@@ -4,7 +4,7 @@ using System;
 
 namespace RotationSolver.Actions
 {
-    internal interface IBaseAction : IAction
+    public interface IBaseAction : IAction
     {
         /// <summary>
         /// MP for casting.

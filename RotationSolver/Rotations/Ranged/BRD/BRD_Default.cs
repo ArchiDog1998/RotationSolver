@@ -15,7 +15,7 @@ internal sealed class BRD_Default : BRD_Base
 
     public override string RotationName => "Default";
 
-    private protected override IRotationConfigSet CreateConfiguration() => base.CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration() => base.CreateConfiguration()
             .SetBool("BindWAND", false, "Use Raging Strikes on WAND")
             .SetCombo("FirstSong", 0, "First Song", "WAND", "MAGE", "ARMY")
             .SetFloat("WANDTime", 43, "WAND Time", min: 0, max: 45, speed: 1)
@@ -30,7 +30,7 @@ internal sealed class BRD_Default : BRD_Base
     private float MAGERemainTime => 45 - Configs.GetFloat("MAGETime");
     private float ARMYRemainTime => 45 - Configs.GetFloat("ARMYTime");
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //伶牙俐齿
         if (IronJaws.CanUse(out act)) return true;
@@ -65,7 +65,7 @@ internal sealed class BRD_Default : BRD_Base
         return false;
     }
 
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //如果接下来要上毒或者要直线射击，那算了。
         if (nextGCD.IsTheSameTo(true, StraitShoot, VenomousBite, Windbite, IronJaws))
@@ -84,7 +84,7 @@ internal sealed class BRD_Default : BRD_Base
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
 

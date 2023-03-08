@@ -17,7 +17,7 @@ internal sealed class DRG_Default : DRG_Base
 
     public override string RotationName => "Default";
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("DRG_ShouldDelay", true, "Delay the dragon?")
             .SetBool("DRG_Opener", false, "Opener in lv.88")
@@ -25,7 +25,7 @@ internal sealed class DRG_Default : DRG_Base
     }
 
     [RotationDesc(ActionID.SpineshatterDive, ActionID.DragonfireDive)]
-    private protected override bool MoveForwardAbility(byte abilityRemain, out IAction act, bool recordTarget = true)
+    protected override bool MoveForwardAbility(byte abilityRemain, out IAction act, bool recordTarget = true)
     {
         if (abilityRemain > 1)
         {
@@ -36,7 +36,7 @@ internal sealed class DRG_Default : DRG_Base
         act = null;
         return false;
     }
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         if (nextGCD.IsTheSameTo(true, FullThrust, CoerthanTorment)
             || Player.HasStatus(true, StatusID.LanceCharge) && nextGCD.IsTheSameTo(false, FangandClaw))
@@ -48,7 +48,7 @@ internal sealed class DRG_Default : DRG_Base
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (InBurst)
         {
@@ -107,7 +107,7 @@ internal sealed class DRG_Default : DRG_Base
         return false;
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         #region х╨ик
         if (CoerthanTorment.CanUse(out act)) return true;

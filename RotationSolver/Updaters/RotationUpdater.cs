@@ -5,6 +5,7 @@ using RotationSolver.Data;
 using RotationSolver.Rotations.CustomRotation;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,7 +17,6 @@ internal static class RotationUpdater
 {
     public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] rotations);
 
-    #region All Rotations
     private static SortedList<JobRole, CustomRotationGroup[]> _customRotationsDict;
     internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict
     {
@@ -44,6 +44,18 @@ internal static class RotationUpdater
 
     private static void GetAllCustomRotations()
     {
+        //var thisPath = Assembly.GetAssembly(typeof(ICustomRotation)).Location;
+
+        //var types = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
+        //    .Where(l => l != thisPath)
+        //    .Select(Assembly.LoadFrom)
+        //    .SelectMany(a => a.GetTypes());
+
+        //foreach (var t in types)
+        //{
+        //    Service.ChatGui.Print(t.Name);
+        //}
+
         _customRotations = (from t in Assembly.GetAssembly(typeof(ICustomRotation)).GetTypes()
                             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                                  && !t.IsAbstract && !t.IsInterface
@@ -69,7 +81,6 @@ internal static class RotationUpdater
         }
         return result.ToArray();
     }
-    #endregion
 
     public static ICustomRotation RightNowRotation { get; private set; }
 
@@ -91,13 +102,13 @@ internal static class RotationUpdater
         {
             if (!group.classJobIds.Contains(_job)) continue;
 
-            RightNowRotation = GetChoosedRotation(group, _rotationName);
+            RightNowRotation = GetChooseRotation(group, _rotationName);
             RightRotationBaseActions = RightNowRotation.AllBaseActions;
             break;
         }
     }
 
-    internal static ICustomRotation GetChoosedRotation(CustomRotationGroup group, string name)
+    internal static ICustomRotation GetChooseRotation(CustomRotationGroup group, string name)
     {
         var rotation = group.rotations.FirstOrDefault(r => r.RotationName == name);
         rotation ??= group.rotations.FirstOrDefault(r => r.GetType().GetCustomAttribute<DefaultRotationAttribute>() != null);

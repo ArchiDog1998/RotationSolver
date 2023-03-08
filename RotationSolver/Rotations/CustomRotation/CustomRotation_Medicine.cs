@@ -10,7 +10,7 @@ public enum MedicineType : byte
     Intelligence,
     Mind,
 }
-internal abstract partial class CustomRotation
+public abstract partial class CustomRotation
 {
     public abstract MedicineType MedicineType { get; }
     public static IBaseItem TinctureofStrength6 { get; } = new MedicineItem(36109,

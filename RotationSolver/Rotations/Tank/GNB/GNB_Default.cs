@@ -18,7 +18,7 @@ internal sealed class GNB_Default : GNB_Base
 
     protected override bool CanHealAreaSpell => false;
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //倍攻
         if (CanUseDoubleDown(out act)) return true;
@@ -54,7 +54,7 @@ internal sealed class GNB_Default : GNB_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //无情,目前只有4GCD起手的判断
         if (InBurst && abilitiesRemaining == 1 && CanUseNoMercy(out act)) return true;
@@ -95,7 +95,7 @@ internal sealed class GNB_Default : GNB_Base
     }
 
     [RotationDesc(ActionID.HeartofLight, ActionID.Reprisal)]
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (HeartofLight.CanUse(out act, emptyOrSkipCombo: true)) return true;
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
@@ -103,7 +103,7 @@ internal sealed class GNB_Default : GNB_Base
     }
 
     [RotationDesc(ActionID.HeartofStone, ActionID.Nebula, ActionID.Rampart, ActionID.Camouflage, ActionID.Reprisal)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (abilitiesRemaining == 2)
         {
@@ -127,7 +127,7 @@ internal sealed class GNB_Default : GNB_Base
     }
 
     [RotationDesc(ActionID.Aurora)]
-    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Aurora.CanUse(out act, emptyOrSkipCombo: true) && abilitiesRemaining == 1) return true;
         return false;

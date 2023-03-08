@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
-internal abstract partial class CustomRotation
+public abstract partial class CustomRotation
 {
     private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
     {
@@ -86,40 +86,40 @@ internal abstract partial class CustomRotation
         return false;
     }
 
-    private protected virtual bool EmergencyGCD(out IAction act)
+    protected virtual bool EmergencyGCD(out IAction act)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.MoveForwardGCD)]
-    private protected virtual bool MoveForwardGCD(out IAction act)
+    protected virtual bool MoveForwardGCD(out IAction act)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.HealSingleGCD)]
-    private protected virtual bool HealSingleGCD(out IAction act)
+    protected virtual bool HealSingleGCD(out IAction act)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.HealAreaGCD)]
-    private protected virtual bool HealAreaGCD(out IAction act)
+    protected virtual bool HealAreaGCD(out IAction act)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.DefenseSingleGCD)]
-    private protected virtual bool DefenseSingleGCD(out IAction act)
+    protected virtual bool DefenseSingleGCD(out IAction act)
     {
         act = null; return false;
     }
 
     [RotationDesc(DescType.DefenseAreaGCD)]
-    private protected virtual bool DefenseAreaGCD(out IAction act)
+    protected virtual bool DefenseAreaGCD(out IAction act)
     {
         act = null; return false;
     }
 
-    private protected abstract bool GeneralGCD(out IAction act);
+    protected abstract bool GeneralGCD(out IAction act);
 }

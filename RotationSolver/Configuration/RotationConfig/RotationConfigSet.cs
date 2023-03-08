@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace RotationSolver.Configuration.RotationConfig
 {
-    internal class RotationConfigSet : IRotationConfigSet
+    public class RotationConfigSet : IRotationConfigSet
     {
         ClassJobID _job;
         string _rotationName;

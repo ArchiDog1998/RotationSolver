@@ -181,7 +181,7 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
         StatusNeed = new[] { StatusID.PrimalRendReady }
     };
 
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //死斗 如果血不够了。
         if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
@@ -189,7 +189,7 @@ internal abstract class WAR_Base : CustomRotation.CustomRotation
     }
 
     [RotationDesc(ActionID.Onslaught)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         if (Onslaught.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;

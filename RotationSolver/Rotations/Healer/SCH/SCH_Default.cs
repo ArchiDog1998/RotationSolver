@@ -26,14 +26,14 @@ internal sealed class SCH_Default : SCH_Base
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Configs.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Configs.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "Aut use GCD to heal")
                                             .SetBool("prevDUN", false, "Recitation in 15 seconds.")
                                             .SetBool("GiveT", false, "Give Recitation to Tank");
     }
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         //秘策绑定单盾群盾
         if (nextGCD.IsTheSameTo(true, Succor, Adloquium))
@@ -55,7 +55,7 @@ internal sealed class SCH_Default : SCH_Base
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //召唤小仙女
         if (SummonEos.CanUse(out act)) return true;
@@ -77,7 +77,7 @@ internal sealed class SCH_Default : SCH_Base
     }
 
     [RotationDesc(ActionID.Adloquium, ActionID.Physick)]
-    private protected override bool HealSingleGCD(out IAction act)
+    protected override bool HealSingleGCD(out IAction act)
     {
         //鼓舞激励之策
         if (Adloquium.CanUse(out act)) return true;
@@ -89,7 +89,7 @@ internal sealed class SCH_Default : SCH_Base
     }
 
     [RotationDesc(ActionID.Aetherpact, ActionID.Protraction, ActionID.SacredSoil, ActionID.Excogitation, ActionID.Lustrate, ActionID.Aetherpact)]
-    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //判断是否有人有线
         var haveLink = TargetUpdater.PartyMembers.Any(p => p.HasStatus(true, StatusID.Aetherpact));
@@ -116,14 +116,14 @@ internal sealed class SCH_Default : SCH_Base
     }
 
     [RotationDesc(ActionID.Excogitation)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Excogitation.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Succor)]
-    private protected override bool HealAreaGCD(out IAction act)
+    protected override bool HealAreaGCD(out IAction act)
     {
         //士气高扬之策
         if (Succor.CanUse(out act)) return true;
@@ -133,7 +133,7 @@ internal sealed class SCH_Default : SCH_Base
 
 
     [RotationDesc(ActionID.SummonSeraph, ActionID.Consolation, ActionID.WhisperingDawn, ActionID.SacredSoil, ActionID.Indomitability)]
-    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //慰藉
         if (SummonSeraph.CanUse(out act)) return true;
@@ -156,14 +156,14 @@ internal sealed class SCH_Default : SCH_Base
     }
 
     [RotationDesc(ActionID.Succor)]
-    private protected override bool DefenseAreaGCD(out IAction act)
+    protected override bool DefenseAreaGCD(out IAction act)
     {
         if (Succor.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.FeyIllumination, ActionID.Expedient, ActionID.SummonSeraph, ActionID.Consolation, ActionID.SacredSoil)]
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //异想的幻光
         if (FeyIllumination.CanUse(out act)) return true;
@@ -182,7 +182,7 @@ internal sealed class SCH_Default : SCH_Base
     }
 
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (InBurst)
         {
@@ -207,7 +207,7 @@ internal sealed class SCH_Default : SCH_Base
     }
 
     //15秒秘策单盾扩散
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         if(remainTime < Ruin.CastTime + Service.Configuration.CountDownAhead 
             && Ruin.CanUse(out var act)) return act;

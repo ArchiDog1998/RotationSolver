@@ -20,7 +20,7 @@ internal sealed class BLU_Default : BLU_Base
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell && BlueId == BLUID.Healer;
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && BlueId == BLUID.Healer;
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("MoonFluteBreak", false, "MoonFlute")
@@ -46,13 +46,13 @@ internal sealed class BLU_Default : BLU_Base
     /// </summary>
     private bool SingleAOE => Configs.GetBool("SingleAOE");
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
         return false;
     }
 
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         if (nextGCD.IsTheSameTo(false, Selfdestruct, FinalSting))
         {
@@ -61,14 +61,14 @@ internal sealed class BLU_Default : BLU_Base
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    private protected override bool MoveForwardGCD(out IAction act)
+    protected override bool MoveForwardGCD(out IAction act)
     {
         //正义飞踢
         if (JKick.CanUse(out act, mustUse: true)) return true;
         return base.MoveForwardGCD(out act);
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         act = null;
         //狂战士副作用期间
@@ -103,7 +103,7 @@ internal sealed class BLU_Default : BLU_Base
         return false;
     }
 
-    private protected override bool HealSingleGCD(out IAction act)
+    protected override bool HealSingleGCD(out IAction act)
     {
         if (BlueId == BLUID.Healer)
         {

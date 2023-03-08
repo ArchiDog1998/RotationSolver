@@ -16,7 +16,7 @@ internal sealed class SAM_Default : SAM_Base
 
     public override string RotationName => "Default";
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetFloat("addKenki", 50, "use Kenki above.", min: 0, max: 85, speed: 5);
@@ -47,7 +47,7 @@ internal sealed class SAM_Default : SAM_Base
     //    {DescType.MoveAction, $"{HissatsuGyoten}"},
     //};
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //奥义回返
         if (KaeshiNamikiri.CanUse(out act, mustUse: true)) return true;
@@ -97,7 +97,7 @@ internal sealed class SAM_Default : SAM_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //意气冲天
         if (Kenki <= 50 && Ikishoten.CanUse(out act)) return true;
@@ -126,7 +126,7 @@ internal sealed class SAM_Default : SAM_Base
         act = null;
         return false;
     }
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //明镜止水
         if (HasHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) &&
@@ -138,7 +138,7 @@ internal sealed class SAM_Default : SAM_Base
     }
 
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         //开局使用明镜
         if (remainTime <= 5 && MeikyoShisui.CanUse(out _)) return MeikyoShisui;

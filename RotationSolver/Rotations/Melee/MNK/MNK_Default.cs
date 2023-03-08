@@ -19,15 +19,23 @@ internal sealed class MNK_Default : MNK_Base
 
     public override string RotationName => "LunarSolarOpener";
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("AutoFormShift", true, "Auto use FormShift");
     }
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
-        if (remainTime < 0.2 && MoveForwardAbility(1, out var act)) return act;
-        if (remainTime < 15 && FormShift.CanUse(out act)) return act;
+        if (remainTime < 0.2)
+        {
+            if (Thunderclap.CanUse(out var act, true, true)) return act;
+            if (Thunderclap.CanUse(out act, false, true)) return act;
+        }
+        if (remainTime < 15)
+        {
+            if (Chakra < 5 && Meditation.CanUse(out var act)) return act;
+            if (FormShift.CanUse(out act)) return act;
+        }
 
         return base.CountDownAction(remainTime);
     }
@@ -57,7 +65,7 @@ internal sealed class MNK_Default : MNK_Base
         return false;
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         if(PerfectBalanceActions(out act)) return true;
 
@@ -158,7 +166,7 @@ internal sealed class MNK_Default : MNK_Base
         return CoerlForm(out act);
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
         if (abilitiesRemaining == 1 && InCombat)

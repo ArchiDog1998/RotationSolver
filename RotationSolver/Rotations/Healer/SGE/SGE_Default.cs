@@ -43,18 +43,18 @@ internal sealed class SGE_Default : SGE_Base
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Configs.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Configs.GetBool("GCDHeal") || TargetUpdater.PartyHealers.Count() < 2);
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration().SetBool("GCDHeal", false, "Auto Use GCD to heal.");
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null!;
         return false;
     }
 
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         if (base.EmergencyAbility(abilitiesRemaining, nextGCD, out act)) return true;
 
@@ -76,7 +76,7 @@ internal sealed class SGE_Default : SGE_Base
     }
 
     [RotationDesc(ActionID.Haima, ActionID.Taurochole)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Addersgall == 0 || Dyskrasia.CanUse(out _))
         {
@@ -90,7 +90,7 @@ internal sealed class SGE_Default : SGE_Base
     }
 
     [RotationDesc(ActionID.EukrasianDiagnosis)]
-    private protected override bool DefenseSingleGCD(out IAction act)
+    protected override bool DefenseSingleGCD(out IAction act)
     {
         //诊断
         if (EukrasianDiagnosis.CanUse(out act))
@@ -112,7 +112,7 @@ internal sealed class SGE_Default : SGE_Base
     }
 
     [RotationDesc(ActionID.Panhaima, ActionID.Kerachole, ActionID.Holos)]
-    private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
+    protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
         //泛输血
         if (Addersgall == 0 && TargetUpdater.PartyMembersAverHP < 0.7)
@@ -130,7 +130,7 @@ internal sealed class SGE_Default : SGE_Base
     }
 
     [RotationDesc(ActionID.EukrasianPrognosis)]
-    private protected override bool DefenseAreaGCD(out IAction act)
+    protected override bool DefenseAreaGCD(out IAction act)
     {
         //预后
         if (EukrasianPrognosis.CanUse(out act))
@@ -151,7 +151,7 @@ internal sealed class SGE_Default : SGE_Base
         return base.DefenseAreaGCD(out act);
     }
 
-    private protected override bool GeneralAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool GeneralAbility(byte abilitiesRemaining, out IAction act)
     {
         //心关
         if (Kardia.CanUse(out act)) return true;
@@ -169,7 +169,7 @@ internal sealed class SGE_Default : SGE_Base
         return false;
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //发炎 留一层走位
         if (Phlegma3.CanUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.CanUse(out _))) return true;
@@ -208,7 +208,7 @@ internal sealed class SGE_Default : SGE_Base
     }
 
     [RotationDesc(ActionID.Taurochole, ActionID.Druochole, ActionID.Holos, ActionID.Physis, ActionID.Panhaima)]
-    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //白牛青汁
         if (Taurochole.CanUse(out act)) return true;
@@ -235,14 +235,14 @@ internal sealed class SGE_Default : SGE_Base
     }
 
     [RotationDesc(ActionID.Diagnosis)]
-    private protected override bool HealSingleGCD(out IAction act)
+    protected override bool HealSingleGCD(out IAction act)
     {
         if (Diagnosis.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Pneuma, ActionID.Prognosis, ActionID.EukrasianPrognosis)]
-    private protected override bool HealAreaGCD(out IAction act)
+    protected override bool HealAreaGCD(out IAction act)
     {
         if (TargetUpdater.PartyMembersAverHP < 0.65f || Dyskrasia.CanUse(out _) && TargetUpdater.PartyTanks.Any(t => t.GetHealthRatio() < 0.6f))
         {
@@ -270,7 +270,7 @@ internal sealed class SGE_Default : SGE_Base
     }
 
     [RotationDesc(ActionID.Kerachole, ActionID.Physis, ActionID.Holos, ActionID.Ixochole)]
-    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //坚角清汁
         if (Kerachole.CanUse(out act) && Level >= 78) return true;

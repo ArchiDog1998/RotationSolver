@@ -48,13 +48,13 @@ internal sealed class RDM_Default : RDM_Base
         Acceleration.RotationCheck = b => InCombat;
     }
 
-    private protected override IRotationConfigSet CreateConfiguration()
+    protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
             .SetBool("UseVercure", true, "Use Vercure for Dualcast");
     }
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         if (remainTime < Verthunder.CastTime + Service.Configuration.CountDownAhead
             && Verthunder.CanUse(out var act)) return act;
@@ -67,7 +67,7 @@ internal sealed class RDM_Default : RDM_Base
         return base.CountDownAction(remainTime);
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         act = null;
         if (ManaStacks == 3) return false;
@@ -95,7 +95,7 @@ internal sealed class RDM_Default : RDM_Base
     }
 
 
-    private protected override bool EmergencyGCD(out IAction act)
+    protected override bool EmergencyGCD(out IAction act)
     {
         if (ManaStacks == 3)
         {
@@ -129,7 +129,7 @@ internal sealed class RDM_Default : RDM_Base
         return false;
     }
 
-    private protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilityRemain, IAction nextGCD, out IAction act)
     {
         act = null;
         if (CombatElapsedLess(4)) return false;
@@ -144,7 +144,7 @@ internal sealed class RDM_Default : RDM_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         //Swift
         if (ManaStacks == 0 && (BlackMana < 50 || WhiteMana < 50) 

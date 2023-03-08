@@ -224,21 +224,21 @@ internal abstract class RDM_Base : CustomRotation.CustomRotation
     };
 
     [RotationDesc(ActionID.Vercure)]
-    private protected sealed override bool HealSingleGCD(out IAction act)
+    protected sealed override bool HealSingleGCD(out IAction act)
     {
         if (Vercure.CanUse(out act, mustUse: true)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.CorpsAcorps)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Addle, ActionID.MagickBarrier)]
-    private protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Addle.CanUse(out act)) return true;
         if (MagickBarrier.CanUse(out act, mustUse: true)) return true;

@@ -22,7 +22,7 @@ internal sealed class WAR_Default : WAR_Base
     }
 
     [RotationDesc(ActionID.ShakeItOff, ActionID.Reprisal)]
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (ShakeItOff.CanUse(out act, mustUse: true)) return true;
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
@@ -30,13 +30,13 @@ internal sealed class WAR_Default : WAR_Base
     }
 
     [RotationDesc(ActionID.PrimalRend)]
-    private protected override bool MoveForwardGCD(out IAction act)
+    protected override bool MoveForwardGCD(out IAction act)
     {
         if (PrimalRend.CanUse(out act, mustUse: true)) return true;
         return false;
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //¸ã¸ã¹¥»÷
         if (PrimalRend.CanUse(out act, mustUse: true) && !IsMoving)
@@ -63,7 +63,7 @@ internal sealed class WAR_Default : WAR_Base
     }
 
     [RotationDesc(ActionID.RawIntuition, ActionID.Vengeance, ActionID.Rampart, ActionID.RawIntuition, ActionID.Reprisal)]
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (abilitiesRemaining == 2)
         {
@@ -87,7 +87,7 @@ internal sealed class WAR_Default : WAR_Base
         return false;
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         if (!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest) || !MythrilTempest.EnoughLevel)
         {

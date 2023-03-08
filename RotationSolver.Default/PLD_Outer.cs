@@ -4,16 +4,18 @@ using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace RotationSolver.Rotations.Tank.PLD;
+namespace RotationSolver.Default;
 
-[RotationDesc("The whole rotation's burst\nis base on:")]
-[LinkDesc("https://xiv.sleepyshiba.com/pld/img/63-60stentative2.png")]
-[RotationDesc(ActionID.FightorFlight)]
-internal class PLD_Default : PLD_Base
+public class PLD_Outer : PLD_Base
 {
     public override string GameVersion => "6.31";
-    public override string RotationName => "Tentative v1.2";
+    public override string RotationName => "Outer One!";
 
     public override string Description => "Please work well!";
 
@@ -61,7 +63,7 @@ internal class PLD_Default : PLD_Base
 
     protected override bool GeneralGCD(out IAction act)
     {
-        if(Player.HasStatus(true, StatusID.Requiescat))
+        if (Player.HasStatus(true, StatusID.Requiescat))
         {
             if (Confiteor.CanUse(out act, mustUse: true))
             {
@@ -81,7 +83,7 @@ internal class PLD_Default : PLD_Base
         if (!CombatElapsedLess(8) && HasFightOrFlight && GoringBlade.CanUse(out act)) return true; // Dot
         if (!FightorFlight.WillHaveOneChargeGCD(2))
         {
-            if (!FightorFlight.WillHaveOneChargeGCD(6) && 
+            if (!FightorFlight.WillHaveOneChargeGCD(6) &&
                 HasDivineMight && HolySpirit.CanUse(out act)) return true;
             if (RageofHalone.CanUse(out act)) return true;
             if (Atonement.CanUse(out act)) return true;
@@ -136,4 +138,5 @@ internal class PLD_Default : PLD_Base
 
         return false;
     }
+
 }

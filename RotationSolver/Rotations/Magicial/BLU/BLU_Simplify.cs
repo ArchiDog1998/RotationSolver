@@ -15,13 +15,13 @@ internal class BLU_Simplify : BLU_Base
 
     public override string Description => "This is a simplfied version for me (ArchiTed) using, \nwhich doesn't contain all actions.";
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
         return false;
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         if (ChocoMeteor.CanUse(out act)) return true;
         if (DrillCannons.CanUse(out act)) return true;

@@ -63,7 +63,7 @@ internal partial class RotationConfigWindow
 
             var group = rotations[i];
             Service.Configuration.RotationChoices.TryGetValue((uint)group.jobId, out var rotationName);
-            var rotation = RotationUpdater.GetChoosedRotation(group, rotationName);
+            var rotation = RotationUpdater.GetChooseRotation(group, rotationName);
 
             var canAddButton = Service.ClientState.LocalPlayer != null
                 && rotation.JobIDs.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id);

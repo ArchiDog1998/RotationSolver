@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
-internal abstract partial class CustomRotation
+public abstract partial class CustomRotation
 {
     public bool TryInvoke(out IAction newAction)
     {
@@ -89,7 +89,7 @@ internal abstract partial class CustomRotation
         return act;
     }
 
-    private protected virtual IAction CountDownAction(float remainTime) => null;
+    protected virtual IAction CountDownAction(float remainTime) => null;
 
 
     uint _lastSayingGCDAction;

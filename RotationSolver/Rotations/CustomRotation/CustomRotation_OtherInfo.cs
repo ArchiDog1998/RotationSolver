@@ -13,7 +13,7 @@ using static RotationSolver.SigReplacers.Watcher;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
-internal abstract partial class CustomRotation
+public abstract partial class CustomRotation
 {
     /// <summary>
     /// This is the player.
@@ -28,12 +28,12 @@ internal abstract partial class CustomRotation
     /// <summary>
     /// Does player have swift cast, dual cast or triple cast.
     /// </summary>
-    internal static bool HasSwift => Player?.HasStatus(true, Swiftcast.StatusProvide) ?? false;
+    protected static bool HasSwift => Player?.HasStatus(true, Swiftcast.StatusProvide) ?? false;
 
     /// <summary>
     /// 
     /// </summary>
-    internal static bool HasTankStance => Player?.HasStatus(true, StatusHelper.TankStanceStatus) ?? false;
+    protected static bool HasTankStance => Player?.HasStatus(true, StatusHelper.TankStanceStatus) ?? false;
 
     /// <summary>
     /// Check the player is moving, such as running, walking or jumping.

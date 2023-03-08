@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
-internal abstract partial class CustomRotation
+public abstract partial class CustomRotation
 {
     internal class RoleAction : BaseAction
     {

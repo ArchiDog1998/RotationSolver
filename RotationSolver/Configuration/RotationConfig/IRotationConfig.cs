@@ -2,7 +2,7 @@
 
 namespace RotationSolver.Configuration.RotationConfig
 {
-    internal interface IRotationConfig
+    public interface IRotationConfig
     {
         string Name { get; }
         string DisplayName { get; }

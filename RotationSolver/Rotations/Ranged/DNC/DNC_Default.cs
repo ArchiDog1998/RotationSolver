@@ -14,7 +14,7 @@ internal sealed class DNC_Default : DNC_Base
 
     public override string RotationName => "Default";
 
-    private protected override IAction CountDownAction(float remainTime)
+    protected override IAction CountDownAction(float remainTime)
     {
         if (remainTime <= 15)
         {
@@ -24,7 +24,7 @@ internal sealed class DNC_Default : DNC_Base
         return base.CountDownAction(remainTime);
     }
 
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
         //ÌøÎè×´Ì¬½ûÖ¹Ê¹ÓÃ
@@ -65,7 +65,7 @@ internal sealed class DNC_Default : DNC_Base
         return false;
     }
 
-    private protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction act)
     {
         //°ó¶¨Îè°é
         if (!InCombat && !Player.HasStatus(true, StatusID.ClosedPosition1) && ClosedPosition.CanUse(out act)) return true;
@@ -91,7 +91,7 @@ internal sealed class DNC_Default : DNC_Base
     /// <param name="act"></param>
     /// <param name="breaking"></param>
     /// <returns></returns>
-    private bool AttackGCD(out IAction act, bool breaking)
+    bool AttackGCD(out IAction act, bool breaking)
     {
         act = null;
         //ÌøÎè×´Ì¬½ûÖ¹Ê¹ÓÃ

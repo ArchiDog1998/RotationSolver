@@ -14,7 +14,7 @@ using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
-internal abstract partial class CustomRotation
+public abstract partial class CustomRotation
 {
     public unsafe void Display(ICustomRotation[] rotations, bool canAddButton)
         => this.DrawEnableTexture(canAddButton, null,
@@ -91,25 +91,29 @@ internal abstract partial class CustomRotation
         }
         ImGuiHelper.HoveredString(LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
 
-        ImGui.SameLine();
-        ImGuiHelper.Spacing();
-
-        foreach (var texture in GetType().GetCustomAttributes<LinkDescAttribute>())
+        var attrs = GetType().GetCustomAttributes<LinkDescAttribute>();
+        if (attrs.Any())
         {
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.HandsHelping,
-                "Button" + texture.GetHashCode().ToString()))
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            foreach (var texture in attrs)
             {
-                Util.OpenLink(texture.Path);
-            }
-            if (ImGui.IsItemHovered() && texture.Texture != null)
-            {
-                ImGuiHelper.DrawTooltip(() =>
+                if (ImGuiHelper.IconButton(FontAwesomeIcon.Question,
+                    "Button" + texture.GetHashCode().ToString()))
                 {
-                    var ratio = Math.Min(1, 1000f / texture.Texture.Width);
-                    var size = new Vector2(texture.Texture.Width * ratio,
-                        texture.Texture.Height * ratio);
-                    ImGui.Image(texture.Texture.ImGuiHandle, size);
-                }, "Picture" + texture.GetHashCode().ToString());
+                    Util.OpenLink(texture.Path);
+                }
+                //if (ImGui.IsItemHovered() && texture.Texture != null)
+                //{
+                //    ImGuiHelper.DrawTooltip(() =>
+                //    {
+                //        var ratio = Math.Min(1, 1000f / texture.Texture.Width);
+                //        var size = new Vector2(texture.Texture.Width * ratio,
+                //            texture.Texture.Height * ratio);
+                //        ImGui.Image(texture.Texture.ImGuiHandle, size);
+                //    }, "Picture" + texture.GetHashCode().ToString());
+                //}
             }
         }
     }, () =>

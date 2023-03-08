@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace RotationSolver.Rotations.Basic;
 
-internal abstract class PLD_Base : CustomRotation.CustomRotation
+public abstract class PLD_Base : CustomRotation.CustomRotation
 {
     private static PLDGauge JobGauge => Service.JobGauges.Get<PLDGauge>();
     public override MedicineType MedicineType => MedicineType.Strength;
@@ -197,21 +197,21 @@ internal abstract class PLD_Base : CustomRotation.CustomRotation
     };
 
 
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
     [RotationDesc(ActionID.Intervene)]
-    private protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         if (Intervene.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Clemency)]
-    private protected sealed override bool HealSingleGCD(out IAction act)
+    protected sealed override bool HealSingleGCD(out IAction act)
     {
         if (Clemency.CanUse(out act)) return true;
         return false;
