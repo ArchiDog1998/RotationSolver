@@ -1,5 +1,4 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
 using RotationSolver.Helpers;
@@ -15,7 +14,7 @@ internal class BaseItem : IBaseItem
     public uint AdjustedID => ID;
 
     public Func<bool> OtherCheck { private get; set; }
-    public unsafe bool HaveIt => InventoryManager.Instance()->GetInventoryItemCount(_item.RowId, false) > 0 ||
+    private unsafe bool HasIt => InventoryManager.Instance()->GetInventoryItemCount(_item.RowId, false) > 0 ||
             InventoryManager.Instance()->GetInventoryItemCount(_item.RowId, true) > 0;
 
     public uint IconID { get; }
@@ -63,7 +62,7 @@ internal class BaseItem : IBaseItem
 
         if (OtherCheck != null && !OtherCheck()) return false;
 
-        return HaveIt;
+        return HasIt;
     }
 
     public unsafe bool Use()

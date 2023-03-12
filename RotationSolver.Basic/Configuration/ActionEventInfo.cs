@@ -1,7 +1,4 @@
-﻿using ImGuiNET;
-using RotationSolver.Basic;
-
-namespace RotationSolver.Configuration;
+﻿namespace RotationSolver.Configuration;
 
 public class ActionEventInfo : MacroInfo
 {

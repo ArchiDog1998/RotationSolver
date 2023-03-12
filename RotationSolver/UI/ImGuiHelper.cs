@@ -439,7 +439,7 @@ internal static class ImGuiHelper
             }
             ImGuiHelper.HoveredString       (LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
         
-            var attrs = rotation.GetType    ().GetCustomAttributes<LinkDescAttribute>   ();
+            var attrs = rotation.GetType    ().GetCustomAttributes<LinkDescriptionAttribute>   ();
             if (attrs.Any())
             {
                 ImGui.SameLine();

@@ -168,7 +168,7 @@ public abstract partial class CustomRotation
             if (Provoke.CanUse(out act, mustUse: true)) return true;
         }
 
-        //No using defence abilities.
+        //No using defense abilities.
         if (!Service.Config.UseDefenseAbility) return false;
 
         if (helpDefenseAOE)
@@ -180,20 +180,20 @@ public abstract partial class CustomRotation
             }
         }
 
-        //Defnece himself.
+        //Defense himself.
         if (role == JobRole.Tank && HasTankStance)
         {
-            var tarOnmeCount = DataCenter.TarOnMeTargets.Count();
+            var tarOnMeCount = DataCenter.TarOnMeTargets.Count();
 
             //A lot targets are targeting on me.
-            if (tarOnmeCount > 1 && !IsMoving)
+            if (tarOnMeCount > 1 && !IsMoving)
             {
                 if (ArmsLength.CanUse(out act)) return true;
                 if (DefenseSingleAbility(abilitiesRemaining, out act)) return true;
             }
 
-            //Big damage cating action.
-            if (tarOnmeCount == 1 && DataCenter.IsHostileCastingToTank)
+            //Big damage casting action.
+            if (tarOnMeCount == 1 && DataCenter.IsHostileCastingToTank)
             {
                 if (DefenseSingleAbility(abilitiesRemaining, out act)) return true;
             }

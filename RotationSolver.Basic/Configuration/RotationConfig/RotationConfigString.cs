@@ -1,7 +1,4 @@
-﻿using ImGuiNET;
-using RotationSolver.Basic;
-
-namespace RotationSolver.Configuration.RotationConfig;
+﻿namespace RotationSolver.Configuration.RotationConfig;
 
 public class RotationConfigString : RotationConfigBase
 {

@@ -21,10 +21,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     private static RotationConfigWindow _comboConfigWindow;
 
-    private Watcher _watcher;
-    private CountDown _countDown;
-    LocalizationManager _manager;
-    IconReplacer _iconReplacer;
+    readonly List<IDisposable> _dis = new List<IDisposable>();
     public string Name => "Rotation Solver";
 
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
@@ -42,8 +39,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         //Service.Address = new PluginAddressResolver();
         //Service.Address.Setup();
 
-        _iconReplacer = new IconReplacer();
-
         _comboConfigWindow = new();
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(_comboConfigWindow);
@@ -55,12 +50,15 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Enable();
         TimeLineUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
         SocialUpdater.Enable();
-        _watcher = new();
-        _countDown = new();
+        _dis.Add(new Service(pluginInterface));
+        _dis.Add(new Watcher());
+        _dis.Add(new IconReplacer());
+        _dis.Add(new MovingController());
 
-        _manager = new LocalizationManager();
+        var manager = new LocalizationManager();
+        _dis.Add(manager);
 #if DEBUG
-        _manager.ExportLocalization();
+        manager.ExportLocalization();
 #endif
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ChangeUITranslation();
@@ -94,13 +92,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
 
-        _iconReplacer.Dispose();
-        _manager.Dispose();
+        foreach (var item in _dis)
+        {
+            item.Dispose();
+        }
 
         MajorUpdater.Dispose();
         TimeLineUpdater.SaveFiles();
-        _watcher.Dispose();
-        _countDown.Dispose();
         SocialUpdater.Disable();
 
         IconSet.Dispose();

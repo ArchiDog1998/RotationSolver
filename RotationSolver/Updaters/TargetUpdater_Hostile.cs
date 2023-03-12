@@ -84,7 +84,7 @@ internal static partial class TargetUpdater
     private static IEnumerable<BattleChara> GetHostileTargets(IEnumerable<BattleChara> allattackableTargets)
     {
         var type = IconReplacer.RightNowTargetToHostileType;
-        if (type == TargetHostileType.AllTargetsCanAttack || CountDown.CountDownTime > 0)
+        if (type == TargetHostileType.AllTargetsCanAttack || Service.CountDownTime > 0)
         {
             return allattackableTargets;
         }

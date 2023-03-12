@@ -3,8 +3,6 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
 using RotationSolver.Commands;
 using RotationSolver.Data;
-using RotationSolver.Helpers;
-using RotationSolver.SigReplacers;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
@@ -28,7 +26,7 @@ public abstract partial class CustomRotation
 
     private IAction Invoke(out IAction gcdAction)
     {
-        var countDown = CountDown.CountDownTime;
+        var countDown = Service.CountDownTime;
         if (countDown > 0)
         {
             gcdAction = null;

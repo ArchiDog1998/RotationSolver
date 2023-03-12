@@ -29,18 +29,45 @@ using System.Runtime.InteropServices;
 
 namespace RotationSolver.Basic;
 
-public class Service
+public class Service : IDisposable
 {
     public const string Command = "/rotation";
+
+    private delegate IntPtr CountdownTimerDelegate(IntPtr p1);
+
+    /// <summary>
+    ///https://github.com/xorus/EngageTimer/blob/main/Game/CountdownHook.cs
+    /// </summary>
+    [Signature("48 89 5C 24 ?? 57 48 83 EC 40 8B 41", DetourName = nameof(CountdownTimerFunc))]
+    private readonly Hook<CountdownTimerDelegate> _countdownTimerHook = null;
+
+    private static IntPtr _countDown = IntPtr.Zero;
+
+    public static float CountDownTime => _countDown == IntPtr.Zero ? 0 : Math.Max(0, Marshal.PtrToStructure<float>(_countDown + 0x2c));
+
     public static GetChatBoxModuleDelegate GetChatBox { get; private set; }
 
-    public Service(DalamudPluginInterface pluginInterface, SigScanner scanner)
+    public Service(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
 
         //https://github.com/BardMusicPlayer/Hypnotoad-Plugin/blob/7928be6735daf28e94121c3cf1c1dbbef0d97bcf/HypnotoadPlugin/Offsets/Offsets.cs#L18
         GetChatBox = Marshal.GetDelegateForFunctionPointer<GetChatBoxModuleDelegate>(
-            scanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9"));
+            SigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9"));
+
+        SignatureHelper.Initialise(this);
+        _countdownTimerHook?.Enable();
+    }
+
+    private IntPtr CountdownTimerFunc(IntPtr value)
+    {
+        _countDown = value;
+        return _countdownTimerHook!.Original(value);
+    }
+
+    public void Dispose()
+    {
+        _countdownTimerHook?.Dispose();
     }
     public static PluginConfiguration Config { get; set; }
 
@@ -56,6 +83,8 @@ public class Service
 
     [PluginService]
     public static DalamudPluginInterface Interface { get; private set; }
+    [PluginService]
+    public static SigScanner SigScanner { get; private set; }
 
     [PluginService]
     public static ChatGui ChatGui { get; private set; }
@@ -109,6 +138,7 @@ public class Service
 
     [PluginService]
     public static DutyState DutyState { get; private set; }
+
     public static ClientLanguage Language => ClientState.ClientLanguage;
 
 

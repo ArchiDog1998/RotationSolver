@@ -135,7 +135,7 @@ internal partial class RotationConfigWindow
 
     private void DrawCDEX()
     {
-        ImGui.Text("Count Down: " + CountDown.CountDownTime.ToString());
+        ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
 
         if (ActionUpdater.exception != null)
         {

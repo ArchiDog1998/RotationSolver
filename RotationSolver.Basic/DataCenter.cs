@@ -1,17 +1,16 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Actions;
 using RotationSolver.Basic.Data;
 using RotationSolver.Commands;
 using RotationSolver.Data;
-using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
-using Action = Lumina.Excel.GeneratedSheets.Action;
-using System.ComponentModel;
 using RotationSolver.Helpers;
-using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using Action = Lumina.Excel.GeneratedSheets.Action;
+using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
 namespace RotationSolver.Basic;
 

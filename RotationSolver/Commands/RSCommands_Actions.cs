@@ -76,7 +76,7 @@ namespace RotationSolver.Commands
                 CancelState();
             }
             //Auto start at count Down.
-            else if (Service.Config.StartOnCountdown && CountDown.CountDownTime > 0)
+            else if (Service.Config.StartOnCountdown && Service.CountDownTime > 0)
             {
                 if (StateType == StateCommandType.Cancel)
                 {

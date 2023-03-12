@@ -47,7 +47,7 @@ public static class ReflectionHelper
         return type.BaseType.GetPropertyInfo(name);
     }
 
-    internal static MethodInfo GetMethodInfo(this Type type, string name)
+    public static MethodInfo GetMethodInfo(this Type type, string name)
     {
         if (type == null) return null;
 

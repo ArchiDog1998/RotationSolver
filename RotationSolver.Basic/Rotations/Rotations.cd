@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="RotationSolver.Rotations.CustomRotation.CustomRotation">
-    <Position X="9.75" Y="2.5" Width="2.25" />
+    <Position X="10" Y="2" Width="2.25" />
     <NestedTypes>
       <Class Name="RotationSolver.Rotations.CustomRotation.CustomRotation.RoleAction" Collapsed="true">
         <TypeIdentifier>
@@ -10,36 +10,36 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>WwAaPo4ACN0pVr3Bp8UcJ6QRgCAOWQEBCJmiS8pABUU=</HashCode>
-      <FileName>Rotations\CustomRotation\CustomRotation_Ability.cs</FileName>
+      <HashCode>UwAZPo4ACM2pXq3BocVcJ6QRgCAOSYFtCLmiS8vAJUE=</HashCode>
+      <FileName>Rotations\CustomRotation_Ability.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.PLD_Base">
     <Position X="1" Y="2.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAEMEAEAEAEBEAPAChQQAAOYoBgFCAEIAAqAgCBAAAA=</HashCode>
+      <HashCode>AAEIEAEAAAEBEAOAChQQAAOYoBgFCAEIEAuAgCBAAAA=</HashCode>
       <FileName>Rotations\Basic\PLD_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.WAR_Base">
     <Position X="3" Y="3.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAgAEIBIQEAMAEBBCAgAYIAJAABUAiBIAgQAgAAAAA=</HashCode>
+      <HashCode>AAAgAEIBIQEAMAEBBCAgAYIAJAABUAiBMAgQAgAAAAA=</HashCode>
       <FileName>Rotations\Basic\WAR_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.DRK_Base">
     <Position X="5" Y="3.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>BwSEACEjQAMgUAEBAEAjKBAAIAAAAoAAAEgAAAAUAAA=</HashCode>
+      <HashCode>BwSEACEjQAMgUAEBAEAjKBAAIAAAAoAAEEgAAAAUAAA=</HashCode>
       <FileName>Rotations\Basic\DRK_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.GNB_Base">
     <Position X="7.25" Y="4.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AGwGIiQmAREAEEFAAIBAAAAEIAAFgASAAQgBAEhABAQ=</HashCode>
+      <HashCode>AGwGIiQmAREAEEFAAIBAAAAEIAAFgASAEQgBAEhABAQ=</HashCode>
       <FileName>Rotations\Basic\GNB_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -53,21 +53,21 @@
   <Class Name="RotationSolver.Rotations.Basic.SCH_Base">
     <Position X="14.75" Y="3.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAABIgRgAENA4CiAAAACEYAIwEJAjCgAAAAgAAgA=</HashCode>
+      <HashCode>AAAAAABIgRgAENA4CiAAAACEYAIwEJAjGgAAAAgAAgA=</HashCode>
       <FileName>Rotations\Basic\SCH_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.AST_Base">
     <Position X="16.75" Y="3" Width="2" />
     <TypeIdentifier>
-      <HashCode>AggSAMAAAAQIG9gAQBgAAgAAIAEkAAAAAAhEFoAACAA=</HashCode>
+      <HashCode>AggSAMAAAAQIG9gAQBgAAgAAIAEkAAAAEAhEFoAACAA=</HashCode>
       <FileName>Rotations\Basic\AST_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.SGE_Base">
     <Position X="19" Y="2.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>EAAKEAAIAAAAENEaBiAoZ0AIIAAAAAYDAAAECAACAKI=</HashCode>
+      <HashCode>EAAKEAAIAAAAENEaBiAoZ0AIIAAAAAYDEAAECAACAKI=</HashCode>
       <FileName>Rotations\Basic\SGE_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -97,7 +97,7 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>yklKQVgAhPYrHIlAMfglZ6xrCerhDAyLChiAOgYdskE=</HashCode>
+      <HashCode>yklKQVgAhPYrHIlAMfglZ6xrCerhDAyLGhiAOgYdskE=</HashCode>
       <FileName>Rotations\Basic\BLU_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -128,54 +128,54 @@
   <Class Name="RotationSolver.Rotations.Basic.SMN_Base">
     <Position X="16.75" Y="14.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>ASEIAkhIoBIEUoEIAyMQgACEIQIUAACMAIAEAAAEGAA=</HashCode>
+      <HashCode>ASEIAkhIoBIEUoEIAyMQgACEIQIUAACMEIAEAAAEGAA=</HashCode>
       <FileName>Rotations\Basic\SMN_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.RDM_Base">
     <Position X="19.25" Y="13.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AABJIAIIQBAA0YEIBCCAAAAQMAAsAABigAAEAGIgAAg=</HashCode>
+      <HashCode>AABJIAIIQBAA0YEIBCCAAAAQMAAsAABikAAEAGIgAAg=</HashCode>
       <FileName>Rotations\Basic\RDM_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.DNC_Base">
     <Position X="5.25" Y="15" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AMCCAAkgMCgBUCEQAAAIcCWAYEIAEAgAABAAAAAABgo=</HashCode>
+      <HashCode>AMCCAAkgMCgBUCEQAAAIcCWAYEIAEAgAEBAAAAAABgo=</HashCode>
       <FileName>Rotations\Basic\DNC_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.MCH_Base">
     <Position X="3" Y="14.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>JAIAAAAAAiCA8QiREBAAAAEAIiAAAAAAAEgQAggAAAA=</HashCode>
+      <HashCode>JAIAAAAAAiCA8QiREBAAAAEAIiAAAAAAEEgQAggAAAA=</HashCode>
       <FileName>Rotations\Basic\MCH_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.BRD_Base">
     <Position X="1" Y="14" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AlEACAgFBAAIUAQAkAABAAoAMABCCCAAgRqCAAIAIQA=</HashCode>
+      <HashCode>AlEACAgFBAAIUAQAkAABAAoAMABCCCAAkRqCAAIAIQA=</HashCode>
       <FileName>Rotations\Basic\BRD_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.MNK_Base">
-    <Position X="5.25" Y="27.25" Width="2" />
+    <Position X="5.25" Y="28.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>CAEAAAggEAIBUAFCCADAggEAIAAAAEQQJIAYAJBkSAA=</HashCode>
+      <HashCode>CAEAAAggEBIBUAFCCACAggEAIAAAAEYQNIAYAJBkSAA=</HashCode>
       <FileName>Rotations\Basic\MNK_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.DRG_Base">
-    <Position X="7.75" Y="27.25" Width="1.75" />
+    <Position X="7.75" Y="28.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>BEwAAAAIgkAAVAAEBgQAAAEGIAAgAIIgAABAAABAAAA=</HashCode>
+      <HashCode>BEwAAAAIgkAAVAAEBgQAAAEGIAAgAIIgEABAAABAAAA=</HashCode>
       <FileName>Rotations\Basic\DRG_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.NIN_Base">
-    <Position X="10" Y="27.25" Width="1.75" />
+    <Position X="10" Y="28.5" Width="1.75" />
     <NestedTypes>
       <Class Name="RotationSolver.Rotations.Basic.NIN_Base.NinAction" Collapsed="true">
         <TypeIdentifier>
@@ -185,19 +185,19 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>EEEII1hAAACB0EHAGAgQQEAAIAYldAACgIEEAYUBkCA=</HashCode>
+      <HashCode>EEEII1hAAACB0EHAGAgQQEAAIAYldAACkIEEAYUBkCA=</HashCode>
       <FileName>Rotations\Basic\NIN_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.SAM_Base">
-    <Position X="12.25" Y="27.25" Width="1.75" />
+    <Position X="12.25" Y="28.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>BAABAAkRogAAVAnABQAGBHFGIAQBEkQBEEAJAAAAAGA=</HashCode>
       <FileName>Rotations\Basic\SAM_Base.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RotationSolver.Rotations.Basic.RPR_Base">
-    <Position X="14.5" Y="27.25" Width="1.75" />
+    <Position X="14.5" Y="28.5" Width="1.75" />
     <NestedTypes>
       <Class Name="RotationSolver.Rotations.Basic.RPR_Base.PRPAction" Collapsed="true">
         <TypeIdentifier>
@@ -206,7 +206,7 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AIABEEgEjiAgWAEAACRRAAgwLAEAgBAAgIAABBCIAEA=</HashCode>
+      <HashCode>AIABEEgEjiAgWAEAACRRAAgwLAEAgBAAkIAABBCIAEA=</HashCode>
       <FileName>Rotations\Basic\RPR_Base.cs</FileName>
     </TypeIdentifier>
   </Class>

@@ -1,7 +1,4 @@
-﻿using ImGuiNET;
-using RotationSolver.Basic;
-using RotationSolver.Commands;
-using RotationSolver.Data;
+﻿using RotationSolver.Data;
 namespace RotationSolver.Configuration.RotationConfig;
 
 public class RotationConfigCombo : RotationConfigBase

@@ -1,14 +1,11 @@
-﻿using ImGuiScene;
-using System;
-
-namespace RotationSolver.Attributes;
+﻿namespace RotationSolver.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class LinkDescAttribute : Attribute
+public class LinkDescriptionAttribute : Attribute
 {
     //public TextureWrap Texture { get; }
     public string Path { get; } 
-    public LinkDescAttribute(string path)
+    public LinkDescriptionAttribute(string path)
     {
         Path = path;
         //Texture = Service.DataManager.GetImGuiTexture(path);

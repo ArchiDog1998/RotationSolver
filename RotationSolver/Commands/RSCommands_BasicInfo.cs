@@ -10,8 +10,6 @@ namespace RotationSolver.Commands
 {
     public static partial class RSCommands
     {
-        internal const string _command = "/rotation";
-
         internal static TargetingType TargetingType
         {
             get
@@ -28,13 +26,13 @@ namespace RotationSolver.Commands
         }
 
         internal static void Enable()
-            => Service.CommandManager.AddHandler(_command, new CommandInfo(OnCommand)
+            => Service.CommandManager.AddHandler(Service.Command, new CommandInfo(OnCommand)
             {
                 HelpMessage = LocalizationManager.RightLang.Commands_Rotation,
                 ShowInHelp = true,
             });
 
-        internal static void Disable() => Service.CommandManager.RemoveHandler(_command);
+        internal static void Disable() => Service.CommandManager.RemoveHandler(Service.Command);
 
         private static void OnCommand(string command, string arguments)
         {
