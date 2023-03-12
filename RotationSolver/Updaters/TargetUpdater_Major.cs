@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using RotationSolver.Basic;
 using RotationSolver.Helpers;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,10 @@ namespace RotationSolver.Updaters
 {
     internal static partial class TargetUpdater
     {
-        internal static IEnumerable<GameObject> AllTargets { get; private set; }
         internal static void UpdateTarget()
         {
-            AllTargets = Service.ObjectTable.GetObjectInRadius(30);
-            var battles = AllTargets.OfType<BattleChara>();
+            DataCenter.AllTargets = Service.ObjectTable.GetObjectInRadius(30);
+            var battles = DataCenter.AllTargets.OfType<BattleChara>();
             UpdateHostileTargets(battles);
             UpdateFriends(battles);
             UpdateNamePlate(Service.ObjectTable.OfType<BattleChara>());

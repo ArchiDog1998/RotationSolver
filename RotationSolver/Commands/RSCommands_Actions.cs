@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Basic;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
@@ -10,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace RotationSolver.Commands
 {
-    internal static partial class RSCommands
+    public static partial class RSCommands
     {
         private static DateTime _fastClickStopwatch = DateTime.Now;
 
@@ -18,7 +19,7 @@ namespace RotationSolver.Commands
         {
             if (StateType == StateCommandType.Cancel) return;
 
-            var localPlayer = Service.ClientState.LocalPlayer;
+            var localPlayer = Service.Player;
             if (localPlayer == null) return;
 
             //0.2s内，不能重复按按钮。
@@ -36,7 +37,8 @@ namespace RotationSolver.Commands
 
             if (nextAction.Use())
             {
-                if (Service.Configuration.KeyBoardNoise) PreviewUpdater.PulseAtionBar(nextAction.AdjustedID);
+                if (nextAction is BaseAction a && a.ShouldEndSpecial) ResetSpecial();
+                if (Service.Config.KeyBoardNoise) PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
                 if (nextAction is BaseAction act)
                 {
 #if DEBUG
@@ -61,12 +63,12 @@ namespace RotationSolver.Commands
 
         internal static void UpdateRotationState()
         {
-            if (Service.ClientState.LocalPlayer.CurrentHp == 0
+            if (Service.Player.CurrentHp == 0
                 || Service.Conditions[ConditionFlag.LoggingOut])
             {
                 CancelState();
             }
-            else if (Service.Configuration.AutoOffBetweenArea && (
+            else if (Service.Config.AutoOffBetweenArea && (
                 Service.Conditions[ConditionFlag.BetweenAreas]
                 || Service.Conditions[ConditionFlag.BetweenAreas51])
                 || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent])
@@ -74,7 +76,7 @@ namespace RotationSolver.Commands
                 CancelState();
             }
             //Auto start at count Down.
-            else if (Service.Configuration.StartOnCountdown && CountDown.CountDownTime > 0)
+            else if (Service.Config.StartOnCountdown && CountDown.CountDownTime > 0)
             {
                 if (StateType == StateCommandType.Cancel)
                 {
@@ -83,24 +85,5 @@ namespace RotationSolver.Commands
             }
         }
 
-        /// <summary>
-        /// Submit text/command to outgoing chat.
-        /// Can be used to enter chat commands.
-        /// </summary>
-        /// <param name="text">Text to submit.</param>
-        public unsafe static void SubmitToChat(string text)
-        {
-            IntPtr uiModule = Service.GameGui.GetUIModule();
-
-            using (ChatPayload payload = new ChatPayload(text))
-            {
-                IntPtr mem1 = Marshal.AllocHGlobal(400);
-                Marshal.StructureToPtr(payload, mem1, false);
-
-                Service.Address.GetChatBox(uiModule, mem1, IntPtr.Zero, 0);
-
-                Marshal.FreeHGlobal(mem1);
-            }
-        }
     }
 }

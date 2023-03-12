@@ -1,5 +1,6 @@
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
+using RotationSolver.Basic;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
@@ -32,7 +33,7 @@ internal partial class RotationConfigWindow : Window
         if (ImGui.BeginTabBar("RotationSolverSettings"))
         {
 #if DEBUG
-            if (Service.ClientState.LocalPlayer != null && ImGui.BeginTabItem("Debug"))
+            if (Service.Player != null && ImGui.BeginTabItem("Debug"))
             {
                 DrawDebugTab();
                 ImGui.EndTabItem();

@@ -2,10 +2,11 @@
 using Newtonsoft.Json;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Rotations;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.Rotations.CustomRotation;
 using System.Reflection;
 
 namespace RotationSolver.Timeline;
@@ -38,7 +39,7 @@ internal class RotationCondition : ICondition
 
     public bool IsTrue(ICustomRotation rotation)
     {
-        if (Service.ClientState.LocalPlayer == null) return false;
+        if (Service.Player == null) return false;
         UpdateInfo(rotation);
 
         switch (ComboConditionType)

@@ -1,4 +1,5 @@
 ﻿using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -7,16 +8,16 @@ using System;
 
 namespace RotationSolver.Commands
 {
-    internal static partial class RSCommands
+    public static partial class RSCommands
     {
         private static DateTime _specialStateStartTime = DateTime.MinValue;
-        private static double SpecialTimeLeft => Service.Configuration.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds;
+        private static double SpecialTimeLeft => Service.Config.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds;
 
         private static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
-        internal static SpecialCommandType SpecialType =>
+        public static SpecialCommandType SpecialType =>
              SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
 
-        internal static StateCommandType StateType { get; private set; } = StateCommandType.Cancel;
+        public static StateCommandType StateType { get; private set; } = StateCommandType.Cancel;
 
 
         private static string _stateString = "Off", _specialString = string.Empty;
@@ -25,7 +26,7 @@ namespace RotationSolver.Commands
 
         private static void UpdateToast()
         {
-            if (!Service.Configuration.ShowInfoOnToast) return;
+            if (!Service.Config.ShowInfoOnToast) return;
 
             Service.ToastGui.ShowQuest(" " + EntryString, new Dalamud.Game.Gui.Toast.QuestToastOptions()
             {
@@ -38,8 +39,8 @@ namespace RotationSolver.Commands
             if (StateType == StateCommandType.Smart
             && stateType == StateCommandType.Smart)
             {
-                Service.Configuration.TargetingIndex += 1;
-                Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count;
+                Service.Config.TargetingIndex += 1;
+                Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count;
             }
 
             StateType = stateType;
@@ -52,10 +53,10 @@ namespace RotationSolver.Commands
 
         public static unsafe void UpdateStateNamePlate()
         {
-            if (Service.ClientState.LocalPlayer == null) return;
+            if (Service.Player == null) return;
 
-            Service.ClientState.LocalPlayer.GetAddress()->NamePlateIconId =
-                StateType == StateCommandType.Cancel ? 0u : (uint)Service.Configuration.NamePlateIconId;
+            Service.Player.GetAddress()->NamePlateIconId =
+                StateType == StateCommandType.Cancel ? 0u : (uint)Service.Config.NamePlateIconId;
         }
 
         private static void DoSpecialCommandType(SpecialCommandType specialType, bool sayout = true) => DoOneCommandType(specialType, sayout ? EnumTranslations.ToSayout : (s, r) => string.Empty, role =>
@@ -71,13 +72,13 @@ namespace RotationSolver.Commands
             where T : struct, Enum
         {
             //Get jobrole.
-            var role = Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
-                Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole();
+            var role = Service.GetSheet<ClassJob>().GetRow(
+                Service.Player.ClassJob.Id).GetJobRole();
 
             doingSomething(role);
 
             //Saying out.
-            if (Service.Configuration.SayOutStateChanged) Watcher.Speak(sayout(type, role));
+            if (Service.Config.SayOutStateChanged) Watcher.Speak(sayout(type, role));
         }
     }
 }

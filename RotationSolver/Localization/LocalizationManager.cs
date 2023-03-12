@@ -1,5 +1,6 @@
 ﻿using Dalamud.Logging;
 using Newtonsoft.Json;
+using RotationSolver.Basic;
 using System;
 using System.Collections.Generic;
 using System.IO;

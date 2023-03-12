@@ -1,19 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using FFXIVClientStructs.FFXIV.Client.Game.Group;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Basic;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Localization;
-using RotationSolver.Rotations.RangedMagicial.BLM;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
-using System;
-using System.Linq;
 using System.Numerics;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
@@ -22,7 +16,7 @@ internal partial class RotationConfigWindow
 {
     private void DrawDebugTab()
     {
-        var str = SocialUpdater.EncryptString(Service.ClientState.LocalPlayer);
+        var str = SocialUpdater.EncryptString(Service.Player);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH", ref str, 100);
 
@@ -47,15 +41,15 @@ internal partial class RotationConfigWindow
     {
         if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
         {
-            ImGui.Text("Fate: " + TargetUpdater.FateId.ToString());
+            ImGui.Text("Fate: " + DataCenter.FateId.ToString());
         }
 
-        ImGui.Text("Have pet: " + TargetUpdater.HavePet.ToString());
-        ImGui.Text("Have Companion: " + TargetUpdater.HaveCompanion.ToString());
-        ImGui.Text("Targetable: " + Service.ClientState.LocalPlayer.IsTargetable().ToString());
+        ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
+        ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
+        ImGui.Text("Targetable: " + Service.Player.IsTargetable().ToString());
 
 
-        foreach (var status in Service.ClientState.LocalPlayer.StatusList)
+        foreach (var status in Service.Player.StatusList)
         {
             var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
@@ -77,13 +71,13 @@ internal partial class RotationConfigWindow
         //    }
         //}
 
-        ImGui.Text("Party: " + TargetUpdater.PartyMembers.Count().ToString());
-        ImGui.Text("CanHealSingleAbility: " + TargetUpdater.CanHealSingleAbility.ToString());
-        ImGui.Text("CanHealSingleSpell: " + TargetUpdater.CanHealSingleSpell.ToString());
-        ImGui.Text("CanHealAreaAbility: " + TargetUpdater.CanHealAreaAbility.ToString());
-        ImGui.Text("CanHealAreaSpell: " + TargetUpdater.CanHealAreaSpell.ToString());
+        ImGui.Text("Party: " + DataCenter.PartyMembers.Count().ToString());
+        ImGui.Text("CanHealSingleAbility: " + DataCenter.CanHealSingleAbility.ToString());
+        ImGui.Text("CanHealSingleSpell: " + DataCenter.CanHealSingleSpell.ToString());
+        ImGui.Text("CanHealAreaAbility: " + DataCenter.CanHealAreaAbility.ToString());
+        ImGui.Text("CanHealAreaSpell: " + DataCenter.CanHealAreaSpell.ToString());
 
-        foreach (var member in TargetUpdater.PartyMembers)
+        foreach (var member in DataCenter.PartyMembers)
         {
             var cha = (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)member.GetAddress();
 
@@ -114,9 +108,9 @@ internal partial class RotationConfigWindow
             }
         }
 
-        ImGui.Text("All: " + TargetUpdater.AllTargets.Count().ToString());
-        ImGui.Text("Hostile: " + TargetUpdater.HostileTargets.Count().ToString());
-        foreach (var item in TargetUpdater.HostileTargets)
+        ImGui.Text("All: " + DataCenter.AllTargets.Count().ToString());
+        ImGui.Text("Hostile: " + DataCenter.HostileTargets.Count().ToString());
+        foreach (var item in DataCenter.HostileTargets)
         {
             ImGui.Text(item.Name.ToString());
         }
@@ -127,8 +121,8 @@ internal partial class RotationConfigWindow
         ImGui.Text(RSCommands.SpecialType.ToString());
 
         ActionUpdater.NextAction?.Display(false);
-        ImGui.Text("Ability Remain: " + ActionUpdater.AbilityRemain.ToString());
-        ImGui.Text("Ability Count: " + ActionUpdater.AbilityRemainCount.ToString());
+        ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
+        ImGui.Text("Ability Count: " + DataCenter.AbilityRemainCount.ToString());
 
     }
     private void DrawLastAction()
@@ -136,7 +130,7 @@ internal partial class RotationConfigWindow
         DrawAction(Watcher.LastAction, nameof(Watcher.LastAction));
         DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
         DrawAction(Watcher.LastGCD, nameof(Watcher.LastGCD));
-        DrawAction(ActionUpdater.LastComboAction, nameof(ActionUpdater.LastComboAction));
+        DrawAction(DataCenter.LastComboAction, nameof(DataCenter.LastComboAction));
     }
 
     private void DrawCDEX()

@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -41,8 +42,8 @@ internal class SocialUpdater
                 || Service.Conditions[ConditionFlag.BetweenAreas]
                 || Service.Conditions[ConditionFlag.BetweenAreas51]) return false;
 
-            if(Service.ClientState.LocalPlayer == null) return false;
-            if (!Service.ClientState.LocalPlayer.IsTargetable()) return false;
+            if(Service.Player == null) return false;
+            if (!Service.Player.IsTargetable()) return false;
 
             return Service.Conditions[ConditionFlag.BoundByDuty];
         }
@@ -58,16 +59,16 @@ internal class SocialUpdater
     {
         RSCommands.CancelState();
 
-        if (TargetUpdater.PartyMembers.Count() < 2) return;
+        if (DataCenter.PartyMembers.Count() < 2) return;
 
         await Task.Delay(new Random().Next(4000, 6000));
 
-        Service.Configuration.DutyEnd.AddMacro();
+        Service.Config.DutyEnd.AddMacro();
     }
 
     static void DutyState_DutyStarted(object sender, ushort e)
     {
-        var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
+        var territory = Service.GetSheet<TerritoryType>().GetRow(e);
         if (territory?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
         {
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
@@ -83,7 +84,7 @@ internal class SocialUpdater
 
     internal static async void UpdateSocial()
     {
-        if (ActionUpdater.InCombat || TargetUpdater.PartyMembers.Count() < 2) return;
+        if (DataCenter.InCombat || DataCenter.PartyMembers.Count() < 2) return;
         if (CanSaying && CanSocial)
         {
             CanSaying = false;
@@ -92,7 +93,7 @@ internal class SocialUpdater
 #if DEBUG
             Service.ChatGui.PrintError("Macro now.");
 #endif
-            Service.Configuration.DutyStart.AddMacro();
+            Service.Config.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
             SayHelloToAuthor();
         }
@@ -100,7 +101,7 @@ internal class SocialUpdater
 
     private static async void SayHelloToAuthor()
     {
-        var author = TargetUpdater.AllianceMembers.OfType<PlayerCharacter>()
+        var author = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
             .FirstOrDefault(c =>
 #if DEBUG
 #else
@@ -110,7 +111,7 @@ internal class SocialUpdater
 
         if (author != null)
         {
-            while(!author.IsTargetable() && !ActionUpdater.InCombat)
+            while(!author.IsTargetable() && !DataCenter.InCombat)
             {
                 await Task.Delay(100);
             }

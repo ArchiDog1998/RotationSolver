@@ -1,9 +1,11 @@
 ﻿using ImGuiNET;
 using RotationSolver.Actions;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -34,7 +36,39 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
         {
-            foreach (var pair in RotationUpdater.RightNowRotation.AllActions.GroupBy(a => a.CateName).OrderBy(g => g.Key))
+            foreach (var pair in RotationUpdater.RightNowRotation.AllActions.GroupBy(a =>
+            {
+                if(a is IBaseAction act)
+                {
+                    string result;
+
+                    if (act.IsFriendly)
+                    {
+                        result = LocalizationManager.RightLang.Action_Friendly;
+                        if (act.IsEot)
+                        {
+                            result += "Hot";
+                        }
+                    }
+                    else
+                    {
+                        result = LocalizationManager.RightLang.Action_Attack;
+
+                        if (act.IsEot)
+                        {
+                            result += "Dot";
+                        }
+                    }
+                    result += "-" + (act.IsRealGCD ? "GCD" : LocalizationManager.RightLang.Timeline_Ability);
+                    return result;
+                }
+                else if(a is IBaseItem)
+                {
+                    return "Item";
+                }
+                return string.Empty;
+
+            }).OrderBy(g => g.Key))
             {
                 if (ImGui.CollapsingHeader(pair.Key))
                 {

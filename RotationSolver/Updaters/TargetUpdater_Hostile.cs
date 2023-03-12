@@ -6,6 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
@@ -18,53 +19,16 @@ namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {
-    /// <summary>
-    /// 敌人
-    /// </summary>
-    internal static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
-        () => (Service.Configuration.HostileDelayMin, Service.Configuration.HostileDelayMax));
 
-    internal static IEnumerable<BattleChara> AllHostileTargets { get; private set; } = new BattleChara[0];
-
-    internal static IEnumerable<BattleChara> TarOnMeTargets { get; private set; } = new BattleChara[0];
-
-    internal static ObjectListDelay<BattleChara> CanInterruptTargets { get;} = new ObjectListDelay<BattleChara>(
-        () => (Service.Configuration.InterruptDelayMin, Service.Configuration.InterruptDelayMax));
-    internal static bool HasHostilesInRange { get; private set; } = false;
-
-    internal static bool IsHostileCastingAOE { get; private set; } = false;
-
-    internal static bool IsHostileCastingToTank { get; private set; } = false;
-
-    internal static unsafe ushort FateId
-    {
-        get
-        {
-            try
-            {
-                if(Service.Configuration.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero 
-                    && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
-                    && Service.ClientState.LocalPlayer.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
-                {
-                    return FateManager.Instance()->CurrentFate->FateId;
-                }
-            }
-            catch(Exception ex)
-            {
-                PluginLog.Error(ex.StackTrace);
-            }
-            return 0;
-        }
-    }
 
     private static float JobRange
     {
         get
         {
             float radius = 25;
-            if(Service.ClientState.LocalPlayer == null) return radius;
-            switch (Service.DataManager.GetExcelSheet<ClassJob>().GetRow(
-                Service.ClientState.LocalPlayer.ClassJob.Id).GetJobRole())
+            if(Service.Player == null) return radius;
+            switch (Service.GetSheet<ClassJob>().GetRow(
+                Service.Player.ClassJob.Id).GetJobRole())
             {
                 case JobRole.Tank:
                 case JobRole.Melee:
@@ -77,7 +41,7 @@ internal static partial class TargetUpdater
 
     private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
     {
-        AllHostileTargets = allTargets.Where(b =>
+        DataCenter.AllHostileTargets = allTargets.Where(b =>
         {
             if (!b.IsNPCEnemy()) return false;
 
@@ -88,7 +52,7 @@ internal static partial class TargetUpdater
 
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
-            if (Service.Configuration.OnlyAttackInView)
+            if (Service.Config.OnlyAttackInView)
             {
                 if(!Service.GameGui.WorldToScreen(b.Position, out _)) return false;
             }
@@ -96,24 +60,24 @@ internal static partial class TargetUpdater
             return true;
         });
 
-        HostileTargets.Delay(GetHostileTargets(AllHostileTargets));
+        DataCenter.HostileTargets.Delay(GetHostileTargets(DataCenter.AllHostileTargets));
 
-        CanInterruptTargets.Delay(HostileTargets.Where(ObjectHelper.CanInterrupt));
+        DataCenter.CanInterruptTargets.Delay(DataCenter.HostileTargets.Where(ObjectHelper.CanInterrupt));
 
-        TarOnMeTargets = HostileTargets.Where(tar => tar.TargetObjectId == Service.ClientState.LocalPlayer.ObjectId);
+        DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Service.Player.ObjectId);
 
-        HasHostilesInRange = TargetFilter.GetObjectInRadius(HostileTargets, JobRange).Any();
+        DataCenter.HasHostilesInRange = TargetFilter.GetObjectInRadius(DataCenter.HostileTargets, JobRange).Any();
 
-        if (HostileTargets.Count() == 1)
+        if (DataCenter.HostileTargets.Count() == 1)
         {
-            var tar = HostileTargets.FirstOrDefault();
+            var tar = DataCenter.HostileTargets.FirstOrDefault();
 
-            IsHostileCastingToTank = IsHostileCastingTank(tar);
-            IsHostileCastingAOE = IsHostileCastingArea(tar);
+            DataCenter.IsHostileCastingToTank = IsHostileCastingTank(tar);
+            DataCenter.IsHostileCastingAOE = IsHostileCastingArea(tar);
         }
         else
         {
-            IsHostileCastingToTank = IsHostileCastingAOE = false;
+            DataCenter.IsHostileCastingToTank = DataCenter.IsHostileCastingAOE = false;
         }
     }
 
@@ -126,13 +90,13 @@ internal static partial class TargetUpdater
         }
 
         uint[] ids = GetEnemies();
-        var fateId = FateId;
+        var fateId = DataCenter.FateId;
 
         var hostiles = allattackableTargets.Where(t =>
         {
             if (ids.Contains(t.ObjectId)) return true;
-            if (t.TargetObject == Service.ClientState.LocalPlayer
-            || t.TargetObject?.OwnerId == Service.ClientState.LocalPlayer.ObjectId) return true;
+            if (t.TargetObject == Service.Player
+            || t.TargetObject?.OwnerId == Service.Player.ObjectId) return true;
 
             //Remove other's treasure.
             if (t.IsOthersPlayers()) return false;
@@ -152,7 +116,7 @@ internal static partial class TargetUpdater
 
     private static unsafe uint[] GetEnemies()
     {
-        if (!Service.Configuration.AddEnemyListToHostile) return new uint[0];
+        if (!Service.Config.AddEnemyListToHostile) return new uint[0];
 
         var addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);
         if (addonByName == IntPtr.Zero) return new uint[0];
@@ -198,7 +162,7 @@ internal static partial class TargetUpdater
             if (!(h.TotalCastTime > 2.5 && 
                 CooldownHelper.RecastAfterGCD(last, 2) && !CooldownHelper.RecastAfterGCD(last, 0))) return false;
 
-            var action = Service.DataManager.GetExcelSheet<Action>().GetRow(h.CastActionId);
+            var action = Service.GetSheet<Action>().GetRow(h.CastActionId);
             return check?.Invoke(action) ?? false;
         }
         return false;

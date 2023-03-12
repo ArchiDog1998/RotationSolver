@@ -1,172 +1,136 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
 using Dalamud.Interface.Colors;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using Dalamud.Utility.Signatures;
 using ImGuiNET;
+using RotationSolver.Basic;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace RotationSolver.SigReplacers
+namespace RotationSolver.SigReplacers;
+
+public class Watcher : IDisposable
 {
-    public static class Watcher
+    private delegate void ReceiveAbilityDelegate(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail);
+
+    /// <summary>
+    /// https://github.com/Tischel/ActionTimeline/blob/master/ActionTimeline/Helpers/TimelineManager.cs#L86
+    /// </summary>
+    [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
+    private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    internal static ActionID LastAction { get; set; } = 0;
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    internal static ActionID LastGCD { get; set; } = 0;
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    internal static ActionID LastAbility { get; set; } = 0;
+
+    public Watcher()
     {
-        public record ActionRec(DateTime UsedTime, Action Action);
+        SignatureHelper.Initialise(this);
 
-        private delegate void ReceiveAbiltyDelegate(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail);
+        _receiveAbilityHook?.Enable();
+    }
 
-        private static Hook<ReceiveAbiltyDelegate> _receivAbilityHook;
+    private static void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail)
+    {
+        _receiveAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTrail);
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static ActionID LastAction { get; set; } = 0;
+        //不是自己放出来的
+        if (Service.Player == null || sourceId != Service.Player.ObjectId) return;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static ActionID LastGCD { get; set; } = 0;
+        //不是一个Spell
+        if (Marshal.ReadByte(effectHeader, 31) != 1) return;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static ActionID LastAbility { get; set; } = 0;
+        //获得行为
+        var action = Service.GetSheet<Action>().GetRow((uint)Marshal.ReadInt32(effectHeader, 0x8));
 
-        internal static TimeSpan TimeSinceLastAction => DateTime.Now - _timeLastActionUsed;
+        //获得目标
+        var tar = Service.ObjectTable.SearchById((uint)Marshal.ReadInt32(effectHeader)) ?? Service.Player;
 
-        private static DateTime _timeLastActionUsed = DateTime.Now;
+        //获得身为技能是否正确flag
+        var flag = Marshal.ReadByte(effectArray + 3);
+        RecordAction(tar, action, flag);
+    }
 
-        const int QUEUECAPACITY = 32;
-        private static Queue<ActionRec> _actions = new Queue<ActionRec>(QUEUECAPACITY);
+    private static unsafe void RecordAction(GameObject tar, Action action, byte flag)
+    {
+        DataCenter.AddActionRec(action);
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static ActionRec[] RecordActions => _actions.Reverse().ToArray();
-
-        internal static unsafe void Enable()
+        //Macro
+        foreach (var item in Service.Config.Events)
         {
-            _receivAbilityHook = Hook<ReceiveAbiltyDelegate>.FromAddress(Service.Address.ReceiveAbilty, ReceiveAbilityEffect);
-
-            _receivAbilityHook?.Enable();
+            if (!new Regex(item.Name).Match(action.Name).Success) continue;
+            if (item.AddMacro(tar)) break;
         }
 
-        private static void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail)
+        if (flag != 0 && Service.Config.ShowActionFlag)
         {
-            _receivAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTrail);
-
-            //不是自己放出来的
-            if (Service.ClientState.LocalPlayer == null || sourceId != Service.ClientState.LocalPlayer.ObjectId) return;
-
-            //不是一个Spell
-            if (Marshal.ReadByte(effectHeader, 31) != 1) return;
-
-            //获得行为
-            var action = Service.DataManager.GetExcelSheet<Action>().GetRow((uint)Marshal.ReadInt32(effectHeader, 0x8));
-
-            //获得目标
-            var tar = Service.ObjectTable.SearchById((uint)Marshal.ReadInt32(effectHeader)) ?? Service.ClientState.LocalPlayer;
-
-            //获得身为技能是否正确flag
-            var flag = Marshal.ReadByte(effectArray + 3);
-            RecordAction(tar, action, flag);
+            Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
+            ImGui.GetColorU32(ImGuiColors.DPSRed), 0, action.Icon);
         }
 
-        private static unsafe void RecordAction(GameObject tar, Action action, byte flag)
+        //事后骂人！
+        if (Service.Config.PositionalFeedback
+            && ConfigurationHelper.ActionPositional.TryGetValue((ActionID)action.RowId, out var pos)
+            && pos.Tags.Length > 0 && !pos.Tags.Contains(flag))
         {
-            var id = (ActionID)action.RowId;
-
-            //Record
-            switch (action.GetActinoType())
+            Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, pos.Pos.ToName(), "",
+                ImGui.GetColorU32(ImGuiColors.DPSRed), 94662, action.Icon);
+            if (!string.IsNullOrEmpty(Service.Config.PositionalErrorText))
             {
-                case ActionCate.Spell: //魔法
-                case ActionCate.Weaponskill: //战技
-                    LastGCD = id;
-                    break;
-                case ActionCate.Ability: //能力
-                    LastAbility = id;
-                    break;
-                default:
-                    return;
-            }
-            _timeLastActionUsed = DateTime.Now;
-            LastAction = id;
-
-            if (_actions.Count >= QUEUECAPACITY)
-            {
-                _actions.Dequeue();
-            }
-            _actions.Enqueue(new ActionRec(_timeLastActionUsed, action));
-
-            //Macro
-            foreach (var item in Service.Configuration.Events)
-            {
-                if (!new Regex(item.Name).Match(action.Name).Success) continue;
-                if (item.AddMacro(tar)) break;
-            }
-
-            if (flag != 0 && Service.Configuration.ShowActionFlag)
-            {
-                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
-                ImGui.GetColorU32(ImGuiColors.DPSRed), 0, action.Icon);
-            }
-
-            //事后骂人！
-            if (Service.Configuration.PositionalFeedback
-                && ConfigurationHelper.ActionPositionals.TryGetValue(id, out var pos)
-                && pos.Tags.Length > 0 && !pos.Tags.Contains(flag))
-            {
-                Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, pos.Pos.ToName(), "",
-                    ImGui.GetColorU32(ImGuiColors.DPSRed), 94662, action.Icon);
-                if (!string.IsNullOrEmpty(Service.Configuration.PositionalErrorText))
-                {
-                    Speak(Service.Configuration.PositionalErrorText);
-                }
+                Speak(Service.Config.PositionalErrorText);
             }
         }
+    }
 
-        internal static void Speak(string text, bool wait = false)
-        {
-            ExecuteCommand(
-                $@"Add-Type -AssemblyName System.speech; 
+    internal static void Speak(string text, bool wait = false)
+    {
+        ExecuteCommand(
+            $@"Add-Type -AssemblyName System.speech; 
                 $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; 
-                $speak.Volume = ""{Service.Configuration.VoiceVolume}"";
+                $speak.Volume = ""{Service.Config.VoiceVolume}"";
                 $speak.Speak(""{text}"");");
 
-            void ExecuteCommand(string command)
+        void ExecuteCommand(string command)
+        {
+            string path = Path.GetTempPath() + Guid.NewGuid() + ".ps1";
+
+            // make sure to be using System.Text
+            using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
             {
-                string path = Path.GetTempPath() + Guid.NewGuid() + ".ps1";
+                sw.Write(command);
 
-                // make sure to be using System.Text
-                using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
+                ProcessStartInfo start = new ProcessStartInfo()
                 {
-                    sw.Write(command);
+                    FileName = @"C:\Windows\System32\windowspowershell\v1.0\powershell.exe",
+                    LoadUserProfile = false,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    Arguments = $"-executionpolicy bypass -File {path}",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
 
-                    ProcessStartInfo start = new ProcessStartInfo()
-                    {
-                        FileName = @"C:\Windows\System32\windowspowershell\v1.0\powershell.exe",
-                        LoadUserProfile = false,
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        Arguments = $"-executionpolicy bypass -File {path}",
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    };
+                Process process = Process.Start(start);
 
-                    Process process = Process.Start(start);
-
-                    if (wait)
-                        process.WaitForExit();
-                }
+                if (wait)
+                    process.WaitForExit();
             }
         }
+    }
 
-        public static void Dispose()
-        {
-            _receivAbilityHook?.Dispose();
-        }
+    public void Dispose()
+    {
+        _receiveAbilityHook?.Dispose();
     }
 }

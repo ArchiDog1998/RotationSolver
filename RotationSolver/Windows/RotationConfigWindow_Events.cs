@@ -1,5 +1,6 @@
 ﻿using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic;
 using RotationSolver.Configuration;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -13,8 +14,8 @@ internal partial class RotationConfigWindow
     {
         if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Events_AddEvent))
         {
-            Service.Configuration.Events.Add(new ActionEventInfo());
-            Service.Configuration.Save();
+            Service.Config.Events.Add(new ActionEventInfo());
+            Service.Config.Save();
         }
         ImGui.SameLine();
         ImGuiHelper.Spacing();
@@ -27,18 +28,18 @@ internal partial class RotationConfigWindow
         ImGui.Text(LocalizationManager.RightLang.Configwindow_Events_DutyStart);
         ImGui.SameLine();
         ImGuiHelper.Spacing();
-        Service.Configuration.DutyStart.DisplayMacro();
+        Service.Config.DutyStart.DisplayMacro();
 
         ImGui.Text(LocalizationManager.RightLang.Configwindow_Events_DutyEnd);
         ImGui.SameLine();
         ImGuiHelper.Spacing();
-        Service.Configuration.DutyEnd.DisplayMacro();
+        Service.Config.DutyEnd.DisplayMacro();
 #endif
 
         if (ImGui.BeginChild("Events List", new Vector2(0f, -1f), true))
         {
             ActionEventInfo remove = null;
-            foreach (var eve in Service.Configuration.Events)
+            foreach (var eve in Service.Config.Events)
             {
                 eve.DisplayMacro();
 
@@ -53,8 +54,8 @@ internal partial class RotationConfigWindow
             }
             if(remove!= null)
             {
-                Service.Configuration.Events.Remove(remove);
-                Service.Configuration.Save();
+                Service.Config.Events.Remove(remove);
+                Service.Config.Save();
             }
 
             ImGui.EndChild();

@@ -76,8 +76,8 @@ internal static class EnumTranslations
         DescType.MoveBackAbility => LocalizationManager.RightLang.DescType_MoveBackAbility,
         DescType.HealSingleAbility => LocalizationManager.RightLang.DescType_HealSingleAbility,
         DescType.HealAreaAbility => LocalizationManager.RightLang.DescType_HealAreaAbility,
-        DescType.DefenceSingleAbility => LocalizationManager.RightLang.DescType_DefenseSingleAbility,
-        DescType.DefenceAreaAbility => LocalizationManager.RightLang.DescType_DefenseAreaAbility,
+        DescType.DefenseSingleAbility => LocalizationManager.RightLang.DescType_DefenseSingleAbility,
+        DescType.DefenseAreaAbility => LocalizationManager.RightLang.DescType_DefenseAreaAbility,
 
         _ => string.Empty,
     };
@@ -90,9 +90,9 @@ internal static class EnumTranslations
         JobRole.Ranged => LocalizationManager.RightLang.JobRole_Ranged,
         JobRole.Healer => LocalizationManager.RightLang.JobRole_Healer,
         JobRole.RangedPhysical => LocalizationManager.RightLang.JobRole_RangedPhysical,
-        JobRole.RangedMagicial => LocalizationManager.RightLang.JobRole_RangedMagicial,
-        JobRole.DiscipleoftheLand => LocalizationManager.RightLang.JobRole_DiscipleoftheLand,
-        JobRole.DiscipleoftheHand => LocalizationManager.RightLang.JobRole_DiscipleoftheHand,
+        JobRole.RangedMagical => LocalizationManager.RightLang.JobRole_RangedMagicial,
+        JobRole.DiscipleOfTheLand => LocalizationManager.RightLang.JobRole_DiscipleoftheLand,
+        JobRole.DiscipleOfTheHand => LocalizationManager.RightLang.JobRole_DiscipleoftheHand,
         _ => string.Empty,
     };
 

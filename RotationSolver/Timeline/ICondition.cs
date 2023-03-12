@@ -1,4 +1,4 @@
-﻿using RotationSolver.Rotations.CustomRotation;
+﻿using RotationSolver.Basic.Rotations;
 
 namespace RotationSolver.Timeline;
 

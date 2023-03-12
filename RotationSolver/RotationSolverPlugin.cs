@@ -2,6 +2,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions;
+using RotationSolver.Basic;
 using RotationSolver.Commands;
 using RotationSolver.Configuration;
 using RotationSolver.Data;
@@ -19,6 +20,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private readonly WindowSystem windowSystem;
 
     private static RotationConfigWindow _comboConfigWindow;
+
+    private Watcher _watcher;
+    private CountDown _countDown;
+    LocalizationManager _manager;
+    IconReplacer _iconReplacer;
     public string Name => "Rotation Solver";
 
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
@@ -27,16 +33,16 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         try
         {
-            Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+            Service.Config = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
         }
         catch
         {
-            Service.Configuration = new PluginConfiguration();
+            Service.Config = new PluginConfiguration();
         }
-        Service.Address = new PluginAddressResolver();
-        Service.Address.Setup();
+        //Service.Address = new PluginAddressResolver();
+        //Service.Address.Setup();
 
-        Service.IconReplacer = new IconReplacer();
+        _iconReplacer = new IconReplacer();
 
         _comboConfigWindow = new();
         windowSystem = new WindowSystem(Name);
@@ -49,12 +55,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Enable();
         TimeLineUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
         SocialUpdater.Enable();
-        Watcher.Enable();
-        CountDown.Enable();
+        _watcher = new();
+        _countDown = new();
 
-        Service.Localization = new LocalizationManager();
+        _manager = new LocalizationManager();
 #if DEBUG
-        Service.Localization.ExportLocalization();
+        _manager.ExportLocalization();
 #endif
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ChangeUITranslation();
@@ -63,7 +69,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private void ClientState_TerritoryChanged(object sender, ushort e)
     {
         RSCommands.UpdateStateNamePlate();
-        var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
+        var territory = Service.GetSheet<TerritoryType>().GetRow(e);
         if(territory?.ContentFinderCondition?.Value?.RowId != 0)
         {
             SocialUpdater.CanSaying = true;
@@ -88,13 +94,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
 
-        Service.IconReplacer.Dispose();
-        Service.Localization.Dispose();
+        _iconReplacer.Dispose();
+        _manager.Dispose();
 
         MajorUpdater.Dispose();
         TimeLineUpdater.SaveFiles();
-        Watcher.Dispose();
-        CountDown.Dispose();
+        _watcher.Dispose();
+        _countDown.Dispose();
         SocialUpdater.Disable();
 
         IconSet.Dispose();

@@ -1,0 +1,24 @@
+﻿
+name: Rotation Solver
+author: ArchiTed
+description: |-
+  Based on the pve combat information in one frame, find the best action.
+
+  The `information` is almost all the information available in one frame in combat, including the status of the all players in party, the status of the hostile targets, action cooling, the number of action stack, the MP and HP of characters, the location of characters, casting action of the hostile target, combo ID, combat duration, player level, etc. In this case, opener is also a kind of information that a lot of abilities are not cooling down.
+
+  Then, it will highlight the best action one the hot bar, or help you to click on it.
+
+  It is designed for general combat, not for savage or ultimate. So use it carefully.
+punchline: Based on the pve combat information in one frame, find the best action.
+repo_url: https://github.com/ArchiDog1998/RotationSolver
+icon_url: https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png
+dalamud_api_level: 8
+tags:
+  - combat
+  - rotation
+category_tags:
+  - jobs
+image_urls:
+download_link_install: https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip
+download_link_update: https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip
+download_link_testing: https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip

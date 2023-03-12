@@ -3,10 +3,11 @@ using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Rotations;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.Rotations.CustomRotation;
 using System;
 using System.Linq;
 
@@ -46,7 +47,7 @@ internal class TargetCondition : ICondition
 
     public bool IsTrue(ICustomRotation combo)
     {
-        if (Service.ClientState.LocalPlayer == null) return false;
+        if (Service.Player == null) return false;
 
         BattleChara tar = null;
         if (_action != null)
@@ -56,8 +57,8 @@ internal class TargetCondition : ICondition
         }
         else
         {
-            tar = IsTarget ? (BattleChara)Service.TargetManager.Target : Service.ClientState.LocalPlayer;
-            tar ??= Service.ClientState.LocalPlayer;
+            tar = IsTarget ? (BattleChara)Service.TargetManager.Target : Service.Player;
+            tar ??= Service.Player;
         }
 
         if (tar == null) return false;
@@ -97,7 +98,7 @@ internal class TargetCondition : ICondition
                     break;
                 }
 
-                var castName = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(tar.CastActionId)?.Name.ToString();
+                var castName = Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(tar.CastActionId)?.Name.ToString();
 
                 result = CastingActionName == castName;
                 break;

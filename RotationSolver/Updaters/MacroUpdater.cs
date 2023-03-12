@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic;
 using RotationSolver.Configuration;
 using RotationSolver.Data;
 using System.Collections.Generic;
@@ -9,13 +10,12 @@ namespace RotationSolver.Updaters;
 
 internal static class MacroUpdater
 {
-    internal static readonly Queue<MacroItem> Macros = new Queue<MacroItem>();
     internal static MacroItem DoingMacro;
 
     public static void UpdateMacro()
     {
         //如果没有有正在运行的宏，弄一个出来
-        if (DoingMacro == null && Macros.TryDequeue(out var macro))
+        if (DoingMacro == null && DataCenter.Macros.TryDequeue(out var macro))
         {
             DoingMacro = macro;
         }

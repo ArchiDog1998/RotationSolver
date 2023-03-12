@@ -1,21 +1,20 @@
 ﻿using RotationSolver.Actions;
 using RotationSolver.Attributes;
+using RotationSolver.Basic;
 using RotationSolver.Configuration.RotationConfig;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Rotations.Basic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RotationSolver.Default;
+namespace RotationSolver.Default.Tank;
 
-public class PLD_Outer : PLD_Base
+[LinkDesc("https://xiv.sleepyshiba.com/pld/img/63-60stentative2.png")]
+[RotationDesc("The whole rotation's burst\nis base on:")]
+[RotationDesc(ActionID.FightorFlight)]
+internal class PLD_Default : PLD_Base
 {
     public override string GameVersion => "6.31";
-    public override string RotationName => "Outer One!";
+    public override string RotationName => "Tentative v1.2";
 
     public override string Description => "Please work well!";
 
@@ -27,7 +26,7 @@ public class PLD_Outer : PLD_Base
 
     protected override IAction CountDownAction(float remainTime)
     {
-        if (remainTime < HolySpirit.CastTime + Service.Configuration.CountDownAhead
+        if (remainTime < HolySpirit.CastTime + Service.Config.CountDownAhead
             && HolySpirit.CanUse(out var act)) return act;
 
         if (remainTime < 15 && Configs.GetBool("UseDivineVeilPre")
@@ -101,7 +100,7 @@ public class PLD_Outer : PLD_Base
     }
 
     [RotationDesc(ActionID.Reprisal, ActionID.DivineVeil)]
-    protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
         if (DivineVeil.CanUse(out act)) return true;
@@ -116,7 +115,7 @@ public class PLD_Outer : PLD_Base
     }
 
     [RotationDesc(ActionID.Sentinel, ActionID.Rampart, ActionID.Bulwark, ActionID.Sheltron, ActionID.Reprisal)]
-    protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (abilitiesRemaining == 2)
         {
@@ -138,5 +137,4 @@ public class PLD_Outer : PLD_Base
 
         return false;
     }
-
 }

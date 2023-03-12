@@ -1,8 +1,9 @@
 ﻿using Lumina.Data.Parsing;
 using RotationSolver.Actions;
 using RotationSolver.Attributes;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Rotations;
 using RotationSolver.Data;
-using RotationSolver.Rotations.CustomRotation;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -90,8 +91,8 @@ internal static class RotationUpdater
     static string _rotationName;
     public static void UpdateRotation()
     {
-        var nowJob = (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id;
-        Service.Configuration.RotationChoices.TryGetValue((uint)nowJob, out var newName);
+        var nowJob = (ClassJobID)Service.Player.ClassJob.Id;
+        Service.Config.RotationChoices.TryGetValue((uint)nowJob, out var newName);
 
         if (_job == nowJob && _rotationName == newName) return;
 
@@ -111,7 +112,7 @@ internal static class RotationUpdater
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group, string name)
     {
         var rotation = group.rotations.FirstOrDefault(r => r.RotationName == name);
-        rotation ??= group.rotations.FirstOrDefault(r => r.GetType().GetCustomAttribute<DefaultRotationAttribute>() != null);
+        //rotation ??= group.rotations.FirstOrDefault(r => r.GetType().GetCustomAttribute<DefaultRotationAttribute>() != null);
         rotation ??= group.rotations.FirstOrDefault(r => r.GetType().Name.Contains("Default"));
         rotation ??= group.rotations.FirstOrDefault();
         return rotation;

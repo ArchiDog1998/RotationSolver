@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiNET;
 using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
+using RotationSolver.Basic;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
@@ -20,7 +21,7 @@ internal static class OverlayWindow
     internal static IBaseAction MeleeAction { get; set; }
     public static void Draw()
     {
-        if (Service.GameGui == null || Service.ClientState.LocalPlayer == null || !Service.Configuration.UseOverlayWindow) return;
+        if (Service.GameGui == null || Service.Player == null || !Service.Config.UseOverlayWindow) return;
 
         if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
@@ -52,25 +53,25 @@ internal static class OverlayWindow
 
     private static void DrawTarget()
     {
-        if (!Service.Configuration.ShowTarget) return;
+        if (!Service.Config.ShowTarget) return;
 
         if (ActionUpdater.NextAction is not BaseAction act) return;
 
         if (act.Target == null) return;
 
-        if (act.Target != Service.ClientState.LocalPlayer)
+        if (act.Target != Service.Player)
         {
-            var c = Service.Configuration.TargetColor;
+            var c = Service.Config.TargetColor;
             var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
             DrawTarget(act.Target, Tcolor, 8, out _);
         }
 
-        if (TargetUpdater.HostileTargets.Contains(act.Target))
+        if (DataCenter.HostileTargets.Contains(act.Target))
         {
-            var c = Service.Configuration.SubTargetColor;
+            var c = Service.Config.SubTargetColor;
             var Scolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
-            foreach (var t in TargetUpdater.HostileTargets)
+            foreach (var t in DataCenter.HostileTargets)
             {
                 if (t == act.Target) continue;
                 if (act.CanGetTarget(act.Target, t))
@@ -84,10 +85,10 @@ internal static class OverlayWindow
     static readonly uint HealthRatioColor = ImGui.GetColorU32(new Vector4(0, 1, 0.8f, 1));
     private static void DrawHealthRatio()
     {
-        if(!Service.Configuration.ShowHealthRatio) return;
+        if(!Service.Config.ShowHealthRatio) return;
 
         var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
-        foreach (BattleChara t in TargetUpdater.AllTargets)
+        foreach (BattleChara t in DataCenter.AllTargets)
         {
             if (t == null) continue;
             if (Service.GameGui.WorldToScreen(t.Position, out var p))
@@ -99,17 +100,17 @@ internal static class OverlayWindow
 
     private unsafe static void DrawMoveTarget()
     {
-        if (!Service.Configuration.ShowMoveTarget) return;
+        if (!Service.Config.ShowMoveTarget) return;
 
-        var c = Service.Configuration.MovingTargetColor;
+        var c = Service.Config.MovingTargetColor;
         var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
         var tar = RotationUpdater.RightNowRotation?.MoveTarget;
-        if (tar == null || tar == Service.ClientState.LocalPlayer) return;
+        if (tar == null || tar == Service.Player) return;
 
         DrawTarget(tar, color, 8, out var scrPos);
 
-        if (Service.GameGui.WorldToScreen(Service.ClientState.LocalPlayer.Position, out var plyPos))
+        if (Service.GameGui.WorldToScreen(Service.Player.Position, out var plyPos))
         {
             var dir = scrPos - plyPos;
 
@@ -140,14 +141,14 @@ internal static class OverlayWindow
         Vector3 pPosition = MeleeAction.Target.Position;
         Service.GameGui.WorldToScreen(pPosition, out var scrPos);
 
-        float radius = MeleeAction.Target.HitboxRadius + Service.ClientState.LocalPlayer.HitboxRadius + 3;
+        float radius = MeleeAction.Target.HitboxRadius + Service.Player.HitboxRadius + 3;
         float rotation = MeleeAction.Target.Rotation;
         bool wrong = MeleeAction.Target.DistanceToPlayer() > 3;
         List<Vector2> pts = new List<Vector2>(4 * COUNT);
 
-        if(Service.Configuration.DrawPositional && !Service.ClientState.LocalPlayer.HasStatus(true, StatusID.TrueNorth))
+        if(Service.Config.DrawPositional && !Service.Player.HasStatus(true, StatusID.TrueNorth))
         {
-            var shouldPos = MeleeAction.EnermyPositonal;
+            var shouldPos = MeleeAction.EnemyPositional;
 
             switch (shouldPos)
             {
@@ -169,7 +170,7 @@ internal static class OverlayWindow
                 wrong = shouldPos != MeleeAction.Target.FindEnemyPositional();
             }
         }
-        if(pts.Count == 0 && Service.Configuration.DrawMeleeRange)
+        if(pts.Count == 0 && Service.Config.DrawMeleeRange)
         {
             SectorPlots(ref pts, pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
         }

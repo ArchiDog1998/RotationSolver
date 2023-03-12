@@ -1,10 +1,11 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 using ImGuiNET;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Rotations;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
 using System;
@@ -62,11 +63,11 @@ internal partial class RotationConfigWindow
             if (i > 0) ImGui.Separator();
 
             var group = rotations[i];
-            Service.Configuration.RotationChoices.TryGetValue((uint)group.jobId, out var rotationName);
+            Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var rotationName);
             var rotation = RotationUpdater.GetChooseRotation(group, rotationName);
 
-            var canAddButton = Service.ClientState.LocalPlayer != null
-                && rotation.JobIDs.Contains((ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id);
+            var canAddButton = Service.Player != null
+                && rotation.JobIDs.Contains((ClassJobID)Service.Player.ClassJob.Id);
 
             rotation.Display(group.rotations, canAddButton);
         }
@@ -91,11 +92,11 @@ internal partial class RotationConfigWindow
              LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType3,
         }, 3))
         {
-            Service.Configuration.TargetToHostileTypes[rotation.Job.RowId] = (byte)isAllTargetAsHostile;
-            Service.Configuration.Save();
+            Service.Config.TargetToHostileTypes[rotation.Job.RowId] = (byte)isAllTargetAsHostile;
+            Service.Config.Save();
         }
 
-        if (isAllTargetAsHostile != 2 && !Service.Configuration.AutoOffBetweenArea)
+        if (isAllTargetAsHostile != 2 && !Service.Config.AutoOffBetweenArea)
         {
             ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.Configwindow_Param_NoticeUnexpectedCombat);
         }
@@ -111,7 +112,7 @@ internal partial class RotationConfigWindow
         {
             DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthForDyingTank,
                 () => ConfigurationHelper.GetHealthForDyingTank(job),
-                (value) => Service.Configuration.HealthForDyingTanks[job] = value);
+                (value) => Service.Config.HealthForDyingTanks[job] = value);
         }
     }
 
@@ -119,27 +120,27 @@ internal partial class RotationConfigWindow
     {
         DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthAreaAbility,
             () => ConfigurationHelper.GetHealAreaAbility(job),
-            (value) => Service.Configuration.HealthAreaAbilities[job] = value);
+            (value) => Service.Config.HealthAreaAbilities[job] = value);
 
         DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthAreaSpell,
-            () => ConfigurationHelper.GetHealAreafSpell(job),
-            (value) => Service.Configuration.HealthAreafSpells[job] = value);
+            () => ConfigurationHelper.GetHealAreaSpell(job),
+            (value) => Service.Config.HealthAreaSpells[job] = value);
 
         DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealingOfTimeSubtractArea,
             () => ConfigurationHelper.GetHealingOfTimeSubtractArea(job),
-            (value) => Service.Configuration.HealingOfTimeSubtractAreas[job] = value);
+            (value) => Service.Config.HealingOfTimeSubtractAreas[job] = value);
 
         DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthSingleAbility,
             () => ConfigurationHelper.GetHealSingleAbility(job),
-            (value) => Service.Configuration.HealthSingleAbilities[job] = value);
+            (value) => Service.Config.HealthSingleAbilities[job] = value);
 
         DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthSingleSpell,
             () => ConfigurationHelper.GetHealSingleSpell(job),
-            (value) => Service.Configuration.HealthSingleSpells[job] = value);
+            (value) => Service.Config.HealthSingleSpells[job] = value);
 
         DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealingOfTimeSubtractSingle,
             () => ConfigurationHelper.GetHealingOfTimeSubtractSingle(job),
-            (value) => Service.Configuration.HealingOfTimeSubtractSingles[job] = value);
+            (value) => Service.Config.HealingOfTimeSubtractSingles[job] = value);
     }
 
     private static void DrawDragFloat(ClassJobID job, string desc, Func<float> getValue, Action<float> setValue)
@@ -153,7 +154,7 @@ internal partial class RotationConfigWindow
         if (ImGui.DragFloat($"{desc}##{job}{desc}", ref value, speed, 0, 1))
         {
             setValue(value);
-            Service.Configuration.Save();
+            Service.Config.Save();
         }
     }
 }
