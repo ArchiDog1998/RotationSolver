@@ -35,8 +35,6 @@ internal static class RotationUpdater
         }
     }
 
-    public static Assembly[] Assemblies { get; private set; } = new Assembly[0];
-
     private static void GetAllCustomRotations()
     {
         //var thisPath = Assembly.GetAssembly(typeof(ICustomRotation)).Location;
@@ -109,8 +107,8 @@ internal static class RotationUpdater
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group, string name)
     {
         var rotation = group.rotations.FirstOrDefault(r => r.RotationName == name);
-        //rotation ??= group.rotations.FirstOrDefault(r => r.GetType().GetCustomAttribute<DefaultRotationAttribute>() != null);
-        rotation ??= group.rotations.FirstOrDefault(r => r.GetType().Name.Contains("Default"));
+        rotation ??= group.rotations.FirstOrDefault(RotationHelper.IsDefault);
+        rotation ??= group.rotations.FirstOrDefault(r => r.IsAllowed(out _));
         rotation ??= group.rotations.FirstOrDefault();
         return rotation;
     }

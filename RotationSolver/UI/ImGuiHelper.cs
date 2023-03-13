@@ -425,7 +425,12 @@ internal static class ImGuiHelper
             }
 
             ImGui.SameLine();
-            ImGui.TextDisabled("   -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":    ");
+            ImGui.TextDisabled("   -  ");
+            ImGui.SameLine();
+            ImGui.TextColored(rotation.IsAllowed(out _) ? ImGuiColors.HealerGreen : ImGuiColors.DalamudRed,
+                rotation.GetAuthor());
+            ImGui.SameLine();
+            ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":    ");
             ImGui.SameLine();
             ImGui.Text(rotation.GameVersion);
             ImGui.SameLine();

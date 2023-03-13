@@ -12,15 +12,10 @@ namespace RotationSolver.Commands
     {
         private static DateTime _fastClickStopwatch = DateTime.Now;
 
-        static readonly string[] _allowedAssembly = new string[]
-        {
-
-        };
-
         internal static unsafe void DoAnAction(bool isGCD)
         {
             if (StateType == StateCommandType.Cancel) return;
-            if(SocialUpdater.InHighEndDuty && RotationUpdater.RightNowRotation.GetType().Assembly.FullName is string str && !_allowedAssembly.Contains(str))
+            if(SocialUpdater.InHighEndDuty && RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
                 Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
                 return;
