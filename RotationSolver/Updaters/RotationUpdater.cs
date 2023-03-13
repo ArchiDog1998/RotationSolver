@@ -35,6 +35,8 @@ internal static class RotationUpdater
         }
     }
 
+    public static Assembly[] Assemblies { get; private set; } = new Assembly[0];
+
     private static void GetAllCustomRotations()
     {
         //var thisPath = Assembly.GetAssembly(typeof(ICustomRotation)).Location;
@@ -49,9 +51,9 @@ internal static class RotationUpdater
             Service.ChatGui.Print(t.FullName);
         }
 
-        var asses = new Assembly[] { typeof(RotationUpdater).Assembly };
+        var Assemblies = new Assembly[] { typeof(RotationUpdater).Assembly };
 
-        _customRotations = (from a in asses
+        _customRotations = (from a in Assemblies
                             from t in a.GetTypes()
                             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                                  && !t.IsAbstract && !t.IsInterface

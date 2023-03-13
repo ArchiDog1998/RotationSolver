@@ -1,5 +1,6 @@
 ﻿namespace RotationSolver.Default.Melee;
 
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Melee/RPR_Default.cs")]
 internal sealed class RPR_Default : RPR_Base
 {
     public override string GameVersion => "6.28";

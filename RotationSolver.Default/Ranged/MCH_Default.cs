@@ -1,5 +1,6 @@
 namespace RotationSolver.Default.Ranged;
 
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Ranged/MCH_Default.cs")]
 internal sealed class MCH_Default : MCH_Base
 {
     public override string GameVersion => "6.28";

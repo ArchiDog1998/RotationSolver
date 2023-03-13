@@ -1,5 +1,6 @@
 namespace RotationSolver.Default.Tank;
 
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/GNB_Default.cs")]
 internal sealed class GNB_Default : GNB_Base
 {
     public override string GameVersion => "6.18";

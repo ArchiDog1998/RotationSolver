@@ -431,12 +431,16 @@ internal static class ImGuiHelper
             ImGui.SameLine();
             Spacing();
 
-            if (IconButton(FontAwesomeIcon.Globe, rotation.GetHashCode().ToString()))
+            var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
+            if(link != null)
             {
-                var url = @"https://github.com/ArchiDog1998/RotationSolver/ blob/    main/" + rotation.GetType().FullName.Replace(".", @"/") + ".cs";
-
-                Util.OpenLink(url);
+                if (IconButton(FontAwesomeIcon.Globe, "Code" + rotation.GetHashCode().ToString()))
+                {
+                    var url = link.Url;
+                    Util.OpenLink(url);
+                }
             }
+
             HoveredString(LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
 
             var attrs = rotation.GetType().GetCustomAttributes<LinkDescriptionAttribute>();

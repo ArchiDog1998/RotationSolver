@@ -1,5 +1,6 @@
 ﻿namespace RotationSolver.Default.Magical;
 
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Magical/BLU_Default.cs")]
 internal sealed class BLU_Default : BLU_Base
 {
     public override string GameVersion => "6.18";

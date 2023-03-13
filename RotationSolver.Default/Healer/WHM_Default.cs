@@ -1,5 +1,6 @@
 namespace RotationSolver.Default.Healer;
 
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Healer/WHM_Default.cs")]
 internal sealed class WHM_Default : WHM_Base
 {
     public override string GameVersion => "6.28";
