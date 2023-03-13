@@ -1,9 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using RotationSolver.Basic;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 using System.Collections.Generic;
 
-namespace RotationSolver.Helpers;
+namespace RotationSolver.Basic.Helpers;
 
 public static class ConfigurationHelper
 {

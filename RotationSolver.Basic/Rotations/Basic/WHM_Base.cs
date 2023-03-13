@@ -1,14 +1,13 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Basic;
+namespace RotationSolver.Basic.Rotations.Basic;
 
-public abstract class WHM_Base : CustomRotation.CustomRotation
+public abstract class WHM_Base : CustomRotation
 {
     private static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
     public override MedicineType MedicineType => MedicineType.Mind;

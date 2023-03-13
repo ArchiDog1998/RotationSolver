@@ -7,12 +7,11 @@
 
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 
-	  <Platforms>AnyCPU;ARM64</Platforms>
+	  <Platforms>AnyCPU</Platforms>
 
   </PropertyGroup>
 
 	<ItemGroup>
-
 		<Reference Include="Dalamud">
 			<HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
 			<Private>False</Private>

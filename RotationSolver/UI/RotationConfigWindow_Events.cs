@@ -1,9 +1,9 @@
 ﻿using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
-using RotationSolver.Configuration;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
+using RotationSolver.UI;
 using System.Numerics;
 
 namespace RotationSolver.Windows.RotationConfigWindow;

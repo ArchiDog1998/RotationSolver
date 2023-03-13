@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Configuration.RotationConfig;
+﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public class RotationConfigFloat : RotationConfigBase
 {

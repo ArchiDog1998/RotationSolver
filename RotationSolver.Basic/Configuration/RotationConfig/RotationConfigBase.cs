@@ -1,8 +1,8 @@
 ﻿using RotationSolver.Basic;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 using System.Collections.Generic;
 
-namespace RotationSolver.Configuration.RotationConfig;
+namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public abstract class RotationConfigBase : IRotationConfig
 {

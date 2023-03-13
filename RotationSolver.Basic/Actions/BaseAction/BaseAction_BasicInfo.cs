@@ -1,7 +1,8 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Actions.BaseAction;

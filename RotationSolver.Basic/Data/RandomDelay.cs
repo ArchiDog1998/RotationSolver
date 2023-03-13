@@ -1,20 +1,20 @@
-﻿namespace RotationSolver.Data;
+﻿namespace RotationSolver.Basic.Data;
 
 public struct RandomDelay
 {
-	DateTime _startDelayTime = DateTime.Now;
-	float _delayTime = -1;
+    DateTime _startDelayTime = DateTime.Now;
+    float _delayTime = -1;
     Func<(float min, float max)> _getRange;
-	Random _ran = new Random(DateTime.Now.Millisecond);
+    Random _ran = new Random(DateTime.Now.Millisecond);
     bool _lastValue = false;
     public RandomDelay(Func<(float min, float max)> getRange)
-	{
+    {
         _getRange = getRange;
-	}
+    }
 
-	public bool Delay(bool originData)
-	{
-        if(_getRange == null) return false;
+    public bool Delay(bool originData)
+    {
+        if (_getRange == null) return false;
 
         if (!originData)
         {

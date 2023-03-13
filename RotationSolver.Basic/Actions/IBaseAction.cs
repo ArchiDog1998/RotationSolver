@@ -1,8 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 using System;
 
-namespace RotationSolver.Actions
+namespace RotationSolver.Basic.Actions
 {
     public interface IBaseAction : IAction
     {

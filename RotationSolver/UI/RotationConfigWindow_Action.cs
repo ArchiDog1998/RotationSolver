@@ -1,12 +1,8 @@
 ﻿using ImGuiNET;
-using RotationSolver.Actions;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Actions;
 using RotationSolver.Localization;
-using RotationSolver.SigReplacers;
+using RotationSolver.UI;
 using RotationSolver.Updaters;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 
 namespace RotationSolver.Windows.RotationConfigWindow;

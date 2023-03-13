@@ -1,13 +1,10 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic;
-using RotationSolver.Commands;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 using System.Data;
-using System.Linq;
 using System.Numerics;
 
-namespace RotationSolver.Helpers;
+namespace RotationSolver.Basic.Helpers;
 
 public static class TargetFilter
 {
@@ -46,7 +43,7 @@ public static class TargetFilter
             if (charas?.Any() ?? false) availableCharas = charas;
         }
 
-        b = availableCharas.FirstOrDefault(ObjectHelper.IsTopPriorityHostile); 
+        b = availableCharas.FirstOrDefault(ObjectHelper.IsTopPriorityHostile);
         if (b != null) return b;
 
         if (DataCenter.TreasureCharas.Length > 0)
@@ -71,7 +68,7 @@ public static class TargetFilter
         if (mustUse)
         {
             var tar = charas.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
-            if(tar == null) return null;
+            if (tar == null) return null;
             if (tar.DistanceToPlayer() < 1) return tar;
             return null;
         }

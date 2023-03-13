@@ -1,12 +1,4 @@
-﻿using RotationSolver.Actions;
-using RotationSolver.Attributes;
-using RotationSolver.Commands;
-using RotationSolver.Configuration.RotationConfig;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
-using RotationSolver.Rotations.Basic;
-
-namespace RotationSolver.Default.Magical;
+﻿namespace RotationSolver.Default.Magical;
 
 internal sealed class BLU_Default : BLU_Base
 {

@@ -1,6 +1,6 @@
-﻿using RotationSolver.Data;
+﻿using RotationSolver.Basic.Data;
 
-namespace RotationSolver.Configuration.RotationConfig;
+namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public interface IRotationConfig
 {

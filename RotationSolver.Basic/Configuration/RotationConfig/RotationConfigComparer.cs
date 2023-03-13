@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace RotationSolver.Configuration.RotationConfig
+namespace RotationSolver.Basic.Configuration.RotationConfig
 {
     internal class RotationConfigComparer : IEqualityComparer<IRotationConfig>
     {

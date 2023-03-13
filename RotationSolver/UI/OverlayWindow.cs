@@ -1,24 +1,17 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
-using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiNET;
-using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
-using RotationSolver.SigReplacers;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 
-namespace RotationSolver.Windows;
+namespace RotationSolver.UI;
 
 internal static class OverlayWindow
 {
-    internal static IBaseAction MeleeAction { get; set; }
     public static void Draw()
     {
         if (Service.GameGui == null || Service.Player == null || !Service.Config.UseOverlayWindow) return;
@@ -85,7 +78,7 @@ internal static class OverlayWindow
     static readonly uint HealthRatioColor = ImGui.GetColorU32(new Vector4(0, 1, 0.8f, 1));
     private static void DrawHealthRatio()
     {
-        if(!Service.Config.ShowHealthRatio) return;
+        if (!Service.Config.ShowHealthRatio) return;
 
         var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
         foreach (BattleChara t in DataCenter.AllTargets)
@@ -136,19 +129,19 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        if (MeleeAction == null) return;
+        if (ActionUpdater.NextGCDAction == null) return;
 
-        Vector3 pPosition = MeleeAction.Target.Position;
+        Vector3 pPosition = ActionUpdater.NextGCDAction.Target.Position;
         Service.GameGui.WorldToScreen(pPosition, out var scrPos);
 
-        float radius = MeleeAction.Target.HitboxRadius + Service.Player.HitboxRadius + 3;
-        float rotation = MeleeAction.Target.Rotation;
-        bool wrong = MeleeAction.Target.DistanceToPlayer() > 3;
+        float radius = ActionUpdater.NextGCDAction.Target.HitboxRadius + Service.Player.HitboxRadius + 3;
+        float rotation = ActionUpdater.NextGCDAction.Target.Rotation;
+        bool wrong = ActionUpdater.NextGCDAction.Target.DistanceToPlayer() > 3;
         List<Vector2> pts = new List<Vector2>(4 * COUNT);
 
-        if(Service.Config.DrawPositional && !Service.Player.HasStatus(true, StatusID.TrueNorth))
+        if (Service.Config.DrawPositional && !Service.Player.HasStatus(true, StatusID.TrueNorth))
         {
-            var shouldPos = MeleeAction.EnemyPositional;
+            var shouldPos = ActionUpdater.NextGCDAction.EnemyPositional;
 
             switch (shouldPos)
             {
@@ -167,15 +160,15 @@ internal static class OverlayWindow
             }
             if (!wrong && pts.Count > 0)
             {
-                wrong = shouldPos != MeleeAction.Target.FindEnemyPositional();
+                wrong = shouldPos != ActionUpdater.NextGCDAction.Target.FindEnemyPositional();
             }
         }
-        if(pts.Count == 0 && Service.Config.DrawMeleeRange)
+        if (pts.Count == 0 && Service.Config.DrawMeleeRange)
         {
             SectorPlots(ref pts, pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
         }
 
-        if(pts.Count > 0) DrawRange(pts, wrong);
+        if (pts.Count > 0) DrawRange(pts, wrong);
     }
 
     static void DrawRange(List<Vector2> pts, bool wrong)

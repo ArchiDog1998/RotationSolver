@@ -1,10 +1,10 @@
-﻿namespace RotationSolver.Attributes;
+﻿namespace RotationSolver.Basic.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class LinkDescriptionAttribute : Attribute
 {
     //public TextureWrap Texture { get; }
-    public string Path { get; } 
+    public string Path { get; }
     public LinkDescriptionAttribute(string path)
     {
         Path = path;

@@ -1,8 +1,7 @@
-﻿using RotationSolver.Actions;
-using RotationSolver.Actions.BaseAction;
+﻿using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
-using RotationSolver.Commands;
-using RotationSolver.Data;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Data;
 
 namespace RotationSolver.Rotations.CustomRotation;
 
@@ -51,32 +50,13 @@ public abstract partial class CustomRotation
 
         gcdAction = GCD(abilityRemain, helpDefenseAOE, helpDefenseSingle);
 
-        if (gcdAction != null && gcdAction is IBaseAction GcdAction)
+        if (gcdAction != null)
         {
-            //if (GcdAction.IsMeleeAction())
-            //{
-            //    OverlayWindow.MeleeAction = GcdAction;
-            //    //Sayout!
-            //    if (GcdAction.EnemyPositional != EnemyPositional.None && GcdAction.Target.HasPositional()
-            //         && !Player.HasStatus(true, StatusID.TrueNorth))
-            //    {
-            //        if (CheckAction(GcdAction.ID))
-            //        {
-            //            string positional = GcdAction.EnemyPositional.ToName();
-            //            if (Service.Config.SayPositional) Watcher.Speak(positional);
-            //            if (Service.Config.FlytextPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
-            //            {
-            //                IconId = GcdAction.IconID,
-            //            });
-            //        }
-            //    }
-            //}
+            if (abilityRemain == 0 || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
 
-            if (abilityRemain == 0 || DataCenter.WeaponTotal < DataCenter.CastingTotal) return GcdAction;
+            if (Ability(abilityRemain, gcdAction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
 
-            if (Ability(abilityRemain, GcdAction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
-
-            return GcdAction;
+            return gcdAction;
         }
         else if (gcdAction == null)
         {
@@ -87,18 +67,4 @@ public abstract partial class CustomRotation
     }
 
     protected virtual IAction CountDownAction(float remainTime) => null;
-
-
-    uint _lastSayingGCDAction;
-    DateTime lastTime;
-    bool CheckAction(uint actionID)
-    {
-        if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0, 0, 3)) && DataCenter.StateType != StateCommandType.Cancel)
-        {
-            _lastSayingGCDAction = actionID;
-            lastTime = DateTime.Now;
-            return true;
-        }
-        else return false;
-    }
 }

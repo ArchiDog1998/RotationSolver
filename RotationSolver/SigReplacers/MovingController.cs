@@ -1,12 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Basic;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
-using System;
-using System.Numerics;
+using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.SigReplacers;
 

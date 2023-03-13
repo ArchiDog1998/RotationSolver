@@ -1,9 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using RotationSolver.Basic;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 
-namespace RotationSolver.Configuration;
+namespace RotationSolver.Basic.Configuration;
 
 public class MacroInfo
 {

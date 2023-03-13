@@ -1,4 +1,4 @@
-﻿namespace RotationSolver;
+﻿namespace RotationSolver.Basic;
 
 public interface ITexture
 {

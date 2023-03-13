@@ -1,6 +1,6 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 
-namespace RotationSolver.Data;
+namespace RotationSolver.Basic.Data;
 
 public enum JobRole : byte
 {

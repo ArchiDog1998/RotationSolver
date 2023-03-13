@@ -1,11 +1,12 @@
 ﻿using ImGuiNET;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Basic.Rotations;
-using RotationSolver.Data;
 using System.Reflection;
 
-namespace RotationSolver.Helpers;
+namespace RotationSolver.Timeline;
 
 public class ConditionHelper
 {

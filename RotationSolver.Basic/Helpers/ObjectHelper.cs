@@ -4,10 +4,10 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 using System.Numerics;
 
-namespace RotationSolver.Helpers;
+namespace RotationSolver.Basic.Helpers;
 
 public static class ObjectHelper
 {
@@ -29,7 +29,7 @@ public static class ObjectHelper
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
     }
 
-    public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetAddress(this GameObject obj)
+    private static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetAddress(this GameObject obj)
         => (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
 
     public static unsafe bool IsOthersPlayers(this GameObject obj)
@@ -42,9 +42,9 @@ public static class ObjectHelper
         return false;
     }
 
-    public static unsafe bool IsNPCEnemy(this GameObject obj) 
+    public static unsafe bool IsNPCEnemy(this GameObject obj)
         => obj.GetObjectKind() == ObjectKind.BattleNpc
-        && (byte)obj.GetBattleNPCSubkind() is (byte)BattleNpcSubKind.Enemy or 1;
+        && (byte)obj.GetBattleNPCSubKind() is (byte)BattleNpcSubKind.Enemy or 1;
 
 
     public static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.GetAddress()->ObjectKind;
@@ -53,7 +53,7 @@ public static class ObjectHelper
     {
         var icon = obj.GetNamePlateIcon();
         //Hunting log and weapon.
-        if (icon 
+        if (icon
             is 60092 //Hunting
             or 60096 //Weapon
             or 71204 //Main Quest
@@ -62,18 +62,19 @@ public static class ObjectHelper
             or 71244 //Leve
             or 71344 //Major Quest
             ) return true;
-        if(icon == 0) return false;
+        if (icon == 0) return false;
         var type = obj.GetEventType();
 
-        if(type is EventHandlerType.Quest) return true;
+        if (type is EventHandlerType.Quest) return true;
 
         return false;
     }
 
     public static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.GetAddress()->NamePlateIconId;
+    public static unsafe void SetNamePlateIcon(this GameObject obj, uint id) => obj.GetAddress()->NamePlateIconId = id;
     public static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.GetAddress()->EventId.Type;
 
-    public static unsafe BattleNpcSubKind GetBattleNPCSubkind(this GameObject obj) => (BattleNpcSubKind)obj.GetAddress()->SubKind;
+    public static unsafe BattleNpcSubKind GetBattleNPCSubKind(this GameObject obj) => (BattleNpcSubKind)obj.GetAddress()->SubKind;
 
     public static unsafe uint FateId(this GameObject obj) => obj.GetAddress()->FateId;
 

@@ -3,13 +3,11 @@ using Dalamud;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using RotationSolver.Actions;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
-using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
 using System.Reflection;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.Rotations.CustomRotation;
 public abstract partial class CustomRotation

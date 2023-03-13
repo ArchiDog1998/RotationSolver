@@ -4,7 +4,7 @@ using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.SigReplacers;

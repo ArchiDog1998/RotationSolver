@@ -1,11 +1,11 @@
 using Dalamud.Configuration;
 using RotationSolver.Basic;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace RotationSolver.Configuration;
+namespace RotationSolver.Basic.Configuration;
 
 [Serializable]
 public class PluginConfiguration : IPluginConfiguration

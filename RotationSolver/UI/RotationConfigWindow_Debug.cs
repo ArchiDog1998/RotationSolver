@@ -3,10 +3,11 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using ImGuiNET;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
+using RotationSolver.UI;
 using RotationSolver.Updaters;
 using System.Numerics;
 
@@ -76,13 +77,6 @@ internal partial class RotationConfigWindow
         ImGui.Text("CanHealSingleSpell: " + DataCenter.CanHealSingleSpell.ToString());
         ImGui.Text("CanHealAreaAbility: " + DataCenter.CanHealAreaAbility.ToString());
         ImGui.Text("CanHealAreaSpell: " + DataCenter.CanHealAreaSpell.ToString());
-
-        foreach (var member in DataCenter.PartyMembers)
-        {
-            var cha = (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)member.GetAddress();
-
-            ImGui.Text("StatusVfxId:" + cha->StatusEffectVFXId.ToString());
-        }
     }
 
     private unsafe void DrawTargetData()
@@ -94,7 +88,7 @@ internal partial class RotationConfigWindow
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());
             ImGui.Text("Kind: " + b.GetObjectKind().ToString());
-            ImGui.Text("Subkind: " + b.GetBattleNPCSubkind().ToString());
+            ImGui.Text("Subkind: " + b.GetBattleNPCSubKind().ToString());
             ImGui.Text("EventType: " + b.GetEventType().ToString());
             ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
             ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());

@@ -1,8 +1,8 @@
 ﻿using Dalamud.Utility;
 using ImGuiNET;
-using RotationSolver.Commands;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Data;
 using RotationSolver.Localization;
+using RotationSolver.UI;
 using System.Numerics;
 
 namespace RotationSolver.Windows.RotationConfigWindow

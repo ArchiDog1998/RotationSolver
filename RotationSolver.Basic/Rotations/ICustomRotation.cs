@@ -1,8 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Actions;
-using RotationSolver.Configuration.RotationConfig;
-using RotationSolver.Data;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Configuration.RotationConfig;
+using RotationSolver.Basic.Data;
 using RotationSolver.Rotations.CustomRotation;
 using System.Collections.Generic;
 using System.Reflection;

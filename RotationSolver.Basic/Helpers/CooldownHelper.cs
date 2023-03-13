@@ -1,6 +1,6 @@
 ﻿using RotationSolver.Basic;
 
-namespace RotationSolver.Helpers;
+namespace RotationSolver.Basic.Helpers;
 
 public static class CooldownHelper
 {

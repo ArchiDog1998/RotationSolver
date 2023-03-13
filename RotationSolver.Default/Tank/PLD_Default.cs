@@ -1,11 +1,4 @@
-﻿using RotationSolver.Actions;
-using RotationSolver.Attributes;
-using RotationSolver.Basic;
-using RotationSolver.Configuration.RotationConfig;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
-using RotationSolver.Rotations.Basic;
-
+﻿
 namespace RotationSolver.Default.Tank;
 
 [LinkDescription("https://xiv.sleepyshiba.com/pld/img/63-60stentative2.png")]

@@ -1,5 +1,6 @@
-﻿using RotationSolver.Data;
-namespace RotationSolver.Configuration.RotationConfig;
+﻿using RotationSolver.Basic.Data;
+
+namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public class RotationConfigCombo : RotationConfigBase
 {

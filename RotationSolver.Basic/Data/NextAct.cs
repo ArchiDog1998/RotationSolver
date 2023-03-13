@@ -1,4 +1,4 @@
-﻿using RotationSolver.Actions;
+﻿using RotationSolver.Basic.Actions;
 
 namespace RotationSolver.Basic.Data;
 

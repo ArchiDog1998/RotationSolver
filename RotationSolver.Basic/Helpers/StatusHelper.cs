@@ -1,15 +1,10 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
-using RotationSolver.Basic;
-using RotationSolver.Commands;
-using RotationSolver.Data;
-using System;
-using System.Collections.Generic;
+using RotationSolver.Basic.Data;
 using System.ComponentModel;
-using System.Linq;
 
 
-namespace RotationSolver.Helpers;
+namespace RotationSolver.Basic.Helpers;
 
 public static class StatusHelper
 {
@@ -169,7 +164,7 @@ public static class StatusHelper
     public static bool IsDangerous(this Status status)
     {
         if (!status.CanDispel()) return false;
-        if(status.StackCount > 2) return true;
+        if (status.StackCount > 2) return true;
         return dangerousStatus.Any(id => (uint)id == status.StatusId);
     }
 

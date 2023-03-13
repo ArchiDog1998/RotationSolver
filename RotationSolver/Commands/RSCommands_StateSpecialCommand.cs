@@ -1,7 +1,7 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using System;
@@ -55,8 +55,8 @@ namespace RotationSolver.Commands
         {
             if (Service.Player == null) return;
 
-            Service.Player.GetAddress()->NamePlateIconId =
-                StateType == StateCommandType.Cancel ? 0u : (uint)Service.Config.NamePlateIconId;
+            Service.Player.SetNamePlateIcon(
+                StateType == StateCommandType.Cancel ? 0u : (uint)Service.Config.NamePlateIconId);
         }
 
         private static void DoSpecialCommandType(SpecialCommandType specialType, bool sayout = true) => DoOneCommandType(specialType, sayout ? EnumTranslations.ToSayout : (s, r) => string.Empty, role =>

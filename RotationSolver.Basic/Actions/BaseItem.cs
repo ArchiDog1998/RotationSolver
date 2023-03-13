@@ -1,9 +1,9 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Helpers;
 
-namespace RotationSolver.Actions;
+namespace RotationSolver.Basic.Actions;
 
 internal class BaseItem : IBaseItem
 {

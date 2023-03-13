@@ -3,15 +3,14 @@ using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Data;
 using RotationSolver.Commands;
-using RotationSolver.Configuration;
-using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
+using RotationSolver.UI;
 using RotationSolver.Updaters;
-using RotationSolver.Windows;
 using RotationSolver.Windows.RotationConfigWindow;
-using System;
 
 namespace RotationSolver;
 

@@ -5,11 +5,8 @@ using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
-using RotationSolver.Attributes;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Rotations;
-using RotationSolver.Commands;
-using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Windows.RotationConfigWindow;
@@ -17,11 +14,14 @@ using System.ComponentModel;
 using System.Numerics;
 using System.Reflection;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Actions;
-using RotationSolver.Configuration;
-using RotationSolver.Configuration.RotationConfig;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Attributes;
+using RotationSolver.Basic.Helpers;
+using RotationSolver.Basic.Configuration.RotationConfig;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Data;
 
-namespace RotationSolver.Helpers;
+namespace RotationSolver.UI;
 
 internal static class ImGuiHelper
 {
@@ -353,7 +353,7 @@ internal static class ImGuiHelper
                 ImGui.SameLine();
                 ImGui.Indent(INDENT_WIDTH);
             }
-            else ImGuiHelper.Spacing();
+            else Spacing();
             ImGui.Text(" → ");
             ImGui.SameLine();
             ImGui.TextWrapped(help);
@@ -368,12 +368,12 @@ internal static class ImGuiHelper
         => rotation.DrawEnableTexture(canAddButton, null,
         text =>
         {
-            ImGui.SetNextWindowSizeConstraints(new Vector2(0, 0), new Vector2     (1000, 1500));
-            ImGuiHelper.DrawTooltip(() =>
+            ImGui.SetNextWindowSizeConstraints(new Vector2(0, 0), new Vector2(1000, 1500));
+            DrawTooltip(() =>
             {
-                var t = IconSet.GetTexture(IconSet.GetJobIcon(rotation,         IconType.Framed));
+                var t = IconSet.GetTexture(IconSet.GetJobIcon(rotation, IconType.Framed));
                 ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
-        
+
                 if (!string.IsNullOrEmpty(text))
                 {
                     ImGui.SameLine();
@@ -381,16 +381,16 @@ internal static class ImGuiHelper
                     ImGui.SameLine();
                     ImGui.Text(text);
                 }
-        
+
                 var type = rotation.GetType();
-        
-                var attrs = new List<RotationDescAttribute>         { RotationDescAttribute.MergeToOne      (type.GetCustomAttributes<RotationDescAttribute>()) };
-        
+
+                var attrs = new List<RotationDescAttribute> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
+
                 foreach (var m in type.GetAllMethodInfo())
                 {
-                    attrs.Add(RotationDescAttribute.MergeToOne      (m.GetCustomAttributes<RotationDescAttribute>()));
+                    attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));
                 }
-        
+
                 foreach (var a in RotationDescAttribute.Merge(attrs))
                 {
                     RotationDescAttribute.MergeToOne(a)?.Display(rotation);
@@ -399,19 +399,19 @@ internal static class ImGuiHelper
         },
         showToolTip =>
         {
-            if (!string.IsNullOrEmpty(rotation.RotationName) && rotations !=    null)
+            if (!string.IsNullOrEmpty(rotation.RotationName) && rotations != null)
             {
                 ImGui.SameLine();
                 ImGui.TextDisabled("  -  ");
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(ImGui.CalcTextSize   (rotation.RotationName).X   + 30);
-                if (ImGui.BeginCombo("##RotationName:" + rotation.Name,         rotation.RotationName))
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(rotation.RotationName).X + 30);
+                if (ImGui.BeginCombo("##RotationName:" + rotation.Name, rotation.RotationName))
                 {
                     foreach (var r in rotations)
                     {
                         if (ImGui.Selectable(r.RotationName))
                         {
-                            Service.Config.RotationChoices[rotation.Job.RowId]   =    r.RotationName;
+                            Service.Config.RotationChoices[rotation.Job.RowId] = r.RotationName;
                             Service.Config.Save();
                         }
                         if (ImGui.IsItemHovered())
@@ -421,30 +421,30 @@ internal static class ImGuiHelper
                     }
                     ImGui.EndCombo();
                 }
-                ImGuiHelper.HoveredString       (LocalizationManager.RightLang.Configwindow_Helper_SwitchRotation);
+                HoveredString(LocalizationManager.RightLang.Configwindow_Helper_SwitchRotation);
             }
-        
+
             ImGui.SameLine();
-            ImGui.TextDisabled("   -  " +       LocalizationManager.RightLang.Configwindow_Helper_GameVersion +     ":    ");
+            ImGui.TextDisabled("   -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":    ");
             ImGui.SameLine();
             ImGui.Text(rotation.GameVersion);
             ImGui.SameLine();
             Spacing();
-        
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.Globe,   rotation.GetHashCode  ().ToString()))
+
+            if (IconButton(FontAwesomeIcon.Globe, rotation.GetHashCode().ToString()))
             {
-                var url = @"https://github.com/ArchiDog1998/RotationSolver/ blob/    main/" + rotation.GetType().FullName.Replace(".",   @"/") + ".cs";
-        
+                var url = @"https://github.com/ArchiDog1998/RotationSolver/ blob/    main/" + rotation.GetType().FullName.Replace(".", @"/") + ".cs";
+
                 Util.OpenLink(url);
             }
-            ImGuiHelper.HoveredString       (LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
-        
-            var attrs = rotation.GetType    ().GetCustomAttributes<LinkDescriptionAttribute>   ();
+            HoveredString(LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
+
+            var attrs = rotation.GetType().GetCustomAttributes<LinkDescriptionAttribute>();
             if (attrs.Any())
             {
                 ImGui.SameLine();
                 Spacing();
-        
+
                 foreach (var texture in attrs)
                 {
                     if (IconButton(FontAwesomeIcon.Question,
@@ -467,18 +467,18 @@ internal static class ImGuiHelper
         }, () =>
         {
             RotationConfigWindow.DrawRotationRole(rotation);
-        
+
             rotation.Configs.Draw(canAddButton);
         });
 
     #region IAction
     public static void Display(this IAction action, bool IsActive)
     {
-        if(action is BaseAction act)
+        if (action is BaseAction act)
         {
             act.Display(IsActive);
         }
-        else if(action is IBaseItem item)
+        else if (action is IBaseItem item)
         {
             item.Display(IsActive);
         }
@@ -489,7 +489,7 @@ internal static class ImGuiHelper
     }, otherThing: () =>
     {
         ImGui.SameLine();
-        ImGuiHelper.Spacing();
+        Spacing();
 
         OtherCommandType.ToggleActions.DisplayCommandHelp(action.ToString());
 
@@ -545,7 +545,7 @@ internal static class ImGuiHelper
         }
 
         ImGui.SameLine();
-        ImGuiHelper.Spacing();
+        Spacing();
 
         if (ImGui.Checkbox($"{LocalizationManager.RightLang.Configwindow_Events_ShareMacro}##ShareMacro{info.GetHashCode()}",
             ref info.IsShared))
@@ -593,11 +593,11 @@ internal static class ImGuiHelper
                 {
                     ImGui.SameLine();
                     Spacing();
-                    DisplayCommandHelp(OtherCommandType.Rotations, config.Name + " " + comboIndex.ToString());
+                    OtherCommandType.Rotations.DisplayCommandHelp(config.Name + " " + comboIndex.ToString());
 
                     ImGui.SameLine();
                     Spacing();
-                    DisplayCommandHelp(OtherCommandType.Rotations, config.Name + " " + config.Items[comboIndex]);
+                    OtherCommandType.Rotations.DisplayCommandHelp(config.Name + " " + config.Items[comboIndex]);
                 }
             }
             ImGui.EndCombo();
@@ -612,7 +612,7 @@ internal static class ImGuiHelper
         {
             ImGui.SameLine();
             Spacing();
-            DisplayCommandHelp(OtherCommandType.Rotations, config.Name);
+            OtherCommandType.Rotations.DisplayCommandHelp(config.Name);
         }
     }
 
@@ -634,7 +634,7 @@ internal static class ImGuiHelper
         {
             ImGui.SameLine();
             Spacing();
-            DisplayCommandHelp(OtherCommandType.Rotations, config.Name);
+            OtherCommandType.Rotations.DisplayCommandHelp(config.Name);
         }
     }
 
@@ -661,7 +661,7 @@ internal static class ImGuiHelper
     #endregion
 
 
-    static readonly System.Numerics.Vector2 PIC_SIZE = new System.Numerics.Vector2(24, 24);
+    static readonly Vector2 PIC_SIZE = new Vector2(24, 24);
     const float ATTR_INDENT = 170;
 
     public static void Display(this RotationDescAttribute attr, ICustomRotation rotation)

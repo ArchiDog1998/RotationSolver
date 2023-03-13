@@ -1,24 +1,18 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Updaters;
 
 internal class SocialUpdater
 {
-    static List<string> macroToAuthor = new List<string>()
+    static List<string> _macroToAuthor = new List<string>()
     {
         "blush",
         "hug",

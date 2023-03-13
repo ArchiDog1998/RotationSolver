@@ -1,15 +1,14 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Attributes;
-using RotationSolver.Basic;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Attributes;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Basic;
+namespace RotationSolver.Basic.Rotations.Basic;
 
-public abstract class SAM_Base : CustomRotation.CustomRotation
+public abstract class SAM_Base : CustomRotation
 {
     private static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
     public override MedicineType MedicineType => MedicineType.Strength;

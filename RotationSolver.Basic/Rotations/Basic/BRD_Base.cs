@@ -1,17 +1,15 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
-using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Attributes;
-using RotationSolver.Basic;
-using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Attributes;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Basic;
+namespace RotationSolver.Basic.Rotations.Basic;
 
-public abstract class BRD_Base : CustomRotation.CustomRotation
+public abstract class BRD_Base : CustomRotation
 {
     private static BRDGauge JobGauge => Service.JobGauges.Get<BRDGauge>();
 

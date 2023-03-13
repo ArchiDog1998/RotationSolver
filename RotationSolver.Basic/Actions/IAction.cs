@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Actions;
+﻿namespace RotationSolver.Basic.Actions;
 
 public interface IAction : ITexture
 {

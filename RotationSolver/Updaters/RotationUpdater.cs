@@ -1,16 +1,8 @@
-﻿using Lumina.Data.Parsing;
-using RotationSolver.Actions;
-using RotationSolver.Attributes;
-using RotationSolver.Basic;
+﻿using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Rotations;
-using RotationSolver.Data;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Updaters;
 
@@ -52,12 +44,15 @@ internal static class RotationUpdater
         //    .Select(Assembly.LoadFrom)
         //    .SelectMany(a => a.GetTypes());
 
-        //foreach (var t in types)
-        //{
-        //    Service.ChatGui.Print(t.Name);
-        //}
+        foreach (var t in AppDomain.CurrentDomain.GetAssemblies().Where(a => a.Location.Contains("RotationSolver")))
+        {
+            Service.ChatGui.Print(t.FullName);
+        }
 
-        _customRotations = (from t in Assembly.GetAssembly(typeof(ICustomRotation)).GetTypes()
+        var asses = new Assembly[] { typeof(RotationUpdater).Assembly };
+
+        _customRotations = (from a in asses
+                            from t in a.GetTypes()
                             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                                  && !t.IsAbstract && !t.IsInterface
                             select (ICustomRotation)Activator.CreateInstance(t) into rotation

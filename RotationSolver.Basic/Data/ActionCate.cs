@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Data;
+﻿namespace RotationSolver.Basic.Data;
 
 public enum ActionCate : uint
 {

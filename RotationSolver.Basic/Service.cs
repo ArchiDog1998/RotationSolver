@@ -23,8 +23,8 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiScene;
 using Lumina.Excel;
-using RotationSolver.Configuration;
-using RotationSolver.Data;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Data;
 using System.Runtime.InteropServices;
 
 namespace RotationSolver.Basic;
@@ -51,7 +51,7 @@ public class Service : IDisposable
     {
         pluginInterface.Create<Service>();
 
-        //https://github.com/BardMusicPlayer/Hypnotoad-Plugin/blob/7928be6735daf28e94121c3cf1c1dbbef0d97bcf/HypnotoadPlugin/Offsets/Offsets.cs#L18
+        //https://github.com/BardMusicPlayer/Hypnotoad-Plugin/blob/develop/HypnotoadPlugin/Offsets/Offsets.cs#L18
         GetChatBox = Marshal.GetDelegateForFunctionPointer<GetChatBoxModuleDelegate>(
             SigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9"));
 

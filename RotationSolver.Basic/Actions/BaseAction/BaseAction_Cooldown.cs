@@ -1,6 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Helpers;
 using System;
 
 

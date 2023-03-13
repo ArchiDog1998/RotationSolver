@@ -1,13 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Objects.SubKinds;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
-using RotationSolver.SigReplacers;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Updaters;
-using System;
-using System.Runtime.InteropServices;
 
 namespace RotationSolver.Commands
 {

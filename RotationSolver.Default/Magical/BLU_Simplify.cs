@@ -1,10 +1,4 @@
-﻿using RotationSolver.Actions;
-using RotationSolver.Basic;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
-using RotationSolver.Rotations.Basic;
-
-namespace RotationSolver.Default.Magical;
+﻿namespace RotationSolver.Default.Magical;
 
 internal class BLU_Simplify : BLU_Base
 {

@@ -1,9 +1,8 @@
 ﻿using ImGuiScene;
-using RotationSolver.Basic;
 using RotationSolver.Basic.Rotations;
 using System.Collections.Generic;
 
-namespace RotationSolver.Data;
+namespace RotationSolver.Basic.Data;
 
 public enum IconType : byte
 {

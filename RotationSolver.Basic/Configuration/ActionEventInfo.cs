@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Configuration;
+﻿namespace RotationSolver.Basic.Configuration;
 
 public class ActionEventInfo : MacroInfo
 {

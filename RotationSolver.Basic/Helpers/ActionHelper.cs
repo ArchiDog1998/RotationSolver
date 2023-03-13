@@ -1,8 +1,8 @@
-﻿using RotationSolver.Data;
+﻿using RotationSolver.Basic.Data;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 
-namespace RotationSolver.Helpers;
+namespace RotationSolver.Basic.Helpers;
 
 internal static class ActionHelper
 {

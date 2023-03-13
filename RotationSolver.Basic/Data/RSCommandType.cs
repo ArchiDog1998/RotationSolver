@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Commands;
+﻿namespace RotationSolver.Basic.Data;
 
 public enum SpecialCommandType : byte
 {

@@ -1,10 +1,9 @@
-using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Attributes;
 using RotationSolver.Basic;
-using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Attributes;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.Rotations.CustomRotation;
 

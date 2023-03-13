@@ -2,11 +2,12 @@
 using Dalamud.Utility;
 using ImGuiNET;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Basic.Rotations;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
+using RotationSolver.UI;
 using RotationSolver.Updaters;
 using System;
 using System.Linq;

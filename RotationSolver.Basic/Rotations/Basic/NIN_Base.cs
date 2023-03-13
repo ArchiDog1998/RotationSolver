@@ -1,13 +1,12 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using RotationSolver.Actions;
 using RotationSolver.Actions.BaseAction;
-using RotationSolver.Attributes;
-using RotationSolver.Basic;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Attributes;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
 
-namespace RotationSolver.Rotations.Basic;
+namespace RotationSolver.Basic.Rotations.Basic;
 
 public interface INinAction : IBaseAction
 {
@@ -15,7 +14,7 @@ public interface INinAction : IBaseAction
 }
 
 
-public abstract class NIN_Base : CustomRotation.CustomRotation
+public abstract class NIN_Base : CustomRotation
 {
     private static NINGauge JobGauge => Service.JobGauges.Get<NINGauge>();
     public override MedicineType MedicineType => MedicineType.Dexterity;

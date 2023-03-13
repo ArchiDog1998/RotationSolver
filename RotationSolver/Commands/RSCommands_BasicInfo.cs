@@ -1,7 +1,7 @@
 ﻿using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using RotationSolver.Basic;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 using RotationSolver.Localization;
 using System;
 using System.Linq;

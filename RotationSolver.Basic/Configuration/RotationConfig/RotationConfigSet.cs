@@ -1,9 +1,9 @@
-﻿using RotationSolver.Data;
+﻿using RotationSolver.Basic.Data;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RotationSolver.Configuration.RotationConfig;
+namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public class RotationConfigSet : IRotationConfigSet
 {

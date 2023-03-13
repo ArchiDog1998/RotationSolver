@@ -1,7 +1,5 @@
-﻿using RotationSolver.Actions;
-using RotationSolver.Basic;
-using RotationSolver.Data;
-using System.Linq;
+﻿using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
 
 namespace RotationSolver.Rotations.CustomRotation;
 public enum MedicineType : byte

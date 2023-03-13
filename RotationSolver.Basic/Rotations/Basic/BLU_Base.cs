@@ -1,14 +1,13 @@
-﻿using RotationSolver.Actions;
-using RotationSolver.Actions.BaseAction;
+﻿using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
-using RotationSolver.Commands;
-using RotationSolver.Configuration.RotationConfig;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Configuration.RotationConfig;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
 using System.Linq;
 
-namespace RotationSolver.Rotations.Basic;
+namespace RotationSolver.Basic.Rotations.Basic;
 
 
 public interface IBLUAction : IBaseAction
@@ -16,7 +15,7 @@ public interface IBLUAction : IBaseAction
     bool OnSlot { get; }
     bool RightType { get; }
 }
-public abstract class BLU_Base : CustomRotation.CustomRotation
+public abstract class BLU_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Intelligence;
 
@@ -290,7 +289,7 @@ public abstract class BLU_Base : CustomRotation.CustomRotation
     /// </summary>
     public static IBLUAction Tingle { get; } = new BLUAction(ActionID.Tingle, BLUActionType.Magical)
     {
-        StatusProvide = new StatusID[] {StatusID.Tingling},
+        StatusProvide = new StatusID[] { StatusID.Tingling },
     };
 
     /// <summary>

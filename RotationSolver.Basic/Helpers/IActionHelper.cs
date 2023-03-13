@@ -1,34 +1,34 @@
-﻿using RotationSolver.Actions;
-using RotationSolver.Basic;
-using RotationSolver.Data;
+﻿using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Data;
 
-namespace RotationSolver.Helpers;
+namespace RotationSolver.Basic.Helpers;
 
 public static class IActionHelper
 {
-    public static bool IsLastGCD(bool isAdjust, params IAction[] actions)
+    internal static bool IsLastGCD(bool isAdjust, params IAction[] actions)
     {
         return IsLastGCD(GetIDFromActions(isAdjust, actions));
     }
-    public static bool IsLastGCD(params ActionID[] ids)
+    internal static bool IsLastGCD(params ActionID[] ids)
     {
         return IsActionID(DataCenter.LastGCD, ids);
     }
 
-    public static bool IsLastAbility(bool isAdjust, params IAction[] actions)
+    internal static bool IsLastAbility(bool isAdjust, params IAction[] actions)
     {
         return IsLastAbility(GetIDFromActions(isAdjust, actions));
     }
-    public static bool IsLastAbility(params ActionID[] ids)
+    internal static bool IsLastAbility(params ActionID[] ids)
     {
         return IsActionID(DataCenter.LastAbility, ids);
     }
 
-    public static bool IsLastAction(bool isAdjust, params IAction[] actions)
+    internal static bool IsLastAction(bool isAdjust, params IAction[] actions)
     {
         return IsLastAction(GetIDFromActions(isAdjust, actions));
     }
-    public static bool IsLastAction(params ActionID[] ids)
+    internal static bool IsLastAction(params ActionID[] ids)
     {
         return IsActionID(DataCenter.LastAction, ids);
     }
@@ -52,7 +52,7 @@ public static class IActionHelper
         return actions.Select(a => isAdjust ? (ActionID)a.AdjustedID : (ActionID)a.ID).ToArray();
     }
 
-    internal static bool IsMeleeAction(this IBaseAction act)
+    public static bool IsMeleeAction(this IBaseAction act)
     {
         return act.Range == 3;
     }

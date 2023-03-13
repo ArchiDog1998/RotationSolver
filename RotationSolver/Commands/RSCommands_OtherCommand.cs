@@ -1,15 +1,9 @@
-﻿using RotationSolver.Actions;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
+﻿using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Rotations;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RotationSolver.Commands
 {

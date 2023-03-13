@@ -1,10 +1,10 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Attributes;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Attributes;
+using RotationSolver.Basic.Configuration.RotationConfig;
+using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Rotations;
-using RotationSolver.Configuration.RotationConfig;
-using RotationSolver.Data;
 namespace RotationSolver.Rotations.CustomRotation;
 
 [RotationDesc(DescType.BurstActions)]

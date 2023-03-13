@@ -3,9 +3,8 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic;
-using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using System.Numerics;
 
 namespace RotationSolver.Actions.BaseAction;

@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace RotationSolver.Data;
+namespace RotationSolver.Basic.Data;
 
 [StructLayout(LayoutKind.Explicit)]
 public readonly struct ChatPayload : IDisposable

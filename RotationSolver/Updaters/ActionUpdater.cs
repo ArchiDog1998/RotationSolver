@@ -1,11 +1,12 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver.Actions;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using System;
 
@@ -19,11 +20,10 @@ internal static class ActionUpdater
     static  RandomDelay _GCDDelay = new RandomDelay(() => (Service.Config.WeaponDelayMin, Service.Config.WeaponDelayMax));
 
 
-    internal static uint[] BluSlots { get; private set; } = new uint[24];
-
     internal static IAction NextAction { get; private set; }
+    internal static IBaseAction NextGCDAction { get; private set; }
 
-    public static float LastCastingTotal { get; set; }
+    static float _lastCastingTotal { get; set; }
 
 #if DEBUG
     internal static Exception exception;
@@ -42,6 +42,29 @@ internal static class ActionUpdater
             if (customRotation?.TryInvoke(out var newAction, out var gcdAction) ?? false)
             {
                 NextAction = newAction;
+
+                if (gcdAction is IBaseAction GcdAction && GcdAction.IsMeleeAction())
+                {
+                    NextGCDAction = GcdAction;
+                    //Sayout!
+                    if (GcdAction.EnemyPositional != EnemyPositional.None && GcdAction.Target.HasPositional()
+                         && !localPlayer.HasStatus(true, StatusID.TrueNorth))
+                    {
+                        if (CheckAction(GcdAction.ID))
+                        {
+                            string positional = GcdAction.EnemyPositional.ToName();
+                            if (Service.Config.SayPositional) Watcher.Speak(positional);
+                            if (Service.Config.FlytextPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                            {
+                                IconId = GcdAction.IconID,
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    NextGCDAction = null;
+                }
                 return;
             }
         }
@@ -55,6 +78,19 @@ internal static class ActionUpdater
 #endif
 
         NextAction = null;
+    }
+
+    static uint _lastSayingGCDAction;
+    static DateTime lastTime;
+    static bool CheckAction(uint actionID)
+    {
+        if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0, 0, 3)) && DataCenter.StateType != StateCommandType.Cancel)
+        {
+            _lastSayingGCDAction = actionID;
+            lastTime = DateTime.Now;
+            return true;
+        }
+        else return false;
     }
 
     internal unsafe static void UpdateActionInfo()
@@ -78,9 +114,9 @@ internal static class ActionUpdater
             DataCenter.CombatTime = (float)(DateTime.Now - _startCombatTime).TotalSeconds;
         }
 
-        for (int i = 0; i < BluSlots.Length; i++)
+        for (int i = 0; i < DataCenter.BluSlots.Length; i++)
         {
-            BluSlots[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
+            DataCenter.BluSlots[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
         }
         UpdateMPTimer();
     }
@@ -103,7 +139,7 @@ internal static class ActionUpdater
             : Math.Max(weapontotal - DataCenter.WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
         //确定读条时间。
-        if (DataCenter.WeaponElapsed < 0.3) LastCastingTotal = castTotal;
+        if (DataCenter.WeaponElapsed < 0.3) _lastCastingTotal = castTotal;
 
         //确认能力技的相关信息
         var interval = Service.Config.AbilitiesInterval;
@@ -185,7 +221,7 @@ internal static class ActionUpdater
         }
 
         //还在咏唱，就不放技能了。
-        if (DataCenter.WeaponElapsed <= LastCastingTotal) return;
+        if (DataCenter.WeaponElapsed <= _lastCastingTotal) return;
 
         //只剩下最后一个能力技了，然后卡最后！
         if (DataCenter.WeaponRemain < 2 * Service.Config.AbilitiesInterval)
@@ -193,7 +229,7 @@ internal static class ActionUpdater
             if (DataCenter.WeaponRemain > Service.Config.AbilitiesInterval + Service.Config.ActionAhead) return;
             RSCommands.DoAnAction(false);
         }
-        else if ((DataCenter.WeaponElapsed - LastCastingTotal) % Service.Config.AbilitiesInterval <= Service.Config.ActionAhead)
+        else if ((DataCenter.WeaponElapsed - _lastCastingTotal) % Service.Config.AbilitiesInterval <= Service.Config.ActionAhead)
         {
             RSCommands.DoAnAction(false);
         }

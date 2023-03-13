@@ -1,7 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections;
 
-namespace RotationSolver.Data;
+namespace RotationSolver.Basic.Data;
 
 public class ObjectListDelay<T> : IEnumerable<T> where T : GameObject
 {
@@ -17,13 +17,13 @@ public class ObjectListDelay<T> : IEnumerable<T> where T : GameObject
 
     public void Delay(IEnumerable<T> originData)
     {
-        var outList= new List<T>(originData.Count());
+        var outList = new List<T>(originData.Count());
         var revealTime = new SortedList<uint, DateTime>();
         var now = DateTime.Now;
 
         foreach (var item in originData)
         {
-            if(!_revealTime.TryGetValue(item.ObjectId, out var time))
+            if (!_revealTime.TryGetValue(item.ObjectId, out var time))
             {
                 var range = _getRange();
                 var delaySecond = range.min + (float)_ran.NextDouble() * (range.max - range.min);

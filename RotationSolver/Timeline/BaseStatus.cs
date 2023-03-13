@@ -1,6 +1,6 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
-using RotationSolver.Data;
+using RotationSolver.Basic.Data;
 
 namespace RotationSolver.Timeline;
 

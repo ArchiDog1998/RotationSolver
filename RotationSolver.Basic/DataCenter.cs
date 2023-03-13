@@ -4,11 +4,9 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using RotationSolver.Actions;
+using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Data;
-using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Helpers;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
