@@ -5,12 +5,32 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <PlatformTarget>x64</PlatformTarget>
-
+	  <Version>0.9.0</Version>
+	  <Authors>ArchiTed</Authors>
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-
 	  <Platforms>AnyCPU</Platforms>
+	  <PackageIcon>RotationSolverIconDiscord_512.png</PackageIcon>
+	  <Description>A basic library for rotation development in FFXIV in RotationSolver.</Description>
+	  <PackageId>FFXIV.Dalamud.RotationSolver.Basic</PackageId>
+	  <Title>RotationSolver.Basic</Title>
+	  <RepositoryUrl>https://github.com/ArchiDog1998/RotationSolver/tree/main/RotationSolver.Basic</RepositoryUrl>
+	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	  <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+	  <PackageTags>FFXIV, FF14, Dalamud, Rotation</PackageTags>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\COPYING.LESSER">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\RotationSolverIconDiscord_512.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="Dalamud">
