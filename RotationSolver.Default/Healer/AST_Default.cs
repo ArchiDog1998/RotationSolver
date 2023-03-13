@@ -2,7 +2,7 @@ namespace RotationSolver.Default.Healer;
 
 [RotationDesc(ActionID.Divination)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Healer/AST_Default.cs")]
-internal sealed class AST_Default : AST_Base
+public sealed class AST_Default : AST_Base
 {
     public override string GameVersion => "6.28";
 

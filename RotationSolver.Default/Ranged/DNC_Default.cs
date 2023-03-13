@@ -1,7 +1,7 @@
 namespace RotationSolver.Default.Ranged;
 
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Ranged/DNC_Default.cs")]
-internal sealed class DNC_Default : DNC_Base
+public sealed class DNC_Default : DNC_Base
 {
     public override string GameVersion => "6.28";
 

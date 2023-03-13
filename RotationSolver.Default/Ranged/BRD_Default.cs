@@ -1,7 +1,7 @@
 namespace RotationSolver.Default.Ranged;
 
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Ranged/BRD_Default.cs")]
-internal sealed class BRD_Default : BRD_Base
+public sealed class BRD_Default : BRD_Base
 {
     public override string GameVersion => "6.28";
 

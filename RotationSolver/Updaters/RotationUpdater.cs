@@ -35,23 +35,13 @@ internal static class RotationUpdater
         }
     }
 
+    public static Assembly[] Assemblies { get; set; } = new Assembly[0];
+
     private static void GetAllCustomRotations()
     {
-        //var thisPath = Assembly.GetAssembly(typeof(ICustomRotation)).Location;
 
-        //var types = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
-        //    .Where(l => l != thisPath)
-        //    .Select(Assembly.LoadFrom)
-        //    .SelectMany(a => a.GetTypes());
 
-        foreach (var t in AppDomain.CurrentDomain.GetAssemblies().Where(a => a.Location.Contains("RotationSolver")))
-        {
-            Service.ChatGui.Print(t.FullName);
-        }
-
-        var assemblies = new Assembly[] { typeof(RotationUpdater).Assembly };
-
-        _customRotations = (from a in assemblies
+        _customRotations = (from a in Assemblies
                             from t in a.GetTypes()
                             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                                  && !t.IsAbstract && !t.IsInterface

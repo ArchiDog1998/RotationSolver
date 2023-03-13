@@ -14,8 +14,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver.Basic", "Rot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver", "RotationSolver\RotationSolver.csproj", "{99EA3D95-33DC-424F-A9E6-FE6064F11592}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver.Old", "RotationSolver.Old\RotationSolver.Old.csproj", "{4C6B3AFA-44B5-433D-99DF-D26595275EEF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +32,6 @@ Global
 		{99EA3D95-33DC-424F-A9E6-FE6064F11592}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99EA3D95-33DC-424F-A9E6-FE6064F11592}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99EA3D95-33DC-424F-A9E6-FE6064F11592}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C6B3AFA-44B5-433D-99DF-D26595275EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C6B3AFA-44B5-433D-99DF-D26595275EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C6B3AFA-44B5-433D-99DF-D26595275EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C6B3AFA-44B5-433D-99DF-D26595275EEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

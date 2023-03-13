@@ -2,7 +2,7 @@ namespace RotationSolver.Default.Melee;
 
 [RotationDesc(ActionID.Mug)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Melee/NIN_Default.cs")]
-internal sealed class NIN_Default : NIN_Base
+public sealed class NIN_Default : NIN_Base
 {
     public override string GameVersion => "6.0";
 

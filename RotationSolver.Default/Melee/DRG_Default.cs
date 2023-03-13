@@ -1,7 +1,7 @@
 namespace RotationSolver.Default.Melee;
 
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Melee/DRG_Default.cs")]
-internal sealed class DRG_Default : DRG_Base
+public sealed class DRG_Default : DRG_Base
 {
     public override string GameVersion => "6.18";
 

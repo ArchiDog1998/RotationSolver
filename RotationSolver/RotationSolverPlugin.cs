@@ -5,12 +5,14 @@ using RotationSolver.Actions;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Rotations;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
 using RotationSolver.Windows.RotationConfigWindow;
+using System.Reflection;
 
 namespace RotationSolver;
 
@@ -49,7 +51,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Enable();
         TimeLineUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
         SocialUpdater.Enable();
-        _dis.Add(new Service(pluginInterface));
         _dis.Add(new Watcher());
         _dis.Add(new IconReplacer());
         _dis.Add(new MovingController());
@@ -60,6 +61,23 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         manager.ExportLocalization();
 #endif
         ChangeUITranslation();
+
+        var locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
+        var assemblies = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
+            .Where(l => !locs.Any(t => l.Contains(t))).Select(Assembly.LoadFrom);
+
+        RotationUpdater.Assemblies = assemblies.ToArray();
+
+        foreach (var a in assemblies)
+        {
+            Service.ChatGui.Print(a.FullName);
+
+            foreach (var t in a.GetTypes())
+            {
+                Service.ChatGui.Print(t.FullName);
+            }
+        }
+
     }
 
 

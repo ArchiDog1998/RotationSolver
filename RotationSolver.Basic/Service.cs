@@ -47,10 +47,8 @@ public class Service : IDisposable
 
     public static GetChatBoxModuleDelegate GetChatBox { get; private set; }
 
-    public Service(DalamudPluginInterface pluginInterface)
+    public Service()
     {
-        pluginInterface.Create<Service>();
-
         //https://github.com/BardMusicPlayer/Hypnotoad-Plugin/blob/develop/HypnotoadPlugin/Offsets/Offsets.cs#L18
         GetChatBox = Marshal.GetDelegateForFunctionPointer<GetChatBoxModuleDelegate>(
             SigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9"));

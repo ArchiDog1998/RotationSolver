@@ -5,7 +5,7 @@ namespace RotationSolver.Default.Tank;
 [RotationDesc("The whole rotation's burst\nis base on:")]
 [RotationDesc(ActionID.FightorFlight)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/PLD_Default.cs")]
-internal class PLD_Default : PLD_Base
+public class PLD_Default : PLD_Base
 {
     public override string GameVersion => "6.31";
     public override string RotationName => "Tentative v1.2";

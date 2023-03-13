@@ -2,7 +2,7 @@ namespace RotationSolver.Default.Magical;
 
 [RotationDesc(ActionID.Embolden)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Magical/RDM_Default.cs")]
-internal sealed class RDM_Default : RDM_Base
+public sealed class RDM_Default : RDM_Base
 {
     public override string GameVersion => "6.31";
 

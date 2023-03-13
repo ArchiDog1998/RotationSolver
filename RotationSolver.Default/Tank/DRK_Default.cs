@@ -3,7 +3,7 @@ namespace RotationSolver.Default.Tank;
 
 [RotationDesc(ActionID.BloodWeapon, ActionID.Delirium)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/DRK_Default.cs")]
-internal sealed class DRK_Default : DRK_Base
+public sealed class DRK_Default : DRK_Base
 {
     public override string GameVersion => "6.31";
 
