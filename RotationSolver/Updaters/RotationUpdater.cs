@@ -51,9 +51,9 @@ internal static class RotationUpdater
             Service.ChatGui.Print(t.FullName);
         }
 
-        var assemblies = new Assembly[] { typeof(RotationUpdater).Assembly };
+        Assemblies = new Assembly[] { typeof(RotationUpdater).Assembly };
 
-        _customRotations = (from a in assemblies
+        _customRotations = (from a in Assemblies
                             from t in a.GetTypes()
                             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                                  && !t.IsAbstract && !t.IsInterface
@@ -109,8 +109,8 @@ internal static class RotationUpdater
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group, string name)
     {
         var rotation = group.rotations.FirstOrDefault(r => r.RotationName == name);
-        //rotation ??= group.rotations.FirstOrDefault(r => r.GetType().GetCustomAttribute<DefaultRotationAttribute>() != null);
-        rotation ??= group.rotations.FirstOrDefault(r => r.GetType().Name.Contains("Default"));
+        rotation ??= group.rotations.FirstOrDefault(RotationHelper.IsDefault);
+        rotation ??= group.rotations.FirstOrDefault(r => r.IsAllowed(out _));
         rotation ??= group.rotations.FirstOrDefault();
         return rotation;
     }
