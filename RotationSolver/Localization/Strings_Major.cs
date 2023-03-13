@@ -523,4 +523,5 @@ internal partial class Strings
     };
 
     public string HighEndWarning { get; set; } = "You'd better not use Rotation Solver in {0}!";
+    public string HighEndBan { get; set; } = "{0} can not be used in High-end Duty!";
 }

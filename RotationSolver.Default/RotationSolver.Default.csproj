@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <PlatformTarget>x64</PlatformTarget>
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-	  <Platforms>AnyCPU;ARM64</Platforms>
+	  <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,6 +39,18 @@
 		  <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
 		  <Private>False</Private>
 	  </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Dalamud.Game.ClientState.JobGauge.Enums" />
+    <Using Include="RotationSolver.Actions.BaseAction" />
+    <Using Include="RotationSolver.Basic" />
+    <Using Include="RotationSolver.Basic.Actions" />
+    <Using Include="RotationSolver.Basic.Attributes" />
+    <Using Include="RotationSolver.Basic.Configuration.RotationConfig" />
+    <Using Include="RotationSolver.Basic.Data" />
+    <Using Include="RotationSolver.Basic.Helpers" />
+    <Using Include="RotationSolver.Basic.Rotations.Basic" />
   </ItemGroup>
 
 </Project>

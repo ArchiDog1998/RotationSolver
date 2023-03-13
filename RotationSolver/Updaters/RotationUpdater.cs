@@ -51,9 +51,9 @@ internal static class RotationUpdater
             Service.ChatGui.Print(t.FullName);
         }
 
-        var Assemblies = new Assembly[] { typeof(RotationUpdater).Assembly };
+        var assemblies = new Assembly[] { typeof(RotationUpdater).Assembly };
 
-        _customRotations = (from a in Assemblies
+        _customRotations = (from a in assemblies
                             from t in a.GetTypes()
                             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                                  && !t.IsAbstract && !t.IsInterface

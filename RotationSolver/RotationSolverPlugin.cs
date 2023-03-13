@@ -59,19 +59,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         manager.ExportLocalization();
 #endif
-        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ChangeUITranslation();
     }
 
-    private void ClientState_TerritoryChanged(object sender, ushort e)
-    {
-        RSCommands.UpdateStateNamePlate();
-        var territory = Service.GetSheet<TerritoryType>().GetRow(e);
-        if(territory?.ContentFinderCondition?.Value?.RowId != 0)
-        {
-            SocialUpdater.CanSaying = true;
-        }
-    }
+
 
     internal static void ChangeUITranslation()
     {
@@ -84,8 +75,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     public void Dispose()
     {
-        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
-
         RSCommands.Disable();
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;

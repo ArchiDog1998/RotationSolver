@@ -23,7 +23,8 @@ internal class SocialUpdater
         "stroke",
     };
 
-    public static bool CanSaying { get; set; } = false;
+    static bool _canSaying = false;
+    public static bool InHighEndDuty { get; private set; } = false;
 
     static bool CanSocial
     {
@@ -47,6 +48,7 @@ internal class SocialUpdater
     {
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
         Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
+        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
     }
 
     static async void DutyState_DutyCompleted(object sender, ushort e)
@@ -58,6 +60,17 @@ internal class SocialUpdater
         await Task.Delay(new Random().Next(4000, 6000));
 
         Service.Config.DutyEnd.AddMacro();
+    }
+
+    static void ClientState_TerritoryChanged(object sender, ushort e)
+    {
+        RSCommands.UpdateStateNamePlate();
+        var territory = Service.GetSheet<TerritoryType>().GetRow(e);
+        if (territory?.ContentFinderCondition?.Value?.RowId != 0)
+        {
+            _canSaying = true;
+        }
+        InHighEndDuty = territory?.ContentFinderCondition?.Value?.HighEndDuty ?? false;
     }
 
     static void DutyState_DutyStarted(object sender, ushort e)
@@ -74,14 +87,15 @@ internal class SocialUpdater
     {
         Service.DutyState.DutyStarted -= DutyState_DutyStarted;
         Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
+        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
     internal static async void UpdateSocial()
     {
         if (DataCenter.InCombat || DataCenter.PartyMembers.Count() < 2) return;
-        if (CanSaying && CanSocial)
+        if (_canSaying && CanSocial)
         {
-            CanSaying = false;
+            _canSaying = false;
             await Task.Delay(new Random().Next(3000, 5000));
 
 #if DEBUG

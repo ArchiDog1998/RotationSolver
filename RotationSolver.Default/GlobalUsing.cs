@@ -1,9 +1,0 @@
-﻿global using Dalamud.Game.ClientState.JobGauge.Enums;
-global using RotationSolver.Actions.BaseAction;
-global using RotationSolver.Basic;
-global using RotationSolver.Basic.Actions;
-global using RotationSolver.Basic.Attributes;
-global using RotationSolver.Basic.Configuration.RotationConfig;
-global using RotationSolver.Basic.Data;
-global using RotationSolver.Basic.Helpers;
-global using RotationSolver.Basic.Rotations.Basic;
