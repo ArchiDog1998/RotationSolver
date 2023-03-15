@@ -36,11 +36,6 @@ public sealed class RDM_Default : RDM_Base
         }
     }
 
-    static RDM_Default()
-    {
-        Acceleration.RotationCheck = b => InCombat;
-    }
-
     protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
@@ -146,7 +141,7 @@ public sealed class RDM_Default : RDM_Base
             if (!Player.HasStatus(true, StatusID.VerfireReady, StatusID.VerstoneReady))
             {
                 if (Swiftcast.CanUse(out act)) return true;
-                if (Acceleration.CanUse(out act, emptyOrSkipCombo: true)) return true;
+                if (InCombat && Acceleration.CanUse(out act, emptyOrSkipCombo: true)) return true;
             }
         }
 

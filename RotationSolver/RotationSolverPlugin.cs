@@ -64,8 +64,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         RotationUpdater.GetAllCustomRotations();
     }
 
-
-
     internal static void ChangeUITranslation()
     {
         _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header

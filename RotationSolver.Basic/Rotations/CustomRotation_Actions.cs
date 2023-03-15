@@ -3,6 +3,8 @@ using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
+using RotationSolver.Basic.Rotations.Basic;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace RotationSolver.Rotations.CustomRotation;
@@ -257,6 +259,7 @@ public abstract partial class CustomRotation
         var acts = from prop in type.GetProperties()
                    where typeof(IAction).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)
                    select (IAction)prop.GetValue(this) into act
+                   where act != null
                    orderby act.ID
                    select act;
 

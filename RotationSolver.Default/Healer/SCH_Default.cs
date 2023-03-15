@@ -8,10 +8,6 @@ public sealed class SCH_Default : SCH_Base
 
     public override string RotationName => "Default";
 
-    public SCH_Default()
-    {
-        SummonSeraph.RotationCheck = b => WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1);
-    }
     protected override bool CanHealSingleSpell => base.CanHealSingleSpell && (Configs.GetBool("GCDHeal") || PartyHealers.Count() < 2);
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell && (Configs.GetBool("GCDHeal") || PartyHealers.Count() < 2);
 
@@ -125,7 +121,10 @@ public sealed class SCH_Default : SCH_Base
     protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //慰藉
-        if (SummonSeraph.CanUse(out act)) return true;
+        if(WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1))
+        {
+            if (SummonSeraph.CanUse(out act)) return true;
+        }
         if (Consolation.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
         //异想的祥光
@@ -161,7 +160,12 @@ public sealed class SCH_Default : SCH_Base
         if (Expedient.CanUse(out act)) return true;
 
         //慰藉
-        if (SummonSeraph.CanUse(out act)) return true;
+
+
+        if (WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1))
+        {
+            if (SummonSeraph.CanUse(out act)) return true;
+        }
         if (Consolation.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
         //野战治疗阵

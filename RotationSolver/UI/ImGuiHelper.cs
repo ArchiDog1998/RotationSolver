@@ -391,9 +391,22 @@ internal static class ImGuiHelper
                     attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));
                 }
 
-                foreach (var a in RotationDescAttribute.Merge(attrs))
+                try
                 {
-                    RotationDescAttribute.MergeToOne(a)?.Display(rotation);
+                    foreach (var a in RotationDescAttribute.Merge(attrs))
+                    {
+                        RotationDescAttribute.MergeToOne(a)?.Display(rotation);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var e = ex;
+                    while(e != null)
+                    {
+                        ImGui.Text(e.Message);
+                        e = e.InnerException;
+                    }
+                    ImGui.TextWrapped(ex.StackTrace);
                 }
             }, "Popup" + rotation.GetHashCode().ToString());
         },
@@ -694,6 +707,7 @@ internal static class ImGuiHelper
         if (isOnCommand) ImGui.PopStyleColor();
 
         ImGui.SameLine();
+
         ImGui.Indent(ATTR_INDENT);
 
         if (hasDesc)

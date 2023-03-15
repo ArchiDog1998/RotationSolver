@@ -50,11 +50,6 @@ namespace RotationSolver.Basic.Actions
         Func<BattleChara, bool> ActionCheck { get; set; }
 
         /// <summary>
-        /// Check for rotation, you can add it for simplify the rotation file. 
-        /// Input data is the target for this action.
-        Func<BattleChara, bool> RotationCheck { get; set; }
-
-        /// <summary>
         /// Player's level is enough for this action's usage.
         /// </summary>
         bool EnoughLevel { get; }

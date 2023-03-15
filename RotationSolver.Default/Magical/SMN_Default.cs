@@ -17,12 +17,6 @@ public sealed class SMN_Default : SMN_Base
             .SetBool("addCrimsonCyclone", true, "Auto CrimsonCyclon");
     }
 
-    public SMN_Default()
-    {
-        RuinIV.RotationCheck = b => !Player.HasStatus(true, StatusID.Swiftcast) && !InBahamut && !InPhoenix;
-        SearingLight.RotationCheck = b => !Player.HasStatus(false, StatusID.SearingLight);
-    }
-
     protected override bool CanHealSingleSpell => false;
 
     [RotationDesc(ActionID.CrimsonCyclone)]
@@ -55,7 +49,9 @@ public sealed class SMN_Default : SMN_Base
         if (!SummonBahamut.EnoughLevel && HasHostilesInRange && Aethercharge.CanUse(out act)) return true;
 
         //毁4
-        if (IsMoving && (Player.HasStatus(true, StatusID.GarudasFavor) || InIfrit) && RuinIV.CanUse(out act, mustUse: true)) return true;
+        if (IsMoving && (Player.HasStatus(true, StatusID.GarudasFavor) || InIfrit) 
+            && !Player.HasStatus(true, StatusID.Swiftcast) && !InBahamut && !InPhoenix
+            && RuinIV.CanUse(out act, mustUse: true)) return true;
 
         //召唤蛮神
         switch (Configs.GetCombo("SummonOrder"))
@@ -87,7 +83,9 @@ public sealed class SMN_Default : SMN_Base
                 if (SummonRuby.CanUse(out act)) return true;
                 break;
         }
-        if (SummonTimerRemaining == 0 && AttunmentTimerRemaining == 0 && RuinIV.CanUse(out act, mustUse: true)) return true;
+        if (SummonTimerRemaining == 0 && AttunmentTimerRemaining == 0 &&
+            !Player.HasStatus(true, StatusID.Swiftcast) && !InBahamut && !InPhoenix　&&
+            RuinIV.CanUse(out act, mustUse: true)) return true;
         //迸裂三灾
         if (Outburst.CanUse(out act)) return true;
 
@@ -98,7 +96,7 @@ public sealed class SMN_Default : SMN_Base
 
     protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (InBurst)
+        if (InBurst && !Player.HasStatus(false, StatusID.SearingLight))
         {
             //灼热之光
             if (SearingLight.CanUse(out act)) return true;

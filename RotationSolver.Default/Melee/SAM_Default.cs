@@ -18,26 +18,6 @@ public sealed class SAM_Default : SAM_Base
     /// </summary>
     private static bool haveMeikyoShisui => Player.HasStatus(true, StatusID.MeikyoShisui);
 
-    public SAM_Default()
-    {
-        //明镜里ban了最基础技能
-        Hakaze.RotationCheck = b => !haveMeikyoShisui;
-        Fuko.RotationCheck = b => !haveMeikyoShisui;
-        Fuga.RotationCheck = b => !haveMeikyoShisui;
-        Enpi.RotationCheck = b => !haveMeikyoShisui;
-        //保证有buff加成
-        Higanbana.RotationCheck = b => HaveMoon && HaveFlower;
-        OgiNamikiri.RotationCheck = b => HaveMoon && HaveFlower;
-        HissatsuSenei.RotationCheck = b => HaveMoon && HaveFlower;
-        HissatsuGuren.RotationCheck = b => HaveMoon && HaveFlower;
-    }
-
-    //public override SortedList<DescType, string> DescriptionDict => new()
-    //{
-    //    {DescType.DefenseSingle, $"{ThirdEye}"},
-    //    {DescType.MoveAction, $"{HissatsuGyoten}"},
-    //};
-
     protected override bool GeneralGCD(out IAction act)
     {
         //奥义回返
@@ -48,12 +28,13 @@ public sealed class SAM_Default : SAM_Base
         if (KaeshiSetsugekka.CanUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
 
         //奥义斩浪
-        if ((!IsTargetBoss || Target.HasStatus(true, StatusID.Higanbana)) && OgiNamikiri.CanUse(out act, mustUse: true)) return true;
+        if ((!IsTargetBoss || Target.HasStatus(true, StatusID.Higanbana)) && HaveMoon && HaveFlower 
+            && OgiNamikiri.CanUse(out act, mustUse: true)) return true;
 
         //处理居合术
         if (SenCount == 1 && IsTargetBoss && !IsTargetDying)
         {
-            if (Higanbana.CanUse(out act)) return true;
+            if (HaveMoon && HaveFlower && Higanbana.CanUse(out act)) return true;
         }
         if (SenCount == 2)
         {
@@ -77,13 +58,17 @@ public sealed class SAM_Default : SAM_Base
         if ((!HaveMoon || MoonTime < FlowerTime || !Shifu.EnoughLevel) && Jinpu.CanUse(out act)) return true;
         if ((!HaveFlower || FlowerTime < MoonTime) && Shifu.CanUse(out act)) return true;
 
-        //连击1
-        if (Fuko.CanUse(out act)) return true;
-        if (!Fuko.EnoughLevel && Fuga.CanUse(out act)) return true;
-        if (Hakaze.CanUse(out act)) return true;
+        if (!haveMeikyoShisui)
+        {
+            //连击1
+            if (Fuko.CanUse(out act)) return true;
+            if (!Fuko.EnoughLevel && Fuga.CanUse(out act)) return true;
+            if (Hakaze.CanUse(out act)) return true;
 
-        //燕飞
-        if (Enpi.CanUse(out act)) return true;
+            //燕飞
+            if (Enpi.CanUse(out act)) return true;
+        }
+
         act = null;
         return false;
     }
@@ -100,8 +85,11 @@ public sealed class SAM_Default : SAM_Base
         }
 
         //闪影、红莲
-        if (HissatsuGuren.CanUse(out act, mustUse: !HissatsuSenei.EnoughLevel)) return true;
-        if (HissatsuSenei.CanUse(out act)) return true;
+        if(HaveMoon && HaveFlower)
+        {
+            if (HissatsuGuren.CanUse(out act, mustUse: !HissatsuSenei.EnoughLevel)) return true;
+            if (HissatsuSenei.CanUse(out act)) return true;
+        }
 
         //照破、无明照破
         if (Shoha2.CanUse(out act)) return true;

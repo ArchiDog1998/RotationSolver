@@ -21,10 +21,14 @@ internal partial class RotationConfigWindow
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_Rotation_Description);
 
-        ImGui.SameLine();
         if (ImGui.Button("Dev Wiki"))
         {
             Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
+        }
+        ImGui.SameLine();
+        if (ImGui.Button("Load Rotation"))
+        {
+            RotationUpdater.GetAllCustomRotations();
         }
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));

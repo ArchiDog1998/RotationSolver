@@ -1,8 +1,16 @@
 using Dalamud.Interface.Windowing;
+using Dalamud.Plugin;
+using FFXIVClientStructs.Interop;
 using ImGuiNET;
+using Lumina.Excel;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Rotations;
+using RotationSolver.Basic.Rotations.Basic;
 using RotationSolver.Localization;
 using System.Numerics;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
 
@@ -25,14 +33,37 @@ internal partial class RotationConfigWindow : Window
     //    {JobRole.RangedMagicial, $"{DescType.DefenseArea.ToName()} ¡ú {CustomRotation.Addle}" },
     //};
 
+    static Exception exc;
+    static Type[] types;
+
     public override unsafe void Draw()
     {
         if (ImGui.BeginTabBar("RotationSolverSettings"))
         {
 #if DEBUG
-            if (Service.Player != null && ImGui.BeginTabItem("Debug"))
+            if (ImGui.BeginTabItem("Debug"))
             {
                 DrawDebugTab();
+
+                try
+                {
+                    
+                    foreach (var type in from prop in typeof(WAR_Base).GetProperties()
+                                         where typeof(IAction).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true) select prop)
+                    {
+                        ImGui.Text(type.Name);
+                        var a  = (IAction)type.GetValue(null);
+                    }
+                }
+                catch (Exception e)
+                {
+                    while(e != null)
+                    {
+                        ImGui.Text(e.Message);
+                        e = e.InnerException;
+                    }
+                }
+
                 ImGui.EndTabItem();
             }
 #endif

@@ -14,38 +14,38 @@ internal static class RotationUpdater
     internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; set; } = new SortedList<JobRole, CustomRotationGroup[]>();
     private static CustomRotationGroup[] CustomRotations { get; set; } = new CustomRotationGroup[0];
 
-    public static Assembly[] Assemblies { get; set; } = new Assembly[0];
-
+    static readonly  string[] locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
 
     public static void GetAllCustomRotations()
     {
-        var locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
-        var assemblies = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
-            .Where(l => !locs.Any(t => l.Contains(t))).Select(RotationLoadContext.LoadFrom);
-
-        Assemblies = assemblies.ToArray();
-
-        foreach (var a in assemblies)
-        {
-            Service.ChatGui.Print(a.FullName);
-
-            //foreach (var t in a.GetTypes())
-            //{
-            //    Service.ChatGui.Print(t.FullName);
-            //}
-        }
-
-        CustomRotations = (from a in Assemblies
-                            from t in a.GetTypes()
-                            where t.GetInterfaces().Contains(typeof(ICustomRotation))
-                                 && !t.IsAbstract && !t.IsInterface
-                            select (ICustomRotation)Activator.CreateInstance(t) into rotation
-                            group rotation by rotation.JobIDs[0] into rotationGrp
-                            select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
+        CustomRotations = (
+            from l in Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
+            where !locs.Any(l.Contains)
+            select RotationLoadContext.LoadFrom(l) into a
+            from t in a.GetTypes()
+            where t.GetInterfaces().Contains(typeof(ICustomRotation))
+                 && !t.IsAbstract && !t.IsInterface
+            select GetRotation(t) into rotation
+            where rotation != null
+            group rotation by rotation.JobIDs[0] into rotationGrp
+            select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
 
         CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
             (CustomRotations.GroupBy(g => g.rotations[0].Job.GetJobRole())
             .ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+    }
+
+    private static ICustomRotation GetRotation(Type t)
+    {
+        try
+        {
+            return (ICustomRotation)Activator.CreateInstance(t);
+        }
+        catch 
+        {
+            Dalamud.Logging.PluginLog.LogError($"Failed to load the rotation: {t.Name}");
+            return null; 
+        }
     }
 
     private static ICustomRotation[] CreateRotationSet(ICustomRotation[] combos)

@@ -7,11 +7,6 @@ public sealed class WAR_Default : WAR_Base
 
     public override string RotationName => "Default";
 
-    static WAR_Default()
-    {
-        InnerBeast.RotationCheck = b => !Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest);
-    }
-
     [RotationDesc(ActionID.ShakeItOff, ActionID.Reprisal)]
     protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
@@ -36,7 +31,10 @@ public sealed class WAR_Default : WAR_Base
         }
 
         if (SteelCyclone.CanUse(out act)) return true;
-        if (InnerBeast.CanUse(out act)) return true;
+        if(!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest))
+        {
+            if (InnerBeast.CanUse(out act)) return true;
+        }
 
         if (MythrilTempest.CanUse(out act)) return true;
         if (Overpower.CanUse(out act)) return true;

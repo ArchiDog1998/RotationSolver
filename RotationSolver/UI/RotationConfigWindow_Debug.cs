@@ -17,6 +17,7 @@ internal partial class RotationConfigWindow
 {
     private void DrawDebugTab()
     {
+        if (Service.Player == null) return;
         var str = SocialUpdater.EncryptString(Service.Player);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH", ref str, 100);

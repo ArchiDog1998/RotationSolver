@@ -11,19 +11,6 @@ public sealed class RPR_Default : RPR_Base
     {
         return base.CreateConfiguration().SetBool("EnshroudPooling", false, "Enshroud Pooling");
     }
-    public RPR_Default()
-    {
-        //保留红条不第一时间打出去,保证暴食不空转 同时保证不延后大丰收
-        BloodStalk.RotationCheck = b => !Player.HasStatus(true, StatusID.BloodsownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel || Soul == 100);
-        GrimSwathe.RotationCheck = BloodStalk.RotationCheck;
-
-        //必须有dot
-        ArcaneCircle.RotationCheck = b => Target.HasStatus(true, StatusID.DeathsDesign);
-
-        //必须进战
-        HarvestMoon.RotationCheck = b => InCombat;
-    }
-
 
     protected override IAction CountDownAction(float remainTime)
     {
@@ -131,7 +118,7 @@ public sealed class RPR_Default : RPR_Base
         if (Slice.CanUse(out act)) return true;
 
         //摸不到怪 先花掉收获月
-        if (HarvestMoon.CanUse(out act, mustUse: true)) return true;
+        if (InCombat && HarvestMoon.CanUse(out act, mustUse: true)) return true;
         if (Harpe.CanUse(out act)) return true;
 
         return false;
@@ -142,7 +129,7 @@ public sealed class RPR_Default : RPR_Base
         if (InBurst)
         {
             //神秘环
-            if (ArcaneCircle.CanUse(out act)) return true;
+            if (Target.HasStatus(true, StatusID.DeathsDesign) && ArcaneCircle.CanUse(out act)) return true;
 
             if (IsTargetBoss && IsTargetDying || //资源倾泻
                !Configs.GetBool("EnshroudPooling") && Shroud >= 50 ||//未开启双附体
@@ -171,10 +158,15 @@ public sealed class RPR_Default : RPR_Base
             if (Gluttony.CanUse(out act, mustUse: true)) return true;
         }
 
-        //AOE
-        if (GrimSwathe.CanUse(out act)) return true;
-        //单体
-        if (BloodStalk.CanUse(out act)) return true;
+        if (!Player.HasStatus(true, StatusID.BloodsownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel || Soul == 100))
+        {
+            //AOE
+            if (GrimSwathe.CanUse(out act)) return true;
+            //单体
+            if (BloodStalk.CanUse(out act)) return true;
+        }
+
+        act = null;
         return false;
     }
 }

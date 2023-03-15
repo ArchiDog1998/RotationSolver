@@ -25,7 +25,8 @@ public class RotationLoadContext : AssemblyLoadContext
             ["FFXIVClientStructs"] = typeof(Resolver).Assembly,
             ["Dalamud"] = typeof(DalamudPluginInterface).Assembly,
             ["RotationSolver.Basic"] = typeof(DataCenter).Assembly,
-            ["Lumina.Excel"] = typeof(SheetAttribute).Assembly,
+            ["Lumina"] = typeof(SheetAttribute).Assembly,
+            ["Lumina.Excel"] = typeof(ExcelRow).Assembly,
         };
     }
 
