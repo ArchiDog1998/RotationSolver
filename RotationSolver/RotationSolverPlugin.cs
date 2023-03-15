@@ -13,6 +13,7 @@ using RotationSolver.UI;
 using RotationSolver.Updaters;
 using RotationSolver.Windows.RotationConfigWindow;
 using System.Reflection;
+using System.Runtime.Loader;
 
 namespace RotationSolver;
 
@@ -37,8 +38,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             Service.Config = new PluginConfiguration();
         }
-        //Service.Address = new PluginAddressResolver();
-        //Service.Address.Setup();
 
         _comboConfigWindow = new();
         windowSystem = new WindowSystem(Name);
@@ -62,22 +61,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #endif
         ChangeUITranslation();
 
-        var locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
-        var assemblies = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
-            .Where(l => !locs.Any(t => l.Contains(t))).Select(Assembly.LoadFrom);
-
-        RotationUpdater.Assemblies = assemblies.ToArray();
-
-        foreach (var a in assemblies)
-        {
-            Service.ChatGui.Print(a.FullName);
-
-            foreach (var t in a.GetTypes())
-            {
-                Service.ChatGui.Print(t.FullName);
-            }
-        }
-
+        RotationUpdater.GetAllCustomRotations();
     }
 
 

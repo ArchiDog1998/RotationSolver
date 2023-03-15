@@ -3,6 +3,7 @@ using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Rotations;
 using System.Reflection;
+using System.Runtime.Loader;
 
 namespace RotationSolver.Updaters;
 
@@ -10,38 +11,31 @@ internal static class RotationUpdater
 {
     public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] rotations);
 
-    private static SortedList<JobRole, CustomRotationGroup[]> _customRotationsDict;
-    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict
-    {
-        get
-        {
-            if (_customRotationsDict == null)
-            {
-                GetAllCustomRotations();
-            }
-            return _customRotationsDict;
-        }
-    }
-    private static CustomRotationGroup[] _customRotations;
-    private static CustomRotationGroup[] CustomRotations
-    {
-        get
-        {
-            if (_customRotations == null)
-            {
-                GetAllCustomRotations();
-            }
-            return _customRotations;
-        }
-    }
+    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; set; } = new SortedList<JobRole, CustomRotationGroup[]>();
+    private static CustomRotationGroup[] CustomRotations { get; set; } = new CustomRotationGroup[0];
 
     public static Assembly[] Assemblies { get; set; } = new Assembly[0];
 
-    private static void GetAllCustomRotations()
+
+    public static void GetAllCustomRotations()
     {
+        var locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
+        var assemblies = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
+            .Where(l => !locs.Any(t => l.Contains(t))).Select(RotationLoadContext.LoadFrom);
 
+        Assemblies = assemblies.ToArray();
 
-        _customRotations = (from a in Assemblies
+        foreach (var a in assemblies)
+        {
+            Service.ChatGui.Print(a.FullName);
+
+            //foreach (var t in a.GetTypes())
+            //{
+            //    Service.ChatGui.Print(t.FullName);
+            //}
+        }
+
+        CustomRotations = (from a in Assemblies
                             from t in a.GetTypes()
                             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                                  && !t.IsAbstract && !t.IsInterface
@@ -49,8 +43,8 @@ internal static class RotationUpdater
                             group rotation by rotation.JobIDs[0] into rotationGrp
                             select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
 
-        _customRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
-            (_customRotations.GroupBy(g => g.rotations[0].Job.GetJobRole())
+        CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
+            (CustomRotations.GroupBy(g => g.rotations[0].Job.GetJobRole())
             .ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
     }
 
