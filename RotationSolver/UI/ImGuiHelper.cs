@@ -2,24 +2,23 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Utility;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
+using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Attributes;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.RotationConfig;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Basic.Rotations;
 using RotationSolver.Localization;
-using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Windows.RotationConfigWindow;
 using System.ComponentModel;
 using System.Numerics;
 using System.Reflection;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Basic.Configuration.RotationConfig;
-using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Data;
 
 namespace RotationSolver.UI;
 
@@ -440,8 +439,15 @@ internal static class ImGuiHelper
             ImGui.SameLine();
             ImGui.TextDisabled("   -  ");
             ImGui.SameLine();
-            ImGui.TextColored(rotation.IsAllowed(out _) ? ImGuiColors.HealerGreen : ImGuiColors.DalamudRed,
+
+            var isAllowed = rotation.IsAllowed(out _);
+            ImGui.TextColored(isAllowed ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet,
                 rotation.GetAuthor());
+            if(!isAllowed && ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("This rotation is not allowed to be used in High-end Duty!");
+            }
+            
             ImGui.SameLine();
             ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":    ");
             ImGui.SameLine();

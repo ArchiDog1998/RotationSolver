@@ -26,6 +26,7 @@ internal partial class RotationConfigWindow
             Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
         }
         ImGui.SameLine();
+        ImGuiHelper.Spacing();
         if (ImGui.Button("Load Rotation"))
         {
             RotationUpdater.GetAllCustomRotations();
