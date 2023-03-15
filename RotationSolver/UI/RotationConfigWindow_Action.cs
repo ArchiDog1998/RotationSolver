@@ -32,49 +32,51 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
         {
-            foreach (var pair in RotationUpdater.RightNowRotation?.AllActions.GroupBy(a =>
-            {
-                if(a is IBaseAction act)
+            if (RotationUpdater.RightNowRotation != null)
+                foreach (var pair in RotationUpdater.RightNowRotation.AllActions.GroupBy(a =>
                 {
-                    string result;
-
-                    if (act.IsFriendly)
+                    if (a is IBaseAction act)
                     {
-                        result = LocalizationManager.RightLang.Action_Friendly;
-                        if (act.IsEot)
+                        string result;
+
+                        if (act.IsFriendly)
                         {
-                            result += "Hot";
+                            result = LocalizationManager.RightLang.Action_Friendly;
+                            if (act.IsEot)
+                            {
+                                result += "Hot";
+                            }
+                        }
+                        else
+                        {
+                            result = LocalizationManager.RightLang.Action_Attack;
+
+                            if (act.IsEot)
+                            {
+                                result += "Dot";
+                            }
+                        }
+                        result += "-" + (act.IsRealGCD ? "GCD" : LocalizationManager.RightLang.Timeline_Ability);
+                        return result;
+                    }
+                    else if (a is IBaseItem)
+                    {
+                        return "Item";
+                    }
+                    return string.Empty;
+
+                }).OrderBy(g => g.Key))
+                {
+                    if (ImGui.CollapsingHeader(pair.Key))
+                    {
+                        foreach (var item in pair)
+                        {
+                            item.Display(ActiveAction == item);
+                            ImGui.Separator();
                         }
                     }
-                    else
-                    {
-                        result = LocalizationManager.RightLang.Action_Attack;
+                }
 
-                        if (act.IsEot)
-                        {
-                            result += "Dot";
-                        }
-                    }
-                    result += "-" + (act.IsRealGCD ? "GCD" : LocalizationManager.RightLang.Timeline_Ability);
-                    return result;
-                }
-                else if(a is IBaseItem)
-                {
-                    return "Item";
-                }
-                return string.Empty;
-
-            }).OrderBy(g => g.Key))
-            {
-                if (ImGui.CollapsingHeader(pair.Key))
-                {
-                    foreach (var item in pair)
-                    {
-                        item.Display(ActiveAction == item);
-                        ImGui.Separator();
-                    }
-                }
-            }
             ImGui.EndChild();
         }
         ImGui.PopStyleVar();

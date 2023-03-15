@@ -446,12 +446,13 @@ internal static class ImGuiHelper
             ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":    ");
             ImGui.SameLine();
             ImGui.Text(rotation.GameVersion);
-            ImGui.SameLine();
-            Spacing();
 
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
             if(link != null)
             {
+                ImGui.SameLine();
+                Spacing();
+
                 if (IconButton(FontAwesomeIcon.Globe, "Code" + rotation.GetHashCode().ToString()))
                 {
                     var url = link.Url;

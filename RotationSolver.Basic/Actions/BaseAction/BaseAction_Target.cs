@@ -29,7 +29,7 @@ public partial class BaseAction
     public BattleChara Target { get; private set; } = Service.Player;
 
     private Vector3 _position = default;
-    private uint _targetId = Service.Player.ObjectId;
+    private uint _targetId = Service.Player?.ObjectId ?? 0;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
     public Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget

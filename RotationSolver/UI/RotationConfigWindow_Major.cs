@@ -26,16 +26,6 @@ internal partial class RotationConfigWindow : Window
         RespectCloseHotkey = true;
     }
 
-    //private static readonly Dictionary<JobRole, string> _roleDescriptionValue = new Dictionary<JobRole, string>()
-    //{
-    //    {JobRole.Tank, $"{DescType.DefenseSingle.ToName()} ¡ú {CustomRotation.Rampart}, {CustomRotation.Reprisal}" },
-    //    {JobRole.Melee, $"{DescType.DefenseArea.ToName()} ¡ú {CustomRotation.Feint}" },
-    //    {JobRole.RangedMagicial, $"{DescType.DefenseArea.ToName()} ¡ú {CustomRotation.Addle}" },
-    //};
-
-    static Exception exc;
-    static Type[] types;
-
     public override unsafe void Draw()
     {
         if (ImGui.BeginTabBar("RotationSolverSettings"))
@@ -44,26 +34,6 @@ internal partial class RotationConfigWindow : Window
             if (ImGui.BeginTabItem("Debug"))
             {
                 DrawDebugTab();
-
-                try
-                {
-                    
-                    foreach (var type in from prop in typeof(WAR_Base).GetProperties()
-                                         where typeof(IAction).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true) select prop)
-                    {
-                        ImGui.Text(type.Name);
-                        var a  = (IAction)type.GetValue(null);
-                    }
-                }
-                catch (Exception e)
-                {
-                    while(e != null)
-                    {
-                        ImGui.Text(e.Message);
-                        e = e.InnerException;
-                    }
-                }
-
                 ImGui.EndTabItem();
             }
 #endif
