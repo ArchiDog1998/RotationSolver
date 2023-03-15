@@ -9,8 +9,6 @@ using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
-using System;
-using System.Linq;
 using System.Numerics;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
@@ -26,8 +24,7 @@ internal partial class RotationConfigWindow
             Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
         }
         ImGui.SameLine();
-        ImGuiHelper.Spacing();
-        if (ImGui.Button("Load Rotation"))
+        if (ImGui.Button("Load Rotations"))
         {
             RotationUpdater.GetAllCustomRotations();
         }

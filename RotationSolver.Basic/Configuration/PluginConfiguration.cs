@@ -1,8 +1,5 @@
 using Dalamud.Configuration;
-using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
-using System;
-using System.Collections.Generic;
 using System.Numerics;
 
 namespace RotationSolver.Basic.Configuration;
@@ -144,7 +141,7 @@ public class PluginConfiguration : IPluginConfiguration
     public int MoveTargetAngle = 24;
     public float HealthRatioBoss = 1.85f;
     public float HealthRatioDying = 0.8f;
-    public float HealthRatioDot = 1.5f;
+    public float HealthRatioDot = 1.2f;
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
