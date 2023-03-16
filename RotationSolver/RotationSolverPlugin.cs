@@ -17,7 +17,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     private static RotationConfigWindow _comboConfigWindow;
 
-    readonly List<IDisposable> _dis = new List<IDisposable>();
+    static readonly List<IDisposable> _dis = new List<IDisposable>();
     public string Name => "Rotation Solver";
 
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
@@ -78,6 +78,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             item.Dispose();
         }
+        _dis?.Clear();
 
         MajorUpdater.Dispose();
         TimeLineUpdater.SaveFiles();

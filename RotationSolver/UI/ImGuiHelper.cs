@@ -478,16 +478,16 @@ internal static class ImGuiHelper
                     {
                         Util.OpenLink(texture.Path);
                     }
-                    //if (ImGui.IsItemHovered() && texture.Texture != null)
-                    //{
-                    //    ImGuiHelper.DrawTooltip(() =>
-                    //    {
-                    //        var ratio = Math.Min(1, 1000f /       texture.Texture.Width);
-                    //        var size = new Vector2(texture.Texture.Width *      ratio,
-                    //            texture.Texture.Height * ratio);
-                    //        ImGui.Image(texture.Texture.ImGuiHandle, size);
-                    //    }, "Picture" + texture.GetHashCode().ToString());
-                    //}
+                    if (ImGui.IsItemHovered() && texture.Texture != null)
+                    {
+                        DrawTooltip(() =>
+                        {
+                            var ratio = Math.Min(1, 1000f / texture.Texture.Width);
+                            var size = new Vector2(texture.Texture.Width * ratio,
+                                texture.Texture.Height * ratio);
+                            ImGui.Image(texture.Texture.ImGuiHandle, size);
+                        }, "Picture" + texture.GetHashCode().ToString());
+                    }
                 }
             }
         }, () =>
