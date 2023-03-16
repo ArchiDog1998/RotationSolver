@@ -19,16 +19,6 @@ internal partial class RotationConfigWindow
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Rotation_Description);
 
-        if (ImGui.Button("Dev Wiki"))
-        {
-            Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
-        }
-        ImGui.SameLine();
-        if (ImGui.Button("Load Rotations"))
-        {
-            RotationUpdater.GetAllCustomRotations();
-        }
-
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
         if (ImGui.BeginTabBar("Job Items"))

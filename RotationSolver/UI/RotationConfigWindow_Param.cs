@@ -164,14 +164,7 @@ internal partial class RotationConfigWindow
 
         ImGui.Separator();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
-            ref Service.Config.InDebug);
 
-        if (Service.Config.InDebug)
-        {
-            ImGui.TextColored(ImGuiColors.DalamudRed,
-                LocalizationManager.RightLang.ConfigWindow_Param_InDebugWarning);
-        }
     }
 
     private void DrawParamDisplay()

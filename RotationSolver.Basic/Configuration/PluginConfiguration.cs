@@ -134,7 +134,7 @@ public class PluginConfiguration : IPluginConfiguration
     public string PositionalErrorText = string.Empty;
     public float CountDownAhead = 0.6f;
 
-    public int NamePlateIconId = 61437; // 61435
+    public int NamePlateIconId = 61437; // 61435, 0
     public bool ShowActionFlag = false;
 
 
@@ -144,6 +144,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthRatioDot = 1.2f;
 
     public bool InDebug = false;
+    public string[] OtherLibs = new string[0];
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;

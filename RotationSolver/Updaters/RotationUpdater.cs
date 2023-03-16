@@ -21,17 +21,31 @@ internal static class RotationUpdater
 
     public static void GetAllCustomRotations()
     {
-        var assembly = from l in Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
-                       where !_locs.Any(l.Contains)
-                       select RotationLoadContext.LoadFrom(l);
+        var directories =  Service.Config.OtherLibs
+            .Select(s => s.Trim()).Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location));
 
-        AuthorHashes = (from a in assembly
+#if DEBUG
+        foreach (var dir in directories)
+        {
+            foreach (var item in Directory.GetFiles(dir, "*.dll"))
+            {
+                Service.ChatGui.Print(item);
+            }
+        }
+#endif
+
+        var assemblies = from dir in directories
+                         from l in Directory.GetFiles(dir, "*.dll")
+                         where !_locs.Any(l.Contains)
+                         select RotationLoadContext.LoadFrom(l);
+
+        AuthorHashes = (from a in assemblies
                        select a.GetCustomAttribute<AuthorHashAttribute>() into author
                        where author != null
                        select author.Hash).ToArray();
 
         _customRotations = (
-            from a in assembly
+            from a in assemblies
             from t in a.GetTypes()
             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                  && !t.IsAbstract && !t.IsInterface

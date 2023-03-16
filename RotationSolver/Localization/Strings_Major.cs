@@ -24,6 +24,7 @@ internal partial class Strings
     public string ConfigWindow_EventItem { get; set; } = "Event";
     public string ConfigWindow_ActionItem { get; set; } = "Action";
     public string ConfigWindow_HelpItem { get; set; } = "Help";
+    public string ConfigWindow_RotationDev { get; set; } = "RotationDev";
 
     public string ConfigWindow_ActionItem_Description { get; set; }
         = "Modify the usage for each action.";
@@ -79,6 +80,9 @@ internal partial class Strings
     public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
     public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
     public string ConfigWindow_Rotation_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
+
+    public string ConfigWindow_RotationDev_Description { get; set; } = "You can get some extra rotation development information here.";
+
     public string ConfigWindow_Rotation_KeyName { get; set; } = "The key name is";
     public string ConfigWindow_Events_AddEvent { get; set; } = "AddEvents";
     public string ConfigWindow_Events_Description { get; set; } = "In this window, you can set what macro will be trigger after using an action.";
