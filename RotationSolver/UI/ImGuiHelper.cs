@@ -443,10 +443,8 @@ internal static class ImGuiHelper
             var isAllowed = rotation.IsAllowed(out _);
             ImGui.TextColored(isAllowed ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet,
                 rotation.GetAuthor());
-            if(!isAllowed && ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip("This rotation is not allowed to be used in High-end Duty!");
-            }
+            if (!isAllowed)
+                HoveredString("This rotation is not allowed to be used in High-end Duty!");
             
             ImGui.SameLine();
             ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":    ");

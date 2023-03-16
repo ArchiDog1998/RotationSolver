@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Helpers;
@@ -128,7 +129,7 @@ internal class SocialUpdater
             Service.ChatGui.PrintError("Author Time");
 #else
             Service.TargetManager.SetTarget(author);
-            RSCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
+            Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.Name),

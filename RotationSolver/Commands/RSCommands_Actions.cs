@@ -10,23 +10,24 @@ namespace RotationSolver.Commands
 {
     public static partial class RSCommands
     {
-        private static DateTime _fastClickStopwatch = DateTime.Now;
-
+        static DateTime _fastClickStopwatch = DateTime.Now;
+        static readonly TimeSpan _fastSpan = new TimeSpan(0, 0, 0, 0, 200);
         internal static unsafe void DoAnAction(bool isGCD)
         {
             if (StateType == StateCommandType.Cancel) return;
-            if(SocialUpdater.InHighEndDuty && RotationUpdater.RightNowRotation.IsAllowed(out var str))
-            {
-                Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
-                return;
-            }
 
             var localPlayer = Service.Player;
             if (localPlayer == null) return;
 
             //0.2s内，不能重复按按钮。
-            if (DateTime.Now - _fastClickStopwatch < new TimeSpan(0, 0, 0, 0, 200)) return;
+            if (DateTime.Now - _fastClickStopwatch < _fastSpan) return;
             _fastClickStopwatch = DateTime.Now;
+
+            if (SocialUpdater.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
+            {
+                Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
+                return;
+            }
 
             //Do Action
             var nextAction = ActionUpdater.NextAction;
@@ -86,6 +87,5 @@ namespace RotationSolver.Commands
                 }
             }
         }
-
     }
 }
