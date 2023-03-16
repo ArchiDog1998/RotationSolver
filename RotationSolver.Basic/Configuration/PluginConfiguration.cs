@@ -143,6 +143,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthRatioDying = 0.8f;
     public float HealthRatioDot = 1.2f;
 
+    public bool InDebug = false;
+
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
     public MacroInfo DutyStart { get; set; } = new MacroInfo();

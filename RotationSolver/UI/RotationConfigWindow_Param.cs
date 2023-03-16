@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using Dalamud.Interface.Colors;
+using ImGuiNET;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
@@ -159,7 +160,18 @@ internal partial class RotationConfigWindow
             ref Service.Config.HealthRatioDot, speed: 0.02f, min: 0, max: 10);
 
         DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_ShowActionFlag,
-    ref Service.Config.ShowActionFlag);
+            ref Service.Config.ShowActionFlag);
+
+        ImGui.Separator();
+
+        DrawCheckBox(LocalizationManager.RightLang.Configwindow_Param_InDebug,
+            ref Service.Config.InDebug);
+
+        if (Service.Config.InDebug)
+        {
+            ImGui.TextColored(ImGuiColors.DalamudRed,
+                LocalizationManager.RightLang.Configwindow_Param_InDebugWarning);
+        }
     }
 
     private void DrawParamDisplay()

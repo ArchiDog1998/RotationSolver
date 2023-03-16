@@ -1,5 +1,6 @@
 ﻿using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Rotations;
 using System.Reflection;
@@ -11,17 +12,26 @@ internal static class RotationUpdater
 {
     public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] rotations);
 
-    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; set; } = new SortedList<JobRole, CustomRotationGroup[]>();
-    private static CustomRotationGroup[] CustomRotations { get; set; } = new CustomRotationGroup[0];
+    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
 
-    static readonly  string[] locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
+    internal static string[] AuthorHashes { get; private set; } = new string[0];
+    static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
+
+    static readonly string[] _locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
 
     public static void GetAllCustomRotations()
     {
-        CustomRotations = (
-            from l in Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
-            where !locs.Any(l.Contains)
-            select RotationLoadContext.LoadFrom(l) into a
+        var assembly = from l in Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
+                       where !_locs.Any(l.Contains)
+                       select RotationLoadContext.LoadFrom(l);
+
+        AuthorHashes = (from a in assembly
+                       select a.GetCustomAttribute<AuthorHashAttribute>() into author
+                       where author != null
+                       select author.Hash).ToArray();
+
+        _customRotations = (
+            from a in assembly
             from t in a.GetTypes()
             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                  && !t.IsAbstract && !t.IsInterface
@@ -31,7 +41,7 @@ internal static class RotationUpdater
             select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
 
         CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
-            (CustomRotations.GroupBy(g => g.rotations[0].Job.GetJobRole())
+            (_customRotations.GroupBy(g => g.rotations[0].Job.GetJobRole())
             .ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
     }
 
@@ -78,7 +88,7 @@ internal static class RotationUpdater
         _job = nowJob;
         _rotationName = newName;
 
-        foreach (var group in CustomRotations)
+        foreach (var group in _customRotations)
         {
             if (!group.classJobIds.Contains(_job)) continue;
 

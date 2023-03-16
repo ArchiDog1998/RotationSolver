@@ -48,7 +48,7 @@ public partial class BaseAction
     /// <summary>
     /// 复唱经过时间
     /// </summary>
-    private unsafe float RecastTimeElapsed => CoolDownDetail->Elapsed;
+    public unsafe float RecastTimeElapsed => CoolDownDetail->Elapsed;
 
     /// <summary>
     /// 是否正在冷却中
@@ -58,7 +58,7 @@ public partial class BaseAction
     /// <summary>
     /// 复唱剩余时间
     /// </summary>
-    private float RecastTimeRemain => RecastTime - RecastTimeElapsed;
+    public float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
     /// <summary>
     /// 技能的最大层数
@@ -67,13 +67,13 @@ public partial class BaseAction
     /// <summary>
     /// 是否起码有一层技能
     /// </summary>
-    private bool HaveOneCharge => IsCoolingDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
+    public bool HaveOneCharge => IsCoolingDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
     /// <summary>
     /// 当前技能层数
     /// </summary>
     public ushort CurrentCharges => IsCoolingDown ? (ushort)(RecastTimeElapsed / RecastTimeOneCharge) : MaxCharges;
 
-    private float RecastTimeOneCharge => ActionManager.GetAdjustedRecastTime(ActionType.Spell, AdjustedID) / 1000f;
+    public float RecastTimeOneCharge => ActionManager.GetAdjustedRecastTime(ActionType.Spell, AdjustedID) / 1000f;
 
     /// <summary>
     /// 下一层转好的时间
@@ -81,10 +81,4 @@ public partial class BaseAction
     private float RecastTimeRemainOneCharge => RecastTimeRemain % RecastTimeOneCharge;
     private float RecastTimeElapsedOneCharge => RecastTimeElapsed % RecastTimeOneCharge;
 
-#if DEBUG
-    public bool HaveOneChargeDEBUG => HaveOneCharge;
-    public float RecastTimeOneChargeDEBUG => RecastTimeOneCharge;
-    public float RecastTimeElapsedDEBUG => RecastTimeElapsed;
-    public float RecastTimeRemainDEBUG => RecastTimeRemain;
-#endif
 }

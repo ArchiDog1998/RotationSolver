@@ -12,7 +12,6 @@ using RotationSolver.Updaters;
 using System.Numerics;
 
 namespace RotationSolver.Windows.RotationConfigWindow;
-#if DEBUG
 internal partial class RotationConfigWindow
 {
     private void DrawDebugTab()
@@ -152,4 +151,3 @@ internal partial class RotationConfigWindow
         ImGui.Text($"{type}: {action}");
     }
 }
-#endif

@@ -30,13 +30,6 @@ internal partial class RotationConfigWindow : Window
     {
         if (ImGui.BeginTabBar("RotationSolverSettings"))
         {
-#if DEBUG
-            if (ImGui.BeginTabItem("Debug"))
-            {
-                DrawDebugTab();
-                ImGui.EndTabItem();
-            }
-#endif
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_RotationItem))
             {
                 DrawRotationTab();
@@ -64,6 +57,12 @@ internal partial class RotationConfigWindow : Window
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_HelpItem))
             {
                 DrawHelpTab();
+                ImGui.EndTabItem();
+            }
+
+            if (Service.Config.InDebug && ImGui.BeginTabItem("Debug"))
+            {
+                DrawDebugTab();
                 ImGui.EndTabItem();
             }
 

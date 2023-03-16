@@ -9,15 +9,16 @@
 	  <Authors>ArchiTed</Authors>
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	  <Platforms>AnyCPU</Platforms>
-	  <PackageIcon>RotationSolverIconDiscord_512.png</PackageIcon>
+	  <PackageIcon>RotationSolverIcon_128.png</PackageIcon>
 	  <Description>A basic library for rotation development in FFXIV in RotationSolver.</Description>
-	  <PackageId>FFXIV.Dalamud.RotationSolver.Basic</PackageId>
+	  <PackageId>RotationSolver.Basic</PackageId>
 	  <Title>RotationSolver.Basic</Title>
 	  <RepositoryUrl>https://github.com/ArchiDog1998/RotationSolver/tree/main/RotationSolver.Basic</RepositoryUrl>
 	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	  <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
 	  <PackageTags>FFXIV, FF14, Dalamud, Rotation</PackageTags>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
 
   </PropertyGroup>
 
@@ -26,7 +27,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="..\RotationSolverIconDiscord_512.png">
+    <None Include="..\docs\RotationSolverIcon_128.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
@@ -57,5 +58,12 @@
 			<HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 </Project>

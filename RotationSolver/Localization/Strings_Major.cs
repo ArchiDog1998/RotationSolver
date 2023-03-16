@@ -120,6 +120,8 @@ internal partial class Strings
     public string Configwindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";
     public string Configwindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
     public string Configwindow_Param_ShowActionFlag { get; set; } = "Show action flag.";
+    public string Configwindow_Param_InDebug { get; set; } = "Debug Mode";
+    public string Configwindow_Param_InDebugWarning { get; set; } = "Debug Mode";
     public string Configwindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
 
     public string Configwindow_Param_HealthRatioBoss { get; set; } = "If target's max health ratio is higher than this, regard it as Boss.";

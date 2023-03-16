@@ -116,7 +116,7 @@ internal class SocialUpdater
 #else
             c.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
 #endif
-            ConfigurationHelper.AuthorKeys.Contains(EncryptString(c)));
+            RotationUpdater.AuthorHashes.Contains(EncryptString(c)));
 
         if (author != null)
         {

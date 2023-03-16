@@ -25,9 +25,7 @@ internal static class ActionUpdater
 
     static float _lastCastingTotal { get; set; }
 
-#if DEBUG
     internal static Exception exception;
-#endif
 
     internal static void UpdateNextAction()
     {
@@ -68,14 +66,10 @@ internal static class ActionUpdater
                 return;
             }
         }
-#if DEBUG
         catch (Exception ex)
         {
             exception = ex;
         }
-#else
-        catch { }
-#endif
 
         NextAction = null;
     }

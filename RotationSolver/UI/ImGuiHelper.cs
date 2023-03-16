@@ -523,42 +523,44 @@ internal static class ImGuiHelper
         if (action.IsTimeline) OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
            type => string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, action), false);
 
-#if DEBUG
-        try
+        if (Service.Config.InDebug)
         {
-            ImGui.Text("Can Target: " + action.CanUseTo(action.Target));
-            ImGui.Text("Have One:" + action.HaveOneChargeDEBUG.ToString());
-            ImGui.Text("Is Real GCD: " + action.IsRealGCD.ToString());
-            ImGui.Text("Recast One: " + action.RecastTimeOneChargeDEBUG.ToString());
-            ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsedDEBUG.ToString());
-            ImGui.Text("Recast Remain: " + action.RecastTimeRemainDEBUG.ToString());
-            ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, action.AdjustedID).ToString());
-
-            ImGui.Text("Cast Time: " + action.CastTime.ToString());
-            ImGui.Text("MP: " + action.MPNeed.ToString());
-            ImGui.Text($"Can Use: {action.CanUse(out _)} ");
-            ImGui.Text("Must Use:" + action.CanUse(out _, mustUse: true).ToString());
-            ImGui.Text("Empty Use:" + action.CanUse(out _, emptyOrSkipCombo: true).ToString());
-            ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(action.AdjustedID).ToString());
-            if (action.Target != null)
+            try
             {
-                ImGui.Text("Target Name: " + action.Target.Name);
+                ImGui.Text("Can Target: " + action.CanUseTo(action.Target));
+                ImGui.Text("Have One:" + action.HaveOneCharge.ToString());
+                ImGui.Text("Is Real GCD: " + action.IsRealGCD.ToString());
+                ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
+                ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());
+                ImGui.Text("Recast Remain: " + action.RecastTimeRemain.ToString());
+                ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, action.AdjustedID).ToString());
+
+                ImGui.Text("Cast Time: " + action.CastTime.ToString());
+                ImGui.Text("MP: " + action.MPNeed.ToString());
+                ImGui.Text($"Can Use: {action.CanUse(out _)} ");
+                ImGui.Text("Must Use:" + action.CanUse(out _, mustUse: true).ToString());
+                ImGui.Text("Empty Use:" + action.CanUse(out _, emptyOrSkipCombo: true).ToString());
+                ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(action.AdjustedID).ToString());
+                if (action.Target != null)
+                {
+                    ImGui.Text("Target Name: " + action.Target.Name);
+                }
+            }
+            catch
+            {
+
             }
         }
-        catch
-        {
-
-        }
-#endif
     });
 
     public unsafe static void Display(this IBaseItem item, bool IsActive) => item.DrawEnableTexture(false, null, otherThing: () =>
     {
-#if DEBUG
-        ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID).ToString());
-        var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, item.ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, item.ID);
-        ImGui.Text("remain: " + remain.ToString());
-#endif
+        if (Service.Config.InDebug)
+        {
+            ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID).ToString());
+            var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, item.ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, item.ID);
+            ImGui.Text("remain: " + remain.ToString());
+        }
     });
     #endregion
 

@@ -26,12 +26,6 @@ public static class ConfigurationHelper
         {ActionID.Kasha, new(EnemyPositional.Flank, new byte[] { 29, 68, 72 }) },
     };
 
-
-    public static readonly string[] AuthorKeys = new string[]
-    {
-        "Ig4lHXUohMZNIeheUtAtRg==", //ArchiTed
-    };
-
     public static readonly uint[] BadStatus = new uint[]
     {
         583, //No items.

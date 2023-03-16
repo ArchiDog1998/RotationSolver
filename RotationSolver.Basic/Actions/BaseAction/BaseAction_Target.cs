@@ -469,12 +469,7 @@ public partial class BaseAction
     }
 
 
-#if DEBUG
     public unsafe bool CanUseTo(BattleChara tar)
-#else
-    unsafe bool CanUseTo(BattleChara tar)
-
-#endif
     {
         if (tar == null) return false;
 
