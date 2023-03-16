@@ -9,8 +9,7 @@ using RotationSolver.UI;
 using System;
 using System.Numerics;
 
-namespace RotationSolver.Windows.RotationConfigWindow;
-
+namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
 {
     private static void DrawParamTabItem(string name, Action act)

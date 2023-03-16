@@ -11,7 +11,8 @@ using RotationSolver.UI;
 using RotationSolver.Updaters;
 using System.Numerics;
 
-namespace RotationSolver.Windows.RotationConfigWindow;
+namespace RotationSolver.UI; 
+
 internal partial class RotationConfigWindow
 {
     private void DrawDebugTab()

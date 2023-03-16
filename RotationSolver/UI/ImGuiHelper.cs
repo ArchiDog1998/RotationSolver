@@ -15,7 +15,6 @@ using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Basic.Rotations;
 using RotationSolver.Localization;
-using RotationSolver.Windows.RotationConfigWindow;
 using System.ComponentModel;
 using System.Numerics;
 using System.Reflection;

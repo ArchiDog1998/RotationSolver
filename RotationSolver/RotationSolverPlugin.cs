@@ -1,19 +1,13 @@
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Actions;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Rotations;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
-using RotationSolver.Windows.RotationConfigWindow;
-using System.Reflection;
-using System.Runtime.Loader;
 
 namespace RotationSolver;
 

@@ -4,14 +4,8 @@ using ImGuiNET;
 using RotationSolver.Basic;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RotationSolver.Windows.RotationConfigWindow;
-
+namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
 {
     private void DrawRotationDevTab()

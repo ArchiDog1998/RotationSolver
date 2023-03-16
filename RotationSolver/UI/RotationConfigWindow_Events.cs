@@ -6,8 +6,7 @@ using RotationSolver.Localization;
 using RotationSolver.UI;
 using System.Numerics;
 
-namespace RotationSolver.Windows.RotationConfigWindow;
-
+namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
 {
     private void DrawEventTab()

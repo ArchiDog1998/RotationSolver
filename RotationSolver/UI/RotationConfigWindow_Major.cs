@@ -12,8 +12,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace RotationSolver.Windows.RotationConfigWindow;
-
+namespace RotationSolver.UI;
 internal partial class RotationConfigWindow : Window
 {
     const float DRAG_NUMBER_WIDTH = 100;
