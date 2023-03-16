@@ -421,6 +421,7 @@ internal static class ImGuiHelper
                 {
                     foreach (var r in rotations)
                     {
+                        ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
                         if (ImGui.Selectable(r.RotationName))
                         {
                             Service.Config.RotationChoices[rotation.Job.RowId] = r.RotationName;
@@ -430,6 +431,7 @@ internal static class ImGuiHelper
                         {
                             showToolTip?.Invoke(r.Description);
                         }
+                        ImGui.PopStyleColor();
                     }
                     ImGui.EndCombo();
                 }
@@ -441,18 +443,14 @@ internal static class ImGuiHelper
             ImGui.SameLine();
 
             var isAllowed = rotation.IsAllowed(out _);
-            ImGui.TextColored(isAllowed ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet,
+            ImGui.TextColored(rotation.GetColor(),
                 rotation.GetAuthor());
             if (!isAllowed)
             {
-                var allHighEnds = string.Join('\n', SocialUpdater.HighEndDuties.Select(x => x.PlaceName?.Value?.Name.ToString())
-                .Where(s => !string.IsNullOrEmpty(s)));
+                var showStr = "This rotation is not allowed to be used in High-end Duty!"
+                + string.Join("", SocialUpdater.HighEndDuties.Select(x => x.PlaceName?.Value?.Name.ToString())
+                .Where(s => !string.IsNullOrEmpty(s)).Select(t => "\n - " + t));
 
-                var showStr = "This rotation is not allowed to be used in High-end Duty!";
-                if(!string.IsNullOrEmpty(allHighEnds))
-                {
-                    showStr += "\n" + allHighEnds;
-                }
                 HoveredString(showStr);
             }
             

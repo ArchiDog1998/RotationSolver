@@ -1,5 +1,7 @@
-﻿using RotationSolver.Basic.Rotations;
+﻿using Dalamud.Interface.Colors;
+using RotationSolver.Basic.Rotations;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace RotationSolver;
 
@@ -19,6 +21,9 @@ internal static class RotationHelper
         name = rotation.GetType().Assembly.GetName().Name;
         return _allowedAssembly.Contains(rotation.GetType().Assembly.GetName().Name);
     }
+
+    public static Vector4 GetColor(this ICustomRotation rotation)
+   => rotation.IsAllowed(out _) ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet;
 
     public static string GetAuthor(this ICustomRotation rotation)
     {
