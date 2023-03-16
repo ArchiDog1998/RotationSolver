@@ -156,25 +156,25 @@ internal static class EnumTranslations
 
     internal static string ToHelp(this SpecialCommandType type) => type switch
     {
-        SpecialCommandType.HealArea => LocalizationManager.RightLang.Configwindow_HelpItem_HealArea,
-        SpecialCommandType.HealSingle => LocalizationManager.RightLang.Configwindow_HelpItem_HealSingle,
-        SpecialCommandType.DefenseArea => LocalizationManager.RightLang.Configwindow_HelpItem_DefenseArea,
-        SpecialCommandType.DefenseSingle => LocalizationManager.RightLang.Configwindow_HelpItem_DefenseSingle,
-        SpecialCommandType.EsunaStanceNorth => LocalizationManager.RightLang.Configwindow_HelpItem_Esuna,
-        SpecialCommandType.RaiseShirk => LocalizationManager.RightLang.Configwindow_HelpItem_RaiseShirk,
-        SpecialCommandType.MoveForward => LocalizationManager.RightLang.Configwindow_HelpItem_MoveForward,
-        SpecialCommandType.MoveBack => LocalizationManager.RightLang.Configwindow_HelpItem_MoveBack,
-        SpecialCommandType.AntiKnockback => LocalizationManager.RightLang.Configwindow_HelpItem_AntiKnockback,
-        SpecialCommandType.Burst => LocalizationManager.RightLang.Configwindow_HelpItem_Burst,
-        SpecialCommandType.EndSpecial => LocalizationManager.RightLang.Configwindow_HelpItem_EndSpecial,
+        SpecialCommandType.HealArea => LocalizationManager.RightLang.ConfigWindow_HelpItem_HealArea,
+        SpecialCommandType.HealSingle => LocalizationManager.RightLang.ConfigWindow_HelpItem_HealSingle,
+        SpecialCommandType.DefenseArea => LocalizationManager.RightLang.ConfigWindow_HelpItem_DefenseArea,
+        SpecialCommandType.DefenseSingle => LocalizationManager.RightLang.ConfigWindow_HelpItem_DefenseSingle,
+        SpecialCommandType.EsunaStanceNorth => LocalizationManager.RightLang.ConfigWindow_HelpItem_Esuna,
+        SpecialCommandType.RaiseShirk => LocalizationManager.RightLang.ConfigWindow_HelpItem_RaiseShirk,
+        SpecialCommandType.MoveForward => LocalizationManager.RightLang.ConfigWindow_HelpItem_MoveForward,
+        SpecialCommandType.MoveBack => LocalizationManager.RightLang.ConfigWindow_HelpItem_MoveBack,
+        SpecialCommandType.AntiKnockback => LocalizationManager.RightLang.ConfigWindow_HelpItem_AntiKnockback,
+        SpecialCommandType.Burst => LocalizationManager.RightLang.ConfigWindow_HelpItem_Burst,
+        SpecialCommandType.EndSpecial => LocalizationManager.RightLang.ConfigWindow_HelpItem_EndSpecial,
         _ => string.Empty,
     };
 
     internal static string ToHelp(this StateCommandType type) => type switch
     {
-        StateCommandType.Smart => LocalizationManager.RightLang.Configwindow_HelpItem_AttackSmart,
-        StateCommandType.Manual => LocalizationManager.RightLang.Configwindow_HelpItem_AttackManual,
-        StateCommandType.Cancel => LocalizationManager.RightLang.Configwindow_HelpItem_AttackCancel,
+        StateCommandType.Smart => LocalizationManager.RightLang.ConfigWindow_HelpItem_AttackSmart,
+        StateCommandType.Manual => LocalizationManager.RightLang.ConfigWindow_HelpItem_AttackManual,
+        StateCommandType.Cancel => LocalizationManager.RightLang.ConfigWindow_HelpItem_AttackCancel,
         _ => string.Empty,
     };
 }

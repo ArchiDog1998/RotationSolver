@@ -335,7 +335,7 @@ internal static class ImGuiHelper
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip($"{LocalizationManager.RightLang.Configwindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager.RightLang.Configwindow_Helper_CopyCommand}: {cmdStr}");
+            ImGui.SetTooltip($"{LocalizationManager.RightLang.ConfigWindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager.RightLang.ConfigWindow_Helper_CopyCommand}: {cmdStr}");
 
             if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
             {
@@ -433,7 +433,7 @@ internal static class ImGuiHelper
                     }
                     ImGui.EndCombo();
                 }
-                HoveredString(LocalizationManager.RightLang.Configwindow_Helper_SwitchRotation);
+                HoveredString(LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation);
             }
 
             ImGui.SameLine();
@@ -447,7 +447,7 @@ internal static class ImGuiHelper
                 HoveredString("This rotation is not allowed to be used in High-end Duty!");
             
             ImGui.SameLine();
-            ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.Configwindow_Helper_GameVersion + ":    ");
+            ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ":    ");
             ImGui.SameLine();
             ImGui.Text(rotation.GameVersion);
 
@@ -464,7 +464,7 @@ internal static class ImGuiHelper
                 }
             }
 
-            HoveredString(LocalizationManager.RightLang.Configwindow_Helper_OpenSource);
+            HoveredString(LocalizationManager.RightLang.ConfigWindow_Helper_OpenSource);
 
             var attrs = rotation.GetType().GetCustomAttributes<LinkDescriptionAttribute>();
             if (attrs.Any())
@@ -521,7 +521,7 @@ internal static class ImGuiHelper
         OtherCommandType.ToggleActions.DisplayCommandHelp(action.ToString());
 
         if (action.IsTimeline) OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
-           type => string.Format(LocalizationManager.RightLang.Configwindow_Helper_InsertCommand, action), false);
+           type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, action), false);
 
         if (Service.Config.InDebug)
         {
@@ -567,7 +567,7 @@ internal static class ImGuiHelper
     public static void DisplayMacro(this MacroInfo info)
     {
         ImGui.SetNextItemWidth(50);
-        if (ImGui.DragInt($"{LocalizationManager.RightLang.Configwindow_Events_MacroIndex}##MacroIndex{info.GetHashCode()}",
+        if (ImGui.DragInt($"{LocalizationManager.RightLang.ConfigWindow_Events_MacroIndex}##MacroIndex{info.GetHashCode()}",
             ref info.MacroIndex, 1, -1, 99))
         {
             Service.Config.Save();
@@ -576,7 +576,7 @@ internal static class ImGuiHelper
         ImGui.SameLine();
         Spacing();
 
-        if (ImGui.Checkbox($"{LocalizationManager.RightLang.Configwindow_Events_ShareMacro}##ShareMacro{info.GetHashCode()}",
+        if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Events_ShareMacro}##ShareMacro{info.GetHashCode()}",
             ref info.IsShared))
         {
             Service.Config.Save();
@@ -585,7 +585,7 @@ internal static class ImGuiHelper
 
     public static void DisplayEvent(this ActionEventInfo info)
     {
-        if (ImGui.InputText($"{LocalizationManager.RightLang.Configwindow_Events_ActionName}##ActionName{info.GetHashCode()}",
+        if (ImGui.InputText($"{LocalizationManager.RightLang.ConfigWindow_Events_ActionName}##ActionName{info.GetHashCode()}",
             ref info.Name, 100))
         {
             Service.Config.Save();
@@ -633,7 +633,7 @@ internal static class ImGuiHelper
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Rotation_KeyName + ": " + config.Name);
+            ImGui.SetTooltip(LocalizationManager.RightLang.ConfigWindow_Rotation_KeyName + ": " + config.Name);
         }
 
         //显示可以设置的按键
@@ -655,7 +655,7 @@ internal static class ImGuiHelper
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip(LocalizationManager.RightLang.Configwindow_Rotation_KeyName + ": " + config.Name);
+            ImGui.SetTooltip(LocalizationManager.RightLang.ConfigWindow_Rotation_KeyName + ": " + config.Name);
         }
 
         //显示可以设置的案件

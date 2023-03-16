@@ -17,7 +17,7 @@ internal partial class RotationConfigWindow
 {
     private void DrawRotationTab()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_Rotation_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Rotation_Description);
 
         if (ImGui.Button("Dev Wiki"))
         {
@@ -88,11 +88,11 @@ internal partial class RotationConfigWindow
     {
         var isAllTargetAsHostile = (int)IconReplacer.GetTargetHostileType(rotation.Job);
         ImGui.SetNextItemWidth(300);
-        if (ImGui.Combo(LocalizationManager.RightLang.Configwindow_Param_RightNowTargetToHostileType + $"##HostileType{rotation.GetHashCode()}", ref isAllTargetAsHostile, new string[]
+        if (ImGui.Combo(LocalizationManager.RightLang.ConfigWindow_Param_RightNowTargetToHostileType + $"##HostileType{rotation.GetHashCode()}", ref isAllTargetAsHostile, new string[]
         {
-             LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType1,
-             LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType2,
-             LocalizationManager.RightLang.Configwindow_Param_TargetToHostileType3,
+             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
+             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
+             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
         }, 3))
         {
             Service.Config.TargetToHostileTypes[rotation.Job.RowId] = (byte)isAllTargetAsHostile;
@@ -101,7 +101,7 @@ internal partial class RotationConfigWindow
 
         if (isAllTargetAsHostile != 2 && !Service.Config.AutoOffBetweenArea)
         {
-            ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.Configwindow_Param_NoticeUnexpectedCombat);
+            ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.ConfigWindow_Param_NoticeUnexpectedCombat);
         }
     }
 
@@ -113,7 +113,7 @@ internal partial class RotationConfigWindow
         }
         else if (role == JobRole.Tank)
         {
-            DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthForDyingTank,
+            DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthForDyingTank,
                 () => ConfigurationHelper.GetHealthForDyingTank(job),
                 (value) => Service.Config.HealthForDyingTanks[job] = value);
         }
@@ -121,27 +121,27 @@ internal partial class RotationConfigWindow
 
     private static void DrawHealerSettings(ClassJobID job)
     {
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthAreaAbility,
+        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility,
             () => ConfigurationHelper.GetHealAreaAbility(job),
             (value) => Service.Config.HealthAreaAbilities[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthAreaSpell,
+        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell,
             () => ConfigurationHelper.GetHealAreaSpell(job),
             (value) => Service.Config.HealthAreaSpells[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealingOfTimeSubtractArea,
+        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealingOfTimeSubtractArea,
             () => ConfigurationHelper.GetHealingOfTimeSubtractArea(job),
             (value) => Service.Config.HealingOfTimeSubtractAreas[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthSingleAbility,
+        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility,
             () => ConfigurationHelper.GetHealSingleAbility(job),
             (value) => Service.Config.HealthSingleAbilities[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealthSingleSpell,
+        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell,
             () => ConfigurationHelper.GetHealSingleSpell(job),
             (value) => Service.Config.HealthSingleSpells[job] = value);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.Configwindow_Param_HealingOfTimeSubtractSingle,
+        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealingOfTimeSubtractSingle,
             () => ConfigurationHelper.GetHealingOfTimeSubtractSingle(job),
             (value) => Service.Config.HealingOfTimeSubtractSingles[job] = value);
     }

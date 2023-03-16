@@ -12,7 +12,7 @@ internal partial class RotationConfigWindow
 {
     private void DrawEventTab()
     {
-        if (ImGui.Button(LocalizationManager.RightLang.Configwindow_Events_AddEvent))
+        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Events_AddEvent))
         {
             Service.Config.Events.Add(new ActionEventInfo());
             Service.Config.Save();
@@ -20,21 +20,19 @@ internal partial class RotationConfigWindow
         ImGui.SameLine();
         ImGuiHelper.Spacing();
 
-        ImGui.TextWrapped(LocalizationManager.RightLang.Configwindow_Events_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Events_Description);
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-#if DEBUG
-        ImGui.Text(LocalizationManager.RightLang.Configwindow_Events_DutyStart);
+        ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Events_DutyStart);
         ImGui.SameLine();
         ImGuiHelper.Spacing();
         Service.Config.DutyStart.DisplayMacro();
 
-        ImGui.Text(LocalizationManager.RightLang.Configwindow_Events_DutyEnd);
+        ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Events_DutyEnd);
         ImGui.SameLine();
         ImGuiHelper.Spacing();
         Service.Config.DutyEnd.DisplayMacro();
-#endif
 
         if (ImGui.BeginChild("Events List", new Vector2(0f, -1f), true))
         {
@@ -46,7 +44,7 @@ internal partial class RotationConfigWindow
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
 
-                if (ImGui.Button($"{LocalizationManager.RightLang.Configwindow_Events_RemoveEvent}##RemoveEvent{eve.GetHashCode()}"))
+                if (ImGui.Button($"{LocalizationManager.RightLang.ConfigWindow_Events_RemoveEvent}##RemoveEvent{eve.GetHashCode()}"))
                 {
                     remove = eve;
                 }
