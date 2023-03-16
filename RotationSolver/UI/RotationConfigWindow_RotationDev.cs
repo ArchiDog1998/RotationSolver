@@ -4,6 +4,7 @@ using ImGuiNET;
 using RotationSolver.Basic;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Numerics;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
@@ -28,33 +29,37 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
             ref Service.Config.InDebug);
 
-        if (Service.Config.InDebug)
+        if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f), true))
         {
-            ImGui.TextColored(ImGuiColors.DalamudRed,
-                LocalizationManager.RightLang.ConfigWindow_Param_InDebugWarning);
-        }
-
-        int removeIndex = -1;
-        for (int i = 0; i < Service.Config.OtherLibs.Length; i++)
-        {
-            ImGui.InputText($"##OtherLib{i}", ref Service.Config.OtherLibs[i], 1024);
-            ImGui.SameLine();
-            if (ImGui.Button($"X##Remove{i}"))
+            if (ImGui.Button("AddOne"))
             {
-                removeIndex = i;
+                Service.Config.OtherLibs = Service.Config.OtherLibs.Append(string.Empty).ToArray();
             }
-        }
-        if(removeIndex > -1)
-        {
-            var list = Service.Config.OtherLibs.ToList();
-            list.RemoveAt(removeIndex);
-            Service.Config.OtherLibs = list.ToArray();
-        }
+            ImGui.SameLine();
+            ImGui.Text("Third-party Rotation Libraries");
 
-        string str = string.Empty;
-        if(ImGui.InputText($"##OtherLibExtra", ref str, 1024))
-        {
-            Service.Config.OtherLibs = Service.Config.OtherLibs.Append(str).ToArray();
+            int removeIndex = -1;
+            for (int i = 0; i < Service.Config.OtherLibs.Length; i++)
+            {
+                if (ImGui.InputText($"##OtherLib{i}", ref Service.Config.OtherLibs[i], 1024))
+                {
+                    Service.Config.Save();
+                }
+                ImGui.SameLine();
+                if (ImGui.Button($"X##Remove{i}"))
+                {
+                    removeIndex = i;
+                }
+            }
+            if (removeIndex > -1)
+            {
+                var list = Service.Config.OtherLibs.ToList();
+                list.RemoveAt(removeIndex);
+                Service.Config.OtherLibs = list.ToArray();
+            }
+
+            ImGui.EndChild();
+
         }
     }
 }

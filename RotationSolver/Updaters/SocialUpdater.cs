@@ -26,6 +26,7 @@ internal class SocialUpdater
 
     static bool _canSaying = false;
     public static bool InHighEndDuty { get; private set; } = false;
+    public static TerritoryType[] HighEndDuties { get; private set; } = new TerritoryType[0];
 
     static bool CanSocial
     {
@@ -50,6 +51,10 @@ internal class SocialUpdater
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
         Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
+
+        HighEndDuties = Service.GetSheet<TerritoryType>()
+            .Where(t => t?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
+            .ToArray();
     }
 
     static async void DutyState_DutyCompleted(object sender, ushort e)
@@ -71,13 +76,13 @@ internal class SocialUpdater
         {
             _canSaying = true;
         }
-        InHighEndDuty = territory?.ContentFinderCondition?.Value?.HighEndDuty ?? false;
+        InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
     }
 
     static void DutyState_DutyStarted(object sender, ushort e)
     {
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
-        if (territory?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
+        if (HighEndDuties.Any(t => t.RowId == territory.RowId))
         {
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
             Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndWarning, str));

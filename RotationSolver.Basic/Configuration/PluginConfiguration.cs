@@ -1,4 +1,5 @@
 using Dalamud.Configuration;
+using Newtonsoft.Json;
 using RotationSolver.Basic.Data;
 using System.Numerics;
 

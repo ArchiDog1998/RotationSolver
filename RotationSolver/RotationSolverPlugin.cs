@@ -1,5 +1,8 @@
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
+using Dalamud.Utility;
+using ImGuiScene;
+using Newtonsoft.Json;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
@@ -8,6 +11,7 @@ using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
+using System.Net;
 
 namespace RotationSolver;
 
@@ -19,16 +23,17 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     static readonly List<IDisposable> _dis = new List<IDisposable>();
     public string Name => "Rotation Solver";
-
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
 
         try
         {
-            Service.Config = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+            Service.Config = JsonConvert.DeserializeObject<PluginConfiguration>(
+                File.ReadAllText(Service.Interface.ConfigFile.FullName)) 
+                ?? new PluginConfiguration();
         }
-        catch
+        catch(Exception ex) 
         {
             Service.Config = new PluginConfiguration();
         }
@@ -57,6 +62,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         RotationUpdater.GetAllCustomRotations();
     }
+
 
     internal static void ChangeUITranslation()
     {

@@ -51,7 +51,7 @@ internal partial class RotationConfigWindow
 
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_HelpItem_Description);
 
-        if (ImGui.BeginChild("Help Infomation", new Vector2(0f, -1f), true))
+        if (ImGui.BeginChild("Help Information", new Vector2(0f, -1f), true))
         {
             ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
@@ -86,6 +86,8 @@ internal partial class RotationConfigWindow
             SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
             ImGui.PopStyleVar();
+
+            ImGui.EndChild();
         }
     }
 }

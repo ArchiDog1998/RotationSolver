@@ -15,6 +15,7 @@ using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Basic.Rotations;
 using RotationSolver.Localization;
+using RotationSolver.Updaters;
 using System.ComponentModel;
 using System.Numerics;
 using System.Reflection;
@@ -443,7 +444,17 @@ internal static class ImGuiHelper
             ImGui.TextColored(isAllowed ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet,
                 rotation.GetAuthor());
             if (!isAllowed)
-                HoveredString("This rotation is not allowed to be used in High-end Duty!");
+            {
+                var allHighEnds = string.Join('\n', SocialUpdater.HighEndDuties.Select(x => x.PlaceName?.Value?.Name.ToString())
+                .Where(s => !string.IsNullOrEmpty(s)));
+
+                var showStr = "This rotation is not allowed to be used in High-end Duty!";
+                if(!string.IsNullOrEmpty(allHighEnds))
+                {
+                    showStr += "\n" + allHighEnds;
+                }
+                HoveredString(showStr);
+            }
             
             ImGui.SameLine();
             ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ":    ");
@@ -482,7 +493,7 @@ internal static class ImGuiHelper
                     {
                         DrawTooltip(() =>
                         {
-                            var ratio = Math.Min(1, 1000f / texture.Texture.Width);
+                            var ratio = Math.Min(1, 1500f / texture.Texture.Width);
                             var size = new Vector2(texture.Texture.Width * ratio,
                                 texture.Texture.Height * ratio);
                             ImGui.Image(texture.Texture.ImGuiHandle, size);

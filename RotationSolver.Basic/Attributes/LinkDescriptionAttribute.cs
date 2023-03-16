@@ -9,6 +9,10 @@ namespace RotationSolver.Basic.Attributes;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class LinkDescriptionAttribute : Attribute
 {
+    static readonly SortedDictionary<string, TextureWrap> _TextureCache = new SortedDictionary<string, TextureWrap>();
+
+    static readonly List<string> _loadingTexture = new List<string>();
+
     public TextureWrap Texture { get; private set; }
     public string Path { get; }
     public LinkDescriptionAttribute(string path)
@@ -19,19 +23,28 @@ public class LinkDescriptionAttribute : Attribute
 
     private void LoadTexture(string path)
     {
+        if(_TextureCache.TryGetValue(path,out var t))
+        {
+            Texture = t;
+            return;
+        }
+        if (_loadingTexture.Contains(path))
+        {
+            return;
+        }
+        _loadingTexture.Add(path);
+
         try
         {
             Task.Run(async () =>
             {
                 var bytes = await LoadBytes(path);
-                Texture = TryLoadImage(bytes);
+                _TextureCache[path] = Texture = TryLoadImage(bytes);
             });
         }
         catch
         {
-
         }
-
     }
 
     private static async Task<byte[]> LoadBytes(string url)
