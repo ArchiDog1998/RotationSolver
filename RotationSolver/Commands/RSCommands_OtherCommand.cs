@@ -1,38 +1,14 @@
-﻿using RotationSolver.Actions;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Helpers;
+﻿using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Rotations;
 using RotationSolver.Localization;
-using RotationSolver.Rotations.CustomRotation;
-using RotationSolver.SigReplacers;
 using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RotationSolver.Commands
 {
-    internal static partial class RSCommands
+    public static partial class RSCommands
     {
-        internal record NextAct(IBaseAction act, DateTime deadTime);
-
-        private static List<NextAct> NextActs = new List<NextAct>();
-        internal static IBaseAction NextAction
-        {
-            get
-            {
-                if (TimeLineUpdater.TimeLineAction != null) return TimeLineUpdater.TimeLineAction;
-
-                var next = NextActs.FirstOrDefault();
-
-                while (next != null && NextActs.Count > 0 && (next.deadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.act)))
-                {
-                    NextActs.RemoveAt(0);
-                    next = NextActs.FirstOrDefault();
-                }
-                return next?.act;
-            }
-        }
-
         private static void DoOtherCommand(OtherCommandType otherType, string str)
         {
             switch (otherType)
@@ -60,13 +36,13 @@ namespace RotationSolver.Commands
 
         private static void DoSettingCommand(string str)
         {
-            if (str.Contains(nameof(Service.Configuration.AutoBurst)))
+            if (str.Contains(nameof(Service.Config.AutoBurst)))
             {
-                Service.Configuration.AutoBurst = !Service.Configuration.AutoBurst;
+                Service.Config.AutoBurst = !Service.Config.AutoBurst;
 
                 //Say out.
                 Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeAutoBurst,
-                    Service.Configuration.AutoBurst));
+                    Service.Config.AutoBurst));
             }
         }
 
@@ -99,22 +75,12 @@ namespace RotationSolver.Commands
                 var actName = strs[0];
                 foreach (var iAct in RotationUpdater.RightRotationBaseActions)
                 {
-                    if (iAct is not BaseAction act) continue;
+                    if (iAct is not IBaseAction act) continue;
                     if (!act.IsTimeline) continue;
 
                     if (actName == act.Name)
                     {
-                        var index = NextActs.FindIndex(i => i.act.ID == act.ID);
-                        var newItem = new NextAct(act, DateTime.Now.AddSeconds(time));
-                        if (index < 0)
-                        {
-                            NextActs.Add(newItem);
-                        }
-                        else
-                        {
-                            NextActs[index] = newItem;
-                        }
-                        NextActs = NextActs.OrderBy(i => i.deadTime).ToList();
+                        DataCenter.AddOneTimelineAction(act, time);
 
                         Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
                             new Dalamud.Game.Gui.Toast.QuestToastOptions()

@@ -1,16 +1,17 @@
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Actions;
+using Dalamud.Utility;
+using ImGuiScene;
+using Newtonsoft.Json;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Data;
 using RotationSolver.Commands;
-using RotationSolver.Configuration;
-using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.SigReplacers;
+using RotationSolver.UI;
 using RotationSolver.Updaters;
-using RotationSolver.Windows;
-using RotationSolver.Windows.RotationConfigWindow;
-using System;
+using System.Net;
 
 namespace RotationSolver;
 
@@ -19,24 +20,23 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private readonly WindowSystem windowSystem;
 
     private static RotationConfigWindow _comboConfigWindow;
-    public string Name => "Rotation Solver";
 
+    static readonly List<IDisposable> _dis = new List<IDisposable>();
+    public string Name => "Rotation Solver";
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
 
         try
         {
-            Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+            Service.Config = JsonConvert.DeserializeObject<PluginConfiguration>(
+                File.ReadAllText(Service.Interface.ConfigFile.FullName)) 
+                ?? new PluginConfiguration();
         }
         catch
         {
-            Service.Configuration = new PluginConfiguration();
+            Service.Config = new PluginConfiguration();
         }
-        Service.Address = new PluginAddressResolver();
-        Service.Address.Setup();
-
-        Service.IconReplacer = new IconReplacer();
 
         _comboConfigWindow = new();
         windowSystem = new WindowSystem(Name);
@@ -49,26 +49,20 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Enable();
         TimeLineUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
         SocialUpdater.Enable();
-        Watcher.Enable();
-        CountDown.Enable();
+        _dis.Add(new Watcher());
+        _dis.Add(new IconReplacer());
+        _dis.Add(new MovingController());
 
-        Service.Localization = new LocalizationManager();
+        var manager = new LocalizationManager();
+        _dis.Add(manager);
 #if DEBUG
-        Service.Localization.ExportLocalization();
+        manager.ExportLocalization();
 #endif
-        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ChangeUITranslation();
+
+        RotationUpdater.GetAllCustomRotations();
     }
 
-    private void ClientState_TerritoryChanged(object sender, ushort e)
-    {
-        RSCommands.UpdateStateNamePlate();
-        var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
-        if(territory?.ContentFinderCondition?.Value?.RowId != 0)
-        {
-            SocialUpdater.CanSaying = true;
-        }
-    }
 
     internal static void ChangeUITranslation()
     {
@@ -81,20 +75,19 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     public void Dispose()
     {
-        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
-
         RSCommands.Disable();
         Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
         Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
 
-        Service.IconReplacer.Dispose();
-        Service.Localization.Dispose();
+        foreach (var item in _dis)
+        {
+            item.Dispose();
+        }
+        _dis?.Clear();
 
         MajorUpdater.Dispose();
         TimeLineUpdater.SaveFiles();
-        Watcher.Dispose();
-        CountDown.Dispose();
         SocialUpdater.Disable();
 
         IconSet.Dispose();

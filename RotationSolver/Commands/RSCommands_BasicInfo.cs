@@ -1,39 +1,38 @@
 ﻿using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using RotationSolver.Data;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Data;
 using RotationSolver.Localization;
 using System;
 using System.Linq;
 
 namespace RotationSolver.Commands
 {
-    internal static partial class RSCommands
+    public static partial class RSCommands
     {
-        internal const string _command = "/rotation";
-
         internal static TargetingType TargetingType
         {
             get
             {
-                if (Service.Configuration.TargetingTypes.Count == 0)
+                if (Service.Config.TargetingTypes.Count == 0)
                 {
-                    Service.Configuration.TargetingTypes.Add(TargetingType.Big);
-                    Service.Configuration.TargetingTypes.Add(TargetingType.Small);
-                    Service.Configuration.Save();
+                    Service.Config.TargetingTypes.Add(TargetingType.Big);
+                    Service.Config.TargetingTypes.Add(TargetingType.Small);
+                    Service.Config.Save();
                 }
 
-                return Service.Configuration.TargetingTypes[Service.Configuration.TargetingIndex %= Service.Configuration.TargetingTypes.Count];
+                return Service.Config.TargetingTypes[Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count];
             }
         }
 
         internal static void Enable()
-            => Service.CommandManager.AddHandler(_command, new CommandInfo(OnCommand)
+            => Service.CommandManager.AddHandler(Service.Command, new CommandInfo(OnCommand)
             {
                 HelpMessage = LocalizationManager.RightLang.Commands_Rotation,
                 ShowInHelp = true,
             });
 
-        internal static void Disable() => Service.CommandManager.RemoveHandler(_command);
+        internal static void Disable() => Service.CommandManager.RemoveHandler(Service.Command);
 
         private static void OnCommand(string command, string arguments)
         {

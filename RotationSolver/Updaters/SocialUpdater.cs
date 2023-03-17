@@ -2,22 +2,18 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.Updaters;
 
 internal class SocialUpdater
 {
-    static List<string> macroToAuthor = new List<string>()
+    static List<string> _macroToAuthor = new List<string>()
     {
         "blush",
         "hug",
@@ -28,7 +24,9 @@ internal class SocialUpdater
         "stroke",
     };
 
-    public static bool CanSaying { get; set; } = false;
+    static bool _canSaying = false;
+    public static bool InHighEndDuty { get; private set; } = false;
+    public static TerritoryType[] HighEndDuties { get; private set; } = new TerritoryType[0];
 
     static bool CanSocial
     {
@@ -41,8 +39,8 @@ internal class SocialUpdater
                 || Service.Conditions[ConditionFlag.BetweenAreas]
                 || Service.Conditions[ConditionFlag.BetweenAreas51]) return false;
 
-            if(Service.ClientState.LocalPlayer == null) return false;
-            if (!Service.ClientState.LocalPlayer.IsTargetable()) return false;
+            if(Service.Player == null) return false;
+            if (!Service.Player.IsTargetable()) return false;
 
             return Service.Conditions[ConditionFlag.BoundByDuty];
         }
@@ -52,23 +50,37 @@ internal class SocialUpdater
     {
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
         Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
+        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
+
+        HighEndDuties = Service.GetSheet<TerritoryType>()
+            .Where(t => t?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
+            .ToArray();
     }
 
     static async void DutyState_DutyCompleted(object sender, ushort e)
     {
-        RSCommands.CancelState();
-
-        if (TargetUpdater.PartyMembers.Count() < 2) return;
+        if (DataCenter.PartyMembers.Count() < 2) return;
 
         await Task.Delay(new Random().Next(4000, 6000));
 
-        Service.Configuration.DutyEnd.AddMacro();
+        Service.Config.DutyEnd.AddMacro();
+    }
+
+    static void ClientState_TerritoryChanged(object sender, ushort e)
+    {
+        RSCommands.UpdateStateNamePlate();
+        var territory = Service.GetSheet<TerritoryType>().GetRow(e);
+        if (territory?.ContentFinderCondition?.Value?.RowId != 0)
+        {
+            _canSaying = true;
+        }
+        InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
     }
 
     static void DutyState_DutyStarted(object sender, ushort e)
     {
-        var territory = Service.DataManager.GetExcelSheet<TerritoryType>().GetRow(e);
-        if (territory?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
+        var territory = Service.GetSheet<TerritoryType>().GetRow(e);
+        if (HighEndDuties.Any(t => t.RowId == territory.RowId))
         {
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
             Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndWarning, str));
@@ -79,20 +91,21 @@ internal class SocialUpdater
     {
         Service.DutyState.DutyStarted -= DutyState_DutyStarted;
         Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
+        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
     internal static async void UpdateSocial()
     {
-        if (ActionUpdater.InCombat || TargetUpdater.PartyMembers.Count() < 2) return;
-        if (CanSaying && CanSocial)
+        if (DataCenter.InCombat || DataCenter.PartyMembers.Count() < 2) return;
+        if (_canSaying && CanSocial)
         {
-            CanSaying = false;
+            _canSaying = false;
             await Task.Delay(new Random().Next(3000, 5000));
 
 #if DEBUG
             Service.ChatGui.PrintError("Macro now.");
 #endif
-            Service.Configuration.DutyStart.AddMacro();
+            Service.Config.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
             SayHelloToAuthor();
         }
@@ -100,17 +113,17 @@ internal class SocialUpdater
 
     private static async void SayHelloToAuthor()
     {
-        var author = TargetUpdater.AllianceMembers.OfType<PlayerCharacter>()
+        var author = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
             .FirstOrDefault(c =>
 #if DEBUG
 #else
             c.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
 #endif
-            ConfigurationHelper.AuthorKeys.Contains(EncryptString(c)));
+            RotationUpdater.AuthorHashes.Contains(EncryptString(c)));
 
         if (author != null)
         {
-            while(!author.IsTargetable() && !ActionUpdater.InCombat)
+            while(!author.IsTargetable() && !DataCenter.InCombat)
             {
                 await Task.Delay(100);
             }
@@ -119,7 +132,7 @@ internal class SocialUpdater
             Service.ChatGui.PrintError("Author Time");
 #else
             Service.TargetManager.SetTarget(author);
-            RSCommands.SubmitToChat($"/{macroToAuthor[new Random().Next(macroToAuthor.Count)]} <t>");
+            Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.Name),

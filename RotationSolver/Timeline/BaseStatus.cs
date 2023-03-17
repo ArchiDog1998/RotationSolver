@@ -1,5 +1,6 @@
 ﻿using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Data;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Data;
 
 namespace RotationSolver.Timeline;
 
@@ -16,6 +17,6 @@ internal class BaseStatus : ITexture
 
     public BaseStatus(StatusID id)
     {
-        _status = Service.DataManager.GetExcelSheet<Status>().GetRow((uint)id);
+        _status = Service.GetSheet<Status>().GetRow((uint)id);
     }
 }

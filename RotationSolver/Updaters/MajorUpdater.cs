@@ -1,6 +1,8 @@
 ﻿using Dalamud.Game;
 using Dalamud.Logging;
+using RotationSolver.Basic;
 using RotationSolver.Commands;
+using RotationSolver.SigReplacers;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,7 +13,7 @@ namespace RotationSolver.Updaters;
 
 internal static class MajorUpdater
 {
-    private static bool IsValid => Service.Conditions.Any() && Service.ClientState.LocalPlayer != null;
+    private static bool IsValid => Service.Conditions.Any() && Service.Player != null;
 
     //#if DEBUG
     //    private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
@@ -48,9 +50,16 @@ internal static class MajorUpdater
 
         MacroUpdater.UpdateMacro();
 
-        if (Service.Configuration.UseWorkTask)
+        if (Service.Config.UseWorkTask)
         {
-            Task.Run(UpdateWork);
+            try
+            {
+                Task.Run(UpdateWork);
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Error(ex, "Worker Exception");
+            }
         }
         else
         {
@@ -61,7 +70,6 @@ internal static class MajorUpdater
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
-        MovingUpdater.Enable();
     }
 
     static bool _work;
@@ -71,22 +79,15 @@ internal static class MajorUpdater
         if (_work) return;
         _work = true;
 
-        try
-        {
-            PreviewUpdater.UpdateCastBarState();
-            TargetUpdater.UpdateTarget();
-            ActionUpdater.UpdateActionInfo();
+        PreviewUpdater.UpdateCastBarState();
+        TargetUpdater.UpdateTarget();
+        ActionUpdater.UpdateActionInfo();
 
-            RotationUpdater.UpdateRotation();
+        RotationUpdater.UpdateRotation();
 
-            TimeLineUpdater.UpdateTimelineAction();
-            ActionUpdater.UpdateNextAction();
-            RSCommands.UpdateRotationState();
-        }
-        catch (Exception ex)
-        {
-            PluginLog.Error(ex, "Worker Exception");
-        }
+        TimeLineUpdater.UpdateTimelineAction();
+        ActionUpdater.UpdateNextAction();
+        RSCommands.UpdateRotationState();
 
         _work = false;
     }
@@ -95,6 +96,5 @@ internal static class MajorUpdater
     {
         Service.Framework.Update -= FrameworkUpdate;
         PreviewUpdater.Dispose();
-        MovingUpdater.Dispose();
     }
 }

@@ -1,15 +1,10 @@
-﻿using Lumina.Data.Parsing;
-using RotationSolver.Actions;
-using RotationSolver.Attributes;
-using RotationSolver.Data;
-using RotationSolver.Rotations.CustomRotation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Attributes;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Rotations;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Loader;
 
 namespace RotationSolver.Updaters;
 
@@ -17,55 +12,64 @@ internal static class RotationUpdater
 {
     public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] rotations);
 
-    private static SortedList<JobRole, CustomRotationGroup[]> _customRotationsDict;
-    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict
+    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
+
+    internal static string[] AuthorHashes { get; private set; } = new string[0];
+    static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
+
+    static readonly string[] _locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
+
+    public static void GetAllCustomRotations()
     {
-        get
+        var directories =  Service.Config.OtherLibs
+            .Select(s => s.Trim()).Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location));
+
+#if DEBUG
+        foreach (var dir in directories)
         {
-            if (_customRotationsDict == null)
+            foreach (var item in Directory.GetFiles(dir, "*.dll"))
             {
-                GetAllCustomRotations();
+                Service.ChatGui.Print(item);
             }
-            return _customRotationsDict;
         }
-    }
-    private static CustomRotationGroup[] _customRotations;
-    private static CustomRotationGroup[] CustomRotations
-    {
-        get
-        {
-            if (_customRotations == null)
-            {
-                GetAllCustomRotations();
-            }
-            return _customRotations;
-        }
-    }
+#endif
 
-    private static void GetAllCustomRotations()
-    {
-        //var thisPath = Assembly.GetAssembly(typeof(ICustomRotation)).Location;
+        var assemblies = from dir in directories
+                         from l in Directory.GetFiles(dir, "*.dll")
+                         where !_locs.Any(l.Contains)
+                         select RotationLoadContext.LoadFrom(l);
 
-        //var types = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location), "*.dll")
-        //    .Where(l => l != thisPath)
-        //    .Select(Assembly.LoadFrom)
-        //    .SelectMany(a => a.GetTypes());
+        AuthorHashes = (from a in assemblies
+                       select a.GetCustomAttribute<AuthorHashAttribute>() into author
+                       where author != null
+                       select author.Hash).ToArray();
 
-        //foreach (var t in types)
-        //{
-        //    Service.ChatGui.Print(t.Name);
-        //}
+        _customRotations = (
+            from a in assemblies
+            from t in a.GetTypes()
+            where t.GetInterfaces().Contains(typeof(ICustomRotation))
+                 && !t.IsAbstract && !t.IsInterface
+            select GetRotation(t) into rotation
+            where rotation != null
+            group rotation by rotation.JobIDs[0] into rotationGrp
+            select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
 
-        _customRotations = (from t in Assembly.GetAssembly(typeof(ICustomRotation)).GetTypes()
-                            where t.GetInterfaces().Contains(typeof(ICustomRotation))
-                                 && !t.IsAbstract && !t.IsInterface
-                            select (ICustomRotation)Activator.CreateInstance(t) into rotation
-                            group rotation by rotation.JobIDs[0] into rotationGrp
-                            select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
-
-        _customRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
+        CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
             (_customRotations.GroupBy(g => g.rotations[0].Job.GetJobRole())
             .ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+    }
+
+    private static ICustomRotation GetRotation(Type t)
+    {
+        try
+        {
+            return (ICustomRotation)Activator.CreateInstance(t);
+        }
+        catch 
+        {
+            Dalamud.Logging.PluginLog.LogError($"Failed to load the rotation: {t.Name}");
+            return null; 
+        }
     }
 
     private static ICustomRotation[] CreateRotationSet(ICustomRotation[] combos)
@@ -90,15 +94,15 @@ internal static class RotationUpdater
     static string _rotationName;
     public static void UpdateRotation()
     {
-        var nowJob = (ClassJobID)Service.ClientState.LocalPlayer.ClassJob.Id;
-        Service.Configuration.RotationChoices.TryGetValue((uint)nowJob, out var newName);
+        var nowJob = (ClassJobID)Service.Player.ClassJob.Id;
+        Service.Config.RotationChoices.TryGetValue((uint)nowJob, out var newName);
 
         if (_job == nowJob && _rotationName == newName) return;
 
         _job = nowJob;
         _rotationName = newName;
 
-        foreach (var group in CustomRotations)
+        foreach (var group in _customRotations)
         {
             if (!group.classJobIds.Contains(_job)) continue;
 
@@ -111,8 +115,8 @@ internal static class RotationUpdater
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group, string name)
     {
         var rotation = group.rotations.FirstOrDefault(r => r.RotationName == name);
-        rotation ??= group.rotations.FirstOrDefault(r => r.GetType().GetCustomAttribute<DefaultRotationAttribute>() != null);
-        rotation ??= group.rotations.FirstOrDefault(r => r.GetType().Name.Contains("Default"));
+        rotation ??= group.rotations.FirstOrDefault(RotationHelper.IsDefault);
+        rotation ??= group.rotations.FirstOrDefault(r => r.IsAllowed(out _));
         rotation ??= group.rotations.FirstOrDefault();
         return rotation;
     }

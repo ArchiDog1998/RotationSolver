@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RotationSolver.Data;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace RotationSolver.Timeline;
 

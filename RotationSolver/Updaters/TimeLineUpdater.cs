@@ -1,9 +1,11 @@
 ﻿using ImGuiNET;
 using Newtonsoft.Json;
 using RotationSolver.Actions;
-using RotationSolver.Helpers;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Data;
 using RotationSolver.SigReplacers;
 using RotationSolver.Timeline;
+using RotationSolver.UI;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -16,11 +18,11 @@ namespace RotationSolver.Updaters
         static string _timelineFolder;
 
         static IEnumerable<MajorConditionSet> _conditionSet;
-        public static MajorConditionSet RightSet => _conditionSet?.ElementAtOrDefault(Service.Configuration.TimelineIndex);
+        public static MajorConditionSet RightSet => _conditionSet?.ElementAtOrDefault(Service.Config.TimelineIndex);
 
         public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? new string[0];
 
-        public static IBaseAction TimeLineAction { get; private set; }
+        
         public static void UpdateTimelineAction()
         {
             if (_conditionSet == null) return;
@@ -32,6 +34,7 @@ namespace RotationSolver.Updaters
             var set = RightSet;
             if (set == null) return;
 
+            bool find = false;
             foreach (var conditionPair in set.Conditions)
             {
                 var nextAct = allActions.FirstOrDefault(a => a.ID == conditionPair.Key);
@@ -39,8 +42,13 @@ namespace RotationSolver.Updaters
 
                 if (!conditionPair.Value.IsTrue(customRotation)) continue;
 
-                TimeLineAction = nextAct;
+                DataCenter.TimeLineAction = nextAct;
+                find = true;
                 break;
+            }
+            if (!find)
+            {
+                DataCenter.TimeLineAction = null;
             }
         }
 
@@ -97,16 +105,16 @@ namespace RotationSolver.Updaters
             }
 
             var combos = ConditionSetsName;
-            if (combos != null && combos.Length > Service.Configuration.TimelineIndex)
+            if (combos != null && combos.Length > Service.Config.TimelineIndex)
             {
-                ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[Service.Configuration.TimelineIndex]).X + 30);
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[Service.Config.TimelineIndex]).X + 30);
             }
             else
             {
                 ImGui.SetNextItemWidth(30);
             }
 
-            ImGui.Combo("##MajorConditionCombo", ref Service.Configuration.TimelineIndex, combos, combos.Length);
+            ImGui.Combo("##MajorConditionCombo", ref Service.Config.TimelineIndex, combos, combos.Length);
 
             ImGui.SameLine();
 

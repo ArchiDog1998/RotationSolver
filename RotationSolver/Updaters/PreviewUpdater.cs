@@ -10,9 +10,10 @@ using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
-using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.SigReplacers;
 using System;
 using System.Runtime.InteropServices;
@@ -33,7 +34,7 @@ internal static class PreviewUpdater
     private static void UpdateEntry()
     {
         var showStr = RSCommands.EntryString;
-        if (Service.Configuration.ShowInfoOnDtr && !string.IsNullOrEmpty(showStr))
+        if (Service.Config.ShowInfoOnDtr && !string.IsNullOrEmpty(showStr))
         {
             try
             {
@@ -63,11 +64,11 @@ internal static class PreviewUpdater
     static bool _canMove;
     static bool _isTarNoNeedCast;
     static RandomDelay _tarStopCastDelay = new RandomDelay(() =>
-    (Service.Configuration.StopCastingDelayMin, Service.Configuration.StopCastingDelayMax));
+    (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
     internal static void UpdateCastBarState()
     {
-        var tardead = Service.Configuration.UseStopCasting ? 
-            Service.ObjectTable.SearchById(Service.ClientState.LocalPlayer.CastTargetObjectId) is BattleChara b 
+        var tardead = Service.Config.UseStopCasting ? 
+            Service.ObjectTable.SearchById(Service.Player.CastTargetObjectId) is BattleChara b 
             && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0 ): false;
         _isTarNoNeedCast = _tarStopCastDelay.Delay(tardead);
 
@@ -75,9 +76,9 @@ internal static class PreviewUpdater
             && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
         //For lock
-        var specialStatus = Service.ClientState.LocalPlayer.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);
+        var specialStatus = Service.Player.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);
 
-        MovingUpdater.IsMoving = _canMove = specialStatus ? false : canMove;
+        MovingController.IsMoving = _canMove = specialStatus ? false : canMove;
     }
 
     static bool _showCanMove;
@@ -90,7 +91,7 @@ internal static class PreviewUpdater
             UIState.Instance()->Hotbar.CancelCast();
         }
 
-        var nowMove = _canMove && Service.Configuration.CastingDisplay;
+        var nowMove = _canMove && Service.Config.CastingDisplay;
         if (nowMove == _showCanMove) return;
         _showCanMove = nowMove;
 
@@ -114,11 +115,11 @@ internal static class PreviewUpdater
 
         HigglightAtionBar((slot, hot) =>
         {
-            return Service.Configuration.TeachingMode && IsActionSlotRight(slot, hot, _higtLightId);
+            return Service.Config.TeachingMode && IsActionSlotRight(slot, hot, _higtLightId);
         });
     }
 
-    internal static unsafe void PulseAtionBar(uint actionID)
+    internal static unsafe void PulseActionBar(uint actionID)
     {
         LoopAllSlotBar((bar, hotbar, index) =>
         {
@@ -132,7 +133,7 @@ internal static class PreviewUpdater
         if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
         if (slot->ActionId == (uint)IconReplacer.KeyActionID) return false;
 
-        return Service.IconReplacer.OriginalHook((uint)slot->ActionId) == actionID;
+        return Service.GetAdjustedActionId((uint)slot->ActionId) == actionID;
     }
 
     const int ActionBarSlotsCount = 12;
@@ -234,7 +235,7 @@ internal static class PreviewUpdater
             highLightPtr->AtkResNode.AddBlue = 40;
 
             //Change Color
-            var color = Service.Configuration.TeachingModeColor;
+            var color = Service.Config.TeachingModeColor;
             highLightPtr->AtkResNode.MultiplyRed = (byte)(color.X * 100);
             highLightPtr->AtkResNode.MultiplyGreen = (byte)(color.Y * 100);
             highLightPtr->AtkResNode.MultiplyBlue = (byte)(color.Z * 100);

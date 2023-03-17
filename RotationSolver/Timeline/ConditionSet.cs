@@ -1,9 +1,9 @@
 ﻿using Dalamud.Interface;
 using ImGuiNET;
 using Newtonsoft.Json;
-using RotationSolver.Helpers;
+using RotationSolver.Basic.Rotations;
 using RotationSolver.Localization;
-using RotationSolver.Rotations.CustomRotation;
+using RotationSolver.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
