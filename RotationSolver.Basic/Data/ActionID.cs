@@ -925,7 +925,7 @@ public enum ActionID : uint
     /// <summary>
     /// 死亡箭雨
     /// </summary>
-    RainofDeath = 117,
+    RainOfDeath = 117,
 
     /// <summary>
     /// 连珠箭
@@ -935,7 +935,7 @@ public enum ActionID : uint
     /// <summary>
     /// 影噬箭
     /// </summary>
-    Shadowbite = 16494,
+    ShadowBite = 16494,
 
     /// <summary>
     /// 光阴神的礼赞凯歌

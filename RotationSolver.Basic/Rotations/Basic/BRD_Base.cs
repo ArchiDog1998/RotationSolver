@@ -148,7 +148,10 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// ËÀÍö¼ýÓê
     /// </summary>
-    public static IBaseAction RainofDeath { get; } = new BaseAction(ActionID.RainofDeath);
+    public static IBaseAction RainOfDeath { get; } = new BaseAction(ActionID.RainOfDeath)
+    {
+        AOECount = 2,
+    };
 
     /// <summary>
     /// Á¬Öé¼ý
@@ -161,7 +164,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// Ó°ÊÉ¼ý
     /// </summary>
-    public static IBaseAction Shadowbite { get; } = new BaseAction(ActionID.Shadowbite)
+    public static IBaseAction ShadowBite { get; } = new BaseAction(ActionID.ShadowBite)
     {
         StatusNeed = new[] { StatusID.ShadowbiteReady }
     };

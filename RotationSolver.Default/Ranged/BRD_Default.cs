@@ -41,7 +41,7 @@ public sealed class BRD_Default : BRD_Base
         }
 
         //群体GCD
-        if (Shadowbite.CanUse(out act)) return true;
+        if (ShadowBite.CanUse(out act)) return true;
         if (QuickNock.CanUse(out act)) return true;
 
         //上毒
@@ -169,7 +169,7 @@ public sealed class BRD_Default : BRD_Base
         if (EmpyrealArrow.IsCoolingDown || !EmpyrealArrow.WillHaveOneChargeGCD() || Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
         {
             //死亡剑雨
-            if (RainofDeath.CanUse(out act, emptyOrSkipCombo: empty)) return true;
+            if (RainOfDeath.CanUse(out act, emptyOrSkipCombo: empty)) return true;
 
             //失血箭
             if (Bloodletter.CanUse(out act, emptyOrSkipCombo: empty)) return true;
