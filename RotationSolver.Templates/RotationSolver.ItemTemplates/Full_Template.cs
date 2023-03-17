@@ -12,6 +12,8 @@ internal class Full_Template : AST_Base
 
     public override string RotationName => "$safeitemname$";
 
+    public override string Description => "Your description about this rotation.";
+
     #region If you want to change the auto healing, please change these bools.
     protected override bool CanHealAreaSpell => base.CanHealAreaSpell;
     protected override bool CanHealAreaAbility => base.CanHealAreaAbility;
