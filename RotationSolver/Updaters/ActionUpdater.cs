@@ -200,7 +200,8 @@ internal static class ActionUpdater
             || Service.Conditions[ConditionFlag.SufferingStatusAffliction2]
             || Service.Conditions[ConditionFlag.RolePlaying]
             || Service.Conditions[ConditionFlag.InFlight]
-            || ActionManager.Instance()->ActionQueued) return;
+            || ActionManager.Instance()->ActionQueued
+            || Service.Player.CurrentHp == 0) return;
 
         //GCD
         var canUseGCD = DataCenter.WeaponRemain <= Service.Config.ActionAhead;

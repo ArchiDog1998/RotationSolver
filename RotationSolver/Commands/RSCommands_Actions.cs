@@ -66,15 +66,23 @@ namespace RotationSolver.Commands
 
         internal static void UpdateRotationState()
         {
-            if (Service.Player.CurrentHp == 0
-                || Service.Conditions[ConditionFlag.LoggingOut])
+            if (Service.Conditions[ConditionFlag.LoggingOut])
+            {
+                CancelState();
+            }
+            else if (Service.Config.AutoOffWhenDead 
+                && Service.Player.CurrentHp == 0)
+            {
+                CancelState();
+            }
+            else if (Service.Config.AutoOffCutScene
+                && Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent])
             {
                 CancelState();
             }
             else if (Service.Config.AutoOffBetweenArea && (
                 Service.Conditions[ConditionFlag.BetweenAreas]
-                || Service.Conditions[ConditionFlag.BetweenAreas51])
-                || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent])
+                || Service.Conditions[ConditionFlag.BetweenAreas51]))
             {
                 CancelState();
             }

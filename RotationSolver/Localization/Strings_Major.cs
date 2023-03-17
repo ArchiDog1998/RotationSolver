@@ -106,6 +106,10 @@ internal partial class Strings
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Turn off when player is between area.";
 
+    public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Turn off during cut scene.";
+
+    public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Turn off when dead.";
+
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_Delay { get; set; } = "Delay";
 

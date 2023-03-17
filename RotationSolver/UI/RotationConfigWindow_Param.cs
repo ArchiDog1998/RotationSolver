@@ -76,6 +76,15 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffBetweenArea,
             ref Service.Config.AutoOffBetweenArea);
 
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffCutScene,
+            ref Service.Config.AutoOffCutScene);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffWhenDead,
+            ref Service.Config.AutoOffWhenDead);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
+            ref Service.Config.StartOnCountdown);
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
             ref Service.Config.UseWorkTask);
     }
@@ -318,9 +327,6 @@ internal partial class RotationConfigWindow
     {
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InterruptibleMoreCheck,
             ref Service.Config.InterruptibleMoreCheck);
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
-            ref Service.Config.StartOnCountdown);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_EsunaAll,
             ref Service.Config.EsunaAll);
