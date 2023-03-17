@@ -54,7 +54,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Healer\" />
-	  <Folder Include="Magical\" />
 	  <Folder Include="Melee\" />
 	  <Folder Include="Tank\" />
 	  <Folder Include="Ranged\" />
