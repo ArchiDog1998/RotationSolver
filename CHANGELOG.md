@@ -1,5 +1,49 @@
 # Changelog
 
+## [2.0.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.5.1...v2.0.0) (2023-03-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* split the whole project to three libraries.
+
+### Features
+
+* add a debug mode for rotation debug. ([f5eb8bc](https://github.com/ArchiDog1998/RotationSolver/commit/f5eb8bc5984dfa315055bbd6a37f0c5a1eb2dabb))
+* add a MNK Old rotation. ([9c2aef2](https://github.com/ArchiDog1998/RotationSolver/commit/9c2aef2fe403e3d52ea337710d5b6edbe1f2d8bb))
+* add an extra library to use. ([82df403](https://github.com/ArchiDog1998/RotationSolver/commit/82df403638bd4a590c94d433242cfe1fc904d5d8))
+* add an vsix for rotation dev. ([892eef0](https://github.com/ArchiDog1998/RotationSolver/commit/892eef07980e07f1d3d7296036c1fc02b1c0b929))
+* add assembly rotation author feature. ([192c710](https://github.com/ArchiDog1998/RotationSolver/commit/192c7108c6a8b75c0c5d181ac72fb62087499529))
+* add assembly rotation author feature. ([5b85f81](https://github.com/ArchiDog1998/RotationSolver/commit/5b85f8189e04fece936d34fe479fe37a00cee85f))
+* add more auto off options. ([2c485c9](https://github.com/ArchiDog1998/RotationSolver/commit/2c485c92c22a9abb0611cf52db2ee3c17c566339))
+
+
+### Bug Fixes
+
+* add a description. ([a8adedf](https://github.com/ArchiDog1998/RotationSolver/commit/a8adedf7f3274b2df27bface58a6424081d3e5d9))
+* add a nuget package. ([d07d7b6](https://github.com/ArchiDog1998/RotationSolver/commit/d07d7b66487208a36a68f57a8e24ff866764fa28))
+* add a restrict to high-end duty for third-party rotation. ([58a77e2](https://github.com/ArchiDog1998/RotationSolver/commit/58a77e2313f4011c5b310dceda939caccb6e7367))
+* add pics info. ([add7eee](https://github.com/ArchiDog1998/RotationSolver/commit/add7eee4ea34387b1b9142bc46cde9c7272be28f))
+* add rotation dev template. ([cd1a941](https://github.com/ArchiDog1998/RotationSolver/commit/cd1a94173b042af7f8a0397513e3bc6a5d5f3f68))
+* add two project. ([86f9c68](https://github.com/ArchiDog1998/RotationSolver/commit/86f9c681c2f10ab31b6bd08e8df34d8dd8da2c87))
+* brd's `Rain of Death` changed the AOECount from 3 to 2. ([88c805c](https://github.com/ArchiDog1998/RotationSolver/commit/88c805cc0b98615216ec57a8d603dcba70cd788b))
+* changed some ui stuff. ([c6f329c](https://github.com/ArchiDog1998/RotationSolver/commit/c6f329c3c90142af485d6175cd7cd6596a7ffc82))
+* changed the default dot value. ([c75d30b](https://github.com/ArchiDog1998/RotationSolver/commit/c75d30b99a4d3f6724c1cb4b0521570da2dcd5a5))
+* changed the namespace. ([2cb1962](https://github.com/ArchiDog1998/RotationSolver/commit/2cb196216f9562bc41de7cf196d4d872250235f9))
+* changed the url. ([a6cd87a](https://github.com/ArchiDog1998/RotationSolver/commit/a6cd87ab5f5247e541096cf4c34bd0e7996c430e))
+* changed the vsix. ([2908da4](https://github.com/ArchiDog1998/RotationSolver/commit/2908da40cea6aa56a32679babe065d219a57d91a))
+* Fix the problem of spelling error. ([1278e88](https://github.com/ArchiDog1998/RotationSolver/commit/1278e883db27b00e79974a8223a943c46f3c506c))
+* fixed some showing up. ([bb8f8f7](https://github.com/ArchiDog1998/RotationSolver/commit/bb8f8f74efc852c6ced609efd2fa882a76fcbf45))
+* fixed the config reading bug. ([ad4d9ed](https://github.com/ArchiDog1998/RotationSolver/commit/ad4d9edc433e462d49383c01119cc1b56ea526dc))
+* fixed the interrupt targeting andLowBlow targeting. ([54b523b](https://github.com/ArchiDog1998/RotationSolver/commit/54b523b96cce8e7b5423961b42380d7625a1e4bc))
+* fixed the sorcecode link. ([6052836](https://github.com/ArchiDog1998/RotationSolver/commit/6052836993931f9533d7fdce98b9a5e19f229d80))
+* high-end ban for third-party dll. ([c087fe3](https://github.com/ArchiDog1998/RotationSolver/commit/c087fe3863ac94e50f6510fddcbc26c70bdcbb87))
+
+
+### Code Refactoring
+
+* split the whole project to three libraries. ([7f1016a](https://github.com/ArchiDog1998/RotationSolver/commit/7f1016a1845a8abc6ca0adf83f2da6e3269c3f09))
+
 ## [1.5.1](https://github.com/ArchiDog1998/RotationSolver/compare/v1.5.0...v1.5.1) (2023-03-08)
 
 
