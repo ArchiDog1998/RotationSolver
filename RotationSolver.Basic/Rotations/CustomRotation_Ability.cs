@@ -115,13 +115,13 @@ public abstract partial class CustomRotation
                 if (ArmsLength.CanUse(out act)) return true;
                 break;
             case JobRole.Healer:
-                if (Surecast.CanUse(out act)) return true;
+                if (SureCast.CanUse(out act)) return true;
                 break;
             case JobRole.RangedPhysical:
                 if (ArmsLength.CanUse(out act)) return true;
                 break;
             case JobRole.RangedMagical:
-                if (Surecast.CanUse(out act)) return true;
+                if (SureCast.CanUse(out act)) return true;
                 break;
         }
 

@@ -160,36 +160,45 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 插言
     /// </summary>
-    public static IBaseAction Interject { get; } = new RoleAction(ActionID.Interject, new JobRole[] { JobRole.Tank });
+    public static IBaseAction Interject { get; } = new RoleAction(ActionID.Interject, new JobRole[] { JobRole.Tank })
+    {
+        FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
+    };
 
     /// <summary>
     /// 下踢
     /// </summary>
     public static IBaseAction LowBlow { get; } = new RoleAction(ActionID.LowBlow, new JobRole[] { JobRole.Tank })
     {
-        ActionCheck = b =>
+        FilterForHostiles = bs => bs.Where(b =>
         {
             if (b.IsBoss() || IsMoving || b.CastActionId == 0) return false;
 
             if (!b.IsCastInterruptible || Interject.IsCoolingDown) return true;
             return false;
-        }
+        }),
     };
 
     /// <summary>
     /// 扫腿
     /// </summary>
-    public static IBaseAction LegSweep { get; } = new RoleAction(ActionID.LegSweep, new JobRole[] { JobRole.Melee });
+    public static IBaseAction LegSweep { get; } = new RoleAction(ActionID.LegSweep, new JobRole[] { JobRole.Melee })
+    {
+        FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
+    };
 
     /// <summary>
     /// 伤头
     /// </summary>
-    public static IBaseAction HeadGraze { get; } = new RoleAction(ActionID.HeadGraze, new JobRole[] { JobRole.RangedPhysical });
+    public static IBaseAction HeadGraze { get; } = new RoleAction(ActionID.HeadGraze, new JobRole[] { JobRole.RangedPhysical })
+    {
+        FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
+    };
 
     /// <summary>
     /// 沉稳咏唱
     /// </summary>
-    public static IBaseAction Surecast { get; } = new RoleAction(ActionID.Surecast,
+    public static IBaseAction SureCast { get; } = new RoleAction(ActionID.Surecast,
         new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, true, shouldEndSpecial: true);
 
     /// <summary>
