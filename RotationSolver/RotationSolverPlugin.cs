@@ -33,7 +33,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
                 File.ReadAllText(Service.Interface.ConfigFile.FullName)) 
                 ?? new PluginConfiguration();
         }
-        catch() 
+        catch
         {
             Service.Config = new PluginConfiguration();
         }

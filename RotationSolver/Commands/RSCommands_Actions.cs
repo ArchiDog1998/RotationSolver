@@ -59,7 +59,7 @@ namespace RotationSolver.Commands
         }
 
         internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
-        internal static void CancelState()
+        private static void CancelState()
         {
             if (StateType != StateCommandType.Cancel) DoStateCommandType(StateCommandType.Cancel);
         }

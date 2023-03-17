@@ -59,8 +59,6 @@ internal class SocialUpdater
 
     static async void DutyState_DutyCompleted(object sender, ushort e)
     {
-        RSCommands.CancelState();
-
         if (DataCenter.PartyMembers.Count() < 2) return;
 
         await Task.Delay(new Random().Next(4000, 6000));

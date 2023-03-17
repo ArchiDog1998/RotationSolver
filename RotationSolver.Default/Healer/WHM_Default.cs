@@ -15,12 +15,7 @@ public sealed class WHM_Default : WHM_Base
     public static IBaseAction RegenDefense { get; } = new BaseAction(ActionID.Regen, true, isEot: true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
-        TargetStatus = new[]
-        {
-            StatusID.Regen1,
-            StatusID.Regen2,
-            StatusID.Regen3,
-        }
+        TargetStatus = Regen.TargetStatus,
     };
 
     protected override bool GeneralGCD(out IAction act)

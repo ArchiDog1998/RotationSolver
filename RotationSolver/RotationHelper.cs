@@ -11,6 +11,7 @@ internal static class RotationHelper
     static readonly string[] _allowedAssembly = new string[]
     {
         DefaultAssembly,
+        "RotationSolver.Old",
     };
 
     public static bool IsDefault(this ICustomRotation rotation)
