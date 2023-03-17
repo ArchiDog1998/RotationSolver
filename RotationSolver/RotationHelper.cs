@@ -12,6 +12,7 @@ internal static class RotationHelper
     {
         DefaultAssembly,
         "RotationSolver.Old",
+        //"RotationSolver.Extra",
     };
 
     public static bool IsDefault(this ICustomRotation rotation)

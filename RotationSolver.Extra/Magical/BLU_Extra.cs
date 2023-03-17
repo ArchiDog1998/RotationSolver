@@ -1,7 +1,7 @@
-﻿namespace RotationSolver.Default.Magical;
+﻿namespace RotationSolver.Extra.Magical;
 
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Extra/Magical/BLU_Extra.cs")]
-public class BLU_Extra : BLU_Base
+public sealed class BLU_Extra : BLU_Base
 {
     public override string GameVersion => "6.3";
 
