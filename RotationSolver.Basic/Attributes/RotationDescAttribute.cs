@@ -69,7 +69,7 @@ public class RotationDescAttribute : Attribute
         }
     }
 
-    public RotationDescAttribute(DescType descType)
+    internal RotationDescAttribute(DescType descType)
     {
         Type = descType;
     }

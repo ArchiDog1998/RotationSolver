@@ -52,12 +52,4 @@
 		<Using Include="RotationSolver.Basic.Helpers" />
 		<Using Include="RotationSolver.Basic.Rotations.Basic" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Healer\" />
-	  <Folder Include="Magical\" />
-	  <Folder Include="Melee\" />
-	  <Folder Include="Tank\" />
-	  <Folder Include="Ranged\" />
-	</ItemGroup>
 </Project>
