@@ -71,7 +71,7 @@ internal static class ActionUpdater
             exception = ex;
         }
 
-        NextAction = null;
+        NextAction = NextGCDAction = null;
     }
 
     static uint _lastSayingGCDAction;
