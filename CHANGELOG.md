@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.1.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.0.0...v2.1.0) (2023-03-18)
+
+
+### Features
+
+* add an control window. ([f172d0e](https://github.com/ArchiDog1998/RotationSolver/commit/f172d0eb3338d1ccfb878f7d35bfd3b653c4c249))
+* add game pad or keyboard click event. ([6dc943f](https://github.com/ArchiDog1998/RotationSolver/commit/6dc943f0ff44bf1d6ccc0f527ae1469cef0f7971))
+
+
+### Bug Fixes
+
+* add async loading texture wrap for acceleration. ([fbd8d66](https://github.com/ArchiDog1998/RotationSolver/commit/fbd8d667cc0b32329bd2ef27ef7b25fcde33d1bd))
+* add time limit for recording key or button. ([7c6a541](https://github.com/ArchiDog1998/RotationSolver/commit/7c6a5419315d1d3ce55d26231d292a14d5ff7997))
+* Fixed a problem with Special State passing. ([af13b96](https://github.com/ArchiDog1998/RotationSolver/commit/af13b96c6a05bb67e15fc488bbaf48f9a98c992e))
+* fixed button command error. ([d7e35c8](https://github.com/ArchiDog1998/RotationSolver/commit/d7e35c8eca996c260c95cca1758438d38a170a39))
+* fixed control window ui stuff. ([3406096](https://github.com/ArchiDog1998/RotationSolver/commit/3406096b8f6725195913c72524ff9fb5e5122349))
+* fixed next action display error ([0d56c54](https://github.com/ArchiDog1998/RotationSolver/commit/0d56c54a36d7069127db4fb4cf5d870dea672ff9))
+* fixed next action display error ([3762b49](https://github.com/ArchiDog1998/RotationSolver/commit/3762b495fc40c50d1b0b6dca37600d6405160fa8))
+* removed the icon replacer. ([5df63d2](https://github.com/ArchiDog1998/RotationSolver/commit/5df63d2d8044cbaf42da26540528556090dc339a))
+
 ## [2.0.0](https://github.com/ArchiDog1998/RotationSolver/compare/v1.5.1...v2.0.0) (2023-03-17)
 
 
