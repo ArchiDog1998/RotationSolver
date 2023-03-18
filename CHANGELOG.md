@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.1...v2.1.2) (2023-03-18)
+
+
+### Bug Fixes
+
+* fixed high-end duty check ([3b52bee](https://github.com/ArchiDog1998/RotationSolver/commit/3b52bee26613dedaf7b79304207e8563175c9186))
+* fixed the bugwhere certain errors could cause work task to terminate ([4aaac8b](https://github.com/ArchiDog1998/RotationSolver/commit/4aaac8bc5d028d8cd70b8b2a3ac63b4690d7f4bc))
+
 ## [2.1.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.0...v2.1.1) (2023-03-18)
 
 
