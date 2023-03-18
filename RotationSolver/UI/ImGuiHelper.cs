@@ -442,18 +442,18 @@ internal static class ImGuiHelper
             ImGui.TextDisabled("   -  ");
             ImGui.SameLine();
 
-            var isAllowed = rotation.IsAllowed(out _);
-            ImGui.TextColored(rotation.GetColor(),
-                rotation.GetAuthor());
-            if (!isAllowed)
+            ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
+            ImGui.Text(rotation.GetAuthor());
+            if (!rotation.IsAllowed(out _))
             {
-                var showStr = "This rotation is not allowed to be used in High-end Duty!"
+                var showStr = $"This `{rotation}` rotation is not allowed to be used in High-end Duty!"
                 + string.Join("", SocialUpdater.HighEndDuties.Select(x => x.PlaceName?.Value?.Name.ToString())
                 .Where(s => !string.IsNullOrEmpty(s)).Select(t => "\n - " + t));
 
                 HoveredString(showStr);
             }
-            
+            ImGui.PopStyleColor();
+
             ImGui.SameLine();
             ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ":    ");
             ImGui.SameLine();

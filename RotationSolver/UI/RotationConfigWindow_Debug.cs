@@ -113,7 +113,7 @@ internal partial class RotationConfigWindow
     private void DrawNextAction()
     {
         ImGui.Text(RotationUpdater.RightNowRotation.RotationName);
-        ImGui.Text(RSCommands.SpecialType.ToString());
+        ImGui.Text(DataCenter.SpecialType.ToString());
 
         ActionUpdater.NextAction?.Display(false);
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());

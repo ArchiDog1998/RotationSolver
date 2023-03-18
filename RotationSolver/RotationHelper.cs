@@ -21,14 +21,21 @@ internal static class RotationHelper
     public static bool IsAllowed(this ICustomRotation rotation, out string name)
     {
         name = rotation.GetType().Assembly.GetName().Name;
-        return _allowedAssembly.Contains(rotation.GetType().Assembly.GetName().Name);
+        return _allowedAssembly.Contains(name);
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)
-   => rotation.IsAllowed(out _) ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet;
+        => rotation.IsAllowed(out _) ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet;
 
     public static string GetAuthor(this ICustomRotation rotation)
     {
-        return FileVersionInfo.GetVersionInfo(rotation.GetType().Assembly.Location)?.CompanyName ?? "Unnamed";
+        try
+        {
+            return FileVersionInfo.GetVersionInfo(rotation.GetType().Assembly.Location)?.CompanyName ?? "Unknown";
+        }
+        catch
+        {
+            return "Unknown";
+        }
     }
 }

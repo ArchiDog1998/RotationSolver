@@ -104,8 +104,20 @@ public static class DataCenter
     #endregion
     public static uint[] BluSlots { get; set; } = new uint[24];
 
-    public static SpecialCommandType SpecialType { get; set; }
+    static DateTime _specialStateStartTime = DateTime.MinValue;
+    public static double SpecialTimeLeft => Service.Config.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds;
+
+    static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
+    public static SpecialCommandType SpecialType =>
+         SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
     public static StateCommandType StateType { get; set; }
+
+    public static void SetSpecialType(SpecialCommandType specialType)
+    {
+        _specialType = specialType;
+        _specialStateStartTime = specialType == SpecialCommandType.EndSpecial ? DateTime.MinValue : DateTime.Now;
+    }
+
     public static bool InCombat { get; set; }
 
     public static float CombatTime { get; set; }

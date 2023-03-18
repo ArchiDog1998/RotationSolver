@@ -18,9 +18,6 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public string Name => Job.Abbreviation + " - " + Job.Name;
 
-    /// <summary>
-    /// 作者
-    /// </summary>
     public abstract string RotationName { get; }
 
     public bool IsEnabled
@@ -67,4 +64,6 @@ public abstract partial class CustomRotation : ICustomRotation
     /// Update your customized field.
     /// </summary>
     protected virtual void UpdateInfo() { }
+
+    public override string ToString() => RotationName;
 }
