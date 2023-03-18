@@ -75,7 +75,7 @@ internal partial class RotationConfigWindow
 
     private static void DrawTargetHostileTYpe(ICustomRotation rotation)
     {
-        var isAllTargetAsHostile = (int)IconReplacer.GetTargetHostileType(rotation.Job);
+        var isAllTargetAsHostile = (int)DataCenter.GetTargetHostileType(rotation.Job);
         ImGui.SetNextItemWidth(300);
         if (ImGui.Combo(LocalizationManager.RightLang.ConfigWindow_Param_RightNowTargetToHostileType + $"##HostileType{rotation.GetHashCode()}", ref isAllTargetAsHostile, new string[]
         {

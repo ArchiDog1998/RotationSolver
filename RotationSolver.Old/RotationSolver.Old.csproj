@@ -7,7 +7,7 @@
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	  <Platforms>AnyCPU</Platforms>
 	  <Authors>ArchiTed</Authors>
-	  <Version>1.5.1</Version>
+	  <Version>2.0.0</Version>
   </PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />

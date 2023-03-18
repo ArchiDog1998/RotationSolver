@@ -129,7 +129,7 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        if (ActionUpdater.NextGCDAction == null) return;
+        if (ActionUpdater.NextGCDAction == null ||　!ActionUpdater.NextGCDAction.IsMeleeAction()) return;
 
         Vector3 pPosition = ActionUpdater.NextGCDAction.Target.Position;
         Service.GameGui.WorldToScreen(pPosition, out var scrPos);

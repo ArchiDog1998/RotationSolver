@@ -1,0 +1,147 @@
+﻿using Dalamud.Game.ClientState.GamePad;
+using Dalamud.Game.ClientState.Keys;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Data;
+using RotationSolver.Commands;
+
+namespace RotationSolver.Updaters;
+
+internal static class InputUpdater
+{
+    static readonly SortedList<VirtualKey, bool> _keys = new SortedList<VirtualKey, bool>();
+    static readonly SortedList<GamepadButtons, bool> _buttons = new SortedList<GamepadButtons, bool>();
+
+    public static SpecialCommandType RecordingSpecialType { get ; set; }
+    public static StateCommandType RecordingStateType { get ; set; }
+    public static DateTime RecordingTime { get; set; } = DateTime.MinValue;
+
+    internal static void UpdateCommand()
+    {
+        if(DateTime.Now - RecordingTime > TimeSpan.FromSeconds(10))
+        {
+            RecordingSpecialType = SpecialCommandType.None;
+            RecordingStateType = StateCommandType.None;
+        }
+
+        foreach (var key in Service.KeyState.GetValidVirtualKeys())
+        {
+            if (key is VirtualKey.CONTROL) continue;
+            if (key is VirtualKey.MENU) continue;
+            if (key is VirtualKey.SHIFT) continue;
+
+            var value = Service.KeyState[key];
+
+            if (_keys.ContainsKey(key))
+            {
+                if (!_keys[key] && value)
+                {
+                    KeyDown(new KeyRecord(key, Service.KeyState[VirtualKey.CONTROL], 
+                        Service.KeyState[VirtualKey.MENU], Service.KeyState[VirtualKey.SHIFT]));
+                }
+            }
+            _keys[key] = value;
+        }
+
+        foreach (var button in Enum.GetValues<GamepadButtons>())
+        {
+            if (button is GamepadButtons.L2) continue;
+            if (button is GamepadButtons.R2) continue;
+
+
+            var value = Service.GamepadState.Raw(button) > 0.5f;
+            if (_buttons.ContainsKey(button))
+            {
+                if (!_buttons[button] && value)
+                {
+                    ButtonDown(new ButtonRecord(button,
+                        Service.GamepadState.Raw(GamepadButtons.L2) > 0.5f, 
+                        Service.GamepadState.Raw(GamepadButtons.R2) > 0.5f));
+                }
+            }
+            _buttons[button] = value;
+        }
+    }
+
+    static readonly Dalamud.Game.Gui.Toast.QuestToastOptions QUEST = new Dalamud.Game.Gui.Toast.QuestToastOptions()
+    {
+        IconId = 101,
+        PlaySound = true,
+        DisplayCheckmark = true,
+    };
+
+    private static void KeyDown(KeyRecord key)
+    {
+        if (RecordingSpecialType != SpecialCommandType.None)
+        {
+            Service.Config.KeySpecial[RecordingSpecialType] = key;
+            Service.ToastGui.ShowQuest($"{RecordingSpecialType}: {key.ToStr()}",
+               QUEST);
+
+            RecordingSpecialType = SpecialCommandType.None;
+            Service.Config.Save();
+            return;
+        }
+        else  if (RecordingStateType != StateCommandType.None )
+        {
+            Service.Config.KeyState[RecordingStateType] = key;
+            Service.ToastGui.ShowQuest($"{RecordingStateType}: {key.ToStr()}",
+                QUEST);
+
+            RecordingStateType = StateCommandType.None;
+            Service.Config.Save();
+            return;
+        }
+
+        if (!Service.Config.UseKeyboardCommand) return;
+
+        if (Service.Config.KeyState.ContainsValue(key))
+        {
+            Service.CommandManager.ProcessCommand(Service.Config.KeyState
+                .First(k => k.Value == key && k.Key != 0).Key.GetCommandStr());
+        }
+
+        if (Service.Config.KeySpecial.ContainsValue(key))
+        {
+            Service.CommandManager.ProcessCommand(Service.Config.KeySpecial
+                .First(k => k.Value == key && k.Key != 0).Key.GetCommandStr());
+        }
+    }
+
+    private static void ButtonDown(ButtonRecord button)
+    {
+        if (RecordingSpecialType != SpecialCommandType.None)
+        {
+            Service.Config.ButtonSpecial[RecordingSpecialType] = button;
+            Service.ToastGui.ShowQuest($"{RecordingSpecialType}: {button.ToStr()}",
+                QUEST);
+
+            RecordingSpecialType = SpecialCommandType.None;
+            Service.Config.Save();
+            return;
+        }
+        else if (RecordingStateType != StateCommandType.None)
+        {
+            Service.Config.ButtonState[RecordingStateType] = button;
+            Service.ToastGui.ShowQuest($"{RecordingStateType}: {button.ToStr()}",
+                QUEST);
+
+            RecordingStateType = StateCommandType.None;
+            Service.Config.Save();
+            return;
+        }
+
+        if (!Service.Config.UseGamepadCommand) return;
+
+        if (Service.Config.ButtonState.ContainsValue(button))
+        {
+            Service.CommandManager.ProcessCommand(Service.Config.ButtonState
+                .First(k => k.Value == button && k.Key != 0).Key.GetCommandStr());
+        }
+
+        if (Service.Config.ButtonSpecial.ContainsValue(button))
+        {
+            Service.CommandManager.ProcessCommand(Service.Config.ButtonSpecial
+                .First(k => k.Value == button && k.Key != 0).Key.GetCommandStr());
+        }
+    }
+}

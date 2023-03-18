@@ -14,7 +14,7 @@ namespace RotationSolver.Commands
         static readonly TimeSpan _fastSpan = new TimeSpan(0, 0, 0, 0, 200);
         internal static unsafe void DoAnAction(bool isGCD)
         {
-            if (StateType == StateCommandType.Cancel) return;
+            if (DataCenter.StateType == StateCommandType.Cancel) return;
 
             var localPlayer = Service.Player;
             if (localPlayer == null) return;
@@ -23,7 +23,7 @@ namespace RotationSolver.Commands
             if (DateTime.Now - _fastClickStopwatch < _fastSpan) return;
             _fastClickStopwatch = DateTime.Now;
 
-            if (SocialUpdater.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
+            if (!RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
                 Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
                 return;
@@ -61,7 +61,7 @@ namespace RotationSolver.Commands
         internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
         private static void CancelState()
         {
-            if (StateType != StateCommandType.Cancel) DoStateCommandType(StateCommandType.Cancel);
+            if (DataCenter.StateType != StateCommandType.Cancel) DoStateCommandType(StateCommandType.Cancel);
         }
 
         internal static void UpdateRotationState()
@@ -89,7 +89,7 @@ namespace RotationSolver.Commands
             //Auto start at count Down.
             else if (Service.Config.StartOnCountdown && Service.CountDownTime > 0)
             {
-                if (StateType == StateCommandType.Cancel)
+                if (DataCenter.StateType == StateCommandType.Cancel)
                 {
                     DoStateCommandType(StateCommandType.Smart);
                 }

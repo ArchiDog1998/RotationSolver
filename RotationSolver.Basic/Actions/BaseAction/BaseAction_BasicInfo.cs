@@ -27,33 +27,6 @@ public partial class BaseAction : IBaseAction
 
     public string Description => string.Empty;
 
-    //public string CateName
-    //{
-    //    get
-    //    {
-    //        string result;
-
-    //        if (_isFriendly)
-    //        {
-    //            result = LocalizationManager.RightLang.Action_Friendly;
-    //            if (_isEot)
-    //            {
-    //                result += "Hot";
-    //            }
-    //        }
-    //        else
-    //        {
-    //            result = LocalizationManager.RightLang.Action_Attack;
-
-    //            if (_isEot)
-    //            {
-    //                result += "Dot";
-    //            }
-    //        }
-    //        result += "-" + (IsRealGCD ? "GCD" : LocalizationManager.RightLang.Timeline_Ability);
-    //        return result;
-    //    }
-    //}
     public bool IsEnabled
     {
         get => !Service.Config.DisabledActions.Contains(ID);

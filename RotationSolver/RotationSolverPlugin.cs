@@ -19,7 +19,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
     private readonly WindowSystem windowSystem;
 
-    private static RotationConfigWindow _comboConfigWindow;
+    static RotationConfigWindow _comboConfigWindow;
+    static ControlWindow _controlWindow;
 
     static readonly List<IDisposable> _dis = new List<IDisposable>();
     public string Name => "Rotation Solver";
@@ -39,8 +40,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         }
 
         _comboConfigWindow = new();
+        _controlWindow = new();
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(_comboConfigWindow);
+        windowSystem.AddWindow(_controlWindow);
 
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
@@ -50,7 +53,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         TimeLineUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
         SocialUpdater.Enable();
         _dis.Add(new Watcher());
-        _dis.Add(new IconReplacer());
         _dis.Add(new MovingController());
 
         var manager = new LocalizationManager();
@@ -61,6 +63,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         ChangeUITranslation();
 
         RotationUpdater.GetAllCustomRotations();
+        OpenControlWindow();
     }
 
 
@@ -102,4 +105,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     {
         _comboConfigWindow.Toggle();
     }
+
+    internal static void OpenControlWindow()
+    {
+        _controlWindow.IsOpen = Service.Config.ShowControlWindow;
+    }
+
 }

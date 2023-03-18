@@ -4,6 +4,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
@@ -47,6 +48,26 @@ public static class DataCenter
             NextActs[index] = newItem;
         }
         NextActs = NextActs.OrderBy(i => i.deadTime).ToList();
+    }
+
+    public static TargetHostileType RightNowTargetToHostileType
+    {
+        get
+        {
+            if (Service.Player == null) return 0;
+            var id = Service.Player.ClassJob.Id;
+            return GetTargetHostileType(Service.GetSheet<ClassJob>().GetRow(id));
+        }
+    }
+
+    public static TargetHostileType GetTargetHostileType(ClassJob classJob)
+    {
+        if (Service.Config.TargetToHostileTypes.TryGetValue(classJob.RowId, out var type))
+        {
+            return (TargetHostileType)type;
+        }
+
+        return classJob.GetJobRole() == JobRole.Tank ? TargetHostileType.AllTargetsCanAttack : TargetHostileType.TargetsHaveTarget;
     }
 
     public static unsafe ActionID LastComboAction => (ActionID)ActionManager.Instance()->Combo.Action;
@@ -104,8 +125,20 @@ public static class DataCenter
     #endregion
     public static uint[] BluSlots { get; set; } = new uint[24];
 
-    public static SpecialCommandType SpecialType { get; set; }
-    public static StateCommandType StateType { get; set; }
+    static DateTime _specialStateStartTime = DateTime.MinValue;
+    public static double SpecialTimeLeft => Service.Config.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds;
+
+    static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
+    public static SpecialCommandType SpecialType =>
+         SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
+    public static StateCommandType StateType { get; set; } = StateCommandType.Cancel;
+
+    public static void SetSpecialType(SpecialCommandType specialType)
+    {
+        _specialType = specialType;
+        _specialStateStartTime = specialType == SpecialCommandType.EndSpecial ? DateTime.MinValue : DateTime.Now;
+    }
+
     public static bool InCombat { get; set; }
 
     public static float CombatTime { get; set; }

@@ -239,6 +239,7 @@ public static class TargetFilter
 
     public unsafe static IEnumerable<BattleChara> GetDeath(this IEnumerable<BattleChara> charas) => charas.Where(item =>
         {
+            if (item == null) return false;
             if (!item.IsDead) return false;
             if (item.CurrentHp != 0) return false;
 

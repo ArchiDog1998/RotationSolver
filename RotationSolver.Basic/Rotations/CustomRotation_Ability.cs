@@ -131,6 +131,7 @@ public abstract partial class CustomRotation
     private bool GeneralHealAbility(byte abilitiesRemaining, SpecialCommandType specialType, out IAction act)
     {
         act = null;
+
         switch (specialType)
         {
             case SpecialCommandType.DefenseArea:
@@ -142,7 +143,7 @@ public abstract partial class CustomRotation
                 break;
         }
 
-        if ((DataCenter.HPNotFull || Job.RowId == (uint)ClassJobID.BlackMage) && InCombat)
+        if ((DataCenter.HPNotFull || Job.GetJobRole() != JobRole.Healer) && InCombat)
         {
             if ((DataCenter.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && HealAreaAbility(abilitiesRemaining, out act)) return true;
             if ((DataCenter.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility) && HealSingleAbility(abilitiesRemaining, out act)) return true;

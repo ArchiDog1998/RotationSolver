@@ -1,4 +1,5 @@
-﻿using RotationSolver.Basic;
+﻿using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
@@ -24,21 +25,16 @@ internal static class RotationUpdater
         var directories =  Service.Config.OtherLibs
             .Select(s => s.Trim()).Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location));
 
-#if DEBUG
-        foreach (var dir in directories)
-        {
-            foreach (var item in Directory.GetFiles(dir, "*.dll"))
-            {
-                Service.ChatGui.Print(item);
-            }
-        }
-#endif
-
         var assemblies = from dir in directories
                          from l in Directory.GetFiles(dir, "*.dll")
                          where !_locs.Any(l.Contains)
                          select RotationLoadContext.LoadFrom(l);
-
+#if DEBUG
+        foreach (var ass in assemblies)
+        {
+            Service.ChatGui.Print(ass.FullName);
+        }
+#endif
         AuthorHashes = (from a in assemblies
                        select a.GetCustomAttribute<AuthorHashAttribute>() into author
                        where author != null

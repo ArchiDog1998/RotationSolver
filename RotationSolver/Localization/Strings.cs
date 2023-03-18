@@ -23,6 +23,7 @@ internal partial class Strings
     public string ConfigWindow_ParamItem { get; set; } = "Param";
     public string ConfigWindow_EventItem { get; set; } = "Event";
     public string ConfigWindow_ActionItem { get; set; } = "Action";
+    public string ConfigWindow_ControlItem { get; set; } = "Control";
     public string ConfigWindow_HelpItem { get; set; } = "Help";
     public string ConfigWindow_RotationDev { get; set; } = "RotationDev";
 
@@ -74,6 +75,7 @@ internal partial class Strings
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
         = "Close special window.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
+    public string ConfigWindow_Helper_HighEndWarning { get; set; } = "This `{0}` rotation is not allowed to be used in High-end Duty!";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game Version";
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
@@ -233,6 +235,18 @@ internal partial class Strings
     public string ConfigWindow_Param_ConditionUp { get; set; } = "Up";
     public string ConfigWindow_Param_ConditionDown { get; set; } = "Down";
     public string ConfigWindow_Param_ConditionDelete { get; set; } = "Delete";
+
+    public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
+    public string ConfigWindow_Control_UseKeyboardCommand { get; set; } = "Use Keyboard Command";
+    public string ConfigWindow_Control_UseGamepadCommand { get; set; } = "Use GamePad Command";
+    public string ConfigWindow_Control_IsControlWindowLock { get; set; } = "Lock";
+    public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
+    public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
+    public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
+    public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
+    public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and right click to clear the key setting.";
+    public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
+
     #endregion
 
     #region ScriptWindow

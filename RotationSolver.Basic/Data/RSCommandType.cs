@@ -13,6 +13,8 @@ public enum SpecialCommandType : byte
     MoveBack,
     AntiKnockback,
     Burst,
+
+    None,
 }
 
 public enum StateCommandType : byte
@@ -20,6 +22,8 @@ public enum StateCommandType : byte
     Cancel,
     Smart,
     Manual,
+
+    None,
 }
 
 public enum OtherCommandType : byte

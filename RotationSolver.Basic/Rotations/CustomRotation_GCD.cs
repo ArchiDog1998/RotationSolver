@@ -25,7 +25,8 @@ public abstract partial class CustomRotation
         }
 
         //General Heal
-        if (DataCenter.HPNotFull && (DataCenter.InCombat || Service.Config.HealOutOfCombat))
+        if ((DataCenter.HPNotFull || Job.GetJobRole() != JobRole.Healer)
+            && (DataCenter.InCombat || Service.Config.HealOutOfCombat))
         {
             if ((specialType == SpecialCommandType.HealArea || CanHealAreaSpell) && HealAreaGCD(out act)) return act;
             if ((specialType == SpecialCommandType.HealSingle || CanHealSingleSpell) && HealSingleGCD(out act)) return act;
@@ -58,10 +59,12 @@ public abstract partial class CustomRotation
         if (Raise == null) return false;
         if (Player.CurrentMp <= Service.Config.LessMPNoRaise) return false;
 
+        if (specialType == SpecialCommandType.RaiseShirk && DataCenter.DeathPeopleAll.Any()) return true;
+
         if ((Service.Config.RaiseAll ? DataCenter.DeathPeopleAll.Any() : DataCenter.DeathPeopleParty.Any())
             && Raise.CanUse(out act))
         {
-            if (specialType == SpecialCommandType.RaiseShirk || HasSwift)
+            if (HasSwift)
             {
                 return true;
             }

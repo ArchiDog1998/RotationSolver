@@ -14,6 +14,7 @@ using RotationSolver.Basic.Configuration.RotationConfig;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Basic.Rotations;
+using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.ComponentModel;
@@ -323,11 +324,7 @@ internal static class ImGuiHelper
 
     internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string> getHelp = null, bool sameLine = true) where T : struct, Enum
     {
-        var cmdStr = Service.Command + " " + command.ToString();
-        if (!string.IsNullOrEmpty(extraCommand))
-        {
-            cmdStr += " " + extraCommand;
-        }
+        var cmdStr = command.GetCommandStr(extraCommand);
 
         if (ImGui.Button(cmdStr))
         {
@@ -442,18 +439,18 @@ internal static class ImGuiHelper
             ImGui.TextDisabled("   -  ");
             ImGui.SameLine();
 
-            var isAllowed = rotation.IsAllowed(out _);
-            ImGui.TextColored(rotation.GetColor(),
-                rotation.GetAuthor());
-            if (!isAllowed)
+            ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
+            ImGui.Text(rotation.GetAuthor());
+            if (!rotation.IsAllowed(out _))
             {
-                var showStr = "This rotation is not allowed to be used in High-end Duty!"
+                var showStr = string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_HighEndWarning, rotation)
                 + string.Join("", SocialUpdater.HighEndDuties.Select(x => x.PlaceName?.Value?.Name.ToString())
                 .Where(s => !string.IsNullOrEmpty(s)).Select(t => "\n - " + t));
 
                 HoveredString(showStr);
             }
-            
+            ImGui.PopStyleColor();
+
             ImGui.SameLine();
             ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ":    ");
             ImGui.SameLine();

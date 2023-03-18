@@ -186,7 +186,7 @@ internal partial class RotationConfigWindow
         {
             ImGuiHelper.Spacing();
 
-            DrawColor(LocalizationManager.RightLang.ConfigWindow_Param_TeachingModeColor,
+            DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_TeachingModeColor,
                 ref Service.Config.TeachingModeColor);
         }
 
@@ -199,7 +199,7 @@ internal partial class RotationConfigWindow
             {
                 ImGuiHelper.Spacing();
 
-                DrawColor(LocalizationManager.RightLang.ConfigWindow_Param_MovingTargetColor,
+                DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_MovingTargetColor,
                     ref Service.Config.MovingTargetColor);
             }
 
@@ -210,12 +210,12 @@ internal partial class RotationConfigWindow
             {
                 ImGuiHelper.Spacing();
 
-                DrawColor(LocalizationManager.RightLang.ConfigWindow_Param_TargetColor,
+                DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_TargetColor,
                     ref Service.Config.TargetColor);
 
                 ImGuiHelper.Spacing();
 
-                DrawColor(LocalizationManager.RightLang.ConfigWindow_Params_SubTargetColor,
+                DrawColor3(LocalizationManager.RightLang.ConfigWindow_Params_SubTargetColor,
                     ref Service.Config.SubTargetColor);
             }
         }
@@ -461,7 +461,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawCheckBox(string name, ref bool value, string description = "", Action otherThing = null)
+    internal static void DrawCheckBox(string name, ref bool value, string description = "", Action otherThing = null)
     {
         if (ImGui.Checkbox(name, ref value))
         {
@@ -514,7 +514,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawColor(string name, ref Vector3 value, string description = "")
+    private static void DrawColor3(string name, ref Vector3 value, string description = "")
     {
         ImGui.SetNextItemWidth(210);
         if (ImGui.ColorEdit3(name, ref value))

@@ -41,17 +41,17 @@ internal static class ActionUpdater
             {
                 NextAction = newAction;
 
-                if (gcdAction is IBaseAction GcdAction && GcdAction.IsMeleeAction())
+                if (gcdAction is IBaseAction GcdAction)
                 {
                     NextGCDAction = GcdAction;
-                    //Sayout!
+
                     if (GcdAction.EnemyPositional != EnemyPositional.None && GcdAction.Target.HasPositional()
                          && !localPlayer.HasStatus(true, StatusID.TrueNorth))
                     {
                         if (CheckAction(GcdAction.ID))
                         {
                             string positional = GcdAction.EnemyPositional.ToName();
-                            if (Service.Config.SayPositional) Watcher.Speak(positional);
+                            if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
                             if (Service.Config.FlytextPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = GcdAction.IconID,
@@ -65,13 +65,14 @@ internal static class ActionUpdater
                 }
                 return;
             }
+            NextAction = NextGCDAction = null;
         }
         catch (Exception ex)
         {
             exception = ex;
         }
 
-        NextAction = null;
+        NextAction = NextGCDAction = null;
     }
 
     static uint _lastSayingGCDAction;
