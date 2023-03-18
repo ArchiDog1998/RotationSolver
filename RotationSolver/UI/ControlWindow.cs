@@ -97,43 +97,43 @@ internal class ControlWindow : Window
 
         ImGui.NextColumn();
         var rotation = RotationUpdater.RightNowRotation;
-        DrawCommandAction(rotation.ActionHealAreaGCD, rotation.ActionHealAreaAbility, 
+        DrawCommandAction(rotation?.ActionHealAreaGCD, rotation?.ActionHealAreaAbility, 
             SpecialCommandType.HealArea, ImGuiColors.HealerGreen);
 
         ImGui.SameLine();
 
-        DrawCommandAction(rotation.ActionHealSingleGCD, rotation.ActionHealSingleAbility,
+        DrawCommandAction(rotation?.ActionHealSingleGCD, rotation?.ActionHealSingleAbility,
             SpecialCommandType.HealSingle, ImGuiColors.HealerGreen);
 
         ImGui.SameLine();
 
-        DrawCommandAction(rotation.ActionDefenseAreaGCD, rotation.ActionDefenseAreaAbility,
+        DrawCommandAction(rotation?.ActionDefenseAreaGCD, rotation?.ActionDefenseAreaAbility,
             SpecialCommandType.DefenseArea, ImGuiColors.TankBlue);
 
         ImGui.SameLine();
 
-        DrawCommandAction(rotation.ActionDefenseSingleGCD, rotation.ActionDefenseSingleAbility,
+        DrawCommandAction(rotation?.ActionDefenseSingleGCD, rotation?.ActionDefenseSingleAbility,
             SpecialCommandType.DefenseSingle, ImGuiColors.TankBlue);
 
-        DrawCommandAction(rotation.ActionMoveForwardGCD, rotation.ActionMoveForwardAbility,
+        DrawCommandAction(rotation?.ActionMoveForwardGCD, rotation?.ActionMoveForwardAbility,
             SpecialCommandType.MoveForward, ImGuiColors.DalamudOrange);
 
         ImGui.SameLine();
 
-        DrawCommandAction(null, rotation.ActionMoveBackAbility,
+        DrawCommandAction(null, rotation?.ActionMoveBackAbility,
             SpecialCommandType.MoveBack, ImGuiColors.DalamudOrange);
 
-        DrawCommandAction(rotation.EsunaStanceNorthGCD, rotation.EsunaStanceNorthAbility,
+        DrawCommandAction(rotation?.EsunaStanceNorthGCD, rotation?.EsunaStanceNorthAbility,
             SpecialCommandType.EsunaStanceNorth, ImGuiColors.ParsedGold);
 
         ImGui.SameLine();
 
-        DrawCommandAction(rotation.RaiseShirkGCD, rotation.RaiseShirkAbility,
+        DrawCommandAction(rotation?.RaiseShirkGCD, rotation?.RaiseShirkAbility,
             SpecialCommandType.RaiseShirk, ImGuiColors.ParsedBlue);
 
         ImGui.SameLine();
 
-        DrawCommandAction(null, rotation.AntiKnockbackAbility,
+        DrawCommandAction(null, rotation?.AntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
 
         ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 5);
@@ -207,7 +207,7 @@ internal class ControlWindow : Window
 
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
         ImGui.Text(str);
-        ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, 5));
+        ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, Service.Config.ControlProgressHeight), string.Empty);
 
         DrawIAction(ActionUpdater.NextGCDAction, gcd);
 

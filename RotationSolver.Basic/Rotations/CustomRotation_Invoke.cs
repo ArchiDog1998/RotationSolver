@@ -14,6 +14,7 @@ public abstract partial class CustomRotation
         {
             return false;
         }
+        var role = Job.GetJobRole();
 
         ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
         ActionMoveForwardAbility = MoveForwardAbility(DataCenter.AbilityRemainCount, out act, recordTarget: false) ? act : null;
@@ -21,11 +22,18 @@ public abstract partial class CustomRotation
 
         ActionMoveBackAbility = MoveBackAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
 
-        ActionHealAreaGCD = HealAreaGCD(out act) ? act : null;
-        ActionHealAreaAbility = HealAreaAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
+        if(!DataCenter.HPNotFull && role == JobRole.Healer)
+        {
+            ActionHealAreaGCD = ActionHealAreaAbility = ActionHealSingleGCD = ActionHealSingleAbility = null;
+        }
+        else
+        {
+            ActionHealAreaGCD = HealAreaGCD(out act) ? act : null;
+            ActionHealAreaAbility = HealAreaAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
 
-        ActionHealSingleGCD = HealSingleGCD(out act) ? act : null;
-        ActionHealSingleAbility = HealSingleAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
+            ActionHealSingleGCD = HealSingleGCD(out act) ? act : null;
+            ActionHealSingleAbility = HealSingleAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
+        }
 
         ActionDefenseAreaGCD = DefenseAreaGCD(out act) ? act : null;
         ActionDefenseAreaAbility = DefenseAreaAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
@@ -33,7 +41,6 @@ public abstract partial class CustomRotation
         ActionDefenseSingleGCD = DefenseSingleGCD(out act) ? act : null;
         ActionDefenseSingleAbility = DefenseSingleAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
 
-        var role = Job.GetJobRole();
         EsunaStanceNorthGCD = role switch
         {
             JobRole.Healer => DataCenter.WeakenPeople.Any() && Esuna.CanUse(out act, mustUse: true) ? act : null,
