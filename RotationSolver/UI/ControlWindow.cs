@@ -46,7 +46,7 @@ internal class ControlWindow : Window
 
         if (Service.Config.IsControlWindowLock)
         {
-            Flags |= ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoMouseInputs;
+            Flags |= ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
         }
 
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
@@ -156,11 +156,12 @@ internal class ControlWindow : Window
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
         ImGui.TextColored(color, str);
 
-        DrawIAction(gcd, gcdW, command);
+        string baseId = "ImgButton" + command.ToString();
+        DrawIAction(GetTexture(gcd).ImGuiHandle, baseId + nameof(gcd), gcdW, command);
         ImGuiHelper.HoveredString(command.ToHelp());
 
         ImGui.SameLine();
-        DrawIAction(ability, abilityW, command);
+        DrawIAction(GetTexture(ability).ImGuiHandle, baseId + nameof(ability), abilityW, command);
         ImGuiHelper.HoveredString(command.ToHelp());
         ImGui.EndGroup();
     }
@@ -178,12 +179,14 @@ internal class ControlWindow : Window
         return IconSet.GetTexture(iconId);
     }
 
-    static void DrawIAction(IAction action, float width, SpecialCommandType command)
+    static void DrawIAction(nint handle, string id, float width, SpecialCommandType command)
     {
-        if(ImGui.ImageButton(GetTexture(action).ImGuiHandle, new Vector2(width, width)))
+        ImGui.PushID(id);
+        if (ImGui.ImageButton(handle, new Vector2(width, width)))
         {
             Service.CommandManager.ProcessCommand(command.GetCommandStr());
         }
+        ImGui.PopID();
     }
 
     static void DrawIAction(IAction action, float width)
