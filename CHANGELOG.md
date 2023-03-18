@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.0...v2.1.1) (2023-03-18)
+
+
+### Bug Fixes
+
+* fixed the rotation choice on the main thread. Add a try catch to make sure it works. ([db291d8](https://github.com/ArchiDog1998/RotationSolver/commit/db291d8cdf852e55c2728efad7fc5fb9667a2c23))
+
 ## [2.1.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.0.0...v2.1.0) (2023-03-18)
 
 
