@@ -2,7 +2,6 @@
 
 public enum SpecialCommandType : byte
 {
-    None,
     EndSpecial,
     HealArea,
     HealSingle,
@@ -14,14 +13,17 @@ public enum SpecialCommandType : byte
     MoveBack,
     AntiKnockback,
     Burst,
+
+    None,
 }
 
 public enum StateCommandType : byte
 {
-    None,
     Cancel,
     Smart,
     Manual,
+
+    None,
 }
 
 public enum OtherCommandType : byte

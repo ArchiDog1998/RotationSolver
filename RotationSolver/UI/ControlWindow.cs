@@ -73,7 +73,7 @@ internal class ControlWindow : Window
 
         DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
 
-        DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DPSRed);
+        DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DalamudWhite2);
 
         ImGui.SameLine();
 
@@ -279,6 +279,7 @@ internal class ControlWindow : Window
                 }
                 if(InputUpdater.RecordingSpecialType == SpecialCommandType.None)
                 {
+                    InputUpdater.RecordingTime = DateTime.Now;
                     InputUpdater.RecordingSpecialType = command;
                     Service.ToastGui.ShowQuest($"Recording: {command}",
                         new Dalamud.Game.Gui.Toast.QuestToastOptions()
@@ -319,6 +320,7 @@ internal class ControlWindow : Window
                 }
                 if (InputUpdater.RecordingStateType == StateCommandType.None)
                 {
+                    InputUpdater.RecordingTime = DateTime.Now;
                     InputUpdater.RecordingStateType = command;
                     Service.ToastGui.ShowQuest($"Recording: {command}",
                         new Dalamud.Game.Gui.Toast.QuestToastOptions()

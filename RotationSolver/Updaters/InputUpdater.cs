@@ -13,9 +13,16 @@ internal static class InputUpdater
 
     public static SpecialCommandType RecordingSpecialType { get ; set; }
     public static StateCommandType RecordingStateType { get ; set; }
+    public static DateTime RecordingTime { get; set; } = DateTime.MinValue;
 
     internal static void UpdateCommand()
     {
+        if(DateTime.Now - RecordingTime > TimeSpan.FromSeconds(10))
+        {
+            RecordingSpecialType = SpecialCommandType.None;
+            RecordingStateType = StateCommandType.None;
+        }
+
         foreach (var key in Service.KeyState.GetValidVirtualKeys())
         {
             if (key is VirtualKey.CONTROL) continue;
@@ -33,7 +40,6 @@ internal static class InputUpdater
                 }
             }
             _keys[key] = value;
-
         }
 
         foreach (var button in Enum.GetValues<GamepadButtons>())
