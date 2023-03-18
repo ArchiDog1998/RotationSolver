@@ -65,6 +65,7 @@ internal static class ActionUpdater
                 }
                 return;
             }
+            NextAction = NextGCDAction = null;
         }
         catch (Exception ex)
         {
