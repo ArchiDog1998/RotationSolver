@@ -1,8 +1,10 @@
-﻿using RotationSolver.Basic;
+﻿using ImGuiNET;
+using RotationSolver.Basic;
 using RotationSolver.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,5 +21,39 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsControlWindowLock,
             ref Service.Config.IsControlWindowLock);
+
+        if (Service.Config.IsControlWindowLock)
+        {
+            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
+                ref Service.Config.ControlWindowLockBg);
+        }
+        else
+        {
+            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
+                ref Service.Config.ControlWindowUnlockBg);
+        }
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowGCDSize,
+            ref Service.Config.ControlWindowGCDSize);
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindow0GCDSize,
+            ref Service.Config.ControlWindow0GCDSize);
+
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
+            ref Service.Config.ControlWindowNextSizeRatio);
+    }
+
+    private static void DrawColor4(string name, ref Vector4 value, string description = "")
+    {
+        ImGui.SetNextItemWidth(210);
+        if (ImGui.ColorEdit4(name, ref value))
+        {
+            Service.Config.Save();
+        }
+        if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(description);
+        }
     }
 }

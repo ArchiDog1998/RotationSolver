@@ -41,7 +41,7 @@ internal static class ActionUpdater
             {
                 NextAction = newAction;
 
-                if (gcdAction is IBaseAction GcdAction && GcdAction.IsMeleeAction())
+                if (gcdAction is IBaseAction GcdAction)
                 {
                     NextGCDAction = GcdAction;
 

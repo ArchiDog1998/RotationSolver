@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Configuration.RotationConfig;
 using RotationSolver.Basic.Data;
@@ -43,6 +44,38 @@ public abstract partial class CustomRotation : ICustomRotation
     public BattleChara MoveTarget { get; private set; }
 
     public virtual string Description { get; } = string.Empty;
+
+    public IAction ActionHealAreaGCD { get; private set; }
+
+    public IAction ActionHealAreaAbility { get; private set; }
+
+    public IAction ActionHealSingleGCD { get; private set; }
+
+    public IAction ActionHealSingleAbility { get; private set; }
+
+    public IAction ActionDefenseAreaGCD { get; private set; }
+
+    public IAction ActionDefenseAreaAbility { get; private set; }
+
+    public IAction ActionDefenseSingleGCD { get; private set; }
+
+    public IAction ActionDefenseSingleAbility { get; private set; }
+
+    public IAction ActionMoveForwardGCD { get; private set; }
+
+    public IAction ActionMoveForwardAbility { get; private set; }
+
+    public IAction ActionMoveBackAbility { get; private set; }
+
+    public IAction EsunaStanceNorthGCD { get; private set; }
+
+    public IAction EsunaStanceNorthAbility { get; private set; }
+
+    public IAction RaiseShirkGCD { get; private set; }
+
+    public IAction RaiseShirkAbility { get; private set; }
+
+    public IAction AntiKnockbackAbility { get; private set; }
 
     /// <summary>
     /// Description about the actions.

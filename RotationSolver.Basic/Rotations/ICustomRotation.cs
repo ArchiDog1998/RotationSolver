@@ -29,5 +29,21 @@ public interface ICustomRotation : ITexture
     MethodInfo[] AllLast { get; }
     MethodInfo[] AllGCDs { get; }
 
+    IAction ActionHealAreaGCD { get; }
+    IAction ActionHealAreaAbility { get; }
+    IAction ActionHealSingleGCD { get; }
+    IAction ActionHealSingleAbility { get; }
+    IAction ActionDefenseAreaGCD { get; }
+    IAction ActionDefenseAreaAbility { get; }
+    IAction ActionDefenseSingleGCD { get; }
+    IAction ActionDefenseSingleAbility { get; }
+    IAction ActionMoveForwardGCD { get; }
+    IAction ActionMoveForwardAbility { get; }
+    IAction ActionMoveBackAbility { get; }
+    IAction EsunaStanceNorthGCD { get; }
+    IAction EsunaStanceNorthAbility { get; }
+    IAction RaiseShirkGCD { get; }
+    IAction RaiseShirkAbility { get; }
+    IAction AntiKnockbackAbility { get; }
     bool TryInvoke(out IAction newAction, out IAction gcdAction);
 }

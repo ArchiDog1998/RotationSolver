@@ -75,6 +75,7 @@ internal partial class Strings
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
         = "Close special window.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
+    public string ConfigWindow_Helper_HighEndWarning { get; set; } = "This `{0}` rotation is not allowed to be used in High-end Duty!";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game Version";
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
@@ -237,6 +238,10 @@ internal partial class Strings
 
     public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
     public string ConfigWindow_Control_IsControlWindowLock { get; set; } = "Lock Control Window";
+    public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
+    public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
+    public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
+    public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
 
     #endregion
 

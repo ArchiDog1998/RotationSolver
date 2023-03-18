@@ -24,7 +24,7 @@ public static class IconSet
 {
     private static readonly Dictionary<uint, TextureWrap> _textures = new Dictionary<uint, TextureWrap>();
 
-    public static TextureWrap GetTexture(this ITexture text) => GetTexture(text.IconID);
+    public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
 
     public static TextureWrap GetTexture(uint id)
     {

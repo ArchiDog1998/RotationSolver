@@ -4,9 +4,9 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Basic.Helpers;
 
-internal static class ActionHelper
+public static class ActionHelper
 {
-    internal const byte GCDCooldownGroup = 58;
+    public const byte GCDCooldownGroup = 58;
 
     internal static ActionCate GetActionType(this Action action) => (ActionCate)action.ActionCategory.Value.RowId;
     internal static bool IsGeneralGCD(this Action action) => action.CooldownGroup == GCDCooldownGroup;

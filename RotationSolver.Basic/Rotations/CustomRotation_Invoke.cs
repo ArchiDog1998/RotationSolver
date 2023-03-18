@@ -15,7 +15,47 @@ public abstract partial class CustomRotation
             return false;
         }
 
-        MoveTarget = (MoveForwardAbility(1, out var act, recordTarget: false) && act is BaseAction a) ? a.Target : null;
+        ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
+        ActionMoveForwardAbility = MoveForwardAbility(DataCenter.AbilityRemainCount, out act, recordTarget: false) ? act : null;
+        MoveTarget = act is IBaseAction a ? a.Target : null;
+
+        ActionMoveBackAbility = MoveBackAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
+
+        ActionHealAreaGCD = HealAreaGCD(out act) ? act : null;
+        ActionHealAreaAbility = HealAreaAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
+
+        ActionHealSingleGCD = HealSingleGCD(out act) ? act : null;
+        ActionHealSingleAbility = HealSingleAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
+
+        ActionDefenseAreaGCD = DefenseAreaGCD(out act) ? act : null;
+        ActionDefenseAreaAbility = DefenseAreaAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
+
+        ActionDefenseSingleGCD = DefenseSingleGCD(out act) ? act : null;
+        ActionDefenseSingleAbility = DefenseSingleAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
+
+        var role = Job.GetJobRole();
+        EsunaStanceNorthGCD = role switch
+        {
+            JobRole.Healer => DataCenter.WeakenPeople.Any() && Esuna.CanUse(out act, mustUse: true) ? act : null,
+            _ => null,
+        };
+        EsunaStanceNorthAbility = role switch
+        {
+            JobRole.Melee => TrueNorth.CanUse(out act) ? act : null,
+            JobRole.Tank => Shield.CanUse(out act) ? act : null,
+            _ => null,
+        };
+        RaiseShirkGCD = role switch
+        {
+            JobRole.Healer => DataCenter.DeathPeopleAll.Any() && Raise.CanUse(out act) ? act : null,
+            _ => null,
+        };
+        RaiseShirkAbility = role switch
+        {
+            JobRole.Tank => Shirk.CanUse(out act) ? act : null,
+            _ => null,
+        };
+        AntiKnockbackAbility = AntiKnockback(role, SpecialCommandType.AntiKnockback, out act) ? act : null;
         UpdateInfo();
 
         newAction = Invoke(out gcdAction);

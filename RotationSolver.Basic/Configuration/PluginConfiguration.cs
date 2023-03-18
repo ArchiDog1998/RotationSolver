@@ -156,6 +156,11 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool ShowControlWindow = false;
     public bool IsControlWindowLock = true;
+    public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.5f);
+    public Vector4 ControlWindowUnlockBg = new Vector4(0, 0, 0, 1);
+    public float ControlWindowGCDSize = 40;
+    public float ControlWindow0GCDSize = 30;
+    public float ControlWindowNextSizeRatio = 1.5f;
 
     public void Save()
     {
