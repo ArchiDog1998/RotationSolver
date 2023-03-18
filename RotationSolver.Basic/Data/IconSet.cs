@@ -23,15 +23,29 @@ public enum IconType : byte
 public static class IconSet
 {
     private static readonly Dictionary<uint, TextureWrap> _textures = new Dictionary<uint, TextureWrap>();
-
+    private static readonly HashSet<uint> _loadingTexture = new HashSet<uint>();
     public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
 
     public static TextureWrap GetTexture(uint id)
     {
         if (!_textures.TryGetValue(id, out var texture))
         {
-            texture = Service.GetTextureIcon(id);
-            _textures.Add(id, texture);
+            if (!_loadingTexture.Contains(id))
+            {
+                _loadingTexture.Add(id);
+                Task.Run(() =>
+                {
+                    texture = Service.GetTextureIcon(id);
+                    _textures.Add(id, texture);
+                });
+            }
+
+            if (!_textures.TryGetValue(0, out texture))
+            {
+                texture = Service.GetTextureIcon(0);
+                _textures.Add(0, texture);
+            }
+            return texture;
         }
 
         return texture;
