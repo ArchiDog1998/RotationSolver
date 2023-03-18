@@ -20,6 +20,11 @@ internal static class RotationHelper
     
     public static bool IsAllowed(this ICustomRotation rotation, out string name)
     {
+        if (rotation == null)
+        {
+            name = "Unknown";
+            return false;
+        }
         name = rotation.GetType().Assembly.GetName().Name;
         return _allowedAssembly.Contains(name);
     }
