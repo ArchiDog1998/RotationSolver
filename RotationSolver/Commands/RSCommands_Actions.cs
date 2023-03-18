@@ -23,7 +23,7 @@ namespace RotationSolver.Commands
             if (DateTime.Now - _fastClickStopwatch < _fastSpan) return;
             _fastClickStopwatch = DateTime.Now;
 
-            if (!RotationUpdater.RightNowRotation.IsAllowed(out var str))
+            if (SocialUpdater.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
                 Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
                 return;
