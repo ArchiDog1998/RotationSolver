@@ -36,14 +36,14 @@ public static class IconSet
                 Task.Run(() =>
                 {
                     texture = Service.GetTextureIcon(id);
-                    _textures.Add(id, texture);
+                    _textures[id] = texture;
                 });
             }
 
             if (!_textures.TryGetValue(0, out texture))
             {
                 texture = Service.GetTextureIcon(0);
-                _textures.Add(0, texture);
+                _textures[0] = texture;
             }
             return texture;
         }

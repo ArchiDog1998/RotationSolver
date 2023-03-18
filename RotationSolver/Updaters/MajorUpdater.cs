@@ -86,17 +86,24 @@ internal static class MajorUpdater
         if (_work) return;
         _work = true;
 
-        PreviewUpdater.UpdateCastBarState();
-        TargetUpdater.UpdateTarget();
-        ActionUpdater.UpdateActionInfo();
+        try
+        {
+            PreviewUpdater.UpdateCastBarState();
+            TargetUpdater.UpdateTarget();
+            ActionUpdater.UpdateActionInfo();
 
-        RotationUpdater.UpdateRotation();
+            RotationUpdater.UpdateRotation();
 
-        TimeLineUpdater.UpdateTimelineAction();
-        ActionUpdater.UpdateNextAction();
-        RSCommands.UpdateRotationState();
+            TimeLineUpdater.UpdateTimelineAction();
+            ActionUpdater.UpdateNextAction();
+            RSCommands.UpdateRotationState();
 
-        InputUpdater.UpdateCommand();
+            InputUpdater.UpdateCommand();
+        }
+        catch (Exception ex)
+        {
+            PluginLog.Error(ex, "Inner Worker Exception");
+        }
 
         _work = false;
     }
