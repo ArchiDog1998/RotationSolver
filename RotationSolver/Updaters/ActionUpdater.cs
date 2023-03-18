@@ -44,14 +44,14 @@ internal static class ActionUpdater
                 if (gcdAction is IBaseAction GcdAction && GcdAction.IsMeleeAction())
                 {
                     NextGCDAction = GcdAction;
-                    //Sayout!
+
                     if (GcdAction.EnemyPositional != EnemyPositional.None && GcdAction.Target.HasPositional()
                          && !localPlayer.HasStatus(true, StatusID.TrueNorth))
                     {
                         if (CheckAction(GcdAction.ID))
                         {
                             string positional = GcdAction.EnemyPositional.ToName();
-                            if (Service.Config.SayPositional) Watcher.Speak(positional);
+                            if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
                             if (Service.Config.FlytextPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = GcdAction.IconID,

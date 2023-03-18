@@ -131,7 +131,6 @@ internal static class PreviewUpdater
     {
         if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
         if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
-        if (slot->ActionId == (uint)IconReplacer.KeyActionID) return false;
 
         return Service.GetAdjustedActionId((uint)slot->ActionId) == actionID;
     }

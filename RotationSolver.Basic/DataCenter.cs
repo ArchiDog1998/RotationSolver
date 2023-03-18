@@ -4,6 +4,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
@@ -47,6 +48,26 @@ public static class DataCenter
             NextActs[index] = newItem;
         }
         NextActs = NextActs.OrderBy(i => i.deadTime).ToList();
+    }
+
+    public static TargetHostileType RightNowTargetToHostileType
+    {
+        get
+        {
+            if (Service.Player == null) return 0;
+            var id = Service.Player.ClassJob.Id;
+            return GetTargetHostileType(Service.GetSheet<ClassJob>().GetRow(id));
+        }
+    }
+
+    public static TargetHostileType GetTargetHostileType(ClassJob classJob)
+    {
+        if (Service.Config.TargetToHostileTypes.TryGetValue(classJob.RowId, out var type))
+        {
+            return (TargetHostileType)type;
+        }
+
+        return classJob.GetJobRole() == JobRole.Tank ? TargetHostileType.AllTargetsCanAttack : TargetHostileType.TargetsHaveTarget;
     }
 
     public static unsafe ActionID LastComboAction => (ActionID)ActionManager.Instance()->Combo.Action;

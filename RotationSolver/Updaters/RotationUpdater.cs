@@ -1,4 +1,5 @@
-﻿using RotationSolver.Basic;
+﻿using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;

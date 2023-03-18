@@ -66,7 +66,7 @@ namespace RotationSolver.Commands
             doingSomething(role);
 
             //Saying out.
-            if (Service.Config.SayOutStateChanged) Watcher.Speak(sayout(type, role));
+            if (Service.Config.SayOutStateChanged) SpeechHelper.Speak(sayout(type, role));
         }
     }
 }

@@ -23,6 +23,7 @@ internal partial class Strings
     public string ConfigWindow_ParamItem { get; set; } = "Param";
     public string ConfigWindow_EventItem { get; set; } = "Event";
     public string ConfigWindow_ActionItem { get; set; } = "Action";
+    public string ConfigWindow_ControlItem { get; set; } = "Control";
     public string ConfigWindow_HelpItem { get; set; } = "Help";
     public string ConfigWindow_RotationDev { get; set; } = "RotationDev";
 
@@ -233,6 +234,10 @@ internal partial class Strings
     public string ConfigWindow_Param_ConditionUp { get; set; } = "Up";
     public string ConfigWindow_Param_ConditionDown { get; set; } = "Down";
     public string ConfigWindow_Param_ConditionDelete { get; set; } = "Delete";
+
+    public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
+    public string ConfigWindow_Control_IsControlWindowLock { get; set; } = "Lock Control Window";
+
     #endregion
 
     #region ScriptWindow

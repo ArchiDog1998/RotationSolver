@@ -153,6 +153,10 @@ public class PluginConfiguration : IPluginConfiguration
     public int TargetingIndex { get; set; } = 0;
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
+
+    public bool ShowControlWindow = false;
+    public bool IsControlWindowLock = true;
+
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

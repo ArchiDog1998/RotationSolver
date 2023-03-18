@@ -91,7 +91,7 @@ internal static partial class TargetUpdater
 
     private static IEnumerable<BattleChara> GetHostileTargets(IEnumerable<BattleChara> allAttackableTargets)
     {
-        var type = IconReplacer.RightNowTargetToHostileType;
+        var type = DataCenter.RightNowTargetToHostileType;
         if (type == TargetHostileType.AllTargetsCanAttack || Service.CountDownTime > 0)
         {
             return allAttackableTargets;
