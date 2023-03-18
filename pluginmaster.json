@@ -16,7 +16,7 @@
     ],
     "IsHide": false,
     "InternalName": "RotationSolver",
-    "AssemblyVersion": "2.0.0",
+    "AssemblyVersion": "2.1.0",
     "IsTestingExclusive": false,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
     "ApplicableVersion": "any",
