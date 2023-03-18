@@ -42,5 +42,4 @@ internal class MovingController : IDisposable
         }
         return movingHook.Original(ptr);
     }
-
 }

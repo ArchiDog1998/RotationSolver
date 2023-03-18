@@ -89,6 +89,8 @@ internal static class MajorUpdater
         ActionUpdater.UpdateNextAction();
         RSCommands.UpdateRotationState();
 
+        InputUpdater.UpdateCommand();
+
         _work = false;
     }
 

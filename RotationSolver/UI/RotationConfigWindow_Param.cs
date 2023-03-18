@@ -461,7 +461,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawCheckBox(string name, ref bool value, string description = "", Action otherThing = null)
+    internal static void DrawCheckBox(string name, ref bool value, string description = "", Action otherThing = null)
     {
         if (ImGui.Checkbox(name, ref value))
         {

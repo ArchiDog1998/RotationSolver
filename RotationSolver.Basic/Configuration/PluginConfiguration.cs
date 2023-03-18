@@ -1,4 +1,5 @@
 using Dalamud.Configuration;
+using Dalamud.Game.ClientState.GamePad;
 using Newtonsoft.Json;
 using RotationSolver.Basic.Data;
 using System.Numerics;
@@ -156,13 +157,43 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool ShowControlWindow = false;
     public bool IsControlWindowLock = true;
-    public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.5f);
-    public Vector4 ControlWindowUnlockBg = new Vector4(0, 0, 0, 1);
+    public bool UseKeyboardCommand = false;
+    public bool UseGamepadCommand = false;
+
+    public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.6f);
+    public Vector4 ControlWindowUnlockBg = new Vector4(0, 0, 0, 0.9f);
     public float ControlWindowGCDSize = 40;
     public float ControlWindow0GCDSize = 30;
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
 
+    public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
+    public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();
+
+    public Dictionary<StateCommandType, ButtonRecord> ButtonState { get; set; } = new Dictionary<StateCommandType, ButtonRecord>()
+    {
+        {StateCommandType.Smart, new ButtonRecord( GamepadButtons.East, false, true) },
+        {StateCommandType.Manual, new ButtonRecord( GamepadButtons.North, false, true) },
+        {StateCommandType.Cancel, new ButtonRecord( GamepadButtons.South, false, true) },
+    };
+    public Dictionary<SpecialCommandType, ButtonRecord> ButtonSpecial { get; set; } = new Dictionary<SpecialCommandType, ButtonRecord>()
+    {
+        {SpecialCommandType.EndSpecial, new ButtonRecord( GamepadButtons.West, false, true) },
+
+        {SpecialCommandType.EsunaStanceNorth, new ButtonRecord( GamepadButtons.DpadRight, false, true) },
+        {SpecialCommandType.MoveForward, new ButtonRecord( GamepadButtons.DpadUp, false, true) },
+        {SpecialCommandType.MoveBack, new ButtonRecord( GamepadButtons.DpadDown, false, true) },
+        {SpecialCommandType.RaiseShirk, new ButtonRecord( GamepadButtons.DpadLeft, false, true) },
+
+        {SpecialCommandType.DefenseArea, new ButtonRecord( GamepadButtons.North, true, false) },
+        {SpecialCommandType.DefenseSingle, new ButtonRecord( GamepadButtons.East, true, false) },
+        {SpecialCommandType.HealArea, new ButtonRecord( GamepadButtons.South, true, false) },
+        {SpecialCommandType.HealSingle, new ButtonRecord( GamepadButtons.West, true, false) },
+
+        {SpecialCommandType.Burst, new ButtonRecord( GamepadButtons.DpadDown, true, false) },
+        {SpecialCommandType.AntiKnockback, new ButtonRecord( GamepadButtons.DpadUp, true, false) },
+
+    };
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

@@ -60,8 +60,7 @@ namespace RotationSolver.Commands
             where T : struct, Enum
         {
             //Get jobrole.
-            var role = Service.GetSheet<ClassJob>().GetRow(
-                Service.Player.ClassJob.Id).GetJobRole();
+            var role = Service.Player.ClassJob.GameData.GetJobRole();
 
             doingSomething(role);
 

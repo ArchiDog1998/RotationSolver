@@ -18,6 +18,8 @@ using Dalamud.Interface.Colors;
 using RotationSolver.Localization;
 using Lumina.Excel.GeneratedSheets;
 using ImGuiScene;
+using static System.Net.Mime.MediaTypeNames;
+using static FFXIVClientStructs.FFXIV.Client.Game.QuestManager.QuestListArray;
 
 namespace RotationSolver.UI;
 
@@ -60,40 +62,23 @@ internal class ControlWindow : Window
         base.PostDraw();
     }
 
-    static void DrawCommand<T>(T command, Func<T, string> getHelp = null) where T : struct, Enum
-    {
-        var cmdStr = command.GetCommandStr();
-
-        if (ImGui.Button(command.ToString()))
-        {
-            Service.CommandManager.ProcessCommand(cmdStr);
-        }
-        if (ImGui.IsItemHovered())
-        {
-            var help = getHelp?.Invoke(command);
-            if (!string.IsNullOrEmpty(help))
-            {
-                ImGui.SetTooltip(help);
-            }
-
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
-            {
-                ImGui.SetClipboardText(cmdStr);
-            }
-        }
-    }
-
     public override  void Draw()
     {
         ImGui.Columns(2, "Control Bolder", false);
         ImGui.SetColumnWidth(0, DrawNextAction() + ImGui.GetStyle().ColumnsMinSpacing * 2);
 
-        DrawCommand(StateCommandType.Smart, EnumTranslations.ToHelp);
+        DrawCommandAction(61822, StateCommandType.Smart, ImGuiColors.DPSRed);
 
-        DrawCommand(StateCommandType.Manual, EnumTranslations.ToHelp);
+        ImGui.SameLine();
 
-        DrawCommand(StateCommandType.Cancel, EnumTranslations.ToHelp);
+        DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
 
+        DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DPSRed);
+
+        ImGui.SameLine();
+
+        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsControlWindowLock,
+            ref Service.Config.IsControlWindowLock);
 
         ImGui.NextColumn();
         var rotation = RotationUpdater.RightNowRotation;
@@ -120,8 +105,16 @@ internal class ControlWindow : Window
 
         ImGui.SameLine();
 
-        DrawCommandAction(null, rotation?.ActionMoveBackAbility,
+        DrawCommandAction(rotation?.ActionMoveBackAbility,
             SpecialCommandType.MoveBack, ImGuiColors.DalamudOrange);
+
+        ImGui.SameLine();
+
+        DrawCommandAction(61804, SpecialCommandType.Burst, ImGuiColors.DalamudWhite2);
+
+        ImGui.SameLine();
+
+        DrawCommandAction(61753, SpecialCommandType.EndSpecial, ImGuiColors.DalamudWhite2);
 
         DrawCommandAction(rotation?.EsunaStanceNorthGCD, rotation?.EsunaStanceNorthAbility,
             SpecialCommandType.EsunaStanceNorth, ImGuiColors.ParsedGold);
@@ -133,16 +126,10 @@ internal class ControlWindow : Window
 
         ImGui.SameLine();
 
-        DrawCommandAction(null, rotation?.AntiKnockbackAbility,
+        DrawCommandAction(rotation?.AntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
 
         ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 5);
-
-        DrawCommand(SpecialCommandType.Burst, EnumTranslations.ToHelp);
-
-        ImGui.SameLine();
-
-        DrawCommand(SpecialCommandType.EndSpecial, EnumTranslations.ToHelp);
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)
@@ -150,20 +137,104 @@ internal class ControlWindow : Window
         var gcdW = Service.Config.ControlWindowGCDSize;
         var abilityW = Service.Config.ControlWindow0GCDSize;
         var width = gcdW + abilityW + ImGui.GetStyle().ItemSpacing.X + ImGui.GetStyle().ItemInnerSpacing.X * 4;
+        var str = command.ToString();
+        var strWidth = ImGui.CalcTextSize(str).X;
 
         ImGui.BeginGroup();
-        var str = command.ToString();
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
         ImGui.TextColored(color, str);
 
+        var help = GetHelp(command);
         string baseId = "ImgButton" + command.ToString();
-        DrawIAction(GetTexture(gcd).ImGuiHandle, baseId + nameof(gcd), gcdW, command);
-        ImGuiHelper.HoveredString(command.ToHelp());
 
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+
+        DrawIAction(GetTexture(gcd).ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
         ImGui.SameLine();
-        DrawIAction(GetTexture(ability).ImGuiHandle, baseId + nameof(ability), abilityW, command);
-        ImGuiHelper.HoveredString(command.ToHelp());
+        DrawIAction(GetTexture(ability).ImGuiHandle, baseId + nameof(ability), abilityW, command, help);
         ImGui.EndGroup();
+    }
+
+    static void DrawCommandAction(IAction ability, SpecialCommandType command, Vector4 color)
+    {
+        DrawCommandAction(GetTexture(ability), command, color);
+    }
+
+    static void DrawCommandAction(uint iconId, SpecialCommandType command, Vector4 color)
+    {
+        DrawCommandAction(IconSet.GetTexture(iconId), command, color);
+    }
+
+    static void DrawCommandAction(TextureWrap texture, SpecialCommandType command, Vector4 color)
+    {
+        var abilityW = Service.Config.ControlWindow0GCDSize;
+        var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
+        var str = command.ToString();
+        var strWidth = ImGui.CalcTextSize(str).X;
+
+        ImGui.BeginGroup();
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+        ImGui.TextColored(color, str);
+
+        var help = GetHelp(command);
+        string baseId = "ImgButton" + command.ToString();
+
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+        DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
+        ImGui.EndGroup();
+    }
+
+    static void DrawCommandAction(uint iconId, StateCommandType command, Vector4 color)
+    {
+        var abilityW = Service.Config.ControlWindow0GCDSize;
+        var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
+        var str = command.ToString();
+        var strWidth = ImGui.CalcTextSize(str).X;
+
+        ImGui.BeginGroup();
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+        ImGui.TextColored(color, str);
+
+        var help = GetHelp(command);
+        string baseId = "ImgButton" + command.ToString();
+
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+        DrawIAction(IconSet.GetTexture(iconId).ImGuiHandle, baseId, abilityW, command, help);
+        ImGui.EndGroup();
+    }
+
+    static string GetHelp(SpecialCommandType command)
+    {
+        var help = command.ToHelp() + "\n ";
+        if (Service.Config.ButtonSpecial.TryGetValue(command, out var button))
+        {
+            help += "\n" + button.ToStr();
+            if (!Service.Config.UseGamepadCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
+
+        }
+        if (Service.Config.KeySpecial.TryGetValue(command, out var key))
+        {
+            help += "\n" + key.ToStr();
+            if (!Service.Config.UseKeyboardCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
+        }
+        return help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
+    }
+
+    static string GetHelp(StateCommandType command)
+    {
+        var help = command.ToHelp() + "\n ";
+        if (Service.Config.ButtonState.TryGetValue(command, out var button))
+        {
+            help += "\n" + button.ToStr();
+            if (!Service.Config.UseGamepadCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
+        }
+        if (Service.Config.KeyState.TryGetValue(command, out var key))
+        {
+            help += "\n" + key.ToStr();
+            if (!Service.Config.UseKeyboardCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
+
+        }
+        return help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
     }
 
     static readonly Dictionary<uint, uint> _actionIcons = new Dictionary<uint, uint>();
@@ -179,7 +250,7 @@ internal class ControlWindow : Window
         return IconSet.GetTexture(iconId);
     }
 
-    static void DrawIAction(nint handle, string id, float width, SpecialCommandType command)
+    static void DrawIAction(nint handle, string id, float width, SpecialCommandType command, string help)
     {
         ImGui.PushID(id);
         if (ImGui.ImageButton(handle, new Vector2(width, width)))
@@ -187,6 +258,76 @@ internal class ControlWindow : Window
             Service.CommandManager.ProcessCommand(command.GetCommandStr());
         }
         ImGui.PopID();
+        if (ImGui.IsItemHovered())
+        {
+            if (!string.IsNullOrEmpty(help)) ImGui.SetTooltip(help);
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
+            {
+                if(ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
+                {
+                    Service.Config.KeySpecial.Remove(command);
+                    Service.Config.ButtonSpecial.Remove(command);
+                    Service.Config.Save();
+
+                    Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                        {
+                            IconId = 101,
+                            PlaySound = true,
+                            DisplayCheckmark = true,
+                        });
+                }
+                if(InputUpdater.RecordingSpecialType == SpecialCommandType.None)
+                {
+                    InputUpdater.RecordingSpecialType = command;
+                    Service.ToastGui.ShowQuest($"Recording: {command}",
+                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                        {
+                            IconId = 101,
+                        });
+                }
+            }
+        }
+    }
+
+    static void DrawIAction(nint handle, string id, float width, StateCommandType command, string help)
+    {
+        ImGui.PushID(id);
+        if (ImGui.ImageButton(handle, new Vector2(width, width)))
+        {
+            Service.CommandManager.ProcessCommand(command.GetCommandStr());
+        }
+        ImGui.PopID();
+        if (ImGui.IsItemHovered())
+        {
+            if (!string.IsNullOrEmpty(help)) ImGui.SetTooltip(help);
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
+            {
+                if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
+                {
+                    Service.Config.KeyState.Remove(command);
+                    Service.Config.ButtonState.Remove(command);
+                    Service.Config.Save();
+
+                    Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                        {
+                            IconId = 101,
+                            PlaySound = true,
+                            DisplayCheckmark = true,
+                        });
+                }
+                if (InputUpdater.RecordingStateType == StateCommandType.None)
+                {
+                    InputUpdater.RecordingStateType = command;
+                    Service.ToastGui.ShowQuest($"Recording: {command}",
+                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                        {
+                            IconId = 101,
+                        });
+                }
+            }
+        }
     }
 
     static void DrawIAction(IAction action, float width)
