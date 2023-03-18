@@ -1,25 +1,16 @@
-﻿using Dalamud.Interface.Windowing;
-using ImGuiNET;
-using RotationSolver.Basic;
-using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Commands;
-using RotationSolver.Basic.Helpers;
+﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using Dalamud.Interface.Colors;
-using RotationSolver.Localization;
-using Lumina.Excel.GeneratedSheets;
+using ImGuiNET;
 using ImGuiScene;
-using static System.Net.Mime.MediaTypeNames;
-using static FFXIVClientStructs.FFXIV.Client.Game.QuestManager.QuestListArray;
+using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
+using RotationSolver.Commands;
+using RotationSolver.Localization;
+using RotationSolver.Updaters;
+using System.Numerics;
 
 namespace RotationSolver.UI;
 

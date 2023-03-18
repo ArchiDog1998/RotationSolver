@@ -42,13 +42,20 @@ internal static class MajorUpdater
         //        }
         //#endif
 
-        SocialUpdater.UpdateSocial();
-        PreviewUpdater.UpdatePreview();
-        ActionUpdater.UpdateWeaponTime();
+        try
+        {
+            SocialUpdater.UpdateSocial();
+            PreviewUpdater.UpdatePreview();
+            ActionUpdater.UpdateWeaponTime();
 
-        ActionUpdater.DoAction();
+            ActionUpdater.DoAction();
 
-        MacroUpdater.UpdateMacro();
+            MacroUpdater.UpdateMacro();
+        }
+        catch (Exception ex)
+        {
+            PluginLog.Error(ex, "Main Thread Exception");
+        }
 
         if (Service.Config.UseWorkTask)
         {
