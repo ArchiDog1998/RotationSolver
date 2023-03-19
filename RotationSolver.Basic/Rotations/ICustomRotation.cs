@@ -18,7 +18,6 @@ public interface ICustomRotation : ITexture
     string RotationName { get; }
     IRotationConfigSet Configs { get; }
     MedicineType MedicineType { get; }
-    BattleChara MoveTarget { get; }
 
     IBaseAction[] AllBaseActions { get; }
     IAction[] AllActions { get; }

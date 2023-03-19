@@ -15,6 +15,7 @@ internal static class MajorUpdater
 
     private static void FrameworkUpdate(Framework framework)
     {
+        RotationSolverPlugin.UpdateControlWindow();
         if (!IsValid) return;
 
         //#if DEBUG

@@ -59,7 +59,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         ChangeUITranslation();
 
         RotationUpdater.GetAllCustomRotations();
-        OpenControlWindow();
     }
 
 
@@ -102,9 +101,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _comboConfigWindow.Toggle();
     }
 
-    internal static void OpenControlWindow()
+    internal static void UpdateControlWindow()
     {
-        _controlWindow.IsOpen = Service.Config.ShowControlWindow;
+        _controlWindow.IsOpen = MajorUpdater.IsValid && Service.Config.ShowControlWindow;
     }
-
 }

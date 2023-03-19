@@ -5,6 +5,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Numerics;
 
@@ -98,7 +99,7 @@ internal static class OverlayWindow
         var c = Service.Config.MovingTargetColor;
         var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
-        var tar = RotationUpdater.RightNowRotation?.MoveTarget;
+        var tar = CustomRotation.MoveTarget;
         if (tar == null || tar == Service.Player) return;
 
         DrawTarget(tar, color, 8, out var scrPos);

@@ -133,7 +133,12 @@ internal class ControlWindow : Window
         DrawIAction(act, width);
         ImGuiHelper.HoveredString(act.Name);
 
-        if (act.IsCoolingDown)
+        if (!act.EnoughLevel)
+        {
+            ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X, pos.Y) + winPos,
+                new Vector2(pos.X + width, pos.Y + width) + winPos, progressCol);
+        }
+        else if (act.IsCoolingDown)
         {
             var ratio = recast == 0 ? 0 : elapsed % recast / recast;
             ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X + width * ratio, pos.Y) + winPos, 
@@ -146,7 +151,7 @@ internal class ControlWindow : Window
             TextShade(fontPos, time, 1.5f, white, black);
         }
 
-        if(act is IBaseAction bAct && bAct.MaxCharges > 1)
+        if(act.EnoughLevel && act is IBaseAction bAct && bAct.MaxCharges > 1)
         {
             for (int i = 0; i < bAct.CurrentCharges; i++)
             {

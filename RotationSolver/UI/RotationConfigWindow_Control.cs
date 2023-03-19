@@ -15,7 +15,7 @@ internal partial class RotationConfigWindow
     private void DrawControlTab()
     {
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
-            ref Service.Config.ShowControlWindow, otherThing: RotationSolverPlugin.OpenControlWindow);
+            ref Service.Config.ShowControlWindow);
 
         if (!Service.Config.ShowControlWindow) return;
 

@@ -16,7 +16,6 @@ internal static class ActionUpdater
 
     static  RandomDelay _GCDDelay = new RandomDelay(() => (Service.Config.WeaponDelayMin, Service.Config.WeaponDelayMax));
 
-
     internal static IAction NextAction { get; private set; }
     internal static IBaseAction NextGCDAction { get; private set; }
 
@@ -26,7 +25,6 @@ internal static class ActionUpdater
 
     internal static void UpdateNextAction()
     {
-
         PlayerCharacter localPlayer = Service.Player;
         if (localPlayer == null) return;
 
