@@ -12,6 +12,7 @@ namespace RotationSolver.Commands
     {
         static DateTime _fastClickStopwatch = DateTime.Now;
         static readonly TimeSpan _fastSpan = new TimeSpan(0, 0, 0, 0, 200);
+        static byte _loop = 0;
         internal static unsafe void DoAnAction(bool isGCD)
         {
             if (DataCenter.StateType == StateCommandType.Cancel) return;
@@ -25,7 +26,12 @@ namespace RotationSolver.Commands
 
             if (SocialUpdater.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
-                Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
+                if(_loop % 5  == 0)
+                {
+                    Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
+                }
+                _loop++;
+                _loop %= 5;
                 return;
             }
 
