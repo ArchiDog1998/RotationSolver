@@ -359,7 +359,7 @@ internal class ControlWindow : Window
                             DisplayCheckmark = true,
                         });
                 }
-                if(InputUpdater.RecordingSpecialType == SpecialCommandType.None)
+                else if(InputUpdater.RecordingSpecialType == SpecialCommandType.None)
                 {
                     InputUpdater.RecordingTime = DateTime.Now;
                     InputUpdater.RecordingSpecialType = command;
@@ -400,7 +400,7 @@ internal class ControlWindow : Window
                             DisplayCheckmark = true,
                         });
                 }
-                if (InputUpdater.RecordingStateType == StateCommandType.None)
+                else if (InputUpdater.RecordingStateType == StateCommandType.None)
                 {
                     InputUpdater.RecordingTime = DateTime.Now;
                     InputUpdater.RecordingStateType = command;

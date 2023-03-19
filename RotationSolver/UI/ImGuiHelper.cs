@@ -477,6 +477,9 @@ internal static class ImGuiHelper
                 ImGui.SameLine();
                 Spacing();
 
+                var display = ImGui.GetIO().DisplaySize;
+                var displayS = Math.Min(display.X, display.Y) * 0.8f;
+
                 foreach (var texture in attrs)
                 {
                     if (IconButton(FontAwesomeIcon.Question,
@@ -488,7 +491,7 @@ internal static class ImGuiHelper
                     {
                         DrawTooltip(() =>
                         {
-                            var ratio = Math.Min(1, 1500f / texture.Texture.Width);
+                            var ratio = Math.Min(1, displayS / Math.Max(texture.Texture.Width, texture.Texture.Height));
                             var size = new Vector2(texture.Texture.Width * ratio,
                                 texture.Texture.Height * ratio);
                             ImGui.Image(texture.Texture.ImGuiHandle, size);
