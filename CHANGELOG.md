@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.2...v2.1.3) (2023-03-19)
+
+
+### Bug Fixes
+
+* add a directory existing check. ([20bdb07](https://github.com/ArchiDog1998/RotationSolver/commit/20bdb073110c8116f94af7c1faf17bd1f70ac019))
+* add cooldown show. ([2f5c111](https://github.com/ArchiDog1998/RotationSolver/commit/2f5c1114a367468330328c114934a02b354b61d7))
+* blm and some input stuff. ([a0dce2e](https://github.com/ArchiDog1998/RotationSolver/commit/a0dce2e16c25c56b36bbc08636d8715e9126353d))
+* changed the speech logic. ([3b7d169](https://github.com/ArchiDog1998/RotationSolver/commit/3b7d16939ede220f71318fd838201c5e844468a9))
+* finished the cooldown show. ([4769cf4](https://github.com/ArchiDog1998/RotationSolver/commit/4769cf48603b83bdd39b1910b377fb0e43f3cfa1))
+* fix some control window showing stuff. ([b363364](https://github.com/ArchiDog1998/RotationSolver/commit/b3633640fc8463ccebe3679ea3fad94927c8086a))
+* moving target choice. ([57ac999](https://github.com/ArchiDog1998/RotationSolver/commit/57ac9992ef3019e09b3686e1c911392f2625892f))
+* Reduce the frequency of high-end rotation error reporting. ([549c0e5](https://github.com/ArchiDog1998/RotationSolver/commit/549c0e5c6adf854c4efb7c8aaedd6bc15b3ba4e6))
+
 ## [2.1.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.1...v2.1.2) (2023-03-18)
 
 
