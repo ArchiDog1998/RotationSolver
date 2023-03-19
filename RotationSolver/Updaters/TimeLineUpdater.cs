@@ -1,15 +1,8 @@
 ﻿using ImGuiNET;
-using Newtonsoft.Json;
-using RotationSolver.Actions;
 using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.SigReplacers;
 using RotationSolver.Timeline;
 using RotationSolver.UI;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 
 namespace RotationSolver.Updaters
 {

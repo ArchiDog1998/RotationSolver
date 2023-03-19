@@ -14,7 +14,6 @@ using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
-using RotationSolver.SigReplacers;
 using System;
 using System.Runtime.InteropServices;
 

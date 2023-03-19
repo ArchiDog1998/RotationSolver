@@ -47,7 +47,7 @@ public partial class BaseAction : IBaseAction
 
     public uint IconID => _action.Icon;
 
-    private bool IsGeneralGCD { get; }
+    public bool IsGeneralGCD { get; }
 
     public bool IsRealGCD { get; }
 

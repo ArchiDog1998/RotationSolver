@@ -32,39 +32,7 @@ internal partial class RotationConfigWindow
         if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
         {
             if (RotationUpdater.RightNowRotation != null)
-                foreach (var pair in RotationUpdater.RightNowRotation.AllActions.GroupBy(a =>
-                {
-                    if (a is IBaseAction act)
-                    {
-                        string result;
-
-                        if (act.IsFriendly)
-                        {
-                            result = LocalizationManager.RightLang.Action_Friendly;
-                            if (act.IsEot)
-                            {
-                                result += "Hot";
-                            }
-                        }
-                        else
-                        {
-                            result = LocalizationManager.RightLang.Action_Attack;
-
-                            if (act.IsEot)
-                            {
-                                result += "Dot";
-                            }
-                        }
-                        result += "-" + (act.IsRealGCD ? "GCD" : LocalizationManager.RightLang.Timeline_Ability);
-                        return result;
-                    }
-                    else if (a is IBaseItem)
-                    {
-                        return "Item";
-                    }
-                    return string.Empty;
-
-                }).OrderBy(g => g.Key))
+                foreach (var pair in RotationUpdater.AllGroupedActions)
                 {
                     if (ImGui.CollapsingHeader(pair.Key))
                     {

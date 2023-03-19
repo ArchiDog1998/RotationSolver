@@ -15,15 +15,21 @@ internal partial class RotationConfigWindow
     private void DrawControlTab()
     {
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
-            ref Service.Config.ShowControlWindow, otherThing: RotationSolverPlugin.OpenControlWindow);
+            ref Service.Config.ShowControlWindow);
 
         if (!Service.Config.ShowControlWindow) return;
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsControlWindowLock,
+            ref Service.Config.IsControlWindowLock);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseKeyboardCommand,
             ref Service.Config.UseKeyboardCommand);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseGamepadCommand,
             ref Service.Config.UseGamepadCommand);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ControlShowCooldown,
+            ref Service.Config.ControlShowCooldown);
 
         if (Service.Config.IsControlWindowLock)
         {
@@ -37,10 +43,10 @@ internal partial class RotationConfigWindow
         }
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowGCDSize,
-            ref Service.Config.ControlWindowGCDSize);
+            ref Service.Config.ControlWindowGCDSize, speed: 0.2f , max: 80);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindow0GCDSize,
-            ref Service.Config.ControlWindow0GCDSize);
+            ref Service.Config.ControlWindow0GCDSize, speed: 0.2f, max: 80);
 
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,

@@ -2,18 +2,12 @@
 using Dalamud.Logging;
 using RotationSolver.Basic;
 using RotationSolver.Commands;
-using RotationSolver.SigReplacers;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 
 namespace RotationSolver.Updaters;
 
 internal static class MajorUpdater
 {
-    private static bool IsValid => Service.Conditions.Any() && Service.Player != null;
+    public static bool IsValid => Service.Conditions.Any() && Service.Player != null;
 
     //#if DEBUG
     //    private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
@@ -21,6 +15,7 @@ internal static class MajorUpdater
 
     private static void FrameworkUpdate(Framework framework)
     {
+        RotationSolverPlugin.UpdateControlWindow();
         if (!IsValid) return;
 
         //#if DEBUG

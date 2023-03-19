@@ -17,8 +17,9 @@ public abstract partial class CustomRotation
         var role = Job.GetJobRole();
 
         ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
-        ActionMoveForwardAbility = MoveForwardAbility(1, out act, recordTarget: false) ? act : null;
-        MoveTarget = act is IBaseAction a ? a.Target : null;
+        var movingTarget = MoveForwardAbility(1, out act, recordTarget: false);
+        ActionMoveForwardAbility = movingTarget ? act : null;
+        MoveTarget = (movingTarget && act is IBaseAction a) ? a.Target : null;
 
         ActionMoveBackAbility = MoveBackAbility(DataCenter.AbilityRemainCount, out act) ? act : null;
 

@@ -1,17 +1,13 @@
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using Dalamud.Utility;
-using ImGuiScene;
 using Newtonsoft.Json;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
-using RotationSolver.SigReplacers;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
-using System.Net;
 
 namespace RotationSolver;
 
@@ -63,7 +59,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         ChangeUITranslation();
 
         RotationUpdater.GetAllCustomRotations();
-        OpenControlWindow();
     }
 
 
@@ -106,9 +101,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _comboConfigWindow.Toggle();
     }
 
-    internal static void OpenControlWindow()
+    internal static void UpdateControlWindow()
     {
-        _controlWindow.IsOpen = Service.Config.ShowControlWindow;
+        _controlWindow.IsOpen = MajorUpdater.IsValid && Service.Config.ShowControlWindow;
     }
-
 }

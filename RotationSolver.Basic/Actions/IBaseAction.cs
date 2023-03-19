@@ -50,14 +50,14 @@ namespace RotationSolver.Basic.Actions
         Func<BattleChara, bool> ActionCheck { get; set; }
 
         /// <summary>
-        /// Player's level is enough for this action's usage.
-        /// </summary>
-        bool EnoughLevel { get; }
-
-        /// <summary>
         /// Is a GCD action.
         /// </summary>
         bool IsRealGCD { get; }
+
+        /// <summary>
+        /// Is a simple gcd action, without other cooldown.
+        /// </summary>
+        bool IsGeneralGCD { get; }
 
         /// <summary>
         /// Can I use this action at this time. It will check a lot of things.
@@ -90,6 +90,15 @@ namespace RotationSolver.Basic.Actions
         /// </summary>
         ushort MaxCharges { get; }
 
+        /// <summary>
+        /// At least has one Charge
+        /// </summary>
+        bool HasOneCharge { get; }
+
+        /// <summary>
+        /// recast time remain total.
+        /// </summary>
+        float RecastTimeRemain { get; }
         /// <summary>
         /// Has it been in cooldown for <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
         /// </summary>

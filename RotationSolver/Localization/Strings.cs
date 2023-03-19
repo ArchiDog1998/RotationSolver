@@ -144,9 +144,10 @@ internal partial class Strings
     public string ConfigWindow_Param_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
     public string ConfigWindow_Param_MovingTargetColor { get; set; } = "Prompt box color of moving target";
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
-    public string ConfigWindow_Params_SubTargetColor { get; set; } = "Sub-target color";
+    public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
-    public string ConfigWindow_Params_VoiceVolume { get; set; } = "Voice volume";
+    public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
+    public string ConfigWindow_Param_VoiceName { get; set; } = "Voice Name";
     public string ConfigWindow_Param_FlytextPositional { get; set; } = "Hint positional anticipation by flytext";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback";
@@ -239,6 +240,7 @@ internal partial class Strings
     public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
     public string ConfigWindow_Control_UseKeyboardCommand { get; set; } = "Use Keyboard Command";
     public string ConfigWindow_Control_UseGamepadCommand { get; set; } = "Use GamePad Command";
+    public string ConfigWindow_Control_ControlShowCooldown { get; set; } = "Show action's cooldown";
     public string ConfigWindow_Control_IsControlWindowLock { get; set; } = "Lock";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";

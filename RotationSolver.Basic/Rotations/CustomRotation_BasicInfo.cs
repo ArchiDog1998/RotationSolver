@@ -41,7 +41,7 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public IRotationConfigSet Configs { get; }
 
-    public BattleChara MoveTarget { get; private set; }
+    public static BattleChara MoveTarget { get; private set; }
 
     public virtual string Description { get; } = string.Empty;
 

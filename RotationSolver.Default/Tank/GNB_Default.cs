@@ -100,9 +100,6 @@ public sealed class GNB_Default : GNB_Base
     {
         if (abilitiesRemaining == 2)
         {
-            //10
-            if (HeartofStone.CanUse(out act)) return true;
-
             //30
             if (Nebula.CanUse(out act)) return true;
 
@@ -112,6 +109,8 @@ public sealed class GNB_Default : GNB_Base
             //10
             if (Camouflage.CanUse(out act)) return true;
         }
+        //10
+        if (HeartofStone.CanUse(out act)) return true;
 
         if (Reprisal.CanUse(out act)) return true;
 
