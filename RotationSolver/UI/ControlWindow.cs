@@ -82,7 +82,7 @@ internal class ControlWindow : Window
 
         ImGui.Columns(1);
 
-        if(Service.Config.ControlShowCooldown && RotationUpdater.RightNowRotation!= null)
+        if(MajorUpdater.IsValid && Service.Config.ControlShowCooldown && RotationUpdater.RightNowRotation!= null)
         {
             ImGui.Separator();
             foreach (var pair in RotationUpdater.AllGroupedActions)

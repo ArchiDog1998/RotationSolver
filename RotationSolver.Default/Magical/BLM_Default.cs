@@ -103,7 +103,7 @@ public class BLM_Default : BLM_Base
         if (InFireOrIce(out act, out var mustGo)) return true;
         if (mustGo) return false;
         //Triplecast for moving.
-        if (IsMoving && Triplecast.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (IsMoving && HasHostilesInRange && Triplecast.CanUse(out act, emptyOrSkipCombo: true)) return true;
 
         if (AddElementBase(out act)) return true;
         if (Scathe.CanUse(out act)) return true;

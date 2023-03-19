@@ -97,13 +97,13 @@ internal static class InputUpdater
         if (Service.Config.KeyState.ContainsValue(key))
         {
             Service.CommandManager.ProcessCommand(Service.Config.KeyState
-                .First(k => k.Value == key && k.Key != 0).Key.GetCommandStr());
+                .FirstOrDefault(k => k.Value == key && k.Key != StateCommandType.None).Key.GetCommandStr());
         }
 
         if (Service.Config.KeySpecial.ContainsValue(key))
         {
             Service.CommandManager.ProcessCommand(Service.Config.KeySpecial
-                .First(k => k.Value == key && k.Key != 0).Key.GetCommandStr());
+                .FirstOrDefault(k => k.Value == key && k.Key != SpecialCommandType.None).Key.GetCommandStr());
         }
     }
 
@@ -135,13 +135,13 @@ internal static class InputUpdater
         if (Service.Config.ButtonState.ContainsValue(button))
         {
             Service.CommandManager.ProcessCommand(Service.Config.ButtonState
-                .First(k => k.Value == button && k.Key != 0).Key.GetCommandStr());
+                .FirstOrDefault(k => k.Value == button && k.Key != StateCommandType.None).Key.GetCommandStr());
         }
 
         if (Service.Config.ButtonSpecial.ContainsValue(button))
         {
             Service.CommandManager.ProcessCommand(Service.Config.ButtonSpecial
-                .First(k => k.Value == button && k.Key != 0).Key.GetCommandStr());
+                .FirstOrDefault(k => k.Value == button && k.Key != SpecialCommandType.None).Key.GetCommandStr());
         }
     }
 }
