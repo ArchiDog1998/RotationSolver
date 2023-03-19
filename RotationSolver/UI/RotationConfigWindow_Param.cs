@@ -121,8 +121,24 @@ internal partial class RotationConfigWindow
 
     private void DrawParamAdvanced()
     {
-        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Params_VoiceVolume,
-    ref Service.Config.VoiceVolume, max: 100);
+        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_VoiceVolume,
+            ref Service.Config.VoiceVolume, max: 100);
+
+        if(SpeechHelper.VoiceNames != null)
+        {
+            if (ImGui.BeginCombo(LocalizationManager.RightLang.ConfigWindow_Param_VoiceName, Service.Config.VoiceName))
+            {
+                foreach (var item in SpeechHelper.VoiceNames)
+                {
+                    if (ImGui.Selectable(item))
+                    {
+                        Service.Config.VoiceName = item;
+                        Service.Config.Save();
+                    }
+                }
+                ImGui.EndCombo();
+            }
+        }
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayOutStateChanged,
             ref Service.Config.SayOutStateChanged);
@@ -169,10 +185,6 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowActionFlag,
             ref Service.Config.ShowActionFlag);
-
-        ImGui.Separator();
-
-
     }
 
     private void DrawParamDisplay()
@@ -215,7 +227,7 @@ internal partial class RotationConfigWindow
 
                 ImGuiHelper.Spacing();
 
-                DrawColor3(LocalizationManager.RightLang.ConfigWindow_Params_SubTargetColor,
+                DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_SubTargetColor,
                     ref Service.Config.SubTargetColor);
             }
         }

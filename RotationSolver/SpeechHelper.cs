@@ -1,4 +1,5 @@
-﻿using RotationSolver.Basic;
+﻿using Dalamud.Logging;
+using RotationSolver.Basic;
 using System.Diagnostics;
 using System.Speech.Synthesis;
 using System.Text;
@@ -8,17 +9,24 @@ namespace RotationSolver;
 internal static class SpeechHelper
 {
     static SpeechSynthesizer _speech;
+    public static string[] VoiceNames { get; private set; }
     internal static void Speak(string text)
     {
         try
         {
-            _speech ??= new SpeechSynthesizer();
-            _speech.Volume = Service.Config.VoiceVolume;
+            try
+            {
+                VoiceNames ??= _speech.GetInstalledVoices().Select(v => v.VoiceInfo.Name).ToArray();
+                _speech ??= new SpeechSynthesizer();
+                _speech.Volume = Service.Config.VoiceVolume;
+                _speech.SelectVoice(Service.Config.VoiceName);
+            }
+            catch(Exception ex)
+            {
+                PluginLog.Error(ex, "Speech Exception");
+            }
             _speech.SpeakAsyncCancelAll();
             _speech.SpeakAsync(text);
-
-            //When I got win 11, I'll do that.
-            //_speech.GetInstalledVoices().FirstOrDefault().VoiceInfo;
         }
         catch
         {

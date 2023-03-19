@@ -12,6 +12,7 @@ public class PluginConfiguration : IPluginConfiguration
     public int Version { get; set; } = 6;
 
     public int VoiceVolume = 100;
+    public string VoiceName = string.Empty;
     public SortedSet<string> DisabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DisabledActions { get; private set; } = new SortedSet<uint>();
     public SortedSet<uint> DisabledItems { get; private set; } = new SortedSet<uint>();
