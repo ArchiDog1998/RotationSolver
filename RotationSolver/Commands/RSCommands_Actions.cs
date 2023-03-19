@@ -24,9 +24,16 @@ namespace RotationSolver.Commands
             if (DateTime.Now - _fastClickStopwatch < _fastSpan) return;
             _fastClickStopwatch = DateTime.Now;
 
+            //Do Action
+            var nextAction = ActionUpdater.NextAction;
+            if (nextAction == null) return;
+#if DEBUG
+            //if (nextAction is BaseAction acti)
+            //    Service.ChatGui.Print($"Will Do {acti} {ActionUpdater.WeaponElapsed}");
+#endif
             if (SocialUpdater.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
-                if(_loop % 5  == 0)
+                if (_loop % 5 == 0)
                 {
                     Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
                 }
@@ -35,13 +42,6 @@ namespace RotationSolver.Commands
                 return;
             }
 
-            //Do Action
-            var nextAction = ActionUpdater.NextAction;
-#if DEBUG
-            //if (nextAction is BaseAction acti)
-            //    Service.ChatGui.Print($"Will Do {acti} {ActionUpdater.WeaponElapsed}");
-#endif
-            if (nextAction == null) return;
             if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
 
             if (nextAction.Use())

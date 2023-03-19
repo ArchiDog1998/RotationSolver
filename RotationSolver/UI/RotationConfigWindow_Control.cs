@@ -19,6 +19,9 @@ internal partial class RotationConfigWindow
 
         if (!Service.Config.ShowControlWindow) return;
 
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsControlWindowLock,
+            ref Service.Config.IsControlWindowLock);
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseKeyboardCommand,
             ref Service.Config.UseKeyboardCommand);
 

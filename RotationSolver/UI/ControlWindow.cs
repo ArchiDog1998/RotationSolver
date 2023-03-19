@@ -28,7 +28,8 @@ internal class ControlWindow : Window
     public ControlWindow()
         : base(nameof(ControlWindow), _baseFlags)
     {
-        this.IsOpen = true;
+        Size = new Vector2(540f, 490f);
+        //SizeCondition = ImGuiCond.FirstUseEver;
     }
 
     public override void PreDraw()
@@ -79,10 +80,10 @@ internal class ControlWindow : Window
         DrawSpecials();
 
         ImGui.Columns(1);
-        ImGui.Separator();
 
-        if(RotationUpdater.RightNowRotation!= null)
+        if(Service.Config.ControlShowCooldown && RotationUpdater.RightNowRotation!= null)
         {
+            ImGui.Separator();
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
                 ImGui.Text(pair.Key);
@@ -126,7 +127,8 @@ internal class ControlWindow : Window
 
         if(act is IBaseAction bAct && bAct.MaxCharges > 1)
         {
-            //Draw charges here.
+            ImGui.SetCursorPos(pos);
+            ImGui.TextDisabled(bAct.CurrentCharges.ToString());
         }
 
         ImGui.EndGroup();

@@ -157,7 +157,7 @@ public class PluginConfiguration : IPluginConfiguration
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
     public bool ShowControlWindow = false;
-    public bool IsControlWindowLock = true;
+    public bool IsControlWindowLock = false;
     public bool UseKeyboardCommand = false;
     public bool UseGamepadCommand = false;
 
@@ -167,6 +167,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float ControlWindow0GCDSize = 30;
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
+    public bool ControlShowCooldown = false;
 
     public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
     public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();
