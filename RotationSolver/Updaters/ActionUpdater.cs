@@ -7,14 +7,11 @@ using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
-using RotationSolver.SigReplacers;
-using System;
 
 namespace RotationSolver.Updaters;
 
 internal static class ActionUpdater
 {
-
     static DateTime _startCombatTime = DateTime.MinValue;
 
     static  RandomDelay _GCDDelay = new RandomDelay(() => (Service.Config.WeaponDelayMin, Service.Config.WeaponDelayMax));

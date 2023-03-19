@@ -240,6 +240,7 @@ internal partial class Strings
     public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
     public string ConfigWindow_Control_UseKeyboardCommand { get; set; } = "Use Keyboard Command";
     public string ConfigWindow_Control_UseGamepadCommand { get; set; } = "Use GamePad Command";
+    public string ConfigWindow_Control_ControlShowCooldown { get; set; } = "Show action's cooldown";
     public string ConfigWindow_Control_IsControlWindowLock { get; set; } = "Lock";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";

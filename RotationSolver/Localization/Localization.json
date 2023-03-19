@@ -175,6 +175,7 @@
   "ConfigWindow_Control_ShowControlWindow": "Show Control Window",
   "ConfigWindow_Control_UseKeyboardCommand": "Use Keyboard Command",
   "ConfigWindow_Control_UseGamepadCommand": "Use GamePad Command",
+  "ConfigWindow_Control_ControlShowCooldown": "Show action's cooldown",
   "ConfigWindow_Control_IsControlWindowLock": "Lock",
   "ConfigWindow_Control_BackgroundColor": "Control Window's Background",
   "ConfigWindow_Control_ControlWindowGCDSize": "GCD icon size",

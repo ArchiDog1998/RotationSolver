@@ -28,6 +28,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseGamepadCommand,
             ref Service.Config.UseGamepadCommand);
 
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ControlShowCooldown,
+            ref Service.Config.ControlShowCooldown);
+
         if (Service.Config.IsControlWindowLock)
         {
             DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,

@@ -15,7 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace RotationSolver.SigReplacers;
+namespace RotationSolver;
 
 public class Watcher : IDisposable
 {

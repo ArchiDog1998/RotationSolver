@@ -23,19 +23,6 @@ internal static class InputUpdater
             RecordingStateType = StateCommandType.None;
         }
 
-#if DEBUG
-        Service.KeyState[VirtualKey.W] =
-            Service.KeyState[VirtualKey.A] =
-            Service.KeyState[VirtualKey.S] =
-            Service.KeyState[VirtualKey.D] =
-            Service.KeyState[VirtualKey.UP] =
-            Service.KeyState[VirtualKey.DOWN] =
-            Service.KeyState[VirtualKey.LEFT] =
-            Service.KeyState[VirtualKey.RIGHT] = false;
-
-        var input = (GamepadInput*)Service.GamepadState.GamepadInputAddress;
-        input->LeftStickX = input->LeftStickY = 0;
-#endif
         foreach (var key in Service.KeyState.GetValidVirtualKeys())
         {
             if (key is VirtualKey.CONTROL) continue;

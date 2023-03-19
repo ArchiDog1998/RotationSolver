@@ -6,12 +6,11 @@ using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
-using RotationSolver.SigReplacers;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
 using System.Numerics;
 
-namespace RotationSolver.UI; 
+namespace RotationSolver.UI;
 
 internal partial class RotationConfigWindow
 {

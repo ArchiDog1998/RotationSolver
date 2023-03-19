@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
 using ImGuiScene;
@@ -29,7 +30,7 @@ internal class ControlWindow : Window
         : base(nameof(ControlWindow), _baseFlags)
     {
         Size = new Vector2(540f, 490f);
-        //SizeCondition = ImGuiCond.FirstUseEver;
+        SizeCondition = ImGuiCond.FirstUseEver;
     }
 
     public override void PreDraw()
@@ -86,9 +87,14 @@ internal class ControlWindow : Window
             ImGui.Separator();
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
+                var showItems = pair.Where(i => !(i is IBaseAction a && a.IsGeneralGCD)).OrderBy(a => a.ID);
+
+                if (!showItems.Any()) continue;
+
                 ImGui.Text(pair.Key);
+
                 bool started = false;
-                foreach(var item in pair)
+                foreach(var item in showItems)
                 {
                     if (started)
                     {
@@ -101,34 +107,51 @@ internal class ControlWindow : Window
         }
     }
 
+    static readonly uint black = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 0, 0, 1));
+    static readonly uint white = ImGui.ColorConvertFloat4ToU32(new Vector4(1, 1, 1, 1));
+    static readonly uint progressCol = ImGui.ColorConvertFloat4ToU32(new Vector4(0.6f, 0.6f, 0.6f, 0.6f));
+
+    static void TextShade(Vector2 pos, string text, float width, uint fore, uint background)
+    {
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(0, width), background, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(0, -width), background, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(width, 0), background, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(-width, 0), background, text);
+        ImGui.GetWindowDrawList().AddText(pos, fore, text);
+    }
+
     private static void DrawActionCooldown(IAction act)
     {
-        if (act is IBaseAction a && a.IsGeneralGCD) return;
-
         var width = Service.Config.ControlWindow0GCDSize;
         var recast = act.RecastTimeOneCharge;
         var elapsed = act.RecastTimeElapsed;
 
         ImGui.BeginGroup();
         var pos = ImGui.GetCursorPos();
+        var winPos = ImGui.GetWindowPos();
+
         DrawIAction(act, width);
         ImGuiHelper.HoveredString(act.Name);
 
-        var ratio = recast == 0 ? 0 : elapsed % recast / recast;
-        ImGui.SetCursorPos(new Vector2(pos.X + width * ratio, pos.Y));
-        ImGui.PushStyleColor(ImGuiCol.FrameBg, new Vector4(0, 0, 0, 0.7f));
-        ImGui.ProgressBar(0, new Vector2(width * (1 - ratio), width), string.Empty);
-        ImGui.PopStyleColor();
+        if (act.IsCoolingDown)
+        {
+            var ratio = recast == 0 ? 0 : elapsed % recast / recast;
+            ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X + width * ratio, pos.Y) + winPos, 
+                new Vector2(pos.X + width, pos.Y + width) + winPos, progressCol);
 
-        string time = recast == 0 || !act.EnoughLevel ? "0" : ((int)(recast - elapsed % recast)).ToString();
-        var strSize = ImGui.CalcTextSize(time);
-        ImGui.SetCursorPos(new Vector2(pos.X + width / 2 - strSize.X / 2, pos.Y + width / 2 - strSize.Y / 2));
-        ImGui.Text(time);
+            string time = recast == 0 || !act.EnoughLevel ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
+            var strSize = ImGui.CalcTextSize(time);
+            var fontPos = new Vector2(pos.X + width / 2 - strSize.X / 2, pos.Y + width / 2 - strSize.Y / 2) + winPos;
+
+            TextShade(fontPos, time, 1.5f, white, black);
+        }
 
         if(act is IBaseAction bAct && bAct.MaxCharges > 1)
         {
-            ImGui.SetCursorPos(pos);
-            ImGui.TextDisabled(bAct.CurrentCharges.ToString());
+            for (int i = 0; i < bAct.CurrentCharges; i++)
+            {
+                ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + (i + 0.5f) * new Vector2(6, 0), 2.5f, white);
+            }
         }
 
         ImGui.EndGroup();
@@ -297,8 +320,9 @@ internal class ControlWindow : Window
         uint iconId = 0;
         if(action != null && !_actionIcons.TryGetValue(action.AdjustedID, out iconId))
         {
-            _actionIcons[action.AdjustedID] = iconId =
-                Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon;
+            iconId = action is IBaseAction ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon
+                : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(action.AdjustedID).Icon;
+            _actionIcons[action.AdjustedID] = iconId;
         }
         return IconSet.GetTexture(iconId);
     }

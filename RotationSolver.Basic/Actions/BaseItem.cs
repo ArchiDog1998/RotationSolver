@@ -45,6 +45,8 @@ internal class BaseItem : IBaseItem
 
     public bool EnoughLevel => true;
 
+    public unsafe bool IsCoolingDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Item, ID);
+
     public BaseItem(uint row, uint a4 = 65535)
     {
         _item = Service.GetSheet<Item>().GetRow(row);
