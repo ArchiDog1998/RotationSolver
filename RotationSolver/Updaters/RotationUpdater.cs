@@ -27,6 +27,7 @@ internal static class RotationUpdater
             .Select(s => s.Trim()).Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location));
 
         var assemblies = from dir in directories
+                         where Directory.Exists(dir)
                          from l in Directory.GetFiles(dir, "*.dll")
                          where !_locs.Any(l.Contains)
                          select RotationLoadContext.LoadFrom(l);
