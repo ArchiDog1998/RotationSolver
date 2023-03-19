@@ -4,6 +4,7 @@ using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Rotations;
+using RotationSolver.Localization;
 using System.Reflection;
 using System.Runtime.Loader;
 
@@ -83,6 +84,41 @@ internal static class RotationUpdater
     }
 
     public static ICustomRotation RightNowRotation { get; private set; }
+
+    public static IEnumerable<IGrouping<string, IAction>> AllGroupedActions
+        => RightNowRotation?.AllActions.GroupBy(a =>
+            {
+                if (a is IBaseAction act)
+                {
+                    string result;
+
+                    if (act.IsFriendly)
+                    {
+                        result = LocalizationManager.RightLang.Action_Friendly;
+                        if (act.IsEot)
+                        {
+                            result += "Hot";
+                        }
+                    }
+                    else
+                    {
+                        result = LocalizationManager.RightLang.Action_Attack;
+
+                        if (act.IsEot)
+                        {
+                            result += "Dot";
+                        }
+                    }
+                    result += "-" + (act.IsRealGCD ? "GCD" : LocalizationManager.RightLang.Timeline_Ability);
+                    return result;
+                }
+                else if (a is IBaseItem)
+                {
+                    return "Item";
+                }
+                return string.Empty;
+
+            }).OrderBy(g => g.Key);
 
     public static IBaseAction[] RightRotationBaseActions { get; private set; } = new IBaseAction[0];
 

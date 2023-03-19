@@ -515,7 +515,7 @@ internal static class ImGuiHelper
             item.Display(IsActive);
         }
     }
-    private unsafe static void Display(this BaseAction action, bool IsActive) => action.DrawEnableTexture(IsActive, () =>
+    private unsafe static void Display(this IBaseAction action, bool IsActive) => action.DrawEnableTexture(IsActive, () =>
     {
         if (action.IsTimeline) RotationConfigWindow.ActiveAction = action;
     }, otherThing: () =>
@@ -532,8 +532,7 @@ internal static class ImGuiHelper
         {
             try
             {
-                ImGui.Text("Can Target: " + action.CanUseTo(action.Target));
-                ImGui.Text("Have One:" + action.HaveOneCharge.ToString());
+                ImGui.Text("Have One:" + action.HasOneCharge.ToString());
                 ImGui.Text("Is Real GCD: " + action.IsRealGCD.ToString());
                 ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
                 ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());

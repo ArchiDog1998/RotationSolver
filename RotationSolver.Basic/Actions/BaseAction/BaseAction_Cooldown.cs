@@ -22,7 +22,7 @@ public partial class BaseAction
 
     public bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0)
     {
-        if (HaveOneCharge) return true;
+        if (HasOneCharge) return true;
         var recast = RecastTimeRemainOneCharge;
         return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount);
     }
@@ -31,7 +31,7 @@ public partial class BaseAction
 
     private bool WillHaveOneCharge(float remain, bool addWeaponRemain)
     {
-        if (HaveOneCharge) return true;
+        if (HasOneCharge) return true;
         var recast = RecastTimeRemainOneCharge;
         return CooldownHelper.RecastAfter(recast, remain, addWeaponRemain);
     }
@@ -65,7 +65,7 @@ public partial class BaseAction
     /// <summary>
     /// 是否起码有一层技能
     /// </summary>
-    public bool HaveOneCharge => IsCoolingDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
+    public bool HasOneCharge => IsCoolingDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
     /// <summary>
     /// 当前技能层数
     /// </summary>

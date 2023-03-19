@@ -15,7 +15,7 @@ internal static class InputUpdater
     public static StateCommandType RecordingStateType { get ; set; }
     public static DateTime RecordingTime { get; set; } = DateTime.MinValue;
 
-    internal static void UpdateCommand()
+    internal static unsafe void UpdateCommand()
     {
         if(DateTime.Now - RecordingTime > TimeSpan.FromSeconds(10))
         {
@@ -23,6 +23,19 @@ internal static class InputUpdater
             RecordingStateType = StateCommandType.None;
         }
 
+#if DEBUG
+        Service.KeyState[VirtualKey.W] =
+            Service.KeyState[VirtualKey.A] =
+            Service.KeyState[VirtualKey.S] =
+            Service.KeyState[VirtualKey.D] =
+            Service.KeyState[VirtualKey.UP] =
+            Service.KeyState[VirtualKey.DOWN] =
+            Service.KeyState[VirtualKey.LEFT] =
+            Service.KeyState[VirtualKey.RIGHT] = false;
+
+        var input = (GamepadInput*)Service.GamepadState.GamepadInputAddress;
+        input->LeftStickX = input->LeftStickY = 0;
+#endif
         foreach (var key in Service.KeyState.GetValidVirtualKeys())
         {
             if (key is VirtualKey.CONTROL) continue;

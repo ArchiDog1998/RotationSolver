@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
@@ -10,6 +11,8 @@ using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System;
+using System.Buffers.Text;
 using System.Numerics;
 
 namespace RotationSolver.UI;
@@ -53,7 +56,7 @@ internal class ControlWindow : Window
         base.PostDraw();
     }
 
-    public override  void Draw()
+    public override void Draw()
     {
         ImGui.Columns(2, "Control Bolder", false);
         ImGui.SetColumnWidth(0, DrawNextAction() + ImGui.GetStyle().ColumnsMinSpacing * 2);
@@ -72,8 +75,67 @@ internal class ControlWindow : Window
             ref Service.Config.IsControlWindowLock);
 
         ImGui.NextColumn();
+
+        DrawSpecials();
+
+        ImGui.Columns(1);
+        ImGui.Separator();
+
+        if(RotationUpdater.RightNowRotation!= null)
+        {
+            foreach (var pair in RotationUpdater.AllGroupedActions)
+            {
+                ImGui.Text(pair.Key);
+                bool started = false;
+                foreach(var item in pair)
+                {
+                    if (started)
+                    {
+                        ImGui.SameLine();
+                    }
+                    DrawActionCooldown(item);
+                    started = true;
+                }
+            }
+        }
+    }
+
+    private static void DrawActionCooldown(IAction act)
+    {
+        if (act is IBaseAction a && a.IsGeneralGCD) return;
+
+        var width = Service.Config.ControlWindow0GCDSize;
+        var recast = act.RecastTimeOneCharge;
+        var elapsed = act.RecastTimeElapsed;
+
+        ImGui.BeginGroup();
+        var pos = ImGui.GetCursorPos();
+        DrawIAction(act, width);
+        ImGuiHelper.HoveredString(act.Name);
+
+        var ratio = recast == 0 ? 0 : elapsed % recast / recast;
+        ImGui.SetCursorPos(new Vector2(pos.X + width * ratio, pos.Y));
+        ImGui.PushStyleColor(ImGuiCol.FrameBg, new Vector4(0, 0, 0, 0.7f));
+        ImGui.ProgressBar(0, new Vector2(width * (1 - ratio), width), string.Empty);
+        ImGui.PopStyleColor();
+
+        string time = recast == 0 || !act.EnoughLevel ? "0" : ((int)(recast - elapsed % recast)).ToString();
+        var strSize = ImGui.CalcTextSize(time);
+        ImGui.SetCursorPos(new Vector2(pos.X + width / 2 - strSize.X / 2, pos.Y + width / 2 - strSize.Y / 2));
+        ImGui.Text(time);
+
+        if(act is IBaseAction bAct && bAct.MaxCharges > 1)
+        {
+            //Draw charges here.
+        }
+
+        ImGui.EndGroup();
+    }
+
+    private static void DrawSpecials()
+    {
         var rotation = RotationUpdater.RightNowRotation;
-        DrawCommandAction(rotation?.ActionHealAreaGCD, rotation?.ActionHealAreaAbility, 
+        DrawCommandAction(rotation?.ActionHealAreaGCD, rotation?.ActionHealAreaAbility,
             SpecialCommandType.HealArea, ImGuiColors.HealerGreen);
 
         ImGui.SameLine();
@@ -119,8 +181,6 @@ internal class ControlWindow : Window
 
         DrawCommandAction(rotation?.AntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
-
-        ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 5);
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)
@@ -325,7 +385,12 @@ internal class ControlWindow : Window
 
     static void DrawIAction(IAction action, float width)
     {
-        ImGui.Image(GetTexture(action).ImGuiHandle, new Vector2(width, width));
+        DrawIAction(GetTexture(action).ImGuiHandle, width);
+    }
+
+    static void DrawIAction(nint handle, float width)
+    {
+        ImGui.Image(handle, new Vector2(width, width));
     }
 
     static unsafe float  DrawNextAction()

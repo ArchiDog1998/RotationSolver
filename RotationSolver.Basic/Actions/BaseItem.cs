@@ -39,6 +39,12 @@ internal class BaseItem : IBaseItem
 
     public string Description => string.Empty;
 
+    public unsafe float RecastTimeOneCharge => ActionManager.Instance()->GetRecastTime(ActionType.Item, ID);
+
+    public unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, ID);
+
+    public bool EnoughLevel => true;
+
     public BaseItem(uint row, uint a4 = 65535)
     {
         _item = Service.GetSheet<Item>().GetRow(row);
@@ -56,7 +62,7 @@ internal class BaseItem : IBaseItem
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))) return false;
 
-        var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, ID);
+        var remain = RecastTimeOneCharge - RecastTimeElapsed;
 
         if (!CooldownHelper.RecastAfter(DataCenter.AbilityRemain, remain, false)) return false;
 

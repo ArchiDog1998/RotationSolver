@@ -37,10 +37,10 @@ internal partial class RotationConfigWindow
         }
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowGCDSize,
-            ref Service.Config.ControlWindowGCDSize);
+            ref Service.Config.ControlWindowGCDSize, speed: 0.2f , max: 80);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindow0GCDSize,
-            ref Service.Config.ControlWindow0GCDSize);
+            ref Service.Config.ControlWindow0GCDSize, speed: 0.2f, max: 80);
 
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
