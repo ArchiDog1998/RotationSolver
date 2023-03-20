@@ -21,6 +21,9 @@ internal static class RotationUpdater
 
     static readonly string[] _locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
 
+#if DEBUG
+    internal static string[] Plugins;
+#endif
     public static void GetAllCustomRotations()
     {
         var directories =  Service.Config.OtherLibs
@@ -32,10 +35,7 @@ internal static class RotationUpdater
                          where !_locs.Any(l.Contains)
                          select RotationLoadContext.LoadFrom(l);
 #if DEBUG
-        foreach (var ass in assemblies)
-        {
-            Service.ChatGui.Print(ass.FullName);
-        }
+        Plugins = assemblies.Select(a => a.GetName().Name + " : " + Convert.ToBase64String(a.GetName().GetPublicKeyToken())).ToArray();
 #endif
         AuthorHashes = (from a in assemblies
                        select a.GetCustomAttribute<AuthorHashAttribute>() into author
@@ -123,23 +123,23 @@ internal static class RotationUpdater
 
     public static IBaseAction[] RightRotationBaseActions { get; private set; } = new IBaseAction[0];
 
-    static ClassJobID _job;
-    static string _rotationName;
+    //static ClassJobID _job;
+    //static string _rotationName;
     public static void UpdateRotation()
     {
         var nowJob = (ClassJobID)Service.Player.ClassJob.Id;
         Service.Config.RotationChoices.TryGetValue((uint)nowJob, out var newName);
 
-        if (_job == nowJob && _rotationName == newName) return;
+        //if (_job == nowJob && _rotationName == newName) return;
 
-        _job = nowJob;
-        _rotationName = newName;
+        //_job = nowJob;
+        //_rotationName = newName;
 
         foreach (var group in _customRotations)
         {
-            if (!group.classJobIds.Contains(_job)) continue;
+            if (!group.classJobIds.Contains(nowJob)) continue;
 
-            RightNowRotation = GetChooseRotation(group, _rotationName);
+            RightNowRotation = GetChooseRotation(group, newName);
             RightRotationBaseActions = RightNowRotation.AllBaseActions;
             break;
         }
