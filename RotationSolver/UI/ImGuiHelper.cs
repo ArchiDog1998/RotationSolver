@@ -477,8 +477,7 @@ internal static class ImGuiHelper
                 ImGui.SameLine();
                 Spacing();
 
-                var display = ImGui.GetIO().DisplaySize;
-                var displayS = Math.Min(display.X, display.Y) * 0.8f;
+                var display = ImGui.GetIO().DisplaySize * 0.7f;
 
                 foreach (var texture in attrs)
                 {
@@ -491,7 +490,7 @@ internal static class ImGuiHelper
                     {
                         DrawTooltip(() =>
                         {
-                            var ratio = Math.Min(1, displayS / Math.Max(texture.Texture.Width, texture.Texture.Height));
+                            var ratio = Math.Min(1, Math.Min(display.X / texture.Texture.Width, display.Y / texture.Texture.Height));
                             var size = new Vector2(texture.Texture.Width * ratio,
                                 texture.Texture.Height * ratio);
                             ImGui.Image(texture.Texture.ImGuiHandle, size);

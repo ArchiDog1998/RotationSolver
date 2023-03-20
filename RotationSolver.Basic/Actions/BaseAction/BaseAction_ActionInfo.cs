@@ -132,7 +132,17 @@ public partial class BaseAction
     {
         var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 
-        return _action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.Player.ObjectId, &loc) :
-            ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, _targetId);
+        if (_action.TargetArea)
+        {
+            return ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.Player.ObjectId, &loc);
+        }
+        else if(Service.ObjectTable.SearchById(_targetId) == null)
+        {
+            return false;
+        }
+        else
+        {
+            return ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, _targetId);
+        }
     }
 }

@@ -23,17 +23,6 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginTabBar("Debug Items"))
         {
-
-#if DEBUG
-            if(RotationUpdater.Plugins != null)
-            {
-                foreach (var p in RotationUpdater.Plugins)
-                {
-                    var s = p;
-                    ImGui.InputText($"##{p}", ref s, 512);
-                }
-            }
-#endif
             DrawParamTabItem("Status", DrawStatus);
             DrawParamTabItem("Party", DrawParty);
             DrawParamTabItem("Target Data", DrawTargetData);
@@ -106,7 +95,7 @@ internal partial class RotationConfigWindow
 
             foreach (var status in b.StatusList)
             {
-                var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";
+                var source = status.SourceId == Service.Player.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
                 ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
         }
