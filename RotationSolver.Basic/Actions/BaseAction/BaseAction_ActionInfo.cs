@@ -92,7 +92,7 @@ public partial class BaseAction
         if (CastTime > 0 && DataCenter.IsMoving &&
             !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
 
-        if (!FindTarget(mustUse, out var target)) return false;
+        if (!FindTarget(mustUse, out var target) || target == null) return false;
 
         if (ActionCheck != null && !ActionCheck(target)) return false;
         if (!skipDisable && RotationCheck != null && !RotationCheck(target)) return false;

@@ -248,6 +248,7 @@ public partial class BaseAction
             //特殊选队友的方法。
             target = ChoiceTarget(availableCharas, mustUse);
         }
+        if (target == null) return false;
 
         return mustUse || CheckStatus(target);
     }
