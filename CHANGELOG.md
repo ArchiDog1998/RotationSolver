@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.1.4](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.3...v2.1.4) (2023-03-20)
+
+
+### Bug Fixes
+
+* add action target is null check. ([54789c9](https://github.com/ArchiDog1998/RotationSolver/commit/54789c9e6cb224242a0e418cf52a3c75730a45cd))
+* changed the rotation choic ([eeded1c](https://github.com/ArchiDog1998/RotationSolver/commit/eeded1c9ee923ac0e4a974c22f7310b80ab14a9f))
+* fixed some ui bugs. ([aa8883a](https://github.com/ArchiDog1998/RotationSolver/commit/aa8883a0714efb6c9a8b26d9ac4fb93d71785d3a))
+* fixed some ui bugs. ([bc944b3](https://github.com/ArchiDog1998/RotationSolver/commit/bc944b301dc372324be5f177090a62043d1c2821))
+* help icon ui size. ([1e953a5](https://github.com/ArchiDog1998/RotationSolver/commit/1e953a5e3e5b2f8931779c4d5fd0b3dbd410de9d))
+
 ## [2.1.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.2...v2.1.3) (2023-03-19)
 
 
