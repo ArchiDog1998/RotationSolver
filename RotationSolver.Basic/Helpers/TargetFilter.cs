@@ -57,7 +57,7 @@ public static class TargetFilter
         availableCharas = DefaultTargetingType(availableCharas);
 
         //找到体积一样小的
-        float radius = availableCharas.FirstOrDefault().HitboxRadius;
+        float radius = availableCharas.FirstOrDefault()?.HitboxRadius ?? 0.5f;
 
         return availableCharas.Where(c => c.HitboxRadius == radius)
             .OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();

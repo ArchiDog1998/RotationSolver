@@ -56,6 +56,7 @@ internal partial class RotationConfigWindow
                 var list = Service.Config.OtherLibs.ToList();
                 list.RemoveAt(removeIndex);
                 Service.Config.OtherLibs = list.ToArray();
+                Service.Config.Save();
             }
 
             ImGui.EndChild();

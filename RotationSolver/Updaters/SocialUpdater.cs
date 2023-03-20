@@ -150,7 +150,7 @@ internal class SocialUpdater
             + " - " + player.Name.ToString() + "U6Wy.zCG");
 
         var tmpHash = MD5.Create().ComputeHash(inputByteArray);
-        var retB = Convert.ToBase64String(tmpHash.ToArray());
+        var retB = Convert.ToBase64String(tmpHash);
         return retB;
     }
 }

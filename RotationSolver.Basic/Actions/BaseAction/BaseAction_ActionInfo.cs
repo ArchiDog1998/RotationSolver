@@ -92,7 +92,7 @@ public partial class BaseAction
         if (CastTime > 0 && DataCenter.IsMoving &&
             !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
 
-        if (!FindTarget(mustUse, out var target)) return false;
+        if (!FindTarget(mustUse, out var target) || target == null) return false;
 
         if (ActionCheck != null && !ActionCheck(target)) return false;
         if (!skipDisable && RotationCheck != null && !RotationCheck(target)) return false;
@@ -132,7 +132,17 @@ public partial class BaseAction
     {
         var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
 
-        return _action.TargetArea ? ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.Player.ObjectId, &loc) :
-            ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, _targetId);
+        if (_action.TargetArea)
+        {
+            return ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.Player.ObjectId, &loc);
+        }
+        else if(Service.ObjectTable.SearchById(_targetId) == null)
+        {
+            return false;
+        }
+        else
+        {
+            return ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, _targetId);
+        }
     }
 }

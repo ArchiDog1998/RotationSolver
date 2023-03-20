@@ -5,8 +5,6 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
-using RotationSolver.Commands;
-using RotationSolver.UI;
 using RotationSolver.Updaters;
 using System.Numerics;
 
@@ -52,7 +50,7 @@ internal partial class RotationConfigWindow
 
         foreach (var status in Service.Player.StatusList)
         {
-            var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";
+            var source = status.SourceId == Service.Player.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
         }
     }
@@ -97,7 +95,7 @@ internal partial class RotationConfigWindow
 
             foreach (var status in b.StatusList)
             {
-                var source = Service.ObjectTable.SearchById(status.SourceId)?.Name ?? "None";
+                var source = status.SourceId == Service.Player.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
                 ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
         }
