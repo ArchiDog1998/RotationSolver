@@ -16,7 +16,7 @@ internal static class RotationHelper
     };
 
     public static bool IsDefault(this ICustomRotation rotation)
-        => DefaultAssembly == GetId(rotation);
+        => DefaultAssembly == rotation.GetType().Assembly.GetName().Name;
     
     public static bool IsAllowed(this ICustomRotation rotation, out string name)
     {
@@ -26,12 +26,7 @@ internal static class RotationHelper
             return false;
         }
         name = rotation.GetType().Assembly.GetName().Name;
-        return _allowedAssembly.Contains(GetId(rotation));
-    }
-
-    internal static string GetId(this ICustomRotation rotation)
-    {
-        return Convert.ToBase64String(rotation.GetType().Assembly.GetName().GetPublicKeyToken());
+        return _allowedAssembly.Contains(name);
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)

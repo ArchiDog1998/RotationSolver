@@ -1,12 +1,7 @@
 ﻿using ImGuiNET;
 using RotationSolver.Basic;
 using RotationSolver.Localization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.UI;
 
@@ -14,6 +9,15 @@ internal partial class RotationConfigWindow
 {
     private void DrawControlTab()
     {
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseGamepadCommand,
+            ref Service.Config.UseGamepadCommand);
+
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseKeyboardCommand,
+            ref Service.Config.UseKeyboardCommand);
+
+        ImGui.Separator();
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
             ref Service.Config.ShowControlWindow);
 
@@ -21,12 +25,6 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsControlWindowLock,
             ref Service.Config.IsControlWindowLock);
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseKeyboardCommand,
-            ref Service.Config.UseKeyboardCommand);
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseGamepadCommand,
-            ref Service.Config.UseGamepadCommand);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ControlShowCooldown,
             ref Service.Config.ControlShowCooldown);

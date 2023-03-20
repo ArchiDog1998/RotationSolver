@@ -93,15 +93,15 @@ internal class ControlWindow : Window
 
                 ImGui.Text(pair.Key);
 
-                bool started = false;
+                uint started = 0;
                 foreach(var item in showItems)
                 {
-                    if (started)
+                    if (started % 14 != 0)
                     {
                         ImGui.SameLine();
                     }
                     DrawActionCooldown(item);
-                    started = true;
+                    started ++;
                 }
             }
         }
