@@ -57,13 +57,11 @@ internal partial class RotationConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-#if DEBUG
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ControlItem))
             {
                 DrawControlTab();
                 ImGui.EndTabItem();
             }
-#endif
 
             if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_HelpItem))
             {
