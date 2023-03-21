@@ -19,8 +19,6 @@ internal static class ActionUpdater
     internal static IAction NextAction { get; private set; }
     internal static IBaseAction NextGCDAction { get; private set; }
 
-    static float _lastCastingTotal { get; set; }
-
     internal static Exception exception;
 
     internal static void UpdateNextAction()
@@ -119,17 +117,17 @@ internal static class ActionUpdater
         var instance = ActionManager.Instance();
 
         var castTotal = player.TotalCastTime;
-        castTotal = castTotal > 2.5f ? castTotal + 0.1f : castTotal;
 
-        var weapontotal = instance->GetRecastTime(ActionType.Spell, 11);
-        if (player.IsCasting) weapontotal = Math.Max(weapontotal, castTotal);
+        var weaponTotal = instance->GetRecastTime(ActionType.Spell, 11);
+        castTotal = Math.Max(castTotal + 0.1f, weaponTotal);
+        if (player.IsCasting) weaponTotal = castTotal;
 
         DataCenter.WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Spell, 11);
         DataCenter.WeaponRemain = DataCenter.WeaponElapsed == 0 ? player.TotalCastTime - player.CurrentCastTime
-            : Math.Max(weapontotal - DataCenter.WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
+            : Math.Max(weaponTotal - DataCenter.WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
         //确定读条时间。
-        if (DataCenter.WeaponElapsed < 0.3) _lastCastingTotal = castTotal;
+        if (DataCenter.WeaponElapsed < 0.3) DataCenter.CastingTotal = castTotal;
 
         //确认能力技的相关信息
         var interval = Service.Config.AbilitiesInterval;
@@ -149,12 +147,12 @@ internal static class ActionUpdater
         }
         else
         {
-            var abilityWhole = (int)(weapontotal / Service.Config.AbilitiesInterval - 1);
+            var abilityWhole = (int)(weaponTotal / Service.Config.AbilitiesInterval - 1);
             DataCenter.AbilityRemain = interval - DataCenter.WeaponElapsed % interval;
             DataCenter.AbilityRemainCount = (byte)(abilityWhole - (int)(DataCenter.WeaponElapsed / interval));
         }
 
-        if (weapontotal > 0) DataCenter.WeaponTotal = weapontotal;
+        if (weaponTotal > 0) DataCenter.WeaponTotal = weaponTotal;
     }
 
     static uint _lastMP = 0;
@@ -212,7 +210,7 @@ internal static class ActionUpdater
         }
 
         //还在咏唱，就不放技能了。
-        if (DataCenter.WeaponElapsed <= _lastCastingTotal) return;
+        if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return;
 
         //只剩下最后一个能力技了，然后卡最后！
         if (DataCenter.WeaponRemain < 2 * Service.Config.AbilitiesInterval)
@@ -220,7 +218,7 @@ internal static class ActionUpdater
             if (DataCenter.WeaponRemain > Service.Config.AbilitiesInterval + Service.Config.ActionAhead) return;
             RSCommands.DoAnAction(false);
         }
-        else if ((DataCenter.WeaponElapsed - _lastCastingTotal) % Service.Config.AbilitiesInterval <= Service.Config.ActionAhead)
+        else if ((DataCenter.WeaponElapsed - DataCenter.CastingTotal) % Service.Config.AbilitiesInterval <= Service.Config.ActionAhead)
         {
             RSCommands.DoAnAction(false);
         }

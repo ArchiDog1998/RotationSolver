@@ -20,14 +20,8 @@ namespace RotationSolver.UI;
 
 internal class ControlWindow : Window
 {
-    const ImGuiWindowFlags _baseFlags = ImGuiWindowFlags.NoScrollbar
-                                    | ImGuiWindowFlags.NoCollapse
-                                    | ImGuiWindowFlags.NoTitleBar
-                                    | ImGuiWindowFlags.NoNav
-                                    | ImGuiWindowFlags.NoScrollWithMouse;
-
     public ControlWindow()
-        : base(nameof(ControlWindow), _baseFlags)
+        : base(nameof(ControlWindow), NextActionWindow.BaseFlags)
     {
         Size = new Vector2(540f, 490f);
         SizeCondition = ImGuiCond.FirstUseEver;
@@ -40,7 +34,7 @@ internal class ControlWindow : Window
             : Service.Config.ControlWindowUnlockBg;
         ImGui.PushStyleColor(ImGuiCol.WindowBg, bgColor);
 
-        Flags = _baseFlags;
+        Flags = NextActionWindow.BaseFlags;
 
         if (Service.Config.IsControlWindowLock)
         {
@@ -414,7 +408,7 @@ internal class ControlWindow : Window
         }
     }
 
-    static void DrawIAction(IAction action, float width)
+    internal static void DrawIAction(IAction action, float width)
     {
         DrawIAction(GetTexture(action).ImGuiHandle, width);
     }
@@ -426,9 +420,6 @@ internal class ControlWindow : Window
 
     static unsafe float  DrawNextAction()
     {
-        var group = ActionManager.Instance()->GetRecastGroupDetail(ActionHelper.GCDCooldownGroup - 1);
-        var remain = group->Total - group->Elapsed;
-
         var gcd = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
         var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
         var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
@@ -436,11 +427,8 @@ internal class ControlWindow : Window
         var str = "Next Action";
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
         ImGui.TextColored(ImGuiColors.DalamudYellow, str);
-        str = remain.ToString("F2") + "s";
 
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
-        ImGui.Text(str);
-        ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, Service.Config.ControlProgressHeight), string.Empty);
+        NextActionWindow.DrawGcdCooldown(width, true);
 
         DrawIAction(ActionUpdater.NextGCDAction, gcd);
 

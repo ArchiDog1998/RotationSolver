@@ -18,6 +18,9 @@ internal partial class RotationConfigWindow
 
         ImGui.Separator();
 
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowNextActionWindow,
+            ref Service.Config.ShowNextActionWindow);
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
             ref Service.Config.ShowControlWindow);
 

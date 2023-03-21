@@ -237,6 +237,8 @@ internal partial class Strings
     public string ConfigWindow_Param_ConditionDown { get; set; } = "Down";
     public string ConfigWindow_Param_ConditionDelete { get; set; } = "Delete";
 
+    public string ConfigWindow_Control_ShowNextActionWindow { get; set; } = "Show Next Action Window";
+
     public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
     public string ConfigWindow_Control_UseKeyboardCommand { get; set; } = "Use Keyboard Command";
     public string ConfigWindow_Control_UseGamepadCommand { get; set; } = "Use GamePad Command";
