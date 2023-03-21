@@ -7,7 +7,7 @@
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	  <Platforms>AnyCPU</Platforms>
 	  <Authors>ArchiTed</Authors>
-	  <Version>2.1.4</Version>
+	  <Version>2.1.5</Version>
   </PropertyGroup>
 
 	<ItemGroup>
