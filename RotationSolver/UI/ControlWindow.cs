@@ -337,32 +337,30 @@ internal class ControlWindow : Window
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(help)) ImGui.SetTooltip(help);
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Right) && InputUpdater.RecordingSpecialType == SpecialCommandType.None)
             {
-                if(ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
-                {
-                    Service.Config.KeySpecial.Remove(command);
-                    Service.Config.ButtonSpecial.Remove(command);
-                    Service.Config.Save();
+                InputUpdater.RecordingTime = DateTime.Now;
+                InputUpdater.RecordingSpecialType = command;
+                Service.ToastGui.ShowQuest($"Recording: {command}",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                    });
+            }
 
-                    Service.ToastGui.ShowQuest($"Clear Recording: {command}",
-                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                        {
-                            IconId = 101,
-                            PlaySound = true,
-                            DisplayCheckmark = true,
-                        });
-                }
-                else if(InputUpdater.RecordingSpecialType == SpecialCommandType.None)
-                {
-                    InputUpdater.RecordingTime = DateTime.Now;
-                    InputUpdater.RecordingSpecialType = command;
-                    Service.ToastGui.ShowQuest($"Recording: {command}",
-                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                        {
-                            IconId = 101,
-                        });
-                }
+            if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
+            {
+                Service.Config.KeySpecial.Remove(command);
+                Service.Config.ButtonSpecial.Remove(command);
+                Service.Config.Save();
+
+                Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                        PlaySound = true,
+                        DisplayCheckmark = true,
+                    });
             }
         }
     }
@@ -378,32 +376,30 @@ internal class ControlWindow : Window
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(help)) ImGui.SetTooltip(help);
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Right)&& InputUpdater.RecordingStateType == StateCommandType.None)
             {
-                if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
-                {
-                    Service.Config.KeyState.Remove(command);
-                    Service.Config.ButtonState.Remove(command);
-                    Service.Config.Save();
+                InputUpdater.RecordingTime = DateTime.Now;
+                InputUpdater.RecordingStateType = command;
+                Service.ToastGui.ShowQuest($"Recording: {command}",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                    });
+            }
 
-                    Service.ToastGui.ShowQuest($"Clear Recording: {command}",
-                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                        {
-                            IconId = 101,
-                            PlaySound = true,
-                            DisplayCheckmark = true,
-                        });
-                }
-                else if (InputUpdater.RecordingStateType == StateCommandType.None)
-                {
-                    InputUpdater.RecordingTime = DateTime.Now;
-                    InputUpdater.RecordingStateType = command;
-                    Service.ToastGui.ShowQuest($"Recording: {command}",
-                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                        {
-                            IconId = 101,
-                        });
-                }
+            if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
+            {
+                Service.Config.KeyState.Remove(command);
+                Service.Config.ButtonState.Remove(command);
+                Service.Config.Save();
+
+                Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                        PlaySound = true,
+                        DisplayCheckmark = true,
+                    });
             }
         }
     }

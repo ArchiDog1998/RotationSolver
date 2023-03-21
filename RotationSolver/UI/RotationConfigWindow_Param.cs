@@ -417,7 +417,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseAll,
             ref Service.Config.RaiseAll);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseBrinkofDeath,
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseBrinkOfDeath,
             ref Service.Config.RaiseBrinkOfDeath);
     }
 

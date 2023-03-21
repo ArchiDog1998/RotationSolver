@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RotationSolver.Localization;
+﻿namespace RotationSolver.Localization;
 
 internal partial class Strings
 {
@@ -226,7 +224,7 @@ internal partial class Strings
     public string ConfigWindow_Param_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
     public string ConfigWindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
     public string ConfigWindow_Param_TargetFriendly { get; set; } = "Target all for friendly actions(include passerby)";
-    public string ConfigWindow_Param_RaiseBrinkofDeath { get; set; } = "Raise player even has Brink of Death";
+    public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
     public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
     public string ConfigWindow_Param_Hostile { get; set; } = "Hostile";
@@ -248,7 +246,7 @@ internal partial class Strings
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
-    public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and right click to clear the key setting.";
+    public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and middle click to clear the key setting.";
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
 
     #endregion
