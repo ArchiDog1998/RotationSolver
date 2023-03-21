@@ -55,7 +55,7 @@ public static class IconSet
     {
         foreach (var item in _textures.Values)
         {
-            item.Dispose();
+            item?.Dispose();
         }
     }
 

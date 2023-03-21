@@ -1,4 +1,5 @@
-﻿using Lumina.Excel.GeneratedSheets;
+﻿using Dalamud.Logging;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Attributes;
@@ -21,9 +22,7 @@ internal static class RotationUpdater
 
     static readonly string[] _locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
 
-#if DEBUG
-    internal static string[] Plugins;
-#endif
+
     public static void GetAllCustomRotations()
     {
         var directories =  Service.Config.OtherLibs
@@ -34,9 +33,9 @@ internal static class RotationUpdater
                          from l in Directory.GetFiles(dir, "*.dll")
                          where !_locs.Any(l.Contains)
                          select RotationLoadContext.LoadFrom(l);
-#if DEBUG
-        Plugins = assemblies.Select(a => a.GetName().Name + " : " + Convert.ToBase64String(a.GetName().GetPublicKeyToken())).ToArray();
-#endif
+
+        PluginLog.Log("Try to load rotations from these assemblies.", assemblies.Select(a => a.FullName));
+
         AuthorHashes = (from a in assemblies
                        select a.GetCustomAttribute<AuthorHashAttribute>() into author
                        where author != null
@@ -65,7 +64,7 @@ internal static class RotationUpdater
         }
         catch 
         {
-            Dalamud.Logging.PluginLog.LogError($"Failed to load the rotation: {t.Name}");
+            PluginLog.LogError($"Failed to load the rotation: {t.Name}");
             return null; 
         }
     }
@@ -123,17 +122,10 @@ internal static class RotationUpdater
 
     public static IBaseAction[] RightRotationBaseActions { get; private set; } = new IBaseAction[0];
 
-    //static ClassJobID _job;
-    //static string _rotationName;
     public static void UpdateRotation()
     {
         var nowJob = (ClassJobID)Service.Player.ClassJob.Id;
         Service.Config.RotationChoices.TryGetValue((uint)nowJob, out var newName);
-
-        //if (_job == nowJob && _rotationName == newName) return;
-
-        //_job = nowJob;
-        //_rotationName = newName;
 
         foreach (var group in _customRotations)
         {

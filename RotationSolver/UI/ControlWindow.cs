@@ -1,33 +1,27 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
-using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
 using ImGuiScene;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System;
-using System.Buffers.Text;
 using System.Numerics;
 
 namespace RotationSolver.UI;
 
 internal class ControlWindow : Window
 {
-    const ImGuiWindowFlags _baseFlags = ImGuiWindowFlags.NoScrollbar
-                                    | ImGuiWindowFlags.NoCollapse
-                                    | ImGuiWindowFlags.NoTitleBar
-                                    | ImGuiWindowFlags.NoNav
-                                    | ImGuiWindowFlags.NoScrollWithMouse;
+    public const ImGuiWindowFlags BaseFlags = ImGuiWindowFlags.NoScrollbar
+                            | ImGuiWindowFlags.NoCollapse
+                            | ImGuiWindowFlags.NoTitleBar
+                            | ImGuiWindowFlags.NoNav
+                            | ImGuiWindowFlags.NoScrollWithMouse;
 
     public ControlWindow()
-        : base(nameof(ControlWindow), _baseFlags)
+        : base(nameof(ControlWindow), BaseFlags)
     {
         Size = new Vector2(540f, 490f);
         SizeCondition = ImGuiCond.FirstUseEver;
@@ -40,21 +34,21 @@ internal class ControlWindow : Window
             : Service.Config.ControlWindowUnlockBg;
         ImGui.PushStyleColor(ImGuiCol.WindowBg, bgColor);
 
-        Flags = _baseFlags;
+        Flags = BaseFlags;
 
         if (Service.Config.IsControlWindowLock)
         {
             Flags |= ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
         }
 
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
+        //ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
         ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
     }
 
     public override void PostDraw()
     {
         ImGui.PopStyleColor();
-        ImGui.PopStyleVar(2);
+        ImGui.PopStyleVar();
         base.PostDraw();
     }
 
@@ -73,7 +67,7 @@ internal class ControlWindow : Window
 
         ImGui.SameLine();
 
-        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsControlWindowLock,
+        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
             ref Service.Config.IsControlWindowLock);
 
         ImGui.NextColumn();
@@ -343,32 +337,30 @@ internal class ControlWindow : Window
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(help)) ImGui.SetTooltip(help);
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Right) && InputUpdater.RecordingSpecialType == SpecialCommandType.None)
             {
-                if(ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
-                {
-                    Service.Config.KeySpecial.Remove(command);
-                    Service.Config.ButtonSpecial.Remove(command);
-                    Service.Config.Save();
+                InputUpdater.RecordingTime = DateTime.Now;
+                InputUpdater.RecordingSpecialType = command;
+                Service.ToastGui.ShowQuest($"Recording: {command}",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                    });
+            }
 
-                    Service.ToastGui.ShowQuest($"Clear Recording: {command}",
-                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                        {
-                            IconId = 101,
-                            PlaySound = true,
-                            DisplayCheckmark = true,
-                        });
-                }
-                else if(InputUpdater.RecordingSpecialType == SpecialCommandType.None)
-                {
-                    InputUpdater.RecordingTime = DateTime.Now;
-                    InputUpdater.RecordingSpecialType = command;
-                    Service.ToastGui.ShowQuest($"Recording: {command}",
-                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                        {
-                            IconId = 101,
-                        });
-                }
+            if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
+            {
+                Service.Config.KeySpecial.Remove(command);
+                Service.Config.ButtonSpecial.Remove(command);
+                Service.Config.Save();
+
+                Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                        PlaySound = true,
+                        DisplayCheckmark = true,
+                    });
             }
         }
     }
@@ -384,37 +376,35 @@ internal class ControlWindow : Window
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(help)) ImGui.SetTooltip(help);
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Right)&& InputUpdater.RecordingStateType == StateCommandType.None)
             {
-                if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
-                {
-                    Service.Config.KeyState.Remove(command);
-                    Service.Config.ButtonState.Remove(command);
-                    Service.Config.Save();
+                InputUpdater.RecordingTime = DateTime.Now;
+                InputUpdater.RecordingStateType = command;
+                Service.ToastGui.ShowQuest($"Recording: {command}",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                    });
+            }
 
-                    Service.ToastGui.ShowQuest($"Clear Recording: {command}",
-                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                        {
-                            IconId = 101,
-                            PlaySound = true,
-                            DisplayCheckmark = true,
-                        });
-                }
-                else if (InputUpdater.RecordingStateType == StateCommandType.None)
-                {
-                    InputUpdater.RecordingTime = DateTime.Now;
-                    InputUpdater.RecordingStateType = command;
-                    Service.ToastGui.ShowQuest($"Recording: {command}",
-                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                        {
-                            IconId = 101,
-                        });
-                }
+            if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
+            {
+                Service.Config.KeyState.Remove(command);
+                Service.Config.ButtonState.Remove(command);
+                Service.Config.Save();
+
+                Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                        PlaySound = true,
+                        DisplayCheckmark = true,
+                    });
             }
         }
     }
 
-    static void DrawIAction(IAction action, float width)
+    internal static void DrawIAction(IAction action, float width)
     {
         DrawIAction(GetTexture(action).ImGuiHandle, width);
     }
@@ -426,9 +416,6 @@ internal class ControlWindow : Window
 
     static unsafe float  DrawNextAction()
     {
-        var group = ActionManager.Instance()->GetRecastGroupDetail(ActionHelper.GCDCooldownGroup - 1);
-        var remain = group->Total - group->Elapsed;
-
         var gcd = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
         var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
         var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
@@ -436,11 +423,8 @@ internal class ControlWindow : Window
         var str = "Next Action";
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
         ImGui.TextColored(ImGuiColors.DalamudYellow, str);
-        str = remain.ToString("F2") + "s";
 
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
-        ImGui.Text(str);
-        ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, Service.Config.ControlProgressHeight), string.Empty);
+        NextActionWindow.DrawGcdCooldown(width, true);
 
         DrawIAction(ActionUpdater.NextGCDAction, gcd);
 

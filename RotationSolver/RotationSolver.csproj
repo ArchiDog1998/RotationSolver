@@ -6,7 +6,7 @@
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	  <Description>Based on the pve combat information in one frame, find the best action.</Description>
 	  <Authors>ArchiTed</Authors>
-	  <Version>2.1.3</Version>
+	  <Version>2.1.4</Version>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <PlatformTarget>x64</PlatformTarget>
 
@@ -19,6 +19,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
+		<ProjectReference Include="..\RotationSolver.Default\RotationSolver.Default.csproj" />
+		<ProjectReference Include="..\RotationSolver.Old\RotationSolver.Old.csproj" />
 
 		<EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
 		
