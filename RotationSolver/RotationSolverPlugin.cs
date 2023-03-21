@@ -1,3 +1,4 @@
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Newtonsoft.Json;
@@ -106,7 +107,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     internal static void UpdateDisplayWindow()
     {
-        _controlWindow.IsOpen = MajorUpdater.IsValid && Service.Config.ShowControlWindow;
-        _nextActionWindow.IsOpen = MajorUpdater.IsValid && Service.Config.ShowNextActionWindow;
+        var isValid = MajorUpdater.IsValid 
+            && !Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
+            && !Service.Conditions[ConditionFlag.BetweenAreas]
+            && !Service.Conditions[ConditionFlag.BetweenAreas51];
+
+        _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
+        _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;
     }
 }

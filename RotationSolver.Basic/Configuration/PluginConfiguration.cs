@@ -157,8 +157,9 @@ public class PluginConfiguration : IPluginConfiguration
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
     public bool ShowControlWindow = false;
-    public bool ShowNextActionWindow = false;
     public bool IsControlWindowLock = false;
+    public bool ShowNextActionWindow = false;
+    public bool IsNextActionWindowLock = false;
     public bool UseKeyboardCommand = false;
     public bool UseGamepadCommand = false;
 

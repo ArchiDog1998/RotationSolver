@@ -11,22 +11,23 @@ namespace RotationSolver.UI;
 
 internal class NextActionWindow : Window
 {
-    public const ImGuiWindowFlags BaseFlags = ImGuiWindowFlags.NoScrollbar
-                                | ImGuiWindowFlags.NoCollapse
-                                | ImGuiWindowFlags.NoTitleBar
-                                | ImGuiWindowFlags.NoNav
-                                | ImGuiWindowFlags.NoScrollWithMouse;
-
+    const ImGuiWindowFlags BaseFlags = ControlWindow.BaseFlags
+            | ImGuiWindowFlags.AlwaysAutoResize
+            | ImGuiWindowFlags.NoResize;
     public NextActionWindow()
-        : base(nameof(NextActionWindow), BaseFlags 
-            | ImGuiWindowFlags.AlwaysAutoResize 
-            | ImGuiWindowFlags.NoResize)
+        : base(nameof(NextActionWindow), BaseFlags)
     {
     }
 
     public override void PreDraw()
     {
         ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.NextActionWindowBg);
+
+        Flags = BaseFlags;
+        if (Service.Config.IsNextActionWindowLock)
+        {
+            Flags |= ImGuiWindowFlags.NoInputs;
+        }
 
         //ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
         ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
@@ -50,17 +51,17 @@ internal class NextActionWindow : Window
     {
         var group = ActionManager.Instance()->GetRecastGroupDetail(ActionHelper.GCDCooldownGroup - 1);
         var remain = group->Total - group->Elapsed;
+        var total = DataCenter.WeaponTotal;
 
-        if(drawTittle)
+        if (drawTittle)
         {
-            var str = $"{remain:F2}s / {group->Total:F2}s";
+            var str = $"{remain:F2}s / {total:F2}s";
             ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
             ImGui.Text(str);
         }
 
         var cursor = ImGui.GetCursorPos() + ImGui.GetWindowPos();
         var height = Service.Config.ControlProgressHeight;
-        var total = DataCenter.WeaponTotal;
         var interval = Service.Config.AbilitiesInterval;
 
         ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);

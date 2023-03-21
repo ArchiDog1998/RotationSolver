@@ -14,8 +14,14 @@ namespace RotationSolver.UI;
 
 internal class ControlWindow : Window
 {
+    public const ImGuiWindowFlags BaseFlags = ImGuiWindowFlags.NoScrollbar
+                            | ImGuiWindowFlags.NoCollapse
+                            | ImGuiWindowFlags.NoTitleBar
+                            | ImGuiWindowFlags.NoNav
+                            | ImGuiWindowFlags.NoScrollWithMouse;
+
     public ControlWindow()
-        : base(nameof(ControlWindow), NextActionWindow.BaseFlags)
+        : base(nameof(ControlWindow), BaseFlags)
     {
         Size = new Vector2(540f, 490f);
         SizeCondition = ImGuiCond.FirstUseEver;
@@ -28,7 +34,7 @@ internal class ControlWindow : Window
             : Service.Config.ControlWindowUnlockBg;
         ImGui.PushStyleColor(ImGuiCol.WindowBg, bgColor);
 
-        Flags = NextActionWindow.BaseFlags;
+        Flags = BaseFlags;
 
         if (Service.Config.IsControlWindowLock)
         {
@@ -61,7 +67,7 @@ internal class ControlWindow : Window
 
         ImGui.SameLine();
 
-        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsControlWindowLock,
+        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
             ref Service.Config.IsControlWindowLock);
 
         ImGui.NextColumn();
