@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.1.5](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.4...v2.1.5) (2023-03-21)
+
+
+### Bug Fixes
+
+* add a next action window. ([2f3de8f](https://github.com/ArchiDog1998/RotationSolver/commit/2f3de8f3cbf87d6786b35b353f522c78e7d0aa95))
+* add an next action window. ([b7e017e](https://github.com/ArchiDog1998/RotationSolver/commit/b7e017e4169463d740232ae6b8bf3bce0cc904d8))
+* add control tab to release. ([8e8b850](https://github.com/ArchiDog1998/RotationSolver/commit/8e8b850d78644ed553c78d9bdee01bb288f849d4))
+* changed the hot key for changing command. ([b453d72](https://github.com/ArchiDog1998/RotationSolver/commit/b453d72daf969fbc96aa0c2e55e6706c33cc3910))
+* fix some bug with next action window. ([55956ea](https://github.com/ArchiDog1998/RotationSolver/commit/55956ea5e59bdd0d8f9eeab34f096059da8c94b4))
+
 ## [2.1.4](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.3...v2.1.4) (2023-03-20)
 
 
