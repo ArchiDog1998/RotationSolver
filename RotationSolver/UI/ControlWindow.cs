@@ -1,19 +1,13 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
-using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
 using ImGuiScene;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System;
-using System.Buffers.Text;
 using System.Numerics;
 
 namespace RotationSolver.UI;
@@ -41,14 +35,14 @@ internal class ControlWindow : Window
             Flags |= ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
         }
 
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
+        //ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
         ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
     }
 
     public override void PostDraw()
     {
         ImGui.PopStyleColor();
-        ImGui.PopStyleVar(2);
+        ImGui.PopStyleVar();
         base.PostDraw();
     }
 

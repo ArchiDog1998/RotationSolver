@@ -5,12 +5,7 @@ using ImGuiNET;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.UI;
 
@@ -25,9 +20,23 @@ internal class NextActionWindow : Window
     public NextActionWindow()
         : base(nameof(NextActionWindow), BaseFlags 
             | ImGuiWindowFlags.AlwaysAutoResize 
-            | ImGuiWindowFlags.NoResize
-            | ImGuiWindowFlags.NoInputs)
+            | ImGuiWindowFlags.NoResize)
     {
+    }
+
+    public override void PreDraw()
+    {
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.NextActionWindowBg);
+
+        //ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
+    }
+
+    public override void PostDraw()
+    {
+        ImGui.PopStyleColor();
+        ImGui.PopStyleVar();
+        base.PostDraw();
     }
 
     public override void Draw()
@@ -44,7 +53,7 @@ internal class NextActionWindow : Window
 
         if(drawTittle)
         {
-            var str = remain.ToString("F2") + "s";
+            var str = $"{remain:F2}s / {group->Total:F2}s";
             ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
             ImGui.Text(str);
         }
@@ -59,23 +68,23 @@ internal class NextActionWindow : Window
         foreach (var value in CalculateValue(total, interval))
         {
             if (value < DataCenter.CastingTotal) continue;
-            var pt = cursor + new Vector2(total, 0) * value / total;
+            var pt = cursor + new Vector2(width, 0) * value / total;
 
-            ImGui.GetWindowDrawList().AddLine(pt, pt + new Vector2(0, height), 
+            ImGui.GetWindowDrawList().AddLine(pt, pt + new Vector2(0, height),
                 ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudRed));
         }
     }
 
     static float[] CalculateValue(float total, float interval)
     {
-        if(interval <= 0 || total <= 0 || interval <= total) return new float[0];
+        if(interval <= 0 || total <= 0 || total <= interval) return new float[0];
 
         var count = (int)(total / interval);
-        var result = new List<float>(count);
+        var result = new List<float>();
 
         if(count > 1)
         {
-            for (int i = 1; i < count; i++)
+            for (int i = 1; i < count-1; i++)
             {
                 result.Add(i * interval);
             }

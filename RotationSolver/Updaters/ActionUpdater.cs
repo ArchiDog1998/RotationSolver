@@ -119,8 +119,8 @@ internal static class ActionUpdater
         var castTotal = player.TotalCastTime;
 
         var weaponTotal = instance->GetRecastTime(ActionType.Spell, 11);
-        castTotal = Math.Max(castTotal + 0.1f, weaponTotal);
-        if (player.IsCasting) weaponTotal = castTotal;
+        if (castTotal > 0) castTotal += 0.1f;
+        if (player.IsCasting) weaponTotal = Math.Max(castTotal, weaponTotal);
 
         DataCenter.WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Spell, 11);
         DataCenter.WeaponRemain = DataCenter.WeaponElapsed == 0 ? player.TotalCastTime - player.CurrentCastTime

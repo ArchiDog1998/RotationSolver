@@ -19,6 +19,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
+		<ProjectReference Include="..\RotationSolver.Default\RotationSolver.Default.csproj" />
+		<ProjectReference Include="..\RotationSolver.Old\RotationSolver.Old.csproj" />
 
 		<EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
 		

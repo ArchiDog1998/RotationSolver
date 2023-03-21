@@ -164,6 +164,8 @@ public class PluginConfiguration : IPluginConfiguration
 
     public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.6f);
     public Vector4 ControlWindowUnlockBg = new Vector4(0, 0, 0, 0.9f);
+    public Vector4 NextActionWindowBg = new Vector4(0, 0, 0, 0.4f);
+
     public float ControlWindowGCDSize = 40;
     public float ControlWindow0GCDSize = 30;
     public float ControlWindowNextSizeRatio = 1.5f;

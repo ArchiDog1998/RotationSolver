@@ -243,6 +243,7 @@ internal partial class Strings
     public string ConfigWindow_Control_ControlShowCooldown { get; set; } = "Show action's cooldown";
     public string ConfigWindow_Control_IsControlWindowLock { get; set; } = "Lock";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
+    public string ConfigWindow_Control_NextActionWindowBg { get; set; } = "Next Action Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";

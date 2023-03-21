@@ -103,7 +103,7 @@ internal class SocialUpdater
             await Task.Delay(new Random().Next(3000, 5000));
 
 #if DEBUG
-            Service.ChatGui.PrintError("Macro now.");
+            Service.ChatGui.Print("Macro now.");
 #endif
             Service.Config.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
@@ -129,7 +129,7 @@ internal class SocialUpdater
             }
 
 #if DEBUG
-            Service.ChatGui.PrintError("Author Time");
+            Service.ChatGui.Print("Author Time");
 #else
             Service.TargetManager.SetTarget(author);
             Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");

@@ -21,6 +21,12 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowNextActionWindow,
             ref Service.Config.ShowNextActionWindow);
 
+        if (Service.Config.ShowNextActionWindow)
+        {
+            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_NextActionWindowBg,
+                ref Service.Config.NextActionWindowBg);
+        }
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
             ref Service.Config.ShowControlWindow);
 
