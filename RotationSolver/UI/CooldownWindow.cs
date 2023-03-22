@@ -24,7 +24,6 @@ internal class CooldownWindow : InfoWindow
     {
         if (RotationUpdater.RightNowRotation != null)
         {
-            ImGui.Separator();
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
                 var showItems = pair.Where(i => !(i is IBaseAction a && a.IsGeneralGCD)).OrderBy(a => a.ID);

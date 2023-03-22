@@ -141,8 +141,10 @@ internal static class RotationUpdater
 
             RightNowRotation = GetChooseRotation(group, newName);
             RightRotationBaseActions = RightNowRotation.AllBaseActions;
-            break;
+            return;
         }
+        RightNowRotation = null;
+        RightRotationBaseActions = new IBaseAction[0];
     }
 
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group, string name)
