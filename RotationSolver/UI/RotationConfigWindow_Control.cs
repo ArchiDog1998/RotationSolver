@@ -21,13 +21,16 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowNextActionWindow,
             ref Service.Config.ShowNextActionWindow);
 
-        if (Service.Config.ShowNextActionWindow)
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowCooldownWindow,
+            ref Service.Config.ShowCooldownWindow);
+
+        if (Service.Config.ShowNextActionWindow || Service.Config.ShowCooldownWindow)
         {
-            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_NextActionWindowBg,
-                ref Service.Config.NextActionWindowBg);
+            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_InfoWindowBg,
+                ref Service.Config.InfoWindowBg);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
-                ref Service.Config.IsNextActionWindowLock);
+                ref Service.Config.IsInfoWindowLock);
         }
 
         ImGui.Separator();
@@ -39,9 +42,6 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
             ref Service.Config.IsControlWindowLock);
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ControlShowCooldown,
-            ref Service.Config.ControlShowCooldown);
 
         if (Service.Config.IsControlWindowLock)
         {

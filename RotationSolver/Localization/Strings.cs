@@ -240,10 +240,10 @@ internal partial class Strings
     public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
     public string ConfigWindow_Control_UseKeyboardCommand { get; set; } = "Use Keyboard Command";
     public string ConfigWindow_Control_UseGamepadCommand { get; set; } = "Use GamePad Command";
-    public string ConfigWindow_Control_ControlShowCooldown { get; set; } = "Show action's cooldown";
+    public string ConfigWindow_Control_ShowCooldownWindow { get; set; } = "Show Cooldown Window";
     public string ConfigWindow_Control_IsWindowLock { get; set; } = "Lock";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
-    public string ConfigWindow_Control_NextActionWindowBg { get; set; } = "Next Action Window's Background";
+    public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Next Action Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
