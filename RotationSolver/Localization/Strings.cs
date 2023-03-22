@@ -242,6 +242,10 @@ internal partial class Strings
     public string ConfigWindow_Control_UseGamepadCommand { get; set; } = "Use GamePad Command";
     public string ConfigWindow_Control_ShowCooldownWindow { get; set; } = "Show Cooldown Window";
     public string ConfigWindow_Control_IsWindowLock { get; set; } = "Lock";
+
+    public string ConfigWindow_Control_ShowItemsCooldown { get; set; } = "Show Items' Cooldown";
+
+    public string ConfigWindow_Control_CooldownActionOneLine { get; set; } = "The count of cooldown actions in one line.";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
     public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Next Action Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";

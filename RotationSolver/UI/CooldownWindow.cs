@@ -30,13 +30,14 @@ internal class CooldownWindow : InfoWindow
                 var showItems = pair.Where(i => !(i is IBaseAction a && a.IsGeneralGCD)).OrderBy(a => a.ID);
 
                 if (!showItems.Any()) continue;
+                if (!Service.Config.ShowItemsCooldown && showItems.Any(i => i is IBaseItem)) continue;
 
                 ImGui.Text(pair.Key);
 
                 uint started = 0;
                 foreach (var item in showItems)
                 {
-                    if (started % 14 != 0)
+                    if (started % Math.Max(1, Service.Config.CooldownActionOneLine) != 0)
                     {
                         ImGui.SameLine();
                     }

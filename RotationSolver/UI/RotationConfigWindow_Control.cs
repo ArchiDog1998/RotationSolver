@@ -31,6 +31,14 @@ internal partial class RotationConfigWindow
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
                 ref Service.Config.IsInfoWindowLock);
+
+            if (Service.Config.ShowCooldownWindow)
+            {
+                DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowItemsCooldown,
+                    ref Service.Config.ShowItemsCooldown);
+
+                DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownActionOneLine, ref Service.Config.CooldownActionOneLine, min: 1, max: 30);
+            }
         }
 
         ImGui.Separator();
