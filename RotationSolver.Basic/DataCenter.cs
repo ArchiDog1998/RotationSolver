@@ -186,7 +186,8 @@ public static class DataCenter
 
     public static bool HasPet { get; set; }
 
-    public static unsafe bool HasCompanion => (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Service.RawPlayer) != IntPtr.Zero;
+    public static unsafe bool HasCompanion => (IntPtr)Service.RawPlayer == IntPtr.Zero ? false :
+        (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Service.RawPlayer) != IntPtr.Zero;
 
     #region HP
     public static IEnumerable<float> PartyMembersHP { get; set; }
