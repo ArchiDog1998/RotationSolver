@@ -92,9 +92,18 @@ internal static class RotationUpdater
                 {
                     string result;
 
+                    if (act.IsGeneralGCD)
+                    {
+                        result = "GCD";
+                    }
+                    else
+                    {
+                        result = LocalizationManager.RightLang.Timeline_Ability;
+                    }
+
                     if (act.IsFriendly)
                     {
-                        result = LocalizationManager.RightLang.Action_Friendly;
+                        result += "-" + LocalizationManager.RightLang.Action_Friendly;
                         if (act.IsEot)
                         {
                             result += "Hot";
@@ -102,14 +111,13 @@ internal static class RotationUpdater
                     }
                     else
                     {
-                        result = LocalizationManager.RightLang.Action_Attack;
+                        result += "-" + LocalizationManager.RightLang.Action_Attack;
 
                         if (act.IsEot)
                         {
                             result += "Dot";
                         }
                     }
-                    result += "-" + (act.IsRealGCD ? "GCD" : LocalizationManager.RightLang.Timeline_Ability);
                     return result;
                 }
                 else if (a is IBaseItem)
@@ -133,8 +141,10 @@ internal static class RotationUpdater
 
             RightNowRotation = GetChooseRotation(group, newName);
             RightRotationBaseActions = RightNowRotation.AllBaseActions;
-            break;
+            return;
         }
+        RightNowRotation = null;
+        RightRotationBaseActions = new IBaseAction[0];
     }
 
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group, string name)

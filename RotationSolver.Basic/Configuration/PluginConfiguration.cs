@@ -159,19 +159,21 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowControlWindow = false;
     public bool IsControlWindowLock = false;
     public bool ShowNextActionWindow = false;
-    public bool IsNextActionWindowLock = false;
+    public bool IsInfoWindowLock = false;
     public bool UseKeyboardCommand = false;
     public bool UseGamepadCommand = false;
+    public bool ShowItemsCooldown = false;
+    public int CooldownActionOneLine = 14;
 
     public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.6f);
     public Vector4 ControlWindowUnlockBg = new Vector4(0, 0, 0, 0.9f);
-    public Vector4 NextActionWindowBg = new Vector4(0, 0, 0, 0.4f);
+    public Vector4 InfoWindowBg = new Vector4(0, 0, 0, 0.4f);
 
     public float ControlWindowGCDSize = 40;
     public float ControlWindow0GCDSize = 30;
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
-    public bool ControlShowCooldown = false;
+    public bool ShowCooldownWindow = false;
 
     public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
     public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();

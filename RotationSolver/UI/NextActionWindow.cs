@@ -9,35 +9,11 @@ using System.Numerics;
 
 namespace RotationSolver.UI;
 
-internal class NextActionWindow : Window
+internal class NextActionWindow : InfoWindow
 {
-    const ImGuiWindowFlags BaseFlags = ControlWindow.BaseFlags
-            | ImGuiWindowFlags.AlwaysAutoResize
-            | ImGuiWindowFlags.NoResize;
     public NextActionWindow()
-        : base(nameof(NextActionWindow), BaseFlags)
+        : base(nameof(NextActionWindow))
     {
-    }
-
-    public override void PreDraw()
-    {
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.NextActionWindowBg);
-
-        Flags = BaseFlags;
-        if (Service.Config.IsNextActionWindowLock)
-        {
-            Flags |= ImGuiWindowFlags.NoInputs;
-        }
-
-        //ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
-    }
-
-    public override void PostDraw()
-    {
-        ImGui.PopStyleColor();
-        ImGui.PopStyleVar();
-        base.PostDraw();
     }
 
     public override void Draw()
