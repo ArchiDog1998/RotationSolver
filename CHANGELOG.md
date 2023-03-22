@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.6](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.5...v2.1.6) (2023-03-22)
+
+
+### Bug Fixes
+
+* add a RawPlayer is zero ptr check. ([49a5938](https://github.com/ArchiDog1998/RotationSolver/commit/49a593802f98d716aefff6a585e6aefc49625d6b))
+* add a window to show cooldown. ([2ef07a3](https://github.com/ArchiDog1998/RotationSolver/commit/2ef07a343b9949f533fc31000387b1187cea9bf3))
+* add two options for cooldown window. ([45047a0](https://github.com/ArchiDog1998/RotationSolver/commit/45047a007207b369576ec813fba045831188b47c))
+* changed cooldown window seperater. ([f72d291](https://github.com/ArchiDog1998/RotationSolver/commit/f72d29133c1b9d5089b68bea589f7ec3360b57a6))
+
 ## [2.1.5](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.4...v2.1.5) (2023-03-21)
 
 
