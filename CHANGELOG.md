@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.7](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.6...v2.1.7) (2023-03-23)
+
+
+### Bug Fixes
+
+* add more infomation on control window. ([503182b](https://github.com/ArchiDog1998/RotationSolver/commit/503182b88ee7b0ccc1a29aa0a0ba25bbb7d6161d))
+* changed template and public that one. ([0fc9396](https://github.com/ArchiDog1998/RotationSolver/commit/0fc93967d8598c64b84382507b09ba0b637a5f5a))
+
 ## [2.1.6](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.5...v2.1.6) (2023-03-22)
 
 
