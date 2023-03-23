@@ -47,8 +47,6 @@ internal class CooldownWindow : InfoWindow
         }
     }
 
-    static readonly uint black = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 0, 0, 1));
-    static readonly uint white = ImGui.ColorConvertFloat4ToU32(new Vector4(1, 1, 1, 1));
     static readonly uint progressCol = ImGui.ColorConvertFloat4ToU32(new Vector4(0.6f, 0.6f, 0.6f, 0.6f));
     private static void DrawActionCooldown(IAction act)
     {
@@ -78,7 +76,7 @@ internal class CooldownWindow : InfoWindow
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + width / 2 - strSize.X / 2, pos.Y + width / 2 - strSize.Y / 2) + winPos;
 
-            TextShade(fontPos, time, 1.5f, white, black);
+            TextShade(fontPos, time);
         }
 
         if (act.EnoughLevel && act is IBaseAction bAct && bAct.MaxCharges > 1)
@@ -92,12 +90,15 @@ internal class CooldownWindow : InfoWindow
         ImGui.EndGroup();
     }
 
-    static void TextShade(Vector2 pos, string text, float width, uint fore, uint background)
+    static readonly uint black = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 0, 0, 1));
+    static readonly uint white = ImGui.ColorConvertFloat4ToU32(new Vector4(1, 1, 1, 1));
+
+    public static void TextShade(Vector2 pos, string text, float width = 1.5f)
     {
-        ImGui.GetWindowDrawList().AddText(pos - new Vector2(0, width), background, text);
-        ImGui.GetWindowDrawList().AddText(pos - new Vector2(0, -width), background, text);
-        ImGui.GetWindowDrawList().AddText(pos - new Vector2(width, 0), background, text);
-        ImGui.GetWindowDrawList().AddText(pos - new Vector2(-width, 0), background, text);
-        ImGui.GetWindowDrawList().AddText(pos, fore, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(0, width), black, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(0, -width), black, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(width, 0), black, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(-width, 0), black, text);
+        ImGui.GetWindowDrawList().AddText(pos, white, text);
     }
 }

@@ -60,6 +60,8 @@ If you have any questions about usage, please check the [Wiki](https://archidog1
 
 > 不能限制任何人自由分发此软件，不论是否收费！如已有限制，请删除！
 
+该链接为个人研发的最后一版的源代码[AutoAttack](https://github.com/ArchiDog1998/RotationSolver/tree/1e28211c8b447423f8e11cd3126ae1aa1ef08dc6)
+
 ### 插件简要历程
 
 | 时间 | 事件 |

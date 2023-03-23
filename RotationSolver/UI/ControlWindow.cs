@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using ImGuiScene;
@@ -57,18 +58,23 @@ internal class ControlWindow : Window
         ImGui.Columns(2, "Control Bolder", false);
         ImGui.SetColumnWidth(0, DrawNextAction() + ImGui.GetStyle().ColumnsMinSpacing * 2);
 
+        DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
+
+
+        ImGui.SameLine();
+        DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DalamudWhite2);
+
         DrawCommandAction(61822, StateCommandType.Smart, ImGuiColors.DPSRed);
 
         ImGui.SameLine();
 
-        DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
+        ImGui.BeginGroup();
 
-        DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DalamudWhite2);
-
-        ImGui.SameLine();
+        ImGui.Text(DataCenter.TargetingType.ToName());
 
         RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
             ref Service.Config.IsControlWindowLock);
+        ImGui.EndGroup();
 
         ImGui.NextColumn();
 
@@ -80,6 +86,7 @@ internal class ControlWindow : Window
     private static void DrawSpecials()
     {
         var rotation = RotationUpdater.RightNowRotation;
+
         DrawCommandAction(rotation?.ActionHealAreaGCD, rotation?.ActionHealAreaAbility,
             SpecialCommandType.HealArea, ImGuiColors.HealerGreen);
 
@@ -126,6 +133,14 @@ internal class ControlWindow : Window
 
         DrawCommandAction(rotation?.AntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
+
+        ImGui.Text(DataCenter.RightNowTargetToHostileType switch
+        {
+             TargetHostileType.AllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
+             TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
+             TargetHostileType.TargetsHaveTarget => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
+             _ => string.Empty,
+        });
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)
@@ -136,6 +151,8 @@ internal class ControlWindow : Window
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
 
+        var pos = ImGui.GetCursorPos();
+        ImGui.BeginGroup();
         ImGui.BeginGroup();
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
         ImGui.TextColored(color, str);
@@ -148,6 +165,22 @@ internal class ControlWindow : Window
         DrawIAction(GetTexture(gcd).ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
         ImGui.SameLine();
         DrawIAction(GetTexture(ability).ImGuiHandle, baseId + nameof(ability), abilityW, command, help);
+        ImGui.EndGroup();
+
+        if (DataCenter.SpecialType == command)
+        {
+            var size = ImGui.GetItemRectSize();
+            var winPos = ImGui.GetWindowPos();
+
+            HighLight(winPos + pos, size);
+
+            if(DataCenter.SpecialTimeLeft > 0)
+            {
+                var time = DataCenter.SpecialTimeLeft.ToString("F2") + "s";
+                var strSize = ImGui.CalcTextSize(time);
+                CooldownWindow.TextShade(winPos + pos + size - strSize, time);
+            }
+        }
         ImGui.EndGroup();
     }
 
@@ -168,6 +201,8 @@ internal class ControlWindow : Window
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
 
+        var pos = ImGui.GetCursorPos();
+        ImGui.BeginGroup();
         ImGui.BeginGroup();
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
         ImGui.TextColored(color, str);
@@ -178,6 +213,22 @@ internal class ControlWindow : Window
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
         DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
         ImGui.EndGroup();
+
+        if (DataCenter.SpecialType == command)
+        {
+            var size = ImGui.GetItemRectSize();
+            var winPos = ImGui.GetWindowPos();
+
+            HighLight(winPos + pos, size);
+
+            if (DataCenter.SpecialTimeLeft > 0)
+            {
+                var time = DataCenter.SpecialTimeLeft.ToString("F2") + "s";
+                var strSize = ImGui.CalcTextSize(time);
+                CooldownWindow.TextShade(winPos + pos + size - strSize, time);
+            }
+        }
+        ImGui.EndGroup();
     }
 
     static void DrawCommandAction(uint iconId, StateCommandType command, Vector4 color)
@@ -187,6 +238,7 @@ internal class ControlWindow : Window
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
 
+        var pos = ImGui.GetCursorPos();
         ImGui.BeginGroup();
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
         ImGui.TextColored(color, str);
@@ -197,7 +249,24 @@ internal class ControlWindow : Window
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
         DrawIAction(IconSet.GetTexture(iconId).ImGuiHandle, baseId, abilityW, command, help);
         ImGui.EndGroup();
+
+        if (DataCenter.StateType == command)
+        {
+            var size = ImGui.GetItemRectSize();
+            var winPos = ImGui.GetWindowPos();
+
+            HighLight(winPos + pos, size);
+        }
     }
+
+    static readonly uint highLight = ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudGrey);
+    static void HighLight(Vector2 pt, Vector2 size)
+    {
+        var offset = ImGui.GetStyle().ItemSpacing / 2;
+        ImGui.GetWindowDrawList().AddRect(pt - offset, pt + size + offset,
+            highLight, 5, ImDrawFlags.RoundCornersAll, 2);
+    }
+
 
     static string GetHelp(SpecialCommandType command)
     {

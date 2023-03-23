@@ -181,7 +181,7 @@
   "ConfigWindow_Control_ShowItemsCooldown": "Show Items' Cooldown",
   "ConfigWindow_Control_CooldownActionOneLine": "The count of cooldown actions in one line.",
   "ConfigWindow_Control_BackgroundColor": "Control Window's Background",
-  "ConfigWindow_Control_InfoWindowBg": "Next Action Window's Background",
+  "ConfigWindow_Control_InfoWindowBg": "Info Window's Background",
   "ConfigWindow_Control_ControlWindowGCDSize": "GCD icon size",
   "ConfigWindow_Control_ControlWindow0GCDSize": "0GCD icon size",
   "ConfigWindow_Control_ControlWindowNextSizeRatio": "Next Action Size Ratio",
