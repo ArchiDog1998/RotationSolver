@@ -1,6 +1,5 @@
 ﻿namespace RotationSolver.ItemTemplates;
 
-[RotationDesc("Burst Description here", ActionID.None /* Some actions you used in burst. */)]
 [LinkDescription("$Your link description here, it is better to link to a png! this attribute can be multiple! $")]
 [SourceCode("$If your rotation is open source, please write the link to this attribute! $")]
 
