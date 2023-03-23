@@ -163,7 +163,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseKeyboardCommand = false;
     public bool UseGamepadCommand = false;
     public bool ShowItemsCooldown = false;
-    public int CooldownActionOneLine = 14;
+    public int CooldownActionOneLine = 15;
 
     public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.6f);
     public Vector4 ControlWindowUnlockBg = new Vector4(0, 0, 0, 0.9f);

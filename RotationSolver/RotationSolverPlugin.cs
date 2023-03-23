@@ -113,7 +113,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         var isValid = MajorUpdater.IsValid 
             && !Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
             && !Service.Conditions[ConditionFlag.BetweenAreas]
-            && !Service.Conditions[ConditionFlag.BetweenAreas51];
+            && !Service.Conditions[ConditionFlag.BetweenAreas51]
+            && !Service.Conditions[ConditionFlag.OccupiedInQuestEvent];
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
         _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;

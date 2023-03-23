@@ -72,7 +72,7 @@ public static class DataCenter
 
     public static unsafe ActionID LastComboAction => (ActionID)ActionManager.Instance()->Combo.Action;
     public static unsafe float ComboTime => ActionManager.Instance()->Combo.Timer;
-    internal static TargetingType TargetingType
+    public static TargetingType TargetingType
     {
         get
         {

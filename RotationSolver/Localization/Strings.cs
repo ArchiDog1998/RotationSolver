@@ -247,7 +247,7 @@ internal partial class Strings
 
     public string ConfigWindow_Control_CooldownActionOneLine { get; set; } = "The count of cooldown actions in one line.";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
-    public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Next Action Window's Background";
+    public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Info Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
