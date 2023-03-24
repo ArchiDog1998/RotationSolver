@@ -15,6 +15,7 @@ namespace RotationSolver.Basic;
 
 public static class DataCenter
 {
+    public static bool InHighEndDuty { get; set; } = false;
 
     private static List<NextAct> NextActs = new List<NextAct>();
     public static IBaseAction TimeLineAction { internal get; set; }

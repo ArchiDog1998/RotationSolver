@@ -98,7 +98,7 @@ public static class ObjectHelper
         return _effectRangeCheck[id] = true;
     }
 
-    private static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
+    public static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
     /// <summary>
     /// Is character a boss? Max HP exceeds a certain amount.
     /// </summary>
