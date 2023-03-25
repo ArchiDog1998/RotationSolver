@@ -79,22 +79,18 @@ public partial class BaseAction
             target = player;
             return TargetArea(range, mustUse, aoeCount, player);
         }
-        //如果能对友方和敌方都能选中
         else if (_action.CanTargetParty && _action.CanTargetHostile)
         {
             return TargetPartyAndHostile(range, mustUse, out target);
         }
-        //首先看看是不是能对小队成员进行操作的。
         else if (_action.CanTargetParty)
         {
             return TargetParty(range, aoeCount, mustUse, out target);
         }
-        //再看看是否可以选中敌对的。
         else if (_action.CanTargetHostile)
         {
             return TargetHostile(range, mustUse, aoeCount, out target);
         }
-        //如果只能选自己，那就选自己吧。
         else if (_action.CanTargetSelf)
         {
             target = player;
@@ -292,6 +288,7 @@ public partial class BaseAction
     {
         target = b;
         if (!CanUseTo(b)) return false;
+        if (!TargetFilterFuncEot(new BattleChara[] { b }, mustUse).Any()) return false;
 
         if (_action.CastType == 1)
         {
@@ -436,7 +433,7 @@ public partial class BaseAction
 
     private IEnumerable<BattleChara> TargetFilterFuncEot(IEnumerable<BattleChara> tars, bool mustUse)
     {
-        if (FilterForHostiles != null) return FilterForHostiles(tars);
+        if (FilterForHostiles != null) tars = FilterForHostiles(tars);
         if (TargetStatus == null || !IsEot) return tars;
 
         var dontHave = tars.Where(CheckStatus);
