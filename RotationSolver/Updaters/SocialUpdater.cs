@@ -73,7 +73,7 @@ internal class SocialUpdater
         {
             _canSaying = true;
         }
-        InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
+        DataCenter.InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
     }
 
     static void DutyState_DutyStarted(object sender, ushort e)
