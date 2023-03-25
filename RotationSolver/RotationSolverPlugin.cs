@@ -111,6 +111,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void UpdateDisplayWindow()
     {
         var isValid = MajorUpdater.IsValid 
+            && RotationUpdater.RightNowRotation != null
             && !Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
             && !Service.Conditions[ConditionFlag.BetweenAreas]
             && !Service.Conditions[ConditionFlag.BetweenAreas51]
