@@ -172,6 +172,7 @@
   "ConfigWindow_Param_ConditionUp": "Up",
   "ConfigWindow_Param_ConditionDown": "Down",
   "ConfigWindow_Param_ConditionDelete": "Delete",
+  "ConfigWindow_Control_OnlyShowWithHostileOrInDuty": "Only shown if there are enemies in or in duty",
   "ConfigWindow_Control_ShowNextActionWindow": "Show Next Action Window",
   "ConfigWindow_Control_ShowControlWindow": "Show Control Window",
   "ConfigWindow_Control_UseKeyboardCommand": "Use Keyboard Command",

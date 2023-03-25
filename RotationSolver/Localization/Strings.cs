@@ -235,6 +235,7 @@ internal partial class Strings
     public string ConfigWindow_Param_ConditionDown { get; set; } = "Down";
     public string ConfigWindow_Param_ConditionDelete { get; set; } = "Delete";
 
+    public string ConfigWindow_Control_OnlyShowWithHostileOrInDuty { get; set; } = "Only shown if there are enemies in or in duty";
     public string ConfigWindow_Control_ShowNextActionWindow { get; set; } = "Show Next Action Window";
 
     public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
