@@ -147,7 +147,7 @@ public sealed class WHM_Default : WHM_Base
         return false;
     }
 
-    [RotationDesc(ActionID.Temperance, ActionID.LiturgyoftheBell)]
+    [RotationDesc(ActionID.Temperance, ActionID.LiturgyOfTheBell)]
     protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //节制

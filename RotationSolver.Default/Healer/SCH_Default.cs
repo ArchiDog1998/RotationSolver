@@ -121,7 +121,7 @@ public sealed class SCH_Default : SCH_Base
     protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         //慰藉
-        if(WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1))
+        if(WhisperingDawn.ElapsedOneChargeAfterGCD(1) || FeyIllumination.ElapsedOneChargeAfterGCD(1) || FeyBlessing.ElapsedOneChargeAfterGCD(1))
         {
             if (SummonSeraph.CanUse(out act)) return true;
         }
@@ -162,7 +162,7 @@ public sealed class SCH_Default : SCH_Base
         //慰藉
 
 
-        if (WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1))
+        if (WhisperingDawn.ElapsedOneChargeAfterGCD(1) || FeyIllumination.ElapsedOneChargeAfterGCD(1) || FeyBlessing.ElapsedOneChargeAfterGCD(1))
         {
             if (SummonSeraph.CanUse(out act)) return true;
         }

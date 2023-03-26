@@ -59,7 +59,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// ×¹ÅçÈª
     /// </summary>
-    public static IBaseAction Fountainfall { get; } = new BaseAction(ActionID.Fountainfall)
+    public static IBaseAction Fountainfall { get; } = new BaseAction(ActionID.FountainFall)
     {
         StatusNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
     };
@@ -84,7 +84,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// ÂäÈÐÓê
     /// </summary>
-    public static IBaseAction Bladeshower { get; } = new BaseAction(ActionID.Bladeshower)
+    public static IBaseAction Bladeshower { get; } = new BaseAction(ActionID.BladeShower)
     {
         StatusProvide = Fountain.StatusProvide,
     };
@@ -100,7 +100,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// ÂäÑªÓê
     /// </summary>
-    public static IBaseAction Bloodshower { get; } = new BaseAction(ActionID.Bloodshower)
+    public static IBaseAction Bloodshower { get; } = new BaseAction(ActionID.BloodShower)
     {
         AOECount = 2,
         StatusNeed = Fountainfall.StatusNeed,
@@ -143,7 +143,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// Á÷ÐÇÎè
     /// </summary>
-    public static IBaseAction StarfallDance { get; } = new BaseAction(ActionID.StarfallDance)
+    public static IBaseAction StarfallDance { get; } = new BaseAction(ActionID.StarFallDance)
     {
         StatusNeed = new[] { StatusID.FlourishingStarfall },
     };
@@ -252,7 +252,7 @@ public abstract class DNC_Base : CustomRotation
         {
             Targets = Targets.Where(b => b.ObjectId != Player.ObjectId && b.CurrentHp != 0 &&
             //Remove Weak
-            !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)
+            !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkOfDeath)
             //Remove other partner.
             && !b.HasStatus(false, StatusID.ClosedPosition2) | b.HasStatus(true, StatusID.ClosedPosition2)
             );

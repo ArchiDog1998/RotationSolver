@@ -156,6 +156,7 @@ public class PluginConfiguration : IPluginConfiguration
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
+    public bool OnlyShowWithHostileOrInDuty = true;
     public bool ShowControlWindow = false;
     public bool IsControlWindowLock = false;
     public bool ShowNextActionWindow = false;

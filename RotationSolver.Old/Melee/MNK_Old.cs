@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Old.Melee;
 
-[RotationDesc(ActionID.RiddleofFire)]
+[RotationDesc(ActionID.RiddleOfFire)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Old/Melee/MNK_Old.cs")]
 public sealed class MNK_Old : MNK_Base
 {
@@ -23,7 +23,7 @@ public sealed class MNK_Old : MNK_Base
 
     private bool RaptorForm(out IAction act)
     {
-        if (FourpointFury.CanUse(out act)) return true;
+        if (FourPointFury.CanUse(out act)) return true;
 
         if (Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist) && TwinSnakes.CanUse(out act)) return true;
 
@@ -33,7 +33,7 @@ public sealed class MNK_Old : MNK_Base
 
     private bool CoerlForm(out IAction act)
     {
-        if (Rockbreaker.CanUse(out act)) return true;
+        if (RockBreaker.CanUse(out act)) return true;
         if (Demolish.CanUse(out act)) return true;
         if (SnapPunch.CanUse(out act)) return true;
         return false;
@@ -111,7 +111,7 @@ public sealed class MNK_Old : MNK_Base
     {
         if (InBurst)
         {
-            if (RiddleofFire.CanUse(out act)) return true;
+            if (RiddleOfFire.CanUse(out act)) return true;
             if (Brotherhood.CanUse(out act)) return true;
         }
 

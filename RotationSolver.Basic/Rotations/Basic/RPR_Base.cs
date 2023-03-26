@@ -80,7 +80,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 死亡之影
     /// </summary>
-    public static IBaseAction ShadowofDeath { get; } = new BaseAction(ActionID.ShadowofDeath, isEot: true)
+    public static IBaseAction ShadowofDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, isEot: true)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = b => !SoulReaver,
@@ -114,7 +114,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 死亡之涡
     /// </summary>
-    public static IBaseAction WhorlofDeath { get; } = new BaseAction(ActionID.WhorlofDeath, isEot: true)
+    public static IBaseAction WhorlofDeath { get; } = new BaseAction(ActionID.WhorlOfDeath, isEot: true)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = ShadowofDeath.ActionCheck,
@@ -187,7 +187,7 @@ public abstract class RPR_Base : CustomRotation
     /// </summary>
     public static IBaseAction ArcaneCircle { get; } = new BaseAction(ActionID.ArcaneCircle, true)
     {
-        StatusProvide = new[] { StatusID.CircleofSacrifice, StatusID.BloodsownCircle }
+        StatusProvide = new[] { StatusID.CircleOfSacrifice, StatusID.BloodSownCircle }
     };
 
     /// <summary>
@@ -196,7 +196,7 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction PlentifulHarvest { get; } = new BaseAction(ActionID.PlentifulHarvest)
     {
         StatusNeed = new[] { StatusID.ImmortalSacrifice },
-        ActionCheck = b => !Player.HasStatus(true, StatusID.BloodsownCircle)
+        ActionCheck = b => !Player.HasStatus(true, StatusID.BloodSownCircle)
     };
     #endregion
     #region 蓝条50附体
@@ -291,9 +291,9 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 播魂种
     /// </summary>
-    public static IBaseAction Soulsow { get; } = new BaseAction(ActionID.Soulsow)
+    public static IBaseAction Soulsow { get; } = new BaseAction(ActionID.SoulSow)
     {
-        StatusProvide = new[] { StatusID.Soulsow },
+        StatusProvide = new[] { StatusID.SoulSow },
         ActionCheck = b => !InCombat,
     };
 
@@ -302,7 +302,7 @@ public abstract class RPR_Base : CustomRotation
     /// </summary>
     public static IBaseAction HarvestMoon { get; } = new BaseAction(ActionID.HarvestMoon)
     {
-        StatusNeed = new[] { StatusID.Soulsow },
+        StatusNeed = new[] { StatusID.SoulSow },
     };
 
     /// <summary>

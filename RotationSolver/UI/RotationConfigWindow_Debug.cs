@@ -45,6 +45,7 @@ internal partial class RotationConfigWindow
         }
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
+        ImGui.Text("Hostile Near: " + DataCenter.HasHostilesInRange.ToString());
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
         ImGui.Text("Targetable: " + Service.Player.IsTargetable().ToString());
 

@@ -42,17 +42,17 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 连击
     /// </summary>
-    public static IBaseAction Bootshine { get; } = new BaseAction(ActionID.Bootshine);
+    public static IBaseAction Bootshine { get; } = new BaseAction(ActionID.BootShine);
 
     /// <summary>
     /// 破坏神冲 aoe
     /// </summary>
-    public static IBaseAction ArmoftheDestroyer { get; } = new BaseAction(ActionID.ArmoftheDestroyer);
+    public static IBaseAction ArmoftheDestroyer { get; } = new BaseAction(ActionID.ArmOfTheDestroyer);
 
     /// <summary>
     /// 破坏神脚 aoe
     /// </summary>
-    public static IBaseAction ShadowoftheDestroyer { get; } = new BaseAction(ActionID.ShadowoftheDestroyer);
+    public static IBaseAction ShadowOfTheDestroyer { get; } = new BaseAction(ActionID.ShadowOfTheDestroyer);
 
     /// <summary>
     /// 双掌打 伤害提高
@@ -67,7 +67,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 四面脚 aoe
     /// </summary>
-    public static IBaseAction FourpointFury { get; } = new BaseAction(ActionID.FourpointFury);
+    public static IBaseAction FourPointFury { get; } = new BaseAction(ActionID.FourPointFury);
 
     /// <summary>
     /// 破碎拳
@@ -75,7 +75,7 @@ public abstract class MNK_Base : CustomRotation
     public static IBaseAction Demolish { get; } = new BaseAction(ActionID.Demolish, isEot: true)
     {
         TargetStatus = new StatusID[] { StatusID.Demolish },
-        GetDotGcdCount = () => 2,
+        GetDotGcdCount = () => 3,
     };
 
     /// <summary>
@@ -86,7 +86,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 地烈劲 aoe
     /// </summary>
-    public static IBaseAction Rockbreaker { get; } = new BaseAction(ActionID.Rockbreaker);
+    public static IBaseAction RockBreaker { get; } = new BaseAction(ActionID.RockBreaker);
 
     /// <summary>
     /// 斗气
@@ -117,7 +117,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 红莲极意 提高dps
     /// </summary>
-    public static IBaseAction RiddleofFire { get; } = new BaseAction(ActionID.RiddleofFire, true);
+    public static IBaseAction RiddleOfFire { get; } = new BaseAction(ActionID.RiddleOfFire, true);
 
     /// <summary>
     /// 突进技能
@@ -177,15 +177,15 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 金刚极意 盾
     /// </summary>
-    public static IBaseAction RiddleofEarth { get; } = new BaseAction(ActionID.RiddleofEarth, true, shouldEndSpecial: true, isTimeline: true)
+    public static IBaseAction RiddleofEarth { get; } = new BaseAction(ActionID.RiddleOfEarth, true, shouldEndSpecial: true, isTimeline: true)
     {
-        StatusProvide = new[] { StatusID.RiddleofEarth },
+        StatusProvide = new[] { StatusID.RiddleOfEarth },
     };
 
     /// <summary>
     /// 疾风极意
     /// </summary>
-    public static IBaseAction RiddleofWind { get; } = new BaseAction(ActionID.RiddleofWind, true);
+    public static IBaseAction RiddleofWind { get; } = new BaseAction(ActionID.RiddleOfWind, true);
 
     [RotationDesc(ActionID.Thunderclap)]
     protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
@@ -208,7 +208,7 @@ public abstract class MNK_Base : CustomRotation
         return false;
     }
 
-    [RotationDesc(ActionID.RiddleofEarth)]
+    [RotationDesc(ActionID.RiddleOfEarth)]
     protected sealed override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (RiddleofEarth.CanUse(out act, emptyOrSkipCombo: true)) return true;

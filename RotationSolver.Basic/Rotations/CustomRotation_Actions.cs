@@ -33,13 +33,13 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 即刻咏唱
     /// </summary>
-    public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.Swiftcast, new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, true)
+    public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.SwiftCast, new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, true)
     {
         StatusProvide = new StatusID[]
         {
-            StatusID.Swiftcast,
-            StatusID.Triplecast,
-            StatusID.Dualcast,
+            StatusID.SwiftCast,
+            StatusID.TripleCast,
+            StatusID.DualCast,
         }
     };
 
@@ -102,10 +102,10 @@ public abstract partial class CustomRotation
     {
         StatusProvide = new StatusID[]
         {
-            StatusID.Superbolide, StatusID.HallowedGround,
+            StatusID.SuperBolide, StatusID.HallowedGround,
             StatusID.Rampart, StatusID.Bulwark,
             //原初的直觉和血气
-            StatusID.RawIntuition, StatusID.Bloodwhetting,
+            StatusID.RawIntuition, StatusID.BloodWhetting,
             //复仇
             StatusID.Vengeance,
             //预警
@@ -198,7 +198,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 沉稳咏唱
     /// </summary>
-    public static IBaseAction SureCast { get; } = new RoleAction(ActionID.Surecast,
+    public static IBaseAction SureCast { get; } = new RoleAction(ActionID.SureCast,
         new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, true, shouldEndSpecial: true);
 
     /// <summary>

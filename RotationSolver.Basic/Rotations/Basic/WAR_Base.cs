@@ -128,7 +128,7 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// ’Ω¿ı
     /// </summary>
-    public static IBaseAction ThrillofBattle { get; } = new BaseAction(ActionID.ThrillofBattle, true, isTimeline: true);
+    public static IBaseAction ThrillofBattle { get; } = new BaseAction(ActionID.ThrillOfBattle, true, isTimeline: true);
 
     /// <summary>
     /// Ã©»ª◊‘»Ù

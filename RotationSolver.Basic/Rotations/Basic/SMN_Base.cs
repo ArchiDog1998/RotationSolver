@@ -56,7 +56,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 龙神附体状态
     /// </summary>
-    protected static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.Deathflare;
+    protected static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.DeathFlare;
 
     /// <summary>
     /// 不死鸟附体状态
@@ -148,7 +148,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 以太蓄能  龙神附体 
     /// </summary>
-    public static IBaseAction Aethercharge { get; } = new BaseAction(ActionID.Aethercharge)
+    public static IBaseAction Aethercharge { get; } = new BaseAction(ActionID.AetherCharge)
     {
         ActionCheck = b => InCombat && HaveSummon
     };
@@ -173,7 +173,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 死星核爆
     /// </summary>
-    public static IBaseAction Deathflare { get; } = new BaseAction(ActionID.Deathflare)
+    public static IBaseAction Deathflare { get; } = new BaseAction(ActionID.DeathFlare)
     {
         ActionCheck = b => InBahamut,
     };
@@ -283,7 +283,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 痛苦核爆
     /// </summary>
-    public static IBaseAction Painflare { get; } = new BaseAction(ActionID.Painflare)
+    public static IBaseAction Painflare { get; } = new BaseAction(ActionID.PainFlare)
     {
         ActionCheck = b => HasAetherflowStacks
     };

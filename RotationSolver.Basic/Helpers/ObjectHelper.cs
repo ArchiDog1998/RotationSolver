@@ -44,7 +44,8 @@ public static class ObjectHelper
 
     public static unsafe bool IsNPCEnemy(this GameObject obj)
         => obj.GetObjectKind() == ObjectKind.BattleNpc
-        && (byte)obj.GetBattleNPCSubKind() is (byte)BattleNpcSubKind.Enemy or 1;
+        && (byte)obj.GetBattleNPCSubKind() is (byte)BattleNpcSubKind.Enemy or 1
+        && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.GetAddress());
 
 
     public static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.GetAddress()->ObjectKind;
@@ -98,7 +99,7 @@ public static class ObjectHelper
         return _effectRangeCheck[id] = true;
     }
 
-    private static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
+    public static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
     /// <summary>
     /// Is character a boss? Max HP exceeds a certain amount.
     /// </summary>

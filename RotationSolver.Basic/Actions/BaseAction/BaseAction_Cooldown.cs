@@ -1,22 +1,37 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Helpers;
+using System.ComponentModel;
 
 namespace RotationSolver.Actions.BaseAction;
 
 public partial class BaseAction
 {
-    public bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0)
+    public bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, uint abilityCount = 0)
     {
         if (!IsCoolingDown) return false;
         var elapsed = RecastTimeElapsedOneCharge;
         return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount);
     }
 
-    public bool ElapsedAfter(float time)
+    public bool ElapsedOneChargeAfter(float time)
     {
         if (!IsCoolingDown) return false;
         var elapsed = RecastTimeElapsedOneCharge;
+        return CooldownHelper.ElapsedAfter(elapsed, time);
+    }
+
+    public bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0)
+    {
+        if (!IsCoolingDown) return false;
+        var elapsed = RecastTimeElapsed;
+        return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount);
+    }
+
+    public bool ElapsedAfter(float time)
+    {
+        if (!IsCoolingDown) return false;
+        var elapsed = RecastTimeElapsed;
         return CooldownHelper.ElapsedAfter(elapsed, time);
     }
 
@@ -41,11 +56,13 @@ public partial class BaseAction
     /// <summary>
     /// 复唱时间
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     private unsafe float RecastTime => CoolDownDetail->Total;
 
     /// <summary>
     /// 复唱经过时间
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public unsafe float RecastTimeElapsed => CoolDownDetail->Elapsed;
 
     /// <summary>
@@ -56,6 +73,7 @@ public partial class BaseAction
     /// <summary>
     /// 复唱剩余时间
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float RecastTimeRemain => RecastTime - RecastTimeElapsed;
 
     /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Actions;
+﻿using System.ComponentModel;
+
+namespace RotationSolver.Basic.Actions;
 
 public interface IAction : ITexture
 {
@@ -6,6 +8,8 @@ public interface IAction : ITexture
     uint ID { get; }
     uint AdjustedID { get; }
     float RecastTimeOneCharge { get; }
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
     float RecastTimeElapsed { get; }
     bool IsCoolingDown { get; }
 

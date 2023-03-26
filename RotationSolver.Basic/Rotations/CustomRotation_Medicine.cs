@@ -1,7 +1,9 @@
 ﻿using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.Rotations.CustomRotation;
+
 public enum MedicineType : byte
 {
     Strength,
@@ -9,26 +11,26 @@ public enum MedicineType : byte
     Intelligence,
     Mind,
 }
+
 public abstract partial class CustomRotation
 {
     public abstract MedicineType MedicineType { get; }
-    public static IBaseItem TinctureOfStrength6 { get; } = new MedicineItem(36109,
-        MedicineType.Strength, 196625);
-    public static IBaseItem TinctureOfDexterity6 { get; } = new MedicineItem(36110,
-         MedicineType.Dexterity);
-    public static IBaseItem TinctureOfIntelligence6 { get; } = new MedicineItem(36112,
-         MedicineType.Intelligence);
-    public static IBaseItem TinctureOfMind6 { get; } = new MedicineItem(36113,
-        MedicineType.Mind);
-
-    public static IBaseItem TinctureOfStrength7 { get; } = new MedicineItem(37840,
-         MedicineType.Strength);
-    public static IBaseItem TinctureOfDexterity7 { get; } = new MedicineItem(37841,
-        MedicineType.Dexterity);
-    public static IBaseItem TinctureOfIntelligence7 { get; } = new MedicineItem(37843,
-       MedicineType.Intelligence);
-    public static IBaseItem TinctureOfMind7 { get; } = new MedicineItem(37844,
-        MedicineType.Mind);
+    public static IBaseItem TinctureOfStrength6 { get; } 
+        = new MedicineItem(36109, MedicineType.Strength, 196625);
+    public static IBaseItem TinctureOfDexterity6 { get; }
+        = new MedicineItem(36110, MedicineType.Dexterity);
+    public static IBaseItem TinctureOfIntelligence6 { get; }
+        = new MedicineItem(36112, MedicineType.Intelligence);
+    public static IBaseItem TinctureOfMind6 { get; } 
+        = new MedicineItem(36113, MedicineType.Mind);
+    public static IBaseItem TinctureOfStrength7 { get; } 
+        = new MedicineItem(37840, MedicineType.Strength);
+    public static IBaseItem TinctureOfDexterity7 { get; } 
+        = new MedicineItem(37841, MedicineType.Dexterity);
+    public static IBaseItem TinctureOfIntelligence7 { get; } 
+        = new MedicineItem(37843, MedicineType.Intelligence);
+    public static IBaseItem TinctureOfMind7 { get; } 
+        = new MedicineItem(37844,  MedicineType.Mind);
 
     public static IBaseItem EchoDrops { get; } = new BaseItem(4566);
     
@@ -61,8 +63,8 @@ public abstract partial class CustomRotation
     {
         act = null;
         
-        if (!IsFullParty || !InCombat) return false;
-        if (Service.Player?.Level < 90) return false;
+        if (!InCombat) return false;
+        if (!(Target?.IsDummy() ?? false) && !DataCenter.InHighEndDuty) return false;
 
         switch (MedicineType)
         {

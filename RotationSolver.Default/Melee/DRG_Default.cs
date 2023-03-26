@@ -14,7 +14,7 @@ public sealed class DRG_Default : DRG_Base
             .SetBool("DRG_SafeMove", true, "Moving save");
     }
 
-    [RotationDesc(ActionID.SpineshatterDive, ActionID.DragonfireDive)]
+    [RotationDesc(ActionID.SpineShatterDive, ActionID.DragonFireDive)]
     protected override bool MoveForwardAbility(byte abilityRemain, out IAction act, bool recordTarget = true)
     {
         if (abilityRemain > 1)
@@ -78,7 +78,7 @@ public sealed class DRG_Default : DRG_Base
         //ÆÆËé³å
         if (SpineshatterDive.CanUse(out act, emptyOrSkipCombo: true))
         {
-            if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedOneChargeAfterGCD(3)) return true;
         }
         if (Player.HasStatus(true, StatusID.PowerSurge) && SpineshatterDive.CurrentCharges != 1 && SpineshatterDive.CanUse(out act)) return true;
 
@@ -88,7 +88,7 @@ public sealed class DRG_Default : DRG_Base
         //ÁúÑ×³å
         if (DragonfireDive.CanUse(out act, mustUse: true))
         {
-            if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedAfterGCD(3)) return true;
+            if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedOneChargeAfterGCD(3)) return true;
         }
 
         //ÌìÁúµã¾¦

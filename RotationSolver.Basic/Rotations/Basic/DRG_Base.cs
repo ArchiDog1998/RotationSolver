@@ -92,12 +92,12 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// ÆÆËé³å
     /// </summary>
-    public static IBaseAction SpineshatterDive { get; } = new BaseAction(ActionID.SpineshatterDive);
+    public static IBaseAction SpineshatterDive { get; } = new BaseAction(ActionID.SpineShatterDive);
 
     /// <summary>
     /// ÁúÑ×³å
     /// </summary>
-    public static IBaseAction DragonfireDive { get; } = new BaseAction(ActionID.DragonfireDive);
+    public static IBaseAction DragonfireDive { get; } = new BaseAction(ActionID.DragonFireDive);
 
     /// <summary>
     /// ÌøÔ¾
@@ -139,7 +139,7 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// ×¹ÐÇ³å
     /// </summary>
-    public static IBaseAction Stardiver { get; } = new BaseAction(ActionID.Stardiver)
+    public static IBaseAction Stardiver { get; } = new BaseAction(ActionID.StarDiver)
     {
         ActionCheck = b => JobGauge.IsLOTDActive,
     };
@@ -175,7 +175,7 @@ public abstract class DRG_Base : CustomRotation
         ChoiceTarget = (Targets, mustUse) =>
         {
             Targets = Targets.Where(b => b.ObjectId != Player.ObjectId &&
-            !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath)).ToArray();
+            !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkOfDeath)).ToArray();
 
             if (Targets.Count() == 0) return Player;
 

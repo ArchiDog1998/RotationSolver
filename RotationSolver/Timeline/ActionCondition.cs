@@ -33,11 +33,11 @@ internal class ActionCondition : ICondition
         switch (ActionConditonType)
         {
             case ActionConditonType.Elapsed:
-                result = _action.ElapsedAfter(Time); // Bigger
+                result = _action.ElapsedOneChargeAfter(Time); // Bigger
                 break;
 
             case ActionConditonType.ElapsedGCD:
-                result = _action.ElapsedAfterGCD((uint)Param1, (uint)Param2); // Bigger
+                result = _action.ElapsedOneChargeAfterGCD((uint)Param1, (uint)Param2); // Bigger
                 break;
 
             case ActionConditonType.Remain:

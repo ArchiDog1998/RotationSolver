@@ -3,7 +3,7 @@ namespace RotationSolver.Default.Tank;
 
 [LinkDescription("https://xiv.sleepyshiba.com/pld/img/63-60stentative2.png")]
 [RotationDesc("The whole rotation's burst\nis base on:")]
-[RotationDesc(ActionID.FightorFlight)]
+[RotationDesc(ActionID.FightOrFlight)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/PLD_Default.cs")]
 public class PLD_Default : PLD_Base
 {
@@ -15,7 +15,8 @@ public class PLD_Default : PLD_Base
     protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("UseDivineVeilPre", false, "DivineVeilPre in 15 seconds counting down.");
+            .SetBool("UseDivineVeilPre", false, "DivineVeilPre in 15 seconds counting down.")
+            .SetBool("UseHolyWhenAway", true, "Use HolyCircle or HolySpirit when far from enemies");
     }
 
     protected override IAction CountDownAction(float remainTime)
@@ -87,7 +88,11 @@ public class PLD_Default : PLD_Base
         if (FastBlade.CanUse(out act)) return true;
 
         //Range
-        if (HolySpirit.CanUse(out act)) return true;
+        if (Configs.GetBool("UseHolyWhenAway"))
+        {
+            if (HolyCircle.CanUse(out act)) return true;
+            if (HolySpirit.CanUse(out act)) return true;
+        }
         if (ShieldLob.CanUse(out act)) return true;
 
         return false;
@@ -101,7 +106,7 @@ public class PLD_Default : PLD_Base
         return false;
     }
 
-    [RotationDesc(ActionID.PassageofArms)]
+    [RotationDesc(ActionID.PassageOfArms)]
     protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (PassageofArms.CanUse(out act)) return true;

@@ -98,22 +98,22 @@ public enum StatusID : ushort
     /// <summary>
     /// 即刻咏唱
     /// </summary>
-    Swiftcast = 167,
+    SwiftCast = 167,
 
     /// <summary>
     /// 连续咏唱
     /// </summary>
-    Dualcast = 1249,
+    DualCast = 1249,
 
     /// <summary>
     /// 三连咏唱
     /// </summary>
-    Triplecast = 1211,
+    TripleCast = 1211,
 
     /// <summary>
     /// 激情咏唱
     /// </summary>
-    Sharpcast = 867,
+    SharpCast = 867,
 
     /// <summary>
     /// 雷云
@@ -189,7 +189,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 超火流行
     /// </summary>
-    Superbolide = 1836,
+    SuperBolide = 1836,
 
     /// <summary>
     /// 直线射击预备
@@ -204,7 +204,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 风蚀箭Dot
     /// </summary>
-    Windbite = 129,
+    WindBite = 129,
 
     /// <summary>
     /// 毒咬箭 Plus Dot
@@ -214,12 +214,12 @@ public enum StatusID : ushort
     /// <summary>
     /// 风蚀箭 Plus Dot
     /// </summary>
-    Stormbite = 1201,
+    StormBite = 1201,
 
     /// <summary>
     /// 影噬箭准备
     /// </summary>
-    ShadowbiteReady = 3002,
+    ShadowBiteReady = 3002,
 
     /// <summary>
     /// 爆破箭准备
@@ -269,7 +269,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 原初的血气
     /// </summary>
-    Bloodwhetting = 2678,
+    BloodWhetting = 2678,
 
     /// <summary>
     /// 原初的解放
@@ -398,7 +398,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 祭祀环
     /// </summary>
-    CircleofSacrifice = 2972,
+    CircleOfSacrifice = 2972,
 
     /// <summary>
     /// 死亡祭品
@@ -408,7 +408,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 死亡祭祀
     /// </summary>
-    BloodsownCircle = 2972,
+    BloodSownCircle = 2972,
 
     /// <summary>
     /// 神秘环
@@ -418,7 +418,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 播魂种
     /// </summary>
-    Soulsow = 2594,
+    SoulSow = 2594,
 
     /// <summary>
     /// 回退准备
@@ -509,7 +509,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 红莲极意
     /// </summary>
-    RiddleofFire = 1181,
+    RiddleOfFire = 1181,
 
     /// <summary>
     /// 义结金兰：攻击
@@ -592,7 +592,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 濒死
     /// </summary>
-    BrinkofDeath = 44,
+    BrinkOfDeath = 44,
 
     /// <summary>
     /// 心关
@@ -652,7 +652,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 英勇之剑
     /// </summary>
-    BladeofValor = 2721,
+    BladeOfValor = 2721,
 
     DivineMight = 2673,
 
@@ -826,7 +826,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 石之心
     /// </summary>
-    HeartofStone = 1840,
+    HeartOfStone = 1840,
 
     /// <summary>
     /// 无情
@@ -867,7 +867,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 燕飞效果提高
     /// </summary>
-    Enhanced_Enpi = 1236,
+    EnhancedEnpi = 1236,
 
     /// <summary>
     /// 风月
@@ -942,7 +942,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 真理之剑预备状态
     /// </summary>
-    ReadyForBladeofFaith = 3019,
+    ReadyForBladeOfFaith = 3019,
 
     /// <summary>
     /// 盾阵
@@ -972,7 +972,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 金刚极意
     /// </summary>
-    RiddleofEarth = 1179,
+    RiddleOfEarth = 1179,
 
     /// <summary>
     /// 醒梦
@@ -999,12 +999,12 @@ public enum StatusID : ushort
     /// <summary>
     /// 即兴表演结束
     /// </summary>
-    Improvised_Finish = 2697,
+    ImprovisedFinish = 2697,
 
     /// <summary>
     /// 舞动的热情
     /// </summary>
-    Rising_Rhythm = 2696,
+    RisingRhythm = 2696,
 
 
     /// <summary>
@@ -1045,7 +1045,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 意志薄弱
     /// </summary>
-    BrushwithDeath = 2127,
+    BrushWithDeath = 2127,
 
     /// <summary>
     /// 蓄力
@@ -1090,7 +1090,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 冰雾
     /// </summary>
-    TouchofFrost = 2994,
+    TouchOfFrost = 2994,
 
     /// <summary>
     /// 玄天武水壁

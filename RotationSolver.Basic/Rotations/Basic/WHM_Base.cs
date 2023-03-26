@@ -142,7 +142,7 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 礼仪之铃
     /// </summary>
-    public static IBaseAction LiturgyoftheBell { get; } = new BaseAction(ActionID.LiturgyoftheBell, true, isTimeline: true);
+    public static IBaseAction LiturgyoftheBell { get; } = new BaseAction(ActionID.LiturgyOfTheBell, true, isTimeline: true);
     #endregion
     #region 输出
     /// <summary>

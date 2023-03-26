@@ -25,7 +25,6 @@ internal class SocialUpdater
     };
 
     static bool _canSaying = false;
-    public static bool InHighEndDuty { get; private set; } = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = new TerritoryType[0];
 
     static bool CanSocial
@@ -74,7 +73,7 @@ internal class SocialUpdater
         {
             _canSaying = true;
         }
-        InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
+        DataCenter.InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
     }
 
     static void DutyState_DutyStarted(object sender, ushort e)

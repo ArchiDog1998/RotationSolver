@@ -31,7 +31,7 @@ namespace RotationSolver.Commands
             //if (nextAction is BaseAction acti)
             //    Service.ChatGui.Print($"Will Do {acti} {ActionUpdater.WeaponElapsed}");
 #endif
-            if (SocialUpdater.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
+            if (DataCenter.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
                 if (_loop % 5 == 0)
                 {

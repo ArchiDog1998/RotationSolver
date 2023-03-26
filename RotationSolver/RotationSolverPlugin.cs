@@ -1,10 +1,12 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
+using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 using Newtonsoft.Json;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
+using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.UI;
@@ -110,10 +112,15 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     internal static void UpdateDisplayWindow()
     {
-        var isValid = MajorUpdater.IsValid 
+        var isValid = MajorUpdater.IsValid
+        && (!Service.Config.OnlyShowWithHostileOrInDuty ||
+                Service.Conditions[ConditionFlag.BoundByDuty] ||
+                 DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
+            && RotationUpdater.RightNowRotation != null
             && !Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
             && !Service.Conditions[ConditionFlag.BetweenAreas]
             && !Service.Conditions[ConditionFlag.BetweenAreas51]
+            && !Service.Conditions[ConditionFlag.WaitingForDuty]
             && !Service.Conditions[ConditionFlag.OccupiedInQuestEvent];
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;

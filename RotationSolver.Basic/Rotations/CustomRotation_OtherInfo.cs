@@ -226,6 +226,8 @@ public abstract partial class CustomRotation
         return CooldownHelper.ElapsedAfter(time, DataCenter.CombatTime + DataCenter.WeaponRemain);
     }
 
+    public static bool CombatElapsedLessGCD(int GCD) => CombatElapsedLess(GCD * DataCenter.WeaponTotal);
+
     public MethodInfo[] AllLast => GetType().GetStaticBoolMethodInfo(m =>
     {
         var types = m.GetParameters();

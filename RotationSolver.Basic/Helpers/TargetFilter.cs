@@ -249,7 +249,7 @@ public static class TargetFilter
             if (item.HasStatus(false, StatusID.Raise)) return false;
 
             //如果濒死了，那给我TMD冷静冷静！等着另一个奶大发慈悲吧。
-            if (!Service.Config.RaiseBrinkOfDeath && item.HasStatus(false, StatusID.BrinkofDeath)) return false;
+            if (!Service.Config.RaiseBrinkOfDeath && item.HasStatus(false, StatusID.BrinkOfDeath)) return false;
 
             //如果有人在对着他咏唱，那就算了。
             if (DataCenter.AllianceMembers.Any(c => c.CastTargetObjectId == item.ObjectId)) return false;
@@ -285,14 +285,14 @@ public static class TargetFilter
 
     internal static BattleChara ASTRangeTarget(IEnumerable<BattleChara> ASTTargets, bool mustUse)
     {
-        ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath));
+        ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkOfDeath));
 
         return ASTTargets.ASTGetTargetByJobs(JobRole.RangedMagical, JobRole.RangedPhysical, JobRole.Melee);
     }
 
     internal static BattleChara ASTMeleeTarget(IEnumerable<BattleChara> ASTTargets, bool mustUse)
     {
-        ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkofDeath));
+        ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkOfDeath));
 
 
         return ASTTargets.ASTGetTargetByJobs(JobRole.Melee, JobRole.RangedMagical, JobRole.RangedPhysical);

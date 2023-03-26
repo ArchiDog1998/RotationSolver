@@ -75,9 +75,9 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// ·çÊ´¼ý
     /// </summary>
-    public static IBaseAction Windbite { get; } = new BaseAction(ActionID.Windbite, isEot: true)
+    public static IBaseAction Windbite { get; } = new BaseAction(ActionID.WindBite, isEot: true)
     {
-        TargetStatus = new[] { StatusID.Windbite, StatusID.Stormbite }
+        TargetStatus = new[] { StatusID.WindBite, StatusID.StormBite }
     };
 
     /// <summary>
@@ -158,7 +158,7 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction QuickNock { get; } = new BaseAction(ActionID.QuickNock)
     {
-        StatusProvide = new[] { StatusID.ShadowbiteReady }
+        StatusProvide = new[] { StatusID.ShadowBiteReady }
     };
 
     /// <summary>
@@ -166,7 +166,7 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction ShadowBite { get; } = new BaseAction(ActionID.ShadowBite)
     {
-        StatusNeed = new[] { StatusID.ShadowbiteReady }
+        StatusNeed = new[] { StatusID.ShadowBiteReady }
     };
 
     /// <summary>
