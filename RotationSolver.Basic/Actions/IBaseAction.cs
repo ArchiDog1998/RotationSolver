@@ -128,6 +128,7 @@ namespace RotationSolver.Basic.Actions
         /// <param name="remain"></param>
         /// <returns></returns>
         bool WillHaveOneCharge(float remain);
+
         #endregion
 
         #region Target

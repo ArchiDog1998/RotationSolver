@@ -5,7 +5,7 @@ namespace RotationSolver.Default.Melee;
 [LinkDescription("https://i.imgur.com/C5lQhpe.png")]
 public sealed class MNK_Default : MNK_Base
 {
-    public override string GameVersion => "6.31";
+    public override string GameVersion => "6.35";
 
     public override string RotationName => "LunarSolarOpener";
 
@@ -19,7 +19,6 @@ public sealed class MNK_Default : MNK_Base
         if (remainTime < 0.2)
         {
             if (Thunderclap.CanUse(out var act, true, true)) return act;
-            if (Thunderclap.CanUse(out act, false, true)) return act;
         }
         if (remainTime < 15)
         {
@@ -38,18 +37,20 @@ public sealed class MNK_Default : MNK_Base
         return false;
     }
 
-
     private static bool RaptorForm(out IAction act)
     {
-        if (FourpointFury.CanUse(out act)) return true;
-        if (Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist) && TwinSnakes.CanUse(out act)) return true;
+        if (FourPointFury.CanUse(out act)) return true;
+        if ((Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist)
+            || Player.WillStatusEndGCD(6, 0, true, StatusID.DisciplinedFist) 
+            && (Player.HasStatus(false, StatusID.RiddleOfFire) || RiddleOfFire.WillHaveOneChargeGCD(3))
+            ) && TwinSnakes.CanUse(out act)) return true;
         if (TrueStrike.CanUse(out act)) return true;
         return false;
     }
 
     private static bool CoerlForm(out IAction act)
     {
-        if (Rockbreaker.CanUse(out act)) return true;
+        if (RockBreaker.CanUse(out act)) return true;
         if (Demolish.CanUse(out act)) return true;
         if (SnapPunch.CanUse(out act)) return true;
         return false;
@@ -95,7 +96,7 @@ public sealed class MNK_Default : MNK_Base
                 if (ElixirField.CanUse(out act, mustUse: true)) return true;
             }
         }
-        else if (Player.HasStatus(true, StatusID.PerfectBalance) && Level >= 60)
+        else if (Player.HasStatus(true, StatusID.PerfectBalance) && ElixirField.EnoughLevel)
         {
             //Some time, no choice
             if (HasSolar)
@@ -162,18 +163,19 @@ public sealed class MNK_Default : MNK_Base
         if (abilitiesRemaining == 1 && InCombat)
         {
             if (UseBurstMedicine(out act)) return true;
-            if (InBurst && !CombatElapsedLess(5) && RiddleofFire.CanUse(out act)) return true;
+            if (InBurst && !CombatElapsedLessGCD(2) && RiddleOfFire.CanUse(out act)) return true;
         }
 
-        if (CombatElapsedLess(8)) return false;
-
-        if (Brotherhood.CanUse(out act)) return true;
+        if (CombatElapsedLessGCD(3)) return false;
 
         if (BeastChakras.Contains(BeastChakra.NONE) && Player.HasStatus(true, StatusID.RaptorForm)
-            && (!RiddleofFire.EnoughLevel || Player.HasStatus(false, StatusID.RiddleofFire)))
+            && (!RiddleOfFire.EnoughLevel  || Player.HasStatus(false, StatusID.RiddleOfFire) 
+            || RiddleOfFire.WillHaveOneChargeGCD(3) && (PerfectBalance.ElapsedAfter(60) || !PerfectBalance.IsCoolingDown)))
         {
             if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
+
+        if (Brotherhood.CanUse(out act)) return true;
 
         if (RiddleofWind.CanUse(out act)) return true;
 

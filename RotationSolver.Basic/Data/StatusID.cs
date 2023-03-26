@@ -509,7 +509,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 红莲极意
     /// </summary>
-    RiddleofFire = 1181,
+    RiddleOfFire = 1181,
 
     /// <summary>
     /// 义结金兰：攻击

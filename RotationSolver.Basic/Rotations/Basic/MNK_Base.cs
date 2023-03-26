@@ -52,7 +52,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 破坏神脚 aoe
     /// </summary>
-    public static IBaseAction ShadowoftheDestroyer { get; } = new BaseAction(ActionID.ShadowoftheDestroyer);
+    public static IBaseAction ShadowOfTheDestroyer { get; } = new BaseAction(ActionID.ShadowoftheDestroyer);
 
     /// <summary>
     /// 双掌打 伤害提高
@@ -67,7 +67,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 四面脚 aoe
     /// </summary>
-    public static IBaseAction FourpointFury { get; } = new BaseAction(ActionID.FourpointFury);
+    public static IBaseAction FourPointFury { get; } = new BaseAction(ActionID.FourpointFury);
 
     /// <summary>
     /// 破碎拳
@@ -75,7 +75,7 @@ public abstract class MNK_Base : CustomRotation
     public static IBaseAction Demolish { get; } = new BaseAction(ActionID.Demolish, isEot: true)
     {
         TargetStatus = new StatusID[] { StatusID.Demolish },
-        GetDotGcdCount = () => 2,
+        GetDotGcdCount = () => 3,
     };
 
     /// <summary>
@@ -86,7 +86,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 地烈劲 aoe
     /// </summary>
-    public static IBaseAction Rockbreaker { get; } = new BaseAction(ActionID.Rockbreaker);
+    public static IBaseAction RockBreaker { get; } = new BaseAction(ActionID.Rockbreaker);
 
     /// <summary>
     /// 斗气
@@ -117,7 +117,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 红莲极意 提高dps
     /// </summary>
-    public static IBaseAction RiddleofFire { get; } = new BaseAction(ActionID.RiddleofFire, true);
+    public static IBaseAction RiddleOfFire { get; } = new BaseAction(ActionID.RiddleofFire, true);
 
     /// <summary>
     /// 突进技能
