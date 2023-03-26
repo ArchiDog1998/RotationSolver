@@ -15,7 +15,8 @@ public class PLD_Default : PLD_Base
     protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetBool("UseDivineVeilPre", false, "DivineVeilPre in 15 seconds counting down.");
+            .SetBool("UseDivineVeilPre", false, "DivineVeilPre in 15 seconds counting down.")
+            .SetBool("UseHolyWhenAway", true, "Use HolyCircle or HolySpirit when far from enemies");
     }
 
     protected override IAction CountDownAction(float remainTime)
@@ -87,7 +88,11 @@ public class PLD_Default : PLD_Base
         if (FastBlade.CanUse(out act)) return true;
 
         //Range
-        if (HolySpirit.CanUse(out act)) return true;
+        if (Configs.GetBool("UseHolyWhenAway"))
+        {
+            if (HolyCircle.CanUse(out act)) return true;
+            if (HolySpirit.CanUse(out act)) return true;
+        }
         if (ShieldLob.CanUse(out act)) return true;
 
         return false;
