@@ -105,6 +105,21 @@ namespace RotationSolver.Basic.Actions
         /// <param name="gcdCount"></param>
         /// <param name="abilityCount"></param>
         /// <returns></returns>
+        bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, uint abilityCount = 0);
+
+        /// <summary>
+        /// Has it been in cooldown for <paramref name="time"/> seconds?
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        bool ElapsedOneChargeAfter(float time);
+
+        /// <summary>
+        /// Has it been in cooldown for <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
+        /// </summary>
+        /// <param name="gcdCount"></param>
+        /// <param name="abilityCount"></param>
+        /// <returns></returns>
         bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0);
 
         /// <summary>
