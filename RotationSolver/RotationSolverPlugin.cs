@@ -115,7 +115,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         var isValid = MajorUpdater.IsValid
         && (!Service.Config.OnlyShowWithHostileOrInDuty ||
                 Service.Conditions[ConditionFlag.BoundByDuty] ||
-                 DataCenter.HostileTargets.Any(o => o.DistanceToPlayer() <= 25))
+                 DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
             && RotationUpdater.RightNowRotation != null
             && !Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
             && !Service.Conditions[ConditionFlag.BetweenAreas]
