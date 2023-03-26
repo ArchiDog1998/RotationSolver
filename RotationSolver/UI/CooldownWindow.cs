@@ -47,7 +47,7 @@ internal class CooldownWindow : InfoWindow
         }
     }
 
-    static readonly uint progressCol = ImGui.ColorConvertFloat4ToU32(new Vector4(0.6f, 0.6f, 0.6f, 0.6f));
+    static readonly uint progressCol = ImGui.ColorConvertFloat4ToU32(new Vector4(0.6f, 0.6f, 0.6f, 0.7f));
     private static void DrawActionCooldown(IAction act)
     {
         var width = Service.Config.ControlWindow0GCDSize;
@@ -69,9 +69,10 @@ internal class CooldownWindow : InfoWindow
         else if (act.IsCoolingDown)
         {
             var ratio = recast == 0 ? 0 : elapsed % recast / recast;
-            ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X + width * ratio, pos.Y) + winPos,
+            var startPos = new Vector2(pos.X + width * ratio, pos.Y) + winPos;
+            ImGui.GetWindowDrawList().AddRectFilled(startPos,
                 new Vector2(pos.X + width, pos.Y + width) + winPos, progressCol);
-
+            ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, width), black);
             string time = recast == 0 || !act.EnoughLevel ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + width / 2 - strSize.X / 2, pos.Y + width / 2 - strSize.Y / 2) + winPos;
