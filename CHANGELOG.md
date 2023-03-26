@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.1.8](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.7...v2.1.8) (2023-03-26)
+
+
+### Bug Fixes
+
+* add a combat time gcd  check method. ([22369fb](https://github.com/ArchiDog1998/RotationSolver/commit/22369fbb63578d21255084e7135d1ac9a9a437ac))
+* add a elapsed after method. ([f1c2349](https://github.com/ArchiDog1998/RotationSolver/commit/f1c2349a3cf1ecbfaf637615f1da59bd1922a0d6))
+* add an line to cooldown window for better showcase. ([09607f7](https://github.com/ArchiDog1998/RotationSolver/commit/09607f7771c55cc275e133ce6498a44a8dc126e9))
+* add an option for control window show. ([ecdcd42](https://github.com/ArchiDog1998/RotationSolver/commit/ecdcd42b38ce61fa39ecb5fa8ae523447a4407b5))
+* add eot check for manual mode. ([7798387](https://github.com/ArchiDog1998/RotationSolver/commit/7798387c29ea37545a75969659f42e4715faf1db))
+* add waiting duty check for control window. ([bef84f4](https://github.com/ArchiDog1998/RotationSolver/commit/bef84f43bbae829b5105b00dc4550ff8e0cbc117))
+* changed error. ([f1dcd97](https://github.com/ArchiDog1998/RotationSolver/commit/f1dcd97701d1a3a38d2d4663e8f1421030eada73))
+* changed some Misspell ([7a1b236](https://github.com/ArchiDog1998/RotationSolver/commit/7a1b2365525b323e599dea32e7e0b72bd1d292fb))
+* fix High-end duty property. ([e7bfe7e](https://github.com/ArchiDog1998/RotationSolver/commit/e7bfe7eb1cff4a628620e7b2cff940edccb1f5c1))
+* fix the auto hide window logic. ([799d2a7](https://github.com/ArchiDog1998/RotationSolver/commit/799d2a7dbe3d04f7c6f537d423b01a24334fb271))
+* fixed the rotation of MNK. ([4a89575](https://github.com/ArchiDog1998/RotationSolver/commit/4a89575c7fda9dea37fb6c058e0350a94fa0f4a7))
+* no windows when the rotation is null. ([4984eb4](https://github.com/ArchiDog1998/RotationSolver/commit/4984eb43cff44053a6942c1fb7f0749819090d17))
+* pld add an option for range attacks. ([751aced](https://github.com/ArchiDog1998/RotationSolver/commit/751aced1f8c5e6c0d1c42c13c29f12374de8f3da))
+* the medicine will be used when in high-end duty or the target is a dummy. ([afa72d1](https://github.com/ArchiDog1998/RotationSolver/commit/afa72d1f0bd2a98f4615cd7fb048618f4cef5d30))
+
 ## [2.1.7](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.6...v2.1.7) (2023-03-23)
 
 
