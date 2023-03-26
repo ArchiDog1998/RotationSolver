@@ -11,7 +11,7 @@ public sealed class DRK_Default : DRK_Base
 
     protected override bool CanHealSingleAbility => false;
 
-    private static bool InDeliruim => !Delirium.EnoughLevel || Delirium.IsCoolingDown && Delirium.ElapsedAfterGCD(1) && !Delirium.ElapsedAfterGCD(7);
+    private static bool InDeliruim => !Delirium.EnoughLevel || Delirium.IsCoolingDown && Delirium.ElapsedOneChargeAfterGCD(1) && !Delirium.ElapsedOneChargeAfterGCD(7);
 
     private static bool CombatLess => CombatElapsedLess(3);
 

@@ -84,12 +84,12 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 暗黑波动
     /// </summary>
-    public static IBaseAction FloodofDarkness { get; } = new BaseAction(ActionID.FloodofDarkness);
+    public static IBaseAction FloodofDarkness { get; } = new BaseAction(ActionID.FloodOfDarkness);
 
     /// <summary>
     /// 暗黑锋
     /// </summary>
-    public static IBaseAction EdgeofDarkness { get; } = new BaseAction(ActionID.EdgeofDarkness);
+    public static IBaseAction EdgeofDarkness { get; } = new BaseAction(ActionID.EdgeOfDarkness);
 
     /// <summary>
     /// 嗜血
@@ -144,7 +144,7 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 血溅
     /// </summary>
-    public static IBaseAction Bloodspiller { get; } = new BaseAction(ActionID.Bloodspiller)
+    public static IBaseAction Bloodspiller { get; } = new BaseAction(ActionID.BloodSpiller)
     {
         ActionCheck = b => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
     };
@@ -199,7 +199,7 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 暗影使者
     /// </summary>
-    public static IBaseAction Shadowbringer { get; } = new BaseAction(ActionID.Shadowbringer)
+    public static IBaseAction Shadowbringer { get; } = new BaseAction(ActionID.ShadowBringer)
     {
         ActionCheck = b => JobGauge.DarksideTimeRemaining > 0,
     };

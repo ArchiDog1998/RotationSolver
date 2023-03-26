@@ -211,17 +211,17 @@ public enum ActionID : uint
     /// <summary>
     /// 激情咏唱
     /// </summary>
-    Sharpcast = 3574,
+    SharpCast = 3574,
 
     /// <summary>
     /// 三连咏唱
     /// </summary>
-    Triplecast = 7421,
+    TripleCast = 7421,
 
     /// <summary>
     /// 黑魔纹
     /// </summary>
-    Leylines = 3573,
+    LeyLines = 3573,
 
     /// <summary>
     /// 魔纹步
@@ -358,7 +358,7 @@ public enum ActionID : uint
     /// <summary>
     /// 苦闷之歌
     /// </summary>
-    SongofTorment = 11386,
+    SongOfTorment = 11386,
 
     /// <summary>
     /// 怒视
@@ -368,7 +368,7 @@ public enum ActionID : uint
     /// <summary>
     /// 平原震裂
     /// </summary>
-    Plaincracker = 11391,
+    PlainCracker = 11391,
 
     /// <summary>
     /// 怒发冲冠
@@ -413,12 +413,12 @@ public enum ActionID : uint
     /// <summary>
     /// 破防
     /// </summary>
-    Offguard = 11411,
+    OffGuard = 11411,
 
     /// <summary>
     /// 自爆
     /// </summary>
-    Selfdestruct = 11408,
+    SelfDestruct = 11408,
 
     /// <summary>
     /// 拍掌
@@ -438,7 +438,7 @@ public enum ActionID : uint
     /// <summary>
     /// 4星吨
     /// </summary>
-    Weight4tonze = 11384,
+    Weight4Tonze = 11384,
 
     /// <summary>
     /// 诡异视线
@@ -553,7 +553,7 @@ public enum ActionID : uint
     /// <summary>
     /// 水神的面纱
     /// </summary>
-    VeiloftheWhorl = 11431,
+    VeilOfTheWhorl = 11431,
 
     /// <summary>
     /// 高山气流
@@ -658,7 +658,7 @@ public enum ActionID : uint
     /// <summary>
     /// 仙人盾
     /// </summary>
-    Cactguard = 18315,
+    CactGuard = 18315,
 
     /// <summary>
     /// 复仇冲击
@@ -758,7 +758,7 @@ public enum ActionID : uint
     /// <summary>
     /// 斗灵弹
     /// </summary>
-    TheRoseofDestruction = 23275,
+    TheRoseOfDestruction = 23275,
 
     /// <summary>
     /// 斗争本能
@@ -768,7 +768,7 @@ public enum ActionID : uint
     /// <summary>
     /// 超振动
     /// </summary>
-    Ultravibration = 23277,
+    UltraVibration = 23277,
 
     /// <summary>
     /// 冰焰
@@ -798,7 +798,7 @@ public enum ActionID : uint
     /// <summary>
     /// 水脉诅咒
     /// </summary>
-    MaledictionofWater = 23283,
+    MaledictionOfWater = 23283,
 
     /// <summary>
     /// 陆行鸟陨石
@@ -828,7 +828,7 @@ public enum ActionID : uint
     /// <summary>
     /// 月下彼岸花
     /// </summary>
-    Nightbloom = 23290,
+    NightBloom = 23290,
 
     /// <summary>
     /// 冰雾
@@ -865,7 +865,7 @@ public enum ActionID : uint
     /// <summary>
     /// 风蚀箭
     /// </summary>
-    Windbite = 113,
+    WindBite = 113,
 
     /// <summary>
     /// 伶牙俐齿
@@ -987,7 +987,7 @@ public enum ActionID : uint
     /// <summary>
     /// 坠喷泉
     /// </summary>
-    Fountainfall = 15992,
+    FountainFall = 15992,
 
     /// <summary>
     /// 扇舞·序
@@ -1002,7 +1002,7 @@ public enum ActionID : uint
     /// <summary>
     /// 落刃雨
     /// </summary>
-    Bladeshower = 15994,
+    BladeShower = 15994,
 
     /// <summary>
     /// 升风车
@@ -1012,7 +1012,7 @@ public enum ActionID : uint
     /// <summary>
     /// 落血雨
     /// </summary>
-    Bloodshower = 15996,
+    BloodShower = 15996,
 
     /// <summary>
     /// 扇舞·破
@@ -1037,7 +1037,7 @@ public enum ActionID : uint
     /// <summary>
     /// 流星舞
     /// </summary>
-    StarfallDance = 25792,
+    StarFallDance = 25792,
 
     /// <summary>
     /// 前冲步
@@ -1204,12 +1204,12 @@ public enum ActionID : uint
     /// <summary>
     /// 破碎冲
     /// </summary>
-    SpineshatterDive = 95,
+    SpineShatterDive = 95,
 
     /// <summary>
     /// 龙炎冲
     /// </summary>
-    DragonfireDive = 96,
+    DragonFireDive = 96,
 
     /// <summary>
     /// 跳跃
@@ -1239,7 +1239,7 @@ public enum ActionID : uint
     /// <summary>
     /// 坠星冲
     /// </summary>
-    Stardiver = 16480,
+    StarDiver = 16480,
 
     /// <summary>
     /// 天龙点睛
@@ -1281,12 +1281,12 @@ public enum ActionID : uint
     /// <summary>
     /// 暗黑波动
     /// </summary>
-    FloodofDarkness = 16466,
+    FloodOfDarkness = 16466,
 
     /// <summary>
     /// 暗黑锋
     /// </summary>
-    EdgeofDarkness = 16467,
+    EdgeOfDarkness = 16467,
 
     /// <summary>
     /// 嗜血
@@ -1331,7 +1331,7 @@ public enum ActionID : uint
     /// <summary>
     /// 血溅
     /// </summary>
-    Bloodspiller = 7392,
+    BloodSpiller = 7392,
 
     /// <summary>
     /// 寂灭
@@ -1391,7 +1391,7 @@ public enum ActionID : uint
     /// <summary>
     /// 暗影使者
     /// </summary>
-    Shadowbringer = 25757,
+    ShadowBringer = 25757,
 
     /// <summary>
     /// 腐秽黑暗
@@ -1468,7 +1468,7 @@ public enum ActionID : uint
     /// <summary>
     /// 超火流星
     /// </summary>
-    Superbolide = 16152,
+    SuperBolide = 16152,
 
     /// <summary>
     /// 音速破
@@ -1493,12 +1493,12 @@ public enum ActionID : uint
     /// <summary>
     /// 光之心
     /// </summary>
-    HeartofLight = 16160,
+    HeartOfLight = 16160,
 
     /// <summary>
     /// 石之心
     /// </summary>
-    HeartofStone = 16161,
+    HeartOfStone = 16161,
 
     /// <summary>
     /// 命运之环
@@ -1508,7 +1508,7 @@ public enum ActionID : uint
     /// <summary>
     /// 血壤
     /// </summary>
-    Bloodfest = 16164,
+    BloodFest = 16164,
 
     /// <summary>
     /// 倍攻
@@ -1615,7 +1615,7 @@ public enum ActionID : uint
     /// <summary>
     /// 毒菌冲击
     /// </summary>
-    Bioblaster = 16499,
+    BioBlaster = 16499,
 
     /// <summary>
     /// 整备
@@ -1669,17 +1669,17 @@ public enum ActionID : uint
     /// <summary>
     /// 连击
     /// </summary>
-    Bootshine = 53,
+    BootShine = 53,
 
     /// <summary>
     /// 破坏神冲 aoe
     /// </summary>
-    ArmoftheDestroyer = 62,
+    ArmOfTheDestroyer = 62,
 
     /// <summary>
     /// 破坏神脚 aoe
     /// </summary>
-    ShadowoftheDestroyer = 25767,
+    ShadowOfTheDestroyer = 25767,
 
     /// <summary>
     /// 双掌打 伤害提高
@@ -1694,7 +1694,7 @@ public enum ActionID : uint
     /// <summary>
     /// 四面脚 aoe
     /// </summary>
-    FourpointFury = 16473,
+    FourPointFury = 16473,
 
     /// <summary>
     /// 破碎拳
@@ -1709,7 +1709,7 @@ public enum ActionID : uint
     /// <summary>
     /// 地烈劲 aoe
     /// </summary>
-    Rockbreaker = 70,
+    RockBreaker = 70,
 
     /// <summary>
     /// 斗气
@@ -1734,7 +1734,7 @@ public enum ActionID : uint
     /// <summary>
     /// 红莲极意 提高dps
     /// </summary>
-    RiddleofFire = 7395,
+    RiddleOfFire = 7395,
 
     /// <summary>
     /// 突进技能
@@ -1789,12 +1789,12 @@ public enum ActionID : uint
     /// <summary>
     /// 金刚极意 盾
     /// </summary>
-    RiddleofEarth = 7394,
+    RiddleOfEarth = 7394,
 
     /// <summary>
     /// 疾风极意
     /// </summary>
-    RiddleofWind = 25766,
+    RiddleOfWind = 25766,
     #endregion
 
     #region NIN
@@ -1896,7 +1896,7 @@ public enum ActionID : uint
     /// <summary>
     /// 通灵之术·大虾蟆
     /// </summary>
-    HellfrogMedium = 7401,
+    HellFrogMedium = 7401,
 
     /// <summary>
     /// 六道轮回
@@ -1931,7 +1931,7 @@ public enum ActionID : uint
     /// <summary>
     /// 梦幻三段
     /// </summary>
-    DreamWithinaDream = 3566,
+    DreamWithInADream = 3566,
 
     /// <summary>
     /// 风魔手里剑天
@@ -2040,7 +2040,7 @@ public enum ActionID : uint
     /// <summary>
     /// 战女神之怒
     /// </summary>
-    RageofHalone = 21,
+    RageOfHalone = 21,
 
     /// <summary>
     /// 王权剑
@@ -2055,7 +2055,7 @@ public enum ActionID : uint
     /// <summary>
     /// 战逃反应
     /// </summary>
-    FightorFlight = 20,
+    FightOrFlight = 20,
 
     /// <summary>
     /// 全蚀斩
@@ -2075,7 +2075,7 @@ public enum ActionID : uint
     /// <summary>
     /// 厄运流转
     /// </summary>
-    CircleofScorn = 23,
+    CircleOfScorn = 23,
 
     /// <summary>
     /// 深奥之灵
@@ -2120,17 +2120,17 @@ public enum ActionID : uint
     /// <summary>
     /// 英勇之剑
     /// </summary>
-    BladeofValor = 25750,
+    BladeOfValor = 25750,
 
     /// <summary>
     /// 真理之剑
     /// </summary>
-    BladeofTruth = 25749,
+    BladeOfTruth = 25749,
 
     /// <summary>
     /// 信念之剑
     /// </summary>
-    BladeofFaith = 25748,
+    BladeOfFaith = 25748,
 
     /// <summary>
     /// 安魂祈祷
@@ -2155,7 +2155,7 @@ public enum ActionID : uint
     /// <summary>
     /// 武装戍卫
     /// </summary>
-    PassageofArms = 7385,
+    PassageOfArms = 7385,
 
     /// <summary>
     /// 保护
@@ -2192,7 +2192,7 @@ public enum ActionID : uint
     /// <summary>
     /// 短兵相接
     /// </summary>
-    CorpsAcorps = 7506,
+    CorpsACorps = 7506,
 
     /// <summary>
     /// 赤疾风
@@ -2324,7 +2324,7 @@ public enum ActionID : uint
     /// <summary>
     /// 死亡之影
     /// </summary>
-    ShadowofDeath = 24378,
+    ShadowOfDeath = 24378,
 
     /// <summary>
     /// 灵魂切割
@@ -2344,7 +2344,7 @@ public enum ActionID : uint
     /// <summary>
     /// 死亡之涡
     /// </summary>
-    WhorlofDeath = 24379,
+    WhorlOfDeath = 24379,
 
     /// <summary>
     /// 灵魂钐割
@@ -2444,7 +2444,7 @@ public enum ActionID : uint
     /// <summary>
     /// 播魂种
     /// </summary>
-    Soulsow = 24387,
+    SoulSow = 24387,
 
     /// <summary>
     /// 收获月
@@ -2688,7 +2688,7 @@ public enum ActionID : uint
     /// <summary>
     /// 破阵法
     /// </summary>
-    ArtofWar = 16539,
+    ArtOfWar = 16539,
 
     /// <summary>
     /// 炽天召唤
@@ -2952,7 +2952,7 @@ public enum ActionID : uint
     /// <summary>
     /// 以太蓄能 
     /// </summary>
-    Aethercharge = 25800,
+    AetherCharge = 25800,
 
     /// <summary>
     /// 龙神召唤
@@ -2992,7 +2992,7 @@ public enum ActionID : uint
     /// <summary>
     /// 灵泉之炎
     /// </summary>
-    FountainofFire = 16514,
+    FountainOfFire = 16514,
 
     /// <summary>
     /// 溃烂爆发
@@ -3002,7 +3002,7 @@ public enum ActionID : uint
     /// <summary>
     /// 痛苦核爆
     /// </summary>
-    Painflare = 3578,
+    PainFlare = 3578,
 
     /// <summary>
     /// 毁绝
@@ -3032,7 +3032,7 @@ public enum ActionID : uint
     /// <summary>
     /// 死星核爆
     /// </summary>
-    Deathflare = 3582,
+    DeathFlare = 3582,
 
     /// <summary>
     /// 苏生之炎
@@ -3144,7 +3144,7 @@ public enum ActionID : uint
     /// <summary>
     /// 战栗
     /// </summary>
-    ThrillofBattle = 40,
+    ThrillOfBattle = 40,
 
     /// <summary>
     /// 泰然自若
@@ -3159,7 +3159,7 @@ public enum ActionID : uint
     /// <summary>
     /// 原初的血气
     /// </summary>
-    Bloodwhetting = 25751,
+    BloodWhetting = 25751,
 
     /// <summary>
     /// 复仇
@@ -3261,7 +3261,7 @@ public enum ActionID : uint
     /// <summary>
     /// 礼仪之铃
     /// </summary>
-    LiturgyoftheBell = 25862,
+    LiturgyOfTheBell = 25862,
 
     /// <summary>
     /// 飞石 
@@ -3318,7 +3318,7 @@ public enum ActionID : uint
     /// <summary>
     /// 即刻咏唱
     /// </summary>
-    Swiftcast = 7561,
+    SwiftCast = 7561,
 
     /// <summary>
     /// 康复
@@ -3403,7 +3403,7 @@ public enum ActionID : uint
     /// <summary>
     /// 沉稳咏唱
     /// </summary>
-    Surecast = 7559,
+    SureCast = 7559,
 
     /// <summary>
     /// 真北

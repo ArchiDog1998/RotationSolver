@@ -102,7 +102,7 @@ public sealed class BRD_Default : BRD_Base
             //光明神的最终乐章
             if (RadiantFinale.CanUse(out act, mustUse: true))
             {
-                if (Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
+                if (Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedOneChargeAfterGCD(1)) return true;
             }
 
             //战斗之声
@@ -110,7 +110,7 @@ public sealed class BRD_Default : BRD_Base
             {
                 if (IsLastAction(true, RadiantFinale)) return true;
 
-                if (Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedAfterGCD(1)) return true;
+                if (Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedOneChargeAfterGCD(1)) return true;
             }
         }
 

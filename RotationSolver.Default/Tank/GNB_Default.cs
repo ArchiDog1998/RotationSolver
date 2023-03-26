@@ -87,7 +87,7 @@ public sealed class GNB_Default : GNB_Base
         return false;
     }
 
-    [RotationDesc(ActionID.HeartofLight, ActionID.Reprisal)]
+    [RotationDesc(ActionID.HeartOfLight, ActionID.Reprisal)]
     protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (HeartofLight.CanUse(out act, emptyOrSkipCombo: true)) return true;
@@ -95,7 +95,7 @@ public sealed class GNB_Default : GNB_Base
         return false;
     }
 
-    [RotationDesc(ActionID.HeartofStone, ActionID.Nebula, ActionID.Rampart, ActionID.Camouflage, ActionID.Reprisal)]
+    [RotationDesc(ActionID.HeartOfStone, ActionID.Nebula, ActionID.Rampart, ActionID.Camouflage, ActionID.Reprisal)]
     protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (abilitiesRemaining == 2)

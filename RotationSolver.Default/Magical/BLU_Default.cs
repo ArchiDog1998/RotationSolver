@@ -64,7 +64,7 @@ public sealed class BLU_Default : BLU_Base
         //狂战士副作用期间
         if (Player.HasStatus(true, StatusID.WaningNocturne)) return false;
         //鬼宿脚
-        if (PhantomFlurry.IsCoolingDown && !PhantomFlurry.ElapsedAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
+        if (PhantomFlurry.IsCoolingDown && !PhantomFlurry.ElapsedOneChargeAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
         {
             if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.CanUse(out act, mustUse: true)) return true;
             return false;

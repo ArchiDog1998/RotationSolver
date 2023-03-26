@@ -104,7 +104,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 苦闷之歌
     /// </summary>
-    public static IBLUAction SongofTorment { get; } = new BLUAction(ActionID.SongofTorment, BLUActionType.Magical, isEot: true)
+    public static IBLUAction SongofTorment { get; } = new BLUAction(ActionID.SongOfTorment, BLUActionType.Magical, isEot: true)
     {
         TargetStatus = new[] { StatusID.Bleeding }
     };
@@ -141,7 +141,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 斗灵弹
     /// </summary>
-    public static IBLUAction TheRoseofDestruction { get; } = new BLUAction(ActionID.TheRoseofDestruction, BLUActionType.Magical);
+    public static IBLUAction TheRoseofDestruction { get; } = new BLUAction(ActionID.TheRoseOfDestruction, BLUActionType.Magical);
 
     /// <summary>
     /// 马特拉魔术
@@ -153,7 +153,7 @@ public abstract class BLU_Base : CustomRotation
     /// </summary>
     public static IBLUAction WhiteDeath { get; } = new BLUAction(ActionID.WhiteDeath, BLUActionType.Magical)
     {
-        ActionCheck = b => Player.HasStatus(true, StatusID.TouchofFrost)
+        ActionCheck = b => Player.HasStatus(true, StatusID.TouchOfFrost)
     };
     #endregion
 
@@ -182,7 +182,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 平原震裂
     /// </summary>
-    public static IBLUAction Plaincracker { get; } = new BLUAction(ActionID.Plaincracker, BLUActionType.Magical);
+    public static IBLUAction Plaincracker { get; } = new BLUAction(ActionID.PlainCracker, BLUActionType.Magical);
 
     /// <summary>
     /// 诡异视线
@@ -330,7 +330,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 水脉诅咒
     /// </summary>
-    public static IBLUAction MaledictionofWater { get; } = new BLUAction(ActionID.MaledictionofWater, BLUActionType.Magical);
+    public static IBLUAction MaledictionofWater { get; } = new BLUAction(ActionID.MaledictionOfWater, BLUActionType.Magical);
 
     /// <summary>
     /// 陆行鸟陨石
@@ -340,7 +340,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 月下彼岸花
     /// </summary>
-    public static IBLUAction Nightbloom { get; } = new BLUAction(ActionID.Nightbloom, BLUActionType.Magical);
+    public static IBLUAction Nightbloom { get; } = new BLUAction(ActionID.NightBloom, BLUActionType.Magical);
 
     /// <summary>
     /// 玄天武水壁
@@ -366,7 +366,7 @@ public abstract class BLU_Base : CustomRotation
     /// </summary>
     public static IBLUAction FinalSting { get; } = new BLUAction(ActionID.FinalSting, BLUActionType.Physical)
     {
-        ActionCheck = b => !Player.HasStatus(true, StatusID.BrushwithDeath),
+        ActionCheck = b => !Player.HasStatus(true, StatusID.BrushWithDeath),
     };
 
     /// <summary>
@@ -414,7 +414,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 4星吨
     /// </summary>
-    public static IBLUAction Weight4tonze { get; } = new BLUAction(ActionID.Weight4tonze, BLUActionType.Physical);
+    public static IBLUAction Weight4tonze { get; } = new BLUAction(ActionID.Weight4Tonze, BLUActionType.Physical);
 
     /// <summary>
     /// 千针刺
@@ -494,9 +494,9 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 自爆
     /// </summary>
-    public static IBLUAction Selfdestruct { get; } = new BLUAction(ActionID.Selfdestruct, BLUActionType.None)
+    public static IBLUAction Selfdestruct { get; } = new BLUAction(ActionID.SelfDestruct, BLUActionType.None)
     {
-        ActionCheck = b => !Player.HasStatus(true, StatusID.BrushwithDeath),
+        ActionCheck = b => !Player.HasStatus(true, StatusID.BrushWithDeath),
     };
 
     /// <summary>
@@ -537,7 +537,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 超振动
     /// </summary>
-    public static IBLUAction Ultravibration { get; } = new BLUAction(ActionID.Ultravibration, BLUActionType.None);
+    public static IBLUAction Ultravibration { get; } = new BLUAction(ActionID.UltraVibration, BLUActionType.None);
 
     /// <summary>
     /// 鬼宿脚
@@ -555,7 +555,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 水神的面纱
     /// </summary>
-    public static IBLUAction VeiloftheWhorl { get; } = new BLUAction(ActionID.VeiloftheWhorl, BLUActionType.None, true);
+    public static IBLUAction VeiloftheWhorl { get; } = new BLUAction(ActionID.VeilOfTheWhorl, BLUActionType.None, true);
 
     /// <summary>
     /// 超硬化
@@ -578,7 +578,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 仙人盾
     /// </summary>
-    public static IBLUAction Cactguard { get; } = new BLUAction(ActionID.Cactguard, BLUActionType.None, true, isTimeline: true)
+    public static IBLUAction Cactguard { get; } = new BLUAction(ActionID.CactGuard, BLUActionType.None, true, isTimeline: true)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -621,7 +621,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 破防
     /// </summary>
-    public static IBLUAction Offguard { get; } = new BLUAction(ActionID.Offguard, BLUActionType.None, true);
+    public static IBLUAction Offguard { get; } = new BLUAction(ActionID.OffGuard, BLUActionType.None, true);
 
     /// <summary>
     /// 强力守护

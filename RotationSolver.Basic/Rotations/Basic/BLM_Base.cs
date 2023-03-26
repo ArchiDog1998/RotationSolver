@@ -173,16 +173,16 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 激情咏唱
     /// </summary>
-    public static IBaseAction Sharpcast { get; } = new BaseAction(ActionID.Sharpcast)
+    public static IBaseAction Sharpcast { get; } = new BaseAction(ActionID.SharpCast)
     {
-        StatusProvide = new[] { StatusID.Sharpcast },
+        StatusProvide = new[] { StatusID.SharpCast },
         ActionCheck = b => HasHostilesInRange,
     };
 
     /// <summary>
     /// 三连咏唱
     /// </summary>
-    public static IBaseAction Triplecast { get; } = new BaseAction(ActionID.Triplecast)
+    public static IBaseAction Triplecast { get; } = new BaseAction(ActionID.TripleCast)
     {
         StatusProvide = Swiftcast.StatusProvide,
     };
@@ -190,7 +190,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 黑魔纹
     /// </summary>
-    public static IBaseAction Leylines { get; } = new BaseAction(ActionID.Leylines, true, shouldEndSpecial: true)
+    public static IBaseAction Leylines { get; } = new BaseAction(ActionID.LeyLines, true, shouldEndSpecial: true)
     {
         StatusProvide = new[] { StatusID.LeyLines, },
     };

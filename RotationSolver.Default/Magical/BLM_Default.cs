@@ -354,7 +354,7 @@ public class BLM_Default : BLM_Base
         return false;
     }
 
-    [RotationDesc(ActionID.BetweenTheLines, ActionID.Leylines)]
+    [RotationDesc(ActionID.BetweenTheLines, ActionID.LeyLines)]
     protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (BetweenTheLines.CanUse(out act)) return true;

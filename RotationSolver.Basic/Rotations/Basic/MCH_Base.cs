@@ -118,7 +118,7 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 毒菌冲击
     /// </summary>
-    public static IBaseAction Bioblaster { get; } = new BaseAction(ActionID.Bioblaster, isEot: true);
+    public static IBaseAction Bioblaster { get; } = new BaseAction(ActionID.BioBlaster, isEot: true);
 
     /// <summary>
     /// 整备

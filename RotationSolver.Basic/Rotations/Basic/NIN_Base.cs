@@ -172,7 +172,7 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 通灵之术·大虾蟆
     /// </summary>
-    public static IBaseAction HellfrogMedium { get; } = new BaseAction(ActionID.HellfrogMedium)
+    public static IBaseAction HellfrogMedium { get; } = new BaseAction(ActionID.HellFrogMedium)
     {
         ActionCheck = Bunshin.ActionCheck,
     };
@@ -220,7 +220,7 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 梦幻三段
     /// </summary>
-    public static IBaseAction DreamWithinaDream { get; } = new BaseAction(ActionID.DreamWithinaDream);
+    public static IBaseAction DreamWithinaDream { get; } = new BaseAction(ActionID.DreamWithInADream);
 
     /// <summary>
     /// 风魔手里剑天

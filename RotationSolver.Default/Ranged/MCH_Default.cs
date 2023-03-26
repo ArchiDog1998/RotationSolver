@@ -48,8 +48,8 @@ public sealed class MCH_Default : MCH_Base
             {
                 if (Player.HasStatus(true, StatusID.Reassemble)) return true;
                 if (!Configs.GetBool("MCH_Opener") || Wildfire.IsCoolingDown) return true;
-                if (AirAnchor.IsCoolingDown && AirAnchor.ElapsedAfterGCD(4) && Drill.IsCoolingDown && Drill.ElapsedAfterGCD(3)) return true;
-                if (AirAnchor.IsCoolingDown && AirAnchor.ElapsedAfterGCD(3) && Drill.IsCoolingDown && Drill.ElapsedAfterGCD(4)) return true;
+                if (AirAnchor.IsCoolingDown && AirAnchor.ElapsedOneChargeAfterGCD(4) && Drill.IsCoolingDown && Drill.ElapsedOneChargeAfterGCD(3)) return true;
+                if (AirAnchor.IsCoolingDown && AirAnchor.ElapsedOneChargeAfterGCD(3) && Drill.IsCoolingDown && Drill.ElapsedOneChargeAfterGCD(4)) return true;
             }
         }
 
@@ -222,7 +222,7 @@ public sealed class MCH_Default : MCH_Base
 
         //机器人吃团辅判断
         if (AirAnchor.IsCoolingDown && AirAnchor.WillHaveOneChargeGCD() && Battery > 80) return true;
-        if (ChainSaw.WillHaveOneCharge(4) || ChainSaw.IsCoolingDown && !ChainSaw.ElapsedAfterGCD(3) && Battery <= 60) return true;
+        if (ChainSaw.WillHaveOneCharge(4) || ChainSaw.IsCoolingDown && !ChainSaw.ElapsedOneChargeAfterGCD(3) && Battery <= 60) return true;
 
         return false;
     }

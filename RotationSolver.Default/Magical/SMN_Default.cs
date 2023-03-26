@@ -50,7 +50,7 @@ public sealed class SMN_Default : SMN_Base
 
         //毁4
         if (IsMoving && (Player.HasStatus(true, StatusID.GarudasFavor) || InIfrit) 
-            && !Player.HasStatus(true, StatusID.Swiftcast) && !InBahamut && !InPhoenix
+            && !Player.HasStatus(true, StatusID.SwiftCast) && !InBahamut && !InPhoenix
             && RuinIV.CanUse(out act, mustUse: true)) return true;
 
         //召唤蛮神
@@ -84,7 +84,7 @@ public sealed class SMN_Default : SMN_Base
                 break;
         }
         if (SummonTimerRemaining == 0 && AttunmentTimerRemaining == 0 &&
-            !Player.HasStatus(true, StatusID.Swiftcast) && !InBahamut && !InPhoenix　&&
+            !Player.HasStatus(true, StatusID.SwiftCast) && !InBahamut && !InPhoenix　&&
             RuinIV.CanUse(out act, mustUse: true)) return true;
         //迸裂三灾
         if (Outburst.CanUse(out act)) return true;
@@ -103,19 +103,19 @@ public sealed class SMN_Default : SMN_Base
         }
 
         //龙神不死鸟迸发
-        if ((InBahamut && SummonBahamut.ElapsedAfterGCD(3) || InPhoenix || IsTargetBoss && IsTargetDying) && EnkindleBahamut.CanUse(out act, mustUse: true)) return true;
+        if ((InBahamut && SummonBahamut.ElapsedOneChargeAfterGCD(3) || InPhoenix || IsTargetBoss && IsTargetDying) && EnkindleBahamut.CanUse(out act, mustUse: true)) return true;
         //死星核爆
-        if ((SummonBahamut.ElapsedAfterGCD(3) || IsTargetBoss && IsTargetDying) && Deathflare.CanUse(out act, mustUse: true)) return true;
+        if ((SummonBahamut.ElapsedOneChargeAfterGCD(3) || IsTargetBoss && IsTargetDying) && Deathflare.CanUse(out act, mustUse: true)) return true;
         //苏生之炎
         if (Rekindle.CanUse(out act, mustUse: true)) return true;
         //山崩
         if (MountainBuster.CanUse(out act, mustUse: true)) return true;
 
         //痛苦核爆
-        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolingDown) ||
+        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedOneChargeAfterGCD(3) || !EnergyDrain.IsCoolingDown) ||
             !SearingLight.EnoughLevel || IsTargetBoss && IsTargetDying) && Painflare.CanUse(out act)) return true;
         //溃烂爆发
-        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedAfterGCD(3) || !EnergyDrain.IsCoolingDown) ||
+        if ((Player.HasStatus(false, StatusID.SearingLight) && InBahamut && (SummonBahamut.ElapsedOneChargeAfterGCD(3) || !EnergyDrain.IsCoolingDown) ||
             !SearingLight.EnoughLevel || IsTargetBoss && IsTargetDying) && Fester.CanUse(out act)) return true;
 
         //能量抽取

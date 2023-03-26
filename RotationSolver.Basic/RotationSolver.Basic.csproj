@@ -23,6 +23,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\jb1sch2v.sen~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\COPYING.LESSER">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
