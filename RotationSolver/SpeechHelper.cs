@@ -10,6 +10,7 @@ internal static class SpeechHelper
 {
     static SpeechSynthesizer _speech;
     public static string[] VoiceNames { get; private set; }
+    static bool _errored;
     internal static void Speak(string text)
     {
         try
@@ -23,7 +24,11 @@ internal static class SpeechHelper
             }
             catch(Exception ex)
             {
-                PluginLog.Error(ex, "Speech Exception");
+                if (!_errored)
+                {
+                    _errored = true;
+                    PluginLog.Error(ex, "Speech Exception");
+                }
             }
             _speech.SpeakAsyncCancelAll();
             _speech.SpeakAsync(text);
