@@ -15,7 +15,7 @@ public sealed class DRK_Default : DRK_Base
 
     private static bool CombatLess => CombatElapsedLess(3);
 
-    private bool CheckDrakSide
+    private bool CheckDarkSide
     {
         get
         {
@@ -129,7 +129,7 @@ public sealed class DRK_Default : DRK_Base
 
     protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (CheckDrakSide)
+        if (CheckDarkSide)
         {
             if (FloodofDarkness.CanUse(out act)) return true;
             if (EdgeofDarkness.CanUse(out act)) return true;
@@ -153,12 +153,12 @@ public sealed class DRK_Default : DRK_Base
 
         if (InDeliruim)
         {
-            if (Shadowbringer.CanUse(out act, mustUse: true)) return true;
+            if (ShadowBringer.CanUse(out act, mustUse: true)) return true;
 
             if (AbyssalDrain.CanUse(out act)) return true;
             if (CarveandSpit.CanUse(out act)) return true;
 
-            if (Shadowbringer.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (ShadowBringer.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
         }
 
         if (SaltandDarkness.CanUse(out act)) return true;

@@ -69,6 +69,7 @@ public abstract class NIN_Base : CustomRotation
     public static IBaseAction ThrowingDagger { get; } = new BaseAction(ActionID.ThrowingDagger)
     {
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
+        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
     /// <summary>

@@ -31,9 +31,9 @@ public sealed class MNK_Default : MNK_Base
 
     private static bool OpoOpoForm(out IAction act)
     {
-        if (ArmoftheDestroyer.CanUse(out act)) return true;
+        if (ArmOfTheDestroyer.CanUse(out act)) return true;
         if (DragonKick.CanUse(out act)) return true;
-        if (Bootshine.CanUse(out act)) return true;
+        if (BootShine.CanUse(out act)) return true;
         return false;
     }
 
@@ -177,7 +177,7 @@ public sealed class MNK_Default : MNK_Base
 
         if (Brotherhood.CanUse(out act)) return true;
 
-        if (RiddleofWind.CanUse(out act)) return true;
+        if (RiddleOfWind.CanUse(out act)) return true;
 
         if (HowlingFist.CanUse(out act)) return true;
         if (SteelPeak.CanUse(out act)) return true;

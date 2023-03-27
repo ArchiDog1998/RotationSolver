@@ -42,12 +42,12 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 连击
     /// </summary>
-    public static IBaseAction Bootshine { get; } = new BaseAction(ActionID.BootShine);
+    public static IBaseAction BootShine { get; } = new BaseAction(ActionID.BootShine);
 
     /// <summary>
     /// 破坏神冲 aoe
     /// </summary>
-    public static IBaseAction ArmoftheDestroyer { get; } = new BaseAction(ActionID.ArmOfTheDestroyer);
+    public static IBaseAction ArmOfTheDestroyer { get; } = new BaseAction(ActionID.ArmOfTheDestroyer);
 
     /// <summary>
     /// 破坏神脚 aoe
@@ -177,7 +177,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 金刚极意 盾
     /// </summary>
-    public static IBaseAction RiddleofEarth { get; } = new BaseAction(ActionID.RiddleOfEarth, true, shouldEndSpecial: true, isTimeline: true)
+    public static IBaseAction RiddleOfEarth { get; } = new BaseAction(ActionID.RiddleOfEarth, true, shouldEndSpecial: true, isTimeline: true)
     {
         StatusProvide = new[] { StatusID.RiddleOfEarth },
     };
@@ -185,7 +185,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 疾风极意
     /// </summary>
-    public static IBaseAction RiddleofWind { get; } = new BaseAction(ActionID.RiddleOfWind, true);
+    public static IBaseAction RiddleOfWind { get; } = new BaseAction(ActionID.RiddleOfWind, true);
 
     [RotationDesc(ActionID.Thunderclap)]
     protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
@@ -211,7 +211,7 @@ public abstract class MNK_Base : CustomRotation
     [RotationDesc(ActionID.RiddleOfEarth)]
     protected sealed override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (RiddleofEarth.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (RiddleOfEarth.CanUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
 }

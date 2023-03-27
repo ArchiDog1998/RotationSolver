@@ -80,7 +80,6 @@ public sealed class GNB_Default : GNB_Base
         if (GnashingFang.IsCoolingDown && Bloodfest.CanUse(out act)) return true;
 
         //¸ã¸ã¹¥»÷,´Ö·ÖÕ¶
-        if (RoughDivide.CanUse(out act, mustUse: true) && !IsMoving) return true;
         if (Player.HasStatus(true, StatusID.NoMercy) && RoughDivide.CanUse(out act, mustUse: true)) return true;
 
         act = null;

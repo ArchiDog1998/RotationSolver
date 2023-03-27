@@ -74,6 +74,7 @@ public abstract class GNB_Base : CustomRotation
     public static IBaseAction LightningShot { get; } = new BaseAction(ActionID.LightningShot)
     {
         FilterForHostiles = TargetFilter.TankRangeTarget,
+        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
     /// <summary>

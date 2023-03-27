@@ -51,6 +51,7 @@ public abstract class WAR_Base : CustomRotation
     public static IBaseAction Tomahawk { get; } = new BaseAction(ActionID.Tomahawk)
     {
         FilterForHostiles = TargetFilter.TankRangeTarget,
+        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
     /// <summary>

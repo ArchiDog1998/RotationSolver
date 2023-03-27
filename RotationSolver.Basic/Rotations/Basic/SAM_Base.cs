@@ -210,6 +210,7 @@ public abstract class SAM_Base : CustomRotation
     public static IBaseAction Enpi { get; } = new BaseAction(ActionID.Enpi)
     {
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
+        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
     /// <summary>

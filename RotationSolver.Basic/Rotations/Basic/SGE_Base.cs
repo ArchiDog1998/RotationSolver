@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
@@ -252,6 +253,7 @@ public abstract class SGE_Base : CustomRotation
         },
     };
 
+    [RotationDesc(ActionID.Icarus)]
     protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
         //…Ò“Ì
