@@ -37,13 +37,15 @@ public sealed class MNK_Default : MNK_Base
         return false;
     }
 
+    private static bool UseLunarPerfectBalance => (HasSolar || BeastChakras.Contains(BeastChakra.COEURL) || BeastChakras.Contains(BeastChakra.RAPTOR))
+        && (!Player.WillStatusEndGCD(0, 0, false, StatusID.RiddleOfFire) || Player.HasStatus(false, StatusID.RiddleOfFire) || RiddleOfFire.WillHaveOneChargeGCD(2)) && PerfectBalance.WillHaveOneChargeGCD(3);
+
     private static bool RaptorForm(out IAction act)
     {
         if (FourPointFury.CanUse(out act)) return true;
         if ((Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist)
-            || Player.WillStatusEndGCD(6, 0, true, StatusID.DisciplinedFist) 
-            && (Player.HasStatus(false, StatusID.RiddleOfFire) || RiddleOfFire.WillHaveOneChargeGCD(3))
-            ) && TwinSnakes.CanUse(out act)) return true;
+            || Player.WillStatusEndGCD(7, 0, true, StatusID.DisciplinedFist) 
+            && UseLunarPerfectBalance) && TwinSnakes.CanUse(out act)) return true;
         if (TrueStrike.CanUse(out act)) return true;
         return false;
     }
@@ -51,6 +53,8 @@ public sealed class MNK_Default : MNK_Base
     private static bool CoerlForm(out IAction act)
     {
         if (RockBreaker.CanUse(out act)) return true;
+        if (UseLunarPerfectBalance && Demolish.CanUse(out act, mustUse: true) 
+            && (Demolish.Target?.WillStatusEndGCD(7, 0, true, StatusID.Demolish) ?? false)) return true;
         if (Demolish.CanUse(out act)) return true;
         if (SnapPunch.CanUse(out act)) return true;
         return false;
@@ -98,7 +102,7 @@ public sealed class MNK_Default : MNK_Base
         }
         else if (Player.HasStatus(true, StatusID.PerfectBalance) && ElixirField.EnoughLevel)
         {
-            //Some time, no choice
+            //Sometimes, no choice
             if (HasSolar)
             {
                 if (LunarNadi(out act)) return true;
@@ -163,25 +167,25 @@ public sealed class MNK_Default : MNK_Base
         if (abilitiesRemaining == 1 && InCombat)
         {
             if (UseBurstMedicine(out act)) return true;
-            if (InBurst && !CombatElapsedLessGCD(2) && RiddleOfFire.CanUse(out act)) return true;
+            if (InBurst && !CombatElapsedLessGCD(2) && !Player.HasStatus(true, StatusID.RaptorForm) && RiddleOfFire.CanUse(out act)) return true;
         }
 
         if (CombatElapsedLessGCD(3)) return false;
 
         if (BeastChakras.Contains(BeastChakra.NONE) && Player.HasStatus(true, StatusID.RaptorForm)
-            && (!RiddleOfFire.EnoughLevel  || Player.HasStatus(false, StatusID.RiddleOfFire) 
-            || RiddleOfFire.WillHaveOneChargeGCD(3) && (PerfectBalance.ElapsedAfter(60) || !PerfectBalance.IsCoolingDown)))
+            && (!RiddleOfFire.EnoughLevel || Player.HasStatus(false, StatusID.RiddleOfFire) 
+            || RiddleOfFire.WillHaveOneChargeGCD(2) && (PerfectBalance.ElapsedAfter(60) || !PerfectBalance.IsCoolingDown)))
         {
             if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
 
         if (Brotherhood.CanUse(out act)) return true;
 
-        if (RiddleOfWind.CanUse(out act)) return true;
-
         if (HowlingFist.CanUse(out act)) return true;
         if (SteelPeak.CanUse(out act)) return true;
         if (HowlingFist.CanUse(out act, mustUse: true)) return true;
+
+        if (RiddleOfWind.CanUse(out act)) return true;
 
         return false;
     }
