@@ -12,7 +12,7 @@ public sealed class DNC_Default : DNC_Base
         if (remainTime <= 15)
         {
             if (StandardStep.CanUse(out var act, mustUse: true)) return act;
-            if (ExcutionStepGCD(out act)) return act;
+            if (ExecuteStepGCD(out act)) return act;
         }
         return base.CountDownAction(remainTime);
     }
@@ -67,7 +67,7 @@ public sealed class DNC_Default : DNC_Base
         if (FinishStepGCD(out act)) return true;
 
         //执行舞步
-        if (ExcutionStepGCD(out act)) return true;
+        if (ExecuteStepGCD(out act)) return true;
 
         //技巧舞步
         if (InBurst && InCombat && TechnicalStep.CanUse(out act, mustUse: true)) return true;
@@ -97,20 +97,20 @@ public sealed class DNC_Default : DNC_Base
         if (Tillana.CanUse(out act, mustUse: true)) return true;
 
         //流星舞
-        if (StarfallDance.CanUse(out act, mustUse: true)) return true;
+        if (StarFallDance.CanUse(out act, mustUse: true)) return true;
 
         //使用标准舞步
         if (UseStandardStep(out act)) return true;
 
         //触发AOE
-        if (Bloodshower.CanUse(out act)) return true;
-        if (Fountainfall.CanUse(out act)) return true;
+        if (BloodShower.CanUse(out act)) return true;
+        if (FountainFall.CanUse(out act)) return true;
         //触发单体
         if (RisingWindmill.CanUse(out act)) return true;
         if (ReverseCascade.CanUse(out act)) return true;
 
         //基础AOE
-        if (Bladeshower.CanUse(out act)) return true;
+        if (BladeShower.CanUse(out act)) return true;
         if (Windmill.CanUse(out act)) return true;
         //基础单体
         if (Fountain.CanUse(out act)) return true;

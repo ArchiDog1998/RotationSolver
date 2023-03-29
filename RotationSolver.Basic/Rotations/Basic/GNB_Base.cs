@@ -120,7 +120,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 超火流星
     /// </summary>
-    public static IBaseAction Superbolide { get; } = new BaseAction(ActionID.SuperBolide, true, isTimeline: true);
+    public static IBaseAction SuperBolide { get; } = new BaseAction(ActionID.SuperBolide, true, isTimeline: true);
 
     /// <summary>
     /// 音速破
@@ -151,12 +151,12 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 光之心
     /// </summary>
-    public static IBaseAction HeartofLight { get; } = new BaseAction(ActionID.HeartOfLight, true, isTimeline: true);
+    public static IBaseAction HeartOfLight { get; } = new BaseAction(ActionID.HeartOfLight, true, isTimeline: true);
 
     /// <summary>
     /// 石之心
     /// </summary>
-    public static IBaseAction HeartofStone { get; } = new BaseAction(ActionID.HeartOfStone, true, isTimeline: true)
+    public static IBaseAction HeartOfStone { get; } = new BaseAction(ActionID.HeartOfStone, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -172,7 +172,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 血壤
     /// </summary>
-    public static IBaseAction Bloodfest { get; } = new BaseAction(ActionID.BloodFest, true)
+    public static IBaseAction BloodFest { get; } = new BaseAction(ActionID.BloodFest, true)
     {
         ActionCheck = b => MaxAmmo - JobGauge.Ammo > 1,
     };
@@ -236,7 +236,7 @@ public abstract class GNB_Base : CustomRotation
 
     protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (Superbolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (SuperBolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 

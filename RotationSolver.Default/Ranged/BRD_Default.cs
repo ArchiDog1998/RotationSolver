@@ -45,7 +45,7 @@ public sealed class BRD_Default : BRD_Base
         if (QuickNock.CanUse(out act)) return true;
 
         //上毒
-        if (Windbite.CanUse(out act)) return true;
+        if (WindBite.CanUse(out act)) return true;
         if (VenomousBite.CanUse(out act)) return true;
 
         //直线射击
@@ -60,7 +60,7 @@ public sealed class BRD_Default : BRD_Base
     protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //如果接下来要上毒或者要直线射击，那算了。
-        if (nextGCD.IsTheSameTo(true, StraitShoot, VenomousBite, Windbite, IronJaws))
+        if (nextGCD.IsTheSameTo(true, StraitShoot, VenomousBite, WindBite, IronJaws))
         {
             return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
         }

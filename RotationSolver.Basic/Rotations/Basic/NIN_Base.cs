@@ -221,7 +221,7 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 梦幻三段
     /// </summary>
-    public static IBaseAction DreamWithinaDream { get; } = new BaseAction(ActionID.DreamWithInADream);
+    public static IBaseAction DreamWithinADream { get; } = new BaseAction(ActionID.DreamWithInADream);
 
     /// <summary>
     /// 风魔手里剑天

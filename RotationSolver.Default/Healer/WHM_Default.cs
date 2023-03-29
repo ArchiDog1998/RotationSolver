@@ -154,7 +154,7 @@ public sealed class WHM_Default : WHM_Base
         if (Temperance.CanUse(out act)) return true;
 
         //礼仪之铃
-        if (LiturgyoftheBell.CanUse(out act)) return true;
+        if (LiturgyOfTheBell.CanUse(out act)) return true;
         return false;
     }
 

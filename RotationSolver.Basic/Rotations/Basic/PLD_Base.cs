@@ -59,7 +59,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 战女神之怒(王权剑)
     /// </summary>
-    public static IBaseAction RageofHalone { get; } = new BaseAction(ActionID.RageOfHalone);
+    public static IBaseAction RageOfHalone { get; } = new BaseAction(ActionID.RageOfHalone);
 
     /// <summary>
     /// 投盾
@@ -73,7 +73,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 战逃反应
     /// </summary>
-    public static IBaseAction FightorFlight { get; } = new BaseAction(ActionID.FightOrFlight, true);
+    public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, true);
 
     /// <summary>
     /// 全蚀斩
@@ -97,7 +97,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 厄运流转
     /// </summary>
-    public static IBaseAction CircleofScorn { get; } = new BaseAction(ActionID.CircleOfScorn);
+    public static IBaseAction CircleOfScorn { get; } = new BaseAction(ActionID.CircleOfScorn);
 
     /// <summary>
     /// 深奥之灵
@@ -171,7 +171,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 武装戍卫
     /// </summary>
-    public static IBaseAction PassageofArms { get; } = new BaseAction(ActionID.PassageOfArms, true, isTimeline: true);
+    public static IBaseAction PassageOfArms { get; } = new BaseAction(ActionID.PassageOfArms, true, isTimeline: true);
 
     /// <summary>
     /// 保护

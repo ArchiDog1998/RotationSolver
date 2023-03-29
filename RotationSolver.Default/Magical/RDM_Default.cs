@@ -152,7 +152,7 @@ public sealed class RDM_Default : RDM_Base
         if (Fleche.CanUse(out act)) return true;
 
         if (Engagement.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        if (CorpsAcorps.CanUse(out act, mustUse: true) && !IsMoving) return true;
+        if (CorpsACorps.CanUse(out act, mustUse: true) && !IsMoving) return true;
 
         return false;
     }

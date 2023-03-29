@@ -110,7 +110,7 @@ public sealed class DRK_Default : DRK_Base
         if (UseBlood)
         {
             if (Quietus.CanUse(out act)) return true;
-            if (Bloodspiller.CanUse(out act)) return true;
+            if (BloodSpiller.CanUse(out act)) return true;
         }
 
         //AOE
@@ -132,8 +132,8 @@ public sealed class DRK_Default : DRK_Base
     {
         if (CheckDarkSide)
         {
-            if (FloodofDarkness.CanUse(out act)) return true;
-            if (EdgeofDarkness.CanUse(out act)) return true;
+            if (FloodOfDarkness.CanUse(out act)) return true;
+            if (EdgeOfDarkness.CanUse(out act)) return true;
         }
 
         if (InBurst)

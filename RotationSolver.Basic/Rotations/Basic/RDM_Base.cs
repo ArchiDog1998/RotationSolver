@@ -67,7 +67,7 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// ¶Ì±øÏà½Ó
     /// </summary>
-    public static IBaseAction CorpsAcorps { get; } = new BaseAction(ActionID.CorpsACorps, shouldEndSpecial: true)
+    public static IBaseAction CorpsACorps { get; } = new BaseAction(ActionID.CorpsACorps, shouldEndSpecial: true)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -231,7 +231,7 @@ public abstract class RDM_Base : CustomRotation
     [RotationDesc(ActionID.CorpsACorps)]
     protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
     {
-        if (CorpsAcorps.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (CorpsACorps.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         return false;
     }
 

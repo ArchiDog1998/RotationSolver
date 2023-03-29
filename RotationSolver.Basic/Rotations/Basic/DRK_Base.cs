@@ -13,7 +13,7 @@ public abstract class DRK_Base : CustomRotation
 
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    private static float DarksideTimeRemaining => JobGauge.DarksideTimeRemaining / 1000f;
+    private static float DarkSideTimeRemaining => JobGauge.DarksideTimeRemaining / 1000f;
     /// <summary>
     /// 暗血
     /// </summary>
@@ -31,7 +31,7 @@ public abstract class DRK_Base : CustomRotation
     /// <returns></returns>
     protected static bool DarkSideEndAfter(float time)
     {
-        return EndAfter(DarksideTimeRemaining, time);
+        return EndAfter(DarkSideTimeRemaining, time);
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public abstract class DRK_Base : CustomRotation
     /// <returns></returns>
     protected static bool DarkSideEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
     {
-        return EndAfterGCD(DarksideTimeRemaining, gctCount, abilityCount);
+        return EndAfterGCD(DarkSideTimeRemaining, gctCount, abilityCount);
     }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
@@ -85,12 +85,12 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 暗黑波动
     /// </summary>
-    public static IBaseAction FloodofDarkness { get; } = new BaseAction(ActionID.FloodOfDarkness);
+    public static IBaseAction FloodOfDarkness { get; } = new BaseAction(ActionID.FloodOfDarkness);
 
     /// <summary>
     /// 暗黑锋
     /// </summary>
-    public static IBaseAction EdgeofDarkness { get; } = new BaseAction(ActionID.EdgeOfDarkness);
+    public static IBaseAction EdgeOfDarkness { get; } = new BaseAction(ActionID.EdgeOfDarkness);
 
     /// <summary>
     /// 嗜血
@@ -145,7 +145,7 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 血溅
     /// </summary>
-    public static IBaseAction Bloodspiller { get; } = new BaseAction(ActionID.BloodSpiller)
+    public static IBaseAction BloodSpiller { get; } = new BaseAction(ActionID.BloodSpiller)
     {
         ActionCheck = b => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
     };
@@ -155,7 +155,7 @@ public abstract class DRK_Base : CustomRotation
     /// </summary>
     public static IBaseAction Quietus { get; } = new BaseAction(ActionID.Quietus)
     {
-        ActionCheck = Bloodspiller.ActionCheck,
+        ActionCheck = BloodSpiller.ActionCheck,
     };
 
     /// <summary>

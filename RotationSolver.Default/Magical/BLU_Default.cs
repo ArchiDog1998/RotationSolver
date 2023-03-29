@@ -44,7 +44,7 @@ public sealed class BLU_Default : BLU_Base
 
     protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (nextGCD.IsTheSameTo(false, Selfdestruct, FinalSting))
+        if (nextGCD.IsTheSameTo(false, SelfDestruct, FinalSting))
         {
             if (Swiftcast.CanUse(out act)) return true;
         }
@@ -128,7 +128,7 @@ public sealed class BLU_Default : BLU_Base
             //哔哩哔哩
             if (!Player.HasStatus(true, StatusID.Tingling)
                 && Tingle.CanUse(out act, mustUse: true)) return true;
-            if (Offguard.CanUse(out act)) return true;
+            if (OffGuard.CanUse(out act)) return true;
             //鱼叉
             if (TripleTrident.CanUse(out act, mustUse: true)) return true;
         }
@@ -137,7 +137,7 @@ public sealed class BLU_Default : BLU_Base
         {
             if (Whistle.CanUse(out act)) return true;
             //破防
-            if (Offguard.CanUse(out act)) return true;
+            if (OffGuard.CanUse(out act)) return true;
             //哔哩哔哩
             if (Tingle.CanUse(out act)) return true;
         }
@@ -148,7 +148,7 @@ public sealed class BLU_Default : BLU_Base
         if (!Player.HasStatus(true, StatusID.WaxingNocturne)) return false;
 
         //月下彼岸花
-        if (Nightbloom.CanUse(out act, mustUse: true)) return true;
+        if (NightBloom.CanUse(out act, mustUse: true)) return true;
         //地火喷发
         if (Eruption.CanUse(out act, mustUse: true)) return true;
         //马特拉魔术
@@ -229,7 +229,7 @@ public sealed class BLU_Default : BLU_Base
         if (AllOnSlot(Whistle, MoonFlute, FinalSting, BasicInstinct))
         {
             //破防
-            if (Player.HasStatus(true, StatusID.WaxingNocturne) && Offguard.CanUse(out act)) return true;
+            if (Player.HasStatus(true, StatusID.WaxingNocturne) && OffGuard.CanUse(out act)) return true;
 
             if ((float)Target.CurrentHp / Target.MaxHp > FinalStingHP) return false;
             if (Whistle.CanUse(out act)) return true;
@@ -254,13 +254,13 @@ public sealed class BLU_Default : BLU_Base
         if (QuickLevel && StickyTongue.CanUse(out act)) return true;
 
         //苦闷之歌
-        if (AllOnSlot(Bristle, SongofTorment) && SongofTorment.CanUse(out _))
+        if (AllOnSlot(Bristle, SongOfTorment) && SongOfTorment.CanUse(out _))
         {
             //怒发冲冠
             if (Bristle.CanUse(out act)) return true;
-            if (SongofTorment.CanUse(out act)) return true;
+            if (SongOfTorment.CanUse(out act)) return true;
         }
-        if (SongofTorment.CanUse(out act)) return true;
+        if (SongOfTorment.CanUse(out act)) return true;
 
         //复仇冲击
         if (RevengeBlast.CanUse(out act)) return true;
@@ -363,7 +363,7 @@ public sealed class BLU_Default : BLU_Base
         //怒视
         if (Glower.CanUse(out act)) return true;
         //平原震裂
-        if (Plaincracker.CanUse(out act)) return true;
+        if (PlainCracker.CanUse(out act)) return true;
         //诡异视线
         if (TheLook.CanUse(out act)) return true;
         //喷墨
@@ -380,10 +380,10 @@ public sealed class BLU_Default : BLU_Base
 
         if (MustardBomb.CanUse(out act)) return true;
         if (AetherialSpark.CanUse(out act)) return true;
-        if (MaledictionofWater.CanUse(out act)) return true;
+        if (MaledictionOfWater.CanUse(out act)) return true;
         if (FlyingFrenzy.CanUse(out act)) return true;
         if (DrillCannons.CanUse(out act)) return true;
-        if (Weight4tonze.CanUse(out act)) return true;
+        if (Weight4Tonze.CanUse(out act)) return true;
         if (Needles1000.CanUse(out act)) return true;
         if (Kaltstrahl.CanUse(out act)) return true;
         if (PeripheralSynthesis.CanUse(out act)) return true;
@@ -410,7 +410,7 @@ public sealed class BLU_Default : BLU_Base
         if (DivineCataract.CanUse(out act)) return true;
 
         //斗灵弹
-        if (TheRoseofDestruction.CanUse(out act)) return true;
+        if (TheRoseOfDestruction.CanUse(out act)) return true;
 
         //渔叉三段
         if (InBurst && !MoonFluteBreak && TripleTrident.CanUse(out act)) return true;
@@ -423,7 +423,7 @@ public sealed class BLU_Default : BLU_Base
         //if (MagicHammer.ShouldUse(out act)) return true;
 
         //月下彼岸花
-        if (InBurst && !MoonFluteBreak && Nightbloom.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (InBurst && !MoonFluteBreak && NightBloom.CanUse(out act, mustUse: SingleAOE)) return true;
         //如意大旋风
         if (InBurst && !MoonFluteBreak && BothEnds.CanUse(out act, mustUse: SingleAOE)) return true;
 

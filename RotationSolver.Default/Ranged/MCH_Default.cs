@@ -33,7 +33,7 @@ public sealed class MCH_Default : MCH_Base
 
         //群体常规GCD
         //AOE,毒菌冲击
-        if (Bioblaster.CanUse(out act)) return true;
+        if (BioBlaster.CanUse(out act)) return true;
         if (ChainSaw.CanUse(out act)) return true;
         if (IsOverheated && AutoCrossbow.CanUse(out act)) return true;
         if (SpreadShot.CanUse(out act)) return true;

@@ -59,7 +59,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// ×¹ÅçÈª
     /// </summary>
-    public static IBaseAction Fountainfall { get; } = new BaseAction(ActionID.FountainFall)
+    public static IBaseAction FountainFall { get; } = new BaseAction(ActionID.FountainFall)
     {
         StatusNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
     };
@@ -84,7 +84,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// ÂäÈÐÓê
     /// </summary>
-    public static IBaseAction Bladeshower { get; } = new BaseAction(ActionID.BladeShower)
+    public static IBaseAction BladeShower { get; } = new BaseAction(ActionID.BladeShower)
     {
         StatusProvide = Fountain.StatusProvide,
     };
@@ -100,10 +100,10 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// ÂäÑªÓê
     /// </summary>
-    public static IBaseAction Bloodshower { get; } = new BaseAction(ActionID.BloodShower)
+    public static IBaseAction BloodShower { get; } = new BaseAction(ActionID.BloodShower)
     {
         AOECount = 2,
-        StatusNeed = Fountainfall.StatusNeed,
+        StatusNeed = FountainFall.StatusNeed,
     };
 
     /// <summary>
@@ -143,7 +143,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// Á÷ÐÇÎè
     /// </summary>
-    public static IBaseAction StarfallDance { get; } = new BaseAction(ActionID.StarFallDance)
+    public static IBaseAction StarFallDance { get; } = new BaseAction(ActionID.StarFallDance)
     {
         StatusNeed = new[] { StatusID.FlourishingStarfall },
     };
@@ -298,7 +298,7 @@ public abstract class DNC_Base : CustomRotation
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    protected static bool ExcutionStepGCD(out IAction act)
+    protected static bool ExecuteStepGCD(out IAction act)
     {
         act = null;
         if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;

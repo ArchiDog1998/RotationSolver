@@ -77,7 +77,7 @@ public sealed class GNB_Default : GNB_Base
         if (Hypervelocity.CanUse(out act)) return true;
 
         //血壤
-        if (GnashingFang.IsCoolingDown && Bloodfest.CanUse(out act)) return true;
+        if (GnashingFang.IsCoolingDown && BloodFest.CanUse(out act)) return true;
 
         //搞搞攻击,粗分斩
         if (Player.HasStatus(true, StatusID.NoMercy) && RoughDivide.CanUse(out act, mustUse: true)) return true;
@@ -89,7 +89,7 @@ public sealed class GNB_Default : GNB_Base
     [RotationDesc(ActionID.HeartOfLight, ActionID.Reprisal)]
     protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (HeartofLight.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (HeartOfLight.CanUse(out act, emptyOrSkipCombo: true)) return true;
         if (Reprisal.CanUse(out act, mustUse: true)) return true;
         return false;
     }
@@ -109,7 +109,7 @@ public sealed class GNB_Default : GNB_Base
             if (Camouflage.CanUse(out act)) return true;
         }
         //10
-        if (HeartofStone.CanUse(out act)) return true;
+        if (HeartOfStone.CanUse(out act)) return true;
 
         if (Reprisal.CanUse(out act)) return true;
 
@@ -136,7 +136,7 @@ public sealed class GNB_Default : GNB_Base
         if (BurstStrike.EnoughLevel)
         {
             //4GCD起手判断
-            if (IsLastGCD((ActionID)KeenEdge.ID) && Ammo == 1 && !GnashingFang.IsCoolingDown && !Bloodfest.IsCoolingDown) return true;
+            if (IsLastGCD((ActionID)KeenEdge.ID) && Ammo == 1 && !GnashingFang.IsCoolingDown && !BloodFest.IsCoolingDown) return true;
 
             //3弹进无情
             else if (Ammo == (Level >= 88 ? 3 : 2)) return true;
@@ -167,10 +167,10 @@ public sealed class GNB_Default : GNB_Base
             if (Ammo == 3 && IsLastGCD((ActionID)BrutalShell.ID) && NoMercy.WillHaveOneCharge(3)) return true;
 
             //1弹且血壤快冷却好了
-            if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && Bloodfest.WillHaveOneCharge(5)) return true;
+            if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && BloodFest.WillHaveOneCharge(5)) return true;
 
             //4GCD起手烈牙判断
-            if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && (!Bloodfest.IsCoolingDown && Bloodfest.EnoughLevel || !Bloodfest.EnoughLevel)) return true;
+            if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && (!BloodFest.IsCoolingDown && BloodFest.EnoughLevel || !BloodFest.EnoughLevel)) return true;
         }
         return false;
     }
@@ -220,7 +220,7 @@ public sealed class GNB_Default : GNB_Base
             if (SonicBreak.IsCoolingDown && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
             //2弹无情的特殊判断,提前使用倍攻
-            if (Player.HasStatus(true, StatusID.NoMercy) && !NoMercy.WillHaveOneCharge(55) && Bloodfest.WillHaveOneCharge(5)) return true;
+            if (Player.HasStatus(true, StatusID.NoMercy) && !NoMercy.WillHaveOneCharge(55) && BloodFest.WillHaveOneCharge(5)) return true;
 
         }
         return false;
@@ -249,7 +249,7 @@ public sealed class GNB_Default : GNB_Base
             //无情外防止溢出
             if (IsLastGCD((ActionID)BrutalShell.ID) &&
                 (Ammo == (Level >= 88 ? 3 : 2) ||
-                Bloodfest.WillHaveOneCharge(6) && Ammo <= 2 && !NoMercy.WillHaveOneCharge(10) && Bloodfest.EnoughLevel)) return true;
+                BloodFest.WillHaveOneCharge(6) && Ammo <= 2 && !NoMercy.WillHaveOneCharge(10) && BloodFest.EnoughLevel)) return true;
 
         }
         return false;

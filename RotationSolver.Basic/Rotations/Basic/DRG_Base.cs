@@ -93,12 +93,12 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// ÆÆËé³å
     /// </summary>
-    public static IBaseAction SpineshatterDive { get; } = new BaseAction(ActionID.SpineShatterDive);
+    public static IBaseAction SpineShatterDive { get; } = new BaseAction(ActionID.SpineShatterDive);
 
     /// <summary>
     /// ÁúÑ×³å
     /// </summary>
-    public static IBaseAction DragonfireDive { get; } = new BaseAction(ActionID.DragonFireDive);
+    public static IBaseAction DragonFireDive { get; } = new BaseAction(ActionID.DragonFireDive);
 
     /// <summary>
     /// ÌøÔ¾
@@ -140,7 +140,7 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// ×¹ÐÇ³å
     /// </summary>
-    public static IBaseAction Stardiver { get; } = new BaseAction(ActionID.StarDiver)
+    public static IBaseAction StarDiver { get; } = new BaseAction(ActionID.StarDiver)
     {
         ActionCheck = b => JobGauge.IsLOTDActive,
     };

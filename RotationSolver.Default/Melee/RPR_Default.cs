@@ -15,7 +15,7 @@ public sealed class RPR_Default : RPR_Base
     protected override IAction CountDownAction(float remainTime)
     {
         //倒数收获月
-        if (remainTime <= 30 && Soulsow.CanUse(out _)) return Soulsow;
+        if (remainTime <= 30 && SoulSow.CanUse(out _)) return SoulSow;
         //提前2s勾刃
         if (remainTime <= Harpe.CastTime + Service.Config.CountDownAhead
             && Harpe.CanUse(out _)) return Harpe;
@@ -25,11 +25,11 @@ public sealed class RPR_Default : RPR_Base
     protected override bool GeneralGCD(out IAction act)
     {
         //非战斗收获月
-        if (Soulsow.CanUse(out act)) return true;
+        if (SoulSow.CanUse(out act)) return true;
 
         //上Debuff
-        if (WhorlofDeath.CanUse(out act)) return true;
-        if (ShadowofDeath.CanUse(out act)) return true;
+        if (WhorlOfDeath.CanUse(out act)) return true;
+        if (ShadowOfDeath.CanUse(out act)) return true;
 
         //补蓝
         if (SoulReaver)
@@ -49,14 +49,14 @@ public sealed class RPR_Default : RPR_Base
         if (Enshrouded)
         {
             //补DoT
-            if (ShadowofDeath.CanUse(out act)) return true;
+            if (ShadowOfDeath.CanUse(out act)) return true;
 
             if (LemureShroud > 1)
             {
                 if (Configs.GetBool("EnshroudPooling") && PlentifulHarvest.EnoughLevel && ArcaneCircle.WillHaveOneCharge(9) &&
                    (LemureShroud == 4 && Target.WillStatusEnd(30, true, StatusID.DeathsDesign) || LemureShroud == 3 && Target.WillStatusEnd(50, true, StatusID.DeathsDesign))) //双附体窗口期 
                 {
-                    if (ShadowofDeath.CanUse(out act, mustUse: true)) return true;
+                    if (ShadowOfDeath.CanUse(out act, mustUse: true)) return true;
                 }
 
                 //夜游魂衣-虚无/交错收割 阴冷收割
@@ -81,7 +81,7 @@ public sealed class RPR_Default : RPR_Base
                     //跑机制来不及读条？补个buff混一下
                     else
                     {
-                        if (ShadowofDeath.CanUse(out act, mustUse: IsMoving)) return true;
+                        if (ShadowOfDeath.CanUse(out act, mustUse: IsMoving)) return true;
                     }
                 }
                 else

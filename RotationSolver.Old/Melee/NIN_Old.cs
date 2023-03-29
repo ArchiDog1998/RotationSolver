@@ -304,13 +304,13 @@ public sealed class NIN_Old : NIN_Base
         if (HellfrogMedium.CanUse(out act)) return true;
         if (Bhavacakra.CanUse(out act)) return true;
 
-        if (!DreamWithinaDream.EnoughLevel)
+        if (!DreamWithinADream.EnoughLevel)
         {
             if (Assassinate.CanUse(out act)) return true;
         }
         else
         {
-            if (DreamWithinaDream.CanUse(out act)) return true;
+            if (DreamWithinADream.CanUse(out act)) return true;
         }
         return false;
     }

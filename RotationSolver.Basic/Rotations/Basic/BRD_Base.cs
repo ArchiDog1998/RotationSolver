@@ -75,7 +75,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// ·çÊ´¼ý
     /// </summary>
-    public static IBaseAction Windbite { get; } = new BaseAction(ActionID.WindBite, isEot: true)
+    public static IBaseAction WindBite { get; } = new BaseAction(ActionID.WindBite, isEot: true)
     {
         TargetStatus = new[] { StatusID.WindBite, StatusID.StormBite }
     };
@@ -85,8 +85,8 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction IronJaws { get; } = new BaseAction(ActionID.IronJaws, isEot: true)
     {
-        TargetStatus = VenomousBite.TargetStatus.Union(Windbite.TargetStatus).ToArray(),
-        ActionCheck = b => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, Windbite.TargetStatus),
+        TargetStatus = VenomousBite.TargetStatus.Union(WindBite.TargetStatus).ToArray(),
+        ActionCheck = b => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, WindBite.TargetStatus),
     };
 
     /// <summary>

@@ -80,7 +80,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 死亡之影
     /// </summary>
-    public static IBaseAction ShadowofDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, isEot: true)
+    public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, isEot: true)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = b => !SoulReaver,
@@ -114,10 +114,10 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 死亡之涡
     /// </summary>
-    public static IBaseAction WhorlofDeath { get; } = new BaseAction(ActionID.WhorlOfDeath, isEot: true)
+    public static IBaseAction WhorlOfDeath { get; } = new BaseAction(ActionID.WhorlOfDeath, isEot: true)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
-        ActionCheck = ShadowofDeath.ActionCheck,
+        ActionCheck = ShadowOfDeath.ActionCheck,
     };
 
     /// <summary>
@@ -291,7 +291,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 播魂种
     /// </summary>
-    public static IBaseAction Soulsow { get; } = new BaseAction(ActionID.SoulSow)
+    public static IBaseAction SoulSow { get; } = new BaseAction(ActionID.SoulSow)
     {
         StatusProvide = new[] { StatusID.SoulSow },
         ActionCheck = b => !InCombat,

@@ -49,7 +49,7 @@ public sealed class SCH_Default : SCH_Base
         if (Bio.CanUse(out act)) return true;
 
         //AOE
-        if (ArtofWar.CanUse(out act)) return true;
+        if (ArtOfWar.CanUse(out act)) return true;
 
         //Single
         if (Ruin.CanUse(out act)) return true;

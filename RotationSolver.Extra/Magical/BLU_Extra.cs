@@ -27,7 +27,7 @@ public sealed class BLU_Extra : BLU_Base
 
             if (!Player.HasStatus(true, StatusID.Tingling)
                 && Tingle.CanUse(out act, mustUse: true)) return true;
-            if (Offguard.CanUse(out act)) return true;
+            if (OffGuard.CanUse(out act)) return true;
 
             if (TripleTrident.CanUse(out act, mustUse: true)) return true;
         }

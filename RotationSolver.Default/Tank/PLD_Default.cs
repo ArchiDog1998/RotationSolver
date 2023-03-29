@@ -37,11 +37,11 @@ public class PLD_Default : PLD_Base
         if (abilitiesRemaining == 1 && InCombat)
         {
             if (UseBurstMedicine(out act)) return true;
-            if (InBurst && !CombatElapsedLess(5) && FightorFlight.CanUse(out act)) return true;
+            if (InBurst && !CombatElapsedLess(5) && FightOrFlight.CanUse(out act)) return true;
         }
         if (CombatElapsedLess(8)) return false;
 
-        if (CircleofScorn.CanUse(out act, mustUse: true)) return true;
+        if (CircleOfScorn.CanUse(out act, mustUse: true)) return true;
         if (Expiacion.CanUse(out act, mustUse: true)) return true;
         if (SpiritsWithin.CanUse(out act, mustUse: true)) return true;
 
@@ -75,15 +75,15 @@ public class PLD_Default : PLD_Base
 
         //Single
         if (!CombatElapsedLess(8) && HasFightOrFlight && GoringBlade.CanUse(out act)) return true; // Dot
-        if (!FightorFlight.WillHaveOneChargeGCD(2))
+        if (!FightOrFlight.WillHaveOneChargeGCD(2))
         {
-            if (!FightorFlight.WillHaveOneChargeGCD(6) &&
+            if (!FightOrFlight.WillHaveOneChargeGCD(6) &&
                 HasDivineMight && HolySpirit.CanUse(out act)) return true;
-            if (RageofHalone.CanUse(out act)) return true;
+            if (RageOfHalone.CanUse(out act)) return true;
             if (Atonement.CanUse(out act)) return true;
         }
         //123
-        if (RageofHalone.CanUse(out act)) return true;
+        if (RageOfHalone.CanUse(out act)) return true;
         if (RiotBlade.CanUse(out act)) return true;
         if (FastBlade.CanUse(out act)) return true;
 
@@ -109,7 +109,7 @@ public class PLD_Default : PLD_Base
     [RotationDesc(ActionID.PassageOfArms)]
     protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (PassageofArms.CanUse(out act)) return true;
+        if (PassageOfArms.CanUse(out act)) return true;
         return base.HealAreaAbility(abilitiesRemaining, out act);
     }
 

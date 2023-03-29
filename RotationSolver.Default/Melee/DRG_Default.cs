@@ -19,8 +19,8 @@ public sealed class DRG_Default : DRG_Base
     {
         if (abilityRemain > 1)
         {
-            if (SpineshatterDive.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
-            if (DragonfireDive.CanUse(out act, mustUse: true, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+            if (SpineShatterDive.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+            if (DragonFireDive.CanUse(out act, mustUse: true, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
         }
 
         act = null;
@@ -60,7 +60,7 @@ public sealed class DRG_Default : DRG_Base
         if (Nastrond.CanUse(out act, mustUse: true)) return true;
 
         //×¹ÐÇ³å
-        if (Stardiver.CanUse(out act, mustUse: true)) return true;
+        if (StarDiver.CanUse(out act, mustUse: true)) return true;
 
         //¸ßÌø
         if (HighJump.EnoughLevel)
@@ -76,17 +76,17 @@ public sealed class DRG_Default : DRG_Base
         if (Geirskogul.CanUse(out act, mustUse: true)) return true;
 
         //ÆÆËé³å
-        if (SpineshatterDive.CanUse(out act, emptyOrSkipCombo: true))
+        if (SpineShatterDive.CanUse(out act, emptyOrSkipCombo: true))
         {
             if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedOneChargeAfterGCD(3)) return true;
         }
-        if (Player.HasStatus(true, StatusID.PowerSurge) && SpineshatterDive.CurrentCharges != 1 && SpineshatterDive.CanUse(out act)) return true;
+        if (Player.HasStatus(true, StatusID.PowerSurge) && SpineShatterDive.CurrentCharges != 1 && SpineShatterDive.CanUse(out act)) return true;
 
         //»ÃÏó³å
         if (MirageDive.CanUse(out act)) return true;
 
         //ÁúÑ×³å
-        if (DragonfireDive.CanUse(out act, mustUse: true))
+        if (DragonFireDive.CanUse(out act, mustUse: true))
         {
             if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedOneChargeAfterGCD(3)) return true;
         }

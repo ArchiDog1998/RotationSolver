@@ -85,7 +85,7 @@ public sealed class WAR_Default : WAR_Base
 
         if (Player.GetHealthRatio() < 0.6f)
         {
-            if (ThrillofBattle.CanUse(out act)) return true;
+            if (ThrillOfBattle.CanUse(out act)) return true;
             if (Equilibrium.CanUse(out act)) return true;
         }
 
