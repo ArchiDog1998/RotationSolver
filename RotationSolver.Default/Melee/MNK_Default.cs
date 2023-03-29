@@ -7,7 +7,7 @@ public sealed class MNK_Default : MNK_Base
 {
     public override string GameVersion => "6.35";
 
-    public override string RotationName => "LunarSolarOpener";
+    public override string RotationName => "Lunar Solar Opener";
 
     protected override IRotationConfigSet CreateConfiguration()
     {
@@ -37,7 +37,7 @@ public sealed class MNK_Default : MNK_Base
         return false;
     }
 
-    private static bool UseLunarPerfectBalance => (HasSolar || BeastChakras.Contains(BeastChakra.COEURL) || BeastChakras.Contains(BeastChakra.RAPTOR))
+    private static bool UseLunarPerfectBalance => (HasSolar || Player.HasStatus(false, StatusID.PerfectBalance))
         && (!Player.WillStatusEndGCD(0, 0, false, StatusID.RiddleOfFire) || Player.HasStatus(false, StatusID.RiddleOfFire) || RiddleOfFire.WillHaveOneChargeGCD(2)) && PerfectBalance.WillHaveOneChargeGCD(3);
 
     private static bool RaptorForm(out IAction act)
@@ -64,11 +64,17 @@ public sealed class MNK_Default : MNK_Base
     {
         if (PerfectBalanceActions(out act)) return true;
 
+
         if (Player.HasStatus(true, StatusID.CoerlForm))
         {
             if (CoerlForm(out act)) return true;
         }
-        else if (Player.HasStatus(true, StatusID.RaptorForm))
+        if (Player.HasStatus(true, StatusID.RiddleOfFire)
+            && !RiddleOfFire.ElapsedAfterGCD(2) && (PerfectBalance.ElapsedAfter(60) || !PerfectBalance.IsCoolingDown))
+        {
+            if (OpoOpoForm(out act)) return true;
+        }
+        if (Player.HasStatus(true, StatusID.RaptorForm))
         {
             if (RaptorForm(out act)) return true;
         }
@@ -135,6 +141,7 @@ public sealed class MNK_Default : MNK_Base
     {
         //Emergency usage of status.
         if (!BeastChakras.Contains(BeastChakra.RAPTOR)
+            && HasLunar
             && Player.WillStatusEndGCD(1, 0, true, StatusID.DisciplinedFist))
         {
             if (RaptorForm(out act)) return true;
@@ -145,36 +152,45 @@ public sealed class MNK_Default : MNK_Base
             if (CoerlForm(out act)) return true;
         }
 
-        if (!BeastChakras.Contains(BeastChakra.RAPTOR))
-        {
-            if (RaptorForm(out act)) return true;
-        }
         if (!BeastChakras.Contains(BeastChakra.OPOOPO))
         {
             if (OpoOpoForm(out act)) return true;
+        }
+        if (HasLunar && !BeastChakras.Contains(BeastChakra.RAPTOR))
+        {
+            if (RaptorForm(out act)) return true;
         }
         if (!BeastChakras.Contains(BeastChakra.COEURL))
         {
             if (CoerlForm(out act)) return true;
         }
+        if (!BeastChakras.Contains(BeastChakra.RAPTOR))
+        {
+            if (RaptorForm(out act)) return true;
+        }
 
         return CoerlForm(out act);
+    }
+
+    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    {
+        if (abilitiesRemaining == 1 && InCombat)
+        {
+            if (UseBurstMedicine(out act)) return true;
+            if (InBurst && !CombatElapsedLessGCD(2) && RiddleOfFire.CanUse(out act)) return true;
+        }
+        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
     protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
-        if (abilitiesRemaining == 1 && InCombat)
-        {
-            if (UseBurstMedicine(out act)) return true;
-            if (InBurst && !CombatElapsedLessGCD(2) && !Player.HasStatus(true, StatusID.RaptorForm) && RiddleOfFire.CanUse(out act)) return true;
-        }
 
         if (CombatElapsedLessGCD(3)) return false;
 
         if (BeastChakras.Contains(BeastChakra.NONE) && Player.HasStatus(true, StatusID.RaptorForm)
-            && (!RiddleOfFire.EnoughLevel || Player.HasStatus(false, StatusID.RiddleOfFire) 
-            || RiddleOfFire.WillHaveOneChargeGCD(2) && (PerfectBalance.ElapsedAfter(60) || !PerfectBalance.IsCoolingDown)))
+            && (!RiddleOfFire.EnoughLevel || Player.HasStatus(false, StatusID.RiddleOfFire) && !Player.WillStatusEndGCD(3, 0, false, StatusID.RiddleOfFire)
+            || RiddleOfFire.WillHaveOneChargeGCD(1) && (PerfectBalance.ElapsedAfter(60) || !PerfectBalance.IsCoolingDown)))
         {
             if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
         }
