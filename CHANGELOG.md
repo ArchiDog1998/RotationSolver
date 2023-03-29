@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.9](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.8...v2.1.9) (2023-03-29)
+
+
+### Bug Fixes
+
+* add a link description for NIN. ([0b3690d](https://github.com/ArchiDog1998/RotationSolver/commit/0b3690de94851cabe21aeefd4cf7f150c7515110))
+* add text description for Link Description. ([45e71ea](https://github.com/ArchiDog1998/RotationSolver/commit/45e71eadc586d758c375b2b2caa8c05a563a3444))
+* changed some name stuff. ([b2f67fc](https://github.com/ArchiDog1998/RotationSolver/commit/b2f67fc9fe4a049ff70218971c3a9c6f61d22a20))
+* fix the range attack action usage of melee and tank. ([04c4c2e](https://github.com/ArchiDog1998/RotationSolver/commit/04c4c2e05c876207cc763e30ef8053c0dfae802a))
+* fixed mnk Lunar Solar Opener rotation. ([616c0aa](https://github.com/ArchiDog1998/RotationSolver/commit/616c0aa988bfe8f1c00c7fd11d1e97faf16cae44))
+* MNK changed dot and buff usage. ([b5e5e11](https://github.com/ArchiDog1998/RotationSolver/commit/b5e5e112e221865872c3588f99f52f38c3204bc3))
+* MNK changed dot and buff usage. ([4ecdc82](https://github.com/ArchiDog1998/RotationSolver/commit/4ecdc8231b8e7523ed55470c6c95264b36392f67))
+
 ## [2.1.8](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.7...v2.1.8) (2023-03-26)
 
 
