@@ -61,6 +61,14 @@ public class LinkDescriptionAttribute : Attribute
     {
         if (bytes == null)
             return null;
-        return Service.Interface.UiBuilder.LoadImage(bytes);
+
+        try
+        {
+            return Service.Interface.UiBuilder.LoadImage(bytes);
+        }
+        catch
+        {
+            return null;
+        }
     }
 }
