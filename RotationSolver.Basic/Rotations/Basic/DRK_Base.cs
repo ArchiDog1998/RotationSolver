@@ -74,6 +74,7 @@ public abstract class DRK_Base : CustomRotation
     public static IBaseAction Unmend { get; } = new BaseAction(ActionID.Unmend)
     {
         FilterForHostiles = TargetFilter.TankRangeTarget,
+        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
     /// <summary>
@@ -199,7 +200,7 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 暗影使者
     /// </summary>
-    public static IBaseAction Shadowbringer { get; } = new BaseAction(ActionID.ShadowBringer)
+    public static IBaseAction ShadowBringer { get; } = new BaseAction(ActionID.ShadowBringer)
     {
         ActionCheck = b => JobGauge.DarksideTimeRemaining > 0,
     };

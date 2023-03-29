@@ -14,11 +14,13 @@ public class LinkDescriptionAttribute : Attribute
     static readonly List<string> _loadingTexture = new List<string>();
 
     public TextureWrap Texture { get; private set; }
+    public string Description { get; private set; }
     public string Path { get; }
-    public LinkDescriptionAttribute(string path)
+    public LinkDescriptionAttribute(string path, string description = "")
     {
         Path = path;
         LoadTexture(path);
+        Description = description;
     }
 
     private void LoadTexture(string path)
@@ -61,6 +63,14 @@ public class LinkDescriptionAttribute : Attribute
     {
         if (bytes == null)
             return null;
-        return Service.Interface.UiBuilder.LoadImage(bytes);
+
+        try
+        {
+            return Service.Interface.UiBuilder.LoadImage(bytes);
+        }
+        catch
+        {
+            return null;
+        }
     }
 }

@@ -3,11 +3,12 @@ namespace RotationSolver.Default.Tank;
 
 [RotationDesc(ActionID.BloodWeapon, ActionID.Delirium)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/DRK_Default.cs")]
+[LinkDescription("https://www.thebalanceffxiv.com/img/jobs/drk/drk_standard_6.2_v1.png")]
 public sealed class DRK_Default : DRK_Base
 {
     public override string GameVersion => "6.31";
 
-    public override string RotationName => "Default";
+    public override string RotationName => "Standard";
 
     protected override bool CanHealSingleAbility => false;
 
@@ -15,7 +16,7 @@ public sealed class DRK_Default : DRK_Base
 
     private static bool CombatLess => CombatElapsedLess(3);
 
-    private bool CheckDrakSide
+    private bool CheckDarkSide
     {
         get
         {
@@ -129,7 +130,7 @@ public sealed class DRK_Default : DRK_Base
 
     protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (CheckDrakSide)
+        if (CheckDarkSide)
         {
             if (FloodofDarkness.CanUse(out act)) return true;
             if (EdgeofDarkness.CanUse(out act)) return true;
@@ -137,6 +138,7 @@ public sealed class DRK_Default : DRK_Base
 
         if (InBurst)
         {
+            if(UseBurstMedicine(out act)) return true;
             if (BloodWeapon.CanUse(out act)) return true;
             if (Delirium.CanUse(out act)) return true;
         }
@@ -153,12 +155,12 @@ public sealed class DRK_Default : DRK_Base
 
         if (InDeliruim)
         {
-            if (Shadowbringer.CanUse(out act, mustUse: true)) return true;
+            if (ShadowBringer.CanUse(out act, mustUse: true)) return true;
 
             if (AbyssalDrain.CanUse(out act)) return true;
             if (CarveandSpit.CanUse(out act)) return true;
 
-            if (Shadowbringer.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (ShadowBringer.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
         }
 
         if (SaltandDarkness.CanUse(out act)) return true;

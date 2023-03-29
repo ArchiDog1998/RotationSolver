@@ -6,6 +6,23 @@ namespace RotationSolver.Basic.Helpers;
 
 public static class IActionHelper
 {
+    public static ActionID[] MovingActions = new ActionID[]
+    {
+        ActionID.EnAvant,
+        ActionID.Plunge,
+        ActionID.RoughDivide,
+        ActionID.Thunderclap,
+        ActionID.Shukuchi,
+        ActionID.Intervene,
+        ActionID.CorpsACorps,
+        ActionID.HellsIngress,
+        ActionID.HissatsuGyoten,
+        ActionID.Icarus,
+        ActionID.Onslaught,
+        ActionID.SpineShatterDive,
+        ActionID.DragonFireDive,
+    };
+
     internal static bool IsLastGCD(bool isAdjust, params IAction[] actions)
     {
         return IsLastGCD(GetIDFromActions(isAdjust, actions));

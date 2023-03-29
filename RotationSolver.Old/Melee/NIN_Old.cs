@@ -1,13 +1,12 @@
 namespace RotationSolver.Default.Melee;
 
 [RotationDesc(ActionID.Mug)]
-[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Melee/NIN_Default.cs")]
-[LinkDescription("https://docs.google.com/spreadsheets/u/0/d/1BZZrqWMRrugCeiBICEgjCz2vRNXt_lRTxPnSQr24Em0/htmlview#", "Under the “Planner (With sample section)”")]
-public sealed class NIN_Default : NIN_Base
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Old/Melee/NIN_Old.cs")]
+public sealed class NIN_Old : NIN_Base
 {
     public override string GameVersion => "6.0";
 
-    public override string RotationName => "Default";
+    public override string RotationName => "Old";
 
     private static INinAction _ninActionAim = null;
 

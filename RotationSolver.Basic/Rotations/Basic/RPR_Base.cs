@@ -266,7 +266,7 @@ public abstract class RPR_Base : CustomRotation
     /// </summary>
     public static IBaseAction Harpe { get; } = new BaseAction(ActionID.Harpe)
     {
-        ActionCheck = b => !SoulReaver,
+        ActionCheck = b => !SoulReaver && !IsLastAction(IActionHelper.MovingActions),
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
     };
 

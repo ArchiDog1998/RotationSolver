@@ -69,6 +69,7 @@ public abstract class DRG_Base : CustomRotation
     public static IBaseAction PiercingTalon { get; } = new BaseAction(ActionID.PiercingTalon)
     {
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
+        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
     /// <summary>
