@@ -486,15 +486,23 @@ internal static class ImGuiHelper
                     {
                         Util.OpenLink(texture.Path);
                     }
-                    if (ImGui.IsItemHovered() && texture.Texture != null)
+                    if (ImGui.IsItemHovered() && (texture.Texture != null || !string.IsNullOrEmpty( texture.Description)))
                     {
                         DrawTooltip(() =>
                         {
-                            var ratio = Math.Min(1, Math.Min(display.X / texture.Texture.Width, display.Y / texture.Texture.Height));
-                            var size = new Vector2(texture.Texture.Width * ratio,
-                                texture.Texture.Height * ratio);
-                            ImGui.Image(texture.Texture.ImGuiHandle, size);
-                        }, "Picture" + texture.GetHashCode().ToString());
+                            if(texture.Texture != null)
+                            {
+                                var ratio = Math.Min(1, Math.Min(display.X / texture.Texture.Width, display.Y / texture.Texture.Height));
+                                var size = new Vector2(texture.Texture.Width * ratio,
+                                    texture.Texture.Height * ratio);
+                                ImGui.Image(texture.Texture.ImGuiHandle, size);
+                            }
+                            if (!string.IsNullOrEmpty(texture.Description))
+                            {
+                                ImGui.Text(texture.Description);
+                            }
+
+                        }, "PictureDescription" + texture.GetHashCode().ToString());
                     }
                 }
             }
