@@ -59,7 +59,7 @@ public sealed class NIN_Old : NIN_Base
         }
         else
         {
-            bool empty = Ten.CanUse(out _, mustUse: true);
+            bool empty = Ten.CanUse(out _, CanUseOption.MustUse);
             bool haveDoton = Player.HasStatus(true, StatusID.Doton);
 
             //加状态
@@ -148,20 +148,20 @@ public sealed class NIN_Old : NIN_Base
             //第二击杀AOE
             else if (tenId == KatonTen.ID)
             {
-                if (KatonTen.CanUse(out act, mustUse: true)) return true;
+                if (KatonTen.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             //其他几击
             else if (chiId == RaitonChi.ID)
             {
-                if (RaitonChi.CanUse(out act, mustUse: true)) return true;
+                if (RaitonChi.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             else if (chiId == DotonChi.ID)
             {
-                if (DotonChi.CanUse(out act, mustUse: true)) return true;
+                if (DotonChi.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             else if (jinId == SuitonJin.ID)
             {
-                if (SuitonJin.CanUse(out act, mustUse: true)) return true;
+                if (SuitonJin.CanUse(out act, CanUseOption.MustUse)) return true;
             }
         }
 
@@ -174,7 +174,7 @@ public sealed class NIN_Old : NIN_Base
         {
             //重置
             if (!Player.HasStatus(true, StatusID.Kassatsu, StatusID.TenChiJin)
-                && !Ten.CanUse(out _, mustUse: true))
+                && !Ten.CanUse(out _, CanUseOption.MustUse))
             {
                 return false;
             }
@@ -191,7 +191,7 @@ public sealed class NIN_Old : NIN_Base
         //结束了
         else if (id == _ninActionAim.ID)
         {
-            if (_ninActionAim.CanUse(out act, mustUse: true)) return true;
+            if (_ninActionAim.CanUse(out act, CanUseOption.MustUse)) return true;
             if (_ninActionAim.ID == Doton.ID && !InCombat)
             {
                 act = _ninActionAim;

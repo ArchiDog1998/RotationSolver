@@ -10,22 +10,22 @@ public sealed class WAR_Default : WAR_Base
     [RotationDesc(ActionID.ShakeItOff, ActionID.Reprisal)]
     protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (ShakeItOff.CanUse(out act, mustUse: true)) return true;
-        if (Reprisal.CanUse(out act, mustUse: true)) return true;
+        if (ShakeItOff.CanUse(out act, CanUseOption.MustUse)) return true;
+        if (Reprisal.CanUse(out act, CanUseOption.MustUse)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.PrimalRend)]
     protected override bool MoveForwardGCD(out IAction act)
     {
-        if (PrimalRend.CanUse(out act, mustUse: true)) return true;
+        if (PrimalRend.CanUse(out act, CanUseOption.MustUse)) return true;
         return false;
     }
 
     protected override bool GeneralGCD(out IAction act)
     {
         //¸ã¸ã¹¥»÷
-        if (PrimalRend.CanUse(out act, mustUse: true) && !IsMoving)
+        if (PrimalRend.CanUse(out act, CanUseOption.MustUse) && !IsMoving)
         {
             if (PrimalRend.Target.DistanceToPlayer() < 1) return true;
         }
@@ -91,12 +91,12 @@ public sealed class WAR_Default : WAR_Base
 
         if (!HasTankStance && NascentFlash.CanUse(out act)) return true;
 
-        if (Infuriate.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Infuriate.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         if (Orogeny.CanUse(out act)) return true;
         if (Upheaval.CanUse(out act)) return true;
 
-        if (Onslaught.CanUse(out act, mustUse: true) && !IsMoving) return true;
+        if (Onslaught.CanUse(out act, CanUseOption.MustUse) && !IsMoving) return true;
 
         return false;
     }

@@ -17,7 +17,7 @@ public abstract partial class CustomRotation
         var role = Job.GetJobRole();
 
         ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
-        var movingTarget = MoveForwardAbility(1, out act, recordTarget: false);
+        var movingTarget = MoveForwardAbility(1, out act, CanUseOption.IgnoreTarget);
         ActionMoveForwardAbility = movingTarget ? act : null;
         MoveTarget = (movingTarget && act is IBaseAction a) ? a.Target : null;
 
@@ -44,7 +44,7 @@ public abstract partial class CustomRotation
 
         EsunaStanceNorthGCD = role switch
         {
-            JobRole.Healer => DataCenter.WeakenPeople.Any() && Esuna.CanUse(out act, mustUse: true) ? act : null,
+            JobRole.Healer => DataCenter.WeakenPeople.Any() && Esuna.CanUse(out act, CanUseOption.MustUse) ? act : null,
             _ => null,
         };
         EsunaStanceNorthAbility = role switch

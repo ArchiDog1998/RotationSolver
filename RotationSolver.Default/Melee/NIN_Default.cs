@@ -2,12 +2,14 @@ namespace RotationSolver.Default.Melee;
 
 [RotationDesc(ActionID.Mug)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Melee/NIN_Default.cs")]
-[LinkDescription("https://docs.google.com/spreadsheets/u/0/d/1BZZrqWMRrugCeiBICEgjCz2vRNXt_lRTxPnSQr24Em0/htmlview#", "Under the “Planner (With sample section)”")]
+[LinkDescription("https://www.thebalanceffxiv.com/img/jobs/nin/earlymug3.png")]
+[LinkDescription("https://docs.google.com/spreadsheets/u/0/d/1BZZrqWMRrugCeiBICEgjCz2vRNXt_lRTxPnSQr24Em0/htmlview#",
+    "Under the “Planner (With sample section)”")]
 public sealed class NIN_Default : NIN_Base
 {
-    public override string GameVersion => "6.0";
+    public override string GameVersion => "6.35";
 
-    public override string RotationName => "Default";
+    public override string RotationName => "Standard";
 
     private static INinAction _ninActionAim = null;
 
@@ -60,7 +62,7 @@ public sealed class NIN_Default : NIN_Base
         }
         else
         {
-            bool empty = Ten.CanUse(out _, mustUse: true);
+            bool empty = Ten.CanUse(out _, CanUseOption.MustUse);
             bool haveDoton = Player.HasStatus(true, StatusID.Doton);
 
             //加状态
@@ -149,20 +151,20 @@ public sealed class NIN_Default : NIN_Base
             //第二击杀AOE
             else if (tenId == KatonTen.ID)
             {
-                if (KatonTen.CanUse(out act, mustUse: true)) return true;
+                if (KatonTen.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             //其他几击
             else if (chiId == RaitonChi.ID)
             {
-                if (RaitonChi.CanUse(out act, mustUse: true)) return true;
+                if (RaitonChi.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             else if (chiId == DotonChi.ID)
             {
-                if (DotonChi.CanUse(out act, mustUse: true)) return true;
+                if (DotonChi.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             else if (jinId == SuitonJin.ID)
             {
-                if (SuitonJin.CanUse(out act, mustUse: true)) return true;
+                if (SuitonJin.CanUse(out act, CanUseOption.MustUse)) return true;
             }
         }
 
@@ -175,7 +177,7 @@ public sealed class NIN_Default : NIN_Base
         {
             //重置
             if (!Player.HasStatus(true, StatusID.Kassatsu, StatusID.TenChiJin)
-                && !Ten.CanUse(out _, mustUse: true))
+                && !Ten.CanUse(out _, CanUseOption.MustUse))
             {
                 return false;
             }
@@ -192,7 +194,7 @@ public sealed class NIN_Default : NIN_Base
         //结束了
         else if (id == _ninActionAim.ID)
         {
-            if (_ninActionAim.CanUse(out act, mustUse: true)) return true;
+            if (_ninActionAim.CanUse(out act, CanUseOption.MustUse)) return true;
             if (_ninActionAim.ID == Doton.ID && !InCombat)
             {
                 act = _ninActionAim;

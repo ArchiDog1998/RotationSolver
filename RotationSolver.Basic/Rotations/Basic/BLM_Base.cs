@@ -126,14 +126,14 @@ public abstract partial class BLM_Base : CustomRotation
         {
         }
 
-        public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0, bool recordTarget = true)
+        public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
         {
             if (ElementTimeEndAfter(CastTime - 0.1f))
             {
                 act = null;
                 return false;
             }
-            return base.CanUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
+            return base.CanUse(out act, option, gcdCountForAbility);
         }
     }
 
@@ -330,7 +330,7 @@ public abstract partial class BLM_Base : CustomRotation
     [RotationDesc(ActionID.AetherialManipulation)]
     protected sealed override bool MoveForwardGCD(out IAction act)
     {
-        if (AetherialManipulation.CanUse(out act, mustUse: true)) return true;
+        if (AetherialManipulation.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.MoveForwardGCD(out act);
     }
 }

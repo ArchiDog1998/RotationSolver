@@ -23,18 +23,18 @@ public sealed class BLU_Extra : BLU_Base
 
         if (TripleTrident.OnSlot && TripleTrident.RightType && TripleTrident.WillHaveOneChargeGCD(OnSlotCount(Whistle, Tingle), 0))
         {
-            if ((TripleTrident.CanUse(out _, mustUse: true) || !HasHostilesInRange) && Whistle.CanUse(out act)) return true;
+            if ((TripleTrident.CanUse(out _, CanUseOption.MustUse) || !HasHostilesInRange) && Whistle.CanUse(out act)) return true;
 
             if (!Player.HasStatus(true, StatusID.Tingling)
-                && Tingle.CanUse(out act, mustUse: true)) return true;
+                && Tingle.CanUse(out act, CanUseOption.MustUse)) return true;
             if (OffGuard.CanUse(out act)) return true;
 
-            if (TripleTrident.CanUse(out act, mustUse: true)) return true;
+            if (TripleTrident.CanUse(out act, CanUseOption.MustUse)) return true;
         }
-        if (ChocoMeteor.CanUse(out act, mustUse: DataCenter.HasCompanion)) return true;
+        if (ChocoMeteor.CanUse(out act,  DataCenter.HasCompanion ? CanUseOption.MustUse : CanUseOption.None)) return true;
 
         if (SonicBoom.CanUse(out act)) return true;
-        if (DrillCannons.CanUse(out act, mustUse: true)) return true;
+        if (DrillCannons.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }

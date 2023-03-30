@@ -22,8 +22,6 @@ public partial class BaseAction
 
     public Func<BattleChara, bool> ActionCheck { get; set; } = null;
 
-    public Func<BattleChara, bool> RotationCheck { get; set; } = null;
-
     private bool WillCooldown
     {
         get
@@ -48,14 +46,15 @@ public partial class BaseAction
         }
     }
 
-    public unsafe virtual bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0, bool recordTarget = true)
+    public unsafe virtual bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
     {
         act = this;
+        var mustUse = option.HasFlag(CanUseOption.MustUse);
 
         var player = Service.Player;
         if (player == null) return false;
 
-        if (!skipDisable && !IsEnabled) return false;
+        if (!option.HasFlag(CanUseOption.SkipDisable) && !IsEnabled) return false;
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
             return false;
@@ -76,7 +75,7 @@ public partial class BaseAction
 
         if (!WillCooldown) return false;
 
-        if (!emptyOrSkipCombo)
+        if (!option.HasFlag(CanUseOption.EmptyOrSkipCombo))
         {
             if (IsGeneralGCD)
             {
@@ -95,10 +94,9 @@ public partial class BaseAction
         if (!FindTarget(mustUse, out var target) || target == null) return false;
 
         if (ActionCheck != null && !ActionCheck(target)) return false;
-        if (!skipDisable && RotationCheck != null && !RotationCheck(target)) return false;
 
         Target = target;
-        if(recordTarget) _targetId = target.ObjectId;
+        if(!option.HasFlag(CanUseOption.IgnoreTarget)) _targetId = target.ObjectId;
         return true;
     }
 

@@ -64,22 +64,12 @@ namespace RotationSolver.Basic.Actions
         /// Level, Enabled, Action Status, MP, Player Status, Coll down, Combo, Moving (for casting), Charges, Target, etc.
         /// </summary>
         /// <param name="act"></param>
-        /// <param name="mustUse">AOE only need one target to use.
-        /// Moving action don't need to have enough distance to use. 
-        /// Skip for <seealso cref="StatusProvide"/> and <seealso cref="TargetStatus"> checking.</param>
-        /// <param name="emptyOrSkipCombo">Use all charges, no keeping one.
-        /// Do not need to check the combo.</param>
-        /// <param name="skipDisable">Skip the disable for emergency use. Please always set this to false.</param>
+        /// <param name="option">Options about using this method.</param>
         /// <param name="gcdCountForAbility">The count of gcd for ability to delay. Only used in BLM right now</paramref>
         /// <returns>Should I use.</returns>
-        bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0, bool recordTarget = true);
+        bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0);
 
         #region CoolDown
-        /// <summary>
-        /// Is action cooling down.
-        /// </summary>
-        bool IsCoolingDown { get; }
-
         /// <summary>
         /// Current charges count.
         /// </summary>

@@ -5,6 +5,7 @@ using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -190,9 +191,9 @@ public abstract class WAR_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Onslaught)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (Onslaught.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (Onslaught.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 }

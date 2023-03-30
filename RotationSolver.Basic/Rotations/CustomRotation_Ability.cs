@@ -12,7 +12,7 @@ public abstract partial class CustomRotation
     private bool Ability(byte abilitiesRemaining, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         act = DataCenter.CommandNextAction;
-        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _, mustUse: true, skipDisable: true)) return true;
+        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,  CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return true;
 
         if (!Service.Config.UseAbility || Player.TotalCastTime - Player.CurrentCastTime > Service.Config.AbilitiesInterval)
         {
@@ -48,7 +48,7 @@ public abstract partial class CustomRotation
 
         //Run!
         if (!InCombat && IsMoving && role == JobRole.RangedPhysical
-            && Peloton.CanUse(out act, mustUse: true)) return true;
+            && Peloton.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }
@@ -165,7 +165,7 @@ public abstract partial class CustomRotation
 
         {
             if (!HasTankStance && Shield.CanUse(out act)) return true;
-            if (Provoke.CanUse(out act, mustUse: true)) return true;
+            if (Provoke.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         //No using defense abilities.
@@ -251,13 +251,13 @@ public abstract partial class CustomRotation
         if (nextGCD is BaseAction action)
         {
             if (Job.GetJobRole() is JobRole.Healer or JobRole.RangedMagical &&
-            action.CastTime >= 5 && Swiftcast.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            action.CastTime >= 5 && Swiftcast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
             if (Service.Config.AutoUseTrueNorth && abilitiesRemaining == 1 && action.EnemyPositional != EnemyPositional.None && action.Target != null)
             {
                 if (action.EnemyPositional != action.Target.FindEnemyPositional() && action.Target.HasPositional())
                 {
-                    if (TrueNorth.CanUse(out act, emptyOrSkipCombo: true)) return true;
+                    if (TrueNorth.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
                 }
             }
         }
@@ -267,7 +267,7 @@ public abstract partial class CustomRotation
     }
 
     [RotationDesc(DescType.MoveForwardAbility)]
-    protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
         act = null; return false;
     }

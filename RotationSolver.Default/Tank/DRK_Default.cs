@@ -72,7 +72,7 @@ public sealed class DRK_Default : DRK_Base
     protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (DarkMissionary.CanUse(out act)) return true;
-        if (Reprisal.CanUse(out act, mustUse: true)) return true;
+        if (Reprisal.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }
@@ -95,7 +95,7 @@ public sealed class DRK_Default : DRK_Base
             if (DarkMind.CanUse(out act)) return true;
 
             //10
-            if (Oblation.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Oblation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         if (Reprisal.CanUse(out act)) return true;
@@ -151,21 +151,21 @@ public sealed class DRK_Default : DRK_Base
 
         if (LivingShadow.CanUse(out act)) return true;
 
-        if (!IsMoving && SaltedEarth.CanUse(out act, mustUse: true)) return true;
+        if (!IsMoving && SaltedEarth.CanUse(out act, CanUseOption.MustUse)) return true;
 
         if (InDeliruim)
         {
-            if (ShadowBringer.CanUse(out act, mustUse: true)) return true;
+            if (ShadowBringer.CanUse(out act, CanUseOption.MustUse)) return true;
 
             if (AbyssalDrain.CanUse(out act)) return true;
             if (CarveandSpit.CanUse(out act)) return true;
 
-            if (ShadowBringer.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (ShadowBringer.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         if (SaltandDarkness.CanUse(out act)) return true;
 
-        if (Plunge.CanUse(out act, mustUse: true) && !IsMoving) return true;
+        if (Plunge.CanUse(out act, CanUseOption.MustUse) && !IsMoving) return true;
 
         return false;
     }

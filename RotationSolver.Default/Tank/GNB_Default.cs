@@ -30,8 +30,8 @@ public sealed class GNB_Default : GNB_Base
         if (CanUseSonicBreak(out act)) return true;
 
         //烈牙后二连
-        if (WickedTalon.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        if (SavageClaw.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (WickedTalon.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+        if (SavageClaw.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         //爆发击   
         if (CanUseBurstStrike(out act)) return true;
@@ -80,7 +80,7 @@ public sealed class GNB_Default : GNB_Base
         if (GnashingFang.IsCoolingDown && BloodFest.CanUse(out act)) return true;
 
         //搞搞攻击,粗分斩
-        if (Player.HasStatus(true, StatusID.NoMercy) && RoughDivide.CanUse(out act, mustUse: true)) return true;
+        if (Player.HasStatus(true, StatusID.NoMercy) && RoughDivide.CanUse(out act, CanUseOption.MustUse)) return true;
 
         act = null;
         return false;
@@ -89,8 +89,8 @@ public sealed class GNB_Default : GNB_Base
     [RotationDesc(ActionID.HeartOfLight, ActionID.Reprisal)]
     protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (HeartOfLight.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        if (Reprisal.CanUse(out act, mustUse: true)) return true;
+        if (HeartOfLight.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+        if (Reprisal.CanUse(out act, CanUseOption.MustUse)) return true;
         return false;
     }
 
@@ -120,7 +120,7 @@ public sealed class GNB_Default : GNB_Base
     [RotationDesc(ActionID.Aurora)]
     protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (Aurora.CanUse(out act, emptyOrSkipCombo: true) && abilitiesRemaining == 1) return true;
+        if (Aurora.CanUse(out act, CanUseOption.EmptyOrSkipCombo) && abilitiesRemaining == 1) return true;
         return false;
     }
 
@@ -211,7 +211,7 @@ public sealed class GNB_Default : GNB_Base
     private bool CanUseDoubleDown(out IAction act)
     {
         //基本判断
-        if (DoubleDown.CanUse(out act, mustUse: true))
+        if (DoubleDown.CanUse(out act, CanUseOption.MustUse))
         {
             //在4人本道中
             if (DemonSlice.CanUse(out _) && Player.HasStatus(true, StatusID.NoMercy)) return true;
@@ -257,7 +257,7 @@ public sealed class GNB_Default : GNB_Base
 
     private bool CanUseBowShock(out IAction act)
     {
-        if (BowShock.CanUse(out act, mustUse: true))
+        if (BowShock.CanUse(out act, CanUseOption.MustUse))
         {
             if (DemonSlice.CanUse(out _) && !IsFullParty) return true;
 

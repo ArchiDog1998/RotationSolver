@@ -85,12 +85,12 @@ public abstract class BLU_Base : CustomRotation
             ActionCheck = t => OnSlot && RightType;
         }
 
-        public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0, bool recordTarget = true)
+        public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
         {
             act = null;
 
             if (!OnSlot) return false;
-            return base.CanUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
+            return base.CanUse(out act, option, gcdCountForAbility);
         }
     }
 
@@ -773,7 +773,7 @@ public abstract class BLU_Base : CustomRotation
             //有某些非常危险的状态。
             if (DataCenter.SpecialType == SpecialCommandType.EsunaStanceNorth && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any())
             {
-                if (Exuviation.CanUse(out act, mustUse: true)) return true;
+                if (Exuviation.CanUse(out act, CanUseOption.MustUse)) return true;
             }
         }
         if (BasicInstinct.CanUse(out _))
@@ -815,7 +815,7 @@ public abstract class BLU_Base : CustomRotation
         {
             if (PomCure.CanUse(out act)) return true;
         }
-        if (WhiteWind.CanUse(out act, mustUse: true)) return true;
+        if (WhiteWind.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.HealSingleGCD(out act);
     }
 
@@ -827,7 +827,7 @@ public abstract class BLU_Base : CustomRotation
             if (Stotram.CanUse(out act)) return true;
         }
 
-        if (WhiteWind.CanUse(out act, mustUse: true)) return true;
+        if (WhiteWind.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.HealAreaGCD(out act);
     }
 }

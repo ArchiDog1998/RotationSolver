@@ -188,9 +188,9 @@ public abstract class MNK_Base : CustomRotation
     public static IBaseAction RiddleOfWind { get; } = new BaseAction(ActionID.RiddleOfWind, true);
 
     [RotationDesc(ActionID.Thunderclap)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (Thunderclap.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (Thunderclap.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 
@@ -211,7 +211,7 @@ public abstract class MNK_Base : CustomRotation
     [RotationDesc(ActionID.RiddleOfEarth)]
     protected sealed override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (RiddleOfEarth.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (RiddleOfEarth.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         return false;
     }
 }

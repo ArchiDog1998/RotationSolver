@@ -70,17 +70,17 @@ public sealed class MNK_Old : MNK_Base
         {
             if (HasSolar && HasLunar)
             {
-                if (PhantomRush.CanUse(out act, mustUse: true)) return true;
-                if (TornadoKick.CanUse(out act, mustUse: true)) return true;
+                if (PhantomRush.CanUse(out act, CanUseOption.MustUse)) return true;
+                if (TornadoKick.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             if (BeastChakras.Contains(BeastChakra.RAPTOR))
             {
-                if (RisingPhoenix.CanUse(out act, mustUse: true)) return true;
-                if (FlintStrike.CanUse(out act, mustUse: true)) return true;
+                if (RisingPhoenix.CanUse(out act, CanUseOption.MustUse)) return true;
+                if (FlintStrike.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             else
             {
-                if (ElixirField.CanUse(out act, mustUse: true)) return true;
+                if (ElixirField.CanUse(out act, CanUseOption.MustUse)) return true;
             }
         }
         //有震脚就阴阳
@@ -129,12 +129,12 @@ public sealed class MNK_Old : MNK_Base
 
                 if (!dis && (!demo || !PerfectBalance.IsCoolingDown))
                 {
-                    if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
+                    if (PerfectBalance.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
                 }
             }
             else
             {
-                if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
+                if (PerfectBalance.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
             }
         }
 
@@ -142,7 +142,7 @@ public sealed class MNK_Old : MNK_Base
 
         if (HowlingFist.CanUse(out act)) return true;
         if (SteelPeak.CanUse(out act)) return true;
-        if (HowlingFist.CanUse(out act, mustUse: true)) return true;
+        if (HowlingFist.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }

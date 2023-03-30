@@ -21,15 +21,15 @@ public sealed class SAM_Default : SAM_Base
     protected override bool GeneralGCD(out IAction act)
     {
         //奥义回返
-        if (KaeshiNamikiri.CanUse(out act, mustUse: true)) return true;
+        if (KaeshiNamikiri.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //燕回返
-        if (KaeshiGoken.CanUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
-        if (KaeshiSetsugekka.CanUse(out act, emptyOrSkipCombo: true, mustUse: true)) return true;
+        if (KaeshiGoken.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
+        if (KaeshiSetsugekka.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
 
         //奥义斩浪
         if ((!IsTargetBoss || Target.HasStatus(true, StatusID.Higanbana)) && HaveMoon && HaveFlower 
-            && OgiNamikiri.CanUse(out act, mustUse: true)) return true;
+            && OgiNamikiri.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //处理居合术
         if (SenCount == 1 && IsTargetBoss && !IsTargetDying)
@@ -38,7 +38,7 @@ public sealed class SAM_Default : SAM_Base
         }
         if (SenCount == 2)
         {
-            if (TenkaGoken.CanUse(out act, mustUse: !MidareSetsugekka.EnoughLevel)) return true;
+            if (TenkaGoken.CanUse(out act, !MidareSetsugekka.EnoughLevel ? CanUseOption.MustUse : CanUseOption.None)) return true;
         }
         if (SenCount == 3)
         {
@@ -46,13 +46,13 @@ public sealed class SAM_Default : SAM_Base
         }
 
         //连击2
-        if ((!HaveMoon || MoonTime < FlowerTime || !Oka.EnoughLevel) && Mangetsu.CanUse(out act, emptyOrSkipCombo: haveMeikyoShisui && !HasGetsu)) return true;
-        if ((!HaveFlower || FlowerTime < MoonTime) && Oka.CanUse(out act, emptyOrSkipCombo: haveMeikyoShisui && !HasKa)) return true;
-        if (!HasSetsu && Yukikaze.CanUse(out act, emptyOrSkipCombo: haveMeikyoShisui && HasGetsu && HasKa && !HasSetsu)) return true;
+        if ((!HaveMoon || MoonTime < FlowerTime || !Oka.EnoughLevel) && Mangetsu.CanUse(out act, haveMeikyoShisui && !HasGetsu ? CanUseOption.EmptyOrSkipCombo : CanUseOption.None)) return true;
+        if ((!HaveFlower || FlowerTime < MoonTime) && Oka.CanUse(out act, haveMeikyoShisui && !HasKa ? CanUseOption.EmptyOrSkipCombo : CanUseOption.None)) return true;
+        if (!HasSetsu && Yukikaze.CanUse(out act, haveMeikyoShisui && HasGetsu && HasKa && !HasSetsu ? CanUseOption.EmptyOrSkipCombo : CanUseOption.None)) return true;
 
         //连击3
-        if (Gekko.CanUse(out act, emptyOrSkipCombo: haveMeikyoShisui && !HasGetsu)) return true;
-        if (Kasha.CanUse(out act, emptyOrSkipCombo: haveMeikyoShisui && !HasKa)) return true;
+        if (Gekko.CanUse(out act, haveMeikyoShisui && !HasGetsu ? CanUseOption.EmptyOrSkipCombo : CanUseOption.None)) return true;
+        if (Kasha.CanUse(out act, haveMeikyoShisui && !HasKa ? CanUseOption.EmptyOrSkipCombo : CanUseOption.None)) return true;
 
         //连击2
         if ((!HaveMoon || MoonTime < FlowerTime || !Shifu.EnoughLevel) && Jinpu.CanUse(out act)) return true;
@@ -87,7 +87,7 @@ public sealed class SAM_Default : SAM_Base
         //闪影、红莲
         if(HaveMoon && HaveFlower)
         {
-            if (HissatsuGuren.CanUse(out act, mustUse: !HissatsuSenei.EnoughLevel)) return true;
+            if (HissatsuGuren.CanUse(out act, !HissatsuSenei.EnoughLevel ? CanUseOption.MustUse : CanUseOption.None)) return true;
             if (HissatsuSenei.CanUse(out act)) return true;
         }
 
@@ -111,7 +111,7 @@ public sealed class SAM_Default : SAM_Base
         if (HasHostilesInRange && IsLastGCD(true, Yukikaze, Mangetsu, Oka) &&
             (!IsTargetBoss || Target.HasStatus(true, StatusID.Higanbana) && !Target.WillStatusEnd(40, true, StatusID.Higanbana) || !HaveMoon && !HaveFlower || IsTargetBoss && IsTargetDying))
         {
-            if (MeikyoShisui.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (MeikyoShisui.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }

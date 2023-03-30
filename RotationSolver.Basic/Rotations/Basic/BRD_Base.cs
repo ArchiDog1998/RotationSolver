@@ -216,7 +216,7 @@ public abstract class BRD_Base : CustomRotation
         //有某些非常危险的状态。
         if (DataCenter.SpecialType == SpecialCommandType.EsunaStanceNorth && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any())
         {
-            if (WardensPaean.CanUse(out act, mustUse: true)) return true;
+            if (WardensPaean.CanUse(out act, CanUseOption.MustUse)) return true;
         }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }

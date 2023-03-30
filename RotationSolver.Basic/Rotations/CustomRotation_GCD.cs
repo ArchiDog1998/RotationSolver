@@ -11,7 +11,7 @@ public abstract partial class CustomRotation
     private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         IAction act = DataCenter.CommandNextAction;
-        if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, mustUse: true, skipDisable: true)) return act;
+        if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return act;
 
         if (EmergencyGCD(out act)) return act;
 
@@ -43,7 +43,7 @@ public abstract partial class CustomRotation
             && DataCenter.WeakenPeople.Any() 
             || DataCenter.DyingPeople.Any())
         {
-            if (Job.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, mustUse: true)) return act;
+            if (Job.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, CanUseOption.MustUse)) return act;
         }
 
         if (GeneralGCD(out var action)) return action;

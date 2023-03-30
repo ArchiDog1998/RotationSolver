@@ -56,7 +56,7 @@ public sealed class RPR_Default : RPR_Base
                 if (Configs.GetBool("EnshroudPooling") && PlentifulHarvest.EnoughLevel && ArcaneCircle.WillHaveOneCharge(9) &&
                    (LemureShroud == 4 && Target.WillStatusEnd(30, true, StatusID.DeathsDesign) || LemureShroud == 3 && Target.WillStatusEnd(50, true, StatusID.DeathsDesign))) //双附体窗口期 
                 {
-                    if (ShadowOfDeath.CanUse(out act, mustUse: true)) return true;
+                    if (ShadowOfDeath.CanUse(out act, CanUseOption.MustUse)) return true;
                 }
 
                 //夜游魂衣-虚无/交错收割 阴冷收割
@@ -74,14 +74,14 @@ public sealed class RPR_Default : RPR_Base
             {
                 if (Communio.EnoughLevel)
                 {
-                    if (!IsMoving && Communio.CanUse(out act, mustUse: true))
+                    if (!IsMoving && Communio.CanUse(out act, CanUseOption.MustUse))
                     {
                         return true;
                     }
                     //跑机制来不及读条？补个buff混一下
                     else
                     {
-                        if (ShadowOfDeath.CanUse(out act, mustUse: IsMoving)) return true;
+                        if (ShadowOfDeath.CanUse(out act, IsMoving ? CanUseOption.MustUse : CanUseOption.None)) return true;
                     }
                 }
                 else
@@ -101,12 +101,12 @@ public sealed class RPR_Default : RPR_Base
         }
 
         //大丰收
-        if (PlentifulHarvest.CanUse(out act, mustUse: true)) return true;
+        if (PlentifulHarvest.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //灵魂钐割
-        if (SoulScythe.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (SoulScythe.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         //灵魂切割
-        if (SoulSlice.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (SoulSlice.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         //群体二连
         if (NightmareScythe.CanUse(out act)) return true;
@@ -118,7 +118,7 @@ public sealed class RPR_Default : RPR_Base
         if (Slice.CanUse(out act)) return true;
 
         //摸不到怪 先花掉收获月
-        if (InCombat && HarvestMoon.CanUse(out act, mustUse: true)) return true;
+        if (InCombat && HarvestMoon.CanUse(out act, CanUseOption.MustUse)) return true;
         if (Harpe.CanUse(out act)) return true;
 
         return false;
@@ -147,15 +147,15 @@ public sealed class RPR_Default : RPR_Base
         if (Enshrouded)
         {
             //夜游魂衣-夜游魂切割 夜游魂钐割
-            if (LemuresScythe.CanUse(out act, emptyOrSkipCombo: true)) return true;
-            if (LemuresSlice.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (LemuresScythe.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+            if (LemuresSlice.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         //暴食
         //大丰收期间延后暴食
         if (PlentifulHarvest.EnoughLevel && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodSownCircle) || !PlentifulHarvest.EnoughLevel)
         {
-            if (Gluttony.CanUse(out act, mustUse: true)) return true;
+            if (Gluttony.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         if (!Player.HasStatus(true, StatusID.BloodSownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel || Soul == 100))

@@ -49,7 +49,10 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditonType.ShouldUse:
-                result = _action.CanUse(out _, Param1 > 0, Param2 > 0);
+                var option = CanUseOption.None;
+                if (Param1 > 0) option |= CanUseOption.MustUse;
+                if (Param2 > 0) option |= CanUseOption.EmptyOrSkipCombo;
+                result = _action.CanUse(out _, option);
                 break;
 
             case ActionConditonType.EnoughLevel:

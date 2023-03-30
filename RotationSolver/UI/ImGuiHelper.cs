@@ -552,8 +552,8 @@ internal static class ImGuiHelper
                 ImGui.Text("Cast Time: " + action.CastTime.ToString());
                 ImGui.Text("MP: " + action.MPNeed.ToString());
                 ImGui.Text($"Can Use: {action.CanUse(out _)} ");
-                ImGui.Text("Must Use:" + action.CanUse(out _, mustUse: true).ToString());
-                ImGui.Text("Empty Use:" + action.CanUse(out _, emptyOrSkipCombo: true).ToString());
+                ImGui.Text("Must Use:" + action.CanUse(out _,  CanUseOption.MustUse).ToString());
+                ImGui.Text("Empty Use:" + action.CanUse(out _, CanUseOption.EmptyOrSkipCombo).ToString());
                 ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(action.AdjustedID).ToString());
                 if (action.Target != null)
                 {

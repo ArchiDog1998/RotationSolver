@@ -54,7 +54,7 @@ public sealed class BLU_Default : BLU_Base
     protected override bool MoveForwardGCD(out IAction act)
     {
         //正义飞踢
-        if (JKick.CanUse(out act, mustUse: true)) return true;
+        if (JKick.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.MoveForwardGCD(out act);
     }
 
@@ -66,13 +66,13 @@ public sealed class BLU_Default : BLU_Base
         //鬼宿脚
         if (PhantomFlurry.IsCoolingDown && !PhantomFlurry.ElapsedOneChargeAfter(1) || Player.HasStatus(true, StatusID.PhantomFlurry))
         {
-            if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.CanUse(out act, mustUse: true)) return true;
+            if (!Player.WillStatusEnd(0.1f, true, StatusID.PhantomFlurry) && Player.WillStatusEnd(1, true, StatusID.PhantomFlurry) && PhantomFlurry2.CanUse(out act, CanUseOption.MustUse)) return true;
             return false;
         }
         //穿甲散弹
         if (Player.HasStatus(true, StatusID.SurpanakhaFury))
         {
-            if (Surpanakha.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (Surpanakha.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         //终极针组合
@@ -100,7 +100,7 @@ public sealed class BLU_Default : BLU_Base
             //有某些非常危险的状态。
             if (SpecialType == SpecialCommandType.EsunaStanceNorth && WeakenPeople.Any() || DyingPeople.Any())
             {
-                if (Exuviation.CanUse(out act, mustUse: true)) return true;
+                if (Exuviation.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             if (AngelsSnack.CanUse(out act)) return true;
             if (Stotram.CanUse(out act)) return true;
@@ -108,7 +108,7 @@ public sealed class BLU_Default : BLU_Base
         }
         else
         {
-            if (WhiteWind.CanUse(out act, mustUse: true)) return true;
+            if (WhiteWind.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         return base.HealSingleGCD(out act);
@@ -127,10 +127,10 @@ public sealed class BLU_Default : BLU_Base
             if (Whistle.CanUse(out act)) return true;
             //哔哩哔哩
             if (!Player.HasStatus(true, StatusID.Tingling)
-                && Tingle.CanUse(out act, mustUse: true)) return true;
+                && Tingle.CanUse(out act, CanUseOption.MustUse)) return true;
             if (OffGuard.CanUse(out act)) return true;
             //鱼叉
-            if (TripleTrident.CanUse(out act, mustUse: true)) return true;
+            if (TripleTrident.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         if (AllOnSlot(Whistle, FinalSting, BasicInstinct) && UseFinalSting)
@@ -148,38 +148,38 @@ public sealed class BLU_Default : BLU_Base
         if (!Player.HasStatus(true, StatusID.WaxingNocturne)) return false;
 
         //月下彼岸花
-        if (NightBloom.CanUse(out act, mustUse: true)) return true;
+        if (NightBloom.CanUse(out act, CanUseOption.MustUse)) return true;
         //地火喷发
-        if (Eruption.CanUse(out act, mustUse: true)) return true;
+        if (Eruption.CanUse(out act, CanUseOption.MustUse)) return true;
         //马特拉魔术
-        if (MatraMagic.CanUse(out act, mustUse: true)) return true;
+        if (MatraMagic.CanUse(out act, CanUseOption.MustUse)) return true;
         //正义飞踢
-        if (JKick.CanUse(out act, mustUse: true)) return true;
+        if (JKick.CanUse(out act, CanUseOption.MustUse)) return true;
         //捕食
-        if (Devour.CanUse(out act, mustUse: true)) return true;
+        if (Devour.CanUse(out act, CanUseOption.MustUse)) return true;
         //轰雷
-        if (ShockStrike.CanUse(out act, mustUse: true)) return true;
+        if (ShockStrike.CanUse(out act, CanUseOption.MustUse)) return true;
         //冰雪乱舞
-        if (GlassDance.CanUse(out act, mustUse: true)) return true;
+        if (GlassDance.CanUse(out act, CanUseOption.MustUse)) return true;
         //魔法锤
-        if (MagicHammer.CanUse(out act, mustUse: true)) return true;
+        if (MagicHammer.CanUse(out act, CanUseOption.MustUse)) return true;
         //穿甲散弹
-        if (Surpanakha.CurrentCharges >= 3 && Surpanakha.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (Surpanakha.CurrentCharges >= 3 && Surpanakha.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
         //鬼宿脚
-        if (PhantomFlurry.CanUse(out act, mustUse: true)) return true;
+        if (PhantomFlurry.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //冰雾
         if (WhiteDeath.CanUse(out act)) return true;
         //如意大旋风
-        if (InBurst && !MoonFluteBreak && BothEnds.CanUse(out act, mustUse: true)) return true;
+        if (InBurst && !MoonFluteBreak && BothEnds.CanUse(out act, CanUseOption.MustUse)) return true;
         //类星体
-        if (Quasar.CanUse(out act, mustUse: true)) return true;
+        if (Quasar.CanUse(out act, CanUseOption.MustUse)) return true;
         //飞翎雨
-        if (FeatherRain.CanUse(out act, mustUse: true)) return true;
+        if (FeatherRain.CanUse(out act, CanUseOption.MustUse)) return true;
         //山崩
-        if (MountainBuster.CanUse(out act, mustUse: true)) return true;
+        if (MountainBuster.CanUse(out act, CanUseOption.MustUse)) return true;
         //冰雪乱舞
-        if (MountainBuster.CanUse(out act, mustUse: true)) return true;
+        if (MountainBuster.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //音爆
         if (SonicBoom.CanUse(out act)) return true;
@@ -282,7 +282,7 @@ public sealed class BLU_Default : BLU_Base
         if (Player.CurrentMp < 1000 && BloodDrain.CanUse(out act)) return true;
         //音爆
         if (SonicBoom.CanUse(out act)) return true;
-        if (DrillCannons.CanUse(out act, mustUse: true)) return true;
+        if (DrillCannons.CanUse(out act, CanUseOption.MustUse)) return true;
         //永恒射线 无法 +眩晕1s
         if (PerpetualRay.CanUse(out act)) return true;
         //深渊贯穿 无物 +麻痹
@@ -318,23 +318,23 @@ public sealed class BLU_Default : BLU_Base
         if (GamblerKill)
         {
             //火箭炮
-            if (Launcher.CanUse(out act, mustUse: true)) return true;
+            if (Launcher.CanUse(out act, CanUseOption.MustUse)) return true;
             //5级即死
-            if (Level5Death.CanUse(out act, mustUse: true)) return true;
+            if (Level5Death.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         if (false)
         {
-            if (AcornBomb.CanUse(out act, mustUse: true)) return true;
-            if (Faze.CanUse(out act, mustUse: true)) return true;
-            if (Snort.CanUse(out act, mustUse: true)) return true;
-            if (BadBreath.CanUse(out act, mustUse: true)) return true;
-            if (Chirp.CanUse(out act, mustUse: true)) return true;
-            if (Level5Petrify.CanUse(out act, mustUse: true)) return true;
+            if (AcornBomb.CanUse(out act, CanUseOption.MustUse)) return true;
+            if (Faze.CanUse(out act, CanUseOption.MustUse)) return true;
+            if (Snort.CanUse(out act, CanUseOption.MustUse)) return true;
+            if (BadBreath.CanUse(out act, CanUseOption.MustUse)) return true;
+            if (Chirp.CanUse(out act, CanUseOption.MustUse)) return true;
+            if (Level5Petrify.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         //陆行鸟陨石
-        if (HasCompanion && ChocoMeteor.CanUse(out act, mustUse: true)) return true;
+        if (HasCompanion && ChocoMeteor.CanUse(out act, CanUseOption.MustUse)) return true;
 
         if (HostileTargets.GetObjectInRadius(6).Count() < 3)
         {
@@ -422,33 +422,34 @@ public sealed class BLU_Default : BLU_Base
         //魔法锤
         //if (MagicHammer.ShouldUse(out act)) return true;
 
+        var option = SingleAOE ? CanUseOption.MustUse : CanUseOption.None;
         //月下彼岸花
-        if (InBurst && !MoonFluteBreak && NightBloom.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (InBurst && !MoonFluteBreak && NightBloom.CanUse(out act, option)) return true;
         //如意大旋风
-        if (InBurst && !MoonFluteBreak && BothEnds.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (InBurst && !MoonFluteBreak && BothEnds.CanUse(out act, option)) return true;
 
         //穿甲散弹
-        if (InBurst && !MoonFluteBreak && Surpanakha.CurrentCharges >= 3 && Surpanakha.CanUse(out act, mustUse: SingleAOE, emptyOrSkipCombo: true)) return true;
+        if (InBurst && !MoonFluteBreak && Surpanakha.CurrentCharges >= 3 && Surpanakha.CanUse(out act, option | CanUseOption.EmptyOrSkipCombo)) return true;
 
         //类星体
-        if (Quasar.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (Quasar.CanUse(out act, option)) return true;
         //正义飞踢
-        if (!IsMoving && JKick.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (!IsMoving && JKick.CanUse(out act, option)) return true;
 
         //地火喷发
-        if (Eruption.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (Eruption.CanUse(out act, option)) return true;
         //飞翎雨
-        if (FeatherRain.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (FeatherRain.CanUse(out act, option)) return true;
 
         //轰雷
-        if (ShockStrike.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (ShockStrike.CanUse(out act, option)) return true;
         //山崩
-        if (MountainBuster.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (MountainBuster.CanUse(out act, option)) return true;
 
         //冰雪乱舞
-        if (MountainBuster.CanUse(out act, mustUse: SingleAOE)) return true;
+        if (MountainBuster.CanUse(out act, option)) return true;
 
-        //if (MountainBuster.ShouldUse(out act, mustUse: SingleAOE)) return true;
+        //if (MountainBuster.ShouldUse(out act, option)) return true;
 
 
         return false;

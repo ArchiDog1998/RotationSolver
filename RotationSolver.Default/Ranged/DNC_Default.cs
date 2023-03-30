@@ -11,7 +11,7 @@ public sealed class DNC_Default : DNC_Base
     {
         if (remainTime <= 15)
         {
-            if (StandardStep.CanUse(out var act, mustUse: true)) return act;
+            if (StandardStep.CanUse(out var act, CanUseOption.MustUse)) return act;
             if (ExecuteStepGCD(out act)) return act;
         }
         return base.CountDownAction(remainTime);
@@ -38,7 +38,7 @@ public sealed class DNC_Default : DNC_Base
         if (Flourish.CanUse(out act)) return true;
 
         //扇舞·急
-        if (FanDance3.CanUse(out act, mustUse: true)) return true;
+        if (FanDance3.CanUse(out act, CanUseOption.MustUse)) return true;
 
         if (Player.HasStatus(true, StatusID.Devilment) || Feathers > 3 || !TechnicalStep.EnoughLevel)
         {
@@ -49,7 +49,7 @@ public sealed class DNC_Default : DNC_Base
         }
 
         //扇舞·终
-        if (FanDance4.CanUse(out act, mustUse: true))
+        if (FanDance4.CanUse(out act, CanUseOption.MustUse))
         {
             if (TechnicalStep.EnoughLevel && TechnicalStep.IsCoolingDown && TechnicalStep.WillHaveOneChargeGCD()) return false;
             return true;
@@ -70,7 +70,7 @@ public sealed class DNC_Default : DNC_Base
         if (ExecuteStepGCD(out act)) return true;
 
         //技巧舞步
-        if (InBurst && InCombat && TechnicalStep.CanUse(out act, mustUse: true)) return true;
+        if (InBurst && InCombat && TechnicalStep.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //攻击GCD
         if (AttackGCD(out act, Player.HasStatus(true, StatusID.Devilment))) return true;
@@ -91,13 +91,13 @@ public sealed class DNC_Default : DNC_Base
         if (IsDancing) return false;
 
         //剑舞
-        if ((breaking || Esprit >= 85) && SaberDance.CanUse(out act, mustUse: true)) return true;
+        if ((breaking || Esprit >= 85) && SaberDance.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //提拉纳
-        if (Tillana.CanUse(out act, mustUse: true)) return true;
+        if (Tillana.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //流星舞
-        if (StarFallDance.CanUse(out act, mustUse: true)) return true;
+        if (StarFallDance.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //使用标准舞步
         if (UseStandardStep(out act)) return true;
@@ -126,7 +126,7 @@ public sealed class DNC_Default : DNC_Base
     /// <returns></returns>
     private bool UseStandardStep(out IAction act)
     {
-        if (!StandardStep.CanUse(out act, mustUse: true)) return false;
+        if (!StandardStep.CanUse(out act, CanUseOption.MustUse)) return false;
         if (Player.WillStatusEndGCD(2, 0, true, StatusID.StandardFinish)) return true;
 
         //等级低于玩家太多不跳舞,都直接秒了还跳啥舞
@@ -175,14 +175,14 @@ public sealed class DNC_Default : DNC_Base
 
         //标准舞步结束
         if (Player.HasStatus(true, StatusID.StandardStep) && (Player.WillStatusEnd(1, true, StatusID.StandardStep) || CompletedSteps == 2 && Player.WillStatusEnd(1, true, StatusID.StandardFinish))
-            || StandardFinish.CanUse(out _, mustUse: true))
+            || StandardFinish.CanUse(out _, CanUseOption.MustUse))
         {
             act = StandardStep;
             return true;
         }
 
         //技巧舞步结束
-        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.CanUse(out _, mustUse: true))
+        if (Player.HasStatus(true, StatusID.TechnicalStep) && Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || TechnicalFinish.CanUse(out _, CanUseOption.MustUse))
         {
             act = TechnicalStep;
             return true;

@@ -53,7 +53,7 @@ internal class TargetCondition : ICondition
         BattleChara tar = null;
         if (_action != null)
         {
-            _action.CanUse(out _, true);
+            _action.CanUse(out _, CanUseOption.EmptyOrSkipCombo | CanUseOption.MustUse);
             tar = _action.Target;
         }
         else

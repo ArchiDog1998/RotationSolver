@@ -5,6 +5,7 @@ using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -224,14 +225,14 @@ public abstract class RDM_Base : CustomRotation
     [RotationDesc(ActionID.Vercure)]
     protected sealed override bool HealSingleGCD(out IAction act)
     {
-        if (Vercure.CanUse(out act, mustUse: true)) return true;
+        if (Vercure.CanUse(out act, CanUseOption.MustUse)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.CorpsACorps)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (CorpsACorps.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (CorpsACorps.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 
@@ -239,7 +240,7 @@ public abstract class RDM_Base : CustomRotation
     protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (Addle.CanUse(out act)) return true;
-        if (MagickBarrier.CanUse(out act, mustUse: true)) return true;
+        if (MagickBarrier.CanUse(out act, CanUseOption.MustUse)) return true;
         return false;
     }
 }
