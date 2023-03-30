@@ -110,7 +110,7 @@ public sealed class MNK_Default : MNK_Base
         else if (Player.HasStatus(true, StatusID.PerfectBalance) && ElixirField.EnoughLevel)
         {
             //Sometimes, no choice
-            if (HasSolar)
+            if (HasSolar || BeastChakras.Count(c => c == BeastChakra.OPOOPO) > 1)
             {
                 if (LunarNadi(out act)) return true;
             }
@@ -121,7 +121,7 @@ public sealed class MNK_Default : MNK_Base
 
             //Add status when solar.
             if (Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist)
-                || Target.WillStatusEndGCD(3, 0, true, StatusID.Demolish))
+                || Target.WillStatusEndGCD(3, 0, true, StatusID.Demolish)) 
             {
                 if (SolarNadi(out act)) return true;
             }

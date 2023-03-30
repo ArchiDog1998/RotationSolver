@@ -474,23 +474,24 @@ internal static class ImGuiHelper
             var attrs = rotation.GetType().GetCustomAttributes<LinkDescriptionAttribute>();
             if (attrs.Any())
             {
-                ImGui.SameLine();
-                Spacing();
-
                 var display = ImGui.GetIO().DisplaySize * 0.7f;
 
                 foreach (var texture in attrs)
                 {
-                    if (IconButton(FontAwesomeIcon.Question,
+                    ImGui.SameLine();
+                    Spacing();
+                    var hasTexture = texture.Texture != null;
+
+                    if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.QuestionCircle,
                         "Button" + texture.GetHashCode().ToString()))
                     {
                         Util.OpenLink(texture.Path);
                     }
-                    if (ImGui.IsItemHovered() && (texture.Texture != null || !string.IsNullOrEmpty( texture.Description)))
+                    if (ImGui.IsItemHovered() && (hasTexture || !string.IsNullOrEmpty( texture.Description)))
                     {
                         DrawTooltip(() =>
                         {
-                            if(texture.Texture != null)
+                            if(hasTexture)
                             {
                                 var ratio = Math.Min(1, Math.Min(display.X / texture.Texture.Width, display.Y / texture.Texture.Height));
                                 var size = new Vector2(texture.Texture.Width * ratio,

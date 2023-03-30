@@ -31,6 +31,10 @@ internal partial class RotationConfigWindow
             DrawParamTabItem("Last Action", DrawLastAction);
             DrawParamTabItem("CD, EX", DrawCDEX);
             DrawParamTabItem("Icon", DrawIcon);
+            DrawParamTabItem("Effect", () =>
+            {
+                ImGui.Text(Watcher.ShowStr.ToString());
+            });
 
             ImGui.EndTabBar();
         }
@@ -140,8 +144,8 @@ internal partial class RotationConfigWindow
 
     private void DrawIcon()
     {
-        ImGui.Image(IconSet.GetTexture(60094).ImGuiHandle, new Vector2(24, 24));
-        ImGui.Image(IconSet.GetTexture(71224).ImGuiHandle, new Vector2(24, 24));
+        //ImGui.Image(IconSet.GetTexture(60094).ImGuiHandle, new Vector2(24, 24));
+        ImGui.Image(IconSet.GetTexture(16).ImGuiHandle, new Vector2(24, 24));
     }
 
     private static void DrawAction(ActionID id, string type)

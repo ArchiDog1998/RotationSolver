@@ -19,13 +19,16 @@ using Dalamud.Hooking;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.Attributes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiScene;
 using Lumina.Excel;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 namespace RotationSolver.Basic;
 
@@ -89,6 +92,17 @@ public class Service : IDisposable
 
     [PluginService]
     public static GameGui GameGui { get; private set; }
+
+    public unsafe static T[] GetAddon<T>() where T : struct
+    {
+        if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return new T[0];
+
+        return on.AddonIdentifiers
+            .Select(str => GameGui.GetAddonByName(str, 1))
+            .Where(ptr => ptr != IntPtr.Zero)
+            .Select(ptr => *(T*)ptr)
+            .ToArray();
+    }
 
     public static PlayerCharacter Player => ClientState.LocalPlayer;
     [PluginService]

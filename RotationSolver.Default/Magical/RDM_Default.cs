@@ -2,11 +2,12 @@ namespace RotationSolver.Default.Magical;
 
 [RotationDesc(ActionID.Embolden)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Magical/RDM_Default.cs")]
+[LinkDescription("https://www.thebalanceffxiv.com/img/jobs/rdm/rdm_ew_opener.png")]
 public sealed class RDM_Default : RDM_Base
 {
     public override string GameVersion => "6.31";
 
-    public override string RotationName => "Default";
+    public override string RotationName => "Standard";
 
     public bool CanStartMeleeCombo
     {
@@ -81,7 +82,6 @@ public sealed class RDM_Default : RDM_Base
 
         return false;
     }
-
 
     protected override bool EmergencyGCD(out IAction act)
     {
