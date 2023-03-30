@@ -96,9 +96,11 @@ internal static class PreviewUpdater
 
         ByteColor c = _showCanMove ? _greenColor : _redColor;
 
-        var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
-        if (castBar == IntPtr.Zero) return;
-        AtkResNode* progressBar = ((AtkUnitBase*)castBar)->UldManager.NodeList[5];
+        var castBars = Service.GetAddon<AddonCastBar>();
+        if (!castBars.Any()) return;
+        var castBar = castBars.FirstOrDefault();
+
+        AtkResNode* progressBar = castBar.AtkUnitBase.UldManager.NodeList[5];
 
         progressBar->AddRed = c.R;
         progressBar->AddGreen = c.G;

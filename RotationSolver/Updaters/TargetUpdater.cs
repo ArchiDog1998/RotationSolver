@@ -121,13 +121,14 @@ internal static partial class TargetUpdater
     {
         if (!Service.Config.AddEnemyListToHostile) return new uint[0];
 
-        var addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);
-        if (addonByName == IntPtr.Zero) return new uint[0];
+        var addons = Service.GetAddon<AddonEnemyList>();
 
-        var addon = (AddonEnemyList*)addonByName;
+        if(!addons.Any()) return new uint[0];
+        var addon = addons.FirstOrDefault();
+
         var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[19];
-        List<uint> list = new List<uint>(addon->EnemyCount);
-        for (var i = 0; i < addon->EnemyCount; i++)
+        List<uint> list = new List<uint>(addon.EnemyCount);
+        for (var i = 0; i < addon.EnemyCount; i++)
         {
             list.Add((uint)numArray->IntArray[8 + i * 6]);
         }
