@@ -106,13 +106,13 @@ public static class TargetFilter
     private static T FindMoveTargetScreenCenter<T>(IEnumerable<T> charas) where T : GameObject
     {
         var pPosition = Service.Player.Position;
-        if (!Service.GameGui.WorldToScreen(pPosition, out var playerScrPos)) return null;
+        if (!Service.WorldToScreen(pPosition, out var playerScrPos)) return null;
 
         var tars = charas.Where(t =>
         {
             if (t.DistanceToPlayer() < DISTANCE_TO_MOVE) return false;
 
-            if (!Service.GameGui.WorldToScreen(t.Position, out var scrPos)) return false;
+            if (!Service.WorldToScreen(t.Position, out var scrPos)) return false;
 
             var dir = scrPos - playerScrPos;
 

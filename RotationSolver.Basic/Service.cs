@@ -26,6 +26,7 @@ using ImGuiScene;
 using Lumina.Excel;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
+using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
@@ -91,7 +92,9 @@ public class Service : IDisposable
     public static ChatGui ChatGui { get; private set; }
 
     [PluginService]
-    public static GameGui GameGui { get; private set; }
+    static GameGui GameGui { get; set; }
+
+    public static bool WorldToScreen(Vector3 worldPos, out Vector2 screenPos) => GameGui.WorldToScreen(worldPos, out screenPos);
 
     public unsafe static T[] GetAddon<T>() where T : struct
     {

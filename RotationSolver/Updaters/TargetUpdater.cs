@@ -56,7 +56,7 @@ internal static partial class TargetUpdater
 
             if (Service.Config.OnlyAttackInView)
             {
-                if (!Service.GameGui.WorldToScreen(b.Position, out _)) return false;
+                if (!Service.WorldToScreen(b.Position, out _)) return false;
             }
 
             return true;
@@ -68,7 +68,6 @@ internal static partial class TargetUpdater
 
         DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Service.Player.ObjectId);
 
-       
         DataCenter.HasHostilesInRange = DataCenter.HostileTargets.Any(o => o.DistanceToPlayer() <= JobRange);
 
         if (DataCenter.HostileTargets.Count() == 1)

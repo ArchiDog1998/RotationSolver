@@ -15,7 +15,7 @@ internal static class OverlayWindow
 {
     public static void Draw()
     {
-        if (Service.GameGui == null || Service.Player == null || !Service.Config.UseOverlayWindow) return;
+        if (Service.Player == null || !Service.Config.UseOverlayWindow) return;
 
         if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
@@ -85,7 +85,7 @@ internal static class OverlayWindow
         foreach (BattleChara t in DataCenter.AllTargets)
         {
             if (t == null) continue;
-            if (Service.GameGui.WorldToScreen(t.Position, out var p))
+            if (Service.WorldToScreen(t.Position, out var p))
             {
                 ImGui.GetWindowDrawList().AddText(p, HealthRatioColor, $"Health Ratio: {t.CurrentHp / calHealth:F2} / {t.MaxHp / calHealth:F2}");
             }
@@ -104,7 +104,7 @@ internal static class OverlayWindow
 
         DrawTarget(tar, color, 8, out var scrPos);
 
-        if (Service.GameGui.WorldToScreen(Service.Player.Position, out var plyPos))
+        if (Service.WorldToScreen(Service.Player.Position, out var plyPos))
         {
             var dir = scrPos - plyPos;
 
@@ -121,7 +121,7 @@ internal static class OverlayWindow
 
     private static void DrawTarget(BattleChara tar, uint color, float radius, out Vector2 scrPos)
     {
-        if (Service.GameGui.WorldToScreen(tar.Position, out scrPos))
+        if (Service.WorldToScreen(tar.Position, out scrPos))
         {
             ImGui.GetWindowDrawList().AddCircle(scrPos, radius, color, COUNT, radius * 0.8f);
         }
@@ -133,7 +133,7 @@ internal static class OverlayWindow
         if (ActionUpdater.NextGCDAction == null ||　!ActionUpdater.NextGCDAction.IsMeleeAction()) return;
 
         Vector3 pPosition = ActionUpdater.NextGCDAction.Target.Position;
-        Service.GameGui.WorldToScreen(pPosition, out var scrPos);
+        Service.WorldToScreen(pPosition, out var scrPos);
 
         float radius = ActionUpdater.NextGCDAction.Target.HitboxRadius + Service.Player.HitboxRadius + 3;
         float rotation = ActionUpdater.NextGCDAction.Target.Rotation;
@@ -188,7 +188,7 @@ internal static class OverlayWindow
         var step = round / segments;
         for (int i = 0; i <= segments; i++)
         {
-            Service.GameGui.WorldToScreen(ChangePoint(centre, radius, rotation + i * step), out var pt);
+            Service.WorldToScreen(ChangePoint(centre, radius, rotation + i * step), out var pt);
             pts.Add(pt);
         }
     }
