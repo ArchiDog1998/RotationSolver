@@ -158,7 +158,8 @@ public partial class BaseAction
         if (!Service.Config.UseGroundBeneficialAbility) return false;
 
         //如果当前目标是Boss且有身位，放他身上。
-        if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && b.IsBoss() && b.HasPositional())
+        if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && 
+            b.IsBoss() && b.HasPositional() && b.HitboxRadius < _action.EffectRange + 2)
         {
             _position = b.Position;
         }
