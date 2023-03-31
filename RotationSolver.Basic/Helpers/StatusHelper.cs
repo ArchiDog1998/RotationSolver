@@ -42,6 +42,8 @@ public static class StatusHelper
     public static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] statusIDs)
     {
         var remain = obj.StatusTime(isFromSelf, statusIDs);
+        //as infinite
+        if (remain < 0 && obj.HasStatus(isFromSelf, statusIDs)) return false;
         return CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount);
     }
 
