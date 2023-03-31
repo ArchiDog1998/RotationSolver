@@ -161,7 +161,6 @@ public partial class BaseAction
         if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && b.IsBoss() && b.HasPositional())
         {
             _position = b.Position;
-            return true;
         }
         //计算玩家和被打的Ｔ之间的关系。
         else
@@ -174,7 +173,7 @@ public partial class BaseAction
             }
             else
             {
-                var disToTankRound = Math.Max(range, Vector3.Distance(player.Position, attackT.Position) + attackT.HitboxRadius);
+                var disToTankRound = Vector3.Distance(player.Position, attackT.Position) + attackT.HitboxRadius;
 
                 if (disToTankRound < _action.EffectRange
                     || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius
@@ -189,8 +188,8 @@ public partial class BaseAction
                     _position = player.Position + MoveDirection;
                 }
             }
-            return true;
         }
+        return true;
     }
     #endregion
 
