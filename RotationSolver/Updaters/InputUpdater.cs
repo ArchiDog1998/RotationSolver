@@ -92,7 +92,7 @@ internal static class InputUpdater
             return;
         }
 
-        if (!Service.Config.UseKeyboardCommand) return;
+        if (!Service.Config.UseKeyboardCommand || SocialUpdater.InPvp) return;
 
         if (Service.Config.KeyState.ContainsValue(key))
         {
@@ -130,7 +130,7 @@ internal static class InputUpdater
             return;
         }
 
-        if (!Service.Config.UseGamepadCommand) return;
+        if (!Service.Config.UseGamepadCommand || SocialUpdater.InPvp) return;
 
         if (Service.Config.ButtonState.ContainsValue(button))
         {
