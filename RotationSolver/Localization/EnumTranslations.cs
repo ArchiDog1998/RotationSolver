@@ -31,17 +31,17 @@ internal static class EnumTranslations
         _ => string.Empty,
     };
 
-    internal static string ToName(this ActionConditonType type) => type switch
+    internal static string ToName(this ActionConditionType type) => type switch
     {
-        ActionConditonType.Elapsed => LocalizationManager.RightLang.ActionConditionType_Elapsed,
-        ActionConditonType.ElapsedGCD => LocalizationManager.RightLang.ActionConditionType_ElapsedGCD,
-        ActionConditonType.Remain => LocalizationManager.RightLang.ActionConditionType_Remain,
-        ActionConditonType.RemainGCD => LocalizationManager.RightLang.ActionConditionType_RemainGCD,
-        ActionConditonType.ShouldUse => LocalizationManager.RightLang.ActionConditionType_ShouldUse,
-        ActionConditonType.EnoughLevel => LocalizationManager.RightLang.ActionConditionType_EnoughLevel,
-        ActionConditonType.IsCoolDown => LocalizationManager.RightLang.ActionConditionType_IsCoolDown,
-        ActionConditonType.CurrentCharges => LocalizationManager.RightLang.ActionConditionType_CurrentCharges,
-        ActionConditonType.MaxCharges => LocalizationManager.RightLang.ActionConditionType_MaxCharges,
+        ActionConditionType.Elapsed => LocalizationManager.RightLang.ActionConditionType_Elapsed,
+        ActionConditionType.ElapsedGCD => LocalizationManager.RightLang.ActionConditionType_ElapsedGCD,
+        ActionConditionType.Remain => LocalizationManager.RightLang.ActionConditionType_Remain,
+        ActionConditionType.RemainGCD => LocalizationManager.RightLang.ActionConditionType_RemainGCD,
+        ActionConditionType.ShouldUse => LocalizationManager.RightLang.ActionConditionType_ShouldUse,
+        ActionConditionType.EnoughLevel => LocalizationManager.RightLang.ActionConditionType_EnoughLevel,
+        ActionConditionType.IsCoolDown => LocalizationManager.RightLang.ActionConditionType_IsCoolDown,
+        ActionConditionType.CurrentCharges => LocalizationManager.RightLang.ActionConditionType_CurrentCharges,
+        ActionConditionType.MaxCharges => LocalizationManager.RightLang.ActionConditionType_MaxCharges,
         _ => string.Empty,
     };
 

@@ -114,6 +114,7 @@ public class Service : IDisposable
     public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => DataManager.GetExcelSheet<T>();
 
     internal static TextureWrap GetTextureIcon(uint id) => DataManager.GetImGuiTextureIcon(id);
+    internal static TextureWrap GetTexture(string path) => DataManager.GetImGuiTexture(path);
 
     [PluginService]
     private static DataManager DataManager { get; set; }

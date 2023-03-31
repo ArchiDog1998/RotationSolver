@@ -15,7 +15,7 @@ internal class ActionCondition : ICondition
 
     public ActionID ID { get; set; } = ActionID.None;
 
-    public ActionConditonType ActionConditonType = ActionConditonType.Elapsed;
+    public ActionConditionType ActionConditionType = ActionConditionType.Elapsed;
 
     public bool Condition { get; set; }
 
@@ -30,44 +30,44 @@ internal class ActionCondition : ICondition
 
         var result = false;
 
-        switch (ActionConditonType)
+        switch (ActionConditionType)
         {
-            case ActionConditonType.Elapsed:
+            case ActionConditionType.Elapsed:
                 result = _action.ElapsedOneChargeAfter(Time); // Bigger
                 break;
 
-            case ActionConditonType.ElapsedGCD:
+            case ActionConditionType.ElapsedGCD:
                 result = _action.ElapsedOneChargeAfterGCD((uint)Param1, (uint)Param2); // Bigger
                 break;
 
-            case ActionConditonType.Remain:
+            case ActionConditionType.Remain:
                 result = !_action.WillHaveOneCharge(Time); //Smaller
                 break;
 
-            case ActionConditonType.RemainGCD:
+            case ActionConditionType.RemainGCD:
                 result = !_action.WillHaveOneChargeGCD((uint)Param1, (uint)Param2); // Smaller
                 break;
 
-            case ActionConditonType.ShouldUse:
+            case ActionConditionType.ShouldUse:
                 var option = CanUseOption.None;
                 if (Param1 > 0) option |= CanUseOption.MustUse;
                 if (Param2 > 0) option |= CanUseOption.EmptyOrSkipCombo;
                 result = _action.CanUse(out _, option);
                 break;
 
-            case ActionConditonType.EnoughLevel:
+            case ActionConditionType.EnoughLevel:
                 result = _action.EnoughLevel;
                 break;
 
-            case ActionConditonType.IsCoolDown:
+            case ActionConditionType.IsCoolDown:
                 result = _action.IsCoolingDown;
                 break;
 
-            case ActionConditonType.CurrentCharges:
+            case ActionConditionType.CurrentCharges:
                 result = _action.CurrentCharges > Param1;
                 break;
 
-            case ActionConditonType.MaxCharges:
+            case ActionConditionType.MaxCharges:
                 result = _action.MaxCharges > Param1;
                 break;
         }
@@ -100,22 +100,22 @@ internal class ActionCondition : ICondition
 
         ImGui.SameLine();
 
-        ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref ActionConditonType, EnumTranslations.ToName);
+        ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref ActionConditionType, EnumTranslations.ToName);
 
         var condition = Condition ? 1 : 0;
         var combos = new string[0];
-        switch (ActionConditonType)
+        switch (ActionConditionType)
         {
-            case ActionConditonType.ElapsedGCD:
-            case ActionConditonType.RemainGCD:
-            case ActionConditonType.Elapsed:
-            case ActionConditonType.Remain:
-            case ActionConditonType.CurrentCharges:
-            case ActionConditonType.MaxCharges:
+            case ActionConditionType.ElapsedGCD:
+            case ActionConditionType.RemainGCD:
+            case ActionConditionType.Elapsed:
+            case ActionConditionType.Remain:
+            case ActionConditionType.CurrentCharges:
+            case ActionConditionType.MaxCharges:
                 combos = new string[] { ">", "<=" };
                 break;
 
-            case ActionConditonType.ShouldUse:
+            case ActionConditionType.ShouldUse:
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.Timeline_Can,
@@ -123,8 +123,8 @@ internal class ActionCondition : ICondition
                 };
                 break;
 
-            case ActionConditonType.EnoughLevel:
-            case ActionConditonType.IsCoolDown:
+            case ActionConditionType.EnoughLevel:
+            case ActionConditionType.IsCoolDown:
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.Timeline_Is,
@@ -140,15 +140,15 @@ internal class ActionCondition : ICondition
         }
 
 
-        switch (ActionConditonType)
+        switch (ActionConditionType)
         {
-            case ActionConditonType.Elapsed:
-            case ActionConditonType.Remain:
+            case ActionConditionType.Elapsed:
+            case ActionConditionType.Remain:
                 ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref Time);
                 break;
 
-            case ActionConditonType.ElapsedGCD:
-            case ActionConditonType.RemainGCD:
+            case ActionConditionType.ElapsedGCD:
+            case ActionConditionType.RemainGCD:
                 if (ConditionHelper.DrawDragInt($"GCD##GCD{GetHashCode()}", ref Param1))
                 {
                     Param1 = Math.Max(0, Param1);
@@ -159,14 +159,14 @@ internal class ActionCondition : ICondition
                 }
                 break;
 
-            case ActionConditonType.ShouldUse:
+            case ActionConditionType.ShouldUse:
 
                 ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Timeline_MustUse}##MustUse{GetHashCode()}", ref Param1, LocalizationManager.RightLang.Timeline_MustUseDesc);
                 ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Timeline_Empty}##MustUse{GetHashCode()}", ref Param2, LocalizationManager.RightLang.Timeline_EmptyDesc);
                 break;
 
-            case ActionConditonType.CurrentCharges:
-            case ActionConditonType.MaxCharges:
+            case ActionConditionType.CurrentCharges:
+            case ActionConditionType.MaxCharges:
                 if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.Timeline_Charges}##Charges{GetHashCode()}", ref Param1))
                 {
                     Param1 = Math.Max(0, Param1);
@@ -176,7 +176,7 @@ internal class ActionCondition : ICondition
     }
 }
 
-public enum ActionConditonType : int
+public enum ActionConditionType : int
 {
     Elapsed,
     ElapsedGCD,

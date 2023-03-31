@@ -26,6 +26,19 @@ public sealed class NIN_Default : NIN_Base
         _ninActionAim = act;
     }
 
+    protected override IAction CountDownAction(float remainTime)
+    {
+        if(DoNinjutsus(out var act)) return act;
+
+        if (remainTime < 5) SetNinjustus(Suiton);
+
+        if (remainTime < 7 &&  Hide.CanUse(out var hide)) return hide;
+
+        if (remainTime < 10) SetNinjustus(Huton);
+
+        return base.CountDownAction(remainTime);
+    }
+
     private bool ChoiceNinjutsus(out IAction act)
     {
         act = null;
@@ -219,7 +232,6 @@ public sealed class NIN_Default : NIN_Base
                 return true;
             }
         }
-        //ClearNinjutsus();
         return false;
     }
 
@@ -234,7 +246,6 @@ public sealed class NIN_Default : NIN_Base
         if (ChoiceNinjutsus(out act)) return true;
         if (DoNinjutsus(out act)) return true;
 
-        //用真北取消隐匿
         if (Configs.GetBool("AutoUnhide"))
         {
             StatusHelper.StatusOff(StatusID.Hidden);

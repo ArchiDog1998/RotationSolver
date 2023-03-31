@@ -92,7 +92,7 @@ internal partial class RotationConfigWindow
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());
             ImGui.Text("Kind: " + b.GetObjectKind().ToString());
-            ImGui.Text("Subkind: " + b.GetBattleNPCSubKind().ToString());
+            ImGui.Text("SubKind: " + b.GetBattleNPCSubKind().ToString());
             ImGui.Text("EventType: " + b.GetEventType().ToString());
             ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
             ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());

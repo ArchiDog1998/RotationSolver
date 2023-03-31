@@ -245,6 +245,7 @@ internal partial class Strings
     public string ConfigWindow_Control_IsWindowLock { get; set; } = "Lock";
 
     public string ConfigWindow_Control_ShowItemsCooldown { get; set; } = "Show Items' Cooldown";
+    public string ConfigWindow_Control_UseOriginalCooldown { get; set; } = "Show Original Cooldown";
 
     public string ConfigWindow_Control_CooldownActionOneLine { get; set; } = "The count of cooldown actions in one line.";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
