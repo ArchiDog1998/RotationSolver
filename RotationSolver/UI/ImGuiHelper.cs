@@ -483,7 +483,7 @@ internal static class ImGuiHelper
                     var hasTexture = texture.Texture != null;
 
                     if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.QuestionCircle,
-                        "Button" + texture.GetHashCode().ToString()))
+                        "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
                     {
                         Util.OpenLink(texture.Path);
                     }
