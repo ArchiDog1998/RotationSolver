@@ -281,6 +281,8 @@ public enum StatusID : ushort
     /// </summary>
     NascentChaos = 1897,
 
+    InnerStrength = 2663,
+
     /// <summary>
     /// 战场风暴
     /// </summary>

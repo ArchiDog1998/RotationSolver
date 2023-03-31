@@ -53,8 +53,18 @@ public sealed class DRK_Default : DRK_Base
     protected override IAction CountDownAction(float remainTime)
     {
         //Provoke when has Shield.
-        if (HasTankStance && remainTime <= Service.Config.AbilitiesInterval && Provoke.CanUse(out var act)) return act;
-        if (remainTime <= 2 && UseBurstMedicine(out act)) return act;
+        if(remainTime <= Service.Config.AbilitiesInterval)
+        {
+            if (HasTankStance)
+            {
+                if (Provoke.CanUse(out var act1)) return act1;
+            }
+            else
+            {
+                if (Unmend.CanUse(out var act1)) return act1;
+            }
+        }
+        if (remainTime <= 2 && UseBurstMedicine(out var act)) return act;
         if (remainTime <= 3 && TheBlackestNight.CanUse(out act)) return act;
         if (remainTime <= 4 && BloodWeapon.CanUse(out act)) return act;
         return base.CountDownAction(remainTime);
