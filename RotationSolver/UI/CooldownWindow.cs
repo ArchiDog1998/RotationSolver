@@ -61,7 +61,7 @@ internal class CooldownWindow : InfoWindow
         var r = -1f;
         if (Service.Config.UseOriginalCooldown)
         {
-            r = !act.EnoughLevel ? 0: recast == 0 ? 1 : elapsed / recast;
+            r = !act.EnoughLevel ? 0: recast == 0 || !act.IsCoolingDown ? 1 : elapsed / recast;
         }
         ControlWindow.DrawIAction(act, width, r);
         var size = ImGui.GetItemRectSize();

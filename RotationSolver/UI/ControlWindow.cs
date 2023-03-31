@@ -56,7 +56,11 @@ internal class ControlWindow : Window
     public override void Draw()
     {
         ImGui.Columns(2, "Control Bolder", false);
-        ImGui.SetColumnWidth(0, DrawNextAction() + ImGui.GetStyle().ColumnsMinSpacing * 2);
+        var gcd = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
+        var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
+        var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
+
+        ImGui.SetColumnWidth(0, width + ImGui.GetStyle().ColumnsMinSpacing * 2);
 
         DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
 
@@ -74,6 +78,8 @@ internal class ControlWindow : Window
         RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
             ref Service.Config.IsControlWindowLock);
         ImGui.EndGroup();
+
+        DrawNextAction(gcd, ability, width);
 
         ImGui.NextColumn();
 
@@ -395,7 +401,7 @@ internal class ControlWindow : Window
 
     internal static void DrawIAction(IAction action, float width, float percent)
     {
-        DrawIAction(GetTexture(action).ImGuiHandle, width, percent);
+        DrawIAction(GetTexture(action).ImGuiHandle, width, action == null ? -1 : percent);
     }
 
     static void DrawIAction(nint handle, float width, float percent)
@@ -412,9 +418,9 @@ internal class ControlWindow : Window
 
                 if(cover != null)
                 {
-                    var pixPerUnit = width / 80;
+                    var pixPerUnit = width / 82;
 
-                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 4, pixPerUnit * 6));
+                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
 
                     var P = (int)(percent * 81);
                     
@@ -423,7 +429,7 @@ internal class ControlWindow : Window
                     var start = new Vector2(P % 9 * step.X, P / 9 * step.Y);
 
                     //Out Size is 88, 96
-                    //Inner Size is 80, 80
+                    //Inner Size is 82, 82
                     ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
                         start, start + step);
                 }
@@ -434,12 +440,12 @@ internal class ControlWindow : Window
 
                 if (cover != null)
                 {
-                    var pixPerUnit = width / 80;
+                    var pixPerUnit = width / 82;
 
-                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 4, pixPerUnit * 6));
+                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
 
                     //Out Size is 88, 96
-                    //Inner Size is 80, 80
+                    //Inner Size is 82, 82
                     ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
                         new Vector2(4f / cover.Width, 0f / cover.Height),
                         new Vector2(92f / cover.Width, 96f / cover.Height));
@@ -452,9 +458,9 @@ internal class ControlWindow : Window
 
                 if (cover != null)
                 {
-                    var pixPerUnit = width / 80;
+                    var pixPerUnit = width / 82;
 
-                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 4, pixPerUnit * 0));
+                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
 
                     var P = (int)(percent % 1 * 81);
 
@@ -463,7 +469,7 @@ internal class ControlWindow : Window
                     var start = new Vector2((P % 9 + 9) * step.X, P / 9 * step.Y);
 
                     //Out Size is 88, 96
-                    //Inner Size is 80, 80
+                    //Inner Size is 82, 82
                     ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
                         start, start + step);
                 }
@@ -473,12 +479,8 @@ internal class ControlWindow : Window
         ImGui.EndGroup();
     }
 
-    static unsafe float  DrawNextAction()
+    static unsafe void DrawNextAction(float gcd, float ability, float width)
     {
-        var gcd = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
-        var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
-        var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
-
         var str = "Next Action";
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
         ImGui.TextColored(ImGuiColors.DalamudYellow, str);
@@ -491,7 +493,5 @@ internal class ControlWindow : Window
 
         ImGui.SameLine();
         DrawIAction(next, ability, -1);
-
-        return width;
     }
 }

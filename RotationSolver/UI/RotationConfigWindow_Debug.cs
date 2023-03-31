@@ -5,6 +5,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Numerics;
 
@@ -144,8 +145,12 @@ internal partial class RotationConfigWindow
 
     private void DrawIcon()
     {
-        //ImGui.Image(IconSet.GetTexture(60094).ImGuiHandle, new Vector2(24, 24));
-        ImGui.Image(IconSet.GetTexture(16).ImGuiHandle, new Vector2(24, 24));
+        //ControlWindow.DrawIAction(CustomRotation.Addle, 256, 1.6f);
+        for (int i = 0; i <= 200; i++)
+        {
+            if (i % 10 != 0) ImGui.SameLine();
+            ControlWindow.DrawIAction(CustomRotation.Addle, 48, i / 100f);
+        }
     }
 
     private static void DrawAction(ActionID id, string type)
