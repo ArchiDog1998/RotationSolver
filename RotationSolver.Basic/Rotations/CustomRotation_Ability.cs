@@ -43,8 +43,8 @@ public abstract partial class CustomRotation
 
         if (GeneralUsingAbility(role, out act)) return true;
 
-        if (GeneralAbility(abilitiesRemaining, out act)) return true;
         if (HasHostilesInRange && AttackAbility(abilitiesRemaining, out act)) return true;
+        if (GeneralAbility(abilitiesRemaining, out act)) return true;
 
         //Run!
         if (!InCombat && IsMoving && role == JobRole.RangedPhysical
