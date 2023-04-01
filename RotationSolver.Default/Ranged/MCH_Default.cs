@@ -28,12 +28,12 @@ public sealed class MCH_Default : MCH_Base
         if (!InCombat)
         {
             //开场前整备,空气锚和钻头必须冷却好
-            if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolingDown || !Drill.IsCoolingDown) && Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (AirAnchor.EnoughLevel && (!AirAnchor.IsCoolingDown || !Drill.IsCoolingDown) && Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         //群体常规GCD
         //AOE,毒菌冲击
-        if (Bioblaster.CanUse(out act)) return true;
+        if (BioBlaster.CanUse(out act)) return true;
         if (ChainSaw.CanUse(out act)) return true;
         if (IsOverheated && AutoCrossbow.CanUse(out act)) return true;
         if (SpreadShot.CanUse(out act)) return true;
@@ -44,7 +44,7 @@ public sealed class MCH_Default : MCH_Base
             if (AirAnchor.CanUse(out act)) return true;
             else if (!AirAnchor.EnoughLevel && HotShot.CanUse(out act)) return true;
             if (Drill.CanUse(out act)) return true;
-            if (ChainSaw.CanUse(out act, mustUse: true))
+            if (ChainSaw.CanUse(out act, CanUseOption.MustUse))
             {
                 if (Player.HasStatus(true, StatusID.Reassemble)) return true;
                 if (!Configs.GetBool("MCH_Opener") || Wildfire.IsCoolingDown) return true;
@@ -67,7 +67,7 @@ public sealed class MCH_Default : MCH_Base
     protected override IAction CountDownAction(float remainTime)
     {
         //提前5秒整备
-        if (remainTime <= 5 && Reassemble.CanUse(out _, emptyOrSkipCombo: true)) return Reassemble;
+        if (remainTime <= 5 && Reassemble.CanUse(out _, CanUseOption.EmptyOrSkipCombo)) return Reassemble;
         return base.CountDownAction(remainTime);
     }
     protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
@@ -75,18 +75,18 @@ public sealed class MCH_Default : MCH_Base
         //等级小于钻头时,绑定狙击弹
         if (!Drill.EnoughLevel && nextGCD.IsTheSameTo(true, CleanShot))
         {
-            if (Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
         //等级小于90时,整备不再留层数
         if ((!ChainSaw.EnoughLevel || !Configs.GetBool("MCH_Reassemble"))
             && nextGCD.IsTheSameTo(false, AirAnchor, Drill))
         {
-            if (Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
         //整备优先链锯
         if (Configs.GetBool("MCH_Reassemble") && nextGCD.IsTheSameTo(true, ChainSaw))
         {
-            if (Reassemble.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
         //如果接下来要搞三大金刚了，整备吧！
         if (ChainSaw.EnoughLevel && nextGCD.IsTheSameTo(true, AirAnchor, Drill))
@@ -110,8 +110,8 @@ public sealed class MCH_Default : MCH_Base
         if (CanUseRookAutoturret(out act)) return true;
 
         //起手虹吸弹、弹射
-        if (Ricochet.CurrentCharges == Ricochet.MaxCharges && Ricochet.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
-        if (GaussRound.CurrentCharges == GaussRound.MaxCharges && GaussRound.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (Ricochet.CurrentCharges == Ricochet.MaxCharges && Ricochet.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
+        if (GaussRound.CurrentCharges == GaussRound.MaxCharges && GaussRound.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
 
         //枪管加热
         if (BarrelStabilizer.CanUse(out act)) return true;
@@ -122,10 +122,10 @@ public sealed class MCH_Default : MCH_Base
         if (GaussRound.CurrentCharges <= Ricochet.CurrentCharges)
         {
             //弹射
-            if (Ricochet.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (Ricochet.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
         }
         //虹吸弹
-        if (GaussRound.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+        if (GaussRound.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
 
         act = null!;
         return false;
@@ -205,7 +205,7 @@ public sealed class MCH_Default : MCH_Base
     /// <returns></returns>
     private bool CanUseRookAutoturret(out IAction act)
     {
-        if (!RookAutoturret.CanUse(out act, mustUse: true)) return false;
+        if (!RookAutoturret.CanUse(out act, CanUseOption.MustUse)) return false;
 
         //4人本小怪快死了不释放
         if (isDyingNotBoss) return false;

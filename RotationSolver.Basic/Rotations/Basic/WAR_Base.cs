@@ -5,6 +5,7 @@ using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
+using System.ComponentModel;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -13,9 +14,9 @@ public abstract class WAR_Base : CustomRotation
     private static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
     public override MedicineType MedicineType => MedicineType.Strength;
 
-
+    protected static byte BeastGauge => JobGauge.BeastGauge;
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
-    private sealed protected override IBaseAction Shield => Defiance;
+    private sealed protected override IBaseAction TankStance => Defiance;
 
     /// <summary>
     /// 守护
@@ -42,7 +43,7 @@ public abstract class WAR_Base : CustomRotation
     /// </summary>
     public static IBaseAction StormsEye { get; } = new BaseAction(ActionID.StormsEye)
     {
-        ActionCheck = b => Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest),
+        ActionCheck = b => Player.WillStatusEndGCD(9, 0, true, StatusID.SurgingTempest),
     };
 
     /// <summary>
@@ -94,14 +95,6 @@ public abstract class WAR_Base : CustomRotation
     };
 
     /// <summary>
-    /// 原初的解放
-    /// </summary>
-    public static IBaseAction InnerRelease { get; } = new BaseAction(ActionID.InnerRelease)
-    {
-        ActionCheck = InnerBeast.ActionCheck,
-    };
-
-    /// <summary>
     /// 钢铁旋风
     /// </summary>
     public static IBaseAction SteelCyclone { get; } = new BaseAction(ActionID.SteelCyclone)
@@ -114,9 +107,15 @@ public abstract class WAR_Base : CustomRotation
     /// </summary>
     public static IBaseAction Infuriate { get; } = new BaseAction(ActionID.Infuriate)
     {
-        StatusProvide = new[] { StatusID.InnerRelease },
-        ActionCheck = b => HasHostilesInRange && JobGauge.BeastGauge < 50 && InCombat,
+        StatusProvide = new[] { StatusID.NascentChaos },
+        ActionCheck = b => HasHostilesInRange && JobGauge.BeastGauge <= 50 && InCombat,
     };
+
+    /// <summary>
+    /// 原初的解放
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static IBaseAction InnerRelease { get; } = new BaseAction(ActionID.InnerRelease);
 
     /// <summary>
     /// 狂暴
@@ -129,7 +128,7 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 战栗
     /// </summary>
-    public static IBaseAction ThrillofBattle { get; } = new BaseAction(ActionID.ThrillOfBattle, true, isTimeline: true);
+    public static IBaseAction ThrillOfBattle { get; } = new BaseAction(ActionID.ThrillOfBattle, true, isTimeline: true);
 
     /// <summary>
     /// 泰然自若
@@ -190,9 +189,16 @@ public abstract class WAR_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Onslaught)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (Onslaught.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (Onslaught.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
+        return false;
+    }
+
+    [RotationDesc(ActionID.PrimalRend)]
+    protected sealed override bool MoveForwardGCD(out IAction act)
+    {
+        if (PrimalRend.CanUse(out act, CanUseOption.MustUse)) return true;
         return false;
     }
 }

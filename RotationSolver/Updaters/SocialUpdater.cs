@@ -13,6 +13,7 @@ namespace RotationSolver.Updaters;
 
 internal class SocialUpdater
 {
+    public static bool InPvp { get; private set; }
     static List<string> _macroToAuthor = new List<string>()
     {
         "blush",
@@ -73,6 +74,7 @@ internal class SocialUpdater
         {
             _canSaying = true;
         }
+        InPvp = territory.IsPvpZone;
         DataCenter.InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
     }
 

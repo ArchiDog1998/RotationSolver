@@ -220,7 +220,7 @@ public abstract partial class CustomRotation
     };
 
     private protected virtual IBaseAction Raise => null;
-    private protected virtual IBaseAction Shield => null;
+    private protected virtual IBaseAction TankStance => null;
 
     /// <summary>
     /// 当前这个类所有的BaseAction

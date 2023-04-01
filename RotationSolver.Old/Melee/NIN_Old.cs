@@ -23,7 +23,7 @@ public sealed class NIN_Old : NIN_Base
         _ninActionAim = act;
     }
 
-    private bool ChoiceNinjutsus(out IAction act)
+    private bool ChoiceNinjutsu(out IAction act)
     {
         act = null;
         if (AdjustId(2260) != 2260) return false;
@@ -59,7 +59,7 @@ public sealed class NIN_Old : NIN_Base
         }
         else
         {
-            bool empty = Ten.CanUse(out _, mustUse: true);
+            bool empty = Ten.CanUse(out _, CanUseOption.MustUse);
             bool haveDoton = Player.HasStatus(true, StatusID.Doton);
 
             //加状态
@@ -67,7 +67,7 @@ public sealed class NIN_Old : NIN_Base
 
             if (InHuton && _ninActionAim?.ID == Huton.ID)
             {
-                ClearNinjutsus();
+                ClearNinjutsu();
                 return false;
             }
 
@@ -77,12 +77,12 @@ public sealed class NIN_Old : NIN_Base
                 return false;
             }
 
-            if (GeneralNinjutsus(empty, haveDoton)) return false;
+            if (GeneralNinjutsu(empty, haveDoton)) return false;
         }
         return false;
     }
 
-    private bool GeneralNinjutsus(bool empty, bool haveDoton)
+    private bool GeneralNinjutsu(bool empty, bool haveDoton)
     {
         //清空忍术
         if (empty)
@@ -94,7 +94,7 @@ public sealed class NIN_Old : NIN_Base
                 return true;
             }
             //背刺
-            if (InBurst && Suiton.CanUse(out _))
+            if (InBurst && TrickAttack.WillHaveOneChargeGCD(1, 1) && Suiton.CanUse(out _))
             {
                 SetNinjustus(Suiton);
             }
@@ -117,12 +117,12 @@ public sealed class NIN_Old : NIN_Base
         return false;
     }
 
-    private static void ClearNinjutsus()
+    private static void ClearNinjutsu()
     {
         _ninActionAim = null;
     }
 
-    private bool DoNinjutsus(out IAction act)
+    private bool DoNinjutsu(out IAction act)
     {
         act = null;
 
@@ -148,20 +148,20 @@ public sealed class NIN_Old : NIN_Base
             //第二击杀AOE
             else if (tenId == KatonTen.ID)
             {
-                if (KatonTen.CanUse(out act, mustUse: true)) return true;
+                if (KatonTen.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             //其他几击
             else if (chiId == RaitonChi.ID)
             {
-                if (RaitonChi.CanUse(out act, mustUse: true)) return true;
+                if (RaitonChi.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             else if (chiId == DotonChi.ID)
             {
-                if (DotonChi.CanUse(out act, mustUse: true)) return true;
+                if (DotonChi.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             else if (jinId == SuitonJin.ID)
             {
-                if (SuitonJin.CanUse(out act, mustUse: true)) return true;
+                if (SuitonJin.CanUse(out act, CanUseOption.MustUse)) return true;
             }
         }
 
@@ -174,24 +174,24 @@ public sealed class NIN_Old : NIN_Base
         {
             //重置
             if (!Player.HasStatus(true, StatusID.Kassatsu, StatusID.TenChiJin)
-                && !Ten.CanUse(out _, mustUse: true))
+                && !Ten.CanUse(out _, CanUseOption.MustUse))
             {
                 return false;
             }
-            act = _ninActionAim.Ninjutsus[0];
+            act = _ninActionAim.Ninjutsu[0];
             return true;
         }
         //失败了
         else if (id == RabbitMedium.ID)
         {
-            ClearNinjutsus();
+            ClearNinjutsu();
             act = null;
             return false;
         }
         //结束了
         else if (id == _ninActionAim.ID)
         {
-            if (_ninActionAim.CanUse(out act, mustUse: true)) return true;
+            if (_ninActionAim.CanUse(out act, CanUseOption.MustUse)) return true;
             if (_ninActionAim.ID == Doton.ID && !InCombat)
             {
                 act = _ninActionAim;
@@ -201,22 +201,22 @@ public sealed class NIN_Old : NIN_Base
         //释放第二个
         else if (id == FumaShuriken.ID)
         {
-            if (_ninActionAim.Ninjutsus.Length > 1)
+            if (_ninActionAim.Ninjutsu.Length > 1)
             {
-                act = _ninActionAim.Ninjutsus[1];
+                act = _ninActionAim.Ninjutsu[1];
                 return true;
             }
         }
         //释放第三个
         else if (id == Katon.ID || id == Raiton.ID || id == Hyoton.ID)
         {
-            if (_ninActionAim.Ninjutsus.Length > 2)
+            if (_ninActionAim.Ninjutsu.Length > 2)
             {
-                act = _ninActionAim.Ninjutsus[2];
+                act = _ninActionAim.Ninjutsu[2];
                 return true;
             }
         }
-        //ClearNinjutsus();
+        //ClearNinjutsu();
         return false;
     }
 
@@ -226,10 +226,10 @@ public sealed class NIN_Old : NIN_Base
             RabbitMedium, FumaShuriken, Katon, Raiton,
             Hyoton, Huton, Doton, Suiton, GokaMekkyaku, HyoshoRanryu))
         {
-            ClearNinjutsus();
+            ClearNinjutsu();
         }
-        if (ChoiceNinjutsus(out act)) return true;
-        if (DoNinjutsus(out act)) return true;
+        if (ChoiceNinjutsu(out act)) return true;
+        if (DoNinjutsu(out act)) return true;
 
         //用真北取消隐匿
         if (Configs.GetBool("AutoUnhide"))
@@ -304,13 +304,13 @@ public sealed class NIN_Old : NIN_Base
         if (HellfrogMedium.CanUse(out act)) return true;
         if (Bhavacakra.CanUse(out act)) return true;
 
-        if (!DreamWithinaDream.EnoughLevel)
+        if (!DreamWithinADream.EnoughLevel)
         {
             if (Assassinate.CanUse(out act)) return true;
         }
         else
         {
-            if (DreamWithinaDream.CanUse(out act)) return true;
+            if (DreamWithinADream.CanUse(out act)) return true;
         }
         return false;
     }

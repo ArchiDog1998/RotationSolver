@@ -10,7 +10,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public interface INinAction : IBaseAction
 {
-    IBaseAction[] Ninjutsus { get; }
+    IBaseAction[] Ninjutsu { get; }
 }
 
 
@@ -35,11 +35,12 @@ public abstract class NIN_Base : CustomRotation
 
     public class NinAction : BaseAction, INinAction
     {
-        public IBaseAction[] Ninjutsus { get; }
-        internal NinAction(ActionID actionID, params IBaseAction[] ninjutsus)
+        protected override bool CheckBadStatus => false;
+        public IBaseAction[] Ninjutsu { get; }
+        internal NinAction(ActionID actionID, params IBaseAction[] ninjutsu)
             : base(actionID, false, false)
         {
-            Ninjutsus = ninjutsus;
+            Ninjutsu = ninjutsu;
         }
     }
 
@@ -77,7 +78,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction Mug { get; } = new BaseAction(ActionID.Mug)
     {
-        ActionCheck = b => JobGauge.Ninki <= 50,
+        ActionCheck = b => JobGauge.Ninki <= 60,
     };
 
     /// <summary>
@@ -221,7 +222,7 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 梦幻三段
     /// </summary>
-    public static IBaseAction DreamWithinaDream { get; } = new BaseAction(ActionID.DreamWithInADream);
+    public static IBaseAction DreamWithinADream { get; } = new BaseAction(ActionID.DreamWithInADream);
 
     /// <summary>
     /// 风魔手里剑天
@@ -301,7 +302,6 @@ public abstract class NIN_Base : CustomRotation
     public static INinAction Suiton { get; } = new NinAction(ActionID.Suiton, Ten, Chi, Jin)
     {
         StatusProvide = new[] { StatusID.Suiton },
-        ActionCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
     };
 
     /// <summary>
@@ -315,9 +315,9 @@ public abstract class NIN_Base : CustomRotation
     public static INinAction HyoshoRanryu { get; } = new NinAction(ActionID.HyoshoRanryu, Ten, Jin);
 
     [RotationDesc(ActionID.Shukuchi)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (Shukuchi.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (Shukuchi.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
 
         return false;
     }

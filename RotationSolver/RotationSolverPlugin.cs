@@ -113,11 +113,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void UpdateDisplayWindow()
     {
         var isValid = MajorUpdater.IsValid
-        && (!Service.Config.OnlyShowWithHostileOrInDuty ||
-                Service.Conditions[ConditionFlag.BoundByDuty] ||
-                 DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
+        && (!Service.Config.OnlyShowWithHostileOrInDuty
+                || Service.Conditions[ConditionFlag.BoundByDuty]
+                || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
             && RotationUpdater.RightNowRotation != null
             && !Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
+            && !Service.Conditions[ConditionFlag.Occupied38] //Treasure hunt.
             && !Service.Conditions[ConditionFlag.BetweenAreas]
             && !Service.Conditions[ConditionFlag.BetweenAreas51]
             && !Service.Conditions[ConditionFlag.WaitingForDuty]

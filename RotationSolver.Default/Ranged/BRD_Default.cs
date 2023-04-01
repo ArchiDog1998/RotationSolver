@@ -26,7 +26,7 @@ public sealed class BRD_Default : BRD_Base
     {
         //伶牙俐齿
         if (IronJaws.CanUse(out act)) return true;
-        if (IronJaws.CanUse(out act, mustUse: true) && IronJaws.Target.WillStatusEnd(30, true, IronJaws.TargetStatus))
+        if (IronJaws.CanUse(out act, CanUseOption.MustUse) && IronJaws.Target.WillStatusEnd(30, true, IronJaws.TargetStatus))
         {
             if (Player.HasStatus(true, StatusID.RagingStrikes) && Player.WillStatusEndGCD(1, 0, true, StatusID.RagingStrikes)) return true;
         }
@@ -34,7 +34,7 @@ public sealed class BRD_Default : BRD_Base
         //放大招！
         if (CanUseApexArrow(out act)) return true;
         //爆破箭
-        if (BlastArrow.CanUse(out act, mustUse: true))
+        if (BlastArrow.CanUse(out act, CanUseOption.MustUse))
         {
             if (!Player.HasStatus(true, StatusID.RagingStrikes)) return true;
             if (Player.HasStatus(true, StatusID.RagingStrikes) && Barrage.IsCoolingDown) return true;
@@ -45,7 +45,7 @@ public sealed class BRD_Default : BRD_Base
         if (QuickNock.CanUse(out act)) return true;
 
         //上毒
-        if (Windbite.CanUse(out act)) return true;
+        if (WindBite.CanUse(out act)) return true;
         if (VenomousBite.CanUse(out act)) return true;
 
         //直线射击
@@ -60,7 +60,7 @@ public sealed class BRD_Default : BRD_Base
     protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
         //如果接下来要上毒或者要直线射击，那算了。
-        if (nextGCD.IsTheSameTo(true, StraitShoot, VenomousBite, Windbite, IronJaws))
+        if (nextGCD.IsTheSameTo(true, StraitShoot, VenomousBite, WindBite, IronJaws))
         {
             return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
         }
@@ -100,13 +100,13 @@ public sealed class BRD_Default : BRD_Base
             }
 
             //光明神的最终乐章
-            if (RadiantFinale.CanUse(out act, mustUse: true))
+            if (RadiantFinale.CanUse(out act, CanUseOption.MustUse))
             {
                 if (Player.HasStatus(true, StatusID.RagingStrikes) && RagingStrikes.ElapsedOneChargeAfterGCD(1)) return true;
             }
 
             //战斗之声
-            if (BattleVoice.CanUse(out act, mustUse: true))
+            if (BattleVoice.CanUse(out act, CanUseOption.MustUse))
             {
                 if (IsLastAction(true, RadiantFinale)) return true;
 
@@ -169,10 +169,10 @@ public sealed class BRD_Default : BRD_Base
         if (EmpyrealArrow.IsCoolingDown || !EmpyrealArrow.WillHaveOneChargeGCD() || Repertoire != 3 || !EmpyrealArrow.EnoughLevel)
         {
             //死亡剑雨
-            if (RainOfDeath.CanUse(out act, emptyOrSkipCombo: empty)) return true;
+            if (RainOfDeath.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
             //失血箭
-            if (Bloodletter.CanUse(out act, emptyOrSkipCombo: empty)) return true;
+            if (Bloodletter.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         return false;
@@ -181,7 +181,7 @@ public sealed class BRD_Default : BRD_Base
     private bool CanUseApexArrow(out IAction act)
     {
         //放大招！
-        if (!ApexArrow.CanUse(out act, mustUse: true)) return false;
+        if (!ApexArrow.CanUse(out act, CanUseOption.MustUse)) return false;
 
         //aoe期间
         if (QuickNock.CanUse(out _) && SoulVoice == 100) return true;

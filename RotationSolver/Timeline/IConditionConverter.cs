@@ -12,7 +12,7 @@ internal class IConditionConverter : JsonCreationConverter<ICondition>
         {
             return new ConditionSet();
         }
-        else if (FieldExists(nameof(ActionCondition.ActionConditonType), jObject))
+        else if (FieldExists(nameof(ActionCondition.ActionConditionType), jObject))
         {
             return new ActionCondition();
         }

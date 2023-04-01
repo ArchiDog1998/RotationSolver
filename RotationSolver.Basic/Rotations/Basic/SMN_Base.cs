@@ -148,7 +148,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 以太蓄能  龙神附体 
     /// </summary>
-    public static IBaseAction Aethercharge { get; } = new BaseAction(ActionID.AetherCharge)
+    public static IBaseAction AetherCharge { get; } = new BaseAction(ActionID.AetherCharge)
     {
         ActionCheck = b => InCombat && HaveSummon
     };
@@ -173,7 +173,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 死星核爆
     /// </summary>
-    public static IBaseAction Deathflare { get; } = new BaseAction(ActionID.DeathFlare)
+    public static IBaseAction DeathFlare { get; } = new BaseAction(ActionID.DeathFlare)
     {
         ActionCheck = b => InBahamut,
     };
@@ -214,7 +214,6 @@ public abstract class SMN_Base : CustomRotation
     {
         StatusNeed = new[] { StatusID.GarudasFavor },
     };
-
     #endregion
     #region 基础技能
     /// <summary>
@@ -283,7 +282,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 痛苦核爆
     /// </summary>
-    public static IBaseAction Painflare { get; } = new BaseAction(ActionID.PainFlare)
+    public static IBaseAction PainFlare { get; } = new BaseAction(ActionID.PainFlare)
     {
         ActionCheck = b => HasAetherflowStacks
     };

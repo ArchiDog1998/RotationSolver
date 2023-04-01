@@ -7,7 +7,7 @@ public sealed class MNK_Default : MNK_Base
 {
     public override string GameVersion => "6.35";
 
-    public override string RotationName => "Lunar Solar Opener";
+    public override string RotationName => "Lunar Solar";
 
     protected override IRotationConfigSet CreateConfiguration()
     {
@@ -18,7 +18,8 @@ public sealed class MNK_Default : MNK_Base
     {
         if (remainTime < 0.2)
         {
-            if (Thunderclap.CanUse(out var act, true, true)) return act;
+            if (Thunderclap.CanUse(out var act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return act;
+            if (Thunderclap.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return act;
         }
         if (remainTime < 15)
         {
@@ -53,7 +54,7 @@ public sealed class MNK_Default : MNK_Base
     private static bool CoerlForm(out IAction act)
     {
         if (RockBreaker.CanUse(out act)) return true;
-        if (UseLunarPerfectBalance && Demolish.CanUse(out act, mustUse: true) 
+        if (UseLunarPerfectBalance && Demolish.CanUse(out act, CanUseOption.MustUse) 
             && (Demolish.Target?.WillStatusEndGCD(7, 0, true, StatusID.Demolish) ?? false)) return true;
         if (Demolish.CanUse(out act)) return true;
         if (SnapPunch.CanUse(out act)) return true;
@@ -93,23 +94,23 @@ public sealed class MNK_Default : MNK_Base
         {
             if (HasSolar && HasLunar)
             {
-                if (PhantomRush.CanUse(out act, mustUse: true)) return true;
-                if (TornadoKick.CanUse(out act, mustUse: true)) return true;
+                if (PhantomRush.CanUse(out act, CanUseOption.MustUse)) return true;
+                if (TornadoKick.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             if (BeastChakras.Contains(BeastChakra.RAPTOR))
             {
-                if (RisingPhoenix.CanUse(out act, mustUse: true)) return true;
-                if (FlintStrike.CanUse(out act, mustUse: true)) return true;
+                if (RisingPhoenix.CanUse(out act, CanUseOption.MustUse)) return true;
+                if (FlintStrike.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             else
             {
-                if (ElixirField.CanUse(out act, mustUse: true)) return true;
+                if (ElixirField.CanUse(out act, CanUseOption.MustUse)) return true;
             }
         }
         else if (Player.HasStatus(true, StatusID.PerfectBalance) && ElixirField.EnoughLevel)
         {
             //Sometimes, no choice
-            if (HasSolar)
+            if (HasSolar || BeastChakras.Count(c => c == BeastChakra.OPOOPO) > 1)
             {
                 if (LunarNadi(out act)) return true;
             }
@@ -120,7 +121,7 @@ public sealed class MNK_Default : MNK_Base
 
             //Add status when solar.
             if (Player.WillStatusEndGCD(3, 0, true, StatusID.DisciplinedFist)
-                || Target.WillStatusEndGCD(3, 0, true, StatusID.Demolish))
+                || Target.WillStatusEndGCD(3, 0, true, StatusID.Demolish)) 
             {
                 if (SolarNadi(out act)) return true;
             }
@@ -192,14 +193,14 @@ public sealed class MNK_Default : MNK_Base
             && (!RiddleOfFire.EnoughLevel || Player.HasStatus(false, StatusID.RiddleOfFire) && !Player.WillStatusEndGCD(3, 0, false, StatusID.RiddleOfFire)
             || RiddleOfFire.WillHaveOneChargeGCD(1) && (PerfectBalance.ElapsedAfter(60) || !PerfectBalance.IsCoolingDown)))
         {
-            if (PerfectBalance.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (PerfectBalance.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         if (Brotherhood.CanUse(out act)) return true;
 
         if (HowlingFist.CanUse(out act)) return true;
         if (SteelPeak.CanUse(out act)) return true;
-        if (HowlingFist.CanUse(out act, mustUse: true)) return true;
+        if (HowlingFist.CanUse(out act, CanUseOption.MustUse)) return true;
 
         if (RiddleOfWind.CanUse(out act)) return true;
 

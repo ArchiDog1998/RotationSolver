@@ -49,14 +49,14 @@ public sealed class SCH_Default : SCH_Base
         if (Bio.CanUse(out act)) return true;
 
         //AOE
-        if (ArtofWar.CanUse(out act)) return true;
+        if (ArtOfWar.CanUse(out act)) return true;
 
         //Single
         if (Ruin.CanUse(out act)) return true;
         if (Ruin2.CanUse(out act)) return true;
 
         //Add dot.
-        if (Bio.CanUse(out act, true)) return true;
+        if (Bio.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }
@@ -125,7 +125,7 @@ public sealed class SCH_Default : SCH_Base
         {
             if (SummonSeraph.CanUse(out act)) return true;
         }
-        if (Consolation.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Consolation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         //异想的祥光
         if (FeyBlessing.CanUse(out act)) return true;
@@ -166,7 +166,7 @@ public sealed class SCH_Default : SCH_Base
         {
             if (SummonSeraph.CanUse(out act)) return true;
         }
-        if (Consolation.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (Consolation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         //野战治疗阵
         if (SacredSoil.CanUse(out act)) return true;
@@ -186,7 +186,7 @@ public sealed class SCH_Default : SCH_Base
         if (Dissipation.EnoughLevel && Dissipation.WillHaveOneChargeGCD(3) && Dissipation.IsEnabled || Aetherflow.WillHaveOneChargeGCD(3))
         {
             //能量吸收
-            if (EnergyDrain.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (EnergyDrain.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         //转化

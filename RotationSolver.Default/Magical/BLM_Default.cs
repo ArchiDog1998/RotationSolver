@@ -29,8 +29,8 @@ public class BLM_Default : BLM_Base
         var count = PolyglotStacks;
         if (count == compare++) return false;
         if (count == compare++ && !EnchinaEndAfterGCD(2)) return false;
-        if (count >= compare && (HasFire || Swiftcast.WillHaveOneChargeGCD(2) || Triplecast.WillHaveOneChargeGCD(2))) return true;
-        if (!HasFire && !Swiftcast.WillHaveOneChargeGCD(2) && !Triplecast.CanUse(out _, gcdCountForAbility: 8)) return false;
+        if (count >= compare && (HasFire || Swiftcast.WillHaveOneChargeGCD(2) || TripleCast.WillHaveOneChargeGCD(2))) return true;
+        if (!HasFire && !Swiftcast.WillHaveOneChargeGCD(2) && !TripleCast.CanUse(out _, gcdCountForAbility: 8)) return false;
         return true;
     }
 
@@ -47,7 +47,7 @@ public class BLM_Default : BLM_Base
         {
             if (Fire3.CanUse(out act)) return act;
         }
-        if (remainTime <= 12 && Sharpcast.CanUse(out act, emptyOrSkipCombo: true)) return act;
+        if (remainTime <= 12 && SharpCast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return act;
         return base.CountDownAction(remainTime);
     }
 
@@ -60,16 +60,16 @@ public class BLM_Default : BLM_Base
                 && !IsLastGCD(ActionID.Paradox))
             {
                 if (Swiftcast.CanUse(out act)) return true;
-                if (Triplecast.CanUse(out act, emptyOrSkipCombo: true)) return true;
+                if (TripleCast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
             }
 
             if (UmbralIceStacks < 3 && LucidDreaming.CanUse(out act)) return true;
-            if (Sharpcast.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (SharpCast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
         if (InAstralFire)
         {
-            if (!CombatElapsedLess(6) && CombatElapsedLess(9) && Leylines.CanUse(out act)) return true;
-            if (Triplecast.CanUse(out act, gcdCountForAbility: 5)) return true;
+            if (!CombatElapsedLess(6) && CombatElapsedLess(9) && LeyLines.CanUse(out act)) return true;
+            if (TripleCast.CanUse(out act, gcdCountForAbility: 5)) return true;
         }
         if (Amplifier.CanUse(out act)) return true;
         return false;
@@ -103,7 +103,7 @@ public class BLM_Default : BLM_Base
         if (InFireOrIce(out act, out var mustGo)) return true;
         if (mustGo) return false;
         //Triplecast for moving.
-        if (IsMoving && HasHostilesInRange && Triplecast.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (IsMoving && HasHostilesInRange && TripleCast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         if (AddElementBase(out act)) return true;
         if (Scathe.CanUse(out act)) return true;
@@ -261,7 +261,7 @@ public class BLM_Default : BLM_Base
             if (AddThunder(out act, 0)) return true;
         }
 
-        if (Triplecast.CanUse(out act)) return true;
+        if (TripleCast.CanUse(out act)) return true;
 
         if (AddThunder(out act, 0) && Player.WillStatusEndGCD(1, 0, true,
             StatusID.Thundercloud)) return true;
@@ -358,7 +358,7 @@ public class BLM_Default : BLM_Base
     protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         if (BetweenTheLines.CanUse(out act)) return true;
-        if (Leylines.CanUse(out act, mustUse: true)) return true;
+        if (LeyLines.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return base.HealSingleAbility(abilitiesRemaining, out act);
     }

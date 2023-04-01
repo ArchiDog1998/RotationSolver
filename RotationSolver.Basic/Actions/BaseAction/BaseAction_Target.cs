@@ -158,10 +158,10 @@ public partial class BaseAction
         if (!Service.Config.UseGroundBeneficialAbility) return false;
 
         //如果当前目标是Boss且有身位，放他身上。
-        if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && b.IsBoss() && b.HasPositional())
+        if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && 
+            b.IsBoss() && b.HasPositional() && b.HitboxRadius <= 8)
         {
             _position = b.Position;
-            return true;
         }
         //计算玩家和被打的Ｔ之间的关系。
         else
@@ -174,7 +174,7 @@ public partial class BaseAction
             }
             else
             {
-                var disToTankRound = Math.Max(range, Vector3.Distance(player.Position, attackT.Position) + attackT.HitboxRadius);
+                var disToTankRound = Vector3.Distance(player.Position, attackT.Position) + attackT.HitboxRadius;
 
                 if (disToTankRound < _action.EffectRange
                     || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius
@@ -189,8 +189,8 @@ public partial class BaseAction
                     _position = player.Position + MoveDirection;
                 }
             }
-            return true;
         }
+        return true;
     }
     #endregion
 

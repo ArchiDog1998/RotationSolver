@@ -2,11 +2,12 @@ namespace RotationSolver.Default.Magical;
 
 [RotationDesc(ActionID.Embolden)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Magical/RDM_Default.cs")]
+[LinkDescription("https://www.thebalanceffxiv.com/img/jobs/rdm/rdm_ew_opener.png")]
 public sealed class RDM_Default : RDM_Base
 {
     public override string GameVersion => "6.31";
 
-    public override string RotationName => "Default";
+    public override string RotationName => "Standard";
 
     public bool CanStartMeleeCombo
     {
@@ -82,23 +83,22 @@ public sealed class RDM_Default : RDM_Base
         return false;
     }
 
-
     protected override bool EmergencyGCD(out IAction act)
     {
         if (ManaStacks == 3)
         {
             if (BlackMana > WhiteMana)
             {
-                if (Verholy.CanUse(out act, mustUse: true)) return true;
+                if (Verholy.CanUse(out act, CanUseOption.MustUse)) return true;
             }
-            if (Verflare.CanUse(out act, mustUse: true)) return true;
+            if (Verflare.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
-        if (Resolution.CanUse(out act, mustUse: true)) return true;
-        if (Scorch.CanUse(out act, mustUse: true)) return true;
+        if (Resolution.CanUse(out act, CanUseOption.MustUse)) return true;
+        if (Scorch.CanUse(out act, CanUseOption.MustUse)) return true;
 
 
-        if (IsLastGCD(true, Moulinet) && Moulinet.CanUse(out act, mustUse: true)) return true;
+        if (IsLastGCD(true, Moulinet) && Moulinet.CanUse(out act, CanUseOption.MustUse)) return true;
         if (Zwerchhau.CanUse(out act)) return true;
         if (Redoublement.CanUse(out act)) return true;
 
@@ -122,7 +122,7 @@ public sealed class RDM_Default : RDM_Base
         act = null;
         if (CombatElapsedLess(4)) return false;
 
-        if (InBurst && Embolden.CanUse(out act, mustUse: true)) return true;
+        if (InBurst && Embolden.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //Use Manafication after embolden.
         if ((Player.HasStatus(true, StatusID.Embolden) || IsLastAbility(ActionID.Embolden))
@@ -141,18 +141,18 @@ public sealed class RDM_Default : RDM_Base
             if (!Player.HasStatus(true, StatusID.VerfireReady, StatusID.VerstoneReady))
             {
                 if (Swiftcast.CanUse(out act)) return true;
-                if (InCombat && Acceleration.CanUse(out act, emptyOrSkipCombo: true)) return true;
+                if (InCombat && Acceleration.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
             }
         }
 
         if (InBurst && UseBurstMedicine(out act)) return true;
 
         //Attack abilities.
-        if (ContreSixte.CanUse(out act, mustUse: true)) return true;
+        if (ContreSixte.CanUse(out act, CanUseOption.MustUse)) return true;
         if (Fleche.CanUse(out act)) return true;
 
-        if (Engagement.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        if (CorpsAcorps.CanUse(out act, mustUse: true) && !IsMoving) return true;
+        if (Engagement.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+        if (CorpsACorps.CanUse(out act, CanUseOption.MustUse) && !IsMoving) return true;
 
         return false;
     }

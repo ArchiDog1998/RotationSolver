@@ -59,7 +59,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// ×¹ÅçÈª
     /// </summary>
-    public static IBaseAction Fountainfall { get; } = new BaseAction(ActionID.FountainFall)
+    public static IBaseAction FountainFall { get; } = new BaseAction(ActionID.FountainFall)
     {
         StatusNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
     };
@@ -84,7 +84,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// ÂäÈÐÓê
     /// </summary>
-    public static IBaseAction Bladeshower { get; } = new BaseAction(ActionID.BladeShower)
+    public static IBaseAction BladeShower { get; } = new BaseAction(ActionID.BladeShower)
     {
         StatusProvide = Fountain.StatusProvide,
     };
@@ -100,10 +100,10 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// ÂäÑªÓê
     /// </summary>
-    public static IBaseAction Bloodshower { get; } = new BaseAction(ActionID.BloodShower)
+    public static IBaseAction BloodShower { get; } = new BaseAction(ActionID.BloodShower)
     {
         AOECount = 2,
-        StatusNeed = Fountainfall.StatusNeed,
+        StatusNeed = FountainFall.StatusNeed,
     };
 
     /// <summary>
@@ -143,7 +143,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// Á÷ÐÇÎè
     /// </summary>
-    public static IBaseAction StarfallDance { get; } = new BaseAction(ActionID.StarFallDance)
+    public static IBaseAction StarFallDance { get; } = new BaseAction(ActionID.StarFallDance)
     {
         StatusNeed = new[] { StatusID.FlourishingStarfall },
     };
@@ -298,7 +298,7 @@ public abstract class DNC_Base : CustomRotation
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    protected static bool ExcutionStepGCD(out IAction act)
+    protected static bool ExecuteStepGCD(out IAction act)
     {
         act = null;
         if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;
@@ -313,24 +313,24 @@ public abstract class DNC_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.EnAvant)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (EnAvant.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (EnAvant.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.CuringWaltz, ActionID.Improvisation)]
     protected sealed override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (CuringWaltz.CanUse(out act, emptyOrSkipCombo: true)) return true;
-        if (Improvisation.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (CuringWaltz.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+        if (Improvisation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.ShieldSamba)]
     protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (ShieldSamba.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (ShieldSamba.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         return false;
     }
 }

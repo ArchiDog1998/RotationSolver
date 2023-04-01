@@ -2,6 +2,7 @@
 using Dalamud.Hooking;
 using Dalamud.Interface.Colors;
 using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
@@ -9,6 +10,7 @@ using RotationSolver.Basic.Helpers;
 using RotationSolver.Localization;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
 using System.Text;
@@ -19,7 +21,7 @@ namespace RotationSolver;
 
 public class Watcher : IDisposable
 {
-    private delegate void ReceiveAbilityDelegate(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail);
+    private unsafe delegate void ReceiveAbilityDelegate(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets);
 
     /// <summary>
     /// https://github.com/Tischel/ActionTimeline/blob/master/ActionTimeline/Helpers/TimelineManager.cs#L86
@@ -43,29 +45,30 @@ public class Watcher : IDisposable
         _receiveAbilityHook?.Enable();
     }
 
-    private static void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, IntPtr pos, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail)
+    public static string ShowStr { get; private set; } = string.Empty;
+
+    private static unsafe void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
-        _receiveAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTrail);
+        _receiveAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTargets);
 
         //不是自己放出来的
         if (Service.Player == null || sourceId != Service.Player.ObjectId) return;
 
+        var set = new ActionEffectSet(effectHeader, effectArray, effectTargets);
+
         //不是一个Spell
-        if (Marshal.ReadByte(effectHeader, 31) != 1) return;
-
-        //获得行为
-        var action = Service.GetSheet<Action>().GetRow((uint)Marshal.ReadInt32(effectHeader, 0x8));
-
-        //获得目标
-        var tar = Service.ObjectTable.SearchById((uint)Marshal.ReadInt32(effectHeader)) ?? Service.Player;
+        if (set.Type != ActionType.Spell) return;
+        if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
+        ShowStr = set.ToString();
 
         //获得身为技能是否正确flag
-        var flag = Marshal.ReadByte(effectArray + 3);
-        RecordAction(tar, action, flag);
+        RecordAction(set.Target, set.Action, effectArray->Param2);
     }
 
     private static unsafe void RecordAction(GameObject tar, Action action, byte flag)
     {
+        if (tar == null || action == null) return;
+
         DataCenter.AddActionRec(action);
 
         //Macro
@@ -94,8 +97,6 @@ public class Watcher : IDisposable
             }
         }
     }
-
-
 
     public void Dispose()
     {

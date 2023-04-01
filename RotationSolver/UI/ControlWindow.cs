@@ -56,10 +56,13 @@ internal class ControlWindow : Window
     public override void Draw()
     {
         ImGui.Columns(2, "Control Bolder", false);
-        ImGui.SetColumnWidth(0, DrawNextAction() + ImGui.GetStyle().ColumnsMinSpacing * 2);
+        var gcd = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
+        var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
+        var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
+
+        ImGui.SetColumnWidth(0, width + ImGui.GetStyle().ColumnsMinSpacing * 2);
 
         DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
-
 
         ImGui.SameLine();
         DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DalamudWhite2);
@@ -75,6 +78,8 @@ internal class ControlWindow : Window
         RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
             ref Service.Config.IsControlWindowLock);
         ImGui.EndGroup();
+
+        DrawNextAction(gcd, ability, width);
 
         ImGui.NextColumn();
 
@@ -141,6 +146,8 @@ internal class ControlWindow : Window
              TargetHostileType.TargetsHaveTarget => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
              _ => string.Empty,
         });
+
+        ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)
@@ -394,35 +401,99 @@ internal class ControlWindow : Window
         }
     }
 
-    internal static void DrawIAction(IAction action, float width)
+    internal static void DrawIAction(IAction action, float width, float percent)
     {
-        DrawIAction(GetTexture(action).ImGuiHandle, width);
+        DrawIAction(GetTexture(action).ImGuiHandle, width, action == null ? -1 : percent);
     }
 
-    static void DrawIAction(nint handle, float width)
+    static void DrawIAction(nint handle, float width, float percent)
     {
+        var cursor = ImGui.GetCursorPos();
+        ImGui.BeginGroup();
+
         ImGui.Image(handle, new Vector2(width, width));
+        if(percent >= 0)
+        {
+            if (percent < 1)
+            {
+                var cover = IconSet.GetTexture("ui/uld/icona_recast_hr1.tex");
+
+                if(cover != null)
+                {
+                    var pixPerUnit = width / 82;
+
+                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
+
+                    var P = (int)(percent * 81);
+                    
+
+                    var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                    var start = new Vector2(P % 9 * step.X, P / 9 * step.Y);
+
+                    //Out Size is 88, 96
+                    //Inner Size is 82, 82
+                    ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                        start, start + step);
+                }
+            }
+            else
+            {
+                var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
+
+                if (cover != null)
+                {
+                    var pixPerUnit = width / 82;
+
+                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
+
+                    //Out Size is 88, 96
+                    //Inner Size is 82, 82
+                    ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                        new Vector2(4f / cover.Width, 0f / cover.Height),
+                        new Vector2(92f / cover.Width, 96f / cover.Height));
+                }
+            }
+
+            if(percent > 1)
+            {
+                var cover = IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex");
+
+                if (cover != null)
+                {
+                    var pixPerUnit = width / 82;
+
+                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
+
+                    var P = (int)(percent % 1 * 81);
+
+
+                    var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                    var start = new Vector2((P % 9 + 9) * step.X, P / 9 * step.Y);
+
+                    //Out Size is 88, 96
+                    //Inner Size is 82, 82
+                    ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                        start, start + step);
+                }
+            }
+        }
+
+        ImGui.EndGroup();
     }
 
-    static unsafe float  DrawNextAction()
+    static unsafe void DrawNextAction(float gcd, float ability, float width)
     {
-        var gcd = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
-        var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
-        var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
-
         var str = "Next Action";
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
         ImGui.TextColored(ImGuiColors.DalamudYellow, str);
 
         NextActionWindow.DrawGcdCooldown(width, true);
 
-        DrawIAction(ActionUpdater.NextGCDAction, gcd);
+        DrawIAction(ActionUpdater.NextGCDAction, gcd, 1);
 
         var next = ActionUpdater.NextGCDAction != ActionUpdater.NextAction ? ActionUpdater.NextAction : null;
 
         ImGui.SameLine();
-        DrawIAction(next, ability);
-
-        return width;
+        DrawIAction(next, ability, -1);
     }
 }

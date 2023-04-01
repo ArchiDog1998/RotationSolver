@@ -11,6 +11,10 @@ public interface IAction : ITexture
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     float RecastTimeElapsed { get; }
+
+    /// <summary>
+    /// Is action cooling down.
+    /// </summary>
     bool IsCoolingDown { get; }
 
     /// <summary>

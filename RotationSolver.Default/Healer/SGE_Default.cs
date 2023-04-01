@@ -159,10 +159,12 @@ public sealed class SGE_Default : SGE_Base
 
     protected override bool GeneralGCD(out IAction act)
     {
+        var option = CanUseOption.MustUse;
+        if (IsMoving || Dyskrasia.CanUse(out _)) option |= CanUseOption.EmptyOrSkipCombo;
         //发炎 留一层走位
-        if (Phlegma3.CanUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.CanUse(out _))) return true;
-        if (!Phlegma3.EnoughLevel && Phlegma2.CanUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.CanUse(out _))) return true;
-        if (!Phlegma2.EnoughLevel && Phlegma.CanUse(out act, mustUse: true, emptyOrSkipCombo: IsMoving || Dyskrasia.CanUse(out _))) return true;
+        if (Phlegma3.CanUse(out act, option)) return true;
+        if (!Phlegma3.EnoughLevel && Phlegma2.CanUse(out act, option)) return true;
+        if (!Phlegma2.EnoughLevel && Phlegma.CanUse(out act, option)) return true;
 
         //失衡
         if (Dyskrasia.CanUse(out act)) return true;
@@ -179,7 +181,7 @@ public sealed class SGE_Default : SGE_Base
         if (Dosis.CanUse(out act)) return true;
 
         //箭毒
-        if (Toxikon.CanUse(out act, mustUse: true)) return true;
+        if (Toxikon.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //脱战给T刷单盾嫖豆子
         if (MEukrasianDiagnosis.CanUse(out _))
@@ -235,7 +237,7 @@ public sealed class SGE_Default : SGE_Base
         if (PartyMembersAverHP < 0.65f || Dyskrasia.CanUse(out _) && PartyTanks.Any(t => t.GetHealthRatio() < 0.6f))
         {
             //魂灵风息
-            if (Pneuma.CanUse(out act, mustUse: true)) return true;
+            if (Pneuma.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         //预后

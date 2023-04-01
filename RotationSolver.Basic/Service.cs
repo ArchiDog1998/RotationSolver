@@ -19,13 +19,17 @@ using Dalamud.Hooking;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.Attributes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiScene;
 using Lumina.Excel;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
+using System.Numerics;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 namespace RotationSolver.Basic;
 
@@ -43,7 +47,8 @@ public class Service : IDisposable
 
     private static IntPtr _countDown = IntPtr.Zero;
 
-    public static float CountDownTime => _countDown == IntPtr.Zero ? 0 : Math.Max(0, Marshal.PtrToStructure<float>(_countDown + 0x2c));
+    static float _lastTime = 0;
+    public static float CountDownTime { get; private set; }
 
     public static GetChatBoxModuleDelegate GetChatBox { get; private set; }
 
@@ -54,7 +59,15 @@ public class Service : IDisposable
             SigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9"));
 
         SignatureHelper.Initialise(this);
+        Framework.Update += Framework_Update;
         _countdownTimerHook?.Enable();
+    }
+
+    private void Framework_Update(Framework framework)
+    {
+        var value = _countDown == IntPtr.Zero ? 0 : Math.Max(0, Marshal.PtrToStructure<float>(_countDown + 0x2c));
+        if (_lastTime == value) CountDownTime = 0;
+        else CountDownTime = _lastTime = value;
     }
 
     private IntPtr CountdownTimerFunc(IntPtr value)
@@ -66,6 +79,7 @@ public class Service : IDisposable
     public void Dispose()
     {
         _countdownTimerHook?.Dispose();
+        Framework.Update -= Framework_Update;
     }
     public static PluginConfiguration Config { get; set; }
 
@@ -88,7 +102,20 @@ public class Service : IDisposable
     public static ChatGui ChatGui { get; private set; }
 
     [PluginService]
-    public static GameGui GameGui { get; private set; }
+    static GameGui GameGui { get; set; }
+
+    public static bool WorldToScreen(Vector3 worldPos, out Vector2 screenPos) => GameGui.WorldToScreen(worldPos, out screenPos);
+
+    public unsafe static T[] GetAddon<T>() where T : struct
+    {
+        if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return new T[0];
+
+        return on.AddonIdentifiers
+            .Select(str => GameGui.GetAddonByName(str, 1))
+            .Where(ptr => ptr != IntPtr.Zero)
+            .Select(ptr => *(T*)ptr)
+            .ToArray();
+    }
 
     public static PlayerCharacter Player => ClientState.LocalPlayer;
     [PluginService]
@@ -97,6 +124,7 @@ public class Service : IDisposable
     public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => DataManager.GetExcelSheet<T>();
 
     internal static TextureWrap GetTextureIcon(uint id) => DataManager.GetImGuiTextureIcon(id);
+    internal static TextureWrap GetTexture(string path) => DataManager.GetImGuiTexture(path);
 
     [PluginService]
     private static DataManager DataManager { get; set; }

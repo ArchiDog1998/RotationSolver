@@ -5,6 +5,7 @@ using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -80,7 +81,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 死亡之影
     /// </summary>
-    public static IBaseAction ShadowofDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, isEot: true)
+    public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, isEot: true)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = b => !SoulReaver,
@@ -114,10 +115,10 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 死亡之涡
     /// </summary>
-    public static IBaseAction WhorlofDeath { get; } = new BaseAction(ActionID.WhorlOfDeath, isEot: true)
+    public static IBaseAction WhorlOfDeath { get; } = new BaseAction(ActionID.WhorlOfDeath, isEot: true)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
-        ActionCheck = ShadowofDeath.ActionCheck,
+        ActionCheck = ShadowOfDeath.ActionCheck,
     };
 
     /// <summary>
@@ -291,7 +292,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 播魂种
     /// </summary>
-    public static IBaseAction Soulsow { get; } = new BaseAction(ActionID.SoulSow)
+    public static IBaseAction SoulSow { get; } = new BaseAction(ActionID.SoulSow)
     {
         StatusProvide = new[] { StatusID.SoulSow },
         ActionCheck = b => !InCombat,
@@ -312,10 +313,10 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HellsIngress)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
         //E上去
-        if (HellsIngress.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (HellsIngress.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 

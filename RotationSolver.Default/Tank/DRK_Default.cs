@@ -53,8 +53,18 @@ public sealed class DRK_Default : DRK_Base
     protected override IAction CountDownAction(float remainTime)
     {
         //Provoke when has Shield.
-        if (HasTankStance && remainTime <= Service.Config.AbilitiesInterval && Provoke.CanUse(out var act)) return act;
-        if (remainTime <= 2 && UseBurstMedicine(out act)) return act;
+        if(remainTime <= Service.Config.CountDownAhead)
+        {
+            if (HasTankStance)
+            {
+                if (Provoke.CanUse(out var act1)) return act1;
+            }
+            else
+            {
+                if (Unmend.CanUse(out var act1)) return act1;
+            }
+        }
+        if (remainTime <= 2 && UseBurstMedicine(out var act)) return act;
         if (remainTime <= 3 && TheBlackestNight.CanUse(out act)) return act;
         if (remainTime <= 4 && BloodWeapon.CanUse(out act)) return act;
         return base.CountDownAction(remainTime);
@@ -72,7 +82,7 @@ public sealed class DRK_Default : DRK_Base
     protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
     {
         if (DarkMissionary.CanUse(out act)) return true;
-        if (Reprisal.CanUse(out act, mustUse: true)) return true;
+        if (Reprisal.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }
@@ -95,7 +105,7 @@ public sealed class DRK_Default : DRK_Base
             if (DarkMind.CanUse(out act)) return true;
 
             //10
-            if (Oblation.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (Oblation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         if (Reprisal.CanUse(out act)) return true;
@@ -110,7 +120,7 @@ public sealed class DRK_Default : DRK_Base
         if (UseBlood)
         {
             if (Quietus.CanUse(out act)) return true;
-            if (Bloodspiller.CanUse(out act)) return true;
+            if (BloodSpiller.CanUse(out act)) return true;
         }
 
         //AOE
@@ -132,8 +142,8 @@ public sealed class DRK_Default : DRK_Base
     {
         if (CheckDarkSide)
         {
-            if (FloodofDarkness.CanUse(out act)) return true;
-            if (EdgeofDarkness.CanUse(out act)) return true;
+            if (FloodOfDarkness.CanUse(out act)) return true;
+            if (EdgeOfDarkness.CanUse(out act)) return true;
         }
 
         if (InBurst)
@@ -151,21 +161,21 @@ public sealed class DRK_Default : DRK_Base
 
         if (LivingShadow.CanUse(out act)) return true;
 
-        if (!IsMoving && SaltedEarth.CanUse(out act, mustUse: true)) return true;
+        if (!IsMoving && SaltedEarth.CanUse(out act, CanUseOption.MustUse)) return true;
 
         if (InDeliruim)
         {
-            if (ShadowBringer.CanUse(out act, mustUse: true)) return true;
+            if (ShadowBringer.CanUse(out act, CanUseOption.MustUse)) return true;
 
             if (AbyssalDrain.CanUse(out act)) return true;
             if (CarveandSpit.CanUse(out act)) return true;
 
-            if (ShadowBringer.CanUse(out act, mustUse: true, emptyOrSkipCombo: true)) return true;
+            if (ShadowBringer.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         if (SaltandDarkness.CanUse(out act)) return true;
 
-        if (Plunge.CanUse(out act, mustUse: true) && !IsMoving) return true;
+        if (Plunge.CanUse(out act, CanUseOption.MustUse) && !IsMoving) return true;
 
         return false;
     }

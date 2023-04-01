@@ -75,7 +75,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 风蚀箭
     /// </summary>
-    public static IBaseAction Windbite { get; } = new BaseAction(ActionID.WindBite, isEot: true)
+    public static IBaseAction WindBite { get; } = new BaseAction(ActionID.WindBite, isEot: true)
     {
         TargetStatus = new[] { StatusID.WindBite, StatusID.StormBite }
     };
@@ -85,8 +85,8 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction IronJaws { get; } = new BaseAction(ActionID.IronJaws, isEot: true)
     {
-        TargetStatus = VenomousBite.TargetStatus.Union(Windbite.TargetStatus).ToArray(),
-        ActionCheck = b => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, Windbite.TargetStatus),
+        TargetStatus = VenomousBite.TargetStatus.Union(WindBite.TargetStatus).ToArray(),
+        ActionCheck = b => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, WindBite.TargetStatus),
     };
 
     /// <summary>
@@ -216,7 +216,7 @@ public abstract class BRD_Base : CustomRotation
         //有某些非常危险的状态。
         if (DataCenter.SpecialType == SpecialCommandType.EsunaStanceNorth && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any())
         {
-            if (WardensPaean.CanUse(out act, mustUse: true)) return true;
+            if (WardensPaean.CanUse(out act, CanUseOption.MustUse)) return true;
         }
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
     }

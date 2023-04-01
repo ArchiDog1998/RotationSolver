@@ -180,6 +180,7 @@
   "ConfigWindow_Control_ShowCooldownWindow": "Show Cooldown Window",
   "ConfigWindow_Control_IsWindowLock": "Lock",
   "ConfigWindow_Control_ShowItemsCooldown": "Show Items' Cooldown",
+  "ConfigWindow_Control_UseOriginalCooldown": "Show Original Cooldown",
   "ConfigWindow_Control_CooldownActionOneLine": "The count of cooldown actions in one line.",
   "ConfigWindow_Control_BackgroundColor": "Control Window's Background",
   "ConfigWindow_Control_InfoWindowBg": "Info Window's Background",

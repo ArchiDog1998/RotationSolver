@@ -36,7 +36,7 @@ public sealed class AST_Default : AST_Base
     protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //天星交错
-        if (CelestialIntersection.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (CelestialIntersection.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         //给T减伤，这个很重要。
         if (Exaltation.CanUse(out act)) return true;
@@ -63,7 +63,7 @@ public sealed class AST_Default : AST_Base
         //单体输出
         if (Combust.CanUse(out act)) return true;
         if (Malefic.CanUse(out act)) return true;
-        if (Combust.CanUse(out act, mustUse: true)) return true;
+        if (Combust.CanUse(out act, CanUseOption.MustUse)) return true;
 
         act = null!;
         return false;
@@ -145,10 +145,10 @@ public sealed class AST_Default : AST_Base
         if (InBurst && Divination.CanUse(out act)) return true;
 
         //如果当前还没有皇冠卡牌，那就抽一张
-        if (MinorArcana.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (MinorArcana.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         //如果当前还没有卡牌，那就抽一张
-        if (Draw.CanUse(out act, emptyOrSkipCombo: InBurst)) return true;
+        if (Draw.CanUse(out act, InBurst ? CanUseOption.EmptyOrSkipCombo : CanUseOption.None)) return true;
 
         //光速，创造更多的内插能力技的机会。
         if (IsMoving && Lightspeed.CanUse(out act)) return true;
@@ -159,7 +159,7 @@ public sealed class AST_Default : AST_Base
             //如果没有地星也没有巨星，那就试试看能不能放个。
             if (!Player.HasStatus(true, StatusID.EarthlyDominance, StatusID.GiantDominance))
             {
-                if (EarthlyStar.CanUse(out act, mustUse: true)) return true;
+                if (EarthlyStar.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             //加星星的进攻Buff
             if (Astrodyne.CanUse(out act)) return true;
@@ -187,7 +187,7 @@ public sealed class AST_Default : AST_Base
         //常规奶
         if (EssentialDignity.CanUse(out act)) return true;
         //带盾奶
-        if (CelestialIntersection.CanUse(out act, emptyOrSkipCombo: true)) return true;
+        if (CelestialIntersection.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         //奶量牌，要看情况。
         if (DrawnCrownCard == CardType.LADY && MinorArcana.CanUse(out act)) return true;

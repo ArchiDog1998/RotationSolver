@@ -1848,6 +1848,8 @@ public enum ActionID : uint
     /// </summary>
     Ten = 2259,
 
+    Ninjutsu = 2260,
+
     /// <summary>
     /// 地之印
     /// </summary>

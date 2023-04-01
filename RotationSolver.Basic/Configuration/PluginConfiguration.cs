@@ -54,7 +54,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool RaisePlayerBySwift = true;
     public bool RaiseBrinkOfDeath = true;
     public int LessMPNoRaise = 0;
-    public bool AutoShield = true;
+    public bool AutoTankStance = true;
     public bool AddEnemyListToHostile = true;
     public bool UseAOEWhenManual = false;
     public bool UseAOEAction = true;
@@ -74,7 +74,7 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector3 MovingTargetColor = new(0f, 1f, 0.8f);
     public Vector3 TargetColor = new(1f, 0.2f, 0f);
     public Vector3 SubTargetColor = new(1f, 0.9f, 0f);
-    public bool KeyBoardNoise = true;
+    public bool KeyBoardNoise = false;
     public bool UseGroundBeneficialAbility = true;
     public bool MoveAreaActionFarthest = true;
     public bool StartOnCountdown = true;
@@ -175,6 +175,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;
+    public bool UseOriginalCooldown = true;
 
     public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
     public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();

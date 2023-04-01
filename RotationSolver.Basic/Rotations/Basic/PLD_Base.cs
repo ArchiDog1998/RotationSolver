@@ -5,6 +5,7 @@ using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -25,7 +26,7 @@ public abstract class PLD_Base : CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
 
-    private sealed protected override IBaseAction Shield => IronWill;
+    private sealed protected override IBaseAction TankStance => IronWill;
 
     protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
     protected override bool CanHealAreaAbility => false;
@@ -59,7 +60,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 战女神之怒(王权剑)
     /// </summary>
-    public static IBaseAction RageofHalone { get; } = new BaseAction(ActionID.RageOfHalone);
+    public static IBaseAction RageOfHalone { get; } = new BaseAction(ActionID.RageOfHalone);
 
     /// <summary>
     /// 投盾
@@ -73,7 +74,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 战逃反应
     /// </summary>
-    public static IBaseAction FightorFlight { get; } = new BaseAction(ActionID.FightOrFlight, true);
+    public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, true);
 
     /// <summary>
     /// 全蚀斩
@@ -97,7 +98,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 厄运流转
     /// </summary>
-    public static IBaseAction CircleofScorn { get; } = new BaseAction(ActionID.CircleOfScorn);
+    public static IBaseAction CircleOfScorn { get; } = new BaseAction(ActionID.CircleOfScorn);
 
     /// <summary>
     /// 深奥之灵
@@ -171,7 +172,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 武装戍卫
     /// </summary>
-    public static IBaseAction PassageofArms { get; } = new BaseAction(ActionID.PassageOfArms, true, isTimeline: true);
+    public static IBaseAction PassageOfArms { get; } = new BaseAction(ActionID.PassageOfArms, true, isTimeline: true);
 
     /// <summary>
     /// 保护
@@ -203,9 +204,9 @@ public abstract class PLD_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Intervene)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (Intervene.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (Intervene.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 

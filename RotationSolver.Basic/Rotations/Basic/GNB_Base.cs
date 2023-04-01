@@ -5,6 +5,7 @@ using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -25,7 +26,7 @@ public abstract class GNB_Base : CustomRotation
     protected static byte AmmoComboStep => JobGauge.AmmoComboStep;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
-    private sealed protected override IBaseAction Shield => RoyalGuard;
+    private sealed protected override IBaseAction TankStance => RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
@@ -120,7 +121,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 超火流星
     /// </summary>
-    public static IBaseAction Superbolide { get; } = new BaseAction(ActionID.SuperBolide, true, isTimeline: true);
+    public static IBaseAction SuperBolide { get; } = new BaseAction(ActionID.SuperBolide, true, isTimeline: true);
 
     /// <summary>
     /// 音速破
@@ -151,12 +152,12 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 光之心
     /// </summary>
-    public static IBaseAction HeartofLight { get; } = new BaseAction(ActionID.HeartOfLight, true, isTimeline: true);
+    public static IBaseAction HeartOfLight { get; } = new BaseAction(ActionID.HeartOfLight, true, isTimeline: true);
 
     /// <summary>
     /// 石之心
     /// </summary>
-    public static IBaseAction HeartofStone { get; } = new BaseAction(ActionID.HeartOfStone, true, isTimeline: true)
+    public static IBaseAction HeartOfStone { get; } = new BaseAction(ActionID.HeartOfStone, true, isTimeline: true)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -172,7 +173,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 血壤
     /// </summary>
-    public static IBaseAction Bloodfest { get; } = new BaseAction(ActionID.BloodFest, true)
+    public static IBaseAction BloodFest { get; } = new BaseAction(ActionID.BloodFest, true)
     {
         ActionCheck = b => MaxAmmo - JobGauge.Ammo > 1,
     };
@@ -236,14 +237,14 @@ public abstract class GNB_Base : CustomRotation
 
     protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (Superbolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (SuperBolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
     [RotationDesc(ActionID.RoughDivide)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (RoughDivide.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+        if (RoughDivide.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 }

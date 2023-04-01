@@ -281,6 +281,8 @@ public enum StatusID : ushort
     /// </summary>
     NascentChaos = 1897,
 
+    InnerStrength = 2663,
+
     /// <summary>
     /// 战场风暴
     /// </summary>
@@ -802,6 +804,8 @@ public enum StatusID : ushort
     /// 隐遁
     /// </summary>
     Hidden = 614,
+
+    Bunshin = 1954,
 
     /// <summary>
     /// 天地人

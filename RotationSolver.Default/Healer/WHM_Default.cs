@@ -21,7 +21,7 @@ public sealed class WHM_Default : WHM_Base
     protected override bool GeneralGCD(out IAction act)
     {
         //苦难之心
-        if (AfflatusMisery.CanUse(out act, mustUse: true)) return true;
+        if (AfflatusMisery.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //泄蓝花 团队缺血时优先狂喜之心
         bool liliesNearlyFull = Lily == 2 && LilyAfter(17);
@@ -40,7 +40,7 @@ public sealed class WHM_Default : WHM_Base
         if (Holy.CanUse(out act)) return true;
 
         //单体输出
-        if (Aero.CanUse(out act, mustUse: IsMoving)) return true;
+        if (Aero.CanUse(out act, IsMoving ? CanUseOption.MustUse : CanUseOption.None)) return true;
         if (Stone.CanUse(out act)) return true;
 
         act = null;
@@ -53,7 +53,7 @@ public sealed class WHM_Default : WHM_Base
         if (PresenseOfMind.CanUse(out act)) return true;
 
         //加个法令
-        if (HasHostilesInRange && Assize.CanUse(out act, mustUse: true)) return true;
+        if (HasHostilesInRange && Assize.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }
@@ -154,7 +154,7 @@ public sealed class WHM_Default : WHM_Base
         if (Temperance.CanUse(out act)) return true;
 
         //礼仪之铃
-        if (LiturgyoftheBell.CanUse(out act)) return true;
+        if (LiturgyOfTheBell.CanUse(out act)) return true;
         return false;
     }
 

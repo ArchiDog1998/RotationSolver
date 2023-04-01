@@ -56,7 +56,7 @@ internal static partial class TargetUpdater
 
             if (Service.Config.OnlyAttackInView)
             {
-                if (!Service.GameGui.WorldToScreen(b.Position, out _)) return false;
+                if (!Service.WorldToScreen(b.Position, out _)) return false;
             }
 
             return true;
@@ -68,7 +68,6 @@ internal static partial class TargetUpdater
 
         DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Service.Player.ObjectId);
 
-       
         DataCenter.HasHostilesInRange = DataCenter.HostileTargets.Any(o => o.DistanceToPlayer() <= JobRange);
 
         if (DataCenter.HostileTargets.Count() == 1)
@@ -121,13 +120,14 @@ internal static partial class TargetUpdater
     {
         if (!Service.Config.AddEnemyListToHostile) return new uint[0];
 
-        var addonByName = Service.GameGui.GetAddonByName("_EnemyList", 1);
-        if (addonByName == IntPtr.Zero) return new uint[0];
+        var addons = Service.GetAddon<AddonEnemyList>();
 
-        var addon = (AddonEnemyList*)addonByName;
+        if(!addons.Any()) return new uint[0];
+        var addon = addons.FirstOrDefault();
+
         var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[19];
-        List<uint> list = new List<uint>(addon->EnemyCount);
-        for (var i = 0; i < addon->EnemyCount; i++)
+        List<uint> list = new List<uint>(addon.EnemyCount);
+        for (var i = 0; i < addon.EnemyCount; i++)
         {
             list.Add((uint)numArray->IntArray[8 + i * 6]);
         }
@@ -277,10 +277,15 @@ internal static partial class TargetUpdater
         }
 
         //Delay
-        DataCenter.CanHealSingleAbility = _healDelay1.Delay(DataCenter.CanHealSingleAbility);
-        DataCenter.CanHealSingleSpell = _healDelay2.Delay(DataCenter.CanHealSingleSpell);
-        DataCenter.CanHealAreaAbility = _healDelay3.Delay(DataCenter.CanHealAreaAbility);
-        DataCenter.CanHealAreaSpell = _healDelay4.Delay(DataCenter.CanHealAreaSpell);
+        
+        DataCenter.CanHealSingleAbility = DataCenter.SetAutoStatus(AutoStatus.HealSingleAbility,
+            _healDelay1.Delay(DataCenter.CanHealSingleAbility));
+        DataCenter.CanHealSingleSpell = DataCenter.SetAutoStatus(AutoStatus.HealSingleSpell,
+            _healDelay2.Delay(DataCenter.CanHealSingleSpell));
+        DataCenter.CanHealAreaAbility = DataCenter.SetAutoStatus(AutoStatus.HealAreaAbility,
+            _healDelay3.Delay(DataCenter.CanHealAreaAbility));
+        DataCenter.CanHealAreaSpell = DataCenter.SetAutoStatus(AutoStatus.HealAreaSpell,
+            _healDelay4.Delay(DataCenter.CanHealAreaSpell));
 
         DataCenter.PartyMembersMinHP = DataCenter.PartyMembersHP.Any() ? DataCenter.PartyMembersHP.Min() : 0;
         DataCenter.HPNotFull = DataCenter.PartyMembersMinHP < 1;

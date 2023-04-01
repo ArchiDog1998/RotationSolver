@@ -96,96 +96,77 @@ internal static class PreviewUpdater
 
         ByteColor c = _showCanMove ? _greenColor : _redColor;
 
-        var castBar = Service.GameGui.GetAddonByName("_CastBar", 1);
-        if (castBar == IntPtr.Zero) return;
-        AtkResNode* progressBar = ((AtkUnitBase*)castBar)->UldManager.NodeList[5];
+        var castBars = Service.GetAddon<AddonCastBar>();
+        if (!castBars.Any()) return;
+        var castBar = castBars.FirstOrDefault();
+
+        AtkResNode* progressBar = castBar.AtkUnitBase.UldManager.NodeList[5];
 
         progressBar->AddRed = c.R;
         progressBar->AddGreen = c.G;
         progressBar->AddBlue = c.B;
     }
 
-    static uint _higtLightId;
+    static uint _highLightId;
     private unsafe static void UpdateHightLight()
     {
         var actId = ActionUpdater.NextAction?.AdjustedID ?? 0;
-        if (_higtLightId == actId) return;
-        _higtLightId = actId;
+        if (_highLightId == actId) return;
+        _highLightId = actId;
 
-        HigglightAtionBar((slot, hot) =>
+        HighLightActionBar((slot) =>
         {
-            return Service.Config.TeachingMode && IsActionSlotRight(slot, hot, _higtLightId);
+            return Service.Config.TeachingMode && IsActionSlotRight(slot, _highLightId);
         });
     }
 
     internal static unsafe void PulseActionBar(uint actionID)
     {
-        LoopAllSlotBar((bar, hotbar, index) =>
+        LoopAllSlotBar((bar, index) =>
         {
-            return IsActionSlotRight(bar, hotbar, actionID);
+            return IsActionSlotRight(bar, actionID);
         });
     }
 
-    private unsafe static bool IsActionSlotRight(ActionBarSlot* slot, HotBarSlot* hot, uint actionID)
+    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, uint actionID)
     {
-        if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
-        if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
-
-        return Service.GetAdjustedActionId((uint)slot->ActionId) == actionID;
+       return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
     }
 
-    const int ActionBarSlotsCount = 12;
-    static readonly string[] _barsName = new string[]
-    {
-        "_ActionBar",
-        "_ActionBar01",
-        "_ActionBar02",
-        "_ActionBar03",
-        "_ActionBar04",
-        "_ActionBar05",
-        "_ActionBar06",
-        "_ActionBar07",
-        "_ActionBar08",
-        "_ActionBar09",
-        "_ActionCross",
-    };
-    unsafe delegate bool ActionBarAction(ActionBarSlot* bar, HotBarSlot* hot, uint highLightID);
-    unsafe delegate bool ActionBarPredicate(ActionBarSlot* bar, HotBarSlot* hot);
+    delegate bool ActionBarAction(ActionBarSlot bar,uint highLightID);
+    delegate bool ActionBarPredicate(ActionBarSlot bar);
     private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
     {
-        for (int i = 0; i < _barsName.Length; i++)
+        var index = 0;
+        foreach (var actionBar in Service.GetAddon<AddonActionBarX>().Select(i => i.AddonActionBarBase)
+            .Union(Service.GetAddon<AddonActionCross>().Select(i => i.ActionBarBase)))
         {
-            var name = _barsName[i];
-            var actBarPtr = Service.GameGui.GetAddonByName(name, 1);
-            if (actBarPtr == IntPtr.Zero) continue;
-            var actBar = (AddonActionBarBase*)actBarPtr;
-            var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[i];
-
-            for (int slotIndex = 0; slotIndex < ActionBarSlotsCount; slotIndex++)
+            var slotIndex = 0;
+            foreach (var slot in actionBar.Slot)
             {
-                var hotBarSlot = hotbar->Slot[slotIndex];
-                var actionBarSlot = &actBar->ActionBarSlots[slotIndex];
-                var highLightId = 0x53550000 + (uint)i * ActionBarSlotsCount + (uint)slotIndex;
-                if (doingSomething(actionBarSlot, hotBarSlot, highLightId))
+                var highLightId = 0x53550000 + index;
+                if (doingSomething(slot, (uint)highLightId))
                 {
-                    actBar->PulseActionBarSlot(slotIndex);
+                    actionBar.PulseActionBarSlot(slotIndex); 
                     UIModule.PlaySound(12, 0, 0, 0);
                     return;
                 }
+                slotIndex ++;
+                index++;
             }
-        }
+        }    
     }
 
 
-    private static unsafe void HigglightAtionBar(ActionBarPredicate shouldShow = null)
+    private static unsafe void HighLightActionBar(ActionBarPredicate shouldShow = null)
     {
-        LoopAllSlotBar((slot, hotbar, highLightId) =>
+        LoopAllSlotBar((slot, highLightId) =>
         {
-            var iconAddon = slot->Icon;
+            var iconAddon = slot.Icon;
             if (!iconAddon->AtkResNode.IsVisible) return false;
 
             AtkImageNode* highLightPtr = null;
-            AtkResNode* lastHightLigth = null;
+            AtkResNode* lastHightLight = null;
             AtkResNode* nextNode = null;
 
             for (int nodeIndex = 8; nodeIndex < iconAddon->Component->UldManager.NodeListCount; nodeIndex++)
@@ -200,11 +181,11 @@ internal static class PreviewUpdater
                     var mayLastNode = (AtkImageNode*)node;
                     if (mayLastNode->PartId == 16)
                     {
-                        lastHightLigth = node;
+                        lastHightLight = node;
                         continue;
                     }
                 }
-                if (lastHightLigth != null && highLightPtr == null)
+                if (lastHightLight != null && highLightPtr == null)
                 {
                     nextNode = node;
                     break;
@@ -214,15 +195,15 @@ internal static class PreviewUpdater
             if (highLightPtr == null)
             {
                 //Create new Addon
-                highLightPtr = CloneNode((AtkImageNode*)lastHightLigth);
+                highLightPtr = CloneNode((AtkImageNode*)lastHightLight);
                 highLightPtr->AtkResNode.NodeID = highLightId;
 
                 //Change LinkList
-                lastHightLigth->PrevSiblingNode = (AtkResNode*)highLightPtr;
+                lastHightLight->PrevSiblingNode = (AtkResNode*)highLightPtr;
                 highLightPtr->AtkResNode.PrevSiblingNode = nextNode;
 
                 nextNode->NextSiblingNode = (AtkResNode*)highLightPtr;
-                highLightPtr->AtkResNode.NextSiblingNode = lastHightLigth;
+                highLightPtr->AtkResNode.NextSiblingNode = lastHightLight;
 
                 iconAddon->Component->UldManager.UpdateDrawNodeList();
             }
@@ -239,12 +220,12 @@ internal static class PreviewUpdater
             highLightPtr->AtkResNode.MultiplyBlue = (byte)(color.Z * 100);
 
             //Update Location
-            highLightPtr->AtkResNode.SetPositionFloat(lastHightLigth->X, lastHightLigth->Y);
-            highLightPtr->AtkResNode.SetWidth(lastHightLigth->Width);
-            highLightPtr->AtkResNode.SetHeight(lastHightLigth->Height);
+            highLightPtr->AtkResNode.SetPositionFloat(lastHightLight->X, lastHightLight->Y);
+            highLightPtr->AtkResNode.SetWidth(lastHightLight->Width);
+            highLightPtr->AtkResNode.SetHeight(lastHightLight->Height);
 
             //Update Visibility
-            highLightPtr->AtkResNode.ToggleVisibility(shouldShow?.Invoke(slot, hotbar) ?? false);
+            highLightPtr->AtkResNode.ToggleVisibility(shouldShow?.Invoke(slot) ?? false);
 
             return false;
         });
@@ -269,7 +250,7 @@ internal static class PreviewUpdater
     public unsafe static void Dispose()
     {
         //Hide All highLight.
-        HigglightAtionBar();
+        HighLightActionBar();
         _dtrEntry?.Dispose();
     }
 }

@@ -20,7 +20,7 @@ internal class NextActionWindow : InfoWindow
     {
         var width = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
         DrawGcdCooldown(width, false);
-        ControlWindow.DrawIAction(ActionUpdater.NextAction, width);
+        ControlWindow.DrawIAction(ActionUpdater.NextAction, width, 1);
     }
 
     public static unsafe void DrawGcdCooldown(float width, bool drawTittle)

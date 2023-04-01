@@ -58,24 +58,37 @@ internal class CooldownWindow : InfoWindow
         var pos = ImGui.GetCursorPos();
         var winPos = ImGui.GetWindowPos();
 
-        ControlWindow.DrawIAction(act, width);
+        var r = -1f;
+        if (Service.Config.UseOriginalCooldown)
+        {
+            r = !act.EnoughLevel ? 0: recast == 0 || !act.IsCoolingDown ? 1 : elapsed / recast;
+        }
+        ControlWindow.DrawIAction(act, width, r);
+        var size = ImGui.GetItemRectSize();
         ImGuiHelper.HoveredString(act.Name);
 
         if (!act.EnoughLevel)
         {
-            ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X, pos.Y) + winPos,
-                new Vector2(pos.X + width, pos.Y + width) + winPos, progressCol);
+            if (!Service.Config.UseOriginalCooldown)
+            {
+                ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X, pos.Y) + winPos,
+                    new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, progressCol);
+            }
         }
         else if (act.IsCoolingDown)
         {
-            var ratio = recast == 0 ? 0 : elapsed % recast / recast;
-            var startPos = new Vector2(pos.X + width * ratio, pos.Y) + winPos;
-            ImGui.GetWindowDrawList().AddRectFilled(startPos,
-                new Vector2(pos.X + width, pos.Y + width) + winPos, progressCol);
-            ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, width), black);
-            string time = recast == 0 || !act.EnoughLevel ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
+            if (!Service.Config.UseOriginalCooldown)
+            {
+                var ratio = recast == 0 || !act.EnoughLevel ? 0 : elapsed % recast / recast;
+                var startPos = new Vector2(pos.X + size.X * ratio, pos.Y) + winPos;
+                ImGui.GetWindowDrawList().AddRectFilled(startPos,
+                    new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, progressCol);
+
+                ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), black);
+            }
+            string time = recast == 0  ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
-            var fontPos = new Vector2(pos.X + width / 2 - strSize.X / 2, pos.Y + width / 2 - strSize.Y / 2) + winPos;
+            var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;
 
             TextShade(fontPos, time);
         }

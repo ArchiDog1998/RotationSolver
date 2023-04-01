@@ -1,6 +1,8 @@
-﻿using ImGuiScene;
+﻿using Dalamud.Utility;
+using ImGuiScene;
 using RotationSolver.Basic.Rotations;
 using System.Collections.Generic;
+using System.Net;
 
 namespace RotationSolver.Basic.Data;
 
@@ -22,28 +24,32 @@ public enum IconType : byte
 
 public static class IconSet
 {
-    private static readonly Dictionary<uint, TextureWrap> _textures = new Dictionary<uint, TextureWrap>();
-    private static readonly HashSet<uint> _loadingTexture = new HashSet<uint>();
+    static readonly Dictionary<uint, TextureWrap> _texturesIds = new Dictionary<uint, TextureWrap>();
+    static readonly HashSet<uint> _loadingTextureID = new HashSet<uint>();
+
+    static readonly SortedDictionary<string, TextureWrap> _texturesPath = new SortedDictionary<string, TextureWrap>();
+    static readonly HashSet<string> _loadingTexturePath = new HashSet<string>();
+
     public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
 
     public static TextureWrap GetTexture(uint id)
     {
-        if (!_textures.TryGetValue(id, out var texture))
+        if (!_texturesIds.TryGetValue(id, out var texture))
         {
-            if (!_loadingTexture.Contains(id))
+            if (!_loadingTextureID.Contains(id))
             {
-                _loadingTexture.Add(id);
+                _loadingTextureID.Add(id);
                 Task.Run(() =>
                 {
                     texture = Service.GetTextureIcon(id);
-                    _textures[id] = texture;
+                    _texturesIds[id] = texture;
                 });
             }
 
-            if (!_textures.TryGetValue(0, out texture))
+            if (!_texturesIds.TryGetValue(0, out texture))
             {
                 texture = Service.GetTextureIcon(0);
-                _textures[0] = texture;
+                _texturesIds[0] = texture;
             }
             return texture;
         }
@@ -51,9 +57,67 @@ public static class IconSet
         return texture;
     }
 
+    public static TextureWrap GetTexture(string path)
+    {
+        if (!_texturesPath.TryGetValue(path, out var t))
+        {
+            if (!_loadingTexturePath.Contains(path))
+            {
+                _loadingTexturePath.Add(path);
+
+                try
+                {
+                    Task.Run(async () =>
+                    {
+                        if (path.StartsWith("https:"))
+                        {
+                            var bytes = await LoadBytes(path);
+                            _texturesPath[path] = TryLoadImage(bytes);
+                        }
+                        else if(path.StartsWith("ui/"))
+                        {
+                            _texturesPath[path] = Service.GetTexture(path);
+                        }
+                    });
+                }
+                finally { }
+            }
+            return null;
+        }
+        return t;
+    }
+
+    private static async Task<byte[]> LoadBytes(string url)
+    {
+        var data = await Util.HttpClient.GetAsync(url);
+        if (data.StatusCode == HttpStatusCode.NotFound)
+            return null;
+
+        data.EnsureSuccessStatusCode();
+        return await data.Content.ReadAsByteArrayAsync();
+    }
+
+    private static TextureWrap TryLoadImage(byte[] bytes)
+    {
+        if (bytes == null)
+            return null;
+
+        try
+        {
+            return Service.Interface.UiBuilder.LoadImage(bytes);
+        }
+        catch
+        {
+            return null;
+        }
+    }
     public static void Dispose()
     {
-        foreach (var item in _textures.Values)
+        foreach (var item in _texturesIds.Values)
+        {
+            item?.Dispose();
+        }
+        foreach (var item in _texturesPath.Values)
         {
             item?.Dispose();
         }

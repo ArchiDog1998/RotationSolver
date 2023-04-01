@@ -5,6 +5,8 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
+using RotationSolver.Default.Melee;
+using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Numerics;
 
@@ -31,6 +33,10 @@ internal partial class RotationConfigWindow
             DrawParamTabItem("Last Action", DrawLastAction);
             DrawParamTabItem("CD, EX", DrawCDEX);
             DrawParamTabItem("Icon", DrawIcon);
+            DrawParamTabItem("Effect", () =>
+            {
+                ImGui.Text(Watcher.ShowStr.ToString());
+            });
 
             ImGui.EndTabBar();
         }
@@ -88,11 +94,11 @@ internal partial class RotationConfigWindow
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());
             ImGui.Text("Kind: " + b.GetObjectKind().ToString());
-            ImGui.Text("Subkind: " + b.GetBattleNPCSubKind().ToString());
+            ImGui.Text("SubKind: " + b.GetBattleNPCSubKind().ToString());
             ImGui.Text("EventType: " + b.GetEventType().ToString());
             ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
             ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
-            ImGui.Text("InView: " + Service.GameGui.WorldToScreen(b.Position, out _).ToString());
+            ImGui.Text("InView: " + Service.WorldToScreen(b.Position, out _).ToString());
             ImGui.Text("NameId: " + b.NameId.ToString());
 
             foreach (var status in b.StatusList)
@@ -140,8 +146,12 @@ internal partial class RotationConfigWindow
 
     private void DrawIcon()
     {
-        ImGui.Image(IconSet.GetTexture(60094).ImGuiHandle, new Vector2(24, 24));
-        ImGui.Image(IconSet.GetTexture(71224).ImGuiHandle, new Vector2(24, 24));
+        //ControlWindow.DrawIAction(CustomRotation.Addle, 256, 1.6f);
+        for (int i = 0; i <= 200; i++)
+        {
+            if (i % 10 != 0) ImGui.SameLine();
+            ControlWindow.DrawIAction(CustomRotation.Addle, 48, i / 100f);
+        }
     }
 
     private static void DrawAction(ActionID id, string type)

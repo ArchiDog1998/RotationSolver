@@ -15,12 +15,13 @@ public sealed class DRG_Default : DRG_Base
     }
 
     [RotationDesc(ActionID.SpineShatterDive, ActionID.DragonFireDive)]
-    protected override bool MoveForwardAbility(byte abilityRemain, out IAction act, bool recordTarget = true)
+    protected override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (abilityRemain > 1)
+        if (abilitiesRemaining > 1)
         {
-            if (SpineshatterDive.CanUse(out act, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
-            if (DragonfireDive.CanUse(out act, mustUse: true, emptyOrSkipCombo: true, recordTarget: recordTarget)) return true;
+            
+            if (SpineShatterDive.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
+            if (DragonFireDive.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | option)) return true;
         }
 
         act = null;
@@ -32,7 +33,7 @@ public sealed class DRG_Default : DRG_Base
             || Player.HasStatus(true, StatusID.LanceCharge) && nextGCD.IsTheSameTo(false, FangandClaw))
         {
             //Áú½£
-            if (abilityRemain == 1 && LifeSurge.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            if (abilityRemain == 1 && LifeSurge.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         return base.EmergencyAbility(abilityRemain, nextGCD, out act);
@@ -43,24 +44,24 @@ public sealed class DRG_Default : DRG_Base
         if (InBurst)
         {
             //ÃÍÇ¹
-            if (LanceCharge.CanUse(out act, mustUse: true))
+            if (LanceCharge.CanUse(out act, CanUseOption.MustUse))
             {
                 if (abilitiesRemaining == 1 && !Player.HasStatus(true, StatusID.PowerSurge)) return true;
                 if (Player.HasStatus(true, StatusID.PowerSurge)) return true;
             }
 
             //¾ÞÁúÊÓÏß
-            if (DragonSight.CanUse(out act, mustUse: true)) return true;
+            if (DragonSight.CanUse(out act, CanUseOption.MustUse)) return true;
 
             //Õ½¶·Á¬µ»
-            if (BattleLitany.CanUse(out act, mustUse: true)) return true;
+            if (BattleLitany.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         //ËÀÕßÖ®°¶
-        if (Nastrond.CanUse(out act, mustUse: true)) return true;
+        if (Nastrond.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //×¹ÐÇ³å
-        if (Stardiver.CanUse(out act, mustUse: true)) return true;
+        if (StarDiver.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //¸ßÌø
         if (HighJump.EnoughLevel)
@@ -73,26 +74,26 @@ public sealed class DRG_Default : DRG_Base
         }
 
         //³¢ÊÔ½øÈëºìÁúÑª
-        if (Geirskogul.CanUse(out act, mustUse: true)) return true;
+        if (Geirskogul.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //ÆÆËé³å
-        if (SpineshatterDive.CanUse(out act, emptyOrSkipCombo: true))
+        if (SpineShatterDive.CanUse(out act, CanUseOption.EmptyOrSkipCombo))
         {
             if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedOneChargeAfterGCD(3)) return true;
         }
-        if (Player.HasStatus(true, StatusID.PowerSurge) && SpineshatterDive.CurrentCharges != 1 && SpineshatterDive.CanUse(out act)) return true;
+        if (Player.HasStatus(true, StatusID.PowerSurge) && SpineShatterDive.CurrentCharges != 1 && SpineShatterDive.CanUse(out act)) return true;
 
         //»ÃÏó³å
         if (MirageDive.CanUse(out act)) return true;
 
         //ÁúÑ×³å
-        if (DragonfireDive.CanUse(out act, mustUse: true))
+        if (DragonFireDive.CanUse(out act, CanUseOption.MustUse))
         {
             if (Player.HasStatus(true, StatusID.LanceCharge) && LanceCharge.ElapsedOneChargeAfterGCD(3)) return true;
         }
 
         //ÌìÁúµã¾¦
-        if (WyrmwindThrust.CanUse(out act, mustUse: true)) return true;
+        if (WyrmwindThrust.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }

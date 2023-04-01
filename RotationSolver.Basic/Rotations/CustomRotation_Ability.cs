@@ -12,7 +12,7 @@ public abstract partial class CustomRotation
     private bool Ability(byte abilitiesRemaining, IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         act = DataCenter.CommandNextAction;
-        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _, mustUse: true, skipDisable: true)) return true;
+        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,  CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return true;
 
         if (!Service.Config.UseAbility || Player.TotalCastTime - Player.CurrentCastTime > Service.Config.AbilitiesInterval)
         {
@@ -43,12 +43,12 @@ public abstract partial class CustomRotation
 
         if (GeneralUsingAbility(role, out act)) return true;
 
-        if (GeneralAbility(abilitiesRemaining, out act)) return true;
         if (HasHostilesInRange && AttackAbility(abilitiesRemaining, out act)) return true;
+        if (GeneralAbility(abilitiesRemaining, out act)) return true;
 
         //Run!
         if (!InCombat && IsMoving && role == JobRole.RangedPhysical
-            && Peloton.CanUse(out act, mustUse: true)) return true;
+            && Peloton.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }
@@ -56,7 +56,9 @@ public abstract partial class CustomRotation
     private bool InterruptAbility(JobRole role, out IAction act)
     {
         act = null;
-        if (!DataCenter.CanInterruptTargets.Any()) return false;
+        if (!DataCenter.SetAutoStatus(AutoStatus.Interrupt, DataCenter.CanInterruptTargets.Any()))
+            return false;
+
 
         switch (role)
         {
@@ -87,16 +89,15 @@ public abstract partial class CustomRotation
                 break;
 
             case SpecialCommandType.EsunaStanceNorth:
-                if (Shield.CanUse(out act)) return true;
+                if (TankStance.CanUse(out act)) return true;
                 break;
         }
 
-        if (Service.Config.AutoShield)
+        if (DataCenter.SetAutoStatus(AutoStatus.TankStance, Service.Config.AutoTankStance
+            && !DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
+            && !HasTankStance && TankStance.CanUse(out act)))
         {
-            if (!DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus)))
-            {
-                if (!HasTankStance && Shield.CanUse(out act)) return true;
-            }
+            return true;
         }
 
         return false;
@@ -155,17 +156,20 @@ public abstract partial class CustomRotation
     private bool AutoDefense(byte abilitiesRemaining, JobRole role, bool helpDefenseAOE, bool helpDefenseSingle, out IAction act)
     {
         act = null;
-
-        if (!InCombat || !HasHostilesInRange) return false;
+        if (!InCombat || !HasHostilesInRange)
+        {
+            DataCenter.SetAutoStatus(AutoStatus.Provoke, false);
+            return false;
+        }
 
         //Auto Provoke
-        if (role == JobRole.Tank
+        if (DataCenter.SetAutoStatus(AutoStatus.Provoke, role == JobRole.Tank
             && (Service.Config.AutoProvokeForTank || DataCenter.AllianceTanks.Count() < 2)
-            && TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count())
-
+            && TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count()))
         {
-            if (!HasTankStance && Shield.CanUse(out act)) return true;
-            if (Provoke.CanUse(out act, mustUse: true)) return true;
+
+            if (!HasTankStance && TankStance.CanUse(out act)) return true;
+            if (Provoke.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         //No using defense abilities.
@@ -251,13 +255,13 @@ public abstract partial class CustomRotation
         if (nextGCD is BaseAction action)
         {
             if (Job.GetJobRole() is JobRole.Healer or JobRole.RangedMagical &&
-            action.CastTime >= 5 && Swiftcast.CanUse(out act, emptyOrSkipCombo: true)) return true;
+            action.CastTime >= 5 && Swiftcast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
             if (Service.Config.AutoUseTrueNorth && abilitiesRemaining == 1 && action.EnemyPositional != EnemyPositional.None && action.Target != null)
             {
                 if (action.EnemyPositional != action.Target.FindEnemyPositional() && action.Target.HasPositional())
                 {
-                    if (TrueNorth.CanUse(out act, emptyOrSkipCombo: true)) return true;
+                    if (TrueNorth.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
                 }
             }
         }
@@ -267,7 +271,7 @@ public abstract partial class CustomRotation
     }
 
     [RotationDesc(DescType.MoveForwardAbility)]
-    protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected virtual bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
         act = null; return false;
     }

@@ -126,14 +126,14 @@ public abstract partial class BLM_Base : CustomRotation
         {
         }
 
-        public override bool CanUse(out IAction act, bool mustUse = false, bool emptyOrSkipCombo = false, bool skipDisable = false, uint gcdCountForAbility = 0, bool recordTarget = true)
+        public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
         {
             if (ElementTimeEndAfter(CastTime - 0.1f))
             {
                 act = null;
                 return false;
             }
-            return base.CanUse(out act, mustUse, emptyOrSkipCombo, skipDisable);
+            return base.CanUse(out act, option, gcdCountForAbility);
         }
     }
 
@@ -173,7 +173,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 激情咏唱
     /// </summary>
-    public static IBaseAction Sharpcast { get; } = new BaseAction(ActionID.SharpCast)
+    public static IBaseAction SharpCast { get; } = new BaseAction(ActionID.SharpCast)
     {
         StatusProvide = new[] { StatusID.SharpCast },
         ActionCheck = b => HasHostilesInRange,
@@ -182,7 +182,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 三连咏唱
     /// </summary>
-    public static IBaseAction Triplecast { get; } = new BaseAction(ActionID.TripleCast)
+    public static IBaseAction TripleCast { get; } = new BaseAction(ActionID.TripleCast)
     {
         StatusProvide = Swiftcast.StatusProvide,
     };
@@ -190,7 +190,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 黑魔纹
     /// </summary>
-    public static IBaseAction Leylines { get; } = new BaseAction(ActionID.LeyLines, true, shouldEndSpecial: true)
+    public static IBaseAction LeyLines { get; } = new BaseAction(ActionID.LeyLines, true, shouldEndSpecial: true)
     {
         StatusProvide = new[] { StatusID.LeyLines, },
     };
@@ -200,7 +200,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// </summary>
     public static IBaseAction BetweenTheLines { get; } = new BaseAction(ActionID.BetweenTheLines, true, shouldEndSpecial: true)
     {
-        StatusNeed = Leylines.StatusProvide,
+        StatusNeed = LeyLines.StatusProvide,
     };
 
     /// <summary>
@@ -330,7 +330,7 @@ public abstract partial class BLM_Base : CustomRotation
     [RotationDesc(ActionID.AetherialManipulation)]
     protected sealed override bool MoveForwardGCD(out IAction act)
     {
-        if (AetherialManipulation.CanUse(out act, mustUse: true)) return true;
+        if (AetherialManipulation.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.MoveForwardGCD(out act);
     }
 }

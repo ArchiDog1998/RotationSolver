@@ -19,7 +19,6 @@ public static class ConfigurationHelper
         {ActionID.TrickAttack, new(EnemyPositional.Rear, new byte[] { 25 }) },
         {ActionID.AeolianEdge,new(EnemyPositional.Rear, new byte[] { 30, 68 }) },
         {ActionID.ArmorCrush, new(EnemyPositional.Flank, new byte[] { 30, 66 }) },
-        {ActionID.Suiton, new(EnemyPositional.Rear, new byte[] { }) },
         {ActionID.Gibbet, new(EnemyPositional.Flank , new byte[] { 11 })},
         {ActionID.Gallows, new(EnemyPositional.Rear, new byte[] { 11 }) },
         {ActionID.Gekko, new(EnemyPositional.Rear , new byte[] { 68, 29, 72 })},

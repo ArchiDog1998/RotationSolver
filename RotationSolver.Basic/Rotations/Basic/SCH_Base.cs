@@ -136,7 +136,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 破阵法
     /// </summary>
-    public static IBaseAction ArtofWar { get; } = new BaseAction(ActionID.ArtOfWar);//裂阵法 25866
+    public static IBaseAction ArtOfWar { get; } = new BaseAction(ActionID.ArtOfWar);//裂阵法 25866
     #endregion
     #region 仙女
     /// <summary>

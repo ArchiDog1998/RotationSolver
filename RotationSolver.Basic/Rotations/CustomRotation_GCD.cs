@@ -11,7 +11,7 @@ public abstract partial class CustomRotation
     private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         IAction act = DataCenter.CommandNextAction;
-        if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, mustUse: true, skipDisable: true)) return act;
+        if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return act;
 
         if (EmergencyGCD(out act)) return act;
 
@@ -35,15 +35,16 @@ public abstract partial class CustomRotation
         if (specialType == SpecialCommandType.DefenseSingle && DefenseSingleGCD(out act)) return act;
 
         //Auto Defense
-        if (helpDefenseAOE && DefenseAreaGCD(out act)) return act;
-        if (helpDefenseSingle && DefenseSingleGCD(out act)) return act;
+        if (DataCenter.SetAutoStatus(AutoStatus.DefenseArea, helpDefenseAOE) && DefenseAreaGCD(out act)) return act;
+        if (DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, helpDefenseSingle) && DefenseSingleGCD(out act)) return act;
 
         //Esuna
-        if ((specialType == SpecialCommandType.EsunaStanceNorth || !HasHostilesInRange || Service.Config.EsunaAll)
+        if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (specialType == SpecialCommandType.EsunaStanceNorth 
+            || !HasHostilesInRange || Service.Config.EsunaAll)
             && DataCenter.WeakenPeople.Any() 
-            || DataCenter.DyingPeople.Any())
+            || DataCenter.DyingPeople.Any()))
         {
-            if (Job.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, mustUse: true)) return act;
+            if (Job.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, CanUseOption.MustUse)) return act;
         }
 
         if (GeneralGCD(out var action)) return action;
@@ -56,33 +57,41 @@ public abstract partial class CustomRotation
     private bool RaiseSpell(SpecialCommandType specialType, out IAction act, byte actabilityRemain, bool mustUse)
     {
         act = null;
-        if (Raise == null) return false;
-        if (Player.CurrentMp <= Service.Config.LessMPNoRaise) return false;
+        if (Raise == null || Player.CurrentMp <= Service.Config.LessMPNoRaise)
+        {
+            return DataCenter.SetAutoStatus(AutoStatus.Raise, false);
+        }
 
-        if (specialType == SpecialCommandType.RaiseShirk && DataCenter.DeathPeopleAll.Any()) return true;
+        if (specialType == SpecialCommandType.RaiseShirk && DataCenter.DeathPeopleAll.Any())
+        {
+            return true;
+        }
 
         if ((Service.Config.RaiseAll ? DataCenter.DeathPeopleAll.Any() : DataCenter.DeathPeopleParty.Any())
             && Raise.CanUse(out act))
         {
             if (HasSwift)
             {
-                return true;
+                return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
             }
             else if (mustUse)
             {
-                if(Swiftcast.CanUse(out act)) return true;
+                if(Swiftcast.CanUse(out act))
+                {
+                    return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
+                }
                 else
                 {
                     act = Raise;
-                    return true;
+                    return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
             }
             else if (Service.Config.RaisePlayerBySwift && !Swiftcast.IsCoolingDown && actabilityRemain > 0)
             {
-                return true;
+                return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
             }
         }
-        return false;
+        return DataCenter.SetAutoStatus(AutoStatus.Raise, false);
     }
 
     protected virtual bool EmergencyGCD(out IAction act)

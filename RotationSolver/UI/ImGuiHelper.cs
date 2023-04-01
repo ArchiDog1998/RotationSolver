@@ -474,23 +474,24 @@ internal static class ImGuiHelper
             var attrs = rotation.GetType().GetCustomAttributes<LinkDescriptionAttribute>();
             if (attrs.Any())
             {
-                ImGui.SameLine();
-                Spacing();
-
                 var display = ImGui.GetIO().DisplaySize * 0.7f;
 
                 foreach (var texture in attrs)
                 {
-                    if (IconButton(FontAwesomeIcon.Question,
-                        "Button" + texture.GetHashCode().ToString()))
+                    ImGui.SameLine();
+                    Spacing();
+                    var hasTexture = texture.Texture != null;
+
+                    if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.QuestionCircle,
+                        "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
                     {
                         Util.OpenLink(texture.Path);
                     }
-                    if (ImGui.IsItemHovered() && (texture.Texture != null || !string.IsNullOrEmpty( texture.Description)))
+                    if (ImGui.IsItemHovered() && (hasTexture || !string.IsNullOrEmpty( texture.Description)))
                     {
                         DrawTooltip(() =>
                         {
-                            if(texture.Texture != null)
+                            if(hasTexture)
                             {
                                 var ratio = Math.Min(1, Math.Min(display.X / texture.Texture.Width, display.Y / texture.Texture.Height));
                                 var size = new Vector2(texture.Texture.Width * ratio,
@@ -552,8 +553,8 @@ internal static class ImGuiHelper
                 ImGui.Text("Cast Time: " + action.CastTime.ToString());
                 ImGui.Text("MP: " + action.MPNeed.ToString());
                 ImGui.Text($"Can Use: {action.CanUse(out _)} ");
-                ImGui.Text("Must Use:" + action.CanUse(out _, mustUse: true).ToString());
-                ImGui.Text("Empty Use:" + action.CanUse(out _, emptyOrSkipCombo: true).ToString());
+                ImGui.Text("Must Use:" + action.CanUse(out _,  CanUseOption.MustUse).ToString());
+                ImGui.Text("Empty Use:" + action.CanUse(out _, CanUseOption.EmptyOrSkipCombo).ToString());
                 ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(action.AdjustedID).ToString());
                 if (action.Target != null)
                 {
