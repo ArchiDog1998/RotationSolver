@@ -26,7 +26,7 @@ public abstract class GNB_Base : CustomRotation
     protected static byte AmmoComboStep => JobGauge.AmmoComboStep;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
-    private sealed protected override IBaseAction Shield => RoyalGuard;
+    private sealed protected override IBaseAction TankStance => RoyalGuard;
 
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;

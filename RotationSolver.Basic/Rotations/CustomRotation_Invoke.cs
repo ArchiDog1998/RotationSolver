@@ -50,7 +50,7 @@ public abstract partial class CustomRotation
         EsunaStanceNorthAbility = role switch
         {
             JobRole.Melee => TrueNorth.CanUse(out act) ? act : null,
-            JobRole.Tank => Shield.CanUse(out act) ? act : null,
+            JobRole.Tank => TankStance.CanUse(out act) ? act : null,
             _ => null,
         };
         RaiseShirkGCD = role switch

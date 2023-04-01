@@ -16,6 +16,19 @@ namespace RotationSolver.Basic;
 public static class DataCenter
 {
     public static bool InHighEndDuty { get; set; } = false;
+    public static AutoStatus AutoStatus { get; private set; } = AutoStatus.None;
+    public static bool SetAutoStatus(AutoStatus status, bool keep)
+    {
+        if (keep)
+        {
+            AutoStatus |= status;
+        }
+        else
+        {
+            AutoStatus &= ~status;
+        }
+        return keep;
+    }
 
     private static List<NextAct> NextActs = new List<NextAct>();
     public static IBaseAction TimeLineAction { internal get; set; }

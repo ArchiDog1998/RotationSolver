@@ -16,7 +16,7 @@ public abstract class WAR_Base : CustomRotation
 
     protected static byte BeastGauge => JobGauge.BeastGauge;
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
-    private sealed protected override IBaseAction Shield => Defiance;
+    private sealed protected override IBaseAction TankStance => Defiance;
 
     /// <summary>
     ///  ÿª§

@@ -58,18 +58,12 @@ public sealed class NIN_Default : NIN_Base
         if(_ninActionAim != act)
         {
             _ninActionAim = act;
-#if DEBUG
-            Service.ChatGui.Print("Set " + act.Name);
-#endif
         }
     }
     private static void ClearNinjutsu()
     {
         if (_ninActionAim != null)
         {
-#if DEBUG
-            Service.ChatGui.Print("Clear " + _ninActionAim.Name);
-#endif
             _ninActionAim = null;
         }
     }
@@ -273,7 +267,7 @@ public sealed class NIN_Default : NIN_Base
         //No Ninjutsu
         if (AdjustId(ActionID.Ninjutsu) is ActionID.Ninjutsu or ActionID.RabbitMedium)
         {
-            if (!CombatElapsedLess(16) && FleetingRaiju.CanUse(out act)) return true;
+            if (!CombatElapsedLess(10) && FleetingRaiju.CanUse(out act)) return true;
             if (Player.HasStatus(true, StatusID.RaijuReady)) return false;
 
             if (InBurstStatus && PhantomKamaitachi.CanUse(out act)) return true;

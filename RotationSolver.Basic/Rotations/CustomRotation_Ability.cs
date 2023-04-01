@@ -56,7 +56,9 @@ public abstract partial class CustomRotation
     private bool InterruptAbility(JobRole role, out IAction act)
     {
         act = null;
-        if (!DataCenter.CanInterruptTargets.Any()) return false;
+        if (!DataCenter.SetAutoStatus(AutoStatus.Interrupt, DataCenter.CanInterruptTargets.Any()))
+            return false;
+
 
         switch (role)
         {
@@ -87,16 +89,15 @@ public abstract partial class CustomRotation
                 break;
 
             case SpecialCommandType.EsunaStanceNorth:
-                if (Shield.CanUse(out act)) return true;
+                if (TankStance.CanUse(out act)) return true;
                 break;
         }
 
-        if (Service.Config.AutoShield)
+        if (DataCenter.SetAutoStatus(AutoStatus.TankStance, Service.Config.AutoTankStance
+            && !DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
+            && !HasTankStance && TankStance.CanUse(out act)))
         {
-            if (!DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus)))
-            {
-                if (!HasTankStance && Shield.CanUse(out act)) return true;
-            }
+            return true;
         }
 
         return false;
@@ -155,16 +156,19 @@ public abstract partial class CustomRotation
     private bool AutoDefense(byte abilitiesRemaining, JobRole role, bool helpDefenseAOE, bool helpDefenseSingle, out IAction act)
     {
         act = null;
-
-        if (!InCombat || !HasHostilesInRange) return false;
+        if (!InCombat || !HasHostilesInRange)
+        {
+            DataCenter.SetAutoStatus(AutoStatus.Provoke, false);
+            return false;
+        }
 
         //Auto Provoke
-        if (role == JobRole.Tank
+        if (DataCenter.SetAutoStatus(AutoStatus.Provoke, role == JobRole.Tank
             && (Service.Config.AutoProvokeForTank || DataCenter.AllianceTanks.Count() < 2)
-            && TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count())
-
+            && TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count()))
         {
-            if (!HasTankStance && Shield.CanUse(out act)) return true;
+
+            if (!HasTankStance && TankStance.CanUse(out act)) return true;
             if (Provoke.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 

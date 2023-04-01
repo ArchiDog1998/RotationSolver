@@ -277,10 +277,15 @@ internal static partial class TargetUpdater
         }
 
         //Delay
-        DataCenter.CanHealSingleAbility = _healDelay1.Delay(DataCenter.CanHealSingleAbility);
-        DataCenter.CanHealSingleSpell = _healDelay2.Delay(DataCenter.CanHealSingleSpell);
-        DataCenter.CanHealAreaAbility = _healDelay3.Delay(DataCenter.CanHealAreaAbility);
-        DataCenter.CanHealAreaSpell = _healDelay4.Delay(DataCenter.CanHealAreaSpell);
+        
+        DataCenter.CanHealSingleAbility = DataCenter.SetAutoStatus(AutoStatus.HealSingleAbility,
+            _healDelay1.Delay(DataCenter.CanHealSingleAbility));
+        DataCenter.CanHealSingleSpell = DataCenter.SetAutoStatus(AutoStatus.HealSingleSpell,
+            _healDelay2.Delay(DataCenter.CanHealSingleSpell));
+        DataCenter.CanHealAreaAbility = DataCenter.SetAutoStatus(AutoStatus.HealAreaAbility,
+            _healDelay3.Delay(DataCenter.CanHealAreaAbility));
+        DataCenter.CanHealAreaSpell = DataCenter.SetAutoStatus(AutoStatus.HealAreaSpell,
+            _healDelay4.Delay(DataCenter.CanHealAreaSpell));
 
         DataCenter.PartyMembersMinHP = DataCenter.PartyMembersHP.Any() ? DataCenter.PartyMembersHP.Min() : 0;
         DataCenter.HPNotFull = DataCenter.PartyMembersMinHP < 1;

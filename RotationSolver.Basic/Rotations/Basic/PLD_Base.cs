@@ -26,7 +26,7 @@ public abstract class PLD_Base : CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
 
-    private sealed protected override IBaseAction Shield => IronWill;
+    private sealed protected override IBaseAction TankStance => IronWill;
 
     protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
     protected override bool CanHealAreaAbility => false;

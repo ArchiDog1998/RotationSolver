@@ -46,7 +46,7 @@ public abstract class DRK_Base : CustomRotation
     }
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
-    private sealed protected override IBaseAction Shield => Grit;
+    private sealed protected override IBaseAction TankStance => Grit;
 
     /// <summary>
     /// 重斩

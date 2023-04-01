@@ -146,6 +146,8 @@ internal class ControlWindow : Window
              TargetHostileType.TargetsHaveTarget => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
              _ => string.Empty,
         });
+
+        ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)

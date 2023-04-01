@@ -54,7 +54,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool RaisePlayerBySwift = true;
     public bool RaiseBrinkOfDeath = true;
     public int LessMPNoRaise = 0;
-    public bool AutoShield = true;
+    public bool AutoTankStance = true;
     public bool AddEnemyListToHostile = true;
     public bool UseAOEWhenManual = false;
     public bool UseAOEAction = true;

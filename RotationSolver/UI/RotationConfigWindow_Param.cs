@@ -307,7 +307,7 @@ internal partial class RotationConfigWindow
                 LocalizationManager.RightLang.ConfigWindow_Param_UseDefenceAbilityDesc);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoShield,
-                ref Service.Config.AutoShield);
+                ref Service.Config.AutoTankStance);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoProvokeForTank,
                 ref Service.Config.AutoProvokeForTank,
