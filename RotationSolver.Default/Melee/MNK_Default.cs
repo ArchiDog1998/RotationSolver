@@ -7,7 +7,7 @@ public sealed class MNK_Default : MNK_Base
 {
     public override string GameVersion => "6.35";
 
-    public override string RotationName => "Lunar Solar Opener";
+    public override string RotationName => "Lunar Solar";
 
     protected override IRotationConfigSet CreateConfiguration()
     {

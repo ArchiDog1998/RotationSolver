@@ -805,6 +805,8 @@ public enum StatusID : ushort
     /// </summary>
     Hidden = 614,
 
+    Bunshin = 1954,
+
     /// <summary>
     /// 天地人
     /// </summary>

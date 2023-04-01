@@ -12,7 +12,7 @@ public sealed class WAR_Default : WAR_Base
 
     protected override IAction CountDownAction(float remainTime)
     {
-        if (remainTime <= Service.Config.AbilitiesInterval)
+        if (remainTime <= Service.Config.CountDownAhead)
         {
             if (HasTankStance)
             {

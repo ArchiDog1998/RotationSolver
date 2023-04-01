@@ -147,7 +147,7 @@ internal static class PreviewUpdater
                 var highLightId = 0x53550000 + index;
                 if (doingSomething(slot, (uint)highLightId))
                 {
-                    actionBar.PulseActionBarSlot(slotIndex);
+                    actionBar.PulseActionBarSlot(slotIndex); 
                     UIModule.PlaySound(12, 0, 0, 0);
                     return;
                 }

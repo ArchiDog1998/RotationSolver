@@ -78,7 +78,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction Mug { get; } = new BaseAction(ActionID.Mug)
     {
-        ActionCheck = b => JobGauge.Ninki <= 50,
+        ActionCheck = b => JobGauge.Ninki <= 60,
     };
 
     /// <summary>

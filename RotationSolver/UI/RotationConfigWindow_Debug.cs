@@ -5,6 +5,7 @@ using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
+using RotationSolver.Default.Melee;
 using RotationSolver.Rotations.CustomRotation;
 using RotationSolver.Updaters;
 using System.Numerics;

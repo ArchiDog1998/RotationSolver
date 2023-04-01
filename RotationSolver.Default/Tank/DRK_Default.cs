@@ -53,7 +53,7 @@ public sealed class DRK_Default : DRK_Base
     protected override IAction CountDownAction(float remainTime)
     {
         //Provoke when has Shield.
-        if(remainTime <= Service.Config.AbilitiesInterval)
+        if(remainTime <= Service.Config.CountDownAhead)
         {
             if (HasTankStance)
             {
