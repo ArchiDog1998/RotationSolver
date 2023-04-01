@@ -22,6 +22,8 @@ public partial class BaseAction
 
     public Func<BattleChara, bool> ActionCheck { get; set; } = null;
 
+    protected virtual bool CheckBadStatus => true;
+
     private bool WillCooldown
     {
         get
@@ -56,7 +58,7 @@ public partial class BaseAction
 
         if (!option.HasFlag(CanUseOption.SkipDisable) && !IsEnabled) return false;
 
-        if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
+        if (CheckBadStatus && ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
             return false;
 
         if (!EnoughLevel) return false;

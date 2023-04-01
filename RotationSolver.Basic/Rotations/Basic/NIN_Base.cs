@@ -5,13 +5,12 @@ using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Rotations.CustomRotation;
-using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public interface INinAction : IBaseAction
 {
-    IBaseAction[] Ninjutsus { get; }
+    IBaseAction[] Ninjutsu { get; }
 }
 
 
@@ -36,11 +35,12 @@ public abstract class NIN_Base : CustomRotation
 
     public class NinAction : BaseAction, INinAction
     {
-        public IBaseAction[] Ninjutsus { get; }
-        internal NinAction(ActionID actionID, params IBaseAction[] ninjutsus)
+        protected override bool CheckBadStatus => false;
+        public IBaseAction[] Ninjutsu { get; }
+        internal NinAction(ActionID actionID, params IBaseAction[] ninjutsu)
             : base(actionID, false, false)
         {
-            Ninjutsus = ninjutsus;
+            Ninjutsu = ninjutsu;
         }
     }
 
@@ -302,7 +302,6 @@ public abstract class NIN_Base : CustomRotation
     public static INinAction Suiton { get; } = new NinAction(ActionID.Suiton, Ten, Chi, Jin)
     {
         StatusProvide = new[] { StatusID.Suiton },
-        ActionCheck = b => TrickAttack.WillHaveOneChargeGCD(1, 1),
     };
 
     /// <summary>

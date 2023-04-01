@@ -74,7 +74,7 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector3 MovingTargetColor = new(0f, 1f, 0.8f);
     public Vector3 TargetColor = new(1f, 0.2f, 0f);
     public Vector3 SubTargetColor = new(1f, 0.9f, 0f);
-    public bool KeyBoardNoise = true;
+    public bool KeyBoardNoise = false;
     public bool UseGroundBeneficialAbility = true;
     public bool MoveAreaActionFarthest = true;
     public bool StartOnCountdown = true;
