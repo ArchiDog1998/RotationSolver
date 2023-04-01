@@ -70,6 +70,7 @@ namespace RotationSolver.Commands
             if (DataCenter.StateType != StateCommandType.Cancel) DoStateCommandType(StateCommandType.Cancel);
         }
 
+        static float _lastCountdownTime = 0;
         internal static void UpdateRotationState()
         {
             if (Service.Conditions[ConditionFlag.LoggingOut])
@@ -92,9 +93,16 @@ namespace RotationSolver.Commands
             {
                 CancelState();
             }
+            //Cancel when pull
+            else if (Service.CountDownTime == 0 && _lastCountdownTime > 0.2f)
+            {
+                _lastCountdownTime = 0;
+                CancelState();
+            }
             //Auto start at count Down.
             else if (Service.Config.StartOnCountdown && Service.CountDownTime > 0)
             {
+                _lastCountdownTime = Service.CountDownTime;
                 if (DataCenter.StateType == StateCommandType.Cancel)
                 {
                     DoStateCommandType(StateCommandType.Smart);

@@ -47,7 +47,8 @@ public class Service : IDisposable
 
     private static IntPtr _countDown = IntPtr.Zero;
 
-    public static float CountDownTime => _countDown == IntPtr.Zero ? 0 : Math.Max(0, Marshal.PtrToStructure<float>(_countDown + 0x2c));
+    static float _lastTime = 0;
+    public static float CountDownTime { get; private set; }
 
     public static GetChatBoxModuleDelegate GetChatBox { get; private set; }
 
@@ -58,7 +59,15 @@ public class Service : IDisposable
             SigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9"));
 
         SignatureHelper.Initialise(this);
+        Framework.Update += Framework_Update;
         _countdownTimerHook?.Enable();
+    }
+
+    private void Framework_Update(Framework framework)
+    {
+        var value = _countDown == IntPtr.Zero ? 0 : Math.Max(0, Marshal.PtrToStructure<float>(_countDown + 0x2c));
+        if (_lastTime == value) CountDownTime = 0;
+        else CountDownTime = _lastTime = value;
     }
 
     private IntPtr CountdownTimerFunc(IntPtr value)
@@ -70,6 +79,7 @@ public class Service : IDisposable
     public void Dispose()
     {
         _countdownTimerHook?.Dispose();
+        Framework.Update -= Framework_Update;
     }
     public static PluginConfiguration Config { get; set; }
 

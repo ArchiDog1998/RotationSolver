@@ -62,7 +62,6 @@ public class Watcher : IDisposable
         ShowStr = set.ToString();
 
         //获得身为技能是否正确flag
-        //Marshal.ReadByte(effectArray + 3);
         RecordAction(set.Target, set.Action, effectArray->Param2);
     }
 
@@ -98,8 +97,6 @@ public class Watcher : IDisposable
             }
         }
     }
-
-
 
     public void Dispose()
     {

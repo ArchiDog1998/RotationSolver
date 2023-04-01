@@ -159,7 +159,7 @@ public partial class BaseAction
 
         //如果当前目标是Boss且有身位，放他身上。
         if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && 
-            b.IsBoss() && b.HasPositional() && b.HitboxRadius < _action.EffectRange + 2)
+            b.IsBoss() && b.HasPositional() && b.HitboxRadius <= 8)
         {
             _position = b.Position;
         }
