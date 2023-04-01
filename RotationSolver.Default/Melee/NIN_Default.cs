@@ -3,6 +3,7 @@ namespace RotationSolver.Default.Melee;
 [RotationDesc(ActionID.Mug)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Melee/NIN_Default.cs")]
 [LinkDescription("https://www.thebalanceffxiv.com/img/jobs/nin/earlymug3.png")]
+[LinkDescription("https://www.thebalanceffxiv.com/img/jobs/nin/nininfographicwindows.png")]
 [LinkDescription("https://docs.google.com/spreadsheets/u/0/d/1BZZrqWMRrugCeiBICEgjCz2vRNXt_lRTxPnSQr24Em0/htmlview#",
     "Under the “Planner (With sample section)”")]
 public sealed class NIN_Default : NIN_Base
@@ -12,8 +13,9 @@ public sealed class NIN_Default : NIN_Base
     public override string RotationName => "Standard";
 
     private static INinAction _ninActionAim = null;
-    private static bool InBurstStatus => TrickAttack.IsCoolingDown && !TrickAttack.ElapsedAfter(14) 
-        || Mug.IsCoolingDown && !Mug.ElapsedAfter(19);
+    private static bool InTrickAttack => TrickAttack.IsCoolingDown && !TrickAttack.ElapsedAfter(17);
+    private static bool InMug => Mug.IsCoolingDown && !Mug.ElapsedAfter(19);
+    private static bool NoNinjutsu => AdjustId(ActionID.Ninjutsu) is ActionID.Ninjutsu or ActionID.RabbitMedium;
 
     protected override IRotationConfigSet CreateConfiguration()
     {
@@ -134,7 +136,7 @@ public sealed class NIN_Default : NIN_Base
             }
 
             //Single
-            if (Ten.CanUse(out _, InBurstStatus && !Player.HasStatus(false, StatusID.RaijuReady) ? CanUseOption.EmptyOrSkipCombo : CanUseOption.None))
+            if (Ten.CanUse(out _, InTrickAttack && !Player.HasStatus(false, StatusID.RaijuReady) ? CanUseOption.EmptyOrSkipCombo : CanUseOption.None))
             {
                 if (Raiton.CanUse(out _))
                 {
@@ -203,7 +205,7 @@ public sealed class NIN_Default : NIN_Base
         }
 
         //Keep Kassatsu in Burst.
-        if (Player.HasStatus(false, StatusID.Kassatsu) && !InBurstStatus) return false;
+        if (Player.HasStatus(false, StatusID.Kassatsu) && !InTrickAttack) return false;
         if (_ninActionAim == null) return false;
 
         var id = AdjustId(ActionID.Ninjutsu);
@@ -261,16 +263,19 @@ public sealed class NIN_Default : NIN_Base
 
     protected override bool GeneralGCD(out IAction act)
     {
+        var hasRaijuReady = Player.HasStatus(true, StatusID.RaijuReady);
+
+        if ((InTrickAttack || InMug) && NoNinjutsu && !hasRaijuReady 
+            && PhantomKamaitachi.CanUse(out act)) return true;
+
         if (ChoiceNinjutsu(out act)) return true;
         if ((!InCombat || !CombatElapsedLess(9)) && DoNinjutsu(out act)) return true;
 
         //No Ninjutsu
-        if (AdjustId(ActionID.Ninjutsu) is ActionID.Ninjutsu or ActionID.RabbitMedium)
+        if (NoNinjutsu)
         {
             if (!CombatElapsedLess(10) && FleetingRaiju.CanUse(out act)) return true;
-            if (Player.HasStatus(true, StatusID.RaijuReady)) return false;
-
-            if (InBurstStatus && PhantomKamaitachi.CanUse(out act)) return true;
+            if (hasRaijuReady) return false;
 
             if (Huraijin.CanUse(out act)) return true;
 
@@ -309,7 +314,7 @@ public sealed class NIN_Default : NIN_Base
 
     protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
     {
-        if (AdjustId(2260) != 2260 || !InCombat) return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
+        if (!NoNinjutsu || !InCombat) return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
 
         if (Kassatsu.CanUse(out act)) return true;
         if (UseBurstMedicine(out act)) return true;
@@ -332,13 +337,11 @@ public sealed class NIN_Default : NIN_Base
         act = null;
         if (!InCombat || AdjustId(2260) != 2260) return false;
 
-        if (!IsMoving && InBurstStatus && !Ten.ElapsedAfter(30) &&  TenChiJin.CanUse(out act)) return true;
+        if (!IsMoving && InTrickAttack && !Ten.ElapsedAfter(30) &&  TenChiJin.CanUse(out act)) return true;
 
         if (!CombatElapsedLess(5) && Bunshin.CanUse(out act)) return true;
-        if (HellfrogMedium.CanUse(out act)) return true;
-        if (Bhavacakra.CanUse(out act)) return true;
 
-        if (InBurstStatus)
+        if (InTrickAttack)
         {
             if (!DreamWithinADream.EnoughLevel)
             {
@@ -348,6 +351,13 @@ public sealed class NIN_Default : NIN_Base
             {
                 if (DreamWithinADream.CanUse(out act)) return true;
             }
+        }
+
+        if ((!InMug || InTrickAttack) 
+            && (!Bunshin.WillHaveOneCharge(10) || Player.HasStatus(false, StatusID.PhantomKamaitachiReady) || Mug.WillHaveOneCharge(2)))
+        {
+            if (HellfrogMedium.CanUse(out act)) return true;
+            if (Bhavacakra.CanUse(out act)) return true;
         }
         return false;
     }
