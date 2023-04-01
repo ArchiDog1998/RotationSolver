@@ -1,5 +1,32 @@
 # Changelog
 
+## [2.2.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.9...v2.2.0) (2023-04-01)
+
+
+### Features
+
+* add an AutoStatus showcase on Control Window. ([5f89217](https://github.com/ArchiDog1998/RotationSolver/commit/5f89217e47d30229f58cfc85be00456454712524))
+* new NIN rotation! ([30eb898](https://github.com/ArchiDog1998/RotationSolver/commit/30eb89850aaf37845318857c58da3842d7679be2))
+* new War rotation. ([7d8ab88](https://github.com/ArchiDog1998/RotationSolver/commit/7d8ab8829b601689f383800a7506e9ff9dc83fa8))
+
+
+### Bug Fixes
+
+* action name changing ([d2ed2a2](https://github.com/ArchiDog1998/RotationSolver/commit/d2ed2a27be8eddb4f6d3a73295d49e9110e9d533))
+* add a hitbox radius check for TargetAreaFriend. ([370466a](https://github.com/ArchiDog1998/RotationSolver/commit/370466aefaeae3a8ebcb506fc915fd698d9f61ba))
+* add an option for bad status check in BaseAction. ([f5bcbe9](https://github.com/ArchiDog1998/RotationSolver/commit/f5bcbe96aff8dce276744a5592b754a6c821297c))
+* add an original cooldown. ([0931f48](https://github.com/ArchiDog1998/RotationSolver/commit/0931f48832aef6c77713c8f7078adf581d9ea477))
+* add BeastGauge property in War_Base. ([4284cbf](https://github.com/ArchiDog1998/RotationSolver/commit/4284cbf8d285c82ec51ec11a1bec1349dee211b2))
+* changed cooldown ui. ([9ca5f38](https://github.com/ArchiDog1998/RotationSolver/commit/9ca5f38d43b4540f6f42852c501e8f1b64914c9c))
+* changed the order of General Ability and Attack Ability. ([9d2f912](https://github.com/ArchiDog1998/RotationSolver/commit/9d2f912c13224a7c0ec4bf798e9ae7549dd870eb))
+* fixed canceling countdown error. ([cf33a39](https://github.com/ArchiDog1998/RotationSolver/commit/cf33a3946bf3b14acee44c57ac792cbf61aa321c))
+* fixed cooldown time check bug. ([30511f7](https://github.com/ArchiDog1998/RotationSolver/commit/30511f7bfd438ff87013f9d2b45c889feb4460ab))
+* fixed NIN rotation. ([3dd9409](https://github.com/ArchiDog1998/RotationSolver/commit/3dd9409f333c7939e838bf3cb20b05156ea2cc37))
+* fixed the distance calculation in TargetAreaFriend. ([5c84281](https://github.com/ArchiDog1998/RotationSolver/commit/5c84281123afbb687ab5984dd7d0d0db8ca4faa6))
+* help icon click error. ([0d1b695](https://github.com/ArchiDog1998/RotationSolver/commit/0d1b695ad600b03ee7a81363c1f4c8128c9343e5))
+* hide control windows when in treasure hunt rolling occupy. ([6f5397e](https://github.com/ArchiDog1998/RotationSolver/commit/6f5397e0c250bee5cc6a466efa1f698fc0d68fbd))
+* input will be disable when in pvp zone. ([b381539](https://github.com/ArchiDog1998/RotationSolver/commit/b381539f4274e48d9477c1fdb5317698dca31e25))
+
 ## [2.1.9](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.8...v2.1.9) (2023-03-29)
 
 
