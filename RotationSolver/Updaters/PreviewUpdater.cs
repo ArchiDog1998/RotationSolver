@@ -14,8 +14,8 @@ using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
-using System;
 using System.Runtime.InteropServices;
+using static Lumina.Data.Parsing.Uld.NodeData;
 
 namespace RotationSolver.Updaters;
 
@@ -45,7 +45,7 @@ internal static class PreviewUpdater
             }
 
             if (!_dtrEntry.Shown) _dtrEntry.Shown = true;
-            if(_showValue != showStr)
+            if (_showValue != showStr)
             {
                 _showValue = showStr;
                 _dtrEntry.Text = new SeString(
@@ -66,9 +66,9 @@ internal static class PreviewUpdater
     (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
     internal static void UpdateCastBarState()
     {
-        var tardead = Service.Config.UseStopCasting ? 
-            Service.ObjectTable.SearchById(Service.Player.CastTargetObjectId) is BattleChara b 
-            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0 ): false;
+        var tardead = Service.Config.UseStopCasting ?
+            Service.ObjectTable.SearchById(Service.Player.CastTargetObjectId) is BattleChara b
+            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0) : false;
         _isTarNoNeedCast = _tarStopCastDelay.Delay(tardead);
 
         bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
@@ -142,25 +142,31 @@ internal static class PreviewUpdater
     private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
     {
         var index = 0;
-        foreach (var actionBar in Service.GetAddon<AddonActionBarX>().Select(i => i.AddonActionBarBase)
-            .Union(Service.GetAddon<AddonActionCross>().Select(i => i.ActionBarBase)))
+        var hotBarIndex = 0;
+        foreach (var actionBar in Service.GetAddon<AddonActionBar>().Select(i => i.AddonActionBarX.AddonActionBarBase)
+            .Union(Service.GetAddon<AddonActionBarX>().Select(i => i.AddonActionBarBase))
+            .Union(Service.GetAddon<AddonActionCross>().Select(i => i.ActionBarBase))
+            .Union(Service.GetAddon<AddonActionDoubleCrossBase>().Where(i => i.ShowDPadSlots > 0).Select(i => i.ActionBarBase)))
         {
-            var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[index];
+            var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[hotBarIndex];
             var slotIndex = 0;
             foreach (var slot in actionBar.Slot)
             {
                 var hotBarSlot = hotbar->Slot[slotIndex];
                 var highLightId = 0x53550000 + index;
+
                 if (doingSomething(slot, hotBarSlot, (uint)highLightId))
                 {
-                    actionBar.PulseActionBarSlot(slotIndex); 
+                    var iconAddon = slot.Icon;
+                    if (!iconAddon->AtkResNode.IsVisible) continue;
+                    actionBar.PulseActionBarSlot(slotIndex);
                     UIModule.PlaySound(12, 0, 0, 0);
-                    return;
                 }
-                slotIndex ++;
+                slotIndex++;
                 index++;
             }
-        }    
+            hotBarIndex++;
+        }
     }
 
 
