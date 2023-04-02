@@ -121,7 +121,7 @@ public class PLD_Default : PLD_Base
         if (abilitiesRemaining == 2)
         {
             //10
-            if (OathGauge >= 90 && Sheltron.CanUse(out act)) return true;
+            if (OathGauge >= 90 && UseOath(out act)) return true;
 
             //30
             if (Sentinel.CanUse(out act)) return true;
@@ -130,12 +130,25 @@ public class PLD_Default : PLD_Base
             if (Rampart.CanUse(out act)) return true;
 
             //10
+            if (UseOath(out act)) return true;
             if (Bulwark.CanUse(out act)) return true;
-            if (Sheltron.CanUse(out act)) return true;
         }
 
         if (Reprisal.CanUse(out act)) return true;
 
+        return false;
+    }
+
+    private static bool UseOath(out IAction act)
+    {
+        if (HasTankStance)
+        {
+            if (Sheltron.CanUse(out act)) return true;
+        }
+        else
+        {
+            if (Intervention.CanUse(out act)) return true;
+        }
         return false;
     }
 }
