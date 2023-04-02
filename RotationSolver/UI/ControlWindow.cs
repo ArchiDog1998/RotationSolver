@@ -76,7 +76,7 @@ internal class ControlWindow : Window
 
         ImGui.Text(DataCenter.TargetingType.ToName());
 
-        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
+        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
             ref Service.Config.IsControlWindowLock);
         ImGui.EndGroup();
 

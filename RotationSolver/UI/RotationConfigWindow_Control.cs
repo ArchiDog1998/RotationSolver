@@ -34,8 +34,11 @@ internal partial class RotationConfigWindow
             DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_InfoWindowBg,
                 ref Service.Config.InfoWindowBg);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
-                ref Service.Config.IsInfoWindowLock);
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
+                ref Service.Config.IsInfoWindowNoInputs);
+
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
+                ref Service.Config.IsInfoWindowNoMove);
 
             if (Service.Config.ShowCooldownWindow)
             {
@@ -56,7 +59,7 @@ internal partial class RotationConfigWindow
 
         if (!Service.Config.ShowControlWindow) return;
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
             ref Service.Config.IsControlWindowLock);
 
         if (Service.Config.IsControlWindowLock)

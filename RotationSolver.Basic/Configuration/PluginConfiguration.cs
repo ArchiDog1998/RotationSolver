@@ -164,7 +164,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowControlWindow = false;
     public bool IsControlWindowLock = false;
     public bool ShowNextActionWindow = false;
-    public bool IsInfoWindowLock = false;
+    public bool IsInfoWindowNoInputs = false;
+    public bool IsInfoWindowNoMove = false;
     public bool UseKeyboardCommand = false;
     public bool UseGamepadCommand = false;
     public bool ShowItemsCooldown = false;

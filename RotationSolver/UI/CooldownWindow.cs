@@ -1,13 +1,7 @@
 ﻿using ImGuiNET;
-using RotationSolver.Basic.Actions;
 using RotationSolver.Basic;
+using RotationSolver.Basic.Actions;
 using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
 using System.Numerics;
 
 namespace RotationSolver.UI;
