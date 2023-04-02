@@ -53,6 +53,7 @@ internal class CooldownWindow : InfoWindow
         var width = Service.Config.ControlWindow0GCDSize;
         var recast = act.RecastTimeOneCharge;
         var elapsed = act.RecastTimeElapsed;
+        var shouldSkip = recast < 3 && act is IBaseAction a && !a.IsRealGCD;
 
         ImGui.BeginGroup();
         var pos = ImGui.GetCursorPos();
@@ -61,7 +62,7 @@ internal class CooldownWindow : InfoWindow
         var r = -1f;
         if (Service.Config.UseOriginalCooldown)
         {
-            r = !act.EnoughLevel ? 0: recast == 0 || !act.IsCoolingDown ? 1 : elapsed / recast;
+            r = !act.EnoughLevel ? 0: recast == 0 || !act.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
         }
         ControlWindow.DrawIAction(act, width, r);
         var size = ImGui.GetItemRectSize();
@@ -75,7 +76,7 @@ internal class CooldownWindow : InfoWindow
                     new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, progressCol);
             }
         }
-        else if (act.IsCoolingDown)
+        else if (act.IsCoolingDown && !shouldSkip)
         {
             if (!Service.Config.UseOriginalCooldown)
             {
