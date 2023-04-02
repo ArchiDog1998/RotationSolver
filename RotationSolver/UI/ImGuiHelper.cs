@@ -67,7 +67,7 @@ internal static class ImGuiHelper
         if (ImGui.IsItemHovered())
         {
             showToolTip(desc);
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Left))
+            if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
             {
                 selected?.Invoke();
             }
@@ -120,7 +120,7 @@ internal static class ImGuiHelper
         if (ImGui.IsItemHovered())
         {
             if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Left))
+            if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
             {
                 selected?.Invoke();
             }
@@ -334,7 +334,7 @@ internal static class ImGuiHelper
         {
             ImGui.SetTooltip($"{LocalizationManager.RightLang.ConfigWindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager.RightLang.ConfigWindow_Helper_CopyCommand}: {cmdStr}");
 
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
+            if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
             {
                 ImGui.SetClipboardText(cmdStr);
             }

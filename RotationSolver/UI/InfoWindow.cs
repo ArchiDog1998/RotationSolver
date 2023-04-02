@@ -31,6 +31,7 @@ internal abstract class InfoWindow : Window
         }
         //ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
         ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
+        base.PreDraw();
     }
 
     public override void PostDraw()

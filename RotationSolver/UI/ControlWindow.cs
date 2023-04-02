@@ -1,9 +1,7 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using ImGuiScene;
-using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
 using RotationSolver.Basic.Data;
@@ -405,10 +403,17 @@ internal class ControlWindow : Window
     internal static void DrawIAction(IAction action, float width, float percent)
     {
         DrawIAction(GetTexture(action).ImGuiHandle, width, action == null ? -1 : percent);
-        if(ImGui.IsItemHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+        if (action != null) ImGuiHelper.HoveredString(action.Name, () =>
         {
-            DataCenter.AddCommandAction(action, 5);
-        }
+            if (DataCenter.StateType == StateCommandType.Cancel)
+            {
+                action.Use();
+            }
+            else
+            {
+                DataCenter.AddCommandAction(action, 5);
+            }
+        });
     }
 
     static void DrawIAction(nint handle, float width, float percent)

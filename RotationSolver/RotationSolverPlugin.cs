@@ -1,7 +1,6 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 using Newtonsoft.Json;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Configuration;

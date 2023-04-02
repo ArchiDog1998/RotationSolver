@@ -100,7 +100,7 @@ internal static class PreviewUpdater
         if (!castBars.Any()) return;
         var castBar = castBars.FirstOrDefault();
 
-        AtkResNode* progressBar = castBar.AtkUnitBase.UldManager.NodeList[5];
+        AtkResNode* progressBar = ((AtkUnitBase*)castBar)->UldManager.NodeList[5];
 
         progressBar->AddRed = c.R;
         progressBar->AddGreen = c.G;
@@ -143,14 +143,16 @@ internal static class PreviewUpdater
     {
         var index = 0;
         var hotBarIndex = 0;
-        foreach (var actionBar in Service.GetAddon<AddonActionBar>().Select(i => i.AddonActionBarX.AddonActionBarBase)
-            .Union(Service.GetAddon<AddonActionBarX>().Select(i => i.AddonActionBarBase))
-            .Union(Service.GetAddon<AddonActionCross>().Select(i => i.ActionBarBase))
-            .Union(Service.GetAddon<AddonActionDoubleCrossBase>().Where(i => i.ShowDPadSlots > 0).Select(i => i.ActionBarBase)))
+        foreach (var intPtr in Service.GetAddon<AddonActionBar>()
+            .Union(Service.GetAddon<AddonActionBarX>())
+            .Union(Service.GetAddon<AddonActionCross>())
+            .Union(Service.GetAddon<AddonActionDoubleCrossBase>()))
         {
+            if (intPtr == IntPtr.Zero) continue;
+            var actionBar = (AddonActionBarBase*)intPtr;
             var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[hotBarIndex];
             var slotIndex = 0;
-            foreach (var slot in actionBar.Slot)
+            foreach (var slot in actionBar->Slot)
             {
                 var hotBarSlot = hotbar->Slot[slotIndex];
                 var highLightId = 0x53550000 + index;
@@ -159,7 +161,7 @@ internal static class PreviewUpdater
                 {
                     var iconAddon = slot.Icon;
                     if (!iconAddon->AtkResNode.IsVisible) continue;
-                    actionBar.PulseActionBarSlot(slotIndex);
+                    actionBar->PulseActionBarSlot(slotIndex);
                     UIModule.PlaySound(12, 0, 0, 0);
                 }
                 slotIndex++;

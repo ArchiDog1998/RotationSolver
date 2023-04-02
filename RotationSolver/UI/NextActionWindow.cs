@@ -1,5 +1,4 @@
 ﻿using Dalamud.Interface.Colors;
-using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using ImGuiNET;
 using RotationSolver.Basic;
