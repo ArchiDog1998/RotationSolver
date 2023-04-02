@@ -1,6 +1,7 @@
 ﻿using ImGuiNET;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Actions;
+using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.Numerics;
 
@@ -61,7 +62,7 @@ internal class CooldownWindow : InfoWindow
         }
         ControlWindow.DrawIAction(act, width, r);
         var size = ImGui.GetItemRectSize();
-        ImGuiHelper.HoveredString(act.Name);
+        ImGuiHelper.HoveredString(act.Name + "\n" + LocalizationManager.RightLang.ConfigWindow_Control_ClickToUse);
 
         if (!act.EnoughLevel)
         {
