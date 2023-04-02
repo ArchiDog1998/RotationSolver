@@ -433,7 +433,11 @@ public partial class BaseAction
 
     private IEnumerable<BattleChara> TargetFilterFuncEot(IEnumerable<BattleChara> tars, bool mustUse)
     {
-        if (FilterForHostiles != null) tars = FilterForHostiles(tars);
+        if (FilterForHostiles != null)
+        {
+            var filtered = FilterForHostiles(tars);
+            if (filtered.Any() || !mustUse) tars = filtered;
+        }
         if (TargetStatus == null || !IsEot) return tars;
 
         var dontHave = tars.Where(CheckStatus);
