@@ -45,6 +45,9 @@ internal partial class RotationConfigWindow
                 DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowItemsCooldown,
                     ref Service.Config.ShowItemsCooldown);
 
+                DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowGCDCooldown,
+                    ref Service.Config.ShowGCDCooldown);
+
                 DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseOriginalCooldown,
                     ref Service.Config.UseOriginalCooldown);
 

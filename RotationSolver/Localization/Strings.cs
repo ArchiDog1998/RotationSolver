@@ -248,8 +248,8 @@ internal partial class Strings
     public string ConfigWindow_Control_IsInfoWindowNoMove { get; set; } = "No Move";
 
     public string ConfigWindow_Control_ShowItemsCooldown { get; set; } = "Show Items' Cooldown";
+    public string ConfigWindow_Control_ShowGCDCooldown { get; set; } = "Show GCD' Cooldown";
     public string ConfigWindow_Control_UseOriginalCooldown { get; set; } = "Show Original Cooldown";
-
     public string ConfigWindow_Control_CooldownActionOneLine { get; set; } = "The count of cooldown actions in one line.";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
     public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Info Window's Background";

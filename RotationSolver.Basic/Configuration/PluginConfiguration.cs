@@ -169,6 +169,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseKeyboardCommand = false;
     public bool UseGamepadCommand = false;
     public bool ShowItemsCooldown = false;
+    public bool ShowGCDCooldown = false;
+    public bool UseOriginalCooldown = true;
     public int CooldownActionOneLine = 15;
 
     public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.6f);
@@ -180,7 +182,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;
-    public bool UseOriginalCooldown = true;
 
     public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
     public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();

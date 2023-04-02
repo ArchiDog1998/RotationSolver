@@ -183,6 +183,7 @@
   "ConfigWindow_Control_IsInfoWindowNoInputs": "No Inputs",
   "ConfigWindow_Control_IsInfoWindowNoMove": "No Move",
   "ConfigWindow_Control_ShowItemsCooldown": "Show Items' Cooldown",
+  "ConfigWindow_Control_ShowGCDCooldown": "Show GCD' Cooldown",
   "ConfigWindow_Control_UseOriginalCooldown": "Show Original Cooldown",
   "ConfigWindow_Control_CooldownActionOneLine": "The count of cooldown actions in one line.",
   "ConfigWindow_Control_BackgroundColor": "Control Window's Background",
