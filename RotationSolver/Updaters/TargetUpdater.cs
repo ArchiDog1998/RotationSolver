@@ -22,6 +22,27 @@ internal static partial class TargetUpdater
         UpdateNamePlate(Service.ObjectTable.OfType<BattleChara>());
     }
 
+    internal static void ClearTarget()
+    {
+        var empty = new BattleChara[0];
+        DataCenter.AllTargets
+            = DataCenter.AllHostileTargets 
+            = DataCenter.TarOnMeTargets
+            = DataCenter.PartyMembers
+            = DataCenter.PartyTanks
+            = DataCenter.PartyHealers
+            = DataCenter.AllianceMembers
+            = DataCenter.AllianceTanks
+            = empty;
+
+        DataCenter.DeathPeopleAll.Delay(empty);
+        DataCenter.DeathPeopleParty.Delay(empty);
+        DataCenter.WeakenPeople.Delay(empty);
+        DataCenter.DyingPeople.Delay(empty);
+        DataCenter.HostileTargets.Delay(empty);
+        DataCenter.CanInterruptTargets.Delay(empty);
+    }
+
     #region Hostile
     private static float JobRange
     {

@@ -18,7 +18,11 @@ internal static class MajorUpdater
     private static void FrameworkUpdate(Framework framework)
     {
         RotationSolverPlugin.UpdateDisplayWindow();
-        if (!IsValid) return;
+        if (!IsValid)
+        {
+            TargetUpdater.ClearTarget();
+            return;
+        }
 
 #if DEBUG
         //Get changed condition.
@@ -70,7 +74,6 @@ internal static class MajorUpdater
             UpdateWork();
         }
     }
-    static bool first = false;
 
     public static void Enable()
     {
