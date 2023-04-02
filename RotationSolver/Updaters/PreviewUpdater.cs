@@ -114,38 +114,44 @@ internal static class PreviewUpdater
         if (_highLightId == actId) return;
         _highLightId = actId;
 
-        HighLightActionBar((slot) =>
+        HighLightActionBar((slot, hot) =>
         {
-            return Service.Config.TeachingMode && IsActionSlotRight(slot, _highLightId);
+            return Service.Config.TeachingMode && IsActionSlotRight(slot, hot, _highLightId);
         });
     }
 
     internal static unsafe void PulseActionBar(uint actionID)
     {
-        LoopAllSlotBar((bar, index) =>
+        LoopAllSlotBar((bar, hot, index) =>
         {
-            return IsActionSlotRight(bar, actionID);
+            return IsActionSlotRight(bar, hot, actionID);
         });
     }
 
-    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, uint actionID)
+    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotBarSlot* hot, uint actionID)
     {
-       return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
+        if ((IntPtr)hot == IntPtr.Zero) return false;
+        if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
+        if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
+
+        return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
     }
 
-    delegate bool ActionBarAction(ActionBarSlot bar,uint highLightID);
-    delegate bool ActionBarPredicate(ActionBarSlot bar);
+    unsafe delegate bool ActionBarAction(ActionBarSlot bar, HotBarSlot* hot, uint highLightID);
+    unsafe delegate bool ActionBarPredicate(ActionBarSlot bar, HotBarSlot* hot);
     private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
     {
         var index = 0;
         foreach (var actionBar in Service.GetAddon<AddonActionBarX>().Select(i => i.AddonActionBarBase)
             .Union(Service.GetAddon<AddonActionCross>().Select(i => i.ActionBarBase)))
         {
+            var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[index];
             var slotIndex = 0;
             foreach (var slot in actionBar.Slot)
             {
+                var hotBarSlot = hotbar->Slot[slotIndex];
                 var highLightId = 0x53550000 + index;
-                if (doingSomething(slot, (uint)highLightId))
+                if (doingSomething(slot, hotBarSlot, (uint)highLightId))
                 {
                     actionBar.PulseActionBarSlot(slotIndex); 
                     UIModule.PlaySound(12, 0, 0, 0);
@@ -160,7 +166,7 @@ internal static class PreviewUpdater
 
     private static unsafe void HighLightActionBar(ActionBarPredicate shouldShow = null)
     {
-        LoopAllSlotBar((slot, highLightId) =>
+        LoopAllSlotBar((slot, hot, highLightId) =>
         {
             var iconAddon = slot.Icon;
             if (!iconAddon->AtkResNode.IsVisible) return false;
@@ -225,7 +231,7 @@ internal static class PreviewUpdater
             highLightPtr->AtkResNode.SetHeight(lastHightLight->Height);
 
             //Update Visibility
-            highLightPtr->AtkResNode.ToggleVisibility(shouldShow?.Invoke(slot) ?? false);
+            highLightPtr->AtkResNode.ToggleVisibility(shouldShow?.Invoke(slot, hot) ?? false);
 
             return false;
         });
