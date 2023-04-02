@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.2.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.0...v2.2.1) (2023-04-02)
+
+
+### Bug Fixes
+
+* add an option to click simulation intense! ([faef1be](https://github.com/ArchiDog1998/RotationSolver/commit/faef1becc7ab1a9e836b175b05b3c26f0b4da681))
+* add an option to control the info window's no move. ([1e2f7e4](https://github.com/ArchiDog1998/RotationSolver/commit/1e2f7e411d93271bcce6b66005d5be9a330167b8))
+* add an option to show gcd cooldown. Does it necessary? ([635b63a](https://github.com/ArchiDog1998/RotationSolver/commit/635b63aa7c404d00d4fe5a76e940def3f6d03126))
+* add click button to control the rotation. ([bb73310](https://github.com/ArchiDog1998/RotationSolver/commit/bb73310124f6e0b0434a4e32ed5a00bc2d09c517))
+* add CMD action showcase. ([5edd2e1](https://github.com/ArchiDog1998/RotationSolver/commit/5edd2e18eab77fd11ff1112271f1a1845571f47f))
+* changed the click time on the last ability. ([ce74808](https://github.com/ArchiDog1998/RotationSolver/commit/ce7480872622368862eda860257f0a720f524675))
+* fixed pulse error. ([2a3037a](https://github.com/ArchiDog1998/RotationSolver/commit/2a3037a5faec6f274a80ae7eb8258bd3e3ac2a10))
+* fixed the cooldown showcase. ([18f2f34](https://github.com/ArchiDog1998/RotationSolver/commit/18f2f34c827bbac952cf8df6bdb71d42d9ea36f1))
+* fixed the pulse thing. ([05f2c43](https://github.com/ArchiDog1998/RotationSolver/commit/05f2c43b001251016a3cd1ecc8a429efb68d5b26))
+* removed one bad status from previous version. ([8b4eb77](https://github.com/ArchiDog1998/RotationSolver/commit/8b4eb77d3520934c47b8f405c90ccb3b9897baaa))
+* when mustuse, skip the filter for hostiles check. ([bd964d5](https://github.com/ArchiDog1998/RotationSolver/commit/bd964d5bcd3c5a519da6433b93db6c68b03ef8b7))
+
 ## [2.2.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.1.9...v2.2.0) (2023-04-01)
 
 
