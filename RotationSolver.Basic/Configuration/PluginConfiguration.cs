@@ -74,7 +74,11 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector3 MovingTargetColor = new(0f, 1f, 0.8f);
     public Vector3 TargetColor = new(1f, 0.2f, 0f);
     public Vector3 SubTargetColor = new(1f, 0.9f, 0f);
-    public bool KeyBoardNoise = false;
+    public bool KeyBoardNoise = true;
+    public int KeyBoardNoiseMin = 2;
+    public int KeyBoardNoiseMax = 3;
+    public float KeyBoardNoiseTimeMin = 0.1f;
+    public float KeyBoardNoiseTimeMax = 0.2f;
     public bool UseGroundBeneficialAbility = true;
     public bool MoveAreaActionFarthest = true;
     public bool StartOnCountdown = true;
@@ -160,10 +164,13 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowControlWindow = false;
     public bool IsControlWindowLock = false;
     public bool ShowNextActionWindow = false;
-    public bool IsInfoWindowLock = false;
+    public bool IsInfoWindowNoInputs = false;
+    public bool IsInfoWindowNoMove = false;
     public bool UseKeyboardCommand = false;
     public bool UseGamepadCommand = false;
     public bool ShowItemsCooldown = false;
+    public bool ShowGCDCooldown = false;
+    public bool UseOriginalCooldown = true;
     public int CooldownActionOneLine = 15;
 
     public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.6f);
@@ -175,7 +182,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;
-    public bool UseOriginalCooldown = true;
 
     public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
     public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();

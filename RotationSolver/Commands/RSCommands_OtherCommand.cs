@@ -80,7 +80,7 @@ namespace RotationSolver.Commands
 
                     if (actName == act.Name)
                     {
-                        DataCenter.AddOneTimelineAction(act, time);
+                        DataCenter.AddCommandAction(act, time);
 
                         Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
                             new Dalamud.Game.Gui.Toast.QuestToastOptions()

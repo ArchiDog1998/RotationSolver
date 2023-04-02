@@ -1,5 +1,4 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using ImGuiScene;
@@ -75,7 +74,7 @@ internal class ControlWindow : Window
 
         ImGui.Text(DataCenter.TargetingType.ToName());
 
-        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsWindowLock,
+        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
             ref Service.Config.IsControlWindowLock);
         ImGui.EndGroup();
 
@@ -139,6 +138,13 @@ internal class ControlWindow : Window
         DrawCommandAction(rotation?.AntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
 
+        ImGui.Text("CMD:");
+        ImGui.SameLine();
+        DrawIAction(DataCenter.CommandNextAction, Service.Config.ControlWindow0GCDSize, 1);
+
+        ImGui.SameLine();
+
+        ImGui.BeginGroup();
         ImGui.Text(DataCenter.RightNowTargetToHostileType switch
         {
              TargetHostileType.AllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
@@ -148,6 +154,7 @@ internal class ControlWindow : Window
         });
 
         ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
+        ImGui.EndGroup();
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)
@@ -404,6 +411,17 @@ internal class ControlWindow : Window
     internal static void DrawIAction(IAction action, float width, float percent)
     {
         DrawIAction(GetTexture(action).ImGuiHandle, width, action == null ? -1 : percent);
+        if (action != null) ImGuiHelper.HoveredString(action.Name, () =>
+        {
+            if (DataCenter.StateType == StateCommandType.Cancel)
+            {
+                action.Use();
+            }
+            else
+            {
+                DataCenter.AddCommandAction(action, 5);
+            }
+        });
     }
 
     static void DrawIAction(nint handle, float width, float percent)

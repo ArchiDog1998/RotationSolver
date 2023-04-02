@@ -1,11 +1,6 @@
 ﻿using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using RotationSolver.Basic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RotationSolver.UI;
 
@@ -26,13 +21,17 @@ internal abstract class InfoWindow : Window
         ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.InfoWindowBg);
 
         Flags = BaseFlags;
-        if (Service.Config.IsInfoWindowLock)
+        if (Service.Config.IsInfoWindowNoInputs)
         {
             Flags |= ImGuiWindowFlags.NoInputs;
         }
-
+        if (Service.Config.IsInfoWindowNoMove)
+        {
+            Flags |= ImGuiWindowFlags.NoMove;
+        }
         //ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
         ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
+        base.PreDraw();
     }
 
     public override void PostDraw()

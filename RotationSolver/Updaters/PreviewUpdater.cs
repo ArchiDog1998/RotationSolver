@@ -14,8 +14,8 @@ using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
-using System;
 using System.Runtime.InteropServices;
+using static Lumina.Data.Parsing.Uld.NodeData;
 
 namespace RotationSolver.Updaters;
 
@@ -45,7 +45,7 @@ internal static class PreviewUpdater
             }
 
             if (!_dtrEntry.Shown) _dtrEntry.Shown = true;
-            if(_showValue != showStr)
+            if (_showValue != showStr)
             {
                 _showValue = showStr;
                 _dtrEntry.Text = new SeString(
@@ -66,9 +66,9 @@ internal static class PreviewUpdater
     (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
     internal static void UpdateCastBarState()
     {
-        var tardead = Service.Config.UseStopCasting ? 
-            Service.ObjectTable.SearchById(Service.Player.CastTargetObjectId) is BattleChara b 
-            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0 ): false;
+        var tardead = Service.Config.UseStopCasting ?
+            Service.ObjectTable.SearchById(Service.Player.CastTargetObjectId) is BattleChara b
+            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0) : false;
         _isTarNoNeedCast = _tarStopCastDelay.Delay(tardead);
 
         bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
@@ -100,7 +100,7 @@ internal static class PreviewUpdater
         if (!castBars.Any()) return;
         var castBar = castBars.FirstOrDefault();
 
-        AtkResNode* progressBar = castBar.AtkUnitBase.UldManager.NodeList[5];
+        AtkResNode* progressBar = ((AtkUnitBase*)castBar)->UldManager.NodeList[5];
 
         progressBar->AddRed = c.R;
         progressBar->AddGreen = c.G;
@@ -114,53 +114,67 @@ internal static class PreviewUpdater
         if (_highLightId == actId) return;
         _highLightId = actId;
 
-        HighLightActionBar((slot) =>
+        HighLightActionBar((slot, hot) =>
         {
-            return Service.Config.TeachingMode && IsActionSlotRight(slot, _highLightId);
+            return Service.Config.TeachingMode && IsActionSlotRight(slot, hot, _highLightId);
         });
     }
 
     internal static unsafe void PulseActionBar(uint actionID)
     {
-        LoopAllSlotBar((bar, index) =>
+        LoopAllSlotBar((bar, hot, index) =>
         {
-            return IsActionSlotRight(bar, actionID);
+            return IsActionSlotRight(bar, hot, actionID);
         });
     }
 
-    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, uint actionID)
+    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotBarSlot* hot, uint actionID)
     {
-       return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
+        if ((IntPtr)hot == IntPtr.Zero) return false;
+        if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
+        if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
+
+        return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
     }
 
-    delegate bool ActionBarAction(ActionBarSlot bar,uint highLightID);
-    delegate bool ActionBarPredicate(ActionBarSlot bar);
+    unsafe delegate bool ActionBarAction(ActionBarSlot bar, HotBarSlot* hot, uint highLightID);
+    unsafe delegate bool ActionBarPredicate(ActionBarSlot bar, HotBarSlot* hot);
     private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
     {
         var index = 0;
-        foreach (var actionBar in Service.GetAddon<AddonActionBarX>().Select(i => i.AddonActionBarBase)
-            .Union(Service.GetAddon<AddonActionCross>().Select(i => i.ActionBarBase)))
+        var hotBarIndex = 0;
+        foreach (var intPtr in Service.GetAddon<AddonActionBar>()
+            .Union(Service.GetAddon<AddonActionBarX>())
+            .Union(Service.GetAddon<AddonActionCross>())
+            .Union(Service.GetAddon<AddonActionDoubleCrossBase>()))
         {
+            if (intPtr == IntPtr.Zero) continue;
+            var actionBar = (AddonActionBarBase*)intPtr;
+            var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[hotBarIndex];
             var slotIndex = 0;
-            foreach (var slot in actionBar.Slot)
+            foreach (var slot in actionBar->Slot)
             {
+                var hotBarSlot = hotbar->Slot[slotIndex];
                 var highLightId = 0x53550000 + index;
-                if (doingSomething(slot, (uint)highLightId))
+
+                if (doingSomething(slot, hotBarSlot, (uint)highLightId))
                 {
-                    actionBar.PulseActionBarSlot(slotIndex); 
+                    var iconAddon = slot.Icon;
+                    if (!iconAddon->AtkResNode.IsVisible) continue;
+                    actionBar->PulseActionBarSlot(slotIndex);
                     UIModule.PlaySound(12, 0, 0, 0);
-                    return;
                 }
-                slotIndex ++;
+                slotIndex++;
                 index++;
             }
-        }    
+            hotBarIndex++;
+        }
     }
 
 
     private static unsafe void HighLightActionBar(ActionBarPredicate shouldShow = null)
     {
-        LoopAllSlotBar((slot, highLightId) =>
+        LoopAllSlotBar((slot, hot, highLightId) =>
         {
             var iconAddon = slot.Icon;
             if (!iconAddon->AtkResNode.IsVisible) return false;
@@ -225,7 +239,7 @@ internal static class PreviewUpdater
             highLightPtr->AtkResNode.SetHeight(lastHightLight->Height);
 
             //Update Visibility
-            highLightPtr->AtkResNode.ToggleVisibility(shouldShow?.Invoke(slot) ?? false);
+            highLightPtr->AtkResNode.ToggleVisibility(shouldShow?.Invoke(slot, hot) ?? false);
 
             return false;
         });

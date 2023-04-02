@@ -122,7 +122,7 @@ internal partial class Strings
     public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
     public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
-    public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stoping casting when target is no need to cast in second.";
+    public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";
@@ -144,6 +144,8 @@ internal partial class Strings
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
+    public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
+    public string ConfigWindow_Param_KeyBoardNoiseTime { get; set; } = "Effect interval";
     public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
     public string ConfigWindow_Param_VoiceName { get; set; } = "Voice Name";
     public string ConfigWindow_Param_FlytextPositional { get; set; } = "Hint positional anticipation by flytext";
@@ -242,11 +244,12 @@ internal partial class Strings
     public string ConfigWindow_Control_UseKeyboardCommand { get; set; } = "Use Keyboard Command";
     public string ConfigWindow_Control_UseGamepadCommand { get; set; } = "Use GamePad Command";
     public string ConfigWindow_Control_ShowCooldownWindow { get; set; } = "Show Cooldown Window";
-    public string ConfigWindow_Control_IsWindowLock { get; set; } = "Lock";
+    public string ConfigWindow_Control_IsInfoWindowNoInputs { get; set; } = "No Inputs";
+    public string ConfigWindow_Control_IsInfoWindowNoMove { get; set; } = "No Move";
 
     public string ConfigWindow_Control_ShowItemsCooldown { get; set; } = "Show Items' Cooldown";
+    public string ConfigWindow_Control_ShowGCDCooldown { get; set; } = "Show GCD' Cooldown";
     public string ConfigWindow_Control_UseOriginalCooldown { get; set; } = "Show Original Cooldown";
-
     public string ConfigWindow_Control_CooldownActionOneLine { get; set; } = "The count of cooldown actions in one line.";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
     public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Info Window's Background";

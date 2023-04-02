@@ -102,19 +102,17 @@ public class Service : IDisposable
     public static ChatGui ChatGui { get; private set; }
 
     [PluginService]
-    static GameGui GameGui { get; set; }
+    public static GameGui GameGui { get; set; }
 
     public static bool WorldToScreen(Vector3 worldPos, out Vector2 screenPos) => GameGui.WorldToScreen(worldPos, out screenPos);
 
-    public unsafe static T[] GetAddon<T>() where T : struct
+    public unsafe static IEnumerable<IntPtr> GetAddon<T>() where T : struct
     {
-        if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return new T[0];
+        if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return new IntPtr[0];
 
         return on.AddonIdentifiers
             .Select(str => GameGui.GetAddonByName(str, 1))
-            .Where(ptr => ptr != IntPtr.Zero)
-            .Select(ptr => *(T*)ptr)
-            .ToArray();
+            .Where(ptr => ptr != IntPtr.Zero);
     }
 
     public static PlayerCharacter Player => ClientState.LocalPlayer;

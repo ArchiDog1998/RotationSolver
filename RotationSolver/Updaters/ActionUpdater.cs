@@ -202,20 +202,20 @@ internal static class ActionUpdater
         if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
         if (canUseGCD) return;
 
-        //要超出GCD了，那就不放技能了。
+        //More then gcd.
         if (DataCenter.WeaponRemain < Service.Config.AbilitiesInterval
             || DataCenter.WeaponElapsed < Service.Config.AbilitiesInterval)
         {
             return;
         }
 
-        //还在咏唱，就不放技能了。
+        //Skip when casting
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return;
 
-        //只剩下最后一个能力技了，然后卡最后！
+        //The last one.
         if (DataCenter.WeaponRemain < 2 * Service.Config.AbilitiesInterval)
         {
-            if (DataCenter.WeaponRemain > Service.Config.AbilitiesInterval + Service.Config.ActionAhead) return;
+            if (DataCenter.WeaponRemain > Service.Config.AbilitiesInterval + Service.Config.ActionAhead * 2) return;
             RSCommands.DoAnAction(false);
         }
         else if ((DataCenter.WeaponElapsed - DataCenter.CastingTotal) % Service.Config.AbilitiesInterval <= Service.Config.ActionAhead)

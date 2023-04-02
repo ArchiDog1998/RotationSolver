@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Actions.BaseAction;
 using RotationSolver.Basic;
 using RotationSolver.Basic.Data;
@@ -47,7 +48,7 @@ namespace RotationSolver.Commands
             if (nextAction.Use())
             {
                 if (nextAction is BaseAction a && a.ShouldEndSpecial) ResetSpecial();
-                if (Service.Config.KeyBoardNoise) PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
+                if (Service.Config.KeyBoardNoise) Task.Run(() => PulseSimulation(nextAction.AdjustedID));
                 if (nextAction is BaseAction act)
                 {
 #if DEBUG
@@ -62,6 +63,26 @@ namespace RotationSolver.Commands
                 }
             }
             return;
+        }
+
+        static bool started = false;
+        static async void PulseSimulation(uint id)
+        {
+            if (started) return;
+            started = true;
+            try
+            {
+                for (int i = 0; i < new Random().Next(Service.Config.KeyBoardNoiseMin,
+                    Service.Config.KeyBoardNoiseMax); i++)
+                {
+                    PreviewUpdater.PulseActionBar(id);
+                    var time = Service.Config.KeyBoardNoiseTimeMin + 
+                        new Random().NextDouble() * (Service.Config.KeyBoardNoiseTimeMax - Service.Config.KeyBoardNoiseTimeMin);
+                    await Task.Delay((int)(time * 1000));
+                }
+            }
+            finally { started = false; }
+            started = false;
         }
 
         internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial, false);

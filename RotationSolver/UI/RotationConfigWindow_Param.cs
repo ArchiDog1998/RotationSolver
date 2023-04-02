@@ -235,6 +235,19 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoise,
             ref Service.Config.KeyBoardNoise);
 
+        if (Service.Config.KeyBoardNoise)
+        {
+            ImGui.Indent();
+
+            DrawRangedInt(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
+                ref Service.Config.KeyBoardNoiseMin, ref Service.Config.KeyBoardNoiseMax);
+
+            DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTime,
+                ref Service.Config.KeyBoardNoiseTimeMin, ref Service.Config.KeyBoardNoiseTimeMax);
+
+            ImGui.Unindent();
+        }
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnDtr,
             ref Service.Config.ShowInfoOnDtr);
 
@@ -480,10 +493,7 @@ internal partial class RotationConfigWindow
             Service.Config.Save();
             otherThing?.Invoke();
         }
-        if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip(description);
-        }
+        ImGuiHelper.HoveredString(description);
     }
 
     private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float speed = 0.01f, float min = 0, float max = 3, string description = "")
@@ -493,10 +503,17 @@ internal partial class RotationConfigWindow
         {
             Service.Config.Save();
         }
-        if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
+        ImGuiHelper.HoveredString(description);
+    }
+
+    private static void DrawRangedInt(string name, ref int minValue, ref int maxValue, float speed = 0.01f, int min = 0, int max = 3, string description = "")
+    {
+        ImGui.SetNextItemWidth(100);
+        if (ImGui.DragIntRange2(name, ref minValue, ref maxValue, speed, min, max))
         {
-            ImGui.SetTooltip(description);
+            Service.Config.Save();
         }
+        ImGuiHelper.HoveredString(description);
     }
 
     private static void DrawFloatNumber(string name, ref float value, float speed = 0.002f, float min = 0, float max = 1, string description = "")
@@ -506,10 +523,7 @@ internal partial class RotationConfigWindow
         {
             Service.Config.Save();
         }
-        if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip(description);
-        }
+        ImGuiHelper.HoveredString(description);
     }
 
     private static void DrawIntNumber(string name, ref int value, float speed = 0.2f, int min = 0, int max = 1, string description = "", Action otherThing = null)
@@ -520,10 +534,7 @@ internal partial class RotationConfigWindow
             Service.Config.Save();
             otherThing?.Invoke();
         }
-        if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip(description);
-        }
+        ImGuiHelper.HoveredString(description);
     }
 
     private static void DrawColor3(string name, ref Vector3 value, string description = "")
@@ -533,10 +544,7 @@ internal partial class RotationConfigWindow
         {
             Service.Config.Save();
         }
-        if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip(description);
-        }
+        ImGuiHelper.HoveredString(description);
     }
 
     private static void DrawCombo<T>(string name, ref int value, Func<T, string> toString, T[] choices = null, string description = "") where T : struct, Enum
@@ -556,10 +564,7 @@ internal partial class RotationConfigWindow
             }
             ImGui.EndCombo();
         }
-        if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip(description);
-        }
+        ImGuiHelper.HoveredString(description);
     }
 
     private static void DrawInputText(string name, ref string value, uint maxLength, string description = "")
@@ -569,9 +574,6 @@ internal partial class RotationConfigWindow
         {
             Service.Config.Save();
         }
-        if (!string.IsNullOrEmpty(description) && ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip(description);
-        }
+        ImGuiHelper.HoveredString(description);
     }
 }

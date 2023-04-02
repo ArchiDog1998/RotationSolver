@@ -2,4 +2,4 @@
 
 namespace RotationSolver.Basic.Data;
 
-public record NextAct(IBaseAction act, DateTime deadTime);
+public record NextAct(IAction act, DateTime deadTime);

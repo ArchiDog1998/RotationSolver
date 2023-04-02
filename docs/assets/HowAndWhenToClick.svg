@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   sodipodi:docname="HowToClick.svg"
+   sodipodi:docname="HowAndWhenToClick.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,13 +24,13 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.929784"
-     inkscape:cx="367.65773"
-     inkscape:cy="231.11395"
-     inkscape:window-width="3072"
-     inkscape:window-height="1831"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
+     inkscape:zoom="5.4582534"
+     inkscape:cx="206.56791"
+     inkscape:cy="118.35288"
+     inkscape:window-width="2496"
+     inkscape:window-height="1417"
+     inkscape:window-x="56"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
@@ -198,14 +198,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.91732px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       x="51.95583"
+       x="50.368328"
        y="31.419163"
        id="text5634-9-3-9-2-0"><tspan
          id="tspan5632-5-3-3-6-3"
          style="fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-opacity:1"
-         x="51.95583"
+         x="50.368328"
          y="31.419163"
-         sodipodi:role="line">ADV</tspan></text>
+         sodipodi:role="line">2*ADV</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.91732px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#800000;fill-opacity:1;stroke:#333333;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
@@ -288,7 +288,7 @@
          id="path7205-1-4" />
       <path
          style="fill:#050505;fill-opacity:1;stroke:#800000;stroke-width:0.818743;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-         d="m 53.168296,23.182185 v 6.576939"
+         d="m 51.581392,23.182185 v 6.576939"
          id="path7205-9-5" />
       <path
          style="fill:#050505;fill-opacity:1;stroke:#800000;stroke-width:0.818743;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"

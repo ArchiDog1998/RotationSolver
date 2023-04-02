@@ -35,7 +35,6 @@ public abstract class NIN_Base : CustomRotation
 
     public class NinAction : BaseAction, INinAction
     {
-        protected override bool CheckBadStatus => false;
         public IBaseAction[] Ninjutsu { get; }
         internal NinAction(ActionID actionID, params IBaseAction[] ninjutsu)
             : base(actionID, false, false)

@@ -31,8 +31,8 @@ public static class DataCenter
     }
 
     private static List<NextAct> NextActs = new List<NextAct>();
-    public static IBaseAction TimeLineAction { internal get; set; }
-    internal static IBaseAction CommandNextAction
+    public static IBaseAction TimeLineAction { private get; set; }
+    public static IAction CommandNextAction
     {
         get
         {
@@ -49,7 +49,7 @@ public static class DataCenter
         }
     }
 
-    public static void AddOneTimelineAction(IBaseAction act, double time)
+    public static void AddCommandAction(IAction act, double time)
     {
         var index = NextActs.FindIndex(i => i.act.ID == act.ID);
         var newItem = new NextAct(act, DateTime.Now.AddSeconds(time));
