@@ -130,8 +130,8 @@ public class PLD_Default : PLD_Base
             if (Rampart.CanUse(out act)) return true;
 
             //10
-            if (UseOath(out act)) return true;
             if (Bulwark.CanUse(out act)) return true;
+            if (UseOath(out act)) return true;
         }
 
         if (Reprisal.CanUse(out act)) return true;
@@ -141,14 +141,9 @@ public class PLD_Default : PLD_Base
 
     private static bool UseOath(out IAction act)
     {
-        if (HasTankStance)
-        {
-            if (Sheltron.CanUse(out act)) return true;
-        }
-        else
-        {
-            if (Intervention.CanUse(out act)) return true;
-        }
+        if (Sheltron.CanUse(out act)) return true;
+        if (Intervention.CanUse(out act)) return true;
+
         return false;
     }
 }
