@@ -106,7 +106,7 @@ public class Service : IDisposable
 
     public static bool WorldToScreen(Vector3 worldPos, out Vector2 screenPos) => GameGui.WorldToScreen(worldPos, out screenPos);
 
-    public unsafe static IEnumerable<IntPtr> GetAddon<T>() where T : struct
+    public unsafe static IEnumerable<IntPtr> GetAddons<T>() where T : struct
     {
         if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return new IntPtr[0];
 
@@ -114,6 +114,9 @@ public class Service : IDisposable
             .Select(str => GameGui.GetAddonByName(str, 1))
             .Where(ptr => ptr != IntPtr.Zero);
     }
+
+    public unsafe static IntPtr GetAddon<T>() where T : struct
+        => GetAddons<T>().FirstOrDefault();
 
     public static PlayerCharacter Player => ClientState.LocalPlayer;
     [PluginService]

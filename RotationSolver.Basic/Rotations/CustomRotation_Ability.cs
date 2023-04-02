@@ -167,7 +167,6 @@ public abstract partial class CustomRotation
             && (Service.Config.AutoProvokeForTank || DataCenter.AllianceTanks.Count() < 2)
             && TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count()))
         {
-
             if (!HasTankStance && TankStance.CanUse(out act)) return true;
             if (Provoke.CanUse(out act, CanUseOption.MustUse)) return true;
         }

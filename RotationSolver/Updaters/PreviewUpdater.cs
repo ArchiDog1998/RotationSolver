@@ -96,7 +96,7 @@ internal static class PreviewUpdater
 
         ByteColor c = _showCanMove ? _greenColor : _redColor;
 
-        var castBars = Service.GetAddon<AddonCastBar>();
+        var castBars = Service.GetAddons<AddonCastBar>();
         if (!castBars.Any()) return;
         var castBar = castBars.FirstOrDefault();
 
@@ -143,10 +143,8 @@ internal static class PreviewUpdater
     {
         var index = 0;
         var hotBarIndex = 0;
-        foreach (var intPtr in Service.GetAddon<AddonActionBar>()
-            .Union(Service.GetAddon<AddonActionBarX>())
-            .Union(Service.GetAddon<AddonActionCross>())
-            .Union(Service.GetAddon<AddonActionDoubleCrossBase>()))
+        foreach (var intPtr in Service.GetAddons<AddonActionBar>()
+            .Union(Service.GetAddons<AddonActionBarX>()))
         {
             if (intPtr == IntPtr.Zero) continue;
             var actionBar = (AddonActionBarBase*)intPtr;
@@ -170,7 +168,6 @@ internal static class PreviewUpdater
             hotBarIndex++;
         }
     }
-
 
     private static unsafe void HighLightActionBar(ActionBarPredicate shouldShow = null)
     {

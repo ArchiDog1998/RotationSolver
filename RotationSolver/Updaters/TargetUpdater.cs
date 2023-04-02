@@ -141,7 +141,7 @@ internal static partial class TargetUpdater
     {
         if (!Service.Config.AddEnemyListToHostile) return new uint[0];
 
-        var addons = Service.GetAddon<AddonEnemyList>();
+        var addons = Service.GetAddons<AddonEnemyList>();
 
         if(!addons.Any()) return new uint[0];
         var addon = addons.FirstOrDefault();
