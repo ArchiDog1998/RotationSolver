@@ -71,7 +71,6 @@ public abstract partial class CustomRotation
     protected static float PartyMembersAverHP => DataCenter.PartyMembersAverHP;
     #endregion
 
-
     #region Target
     /// <summary>
     /// The player's target.
