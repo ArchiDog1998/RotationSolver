@@ -138,6 +138,13 @@ internal class ControlWindow : Window
         DrawCommandAction(rotation?.AntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
 
+        ImGui.Text("CMD:");
+        ImGui.SameLine();
+        DrawIAction(DataCenter.CommandNextAction, Service.Config.ControlWindow0GCDSize, 1);
+
+        ImGui.SameLine();
+
+        ImGui.BeginGroup();
         ImGui.Text(DataCenter.RightNowTargetToHostileType switch
         {
              TargetHostileType.AllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
@@ -147,6 +154,7 @@ internal class ControlWindow : Window
         });
 
         ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
+        ImGui.EndGroup();
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)
