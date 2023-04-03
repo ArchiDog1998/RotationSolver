@@ -126,7 +126,6 @@ public abstract partial class CustomRotation
     protected static float WeaponElapsed => DataCenter.WeaponElapsed;
     #endregion
 
-
     protected static ClientLanguage Language => Service.Language;
 
 

@@ -88,8 +88,13 @@ public partial class BaseAction
             }
         }
 
-        if (CastTime > 0 && DataCenter.IsMoving &&
-            !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
+        if(CastTime > 0)
+        {
+            if (DataCenter.IsMoving &&
+                !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
+
+            if (IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)) return false;
+        }
 
         if (!FindTarget(mustUse, out var target) || target == null) return false;
 
