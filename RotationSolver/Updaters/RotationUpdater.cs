@@ -133,13 +133,12 @@ internal static class RotationUpdater
     public static void UpdateRotation()
     {
         var nowJob = (ClassJobID)Service.Player.ClassJob.Id;
-        Service.Config.RotationChoices.TryGetValue((uint)nowJob, out var newName);
 
         foreach (var group in _customRotations)
         {
             if (!group.classJobIds.Contains(nowJob)) continue;
 
-            RightNowRotation = GetChooseRotation(group, newName);
+            RightNowRotation = GetChooseRotation(group);
             RightRotationBaseActions = RightNowRotation.AllBaseActions;
             return;
         }
@@ -147,9 +146,11 @@ internal static class RotationUpdater
         RightRotationBaseActions = new IBaseAction[0];
     }
 
-    internal static ICustomRotation GetChooseRotation(CustomRotationGroup group, string name)
+    internal static ICustomRotation GetChooseRotation(CustomRotationGroup group)
     {
-        var rotation = group.rotations.FirstOrDefault(r => r.RotationName == name);
+        Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var name);
+       
+        var rotation = group.rotations.FirstOrDefault(r => r.GetType().FullName == name);
         rotation ??= group.rotations.FirstOrDefault(RotationHelper.IsDefault);
         rotation ??= group.rotations.FirstOrDefault(r => r.IsAllowed(out _));
         rotation ??= group.rotations.FirstOrDefault();

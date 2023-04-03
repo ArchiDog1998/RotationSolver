@@ -421,7 +421,7 @@ internal static class ImGuiHelper
                         ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
                         if (ImGui.Selectable(r.RotationName))
                         {
-                            Service.Config.RotationChoices[rotation.Job.RowId] = r.RotationName;
+                            Service.Config.RotationChoices[rotation.Job.RowId] = r.GetType().FullName;
                             Service.Config.Save();
                         }
                         if (ImGui.IsItemHovered())
