@@ -92,9 +92,10 @@ public partial class BaseAction
         {
             if (DataCenter.IsMoving &&
                 !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
-
-            if (IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)) return false;
         }
+
+        if (IsGeneralGCD && IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)
+            && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;
 
         if (!FindTarget(mustUse, out var target) || target == null) return false;
 
