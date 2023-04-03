@@ -1,6 +1,6 @@
 namespace RotationSolver.Default.Tank;
 
-[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/WAR_Default.cs")]
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Old/Tank/WAR_Old.cs")]
 public sealed class WAR_Old : WAR_Base
 {
     public override string GameVersion => "6.0";
