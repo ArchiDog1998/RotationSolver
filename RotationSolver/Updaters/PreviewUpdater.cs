@@ -15,7 +15,6 @@ using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using System.Runtime.InteropServices;
-using static Lumina.Data.Parsing.Uld.NodeData;
 
 namespace RotationSolver.Updaters;
 
@@ -144,18 +143,19 @@ internal static class PreviewUpdater
         var index = 0;
         var hotBarIndex = 0;
         foreach (var intPtr in Service.GetAddons<AddonActionBar>()
-            .Union(Service.GetAddons<AddonActionBarX>()))
+            .Union(Service.GetAddons<AddonActionBarX>())
+            .Union(Service.GetAddons<AddonActionCross>())
+            .Union(Service.GetAddons<AddonActionDoubleCrossBase>()))
         {
             if (intPtr == IntPtr.Zero) continue;
             var actionBar = (AddonActionBarBase*)intPtr;
-            var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[hotBarIndex];
+            var hotBar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[hotBarIndex];
             var slotIndex = 0;
             foreach (var slot in actionBar->Slot)
             {
-                var hotBarSlot = hotbar->Slot[slotIndex];
                 var highLightId = 0x53550000 + index;
 
-                if (doingSomething(slot, hotBarSlot, (uint)highLightId))
+                if (doingSomething(slot, hotBarIndex > 9 ? null: hotBar->Slot[slotIndex], (uint)highLightId))
                 {
                     var iconAddon = slot.Icon;
                     if (!iconAddon->AtkResNode.IsVisible) continue;
