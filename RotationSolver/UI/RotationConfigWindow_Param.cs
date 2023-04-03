@@ -379,6 +379,9 @@ internal partial class RotationConfigWindow
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell,
             ref Service.Config.HealthSingleSpell, speed);
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
+            ref Service.Config.HealthTankRatio, speed);
     }
 
     private void DrawParamTarget()
