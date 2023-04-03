@@ -92,20 +92,19 @@ public sealed class DRK_Default : DRK_Base
     {
         if (TheBlackestNight.CanUse(out act)) return true;
 
-        if (abilitiesRemaining == 2)
+        if (abilitiesRemaining == 1)
         {
             //10
-            if (HostileTargets.Count() > 1 && Oblation.CanUse(out act)) return true;
-
+            if (Oblation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+        }
+        else
+        {
             //30
             if (ShadowWall.CanUse(out act)) return true;
 
             //20
             if (Rampart.CanUse(out act)) return true;
             if (DarkMind.CanUse(out act)) return true;
-
-            //10
-            if (Oblation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
         if (Reprisal.CanUse(out act)) return true;

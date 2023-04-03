@@ -97,19 +97,22 @@ public sealed class GNB_Default : GNB_Base
     [RotationDesc(ActionID.HeartOfStone, ActionID.Nebula, ActionID.Rampart, ActionID.Camouflage, ActionID.Reprisal)]
     protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (abilitiesRemaining == 2)
+        if (abilitiesRemaining == 1)
+        {
+            //10
+            if (Camouflage.CanUse(out act)) return true;
+
+            //10
+            if (HeartOfStone.CanUse(out act)) return true;
+        }
+        else
         {
             //30
             if (Nebula.CanUse(out act)) return true;
 
             //20
             if (Rampart.CanUse(out act)) return true;
-
-            //10
-            if (Camouflage.CanUse(out act)) return true;
         }
-        //10
-        if (HeartOfStone.CanUse(out act)) return true;
 
         if (Reprisal.CanUse(out act)) return true;
 
