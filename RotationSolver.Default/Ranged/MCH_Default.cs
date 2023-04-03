@@ -1,11 +1,11 @@
 namespace RotationSolver.Default.Ranged;
 
-[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Old/Ranged/MCH_Old.cs")]
-public sealed class MCH_Old : MCH_Base
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Ranged/MCH_Default.cs")]
+public sealed class MCH_Default : MCH_Base
 {
     public override string GameVersion => "6.28";
 
-    public override string RotationName => "Old";
+    public override string RotationName => "Default";
 
 
     /// <summary>
