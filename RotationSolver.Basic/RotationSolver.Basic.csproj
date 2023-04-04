@@ -1,14 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  <ImplicitUsings>enable</ImplicitUsings>
-	  <PlatformTarget>x64</PlatformTarget>
-	  <Version>1.0.1</Version>
-	  <Authors>ArchiTed</Authors>
-	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-	  <Platforms>AnyCPU</Platforms>
 	  <PackageIcon>RotationSolverIcon_128.png</PackageIcon>
 	  <Description>A basic library for rotation development in FFXIV in RotationSolver.</Description>
 	  <PackageId>RotationSolver.Basic</PackageId>
@@ -19,12 +12,7 @@
 	  <PackageTags>FFXIV, FF14, Dalamud, Rotation</PackageTags>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
-
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Data\jb1sch2v.sen~" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\COPYING.LESSER">
@@ -36,34 +24,6 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Dalamud">
-			<HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="ImGuiScene">
-			<HintPath>$(DalamudLibPath)ImGuiScene.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Lumina">
-			<HintPath>$(DalamudLibPath)Lumina.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Lumina.Excel">
-			<HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="FFXIVClientStructs">
-			<HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Newtonsoft.Json">
-			<HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-	</ItemGroup>
-
 	<ItemGroup>
 	  <None Update="README.md">
 	    <Pack>True</Pack>
