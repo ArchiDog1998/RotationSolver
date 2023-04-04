@@ -28,7 +28,11 @@ internal static class RotationHelper
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)
-        => rotation.IsAllowed(out _) ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet;
+        => !rotation.IsAllowed(out _) ? ImGuiColors.DalamudViolet : rotation.IsBeta() ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite ;
+
+    public static bool IsBeta(this ICustomRotation rotation)
+        => rotation.GetType().GetCustomAttribute<BetaRotationAttribute>() != null;
+
 
     public static string GetAuthor(this ICustomRotation rotation)
         => rotation.GetType().Assembly.GetAuthor();

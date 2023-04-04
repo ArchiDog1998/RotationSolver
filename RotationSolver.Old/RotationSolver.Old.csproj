@@ -10,6 +10,5 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Healer\" />
-	  <Folder Include="Magical\" />
 	</ItemGroup>
 </Project>

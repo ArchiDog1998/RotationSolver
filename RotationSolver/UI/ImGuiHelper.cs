@@ -437,6 +437,10 @@ internal static class ImGuiHelper
 
                 HoveredString(showStr);
             }
+            if (rotation.IsBeta())
+            {
+                HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation);
+            }
             ImGui.PopStyleColor();
 
             ImGui.SameLine();

@@ -137,7 +137,7 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthRatioDot { get; set; } = "If target's current health ratio is higher than this, regard it can be dot.";
     public string ConfigWindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
-    public string ConfigWindow_Param_CastingDisplay { get; set; } = "Enhance castbar with casting status";
+    public string ConfigWindow_Param_CastingDisplay { get; set; } = "Enhance cast bar with casting status";
     public string ConfigWindow_Param_TeachingMode { get; set; } = "Teaching mode";
     public string ConfigWindow_Param_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
     public string ConfigWindow_Param_MovingTargetColor { get; set; } = "Prompt box color of moving target";
@@ -172,18 +172,18 @@ internal partial class Strings
     public string ConfigWindow_Param_AutoBurst { get; set; } = "Automatic burst";
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
     public string ConfigWindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
-    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Nerver use any AOE action when this action may attack the mobs that not is a hostile target.";
-    public string ConfigWindow_Param_UseDefenceAbility { get; set; } = "Use defence abilities";
+    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AOE action when this action may attack the mobs that not is a hostile target.";
+    public string ConfigWindow_Param_UseDefenceAbility { get; set; } = "Use defense abilities";
     public string ConfigWindow_Param_UseDefenceAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";
     public string ConfigWindow_Param_AutoShield { get; set; } = "Auto tank stance";
     public string ConfigWindow_Param_AutoProvokeForTank { get; set; } = "Auto Provoke (Tank)";
     public string ConfigWindow_Param_AutoProvokeForTankDesc { get; set; } = "When a hostile is hitting the non-Tank member of party, it will automatically use the Provoke.";
     public string ConfigWindow_Param_AutoUseTrueNorth { get; set; } = "Auto TrueNorth (Melee)";
     public string ConfigWindow_Param_RaisePlayerBySwift { get; set; } = "Raise player by swift";
-    public string ConfigWindow_Param_UseGroundBeneficialAbility { get; set; } = "Use beneficaial ground-targeted actions";
+    public string ConfigWindow_Param_UseGroundBeneficialAbility { get; set; } = "Use beneficial ground-targeted actions";
     public string ConfigWindow_Param_RaisePlayerByCasting { get; set; } = "Raise player by casting when swift is in cooldown";
     public string ConfigWindow_Param_UseHealWhenNotAHealer { get; set; } = "Use heal when not-healer";
-    public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Nerver raise player if MP is less than the set value";
+    public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
     public string ConfigWindow_Param_UseItem { get; set; } = "Use items";
     public string ConfigWindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
     public string ConfigWindow_Param_Conditon { get; set; } = "Condition";
@@ -261,6 +261,7 @@ internal partial class Strings
     public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and middle click to clear the key setting.";
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
+    public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation";
 
     #endregion
 

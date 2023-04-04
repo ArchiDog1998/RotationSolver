@@ -32,7 +32,9 @@ internal static class RotationUpdater
             (from a in assemblies
              select (a, a.GetCustomAttribute<AuthorHashAttribute>()) into author
              where author.Item2 != null
-             select author).ToDictionary(i => i.Item2.Hash, i => i.a.GetAuthor() + " - " + i.a.GetName().Name));
+             group author by author.Item2 into gr
+             select (gr.Key.Hash, string.Join(", ", gr.Select(i => i.a.GetAuthor() + " - " + i.a.GetName().Name))))
+             .ToDictionary(i => i.Hash, i => i.Item2));
 
         _customRotations = (
             from a in assemblies
