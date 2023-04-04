@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Newtonsoft.Json;
@@ -24,6 +25,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     static readonly List<IDisposable> _dis = new List<IDisposable>();
     public string Name => "Rotation Solver";
+
+    public static DalamudLinkPayload LinkPayload { get; private set; }
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
@@ -67,6 +70,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         ChangeUITranslation();
 
         RotationUpdater.GetAllCustomRotations();
+
+        LinkPayload = pluginInterface.AddChatLinkHandler(6, (id, str) =>
+        {
+            if(id == 6) OpenConfigWindow();
+        });
     }
 
 

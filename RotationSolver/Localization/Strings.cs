@@ -11,7 +11,7 @@ internal partial class Strings
     public string Commands_InsertAction { get; set; } = "Will use it within {0}s";
 
     public string Commands_InsertActionFailure { get; set; } = "Can not find the action, please check the action name.";
-    public string Commands_SayHelloToAuthor { get; set; } = "({0}) is probably one of the authors of the \"Rotation Solver\", so say hello to him!";
+
 
     #endregion
 

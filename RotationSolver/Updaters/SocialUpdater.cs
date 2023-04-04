@@ -140,8 +140,11 @@ internal class SocialUpdater
             Service.TargetManager.SetTarget(author.c);
             Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
-            var message = new SeString(new PlayerPayload(author.c.Name.TextValue, author.c.HomeWorld.Id)
-                , new TextPayload(string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.nameDesc)));
+            var message = new SeString(new PlayerPayload(author.c.Name.TextValue, author.c.HomeWorld.Id),
+                          new TextPayload($"({author.nameDesc}) is probably one of the authors of the "),
+                          RotationSolverPlugin.LinkPayload,
+                          new TextPayload("Rotation Solver"),
+                          new TextPayload(", so say hello to him/her!"));
 
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
