@@ -21,7 +21,8 @@ public static class TargetFilter
         var tankTars = availableCharas.GetJobCategory(JobRole.Tank);
 
         var tankTar = tankTars.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
-        if (tankTar.GetHealingRatio() < Service.Config.HealthTankRatio) return tankTar;
+        if (tankTar != null &&　tankTar.GetHealingRatio() < Service.Config.HealthTankRatio)
+            return tankTar;
 
         var tar = availableCharas.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
         if (tar.GetHealingRatio() < 1) return tar;

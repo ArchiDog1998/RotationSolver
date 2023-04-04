@@ -129,9 +129,11 @@ internal static class PreviewUpdater
 
     private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotBarSlot* hot, uint actionID)
     {
-        if ((IntPtr)hot == IntPtr.Zero) return false;
-        if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
-        if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
+        if ((IntPtr)hot != IntPtr.Zero)
+        {
+            if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
+            if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
+        }
 
         return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
     }
