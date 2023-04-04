@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" ?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="5b5d55b8-3641-45dc-97ba-98f49408c39c" Version="1.1" Language="en-US" Publisher="秋水" />
+        <Identity Id="5b5d55b8-3641-45dc-97ba-98f49408c39c" Version="1.2" Language="en-US" Publisher="秋水" />
         <DisplayName>RotationSolver Templates</DisplayName>
         <Description xml:space="preserve">A rotation development template for rotation solver</Description>
         <ReleaseNotes>First release.</ReleaseNotes>

@@ -43,7 +43,6 @@
 		</Reference>
 
 		<Using Include="Dalamud.Game.ClientState.JobGauge.Enums" />
-		<Using Include="RotationSolver.Actions.BaseAction" />
 		<Using Include="RotationSolver.Basic" />
 		<Using Include="RotationSolver.Basic.Actions" />
 		<Using Include="RotationSolver.Basic.Attributes" />
