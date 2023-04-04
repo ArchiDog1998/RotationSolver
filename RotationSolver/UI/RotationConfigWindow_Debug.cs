@@ -1,15 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using ImGuiNET;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Default.Melee;
-using RotationSolver.Rotations.CustomRotation;
+﻿using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using RotationSolver.Updaters;
-using System.Numerics;
 
 namespace RotationSolver.UI;
 

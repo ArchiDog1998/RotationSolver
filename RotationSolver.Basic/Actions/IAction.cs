@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace RotationSolver.Basic.Actions;
+﻿namespace RotationSolver.Basic.Actions;
 
 public interface IAction : ITexture
 {

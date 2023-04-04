@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using System.Collections;
+﻿using System.Collections;
 
 namespace RotationSolver.Basic.Data;
 

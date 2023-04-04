@@ -1,9 +1,4 @@
-﻿using Dalamud.Utility;
-using System.Net;
-using System;
-using ImGuiScene;
-using Dalamud.Interface.Internal;
-using RotationSolver.Basic.Data;
+﻿using ImGuiScene;
 
 namespace RotationSolver.Basic.Attributes;
 

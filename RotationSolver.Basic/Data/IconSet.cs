@@ -1,7 +1,5 @@
 ﻿using Dalamud.Utility;
 using ImGuiScene;
-using RotationSolver.Basic.Rotations;
-using System.Collections.Generic;
 using System.Net;
 
 namespace RotationSolver.Basic.Data;

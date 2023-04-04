@@ -1,7 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
-using RotationSolver.Basic;
 
 namespace RotationSolver.Basic.Data;
 

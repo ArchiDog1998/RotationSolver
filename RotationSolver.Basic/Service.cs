@@ -25,11 +25,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiScene;
 using Lumina.Excel;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Data;
-using System.Numerics;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
 
 namespace RotationSolver.Basic;
 

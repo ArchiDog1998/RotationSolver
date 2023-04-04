@@ -1,8 +1,4 @@
-﻿using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Rotations;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.Commands

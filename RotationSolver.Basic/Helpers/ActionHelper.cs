@@ -1,5 +1,4 @@
-﻿using RotationSolver.Basic.Data;
-using Action = Lumina.Excel.GeneratedSheets.Action;
+﻿using Action = Lumina.Excel.GeneratedSheets.Action;
 
 
 namespace RotationSolver.Basic.Helpers;

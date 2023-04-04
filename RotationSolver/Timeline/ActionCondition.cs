@@ -1,11 +1,5 @@
-﻿using ImGuiNET;
-using Newtonsoft.Json;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Rotations;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 using RotationSolver.UI;
-using System;
 
 namespace RotationSolver.Timeline;
 

@@ -1,7 +1,4 @@
-﻿using RotationSolver.Basic.Rotations;
-using RotationSolver.Rotations.CustomRotation;
-
-namespace RotationSolver.Basic.Actions
+﻿namespace RotationSolver.Basic.Actions
 {
     internal class MedicineItem : BaseItem
     {

@@ -1,12 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
-using ImGuiNET;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Basic.Rotations;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Numerics;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow

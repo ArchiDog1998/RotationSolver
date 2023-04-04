@@ -1,9 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 

@@ -1,11 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using System.Numerics;
 
 namespace RotationSolver.Basic.Helpers;
 

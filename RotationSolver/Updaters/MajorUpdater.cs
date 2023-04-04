@@ -1,9 +1,6 @@
 ﻿using Dalamud.Game;
 using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using RotationSolver.Basic;
 using RotationSolver.Commands;
-using System.Collections.Generic;
 
 namespace RotationSolver.Updaters;
 

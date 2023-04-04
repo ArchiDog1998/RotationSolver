@@ -1,13 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Interface;
-using ImGuiNET;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Rotations.CustomRotation;
-using RotationSolver.Updaters;
-using System.Numerics;
+﻿using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
 

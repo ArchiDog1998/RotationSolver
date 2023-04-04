@@ -1,14 +1,9 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
 using ImGuiScene;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Data;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Numerics;
 
 namespace RotationSolver.UI;
 

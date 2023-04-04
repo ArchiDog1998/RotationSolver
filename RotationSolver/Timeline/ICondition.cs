@@ -1,6 +1,4 @@
-﻿using RotationSolver.Basic.Rotations;
-
-namespace RotationSolver.Timeline;
+﻿namespace RotationSolver.Timeline;
 
 internal interface ICondition
 {

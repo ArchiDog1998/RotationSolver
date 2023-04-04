@@ -1,9 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Helpers;
-using System.ComponentModel;
 
-namespace RotationSolver.Actions.BaseAction;
+namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {

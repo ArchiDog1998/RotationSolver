@@ -1,25 +1,13 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using ImGuiNET;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Configuration.RotationConfig;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Basic.Rotations;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.ComponentModel;
-using System.Numerics;
-using System.Reflection;
 
 namespace RotationSolver.UI;
 

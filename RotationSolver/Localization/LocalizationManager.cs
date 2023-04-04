@@ -1,10 +1,4 @@
 ﻿using Dalamud.Logging;
-using Newtonsoft.Json;
-using RotationSolver.Basic;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 
 namespace RotationSolver.Localization;
 

@@ -1,8 +1,5 @@
 ﻿using Dalamud.Interface.Colors;
-using RotationSolver.Basic.Rotations;
 using System.Diagnostics;
-using System.Numerics;
-using System.Reflection;
 
 namespace RotationSolver;
 

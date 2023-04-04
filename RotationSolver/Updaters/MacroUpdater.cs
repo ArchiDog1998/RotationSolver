@@ -1,7 +1,4 @@
-﻿using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-
-namespace RotationSolver.Updaters;
+﻿namespace RotationSolver.Updaters;
 
 internal static class MacroUpdater
 {

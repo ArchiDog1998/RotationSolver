@@ -1,8 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Data;
+﻿using Lumina.Excel.GeneratedSheets;
 using System.Data;
-using System.Numerics;
 
 namespace RotationSolver.Basic.Helpers;
 

@@ -1,11 +1,4 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
-using RotationSolver.Basic.Data;
-using RotationSolver.Rotations.CustomRotation;
-
-namespace RotationSolver.Basic.Rotations.Basic;
+﻿namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SMN_Base : CustomRotation
 {

@@ -1,7 +1,4 @@
-﻿using ImGuiNET;
-using RotationSolver.Basic;
-using RotationSolver.Localization;
-using System.Numerics;
+﻿using RotationSolver.Localization;
 
 namespace RotationSolver.UI;
 

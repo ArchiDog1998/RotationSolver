@@ -1,7 +1,6 @@
-﻿namespace RotationSolver.Basic.Actions
+﻿namespace RotationSolver.Basic.Actions;
+
+public interface IBaseItem : IAction
 {
-    public interface IBaseItem : IAction
-    {
-        bool CanUse(out IAction item);
-    }
+    bool CanUse(out IAction item);
 }

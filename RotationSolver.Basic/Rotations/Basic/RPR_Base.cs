@@ -1,13 +1,4 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Rotations.CustomRotation;
-using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
-
-namespace RotationSolver.Basic.Rotations.Basic;
+﻿namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class RPR_Base : CustomRotation
 {

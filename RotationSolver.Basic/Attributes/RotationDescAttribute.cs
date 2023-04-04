@@ -1,7 +1,4 @@
-﻿using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-
-namespace RotationSolver.Basic.Attributes;
+﻿namespace RotationSolver.Basic.Attributes;
 
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 public class RotationDescAttribute : Attribute

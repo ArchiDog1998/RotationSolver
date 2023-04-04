@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <PackageIcon>RotationSolverIcon_128.png</PackageIcon>
@@ -15,19 +14,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\COPYING.LESSER">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\docs\RotationSolverIcon_128.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-	<ItemGroup>
+	  <Using Include="System.ComponentModel" />
+	  <Using Include="Dalamud.Game.ClientState.JobGauge.Types" />
+
+
+	  <None Include="..\COPYING.LESSER">
+		<Pack>True</Pack>
+		<PackagePath>\</PackagePath>
+      </None>
+      <None Include="..\docs\RotationSolverIcon_128.png">
+		<Pack>True</Pack>
+		<PackagePath>\</PackagePath>
+      </None>
 	  <None Update="README.md">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
+		<Pack>True</Pack>
+		<PackagePath>\</PackagePath>
 	  </None>
-	</ItemGroup>
+  </ItemGroup>
 </Project>

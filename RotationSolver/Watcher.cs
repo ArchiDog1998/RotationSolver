@@ -1,19 +1,9 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Hooking;
+﻿using Dalamud.Hooking;
 using Dalamud.Interface.Colors;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiNET;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
 using RotationSolver.Localization;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Speech.Synthesis;
-using System.Text;
 using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 

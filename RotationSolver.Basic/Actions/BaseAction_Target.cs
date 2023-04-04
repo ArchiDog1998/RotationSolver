@@ -1,13 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using System.Numerics;
 
-namespace RotationSolver.Actions.BaseAction;
+namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {

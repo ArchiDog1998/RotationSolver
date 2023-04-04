@@ -1,8 +1,4 @@
-﻿using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Data;
-
-namespace RotationSolver.Basic.Helpers;
+﻿namespace RotationSolver.Basic.Helpers;
 
 public static class IActionHelper
 {

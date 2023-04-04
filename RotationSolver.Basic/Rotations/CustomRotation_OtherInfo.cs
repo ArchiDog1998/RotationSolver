@@ -1,15 +1,7 @@
-﻿using Dalamud.Game.ClientState;
-using Dalamud;
+﻿using Dalamud;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using System.Reflection;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Helpers;
 
-namespace RotationSolver.Rotations.CustomRotation;
+namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
 {
     #region Player

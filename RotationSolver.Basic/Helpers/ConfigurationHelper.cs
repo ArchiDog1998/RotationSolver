@@ -1,7 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Keys;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using System.Collections.Generic;
 
 namespace RotationSolver.Basic.Helpers;
 

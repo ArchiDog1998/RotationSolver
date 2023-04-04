@@ -1,14 +1,4 @@
-﻿using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Configuration.RotationConfig;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Rotations.CustomRotation;
-using System.Linq;
-
-namespace RotationSolver.Basic.Rotations.Basic;
-
+﻿namespace RotationSolver.Basic.Rotations.Basic;
 
 public interface IBLUAction : IBaseAction
 {

@@ -1,8 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.Updaters;
 

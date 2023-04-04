@@ -1,16 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
-using Newtonsoft.Json;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Basic.Rotations;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 using RotationSolver.UI;
-using System;
-using System.Linq;
 
 namespace RotationSolver.Timeline;
 

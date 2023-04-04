@@ -1,8 +1,5 @@
 using Dalamud.Configuration;
 using Dalamud.Game.ClientState.GamePad;
-using Newtonsoft.Json;
-using RotationSolver.Basic.Data;
-using System.Numerics;
 
 namespace RotationSolver.Basic.Configuration;
 

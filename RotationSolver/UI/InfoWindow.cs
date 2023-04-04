@@ -1,6 +1,4 @@
 ﻿using Dalamud.Interface.Windowing;
-using ImGuiNET;
-using RotationSolver.Basic;
 
 namespace RotationSolver.UI;
 

@@ -1,13 +1,5 @@
 ﻿using Dalamud.Logging;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Rotations;
 using RotationSolver.Localization;
-using System.Reflection;
-using System.Runtime.Loader;
 
 namespace RotationSolver.Updaters;
 

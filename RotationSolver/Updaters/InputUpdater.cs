@@ -1,7 +1,5 @@
 ﻿using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Game.ClientState.Keys;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
 using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;

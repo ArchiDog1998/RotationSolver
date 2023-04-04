@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace RotationSolver.Timeline;
+﻿namespace RotationSolver.Timeline;
 
 internal class MajorConditionSet
 {

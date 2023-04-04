@@ -1,7 +1,4 @@
-﻿using RotationSolver.Basic.Data;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 
 namespace RotationSolver.Basic.Configuration.RotationConfig;
 
