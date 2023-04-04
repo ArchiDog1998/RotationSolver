@@ -2,6 +2,7 @@
 using RotationSolver.Basic.Rotations;
 using System.Diagnostics;
 using System.Numerics;
+using System.Reflection;
 
 namespace RotationSolver;
 
@@ -33,11 +34,13 @@ internal static class RotationHelper
         => rotation.IsAllowed(out _) ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet;
 
     public static string GetAuthor(this ICustomRotation rotation)
+        => rotation.GetType().Assembly.GetAuthor();
+
+    public static string GetAuthor(this Assembly assembly)
     {
         try
         {
-            var assembly = rotation.GetType().Assembly;
-            return FileVersionInfo.GetVersionInfo(assembly.Location)?.CompanyName 
+            return FileVersionInfo.GetVersionInfo(assembly.Location)?.CompanyName
                 ?? assembly.GetName().Name
                 ?? "Unknown";
         }

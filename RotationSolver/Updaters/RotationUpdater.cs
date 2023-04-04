@@ -17,7 +17,7 @@ internal static class RotationUpdater
 
     internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
 
-    internal static string[] AuthorHashes { get; private set; } = new string[0];
+    internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
 
     static readonly string[] _locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
@@ -36,10 +36,11 @@ internal static class RotationUpdater
 
         PluginLog.Log("Try to load rotations from these assemblies.", assemblies.Select(a => a.FullName));
 
-        AuthorHashes = (from a in assemblies
-                       select a.GetCustomAttribute<AuthorHashAttribute>() into author
-                       where author != null
-                       select author.Hash).ToArray();
+        AuthorHashes = new SortedList<string, string>(
+            (from a in assemblies
+             select (a, a.GetCustomAttribute<AuthorHashAttribute>()) into author
+             where author.Item2 != null
+             select author).ToDictionary(i => i.Item2.Hash, i => i.a.GetAuthor() + " - " + i.a.GetName().Name));
 
         _customRotations = (
             from a in assemblies
