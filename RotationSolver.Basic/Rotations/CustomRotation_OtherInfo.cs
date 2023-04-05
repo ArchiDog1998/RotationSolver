@@ -53,15 +53,8 @@ public abstract partial class CustomRotation
     protected static IEnumerable<BattleChara> WeakenPeople => DataCenter.WeakenPeople;
     protected static IEnumerable<BattleChara> DyingPeople => DataCenter.DyingPeople;
 
-    protected static byte CountOfMembersIn2minsBurst => (byte)(StatusHelper.Burst2minsBuff.Count(s =>
-    {
-        if (!Player.HasStatus(false, s)) return false;
-        return !Player.WillStatusEndGCD(0, 0, false, s);
-    }) + StatusHelper.Burst2minsDeBuff.Count(s =>
-    {
-        if (!Target.HasStatus(false, s)) return false;
-        return !Target.WillStatusEndGCD(0, 0, false, s);
-    }));
+    protected static float RatioOfMembersIn2minsBurst => DataCenter.RatioOfMembersIn2minsBurst;
+
 
     /// <summary>
     /// Whether the number of party members is 8.

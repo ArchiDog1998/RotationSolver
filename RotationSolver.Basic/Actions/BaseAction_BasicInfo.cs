@@ -18,7 +18,8 @@ public partial class BaseAction : IBaseAction
     /// <summary>
     /// EnoughLevel for using.
     /// </summary>
-    public bool EnoughLevel => Service.Player.Level >= _action.ClassJobLevel;
+    public bool EnoughLevel => Service.Player.Level >= Level;
+    public byte Level => _action.ClassJobLevel;
     public string Name => _action.Name;
 
     public string Description => string.Empty;

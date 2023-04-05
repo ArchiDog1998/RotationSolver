@@ -46,7 +46,6 @@ internal partial class RotationConfigWindow
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
         ImGui.Text("Targetable: " + Service.Player.IsTargetable().ToString());
 
-
         foreach (var status in Service.Player.StatusList)
         {
             var source = status.SourceId == Service.Player.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
@@ -68,6 +67,8 @@ internal partial class RotationConfigWindow
         //        ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
         //    }
         //}
+
+        ImGui.Text("Party Burst Ratio: " + DataCenter.RatioOfMembersIn2minsBurst.ToString());
 
         ImGui.Text("Party: " + DataCenter.PartyMembers.Count().ToString());
         ImGui.Text("CanHealSingleAbility: " + DataCenter.CanHealSingleAbility.ToString());

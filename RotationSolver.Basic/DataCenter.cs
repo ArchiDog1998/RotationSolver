@@ -196,8 +196,41 @@ public static class DataCenter
 
     public static bool HasPet { get; set; }
 
+
     public static unsafe bool HasCompanion => (IntPtr)Service.RawPlayer == IntPtr.Zero ? false :
         (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Service.RawPlayer) != IntPtr.Zero;
+
+    public static float RatioOfMembersIn2minsBurst
+    {
+        get
+        {
+            byte burst = 0, count = 0;
+
+            foreach (var member in PartyMembers)
+            {
+                foreach (var burstInfo in StatusHelper.Burst2Mins)
+                {
+                    if (burstInfo.jobs.Contains((ClassJobID)member.ClassJob.Id))
+                    {
+                        if (member.Level >= burstInfo.level)
+                        {
+                            var tar = burstInfo.isOnHostile 
+                                && Service.TargetManager.Target is BattleChara b ? b 
+                                : Service.Player;
+                            if (tar.HasStatus(false, burstInfo.status)
+                                && !tar.WillStatusEndGCD(0, 0, false, burstInfo.status))
+                            {
+                                burst++;
+                            }
+                            count++;
+                        }
+                        break;
+                    }
+                }
+            }
+            return (float)burst / count;
+        }
+    }
 
     #region HP
     public static IEnumerable<float> PartyMembersHP { get; set; }

@@ -43,6 +43,8 @@ internal class BaseItem : IBaseItem
 
     public bool EnoughLevel => true;
 
+    public byte Level => 0;
+
     public unsafe bool IsCoolingDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Item, ID);
 
     public BaseItem(uint row, uint a4 = 65535)
