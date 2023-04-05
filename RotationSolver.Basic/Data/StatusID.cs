@@ -1123,4 +1123,8 @@ public enum StatusID : ushort
     ConfiteorReady = 3019,
 
     Bulwark = 77,
+
+    Divination = 1878,
+
+    Mug = 3183,
 }
