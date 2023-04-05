@@ -79,11 +79,14 @@ internal class CooldownWindow : InfoWindow
 
                 ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), black);
             }
+
+            ImGui.PushFont(ImGuiHelper.GetFont(Service.Config.CooldownFontSize));
             string time = recast == 0  ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;
 
             TextShade(fontPos, time);
+            ImGui.PopFont();
         }
 
         if (act.EnoughLevel && act is IBaseAction bAct && bAct.MaxCharges > 1)

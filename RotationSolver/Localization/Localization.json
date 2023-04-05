@@ -188,6 +188,7 @@
   "ConfigWindow_Control_ShowGCDCooldown": "Show GCD' Cooldown",
   "ConfigWindow_Control_UseOriginalCooldown": "Show Original Cooldown",
   "ConfigWindow_Control_CooldownActionOneLine": "The count of cooldown actions in one line.",
+  "ConfigWindow_Control_CooldownFontSize": "Change the cooldown font size.",
   "ConfigWindow_Control_BackgroundColor": "Control Window's Background",
   "ConfigWindow_Control_InfoWindowBg": "Info Window's Background",
   "ConfigWindow_Control_ControlWindowGCDSize": "GCD icon size",

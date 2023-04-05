@@ -49,6 +49,8 @@ internal partial class RotationConfigWindow
                     ref Service.Config.UseOriginalCooldown, Service.Default.UseOriginalCooldown);
 
                 DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownActionOneLine, ref Service.Config.CooldownActionOneLine, Service.Default.CooldownActionOneLine, min: 1, max: 30);
+
+                DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownFontSize, ref Service.Config.CooldownFontSize, Service.Default.CooldownFontSize, min: 9.6f, max: 96);
             }
         }
 
@@ -57,30 +59,31 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
             ref Service.Config.ShowControlWindow, Service.Default.ShowControlWindow);
 
-        if (!Service.Config.ShowControlWindow) return;
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
-            ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
-
-        if (Service.Config.IsControlWindowLock)
+        if (Service.Config.ShowControlWindow)
         {
-            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
-                ref Service.Config.ControlWindowLockBg, Service.Default.ControlWindowLockBg);
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
+                ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
+
+            if (Service.Config.IsControlWindowLock)
+            {
+                DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
+                    ref Service.Config.ControlWindowLockBg, Service.Default.ControlWindowLockBg);
+            }
+            else
+            {
+                DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
+                    ref Service.Config.ControlWindowUnlockBg, Service.Default.ControlWindowUnlockBg);
+            }
+
+            DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowGCDSize,
+                ref Service.Config.ControlWindowGCDSize, Service.Default.ControlWindowGCDSize, speed: 0.2f, max: 80);
+
+            DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindow0GCDSize,
+                ref Service.Config.ControlWindow0GCDSize, Service.Default.ControlWindow0GCDSize, speed: 0.2f, max: 80);
+
+            DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
+                ref Service.Config.ControlWindowNextSizeRatio, Service.Default.ControlWindowNextSizeRatio);
         }
-        else
-        {
-            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
-                ref Service.Config.ControlWindowUnlockBg, Service.Default.ControlWindowUnlockBg);
-        }
-
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowGCDSize,
-            ref Service.Config.ControlWindowGCDSize, Service.Default.ControlWindowGCDSize, speed: 0.2f , max: 80);
-
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindow0GCDSize,
-            ref Service.Config.ControlWindow0GCDSize, Service.Default.ControlWindow0GCDSize, speed: 0.2f, max: 80);
-
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
-            ref Service.Config.ControlWindowNextSizeRatio, Service.Default.ControlWindowNextSizeRatio);
     }
 
     private static void DrawColor4(string name, ref Vector4 value, Vector4 @default, string description = "")

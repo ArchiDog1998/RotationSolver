@@ -791,4 +791,13 @@ internal static class ImGuiHelper
         }
         ImGui.Unindent(ATTR_INDENT);
     }
+
+    public static ImFontPtr GetFont(float size)
+    {
+        var style = new Dalamud.Interface.GameFonts.GameFontStyle(Dalamud.Interface.GameFonts.GameFontStyle.GetRecommendedFamilyAndSize(Dalamud.Interface.GameFonts.GameFontFamily.Axis, size));
+        var font = Service.Interface.UiBuilder.GetGameFontHandle(style).ImFont;
+        font.Scale = size / style.BaseSizePt;
+
+        return font;
+    }
 }
