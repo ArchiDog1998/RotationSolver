@@ -228,6 +228,7 @@ public static class DataCenter
                     }
                 }
             }
+            if (count == 0) return -1;
             return (float)burst / count;
         }
     }

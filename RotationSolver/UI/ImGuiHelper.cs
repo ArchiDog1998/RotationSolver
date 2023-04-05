@@ -469,6 +469,21 @@ internal static class ImGuiHelper
             ImGui.SameLine();
             ImGui.Text(rotation.GameVersion);
 
+            if (rotation.Configs.Any())
+            {
+                ImGui.SameLine();
+                Spacing();
+                if (IconButton(FontAwesomeIcon.Undo, $"#{rotation.GetHashCode()}Undo"))
+                {
+                    if (Service.Config.RotationsConfigurations.TryGetValue(rotation.Job.RowId, out var jobDict)
+                        && jobDict.ContainsKey(rotation.GetType().FullName))
+                    {
+                        jobDict.Remove(rotation.GetType().FullName);
+                    }
+                }
+                HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault);
+            }
+
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
             if(link != null)
             {
@@ -524,7 +539,7 @@ internal static class ImGuiHelper
         {
             RotationConfigWindow.DrawRotationRole(rotation);
 
-            rotation.DrawConfig(canAddButton);
+            rotation.Configs.Draw(canAddButton);
         });
 
     #region IAction
@@ -643,12 +658,8 @@ internal static class ImGuiHelper
     }
 
     #region Rotation Config Display
-    static void DrawConfig(this ICustomRotation rotation, bool canAddButton)
+    static void Draw(this IRotationConfigSet set, bool canAddButton)
     {
-        var set = rotation.Configs;
-        if (!set.Any()) return;
-
-        ImGui.BeginGroup();
         foreach (var config in set.Configs)
         {
             if (config is RotationConfigCombo c) c.Draw(set, canAddButton);
@@ -656,23 +667,6 @@ internal static class ImGuiHelper
             else if (config is RotationConfigFloat f) f.Draw(set, canAddButton);
             else if (config is RotationConfigString s) s.Draw(set, canAddButton);
         }
-        ImGui.EndGroup();
-        ImGui.SameLine();
-
-        var str = $"#{set.GetHashCode()}Undo";
-        var hight = ImGui.GetItemRectSize().Y - IconButtonSize(FontAwesomeIcon.Undo, str).Y;
-        var pos = ImGui.GetCursorPos();
-
-        ImGui.SetCursorPos(pos + new Vector2(10, hight / 2));
-        if(IconButton(FontAwesomeIcon.Undo, str))
-        {
-            if(Service.Config.RotationsConfigurations.TryGetValue(rotation.Job.RowId, out var jobDict)
-                && jobDict.ContainsKey(rotation.GetType().FullName))
-            {
-                jobDict.Remove(rotation.GetType().FullName);
-            }
-        }
-        HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault);
     }
 
     static void Draw(this RotationConfigCombo config, IRotationConfigSet set, bool canAddButton)
