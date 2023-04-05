@@ -1,7 +1,7 @@
 namespace RotationSolver.Old.Melee;
 
 [RotationDesc(ActionID.Mug)]
-[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Old/Melee/NIN_Old.cs")]
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Melee/NIN_Old.cs")]
 public sealed class NIN_Old : NIN_Base
 {
     public override string GameVersion => "6.0";

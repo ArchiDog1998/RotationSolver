@@ -1,7 +1,7 @@
 ﻿namespace RotationSolver.Default.Magical;
 
 [RotationDesc(ActionID.SearingLight)]
-[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Old/Magical/SMN_Old.cs")]
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Magical/SMN_Old.cs")]
 
 public sealed class SMN_Old : SMN_Base
 {

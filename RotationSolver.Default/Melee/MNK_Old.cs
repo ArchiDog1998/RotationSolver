@@ -1,7 +1,7 @@
 ﻿namespace RotationSolver.Old.Melee;
 
 [RotationDesc(ActionID.RiddleOfFire)]
-[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Old/Melee/MNK_Old.cs")]
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Melee/MNK_Old.cs")]
 public sealed class MNK_Old : MNK_Base
 {
     public override string GameVersion => "6.0";

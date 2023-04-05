@@ -9,12 +9,15 @@ internal static class RotationHelper
     static readonly string[] _allowedAssembly = new string[]
     {
         DefaultAssembly,
-        "RotationSolver.Old",
         //"RotationSolver.Extra",
     };
 
     public static bool IsDefault(this ICustomRotation rotation)
-        => DefaultAssembly == rotation.GetType().Assembly.GetName().Name;
+    {
+        var type = rotation.GetType();
+        if (DefaultAssembly != type.Assembly.GetName().Name) return false;
+        return type.Name.Contains("Default", StringComparison.OrdinalIgnoreCase);
+    }
     
     public static bool IsAllowed(this ICustomRotation rotation, out string name)
     {
