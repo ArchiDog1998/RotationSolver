@@ -1,11 +1,5 @@
 ﻿using Dalamud.Game.Command;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
 using RotationSolver.Localization;
-using System;
-using System.Linq;
 
 namespace RotationSolver.Commands;
 

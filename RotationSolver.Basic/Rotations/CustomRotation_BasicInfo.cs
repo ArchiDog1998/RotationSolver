@@ -1,12 +1,6 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
-using RotationSolver.Basic.Configuration.RotationConfig;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Rotations;
-namespace RotationSolver.Rotations.CustomRotation;
+﻿using Lumina.Excel.GeneratedSheets;
+
+namespace RotationSolver.Basic.Rotations;
 
 [RotationDesc(DescType.BurstActions)]
 public abstract partial class CustomRotation : ICustomRotation
@@ -89,7 +83,7 @@ public abstract partial class CustomRotation : ICustomRotation
 
     protected virtual IRotationConfigSet CreateConfiguration()
     {
-        return new RotationConfigSet(JobIDs[0], RotationName);
+        return new RotationConfigSet(JobIDs[0], GetType().FullName);
     }
 
 

@@ -1,11 +1,9 @@
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using Newtonsoft.Json;
-using RotationSolver.Basic;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.UI;
@@ -24,6 +22,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     static readonly List<IDisposable> _dis = new List<IDisposable>();
     public string Name => "Rotation Solver";
+
+    public static DalamudLinkPayload LinkPayload { get; private set; }
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
@@ -67,6 +67,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         ChangeUITranslation();
 
         RotationUpdater.GetAllCustomRotations();
+
+        LinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
+        {
+            if(id == 0) OpenConfigWindow();
+        });
     }
 
 
@@ -109,9 +114,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _comboConfigWindow.Toggle();
     }
 
+    static RandomDelay validDelay = new RandomDelay(() => (0.2f, 0.2f));
+
     internal static void UpdateDisplayWindow()
     {
-        var isValid = MajorUpdater.IsValid
+        var isValid = validDelay.Delay(MajorUpdater.IsValid
         && (!Service.Config.OnlyShowWithHostileOrInDuty
                 || Service.Conditions[ConditionFlag.BoundByDuty]
                 || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
@@ -121,7 +128,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             && !Service.Conditions[ConditionFlag.BetweenAreas]
             && !Service.Conditions[ConditionFlag.BetweenAreas51]
             && !Service.Conditions[ConditionFlag.WaitingForDuty]
-            && !Service.Conditions[ConditionFlag.OccupiedInQuestEvent];
+            && !Service.Conditions[ConditionFlag.OccupiedInQuestEvent]);
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
         _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;

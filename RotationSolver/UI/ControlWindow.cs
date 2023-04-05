@@ -1,14 +1,9 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
 using ImGuiScene;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Data;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Numerics;
 
 namespace RotationSolver.UI;
 
@@ -75,7 +70,7 @@ internal class ControlWindow : Window
         ImGui.Text(DataCenter.TargetingType.ToName());
 
         RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
-            ref Service.Config.IsControlWindowLock);
+            ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
         ImGui.EndGroup();
 
         DrawNextAction(gcd, ability, width);
@@ -198,6 +193,13 @@ internal class ControlWindow : Window
         ImGui.EndGroup();
     }
 
+    static void HighLight(Vector2 pt, Vector2 size, float thickness = 2f)
+    {
+        var offset = ImGui.GetStyle().ItemSpacing / 2;
+        ImGui.GetWindowDrawList().AddRect(pt - offset, pt + size + offset,
+            ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudGrey), 5, ImDrawFlags.RoundCornersAll, thickness);
+    }
+
     static void DrawCommandAction(IAction ability, SpecialCommandType command, Vector4 color)
     {
         DrawCommandAction(GetTexture(ability), command, color);
@@ -273,13 +275,7 @@ internal class ControlWindow : Window
         }
     }
 
-    static readonly uint highLight = ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudGrey);
-    static void HighLight(Vector2 pt, Vector2 size)
-    {
-        var offset = ImGui.GetStyle().ItemSpacing / 2;
-        ImGui.GetWindowDrawList().AddRect(pt - offset, pt + size + offset,
-            highLight, 5, ImDrawFlags.RoundCornersAll, 2);
-    }
+
 
 
     static string GetHelp(SpecialCommandType command)

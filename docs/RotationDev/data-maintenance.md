@@ -1,6 +1,6 @@
 # Data Maintenance
 
-Things above all is about the rotation. but some information from rotation needs maintenance too. It is also the rotation developer's work.
+Things above all is about the rotation. But some information from rotation needs maintenance too. It is also the rotation developer's work.
 
 ## ActionID
 
@@ -20,7 +20,7 @@ When you use `Debug` mode to build this plugin, you'll see the tabitem like this
 
 Then modify the id in this [StatusID](https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver/Data/StatusID.cs) file.
 
-Oh, yeah! You find my debug tab! There is your id hash. This is a `little easter egg`.  People will great you the developer if you are in the same duty. So how to add this? Add your Hash id to this [field](https://github.com/ArchiDog1998/RotationSolver/blob/dd517a0bb3a664d008b8eb88d7bc9a0da56e0973/RotationSolver/Helpers/ConfigurationHelper.cs#L29). And then, you are in!
+
 
 ## Action
 

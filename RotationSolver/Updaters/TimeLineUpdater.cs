@@ -1,6 +1,4 @@
-﻿using ImGuiNET;
-using RotationSolver.Basic;
-using RotationSolver.Timeline;
+﻿using RotationSolver.Timeline;
 using RotationSolver.UI;
 using System.Diagnostics;
 

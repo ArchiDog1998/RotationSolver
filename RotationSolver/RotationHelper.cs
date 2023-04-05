@@ -1,7 +1,5 @@
 ﻿using Dalamud.Interface.Colors;
-using RotationSolver.Basic.Rotations;
 using System.Diagnostics;
-using System.Numerics;
 
 namespace RotationSolver;
 
@@ -11,12 +9,15 @@ internal static class RotationHelper
     static readonly string[] _allowedAssembly = new string[]
     {
         DefaultAssembly,
-        "RotationSolver.Old",
         //"RotationSolver.Extra",
     };
 
     public static bool IsDefault(this ICustomRotation rotation)
-        => DefaultAssembly == rotation.GetType().Assembly.GetName().Name;
+    {
+        var type = rotation.GetType();
+        if (DefaultAssembly != type.Assembly.GetName().Name) return false;
+        return type.Name.Contains("Default", StringComparison.OrdinalIgnoreCase);
+    }
     
     public static bool IsAllowed(this ICustomRotation rotation, out string name)
     {
@@ -30,13 +31,22 @@ internal static class RotationHelper
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)
-        => rotation.IsAllowed(out _) ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudViolet;
+        => !rotation.IsAllowed(out _) ? ImGuiColors.DalamudViolet : rotation.IsBeta() ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite ;
+
+    public static bool IsBeta(this ICustomRotation rotation)
+        => rotation.GetType().GetCustomAttribute<BetaRotationAttribute>() != null;
+
 
     public static string GetAuthor(this ICustomRotation rotation)
+        => rotation.GetType().Assembly.GetAuthor();
+
+    public static string GetAuthor(this Assembly assembly)
     {
         try
         {
-            return FileVersionInfo.GetVersionInfo(rotation.GetType().Assembly.Location)?.CompanyName ?? "Unknown";
+            return FileVersionInfo.GetVersionInfo(assembly.Location)?.CompanyName
+                ?? assembly.GetName().Name
+                ?? "Unknown";
         }
         catch
         {

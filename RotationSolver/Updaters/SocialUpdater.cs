@@ -1,9 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using System.Security.Cryptography;
@@ -95,14 +95,13 @@ internal class SocialUpdater
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
+    static RandomDelay socialDelay = new RandomDelay(() => (3, 5));
     internal static async void UpdateSocial()
     {
-        if (DataCenter.InCombat || DataCenter.PartyMembers.Count() < 2) return;
-        if (_canSaying && CanSocial)
+        if (DataCenter.InCombat) return;
+        if (_canSaying && socialDelay.Delay(CanSocial))
         {
             _canSaying = false;
-            await Task.Delay(new Random().Next(3000, 5000));
-
 #if DEBUG
             Service.ChatGui.Print("Macro now.");
 #endif
@@ -114,34 +113,57 @@ internal class SocialUpdater
 
     private static async void SayHelloToAuthor()
     {
-        var author = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
-            .FirstOrDefault(c =>
+        var authors = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
 #if DEBUG
 #else
-            c.ObjectId != Service.ClientState.LocalPlayer.ObjectId &&
+            .Where(c => c.ObjectId != Service.ClientState.LocalPlayer.ObjectId)
 #endif
-            RotationUpdater.AuthorHashes.Contains(EncryptString(c)));
+            .Select(c =>
+            {
+                if (!RotationUpdater.AuthorHashes.TryGetValue(EncryptString(c), out var nameDesc)) nameDesc = string.Empty;
+                return (c, nameDesc);
+            })
+            .Where(p => !string.IsNullOrEmpty(p.nameDesc));
 
-        if (author != null)
+        foreach (var author in authors)
         {
-            while(!author.IsTargetable() && !DataCenter.InCombat)
+            while (!author.c.IsTargetable() && !DataCenter.InCombat)
             {
                 await Task.Delay(100);
             }
 
 #if DEBUG
-            Service.ChatGui.Print("Author Time");
 #else
-            Service.TargetManager.SetTarget(author);
+            Service.TargetManager.SetTarget(author.c);
             Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
+#endif
+            var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
+
+                          new UIForegroundPayload(31),
+                          new PlayerPayload(author.c.Name.TextValue, author.c.HomeWorld.Id),
+                          UIForegroundPayload.UIForegroundOff,
+
+                          new TextPayload($"({author.nameDesc}) is one of the authors of "),
+
+                          new IconPayload(BitmapFontIcon.DPS),
+                          RotationSolverPlugin.LinkPayload,
+                          new UIForegroundPayload(31),
+                          new TextPayload("Rotation Solver"),
+                          UIForegroundPayload.UIForegroundOff,
+                          RawPayload.LinkTerminator,
+
+                          new TextPayload(", so say hello to him/her!"));
+
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
-                Message = string.Format(LocalizationManager.RightLang.Commands_SayHelloToAuthor, author.Name),
+                Message = message,
                 Type = Dalamud.Game.Text.XivChatType.Notice,
             });
             UIModule.PlaySound(20, 0, 0, 0);
+
+            await Task.Delay(new Random().Next(800, 1200));
             Service.TargetManager.SetTarget(null);
-#endif
+            await Task.Delay(new Random().Next(800, 1200));
         }
     }
 

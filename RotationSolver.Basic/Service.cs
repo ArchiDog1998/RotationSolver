@@ -25,11 +25,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiScene;
 using Lumina.Excel;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Data;
-using System.Numerics;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
 
 namespace RotationSolver.Basic;
 
@@ -82,6 +78,7 @@ public class Service : IDisposable
         Framework.Update -= Framework_Update;
     }
     public static PluginConfiguration Config { get; set; }
+    public static PluginConfiguration Default { get; } = new PluginConfiguration();
 
     internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara* RawPlayer
     => Control.Instance()->LocalPlayer;
@@ -106,7 +103,7 @@ public class Service : IDisposable
 
     public static bool WorldToScreen(Vector3 worldPos, out Vector2 screenPos) => GameGui.WorldToScreen(worldPos, out screenPos);
 
-    public unsafe static IEnumerable<IntPtr> GetAddon<T>() where T : struct
+    public unsafe static IEnumerable<IntPtr> GetAddons<T>() where T : struct
     {
         if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return new IntPtr[0];
 
@@ -114,6 +111,9 @@ public class Service : IDisposable
             .Select(str => GameGui.GetAddonByName(str, 1))
             .Where(ptr => ptr != IntPtr.Zero);
     }
+
+    public unsafe static IntPtr GetAddon<T>() where T : struct
+        => GetAddons<T>().FirstOrDefault();
 
     public static PlayerCharacter Player => ClientState.LocalPlayer;
     [PluginService]

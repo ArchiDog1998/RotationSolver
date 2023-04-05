@@ -1,6 +1,6 @@
 - Getting Started
   - [Set Up](RotationDev/set-up.md)
-  - [Simple Rotation](RotationDev/simple-rotation.md)
+  - [Configs](RotationDev/configurations.md)
 - Fundamentals
   - [CanUse](RotationDev/can-use.md)
   - [Rotation Part](RotationDev/rotation.md)

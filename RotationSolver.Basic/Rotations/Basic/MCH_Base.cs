@@ -1,11 +1,3 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Rotations.CustomRotation;
-
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class MCH_Base : CustomRotation
@@ -39,12 +31,6 @@ public abstract class MCH_Base : CustomRotation
         return EndAfter(JobGauge.OverheatTimeRemaining / 1000f, time);
     }
 
-    /// <summary>
-    /// 过热在这么久后，还有吗
-    /// </summary>
-    /// <param name="abilityCount"></param>
-    /// <param name="gctCount"></param>
-    /// <returns></returns>
     protected static bool OverheatedEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
     {
         return EndAfterGCD(JobGauge.OverheatTimeRemaining / 1000f, gctCount, abilityCount);
@@ -78,8 +64,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction HeatBlast { get; } = new BaseAction(ActionID.HeatBlast)
     {
-        ActionCheck = b => JobGauge.IsOverheated
-        && !OverheatedEndAfterGCD(),
+        ActionCheck = b => IsOverheated && !OverheatedEndAfterGCD(),
     };
 
     /// <summary>

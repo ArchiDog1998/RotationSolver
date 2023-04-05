@@ -1,5 +1,4 @@
 ﻿using Dalamud.Logging;
-using RotationSolver.Basic;
 using System.Diagnostics;
 using System.Speech.Synthesis;
 using System.Text;

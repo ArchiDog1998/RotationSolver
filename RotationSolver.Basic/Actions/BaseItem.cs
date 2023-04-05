@@ -1,7 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -37,6 +35,22 @@ internal class BaseItem : IBaseItem
         }
     }
 
+    public bool IsInCooldown
+    {
+        get => !Service.Config.NotInCoolDownItems.Contains(ID);
+        set
+        {
+            if (value)
+            {
+                Service.Config.NotInCoolDownItems.Remove(ID);
+            }
+            else
+            {
+                Service.Config.NotInCoolDownItems.Add(ID);
+            }
+        }
+    }
+
     public string Description => string.Empty;
 
     public unsafe float RecastTimeOneCharge => ActionManager.Instance()->GetRecastTime(ActionType.Item, ID);
@@ -44,6 +58,8 @@ internal class BaseItem : IBaseItem
     public unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, ID);
 
     public bool EnoughLevel => true;
+
+    public byte Level => 0;
 
     public unsafe bool IsCoolingDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Item, ID);
 

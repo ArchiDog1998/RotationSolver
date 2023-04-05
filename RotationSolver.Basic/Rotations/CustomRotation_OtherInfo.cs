@@ -1,15 +1,7 @@
-﻿using Dalamud.Game.ClientState;
-using Dalamud;
+﻿using Dalamud;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using System.Reflection;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Helpers;
 
-namespace RotationSolver.Rotations.CustomRotation;
+namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
 {
     #region Player
@@ -61,6 +53,9 @@ public abstract partial class CustomRotation
     protected static IEnumerable<BattleChara> WeakenPeople => DataCenter.WeakenPeople;
     protected static IEnumerable<BattleChara> DyingPeople => DataCenter.DyingPeople;
 
+    protected static float RatioOfMembersIn2minsBurst => DataCenter.RatioOfMembersIn2minsBurst;
+
+
     /// <summary>
     /// Whether the number of party members is 8.
     /// </summary>
@@ -70,7 +65,6 @@ public abstract partial class CustomRotation
     protected static float PartyMembersMinHP => DataCenter.PartyMembersMinHP;
     protected static float PartyMembersAverHP => DataCenter.PartyMembersAverHP;
     #endregion
-
 
     #region Target
     /// <summary>
@@ -126,7 +120,6 @@ public abstract partial class CustomRotation
 
     protected static float WeaponElapsed => DataCenter.WeaponElapsed;
     #endregion
-
 
     protected static ClientLanguage Language => Service.Language;
 
@@ -223,7 +216,7 @@ public abstract partial class CustomRotation
     public static bool CombatElapsedLess(float time)
     {
         if (!InCombat) return true;
-        return CooldownHelper.ElapsedAfter(time, DataCenter.CombatTime + DataCenter.WeaponRemain);
+        return (DataCenter.CombatTime + DataCenter.WeaponRemain).IsLessThan(time);
     }
 
     public static bool CombatElapsedLessGCD(int GCD) => CombatElapsedLess(GCD * DataCenter.WeaponTotal);

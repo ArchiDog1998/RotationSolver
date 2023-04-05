@@ -1,12 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using System.Numerics;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Updaters;
@@ -20,6 +15,27 @@ internal static partial class TargetUpdater
         UpdateHostileTargets(battles);
         UpdateFriends(battles);
         UpdateNamePlate(Service.ObjectTable.OfType<BattleChara>());
+    }
+
+    internal static void ClearTarget()
+    {
+        var empty = new BattleChara[0];
+        DataCenter.AllTargets
+            = DataCenter.AllHostileTargets 
+            = DataCenter.TarOnMeTargets
+            = DataCenter.PartyMembers
+            = DataCenter.PartyTanks
+            = DataCenter.PartyHealers
+            = DataCenter.AllianceMembers
+            = DataCenter.AllianceTanks
+            = empty;
+
+        DataCenter.DeathPeopleAll.Delay(empty);
+        DataCenter.DeathPeopleParty.Delay(empty);
+        DataCenter.WeakenPeople.Delay(empty);
+        DataCenter.DyingPeople.Delay(empty);
+        DataCenter.HostileTargets.Delay(empty);
+        DataCenter.CanInterruptTargets.Delay(empty);
     }
 
     #region Hostile
@@ -120,7 +136,7 @@ internal static partial class TargetUpdater
     {
         if (!Service.Config.AddEnemyListToHostile) return new uint[0];
 
-        var addons = Service.GetAddon<AddonEnemyList>();
+        var addons = Service.GetAddons<AddonEnemyList>();
 
         if(!addons.Any()) return new uint[0];
         var addon = addons.FirstOrDefault();

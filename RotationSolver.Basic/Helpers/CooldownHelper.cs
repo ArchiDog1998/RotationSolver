@@ -1,6 +1,4 @@
-﻿using RotationSolver.Basic;
-
-namespace RotationSolver.Basic.Helpers;
+﻿namespace RotationSolver.Basic.Helpers;
 
 public static class CooldownHelper
 {

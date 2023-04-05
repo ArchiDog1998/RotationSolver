@@ -1,8 +1,6 @@
 ﻿using Dalamud.Plugin;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel;
-using RotationSolver.Basic;
-using System.Reflection;
 using System.Runtime.Loader;
 
 namespace RotationSolver;

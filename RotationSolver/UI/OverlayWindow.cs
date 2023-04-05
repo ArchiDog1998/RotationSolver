@@ -1,13 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Interface;
-using ImGuiNET;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Rotations.CustomRotation;
+﻿using Dalamud.Interface;
 using RotationSolver.Updaters;
-using System.Numerics;
 
 namespace RotationSolver.UI;
 
@@ -130,16 +122,44 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        if (ActionUpdater.NextGCDAction == null ||　!ActionUpdater.NextGCDAction.IsMeleeAction()) return;
+        if (!Service.Player.IsJobCategory(JobRole.Tank)
+            && !Service.Player.IsJobCategory(JobRole.Melee) ) return;
 
-        Vector3 pPosition = ActionUpdater.NextGCDAction.Target.Position;
+        if (!(ActionUpdater.NextGCDAction?.IsSingleTarget ?? false)) return;
+
+        var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
+            ? ActionUpdater.NextGCDAction.Target
+            : Service.TargetManager.Target?.IsNPCEnemy() ?? false
+            ? Service.TargetManager.Target
+            : null;
+
+        if(target == null) return;
+
+        Vector3 pPosition = target.Position;
         Service.WorldToScreen(pPosition, out var scrPos);
 
-        float radius = ActionUpdater.NextGCDAction.Target.HitboxRadius + Service.Player.HitboxRadius + 3;
-        float rotation = ActionUpdater.NextGCDAction.Target.Rotation;
-        bool wrong = ActionUpdater.NextGCDAction.Target.DistanceToPlayer() > 3;
-        List<Vector2> pts = new List<Vector2>(4 * COUNT);
+        float radius = target.HitboxRadius + Service.Player.HitboxRadius + 3;
+        float rotation = target.Rotation;
 
+        if (Service.Config.DrawMeleeOffset)
+        {
+            var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
+            List<Vector2> pts1 = new List<Vector2>(4 * COUNT);
+            SectorPlots(ref pts1, pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
+
+            List<Vector2> pts2 = new List<Vector2>(4 * COUNT);
+            SectorPlots(ref pts2, pPosition, radius + Service.Config.MeleeRangeOffset, 0, 4 * COUNT, 2 * Math.PI);
+
+            DrawFill(pts1.ToArray(), pts2.ToArray(), offsetColor);
+
+            DrawBoundary(pts1, offsetColor);
+            DrawBoundary(pts2, offsetColor);
+        }
+
+        if (ActionUpdater.NextGCDAction == null || !ActionUpdater.NextGCDAction.Target.IsNPCEnemy()) return;
+
+        List<Vector2> pts = new List<Vector2>(4 * COUNT);
+        bool wrong = target.DistanceToPlayer() > 3;
         if (Service.Config.DrawPositional && !Service.Player.HasStatus(true, StatusID.TrueNorth))
         {
             var shouldPos = ActionUpdater.NextGCDAction.EnemyPositional;
@@ -161,7 +181,7 @@ internal static class OverlayWindow
             }
             if (!wrong && pts.Count > 0)
             {
-                wrong = shouldPos != ActionUpdater.NextGCDAction.Target.FindEnemyPositional();
+                wrong = shouldPos != target.FindEnemyPositional();
             }
         }
         if (pts.Count == 0 && Service.Config.DrawMeleeRange)
@@ -172,14 +192,44 @@ internal static class OverlayWindow
         if (pts.Count > 0) DrawRange(pts, wrong);
     }
 
-    static void DrawRange(List<Vector2> pts, bool wrong)
+    static void DrawFill(Vector2[] pts1, Vector2[] pts2, Vector3 color)
+    {
+        if (pts1 == null || pts2 == null) return;
+        if (pts1.Length != pts2.Length) return;
+        var length = pts1.Length;
+        for (int i = 0; i < length; i++)
+        {
+            var p1 = pts1[i];
+            var p2 = pts2[i];
+            var p3 = pts2[(i + 1) % length];
+            var p4 = pts1[(i + 1) % length];
+
+            DrawFill(new Vector2[] { p1, p2, p3, p4}, color);
+        }
+    }
+
+    static void DrawRange(IEnumerable<Vector2> pts, bool wrong)
     {
         var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
+        DrawFill(pts, color);
+        DrawBoundary(pts, color);
+    }
 
-        pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
+    static void DrawFill(IEnumerable<Vector2> pts, Vector3 color)
+    {
+        foreach (var pt in pts)
+        {
+            ImGui.GetWindowDrawList().PathLineTo(pt);
+        }
         ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 0.15f)));
+    }
 
-        pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
+    static void DrawBoundary(IEnumerable<Vector2> pts, Vector3 color)
+    {
+        foreach (var pt in pts)
+        {
+            ImGui.GetWindowDrawList().PathLineTo(pt);
+        }
         ImGui.GetWindowDrawList().PathStroke(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 1f)), ImDrawFlags.None, 2);
     }
 

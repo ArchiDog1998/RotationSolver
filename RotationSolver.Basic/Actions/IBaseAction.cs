@@ -1,8 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using RotationSolver.Basic.Data;
-using System;
-
-namespace RotationSolver.Basic.Actions
+﻿namespace RotationSolver.Basic.Actions
 {
     public interface IBaseAction : IAction
     {
@@ -158,6 +154,11 @@ namespace RotationSolver.Basic.Actions
         /// If this is an aoe action, how many hostile target would want to attack on, when you use this action.
         /// </summary>
         byte AOECount { set; }
+
+        /// <summary>
+        /// Is this action's target type is target only one.
+        /// </summary>
+        bool IsSingleTarget { get; }
         #endregion
     }
 }

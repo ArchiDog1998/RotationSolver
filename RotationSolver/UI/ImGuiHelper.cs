@@ -1,25 +1,13 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using ImGuiNET;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Configuration.RotationConfig;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Basic.Rotations;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.ComponentModel;
-using System.Numerics;
-using System.Reflection;
 
 namespace RotationSolver.UI;
 
@@ -74,11 +62,9 @@ internal static class ImGuiHelper
         }
         ImGui.NextColumn();
 
-        bool enable = false;
-
         if (isSelected) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-        enable = texture.IsEnabled;
-        if (ImGui.Checkbox($"{texture.Name}##{texture.Name}", ref enable))
+        var enable = texture.IsEnabled;
+        if (ImGui.Checkbox($"{texture.Name}##{texture.Name}Enabled", ref enable))
         {
             texture.IsEnabled = enable;
             Service.Config.Save();
@@ -111,9 +97,16 @@ internal static class ImGuiHelper
         var result = ImGui.Button($"{icon.ToIconString()}##{name}");
         ImGui.PopFont();
         return result;
-
-        //ImGuiComponents.IconButton(icon)
     }
+
+    public static Vector2 IconButtonSize(FontAwesomeIcon icon, string name)
+    {
+        ImGui.PushFont(UiBuilder.IconFont);
+        var result = ImGui.CalcTextSize($"{icon.ToIconString()}##{name}");
+        ImGui.PopFont();
+        return result;
+    }
+
 
     public static void HoveredString(string text, Action selected = null)
     {
@@ -125,6 +118,22 @@ internal static class ImGuiHelper
                 selected?.Invoke();
             }
         }
+    }
+
+    public static bool HoveredStringReset(string text)
+    {
+        if (ImGui.IsItemHovered())
+        {
+            text = string.IsNullOrEmpty(text)? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault
+                : text + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault;
+
+            ImGui.SetTooltip(text);
+
+            return ImGui.IsMouseDown(ImGuiMouseButton.Right)
+                && ImGui.IsKeyPressed(ImGuiKey.LeftShift)
+                && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl);
+        }
+        return false;
     }
 
     internal unsafe static bool DrawEditorList<T>(List<T> items, Action<T> draw)
@@ -421,7 +430,7 @@ internal static class ImGuiHelper
                         ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
                         if (ImGui.Selectable(r.RotationName))
                         {
-                            Service.Config.RotationChoices[rotation.Job.RowId] = r.RotationName;
+                            Service.Config.RotationChoices[rotation.Job.RowId] = r.GetType().FullName;
                             Service.Config.Save();
                         }
                         if (ImGui.IsItemHovered())
@@ -449,12 +458,31 @@ internal static class ImGuiHelper
 
                 HoveredString(showStr);
             }
+            if (rotation.IsBeta())
+            {
+                HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation);
+            }
             ImGui.PopStyleColor();
 
             ImGui.SameLine();
-            ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ":    ");
+            ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ":  ");
             ImGui.SameLine();
             ImGui.Text(rotation.GameVersion);
+
+            if (rotation.Configs.Any())
+            {
+                ImGui.SameLine();
+                Spacing();
+                if (IconButton(FontAwesomeIcon.Undo, $"#{rotation.GetHashCode()}Undo"))
+                {
+                    if (Service.Config.RotationsConfigurations.TryGetValue(rotation.Job.RowId, out var jobDict)
+                        && jobDict.ContainsKey(rotation.GetType().FullName))
+                    {
+                        jobDict.Remove(rotation.GetType().FullName);
+                    }
+                }
+                HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault);
+            }
 
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
             if(link != null)
@@ -476,10 +504,15 @@ internal static class ImGuiHelper
             {
                 var display = ImGui.GetIO().DisplaySize * 0.7f;
 
+                bool isFirst = true;
                 foreach (var texture in attrs)
                 {
                     ImGui.SameLine();
-                    Spacing();
+                    if(isFirst)
+                    {
+                        isFirst = false;
+                        Spacing();
+                    }
                     var hasTexture = texture.Texture != null;
 
                     if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.QuestionCircle,
@@ -536,8 +569,22 @@ internal static class ImGuiHelper
 
         OtherCommandType.ToggleActions.DisplayCommandHelp(action.ToString());
 
-        if (action.IsTimeline) OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
+
+        var enable = action.IsInCooldown;
+        if (ImGui.Checkbox($"CD##{action.Name}InCooldown", ref enable))
+        {
+            action.IsInCooldown = enable;
+            Service.Config.Save();
+        }
+
+        if (action.IsTimeline)
+        {
+            ImGui.SameLine();
+            Spacing();
+
+            OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
            type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, action), false);
+        }
 
         if (Service.Config.InDebug)
         {
@@ -555,7 +602,6 @@ internal static class ImGuiHelper
                 ImGui.Text($"Can Use: {action.CanUse(out _)} ");
                 ImGui.Text("Must Use:" + action.CanUse(out _,  CanUseOption.MustUse).ToString());
                 ImGui.Text("Empty Use:" + action.CanUse(out _, CanUseOption.EmptyOrSkipCombo).ToString());
-                ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(action.AdjustedID).ToString());
                 if (action.Target != null)
                 {
                     ImGui.Text("Target Name: " + action.Target.Name);
@@ -570,6 +616,16 @@ internal static class ImGuiHelper
 
     public unsafe static void Display(this IBaseItem item, bool IsActive) => item.DrawEnableTexture(false, null, otherThing: () =>
     {
+        ImGui.SameLine();
+        Spacing();
+
+        var enable = item.IsInCooldown;
+        if (ImGui.Checkbox($"CD##{item.Name}InCooldown", ref enable))
+        {
+            item.IsInCooldown = enable;
+            Service.Config.Save();
+        }
+
         if (Service.Config.InDebug)
         {
             ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID).ToString());
@@ -624,6 +680,7 @@ internal static class ImGuiHelper
     static void Draw(this RotationConfigCombo config, IRotationConfigSet set, bool canAddButton)
     {
         var val = set.GetCombo(config.Name);
+        ImGui.SetNextItemWidth(ImGui.CalcTextSize(config.Items[val]).X + 50);
         if (ImGui.BeginCombo($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", config.Items[val]))
         {
             for (int comboIndex = 0; comboIndex < config.Items.Length; comboIndex++)
@@ -753,5 +810,18 @@ internal static class ImGuiHelper
             notStart = true;
         }
         ImGui.Unindent(ATTR_INDENT);
+    }
+
+    public unsafe static ImFontPtr GetFont(float size)
+    {
+        var style = new Dalamud.Interface.GameFonts.GameFontStyle(Dalamud.Interface.GameFonts.GameFontStyle.GetRecommendedFamilyAndSize(Dalamud.Interface.GameFonts.GameFontFamily.Axis, size));
+        var font = Service.Interface.UiBuilder.GetGameFontHandle(style).ImFont;
+
+        if((IntPtr)font.NativePtr == IntPtr.Zero) 
+        {
+            return ImGui.GetFont();
+        }
+        font.Scale = size / style.BaseSizePt;
+        return font;
     }
 }

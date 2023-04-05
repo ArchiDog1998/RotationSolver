@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RotationSolver.Basic.Configuration.RotationConfig;
+﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public interface IRotationConfigSet : IEnumerable<IRotationConfig>
 {

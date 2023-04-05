@@ -1,27 +1,18 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using System.Numerics;
 
-namespace RotationSolver.Actions.BaseAction;
+namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
     public byte AOECount { private get; set; } = 3;
 
-    /// <summary>
-    /// Shortcut for Target.IsDying();
-    /// </summary>
     public bool IsTargetDying => Target?.IsDying() ?? false;
 
-    /// <summary>
-    /// Shortcut for Target.IsBoss();
-    /// </summary>
     public bool IsTargetBoss => Target?.IsBoss() ?? false;
+
+    public bool IsSingleTarget => _action.CastType == 1;
 
     /// <summary>
     /// The action's target.

@@ -118,23 +118,30 @@ public class PLD_Default : PLD_Base
     [RotationDesc(ActionID.Sentinel, ActionID.Rampart, ActionID.Bulwark, ActionID.Sheltron, ActionID.Reprisal)]
     protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (abilitiesRemaining == 2)
+        if (abilitiesRemaining == 1)
         {
             //10
-            if (OathGauge >= 90 && Sheltron.CanUse(out act)) return true;
-
+            if (Bulwark.CanUse(out act)) return true;
+            if (UseOath(out act)) return true;
+        }
+        else
+        {
             //30
             if (Sentinel.CanUse(out act)) return true;
 
             //20
             if (Rampart.CanUse(out act)) return true;
-
-            //10
-            if (Bulwark.CanUse(out act)) return true;
-            if (Sheltron.CanUse(out act)) return true;
         }
 
         if (Reprisal.CanUse(out act)) return true;
+
+        return false;
+    }
+
+    private static bool UseOath(out IAction act)
+    {
+        if (Sheltron.CanUse(out act)) return true;
+        if (Intervention.CanUse(out act)) return true;
 
         return false;
     }

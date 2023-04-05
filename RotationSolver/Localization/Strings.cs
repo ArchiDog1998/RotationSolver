@@ -11,7 +11,7 @@ internal partial class Strings
     public string Commands_InsertAction { get; set; } = "Will use it within {0}s";
 
     public string Commands_InsertActionFailure { get; set; } = "Can not find the action, please check the action name.";
-    public string Commands_SayHelloToAuthor { get; set; } = "This \"{0}\" is probably one of the authors of the \"Rotation Solver\", so say hello to him!";
+
 
     #endregion
 
@@ -137,7 +137,7 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthRatioDot { get; set; } = "If target's current health ratio is higher than this, regard it can be dot.";
     public string ConfigWindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
-    public string ConfigWindow_Param_CastingDisplay { get; set; } = "Enhance castbar with casting status";
+    public string ConfigWindow_Param_CastingDisplay { get; set; } = "Enhance cast bar with casting status";
     public string ConfigWindow_Param_TeachingMode { get; set; } = "Teaching mode";
     public string ConfigWindow_Param_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
     public string ConfigWindow_Param_MovingTargetColor { get; set; } = "Prompt box color of moving target";
@@ -153,6 +153,8 @@ internal partial class Strings
     public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
     public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
+
+    public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the pointing target of the move skill";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
     public string ConfigWindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
@@ -172,18 +174,18 @@ internal partial class Strings
     public string ConfigWindow_Param_AutoBurst { get; set; } = "Automatic burst";
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
     public string ConfigWindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
-    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Nerver use any AOE action when this action may attack the mobs that not is a hostile target.";
-    public string ConfigWindow_Param_UseDefenceAbility { get; set; } = "Use defence abilities";
+    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AOE action when this action may attack the mobs that not is a hostile target.";
+    public string ConfigWindow_Param_UseDefenceAbility { get; set; } = "Use defense abilities";
     public string ConfigWindow_Param_UseDefenceAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";
     public string ConfigWindow_Param_AutoShield { get; set; } = "Auto tank stance";
     public string ConfigWindow_Param_AutoProvokeForTank { get; set; } = "Auto Provoke (Tank)";
     public string ConfigWindow_Param_AutoProvokeForTankDesc { get; set; } = "When a hostile is hitting the non-Tank member of party, it will automatically use the Provoke.";
     public string ConfigWindow_Param_AutoUseTrueNorth { get; set; } = "Auto TrueNorth (Melee)";
     public string ConfigWindow_Param_RaisePlayerBySwift { get; set; } = "Raise player by swift";
-    public string ConfigWindow_Param_UseGroundBeneficialAbility { get; set; } = "Use beneficaial ground-targeted actions";
+    public string ConfigWindow_Param_UseGroundBeneficialAbility { get; set; } = "Use beneficial ground-targeted actions";
     public string ConfigWindow_Param_RaisePlayerByCasting { get; set; } = "Raise player by casting when swift is in cooldown";
     public string ConfigWindow_Param_UseHealWhenNotAHealer { get; set; } = "Use heal when not-healer";
-    public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Nerver raise player if MP is less than the set value";
+    public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
     public string ConfigWindow_Param_UseItem { get; set; } = "Use items";
     public string ConfigWindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
     public string ConfigWindow_Param_Conditon { get; set; } = "Condition";
@@ -199,6 +201,8 @@ internal partial class Strings
     public string ConfigWindow_Param_HealingOfTimeSubtractArea { get; set; } = "Set the HP threshold reduce with hot effect(AOE)";
     public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "Set the HP threshold for using single healing ability";
     public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "Set the HP threshold for using single healing spell";
+
+    public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first it tank's HP threshold is lower than this.";
 
 
     public string ConfigWindow_Param_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
@@ -236,6 +240,7 @@ internal partial class Strings
     public string ConfigWindow_Param_ConditionUp { get; set; } = "Up";
     public string ConfigWindow_Param_ConditionDown { get; set; } = "Down";
     public string ConfigWindow_Param_ConditionDelete { get; set; } = "Delete";
+    public string ConfigWindow_Param_ResetToDefault { get; set; } = "Press left ctrl + shift and press right mouse button to reset this value";
 
     public string ConfigWindow_Control_OnlyShowWithHostileOrInDuty { get; set; } = "Only shown if there are enemies in or in duty";
     public string ConfigWindow_Control_ShowNextActionWindow { get; set; } = "Show Next Action Window";
@@ -251,6 +256,7 @@ internal partial class Strings
     public string ConfigWindow_Control_ShowGCDCooldown { get; set; } = "Show GCD' Cooldown";
     public string ConfigWindow_Control_UseOriginalCooldown { get; set; } = "Show Original Cooldown";
     public string ConfigWindow_Control_CooldownActionOneLine { get; set; } = "The count of cooldown actions in one line.";
+    public string ConfigWindow_Control_CooldownFontSize { get; set; } = "Change the cooldown font size.";
     public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
     public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Info Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
@@ -258,7 +264,9 @@ internal partial class Strings
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
     public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and middle click to clear the key setting.";
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
-
+    public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
+    public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
+    public string ConfigWindow_Rotation_ResetToDefault { get; set; } = "Click to reset the rotation configuration to default!";
     #endregion
 
     #region ScriptWindow

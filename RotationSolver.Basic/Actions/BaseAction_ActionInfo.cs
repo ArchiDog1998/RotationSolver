@@ -1,12 +1,6 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Rotations.CustomRotation;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
 
-namespace RotationSolver.Actions.BaseAction;
+namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
@@ -90,6 +84,9 @@ public partial class BaseAction
 
         if (CastTime > 0 && DataCenter.IsMoving &&
             !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
+
+        if (IsGeneralGCD && IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)
+            && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;
 
         if (!FindTarget(mustUse, out var target) || target == null) return false;
 

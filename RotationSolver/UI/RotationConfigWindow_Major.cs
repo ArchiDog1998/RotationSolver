@@ -1,28 +1,10 @@
 using Dalamud.Interface.Windowing;
-using Dalamud.Plugin;
-using Dalamud.Utility;
-using FFXIVClientStructs.Interop;
 using ImGuiNET;
-using ImGuiScene;
-using Lumina.Excel;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Rotations;
-using RotationSolver.Basic.Rotations.Basic;
 using RotationSolver.Localization;
-using RotationSolver.Rotations.CustomRotation;
-using System.IO;
-using System.Net;
-using System.Numerics;
-using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow : Window
 {
-    const float DRAG_NUMBER_WIDTH = 100;
-
     public RotationConfigWindow()
         : base(nameof(RotationConfigWindow), 0, false)
     {

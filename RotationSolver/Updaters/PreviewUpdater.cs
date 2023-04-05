@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -10,12 +9,8 @@ using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using System.Runtime.InteropServices;
-using static Lumina.Data.Parsing.Uld.NodeData;
 
 namespace RotationSolver.Updaters;
 
@@ -96,7 +91,7 @@ internal static class PreviewUpdater
 
         ByteColor c = _showCanMove ? _greenColor : _redColor;
 
-        var castBars = Service.GetAddon<AddonCastBar>();
+        var castBars = Service.GetAddons<AddonCastBar>();
         if (!castBars.Any()) return;
         var castBar = castBars.FirstOrDefault();
 
@@ -130,9 +125,11 @@ internal static class PreviewUpdater
 
     private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotBarSlot* hot, uint actionID)
     {
-        if ((IntPtr)hot == IntPtr.Zero) return false;
-        if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
-        if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
+        if ((IntPtr)hot != IntPtr.Zero)
+        {
+            if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
+            if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
+        }
 
         return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
     }
@@ -143,21 +140,20 @@ internal static class PreviewUpdater
     {
         var index = 0;
         var hotBarIndex = 0;
-        foreach (var intPtr in Service.GetAddon<AddonActionBar>()
-            .Union(Service.GetAddon<AddonActionBarX>())
-            .Union(Service.GetAddon<AddonActionCross>())
-            .Union(Service.GetAddon<AddonActionDoubleCrossBase>()))
+        foreach (var intPtr in Service.GetAddons<AddonActionBar>()
+            .Union(Service.GetAddons<AddonActionBarX>())
+            .Union(Service.GetAddons<AddonActionCross>())
+            .Union(Service.GetAddons<AddonActionDoubleCrossBase>()))
         {
             if (intPtr == IntPtr.Zero) continue;
             var actionBar = (AddonActionBarBase*)intPtr;
-            var hotbar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[hotBarIndex];
+            var hotBar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[hotBarIndex];
             var slotIndex = 0;
             foreach (var slot in actionBar->Slot)
             {
-                var hotBarSlot = hotbar->Slot[slotIndex];
                 var highLightId = 0x53550000 + index;
 
-                if (doingSomething(slot, hotBarSlot, (uint)highLightId))
+                if (doingSomething(slot, hotBarIndex > 9 ? null: hotBar->Slot[slotIndex], (uint)highLightId))
                 {
                     var iconAddon = slot.Icon;
                     if (!iconAddon->AtkResNode.IsVisible) continue;
@@ -170,7 +166,6 @@ internal static class PreviewUpdater
             hotBarIndex++;
         }
     }
-
 
     private static unsafe void HighLightActionBar(ActionBarPredicate shouldShow = null)
     {

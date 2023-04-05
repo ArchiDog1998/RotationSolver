@@ -1,13 +1,5 @@
 ﻿using Dalamud.Logging;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Rotations;
 using RotationSolver.Localization;
-using System.Reflection;
-using System.Runtime.Loader;
 
 namespace RotationSolver.Updaters;
 
@@ -17,7 +9,7 @@ internal static class RotationUpdater
 
     internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
 
-    internal static string[] AuthorHashes { get; private set; } = new string[0];
+    internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
 
     static readonly string[] _locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
@@ -36,10 +28,13 @@ internal static class RotationUpdater
 
         PluginLog.Log("Try to load rotations from these assemblies.", assemblies.Select(a => a.FullName));
 
-        AuthorHashes = (from a in assemblies
-                       select a.GetCustomAttribute<AuthorHashAttribute>() into author
-                       where author != null
-                       select author.Hash).ToArray();
+        AuthorHashes = new SortedList<string, string>(
+            (from a in assemblies
+             select (a, a.GetCustomAttribute<AuthorHashAttribute>()) into author
+             where author.Item2 != null
+             group author by author.Item2 into gr
+             select (gr.Key.Hash, string.Join(", ", gr.Select(i => i.a.GetAuthor() + " - " + i.a.GetName().Name))))
+             .ToDictionary(i => i.Hash, i => i.Item2));
 
         _customRotations = (
             from a in assemblies
@@ -92,7 +87,7 @@ internal static class RotationUpdater
                 {
                     string result;
 
-                    if (act.IsGeneralGCD)
+                    if (act.IsRealGCD)
                     {
                         result = "GCD";
                     }
@@ -106,7 +101,7 @@ internal static class RotationUpdater
                         result += "-" + LocalizationManager.RightLang.Action_Friendly;
                         if (act.IsEot)
                         {
-                            result += "Hot";
+                            result += "-Hot";
                         }
                     }
                     else
@@ -115,7 +110,7 @@ internal static class RotationUpdater
 
                         if (act.IsEot)
                         {
-                            result += "Dot";
+                            result += "-Dot";
                         }
                     }
                     return result;
@@ -133,13 +128,12 @@ internal static class RotationUpdater
     public static void UpdateRotation()
     {
         var nowJob = (ClassJobID)Service.Player.ClassJob.Id;
-        Service.Config.RotationChoices.TryGetValue((uint)nowJob, out var newName);
 
         foreach (var group in _customRotations)
         {
             if (!group.classJobIds.Contains(nowJob)) continue;
 
-            RightNowRotation = GetChooseRotation(group, newName);
+            RightNowRotation = GetChooseRotation(group);
             RightRotationBaseActions = RightNowRotation.AllBaseActions;
             return;
         }
@@ -147,9 +141,11 @@ internal static class RotationUpdater
         RightRotationBaseActions = new IBaseAction[0];
     }
 
-    internal static ICustomRotation GetChooseRotation(CustomRotationGroup group, string name)
+    internal static ICustomRotation GetChooseRotation(CustomRotationGroup group)
     {
-        var rotation = group.rotations.FirstOrDefault(r => r.RotationName == name);
+        Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var name);
+       
+        var rotation = group.rotations.FirstOrDefault(r => r.GetType().FullName == name);
         rotation ??= group.rotations.FirstOrDefault(RotationHelper.IsDefault);
         rotation ??= group.rotations.FirstOrDefault(r => r.IsAllowed(out _));
         rotation ??= group.rotations.FirstOrDefault();

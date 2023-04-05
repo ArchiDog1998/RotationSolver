@@ -1,8 +1,5 @@
-﻿using ImGuiNET;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
+﻿using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Numerics;
 
 namespace RotationSolver.UI;
 
@@ -20,7 +17,7 @@ internal class CooldownWindow : InfoWindow
         {
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
-                IEnumerable<IAction> showItems = pair.OrderBy(a => a.ID);
+                var showItems = pair.OrderBy(a => a.ID).Where(a => a.IsInCooldown);
                 if (!Service.Config.ShowGCDCooldown) showItems = showItems.Where(i => !(i is IBaseAction a && a.IsGeneralGCD));
 
                 if (!showItems.Any()) continue;
@@ -61,7 +58,7 @@ internal class CooldownWindow : InfoWindow
         }
         ControlWindow.DrawIAction(act, width, r);
         var size = ImGui.GetItemRectSize();
-        ImGuiHelper.HoveredString(act.Name);
+        ImGuiHelper.HoveredString(act.Name + "\n" + LocalizationManager.RightLang.ConfigWindow_Control_ClickToUse);
 
         if (!act.EnoughLevel)
         {
@@ -82,11 +79,14 @@ internal class CooldownWindow : InfoWindow
 
                 ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), black);
             }
+
+            ImGui.PushFont(ImGuiHelper.GetFont(Service.Config.CooldownFontSize));
             string time = recast == 0  ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;
 
             TextShade(fontPos, time);
+            ImGui.PopFont();
         }
 
         if (act.EnoughLevel && act is IBaseAction bAct && bAct.MaxCharges > 1)

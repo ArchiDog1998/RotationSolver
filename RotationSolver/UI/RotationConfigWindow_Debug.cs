@@ -1,14 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using ImGuiNET;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Default.Melee;
-using RotationSolver.Rotations.CustomRotation;
+﻿using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using RotationSolver.Updaters;
-using System.Numerics;
 
 namespace RotationSolver.UI;
 
@@ -55,7 +46,6 @@ internal partial class RotationConfigWindow
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
         ImGui.Text("Targetable: " + Service.Player.IsTargetable().ToString());
 
-
         foreach (var status in Service.Player.StatusList)
         {
             var source = status.SourceId == Service.Player.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
@@ -77,6 +67,8 @@ internal partial class RotationConfigWindow
         //        ImGui.Text(item.Name.ToString() + " : " + item.ItemId.ToString());
         //    }
         //}
+
+        ImGui.Text("Party Burst Ratio: " + DataCenter.RatioOfMembersIn2minsBurst.ToString());
 
         ImGui.Text("Party: " + DataCenter.PartyMembers.Count().ToString());
         ImGui.Text("CanHealSingleAbility: " + DataCenter.CanHealSingleAbility.ToString());
@@ -123,6 +115,9 @@ internal partial class RotationConfigWindow
         ActionUpdater.NextAction?.Display(false);
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
         ImGui.Text("Ability Count: " + DataCenter.AbilityRemainCount.ToString());
+        ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
+        ImGui.Text("Elapsed: " + CustomRotation.CombatElapsedLess(10).ToString());
+        ImGui.Text("Time: " + (DataCenter.CombatTime + DataCenter.WeaponRemain).ToString());
 
     }
     private void DrawLastAction()
@@ -144,14 +139,22 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private void DrawIcon()
+    private unsafe void DrawIcon()
     {
-        //ControlWindow.DrawIAction(CustomRotation.Addle, 256, 1.6f);
-        for (int i = 0; i <= 200; i++)
-        {
-            if (i % 10 != 0) ImGui.SameLine();
-            ControlWindow.DrawIAction(CustomRotation.Addle, 48, i / 100f);
-        }
+        //var pointer = (AddonActionCross*) Service.GetAddon<AddonActionCross>();
+        //if (pointer != null) 
+        //{
+        //    ImGui.Text($"LTRT: {pointer->ExpandedHoldControlsLTRT}");
+        //    ImGui.Text($"RTLT: {pointer->ExpandedHoldControlsRTLT}");
+        //}
+        //var pointer2 = (AddonActionDoubleCrossBase*)Service.GetAddon<AddonActionDoubleCrossBase>();
+        //if (pointer2 != null)
+        //{
+        //    ImGui.Text($"ShowDPadSlots: {pointer2->ShowDPadSlots}");
+        //    ImGui.Text($"BarTarget: {pointer2->BarTarget}");
+        //    ImGui.Text($"UseLeftSide: {pointer2->UseLeftSide}");
+        //    ImGui.Text($"MergedPositioning: {pointer2->MergedPositioning}");
+        //}
     }
 
     private static void DrawAction(ActionID id, string type)

@@ -1,11 +1,4 @@
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-
-namespace RotationSolver.Rotations.CustomRotation;
+namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
@@ -167,7 +160,6 @@ public abstract partial class CustomRotation
             && (Service.Config.AutoProvokeForTank || DataCenter.AllianceTanks.Count() < 2)
             && TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count()))
         {
-
             if (!HasTankStance && TankStance.CanUse(out act)) return true;
             if (Provoke.CanUse(out act, CanUseOption.MustUse)) return true;
         }
@@ -192,6 +184,7 @@ public abstract partial class CustomRotation
             //A lot targets are targeting on me.
             if (tarOnMeCount > 1 && !IsMoving)
             {
+                if (!helpDefenseSingle) DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, true);
                 if (ArmsLength.CanUse(out act)) return true;
                 if (DefenseSingleAbility(abilitiesRemaining, out act)) return true;
             }
@@ -199,6 +192,7 @@ public abstract partial class CustomRotation
             //Big damage casting action.
             if (tarOnMeCount == 1 && DataCenter.IsHostileCastingToTank)
             {
+                if (!helpDefenseSingle) DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, true);
                 if (DefenseSingleAbility(abilitiesRemaining, out act)) return true;
             }
         }

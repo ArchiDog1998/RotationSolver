@@ -1,12 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
-using ImGuiNET;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Basic.Rotations;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Numerics;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
@@ -52,8 +46,7 @@ internal partial class RotationConfigWindow
             if (i > 0) ImGui.Separator();
 
             var group = rotations[i];
-            Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var rotationName);
-            var rotation = RotationUpdater.GetChooseRotation(group, rotationName);
+            var rotation = RotationUpdater.GetChooseRotation(group);
 
             var canAddButton = Service.Player != null
                 && rotation.JobIDs.Contains((ClassJobID)Service.Player.ClassJob.Id);
@@ -101,7 +94,8 @@ internal partial class RotationConfigWindow
         {
             DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthForDyingTank,
                 () => ConfigurationHelper.GetHealthForDyingTank(job),
-                (value) => Service.Config.HealthForDyingTanks[job] = value);
+                (value) => Service.Config.HealthForDyingTanks[job] = value, 
+                ConfigurationHelper.HealthForDyingTanksDefault);
         }
     }
 
@@ -109,38 +103,43 @@ internal partial class RotationConfigWindow
     {
         DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility,
             () => ConfigurationHelper.GetHealAreaAbility(job),
-            (value) => Service.Config.HealthAreaAbilities[job] = value);
+            (value) => Service.Config.HealthAreaAbilities[job] = value,
+            Service.Config.HealthAreaAbility);
 
         DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell,
             () => ConfigurationHelper.GetHealAreaSpell(job),
-            (value) => Service.Config.HealthAreaSpells[job] = value);
+            (value) => Service.Config.HealthAreaSpells[job] = value,
+            Service.Config.HealthAreaSpell);
 
         DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealingOfTimeSubtractArea,
             () => ConfigurationHelper.GetHealingOfTimeSubtractArea(job),
-            (value) => Service.Config.HealingOfTimeSubtractAreas[job] = value);
+            (value) => Service.Config.HealingOfTimeSubtractAreas[job] = value,
+            ConfigurationHelper.HealingOfTimeSubtractAreasDefault);
 
         DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility,
             () => ConfigurationHelper.GetHealSingleAbility(job),
-            (value) => Service.Config.HealthSingleAbilities[job] = value);
+            (value) => Service.Config.HealthSingleAbilities[job] = value,
+            Service.Config.HealthSingleAbility);
 
         DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell,
             () => ConfigurationHelper.GetHealSingleSpell(job),
-            (value) => Service.Config.HealthSingleSpells[job] = value);
+            (value) => Service.Config.HealthSingleSpells[job] = value,
+            Service.Config.HealthSingleSpell);
 
         DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealingOfTimeSubtractSingle,
             () => ConfigurationHelper.GetHealingOfTimeSubtractSingle(job),
-            (value) => Service.Config.HealingOfTimeSubtractSingles[job] = value);
+            (value) => Service.Config.HealingOfTimeSubtractSingles[job] = value,
+            ConfigurationHelper.HealingOfTimeSubtractSinglesDefault);
     }
 
-    private static void DrawDragFloat(ClassJobID job, string desc, Func<float> getValue, Action<float> setValue)
+    private static void DrawDragFloat(ClassJobID job, string desc, Func<float> getValue, Action<float> setValue, float @default)
     {
-        const float speed = 0.005f;
-
         if (getValue == null || setValue == null) return;
 
         var value = getValue();
-        ImGui.SetNextItemWidth(DRAG_NUMBER_WIDTH);
-        if (ImGui.DragFloat($"{desc}##{job}{desc}", ref value, speed, 0, 1))
+        var last = value;
+        DrawFloatNumber($"{desc}##{job}{desc}", ref value, @default, speed: 0.005f, description: desc);
+        if(last != value)
         {
             setValue(value);
             Service.Config.Save();

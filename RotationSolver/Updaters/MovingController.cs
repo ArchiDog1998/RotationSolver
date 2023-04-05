@@ -1,8 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.Updaters;
 
@@ -32,7 +30,7 @@ internal class MovingController : IDisposable
         if (Service.Conditions[ConditionFlag.OccupiedInEvent])
             return movingHook.Original(ptr);
 
-        if (Service.Config.PoslockCasting && _posLocker)
+        if (Service.Config.PoslockCasting && _posLocker && DataCenter.InCombat)
         {
             //没有键盘取消
             if (!Service.KeyState[ConfigurationHelper.Keys[Service.Config.PoslockModifier]]

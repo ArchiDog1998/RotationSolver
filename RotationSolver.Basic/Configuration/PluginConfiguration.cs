@@ -1,8 +1,5 @@
 using Dalamud.Configuration;
 using Dalamud.Game.ClientState.GamePad;
-using Newtonsoft.Json;
-using RotationSolver.Basic.Data;
-using System.Numerics;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -15,7 +12,10 @@ public class PluginConfiguration : IPluginConfiguration
     public string VoiceName = string.Empty;
     public SortedSet<string> DisabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DisabledActions { get; private set; } = new SortedSet<uint>();
+    public SortedSet<uint> NotInCoolDownActions { get; private set; } = new SortedSet<uint>();
     public SortedSet<uint> DisabledItems { get; private set; } = new SortedSet<uint>();
+    public SortedSet<uint> NotInCoolDownItems { get; private set; } = new SortedSet<uint>();
+
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
     public Dictionary<uint, Dictionary<string, Dictionary<string, string>>> RotationsConfigurations { get; private set; }
         = new Dictionary<uint, Dictionary<string, Dictionary<string, string>>>();
@@ -62,6 +62,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool PositionalFeedback = true;
     public bool DrawPositional = true;
     public bool DrawMeleeRange = true;
+    public bool DrawMeleeOffset = true;
     public bool ShowMoveTarget = true;
     public bool ShowHealthRatio = false;
     public bool ShowTarget = true;
@@ -105,6 +106,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthSingleSpell = 0.55f;
 
     public Dictionary<ClassJobID, float> HealthForDyingTanks { get; set; } = new Dictionary<ClassJobID, float>();
+
+    public float HealthTankRatio = 0.4f;
 
     public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;
@@ -172,6 +175,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowGCDCooldown = false;
     public bool UseOriginalCooldown = true;
     public int CooldownActionOneLine = 15;
+    public float CooldownFontSize = 16;
 
     public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.6f);
     public Vector4 ControlWindowUnlockBg = new Vector4(0, 0, 0, 0.9f);

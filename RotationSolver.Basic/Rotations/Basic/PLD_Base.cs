@@ -1,12 +1,3 @@
-using Dalamud.Game.ClientState.JobGauge.Types;
-using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Attributes;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
-using RotationSolver.Rotations.CustomRotation;
-using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
-
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class PLD_Base : CustomRotation
@@ -121,14 +112,6 @@ public abstract class PLD_Base : CustomRotation
     public static IBaseAction Clemency { get; } = new BaseAction(ActionID.Clemency, true, true, isTimeline: true);
 
     /// <summary>
-    /// ∏…‘§
-    /// </summary>
-    public static IBaseAction Intervention { get; } = new BaseAction(ActionID.Intervention, true, isTimeline: true)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-    };
-
-    /// <summary>
     /// µ˜Õ£
     /// </summary>
     public static IBaseAction Intervene { get; } = new BaseAction(ActionID.Intervene, shouldEndSpecial: true)
@@ -184,16 +167,26 @@ public abstract class PLD_Base : CustomRotation
     };
 
     /// <summary>
+    /// ∏…‘§
+    /// </summary>
+    public static IBaseAction Intervention { get; } = new BaseAction(ActionID.Intervention, true, isTimeline: true)
+    {
+        ActionCheck = Cover.ActionCheck,
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
+    /// <summary>
     /// ∂‹’Û
     /// </summary>
     public static IBaseAction Sheltron { get; } = new BaseAction(ActionID.Sheltron, true, isTimeline: true)
     {
-        ActionCheck = Cover.ActionCheck,
+        ActionCheck = b => BaseAction.TankDefenseSelf(b) && Cover.ActionCheck(b),
     };
 
     public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, true, isTimeline: true)
     {
         StatusProvide = Rampart.StatusProvide,
+        ActionCheck = BaseAction.TankDefenseSelf,
     };
 
 

@@ -1,9 +1,4 @@
-﻿using RotationSolver.Actions.BaseAction;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Data;
-
-namespace RotationSolver.Rotations.CustomRotation;
+﻿namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {

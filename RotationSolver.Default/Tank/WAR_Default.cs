@@ -106,22 +106,18 @@ public sealed class WAR_Default : WAR_Base
     [RotationDesc(ActionID.RawIntuition, ActionID.Vengeance, ActionID.Rampart, ActionID.RawIntuition, ActionID.Reprisal)]
     protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (abilitiesRemaining == 2)
+        if (abilitiesRemaining == 1)
         {
-            if (HostileTargets.Count() > 1)
-            {
-                //10
-                if (RawIntuition.CanUse(out act)) return true;
-            }
-
+            //10
+            if (RawIntuition.CanUse(out act)) return true;
+        }
+        else
+        {
             //30
             if (Vengeance.CanUse(out act)) return true;
 
             //20
             if (Rampart.CanUse(out act)) return true;
-
-            //10
-            if (RawIntuition.CanUse(out act)) return true;
         }
         if (Reprisal.CanUse(out act)) return true;
 

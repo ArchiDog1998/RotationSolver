@@ -1,7 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Keys;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Data;
-using System.Collections.Generic;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -44,7 +41,7 @@ public static class ConfigurationHelper
         => Service.Config.HealthAreaSpells.TryGetValue(job, out var value) ? value : Service.Config.HealthAreaSpell;
 
     public static float GetHealingOfTimeSubtractArea(this ClassJobID job)
-        => Service.Config.HealingOfTimeSubtractAreas.TryGetValue(job, out var value) ? value : 0.2f;
+        => Service.Config.HealingOfTimeSubtractAreas.TryGetValue(job, out var value) ? value : HealingOfTimeSubtractAreasDefault;
 
     public static float GetHealSingleAbility(this ClassJobID job)
         => Service.Config.HealthSingleAbilities.TryGetValue(job, out var value) ? value : Service.Config.HealthSingleAbility;
@@ -53,8 +50,12 @@ public static class ConfigurationHelper
         => Service.Config.HealthSingleSpells.TryGetValue(job, out var value) ? value : Service.Config.HealthSingleSpell;
 
     public static float GetHealingOfTimeSubtractSingle(this ClassJobID job)
-        => Service.Config.HealingOfTimeSubtractSingles.TryGetValue(job, out var value) ? value : 0.2f;
+        => Service.Config.HealingOfTimeSubtractSingles.TryGetValue(job, out var value) ? value : HealingOfTimeSubtractSinglesDefault;
 
     public static float GetHealthForDyingTank(this ClassJobID job)
-        => Service.Config.HealthForDyingTanks.TryGetValue(job, out var value) ? value : 0.15f;
+        => Service.Config.HealthForDyingTanks.TryGetValue(job, out var value) ? value : HealthForDyingTanksDefault;
+
+    public const float HealingOfTimeSubtractAreasDefault = 0.2f;
+    public const float HealingOfTimeSubtractSinglesDefault = 0.2f;
+    public const float HealthForDyingTanksDefault = 0.15f;
 }

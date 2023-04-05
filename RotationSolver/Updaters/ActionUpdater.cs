@@ -1,10 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 
@@ -80,8 +76,13 @@ internal static class ActionUpdater
         }
         else return false;
     }
-
     internal unsafe static void UpdateActionInfo()
+    {
+        UpdateWeaponTime();
+        UpdateTimeInfo();
+    }
+
+    private unsafe static void UpdateTimeInfo()
     {
         var last = DataCenter.InCombat;
         DataCenter.InCombat = Service.Conditions[ConditionFlag.InCombat];
@@ -109,7 +110,7 @@ internal static class ActionUpdater
         UpdateMPTimer();
     }
 
-    internal static unsafe void UpdateWeaponTime()
+    private static unsafe void UpdateWeaponTime()
     {
         var player = Service.Player;
         if (player == null) return;
@@ -131,7 +132,8 @@ internal static class ActionUpdater
 
         //确认能力技的相关信息
         var interval = Service.Config.AbilitiesInterval;
-        if (DataCenter.WeaponRemain < interval || DataCenter.WeaponElapsed == 0)
+        if (DataCenter.WeaponRemain < interval + Service.Config.ActionAhead * 2 
+            || DataCenter.WeaponElapsed == 0)
         {
             DataCenter.AbilityRemain = 0;
             if (DataCenter.WeaponRemain > 0)
@@ -140,7 +142,7 @@ internal static class ActionUpdater
             }
             DataCenter.AbilityRemainCount = 0;
         }
-        else if (DataCenter.WeaponRemain < 2 * interval)
+        else if (DataCenter.WeaponRemain < 2 * interval + Service.Config.ActionAhead * 2)
         {
             DataCenter.AbilityRemain = DataCenter.WeaponRemain - interval;
             DataCenter.AbilityRemainCount = 1;

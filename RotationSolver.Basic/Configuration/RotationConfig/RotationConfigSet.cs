@@ -1,7 +1,4 @@
-﻿using RotationSolver.Basic.Data;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 
 namespace RotationSolver.Basic.Configuration.RotationConfig;
 
@@ -86,7 +83,6 @@ public class RotationConfigSet : IRotationConfigSet
 
     private IRotationConfig GetConfig(string name) => Configs.FirstOrDefault(config => config.Name == name);
     #endregion
-
 
 
     public IEnumerator<IRotationConfig> GetEnumerator() => Configs.GetEnumerator();

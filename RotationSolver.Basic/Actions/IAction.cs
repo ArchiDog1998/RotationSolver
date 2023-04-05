@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace RotationSolver.Basic.Actions;
+﻿namespace RotationSolver.Basic.Actions;
 
 public interface IAction : ITexture
 {
@@ -21,4 +19,8 @@ public interface IAction : ITexture
     /// Player's level is enough for this action's usage.
     /// </summary>
     bool EnoughLevel { get; }
+
+    internal byte Level { get; }
+
+    bool IsInCooldown { get; set; }
 }

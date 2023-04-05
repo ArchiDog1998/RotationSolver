@@ -1,10 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiNET;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Helpers;
 using RotationSolver.Updaters;
-using System.Numerics;
 
 namespace RotationSolver.UI;
 

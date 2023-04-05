@@ -1,9 +1,6 @@
 ﻿using Dalamud.Game;
 using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using RotationSolver.Basic;
 using RotationSolver.Commands;
-using System.Collections.Generic;
 
 namespace RotationSolver.Updaters;
 
@@ -18,7 +15,11 @@ internal static class MajorUpdater
     private static void FrameworkUpdate(Framework framework)
     {
         RotationSolverPlugin.UpdateDisplayWindow();
-        if (!IsValid) return;
+        if (!IsValid)
+        {
+            TargetUpdater.ClearTarget();
+            return;
+        }
 
 #if DEBUG
         //Get changed condition.
@@ -43,7 +44,7 @@ internal static class MajorUpdater
         {
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
-            ActionUpdater.UpdateWeaponTime();
+            ActionUpdater.UpdateActionInfo();
 
             ActionUpdater.DoAction();
 
@@ -70,7 +71,6 @@ internal static class MajorUpdater
             UpdateWork();
         }
     }
-    static bool first = false;
 
     public static void Enable()
     {
@@ -88,7 +88,6 @@ internal static class MajorUpdater
         {
             PreviewUpdater.UpdateCastBarState();
             TargetUpdater.UpdateTarget();
-            ActionUpdater.UpdateActionInfo();
 
             RotationUpdater.UpdateRotation();
 

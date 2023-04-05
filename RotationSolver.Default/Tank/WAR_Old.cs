@@ -1,6 +1,6 @@
-namespace RotationSolver.Default.Tank;
+namespace RotationSolver.Old.Tank;
 
-[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/WAR_Default.cs")]
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/WAR_Old.cs")]
 public sealed class WAR_Old : WAR_Base
 {
     public override string GameVersion => "6.0";
@@ -24,7 +24,7 @@ public sealed class WAR_Old : WAR_Base
         }
 
         if (SteelCyclone.CanUse(out act)) return true;
-        if(!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest))
+        if (!Player.WillStatusEndGCD(3, 0, true, StatusID.SurgingTempest))
         {
             if (InnerBeast.CanUse(out act)) return true;
         }

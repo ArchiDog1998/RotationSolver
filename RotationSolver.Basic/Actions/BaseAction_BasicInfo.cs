@@ -1,11 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver.Basic;
-using RotationSolver.Basic.Actions;
-using RotationSolver.Basic.Data;
-using RotationSolver.Basic.Helpers;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace RotationSolver.Actions.BaseAction;
+namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction : IBaseAction
 {
@@ -22,7 +18,8 @@ public partial class BaseAction : IBaseAction
     /// <summary>
     /// EnoughLevel for using.
     /// </summary>
-    public bool EnoughLevel => Service.Player.Level >= _action.ClassJobLevel;
+    public bool EnoughLevel => Service.Player.Level >= Level;
+    public byte Level => _action.ClassJobLevel;
     public string Name => _action.Name;
 
     public string Description => string.Empty;
@@ -39,6 +36,22 @@ public partial class BaseAction : IBaseAction
             else
             {
                 Service.Config.DisabledActions.Add(ID);
+            }
+        }
+    }
+
+    public bool IsInCooldown
+    {
+        get => !Service.Config.NotInCoolDownActions.Contains(ID);
+        set
+        {
+            if (value)
+            {
+                Service.Config.NotInCoolDownActions.Remove(ID);
+            }
+            else
+            {
+                Service.Config.NotInCoolDownActions.Add(ID);
             }
         }
     }

@@ -1,7 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
-using RotationSolver.Basic.Data;
-using System.ComponentModel;
+﻿using Dalamud.Game.ClientState.Statuses;
 
 
 namespace RotationSolver.Basic.Helpers;
@@ -18,14 +15,31 @@ public static class StatusHelper
         StatusID.AspectedBenefic, StatusID.Regen1, StatusID.Regen2, StatusID.Regen3
     };
 
-    public static StatusID[] TankStanceStatus { get; } = new StatusID[]
+    internal static StatusID[] TankStanceStatus { get; } = new StatusID[]
     {
         StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance
     };
 
-    public static StatusID[] NoNeedHealingStatus { get; } = new StatusID[]
+    internal static StatusID[] NoNeedHealingStatus { get; } = new StatusID[]
     {
         StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead,
+    };
+
+
+    internal record Burst2MinsInfo( StatusID status, bool isOnHostile, byte level, params ClassJobID[] jobs);
+
+    internal static Burst2MinsInfo[] Burst2Mins { get; } = new Burst2MinsInfo[]
+    {
+        new Burst2MinsInfo(StatusID.Divination, false, AST_Base.Divination.Level, ClassJobID.Astrologian),
+        new Burst2MinsInfo(StatusID.ChainStratagem, true, SCH_Base.ChainStratagem.Level, ClassJobID.Scholar),
+        new Burst2MinsInfo(StatusID.Brotherhood, false, MNK_Base.Brotherhood.Level, ClassJobID.Monk),
+        new Burst2MinsInfo(StatusID.BattleLitany, false, DRG_Base.BattleLitany.Level, ClassJobID.Dragoon),
+        new Burst2MinsInfo(StatusID.ArcaneCircle, false, RPR_Base.ArcaneCircle.Level, ClassJobID.Reaper),
+        new Burst2MinsInfo(StatusID.BattleVoice, false, BRD_Base.BattleVoice.Level, ClassJobID.Bard),
+        new Burst2MinsInfo(StatusID.TechnicalFinish, false, DNC_Base.TechnicalStep.Level, ClassJobID.Dancer),
+        new Burst2MinsInfo(StatusID.SearingLight, false, SMN_Base.SearingLight.Level, ClassJobID.Summoner),
+        new Burst2MinsInfo(StatusID.Embolden, false, RDM_Base.Embolden.Level, ClassJobID.RedMage),
+        new Burst2MinsInfo(StatusID.Mug, true, NIN_Base.Mug.Level, ClassJobID.Ninja, ClassJobID.Rogue),
     };
 
     public static bool NeedHealing(this BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);

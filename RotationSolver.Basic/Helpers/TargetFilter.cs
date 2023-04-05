@@ -1,8 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Data;
+﻿using Lumina.Excel.GeneratedSheets;
 using System.Data;
-using System.Numerics;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -11,21 +8,24 @@ public static class TargetFilter
     #region Find one target
     internal static IEnumerable<BattleChara> MeleeRangeTargetFilter(IEnumerable<BattleChara> availableCharas)
         => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.MeleeRangeOffset);
+
     internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool mustUse)
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
 
-        //根据默认设置排序怪且没有大招
-        availableCharas = DefaultTargetingType(availableCharas).Where(StatusHelper.NeedHealing);
+        availableCharas = availableCharas.Where(StatusHelper.NeedHealing);
+
+        var tankTars = availableCharas.GetJobCategory(JobRole.Tank);
+
+        var tankTar = tankTars.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
+        if (tankTar != null &&　tankTar.GetHealingRatio() < Service.Config.HealthTankRatio)
+            return tankTar;
 
         var tar = availableCharas.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
-
         if (tar.GetHealingRatio() < 1) return tar;
 
-        availableCharas = availableCharas.GetJobCategory(JobRole.Tank);
-
-        return availableCharas.FirstOrDefault(t => t.HasStatus(false, StatusHelper.TankStanceStatus))
-           ?? availableCharas.FirstOrDefault();
+        return tankTars.FirstOrDefault(t => t.HasStatus(false, StatusHelper.TankStanceStatus))
+           ?? tankTars.FirstOrDefault();
     }
 
     internal static BattleChara DefaultFindHostile(IEnumerable<BattleChara> availableCharas, bool mustUse)

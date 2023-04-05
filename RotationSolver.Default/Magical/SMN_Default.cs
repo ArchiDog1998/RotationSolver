@@ -1,13 +1,16 @@
 ﻿namespace RotationSolver.Default.Magical;
 
+[BetaRotation]
 [RotationDesc(ActionID.SearingLight)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Magical/SMN_Default.cs")]
-
+[LinkDescription("https://www.thebalanceffxiv.com/img/jobs/smn/6.png")]
 public sealed class SMN_Default : SMN_Base
 {
-    public override string GameVersion => "6.28";
+    public override string GameVersion => "6.38";
 
-    public override string RotationName => "Default";
+    public override string RotationName => "General purpose";
+
+    public override string Description => "Beta for testing...";
 
     protected override IRotationConfigSet CreateConfiguration()
     {
