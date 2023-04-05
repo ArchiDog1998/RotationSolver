@@ -20,7 +20,7 @@ public abstract class PLD_Base : CustomRotation
     protected static bool HasFightOrFlight => !Player.WillStatusEndGCD(0, 0, true, StatusID.FightOrFlight);
 
     /// <summary>
-    /// ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// ï¿½ï¿½ï¿½ï¿½ï¿?
     /// </summary>
     protected static byte OathGauge => JobGauge.OathGauge;
 
@@ -96,7 +96,7 @@ public abstract class PLD_Base : CustomRotation
     public static IBaseAction CircleOfScorn { get; } = new BaseAction(ActionID.CircleOfScorn);
 
     /// <summary>
-    /// ï¿½ï¿½ï¿½Ö®ï¿½ï¿½
+    /// ï¿½ï¿½ï¿½Ö?ï¿½ï¿½
     /// </summary>
     public static IBaseAction SpiritsWithin { get; } = new BaseAction(ActionID.SpiritsWithin);
 
