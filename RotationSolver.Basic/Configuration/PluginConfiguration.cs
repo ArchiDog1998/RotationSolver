@@ -59,6 +59,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool PositionalFeedback = true;
     public bool DrawPositional = true;
     public bool DrawMeleeRange = true;
+    public bool DrawMeleeOffset = true;
     public bool ShowMoveTarget = true;
     public bool ShowHealthRatio = false;
     public bool ShowTarget = true;

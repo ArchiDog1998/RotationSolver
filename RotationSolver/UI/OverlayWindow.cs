@@ -121,16 +121,34 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        if (ActionUpdater.NextGCDAction == null ||　!ActionUpdater.NextGCDAction.IsMeleeAction()) return;
+        if (ActionUpdater.NextGCDAction == null ||　
+            !Service.Player.IsJobCategory(JobRole.Tank)
+            && !Service.Player.IsJobCategory(JobRole.Melee)) return;
 
         Vector3 pPosition = ActionUpdater.NextGCDAction.Target.Position;
         Service.WorldToScreen(pPosition, out var scrPos);
 
         float radius = ActionUpdater.NextGCDAction.Target.HitboxRadius + Service.Player.HitboxRadius + 3;
         float rotation = ActionUpdater.NextGCDAction.Target.Rotation;
-        bool wrong = ActionUpdater.NextGCDAction.Target.DistanceToPlayer() > 3;
-        List<Vector2> pts = new List<Vector2>(4 * COUNT);
 
+        if (Service.Config.DrawMeleeOffset)
+        {
+            var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
+            List<Vector2> pts1 = new List<Vector2>(4 * COUNT);
+            SectorPlots(ref pts1, pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
+
+            List<Vector2> pts2 = new List<Vector2>(4 * COUNT);
+            SectorPlots(ref pts2, pPosition, radius + Service.Config.MeleeRangeOffset, 0, 4 * COUNT, 2 * Math.PI);
+            pts2.Reverse();
+
+            DrawFill(pts1.Union(pts2), offsetColor);
+            
+            DrawBoundary(pts1 , offsetColor);
+            DrawBoundary(pts2, offsetColor);
+        }
+
+        List<Vector2> pts = new List<Vector2>(4 * COUNT);
+        bool wrong = ActionUpdater.NextGCDAction.Target.DistanceToPlayer() > 3;
         if (Service.Config.DrawPositional && !Service.Player.HasStatus(true, StatusID.TrueNorth))
         {
             var shouldPos = ActionUpdater.NextGCDAction.EnemyPositional;
@@ -163,14 +181,28 @@ internal static class OverlayWindow
         if (pts.Count > 0) DrawRange(pts, wrong);
     }
 
-    static void DrawRange(List<Vector2> pts, bool wrong)
+    static void DrawRange(IEnumerable<Vector2> pts, bool wrong)
     {
         var color = wrong ? new Vector3(0.3f, 0.8f, 0.2f) : new Vector3(1, 1, 1);
+        DrawFill(pts, color);
+        DrawBoundary(pts, color);
+    }
 
-        pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
+    static void DrawFill(IEnumerable<Vector2> pts, Vector3 color)
+    {
+        foreach (var pt in pts)
+        {
+            ImGui.GetWindowDrawList().PathLineTo(pt);
+        }
         ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 0.15f)));
+    }
 
-        pts.ForEach(pt => ImGui.GetWindowDrawList().PathLineTo(pt));
+    static void DrawBoundary(IEnumerable<Vector2> pts, Vector3 color)
+    {
+        foreach (var pt in pts)
+        {
+            ImGui.GetWindowDrawList().PathLineTo(pt);
+        }
         ImGui.GetWindowDrawList().PathStroke(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 1f)), ImDrawFlags.None, 2);
     }
 

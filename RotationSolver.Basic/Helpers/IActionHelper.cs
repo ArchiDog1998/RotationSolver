@@ -64,9 +64,4 @@ public static class IActionHelper
     {
         return actions.Select(a => isAdjust ? (ActionID)a.AdjustedID : (ActionID)a.ID).ToArray();
     }
-
-    public static bool IsMeleeAction(this IBaseAction act)
-    {
-        return act.Range == 3;
-    }
 }
