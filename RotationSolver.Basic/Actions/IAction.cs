@@ -21,4 +21,6 @@ public interface IAction : ITexture
     bool EnoughLevel { get; }
 
     internal byte Level { get; }
+
+    bool IsInCooldown { get; set; }
 }

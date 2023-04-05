@@ -17,7 +17,7 @@ internal class CooldownWindow : InfoWindow
         {
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
-                IEnumerable<IAction> showItems = pair.OrderBy(a => a.ID);
+                var showItems = pair.OrderBy(a => a.ID).Where(a => a.IsInCooldown);
                 if (!Service.Config.ShowGCDCooldown) showItems = showItems.Where(i => !(i is IBaseAction a && a.IsGeneralGCD));
 
                 if (!showItems.Any()) continue;

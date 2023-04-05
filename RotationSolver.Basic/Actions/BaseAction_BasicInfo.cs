@@ -39,6 +39,22 @@ public partial class BaseAction : IBaseAction
             }
         }
     }
+
+    public bool IsInCooldown
+    {
+        get => !Service.Config.NotInCoolDownActions.Contains(ID);
+        set
+        {
+            if (value)
+            {
+                Service.Config.NotInCoolDownActions.Remove(ID);
+            }
+            else
+            {
+                Service.Config.NotInCoolDownActions.Add(ID);
+            }
+        }
+    }
     public uint ID => _action.RowId;
     public uint AdjustedID => (uint)Service.GetAdjustedActionId((ActionID)ID);
 

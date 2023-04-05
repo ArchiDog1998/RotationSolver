@@ -12,7 +12,10 @@ public class PluginConfiguration : IPluginConfiguration
     public string VoiceName = string.Empty;
     public SortedSet<string> DisabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DisabledActions { get; private set; } = new SortedSet<uint>();
+    public SortedSet<uint> NotInCoolDownActions { get; private set; } = new SortedSet<uint>();
     public SortedSet<uint> DisabledItems { get; private set; } = new SortedSet<uint>();
+    public SortedSet<uint> NotInCoolDownItems { get; private set; } = new SortedSet<uint>();
+
     public List<ActionEventInfo> Events { get; private set; } = new List<ActionEventInfo>();
     public Dictionary<uint, Dictionary<string, Dictionary<string, string>>> RotationsConfigurations { get; private set; }
         = new Dictionary<uint, Dictionary<string, Dictionary<string, string>>>();

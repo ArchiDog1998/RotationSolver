@@ -35,6 +35,22 @@ internal class BaseItem : IBaseItem
         }
     }
 
+    public bool IsInCooldown
+    {
+        get => !Service.Config.NotInCoolDownItems.Contains(ID);
+        set
+        {
+            if (value)
+            {
+                Service.Config.NotInCoolDownItems.Remove(ID);
+            }
+            else
+            {
+                Service.Config.NotInCoolDownItems.Add(ID);
+            }
+        }
+    }
+
     public string Description => string.Empty;
 
     public unsafe float RecastTimeOneCharge => ActionManager.Instance()->GetRecastTime(ActionType.Item, ID);

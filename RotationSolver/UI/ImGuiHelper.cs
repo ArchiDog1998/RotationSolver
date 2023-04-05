@@ -62,11 +62,9 @@ internal static class ImGuiHelper
         }
         ImGui.NextColumn();
 
-        bool enable = false;
-
         if (isSelected) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-        enable = texture.IsEnabled;
-        if (ImGui.Checkbox($"{texture.Name}##{texture.Name}", ref enable))
+        var enable = texture.IsEnabled;
+        if (ImGui.Checkbox($"{texture.Name}##{texture.Name}Enabled", ref enable))
         {
             texture.IsEnabled = enable;
             Service.Config.Save();
@@ -549,6 +547,16 @@ internal static class ImGuiHelper
         ImGui.SameLine();
         Spacing();
 
+        var enable = action.IsInCooldown;
+        if (ImGui.Checkbox($"CD##{action.Name}InCooldown", ref enable))
+        {
+            action.IsInCooldown = enable;
+            Service.Config.Save();
+        }
+
+        ImGui.SameLine();
+        Spacing();
+
         OtherCommandType.ToggleActions.DisplayCommandHelp(action.ToString());
 
         if (action.IsTimeline) OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
@@ -585,6 +593,16 @@ internal static class ImGuiHelper
 
     public unsafe static void Display(this IBaseItem item, bool IsActive) => item.DrawEnableTexture(false, null, otherThing: () =>
     {
+        ImGui.SameLine();
+        Spacing();
+
+        var enable = item.IsInCooldown;
+        if (ImGui.Checkbox($"CD##{item.Name}InCooldown", ref enable))
+        {
+            item.IsInCooldown = enable;
+            Service.Config.Save();
+        }
+
         if (Service.Config.InDebug)
         {
             ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID).ToString());
