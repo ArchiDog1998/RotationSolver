@@ -264,8 +264,8 @@ internal partial class Strings
     public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and middle click to clear the key setting.";
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
-    public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation";
-
+    public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
+    public string ConfigWindow_Rotation_ResetToDefault { get; set; } = "Click to reset value!";
     #endregion
 
     #region ScriptWindow

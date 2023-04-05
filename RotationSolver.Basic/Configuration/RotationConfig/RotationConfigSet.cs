@@ -85,7 +85,6 @@ public class RotationConfigSet : IRotationConfigSet
     #endregion
 
 
-
     public IEnumerator<IRotationConfig> GetEnumerator() => Configs.GetEnumerator();
 
 

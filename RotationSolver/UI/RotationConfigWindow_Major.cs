@@ -4,8 +4,6 @@ using RotationSolver.Localization;
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow : Window
 {
-    const float DRAG_NUMBER_WIDTH = 100;
-
     public RotationConfigWindow()
         : base(nameof(RotationConfigWindow), 0, false)
     {

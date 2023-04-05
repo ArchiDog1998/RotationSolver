@@ -83,7 +83,7 @@ public abstract partial class CustomRotation : ICustomRotation
 
     protected virtual IRotationConfigSet CreateConfiguration()
     {
-        return new RotationConfigSet(JobIDs[0], RotationName);
+        return new RotationConfigSet(JobIDs[0], GetType().FullName);
     }
 
 

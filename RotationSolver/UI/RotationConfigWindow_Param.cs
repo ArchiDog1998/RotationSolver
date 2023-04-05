@@ -511,6 +511,7 @@ internal partial class RotationConfigWindow
         {
             value = @default;
             Service.Config.Save();
+            otherThing?.Invoke();
         }
     }
 
@@ -544,17 +545,19 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawFloatNumber(string name, ref float value, float @default, float speed = 0.002f, float min = 0, float max = 1, string description = "")
+    private static void DrawFloatNumber(string name, ref float value, float @default, float speed = 0.002f, float min = 0, float max = 1, string description = "", Action otherThing = null)
     {
         ImGui.SetNextItemWidth(100);
         if (ImGui.DragFloat(name, ref value, speed, min, max))
         {
             Service.Config.Save();
+            otherThing?.Invoke();
         }
         if (ImGuiHelper.HoveredStringReset(description) && value != @default)
         {
             value = @default;
             Service.Config.Save();
+            otherThing?.Invoke();
         }
     }
 
@@ -570,6 +573,7 @@ internal partial class RotationConfigWindow
         {
             value = @default;
             Service.Config.Save();
+            otherThing?.Invoke();
         }
     }
 

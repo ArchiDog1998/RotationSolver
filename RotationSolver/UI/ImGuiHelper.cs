@@ -99,9 +99,16 @@ internal static class ImGuiHelper
         var result = ImGui.Button($"{icon.ToIconString()}##{name}");
         ImGui.PopFont();
         return result;
-
-        //ImGuiComponents.IconButton(icon)
     }
+
+    public static Vector2 IconButtonSize(FontAwesomeIcon icon, string name)
+    {
+        ImGui.PushFont(UiBuilder.IconFont);
+        var result = ImGui.CalcTextSize($"{icon.ToIconString()}##{name}");
+        ImGui.PopFont();
+        return result;
+    }
+
 
     public static void HoveredString(string text, Action selected = null)
     {
@@ -119,9 +126,10 @@ internal static class ImGuiHelper
     {
         if (ImGui.IsItemHovered())
         {
-            if (string.IsNullOrEmpty(text)) text = string.Empty;
-            text += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault;
-                ImGui.SetTooltip(text);
+            text = string.IsNullOrEmpty(text)? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault
+                : text + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault;
+
+            ImGui.SetTooltip(text);
 
             return ImGui.IsMouseDown(ImGuiMouseButton.Right)
                 && ImGui.IsKeyPressed(ImGuiKey.LeftShift)
@@ -518,7 +526,7 @@ internal static class ImGuiHelper
         {
             RotationConfigWindow.DrawRotationRole(rotation);
 
-            rotation.Configs.Draw(canAddButton);
+            rotation.DrawConfig(canAddButton);
         });
 
     #region IAction
@@ -617,8 +625,12 @@ internal static class ImGuiHelper
     }
 
     #region Rotation Config Display
-    static void Draw(this IRotationConfigSet set, bool canAddButton)
+    static void DrawConfig(this ICustomRotation rotation, bool canAddButton)
     {
+        var set = rotation.Configs;
+        if (!set.Any()) return;
+
+        ImGui.BeginGroup();
         foreach (var config in set.Configs)
         {
             if (config is RotationConfigCombo c) c.Draw(set, canAddButton);
@@ -626,11 +638,29 @@ internal static class ImGuiHelper
             else if (config is RotationConfigFloat f) f.Draw(set, canAddButton);
             else if (config is RotationConfigString s) s.Draw(set, canAddButton);
         }
+        ImGui.EndGroup();
+        ImGui.SameLine();
+
+        var str = $"#{set.GetHashCode()}Undo";
+        var hight = ImGui.GetItemRectSize().Y - IconButtonSize(FontAwesomeIcon.Undo, str).Y;
+        var pos = ImGui.GetCursorPos();
+
+        ImGui.SetCursorPos(pos + new Vector2(10, hight / 2));
+        if(IconButton(FontAwesomeIcon.Undo, str))
+        {
+            if(Service.Config.RotationsConfigurations.TryGetValue(rotation.Job.RowId, out var jobDict)
+                && jobDict.ContainsKey(rotation.GetType().FullName))
+            {
+                jobDict.Remove(rotation.GetType().FullName);
+            }
+        }
+        HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault);
     }
 
     static void Draw(this RotationConfigCombo config, IRotationConfigSet set, bool canAddButton)
     {
         var val = set.GetCombo(config.Name);
+        ImGui.SetNextItemWidth(ImGui.CalcTextSize(config.DisplayName).X );
         if (ImGui.BeginCombo($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", config.Items[val]))
         {
             for (int comboIndex = 0; comboIndex < config.Items.Length; comboIndex++)
