@@ -175,7 +175,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowGCDCooldown = false;
     public bool UseOriginalCooldown = true;
     public int CooldownActionOneLine = 15;
-    public float CooldownFontSize = 24;
+    public float CooldownFontSize = 16;
 
     public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.6f);
     public Vector4 ControlWindowUnlockBg = new Vector4(0, 0, 0, 0.9f);

@@ -50,7 +50,7 @@ internal partial class RotationConfigWindow
 
                 DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownActionOneLine, ref Service.Config.CooldownActionOneLine, Service.Default.CooldownActionOneLine, min: 1, max: 30);
 
-                DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownFontSize, ref Service.Config.CooldownFontSize, Service.Default.CooldownFontSize, min: 9.6f, max: 96);
+                DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownFontSize, ref Service.Config.CooldownFontSize, Service.Default.CooldownFontSize, speed: 0.1f, min: 9.6f, max: 96);
             }
         }
 

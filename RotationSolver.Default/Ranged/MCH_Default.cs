@@ -12,6 +12,11 @@ public sealed class MCH_Default : MCH_Base
 
     protected override IAction CountDownAction(float remainTime)
     {
+        if (remainTime < Service.Config.CountDownAhead)
+        {
+            if (AirAnchor.CanUse(out var act1)) return act1;
+            else if(!AirAnchor.EnoughLevel && HotShot.CanUse(out act1)) return act1;
+        }
         if (remainTime < 2 && UseBurstMedicine(out var act)) return act;
         if (remainTime < 5 && Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return act;
         return base.CountDownAction(remainTime);
@@ -30,8 +35,10 @@ public sealed class MCH_Default : MCH_Base
             if (AirAnchor.CanUse(out act)) return true;
             else if (!AirAnchor.EnoughLevel && HotShot.CanUse(out act)) return true;
 
+
             if (Drill.CanUse(out act)) return true;
         }
+
         if (!CombatElapsedLessGCD(4) && ChainSaw.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //Aoe
@@ -65,16 +72,17 @@ public sealed class MCH_Default : MCH_Base
         {
             if (UseBurstMedicine(out act)) return true;
             if ((IsLastAbility(false, Hypercharge) || Heat >= 50)
+                && !CombatElapsedLess(12)
                 && Wildfire.CanUse(out act)) return true;
         }
 
-        if (CanUseHypercharge(out act)) return true;
+        if (!CombatElapsedLess(12) && CanUseHypercharge(out act)) return true;
         if (!AirAnchorBlockTime(8)
             && RookAutoturret.CanUse(out act)) return true;
 
         if (BarrelStabilizer.CanUse(out act)) return true;
 
-        if (CombatElapsedLessGCD(3)) return false;
+        if (CombatElapsedLess(10)) return false;
 
         var option = CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo;
         if (GaussRound.CurrentCharges <= Ricochet.CurrentCharges)
@@ -88,7 +96,7 @@ public sealed class MCH_Default : MCH_Base
 
     private static bool AirAnchorBlockTime(float time)
     {
-        if (!AirAnchor.EnoughLevel)
+        if (AirAnchor.EnoughLevel)
         {
             return AirAnchor.IsCoolingDown && AirAnchor.WillHaveOneCharge(time);
         }
@@ -98,12 +106,19 @@ public sealed class MCH_Default : MCH_Base
         }
     }
 
-    const float REST_TIME = 7f;
+    const float REST_TIME = 6f;
     private static bool CanUseHypercharge(out IAction act)
     {
         act = null;
 
-        if (AirAnchorBlockTime(4)) return false;
+        if(BarrelStabilizer.IsCoolingDown && BarrelStabilizer.WillHaveOneChargeGCD(8))
+        {
+            if (AirAnchorBlockTime(8)) return false;
+        }
+        else
+        {
+            if (AirAnchorBlockTime(12)) return false;
+        }
 
         //Check recast.
         if (!SpreadShot.CanUse(out _))
@@ -114,11 +129,11 @@ public sealed class MCH_Default : MCH_Base
             }
             else
             {
-                if (HotShot.WillHaveOneCharge(REST_TIME)) return false;
+                if (HotShot.EnoughLevel && HotShot.WillHaveOneCharge(REST_TIME)) return false;
             }
         }
-        if (Drill.WillHaveOneCharge(REST_TIME)) return false;
-        if (ChainSaw.WillHaveOneCharge(REST_TIME)) return false;
+        if (Drill.EnoughLevel && Drill.WillHaveOneCharge(REST_TIME)) return false;
+        if (ChainSaw.EnoughLevel && ChainSaw.WillHaveOneCharge(REST_TIME)) return false;
 
         if (Hypercharge.CanUse(out act)) return true;
         return false;

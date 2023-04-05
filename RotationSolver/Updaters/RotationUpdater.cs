@@ -87,7 +87,7 @@ internal static class RotationUpdater
                 {
                     string result;
 
-                    if (act.IsGeneralGCD)
+                    if (act.IsRealGCD)
                     {
                         result = "GCD";
                     }
@@ -101,7 +101,7 @@ internal static class RotationUpdater
                         result += "-" + LocalizationManager.RightLang.Action_Friendly;
                         if (act.IsEot)
                         {
-                            result += "Hot";
+                            result += "-Hot";
                         }
                     }
                     else
@@ -110,7 +110,7 @@ internal static class RotationUpdater
 
                         if (act.IsEot)
                         {
-                            result += "Dot";
+                            result += "-Dot";
                         }
                     }
                     return result;

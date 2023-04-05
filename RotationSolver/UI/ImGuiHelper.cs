@@ -567,6 +567,9 @@ internal static class ImGuiHelper
         ImGui.SameLine();
         Spacing();
 
+        OtherCommandType.ToggleActions.DisplayCommandHelp(action.ToString());
+
+
         var enable = action.IsInCooldown;
         if (ImGui.Checkbox($"CD##{action.Name}InCooldown", ref enable))
         {
@@ -574,13 +577,14 @@ internal static class ImGuiHelper
             Service.Config.Save();
         }
 
-        ImGui.SameLine();
-        Spacing();
+        if (action.IsTimeline)
+        {
+            ImGui.SameLine();
+            Spacing();
 
-        OtherCommandType.ToggleActions.DisplayCommandHelp(action.ToString());
-
-        if (action.IsTimeline) OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
+            OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
            type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, action), false);
+        }
 
         if (Service.Config.InDebug)
         {
@@ -598,7 +602,6 @@ internal static class ImGuiHelper
                 ImGui.Text($"Can Use: {action.CanUse(out _)} ");
                 ImGui.Text("Must Use:" + action.CanUse(out _,  CanUseOption.MustUse).ToString());
                 ImGui.Text("Empty Use:" + action.CanUse(out _, CanUseOption.EmptyOrSkipCombo).ToString());
-                ImGui.Text("IsUnlocked: " + UIState.Instance()->IsUnlockLinkUnlocked(action.AdjustedID).ToString());
                 if (action.Target != null)
                 {
                     ImGui.Text("Target Name: " + action.Target.Name);
@@ -809,12 +812,16 @@ internal static class ImGuiHelper
         ImGui.Unindent(ATTR_INDENT);
     }
 
-    public static ImFontPtr GetFont(float size)
+    public unsafe static ImFontPtr GetFont(float size)
     {
         var style = new Dalamud.Interface.GameFonts.GameFontStyle(Dalamud.Interface.GameFonts.GameFontStyle.GetRecommendedFamilyAndSize(Dalamud.Interface.GameFonts.GameFontFamily.Axis, size));
         var font = Service.Interface.UiBuilder.GetGameFontHandle(style).ImFont;
-        font.Scale = size / style.BaseSizePt;
 
+        if((IntPtr)font.NativePtr == IntPtr.Zero) 
+        {
+            return ImGui.GetFont();
+        }
+        font.Scale = size / style.BaseSizePt;
         return font;
     }
 }

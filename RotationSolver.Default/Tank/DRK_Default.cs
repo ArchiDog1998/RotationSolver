@@ -24,9 +24,9 @@ public sealed class DRK_Default : DRK_Base
 
             if (CombatLess) return false;
 
-            if (Configs.GetBool("TheBlackestNight") && Player.CurrentMp < 6000) return false;
-
             if (InDeliruim || HasDarkArts) return true;
+
+            if (Configs.GetBool("TheBlackestNight") && Player.CurrentMp < 6000) return false;
 
             return Player.CurrentMp >= 8500;
         }
@@ -90,10 +90,13 @@ public sealed class DRK_Default : DRK_Base
     [RotationDesc(ActionID.TheBlackestNight, ActionID.Oblation, ActionID.ShadowWall, ActionID.Rampart, ActionID.DarkMind, ActionID.Reprisal)]
     protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (TheBlackestNight.CanUse(out act)) return true;
+        act = null;
 
+        //if (Player.HasStatus(true, StatusID.dark)) return false;
         if (abilitiesRemaining == 1)
         {
+            if (TheBlackestNight.CanUse(out act)) return true;
+
             //10
             if (Oblation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
@@ -109,7 +112,6 @@ public sealed class DRK_Default : DRK_Base
 
         if (Reprisal.CanUse(out act)) return true;
 
-        act = null;
         return false;
     }
 
@@ -147,7 +149,7 @@ public sealed class DRK_Default : DRK_Base
 
         if (InBurst)
         {
-            if(UseBurstMedicine(out act)) return true;
+            if (UseBurstMedicine(out act)) return true;
             if (BloodWeapon.CanUse(out act)) return true;
             if (Delirium.CanUse(out act)) return true;
         }

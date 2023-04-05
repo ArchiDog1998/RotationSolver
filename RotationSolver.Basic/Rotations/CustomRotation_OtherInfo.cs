@@ -216,7 +216,7 @@ public abstract partial class CustomRotation
     public static bool CombatElapsedLess(float time)
     {
         if (!InCombat) return true;
-        return CooldownHelper.ElapsedAfter(time, DataCenter.CombatTime + DataCenter.WeaponRemain);
+        return (DataCenter.CombatTime + DataCenter.WeaponRemain).IsLessThan(time);
     }
 
     public static bool CombatElapsedLessGCD(int GCD) => CombatElapsedLess(GCD * DataCenter.WeaponTotal);

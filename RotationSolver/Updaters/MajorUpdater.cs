@@ -44,7 +44,7 @@ internal static class MajorUpdater
         {
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
-            ActionUpdater.UpdateWeaponTime();
+            ActionUpdater.UpdateActionInfo();
 
             ActionUpdater.DoAction();
 
@@ -88,7 +88,6 @@ internal static class MajorUpdater
         {
             PreviewUpdater.UpdateCastBarState();
             TargetUpdater.UpdateTarget();
-            ActionUpdater.UpdateActionInfo();
 
             RotationUpdater.UpdateRotation();
 
