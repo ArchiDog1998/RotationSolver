@@ -198,7 +198,7 @@
   "ConfigWindow_Control_NeedToEnable": " (Need to enable)",
   "ConfigWindow_Control_ClickToUse": "Click to use it!",
   "ConfigWindow_Rotation_BetaRotation": "Beta Rotation!",
-  "ConfigWindow_Rotation_ResetToDefault": "Click to reset value!",
+  "ConfigWindow_Rotation_ResetToDefault": "Click to reset the rotation configuration to default!",
   "Timeline_DragdropDescription": "Drag&drop to move，Ctrl+Alt+RightClick to delete.",
   "Timeline_SearchBar": "Search Bar",
   "Timeline_MustUse": "MustUse",

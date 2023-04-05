@@ -465,7 +465,7 @@ internal static class ImGuiHelper
             ImGui.PopStyleColor();
 
             ImGui.SameLine();
-            ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ":    ");
+            ImGui.TextDisabled("  -  " + LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ":  ");
             ImGui.SameLine();
             ImGui.Text(rotation.GameVersion);
 
@@ -504,10 +504,15 @@ internal static class ImGuiHelper
             {
                 var display = ImGui.GetIO().DisplaySize * 0.7f;
 
+                bool isFirst = true;
                 foreach (var texture in attrs)
                 {
                     ImGui.SameLine();
-                    Spacing();
+                    if(isFirst)
+                    {
+                        isFirst = false;
+                        Spacing();
+                    }
                     var hasTexture = texture.Texture != null;
 
                     if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.QuestionCircle,
@@ -672,7 +677,7 @@ internal static class ImGuiHelper
     static void Draw(this RotationConfigCombo config, IRotationConfigSet set, bool canAddButton)
     {
         var val = set.GetCombo(config.Name);
-        ImGui.SetNextItemWidth(ImGui.CalcTextSize(config.DisplayName).X );
+        ImGui.SetNextItemWidth(ImGui.CalcTextSize(config.Items[val]).X + 50);
         if (ImGui.BeginCombo($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", config.Items[val]))
         {
             for (int comboIndex = 0; comboIndex < config.Items.Length; comboIndex++)
