@@ -20,7 +20,7 @@ public abstract class PLD_Base : CustomRotation
     protected static bool HasFightOrFlight => !Player.WillStatusEndGCD(0, 0, true, StatusID.FightOrFlight);
 
     /// <summary>
-    /// ÖÒÒå¶È
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     protected static byte OathGauge => JobGauge.OathGauge;
 
@@ -32,38 +32,33 @@ public abstract class PLD_Base : CustomRotation
     protected override bool CanHealAreaAbility => false;
 
     /// <summary>
-    /// ¸ÖÌúÐÅÄî
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public static IBaseAction IronWill { get; } = new BaseAction(ActionID.IronWill, shouldEndSpecial: true);
 
     /// <summary>
-    /// ÏÈ·æ½£
+    /// ï¿½È·æ½£
     /// </summary>
     public static IBaseAction FastBlade { get; } = new BaseAction(ActionID.FastBlade);
 
     /// <summary>
-    /// ±©ÂÒ½£
+    /// ï¿½ï¿½ï¿½Ò½ï¿½
     /// </summary>
     public static IBaseAction RiotBlade { get; } = new BaseAction(ActionID.RiotBlade);
 
     /// <summary>
-    /// Á¤Ñª½£
+    /// ï¿½ï¿½Ñªï¿½ï¿½
     /// </summary>
-    public static IBaseAction GoringBlade { get; } = new BaseAction(ActionID.GoringBlade, isEot: true)
-    {
-        TargetStatus = new[]
-        {
-            StatusID.GoringBlade,
-        }
-    };
+    public static IBaseAction GoringBlade { get; } = new BaseAction(ActionID.GoringBlade);
+   
 
     /// <summary>
-    /// Õ½Å®ÉñÖ®Å­(ÍõÈ¨½£)
+    /// Õ½Å®ï¿½ï¿½Ö®Å­(ï¿½ï¿½È¨ï¿½ï¿½)
     /// </summary>
     public static IBaseAction RageOfHalone { get; } = new BaseAction(ActionID.RageOfHalone);
 
     /// <summary>
-    /// Í¶¶Ü
+    /// Í¶ï¿½ï¿½
     /// </summary>
     public static IBaseAction ShieldLob { get; } = new BaseAction(ActionID.ShieldLob)
     {
@@ -72,7 +67,7 @@ public abstract class PLD_Base : CustomRotation
     };
 
     /// <summary>
-    /// Õ½ÌÓ·´Ó¦
+    /// Õ½ï¿½Ó·ï¿½Ó¦
     /// </summary>
     public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, true);
 
@@ -82,12 +77,12 @@ public abstract class PLD_Base : CustomRotation
     public static IBaseAction TotalEclipse { get; } = new BaseAction(ActionID.TotalEclipse);
 
     /// <summary>
-    /// ÈÕçíÕ¶
+    /// ï¿½ï¿½ï¿½ï¿½Õ¶
     /// </summary>
     public static IBaseAction Prominence { get; } = new BaseAction(ActionID.Prominence);
 
     /// <summary>
-    /// Ô¤¾¯
+    /// Ô¤ï¿½ï¿½
     /// </summary>
     public static IBaseAction Sentinel { get; } = new BaseAction(ActionID.Sentinel, isTimeline: true, isFriendly: true)
     {
@@ -96,32 +91,32 @@ public abstract class PLD_Base : CustomRotation
     };
 
     /// <summary>
-    /// ¶òÔËÁ÷×ª
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ª
     /// </summary>
     public static IBaseAction CircleOfScorn { get; } = new BaseAction(ActionID.CircleOfScorn);
 
     /// <summary>
-    /// Éî°ÂÖ®Áé
+    /// ï¿½ï¿½ï¿½Ö®ï¿½ï¿½
     /// </summary>
     public static IBaseAction SpiritsWithin { get; } = new BaseAction(ActionID.SpiritsWithin);
 
     /// <summary>
-    /// ÉñÊ¥ÁìÓò
+    /// ï¿½ï¿½Ê¥ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public static IBaseAction HallowedGround { get; } = new BaseAction(ActionID.HallowedGround, true, isTimeline: true);
 
     /// <summary>
-    /// Ê¥¹âÄ»Á±
+    /// Ê¥ï¿½ï¿½Ä»ï¿½ï¿½
     /// </summary>
     public static IBaseAction DivineVeil { get; } = new BaseAction(ActionID.DivineVeil, true, isTimeline: true);
 
     /// <summary>
-    /// ÉîÈÊºñÔó
+    /// ï¿½ï¿½ï¿½Êºï¿½ï¿½ï¿½
     /// </summary>
     public static IBaseAction Clemency { get; } = new BaseAction(ActionID.Clemency, true, true, isTimeline: true);
 
     /// <summary>
-    /// µ÷Í£
+    /// ï¿½ï¿½Í£
     /// </summary>
     public static IBaseAction Intervene { get; } = new BaseAction(ActionID.Intervene, shouldEndSpecial: true)
     {
@@ -129,7 +124,7 @@ public abstract class PLD_Base : CustomRotation
     };
 
     /// <summary>
-    /// Êê×ï½£
+    /// ï¿½ï¿½ï¿½ï½£
     /// </summary>
     public static IBaseAction Atonement { get; } = new BaseAction(ActionID.Atonement)
     {
@@ -137,37 +132,37 @@ public abstract class PLD_Base : CustomRotation
     };
 
     /// <summary>
-    /// ³¥Êê½£
+    /// ï¿½ï¿½ï¿½ê½£
     /// </summary>
     public static IBaseAction Expiacion { get; } = new BaseAction(ActionID.Expiacion);
 
     /// <summary>
-    /// °²»êÆíµ»
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public static IBaseAction Requiescat { get; } = new BaseAction(ActionID.Requiescat, true);
 
     /// <summary>
-    /// »Ú×ï
+    /// ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor);
 
     /// <summary>
-    /// Ê¥»·
+    /// Ê¥ï¿½ï¿½
     /// </summary>
     public static IBaseAction HolyCircle { get; } = new BaseAction(ActionID.HolyCircle);
 
     /// <summary>
-    /// Ê¥Áé
+    /// Ê¥ï¿½ï¿½
     /// </summary>
     public static IBaseAction HolySpirit { get; } = new BaseAction(ActionID.HolySpirit);
 
     /// <summary>
-    /// Îä×°ÊùÎÀ
+    /// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public static IBaseAction PassageOfArms { get; } = new BaseAction(ActionID.PassageOfArms, true, isTimeline: true);
 
     /// <summary>
-    /// ±£»¤
+    /// ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public static IBaseAction Cover { get; } = new BaseAction(ActionID.Cover, true, isTimeline: true)
     {
@@ -176,7 +171,7 @@ public abstract class PLD_Base : CustomRotation
     };
 
     /// <summary>
-    /// ¸ÉÔ¤
+    /// ï¿½ï¿½Ô¤
     /// </summary>
     public static IBaseAction Intervention { get; } = new BaseAction(ActionID.Intervention, true, isTimeline: true)
     {
@@ -185,7 +180,7 @@ public abstract class PLD_Base : CustomRotation
     };
 
     /// <summary>
-    /// ¶ÜÕó
+    /// ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public static IBaseAction Sheltron { get; } = new BaseAction(ActionID.Sheltron, true, isTimeline: true)
     {
