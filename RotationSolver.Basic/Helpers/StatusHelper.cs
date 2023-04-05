@@ -25,6 +25,24 @@ public static class StatusHelper
         StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead,
     };
 
+    public static StatusID[] Burst2minsBuff { get; } = new StatusID[]
+    {
+        //StatusID.Divination,
+        StatusID.Brotherhood,
+        StatusID.BattleLitany,
+        StatusID.ArcaneCircle,
+        StatusID.BattleVoice,
+        //StatusID.TechnicalStepFinished,
+        StatusID.SearingLight,
+        StatusID.Embolden,
+    };
+
+    public static StatusID[] Burst2minsDeBuff { get; } = new StatusID[]
+    {
+        StatusID.ChainStratagem,
+        //StatusID.Mug,
+    };
+
     public static bool NeedHealing(this BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
     /// <summary>
