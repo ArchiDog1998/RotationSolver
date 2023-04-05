@@ -70,7 +70,7 @@ internal class ControlWindow : Window
         ImGui.Text(DataCenter.TargetingType.ToName());
 
         RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
-            ref Service.Config.IsControlWindowLock);
+            ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
         ImGui.EndGroup();
 
         DrawNextAction(gcd, ability, width);

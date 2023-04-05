@@ -23,7 +23,7 @@ internal partial class RotationConfigWindow
         ImGui.SameLine();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
-            ref Service.Config.InDebug);
+            ref Service.Config.InDebug, Service.Default.InDebug);
 
         if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f), true))
         {

@@ -78,6 +78,7 @@ public class Service : IDisposable
         Framework.Update -= Framework_Update;
     }
     public static PluginConfiguration Config { get; set; }
+    public static PluginConfiguration Default { get; } = new PluginConfiguration();
 
     internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara* RawPlayer
     => Control.Instance()->LocalPlayer;

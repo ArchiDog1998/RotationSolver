@@ -115,6 +115,21 @@ internal static class ImGuiHelper
         }
     }
 
+    public static bool HoveredStringReset(string text)
+    {
+        if (ImGui.IsItemHovered())
+        {
+            if (string.IsNullOrEmpty(text)) text = string.Empty;
+            text += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault;
+                ImGui.SetTooltip(text);
+
+            return ImGui.IsMouseDown(ImGuiMouseButton.Right)
+                && ImGui.IsKeyPressed(ImGuiKey.LeftShift)
+                && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl);
+        }
+        return false;
+    }
+
     internal unsafe static bool DrawEditorList<T>(List<T> items, Action<T> draw)
     {
         ImGui.Indent();
