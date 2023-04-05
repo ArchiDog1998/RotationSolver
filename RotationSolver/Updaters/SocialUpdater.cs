@@ -98,7 +98,7 @@ internal class SocialUpdater
     static RandomDelay socialDelay = new RandomDelay(() => (3, 5));
     internal static async void UpdateSocial()
     {
-        if (DataCenter.InCombat || DataCenter.PartyMembers.Count() < 2) return;
+        if (DataCenter.InCombat) return;
         if (_canSaying && socialDelay.Delay(CanSocial))
         {
             _canSaying = false;
@@ -137,10 +137,21 @@ internal class SocialUpdater
             Service.TargetManager.SetTarget(author.c);
             Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
-            var message = new SeString(new PlayerPayload(author.c.Name.TextValue, author.c.HomeWorld.Id),
-                          new TextPayload($"({author.nameDesc}) is probably one of the authors of the "),
+            var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
+
+                          new UIForegroundPayload(31),
+                          new PlayerPayload(author.c.Name.TextValue, author.c.HomeWorld.Id),
+                          UIForegroundPayload.UIForegroundOff,
+
+                          new TextPayload($"({author.nameDesc}) is one of the authors of "),
+
+                          new IconPayload(BitmapFontIcon.DPS),
                           RotationSolverPlugin.LinkPayload,
+                          new UIForegroundPayload(31),
                           new TextPayload("Rotation Solver"),
+                          UIForegroundPayload.UIForegroundOff,
+                          RawPayload.LinkTerminator,
+
                           new TextPayload(", so say hello to him/her!"));
 
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()

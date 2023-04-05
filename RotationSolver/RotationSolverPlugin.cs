@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
@@ -67,9 +68,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         RotationUpdater.GetAllCustomRotations();
 
-        LinkPayload = pluginInterface.AddChatLinkHandler(6, (id, str) =>
+        LinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
         {
-            if(id == 6) OpenConfigWindow();
+            if(id == 0) OpenConfigWindow();
         });
     }
 
@@ -113,9 +114,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _comboConfigWindow.Toggle();
     }
 
+    static RandomDelay validDelay = new RandomDelay(() => (0.2f, 0.2f));
+
     internal static void UpdateDisplayWindow()
     {
-        var isValid = MajorUpdater.IsValid
+        var isValid = validDelay.Delay(MajorUpdater.IsValid
         && (!Service.Config.OnlyShowWithHostileOrInDuty
                 || Service.Conditions[ConditionFlag.BoundByDuty]
                 || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
@@ -125,7 +128,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             && !Service.Conditions[ConditionFlag.BetweenAreas]
             && !Service.Conditions[ConditionFlag.BetweenAreas51]
             && !Service.Conditions[ConditionFlag.WaitingForDuty]
-            && !Service.Conditions[ConditionFlag.OccupiedInQuestEvent];
+            && !Service.Conditions[ConditionFlag.OccupiedInQuestEvent]);
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
         _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;
