@@ -1,5 +1,47 @@
 # Changelog
 
+## [2.2.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.1...v2.2.2) (2023-04-05)
+
+
+### Bug Fixes
+
+* add `Directory.Build.props` file. ([5aefe29](https://github.com/ArchiDog1998/RotationSolver/commit/5aefe29ae05c0518e9da118c37e8ba7a1e0a82ae))
+* add a `CountOfMembersIn2minsBurst` for burst check. ([a26d63d](https://github.com/ArchiDog1998/RotationSolver/commit/a26d63d44a6c0b325990bc3351afe096094b648d))
+* add a beta rotation attribute. ([31aeed3](https://github.com/ArchiDog1998/RotationSolver/commit/31aeed302d8f0f790ecd9c40ed65db245666333d))
+* add a clear target function for logging out error. ([388b608](https://github.com/ArchiDog1998/RotationSolver/commit/388b6083c4b25c2cf3e93cb473707fc8c9e1b534))
+* add a feature to control if shown in cooldown window. ([b7904fc](https://github.com/ArchiDog1998/RotationSolver/commit/b7904fc451fea1d27f65c2d0502e9ef9447180e0))
+* add a feature to draw melee's offset. ([688e6e7](https://github.com/ArchiDog1998/RotationSolver/commit/688e6e7d71d7b0893cacb4ea7a613cd71f9d3ab6))
+* add a restore to default feature. ([85e1aaf](https://github.com/ArchiDog1998/RotationSolver/commit/85e1aaf816810a28d22ed0ed0fb5ac14a4152fbf))
+* add burst ratio for party check. ([8139b49](https://github.com/ArchiDog1998/RotationSolver/commit/8139b49a5d8b75b3bfec8e752db2456cd9992d9f))
+* add old MCH rotation. ([149c42d](https://github.com/ArchiDog1998/RotationSolver/commit/149c42ddb68e056c13eaede0f2ff4a1aae0c0bf8))
+* add reset for each jobs. ([99255fe](https://github.com/ArchiDog1998/RotationSolver/commit/99255fe21b67cb09bcfa7f52de96227fc4e0591b))
+* add status id. ([7386365](https://github.com/ArchiDog1998/RotationSolver/commit/7386365d963e09573ef5170802b34d9660932af6))
+* add tooltip for cooldown action. ([1e47bdc](https://github.com/ArchiDog1998/RotationSolver/commit/1e47bdcead36428a440511e3241682557a505e13))
+* Added option for tanks to heal first ([f36cc11](https://github.com/ArchiDog1998/RotationSolver/commit/f36cc1115510997c607320315c2bcdb27ba472a7))
+* Allow automated say hello to author to execute multiple times ([772600a](https://github.com/ArchiDog1998/RotationSolver/commit/772600a7558113cb8e6e783978b867e4fd6b8d60))
+* changed namespace. ([3488d73](https://github.com/ArchiDog1998/RotationSolver/commit/3488d7362646f21e6cb62ee7f1862d610d42f6e7))
+* changed saving rotation name from property to type full name. ([42aa439](https://github.com/ArchiDog1998/RotationSolver/commit/42aa439c3130bcb1b747584c11a4a2d6bd6ae378))
+* changed template. ([b070a2f](https://github.com/ArchiDog1998/RotationSolver/commit/b070a2f77e5e7c2cee4613da74e50a7b5fab32b4))
+* changed the say hello to a better way. ([6a4d36b](https://github.com/ArchiDog1998/RotationSolver/commit/6a4d36bac8749ee05a2d295d1a3ced567046118b))
+* changed the way to defense single for tanks. ([0f921f1](https://github.com/ArchiDog1998/RotationSolver/commit/0f921f12659236ae9d4db865af1b5f9b74366daa))
+* finished the say hello feature. ([840c314](https://github.com/ArchiDog1998/RotationSolver/commit/840c31482150822009c5554098f56e9e8aa67fff))
+* fixed combo config ui. ([6cc5b8c](https://github.com/ArchiDog1998/RotationSolver/commit/6cc5b8c50325e2b863a71f53f811570aad0e9d38))
+* fixed divide zero bug. ([6572954](https://github.com/ArchiDog1998/RotationSolver/commit/6572954ab5433e1daf680ffd5c35c6be4867cf10))
+* fixed namespace. ([18a6bd5](https://github.com/ArchiDog1998/RotationSolver/commit/18a6bd5ef6787174cd409ecee7db25970d7a328c))
+* fixed soem calculating bugs. ([f0829e1](https://github.com/ArchiDog1998/RotationSolver/commit/f0829e17fbe074c661a34ef6d93d4a6a7b0c7fc2))
+* fixed some null bug. ([7d2fe93](https://github.com/ArchiDog1998/RotationSolver/commit/7d2fe9367681aa0f3a6111beecdebf36d8e41e3d))
+* fixed some ui bugs. ([1c06b15](https://github.com/ArchiDog1998/RotationSolver/commit/1c06b15fb440b67116c0c8866970f30334b86945))
+* fixed status show about defense Single. ([25ba5ac](https://github.com/ArchiDog1998/RotationSolver/commit/25ba5acacfd6e2466167db2df58b115b4b91c42c))
+* fixed the cross bar high light. ([cb5c498](https://github.com/ArchiDog1998/RotationSolver/commit/cb5c498619da3f3d7f4fbd401acd3210d73ffe2e))
+* make the cooldown number font size could be changed. ([ef6a377](https://github.com/ArchiDog1998/RotationSolver/commit/ef6a377a76197f0ce7a66681663e91234a0d672a))
+* PLD add Intervention action. ([83b0364](https://github.com/ArchiDog1998/RotationSolver/commit/83b0364b7b80f28e4d694389f05b20be76502b92))
+* PLD standart add some restriction to Sheltron and Bulwark. ([9caa7a8](https://github.com/ArchiDog1998/RotationSolver/commit/9caa7a8ada6bfd5cd8f22c54ef7b868a689bd960))
+* Position lock is effective only in combat. ([c75d22e](https://github.com/ArchiDog1998/RotationSolver/commit/c75d22e06582708c83653610fd8e673ac2a65aa6))
+* Prevent HoT actions from being used twice in a row ([54cd4ea](https://github.com/ArchiDog1998/RotationSolver/commit/54cd4ea7a46f3fd40ddc51756e8334df25bd17ba))
+* remove old project. ([afb6b85](https://github.com/ArchiDog1998/RotationSolver/commit/afb6b853278f280ed26614ebc48726ef79e3a78e))
+* removed crossbar because of the unknow of the paring of hotbar and action bar. ([f186ec6](https://github.com/ArchiDog1998/RotationSolver/commit/f186ec67f714449a7d3660511b45b0fd7d9b5c57))
+* the hot double check only valid in 3s. ([0c89267](https://github.com/ArchiDog1998/RotationSolver/commit/0c89267a40f9ac16a725750308bb6e97043a0491))
+
 ## [2.2.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.0...v2.2.1) (2023-04-02)
 
 
