@@ -186,6 +186,7 @@ public abstract class DRK_Base : CustomRotation
     /// </summary>
     public static IBaseAction Oblation { get; } = new BaseAction(ActionID.Oblation, true, isTimeline: true)
     {
+        StatusProvide = new StatusID[] { StatusID.Oblation },
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 

@@ -1127,4 +1127,6 @@ public enum StatusID : ushort
     Divination = 1878,
 
     Mug = 3183,
+
+    Oblation = 2682,
 }

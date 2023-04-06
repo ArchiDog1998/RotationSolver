@@ -107,7 +107,10 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// ¼«¹â
     /// </summary>
-    public static IBaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, true, isTimeline: true);
+    public static IBaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, true, isTimeline: true)
+    {
+        StatusProvide = new StatusID[] { StatusID.Aurora },
+    };
 
     /// <summary>
     /// ³¬»ðÁ÷ÐÇ
