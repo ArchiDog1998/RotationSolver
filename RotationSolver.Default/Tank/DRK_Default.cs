@@ -92,7 +92,8 @@ public sealed class DRK_Default : DRK_Base
     {
         act = null;
 
-        //if (Player.HasStatus(true, StatusID.dark)) return false;
+        if (Player.HasStatus(true, StatusID.TheBlackestNight)) return false;
+
         if (abilitiesRemaining == 1)
         {
             if (TheBlackestNight.CanUse(out act)) return true;

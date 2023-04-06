@@ -1129,4 +1129,6 @@ public enum StatusID : ushort
     Mug = 3183,
 
     Oblation = 2682,
+
+    TheBlackestNight = 1178,
 }
