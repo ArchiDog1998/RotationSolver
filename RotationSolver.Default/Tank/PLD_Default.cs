@@ -52,7 +52,7 @@ public class PLD_Default : PLD_Base
         if(HasFightOrFlight) option |= CanUseOption.EmptyOrSkipCombo;
         if (!IsMoving && Intervene.CanUse(out act, option)) return true;
 
-        if (HasTankStance && OathGauge == 100 && Sheltron.CanUse(out act)) return true;
+        if (HasTankStance && OathGauge == 100 && UseOath(out act)) return true;
 
         return false;
     }
