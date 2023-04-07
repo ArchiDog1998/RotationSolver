@@ -109,7 +109,7 @@ public abstract class GNB_Base : CustomRotation
     /// </summary>
     public static IBaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, true, isTimeline: true)
     {
-        TargetStatus = new StatusID[] { StatusID.Aurora },
+        ActionCheck = b => b.HasStatus(true, StatusID.Aurora),
     };
 
     /// <summary>
