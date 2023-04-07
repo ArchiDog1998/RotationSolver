@@ -108,7 +108,13 @@ internal static partial class TargetUpdater
         }
 
         uint[] ids = GetEnemies();
+
         var fateId = DataCenter.FateId;
+
+        allAttackableTargets = allAttackableTargets.Where(b =>
+        {
+            return fateId > 0 ? b.FateId() == fateId : true;
+        });
 
         var hostiles = allAttackableTargets.Where(t =>
         {
@@ -121,7 +127,7 @@ internal static partial class TargetUpdater
 
             if (t.IsTopPriorityHostile()) return true;
 
-            return fateId > 0 ? t.FateId() == fateId : t.TargetObject is BattleChara;
+            return t.TargetObject is BattleChara;
         });
 
         if (type == TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack)
