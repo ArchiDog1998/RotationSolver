@@ -22,11 +22,10 @@ const output = await Promise.all(repos.map(async (repo) => {
         count = count + Number(data.assets[i].download_count);
     }
 
-
   const base = {
     AssemblyVersion: data.tag_name.replace(/^v/, ""),
     Changelog: clearText(data.body),
-      DownloadCount: count.toString(),
+      DownloadCount: data.assets.reduce((x, y) => +x.download_count + +y.download_count),
     LastUpdate: new Date(data.published_at).valueOf() / 1000,
     DownloadLinkInstall: data.assets[0].browser_download_url,
     DownloadLinkUpdate: data.assets[0].browser_download_url,
