@@ -19,7 +19,7 @@ const output = await Promise.all(repos.map(async (repo) => {
 
     let count = 0;
     for (var asset in data.assets) {
-        count = count + asset.download_count;
+        count = count + +asset.download_count;
     }
 
   const base = {
