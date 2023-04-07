@@ -23,7 +23,7 @@ jobs:
         uses: tj-actions/verify-changed-files@v13
         id: verify-changed-files
         with:
-          files: repo.json
+          files: pluginmaster.json
 
       - name: Commit files
         if: steps.verify-changed-files.outputs.files_changed == 'true'
