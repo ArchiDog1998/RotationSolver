@@ -18,7 +18,7 @@ internal class ControlWindow : Window
     public ControlWindow()
         : base(nameof(ControlWindow), BaseFlags)
     {
-        Size = new Vector2(540f, 490f);
+        Size = new Vector2(540f, 300f);
         SizeCondition = ImGuiCond.FirstUseEver;
     }
 

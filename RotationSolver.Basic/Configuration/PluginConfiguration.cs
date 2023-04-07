@@ -168,7 +168,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool OnlyShowWithHostileOrInDuty = true;
     public bool ShowControlWindow = false;
     public bool IsControlWindowLock = false;
-    public bool ShowNextActionWindow = false;
+    public bool ShowNextActionWindow = true;
     public bool IsInfoWindowNoInputs = false;
     public bool IsInfoWindowNoMove = false;
     public bool UseKeyboardCommand = false;

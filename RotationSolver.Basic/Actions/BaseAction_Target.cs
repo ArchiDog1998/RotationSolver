@@ -179,7 +179,7 @@ public partial class BaseAction
                 else
                 {
                     Vector3 directionToTank = attackT.Position - player.Position;
-                    var MoveDirection = directionToTank / directionToTank.Length() * (disToTankRound - _action.EffectRange);
+                    var MoveDirection = directionToTank / directionToTank.Length() * Math.Max(0, disToTankRound - _action.EffectRange);
                     _position = player.Position + MoveDirection;
                 }
             }

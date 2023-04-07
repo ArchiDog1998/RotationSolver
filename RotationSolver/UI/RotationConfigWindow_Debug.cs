@@ -141,6 +141,9 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawIcon()
     {
+        var A = new Vector3(3, 4, 0);
+        var B = new Vector3(6, 8, 0);
+        ImGui.Text(Vector3.Distance(B, A).ToString());
         //var pointer = (AddonActionCross*) Service.GetAddon<AddonActionCross>();
         //if (pointer != null) 
         //{

@@ -77,8 +77,7 @@ public sealed class MCH_Default : MCH_Base
         }
 
         if (!CombatElapsedLess(12) && CanUseHypercharge(out act)) return true;
-        if (!AirAnchorBlockTime(8)
-            && RookAutoturret.CanUse(out act)) return true;
+        if (CanUseRookAutoturret(out act)) return true;
 
         if (BarrelStabilizer.CanUse(out act)) return true;
 
@@ -104,6 +103,21 @@ public sealed class MCH_Default : MCH_Base
         {
             return HotShot.IsCoolingDown && HotShot.WillHaveOneCharge(time);
         }
+    }
+
+    private bool CanUseRookAutoturret(out IAction act)
+    {
+        act = null;
+        if (AirAnchor.EnoughLevel)
+        {
+            if (!AirAnchor.IsCoolingDown || AirAnchor.ElapsedAfter(10)) return false;
+        }
+        else
+        {
+            if (!HotShot.IsCoolingDown || HotShot.ElapsedAfter(10)) return false;
+        }
+
+        return RookAutoturret.CanUse(out act);
     }
 
     const float REST_TIME = 6f;
@@ -135,7 +149,6 @@ public sealed class MCH_Default : MCH_Base
         if (Drill.EnoughLevel && Drill.WillHaveOneCharge(REST_TIME)) return false;
         if (ChainSaw.EnoughLevel && ChainSaw.WillHaveOneCharge(REST_TIME)) return false;
 
-        if (Hypercharge.CanUse(out act)) return true;
-        return false;
+        return Hypercharge.CanUse(out act);
     }
 }
