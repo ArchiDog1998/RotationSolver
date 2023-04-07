@@ -21,10 +21,16 @@ namespace RotationSolver.Commands
         private static unsafe void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
         {
             if (DataCenter.StateType == StateCommandType.Smart
-            && stateType == StateCommandType.Smart)
+                && stateType == StateCommandType.Smart)
             {
                 Service.Config.TargetingIndex += 1;
                 Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count;
+            }
+
+            if (DataCenter.StateType == StateCommandType.Manual
+                && stateType == StateCommandType.Manual)
+            {
+                stateType = StateCommandType.Cancel;
             }
 
             DataCenter.StateType = stateType;
