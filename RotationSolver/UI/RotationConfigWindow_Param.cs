@@ -370,6 +370,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_HealOutOfCombat,
             ref Service.Config.HealOutOfCombat, Service.Default.HealOutOfCombat);
 
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
+            ref Service.Config.OnlyHotOnTanks, Service.Default.OnlyHotOnTanks);
+
         const float speed = 0.005f;
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MeleeRangeOffset,

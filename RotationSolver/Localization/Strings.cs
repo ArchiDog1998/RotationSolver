@@ -195,6 +195,8 @@ internal partial class Strings
 
     public string ConfigWindow_Param_HealOutOfCombat { get; set; } = "Heal party members outside of combat.";
 
+    public string ConfigWindow_Param_OnlyHotOnTanks { get; set; } = "Only use hot actions on tank rols.";
+
     public string ConfigWindow_Param_HealthDifference { get; set; } = "Set the HP standard deviation threshold for using AOE heal (ability & spell)";
     public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "Set the HP threshold for using AOE healing ability";
     public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "Set the HP threshold for using AOE healing spell";

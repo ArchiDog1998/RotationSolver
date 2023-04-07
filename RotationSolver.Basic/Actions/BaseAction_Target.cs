@@ -230,6 +230,10 @@ public partial class BaseAction
         }
         else
         {
+            if(Service.Config.OnlyHotOnTanks && IsEot)
+            {
+                availableCharas = availableCharas.Where(b => b.IsJobCategory(JobRole.Tank));
+            }
             availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range)
                 .Where(CanUseTo);
             //特殊选队友的方法。
