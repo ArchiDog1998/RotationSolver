@@ -15,11 +15,17 @@ const clearText = (str) => {
 
 const output = await Promise.all(repos.map(async (repo) => {
   const res = await fetch(`https://api.github.com/repos/${user}/${repo}/releases/latest`);
-  const data = await res.json();
+    const data = await res.json();
+
+    let count = 0;
+    for (var asset in data.assets) {
+        count = count + asset.download_count;
+    }
+
   const base = {
     AssemblyVersion: data.tag_name.replace(/^v/, ""),
     Changelog: clearText(data.body),
-    DownloadCount: data.assets[0].download_count,
+    DownloadCount: count,
     LastUpdate: new Date(data.published_at).valueOf() / 1000,
     DownloadLinkInstall: data.assets[0].browser_download_url,
     DownloadLinkUpdate: data.assets[0].browser_download_url,
