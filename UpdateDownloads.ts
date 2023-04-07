@@ -17,10 +17,11 @@ const output = await Promise.all(repos.map(async (repo) => {
   const res = await fetch(`https://api.github.com/repos/${user}/${repo}/releases/latest`);
     const data = await res.json();
 
-    let count = 0;
-    for (var asset in data.assets) {
-        count = count + Number(asset.download_count);
+    var count = 0;
+    for (var i = 0; i < data.assets.length; i++) {
+        count = count + Number(data.assets[i].download_count);
     }
+
 
   const base = {
     AssemblyVersion: data.tag_name.replace(/^v/, ""),
