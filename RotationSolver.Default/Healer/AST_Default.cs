@@ -142,7 +142,7 @@ public sealed class AST_Default : AST_Base
 
     protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (InBurst && Divination.CanUse(out act)) return true;
+        if (InBurst && !IsMoving && Divination.CanUse(out act)) return true;
 
         //如果当前还没有皇冠卡牌，那就抽一张
         if (MinorArcana.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
