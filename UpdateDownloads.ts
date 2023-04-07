@@ -39,7 +39,6 @@ const output = await Promise.all(repos.map(async (repo) => {
       InternalName: repo,
       RepoUrl: `https://github.com/${user}/${repo}`,
       ApplicableVersion: "any",
-      DalamudApiLevel: 6,
     }, base);
   }
   
