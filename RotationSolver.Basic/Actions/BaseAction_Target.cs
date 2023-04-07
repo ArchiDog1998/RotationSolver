@@ -148,8 +148,11 @@ public partial class BaseAction
         //如果用户不想使用自动友方地面放置功能
         if (!Service.Config.UseGroundBeneficialAbility) return false;
 
-        //如果当前目标是Boss且有身位，放他身上。
-        if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && 
+        if (Service.Config.BeneficialAreaOnTarget && Service.TargetManager.Target != null)
+        {
+            _position = Service.TargetManager.Target.Position;
+        }
+        else if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && 
             b.IsBoss() && b.HasPositional() && b.HitboxRadius <= 8)
         {
             _position = b.Position;

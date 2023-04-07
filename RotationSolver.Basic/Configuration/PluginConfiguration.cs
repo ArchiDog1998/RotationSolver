@@ -143,6 +143,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool EsunaAll = false;
     public bool OnlyAttackInView = false;
     public bool OnlyHotOnTanks = false;
+    public bool BeneficialAreaOnTarget = false;
 
     public string PositionalErrorText = string.Empty;
     public float CountDownAhead = 0.6f;
