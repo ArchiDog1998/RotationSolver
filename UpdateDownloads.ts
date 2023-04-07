@@ -42,4 +42,4 @@ const output = await Promise.all(repos.map(async (repo) => {
   return Object.assign(manifest, base);
 }));
 
-await Deno.writeTextFile("repo.json", JSON.stringify(output, null, 2));
+await Deno.writeTextFile("githubusercontent.json", JSON.stringify(output, null, 2));
