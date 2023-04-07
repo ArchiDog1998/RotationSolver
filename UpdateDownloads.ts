@@ -19,13 +19,13 @@ const output = await Promise.all(repos.map(async (repo) => {
 
     let count = 0;
     for (var asset in data.assets) {
-        count = count + +asset.download_count;
+        count = count + Number(asset.download_count);
     }
 
   const base = {
     AssemblyVersion: data.tag_name.replace(/^v/, ""),
     Changelog: clearText(data.body),
-    DownloadCount: count,
+      DownloadCount: count.toString(),
     LastUpdate: new Date(data.published_at).valueOf() / 1000,
     DownloadLinkInstall: data.assets[0].browser_download_url,
     DownloadLinkUpdate: data.assets[0].browser_download_url,
