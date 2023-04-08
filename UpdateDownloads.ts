@@ -28,7 +28,7 @@ const output = await Promise.all(repos.map(async (repo) => {
     AssemblyVersion: data.tag_name.replace(/^v/, ""),
       Changelog: clearText(data.body),
       DownloadCount: count.toString(),
-    LastUpdate: data.published_at,
+      LastUpdate: data.published_at.substring(0, 10),
     DownloadLinkInstall: data.assets[0].browser_download_url,
     DownloadLinkUpdate: data.assets[0].browser_download_url,
   };
