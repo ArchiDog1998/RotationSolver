@@ -4,9 +4,9 @@ namespace RotationSolver.Balance.Tank;
 [RotationDesc(ActionID.BloodWeapon, ActionID.Delirium)]
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/DRK_Balance.cs")]
 [LinkDescription("https://www.thebalanceffxiv.com/img/jobs/drk/drk_standard_6.2_v1.png")]
-public sealed class DRK_Balance : DRK_Base
+public sealed class DRK_Default : DRK_Base
 {
-    public override string GameVersion => "6.31";
+    public override string GameVersion => "6.38";
 
     public override string RotationName => "Balance";
 
