@@ -8,9 +8,7 @@ jobs:
     name: Send Message
     runs-on: ubuntu-latest
     steps:
-          - name: Trigger Repo Update
-            uses: peter-evans/repository-dispatch@v1
-            with:
-              token: ${{ secrets.PAT }}
-              repository: ${{ github.repository_owner }}/RotationSolver
-              event-type: new-release
+      - name: Trigger Repo Update
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          event-type: new-release
