@@ -12,3 +12,8 @@ jobs:
           release-type: node
           package-name: release-please-action
           default-branch: release
+          
+      - name: Trigger Repo Update
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          event-type: new-release
