@@ -30,22 +30,21 @@ const output = await Promise.all(repos.map(async (repo) => {
       Changelog: clearText(data.body),
       DownloadCount: count.toString(),
       LastUpdate: data.published_at.substring(0, 10),
+      RepoUrl: `https://github.com/${user}/${repo}`,
     DownloadLinkInstall: data.assets[0].browser_download_url,
     DownloadLinkUpdate: data.assets[0].browser_download_url,
   };
 
-  const manifestAsset = data.assets.find(asset => asset.name == "manifest.json");
-  if (!manifestAsset) {
-    return Object.assign({
-      Author: user,
-      Name: repo,
-      InternalName: repo,
-      RepoUrl: `https://github.com/${user}/${repo}`,
-      ApplicableVersion: "any",
-    }, base);
-  }
-  
-  const manifestRes = await fetch(manifestAsset.browser_download_url);
+    const manifestRes = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/main/manifest.json`);
+    if (!manifestRes.ok) {
+        return Object.assign({
+            Author: user,
+            Name: repo,
+            InternalName: repo,
+
+            ApplicableVersion: "any",
+        }, base);
+    }
   const manifest = await manifestRes.json();
   return Object.assign(manifest, base);
 }));
