@@ -3,11 +3,14 @@ using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
+using FFXIVClientStructs.Havok;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
+using System.Text;
+using System.Text.Unicode;
 
 namespace RotationSolver;
 
@@ -72,6 +75,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             if(id == 0) OpenConfigWindow();
         });
+
+        using (var client = new HttpClient())
+        {
+            var bts = client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/whitelist.json");
+            RotationHelper.AllowedAssembly = JsonConvert.DeserializeObject<string[]>( Encoding.Default.GetString(bts.Result));
+        }
     }
 
 

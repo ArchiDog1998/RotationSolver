@@ -1,16 +1,13 @@
 ﻿using Dalamud.Interface.Colors;
 using System.Diagnostics;
+using System.Net;
 
 namespace RotationSolver;
 
 internal static class RotationHelper
 {
     const string DefaultAssembly = "RotationSolver.Default";
-    static readonly string[] _allowedAssembly = new string[]
-    {
-        DefaultAssembly,
-        //"RotationSolver.Extra",
-    };
+    public static string[] AllowedAssembly { get; set; } = new string[0];
 
     public static bool IsDefault(this ICustomRotation rotation)
     {
@@ -27,11 +24,13 @@ internal static class RotationHelper
             return false;
         }
         name = rotation.GetType().Assembly.GetName().Name;
-        return _allowedAssembly.Contains(name);
+
+        return name == DefaultAssembly || AllowedAssembly.Contains(name);
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)
-        => !rotation.IsAllowed(out _) ? ImGuiColors.DalamudViolet : rotation.IsBeta() ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite ;
+        => !rotation.IsAllowed(out _) ? ImGuiColors.DalamudViolet : rotation.IsBeta() 
+        ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite ;
 
     public static bool IsBeta(this ICustomRotation rotation)
         => rotation.GetType().GetCustomAttribute<BetaRotationAttribute>() != null;

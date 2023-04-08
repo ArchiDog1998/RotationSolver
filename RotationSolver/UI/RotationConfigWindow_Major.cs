@@ -1,6 +1,8 @@
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using RotationSolver.Localization;
+using System.Collections;
+using System.Text;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow : Window

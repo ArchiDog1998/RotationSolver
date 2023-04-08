@@ -73,7 +73,7 @@ internal partial class Strings
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
         = "Close special window.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
-    public string ConfigWindow_Helper_HighEndWarning { get; set; } = "This `{0}` rotation is not allowed to be used in High-end Duty!";
+    public string ConfigWindow_Helper_HighEndWarning { get; set; } = "This <{0}> rotation is not allowed to be used in High-end Duty!";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game Version";
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
