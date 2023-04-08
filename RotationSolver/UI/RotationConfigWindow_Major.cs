@@ -1,6 +1,7 @@
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using RotationSolver.Localization;
+using RotationSolver.Updaters;
 using System.Collections;
 using System.Text;
 
@@ -63,6 +64,17 @@ internal partial class RotationConfigWindow : Window
 
             if (Service.Config.InDebug && ImGui.BeginTabItem("Debug"))
             {
+                ImGui.Text(RotationUpdater.message);
+
+                foreach (var item in RotationHelper.DefaultAssembly)
+                {
+                    ImGui.Text(item);
+                }
+                foreach (var item in RotationHelper.AllowedAssembly)
+                {
+                    ImGui.Text(item);
+                }
+
                 DrawDebugTab();
                 ImGui.EndTabItem();
             }

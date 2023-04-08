@@ -159,10 +159,9 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool InDebug = false;
     public bool AutoUpdateLibs = true;
-    public string[] OtherLibs = new string[0];
-    public (string, string)[] OtherLibsUrl = new(string, string)[] 
+    public string[] OtherLibs = new string[] 
     {
-        ("ArchiDog1998", "RotationSolver"),
+        "https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip",
     };
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();

@@ -1,5 +1,7 @@
 ﻿using Dalamud.Logging;
 using RotationSolver.Localization;
+using System;
+using System.Text;
 
 namespace RotationSolver.Updaters;
 
@@ -12,21 +14,55 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
 
-    static readonly string[] _locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
+    public static string message = string.Empty;
 
-
-    public static void GetAllCustomRotations()
+    public static async void GetAllCustomRotations()
     {
-        var directories =  Service.Config.OtherLibs
-            .Select(s => s.Trim()).Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location));
+        var relayFolder = Service.Interface.ConfigDirectory.FullName;
+        if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
+
+        using (var client = new HttpClient())
+        {
+            foreach (var url in Service.Config.OtherLibs)
+            {
+                var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
+                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                if (!valid) continue;
+
+                try
+                {
+                    var fileName = url.Split('/').LastOrDefault();
+                    if (string.IsNullOrEmpty(fileName)) continue;
+                    if (Path.GetExtension(fileName) != ".dll") continue;
+                    var filePath = Path.Combine(relayFolder, fileName);
+
+                    //Download
+                    using (HttpResponseMessage response = await client.GetAsync(url))
+                    {
+                        await response.Content.CopyToAsync(new FileStream(filePath, File.Exists(filePath)
+                            ? FileMode.Open : FileMode.CreateNew));
+                    }
+
+                    PluginLog.Log($"Successfully download the {filePath}");
+                }
+                catch (Exception ex)
+                {
+                    PluginLog.LogError(ex, $"failed to download from {url}");
+                }
+            }
+        }
+
+        var directories = Service.Config.OtherLibs
+            .Where(Directory.Exists)
+            .Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
+            .Append(relayFolder);
 
         var assemblies = from dir in directories
                          where Directory.Exists(dir)
                          from l in Directory.GetFiles(dir, "*.dll")
-                         where !_locs.Any(l.Contains)
                          select RotationLoadContext.LoadFrom(l);
 
-        PluginLog.Log("Try to load rotations from these assemblies.", assemblies.Select(a => a.FullName));
+        PluginLog.Log("Try to load rotations from these assemblies.\n" + string.Join('\n', assemblies.Select(a => "- " + a.FullName)));
 
         AuthorHashes = new SortedList<string, string>(
             (from a in assemblies
