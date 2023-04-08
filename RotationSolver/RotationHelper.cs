@@ -6,13 +6,13 @@ namespace RotationSolver;
 
 internal static class RotationHelper
 {
-    const string DefaultAssembly = "RotationSolver.Default";
     public static string[] AllowedAssembly { get; set; } = new string[0];
+    public static string[] DefaultAssembly { get; set; } = new string[0];
 
     public static bool IsDefault(this ICustomRotation rotation)
     {
         var type = rotation.GetType();
-        if (DefaultAssembly != type.Assembly.GetName().Name) return false;
+        if (!DefaultAssembly.Contains(type.Assembly.GetName().Name)) return false;
         return type.Name.Contains("Default", StringComparison.OrdinalIgnoreCase);
     }
     
@@ -25,7 +25,7 @@ internal static class RotationHelper
         }
         name = rotation.GetType().Assembly.GetName().Name;
 
-        return name == DefaultAssembly || AllowedAssembly.Contains(name);
+        return DefaultAssembly.Contains(name) || AllowedAssembly.Contains(name);
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)

@@ -78,8 +78,15 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         using (var client = new HttpClient())
         {
-            var bts = client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/whitelist.json");
-            RotationHelper.AllowedAssembly = JsonConvert.DeserializeObject<string[]>( Encoding.Default.GetString(bts.Result));
+            try
+            {
+                var bts = client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Recources/whiteList.json");
+                RotationHelper.AllowedAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts.Result));
+
+                client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Recources/defaultList.json");
+                RotationHelper.DefaultAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts.Result));
+            }
+            catch { }
         }
     }
 

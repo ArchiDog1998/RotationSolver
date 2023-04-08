@@ -6,10 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8948C02A-914E-4A51-B1FE-2C608492EBF5}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Resources\defaultList.json = Resources\defaultList.json
 		Directory.Build.props = Directory.Build.props
 		manifest.json = manifest.json
 		UpdateDownloads.ts = UpdateDownloads.ts
-		whitelist.json = whitelist.json
+		Resources\whiteList.json = Resources\whiteList.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver.Default", "RotationSolver.Default\RotationSolver.Default.csproj", "{CC7BE595-27DE-4206-AE11-8184E7FCF0CD}"

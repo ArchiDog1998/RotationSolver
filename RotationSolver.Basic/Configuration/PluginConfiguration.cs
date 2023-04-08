@@ -158,7 +158,12 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthRatioDot = 1.2f;
 
     public bool InDebug = false;
+    public bool AutoUpdateLibs = true;
     public string[] OtherLibs = new string[0];
+    public (string, string)[] OtherLibsUrl = new(string, string)[] 
+    {
+        ("ArchiDog1998", "RotationSolver"),
+    };
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
