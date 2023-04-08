@@ -27,5 +27,18 @@
     "LastUpdate": "2023-04-05",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.2/latest.zip",
     "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.2/latest.zip"
+  },
+  {
+    "Author": "ArchiDog1998",
+    "Name": "FakeName",
+    "InternalName": "FakeName",
+    "RepoUrl": "https://github.com/ArchiDog1998/FakeName",
+    "ApplicableVersion": "any",
+    "AssemblyVersion": "1.0.0.5",
+    "Changelog": "",
+    "DownloadCount": "161",
+    "LastUpdate": "2023-01-26",
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip"
   }
 ]
