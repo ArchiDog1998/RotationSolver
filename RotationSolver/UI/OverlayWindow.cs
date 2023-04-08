@@ -141,7 +141,7 @@ internal static class OverlayWindow
         float radius = target.HitboxRadius + Service.Player.HitboxRadius + 3;
         float rotation = target.Rotation;
 
-        if (Service.Config.DrawMeleeOffset)
+        if (Service.Config.DrawMeleeOffset && DataCenter.InCombat)
         {
             var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
             List<Vector2> pts1 = new List<Vector2>(4 * COUNT);
