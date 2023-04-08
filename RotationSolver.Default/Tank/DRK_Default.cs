@@ -111,7 +111,7 @@ public sealed class DRK_Default : DRK_Base
             if (DarkMind.CanUse(out act)) return true;
         }
 
-        if (Reprisal.CanUse(out act)) return true;
+        if (Reprisal.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }

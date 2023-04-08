@@ -2,8 +2,8 @@ name: Update Repo
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 */1 * *'
+  repository_dispatch:
+    types: [new-release]
 
 jobs:
   update:
