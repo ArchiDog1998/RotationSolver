@@ -27,7 +27,7 @@ const output = await Promise.all(repos.map(async (repo) => {
 
   const base = {
     AssemblyVersion: data.tag_name.replace(/^v/, ""),
-      //Changelog: clearText(data.body),
+      Changelog: clearText(data.body),
       DownloadCount: count.toString(),
       LastUpdate: new Date(data.published_at).valueOf() / 1000,
       RepoUrl: `https://github.com/${user}/${repo}`,
