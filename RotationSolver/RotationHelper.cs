@@ -1,13 +1,43 @@
 ﻿using Dalamud.Interface.Colors;
+using Dalamud.Logging;
 using System.Diagnostics;
-using System.Net;
+using System.Text;
 
 namespace RotationSolver;
 
 internal static class RotationHelper
 {
-    public static string[] AllowedAssembly { get; set; } = new string[0];
-    public static string[] DefaultAssembly { get; set; } = new string[0];
+    public static string[] AllowedAssembly { get; private set; } = new string[0];
+    public static string[] DefaultAssembly { get; private set; } = new string[] 
+    { 
+        "RotationSolver.Default",
+    };
+
+    public static async void LoadList()
+    {
+        using (var client = new HttpClient())
+        {
+            try
+            {
+                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/whitelist.json");
+                AllowedAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts));
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Log(ex, "Failed to load white List.");
+            }
+
+            try
+            {
+                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/defaultList.json");
+                DefaultAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts));
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Log(ex, "Failed to load default List.");
+            }
+        }
+    }
 
     public static bool IsDefault(this ICustomRotation rotation)
     {
