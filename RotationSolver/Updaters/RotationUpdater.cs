@@ -14,8 +14,6 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
 
-    public static string message = string.Empty;
-
     public static async void GetAllCustomRotations()
     {
         var relayFolder = Service.Interface.ConfigDirectory.FullName;
@@ -36,12 +34,12 @@ internal static class RotationUpdater
 
             foreach (var url in libs)
             {
-                var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
-                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-                if (!valid) continue;
-
                 try
                 {
+                    var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
+                         && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                    if (!valid) continue;
+
                     var fileName = url.Split('/').LastOrDefault();
                     if (string.IsNullOrEmpty(fileName)) continue;
                     if (Path.GetExtension(fileName) != ".dll") continue;
