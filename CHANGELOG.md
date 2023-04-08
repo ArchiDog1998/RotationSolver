@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.2.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.2...v2.2.3) (2023-04-08)
+
+
+### Bug Fixes
+
+* add a default list json for default check. ([822c3cf](https://github.com/ArchiDog1998/RotationSolver/commit/822c3cf5e847d23f4852f1fd963dbecfee39a30f))
+* add a defense single target distance checking. ([f0c99d6](https://github.com/ArchiDog1998/RotationSolver/commit/f0c99d6a8984fa923a90255d1f63d868a27f6c88))
+* add a update downloads file. ([9e96686](https://github.com/ArchiDog1998/RotationSolver/commit/9e966860d08c2f94d202ee81fa195bb55ddc3398))
+* add an download list to control the extra dll. ([c688990](https://github.com/ArchiDog1998/RotationSolver/commit/c688990c68e9dabcbb7acf337e7cf504575aeb1a))
+* add an option for beneficial area on target. ([4ad1f99](https://github.com/ArchiDog1998/RotationSolver/commit/4ad1f991471d19a91a528de41949359ff2ba0eb3))
+* add an option for only hot on tanks. ([20c5680](https://github.com/ArchiDog1998/RotationSolver/commit/20c5680158d1f70651eabee55b3352f7e06e07a5))
+* add blackestNight status check. ([17aa18d](https://github.com/ArchiDog1998/RotationSolver/commit/17aa18d281bca0cf9defc3109e40f92e7108c891))
+* add fate check to all hostile target check. ([1c40506](https://github.com/ArchiDog1998/RotationSolver/commit/1c4050610edc5aaaff791bcfe0515668ecc7c100))
+* add StatusProvide for `Oblation` and `Aurora` ([1b8de8f](https://github.com/ArchiDog1998/RotationSolver/commit/1b8de8ff5fe5f09230d6cb2e01ff8de4bd2b889a))
+* add the white list to the github. ([0f1def2](https://github.com/ArchiDog1998/RotationSolver/commit/0f1def2fc9e1c42abbdea78de4616e7b1c57d122))
+* add white list. ([9e2d747](https://github.com/ArchiDog1998/RotationSolver/commit/9e2d7476461086afcb42b6f1dbe3c0e5f2c690b8))
+* change provide status to target status. ([cec58c6](https://github.com/ArchiDog1998/RotationSolver/commit/cec58c652d17538ac91da81003e4328703d4944a))
+* changed some ui default values. ([5d8c545](https://github.com/ArchiDog1998/RotationSolver/commit/5d8c5450e9ea0d58dec3dc313ab236da1d6bb990))
+* changed the abilityremain calculation. ([ad9bd34](https://github.com/ArchiDog1998/RotationSolver/commit/ad9bd34a4efa808c6764f374144529a1da3fa6c0))
+* changed the drk to balance. ([098f3ad](https://github.com/ArchiDog1998/RotationSolver/commit/098f3ad5ee2dd8a999c94cf07f908ac65754e373))
+* make extensions available for VS 2019 ([25228f4](https://github.com/ArchiDog1998/RotationSolver/commit/25228f4bb97570bd19c9755d8de498612db568f4))
+* make libs can be a url. ([4496afb](https://github.com/ArchiDog1998/RotationSolver/commit/4496afbc1c9e9ff12b75ab42bc6977b9512b0e8b))
+* moved the allowd and default list to the github. ([e0e5931](https://github.com/ArchiDog1998/RotationSolver/commit/e0e5931ebb2868236e4f1dd77123cf7a25ea048f))
+* oblation and aurora will only be used when no the status they provided. ([4ad139f](https://github.com/ArchiDog1998/RotationSolver/commit/4ad139f8bb0893e4720620beaeca606681a71c56))
+* oblation and aurora will only be used when no the status they provided. ([a7884e0](https://github.com/ArchiDog1998/RotationSolver/commit/a7884e0caa10ee9b6a56a9bdff4d87ef374aebf5))
+* the DeleeOffset will only drawn in combat. ([7b13fcf](https://github.com/ArchiDog1998/RotationSolver/commit/7b13fcfaa2dc8a339751a8fbde69d4e8bababe6e))
+* use manual macro in manual will cancel the auto state. ([cc65acc](https://github.com/ArchiDog1998/RotationSolver/commit/cc65accd96d908708a1300e9689ed51cd7bcd699))
+
 ## [2.2.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.1...v2.2.2) (2023-04-05)
 
 
