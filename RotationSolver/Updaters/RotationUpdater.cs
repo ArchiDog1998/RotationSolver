@@ -23,7 +23,18 @@ internal static class RotationUpdater
 
         using (var client = new HttpClient())
         {
-            foreach (var url in Service.Config.OtherLibs)
+            IEnumerable<string> libs = Service.Config.OtherLibs;
+            try
+            {
+                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/downloadList.json");
+                libs = libs.Union(JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts)));
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Log(ex, "Failed to load downloading List.");
+            }
+
+            foreach (var url in libs)
             {
                 var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
                     && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);

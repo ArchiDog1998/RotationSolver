@@ -171,8 +171,7 @@ public partial class BaseAction
                 var disToTankRound = Vector3.Distance(player.Position, attackT.Position) + attackT.HitboxRadius;
 
                 if (disToTankRound < _action.EffectRange
-                    || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius
-                    || disToTankRound > range)
+                    || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius)
                 {
                     _position = player.Position;
                 }
