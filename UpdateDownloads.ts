@@ -1,6 +1,7 @@
 const user = "ArchiDog1998";
 const repos = [
-  "RotationSolver",
+    "RotationSolver",
+    "FakeName",
 ];
 
 const clearText = (str) => {
