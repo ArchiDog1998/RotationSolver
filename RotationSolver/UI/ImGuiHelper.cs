@@ -492,8 +492,13 @@ internal static class ImGuiHelper
 
                 if (IconButton(FontAwesomeIcon.Globe, "Code" + rotation.GetHashCode().ToString()))
                 {
-                    var url = link.Url;
-                    Util.OpenLink(url);
+                    try
+                    {
+                        Util.OpenLink(link.Url);
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -518,7 +523,13 @@ internal static class ImGuiHelper
                     if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.QuestionCircle,
                         "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
                     {
-                        Util.OpenLink(texture.Path);
+                        try
+                        {
+                            Util.OpenLink(texture.Path);
+                        }
+                        catch
+                        {
+                        }
                     }
                     if (ImGui.IsItemHovered() && (hasTexture || !string.IsNullOrEmpty( texture.Description)))
                     {

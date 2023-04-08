@@ -39,6 +39,13 @@ internal static class RotationUpdater
                     var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
                          && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
                     if (!valid) continue;
+                }
+                catch
+                {
+                    continue;
+                }
+                try
+                {
 
                     var fileName = url.Split('/').LastOrDefault();
                     if (string.IsNullOrEmpty(fileName)) continue;

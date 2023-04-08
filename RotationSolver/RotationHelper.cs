@@ -73,9 +73,10 @@ internal static class RotationHelper
     {
         try
         {
-            return FileVersionInfo.GetVersionInfo(assembly.Location)?.CompanyName
-                ?? assembly.GetName().Name
-                ?? "Unknown";
+            var name = assembly.GetName().Name;
+            return RotationLoadContext.AssemblyPaths.TryGetValue(name, out var path) 
+                ? FileVersionInfo.GetVersionInfo(path)?.CompanyName : name
+                ?? name ?? "Unknown";
         }
         catch
         {

@@ -1,6 +1,7 @@
 ﻿using Dalamud.Plugin;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel;
+using System.Reflection;
 using System.Runtime.Loader;
 
 namespace RotationSolver;
@@ -8,6 +9,8 @@ namespace RotationSolver;
 public class RotationLoadContext : AssemblyLoadContext
 {
     DirectoryInfo _directory;
+
+    public static Dictionary<string, string> AssemblyPaths = new Dictionary<string, string>();
 
     static Dictionary<string, Assembly> _handledAssemblies;
     public RotationLoadContext(DirectoryInfo directoryInfo) : base(true)
@@ -57,7 +60,9 @@ public class RotationLoadContext : AssemblyLoadContext
         var pdbPath = Path.ChangeExtension(filePath, ".pdb");
         if (!File.Exists(pdbPath)) return LoadFromStream(file);
         using var pdbFile = File.Open(pdbPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-        return LoadFromStream(file, pdbFile);
+        var assembly = LoadFromStream(file, pdbFile);
+        AssemblyPaths[assembly.GetName().Name] = filePath;
+        return assembly;
     }
 
     public static Assembly LoadFrom(string filePath)
