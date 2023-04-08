@@ -1,12 +1,10 @@
 [
   {
-    "Disabled": false,
-    "Testing": false,
-    "IsThirdParty": false,
     "Author": "ArchiTed",
     "Name": "Rotation Solver",
-    "Punchline": "Based on the pve combat information in one frame, find the best action.",
+    "InternalName": "RotationSolver",
     "Description": "Based on the pve combat information in one frame, find the best action.\n\nThe `information` is almost all the information available in one frame in combat, including the status of the all players in party, the status of the hostile targets, action cooling, the number of action stack, the MP and HP of characters, the location of characters, casting action of the hostile target, combo ID, combat duration, player level, etc. In this case, opener is also a kind of information that a lot of abilities are not cooling down.\n\nThen, it will highlight the best action one the hot bar, or help you to click on it.\n\nIt is designed for general combat, not for savage or ultimate. So use it carefully.",
+    "ApplicableVersion": "any",
     "Tags": [
       "combat",
       "rotation"
@@ -14,39 +12,33 @@
     "CategoryTags": [
       "jobs"
     ],
-    "IsHide": false,
-    "InternalName": "RotationSolver",
-    "AssemblyVersion": "2.2.1",
-    "IsTestingExclusive": false,
-    "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "ApplicableVersion": "any",
-    "DalamudApiLevel": 8,
-    "DownloadCount": 4096,
-    "LastUpdate": 0,
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip",
-    "DownloadLinkTesting": "https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip",
-    "LoadPriority": 0,
-    "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
-    "AcceptsFeedback": true,
-    "FeedbackMessage": null,
-    "FeedbackWebhook": null
-  },
-  {
-    "Author": "matrix",
-    "Name": "FakeName",
-    "InternalName": "FakeName",
-    "AssemblyVersion": "1.0.0.5",
-    "Description": "Change your character name.",
-    "ApplicableVersion": "any",
     "DalamudApiLevel": 8,
     "LoadRequiredState": 0,
     "LoadSync": false,
+    "CanUnloadAsync": false,
     "LoadPriority": 0,
-    "Punchline": "Change your character name.",
+    "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
+    "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/latest/download/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/FakeName/releases/latest/download/latest.zip",
-    "DownloadLinkTesting": "https://github.com/ArchiDog1998/FakeName/releases/latest/download/latest.zip",
+    "AssemblyVersion": "2.2.2",
+    "Changelog": "2.2.2 (2023-04-05)\n\n\nBug Fixes\n\n* add `Directory.Build.props` file. (5aefe29)\n* add a `CountOfMembersIn2minsBurst` for burst check. (a26d63d)\n* add a beta rotation attribute. (31aeed3)\n* add a clear target function for logging out error. (388b608)\n* add a feature to control if shown in cooldown window. (b7904fc)\n* add a feature to draw melee's offset. (688e6e7)\n* add a restore to default feature. (85e1aaf)\n* add burst ratio for party check. (8139b49)\n* add old MCH rotation. (149c42d)\n* add reset for each jobs. (99255fe)\n* add status id. (7386365)\n* add tooltip for cooldown action. (1e47bdc)\n* Added option for tanks to heal first (f36cc11)\n* Allow automated say hello to author to execute multiple times (772600a)\n* changed namespace. (3488d73)\n* changed saving rotation name from property to type full name. (42aa439)\n* changed template. (b070a2f)\n* changed the say hello to a better way. (6a4d36b)\n* changed the way to defense single for tanks. (0f921f1)\n* finished the say hello feature. (840c314)\n* fixed combo config ui. (6cc5b8c)\n* fixed divide zero bug. (6572954)\n* fixed namespace. (18a6bd5)\n* fixed soem calculating bugs. (f0829e1)\n* fixed some null bug. (7d2fe93)\n* fixed some ui bugs. (1c06b15)\n* fixed status show about defense Single. (25ba5ac)\n* fixed the cross bar high light. (cb5c498)\n* make the cooldown number font size could be changed. (ef6a377)\n* PLD add Intervention action. (83b0364)\n* PLD standart add some restriction to Sheltron and Bulwark. (9caa7a8)\n* Position lock is effective only in combat. (c75d22e)\n* Prevent HoT actions from being used twice in a row (54cd4ea)\n* remove old project. (afb6b85)\n* removed crossbar because of the unknow of the paring of hotbar and action bar. (f186ec6)\n* the hot double check only valid in 3s. (0c89267)",
+    "DownloadCount": "6896",
+    "LastUpdate": 1680711207,
+    "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.2/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.2/latest.zip"
+  },
+  {
+    "Author": "ArchiDog1998",
+    "Name": "FakeName",
+    "InternalName": "FakeName",
+    "ApplicableVersion": "any",
+    "AssemblyVersion": "1.0.0.5",
+    "Changelog": "",
+    "DownloadCount": "162",
+    "LastUpdate": 1674699010,
+    "RepoUrl": "https://github.com/ArchiDog1998/FakeName",
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip"
   }
 ]

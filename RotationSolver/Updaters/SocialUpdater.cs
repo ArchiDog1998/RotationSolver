@@ -152,7 +152,7 @@ internal class SocialUpdater
                           UIForegroundPayload.UIForegroundOff,
                           RawPayload.LinkTerminator,
 
-                          new TextPayload(", so say hello to him/her!"));
+                          new TextPayload(". So say hello to him/her!"));
 
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {

@@ -2,12 +2,16 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
 using Dalamud.Plugin;
+using FFXIVClientStructs.Havok;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
+using System.Text;
+using System.Text.Unicode;
 
 namespace RotationSolver;
 
@@ -67,6 +71,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         ChangeUITranslation();
 
         RotationUpdater.GetAllCustomRotations();
+        RotationHelper.LoadList();
 
         LinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
         {

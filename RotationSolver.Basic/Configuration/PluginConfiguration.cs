@@ -142,6 +142,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseStopCasting = false;
     public bool EsunaAll = false;
     public bool OnlyAttackInView = false;
+    public bool OnlyHotOnTanks = false;
+    public bool BeneficialAreaOnTarget = false;
 
     public string PositionalErrorText = string.Empty;
     public float CountDownAhead = 0.6f;
@@ -156,7 +158,11 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthRatioDot = 1.2f;
 
     public bool InDebug = false;
-    public string[] OtherLibs = new string[0];
+    public bool AutoUpdateLibs = true;
+    public string[] OtherLibs = new string[] 
+    {
+        "https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip",
+    };
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
@@ -166,7 +172,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool OnlyShowWithHostileOrInDuty = true;
     public bool ShowControlWindow = false;
     public bool IsControlWindowLock = false;
-    public bool ShowNextActionWindow = false;
+    public bool ShowNextActionWindow = true;
     public bool IsInfoWindowNoInputs = false;
     public bool IsInfoWindowNoMove = false;
     public bool UseKeyboardCommand = false;

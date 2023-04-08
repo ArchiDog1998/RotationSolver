@@ -179,7 +179,7 @@ public abstract partial class CustomRotation
         //Defense himself.
         if (role == JobRole.Tank && HasTankStance)
         {
-            var tarOnMeCount = DataCenter.TarOnMeTargets.Count();
+            var tarOnMeCount = DataCenter.TarOnMeTargets.Count(t => t.DistanceToPlayer() <= 3);
 
             //A lot targets are targeting on me.
             if (tarOnMeCount > 1 && !IsMoving)

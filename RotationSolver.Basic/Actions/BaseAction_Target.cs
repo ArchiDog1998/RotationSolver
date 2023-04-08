@@ -148,8 +148,11 @@ public partial class BaseAction
         //如果用户不想使用自动友方地面放置功能
         if (!Service.Config.UseGroundBeneficialAbility) return false;
 
-        //如果当前目标是Boss且有身位，放他身上。
-        if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && 
+        if (Service.Config.BeneficialAreaOnTarget && Service.TargetManager.Target != null)
+        {
+            _position = Service.TargetManager.Target.Position;
+        }
+        else if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && 
             b.IsBoss() && b.HasPositional() && b.HitboxRadius <= 8)
         {
             _position = b.Position;
@@ -168,15 +171,14 @@ public partial class BaseAction
                 var disToTankRound = Vector3.Distance(player.Position, attackT.Position) + attackT.HitboxRadius;
 
                 if (disToTankRound < _action.EffectRange
-                    || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius
-                    || disToTankRound > range)
+                    || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius)
                 {
                     _position = player.Position;
                 }
                 else
                 {
                     Vector3 directionToTank = attackT.Position - player.Position;
-                    var MoveDirection = directionToTank / directionToTank.Length() * (disToTankRound - _action.EffectRange);
+                    var MoveDirection = directionToTank / directionToTank.Length() * Math.Max(0, disToTankRound - _action.EffectRange);
                     _position = player.Position + MoveDirection;
                 }
             }
@@ -230,6 +232,10 @@ public partial class BaseAction
         }
         else
         {
+            if(Service.Config.OnlyHotOnTanks && IsEot)
+            {
+                availableCharas = availableCharas.Where(b => b.IsJobCategory(JobRole.Tank));
+            }
             availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range)
                 .Where(CanUseTo);
             //特殊选队友的方法。

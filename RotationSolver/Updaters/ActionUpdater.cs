@@ -132,7 +132,7 @@ internal static class ActionUpdater
 
         //确认能力技的相关信息
         var interval = Service.Config.AbilitiesInterval;
-        if (DataCenter.WeaponRemain < interval + Service.Config.ActionAhead * 2 
+        if (DataCenter.WeaponRemain < interval
             || DataCenter.WeaponElapsed == 0)
         {
             DataCenter.AbilityRemain = 0;
@@ -142,7 +142,7 @@ internal static class ActionUpdater
             }
             DataCenter.AbilityRemainCount = 0;
         }
-        else if (DataCenter.WeaponRemain < 2 * interval + Service.Config.ActionAhead * 2)
+        else if (DataCenter.WeaponRemain < 2 * interval)
         {
             DataCenter.AbilityRemain = DataCenter.WeaponRemain - interval;
             DataCenter.AbilityRemainCount = 1;
