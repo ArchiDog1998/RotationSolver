@@ -187,6 +187,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float ControlWindowGCDSize = 40;
     public float ControlWindow0GCDSize = 30;
+    public float CooldownWindowIconSize = 30;
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;

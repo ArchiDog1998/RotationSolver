@@ -42,7 +42,7 @@ internal class CooldownWindow : InfoWindow
     static readonly uint progressCol = ImGui.ColorConvertFloat4ToU32(new Vector4(0.6f, 0.6f, 0.6f, 0.7f));
     private static void DrawActionCooldown(IAction act)
     {
-        var width = Service.Config.ControlWindow0GCDSize;
+        var width = Service.Config.CooldownWindowIconSize;
         var recast = act.RecastTimeOneCharge;
         var elapsed = act.RecastTimeElapsed;
         var shouldSkip = recast < 3 && act is IBaseAction a && !a.IsRealGCD;
@@ -93,7 +93,7 @@ internal class CooldownWindow : InfoWindow
         {
             for (int i = 0; i < bAct.CurrentCharges; i++)
             {
-                ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + (i + 0.5f) * new Vector2(6, 0), 2.5f, white);
+                ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + (i + 0.5f) * new Vector2(width / 5, 0), width / 12, white);
             }
         }
 

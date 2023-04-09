@@ -265,6 +265,7 @@ internal partial class Strings
     public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Info Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
+    public string ConfigWindow_Control_CooldownWindowIconSize { get; set; } = "Cooldown icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
     public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and middle click to clear the key setting.";
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";

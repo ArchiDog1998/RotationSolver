@@ -49,12 +49,17 @@ internal class ControlWindow : Window
 
     public override void Draw()
     {
-        ImGui.Columns(2, "Control Bolder", false);
+        ImGui.Columns(3, "Control Bolder", false);
         var gcd = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
         var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
         var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
 
         ImGui.SetColumnWidth(0, width + ImGui.GetStyle().ColumnsMinSpacing * 2);
+        ImGui.SetColumnWidth(1, 8);
+
+        DrawNextAction(gcd, ability, width);
+
+        ImGui.Spacing();
 
         DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
 
@@ -69,12 +74,11 @@ internal class ControlWindow : Window
 
         ImGui.Text(DataCenter.TargetingType.ToName());
 
-        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
+        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
             ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
         ImGui.EndGroup();
 
-        DrawNextAction(gcd, ability, width);
-
+        ImGui.NextColumn();
         ImGui.NextColumn();
 
         DrawSpecials();
@@ -104,6 +108,8 @@ internal class ControlWindow : Window
         DrawCommandAction(rotation?.ActionDefenseSingleGCD, rotation?.ActionDefenseSingleAbility,
             SpecialCommandType.DefenseSingle, ImGuiColors.TankBlue);
 
+        ImGui.Spacing();
+
         DrawCommandAction(rotation?.ActionMoveForwardGCD, rotation?.ActionMoveForwardAbility,
             SpecialCommandType.MoveForward, ImGuiColors.DalamudOrange);
 
@@ -120,6 +126,8 @@ internal class ControlWindow : Window
 
         DrawCommandAction(61753, SpecialCommandType.EndSpecial, ImGuiColors.DalamudWhite2);
 
+        ImGui.Spacing();
+
         DrawCommandAction(rotation?.EsunaStanceNorthGCD, rotation?.EsunaStanceNorthAbility,
             SpecialCommandType.EsunaStanceNorth, ImGuiColors.ParsedGold);
 
@@ -132,6 +140,8 @@ internal class ControlWindow : Window
 
         DrawCommandAction(rotation?.AntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
+
+        ImGui.Spacing();
 
         ImGui.Text("CMD:");
         ImGui.SameLine();
@@ -438,7 +448,7 @@ internal class ControlWindow : Window
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
 
                 var step = new Vector2(88f / cover.Width, 96f / cover.Height);
-                var start = new Vector2((96f * 5 + 4f) / cover.Width, (96f * 2) / cover.Height);
+                var start = new Vector2((96f * 0 + 4f) / cover.Width, (96f * 2) / cover.Height);
 
                 //Out Size is 88, 96
                 //Inner Size is 82, 82
