@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.2.4](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.3...v2.2.4) (2023-04-09)
+
+
+### Bug Fixes
+
+* add an `TerritoryContentType` property for rotation. ([8b983a6](https://github.com/ArchiDog1998/RotationSolver/commit/8b983a61fd13f1ddf9837e6559a4909cfcf372f7))
+* fixed the author showcase. ([d780cac](https://github.com/ArchiDog1998/RotationSolver/commit/d780cac97b7f8087271084417896554b1e76b0b1))
+* fixed the cooldown window's layout and showcase. ([33a2459](https://github.com/ArchiDog1998/RotationSolver/commit/33a245953d9e790f92c6bb6b762e1ac71319c558))
+* make item can be used in timeline. ([36d24fd](https://github.com/ArchiDog1998/RotationSolver/commit/36d24fdf617b92da3c17653f985e86eed2775142))
+* make some settings can be used in macro. ([6ab562c](https://github.com/ArchiDog1998/RotationSolver/commit/6ab562cc16e9ce72b659efc83b3de76d5670e19b))
+* make the cooldown ui has the same size. ([96982a8](https://github.com/ArchiDog1998/RotationSolver/commit/96982a8afda1cb75aed4bfe88ef498962992ccef))
+* remove the default list. ([b24b43e](https://github.com/ArchiDog1998/RotationSolver/commit/b24b43ea1d52cbf45e451db4b638c1b394583f95))
+
+
+### Miscellaneous Chores
+
+* release 2.2.4 ([55ea4b9](https://github.com/ArchiDog1998/RotationSolver/commit/55ea4b9b3750153ce295c2c7be4c6488262da1e6))
+
 ## [2.2.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.2...v2.2.3) (2023-04-08)
 
 
