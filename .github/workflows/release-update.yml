@@ -1,7 +1,7 @@
 on:
   release:
     types: [published, edited, released]
-name: release-please
+name: release-update
 jobs:
   release-please:
     runs-on: ubuntu-latest
