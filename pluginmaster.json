@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.2.3",
-    "Changelog": "2.2.3 (2023-04-08)\n\n\nBug Fixes\n\n* add a default list json for default check. (822c3cf)\n* add a defense single target distance checking. (f0c99d6)\n* add a update downloads file. (9e96686)\n* add an download list to control the extra dll. (c688990)\n* add an option for beneficial area on target. (4ad1f99)\n* add an option for only hot on tanks. (20c5680)\n* add blackestNight status check. (17aa18d)\n* add fate check to all hostile target check. (1c40506)\n* add StatusProvide for `Oblation` and `Aurora` (1b8de8f)\n* add the white list to the github. (0f1def2)\n* add white list. (9e2d747)\n* change provide status to target status. (cec58c6)\n* changed some ui default values. (5d8c545)\n* changed the abilityremain calculation. (ad9bd34)\n* changed the drk to balance. (098f3ad)\n* make extensions available for VS 2019 (25228f4)\n* make libs can be a url. (4496afb)\n* moved the allowd and default list to the github. (e0e5931)\n* oblation and aurora will only be used when no the status they provided. (4ad139f)\n* oblation and aurora will only be used when no the status they provided. (a7884e0)\n* the DeleeOffset will only drawn in combat. (7b13fcf)\n* use manual macro in manual will cancel the auto state. (cc65acc)",
-    "DownloadCount": "6774",
-    "LastUpdate": 1680961922,
+    "AssemblyVersion": "2.2.4",
+    "Changelog": "2.2.4 (2023-04-09)\n\n\nBug Fixes\n\n* add an `TerritoryContentType` property for rotation. (8b983a6)\n* fixed the author showcase. (d780cac)\n* fixed the cooldown window's layout and showcase. (33a2459)\n* make item can be used in timeline. (36d24fd)\n* make some settings can be used in macro. (6ab562c)\n* make the cooldown ui has the same size. (96982a8)\n* remove the default list. (b24b43e)\n\n\nMiscellaneous Chores\n\n* release 2.2.4 (55ea4b9)",
+    "DownloadCount": "6652",
+    "LastUpdate": 1681045990,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.3/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.3/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.4/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.4/latest.zip"
   },
   {
     "Author": "ArchiDog1998",
@@ -35,7 +35,7 @@
     "ApplicableVersion": "any",
     "AssemblyVersion": "1.0.0.5",
     "Changelog": "",
-    "DownloadCount": "163",
+    "DownloadCount": "164",
     "LastUpdate": 1674699010,
     "RepoUrl": "https://github.com/ArchiDog1998/FakeName",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip",
