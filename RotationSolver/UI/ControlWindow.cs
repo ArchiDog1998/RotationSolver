@@ -426,71 +426,83 @@ internal class ControlWindow : Window
         ImGui.BeginGroup();
 
         ImGui.Image(handle, new Vector2(width, width));
-        if(percent >= 0)
+
+        var pixPerUnit = width / 82;
+
+        if (percent < 0)
         {
-            if (percent < 1)
+            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
+
+            if (cover != null)
             {
-                var cover = IconSet.GetTexture("ui/uld/icona_recast_hr1.tex");
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
 
-                if(cover != null)
-                {
-                    var pixPerUnit = width / 82;
+                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                var start = new Vector2((96f * 5 + 4f) / cover.Width, (96f * 2) / cover.Height);
 
-                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
-
-                    var P = (int)(percent * 81);
-                    
-
-                    var step = new Vector2(88f / cover.Width, 96f / cover.Height);
-                    var start = new Vector2(P % 9 * step.X, P / 9 * step.Y);
-
-                    //Out Size is 88, 96
-                    //Inner Size is 82, 82
-                    ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                        start, start + step);
-                }
-            }
-            else
-            {
-                var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
-
-                if (cover != null)
-                {
-                    var pixPerUnit = width / 82;
-
-                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
-
-                    //Out Size is 88, 96
-                    //Inner Size is 82, 82
-                    ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                        new Vector2(4f / cover.Width, 0f / cover.Height),
-                        new Vector2(92f / cover.Width, 96f / cover.Height));
-                }
-            }
-
-            if(percent > 1)
-            {
-                var cover = IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex");
-
-                if (cover != null)
-                {
-                    var pixPerUnit = width / 82;
-
-                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
-
-                    var P = (int)(percent % 1 * 81);
-
-
-                    var step = new Vector2(88f / cover.Width, 96f / cover.Height);
-                    var start = new Vector2((P % 9 + 9) * step.X, P / 9 * step.Y);
-
-                    //Out Size is 88, 96
-                    //Inner Size is 82, 82
-                    ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                        start, start + step);
-                }
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    start, start + step);
             }
         }
+        else if (percent < 1)
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_recast_hr1.tex");
+
+            if (cover != null)
+            {
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
+
+                var P = (int)(percent * 81);
+
+
+                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                var start = new Vector2(P % 9 * step.X, P / 9 * step.Y);
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    start, start + step);
+            }
+        }
+        else
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
+
+            if (cover != null)
+            {
+
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    new Vector2(4f / cover.Width, 0f / cover.Height),
+                    new Vector2(92f / cover.Width, 96f / cover.Height));
+            }
+        }
+
+        if (percent > 1)
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex");
+
+            if (cover != null)
+            {
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
+
+                var P = (int)(percent % 1 * 81);
+
+                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                var start = new Vector2((P % 9 + 9) * step.X, P / 9 * step.Y);
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    start, start + step);
+            }
+        }
+
 
         ImGui.EndGroup();
     }
