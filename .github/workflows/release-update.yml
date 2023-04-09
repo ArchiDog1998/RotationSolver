@@ -3,10 +3,37 @@ on:
     types: [published, edited, released]
 name: release-update
 jobs:
-  release-please:
-    runs-on: ubuntu-latest
-    steps:      
+    build:
+      name: Build
+      runs-on: windows-latest
+      steps:
+        - uses: actions/checkout@v2
+
+        - name: Set up .NET
+          uses: actions/setup-dotnet@v1
+          with:
+             dotnet-version: 7.0.x
+             
+        - name: Restore Dependencies
+          run: dotnet restore
+          
+        - name: Download Dalamud
+          run: |
+            Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
+            Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev"
+                      
+        - name: publish on version change
+          id: publish_nuget
+          uses: brandedoutcast/publish-nuget@v2
+          with:
+          # Filepath of the project to be packaged, relative to root of repository
+            PROJECT_FILE_PATH: RotationSolver.Basic/RotationSolver.Basic.csproj
+            
+    release-please:
+     runs-on: ubuntu-latest
+     steps:      
       - name: Trigger Repo Update
         uses: peter-evans/repository-dispatch@v2
         with:
           event-type: new-release
+
