@@ -55,7 +55,7 @@ internal partial class RotationConfigWindow
         TimeLineUpdater.DrawHeader();
 
         if (ActiveAction == null) return;
-        if (!RotationUpdater.RightRotationBaseActions.Any(a => a.ID == ActiveAction.ID)) return;
+        if (!RotationUpdater.RightRotationActions.Any(a => a.ID == ActiveAction.ID)) return;
 
         var set = TimeLineUpdater.RightSet;
         if (set == null) return;

@@ -47,7 +47,7 @@ namespace RotationSolver.Commands
 
         private static void ToggleActionCommand(string str)
         {
-            foreach (var act in RotationUpdater.RightRotationBaseActions)
+            foreach (var act in RotationUpdater.RightRotationActions)
             {
                 if (str == act.Name)
                 {
@@ -72,19 +72,18 @@ namespace RotationSolver.Commands
             if (strs != null && strs.Length == 2 && double.TryParse(strs[1], out var time))
             {
                 var actName = strs[0];
-                foreach (var iAct in RotationUpdater.RightRotationBaseActions)
+                foreach (var iAct in RotationUpdater.RightRotationActions)
                 {
-                    if (iAct is not IBaseAction act) continue;
-                    if (!act.IsTimeline) continue;
+                    if (iAct is IBaseAction act && !act.IsTimeline) continue;
 
-                    if (actName == act.Name)
+                    if (actName == iAct.Name)
                     {
-                        DataCenter.AddCommandAction(act, time);
+                        DataCenter.AddCommandAction(iAct, time);
 
                         Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
                             new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
-                                IconId = act.IconID,
+                                IconId = iAct.IconID,
                             });
 
                         return;
@@ -92,7 +91,7 @@ namespace RotationSolver.Commands
                 }
             }
 
-            Service.ChatGui.Print(LocalizationManager.RightLang.Commands_InsertActionFailure);
+            Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_InsertActionFailure);
         }
 
 

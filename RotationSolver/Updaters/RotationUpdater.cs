@@ -175,7 +175,7 @@ internal static class RotationUpdater
 
             }).OrderBy(g => g.Key);
 
-    public static IBaseAction[] RightRotationBaseActions { get; private set; } = new IBaseAction[0];
+    public static IAction[] RightRotationActions { get; private set; } = new IAction[0];
 
     public static void UpdateRotation()
     {
@@ -186,11 +186,11 @@ internal static class RotationUpdater
             if (!group.classJobIds.Contains(nowJob)) continue;
 
             RightNowRotation = GetChooseRotation(group);
-            RightRotationBaseActions = RightNowRotation.AllBaseActions;
+            RightRotationActions = RightNowRotation.AllActions;
             return;
         }
         RightNowRotation = null;
-        RightRotationBaseActions = new IBaseAction[0];
+        RightRotationActions = new IAction[0];
     }
 
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group)

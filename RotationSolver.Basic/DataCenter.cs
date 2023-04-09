@@ -29,7 +29,7 @@ public static class DataCenter
     }
 
     private static List<NextAct> NextActs = new List<NextAct>();
-    public static IBaseAction TimeLineAction { private get; set; }
+    public static IAction TimeLineAction { private get; set; }
     public static IAction CommandNextAction
     {
         get

@@ -78,7 +78,7 @@ internal partial class Strings
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
-    public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
+    public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
     public string ConfigWindow_Rotation_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
 
     public string ConfigWindow_RotationDev_Description { get; set; } = "You can get some extra rotation development information here.";

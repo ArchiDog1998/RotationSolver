@@ -2,7 +2,6 @@
 using Dalamud.Interface.Components;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
@@ -74,6 +73,14 @@ internal static class ImGuiHelper
         if (ImGui.IsItemHovered())
         {
             showToolTip(desc);
+        }
+
+        if(texture is IAction)
+        {
+            ImGui.SameLine();
+            Spacing();
+
+            OtherCommandType.ToggleActions.DisplayCommandHelp(texture.ToString());
         }
 
         additionalHeader?.Invoke(showToolTip);
@@ -561,7 +568,7 @@ internal static class ImGuiHelper
     #region IAction
     public static void Display(this IAction action, bool IsActive)
     {
-        if (action is BaseAction act)
+        if (action is IBaseAction act)
         {
             act.Display(IsActive);
         }
@@ -575,12 +582,6 @@ internal static class ImGuiHelper
         if (action.IsTimeline) RotationConfigWindow.ActiveAction = action;
     }, otherThing: () =>
     {
-        ImGui.SameLine();
-        Spacing();
-
-        OtherCommandType.ToggleActions.DisplayCommandHelp(action.ToString());
-
-
         var enable = action.IsInCooldown;
         if (ImGui.Checkbox($"CD##{action.Name}InCooldown", ref enable))
         {
@@ -594,7 +595,7 @@ internal static class ImGuiHelper
             Spacing();
 
             OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
-           type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, action), false);
+           type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, action, 5), false);
         }
 
         if (Service.Config.InDebug)
@@ -625,17 +626,22 @@ internal static class ImGuiHelper
         }
     });
 
-    public unsafe static void Display(this IBaseItem item, bool IsActive) => item.DrawEnableTexture(false, null, otherThing: () =>
+    public unsafe static void Display(this IBaseItem item, bool IsActive) => item.DrawEnableTexture(IsActive,
+        () => RotationConfigWindow.ActiveAction = item, otherThing: () =>
     {
-        ImGui.SameLine();
-        Spacing();
-
         var enable = item.IsInCooldown;
         if (ImGui.Checkbox($"CD##{item.Name}InCooldown", ref enable))
         {
             item.IsInCooldown = enable;
             Service.Config.Save();
         }
+
+        ImGui.SameLine();
+        Spacing();
+
+        OtherCommandType.DoActions.DisplayCommandHelp($"{item}-{5}",
+       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, item, 5), false);
+
 
         if (Service.Config.InDebug)
         {
