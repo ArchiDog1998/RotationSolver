@@ -32,14 +32,17 @@ namespace RotationSolver.Commands
 
         private static void DoSettingCommand(string str)
         {
-            if (str.Contains(nameof(Service.Config.AutoBurst)))
+            if (!TryGetOneEnum<SettingsCommand>(str, out var type))
             {
-                Service.Config.AutoBurst = !Service.Config.AutoBurst;
-
-                //Say out.
-                Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeAutoBurst,
-                    Service.Config.AutoBurst));
+                RotationSolverPlugin.OpenConfigWindow();
+                return;
             }
+
+            Service.Config.SetValue(type, !Service.Config.GetValue(type));
+
+            //Say out.
+            Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
+                type.ToString(), Service.Config.GetValue(type)));
         }
 
         private static void ToggleActionCommand(string str)

@@ -28,5 +28,4 @@ public enum TerritoryContentType : uint
     Eureka = 26,
     UltimateRaids = 28,
     VCDungeonFinder = 30,
-\
 }

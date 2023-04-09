@@ -146,7 +146,7 @@ public partial class BaseAction
     private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
         //如果用户不想使用自动友方地面放置功能
-        if (!Service.Config.UseGroundBeneficialAbility) return false;
+        if (!Service.Config.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
 
         if (Service.Config.BeneficialAreaOnTarget && Service.TargetManager.Target != null)
         {

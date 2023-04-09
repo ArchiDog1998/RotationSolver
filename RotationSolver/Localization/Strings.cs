@@ -4,7 +4,7 @@ internal partial class Strings
 {
     #region Commands
     public string Commands_Rotation { get; set; } = "Open config window.";
-    public string Commands_ChangeAutoBurst { get; set; } = "Modify automatic burst to {0}";
+    public string Commands_ChangeSettingsValue { get; set; } = "Modify {0} to {1}";
     public string Commands_ChangeRotationConfig { get; set; } = "Modify {0} to {1}";
     public string Commands_CannotFindRotationConfig { get; set; } = "Failed to find the config in this rotation, please check it.";
 
