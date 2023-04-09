@@ -16,12 +16,12 @@ internal static class SpeechHelper
         {
             try
             {
-                VoiceNames ??= _speech.GetInstalledVoices().Select(v => v.VoiceInfo.Name).ToArray();
                 _speech ??= new SpeechSynthesizer();
                 _speech.Volume = Service.Config.VoiceVolume;
                 _speech.SelectVoice(Service.Config.VoiceName);
+                VoiceNames ??= _speech.GetInstalledVoices().Select(v => v.VoiceInfo.Name).ToArray();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (!_errored)
                 {
