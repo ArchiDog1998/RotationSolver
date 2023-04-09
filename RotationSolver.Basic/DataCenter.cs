@@ -12,6 +12,8 @@ namespace RotationSolver.Basic;
 public static class DataCenter
 {
     public static bool InHighEndDuty { get; set; } = false;
+    public static TerritoryContentType TerritoryContentType { get; set; } = TerritoryContentType.None;
+
     public static AutoStatus AutoStatus { get; private set; } = AutoStatus.None;
     public static bool SetAutoStatus(AutoStatus status, bool keep)
     {

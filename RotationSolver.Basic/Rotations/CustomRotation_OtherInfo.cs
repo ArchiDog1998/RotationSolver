@@ -122,6 +122,7 @@ public abstract partial class CustomRotation
     #endregion
 
     protected static ClientLanguage Language => Service.Language;
+    protected static TerritoryContentType TerritoryContentType => DataCenter.TerritoryContentType;
 
 
     public static uint AdjustId(uint id) => Service.GetAdjustedActionId(id);
