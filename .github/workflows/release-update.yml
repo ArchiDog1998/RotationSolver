@@ -3,6 +3,14 @@ on:
     types: [published, edited, released]
 name: release-update
 jobs:
+    release-please:
+     runs-on: ubuntu-latest
+     steps:      
+      - name: Trigger Repo Update
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          event-type: new-release
+          
     build:
       name: Build
       runs-on: windows-latest
@@ -28,12 +36,3 @@ jobs:
           with:
           # Filepath of the project to be packaged, relative to root of repository
             PROJECT_FILE_PATH: RotationSolver.Basic/RotationSolver.Basic.csproj
-            
-    release-please:
-     runs-on: ubuntu-latest
-     steps:      
-      - name: Trigger Repo Update
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          event-type: new-release
-
