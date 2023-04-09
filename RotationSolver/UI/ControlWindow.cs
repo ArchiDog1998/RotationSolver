@@ -49,12 +49,17 @@ internal class ControlWindow : Window
 
     public override void Draw()
     {
-        ImGui.Columns(2, "Control Bolder", false);
+        ImGui.Columns(3, "Control Bolder", false);
         var gcd = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
         var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
         var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
 
         ImGui.SetColumnWidth(0, width + ImGui.GetStyle().ColumnsMinSpacing * 2);
+        ImGui.SetColumnWidth(1, 8);
+
+        DrawNextAction(gcd, ability, width);
+
+        ImGui.Spacing();
 
         DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
 
@@ -69,12 +74,11 @@ internal class ControlWindow : Window
 
         ImGui.Text(DataCenter.TargetingType.ToName());
 
-        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs,
+        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
             ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
         ImGui.EndGroup();
 
-        DrawNextAction(gcd, ability, width);
-
+        ImGui.NextColumn();
         ImGui.NextColumn();
 
         DrawSpecials();
@@ -104,6 +108,8 @@ internal class ControlWindow : Window
         DrawCommandAction(rotation?.ActionDefenseSingleGCD, rotation?.ActionDefenseSingleAbility,
             SpecialCommandType.DefenseSingle, ImGuiColors.TankBlue);
 
+        ImGui.Spacing();
+
         DrawCommandAction(rotation?.ActionMoveForwardGCD, rotation?.ActionMoveForwardAbility,
             SpecialCommandType.MoveForward, ImGuiColors.DalamudOrange);
 
@@ -120,6 +126,8 @@ internal class ControlWindow : Window
 
         DrawCommandAction(61753, SpecialCommandType.EndSpecial, ImGuiColors.DalamudWhite2);
 
+        ImGui.Spacing();
+
         DrawCommandAction(rotation?.EsunaStanceNorthGCD, rotation?.EsunaStanceNorthAbility,
             SpecialCommandType.EsunaStanceNorth, ImGuiColors.ParsedGold);
 
@@ -132,6 +140,8 @@ internal class ControlWindow : Window
 
         DrawCommandAction(rotation?.AntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
+
+        ImGui.Spacing();
 
         ImGui.Text("CMD:");
         ImGui.SameLine();
@@ -426,71 +436,83 @@ internal class ControlWindow : Window
         ImGui.BeginGroup();
 
         ImGui.Image(handle, new Vector2(width, width));
-        if(percent >= 0)
+
+        var pixPerUnit = width / 82;
+
+        if (percent < 0)
         {
-            if (percent < 1)
+            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
+
+            if (cover != null)
             {
-                var cover = IconSet.GetTexture("ui/uld/icona_recast_hr1.tex");
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
 
-                if(cover != null)
-                {
-                    var pixPerUnit = width / 82;
+                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                var start = new Vector2((96f * 0 + 4f) / cover.Width, (96f * 2) / cover.Height);
 
-                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
-
-                    var P = (int)(percent * 81);
-                    
-
-                    var step = new Vector2(88f / cover.Width, 96f / cover.Height);
-                    var start = new Vector2(P % 9 * step.X, P / 9 * step.Y);
-
-                    //Out Size is 88, 96
-                    //Inner Size is 82, 82
-                    ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                        start, start + step);
-                }
-            }
-            else
-            {
-                var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
-
-                if (cover != null)
-                {
-                    var pixPerUnit = width / 82;
-
-                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
-
-                    //Out Size is 88, 96
-                    //Inner Size is 82, 82
-                    ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                        new Vector2(4f / cover.Width, 0f / cover.Height),
-                        new Vector2(92f / cover.Width, 96f / cover.Height));
-                }
-            }
-
-            if(percent > 1)
-            {
-                var cover = IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex");
-
-                if (cover != null)
-                {
-                    var pixPerUnit = width / 82;
-
-                    ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
-
-                    var P = (int)(percent % 1 * 81);
-
-
-                    var step = new Vector2(88f / cover.Width, 96f / cover.Height);
-                    var start = new Vector2((P % 9 + 9) * step.X, P / 9 * step.Y);
-
-                    //Out Size is 88, 96
-                    //Inner Size is 82, 82
-                    ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                        start, start + step);
-                }
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    start, start + step);
             }
         }
+        else if (percent < 1)
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_recast_hr1.tex");
+
+            if (cover != null)
+            {
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
+
+                var P = (int)(percent * 81);
+
+
+                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                var start = new Vector2(P % 9 * step.X, P / 9 * step.Y);
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    start, start + step);
+            }
+        }
+        else
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
+
+            if (cover != null)
+            {
+
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    new Vector2(4f / cover.Width, 0f / cover.Height),
+                    new Vector2(92f / cover.Width, 96f / cover.Height));
+            }
+        }
+
+        if (percent > 1)
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex");
+
+            if (cover != null)
+            {
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
+
+                var P = (int)(percent % 1 * 81);
+
+                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                var start = new Vector2((P % 9 + 9) * step.X, P / 9 * step.Y);
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    start, start + step);
+            }
+        }
+
 
         ImGui.EndGroup();
     }

@@ -80,7 +80,7 @@ public abstract partial class CustomRotation
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
             }
-            else if (Service.Config.RaisePlayerBySwift && !Swiftcast.IsCoolingDown && actabilityRemain > 0)
+            else if (Service.Config.GetValue(SettingsCommand.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown && actabilityRemain > 0)
             {
                 return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
             }

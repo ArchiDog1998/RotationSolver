@@ -124,14 +124,14 @@ You'll see some output things in the Output, please copy the directory of this `
 
 ![Out put](assets/1680589498456.png)
 
-In the game, add this directory to your Rotation Dev folder. After clicking the `Update rotations` button, you'll see your rotation!
+In the game, add this directory to your [Rotation Dev](extra-rotations.md) folder. After clicking the `Update rotations` button, you'll see your rotation!
 
 ## Use your own rotation in Game
 
 Let's go to the game and select your own rotation.
 
-![Select the rotation](assets/image-20230122160528594.png)
+![1680965887006](assets/1680965887006.png)
 
 When you use `Smart` or `Manual`, the rotation will be like this.
 
-![Rotation](assets/image-20230122160351732.png)
+![rotations](assets/image-20230408222335027.png)

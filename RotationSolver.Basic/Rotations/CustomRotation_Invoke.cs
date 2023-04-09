@@ -76,7 +76,7 @@ public abstract partial class CustomRotation
         }
 
         byte abilityRemain = DataCenter.AbilityRemainCount;
-        var helpDefenseAOE = Service.Config.UseDefenseAbility && DataCenter.IsHostileCastingAOE;
+        var helpDefenseAOE = Service.Config.GetValue(SettingsCommand.UseDefenseAbility) && DataCenter.IsHostileCastingAOE;
 
         bool helpDefenseSingle = false;
         if (Job.GetJobRole() == JobRole.Healer || Job.RowId == (uint)ClassJobID.Paladin)

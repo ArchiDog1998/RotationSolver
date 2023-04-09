@@ -14,8 +14,6 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
 
-    public static string message = string.Empty;
-
     public static async void GetAllCustomRotations()
     {
         var relayFolder = Service.Interface.ConfigDirectory.FullName;
@@ -36,12 +34,19 @@ internal static class RotationUpdater
 
             foreach (var url in libs)
             {
-                var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
-                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-                if (!valid) continue;
-
                 try
                 {
+                    var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
+                         && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                    if (!valid) continue;
+                }
+                catch
+                {
+                    continue;
+                }
+                try
+                {
+
                     var fileName = url.Split('/').LastOrDefault();
                     if (string.IsNullOrEmpty(fileName)) continue;
                     if (Path.GetExtension(fileName) != ".dll") continue;
@@ -170,7 +175,7 @@ internal static class RotationUpdater
 
             }).OrderBy(g => g.Key);
 
-    public static IBaseAction[] RightRotationBaseActions { get; private set; } = new IBaseAction[0];
+    public static IAction[] RightRotationActions { get; private set; } = new IAction[0];
 
     public static void UpdateRotation()
     {
@@ -181,21 +186,25 @@ internal static class RotationUpdater
             if (!group.classJobIds.Contains(nowJob)) continue;
 
             RightNowRotation = GetChooseRotation(group);
-            RightRotationBaseActions = RightNowRotation.AllBaseActions;
+            RightRotationActions = RightNowRotation.AllActions;
             return;
         }
         RightNowRotation = null;
-        RightRotationBaseActions = new IBaseAction[0];
+        RightRotationActions = new IAction[0];
     }
 
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group)
     {
-        Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var name);
+        var has = Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var name);
        
         var rotation = group.rotations.FirstOrDefault(r => r.GetType().FullName == name);
-        rotation ??= group.rotations.FirstOrDefault(RotationHelper.IsDefault);
         rotation ??= group.rotations.FirstOrDefault(r => r.IsAllowed(out _));
         rotation ??= group.rotations.FirstOrDefault();
+
+        if (!has && rotation != null)
+        {
+            Service.Config.RotationChoices[(uint)group.jobId] = rotation.GetType().FullName;
+        }
         return rotation;
     }
 }

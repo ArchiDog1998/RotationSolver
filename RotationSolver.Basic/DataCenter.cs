@@ -12,6 +12,8 @@ namespace RotationSolver.Basic;
 public static class DataCenter
 {
     public static bool InHighEndDuty { get; set; } = false;
+    public static TerritoryContentType TerritoryContentType { get; set; } = TerritoryContentType.None;
+
     public static AutoStatus AutoStatus { get; private set; } = AutoStatus.None;
     public static bool SetAutoStatus(AutoStatus status, bool keep)
     {
@@ -27,7 +29,7 @@ public static class DataCenter
     }
 
     private static List<NextAct> NextActs = new List<NextAct>();
-    public static IBaseAction TimeLineAction { private get; set; }
+    public static IAction TimeLineAction { private get; set; }
     public static IAction CommandNextAction
     {
         get

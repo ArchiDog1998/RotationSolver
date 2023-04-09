@@ -101,4 +101,5 @@ internal class BaseItem : IBaseItem
         return ActionManager.Instance()->UseAction(ActionType.Item, _item.RowId, Service.Player.ObjectId, A4);
     }
 
+    public override string ToString() => Name;
 }

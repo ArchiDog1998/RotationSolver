@@ -6,7 +6,7 @@ namespace RotationSolver.Updaters;
 
 internal static class MajorUpdater
 {
-    public static bool IsValid => Service.Conditions.Any() && Service.Player != null;
+    public static bool IsValid => Service.Conditions.Any() && Service.Player != null && !SocialUpdater.InPvp;
 
 #if DEBUG
     private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();

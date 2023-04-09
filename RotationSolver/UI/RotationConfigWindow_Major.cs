@@ -64,17 +64,6 @@ internal partial class RotationConfigWindow : Window
 
             if (Service.Config.InDebug && ImGui.BeginTabItem("Debug"))
             {
-                ImGui.Text(RotationUpdater.message);
-
-                foreach (var item in RotationHelper.DefaultAssembly)
-                {
-                    ImGui.Text(item);
-                }
-                foreach (var item in RotationHelper.AllowedAssembly)
-                {
-                    ImGui.Text(item);
-                }
-
                 DrawDebugTab();
                 ImGui.EndTabItem();
             }
