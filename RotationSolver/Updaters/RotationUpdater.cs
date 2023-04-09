@@ -195,12 +195,16 @@ internal static class RotationUpdater
 
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group)
     {
-        Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var name);
+        var has = Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var name);
        
         var rotation = group.rotations.FirstOrDefault(r => r.GetType().FullName == name);
-        rotation ??= group.rotations.FirstOrDefault(RotationHelper.IsDefault);
         rotation ??= group.rotations.FirstOrDefault(r => r.IsAllowed(out _));
         rotation ??= group.rotations.FirstOrDefault();
+
+        if (!has && rotation != null)
+        {
+            Service.Config.RotationChoices[(uint)group.jobId] = rotation.GetType().FullName;
+        }
         return rotation;
     }
 }

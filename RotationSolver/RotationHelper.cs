@@ -8,10 +8,6 @@ namespace RotationSolver;
 internal static class RotationHelper
 {
     public static string[] AllowedAssembly { get; private set; } = new string[0];
-    public static string[] DefaultAssembly { get; private set; } = new string[] 
-    { 
-        "RotationSolver.Default",
-    };
 
     public static async void LoadList()
     {
@@ -26,24 +22,7 @@ internal static class RotationHelper
             {
                 PluginLog.Log(ex, "Failed to load white List.");
             }
-
-            try
-            {
-                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/defaultList.json");
-                DefaultAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts));
-            }
-            catch (Exception ex)
-            {
-                PluginLog.Log(ex, "Failed to load default List.");
-            }
         }
-    }
-
-    public static bool IsDefault(this ICustomRotation rotation)
-    {
-        var type = rotation.GetType();
-        if (!DefaultAssembly.Contains(type.Assembly.GetName().Name)) return false;
-        return type.Name.Contains("Default", StringComparison.OrdinalIgnoreCase);
     }
     
     public static bool IsAllowed(this ICustomRotation rotation, out string name)
@@ -55,7 +34,7 @@ internal static class RotationHelper
         }
         name = rotation.GetType().Assembly.GetName().Name;
 
-        return DefaultAssembly.Contains(name) || AllowedAssembly.Contains(name);
+        return AllowedAssembly.Contains(name);
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)
