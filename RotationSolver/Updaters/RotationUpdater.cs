@@ -58,6 +58,13 @@ internal static class RotationUpdater
                     //Download
                     using (HttpResponseMessage response = await client.GetAsync(url))
                     {
+                        if (File.Exists(filePath))
+                        {
+                            if(new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
+                            {
+                                continue;
+                            }
+                        }
                         await response.Content.CopyToAsync(new FileStream(filePath, File.Exists(filePath)
                             ? FileMode.Open : FileMode.CreateNew));
                     }
