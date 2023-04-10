@@ -50,7 +50,6 @@ public class RotationLoadContext : AssemblyLoadContext
                 //
             }
         }
-
         return base.Load(assemblyName);
     }
 
@@ -61,13 +60,14 @@ public class RotationLoadContext : AssemblyLoadContext
         if (!File.Exists(pdbPath)) return LoadFromStream(file);
         using var pdbFile = File.Open(pdbPath, FileMode.Open, FileAccess.Read, FileShare.Read);
         var assembly = LoadFromStream(file, pdbFile);
-        AssemblyPaths[assembly.GetName().Name] = filePath;
         return assembly;
     }
 
     public static Assembly LoadFrom(string filePath)
     {
         var loadContext = new RotationLoadContext(new FileInfo(filePath).Directory);
-        return loadContext.LoadFromFile(filePath);
+        var assembly = loadContext.LoadFromFile(filePath);
+        AssemblyPaths[assembly.GetName().Name] = filePath;
+        return assembly;
     }
 }

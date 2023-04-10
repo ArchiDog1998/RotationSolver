@@ -60,13 +60,18 @@ internal static class RotationUpdater
                     {
                         if (File.Exists(filePath))
                         {
-                            if(new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
+                            if (new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
                             {
                                 continue;
                             }
+                            File.Delete(filePath);
                         }
-                        await response.Content.CopyToAsync(new FileStream(filePath, File.Exists(filePath)
-                            ? FileMode.Open : FileMode.CreateNew));
+
+                        using(var stream = new FileStream(filePath, File.Exists(filePath)
+                            ? FileMode.Open : FileMode.CreateNew))
+                        {
+                            await response.Content.CopyToAsync(stream);
+                        }
                     }
 
                     hasDownload = true;
@@ -86,7 +91,7 @@ internal static class RotationUpdater
     {
         var directories = Service.Config.OtherLibs
     .Where(Directory.Exists)
-    .Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
+    //.Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
     .Append(relayFolder);
 
         var assemblies = from dir in directories
