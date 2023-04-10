@@ -476,13 +476,15 @@ public partial class BaseAction
 
         if (!ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
-        if((IntPtr)Service.RawPlayer == IntPtr.Zero) return false;
+        if((IntPtr)Service.RawPlayer == IntPtr.Zero || (IntPtr)tarAddress == IntPtr.Zero) return false;
 
-        var id = ActionManager.GetActionInRangeOrLoS(AdjustedID,
-(FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.RawPlayer,
-    tarAddress);
+        return true;
 
-        return id is 0 or 565;
+//        var id = ActionManager.GetActionInRangeOrLoS(AdjustedID,
+//(FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.RawPlayer,
+//    tarAddress);
+
+//        return id is 0 or 565;
     }
 
     private static bool NoAOE
