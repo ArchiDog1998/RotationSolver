@@ -90,9 +90,9 @@ internal static class RotationUpdater
     private static void LoadRotationsFromLocal(string relayFolder)
     {
         var directories = Service.Config.OtherLibs
-    .Where(Directory.Exists)
-    //.Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
-    .Append(relayFolder);
+            .Where(Directory.Exists)
+            //.Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
+            .Append(relayFolder);
 
         var assemblies = from dir in directories
                          where Directory.Exists(dir)
