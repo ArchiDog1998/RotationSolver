@@ -147,7 +147,6 @@ internal partial class Strings
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
     public string ConfigWindow_Param_KeyBoardNoiseTime { get; set; } = "Effect interval";
     public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
-    public string ConfigWindow_Param_VoiceName { get; set; } = "Voice Name";
     public string ConfigWindow_Param_FlytextPositional { get; set; } = "Hint positional anticipation by flytext";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback";

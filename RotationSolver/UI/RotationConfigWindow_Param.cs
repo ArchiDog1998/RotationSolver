@@ -127,22 +127,6 @@ internal partial class RotationConfigWindow
         DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_VoiceVolume,
             ref Service.Config.VoiceVolume, Service.Default.VoiceVolume, max: 100);
 
-        if(SpeechHelper.VoiceNames != null)
-        {
-            if (ImGui.BeginCombo(LocalizationManager.RightLang.ConfigWindow_Param_VoiceName, Service.Config.VoiceName))
-            {
-                foreach (var item in SpeechHelper.VoiceNames)
-                {
-                    if (ImGui.Selectable(item))
-                    {
-                        Service.Config.VoiceName = item;
-                        Service.Config.Save();
-                    }
-                }
-                ImGui.EndCombo();
-            }
-        }
-
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayOutStateChanged,
             ref Service.Config.SayOutStateChanged, Service.Default.SayOutStateChanged);
 
