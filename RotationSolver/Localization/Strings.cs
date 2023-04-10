@@ -205,7 +205,7 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "Set the HP threshold for using single healing ability";
     public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "Set the HP threshold for using single healing spell";
 
-    public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first it tank's HP threshold is lower than this.";
+    public string ConfigWindow_Param_HealthTankHealerRatio { get; set; } = "Heal healer or tank first if its HP threshold is lower than this.";
 
 
     public string ConfigWindow_Param_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
