@@ -168,7 +168,7 @@ public sealed class AST_Default : AST_Base
         if (DrawnCrownCard == CardType.LORD || MinorArcana.WillHaveOneChargeGCD(1))
         {
             //进攻牌，随便发。或者CD要转好了，赶紧发掉。
-            if (MinorArcana.CanUse(out act)) return true;
+            if (MinorArcana.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         //发牌
@@ -190,7 +190,7 @@ public sealed class AST_Default : AST_Base
         if (CelestialIntersection.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
         //奶量牌，要看情况。
-        if (DrawnCrownCard == CardType.LADY && MinorArcana.CanUse(out act)) return true;
+        if (DrawnCrownCard == CardType.LADY && MinorArcana.CanUse(out act, CanUseOption.MustUse)) return true;
 
         var tank = PartyTanks;
         var isBoss = Malefic.IsTargetBoss;
@@ -236,7 +236,7 @@ public sealed class AST_Default : AST_Base
         if (Player.HasStatus(true, StatusID.HoroscopeHelios) && Horoscope.CanUse(out act)) return true;
 
         //奶量牌，要看情况。
-        if (DrawnCrownCard == CardType.LADY && MinorArcana.CanUse(out act)) return true;
+        if (DrawnCrownCard == CardType.LADY && MinorArcana.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }

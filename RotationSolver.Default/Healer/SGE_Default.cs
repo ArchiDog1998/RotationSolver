@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace RotationSolver.Default.Healer;
 
 [SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Healer/SGE_Default.cs")]
@@ -21,7 +23,7 @@ public sealed class SGE_Default : SGE_Base
         },
         ActionCheck = b =>
         {
-            if (InCombat) return false;
+            if (InCombat || HasHostilesInRange) return false;
             if (b == Player) return false;
             if (b.HasStatus(false, StatusID.EukrasianDiagnosis, StatusID.EukrasianPrognosis, StatusID.Galvanize)) return false;
             return true;
@@ -54,7 +56,8 @@ public sealed class SGE_Default : SGE_Base
             if (Zoe.CanUse(out act)) return true;
         }
 
-        if (nextGCD == Diagnosis)
+        if (nextGCD.IsTheSameTo(false, Pneuma,
+           Diagnosis, Prognosis))
         {
             //混合
             if (Krasis.CanUse(out act)) return true;
@@ -63,16 +66,27 @@ public sealed class SGE_Default : SGE_Base
         return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
     }
 
-    [RotationDesc(ActionID.Haima, ActionID.Taurochole)]
+    [RotationDesc(ActionID.Haima, ActionID.Taurochole, ActionID.Panhaima, ActionID.Kerachole, ActionID.Holos)]
     protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
-        if (Addersgall == 0 || Dyskrasia.CanUse(out _))
+        if (Addersgall == 0)
         {
             if (Haima.CanUse(out act)) return true;
         }
 
         //白牛清汁
         if (Taurochole.CanUse(out act) && Taurochole.Target.GetHealthRatio() < 0.8) return true;
+
+        if (Addersgall == 0)
+        {
+            if ((!Haima.EnoughLevel || Haima.ElapsedAfter(20)) && Panhaima.CanUse(out act)) return true;
+        }
+
+        //坚角清汁
+        if ((!Taurochole.EnoughLevel || Taurochole.ElapsedAfter(20)) && Kerachole.CanUse(out act)) return true;
+
+        //整体论
+        if (Holos.CanUse(out act)) return true;
 
         return base.DefenseSingleAbility(abilitiesRemaining, out act);
     }
@@ -103,7 +117,7 @@ public sealed class SGE_Default : SGE_Base
     protected override bool DefenseAreaAbility(byte abilityRemain, out IAction act)
     {
         //泛输血
-        if (Addersgall == 0 && PartyMembersAverHP < 0.7)
+        if (Addersgall == 0)
         {
             if (Panhaima.CanUse(out act)) return true;
         }
@@ -181,7 +195,7 @@ public sealed class SGE_Default : SGE_Base
         if (Dosis.CanUse(out act)) return true;
 
         //箭毒
-        if (Toxikon.CanUse(out act, CanUseOption.MustUse)) return true;
+        if (IsMoving && Toxikon.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //脱战给T刷单盾嫖豆子
         if (MEukrasianDiagnosis.CanUse(out _))
@@ -192,34 +206,60 @@ public sealed class SGE_Default : SGE_Base
             act = MEukrasianDiagnosis;
             return true;
         }
-        if (Eukrasia.CanUse(out act)) return true;
+        //if (Eukrasia.CanUse(out act)) return true;
+
+        if (PartyMembersAverHP < 0.65f || Dyskrasia.CanUse(out _) && PartyTanks.Any(t => t.GetHealthRatio() < 0.6f))
+        {
+            //魂灵风息
+            if (Pneuma.CanUse(out act, CanUseOption.MustUse)) return true;
+        }
 
         return false;
     }
 
-    [RotationDesc(ActionID.Taurochole, ActionID.Druochole, ActionID.Holos, ActionID.Physis, ActionID.Panhaima)]
+    [RotationDesc(ActionID.Taurochole, ActionID.Kerachole, ActionID.Druochole, ActionID.Holos, ActionID.Physis, ActionID.Panhaima)]
     protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         //白牛青汁
         if (Taurochole.CanUse(out act)) return true;
 
+        if (Kerachole.CanUse(out act) && Level >= 78) return true;
+
         //灵橡清汁
-        if (Druochole.CanUse(out act)) return true;
+        if ((!Taurochole.EnoughLevel || Taurochole.IsCoolingDown) && Druochole.CanUse(out act)) return true;
 
         //当资源不足时加入范围治疗缓解压力
-        var tank = PartyTanks;
-        var isBoss = Dosis.Target.IsBoss();
-        if (Addersgall == 0 && tank.Count() == 1 && tank.Any(t => t.GetHealthRatio() < 0.6f) && !isBoss)
-        {
-            //整体论
-            if (Holos.CanUse(out act)) return true;
+        //var tank = PartyTanks;
+        //var isBoss = Dosis.Target.IsBoss();
+        //if (Addersgall == 0 && tank.Count() == 1 && tank.Any(t => t.GetHealthRatio() < 0.6f) && !isBoss)
+        //{
+        //    //整体论
+        //    if (Holos.CanUse(out act)) return true;
 
+        //    //自生
+        //    if (Physis.CanUse(out act)) return true;
+
+        //    if (Haima.CanUse(out act)) return true;
+
+        //    //泛输血
+        //    if (Panhaima.CanUse(out act)) return true;
+        //}
+        var tank = PartyTanks;
+        if (Addersgall == 0 && tank.Any(t => t.GetHealthRatio() < 0.65f))
+        {
             //自生
             if (Physis.CanUse(out act)) return true;
 
+            //整体论
+            if (Holos.CanUse(out act)) return true;
+
+            if (Haima.CanUse(out act)) return true;
+
             //泛输血
-            if (Panhaima.CanUse(out act)) return true;
+            if ((!Haima.EnoughLevel || Haima.ElapsedAfter(20)) && Panhaima.CanUse(out act)) return true;
         }
+
+        if (Kerachole.CanUse(out act)) return true;
 
         return base.HealSingleAbility(abilitiesRemaining, out act);
     }
@@ -273,6 +313,8 @@ public sealed class SGE_Default : SGE_Base
 
         //寄生清汁
         if (Ixochole.CanUse(out act)) return true;
+
+        if (Kerachole.CanUse(out act)) return true;
 
         return false;
     }

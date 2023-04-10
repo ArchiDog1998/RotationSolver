@@ -14,7 +14,7 @@ public sealed class DRK_Balance : DRK_Base
 
     private static bool InDeliruim => !Delirium.EnoughLevel || Delirium.IsCoolingDown && Delirium.ElapsedOneChargeAfterGCD(1) && !Delirium.ElapsedOneChargeAfterGCD(7);
 
-    private static bool InTwoMinBurst => BloodWeapon.IsCoolingDown && Delirium.IsCoolingDown && (LivingShadow.IsCoolingDown && !(LivingShadow.ElapsedAfter(20)));
+    private static bool InTwoMinBurst => BloodWeapon.IsCoolingDown && Delirium.IsCoolingDown && ((LivingShadow.IsCoolingDown && !(LivingShadow.ElapsedAfter(20))) || !LivingShadow.EnoughLevel);
 
     private static bool CombatLess => CombatElapsedLess(3);
 
@@ -89,7 +89,7 @@ public sealed class DRK_Balance : DRK_Base
         return false;
     }
 
-    [RotationDesc(ActionID.TheBlackestNight, ActionID.Oblation, ActionID.ShadowWall, ActionID.Rampart, ActionID.DarkMind, ActionID.Reprisal)]
+    [RotationDesc(ActionID.TheBlackestNight, ActionID.Oblation, ActionID.Reprisal, ActionID.ShadowWall, ActionID.Rampart, ActionID.DarkMind)]
     protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
     {
         act = null;
