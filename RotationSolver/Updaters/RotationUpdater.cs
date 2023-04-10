@@ -19,6 +19,9 @@ internal static class RotationUpdater
         var relayFolder = Service.Interface.ConfigDirectory.FullName;
         if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
 
+        LoadRotationsFromLocal(relayFolder);
+
+        bool hasDownload = false;
         using (var client = new HttpClient())
         {
             IEnumerable<string> libs = Service.Config.OtherLibs;
@@ -55,10 +58,23 @@ internal static class RotationUpdater
                     //Download
                     using (HttpResponseMessage response = await client.GetAsync(url))
                     {
-                        await response.Content.CopyToAsync(new FileStream(filePath, File.Exists(filePath)
-                            ? FileMode.Open : FileMode.CreateNew));
+                        if (File.Exists(filePath))
+                        {
+                            if (new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
+                            {
+                                continue;
+                            }
+                            File.Delete(filePath);
+                        }
+
+                        using(var stream = new FileStream(filePath, File.Exists(filePath)
+                            ? FileMode.Open : FileMode.CreateNew))
+                        {
+                            await response.Content.CopyToAsync(stream);
+                        }
                     }
 
+                    hasDownload = true;
                     PluginLog.Log($"Successfully download the {filePath}");
                 }
                 catch (Exception ex)
@@ -68,9 +84,14 @@ internal static class RotationUpdater
             }
         }
 
+        if (hasDownload) LoadRotationsFromLocal(relayFolder);
+    }
+
+    private static void LoadRotationsFromLocal(string relayFolder)
+    {
         var directories = Service.Config.OtherLibs
             .Where(Directory.Exists)
-            .Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
+            //.Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
             .Append(relayFolder);
 
         var assemblies = from dir in directories

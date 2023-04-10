@@ -15,10 +15,15 @@ public static class TargetFilter
 
         availableCharas = availableCharas.Where(StatusHelper.NeedHealing);
 
+        var healerTars = availableCharas.GetJobCategory(JobRole.Healer);
         var tankTars = availableCharas.GetJobCategory(JobRole.Tank);
 
+        var healerTar = tankTars.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
+        if (healerTar != null && healerTar.GetHealingRatio() < Service.Config.HealthTankHealerRatio)
+            return healerTar;
+
         var tankTar = tankTars.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
-        if (tankTar != null &&　tankTar.GetHealingRatio() < Service.Config.HealthTankRatio)
+        if (tankTar != null &&　tankTar.GetHealingRatio() < Service.Config.HealthTankHealerRatio)
             return tankTar;
 
         var tar = availableCharas.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();

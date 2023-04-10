@@ -236,8 +236,7 @@ public partial class BaseAction
             {
                 availableCharas = availableCharas.Where(b => b.IsJobCategory(JobRole.Tank));
             }
-            availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range)
-                .Where(CanUseTo);
+            availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range).Where(CanUseTo);
             //特殊选队友的方法。
             target = ChoiceTarget(availableCharas, mustUse);
         }
@@ -341,8 +340,8 @@ public partial class BaseAction
     private IEnumerable<BattleChara> GetMostObjects(IEnumerable<BattleChara> targets, int maxCount)
     {
         var range = Range;
-        var canAttack = targets.Where(t => t.DistanceToPlayer() <= range + _action.EffectRange);
-        var canGetObj = canAttack.Where(t => t.DistanceToPlayer() <= range && CanUseTo(t));
+        var canAttack = TargetFilter.GetObjectInRadius(targets, range + _action.EffectRange);
+        var canGetObj = TargetFilter.GetObjectInRadius(canAttack, range).Where(CanUseTo);
 
         if (_action.CastType == 1) return canGetObj;
 
@@ -476,13 +475,15 @@ public partial class BaseAction
 
         if (!ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
-        if((IntPtr)Service.RawPlayer == IntPtr.Zero) return false;
+        if((IntPtr)Service.RawPlayer == IntPtr.Zero || (IntPtr)tarAddress == IntPtr.Zero) return false;
 
-        var id = ActionManager.GetActionInRangeOrLoS(AdjustedID,
-(FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.RawPlayer,
-    tarAddress);
+        return true;
 
-        return id is 0 or 565;
+//        var id = ActionManager.GetActionInRangeOrLoS(AdjustedID,
+//(FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.RawPlayer,
+//    tarAddress);
+
+//        return id is 0 or 565;
     }
 
     private static bool NoAOE
