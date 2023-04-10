@@ -1,6 +1,4 @@
-﻿using Dalamud.Logging;
-using System.Diagnostics;
-using System.Speech.Synthesis;
+﻿using System.Diagnostics;
 using System.Text;
 
 namespace RotationSolver;
