@@ -6,6 +6,7 @@ public abstract partial class CustomRotation
     {
         act = DataCenter.CommandNextAction;
         if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,  CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return true;
+        if(act is IBaseItem i &&  i.CanUse(out _)) return true;
 
         if (!Service.Config.GetValue(SettingsCommand.UseAbility) 
             || Player.TotalCastTime - Player.CurrentCastTime > Service.Config.AbilitiesInterval)

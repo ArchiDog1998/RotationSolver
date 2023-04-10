@@ -125,8 +125,6 @@ internal static class OverlayWindow
         if (!Service.Player.IsJobCategory(JobRole.Tank)
             && !Service.Player.IsJobCategory(JobRole.Melee) ) return;
 
-        if (!(ActionUpdater.NextGCDAction?.IsSingleTarget ?? false)) return;
-
         var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
             ? ActionUpdater.NextGCDAction.Target
             : Service.TargetManager.Target?.IsNPCEnemy() ?? false
@@ -141,7 +139,7 @@ internal static class OverlayWindow
         float radius = target.HitboxRadius + Service.Player.HitboxRadius + 3;
         float rotation = target.Rotation;
 
-        if (Service.Config.DrawMeleeOffset && DataCenter.InCombat)
+        if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
         {
             var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
             List<Vector2> pts1 = new List<Vector2>(4 * COUNT);
@@ -156,13 +154,11 @@ internal static class OverlayWindow
             DrawBoundary(pts2, offsetColor);
         }
 
-        if (ActionUpdater.NextGCDAction == null || !ActionUpdater.NextGCDAction.Target.IsNPCEnemy()) return;
-
         List<Vector2> pts = new List<Vector2>(4 * COUNT);
         bool wrong = target.DistanceToPlayer() > 3;
         if (Service.Config.DrawPositional && !Service.Player.HasStatus(true, StatusID.TrueNorth))
         {
-            var shouldPos = ActionUpdater.NextGCDAction.EnemyPositional;
+            var shouldPos = ActionUpdater.NextGCDAction?.EnemyPositional ?? EnemyPositional.None;
 
             switch (shouldPos)
             {

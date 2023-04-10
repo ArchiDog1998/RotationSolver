@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <Compile Remove="Tank\DRK_Balance.cs" />
-  </ItemGroup>
-  <ItemGroup>
-	  <ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
-  </ItemGroup>
-</Project>

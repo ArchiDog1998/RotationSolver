@@ -147,7 +147,6 @@ internal partial class Strings
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
     public string ConfigWindow_Param_KeyBoardNoiseTime { get; set; } = "Effect interval";
     public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
-    public string ConfigWindow_Param_VoiceName { get; set; } = "Voice Name";
     public string ConfigWindow_Param_FlytextPositional { get; set; } = "Hint positional anticipation by flytext";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback";
@@ -206,7 +205,7 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "Set the HP threshold for using single healing ability";
     public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "Set the HP threshold for using single healing spell";
 
-    public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first it tank's HP threshold is lower than this.";
+    public string ConfigWindow_Param_HealthTankHealerRatio { get; set; } = "Heal healer or tank first if its HP threshold is lower than this.";
 
 
     public string ConfigWindow_Param_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";

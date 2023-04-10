@@ -9,7 +9,6 @@ public class PluginConfiguration : IPluginConfiguration
     public int Version { get; set; } = 6;
 
     public int VoiceVolume = 100;
-    public string VoiceName = string.Empty;
     public SortedSet<string> DisabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DisabledActions { get; private set; } = new SortedSet<uint>();
     public SortedSet<uint> NotInCoolDownActions { get; private set; } = new SortedSet<uint>();
@@ -105,7 +104,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public Dictionary<ClassJobID, float> HealthForDyingTanks { get; set; } = new Dictionary<ClassJobID, float>();
 
-    public float HealthTankRatio = 0.4f;
+    public float HealthTankHealerRatio = 0.4f;
 
     public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;

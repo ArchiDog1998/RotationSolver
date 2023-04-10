@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Logging;
+using RotationSolver.Updaters;
 using System.Diagnostics;
 using System.Text;
 
@@ -32,9 +33,10 @@ internal static class RotationHelper
             name = "Unknown";
             return false;
         }
-        name = rotation.GetType().Assembly.GetName().Name;
+        var assembly = rotation.GetType().Assembly;
+        name = assembly.GetName().Name;
 
-        return AllowedAssembly.Contains(name);
+        return AllowedAssembly.Contains(name + " - " + assembly.GetAuthor());
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)
@@ -53,8 +55,8 @@ internal static class RotationHelper
         try
         {
             var name = assembly.GetName().Name;
-            return RotationLoadContext.AssemblyPaths.TryGetValue(name, out var path) 
-                ? FileVersionInfo.GetVersionInfo(path)?.CompanyName : name
+            return (RotationLoadContext.AssemblyPaths.TryGetValue(name, out var path) 
+                ? FileVersionInfo.GetVersionInfo(path)?.CompanyName : name)
                 ?? name ?? "Unknown";
         }
         catch

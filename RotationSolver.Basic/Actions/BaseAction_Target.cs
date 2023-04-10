@@ -236,8 +236,7 @@ public partial class BaseAction
             {
                 availableCharas = availableCharas.Where(b => b.IsJobCategory(JobRole.Tank));
             }
-            availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range)
-                .Where(CanUseTo);
+            availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range).Where(CanUseTo);
             //特殊选队友的方法。
             target = ChoiceTarget(availableCharas, mustUse);
         }
@@ -341,8 +340,8 @@ public partial class BaseAction
     private IEnumerable<BattleChara> GetMostObjects(IEnumerable<BattleChara> targets, int maxCount)
     {
         var range = Range;
-        var canAttack = targets.Where(t => t.DistanceToPlayer() <= range + _action.EffectRange);
-        var canGetObj = canAttack.Where(t => t.DistanceToPlayer() <= range && CanUseTo(t));
+        var canAttack = TargetFilter.GetObjectInRadius(targets, range + _action.EffectRange);
+        var canGetObj = TargetFilter.GetObjectInRadius(canAttack, range).Where(CanUseTo);
 
         if (_action.CastType == 1) return canGetObj;
 

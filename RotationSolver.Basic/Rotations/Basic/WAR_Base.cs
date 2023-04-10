@@ -9,7 +9,7 @@ public abstract class WAR_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
     private sealed protected override IBaseAction TankStance => Defiance;
 
-    public static IBaseAction Defiance { get; } = new BaseAction(ActionID.Defiance, shouldEndSpecial: true);
+    public static IBaseAction Defiance { get; } = new BaseAction(ActionID.Defiance, true, shouldEndSpecial: true);
 
     public static IBaseAction HeavySwing { get; } = new BaseAction(ActionID.HeavySwing);
 
@@ -72,28 +72,33 @@ public abstract class WAR_Base : CustomRotation
 
     public static IBaseAction Equilibrium { get; } = new BaseAction(ActionID.Equilibrium, true, isTimeline: true);
 
-    public static IBaseAction NascentFlash { get; } = new BaseAction(ActionID.NascentFlash, isTimeline: true)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-    };
 
-    public static IBaseAction Vengeance { get; } = new BaseAction(ActionID.Vengeance, isTimeline: true)
+
+    #region Defense Ability
+    public static IBaseAction Vengeance { get; } = new BaseAction(ActionID.Vengeance, true, isTimeline: true)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
-    public static IBaseAction RawIntuition { get; } = new BaseAction(ActionID.RawIntuition, isTimeline: true)
+    public static IBaseAction RawIntuition { get; } = new BaseAction(ActionID.RawIntuition, true, isTimeline: true)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
+    public static IBaseAction NascentFlash { get; } = new BaseAction(ActionID.NascentFlash, true, isTimeline: true)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
     public static IBaseAction ShakeItOff { get; } = new BaseAction(ActionID.ShakeItOff, true, isTimeline: true);
 
-    public static IBaseAction Holmgang { get; } = new BaseAction(ActionID.Holmgang, isTimeline: true)
+    public static IBaseAction Holmgang { get; } = new BaseAction(ActionID.Holmgang, true, isTimeline: true)
     {
         ChoiceTarget = (tars, mustUse) => Player,
     };
+    #endregion
+
 
     public static IBaseAction PrimalRend { get; } = new BaseAction(ActionID.PrimalRend)
     {

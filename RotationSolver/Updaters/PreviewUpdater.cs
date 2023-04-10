@@ -156,6 +156,7 @@ internal static class PreviewUpdater
                 if (doingSomething(slot, hotBarIndex > 9 ? null: hotBar->Slot[slotIndex], (uint)highLightId))
                 {
                     var iconAddon = slot.Icon;
+                    if ((IntPtr)iconAddon == IntPtr.Zero) continue;
                     if (!iconAddon->AtkResNode.IsVisible) continue;
                     actionBar->PulseActionBarSlot(slotIndex);
                     UIModule.PlaySound(12, 0, 0, 0);

@@ -43,6 +43,8 @@ I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXI
 
 If you have any questions about usage, please check the [Wiki](https://archidog1998.github.io/RotationSolver/#/). Wiki is NOT ready yet...
 
+The rotations definitions are [here](https://github.com/ArchiDog1998/FFXIVRotations)
+
 [![Discord](https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2)](https://discord.gg/4fECHunam9)
 
 [![Crowdin](https://badges.crowdin.net/badge/light/crowdin-on-dark.png)](https://crowdin.com/project/rotationsolver)
