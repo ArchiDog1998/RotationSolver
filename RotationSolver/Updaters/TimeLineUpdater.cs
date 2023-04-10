@@ -19,7 +19,7 @@ internal class TimeLineUpdater
         var customRotation = RotationUpdater.RightNowRotation;
         if (customRotation == null) return;
 
-        var allActions = RotationUpdater.RightRotationBaseActions;
+        var allActions = RotationUpdater.RightRotationActions;
 
         var set = RightSet;
         if (set == null) return;
@@ -111,7 +111,7 @@ internal class TimeLineUpdater
 
         if (hasSet)
         {
-            if (ImGuiHelper.IconButton(Dalamud.Interface.FontAwesomeIcon.Ban, "##DeleteTimelineConditionSet"))
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, "##DeleteTimelineConditionSet"))
             {
                 Delete(set.Name);
             }
@@ -119,13 +119,13 @@ internal class TimeLineUpdater
             ImGui.SameLine();
         }
 
-        if (ImGuiHelper.IconButton(Dalamud.Interface.FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
         {
             AddNew();
         }
 
         ImGui.SameLine();
-        if (ImGuiHelper.IconButton(Dalamud.Interface.FontAwesomeIcon.Folder, "##OpenDefinationFolder"))
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Folder, "##OpenDefinationFolder"))
         {
             Process.Start("explorer.exe", _timelineFolder);
         }

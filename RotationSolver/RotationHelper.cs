@@ -1,22 +1,28 @@
 ﻿using Dalamud.Interface.Colors;
+using Dalamud.Logging;
 using System.Diagnostics;
+using System.Text;
 
 namespace RotationSolver;
 
 internal static class RotationHelper
 {
-    const string DefaultAssembly = "RotationSolver.Default";
-    static readonly string[] _allowedAssembly = new string[]
-    {
-        DefaultAssembly,
-        //"RotationSolver.Extra",
-    };
+    public static string[] AllowedAssembly { get; private set; } = new string[0];
 
-    public static bool IsDefault(this ICustomRotation rotation)
+    public static async void LoadList()
     {
-        var type = rotation.GetType();
-        if (DefaultAssembly != type.Assembly.GetName().Name) return false;
-        return type.Name.Contains("Default", StringComparison.OrdinalIgnoreCase);
+        using (var client = new HttpClient())
+        {
+            try
+            {
+                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/whitelist.json");
+                AllowedAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts));
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Log(ex, "Failed to load white List.");
+            }
+        }
     }
     
     public static bool IsAllowed(this ICustomRotation rotation, out string name)
@@ -27,11 +33,13 @@ internal static class RotationHelper
             return false;
         }
         name = rotation.GetType().Assembly.GetName().Name;
-        return _allowedAssembly.Contains(name);
+
+        return AllowedAssembly.Contains(name);
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)
-        => !rotation.IsAllowed(out _) ? ImGuiColors.DalamudViolet : rotation.IsBeta() ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite ;
+        => !rotation.IsAllowed(out _) ? ImGuiColors.DalamudViolet : rotation.IsBeta() 
+        ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite ;
 
     public static bool IsBeta(this ICustomRotation rotation)
         => rotation.GetType().GetCustomAttribute<BetaRotationAttribute>() != null;
@@ -44,9 +52,10 @@ internal static class RotationHelper
     {
         try
         {
-            return FileVersionInfo.GetVersionInfo(assembly.Location)?.CompanyName
-                ?? assembly.GetName().Name
-                ?? "Unknown";
+            var name = assembly.GetName().Name;
+            return RotationLoadContext.AssemblyPaths.TryGetValue(name, out var path) 
+                ? FileVersionInfo.GetVersionInfo(path)?.CompanyName : name
+                ?? name ?? "Unknown";
         }
         catch
         {

@@ -75,6 +75,7 @@ internal class SocialUpdater
             _canSaying = true;
         }
         InPvp = territory.IsPvpZone;
+        DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);
         DataCenter.InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
     }
 

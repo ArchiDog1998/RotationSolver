@@ -146,7 +146,7 @@ public partial class BaseAction
     private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
         //如果用户不想使用自动友方地面放置功能
-        if (!Service.Config.UseGroundBeneficialAbility) return false;
+        if (!Service.Config.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
 
         if (Service.Config.BeneficialAreaOnTarget && Service.TargetManager.Target != null)
         {
@@ -171,8 +171,7 @@ public partial class BaseAction
                 var disToTankRound = Vector3.Distance(player.Position, attackT.Position) + attackT.HitboxRadius;
 
                 if (disToTankRound < _action.EffectRange
-                    || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius
-                    || disToTankRound > range)
+                    || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius)
                 {
                     _position = player.Position;
                 }
@@ -477,13 +476,15 @@ public partial class BaseAction
 
         if (!ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
-        if((IntPtr)Service.RawPlayer == IntPtr.Zero) return false;
+        if((IntPtr)Service.RawPlayer == IntPtr.Zero || (IntPtr)tarAddress == IntPtr.Zero) return false;
 
-        var id = ActionManager.GetActionInRangeOrLoS(AdjustedID,
-(FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.RawPlayer,
-    tarAddress);
+        return true;
 
-        return id is 0 or 565;
+//        var id = ActionManager.GetActionInRangeOrLoS(AdjustedID,
+//(FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.RawPlayer,
+//    tarAddress);
+
+//        return id is 0 or 565;
     }
 
     private static bool NoAOE

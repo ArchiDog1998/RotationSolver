@@ -7,7 +7,8 @@ public abstract partial class CustomRotation
         act = DataCenter.CommandNextAction;
         if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,  CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return true;
 
-        if (!Service.Config.UseAbility || Player.TotalCastTime - Player.CurrentCastTime > Service.Config.AbilitiesInterval)
+        if (!Service.Config.GetValue(SettingsCommand.UseAbility) 
+            || Player.TotalCastTime - Player.CurrentCastTime > Service.Config.AbilitiesInterval)
         {
             act = null;
             return false;
@@ -86,7 +87,7 @@ public abstract partial class CustomRotation
                 break;
         }
 
-        if (DataCenter.SetAutoStatus(AutoStatus.TankStance, Service.Config.AutoTankStance
+        if (DataCenter.SetAutoStatus(AutoStatus.TankStance, Service.Config.GetValue(SettingsCommand.AutoTankStance)
             && !DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
             && !HasTankStance && TankStance.CanUse(out act)))
         {
@@ -157,7 +158,7 @@ public abstract partial class CustomRotation
 
         //Auto Provoke
         if (DataCenter.SetAutoStatus(AutoStatus.Provoke, role == JobRole.Tank
-            && (Service.Config.AutoProvokeForTank || DataCenter.AllianceTanks.Count() < 2)
+            && (Service.Config.GetValue(SettingsCommand.AutoProvokeForTank) || DataCenter.AllianceTanks.Count() < 2)
             && TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count()))
         {
             if (!HasTankStance && TankStance.CanUse(out act)) return true;
@@ -165,7 +166,7 @@ public abstract partial class CustomRotation
         }
 
         //No using defense abilities.
-        if (!Service.Config.UseDefenseAbility) return false;
+        if (!Service.Config.GetValue(SettingsCommand.UseDefenseAbility)) return false;
 
         if (helpDefenseAOE)
         {
@@ -251,7 +252,8 @@ public abstract partial class CustomRotation
             if (Job.GetJobRole() is JobRole.Healer or JobRole.RangedMagical &&
             action.CastTime >= 5 && Swiftcast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
-            if (Service.Config.AutoUseTrueNorth && abilitiesRemaining == 1 && action.EnemyPositional != EnemyPositional.None && action.Target != null)
+            if (Service.Config.GetValue(SettingsCommand.AutoUseTrueNorth) && abilitiesRemaining == 1 
+                && action.EnemyPositional != EnemyPositional.None && action.Target != null)
             {
                 if (action.EnemyPositional != action.Target.FindEnemyPositional() && action.Target.HasPositional())
                 {

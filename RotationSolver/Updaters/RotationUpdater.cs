@@ -1,5 +1,7 @@
 ﻿using Dalamud.Logging;
 using RotationSolver.Localization;
+using System;
+using System.Text;
 
 namespace RotationSolver.Updaters;
 
@@ -12,21 +14,80 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
 
-    static readonly string[] _locs = new string[] { "RotationSolver.dll", "RotationSolver.Basic.dll" };
-
-
-    public static void GetAllCustomRotations()
+    public static async void GetAllCustomRotations()
     {
-        var directories =  Service.Config.OtherLibs
-            .Select(s => s.Trim()).Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location));
+        var relayFolder = Service.Interface.ConfigDirectory.FullName;
+        if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
+
+        LoadRotationsFromLocal(relayFolder);
+
+        bool hasDownload = false;
+        using (var client = new HttpClient())
+        {
+            IEnumerable<string> libs = Service.Config.OtherLibs;
+            try
+            {
+                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/downloadList.json");
+                libs = libs.Union(JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts)));
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Log(ex, "Failed to load downloading List.");
+            }
+
+            foreach (var url in libs)
+            {
+                try
+                {
+                    var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
+                         && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                    if (!valid) continue;
+                }
+                catch
+                {
+                    continue;
+                }
+                try
+                {
+
+                    var fileName = url.Split('/').LastOrDefault();
+                    if (string.IsNullOrEmpty(fileName)) continue;
+                    if (Path.GetExtension(fileName) != ".dll") continue;
+                    var filePath = Path.Combine(relayFolder, fileName);
+
+                    //Download
+                    using (HttpResponseMessage response = await client.GetAsync(url))
+                    {
+                        await response.Content.CopyToAsync(new FileStream(filePath, File.Exists(filePath)
+                            ? FileMode.Open : FileMode.CreateNew));
+                    }
+
+                    hasDownload = true;
+                    PluginLog.Log($"Successfully download the {filePath}");
+                }
+                catch (Exception ex)
+                {
+                    PluginLog.LogError(ex, $"failed to download from {url}");
+                }
+            }
+        }
+
+        if (hasDownload) LoadRotationsFromLocal(relayFolder);
+    }
+
+    private static void LoadRotationsFromLocal(string relayFolder)
+    {
+        var directories = Service.Config.OtherLibs
+    .Where(Directory.Exists)
+    .Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
+    .Append(relayFolder);
 
         var assemblies = from dir in directories
                          where Directory.Exists(dir)
                          from l in Directory.GetFiles(dir, "*.dll")
-                         where !_locs.Any(l.Contains)
                          select RotationLoadContext.LoadFrom(l);
 
-        PluginLog.Log("Try to load rotations from these assemblies.", assemblies.Select(a => a.FullName));
+        PluginLog.Log("Try to load rotations from these assemblies.\n" + string.Join('\n', assemblies.Select(a => "- " + a.FullName)));
 
         AuthorHashes = new SortedList<string, string>(
             (from a in assemblies
@@ -123,7 +184,7 @@ internal static class RotationUpdater
 
             }).OrderBy(g => g.Key);
 
-    public static IBaseAction[] RightRotationBaseActions { get; private set; } = new IBaseAction[0];
+    public static IAction[] RightRotationActions { get; private set; } = new IAction[0];
 
     public static void UpdateRotation()
     {
@@ -134,21 +195,25 @@ internal static class RotationUpdater
             if (!group.classJobIds.Contains(nowJob)) continue;
 
             RightNowRotation = GetChooseRotation(group);
-            RightRotationBaseActions = RightNowRotation.AllBaseActions;
+            RightRotationActions = RightNowRotation.AllActions;
             return;
         }
         RightNowRotation = null;
-        RightRotationBaseActions = new IBaseAction[0];
+        RightRotationActions = new IAction[0];
     }
 
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group)
     {
-        Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var name);
+        var has = Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var name);
        
         var rotation = group.rotations.FirstOrDefault(r => r.GetType().FullName == name);
-        rotation ??= group.rotations.FirstOrDefault(RotationHelper.IsDefault);
         rotation ??= group.rotations.FirstOrDefault(r => r.IsAllowed(out _));
         rotation ??= group.rotations.FirstOrDefault();
+
+        if (!has && rotation != null)
+        {
+            Service.Config.RotationChoices[(uint)group.jobId] = rotation.GetType().FullName;
+        }
         return rotation;
     }
 }

@@ -4,7 +4,7 @@ internal partial class Strings
 {
     #region Commands
     public string Commands_Rotation { get; set; } = "Open config window.";
-    public string Commands_ChangeAutoBurst { get; set; } = "Modify automatic burst to {0}";
+    public string Commands_ChangeSettingsValue { get; set; } = "Modify {0} to {1}";
     public string Commands_ChangeRotationConfig { get; set; } = "Modify {0} to {1}";
     public string Commands_CannotFindRotationConfig { get; set; } = "Failed to find the config in this rotation, please check it.";
 
@@ -73,12 +73,12 @@ internal partial class Strings
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
         = "Close special window.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
-    public string ConfigWindow_Helper_HighEndWarning { get; set; } = "This `{0}` rotation is not allowed to be used in High-end Duty!";
+    public string ConfigWindow_Helper_HighEndWarning { get; set; } = "This <{0}> rotation is not allowed to be used in High-end Duty!";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game Version";
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
-    public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in 5s";
+    public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
     public string ConfigWindow_Rotation_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
 
     public string ConfigWindow_RotationDev_Description { get; set; } = "You can get some extra rotation development information here.";
@@ -265,6 +265,7 @@ internal partial class Strings
     public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Info Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
+    public string ConfigWindow_Control_CooldownWindowIconSize { get; set; } = "Cooldown icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
     public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and middle click to clear the key setting.";
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";

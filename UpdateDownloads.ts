@@ -29,7 +29,7 @@ const output = await Promise.all(repos.map(async (repo) => {
     AssemblyVersion: data.tag_name.replace(/^v/, ""),
       Changelog: clearText(data.body),
       DownloadCount: count.toString(),
-      LastUpdate: data.published_at.substring(0, 10),
+      LastUpdate: new Date(data.published_at).valueOf() / 1000,
       RepoUrl: `https://github.com/${user}/${repo}`,
     DownloadLinkInstall: data.assets[0].browser_download_url,
     DownloadLinkUpdate: data.assets[0].browser_download_url,

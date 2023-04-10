@@ -1,18 +1,21 @@
-namespace RotationSolver.Default.Tank;
+namespace RotationSolver.Balance.Tank;
 
 
 [RotationDesc(ActionID.BloodWeapon, ActionID.Delirium)]
-[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/DRK_Default.cs")]
+[SourceCode("https://github.com/ArchiDog1998/RotationSolver/blob/main/RotationSolver.Default/Tank/DRK_Balance.cs")]
 [LinkDescription("https://www.thebalanceffxiv.com/img/jobs/drk/drk_standard_6.2_v1.png")]
 public sealed class DRK_Default : DRK_Base
 {
-    public override string GameVersion => "6.31";
+    public override string GameVersion => "6.38";
 
-    public override string RotationName => "Standard";
+    public override string RotationName => "Balance";
+
+    public override string Description => "Special thanks to Nore for fixing the rotation.";
 
     protected override bool CanHealSingleAbility => false;
 
-    private static bool InDeliruim => !Delirium.EnoughLevel || Delirium.IsCoolingDown && Delirium.ElapsedOneChargeAfterGCD(1) && !Delirium.ElapsedOneChargeAfterGCD(7);
+    private static bool InTwoMinBurst => BloodWeapon.IsCoolingDown && Delirium.IsCoolingDown 
+        && LivingShadow.IsCoolingDown && !LivingShadow.ElapsedAfter(20);
 
     private static bool CombatLess => CombatElapsedLess(3);
 
@@ -24,7 +27,7 @@ public sealed class DRK_Default : DRK_Base
 
             if (CombatLess) return false;
 
-            if (InDeliruim || HasDarkArts) return true;
+            if ((InTwoMinBurst && SaltedEarth.IsCoolingDown && ShadowBringer.CurrentCharges==0 && CarveandSpit.IsCoolingDown) || HasDarkArts) return true;
 
             if (Configs.GetBool("TheBlackestNight") && Player.CurrentMp < 6000) return false;
 
@@ -96,28 +99,30 @@ public sealed class DRK_Default : DRK_Base
 
         if (abilitiesRemaining == 1)
         {
-            if (TheBlackestNight.CanUse(out act)) return true;
-
             //10
             if (Oblation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+
+            if (Reprisal.CanUse(out act, CanUseOption.MustUse)) return true;
+
+            if (TheBlackestNight.CanUse(out act)) return true;
         }
         else
         {
             //30
-            if (ShadowWall.CanUse(out act)) return true;
+            if ((!Rampart.IsCoolingDown || Rampart.ElapsedAfter(60)) && (ShadowWall.CanUse(out act))) return true;
 
             //20
-            if (Rampart.CanUse(out act)) return true;
+            if ((ShadowWall.IsCoolingDown && ShadowWall.ElapsedAfter(60)) && (Rampart.CanUse(out act))) return true;
             if (DarkMind.CanUse(out act)) return true;
         }
-
-        if (Reprisal.CanUse(out act, CanUseOption.MustUse)) return true;
 
         return false;
     }
 
     protected override bool GeneralGCD(out IAction act)
     {
+        if (IsMoving && HasHostilesInRange && BloodWeapon.CanUse(out act)) return true;
+
         //Use Blood
         if (UseBlood)
         {
@@ -153,6 +158,7 @@ public sealed class DRK_Default : DRK_Base
             if (UseBurstMedicine(out act)) return true;
             if (BloodWeapon.CanUse(out act)) return true;
             if (Delirium.CanUse(out act)) return true;
+            if (LivingShadow.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         if (CombatLess)
@@ -161,23 +167,29 @@ public sealed class DRK_Default : DRK_Base
             return false;
         }
 
-        if (LivingShadow.CanUse(out act)) return true;
-
         if (!IsMoving && SaltedEarth.CanUse(out act, CanUseOption.MustUse)) return true;
 
-        if (InDeliruim)
+        if (InTwoMinBurst)
         {
             if (ShadowBringer.CanUse(out act, CanUseOption.MustUse)) return true;
+        }
 
-            if (AbyssalDrain.CanUse(out act)) return true;
-            if (CarveandSpit.CanUse(out act)) return true;
+        if (AbyssalDrain.CanUse(out act)) return true;
+        if (CarveandSpit.CanUse(out act)) return true;
 
+        if (InTwoMinBurst)
+        {
             if (ShadowBringer.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
+
+            if (Plunge.CanUse(out act, CanUseOption.MustUse) && !IsMoving) return true;
         }
 
         if (SaltandDarkness.CanUse(out act)) return true;
 
-        if (Plunge.CanUse(out act, CanUseOption.MustUse) && !IsMoving) return true;
+        if (InTwoMinBurst)
+        {
+            if (Plunge.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo) && !IsMoving) return true;
+        }
 
         return false;
     }

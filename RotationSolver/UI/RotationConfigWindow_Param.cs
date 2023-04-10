@@ -308,43 +308,38 @@ internal partial class RotationConfigWindow
 
         ImGui.Separator();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst,
-            ref Service.Config.AutoBurst, Service.Default.AutoBurst);
-
-        ImGui.SameLine();
-        ImGuiHelper.Spacing();
-        ImGuiHelper.DisplayCommandHelp(OtherCommandType.Settings, nameof(Service.Config.AutoBurst));
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst, SettingsCommand.AutoBurst);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseItem,
             ref Service.Config.UseItem, Service.Default.UseItem,
             LocalizationManager.RightLang.ConfigWindow_Param_UseItemDesc);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAbility,
-            ref Service.Config.UseAbility, Service.Default.UseAbility);
+            SettingsCommand.UseAbility);
 
-        if (Service.Config.UseAbility)
+        if (Service.Config.GetValue(SettingsCommand.UseAbility))
         {
             ImGui.Indent();
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseDefenceAbility,
-                ref Service.Config.UseDefenseAbility, Service.Default.UseDefenseAbility,
+                SettingsCommand.UseDefenseAbility,
                 LocalizationManager.RightLang.ConfigWindow_Param_UseDefenceAbilityDesc);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoShield,
-                ref Service.Config.AutoTankStance, Service.Default.AutoTankStance);
+                SettingsCommand.AutoTankStance);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoProvokeForTank,
-                ref Service.Config.AutoProvokeForTank, Service.Default.AutoProvokeForTank,
+                SettingsCommand.AutoProvokeForTank,
                 LocalizationManager.RightLang.ConfigWindow_Param_AutoProvokeForTankDesc);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoUseTrueNorth,
-                ref Service.Config.AutoUseTrueNorth, Service.Default.AutoUseTrueNorth);
+                SettingsCommand.AutoUseTrueNorth);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerBySwift,
-                ref Service.Config.RaisePlayerBySwift, Service.Default.RaisePlayerBySwift);
+                SettingsCommand.RaisePlayerBySwift);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseGroundBeneficialAbility,
-                ref Service.Config.UseGroundBeneficialAbility, Service.Default.UseGroundBeneficialAbility);
+                SettingsCommand.UseGroundBeneficialAbility);
 
             ImGui.Unindent();
         }
@@ -373,7 +368,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
             ref Service.Config.OnlyHotOnTanks, Service.Default.OnlyHotOnTanks);
 
-        if (Service.Config.UseGroundBeneficialAbility)
+        if (Service.Config.GetValue(SettingsCommand.UseGroundBeneficialAbility))
         {
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
                 ref Service.Config.BeneficialAreaOnTarget, Service.Default.BeneficialAreaOnTarget);
@@ -509,18 +504,32 @@ internal partial class RotationConfigWindow
         }
     }
 
+    internal static void DrawCheckBox(string name, SettingsCommand command, string description = "", Action otherThing = null)
+    {
+        var value = Service.Config.GetValue(command);
+        DrawCheckBox(name, ref value, command.GetDefault(), description, () =>
+        {
+            Service.Config.SetValue(command, value);
+            otherThing?.Invoke();
+        });
+
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+        ImGuiHelper.DisplayCommandHelp(OtherCommandType.Settings, command.ToString());
+    }
+
     internal static void DrawCheckBox(string name, ref bool value, bool @default, string description = "", Action otherThing = null)
     {
         if (ImGui.Checkbox(name, ref value))
         {
-            Service.Config.Save();
             otherThing?.Invoke();
+            Service.Config.Save();
         }
         if (ImGuiHelper.HoveredStringReset(description) && value != @default)
         {
+            otherThing?.Invoke();
             value = @default;
             Service.Config.Save();
-            otherThing?.Invoke();
         }
     }
 

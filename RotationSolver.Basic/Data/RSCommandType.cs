@@ -33,3 +33,31 @@ public enum OtherCommandType : byte
     DoActions,
     ToggleActions,
 }
+
+public enum SettingsCommand : byte
+{
+    AutoBurst,
+    UseAbility,
+    UseDefenseAbility,
+    AutoTankStance,
+    AutoProvokeForTank,
+    AutoUseTrueNorth,
+    RaisePlayerBySwift,
+    UseGroundBeneficialAbility,
+}
+
+public static class SettingsCommandExtension
+{
+    public static bool GetDefault(this SettingsCommand command) => command switch
+    {
+        SettingsCommand.AutoBurst => true,
+        SettingsCommand.UseAbility => true,
+        SettingsCommand.UseDefenseAbility => true,
+        SettingsCommand.AutoTankStance => true,
+        SettingsCommand.AutoProvokeForTank => true,
+        SettingsCommand.AutoUseTrueNorth => true,
+        SettingsCommand.RaisePlayerBySwift => true,
+        SettingsCommand.UseGroundBeneficialAbility => true,
+        _ => false,
+    };
+}

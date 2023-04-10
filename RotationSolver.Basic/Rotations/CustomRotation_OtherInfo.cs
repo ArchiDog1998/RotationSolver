@@ -97,7 +97,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Is in burst right now? Usually it used with team support actions.
     /// </summary>
-    protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.AutoBurst;
+    protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(SettingsCommand.AutoBurst);
 
     bool _canUseHealAction => Job.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer;
 
@@ -122,6 +122,7 @@ public abstract partial class CustomRotation
     #endregion
 
     protected static ClientLanguage Language => Service.Language;
+    protected static TerritoryContentType TerritoryContentType => DataCenter.TerritoryContentType;
 
 
     public static uint AdjustId(uint id) => Service.GetAdjustedActionId(id);

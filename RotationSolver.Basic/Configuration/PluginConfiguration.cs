@@ -22,18 +22,19 @@ public class PluginConfiguration : IPluginConfiguration
     public Dictionary<uint, string> RotationChoices { get; private set; } = new Dictionary<uint, string>();
     public Dictionary<uint, byte> TargetToHostileTypes { get; set; } =
         new Dictionary<uint, byte>();
+
+    private Dictionary<SettingsCommand, bool> SettingsBools { get; set; } = new Dictionary<SettingsCommand, bool>();
+    public bool GetValue(SettingsCommand command) => Service.Config.SettingsBools.TryGetValue(command, out var value) ? value : command.GetDefault();
+    public void SetValue(SettingsCommand command, bool value) => Service.Config.SettingsBools[command] = value;
+
     public int AddDotGCDCount = 2;
 
     public int TimelineIndex = 0;
-    public bool AutoBurst = true;
+
     public bool AutoOffBetweenArea = true;
     public bool AutoOffCutScene = true;
     public bool AutoOffWhenDead = true;
-    public bool UseAbility = true;
-    public bool UseDefenseAbility = true;
     public bool NeverReplaceIcon = false;
-    public bool AutoProvokeForTank = true;
-    public bool AutoUseTrueNorth = true;
     public bool ChangeTargetForFate = true;
     public bool MoveTowardsScreenCenter = true;
 
@@ -51,10 +52,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool PoslockCasting = false;
     public int PoslockModifier = 0;
     public bool RaisePlayerByCasting = true;
-    public bool RaisePlayerBySwift = true;
     public bool RaiseBrinkOfDeath = true;
     public int LessMPNoRaise = 0;
-    public bool AutoTankStance = true;
     public bool AddEnemyListToHostile = true;
     public bool UseAOEWhenManual = false;
     public bool UseAOEAction = true;
@@ -80,7 +79,6 @@ public class PluginConfiguration : IPluginConfiguration
     public int KeyBoardNoiseMax = 3;
     public float KeyBoardNoiseTimeMin = 0.1f;
     public float KeyBoardNoiseTimeMax = 0.2f;
-    public bool UseGroundBeneficialAbility = true;
     public bool MoveAreaActionFarthest = true;
     public bool StartOnCountdown = true;
     public bool NoNewHostiles = false;
@@ -158,7 +156,11 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthRatioDot = 1.2f;
 
     public bool InDebug = false;
-    public string[] OtherLibs = new string[0];
+    public bool AutoUpdateLibs = true;
+    public string[] OtherLibs = new string[] 
+    {
+        "https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip",
+    };
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
@@ -185,6 +187,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float ControlWindowGCDSize = 40;
     public float ControlWindow0GCDSize = 30;
+    public float CooldownWindowIconSize = 30;
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;

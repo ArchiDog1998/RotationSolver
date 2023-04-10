@@ -33,7 +33,6 @@ public sealed class WHM_Default : WHM_Base
                 if (AfflatusRapture.CanUse(out act)) return true;
             }
             if (AfflatusSolace.CanUse(out act)) return true;
-
         }
 
         //群体输出
