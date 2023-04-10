@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.2.5](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.4...v2.2.5) (2023-04-10)
+
+
+### Bug Fixes
+
+* add downloadList to test. ([ce4adf3](https://github.com/ArchiDog1998/RotationSolver/commit/ce4adf3a14f5c8965a385b8aba798c15385bd10a))
+* add size check for download rotations. ([9976c69](https://github.com/ArchiDog1998/RotationSolver/commit/9976c690aa1d6ec2657638ab4ca12f3d3030b222))
+* changed the whitelist for future using. ([55d0186](https://github.com/ArchiDog1998/RotationSolver/commit/55d0186ea09302815741e1b7ecd6d46f25d95460))
+* fixed the download error. ([8dd6e92](https://github.com/ArchiDog1998/RotationSolver/commit/8dd6e923ba0b02801d70fef2551e8f6f1117c608))
+* make healer more selfish ([8c44f2e](https://github.com/ArchiDog1998/RotationSolver/commit/8c44f2ef0aaf69e08fca6c41421930613be26284))
+* not drawing offset whill State is cancel. ([2c4e048](https://github.com/ArchiDog1998/RotationSolver/commit/2c4e048df25cbc6d1b0f673ea06d0b61b672bc61))
+* remove the rotation assemblies from this repo. ([a0e49a1](https://github.com/ArchiDog1998/RotationSolver/commit/a0e49a18491a283a1956e2b662646818fe4a9350))
+* remove the use of `ActionManager.GetActionInRangeOrLoS` ([730e3fe](https://github.com/ArchiDog1998/RotationSolver/commit/730e3fe0be6781c536d9a7979b7cb204bd3a9945))
+* removed the Voice Name feature. ([328d286](https://github.com/ArchiDog1998/RotationSolver/commit/328d286cfa9146578bab53c6f6d5ab6c6f1427f1))
+* update the rotation download method. ([658a5b8](https://github.com/ArchiDog1998/RotationSolver/commit/658a5b838406b675440edefc9c62a439e8516068))
+
 ## [2.2.4](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.3...v2.2.4) (2023-04-09)
 
 
