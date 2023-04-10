@@ -421,7 +421,16 @@ internal class ControlWindow : Window
         {
             if (DataCenter.StateType == StateCommandType.Cancel)
             {
-                action.Use();
+                bool canDoIt = false;
+                if(action is IBaseAction act)
+                {
+                    canDoIt = act.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | CanUseOption.SkipDisable);
+                }
+                else if (action is IBaseItem item)
+                {
+                    canDoIt = item.CanUse(out _);
+                }
+                if(canDoIt) action.Use();
             }
             else
             {
