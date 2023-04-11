@@ -203,6 +203,8 @@ public enum StatusID : ushort
 
     ChaoticSpring = 2719,
 
+    ChaosThrust = 118,
+
     #region MNK
     OpoOpoForm = 107,
 
