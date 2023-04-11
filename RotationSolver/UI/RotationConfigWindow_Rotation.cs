@@ -66,7 +66,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawRotationRole(ICustomRotation rotation)
+    internal static void DrawRotationRole(ICustomRotation rotation)
     {
         DrawTargetHostileTYpe(rotation);
         DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);

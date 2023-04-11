@@ -81,6 +81,9 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
             ref Service.Config.UseWorkTask, Service.Default.UseWorkTask);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToggleManual,
+            ref Service.Config.ToggleManual, Service.Default.ToggleManual);
     }
 
     private void DrawParamDelay()
