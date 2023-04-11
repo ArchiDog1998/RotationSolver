@@ -261,11 +261,11 @@ public static class DataCenter
     private static DateTime _timeLastActionUsed = DateTime.Now;
     public static TimeSpan TimeSinceLastAction => DateTime.Now - _timeLastActionUsed;
 
-    internal static ActionID LastAction { get; private set; } = 0;
+    public static ActionID LastAction { get; private set; } = 0;
 
-    internal static ActionID LastGCD { get; private set; } = 0;
+    public static ActionID LastGCD { get; private set; } = 0;
 
-    internal static ActionID LastAbility { get; private set; } = 0;
+    public static ActionID LastAbility { get; private set; } = 0;
     public static void AddActionRec(Action act)
     {
         var id = (ActionID)act.RowId;
@@ -273,11 +273,11 @@ public static class DataCenter
         //Record
         switch (act.GetActionType())
         {
-            case ActionCate.Spell: //魔法
-            case ActionCate.WeaponSkill: //战技
+            case ActionCate.Spell:
+            case ActionCate.WeaponSkill:
                 LastGCD = id;
                 break;
-            case ActionCate.Ability: //能力
+            case ActionCate.Ability:
                 LastAbility = id;
                 break;
             default:

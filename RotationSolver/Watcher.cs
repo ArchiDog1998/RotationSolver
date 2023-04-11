@@ -19,15 +19,6 @@ public class Watcher : IDisposable
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
     private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static ActionID LastAction { get; set; } = 0;
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static ActionID LastGCD { get; set; } = 0;
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static ActionID LastAbility { get; set; } = 0;
-
     public Watcher()
     {
         SignatureHelper.Initialise(this);

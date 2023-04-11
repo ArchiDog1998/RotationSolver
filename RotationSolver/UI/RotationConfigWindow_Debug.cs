@@ -123,9 +123,9 @@ internal partial class RotationConfigWindow
     }
     private void DrawLastAction()
     {
-        DrawAction(Watcher.LastAction, nameof(Watcher.LastAction));
-        DrawAction(Watcher.LastAbility, nameof(Watcher.LastAbility));
-        DrawAction(Watcher.LastGCD, nameof(Watcher.LastGCD));
+        DrawAction(DataCenter.LastAction, nameof(DataCenter.LastAction));
+        DrawAction(DataCenter.LastAbility, nameof(DataCenter.LastAbility));
+        DrawAction(DataCenter.LastGCD, nameof(DataCenter.LastGCD));
         DrawAction(DataCenter.LastComboAction, nameof(DataCenter.LastComboAction));
     }
 
@@ -160,8 +160,6 @@ internal partial class RotationConfigWindow
 
     private static void DrawAction(ActionID id, string type)
     {
-        var action = new BaseAction(id);
-
-        ImGui.Text($"{type}: {action}");
+        ImGui.Text($"{type}: {id}");
     }
 }
