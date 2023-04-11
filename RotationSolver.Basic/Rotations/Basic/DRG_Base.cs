@@ -15,6 +15,8 @@ public abstract class DRG_Base : CustomRotation
         ComboIds = new[] { ActionID.RaidenThrust }
     };
 
+    public static IBaseAction HeavensThrust { get; } = new BaseAction(ActionID.HeavensThrust);
+
     public static IBaseAction FullThrust { get; } = new BaseAction(ActionID.FullThrust);
 
     public static IBaseAction Disembowel { get; } = new BaseAction(ActionID.Disembowel)
