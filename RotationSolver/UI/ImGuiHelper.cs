@@ -456,7 +456,7 @@ internal static class ImGuiHelper
             ImGui.SameLine();
 
             ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
-            ImGui.Text(rotation.GetAuthor());
+            ImGui.Text(rotation.GetType().Assembly.GetName().Name);
             if (!rotation.IsAllowed(out _))
             {
                 var showStr = string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_HighEndWarning, rotation)

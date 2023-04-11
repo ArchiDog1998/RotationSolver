@@ -56,7 +56,6 @@ internal partial class RotationConfigWindow
             }
 
             ImGui.EndChild();
-
         }
     }
 }

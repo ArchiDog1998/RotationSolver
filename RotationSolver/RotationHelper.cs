@@ -9,7 +9,7 @@ namespace RotationSolver;
 internal static class RotationHelper
 {
     public static string[] AllowedAssembly { get; private set; } = new string[0];
-
+    static readonly SortedList<Assembly, string> _authors = new SortedList<Assembly, string>();
     public static async void LoadList()
     {
         using (var client = new HttpClient())
@@ -46,16 +46,14 @@ internal static class RotationHelper
     public static bool IsBeta(this ICustomRotation rotation)
         => rotation.GetType().GetCustomAttribute<BetaRotationAttribute>() != null;
 
-
-    public static string GetAuthor(this ICustomRotation rotation)
-        => rotation.GetType().Assembly.GetAuthor();
-
     public static string GetAuthor(this Assembly assembly)
     {
+        if (_authors.TryGetValue(assembly, out var author)) return author;
         try
         {
             var name = assembly.GetName().Name;
-            return (RotationLoadContext.AssemblyPaths.TryGetValue(name, out var path) 
+            return _authors[assembly] = 
+                (RotationLoadContext.AssemblyPaths.TryGetValue(name, out var path) 
                 ? FileVersionInfo.GetVersionInfo(path)?.CompanyName : name)
                 ?? name ?? "Unknown";
         }
