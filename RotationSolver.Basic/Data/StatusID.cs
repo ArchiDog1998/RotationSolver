@@ -201,6 +201,8 @@ public enum StatusID : ushort
 
     DraconianFire = 1863,
 
+    ChaoticSpring = 2719,
+
     #region MNK
     OpoOpoForm = 107,
 
