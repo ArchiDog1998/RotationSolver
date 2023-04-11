@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.2.6](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.5...v2.2.6) (2023-04-11)
+
+
+### Bug Fixes
+
+* add a action record about party members. ([7dace46](https://github.com/ArchiDog1998/RotationSolver/commit/7dace46113864c7e928c74c347c7c2f85b88dfa5))
+* add an assembly info tab in Rotation Dev. ([242ca55](https://github.com/ArchiDog1998/RotationSolver/commit/242ca55f65b07712998c0e854a229908786ea715))
+* add an save to Settings Command Checkbox. ([af271c0](https://github.com/ArchiDog1998/RotationSolver/commit/af271c03ea57f6763d2036a3b42e1b6ea1d2c724))
+* add manual toggle. ([78e715a](https://github.com/ArchiDog1998/RotationSolver/commit/78e715a2fa85bb61c3ee3d30c9811b082e764bd7))
+* add options about aoe usage. ([35fdb0e](https://github.com/ArchiDog1998/RotationSolver/commit/35fdb0e5a7c3bd4257f7d9118c36e1f4ac141233))
+* add Support and Help for third-party rotations. ([49286d5](https://github.com/ArchiDog1998/RotationSolver/commit/49286d51d6ce8db0ee5a2f07863cd7d4ce070a9f))
+* change AssemblyInfo from list to table. ([ec4a0e5](https://github.com/ArchiDog1998/RotationSolver/commit/ec4a0e52b9642c8d8e551c3fc8a51a046cfcf9b6))
+* changed the Action display in Action Panel. ([fc47cc6](https://github.com/ArchiDog1998/RotationSolver/commit/fc47cc68a4165976a2cad4523166ff99698e67b2))
+* changed the rotation info panel. ([86c7369](https://github.com/ArchiDog1998/RotationSolver/commit/86c736957d154186dac97bf31c7d90d4be3e68ec))
+* fixed assembly management. ([b1371d0](https://github.com/ArchiDog1998/RotationSolver/commit/b1371d0cd92da8a10c9ecd9b8fe9baa9d3348d1c))
+* fixed cooldown button clicking error. ([205fbc7](https://github.com/ArchiDog1998/RotationSolver/commit/205fbc7c320ce375b709813cca43b7bca90abb9d))
+* fixed cooldown cover size. ([28df880](https://github.com/ArchiDog1998/RotationSolver/commit/28df880cd53db49ff4427eefbee44dd220de15a7))
+* fixed StatusID.LifeSurge. ([010f64a](https://github.com/ArchiDog1998/RotationSolver/commit/010f64a03b0fc28c0d715e93475abffbe4512931))
+* fixed the last action record. ([1459fd8](https://github.com/ArchiDog1998/RotationSolver/commit/1459fd87de3fade66f90b93ccbb5db5ec9c0a927))
+* fixed the Melee Positional draw. ([948dd9c](https://github.com/ArchiDog1998/RotationSolver/commit/948dd9c4a0e3c35c117c9d79221c813eaf672500))
+* fixed war abilities category. ([4cdb483](https://github.com/ArchiDog1998/RotationSolver/commit/4cdb483e459692a42d0cab52d703cad985781ad4))
+* fixed with ui bugs. ([f3c9794](https://github.com/ArchiDog1998/RotationSolver/commit/f3c9794cc1e2252e6c6848f0044451d63c41fbad))
+* make LoadContext Private ([c7c9d21](https://github.com/ArchiDog1998/RotationSolver/commit/c7c9d2119a5de1c44bf084f2f8959ffae643e457))
+* Reduced the frequency of use of GetAuthors. ([5989a8a](https://github.com/ArchiDog1998/RotationSolver/commit/5989a8a7ecbecbbbe6bd2dd07e8f34815bc3d7e7))
+
 ## [2.2.5](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.4...v2.2.5) (2023-04-10)
 
 
