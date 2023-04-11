@@ -14,7 +14,6 @@ internal partial class RotationConfigWindow
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-
         if (ImGui.BeginTabBar("Debug Items"))
         {
             DrawParamTabItem("Status", DrawStatus);
@@ -26,7 +25,9 @@ internal partial class RotationConfigWindow
             DrawParamTabItem("Icon", DrawIcon);
             DrawParamTabItem("Effect", () =>
             {
-                ImGui.Text(Watcher.ShowStr.ToString());
+                ImGui.Text(Watcher.ShowStrSelf);
+                ImGui.Separator();
+                ImGui.Text(Watcher.ShowStrEnemy);
             });
 
             ImGui.EndTabBar();

@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Actions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
@@ -275,15 +276,14 @@ public static class DataCenter
         {
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
-                LastGCD = id;
+                LastAction = LastGCD = id;
                 break;
             case ActionCate.Ability:
-                LastAbility = id;
+                LastAction = LastAbility = id;
                 break;
             default:
                 return;
         }
-        LastAction = id;
 
         if (_actions.Count >= QUEUECAPACITY)
         {
