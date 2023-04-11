@@ -87,6 +87,21 @@ internal static class RotationUpdater
         if (hasDownload) LoadRotationsFromLocal(relayFolder);
     }
 
+    private static Assembly LoadOne(string filePath)
+    {
+        try
+        {
+            var assembly = RotationHelper.LoadFrom(filePath);
+            PluginLog.Log("Successfully loaded " + assembly.FullName);
+            return assembly;
+        }
+        catch (Exception ex)
+        {
+            PluginLog.Log("Failed to load " + filePath, ex);
+        }
+        return null;
+    }
+
     private static void LoadRotationsFromLocal(string relayFolder)
     {
         var directories = Service.Config.OtherLibs
@@ -97,9 +112,9 @@ internal static class RotationUpdater
         var assemblies = from dir in directories
                          where Directory.Exists(dir)
                          from l in Directory.GetFiles(dir, "*.dll")
-                         select RotationHelper.LoadFrom(l);
-
-        PluginLog.Log("Try to load rotations from these assemblies.\n" + string.Join('\n', assemblies.Select(a => "- " + a.FullName)));
+                         select LoadOne(l) into a
+                         where a != null
+                         select a;
 
         AuthorHashes = new SortedList<string, string>(
             (from a in assemblies
