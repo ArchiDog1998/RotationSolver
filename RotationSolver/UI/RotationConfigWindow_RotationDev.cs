@@ -27,30 +27,6 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
             ref Service.Config.InDebug, Service.Default.InDebug);
 
-        ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
-
-        if (ImGui.BeginTabBar("Rotation Devs"))
-        {
-            if (ImGui.BeginTabItem("Libs"))
-            {
-                DrawThridLibs();
-                ImGui.EndTabItem();
-            }
-
-            if (ImGui.BeginTabItem("Infos"))
-            {
-                DrawAssemblyInfos();
-                ImGui.EndTabItem();
-            }
-
-            ImGui.EndTabBar();
-        }
-        ImGui.PopStyleVar();
-    }
-
-    private void DrawThridLibs()
-    {
-
         if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f), true))
         {
             if (ImGui.Button("AddOne"))
@@ -83,32 +59,5 @@ internal partial class RotationConfigWindow
 
             ImGui.EndChild();
         }
-    }
-    private void DrawAssemblyInfos()
-    {
-        var assemblies = RotationUpdater.CustomRotationsDict
-            .SelectMany(d => d.Value)
-            .SelectMany(g => g.rotations)
-            .Select(r => r.GetType().Assembly)
-            .ToHashSet();
-
-        //if(ImGui.BeginTable("AssemblyTable", 2))
-        //{
-        //    foreach (var assembly in assemblies)
-        //    {
-        //        ImGui.TableNextRow();
-        //        if (ImGui.Button(assembly.GetName().Name + assembly.GetName().Version))
-        //        {
-        //            if (!RotationHelper.AssemblyInfos.TryGetValue(assembly.GetName().Name, out var path))
-        //                path = assembly.Location;
-
-        //            Process.Start("explorer.exe", path);
-        //        }
-
-        //        ImGui.TableNextColumn();
-        //        ImGui.Text(assembly.GetAuthor());
-        //    }
-        //    ImGui.EndTable();
-        //}
     }
 }

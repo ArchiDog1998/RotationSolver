@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Diagnostics;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
@@ -37,6 +38,16 @@ internal partial class RotationConfigWindow
                 ImGui.EndTabItem();
             }
         }
+
+        if (ImGui.BeginTabItem("Info"))
+        {
+            if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f), true))
+            {
+                DrawInfos();
+                ImGui.EndChild();
+            }
+            ImGui.EndTabItem();
+        }
     }
 
     private static void DrawRotations(RotationUpdater.CustomRotationGroup[] rotations)
@@ -55,7 +66,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    internal static void DrawRotationRole(ICustomRotation rotation)
+    private static void DrawRotationRole(ICustomRotation rotation)
     {
         DrawTargetHostileTYpe(rotation);
         DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);
@@ -143,6 +154,44 @@ internal partial class RotationConfigWindow
         {
             setValue(value);
             Service.Config.Save();
+        }
+    }
+
+    private static void DrawInfos()
+    {
+        var assemblyGrps = RotationUpdater.CustomRotationsDict
+            .SelectMany(d => d.Value)
+            .SelectMany(g => g.rotations)
+            .GroupBy(r => r.GetType().Assembly);
+
+        if (ImGui.BeginTable("AssemblyTable", 3))
+        {
+            foreach (var grp in assemblyGrps)
+            {
+                ImGui.TableNextRow();
+
+                
+                var assembly = grp.Key;
+                var isAllowed = assembly.IsAllowed();
+                if (isAllowed) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DPSRed);
+
+                var info = assembly.GetInfo();
+
+                if (ImGui.Button(info.Name + assembly.GetName().Version))
+                {
+                    Process.Start("explorer.exe", info.Path);
+                }
+
+                ImGui.TableNextColumn();
+                ImGui.Text(info.Author);
+
+                ImGui.TableNextColumn();
+
+                ImGui.Text(string.Join('\n', grp));
+
+                if (isAllowed) ImGui.PopStyleColor();
+            }
+            ImGui.EndTable();
         }
     }
 }

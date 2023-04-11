@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Loader;
 using System.Text;
+using System.Xml.Linq;
 
 namespace RotationSolver;
 
@@ -113,11 +114,16 @@ internal static class RotationHelper
             return false;
         }
         var assembly = rotation.GetType().Assembly;
+        name = assembly.GetName().Name;
 
-        if(_assemblyInfos.TryGetValue(assembly, out var info))
+        return assembly.IsAllowed();
+    }
+
+    public static bool IsAllowed(this Assembly assembly)
+    {
+        if (_assemblyInfos.TryGetValue(assembly, out var info))
         {
-            name = info.Name;
-            return _allowedAssembly.Contains(name + " - " + info.Author);
+            return _allowedAssembly.Contains(info.Name + " - " + info.Author);
         }
         return false;
     }
