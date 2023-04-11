@@ -199,6 +199,8 @@ public enum StatusID : ushort
 
     RightEye = 1910,
 
+    DraconianFire = 1863,
+
     #region MNK
     OpoOpoForm = 107,
 
