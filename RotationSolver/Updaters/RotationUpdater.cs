@@ -97,7 +97,7 @@ internal static class RotationUpdater
         var assemblies = from dir in directories
                          where Directory.Exists(dir)
                          from l in Directory.GetFiles(dir, "*.dll")
-                         select RotationLoadContext.LoadFrom(l);
+                         select RotationHelper.LoadFrom(l);
 
         PluginLog.Log("Try to load rotations from these assemblies.\n" + string.Join('\n', assemblies.Select(a => "- " + a.FullName)));
 
@@ -106,7 +106,7 @@ internal static class RotationUpdater
              select (a, a.GetCustomAttribute<AuthorHashAttribute>()) into author
              where author.Item2 != null
              group author by author.Item2 into gr
-             select (gr.Key.Hash, string.Join(", ", gr.Select(i => i.a.GetAuthor() + " - " + i.a.GetName().Name))))
+             select (gr.Key.Hash, string.Join(", ", gr.Select(i => i.a.GetInfo().Author + " - " + i.a.GetInfo().Name))))
              .ToDictionary(i => i.Hash, i => i.Item2));
 
         _customRotations = (

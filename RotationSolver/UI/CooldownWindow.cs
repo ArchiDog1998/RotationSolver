@@ -48,7 +48,6 @@ internal class CooldownWindow : InfoWindow
         var shouldSkip = recast < 3 && act is IBaseAction a && !a.IsRealGCD;
 
         ImGui.BeginGroup();
-        var pos = ImGui.GetCursorPos();
         var winPos = ImGui.GetWindowPos();
 
         var r = -1f;
@@ -56,8 +55,9 @@ internal class CooldownWindow : InfoWindow
         {
             r = !act.EnoughLevel ? 0: recast == 0 || !act.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
         }
-        ControlWindow.DrawIAction(act, width, r);
-        var size = ImGui.GetItemRectSize();
+        var pair = ControlWindow.DrawIAction(act, width, r);
+        var pos = pair.Item1;
+        var size = pair.Item2;
         ImGuiHelper.HoveredString(act.Name + "\n" + LocalizationManager.RightLang.ConfigWindow_Control_ClickToUse);
 
         if (!act.EnoughLevel)

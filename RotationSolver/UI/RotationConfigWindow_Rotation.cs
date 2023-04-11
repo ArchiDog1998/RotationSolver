@@ -1,6 +1,8 @@
 ﻿using Dalamud.Interface.Colors;
+using Dalamud.Utility;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Diagnostics;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
@@ -36,6 +38,16 @@ internal partial class RotationConfigWindow
                 }
                 ImGui.EndTabItem();
             }
+        }
+
+        if (ImGui.BeginTabItem("Info"))
+        {
+            //if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f)))
+            //{
+                DrawInfos();
+            //    ImGui.EndChild();
+            //}
+            ImGui.EndTabItem();
         }
     }
 
@@ -143,6 +155,117 @@ internal partial class RotationConfigWindow
         {
             setValue(value);
             Service.Config.Save();
+        }
+    }
+
+    private static void DrawInfos()
+    {
+        var assemblyGrps = RotationUpdater.CustomRotationsDict
+            .SelectMany(d => d.Value)
+            .SelectMany(g => g.rotations)
+            .GroupBy(r => r.GetType().Assembly);
+
+        if (ImGui.BeginTable("AssemblyTable", 5, ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY 
+            | ImGuiTableFlags.Resizable
+            | ImGuiTableFlags.SizingStretchProp))
+        {
+            ImGui.TableSetupScrollFreeze(0, 1);
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Name");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Version");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Author");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Rotations");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Links");
+
+            foreach (var grp in assemblyGrps)
+            {
+                ImGui.TableNextRow();
+
+                var assembly = grp.Key;
+                var isAllowed = assembly.IsAllowed();
+                if (!isAllowed) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudViolet);
+
+                var info = assembly.GetInfo();
+                ImGui.TableNextColumn();
+
+                if (ImGui.Button(info.Name))
+                {
+                    Process.Start("explorer.exe", "/select, \"" + info.Path + "\"" );
+                }
+
+                ImGui.TableNextColumn();
+
+                var version = assembly.GetName().Version;
+                if(version != null)
+                {
+                    ImGui.Text(version.ToString());
+                }
+
+                ImGui.TableNextColumn();
+
+                ImGui.Text(info.Author);
+
+                ImGui.TableNextColumn();
+
+                var lastRole = JobRole.None;
+                foreach (var jobs in grp.GroupBy(r => r.IconID))
+                {
+                    var role = jobs.FirstOrDefault().Job.GetJobRole();
+                    if(lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
+                    lastRole = role;
+
+                    ImGui.Image(IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed)).ImGuiHandle, new Vector2(30, 30));
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip(string.Join('\n', jobs));
+                    }
+                }
+
+                ImGui.TableNextColumn();
+
+                if (!string.IsNullOrEmpty(info.support))
+                {
+                    if (ImGui.Button("Support"))
+                    {
+                        try
+                        {
+                            Util.OpenLink(info.support);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(info.help))
+                {
+                    if (ImGui.Button("Help"))
+                    {
+                        try
+                        {
+                            Util.OpenLink(info.help);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+
+                if (!isAllowed) ImGui.PopStyleColor();
+            }
+            ImGui.EndTable();
         }
     }
 }

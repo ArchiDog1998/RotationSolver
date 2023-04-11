@@ -125,8 +125,6 @@ internal static class OverlayWindow
         if (!Service.Player.IsJobCategory(JobRole.Tank)
             && !Service.Player.IsJobCategory(JobRole.Melee) ) return;
 
-        if (!(ActionUpdater.NextGCDAction?.IsSingleTarget ?? false)) return;
-
         var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
             ? ActionUpdater.NextGCDAction.Target
             : Service.TargetManager.Target?.IsNPCEnemy() ?? false
@@ -156,13 +154,11 @@ internal static class OverlayWindow
             DrawBoundary(pts2, offsetColor);
         }
 
-        if (ActionUpdater.NextGCDAction == null || !ActionUpdater.NextGCDAction.Target.IsNPCEnemy()) return;
-
         List<Vector2> pts = new List<Vector2>(4 * COUNT);
         bool wrong = target.DistanceToPlayer() > 3;
         if (Service.Config.DrawPositional && !Service.Player.HasStatus(true, StatusID.TrueNorth))
         {
-            var shouldPos = ActionUpdater.NextGCDAction.EnemyPositional;
+            var shouldPos = ActionUpdater.NextGCDAction?.EnemyPositional ?? EnemyPositional.None;
 
             switch (shouldPos)
             {

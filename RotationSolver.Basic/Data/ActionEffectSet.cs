@@ -18,7 +18,7 @@ public unsafe struct ActionEffectSet
         TargetEffects = new TargetEffect[effectHeader->NumTargets];
         for (int i = 0; i < effectHeader->NumTargets; i++)
         {
-            TargetEffects[i] = new TargetEffect(Service.ObjectTable.SearchById(effectTargets[i]), &effectArray[8 * i]);
+            TargetEffects[i] = new TargetEffect(Service.ObjectTable.SearchById(effectTargets[i]), effectArray + 8 * i);
         }
     }
 
@@ -39,12 +39,26 @@ public unsafe struct ActionEffectSet
 public unsafe struct TargetEffect
 {
     public GameObject Target;
-    public ActionEffect* Effects;
+    private ActionEffect* _effects;
 
     public TargetEffect(GameObject target, ActionEffect* effects)
     {
         Target = target;
-        Effects = effects;
+        this._effects = effects;
+    }
+
+    /// <summary>
+    /// Get Effect.
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public ActionEffect this[int index]
+    {
+        get
+        {
+            if (index < 0 || index > 7) return default;
+            return _effects[index];
+        }
     }
 
     public override string ToString()
@@ -52,7 +66,7 @@ public unsafe struct TargetEffect
         var str = Target?.Name?.ToString();
         for (int i = 0; i < 8; i++)
         {
-            var e = Effects[i];
+            var e = _effects[i];
             str += "\n    " + e.ToString();
         }
         return str;

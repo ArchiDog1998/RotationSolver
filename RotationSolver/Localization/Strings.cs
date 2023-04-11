@@ -111,6 +111,7 @@ internal partial class Strings
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Turn off when dead.";
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
+    public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";
     public string ConfigWindow_Param_Delay { get; set; } = "Delay";
 
     public string ConfigWindow_Param_WeaponDelay { get; set; } = "Set the range of random delay for GCD in second.";

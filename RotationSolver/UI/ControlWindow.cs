@@ -414,29 +414,40 @@ internal class ControlWindow : Window
         }
     }
 
-    internal static void DrawIAction(IAction action, float width, float percent)
+    internal static (Vector2, Vector2) DrawIAction(IAction action, float width, float percent)
     {
-        DrawIAction(GetTexture(action).ImGuiHandle, width, action == null ? -1 : percent);
+        var result = DrawIAction(GetTexture(action).ImGuiHandle, width, action == null ? -1 : percent);
         if (action != null) ImGuiHelper.HoveredString(action.Name, () =>
         {
             if (DataCenter.StateType == StateCommandType.Cancel)
             {
-                action.Use();
+                bool canDoIt = false;
+                if(action is IBaseAction act)
+                {
+                    canDoIt = act.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | CanUseOption.SkipDisable);
+                }
+                else if (action is IBaseItem item)
+                {
+                    canDoIt = item.CanUse(out _);
+                }
+                if(canDoIt) action.Use();
             }
             else
             {
                 DataCenter.AddCommandAction(action, 5);
             }
         });
+        return result;
     }
 
-    static void DrawIAction(nint handle, float width, float percent)
+    static (Vector2, Vector2) DrawIAction(nint handle, float width, float percent)
     {
         var cursor = ImGui.GetCursorPos();
         ImGui.BeginGroup();
 
+        var pt = ImGui.GetCursorPos();
         ImGui.Image(handle, new Vector2(width, width));
-
+        var size = ImGui.GetItemRectSize();
         var pixPerUnit = width / 82;
 
         if (percent < 0)
@@ -515,6 +526,7 @@ internal class ControlWindow : Window
 
 
         ImGui.EndGroup();
+        return (pt, size);
     }
 
     static unsafe void DrawNextAction(float gcd, float ability, float width)
