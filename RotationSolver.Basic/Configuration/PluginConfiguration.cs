@@ -54,8 +54,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool RaiseBrinkOfDeath = true;
     public int LessMPNoRaise = 0;
     public bool AddEnemyListToHostile = true;
-    public bool UseAOEWhenManual = false;
-    public bool UseAOEAction = true;
     public bool UseItem = false;
     public bool PositionalFeedback = true;
     public bool DrawPositional = true;

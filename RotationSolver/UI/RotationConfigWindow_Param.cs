@@ -278,12 +278,12 @@ internal partial class RotationConfigWindow
     private void DrawParamAction()
     {
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
-            ref Service.Config.UseAOEAction, Service.Default.UseAOEAction);
+             SettingsCommand.UseAOEAction);
 
-        if(Service.Config.UseAOEAction)
+        if(Service.Config.GetValue(SettingsCommand.UseAOEAction))
         {
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEWhenManual,
-                ref Service.Config.UseAOEWhenManual, Service.Default.UseAOEWhenManual);
+                SettingsCommand.UseAOEWhenManual);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_NoNewHostiles,
                 ref Service.Config.NoNewHostiles, Service.Default.NoNewHostiles,
