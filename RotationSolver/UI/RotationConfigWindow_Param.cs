@@ -495,6 +495,7 @@ internal partial class RotationConfigWindow
         {
             Service.Config.SetValue(command, value);
             otherThing?.Invoke();
+            Service.Config.Save();
         });
 
         ImGui.SameLine();
