@@ -1,6 +1,8 @@
 ﻿using Dalamud.Utility;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
@@ -90,9 +92,23 @@ internal partial class RotationConfigWindow
             .Select(r => r.GetType().Assembly)
             .ToHashSet();
 
-        foreach (var assembly in assemblies)
+        if(ImGui.BeginTable("AssemblyTable", 2))
         {
-            ImGui.Text(assembly.GetName().Name + " - " + assembly.GetAuthor());
+            foreach (var assembly in assemblies)
+            {
+                ImGui.TableNextRow();
+                if (ImGui.Button(assembly.GetName().Name + assembly.GetName().Version))
+                {
+                    if (!RotationLoadContext.AssemblyPaths.TryGetValue(assembly.GetName().Name, out var path))
+                        path = assembly.Location;
+
+                    Process.Start("explorer.exe", path);
+                }
+
+                ImGui.TableNextColumn();
+                ImGui.Text(assembly.GetAuthor());
+            }
+            ImGui.EndTable();
         }
     }
 }
