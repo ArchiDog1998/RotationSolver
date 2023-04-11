@@ -3,6 +3,7 @@ using Dalamud.Logging;
 using Dalamud.Plugin;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel;
+using Lumina.Excel.CustomSheets;
 using System.Diagnostics;
 using System.Runtime.Loader;
 using System.Text;
@@ -32,7 +33,7 @@ internal static class RotationHelper
                 typeof(DalamudPluginInterface).Assembly,
                 typeof(DataCenter).Assembly,
                 typeof(SheetAttribute).Assembly,
-                typeof(ExcelRow).Assembly,
+                typeof(QuestDialogueText).Assembly,
             };
 
             _handledAssemblies = new Dictionary<string, Assembly>();
@@ -76,7 +77,7 @@ internal static class RotationHelper
         }
     }
 
-    public static readonly SortedList<Assembly, AssemblyInfo> _assemblyInfos = new SortedList<Assembly, AssemblyInfo>();
+    public static readonly Dictionary<Assembly, AssemblyInfo> _assemblyInfos = new Dictionary<Assembly, AssemblyInfo>();
 
     public static string[] _allowedAssembly { get; private set; } = new string[0];
     public static AssemblyInfo GetInfo(this Assembly assembly)

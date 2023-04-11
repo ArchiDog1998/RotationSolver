@@ -42,11 +42,11 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginTabItem("Info"))
         {
-            if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f), true))
-            {
+            //if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f)))
+            //{
                 DrawInfos();
-                ImGui.EndChild();
-            }
+            //    ImGui.EndChild();
+            //}
             ImGui.EndTabItem();
         }
     }
@@ -165,34 +165,75 @@ internal partial class RotationConfigWindow
             .SelectMany(g => g.rotations)
             .GroupBy(r => r.GetType().Assembly);
 
-        if (ImGui.BeginTable("AssemblyTable", 4))
+        if (ImGui.BeginTable("AssemblyTable", 5, ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY 
+            | ImGuiTableFlags.Resizable
+            | ImGuiTableFlags.SizingStretchProp))
         {
+            ImGui.TableSetupScrollFreeze(0, 1);
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Name");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Version");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Author");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Rotations");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Links");
+
             foreach (var grp in assemblyGrps)
             {
                 ImGui.TableNextRow();
 
-                
                 var assembly = grp.Key;
                 var isAllowed = assembly.IsAllowed();
-                if (isAllowed) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DPSRed);
+                if (!isAllowed) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudViolet);
 
                 var info = assembly.GetInfo();
+                ImGui.TableNextColumn();
 
-                if (ImGui.Button(info.Name + assembly.GetName().Version))
+                if (ImGui.Button(info.Name))
                 {
-                    Process.Start("explorer.exe", info.Path);
+                    Process.Start("explorer.exe", "/select, \"" + info.Path + "\"" );
                 }
 
                 ImGui.TableNextColumn();
+
+                var version = assembly.GetName().Version;
+                if(version != null)
+                {
+                    ImGui.Text(version.ToString());
+                }
+
+                ImGui.TableNextColumn();
+
                 ImGui.Text(info.Author);
 
                 ImGui.TableNextColumn();
 
-                ImGui.Text(string.Join('\n', grp));
+                var lastRole = JobRole.None;
+                foreach (var jobs in grp.GroupBy(r => r.IconID))
+                {
+                    var role = jobs.FirstOrDefault().Job.GetJobRole();
+                    if(lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
+                    lastRole = role;
+
+                    ImGui.Image(IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed)).ImGuiHandle, new Vector2(30, 30));
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip(string.Join('\n', jobs));
+                    }
+                }
 
                 ImGui.TableNextColumn();
 
-                if(!string.IsNullOrEmpty(info.support))
+                if (!string.IsNullOrEmpty(info.support))
                 {
                     if (ImGui.Button("Support"))
                     {
@@ -222,7 +263,7 @@ internal partial class RotationConfigWindow
                     }
                 }
 
-                if (isAllowed) ImGui.PopStyleColor();
+                if (!isAllowed) ImGui.PopStyleColor();
             }
             ImGui.EndTable();
         }
