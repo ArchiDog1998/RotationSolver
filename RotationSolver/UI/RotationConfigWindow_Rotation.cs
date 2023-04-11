@@ -235,7 +235,7 @@ internal partial class RotationConfigWindow
 
                 if (!string.IsNullOrEmpty(info.support))
                 {
-                    if (ImGui.Button("Support"))
+                    if (ImGui.Button($"Support##{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
@@ -250,7 +250,7 @@ internal partial class RotationConfigWindow
 
                 if (!string.IsNullOrEmpty(info.help))
                 {
-                    if (ImGui.Button("Help"))
+                    if (ImGui.Button($"Help##{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
