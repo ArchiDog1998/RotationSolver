@@ -3,16 +3,13 @@ using Dalamud.Logging;
 using Dalamud.Plugin;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel;
-using RotationSolver.Updaters;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Loader;
 using System.Text;
-using System.Xml.Linq;
 
 namespace RotationSolver;
 
-internal record AssemblyInfo(string Name, string Author, string Path);
+internal record AssemblyInfo(string Name, string Author, string Path, string support, string help);
 
 internal static class RotationHelper
 {
@@ -88,7 +85,7 @@ internal static class RotationHelper
         {
             return value;
         }
-        return _assemblyInfos[assembly] = new AssemblyInfo(assembly.GetName().Name, "Unknown", assembly.Location);
+        return _assemblyInfos[assembly] = new AssemblyInfo(assembly.GetName().Name, "Unknown", assembly.Location, string.Empty, string.Empty);
     }
     public static async void LoadList()
     {
@@ -155,7 +152,8 @@ internal static class RotationHelper
 
         var name = assembly.GetName().Name;
 
-        _assemblyInfos[assembly] = new AssemblyInfo(name, GetAuthor(filePath, name), filePath);
+        var attr = assembly.GetCustomAttribute<AssemblyLinkAttribute>();
+        _assemblyInfos[assembly] = new AssemblyInfo(name, GetAuthor(filePath, name), filePath, attr?.SupportLink, attr?.HelpLink);
         return assembly;
     }
 }

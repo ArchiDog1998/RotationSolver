@@ -1,4 +1,5 @@
 ﻿using Dalamud.Interface.Colors;
+using Dalamud.Utility;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.Diagnostics;
@@ -164,7 +165,7 @@ internal partial class RotationConfigWindow
             .SelectMany(g => g.rotations)
             .GroupBy(r => r.GetType().Assembly);
 
-        if (ImGui.BeginTable("AssemblyTable", 3))
+        if (ImGui.BeginTable("AssemblyTable", 4))
         {
             foreach (var grp in assemblyGrps)
             {
@@ -188,6 +189,38 @@ internal partial class RotationConfigWindow
                 ImGui.TableNextColumn();
 
                 ImGui.Text(string.Join('\n', grp));
+
+                ImGui.TableNextColumn();
+
+                if(!string.IsNullOrEmpty(info.support))
+                {
+                    if (ImGui.Button("Support"))
+                    {
+                        try
+                        {
+                            Util.OpenLink(info.support);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(info.help))
+                {
+                    if (ImGui.Button("Help"))
+                    {
+                        try
+                        {
+                            Util.OpenLink(info.help);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
 
                 if (isAllowed) ImGui.PopStyleColor();
             }
