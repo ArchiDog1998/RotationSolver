@@ -191,7 +191,7 @@ public enum StatusID : ushort
 
     PowerSurge = 2720,
 
-    LifeSurge = 2175,
+    LifeSurge = 116,
 
     LanceCharge = 1864,
 

@@ -81,6 +81,9 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
             ref Service.Config.UseWorkTask, Service.Default.UseWorkTask);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToggleManual,
+            ref Service.Config.ToggleManual, Service.Default.ToggleManual);
     }
 
     private void DrawParamDelay()
@@ -278,12 +281,12 @@ internal partial class RotationConfigWindow
     private void DrawParamAction()
     {
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
-            ref Service.Config.UseAOEAction, Service.Default.UseAOEAction);
+             SettingsCommand.UseAOEAction);
 
-        if(Service.Config.UseAOEAction)
+        if(Service.Config.GetValue(SettingsCommand.UseAOEAction))
         {
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEWhenManual,
-                ref Service.Config.UseAOEWhenManual, Service.Default.UseAOEWhenManual);
+                SettingsCommand.UseAOEWhenManual);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_NoNewHostiles,
                 ref Service.Config.NoNewHostiles, Service.Default.NoNewHostiles,
@@ -394,7 +397,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
             ref Service.Config.ChooseAttackMark, Service.Default.ChooseAttackMark);
 
-        if (Service.Config.ChooseAttackMark && Service.Config.UseAOEAction)
+        if (Service.Config.ChooseAttackMark && Service.Config.GetValue(SettingsCommand.UseAOEAction))
         {
             ImGui.Indent();
 
@@ -495,6 +498,7 @@ internal partial class RotationConfigWindow
         {
             Service.Config.SetValue(command, value);
             otherThing?.Invoke();
+            Service.Config.Save();
         });
 
         ImGui.SameLine();

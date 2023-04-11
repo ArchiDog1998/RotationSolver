@@ -54,8 +54,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool RaiseBrinkOfDeath = true;
     public int LessMPNoRaise = 0;
     public bool AddEnemyListToHostile = true;
-    public bool UseAOEWhenManual = false;
-    public bool UseAOEAction = true;
     public bool UseItem = false;
     public bool PositionalFeedback = true;
     public bool DrawPositional = true;
@@ -166,6 +164,7 @@ public class PluginConfiguration : IPluginConfiguration
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
+    public bool ToggleManual = false;
     public bool OnlyShowWithHostileOrInDuty = true;
     public bool ShowControlWindow = false;
     public bool IsControlWindowLock = false;

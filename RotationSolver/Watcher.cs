@@ -1,4 +1,5 @@
-﻿using Dalamud.Hooking;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Hooking;
 using Dalamud.Interface.Colors;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -19,15 +20,6 @@ public class Watcher : IDisposable
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
     private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static ActionID LastAction { get; set; } = 0;
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static ActionID LastGCD { get; set; } = 0;
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static ActionID LastAbility { get; set; } = 0;
-
     public Watcher()
     {
         SignatureHelper.Initialise(this);
@@ -35,31 +27,45 @@ public class Watcher : IDisposable
         _receiveAbilityHook?.Enable();
     }
 
-    public static string ShowStr { get; private set; } = string.Empty;
+    public static string ShowStrSelf { get; private set; } = string.Empty;
+    public static string ShowStrEnemy { get; private set; } = string.Empty;
 
     private static unsafe void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
         _receiveAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTargets);
-
-        //不是自己放出来的
-        if (Service.Player == null || sourceId != Service.Player.ObjectId) return;
-
+        if (Service.Player == null) return;
         var set = new ActionEffectSet(effectHeader, effectArray, effectTargets);
 
-        //不是一个Spell
-        if (set.Type != ActionType.Spell) return;
-        if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
-        ShowStr = set.ToString();
-
-        //获得身为技能是否正确flag
-        RecordAction(set.Target, set.Action, effectArray->Param2);
+        ActionFromSelf(sourceId, set);
+        ActionFromEnemy(sourceId, set);
     }
 
-    private static unsafe void RecordAction(GameObject tar, Action action, byte flag)
+    private static void ActionFromEnemy(uint sourceId, ActionEffectSet set)
     {
+        var source = Service.ObjectTable.SearchById(sourceId);
+        if(source == null) return;
+        if (source is not BattleChara battle) return;
+        if (battle is PlayerCharacter) return;
+
+        ShowStrEnemy = set.ToString();
+    }
+
+    private static void ActionFromSelf(uint sourceId, ActionEffectSet set)
+    {
+        if (sourceId != Service.Player.ObjectId) return;
+        if (set.Type != ActionType.Spell) return;
+        if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
+
+        var action = set.Action;
+        var tar = set.Target;
+
         if (tar == null || action == null) return;
 
-        DataCenter.AddActionRec(action);
+        var flag = set.TargetEffects[0][0].Param2;
+
+        //Record
+        DataCenter.AddActionRec(set.Action);
+        ShowStrSelf = set.ToString();
 
         //Macro
         foreach (var item in Service.Config.Events)
@@ -74,7 +80,7 @@ public class Watcher : IDisposable
             ImGui.GetColorU32(ImGuiColors.DPSRed), 0, action.Icon);
         }
 
-        //事后骂人！
+        //Positional
         if (Service.Config.PositionalFeedback
             && ConfigurationHelper.ActionPositional.TryGetValue((ActionID)action.RowId, out var pos)
             && pos.Tags.Length > 0 && !pos.Tags.Contains(flag))

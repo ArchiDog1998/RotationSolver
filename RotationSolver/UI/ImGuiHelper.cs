@@ -456,7 +456,7 @@ internal static class ImGuiHelper
             ImGui.SameLine();
 
             ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
-            ImGui.Text(rotation.GetAuthor());
+            ImGui.Text(rotation.GetType().Assembly.GetName().Name);
             if (!rotation.IsAllowed(out _))
             {
                 var showStr = string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_HighEndWarning, rotation)
@@ -602,18 +602,20 @@ internal static class ImGuiHelper
         {
             try
             {
-                ImGui.Text("Have One:" + action.HasOneCharge.ToString());
+#if DEBUG
                 ImGui.Text("Is Real GCD: " + action.IsRealGCD.ToString());
+                ImGui.Text("Has One:" + action.HasOneCharge.ToString());
                 ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
                 ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());
                 ImGui.Text("Recast Remain: " + action.RecastTimeRemain.ToString());
                 ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, action.AdjustedID).ToString());
-
                 ImGui.Text("Cast Time: " + action.CastTime.ToString());
                 ImGui.Text("MP: " + action.MPNeed.ToString());
+#endif
                 ImGui.Text($"Can Use: {action.CanUse(out _)} ");
                 ImGui.Text("Must Use:" + action.CanUse(out _,  CanUseOption.MustUse).ToString());
                 ImGui.Text("Empty Use:" + action.CanUse(out _, CanUseOption.EmptyOrSkipCombo).ToString());
+                ImGui.Text("Must & Empty Use:" + action.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo).ToString());
                 if (action.Target != null)
                 {
                     ImGui.Text("Target Name: " + action.Target.Name);

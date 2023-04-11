@@ -44,6 +44,8 @@ public enum SettingsCommand : byte
     AutoUseTrueNorth,
     RaisePlayerBySwift,
     UseGroundBeneficialAbility,
+    UseAOEAction,
+    UseAOEWhenManual,
 }
 
 public static class SettingsCommandExtension
@@ -58,6 +60,8 @@ public static class SettingsCommandExtension
         SettingsCommand.AutoUseTrueNorth => true,
         SettingsCommand.RaisePlayerBySwift => true,
         SettingsCommand.UseGroundBeneficialAbility => true,
+        SettingsCommand.UseAOEAction => true,
+        SettingsCommand.UseAOEWhenManual => false,
         _ => false,
     };
 }

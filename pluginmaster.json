@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.2.5",
-    "Changelog": "2.2.5 (2023-04-10)\n\n\nBug Fixes\n\n* add downloadList to test. (ce4adf3)\n* add size check for download rotations. (9976c69)\n* changed the whitelist for future using. (55d0186)\n* fixed the download error. (8dd6e92)\n* make healer more selfish (8c44f2e)\n* not drawing offset whill State is cancel. (2c4e048)\n* remove the rotation assemblies from this repo. (a0e49a1)\n* remove the use of `ActionManager.GetActionInRangeOrLoS` (730e3fe)\n* removed the Voice Name feature. (328d286)\n* update the rotation download method. (658a5b8)",
-    "DownloadCount": "6638",
-    "LastUpdate": 1681133958,
+    "AssemblyVersion": "2.2.6",
+    "Changelog": "2.2.6 (2023-04-11)\n\n\nBug Fixes\n\n* add a action record about party members. (7dace46)\n* add an assembly info tab in Rotation Dev. (242ca55)\n* add an save to Settings Command Checkbox. (af271c0)\n* add manual toggle. (78e715a)\n* add options about aoe usage. (35fdb0e)\n* add Support and Help for third-party rotations. (49286d5)\n* change AssemblyInfo from list to table. (ec4a0e5)\n* changed the Action display in Action Panel. (fc47cc6)\n* changed the rotation info panel. (86c7369)\n* fixed assembly management. (b1371d0)\n* fixed cooldown button clicking error. (205fbc7)\n* fixed cooldown cover size. (28df880)\n* fixed StatusID.LifeSurge. (010f64a)\n* fixed the last action record. (1459fd8)\n* fixed the Melee Positional draw. (948dd9c)\n* fixed war abilities category. (4cdb483)\n* fixed with ui bugs. (f3c9794)\n* make LoadContext Private (c7c9d21)\n* Reduced the frequency of use of GetAuthors. (5989a8a)",
+    "DownloadCount": "6570",
+    "LastUpdate": 1681223363,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.5/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.5/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.6/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.6/latest.zip"
   },
   {
     "Author": "ArchiDog1998",
@@ -35,7 +35,7 @@
     "ApplicableVersion": "any",
     "AssemblyVersion": "1.0.0.5",
     "Changelog": "",
-    "DownloadCount": "166",
+    "DownloadCount": "169",
     "LastUpdate": 1674699010,
     "RepoUrl": "https://github.com/ArchiDog1998/FakeName",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip",

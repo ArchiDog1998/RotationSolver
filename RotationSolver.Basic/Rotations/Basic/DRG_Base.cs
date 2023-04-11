@@ -15,6 +15,8 @@ public abstract class DRG_Base : CustomRotation
         ComboIds = new[] { ActionID.RaidenThrust }
     };
 
+    public static IBaseAction HeavensThrust { get; } = new BaseAction(ActionID.HeavensThrust);
+
     public static IBaseAction FullThrust { get; } = new BaseAction(ActionID.FullThrust);
 
     public static IBaseAction Disembowel { get; } = new BaseAction(ActionID.Disembowel)
@@ -107,10 +109,7 @@ public abstract class DRG_Base : CustomRotation
         },
     };
 
-    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, true)
-    {
-        StatusNeed = new[] { StatusID.PowerSurge },
-    };
+    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, true);
 
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)

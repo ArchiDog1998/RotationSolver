@@ -27,7 +27,8 @@ namespace RotationSolver.Commands
                 Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count;
             }
 
-            if (DataCenter.StateType == StateCommandType.Manual
+            if (Service.Config.ToggleManual 
+                && DataCenter.StateType == StateCommandType.Manual
                 && stateType == StateCommandType.Manual)
             {
                 stateType = StateCommandType.Cancel;
