@@ -4,19 +4,20 @@ using Dalamud.Plugin;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel;
 using RotationSolver.Updaters;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Loader;
 using System.Text;
 
 namespace RotationSolver;
 
+internal record AssemblyInfo(string Name, string Author, string Path);
+
 internal static class RotationHelper
 {
     private class RotationLoadContext : AssemblyLoadContext
     {
         DirectoryInfo _directory;
-
-
 
         static Dictionary<string, Assembly> _handledAssemblies;
         public RotationLoadContext(DirectoryInfo directoryInfo) : base(true)
@@ -26,15 +27,22 @@ internal static class RotationHelper
 
         static RotationLoadContext()
         {
-            _handledAssemblies = new Dictionary<string, Assembly>()
+            var assemblies = new Assembly[]
             {
-                ["RotationSolver"] = typeof(RotationSolverPlugin).Assembly,
-                ["FFXIVClientStructs"] = typeof(Resolver).Assembly,
-                ["Dalamud"] = typeof(DalamudPluginInterface).Assembly,
-                ["RotationSolver.Basic"] = typeof(DataCenter).Assembly,
-                ["Lumina"] = typeof(SheetAttribute).Assembly,
-                ["Lumina.Excel"] = typeof(ExcelRow).Assembly,
+                typeof(RotationSolverPlugin).Assembly,
+                typeof(Resolver).Assembly,
+                typeof(DalamudPluginInterface).Assembly,
+                typeof(DataCenter).Assembly,
+                typeof(SheetAttribute).Assembly,
+                typeof(ExcelRow).Assembly,
             };
+
+            _handledAssemblies = new Dictionary<string, Assembly>();
+
+            foreach (var assembly in assemblies)
+            {
+                _handledAssemblies.Add(assembly.GetName().Name, assembly);
+            }
         }
 
         protected override Assembly Load(AssemblyName assemblyName)
@@ -68,14 +76,19 @@ internal static class RotationHelper
             var assembly = LoadFromStream(file, pdbFile);
             return assembly;
         }
-
-
     }
 
-    public static Dictionary<string, string> AssemblyPaths = new Dictionary<string, string>();
+    public static readonly SortedList<Assembly, AssemblyInfo> _assemblyInfos = new SortedList<Assembly, AssemblyInfo>();
 
-    public static string[] AllowedAssembly { get; private set; } = new string[0];
-    static readonly SortedList<Assembly, string> _authors = new SortedList<Assembly, string>();
+    public static string[] _allowedAssembly { get; private set; } = new string[0];
+    public static AssemblyInfo GetInfo(this Assembly assembly)
+    {
+        if(_assemblyInfos.TryGetValue(assembly, out var value))
+        {
+            return value;
+        }
+        return _assemblyInfos[assembly] = new AssemblyInfo(assembly.GetName().Name, "Unknown", assembly.Location);
+    }
     public static async void LoadList()
     {
         using (var client = new HttpClient())
@@ -83,7 +96,7 @@ internal static class RotationHelper
             try
             {
                 var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/whitelist.json");
-                AllowedAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts));
+                _allowedAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts));
             }
             catch (Exception ex)
             {
@@ -94,15 +107,19 @@ internal static class RotationHelper
     
     public static bool IsAllowed(this ICustomRotation rotation, out string name)
     {
+        name = "Unknown";
         if (rotation == null)
         {
-            name = "Unknown";
             return false;
         }
         var assembly = rotation.GetType().Assembly;
-        name = assembly.GetName().Name;
 
-        return AllowedAssembly.Contains(name + " - " + assembly.GetAuthor());
+        if(_assemblyInfos.TryGetValue(assembly, out var info))
+        {
+            name = info.Name;
+            return _allowedAssembly.Contains(name + " - " + info.Author);
+        }
+        return false;
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)
@@ -112,15 +129,11 @@ internal static class RotationHelper
     public static bool IsBeta(this ICustomRotation rotation)
         => rotation.GetType().GetCustomAttribute<BetaRotationAttribute>() != null;
 
-    public static string GetAuthor(this Assembly assembly)
+    public static string GetAuthor(string path, string name)
     {
-        if (_authors.TryGetValue(assembly, out var author)) return author;
         try
         {
-            var name = assembly.GetName().Name;
-            return _authors[assembly] = 
-                (AssemblyPaths.TryGetValue(name, out var path) 
-                ? FileVersionInfo.GetVersionInfo(path)?.CompanyName : name)
+            return  FileVersionInfo.GetVersionInfo(path)?.CompanyName 
                 ?? name ?? "Unknown";
         }
         catch
@@ -133,7 +146,10 @@ internal static class RotationHelper
     {
         var loadContext = new RotationLoadContext(new FileInfo(filePath).Directory);
         var assembly = loadContext.LoadFromFile(filePath);
-        AssemblyPaths[assembly.GetName().Name] = filePath;
+
+        var name = assembly.GetName().Name;
+
+        _assemblyInfos[assembly] = new AssemblyInfo(name, GetAuthor(filePath, name), filePath);
         return assembly;
     }
 }

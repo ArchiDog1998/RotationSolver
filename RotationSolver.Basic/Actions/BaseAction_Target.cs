@@ -322,7 +322,7 @@ public partial class BaseAction
                 return false;
             }
 
-            //如果不用自动找目标，那就不打AOE
+            //not use when aoe.
             if (DataCenter.StateType == StateCommandType.Manual)
             {
                 if (!Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;

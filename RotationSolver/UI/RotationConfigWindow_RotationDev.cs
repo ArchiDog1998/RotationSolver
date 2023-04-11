@@ -92,23 +92,23 @@ internal partial class RotationConfigWindow
             .Select(r => r.GetType().Assembly)
             .ToHashSet();
 
-        if(ImGui.BeginTable("AssemblyTable", 2))
-        {
-            foreach (var assembly in assemblies)
-            {
-                ImGui.TableNextRow();
-                if (ImGui.Button(assembly.GetName().Name + assembly.GetName().Version))
-                {
-                    if (!RotationHelper.AssemblyPaths.TryGetValue(assembly.GetName().Name, out var path))
-                        path = assembly.Location;
+        //if(ImGui.BeginTable("AssemblyTable", 2))
+        //{
+        //    foreach (var assembly in assemblies)
+        //    {
+        //        ImGui.TableNextRow();
+        //        if (ImGui.Button(assembly.GetName().Name + assembly.GetName().Version))
+        //        {
+        //            if (!RotationHelper.AssemblyInfos.TryGetValue(assembly.GetName().Name, out var path))
+        //                path = assembly.Location;
 
-                    Process.Start("explorer.exe", path);
-                }
+        //            Process.Start("explorer.exe", path);
+        //        }
 
-                ImGui.TableNextColumn();
-                ImGui.Text(assembly.GetAuthor());
-            }
-            ImGui.EndTable();
-        }
+        //        ImGui.TableNextColumn();
+        //        ImGui.Text(assembly.GetAuthor());
+        //    }
+        //    ImGui.EndTable();
+        //}
     }
 }
