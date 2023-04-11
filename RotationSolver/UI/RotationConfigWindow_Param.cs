@@ -394,7 +394,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
             ref Service.Config.ChooseAttackMark, Service.Default.ChooseAttackMark);
 
-        if (Service.Config.ChooseAttackMark && Service.Config.UseAOEAction)
+        if (Service.Config.ChooseAttackMark && Service.Config.GetValue(SettingsCommand.UseAOEAction))
         {
             ImGui.Indent();
 

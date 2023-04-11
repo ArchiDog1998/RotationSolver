@@ -300,7 +300,8 @@ public partial class BaseAction
             return true;
         }
 
-        if (Service.Config.UseAOEAction && Service.Config.UseAOEWhenManual || mustUse)
+        if (Service.Config.GetValue(SettingsCommand.UseAOEAction) 
+            && Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) || mustUse)
         {
             if (GetMostObjects(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), aoeCount).Contains(b))
             {
@@ -324,7 +325,7 @@ public partial class BaseAction
             //如果不用自动找目标，那就不打AOE
             if (DataCenter.StateType == StateCommandType.Manual)
             {
-                if (!Service.Config.UseAOEWhenManual && !mustUse) return false;
+                if (!Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;
             }
 
             var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), _action.EffectRange);
@@ -490,7 +491,7 @@ public partial class BaseAction
     {
         get
         {
-            if (!Service.Config.UseAOEAction) return true;
+            if (!Service.Config.GetValue(SettingsCommand.UseAOEAction)) return true;
 
             return Service.Config.ChooseAttackMark
                 && !Service.Config.CanAttackMarkAOE

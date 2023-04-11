@@ -97,7 +97,7 @@ internal static class RotationUpdater
         var assemblies = from dir in directories
                          where Directory.Exists(dir)
                          from l in Directory.GetFiles(dir, "*.dll")
-                         select RotationLoadContext.LoadFrom(l);
+                         select RotationHelper.LoadFrom(l);
 
         PluginLog.Log("Try to load rotations from these assemblies.\n" + string.Join('\n', assemblies.Select(a => "- " + a.FullName)));
 

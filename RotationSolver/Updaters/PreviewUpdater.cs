@@ -119,6 +119,10 @@ internal static class PreviewUpdater
     {
         LoopAllSlotBar((bar, hot, index) =>
         {
+            //Pulse Check
+#if DEBUG
+            return true;
+#endif
             return IsActionSlotRight(bar, hot, actionID);
         });
     }

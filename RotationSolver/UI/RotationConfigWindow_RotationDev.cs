@@ -99,7 +99,7 @@ internal partial class RotationConfigWindow
                 ImGui.TableNextRow();
                 if (ImGui.Button(assembly.GetName().Name + assembly.GetName().Version))
                 {
-                    if (!RotationLoadContext.AssemblyPaths.TryGetValue(assembly.GetName().Name, out var path))
+                    if (!RotationHelper.AssemblyPaths.TryGetValue(assembly.GetName().Name, out var path))
                         path = assembly.Location;
 
                     Process.Start("explorer.exe", path);
