@@ -16,4 +16,11 @@ public class AssemblyLinkAttribute : Attribute
         HelpLink = helpLink;
         ChangeLog = changeLog;
     }
+
+    [Obsolete("Use the third one Please", false)]
+    public AssemblyLinkAttribute(string supportLink = null, string helpLink = null)
+    {
+        SupportLink = supportLink;
+        HelpLink = helpLink;
+    }
 }

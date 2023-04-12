@@ -98,7 +98,7 @@ internal static class RotationUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Log("Failed to load " + filePath, ex);
+            PluginLog.Log(ex, "Failed to load " + filePath);
         }
         return null;
     }
@@ -146,9 +146,9 @@ internal static class RotationUpdater
         {
             return (ICustomRotation)Activator.CreateInstance(t);
         }
-        catch 
+        catch (Exception ex) 
         {
-            PluginLog.LogError($"Failed to load the rotation: {t.Name}");
+            PluginLog.LogError(ex, $"Failed to load the rotation: {t.Name}");
             return null; 
         }
     }
