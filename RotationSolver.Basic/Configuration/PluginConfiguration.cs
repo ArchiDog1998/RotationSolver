@@ -161,7 +161,7 @@ public class PluginConfiguration : IPluginConfiguration
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
-    public bool AutoDownloadRotations = true;
+    public bool AutoUpdateRotations = true;
 
     public bool ToggleManual = false;
     public bool OnlyShowWithHostileOrInDuty = true;
