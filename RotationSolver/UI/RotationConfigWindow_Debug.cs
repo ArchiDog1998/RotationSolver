@@ -44,7 +44,7 @@ internal partial class RotationConfigWindow
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
-        ImGui.Text("Hostile Near: " + DataCenter.HasHostilesInRange.ToString());
+        ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
         ImGui.Text("Targetable: " + Service.Player.IsTargetable().ToString());
 
