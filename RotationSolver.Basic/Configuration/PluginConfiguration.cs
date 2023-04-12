@@ -154,15 +154,14 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool InDebug = false;
     public bool AutoUpdateLibs = true;
-    public string[] OtherLibs = new string[] 
-    {
-        "https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip",
-    };
+    public string[] OtherLibs = new string[0];
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
+
+    public bool AutoUpdateRotations = true;
 
     public bool ToggleManual = false;
     public bool OnlyShowWithHostileOrInDuty = true;

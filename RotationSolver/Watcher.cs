@@ -36,7 +36,7 @@ public class Watcher : IDisposable
         if (Service.Player == null) return;
         var set = new ActionEffectSet(effectHeader, effectArray, effectTargets);
 
-        ActionFromSelf(sourceId, set);
+        ActionFromSelf(sourceId, set, effectArray->Param2);
         ActionFromEnemy(sourceId, set);
     }
 
@@ -50,7 +50,7 @@ public class Watcher : IDisposable
         ShowStrEnemy = set.ToString();
     }
 
-    private static void ActionFromSelf(uint sourceId, ActionEffectSet set)
+    private static void ActionFromSelf(uint sourceId, ActionEffectSet set, byte flag)
     {
         if (sourceId != Service.Player.ObjectId) return;
         if (set.Type != ActionType.Spell) return;
@@ -60,8 +60,6 @@ public class Watcher : IDisposable
         var tar = set.Target;
 
         if (tar == null || action == null) return;
-
-        var flag = set.TargetEffects[0][0].Param2;
 
         //Record
         DataCenter.AddActionRec(set.Action);

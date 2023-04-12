@@ -55,6 +55,8 @@ public abstract class DRG_Base : CustomRotation
 
     public static IBaseAction DragonFireDive { get; } = new BaseAction(ActionID.DragonFireDive);
 
+    public static IBaseAction ElusiveJump { get; } = new BaseAction(ActionID.ElusiveJump);
+
     public static IBaseAction Jump { get; } = new BaseAction(ActionID.Jump)
     {
         StatusProvide = new StatusID[] { StatusID.DiveReady },
@@ -109,10 +111,7 @@ public abstract class DRG_Base : CustomRotation
         },
     };
 
-    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, true)
-    {
-        StatusNeed = new[] { StatusID.PowerSurge },
-    };
+    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, true);
 
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)

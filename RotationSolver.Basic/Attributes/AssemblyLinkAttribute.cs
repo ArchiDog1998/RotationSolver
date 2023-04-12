@@ -8,8 +8,17 @@ public class AssemblyLinkAttribute : Attribute
 {
     public string SupportLink { get; }
     public string HelpLink { get; }
+    public string ChangeLog { get; }
 
-    public AssemblyLinkAttribute(string supportLink = "", string helpLink = "")
+    public AssemblyLinkAttribute(string supportLink = null, string helpLink = null, string changeLog = null)
+    {
+        SupportLink = supportLink;
+        HelpLink = helpLink;
+        ChangeLog = changeLog;
+    }
+
+    [Obsolete("Use the third one Please", false)]
+    public AssemblyLinkAttribute(string supportLink = null, string helpLink = null)
     {
         SupportLink = supportLink;
         HelpLink = helpLink;

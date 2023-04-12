@@ -1,5 +1,8 @@
 ﻿namespace RotationSolver.Basic.Data;
 
+/// <summary>
+/// The id of the action
+/// </summary>
 public enum ActionID : uint
 {
     None = 0,
@@ -506,6 +509,8 @@ public enum ActionID : uint
     StarDiver = 16480,
 
     WyrmwindThrust = 25773,
+
+    ElusiveJump = 94,
     #endregion
 
     #region DRK
