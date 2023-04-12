@@ -4,7 +4,6 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Actions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
@@ -191,7 +190,8 @@ public static class DataCenter
     public static IEnumerable<GameObject> AllTargets { get; set; }
 
     public static uint[] TreasureCharas { get; set; } = new uint[0];
-    public static bool HasHostilesInRange { get; set; }
+    public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
+    public static int NumberOfHostilesInRange { get; set; }
 
     public static bool IsHostileCastingAOE { get; set; }
 
@@ -293,5 +293,4 @@ public static class DataCenter
         _actions.Enqueue(new ActionRec(_timeLastActionUsed, act));
     }
     #endregion
-
 }

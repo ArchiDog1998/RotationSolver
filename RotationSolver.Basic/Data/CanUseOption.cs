@@ -30,4 +30,9 @@ public enum CanUseOption : byte
     /// Ignore the target data.
     /// </summary>
     IgnoreTarget = 1 << 3,
+
+    /// <summary>
+    /// Ignore the check of casting an action while moving.
+    /// </summary>
+    IgnoreCastCheck = 1 << 4,
 }

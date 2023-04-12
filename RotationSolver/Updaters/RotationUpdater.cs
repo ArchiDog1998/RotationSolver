@@ -54,6 +54,7 @@ internal static class RotationUpdater
                     if (string.IsNullOrEmpty(fileName)) continue;
                     if (Path.GetExtension(fileName) != ".dll") continue;
                     var filePath = Path.Combine(relayFolder, fileName);
+                    if(!Service.Config.AutoUpdateRotations && File.Exists(filePath)) continue;
 
                     //Download
                     using (HttpResponseMessage response = await client.GetAsync(url))

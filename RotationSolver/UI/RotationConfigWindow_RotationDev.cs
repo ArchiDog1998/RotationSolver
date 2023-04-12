@@ -25,6 +25,11 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
             ref Service.Config.InDebug, Service.Default.InDebug);
 
+        ImGui.SameLine();
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoUpdateRotations,
+            ref Service.Config.AutoUpdateRotations, Service.Default.AutoUpdateRotations);
+
         if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f), true))
         {
             if (ImGui.Button("AddOne"))

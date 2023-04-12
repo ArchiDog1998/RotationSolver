@@ -84,7 +84,7 @@ internal static partial class TargetUpdater
 
         DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Service.Player.ObjectId);
 
-        DataCenter.HasHostilesInRange = DataCenter.HostileTargets.Any(o => o.DistanceToPlayer() <= JobRange);
+        DataCenter.NumberOfHostilesInRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
 
         if (DataCenter.HostileTargets.Count() == 1)
         {

@@ -263,6 +263,21 @@ internal partial class RotationConfigWindow
                     }
                 }
 
+                if (!string.IsNullOrEmpty(info.changeLog))
+                {
+                    if (ImGui.Button($"ChangeLog##{grp.Key.GetHashCode()}"))
+                    {
+                        try
+                        {
+                            Util.OpenLink(info.changeLog);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+
                 if (!isAllowed) ImGui.PopStyleColor();
             }
             ImGui.EndTable();
