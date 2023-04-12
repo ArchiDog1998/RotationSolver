@@ -248,6 +248,8 @@ internal partial class Strings
     public string ConfigWindow_Param_ConditionDelete { get; set; } = "Delete";
     public string ConfigWindow_Param_ResetToDefault { get; set; } = "Press left ctrl + shift and press right mouse button to reset this value";
 
+    public string ConfigWindow_Action_ShowOnCDWindow { get; set; } = "Show on CD window";
+
     public string ConfigWindow_Control_OnlyShowWithHostileOrInDuty { get; set; } = "Only shown if there are enemies in or in duty";
     public string ConfigWindow_Control_ShowNextActionWindow { get; set; } = "Show Next Action Window";
 
