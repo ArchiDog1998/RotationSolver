@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.2.7](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.6...v2.2.7) (2023-04-12)
+
+
+### Bug Fixes
+
+* add a translation about cd Window in action. ([8ac7466](https://github.com/ArchiDog1998/RotationSolver/commit/8ac7466448ffc0a0a79a88603c5781f96b8e2088))
+* add a try catch for loading one assembly. ([8d516ee](https://github.com/ArchiDog1998/RotationSolver/commit/8d516ee4c70cbd62805cb601576d06614030c57f))
+* add an `IgnoreCastCheck` Option for canUse. ([13096b1](https://github.com/ArchiDog1998/RotationSolver/commit/13096b18a84934adafe9cd57f66262c57a9ae26c))
+* add an aoe infomation showcase on system bar. ([dfbbd8d](https://github.com/ArchiDog1998/RotationSolver/commit/dfbbd8d517b8ce2a74d91ca9adf3abe5fdb02cfe))
+* add an api of `NumberOfHostilesInRange` ([d1e7830](https://github.com/ArchiDog1998/RotationSolver/commit/d1e783063f8405caa3ccc7f4cd38174abeb0f6a6))
+* add an option to enable the auto downloading rotations. ([028eb85](https://github.com/ArchiDog1998/RotationSolver/commit/028eb85565dd694b6f210daf068bc6026e02bb5f))
+* add change logs for aseembly link. ([c172e4d](https://github.com/ArchiDog1998/RotationSolver/commit/c172e4df9d83ef865ce819e533161e3adbe0fd92))
+* add summary for nuget. ([226536b](https://github.com/ArchiDog1998/RotationSolver/commit/226536bde4dd2615f8e26d9f4d2783a3c98c7e83))
+* changed back from the positional check. ([1565569](https://github.com/ArchiDog1998/RotationSolver/commit/1565569adb8a195bdb5055ca77a6e42d91054130))
+* changed some comments ([6c2ae2f](https://github.com/ArchiDog1998/RotationSolver/commit/6c2ae2f71d5ab3fcf43f149e8d9c7480581f5a21))
+* changed the name of auto update rotations ([04a5221](https://github.com/ArchiDog1998/RotationSolver/commit/04a5221a50d3dc45dd3d15feaf2b7b9a43bbed36))
+* changed the show string in action cd button. ([c350659](https://github.com/ArchiDog1998/RotationSolver/commit/c350659ea1256249062b4af85b55501c4b1ad563))
+* fixed the rotation info link error. ([c09bcea](https://github.com/ArchiDog1998/RotationSolver/commit/c09bceaeb98ff42d36408c7b4ebe792cdc47a56a))
+* fixed the usage of items. ([a03555d](https://github.com/ArchiDog1998/RotationSolver/commit/a03555dc6426980ae5ca94be0e04581d573b90de))
+* removed rs document file. ([baf60cb](https://github.com/ArchiDog1998/RotationSolver/commit/baf60cb41ce4f6ac4f4af04ba9ad62a5f560e7a6))
+* removed the status needs in BattleLitany. ([60fd1b5](https://github.com/ArchiDog1998/RotationSolver/commit/60fd1b5a9b48fa96fce220006da8fbdce7b04a41))
+
 ## [2.2.6](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.5...v2.2.6) (2023-04-11)
 
 
