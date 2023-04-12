@@ -11,6 +11,7 @@
 	  <PackageTags>FFXIV, FF14, Dalamud, Rotation</PackageTags>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
