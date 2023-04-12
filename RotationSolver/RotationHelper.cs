@@ -10,7 +10,7 @@ using System.Text;
 
 namespace RotationSolver;
 
-internal record AssemblyInfo(string Name, string Author, string Path, string support, string help);
+internal record AssemblyInfo(string Name, string Author, string Path, string support, string help, string changeLog);
 
 internal static class RotationHelper
 {
@@ -86,7 +86,7 @@ internal static class RotationHelper
         {
             return value;
         }
-        return _assemblyInfos[assembly] = new AssemblyInfo(assembly.GetName().Name, "Unknown", assembly.Location, string.Empty, string.Empty);
+        return _assemblyInfos[assembly] = new AssemblyInfo(assembly.GetName().Name, "Unknown", assembly.Location, null, null, null);
     }
     public static async void LoadList()
     {
@@ -154,7 +154,7 @@ internal static class RotationHelper
         var name = assembly.GetName().Name;
 
         var attr = assembly.GetCustomAttribute<AssemblyLinkAttribute>();
-        _assemblyInfos[assembly] = new AssemblyInfo(name, GetAuthor(filePath, name), filePath, attr?.SupportLink, attr?.HelpLink);
+        _assemblyInfos[assembly] = new AssemblyInfo(name, GetAuthor(filePath, name), filePath, attr?.SupportLink, attr?.HelpLink, attr?.ChangeLog);
         return assembly;
     }
 }
