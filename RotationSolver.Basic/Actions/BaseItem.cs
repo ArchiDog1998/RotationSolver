@@ -12,8 +12,8 @@ internal class BaseItem : IBaseItem
     public uint AdjustedID => ID;
 
     public Func<bool> OtherCheck { private get; set; }
-    private unsafe bool HasIt => InventoryManager.Instance()->GetInventoryItemCount(_item.RowId, false) > 0 ||
-            InventoryManager.Instance()->GetInventoryItemCount(_item.RowId, true) > 0;
+    private unsafe bool HasIt => InventoryManager.Instance()->GetInventoryItemCount(ID, false) > 0 ||
+            InventoryManager.Instance()->GetInventoryItemCount(ID, true) > 0;
 
     public uint IconID { get; }
 
@@ -73,12 +73,12 @@ internal class BaseItem : IBaseItem
     public unsafe bool CanUse(out IAction item)
     {
         item = this;
-
         if (_item == null) return false;
 
         if (!Service.Config.UseItem) return false;
 
-        if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))) return false;
+        if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))
+            && ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID + 1000000))) return false;
 
         var remain = RecastTimeOneCharge - RecastTimeElapsed;
 
@@ -93,12 +93,12 @@ internal class BaseItem : IBaseItem
     {
         if (_item == null) return false;
 
-        if (InventoryManager.Instance()->GetInventoryItemCount(_item.RowId, true) > 0)
+        if (InventoryManager.Instance()->GetInventoryItemCount(ID, true) > 0)
         {
-            return ActionManager.Instance()->UseAction(ActionType.Item, _item.RowId + 1000000, Service.Player.ObjectId, A4);
+            return ActionManager.Instance()->UseAction(ActionType.Item, ID + 1000000, Service.Player.ObjectId, A4);
         }
 
-        return ActionManager.Instance()->UseAction(ActionType.Item, _item.RowId, Service.Player.ObjectId, A4);
+        return ActionManager.Instance()->UseAction(ActionType.Item, ID, Service.Player.ObjectId, A4);
     }
 
     public override string ToString() => Name;
