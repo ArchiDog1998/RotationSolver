@@ -130,6 +130,8 @@ internal partial class Strings
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
     public string ConfigWindow_Param_ShowActionFlag { get; set; } = "Show action flag.";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
+    public string ConfigWindow_Param_AutoDownloadRotations { get; set; } = "Auto Download Rotaions.";
+
     public string ConfigWindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
 
     public string ConfigWindow_Param_HealthRatioBoss { get; set; } = "If target's max health ratio is higher than this, regard it as Boss.";
