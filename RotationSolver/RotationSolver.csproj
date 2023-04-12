@@ -2,7 +2,6 @@
   <PropertyGroup>
 	  <Description>Based on the pve combat information in one frame, find the best action.</Description>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
