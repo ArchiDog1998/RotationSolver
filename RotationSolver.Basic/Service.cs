@@ -46,7 +46,7 @@ public class Service : IDisposable
     static float _lastTime = 0;
     public static float CountDownTime { get; private set; }
 
-    public static GetChatBoxModuleDelegate GetChatBox { get; private set; }
+    private static GetChatBoxModuleDelegate GetChatBox { get; set; }
 
     public Service()
     {
@@ -112,9 +112,6 @@ public class Service : IDisposable
             .Where(ptr => ptr != IntPtr.Zero);
     }
 
-    public unsafe static IntPtr GetAddon<T>() where T : struct
-        => GetAddons<T>().FirstOrDefault();
-
     public static PlayerCharacter Player => ClientState.LocalPlayer;
     [PluginService]
     public static ClientState ClientState { get; set; }
@@ -166,7 +163,7 @@ public class Service : IDisposable
     public static ClientLanguage Language => ClientState.ClientLanguage;
 
 
-    public delegate void GetChatBoxModuleDelegate(IntPtr uiModule, IntPtr message, IntPtr unused, byte a4);
+    private delegate void GetChatBoxModuleDelegate(IntPtr uiModule, IntPtr message, IntPtr unused, byte a4);
 
 
     /// <summary>
