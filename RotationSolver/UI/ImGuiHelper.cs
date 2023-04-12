@@ -583,7 +583,7 @@ internal static class ImGuiHelper
     }, otherThing: () =>
     {
         var enable = action.IsInCooldown;
-        if (ImGui.Checkbox($"CD##{action.Name}InCooldown", ref enable))
+        if (ImGui.Checkbox($"CD Window##{action.Name}InCooldown", ref enable))
         {
             action.IsInCooldown = enable;
             Service.Config.Save();
@@ -632,7 +632,7 @@ internal static class ImGuiHelper
         () => RotationConfigWindow.ActiveAction = item, otherThing: () =>
     {
         var enable = item.IsInCooldown;
-        if (ImGui.Checkbox($"CD##{item.Name}InCooldown", ref enable))
+        if (ImGui.Checkbox($"CD Window##{item.Name}InCooldown", ref enable))
         {
             item.IsInCooldown = enable;
             Service.Config.Save();
