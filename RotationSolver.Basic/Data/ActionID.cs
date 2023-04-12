@@ -1,5 +1,8 @@
 ﻿namespace RotationSolver.Basic.Data;
 
+/// <summary>
+/// The id of the action
+/// </summary>
 public enum ActionID : uint
 {
     None = 0,

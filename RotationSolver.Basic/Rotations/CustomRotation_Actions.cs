@@ -95,18 +95,13 @@ public abstract partial class CustomRotation
         {
             StatusID.SuperBolide, StatusID.HallowedGround,
             StatusID.Rampart, StatusID.Bulwark,
-            //原初的直觉和血气
             StatusID.RawIntuition, StatusID.BloodWhetting,
-            //复仇
             StatusID.Vengeance,
-            //预警
             StatusID.Sentinel,  
-            //暗影墙
             StatusID.ShadowWall,
-            //星云
             StatusID.Nebula,
 
-            //TODO:BLU的减伤技能
+            //TODO:BLU Debuff
         }.Union(StatusHelper.NoNeedHealingStatus).ToArray(),
         ActionCheck = BaseAction.TankDefenseSelf,
     };
