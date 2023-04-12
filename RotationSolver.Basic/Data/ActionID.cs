@@ -509,6 +509,8 @@ public enum ActionID : uint
     StarDiver = 16480,
 
     WyrmwindThrust = 25773,
+
+    ElusiveJump = 94,
     #endregion
 
     #region DRK
