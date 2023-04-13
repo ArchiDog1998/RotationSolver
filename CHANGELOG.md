@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.2.8](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.7...v2.2.8) (2023-04-13)
+
+
+### Bug Fixes
+
+* add a try catch on the `Invoke` method. ([351df60](https://github.com/ArchiDog1998/RotationSolver/commit/351df60c3e3733e971c9012becf6014e19ac2794))
+* ignore the Cast Check about Raise. ([1a39e62](https://github.com/ArchiDog1998/RotationSolver/commit/1a39e62e1ee2fce0987581e00c72d976ce0d9877))
+* make debug ui ignore target. ([2e2017e](https://github.com/ArchiDog1998/RotationSolver/commit/2e2017e94483ebb52bbc6605f04bbe55f681be26))
+* removed `Raw Intuition` status from Tank Defense Status. ([f1329d2](https://github.com/ArchiDog1998/RotationSolver/commit/f1329d274471987319832a6fc77ee7bbdf92fc52))
+* try to fixed the auto target when starting manual. ([3a17e98](https://github.com/ArchiDog1998/RotationSolver/commit/3a17e98c1ea9f32a9a27d4cba676821c9fa0f2b2))
+
 ## [2.2.7](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.6...v2.2.7) (2023-04-12)
 
 
