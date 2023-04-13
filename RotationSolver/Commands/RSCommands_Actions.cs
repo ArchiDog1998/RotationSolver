@@ -9,9 +9,16 @@ namespace RotationSolver.Commands
         static DateTime _fastClickStopwatch = DateTime.Now;
         static readonly TimeSpan _fastSpan = new TimeSpan(0, 0, 0, 0, 200);
         static byte _loop = 0;
+
+        static StateCommandType _lastState;
         internal static unsafe void DoAnAction(bool isGCD)
         {
-            if (DataCenter.StateType == StateCommandType.Cancel) return;
+            if (_lastState == StateCommandType.Cancel)
+            {
+                _lastState = DataCenter.StateType;
+                return;
+            }
+            _lastState = DataCenter.StateType;
 
             var localPlayer = Service.Player;
             if (localPlayer == null) return;

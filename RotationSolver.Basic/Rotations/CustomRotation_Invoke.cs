@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations;
+﻿using Dalamud.Logging;
+
+namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
@@ -61,7 +63,14 @@ public abstract partial class CustomRotation
         AntiKnockbackAbility = AntiKnockback(role, SpecialCommandType.AntiKnockback, out act) ? act : null;
         UpdateInfo();
 
-        newAction = Invoke(out gcdAction);
+        try
+        {
+            newAction = Invoke(out gcdAction);
+        }
+        catch(Exception ex)
+        {
+            PluginLog.Error(ex, "Failed to invoke the next action");
+        }
 
         return newAction != null;
     }

@@ -59,7 +59,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Whether the number of party members is 8.
     /// </summary>
-    protected static bool IsFullParty => DataCenter.PartyMembers.Count() is 8;
+    protected static bool IsFullParty => PartyMembers.Count() is 8;
 
     protected static IEnumerable<float> PartyMembersHP => DataCenter.PartyMembersHP;
     protected static float PartyMembersMinHP => DataCenter.PartyMembersMinHP;

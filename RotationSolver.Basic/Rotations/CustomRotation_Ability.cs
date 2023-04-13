@@ -186,7 +186,6 @@ public abstract partial class CustomRotation
             //A lot targets are targeting on me.
             if (tarOnMeCount > 1 && !IsMoving)
             {
-                if (!helpDefenseSingle) DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, true);
                 if (ArmsLength.CanUse(out act)) return true;
                 if (DefenseSingleAbility(abilitiesRemaining, out act)) return true;
             }
@@ -194,7 +193,6 @@ public abstract partial class CustomRotation
             //Big damage casting action.
             if (tarOnMeCount == 1 && DataCenter.IsHostileCastingToTank)
             {
-                if (!helpDefenseSingle) DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, true);
                 if (DefenseSingleAbility(abilitiesRemaining, out act)) return true;
             }
         }
