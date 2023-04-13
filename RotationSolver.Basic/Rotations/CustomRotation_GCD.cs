@@ -62,7 +62,7 @@ public abstract partial class CustomRotation
         }
 
         if ((Service.Config.RaiseAll ? DataCenter.DeathPeopleAll.Any() : DataCenter.DeathPeopleParty.Any())
-            && Raise.CanUse(out act))
+            && Raise.CanUse(out act, CanUseOption.IgnoreCastCheck))
         {
             if (HasSwift)
             {
@@ -74,7 +74,7 @@ public abstract partial class CustomRotation
                 {
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
-                else
+                else if(!IsMoving)
                 {
                     act = Raise;
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
