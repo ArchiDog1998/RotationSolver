@@ -95,7 +95,7 @@ public abstract partial class CustomRotation
         {
             StatusID.SuperBolide, StatusID.HallowedGround,
             StatusID.Rampart, StatusID.Bulwark,
-            StatusID.RawIntuition, StatusID.BloodWhetting,
+            StatusID.BloodWhetting,
             StatusID.Vengeance,
             StatusID.Sentinel,  
             StatusID.ShadowWall,

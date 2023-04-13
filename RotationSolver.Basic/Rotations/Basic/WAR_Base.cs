@@ -73,7 +73,6 @@ public abstract class WAR_Base : CustomRotation
     public static IBaseAction Equilibrium { get; } = new BaseAction(ActionID.Equilibrium, true, isTimeline: true);
 
 
-
     #region Defense Ability
     public static IBaseAction Vengeance { get; } = new BaseAction(ActionID.Vengeance, true, isTimeline: true)
     {
