@@ -22,7 +22,7 @@
     "AcceptsFeedback": true,
     "AssemblyVersion": "2.2.7",
     "Changelog": "2.2.7 (2023-04-12)\n\n\nBug Fixes\n\n* add a translation about cd Window in action. (8ac7466)\n* add a try catch for loading one assembly. (8d516ee)\n* add an `IgnoreCastCheck` Option for canUse. (13096b1)\n* add an aoe infomation showcase on system bar. (dfbbd8d)\n* add an api of `NumberOfHostilesInRange` (d1e7830)\n* add an option to enable the auto downloading rotations. (028eb85)\n* add change logs for aseembly link. (c172e4d)\n* add summary for nuget. (226536b)\n* changed back from the positional check. (1565569)\n* changed some comments (6c2ae2f)\n* changed the name of auto update rotations (04a5221)\n* changed the show string in action cd button. (c350659)\n* fixed the rotation info link error. (c09bcea)\n* fixed the usage of items. (a03555d)\n* removed rs document file. (baf60cb)\n* removed the status needs in BattleLitany. (60fd1b5)",
-    "DownloadCount": "6604",
+    "DownloadCount": "6734",
     "LastUpdate": 1681312942,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.7/latest.zip",
