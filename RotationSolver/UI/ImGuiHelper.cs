@@ -612,10 +612,11 @@ internal static class ImGuiHelper
                 ImGui.Text("Cast Time: " + action.CastTime.ToString());
                 ImGui.Text("MP: " + action.MPNeed.ToString());
 #endif
-                ImGui.Text($"Can Use: {action.CanUse(out _)} ");
-                ImGui.Text("Must Use:" + action.CanUse(out _,  CanUseOption.MustUse).ToString());
-                ImGui.Text("Empty Use:" + action.CanUse(out _, CanUseOption.EmptyOrSkipCombo).ToString());
-                ImGui.Text("Must & Empty Use:" + action.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo).ToString());
+                var option = CanUseOption.IgnoreTarget;
+                ImGui.Text($"Can Use: {action.CanUse(out _, option)} ");
+                ImGui.Text("Must Use:" + action.CanUse(out _, option | CanUseOption.MustUse).ToString());
+                ImGui.Text("Empty Use:" + action.CanUse(out _, option | CanUseOption.EmptyOrSkipCombo).ToString());
+                ImGui.Text("Must & Empty Use:" + action.CanUse(out _, option | CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo).ToString());
                 if (action.Target != null)
                 {
                     ImGui.Text("Target Name: " + action.Target.Name);
