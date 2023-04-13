@@ -32,7 +32,7 @@ jobs:
                       
         - name: publish on version change
           id: publish_nuget
-          uses: brandedoutcast/publish-nuget@v2
+          uses: alirezanet/publish-nuget@v3.0.4
           with:
             PROJECT_FILE_PATH: RotationSolver.Basic/RotationSolver.Basic.csproj
             VERSION_FILE_PATH: Directory.Build.props
