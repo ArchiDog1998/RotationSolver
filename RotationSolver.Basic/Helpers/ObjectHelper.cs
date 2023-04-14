@@ -74,7 +74,7 @@ public static class ObjectHelper
 
     public static unsafe uint FateId(this GameObject obj) => obj.GetAddress()->FateId;
 
-    public static unsafe bool IsTargetable(this GameObject obj) => obj.GetAddress()->GetIsTargetable();
+    public static unsafe bool IsTargetable(this GameObject obj) => obj.GetAddress()->TargetableStatus == FFXIVClientStructs.FFXIV.Client.Game.Object.ObjectTargetableFlags.IsTargetable;
 
     static readonly Dictionary<uint, bool> _effectRangeCheck = new Dictionary<uint, bool>();
     public static bool CanInterrupt(this BattleChara b)
