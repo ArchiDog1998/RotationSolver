@@ -37,55 +37,63 @@ internal static class RotationUpdater
 
             foreach (var url in libs)
             {
-                try
-                {
-                    var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
-                         && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-                    if (!valid) continue;
-                }
-                catch
-                {
-                    continue;
-                }
-                try
-                {
+                hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client);
+                var pdbUrl = Path.ChangeExtension(url, ".pdb");
+                await DownloadOneUrlAsync(pdbUrl, relayFolder, client);
 
-                    var fileName = url.Split('/').LastOrDefault();
-                    if (string.IsNullOrEmpty(fileName)) continue;
-                    if (Path.GetExtension(fileName) != ".dll") continue;
-                    var filePath = Path.Combine(relayFolder, fileName);
-                    if(!Service.Config.AutoUpdateRotations && File.Exists(filePath)) continue;
-
-                    //Download
-                    using (HttpResponseMessage response = await client.GetAsync(url))
-                    {
-                        if (File.Exists(filePath))
-                        {
-                            if (new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
-                            {
-                                continue;
-                            }
-                            File.Delete(filePath);
-                        }
-
-                        using(var stream = new FileStream(filePath, File.Exists(filePath)
-                            ? FileMode.Open : FileMode.CreateNew))
-                        {
-                            await response.Content.CopyToAsync(stream);
-                        }
-                    }
-
-                    hasDownload = true;
-                    PluginLog.Log($"Successfully download the {filePath}");
-                }
-                catch (Exception ex)
-                {
-                    PluginLog.LogError(ex, $"failed to download from {url}");
-                }
             }
         }
 
         if (hasDownload) LoadRotationsFromLocal(relayFolder);
+    }
+
+    private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client)
+    {
+        try
+        {
+            var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
+                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+            if (!valid) return false;
+        }
+        catch
+        {
+            return false;
+        }
+        try
+        {
+            var fileName = url.Split('/').LastOrDefault();
+            if (string.IsNullOrEmpty(fileName)) return false;
+            //if (Path.GetExtension(fileName) != ".dll") continue;
+            var filePath = Path.Combine(relayFolder, fileName);
+            if (!Service.Config.AutoUpdateRotations && File.Exists(filePath)) return false;
+
+            //Download
+            using (HttpResponseMessage response = await client.GetAsync(url))
+            {
+                if (File.Exists(filePath))
+                {
+                    if (new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
+                    {
+                        return false;
+                    }
+                    File.Delete(filePath);
+                }
+
+                using (var stream = new FileStream(filePath, File.Exists(filePath)
+                    ? FileMode.Open : FileMode.CreateNew))
+                {
+                    await response.Content.CopyToAsync(stream);
+                }
+            }
+
+            PluginLog.Log($"Successfully download the {filePath}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            PluginLog.LogError(ex, $"failed to download from {url}");
+        }
+        return false;
     }
 
     private static Assembly LoadOne(string filePath)
