@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Hooking;
 using Dalamud.Interface.Colors;
+using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Localization;
@@ -34,27 +35,38 @@ public class Watcher : IDisposable
     {
         _receiveAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTargets);
         if (Service.Player == null) return;
-        var set = new ActionEffectSet(effectHeader, effectArray, effectTargets);
 
-        ActionFromSelf(sourceId, set, effectArray->Param2);
-        ActionFromEnemy(sourceId, set);
+        try
+        {
+            var set = new ActionEffectSet(effectHeader, effectArray, effectTargets);
+
+            ActionFromSelf(sourceId, set);
+            ActionFromEnemy(sourceId, set);
+        }
+        catch(Exception ex) 
+        {
+            PluginLog.Error(ex, "Error at Ability Receive.");
+        }
     }
 
     private static void ActionFromEnemy(uint sourceId, ActionEffectSet set)
     {
         var source = Service.ObjectTable.SearchById(sourceId);
-        if(source == null) return;
+        if (source == null) return;
         if (source is not BattleChara battle) return;
         if (battle is PlayerCharacter) return;
 
         ShowStrEnemy = set.ToString();
     }
 
-    private static void ActionFromSelf(uint sourceId, ActionEffectSet set, byte flag)
+    private static void ActionFromSelf(uint sourceId, ActionEffectSet set)
     {
         if (sourceId != Service.Player.ObjectId) return;
         if (set.Type != ActionType.Spell) return;
         if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
+
+        if(!set.TargetEffects.Any()) return;
+        var flag = set.TargetEffects.FirstOrDefault()[0].Param2;
 
         var action = set.Action;
         var tar = set.Target;
