@@ -38,7 +38,7 @@ public class Watcher : IDisposable
 
         try
         {
-            var set = new ActionEffectSet(effectHeader, effectArray, effectTargets);
+            var set = new ActionEffectSet(sourceId, effectHeader, effectArray, effectTargets);
 
             ActionFromSelf(sourceId, set);
             ActionFromEnemy(sourceId, set);
@@ -56,6 +56,7 @@ public class Watcher : IDisposable
         if (source is not BattleChara battle) return;
         if (battle is PlayerCharacter) return;
         if (battle.SubKind == 9) return; //Friend!
+        if (Service.ObjectTable.SearchById(battle.ObjectId) is PlayerCharacter) return;
 
         ShowStrEnemy = set.ToString();
     }

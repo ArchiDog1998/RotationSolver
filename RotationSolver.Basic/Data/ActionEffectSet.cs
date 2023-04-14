@@ -8,12 +8,14 @@ public unsafe struct ActionEffectSet
     public Action Action { get; }
     public ActionType Type { get; }
     public GameObject Target { get; }
+    public GameObject Source { get; }
     public TargetEffect[] TargetEffects { get; }
-    public ActionEffectSet(ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
+    public ActionEffectSet(uint sourceId, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
         Type = effectHeader->actionType;
         Action = Service.GetSheet<Action>().GetRow(effectHeader->actionId);
         Target = Service.ObjectTable.SearchById(effectHeader->animationTargetId);
+        Source = Service.ObjectTable.SearchById(sourceId);
 
         TargetEffects = new TargetEffect[effectHeader->NumTargets];
         for (int i = 0; i < effectHeader->NumTargets; i++)
@@ -24,8 +26,9 @@ public unsafe struct ActionEffectSet
 
     public override string ToString()
     {
-        var str = $"Type: {Type}, Name: {Action?.Name}, Target:{Target?.Name}";
-        if(TargetEffects != null)
+        var str = $"S:{Source?.Name}, T:{Target?.Name}";
+        str += $"\nType: {Type}, Name: {Action?.Name}({Action?.RowId})";
+        if (TargetEffects != null)
         {
             foreach (var effect in TargetEffects)
             {

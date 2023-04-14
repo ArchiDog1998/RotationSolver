@@ -70,7 +70,11 @@ internal static class RotationHelper
         {
             using var file = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var pdbPath = Path.ChangeExtension(filePath, ".pdb");
-            if (!File.Exists(pdbPath)) return LoadFromStream(file);
+            if (!File.Exists(pdbPath))
+            {
+                PluginLog.Information($"Failed to load{pdbPath}");
+                return LoadFromStream(file);
+            }
             using var pdbFile = File.Open(pdbPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var assembly = LoadFromStream(file, pdbFile);
             return assembly;
