@@ -55,6 +55,7 @@ public class Watcher : IDisposable
         if (source == null) return;
         if (source is not BattleChara battle) return;
         if (battle is PlayerCharacter) return;
+        if (battle.SubKind == 9) return; //Friend!
 
         ShowStrEnemy = set.ToString();
     }

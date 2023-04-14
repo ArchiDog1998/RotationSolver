@@ -24,7 +24,7 @@ public partial class BaseAction
             {
                 if (IsRealGCD)
                 {
-                    if (!WillHaveOneChargeGCD()) return false;
+                    if (!WillHaveOneChargeGCD(0, 0)) return false;
                 }
                 else
                 {

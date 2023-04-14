@@ -32,12 +32,18 @@ public partial class BaseAction
         return CooldownHelper.ElapsedAfter(elapsed, time);
     }
 
+
     public bool WillHaveOneChargeGCD(uint gcdCount = 0, int abilityCount = 0)
     {
         if (HasOneCharge) return true;
         var recast = RecastTimeRemainOneCharge;
         return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount);
     }
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("Please use the int abilityCoune one.", true)]
+    public bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0)
+    => WillHaveOneChargeGCD(gcdCount, (int)abilityCount);
 
     public bool WillHaveOneCharge(float remain) => WillHaveOneCharge(remain, true);
 
