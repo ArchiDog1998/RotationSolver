@@ -16,7 +16,7 @@ public abstract class DRK_Base : CustomRotation
         return EndAfter(DarkSideTimeRemaining, time);
     }
 
-    protected static bool DarkSideEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    protected static bool DarkSideEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
     {
         return EndAfterGCD(DarkSideTimeRemaining, gctCount, abilityCount);
     }

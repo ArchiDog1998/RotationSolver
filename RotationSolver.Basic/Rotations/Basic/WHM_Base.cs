@@ -14,7 +14,7 @@ public abstract class WHM_Base : CustomRotation
         return EndAfter(JobGauge.LilyTimer / 1000f, time);
     }
 
-    protected static bool LilyAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    protected static bool LilyAfterGCD(uint gctCount = 0, int abilityCount = 0)
     {
         return EndAfterGCD(JobGauge.LilyTimer / 1000f, gctCount, abilityCount);
     }

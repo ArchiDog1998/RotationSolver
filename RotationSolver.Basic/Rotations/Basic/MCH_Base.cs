@@ -17,7 +17,7 @@ public abstract class MCH_Base : CustomRotation
         return EndAfter(JobGauge.OverheatTimeRemaining / 1000f, time);
     }
 
-    protected static bool OverheatedEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    protected static bool OverheatedEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
     {
         return EndAfterGCD(JobGauge.OverheatTimeRemaining / 1000f, gctCount, abilityCount);
     }

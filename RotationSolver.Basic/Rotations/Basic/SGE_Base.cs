@@ -15,7 +15,7 @@ public abstract class SGE_Base : CustomRotation
         return EndAfter(JobGauge.AddersgallTimer / 1000f, time);
     }
 
-    protected static bool AddersgallEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    protected static bool AddersgallEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
     {
         return EndAfterGCD(JobGauge.AddersgallTimer / 1000f, gctCount, abilityCount);
     }

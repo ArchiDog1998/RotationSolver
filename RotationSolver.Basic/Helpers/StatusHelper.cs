@@ -53,7 +53,7 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    public static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] statusIDs)
+    public static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, int abilityCount = 0, bool isFromSelf = true, params StatusID[] statusIDs)
     {
         var remain = obj.StatusTime(isFromSelf, statusIDs);
         //as infinite

@@ -16,7 +16,8 @@ public abstract class BRD_Base : CustomRotation
 
     protected static bool SongEndAfter(float time) => EndAfter(SongTime, time);
 
-    protected static bool SongEndAfterGCD(uint gctCount = 0, uint abilityCount = 0) => EndAfterGCD(SongTime, gctCount, abilityCount);
+    protected static bool SongEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
+        => EndAfterGCD(SongTime, gctCount, abilityCount);
 
     private static float SongTime => JobGauge.SongTimer / 1000f;
 

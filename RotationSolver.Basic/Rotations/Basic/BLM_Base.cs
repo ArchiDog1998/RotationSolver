@@ -27,7 +27,7 @@ public abstract partial class BLM_Base : CustomRotation
         return EndAfter(JobGauge.EnochianTimer / 1000f, time);
     }
 
-    protected static bool EnchinaEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    protected static bool EnchinaEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
     {
         return EndAfterGCD(JobGauge.EnochianTimer / 1000f, gctCount, abilityCount);
     }
@@ -37,7 +37,7 @@ public abstract partial class BLM_Base : CustomRotation
         return EndAfter(JobGauge.ElementTimeRemaining / 1000f, time);
     }
 
-    protected static bool ElementTimeEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    protected static bool ElementTimeEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
     {
         return EndAfterGCD(JobGauge.ElementTimeRemaining / 1000f, gctCount, abilityCount);
     }
