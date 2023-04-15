@@ -38,4 +38,9 @@ public interface ICustomRotation : ITexture
     IAction RaiseShirkAbility { get; }
     IAction AntiKnockbackAbility { get; }
     bool TryInvoke(out IAction newAction, out IAction gcdAction);
+
+    /// <summary>
+    /// This is an <seealso cref="ImGui"/> method for display the rotation status on Window.
+    /// </summary>
+    void DisplayStatus();
 }

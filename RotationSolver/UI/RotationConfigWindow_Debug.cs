@@ -16,6 +16,10 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginTabBar("Debug Items"))
         {
+            if(RotationUpdater.RightNowRotation != null)
+            {
+                DrawParamTabItem("Rotation", RotationUpdater.RightNowRotation.DisplayStatus);
+            }
             DrawParamTabItem("Status", DrawStatus);
             DrawParamTabItem("Party", DrawParty);
             DrawParamTabItem("Target Data", DrawTargetData);

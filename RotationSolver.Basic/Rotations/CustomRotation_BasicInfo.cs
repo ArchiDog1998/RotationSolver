@@ -92,5 +92,10 @@ public abstract partial class CustomRotation : ICustomRotation
     /// </summary>
     protected virtual void UpdateInfo() { }
 
+    public virtual void DisplayStatus()
+    {
+        ImGui.TextWrapped($"If you want to Display some extra information on this panel. Please override {nameof(DisplayStatus)} method!");
+    }
+
     public override string ToString() => RotationName;
 }
