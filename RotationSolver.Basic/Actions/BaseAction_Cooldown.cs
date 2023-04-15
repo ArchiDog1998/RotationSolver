@@ -107,6 +107,6 @@ public partial class BaseAction
     /// 下一层转好的时间
     /// </summary>
     private float RecastTimeRemainOneCharge => RecastTimeRemain % RecastTimeOneCharge;
-    private float RecastTimeElapsedOneCharge => RecastTimeElapsed % RecastTimeOneCharge;
 
+    private float RecastTimeElapsedOneCharge => RecastTimeElapsed % RecastTimeOneCharge;
 }

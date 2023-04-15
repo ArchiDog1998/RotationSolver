@@ -35,6 +35,11 @@ literally, `Rotation Solver` helps you to choose the target and then click the a
 - [ReAction](https://github.com/UnknownX7/ReAction)
 - etc...
 
+NOTICE: It can't use with [`Block Targeting Treasure Hunt Enemies`](https://github.com/Caraxi/SimpleTweaksPlugin/blob/7e94915afa17ea873d48be2c469ebdaddd2e5200/Tweaks/TreasureHuntTargets.cs) in [Simple Tweaks](https://github.com/Caraxi/SimpleTweaksPlugin). 
+
+I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXIVClientStructs/blob/c554a586c4649a472433734b45c59a4bc4979ead/FFXIVClientStructs/FFXIV/Client/Game/Object/GameObject.cs#L71) Method in [FFXIVClientStructs](https://github.com/aers/FFXIVClientStructs). If anybody knows why, please tell me.
+
+
 ## Links
 
 If you have any questions about usage, please check the [Wiki](https://archidog1998.github.io/RotationSolver/#/). Wiki is NOT ready yet...

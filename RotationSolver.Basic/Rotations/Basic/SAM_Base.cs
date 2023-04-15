@@ -77,12 +77,12 @@ public abstract class SAM_Base : CustomRotation
 
     public static IBaseAction KaeshiNamikiri { get; } = new BaseAction(ActionID.KaeshiNamikiri)
     {
-        ActionCheck = b => JobGauge.Kaeshi == Dalamud.Game.ClientState.JobGauge.Enums.Kaeshi.NAMIKIRI
+        ActionCheck = b => JobGauge.Kaeshi == Kaeshi.NAMIKIRI
     };
     #endregion
 
     #region Sen
-    public static IBaseAction Higanbana { get; } = new BaseAction(ActionID.Higanbana, isEot: true)
+    public static IBaseAction Higanbana { get; } = new BaseAction(ActionID.Higanbana, ActionOption.Dot)
     {
         ActionCheck = b => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
@@ -111,7 +111,7 @@ public abstract class SAM_Base : CustomRotation
     #endregion
 
     #region Range
-    public static IBaseAction ThirdEye { get; } = new BaseAction(ActionID.ThirdEye, true, isTimeline: true);
+    public static IBaseAction ThirdEye { get; } = new BaseAction(ActionID.ThirdEye, ActionOption.Defense);
 
     public static IBaseAction Enpi { get; } = new BaseAction(ActionID.Enpi)
     {

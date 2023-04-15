@@ -17,6 +17,7 @@
         bool IsFriendly { get; }
         bool IsTimeline { get; }
         bool IsEot { get; }
+
         EnemyPositional EnemyPositional { get; }
 
         /// <summary>
@@ -61,7 +62,7 @@
         /// </summary>
         /// <param name="act"></param>
         /// <param name="option">Options about using this method.</param>
-        /// <param name="gcdCountForAbility">The count of gcd for ability to delay. Only used in BLM right now</paramref>
+        /// <param name="gcdCountForAbility">The count of gcd for ability to delay. Only used in BLM right now</param>
         /// <returns>Should I use.</returns>
         bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0);
 

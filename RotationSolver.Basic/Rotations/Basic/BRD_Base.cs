@@ -23,21 +23,27 @@ public abstract class BRD_Base : CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new[] { ClassJobID.Bard, ClassJobID.Archer };
 
-    public static IBaseAction HeavyShoot { get; } = new BaseAction(ActionID.HeavyShoot) { StatusProvide = new[] { StatusID.StraightShotReady } };
+    public static IBaseAction HeavyShoot { get; } = new BaseAction(ActionID.HeavyShoot) 
+    { 
+        StatusProvide = new[] { StatusID.StraightShotReady } 
+    };
 
-    public static IBaseAction StraitShoot { get; } = new BaseAction(ActionID.StraitShoot) { StatusNeed = new[] { StatusID.StraightShotReady } };
+    public static IBaseAction StraitShoot { get; } = new BaseAction(ActionID.StraitShoot) 
+    { 
+        StatusNeed = new[] { StatusID.StraightShotReady } 
+    };
 
-    public static IBaseAction VenomousBite { get; } = new BaseAction(ActionID.VenomousBite, isEot: true)
+    public static IBaseAction VenomousBite { get; } = new BaseAction(ActionID.VenomousBite, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.VenomousBite, StatusID.CausticBite }
     };
 
-    public static IBaseAction WindBite { get; } = new BaseAction(ActionID.WindBite, isEot: true)
+    public static IBaseAction WindBite { get; } = new BaseAction(ActionID.WindBite, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.WindBite, StatusID.StormBite }
     };
 
-    public static IBaseAction IronJaws { get; } = new BaseAction(ActionID.IronJaws, isEot: true)
+    public static IBaseAction IronJaws { get; } = new BaseAction(ActionID.IronJaws, ActionOption.Dot)
     {
         TargetStatus = VenomousBite.TargetStatus.Union(WindBite.TargetStatus).ToArray(),
         ActionCheck = b => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, WindBite.TargetStatus),
@@ -49,11 +55,11 @@ public abstract class BRD_Base : CustomRotation
 
     public static IBaseAction ArmysPaeon { get; } = new BaseAction(ActionID.ArmysPaeon);
 
-    public static IBaseAction BattleVoice { get; } = new BaseAction(ActionID.BattleVoice, true);
+    public static IBaseAction BattleVoice { get; } = new BaseAction(ActionID.BattleVoice, ActionOption.Buff);
 
-    public static IBaseAction RagingStrikes { get; } = new BaseAction(ActionID.RagingStrikes, true);
+    public static IBaseAction RagingStrikes { get; } = new BaseAction(ActionID.RagingStrikes, ActionOption.Buff);
 
-    public static IBaseAction RadiantFinale { get; } = new BaseAction(ActionID.RadiantFinale, true)
+    public static IBaseAction RadiantFinale { get; } = new BaseAction(ActionID.RadiantFinale, ActionOption.Buff)
     {
         ActionCheck = b => JobGauge.Coda.Any(s => s != Song.NONE),
     };
@@ -84,9 +90,9 @@ public abstract class BRD_Base : CustomRotation
         StatusNeed = new[] { StatusID.ShadowBiteReady }
     };
 
-    public static IBaseAction WardensPaean { get; } = new BaseAction(ActionID.WardensPaean, true, isTimeline: true);
+    public static IBaseAction WardensPaean { get; } = new BaseAction(ActionID.WardensPaean, ActionOption.Heal);
 
-    public static IBaseAction NaturesMinne { get; } = new BaseAction(ActionID.NaturesMinne, true, isTimeline: true);
+    public static IBaseAction NaturesMinne { get; } = new BaseAction(ActionID.NaturesMinne, ActionOption.Heal);
 
     public static IBaseAction Sidewinder { get; } = new BaseAction(ActionID.Sidewinder);
 
@@ -100,7 +106,7 @@ public abstract class BRD_Base : CustomRotation
         ActionCheck = b => Player.HasStatus(true, StatusID.BlastArrowReady),
     };
 
-    public static IBaseAction Troubadour { get; } = new BaseAction(ActionID.Troubadour, true, isTimeline: true)
+    public static IBaseAction Troubadour { get; } = new BaseAction(ActionID.Troubadour, ActionOption.Defense)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,

@@ -26,13 +26,13 @@ public abstract class MNK_Base : CustomRotation
 
     public static IBaseAction ShadowOfTheDestroyer { get; } = new BaseAction(ActionID.ShadowOfTheDestroyer);
 
-    public static IBaseAction TwinSnakes { get; } = new BaseAction(ActionID.TwinSnakes, isEot: true);
+    public static IBaseAction TwinSnakes { get; } = new BaseAction(ActionID.TwinSnakes, ActionOption.Dot);
 
     public static IBaseAction TrueStrike { get; } = new BaseAction(ActionID.TrueStrike);
 
     public static IBaseAction FourPointFury { get; } = new BaseAction(ActionID.FourPointFury);
 
-    public static IBaseAction Demolish { get; } = new BaseAction(ActionID.Demolish, isEot: true)
+    public static IBaseAction Demolish { get; } = new BaseAction(ActionID.Demolish, ActionOption.Dot)
     {
         TargetStatus = new StatusID[] { StatusID.Demolish },
         GetDotGcdCount = () => 3,
@@ -42,7 +42,7 @@ public abstract class MNK_Base : CustomRotation
 
     public static IBaseAction RockBreaker { get; } = new BaseAction(ActionID.RockBreaker);
 
-    public static IBaseAction Meditation { get; } = new BaseAction(ActionID.Meditation, true);
+    public static IBaseAction Meditation { get; } = new BaseAction(ActionID.Meditation, ActionOption.Buff);
 
     public static IBaseAction SteelPeak { get; } = new BaseAction(ActionID.SteelPeak)
     {
@@ -54,16 +54,16 @@ public abstract class MNK_Base : CustomRotation
         ActionCheck = SteelPeak.ActionCheck,
     };
 
-    public static IBaseAction Brotherhood { get; } = new BaseAction(ActionID.Brotherhood, true);
+    public static IBaseAction Brotherhood { get; } = new BaseAction(ActionID.Brotherhood, ActionOption.Buff);
 
-    public static IBaseAction RiddleOfFire { get; } = new BaseAction(ActionID.RiddleOfFire, true);
+    public static IBaseAction RiddleOfFire { get; } = new BaseAction(ActionID.RiddleOfFire, ActionOption.Buff);
 
-    public static IBaseAction Thunderclap { get; } = new BaseAction(ActionID.Thunderclap, shouldEndSpecial: true)
+    public static IBaseAction Thunderclap { get; } = new BaseAction(ActionID.Thunderclap, ActionOption.EndSpecial)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 
-    public static IBaseAction Mantra { get; } = new BaseAction(ActionID.Mantra, true, isTimeline: true);
+    public static IBaseAction Mantra { get; } = new BaseAction(ActionID.Mantra, ActionOption.Heal);
 
     public static IBaseAction PerfectBalance { get; } = new BaseAction(ActionID.PerfectBalance)
     {
@@ -81,17 +81,17 @@ public abstract class MNK_Base : CustomRotation
     public static IBaseAction TornadoKick { get; } = new BaseAction(ActionID.TornadoKick);
     public static IBaseAction PhantomRush { get; } = new BaseAction(ActionID.PhantomRush);
 
-    public static IBaseAction FormShift { get; } = new BaseAction(ActionID.FormShift, true)
+    public static IBaseAction FormShift { get; } = new BaseAction(ActionID.FormShift, ActionOption.Buff)
     {
         StatusProvide = new[] { StatusID.FormlessFist, StatusID.PerfectBalance },
     };
 
-    public static IBaseAction RiddleOfEarth { get; } = new BaseAction(ActionID.RiddleOfEarth, true, shouldEndSpecial: true, isTimeline: true)
+    public static IBaseAction RiddleOfEarth { get; } = new BaseAction(ActionID.RiddleOfEarth, ActionOption.Defense)
     {
         StatusProvide = new[] { StatusID.RiddleOfEarth },
     };
 
-    public static IBaseAction RiddleOfWind { get; } = new BaseAction(ActionID.RiddleOfWind, true);
+    public static IBaseAction RiddleOfWind { get; } = new BaseAction(ActionID.RiddleOfWind, ActionOption.Buff);
 
     [RotationDesc(ActionID.Thunderclap)]
     protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)

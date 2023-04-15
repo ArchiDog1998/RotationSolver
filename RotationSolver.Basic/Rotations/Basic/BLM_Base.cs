@@ -55,7 +55,7 @@ public abstract partial class BLM_Base : CustomRotation
         public override uint MPNeed => HasThunder ? 0 : base.MPNeed;
 
         internal ThunderAction(ActionID actionID)
-            : base(actionID, false, false, true)
+            : base(actionID)
         {
         }
     }
@@ -65,14 +65,14 @@ public abstract partial class BLM_Base : CustomRotation
         public override uint MPNeed => HasFire ? 0 : base.MPNeed;
 
         internal Fire3Action(ActionID actionID)
-            : base(actionID, false, false, false)
+            : base(actionID)
         {
         }
     }
 
     public class ElementAction : BaseAction
     {
-        internal ElementAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false, bool isEot = false) : base(actionID, isFriendly, shouldEndSpecial, isEot)
+        internal ElementAction(ActionID actionID) : base(actionID)
         {
         }
 
@@ -95,7 +95,7 @@ public abstract partial class BLM_Base : CustomRotation
 
     public static IBaseAction UmbralSoul { get; } = new BaseAction(ActionID.UmbralSoul) { ActionCheck = b => JobGauge.InUmbralIce && Transpose.ActionCheck(b) };
 
-    public static IBaseAction Manaward { get; } = new BaseAction(ActionID.Manaward, true, isTimeline: true);
+    public static IBaseAction Manaward { get; } = new BaseAction(ActionID.Manaward, ActionOption.Defense);
 
     public static IBaseAction Manafont { get; } = new BaseAction(ActionID.Manafont)
     {
@@ -113,17 +113,17 @@ public abstract partial class BLM_Base : CustomRotation
         StatusProvide = Swiftcast.StatusProvide,
     };
 
-    public static IBaseAction LeyLines { get; } = new BaseAction(ActionID.LeyLines, true, shouldEndSpecial: true)
+    public static IBaseAction LeyLines { get; } = new BaseAction(ActionID.LeyLines, ActionOption.Buff | ActionOption.EndSpecial)
     {
         StatusProvide = new[] { StatusID.LeyLines, },
     };
 
-    public static IBaseAction BetweenTheLines { get; } = new BaseAction(ActionID.BetweenTheLines, true, shouldEndSpecial: true)
+    public static IBaseAction BetweenTheLines { get; } = new BaseAction(ActionID.BetweenTheLines, ActionOption.Buff | ActionOption.EndSpecial)
     {
         StatusNeed = LeyLines.StatusProvide,
     };
 
-    public static IBaseAction AetherialManipulation { get; } = new BaseAction(ActionID.AetherialManipulation, true)
+    public static IBaseAction AetherialManipulation { get; } = new BaseAction(ActionID.AetherialManipulation, ActionOption.Friendly)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };

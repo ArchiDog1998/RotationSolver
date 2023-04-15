@@ -89,24 +89,24 @@ public abstract class DNC_Base : CustomRotation
         StatusNeed = new[] { StatusID.FlourishingStarfall },
     };
 
-    public static IBaseAction EnAvant { get; } = new BaseAction(ActionID.EnAvant, true, shouldEndSpecial: true);
+    public static IBaseAction EnAvant { get; } = new BaseAction(ActionID.EnAvant, ActionOption.Heal | ActionOption.EndSpecial);
 
-    private static IBaseAction Emboite { get; } = new BaseAction(ActionID.Emboite, true)
+    private static IBaseAction Emboite { get; } = new BaseAction(ActionID.Emboite)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Emboite,
     };
 
-    private static IBaseAction Entrechat { get; } = new BaseAction(ActionID.Entrechat, true)
+    private static IBaseAction Entrechat { get; } = new BaseAction(ActionID.Entrechat)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Entrechat,
     };
 
-    private static IBaseAction Jete { get; } = new BaseAction(ActionID.Jete, true)
+    private static IBaseAction Jete { get; } = new BaseAction(ActionID.Jete)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Jete,
     };
 
-    private static IBaseAction Pirouette { get; } = new BaseAction(ActionID.Pirouette, true)
+    private static IBaseAction Pirouette { get; } = new BaseAction(ActionID.Pirouette)
     {
         ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Pirouette,
     };
@@ -141,7 +141,7 @@ public abstract class DNC_Base : CustomRotation
         ActionCheck = b => IsDancing && JobGauge.CompletedSteps == 4,
     };
 
-    public static IBaseAction ShieldSamba { get; } = new BaseAction(ActionID.ShieldSamba, true, isTimeline: true)
+    public static IBaseAction ShieldSamba { get; } = new BaseAction(ActionID.ShieldSamba, ActionOption.Defense)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
@@ -149,9 +149,9 @@ public abstract class DNC_Base : CustomRotation
             StatusID.ShieldSamba),
     };
 
-    public static IBaseAction CuringWaltz { get; } = new BaseAction(ActionID.CuringWaltz, true, isTimeline: true);
+    public static IBaseAction CuringWaltz { get; } = new BaseAction(ActionID.CuringWaltz, ActionOption.Heal);
 
-    public static IBaseAction ClosedPosition { get; } = new BaseAction(ActionID.ClosedPosition, true)
+    public static IBaseAction ClosedPosition { get; } = new BaseAction(ActionID.ClosedPosition, ActionOption.Buff)
     {
         ChoiceTarget = (Targets, mustUse) =>
         {
@@ -166,9 +166,9 @@ public abstract class DNC_Base : CustomRotation
         },
     };
 
-    public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment, true);
+    public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment, ActionOption.Buff);
 
-    public static IBaseAction Flourish { get; } = new BaseAction(ActionID.Flourish, true)
+    public static IBaseAction Flourish { get; } = new BaseAction(ActionID.Flourish, ActionOption.Buff)
     {
         StatusNeed = new[] { StatusID.StandardFinish },
         StatusProvide = new[]
@@ -179,7 +179,7 @@ public abstract class DNC_Base : CustomRotation
         ActionCheck = b => InCombat,
     };
 
-    public static IBaseAction Improvisation { get; } = new BaseAction(ActionID.Improvisation, true);
+    public static IBaseAction Improvisation { get; } = new BaseAction(ActionID.Improvisation, ActionOption.Heal);
 
     public static IBaseAction Tillana { get; } = new BaseAction(ActionID.Tillana)
     {

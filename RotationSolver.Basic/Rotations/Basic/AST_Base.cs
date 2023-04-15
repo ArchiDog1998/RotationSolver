@@ -16,11 +16,11 @@ public abstract class AST_Base : CustomRotation
 
     private sealed protected override IBaseAction Raise => Ascend;
 
-    public static IBaseAction Ascend { get; } = new BaseAction(ActionID.Ascend, true);
+    public static IBaseAction Ascend { get; } = new BaseAction(ActionID.Ascend, ActionOption.Friendly);
 
     public static IBaseAction Malefic { get; } = new BaseAction(ActionID.Malefic);
 
-    public static IBaseAction Combust { get; } = new BaseAction(ActionID.Combust, isEot: true)
+    public static IBaseAction Combust { get; } = new BaseAction(ActionID.Combust, ActionOption.Dot)
     {
         TargetStatus = new StatusID[]
         {
@@ -33,52 +33,52 @@ public abstract class AST_Base : CustomRotation
 
     public static IBaseAction Gravity { get; } = new BaseAction(ActionID.Gravity);
 
-    public static IBaseAction Benefic { get; } = new BaseAction(ActionID.Benefic, true, isTimeline: true);
+    public static IBaseAction Benefic { get; } = new BaseAction(ActionID.Benefic, ActionOption.Heal);
 
-    public static IBaseAction Benefic2 { get; } = new BaseAction(ActionID.Benefic2, true, isTimeline: true);
+    public static IBaseAction Benefic2 { get; } = new BaseAction(ActionID.Benefic2, ActionOption.Heal);
 
-    public static IBaseAction AspectedBenefic { get; } = new BaseAction(ActionID.AspectedBenefic, true, isEot: true, isTimeline: true)
+    public static IBaseAction AspectedBenefic { get; } = new BaseAction(ActionID.AspectedBenefic, ActionOption.Hot)
     {
         TargetStatus = new StatusID[] { StatusID.AspectedBenefic },
     };
 
-    public static IBaseAction EssentialDignity { get; } = new BaseAction(ActionID.EssentialDignity, true, isTimeline: true);
+    public static IBaseAction EssentialDignity { get; } = new BaseAction(ActionID.EssentialDignity, ActionOption.Heal);
 
-    public static IBaseAction Synastry { get; } = new BaseAction(ActionID.Synastry, true, isTimeline: true);
+    public static IBaseAction Synastry { get; } = new BaseAction(ActionID.Synastry, ActionOption.Heal);
 
-    public static IBaseAction CelestialIntersection { get; } = new BaseAction(ActionID.CelestialIntersection, true, isTimeline: true)
+    public static IBaseAction CelestialIntersection { get; } = new BaseAction(ActionID.CelestialIntersection, ActionOption.Heal)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
 
         TargetStatus = new StatusID[] { StatusID.Intersection },
     };
 
-    public static IBaseAction Exaltation { get; } = new BaseAction(ActionID.Exaltation, true, isTimeline: true)
+    public static IBaseAction Exaltation { get; } = new BaseAction(ActionID.Exaltation, ActionOption.Heal)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
-    public static IBaseAction Helios { get; } = new BaseAction(ActionID.Helios, true, isTimeline: true);
+    public static IBaseAction Helios { get; } = new BaseAction(ActionID.Helios, ActionOption.Heal);
 
-    public static IBaseAction AspectedHelios { get; } = new BaseAction(ActionID.AspectedHelios, true, isEot: true, isTimeline: true)
+    public static IBaseAction AspectedHelios { get; } = new BaseAction(ActionID.AspectedHelios, ActionOption.Hot)
     {
         ActionCheck = b => !IsLastGCD(ActionID.AspectedHelios),
         StatusProvide = new StatusID[] { StatusID.AspectedHelios },
     };
 
-    public static IBaseAction CelestialOpposition { get; } = new BaseAction(ActionID.CelestialOpposition, true, isTimeline: true);
+    public static IBaseAction CelestialOpposition { get; } = new BaseAction(ActionID.CelestialOpposition, ActionOption.Heal);
 
-    public static IBaseAction EarthlyStar { get; } = new BaseAction(ActionID.EarthlyStar, true, isTimeline: true);
+    public static IBaseAction EarthlyStar { get; } = new BaseAction(ActionID.EarthlyStar, ActionOption.Heal);
 
-    public static IBaseAction CollectiveUnconscious { get; } = new BaseAction(ActionID.CollectiveUnconscious, true, isTimeline: true);
+    public static IBaseAction CollectiveUnconscious { get; } = new BaseAction(ActionID.CollectiveUnconscious, ActionOption.Heal);
 
-    public static IBaseAction Horoscope { get; } = new BaseAction(ActionID.Horoscope, true, isTimeline: true);
+    public static IBaseAction Horoscope { get; } = new BaseAction(ActionID.Horoscope, ActionOption.Heal);
 
     public static IBaseAction Lightspeed { get; } = new BaseAction(ActionID.Lightspeed);
 
-    public static IBaseAction NeutralSect { get; } = new BaseAction(ActionID.NeutralSect, isTimeline: true);
+    public static IBaseAction NeutralSect { get; } = new BaseAction(ActionID.NeutralSect, ActionOption.Heal);
 
-    public static IBaseAction Macrocosmos { get; } = new BaseAction(ActionID.Macrocosmos, isTimeline: true);
+    public static IBaseAction Macrocosmos { get; } = new BaseAction(ActionID.Macrocosmos, ActionOption.Heal);
 
     public static IBaseAction Astrodyne { get; } = new BaseAction(ActionID.Astrodyne)
     {
@@ -90,7 +90,7 @@ public abstract class AST_Base : CustomRotation
         },
     };
 
-    public static IBaseAction Divination { get; } = new BaseAction(ActionID.Divination, true);
+    public static IBaseAction Divination { get; } = new BaseAction(ActionID.Divination, ActionOption.Buff);
 
     public static IBaseAction Draw { get; } = new BaseAction(ActionID.Draw)
     {

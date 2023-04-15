@@ -23,20 +23,20 @@ public abstract class WHM_Base : CustomRotation
     private sealed protected override IBaseAction Raise => Raise1;
 
     #region Heal
-    public static IBaseAction Cure { get; } = new BaseAction(ActionID.Cure, true, isTimeline: true);
+    public static IBaseAction Cure { get; } = new BaseAction(ActionID.Cure, ActionOption.Heal);
 
-    public static IBaseAction Medica { get; } = new BaseAction(ActionID.Medica, true, isTimeline: true);
+    public static IBaseAction Medica { get; } = new BaseAction(ActionID.Medica, ActionOption.Heal);
 
-    public static IBaseAction Raise1 { get; } = new BaseAction(ActionID.Raise1, true);
+    public static IBaseAction Raise1 { get; } = new BaseAction(ActionID.Raise1, ActionOption.Friendly);
 
-    public static IBaseAction Cure2 { get; } = new BaseAction(ActionID.Cure2, true, isTimeline: true);
+    public static IBaseAction Cure2 { get; } = new BaseAction(ActionID.Cure2, ActionOption.Heal);
 
-    public static IBaseAction Medica2 { get; } = new BaseAction(ActionID.Medica2, true, isEot: true, isTimeline: true)
+    public static IBaseAction Medica2 { get; } = new BaseAction(ActionID.Medica2, ActionOption.Hot)
     {
         StatusProvide = new[] { StatusID.Medica2, StatusID.TrueMedica2 },
     };
 
-    public static IBaseAction Regen { get; } = new BaseAction(ActionID.Regen, true, isEot: true, isTimeline: true)
+    public static IBaseAction Regen { get; } = new BaseAction(ActionID.Regen, ActionOption.Hot)
     {
         TargetStatus = new[]
         {
@@ -46,39 +46,39 @@ public abstract class WHM_Base : CustomRotation
         }
     };
 
-    public static IBaseAction Cure3 { get; } = new BaseAction(ActionID.Cure3, true, shouldEndSpecial: true, isTimeline: true);
+    public static IBaseAction Cure3 { get; } = new BaseAction(ActionID.Cure3, ActionOption.Heal | ActionOption.EndSpecial);
 
-    public static IBaseAction Benediction { get; } = new BaseAction(ActionID.Benediction, true, isTimeline: true);
+    public static IBaseAction Benediction { get; } = new BaseAction(ActionID.Benediction, ActionOption.Heal);
 
-    public static IBaseAction Asylum { get; } = new BaseAction(ActionID.Asylum, true, isTimeline: true);
+    public static IBaseAction Asylum { get; } = new BaseAction(ActionID.Asylum, ActionOption.Heal);
 
-    public static IBaseAction AfflatusSolace { get; } = new BaseAction(ActionID.AfflatusSolace, true, isTimeline: true)
+    public static IBaseAction AfflatusSolace { get; } = new BaseAction(ActionID.AfflatusSolace, ActionOption.Heal)
     {
         ActionCheck = b => JobGauge.Lily > 0,
     };
 
-    public static IBaseAction Tetragrammaton { get; } = new BaseAction(ActionID.Tetragrammaton, true, isTimeline: true);
+    public static IBaseAction Tetragrammaton { get; } = new BaseAction(ActionID.Tetragrammaton, ActionOption.Heal);
 
-    public static IBaseAction DivineBenison { get; } = new BaseAction(ActionID.DivineBenison, true, isTimeline: true)
+    public static IBaseAction DivineBenison { get; } = new BaseAction(ActionID.DivineBenison, ActionOption.Heal)
     {
         StatusProvide = new StatusID[] { StatusID.DivineBenison },
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
-    public static IBaseAction AfflatusRapture { get; } = new BaseAction(ActionID.AfflatusRapture, true, isTimeline: true)
+    public static IBaseAction AfflatusRapture { get; } = new BaseAction(ActionID.AfflatusRapture, ActionOption.Heal)
     {
         ActionCheck = b => JobGauge.Lily > 0,
     };
 
-    public static IBaseAction Aquaveil { get; } = new BaseAction(ActionID.Aquaveil, true, isTimeline: true);
+    public static IBaseAction Aquaveil { get; } = new BaseAction(ActionID.Aquaveil, ActionOption.Heal);
 
-    public static IBaseAction LiturgyOfTheBell { get; } = new BaseAction(ActionID.LiturgyOfTheBell, true, isTimeline: true);
+    public static IBaseAction LiturgyOfTheBell { get; } = new BaseAction(ActionID.LiturgyOfTheBell, ActionOption.Heal);
     #endregion
 
     #region Attack
     public static IBaseAction Stone { get; } = new BaseAction(ActionID.Stone);
 
-    public static IBaseAction Aero { get; } = new BaseAction(ActionID.Aero, isEot: true)
+    public static IBaseAction Aero { get; } = new BaseAction(ActionID.Aero, ActionOption.Dot)
     {
         TargetStatus = new StatusID[]
         {
@@ -99,15 +99,15 @@ public abstract class WHM_Base : CustomRotation
     #endregion
 
     #region buff
-    public static IBaseAction PresenseOfMind { get; } = new BaseAction(ActionID.PresenseOfMind, true)
+    public static IBaseAction PresenseOfMind { get; } = new BaseAction(ActionID.PresenseOfMind, ActionOption.Buff)
     {
         ActionCheck = b => !IsMoving
     };
 
-    public static IBaseAction ThinAir { get; } = new BaseAction(ActionID.ThinAir, true);
+    public static IBaseAction ThinAir { get; } = new BaseAction(ActionID.ThinAir, ActionOption.Buff);
 
-    public static IBaseAction PlenaryIndulgence { get; } = new BaseAction(ActionID.PlenaryIndulgence, true, isTimeline: true);
+    public static IBaseAction PlenaryIndulgence { get; } = new BaseAction(ActionID.PlenaryIndulgence, ActionOption.Heal);
 
-    public static IBaseAction Temperance { get; } = new BaseAction(ActionID.Temperance, true, isTimeline: true);
+    public static IBaseAction Temperance { get; } = new BaseAction(ActionID.Temperance, ActionOption.Heal);
     #endregion
 }

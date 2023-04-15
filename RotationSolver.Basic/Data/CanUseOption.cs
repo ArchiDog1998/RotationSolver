@@ -35,4 +35,9 @@ public enum CanUseOption : byte
     /// Ignore the check of casting an action while moving.
     /// </summary>
     IgnoreCastCheck = 1 << 4,
+
+    /// <summary>
+    /// The combination of <see cref="MustUse"/> and <see cref="EmptyOrSkipCombo"/>
+    /// </summary>
+    MustUseEmpty = MustUse | EmptyOrSkipCombo,
 }
