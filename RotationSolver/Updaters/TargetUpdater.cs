@@ -169,11 +169,19 @@ internal static partial class TargetUpdater
     {
         return IsHostileCastingBase(h, (act) =>
         {
-            if (h.CastTargetObjectId == h.TargetObjectId) return false;
-            if ((act.CastType == 1 || act.CastType == 2) &&
-                act.Range == 0 &&
-                act.EffectRange >= 40)
+            if ((act.CastType == 1 || act.CastType == 2)
+              && act.Range == 0
+              && act.EffectRange >= 40)
                 return true;
+
+            if (act.CastType == 2
+             && act.EffectRange == 6
+             && act.Cast100ms == 50
+             && act.CanTargetHostile
+             && !act.CanTargetSelf
+             && act.Range == 100)
+                return true;
+
             return false;
         });
     }
