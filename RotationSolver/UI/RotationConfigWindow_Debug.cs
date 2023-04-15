@@ -98,7 +98,18 @@ internal partial class RotationConfigWindow
             ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
             ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
             ImGui.Text("InView: " + Service.WorldToScreen(b.Position, out _).ToString());
-            ImGui.Text("NameId: " + b.NameId.ToString());
+            ImGui.Text("DataId: " + b.DataId.ToString());
+
+            var npc = b.GetObjectNPC();
+            if(npc != null)
+            {
+                ImGui.Text("Unknown0: " + npc.Behavior.Value?.Unknown0.ToString());
+                ImGui.Text("Unknown1: " + npc.Behavior.Value?.Unknown1.ToString());
+                ImGui.Text("Condition0Type: " + npc.Behavior.Value?.Condition0Type.ToString());
+                ImGui.Text("Condition0Target: " + npc.Behavior.Value?.Condition0Target.ToString());
+                ImGui.Text("Condition1Type: " + npc.Behavior.Value?.Condition1Type.ToString());
+                ImGui.Text("Condition1Target: " + npc.Behavior.Value?.Condition1Target.ToString());
+            }
 
             foreach (var status in b.StatusList)
             {

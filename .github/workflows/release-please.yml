@@ -17,15 +17,6 @@ jobs:
           package-name: release-please-action
           default-branch: release
   
-  on-released:
-    if: ${{ needs.release-please.outputs.released }}
-    runs-on: ubuntu-latest
-    steps:      
-      - name: Trigger Repo Update
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          event-type: new-release
-
   build:
     name : build
     if: ${{ needs.release-please.outputs.released }}
@@ -84,3 +75,12 @@ jobs:
           asset_path: artifact/latest.zip
           asset_name: latest.zip
           asset_content_type: application/zip
+
+  on-released:
+    runs-on: ubuntu-latest
+    needs: release
+    steps:      
+      - name: Trigger Repo Update
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          event-type: new-release

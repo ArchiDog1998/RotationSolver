@@ -13,7 +13,7 @@ public static class ObjectHelper
         EventHandlerType.Quest,
     };
 
-    private unsafe static BNpcBase GetObjectNPC(this GameObject obj)
+    public static BNpcBase GetObjectNPC(this GameObject obj)
     {
         if (obj == null) return null;
         return Service.GetSheet<BNpcBase>().GetRow(obj.DataId);
@@ -95,6 +95,7 @@ public static class ObjectHelper
     }
 
     public static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
+
     /// <summary>
     /// Is character a boss? Max HP exceeds a certain amount.
     /// </summary>
