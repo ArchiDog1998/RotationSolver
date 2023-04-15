@@ -25,7 +25,7 @@ public static class ObjectHelper
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
     }
 
-    private static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetAddress(this GameObject obj)
+    public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetAddress(this GameObject obj)
         => (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
 
     public static unsafe bool IsOthersPlayers(this GameObject obj)
@@ -74,7 +74,7 @@ public static class ObjectHelper
 
     public static unsafe uint FateId(this GameObject obj) => obj.GetAddress()->FateId;
 
-    public static unsafe bool IsTargetable(this GameObject obj) => obj.GetAddress()->TargetableStatus == FFXIVClientStructs.FFXIV.Client.Game.Object.ObjectTargetableFlags.IsTargetable;
+    public static unsafe bool IsTargetable(this GameObject obj) => obj.GetAddress()->GetIsTargetable();
 
     static readonly Dictionary<uint, bool> _effectRangeCheck = new Dictionary<uint, bool>();
     public static bool CanInterrupt(this BattleChara b)
@@ -95,7 +95,6 @@ public static class ObjectHelper
     }
 
     public static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
-
     /// <summary>
     /// Is character a boss? Max HP exceeds a certain amount.
     /// </summary>

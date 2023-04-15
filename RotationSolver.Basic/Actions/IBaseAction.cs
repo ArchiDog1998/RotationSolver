@@ -93,6 +93,10 @@
         /// <returns></returns>
         bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, int abilityCount = 0);
 
+        [Obsolete("Use int abilityCount one!", false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, uint abilityCount = 0);
+
         /// <summary>
         /// Has it been in cooldown for <paramref name="time"/> seconds?
         /// </summary>
@@ -108,6 +112,10 @@
         /// <returns></returns>
         bool ElapsedAfterGCD(uint gcdCount = 0, int abilityCount = 0);
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use int abilityCount one!", false)]
+        bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0);
+
         /// <summary>
         /// Has it been in cooldown for <paramref name="time"/> seconds?
         /// </summary>
@@ -122,6 +130,10 @@
         /// <param name="abilityCount"></param>
         /// <returns></returns>
         bool WillHaveOneChargeGCD(uint gcdCount = 0, int abilityCount = 0);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use int abilityCount one!", false)]
+        bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0);
 
         /// <summary>
         /// Will have at least one charge after <paramref name="remain"/> seconds?

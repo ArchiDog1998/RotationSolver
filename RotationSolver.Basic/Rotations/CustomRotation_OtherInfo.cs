@@ -135,7 +135,7 @@ public abstract partial class CustomRotation
 
 
     /// <summary>
-    /// Actions successfully released. The first one is the latest one.
+    ///  The actions that were used by player successfully. The first one is the latest successfully used one.
     /// </summary>
     protected static ActionRec[] RecordActions => DataCenter.RecordActions;
 
