@@ -13,7 +13,8 @@ namespace RotationSolver.Commands
         static StateCommandType _lastState;
         internal static unsafe void DoAnAction(bool isGCD)
         {
-            if (_lastState == StateCommandType.Cancel)
+            if (_lastState == StateCommandType.Cancel 
+                || DataCenter.StateType == StateCommandType.Cancel)
             {
                 _lastState = DataCenter.StateType;
                 return;
