@@ -46,6 +46,7 @@ internal partial class RotationConfigWindow
             ImGui.Text("Fate: " + DataCenter.FateId.ToString());
         }
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
+        ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
         ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());

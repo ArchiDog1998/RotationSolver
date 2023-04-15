@@ -49,6 +49,7 @@ public class Watcher : IDisposable
 
     private static void ActionFromEnemy(uint sourceId, ActionEffectSet set)
     {
+        //Check Source.
         var source = Service.ObjectTable.SearchById(sourceId);
         if (source == null) return;
         if (source is not BattleChara battle) return;
@@ -56,7 +57,18 @@ public class Watcher : IDisposable
         if (battle.SubKind == 9) return; //Friend!
         if (Service.ObjectTable.SearchById(battle.ObjectId) is PlayerCharacter) return;
 
-        ShowStrEnemy = set.ToString();
+        var damageRatio = set.TargetEffects
+            .Where(e => e.Target == Service.Player)
+            .SelectMany(e => new ActionEffect[]
+            {
+                e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]
+            })
+            .Where(e => e.Type == ActionEffectType.Damage)
+            .Sum(e => (float)e.Value / Service.Player.MaxHp);
+
+        DataCenter.AddDamageRec(damageRatio);
+
+        ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
     }
 
     private static void ActionFromSelf(uint sourceId, ActionEffectSet set)
