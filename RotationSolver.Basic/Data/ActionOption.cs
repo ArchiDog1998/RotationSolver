@@ -26,6 +26,16 @@ public enum ActionOption : byte
     Timeline = 1 << 3,
 
     /// <summary>
+    /// Is a GCD action.
+    /// </summary>
+    GeneralGCD = 1 << 4,
+
+    /// <summary>
+    /// Is a simple gcd action, without other cooldown.
+    /// </summary>
+    RealGCD = 1 << 5,
+
+    /// <summary>
     /// Dot action
     /// </summary>
     Dot = Eot,

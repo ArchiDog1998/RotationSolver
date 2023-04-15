@@ -1,8 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
-using static Lumina.Data.Parsing.Uld.UldRoot;
-using System.Collections.Generic;
 using Action = Lumina.Excel.GeneratedSheets.Action;
-using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -16,6 +13,9 @@ public partial class BaseAction : IBaseAction
     public bool IsEot => _option.HasFlag(ActionOption.Eot);
     public bool ShouldEndSpecial => _option.HasFlag(ActionOption.EndSpecial);
     public bool IsTimeline => _option.HasFlag(ActionOption.Timeline) && IsFriendly;
+    public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);
+    public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
+
 
     public Func<uint> GetDotGcdCount { private get; set; }
 
@@ -64,10 +64,6 @@ public partial class BaseAction : IBaseAction
 
     public uint IconID => _action.Icon;
 
-    public bool IsGeneralGCD { get; }
-
-    public bool IsRealGCD { get; }
-
     private byte CoolDownGroup { get; }
 
     public unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
@@ -104,10 +100,12 @@ public partial class BaseAction : IBaseAction
     public BaseAction(ActionID actionID, ActionOption option = ActionOption.None)
     {
         _action = Service.GetSheet<Action>().GetRow((uint)actionID);
+
+        option &= ~(ActionOption.GeneralGCD | ActionOption.RealGCD);
+        if(_action.IsGeneralGCD()) option |= ActionOption.GeneralGCD;
+        if(_action.IsRealGCD()) option |= ActionOption.RealGCD;
         _option = option;
 
-        IsGeneralGCD = _action.IsGeneralGCD();
-        IsRealGCD = _action.IsRealGCD();
         CoolDownGroup = _action.GetCoolDownGroup();
     }
 
