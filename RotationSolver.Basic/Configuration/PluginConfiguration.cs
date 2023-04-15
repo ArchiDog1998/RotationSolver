@@ -1,5 +1,6 @@
 using Dalamud.Configuration;
 using Dalamud.Game.ClientState.GamePad;
+using Dalamud.Logging;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -22,6 +23,7 @@ public class PluginConfiguration : IPluginConfiguration
     public Dictionary<uint, byte> TargetToHostileTypes { get; set; } =
         new Dictionary<uint, byte>();
 
+    [JsonProperty]
     private Dictionary<SettingsCommand, bool> SettingsBools { get; set; } = new Dictionary<SettingsCommand, bool>();
     public bool GetValue(SettingsCommand command) => Service.Config.SettingsBools.TryGetValue(command, out var value) ? value : command.GetDefault();
     public void SetValue(SettingsCommand command, bool value) => Service.Config.SettingsBools[command] = value;
