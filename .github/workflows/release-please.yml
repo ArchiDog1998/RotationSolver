@@ -5,6 +5,7 @@ on:
 name: release-please
 jobs:
   release-please:
+    name : releasePlz
     runs-on: ubuntu-latest
     outputs:
       released: ${{ steps.rp.outputs.releases_created }}
@@ -19,6 +20,7 @@ jobs:
   
   build:
     name : build
+    needs: release-please
     if: ${{ needs.release-please.outputs.released }}
     runs-on: windows-latest
     steps:
