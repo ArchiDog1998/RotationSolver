@@ -133,6 +133,9 @@ internal static class OverlayWindow
 
         if(target == null) return;
 
+        if (ActionUpdater.NextGCDAction != null
+            && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
+
         Vector3 pPosition = target.Position;
         Service.WorldToScreen(pPosition, out var scrPos);
 
