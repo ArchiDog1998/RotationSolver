@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.2.9](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.8...v2.2.9) (2023-04-15)
+
+
+### Bug Fixes
+
+* add a api for DPSTaken. ([3d1f2cc](https://github.com/ArchiDog1998/RotationSolver/commit/3d1f2ccb2ec174cfa41195ed0d4ced3990852c01))
+* add a feature to displayStatus on the `Rotation` in `Debug` ([5a5623a](https://github.com/ArchiDog1998/RotationSolver/commit/5a5623a5ef59e130d05b8d35dcf8c4fac9231816))
+* add more for target status. ([c22f5e9](https://github.com/ArchiDog1998/RotationSolver/commit/c22f5e9954d880ef6c9232f2b994de538b966b64))
+* add the missed obsolete method. ([1289409](https://github.com/ArchiDog1998/RotationSolver/commit/1289409e573134a529ded1cbb9eb9dab149b859c))
+* allowed the abilities count of cd is lower than 0. ([3d3b6a8](https://github.com/ArchiDog1998/RotationSolver/commit/3d3b6a85247e6f9a919da13eaec94e42da9d39f7))
+* allowed to download pdb file. ([483b813](https://github.com/ArchiDog1998/RotationSolver/commit/483b81339674d8e9391977ec2421252a1535da04))
+* changed targetable to TargetSattus. ([1631507](https://github.com/ArchiDog1998/RotationSolver/commit/1631507df97e54bf86b04ed4eadf73b3ef18a767))
+* changed the logic of auto defense area ([613456b](https://github.com/ArchiDog1998/RotationSolver/commit/613456b2dcfa4983d5a81dea08a932dc47a3b030))
+* changed the receiveEffects. ([92e20db](https://github.com/ArchiDog1998/RotationSolver/commit/92e20dbffe2cf7064c10c69bae2898e7c439a97f))
+* changed the watcher for count check. ([453ed68](https://github.com/ArchiDog1998/RotationSolver/commit/453ed682586ab4fc903772d7245963326656e9e1))
+* fixed the api for the previous version. ([b9b65a6](https://github.com/ArchiDog1998/RotationSolver/commit/b9b65a6565bbb1f95b04eef0ed8ce41dd5aaa510))
+* fixed the manual to cancel issue. ([28fedef](https://github.com/ArchiDog1998/RotationSolver/commit/28fedef0cee154d5d99b58549dec86516b8e35f7))
+* make SettingsBools saveable. ([1665ac3](https://github.com/ArchiDog1998/RotationSolver/commit/1665ac328a3d931f79e8f082dc762377e0e409d2))
+* never draw circle when aoe with role melee or tank. ([786c3fd](https://github.com/ArchiDog1998/RotationSolver/commit/786c3fdf8d63ffe13e49823c826a78be339cb12d))
+
 ## [2.2.8](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.7...v2.2.8) (2023-04-13)
 
 
