@@ -13,7 +13,8 @@ namespace RotationSolver.Commands
         static StateCommandType _lastState;
         internal static unsafe void DoAnAction(bool isGCD)
         {
-            if (_lastState == StateCommandType.Cancel)
+            if (_lastState == StateCommandType.Cancel 
+                || DataCenter.StateType == StateCommandType.Cancel)
             {
                 _lastState = DataCenter.StateType;
                 return;
@@ -23,7 +24,7 @@ namespace RotationSolver.Commands
             var localPlayer = Service.Player;
             if (localPlayer == null) return;
 
-            //0.2s内，不能重复按按钮。
+            //Do not click the button in 0.2s
             if (DateTime.Now - _fastClickStopwatch < _fastSpan) return;
             _fastClickStopwatch = DateTime.Now;
 

@@ -20,15 +20,15 @@ public abstract class RPR_Base : CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
 
-    public class PRPAction : BaseAction
-    {
-        public override EnemyPositional EnemyPositional => Player.HasStatus(true, StatusID.Enshrouded)
-            ? EnemyPositional.None : base.EnemyPositional;
-        internal PRPAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
-            : base(actionID, isFriendly, shouldEndSpecial)
-        {
-        }
-    }
+    //public class PRPAction : BaseAction
+    //{
+    //    public override EnemyPositional EnemyPositional => Player.HasStatus(true, StatusID.Enshrouded)
+    //        ? EnemyPositional.None : base.EnemyPositional;
+    //    internal PRPAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
+    //        : base(actionID, isFriendly, shouldEndSpecial)
+    //    {
+    //    }
+    //}
 
     #region Single
     public static IBaseAction Slice { get; } = new BaseAction(ActionID.Slice)
@@ -46,7 +46,7 @@ public abstract class RPR_Base : CustomRotation
         ActionCheck = Slice.ActionCheck,
     };
 
-    public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, isEot: true)
+    public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = b => !SoulReaver,
@@ -69,7 +69,7 @@ public abstract class RPR_Base : CustomRotation
         ActionCheck = Slice.ActionCheck,
     };
 
-    public static IBaseAction WhorlOfDeath { get; } = new BaseAction(ActionID.WhorlOfDeath, isEot: true)
+    public static IBaseAction WhorlOfDeath { get; } = new BaseAction(ActionID.WhorlOfDeath, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = ShadowOfDeath.ActionCheck,
@@ -118,7 +118,7 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     #region Burst
-    public static IBaseAction ArcaneCircle { get; } = new BaseAction(ActionID.ArcaneCircle, true)
+    public static IBaseAction ArcaneCircle { get; } = new BaseAction(ActionID.ArcaneCircle, ActionOption.Buff)
     {
         StatusProvide = new[] { StatusID.CircleOfSacrifice, StatusID.BloodSownCircle }
     };
@@ -201,7 +201,7 @@ public abstract class RPR_Base : CustomRotation
         StatusNeed = new[] { StatusID.SoulSow },
     };
 
-    public static IBaseAction ArcaneCrest { get; } = new BaseAction(ActionID.ArcaneCrest, true, isTimeline: true);
+    public static IBaseAction ArcaneCrest { get; } = new BaseAction(ActionID.ArcaneCrest, ActionOption.Defense);
     #endregion
 
     [RotationDesc(ActionID.HellsIngress)]

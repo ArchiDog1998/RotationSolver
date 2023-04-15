@@ -17,7 +17,7 @@ public abstract class MCH_Base : CustomRotation
         return EndAfter(JobGauge.OverheatTimeRemaining / 1000f, time);
     }
 
-    protected static bool OverheatedEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    protected static bool OverheatedEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
     {
         return EndAfterGCD(JobGauge.OverheatTimeRemaining / 1000f, gctCount, abilityCount);
     }
@@ -56,7 +56,7 @@ public abstract class MCH_Base : CustomRotation
 
     public static IBaseAction ChainSaw { get; } = new BaseAction(ActionID.ChainSaw);
 
-    public static IBaseAction BioBlaster { get; } = new BaseAction(ActionID.BioBlaster, isEot: true);
+    public static IBaseAction BioBlaster { get; } = new BaseAction(ActionID.BioBlaster, ActionOption.Dot);
 
     public static IBaseAction Reassemble { get; } = new BaseAction(ActionID.Reassemble)
     {
@@ -85,7 +85,7 @@ public abstract class MCH_Base : CustomRotation
         ActionCheck = b => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
     };
 
-    public static IBaseAction Tactician { get; } = new BaseAction(ActionID.Tactician, true, isTimeline: true)
+    public static IBaseAction Tactician { get; } = new BaseAction(ActionID.Tactician, ActionOption.Defense)
     {
         ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
@@ -93,7 +93,7 @@ public abstract class MCH_Base : CustomRotation
             StatusID.ShieldSamba),
     };
 
-    public static IBaseAction Dismantle { get; } = new BaseAction(ActionID.Dismantle, true, isTimeline: true);
+    public static IBaseAction Dismantle { get; } = new BaseAction(ActionID.Dismantle, ActionOption.Defense);
 
     [RotationDesc(ActionID.Tactician, ActionID.Dismantle)]
     protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)

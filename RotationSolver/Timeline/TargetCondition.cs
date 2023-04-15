@@ -78,7 +78,7 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.StatusEndGCD:
-                result = !tar.WillStatusEndGCD((uint)GCD, (uint)Ability, FromSelf, Status);
+                result = !tar.WillStatusEndGCD((uint)GCD, Ability, FromSelf, Status);
                 break;
 
             case TargetConditionType.CastingAction:

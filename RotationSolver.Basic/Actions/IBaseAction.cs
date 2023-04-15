@@ -17,6 +17,7 @@
         bool IsFriendly { get; }
         bool IsTimeline { get; }
         bool IsEot { get; }
+
         EnemyPositional EnemyPositional { get; }
 
         /// <summary>
@@ -61,7 +62,7 @@
         /// </summary>
         /// <param name="act"></param>
         /// <param name="option">Options about using this method.</param>
-        /// <param name="gcdCountForAbility">The count of gcd for ability to delay. Only used in BLM right now</paramref>
+        /// <param name="gcdCountForAbility">The count of gcd for ability to delay. Only used in BLM right now</param>
         /// <returns>Should I use.</returns>
         bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0);
 
@@ -91,6 +92,10 @@
         /// <param name="gcdCount"></param>
         /// <param name="abilityCount"></param>
         /// <returns></returns>
+        bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, int abilityCount = 0);
+
+        [Obsolete("Use int abilityCount one!", false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, uint abilityCount = 0);
 
         /// <summary>
@@ -106,6 +111,10 @@
         /// <param name="gcdCount"></param>
         /// <param name="abilityCount"></param>
         /// <returns></returns>
+        bool ElapsedAfterGCD(uint gcdCount = 0, int abilityCount = 0);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use int abilityCount one!", false)]
         bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0);
 
         /// <summary>
@@ -121,10 +130,14 @@
         /// <param name="gcdCount"></param>
         /// <param name="abilityCount"></param>
         /// <returns></returns>
+        bool WillHaveOneChargeGCD(uint gcdCount = 0, int abilityCount = 0);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use int abilityCount one!", false)]
         bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0);
 
         /// <summary>
-        /// Will have at least one charge after <paramref name="time"/> seconds?
+        /// Will have at least one charge after <paramref name="remain"/> seconds?
         /// </summary>
         /// <param name="remain"></param>
         /// <returns></returns>

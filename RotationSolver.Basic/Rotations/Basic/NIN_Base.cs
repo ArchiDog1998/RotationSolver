@@ -20,17 +20,17 @@ public abstract class NIN_Base : CustomRotation
     {
         public IBaseAction[] Ninjutsu { get; }
         internal NinAction(ActionID actionID, params IBaseAction[] ninjutsu)
-            : base(actionID, false, false)
+            : base(actionID)
         {
             Ninjutsu = ninjutsu;
         }
     }
 
-    public static IBaseAction Hide { get; } = new BaseAction(ActionID.Hide, true);
+    public static IBaseAction Hide { get; } = new BaseAction(ActionID.Hide, ActionOption.Buff);
 
     public static IBaseAction SpinningEdge { get; } = new BaseAction(ActionID.SpinningEdge);
 
-    public static IBaseAction ShadeShift { get; } = new BaseAction(ActionID.ShadeShift, true);
+    public static IBaseAction ShadeShift { get; } = new BaseAction(ActionID.ShadeShift, ActionOption.Buff);
 
     public static IBaseAction GustSlash { get; } = new BaseAction(ActionID.GustSlash);
 
@@ -54,29 +54,29 @@ public abstract class NIN_Base : CustomRotation
 
     public static IBaseAction DeathBlossom { get; } = new BaseAction(ActionID.DeathBlossom);
 
-    public static IBaseAction Ten { get; } = new BaseAction(ActionID.Ten, true);
+    public static IBaseAction Ten { get; } = new BaseAction(ActionID.Ten, ActionOption.Buff);
 
-    public static IBaseAction Chi { get; } = new BaseAction(ActionID.Chi, true);
+    public static IBaseAction Chi { get; } = new BaseAction(ActionID.Chi, ActionOption.Buff);
 
-    public static IBaseAction Jin { get; } = new BaseAction(ActionID.Jin, true);
+    public static IBaseAction Jin { get; } = new BaseAction(ActionID.Jin, ActionOption.Buff);
 
-    public static IBaseAction TenChiJin { get; } = new BaseAction(ActionID.TenChiJin, true)
+    public static IBaseAction TenChiJin { get; } = new BaseAction(ActionID.TenChiJin)
     {
         StatusProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
         ActionCheck = b => JobGauge.HutonTimer > 0,
     };
 
-    public static IBaseAction Shukuchi { get; } = new BaseAction(ActionID.Shukuchi, true);
+    public static IBaseAction Shukuchi { get; } = new BaseAction(ActionID.Shukuchi);
 
     public static IBaseAction Assassinate { get; } = new BaseAction(ActionID.Assassinate);
 
-    public static IBaseAction Meisui { get; } = new BaseAction(ActionID.Meisui, true)
+    public static IBaseAction Meisui { get; } = new BaseAction(ActionID.Meisui)
     {
         StatusNeed = new[] { StatusID.Suiton },
         ActionCheck = b => JobGauge.Ninki <= 50,
     };
 
-    public static IBaseAction Kassatsu { get; } = new BaseAction(ActionID.Kassatsu, true)
+    public static IBaseAction Kassatsu { get; } = new BaseAction(ActionID.Kassatsu)
     {
         StatusProvide = TenChiJin.StatusProvide,
     };
@@ -88,7 +88,7 @@ public abstract class NIN_Base : CustomRotation
         ActionCheck = b => EndAfter(JobGauge.HutonTimer / 1000f, 29) && JobGauge.HutonTimer > 0,
     };
 
-    public static IBaseAction Bunshin { get; } = new BaseAction(ActionID.Bunshin, true)
+    public static IBaseAction Bunshin { get; } = new BaseAction(ActionID.Bunshin, ActionOption.Buff)
     {
         ActionCheck = b => Ninki >= 50,
     };

@@ -1,12 +1,11 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Hooking;
 using Dalamud.Interface.Colors;
+using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Localization;
-using System.ComponentModel;
 using System.Text.RegularExpressions;
-using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver;
 
@@ -34,27 +33,52 @@ public class Watcher : IDisposable
     {
         _receiveAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTargets);
         if (Service.Player == null) return;
-        var set = new ActionEffectSet(effectHeader, effectArray, effectTargets);
 
-        ActionFromSelf(sourceId, set, effectArray->Param2);
-        ActionFromEnemy(sourceId, set);
+        try
+        {
+            var set = new ActionEffectSet(sourceId, effectHeader, effectArray, effectTargets);
+
+            ActionFromSelf(sourceId, set);
+            ActionFromEnemy(sourceId, set);
+        }
+        catch(Exception ex) 
+        {
+            PluginLog.Error(ex, "Error at Ability Receive.");
+        }
     }
 
     private static void ActionFromEnemy(uint sourceId, ActionEffectSet set)
     {
+        //Check Source.
         var source = Service.ObjectTable.SearchById(sourceId);
-        if(source == null) return;
+        if (source == null) return;
         if (source is not BattleChara battle) return;
         if (battle is PlayerCharacter) return;
+        if (battle.SubKind == 9) return; //Friend!
+        if (Service.ObjectTable.SearchById(battle.ObjectId) is PlayerCharacter) return;
 
-        ShowStrEnemy = set.ToString();
+        var damageRatio = set.TargetEffects
+            .Where(e => e.Target == Service.Player)
+            .SelectMany(e => new ActionEffect[]
+            {
+                e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]
+            })
+            .Where(e => e.Type == ActionEffectType.Damage)
+            .Sum(e => (float)e.Value / Service.Player.MaxHp);
+
+        DataCenter.AddDamageRec(damageRatio);
+
+        ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
     }
 
-    private static void ActionFromSelf(uint sourceId, ActionEffectSet set, byte flag)
+    private static void ActionFromSelf(uint sourceId, ActionEffectSet set)
     {
         if (sourceId != Service.Player.ObjectId) return;
         if (set.Type != ActionType.Spell) return;
         if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
+
+        if(!set.TargetEffects.Any()) return;
+        var flag = set.TargetEffects.FirstOrDefault()[0].Param2;
 
         var action = set.Action;
         var tar = set.Target;

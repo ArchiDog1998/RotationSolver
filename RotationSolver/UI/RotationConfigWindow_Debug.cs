@@ -16,6 +16,10 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginTabBar("Debug Items"))
         {
+            if(RotationUpdater.RightNowRotation != null)
+            {
+                DrawParamTabItem("Rotation", RotationUpdater.RightNowRotation.DisplayStatus);
+            }
             DrawParamTabItem("Status", DrawStatus);
             DrawParamTabItem("Party", DrawParty);
             DrawParamTabItem("Target Data", DrawTargetData);
@@ -42,6 +46,7 @@ internal partial class RotationConfigWindow
             ImGui.Text("Fate: " + DataCenter.FateId.ToString());
         }
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
+        ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
         ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
@@ -93,7 +98,20 @@ internal partial class RotationConfigWindow
             ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
             ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
             ImGui.Text("InView: " + Service.WorldToScreen(b.Position, out _).ToString());
-            ImGui.Text("NameId: " + b.NameId.ToString());
+            ImGui.Text("Name Id: " + b.NameId.ToString());
+            ImGui.Text("Data Id: " + b.DataId.ToString());
+            ImGui.Text("Targetable: " + b.GetAddress()->TargetableStatus.ToString());
+
+            var npc = b.GetObjectNPC();
+            if(npc != null)
+            {
+                ImGui.Text("Unknown0: " + npc.Behavior.Value?.Unknown0.ToString());
+                ImGui.Text("Unknown1: " + npc.Behavior.Value?.Unknown1.ToString());
+                ImGui.Text("Condition0Type: " + npc.Behavior.Value?.Condition0Type.ToString());
+                ImGui.Text("Condition0Target: " + npc.Behavior.Value?.Condition0Target.ToString());
+                ImGui.Text("Condition1Type: " + npc.Behavior.Value?.Condition1Type.ToString());
+                ImGui.Text("Condition1Target: " + npc.Behavior.Value?.Condition1Target.ToString());
+            }
 
             foreach (var status in b.StatusList)
             {

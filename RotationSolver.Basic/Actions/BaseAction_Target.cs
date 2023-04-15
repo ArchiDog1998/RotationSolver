@@ -268,7 +268,6 @@ public partial class BaseAction
             return false;
         }
 
-        //判断一下AOE攻击的时候如果有攻击目标标记目标
         if (_action.CastType > 1 && NoAOE)
         {
             target = null;
@@ -397,7 +396,7 @@ public partial class BaseAction
     public bool CanGetTarget(BattleChara target, BattleChara subTarget)
     {
         if (target == null) return false;
-        if (_action.CastType == 1) return false;
+        if (!IsSingleTarget) return false;
         if (target.DistanceToPlayer() > Range) return false;
 
         var pPos = Service.Player.Position;

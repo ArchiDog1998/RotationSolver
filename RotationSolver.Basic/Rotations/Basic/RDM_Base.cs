@@ -17,7 +17,7 @@ public abstract class RDM_Base : CustomRotation
 
     private sealed protected override IBaseAction Raise => Verraise;
 
-    public static IBaseAction Verraise { get; } = new BaseAction(ActionID.Verraise, true);
+    public static IBaseAction Verraise { get; } = new BaseAction(ActionID.Verraise, ActionOption.Friendly);
 
     public static IBaseAction Jolt { get; } = new BaseAction(ActionID.Jolt)
     {
@@ -34,7 +34,7 @@ public abstract class RDM_Base : CustomRotation
         StatusNeed = Jolt.StatusProvide,
     };
 
-    public static IBaseAction CorpsACorps { get; } = new BaseAction(ActionID.CorpsACorps, shouldEndSpecial: true)
+    public static IBaseAction CorpsACorps { get; } = new BaseAction(ActionID.CorpsACorps, ActionOption.EndSpecial)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -86,7 +86,7 @@ public abstract class RDM_Base : CustomRotation
         ActionCheck = b => BlackMana >= 15 && WhiteMana >= 15,
     };
 
-    public static IBaseAction Acceleration { get; } = new BaseAction(ActionID.Acceleration, true)
+    public static IBaseAction Acceleration { get; } = new BaseAction(ActionID.Acceleration, ActionOption.Buff)
     {
         StatusProvide = new[] { StatusID.Acceleration },
     };
@@ -96,16 +96,16 @@ public abstract class RDM_Base : CustomRotation
         ActionCheck = b => BlackMana >= 20 && WhiteMana >= 20,
     };
 
-    public static IBaseAction Vercure { get; } = new BaseAction(ActionID.Vercure, true)
+    public static IBaseAction Vercure { get; } = new BaseAction(ActionID.Vercure, ActionOption.Heal)
     {
         StatusProvide = Swiftcast.StatusProvide.Union(Acceleration.StatusProvide).ToArray(),
     };
 
     public static IBaseAction ContreSixte { get; } = new BaseAction(ActionID.ContreSixte);
 
-    public static IBaseAction Embolden { get; } = new BaseAction(ActionID.Embolden, true);
+    public static IBaseAction Embolden { get; } = new BaseAction(ActionID.Embolden, ActionOption.Buff);
 
-    public static IBaseAction MagickBarrier { get; } = new BaseAction(ActionID.MagickBarrier, true, isTimeline: true);
+    public static IBaseAction MagickBarrier { get; } = new BaseAction(ActionID.MagickBarrier, ActionOption.Defense);
 
     public static IBaseAction Verflare { get; } = new BaseAction(ActionID.Verflare);
 

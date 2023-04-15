@@ -89,16 +89,16 @@ public abstract class DRG_Base : CustomRotation
         ActionCheck = b => JobGauge.FirstmindsFocusCount == 2,
     };
 
-    public static IBaseAction LifeSurge { get; } = new BaseAction(ActionID.LifeSurge, true)
+    public static IBaseAction LifeSurge { get; } = new BaseAction(ActionID.LifeSurge, ActionOption.Buff)
     {
         StatusProvide = new[] { StatusID.LifeSurge },
 
         ActionCheck = b => !IsLastAbility(true, LifeSurge),
     };
 
-    public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge, true);
+    public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge, ActionOption.Buff);
 
-    public static IBaseAction DragonSight { get; } = new BaseAction(ActionID.DragonSight, true)
+    public static IBaseAction DragonSight { get; } = new BaseAction(ActionID.DragonSight, ActionOption.Buff)
     {
         ChoiceTarget = (Targets, mustUse) =>
         {
@@ -111,7 +111,7 @@ public abstract class DRG_Base : CustomRotation
         },
     };
 
-    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, true);
+    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, ActionOption.Buff);
 
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)

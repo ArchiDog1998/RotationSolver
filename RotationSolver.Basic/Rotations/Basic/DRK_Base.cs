@@ -16,7 +16,7 @@ public abstract class DRK_Base : CustomRotation
         return EndAfter(DarkSideTimeRemaining, time);
     }
 
-    protected static bool DarkSideEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    protected static bool DarkSideEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
     {
         return EndAfterGCD(DarkSideTimeRemaining, gctCount, abilityCount);
     }
@@ -31,7 +31,7 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction Unleash { get; } = new BaseAction(ActionID.Unleash);
 
-    public static IBaseAction Grit { get; } = new BaseAction(ActionID.Grit, shouldEndSpecial: true);
+    public static IBaseAction Grit { get; } = new BaseAction(ActionID.Grit, ActionOption.EndSpecial);
 
     public static IBaseAction Unmend { get; } = new BaseAction(ActionID.Unmend)
     {
@@ -47,22 +47,22 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction BloodWeapon { get; } = new BaseAction(ActionID.BloodWeapon);
 
-    public static IBaseAction ShadowWall { get; } = new BaseAction(ActionID.ShadowWall, true, isTimeline: true)
+    public static IBaseAction ShadowWall { get; } = new BaseAction(ActionID.ShadowWall, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
-    public static IBaseAction DarkMind { get; } = new BaseAction(ActionID.DarkMind, true, isTimeline: true)
+    public static IBaseAction DarkMind { get; } = new BaseAction(ActionID.DarkMind, ActionOption.Defense)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
-    public static IBaseAction LivingDead { get; } = new BaseAction(ActionID.LivingDead, true, isTimeline: true);
+    public static IBaseAction LivingDead { get; } = new BaseAction(ActionID.LivingDead, ActionOption.Defense);
 
     public static IBaseAction SaltedEarth { get; } = new BaseAction(ActionID.SaltedEarth);
 
-    public static IBaseAction Plunge { get; } = new BaseAction(ActionID.Plunge, shouldEndSpecial: true)
+    public static IBaseAction Plunge { get; } = new BaseAction(ActionID.Plunge, ActionOption.EndSpecial)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving
     };
@@ -83,21 +83,21 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction Delirium { get; } = new BaseAction(ActionID.Delirium);
 
-    public static IBaseAction TheBlackestNight { get; } = new BaseAction(ActionID.TheBlackestNight, isTimeline: true)
+    public static IBaseAction TheBlackestNight { get; } = new BaseAction(ActionID.TheBlackestNight, ActionOption.Defense)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
     public static IBaseAction StalwartSoul { get; } = new BaseAction(ActionID.StalwartSoul);
 
-    public static IBaseAction DarkMissionary { get; } = new BaseAction(ActionID.DarkMissionary, true, isTimeline: true);
+    public static IBaseAction DarkMissionary { get; } = new BaseAction(ActionID.DarkMissionary, ActionOption.Defense);
 
     public static IBaseAction LivingShadow { get; } = new BaseAction(ActionID.LivingShadow)
     {
         ActionCheck = b => JobGauge.Blood >= 50,
     };
 
-    public static IBaseAction Oblation { get; } = new BaseAction(ActionID.Oblation, true, isTimeline: true)
+    public static IBaseAction Oblation { get; } = new BaseAction(ActionID.Oblation, ActionOption.Defense)
     {
         ActionCheck = b => !b.HasStatus(true, StatusID.Oblation),
         ChoiceTarget = TargetFilter.FindAttackedTarget,

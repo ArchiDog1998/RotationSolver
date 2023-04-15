@@ -31,7 +31,7 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditionType.ElapsedGCD:
-                result = _action.ElapsedOneChargeAfterGCD((uint)Param1, (uint)Param2); // Bigger
+                result = _action.ElapsedOneChargeAfterGCD((uint)Param1, Param2); // Bigger
                 break;
 
             case ActionConditionType.Remain:
@@ -39,7 +39,7 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditionType.RemainGCD:
-                result = !_action.WillHaveOneChargeGCD((uint)Param1, (uint)Param2); // Smaller
+                result = !_action.WillHaveOneChargeGCD((uint)Param1, Param2); // Smaller
                 break;
 
             case ActionConditionType.ShouldUse:

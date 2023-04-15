@@ -18,7 +18,7 @@ public abstract class GNB_Base : CustomRotation
 
     protected static byte MaxAmmo => Level >= 88 ? (byte)3 : (byte)2;
 
-    public static IBaseAction RoyalGuard { get; } = new BaseAction(ActionID.RoyalGuard, shouldEndSpecial: true);
+    public static IBaseAction RoyalGuard { get; } = new BaseAction(ActionID.RoyalGuard, ActionOption.EndSpecial);
 
     public static IBaseAction KeenEdge { get; } = new BaseAction(ActionID.KeenEdge);
 
@@ -26,7 +26,7 @@ public abstract class GNB_Base : CustomRotation
 
     public static IBaseAction BrutalShell { get; } = new BaseAction(ActionID.BrutalShell);
 
-    public static IBaseAction Camouflage { get; } = new BaseAction(ActionID.Camouflage, true, isTimeline: true)
+    public static IBaseAction Camouflage { get; } = new BaseAction(ActionID.Camouflage, ActionOption.Defense)
     {
         ActionCheck = BaseAction.TankDefenseSelf,
     };
@@ -51,7 +51,7 @@ public abstract class GNB_Base : CustomRotation
         ActionCheck = b => JobGauge.Ammo > 0,
     };
 
-    public static IBaseAction Nebula { get; } = new BaseAction(ActionID.Nebula, true, isTimeline: true)
+    public static IBaseAction Nebula { get; } = new BaseAction(ActionID.Nebula, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -62,16 +62,16 @@ public abstract class GNB_Base : CustomRotation
         AOECount = 2,
     };
 
-    public static IBaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, true, isTimeline: true)
+    public static IBaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, ActionOption.Heal)
     {
         ActionCheck = b => !b.HasStatus(true, StatusID.Aurora),
     };
 
-    public static IBaseAction SuperBolide { get; } = new BaseAction(ActionID.SuperBolide, true, isTimeline: true);
+    public static IBaseAction SuperBolide { get; } = new BaseAction(ActionID.SuperBolide, ActionOption.Defense);
 
     public static IBaseAction SonicBreak { get; } = new BaseAction(ActionID.SonicBreak);
 
-    public static IBaseAction RoughDivide { get; } = new BaseAction(ActionID.RoughDivide, shouldEndSpecial: true)
+    public static IBaseAction RoughDivide { get; } = new BaseAction(ActionID.RoughDivide, ActionOption.EndSpecial)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -83,9 +83,9 @@ public abstract class GNB_Base : CustomRotation
 
     public static IBaseAction BowShock { get; } = new BaseAction(ActionID.BowShock);
 
-    public static IBaseAction HeartOfLight { get; } = new BaseAction(ActionID.HeartOfLight, true, isTimeline: true);
+    public static IBaseAction HeartOfLight { get; } = new BaseAction(ActionID.HeartOfLight, ActionOption.Heal);
 
-    public static IBaseAction HeartOfStone { get; } = new BaseAction(ActionID.HeartOfStone, true, isTimeline: true)
+    public static IBaseAction HeartOfStone { get; } = new BaseAction(ActionID.HeartOfStone, ActionOption.Defense)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
@@ -95,7 +95,7 @@ public abstract class GNB_Base : CustomRotation
         ActionCheck = b => JobGauge.Ammo > 0,
     };
 
-    public static IBaseAction BloodFest { get; } = new BaseAction(ActionID.BloodFest, true)
+    public static IBaseAction BloodFest { get; } = new BaseAction(ActionID.BloodFest, ActionOption.Buff)
     {
         ActionCheck = b => MaxAmmo - JobGauge.Ammo > 1,
     };

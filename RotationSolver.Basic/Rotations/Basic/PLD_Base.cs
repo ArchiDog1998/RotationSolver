@@ -18,7 +18,7 @@ public abstract class PLD_Base : CustomRotation
     protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
     protected override bool CanHealAreaAbility => false;
 
-    public static IBaseAction IronWill { get; } = new BaseAction(ActionID.IronWill, shouldEndSpecial: true);
+    public static IBaseAction IronWill { get; } = new BaseAction(ActionID.IronWill, ActionOption.Friendly);
 
     public static IBaseAction FastBlade { get; } = new BaseAction(ActionID.FastBlade);
 
@@ -34,13 +34,13 @@ public abstract class PLD_Base : CustomRotation
         ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
-    public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, true);
+    public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, ActionOption.Buff);
 
     public static IBaseAction TotalEclipse { get; } = new BaseAction(ActionID.TotalEclipse);
 
     public static IBaseAction Prominence { get; } = new BaseAction(ActionID.Prominence);
 
-    public static IBaseAction Sentinel { get; } = new BaseAction(ActionID.Sentinel, isTimeline: true, isFriendly: true)
+    public static IBaseAction Sentinel { get; } = new BaseAction(ActionID.Sentinel, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -50,13 +50,13 @@ public abstract class PLD_Base : CustomRotation
 
     public static IBaseAction SpiritsWithin { get; } = new BaseAction(ActionID.SpiritsWithin);
 
-    public static IBaseAction HallowedGround { get; } = new BaseAction(ActionID.HallowedGround, true, isTimeline: true);
+    public static IBaseAction HallowedGround { get; } = new BaseAction(ActionID.HallowedGround, ActionOption.Defense);
 
-    public static IBaseAction DivineVeil { get; } = new BaseAction(ActionID.DivineVeil, true, isTimeline: true);
+    public static IBaseAction DivineVeil { get; } = new BaseAction(ActionID.DivineVeil, ActionOption.Defense);
 
-    public static IBaseAction Clemency { get; } = new BaseAction(ActionID.Clemency, true, true, isTimeline: true);
+    public static IBaseAction Clemency { get; } = new BaseAction(ActionID.Clemency, ActionOption.Defense | ActionOption.EndSpecial);
 
-    public static IBaseAction Intervene { get; } = new BaseAction(ActionID.Intervene, shouldEndSpecial: true)
+    public static IBaseAction Intervene { get; } = new BaseAction(ActionID.Intervene, ActionOption.EndSpecial)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -68,7 +68,7 @@ public abstract class PLD_Base : CustomRotation
 
     public static IBaseAction Expiacion { get; } = new BaseAction(ActionID.Expiacion);
 
-    public static IBaseAction Requiescat { get; } = new BaseAction(ActionID.Requiescat, true);
+    public static IBaseAction Requiescat { get; } = new BaseAction(ActionID.Requiescat, ActionOption.Buff);
 
     public static IBaseAction Confiteor { get; } = new BaseAction(ActionID.Confiteor);
 
@@ -76,26 +76,26 @@ public abstract class PLD_Base : CustomRotation
 
     public static IBaseAction HolySpirit { get; } = new BaseAction(ActionID.HolySpirit);
 
-    public static IBaseAction PassageOfArms { get; } = new BaseAction(ActionID.PassageOfArms, true, isTimeline: true);
+    public static IBaseAction PassageOfArms { get; } = new BaseAction(ActionID.PassageOfArms, ActionOption.Defense);
 
-    public static IBaseAction Cover { get; } = new BaseAction(ActionID.Cover, true, isTimeline: true)
+    public static IBaseAction Cover { get; } = new BaseAction(ActionID.Cover, ActionOption.Defense)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => OathGauge >= 50,
     };
 
-    public static IBaseAction Intervention { get; } = new BaseAction(ActionID.Intervention, true, isTimeline: true)
+    public static IBaseAction Intervention { get; } = new BaseAction(ActionID.Intervention, ActionOption.Defense)
     {
         ActionCheck = Cover.ActionCheck,
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
-    public static IBaseAction Sheltron { get; } = new BaseAction(ActionID.Sheltron, true, isTimeline: true)
+    public static IBaseAction Sheltron { get; } = new BaseAction(ActionID.Sheltron, ActionOption.Defense)
     {
         ActionCheck = b => BaseAction.TankDefenseSelf(b) && Cover.ActionCheck(b),
     };
 
-    public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, true, isTimeline: true)
+    public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,

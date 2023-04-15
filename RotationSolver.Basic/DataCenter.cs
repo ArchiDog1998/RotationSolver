@@ -257,6 +257,23 @@ public static class DataCenter
     #region Action Record
     const int QUEUECAPACITY = 32;
     private static Queue<ActionRec> _actions = new Queue<ActionRec>(QUEUECAPACITY);
+    private static Queue<DamageRec> _damages = new Queue<DamageRec>(QUEUECAPACITY);
+
+    public static float DPSTaken
+    {
+        get
+        {
+            var recs = _damages.Where(r => DateTime.Now - r.ReceiveTime < TimeSpan.FromMilliseconds(5));
+
+            if(!recs.Any()) return 0;
+            
+            var damages = recs.Sum(r => r.Ratio);
+
+            var time = recs.Last().ReceiveTime - recs.First().ReceiveTime + TimeSpan.FromMilliseconds(2.5f);
+
+            return damages / (float)time.TotalSeconds;
+        }
+    }
 
     public static ActionRec[] RecordActions => _actions.Reverse().ToArray();
     private static DateTime _timeLastActionUsed = DateTime.Now;
@@ -291,6 +308,15 @@ public static class DataCenter
         }
         _timeLastActionUsed = DateTime.Now;
         _actions.Enqueue(new ActionRec(_timeLastActionUsed, act));
+    }
+
+    public static void AddDamageRec(float damageRatio)
+    {
+        if (_damages.Count >= QUEUECAPACITY)
+        {
+            _damages.Dequeue();
+        }
+        _damages.Enqueue(new DamageRec(DateTime.Now, damageRatio));
     }
     #endregion
 }

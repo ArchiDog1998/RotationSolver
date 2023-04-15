@@ -17,52 +17,52 @@ public abstract class SCH_Base : CustomRotation
     protected static bool HasSeraph => JobGauge.SeraphTimer > 0;
 
     #region Heal
-    public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, true, isTimeline: true);
+    public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, ActionOption.Heal);
 
-    public static IBaseAction Adloquium { get; } = new BaseAction(ActionID.Adloquium, true, isTimeline: true)
+    public static IBaseAction Adloquium { get; } = new BaseAction(ActionID.Adloquium, ActionOption.Heal)
     {
         ActionCheck = b => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
             StatusID.EukrasianPrognosis,
             StatusID.Galvanize),
     };
 
-    public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.Resurrection, true);
+    public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.Resurrection, ActionOption.Friendly);
 
-    public static IBaseAction Succor { get; } = new BaseAction(ActionID.Succor, true, isTimeline: true)
+    public static IBaseAction Succor { get; } = new BaseAction(ActionID.Succor, ActionOption.Heal)
     {
         StatusProvide = new[] { StatusID.Galvanize },
     };
 
-    public static IBaseAction Lustrate { get; } = new BaseAction(ActionID.Lustrate, true, isTimeline: true)
+    public static IBaseAction Lustrate { get; } = new BaseAction(ActionID.Lustrate, ActionOption.Heal)
     {
         ActionCheck = b => HasAetherflow
     };
 
-    public static IBaseAction SacredSoil { get; } = new BaseAction(ActionID.SacredSoil, true, isTimeline: true)
+    public static IBaseAction SacredSoil { get; } = new BaseAction(ActionID.SacredSoil, ActionOption.Heal)
     {
         ActionCheck = b => HasAetherflow && !IsMoving,
     };
 
-    public static IBaseAction Indomitability { get; } = new BaseAction(ActionID.Indomitability, true, isTimeline: true)
+    public static IBaseAction Indomitability { get; } = new BaseAction(ActionID.Indomitability, ActionOption.Heal)
     {
         ActionCheck = b => HasAetherflow
     };
 
-    public static IBaseAction Excogitation { get; } = new BaseAction(ActionID.Excogitation, true, isTimeline: true)
+    public static IBaseAction Excogitation { get; } = new BaseAction(ActionID.Excogitation, ActionOption.Heal)
     {
         ActionCheck = b => HasAetherflow
     };
 
-    public static IBaseAction Consolation { get; } = new BaseAction(ActionID.Consolation, true, isTimeline: true)
+    public static IBaseAction Consolation { get; } = new BaseAction(ActionID.Consolation, ActionOption.Heal)
     {
         ActionCheck = b => HasSeraph,
     };
 
-    public static IBaseAction Protraction { get; } = new BaseAction(ActionID.Protraction, true, isTimeline: true);
+    public static IBaseAction Protraction { get; } = new BaseAction(ActionID.Protraction, ActionOption.Heal);
     #endregion
 
     #region Attack
-    public static IBaseAction Bio { get; } = new BaseAction(ActionID.Bio, isEot: true)
+    public static IBaseAction Bio { get; } = new BaseAction(ActionID.Bio, ActionOption.Dot)
     {
         TargetStatus = new StatusID[] { StatusID.Bio, StatusID.Bio2, StatusID.Biolysis },
     };
@@ -80,7 +80,7 @@ public abstract class SCH_Base : CustomRotation
     #endregion
 
     #region Seraph
-    public static IBaseAction SummonSeraph { get; } = new BaseAction(ActionID.SummonSeraph, true, isTimeline: true)
+    public static IBaseAction SummonSeraph { get; } = new BaseAction(ActionID.SummonSeraph, ActionOption.Heal)
     {
         ActionCheck = b => DataCenter.HasPet,
     };
@@ -90,12 +90,12 @@ public abstract class SCH_Base : CustomRotation
         ActionCheck = b => !DataCenter.HasPet && (!Player.HasStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
     };
 
-    public static IBaseAction WhisperingDawn { get; } = new BaseAction(ActionID.WhisperingDawn, isTimeline: true)
+    public static IBaseAction WhisperingDawn { get; } = new BaseAction(ActionID.WhisperingDawn, ActionOption.Heal)
     {
         ActionCheck = b => DataCenter.HasPet,
     };
 
-    public static IBaseAction FeyIllumination { get; } = new BaseAction(ActionID.FeyIllumination, isTimeline: true)
+    public static IBaseAction FeyIllumination { get; } = new BaseAction(ActionID.FeyIllumination, ActionOption.Heal)
     {
         ActionCheck = b => DataCenter.HasPet,
     };
@@ -106,12 +106,12 @@ public abstract class SCH_Base : CustomRotation
         ActionCheck = b => !HasAetherflow && !HasSeraph && InCombat && DataCenter.HasPet,
     };
 
-    public static IBaseAction Aetherpact { get; } = new BaseAction(ActionID.Aetherpact, true, isTimeline: true)
+    public static IBaseAction Aetherpact { get; } = new BaseAction(ActionID.Aetherpact, ActionOption.Heal)
     {
         ActionCheck = b => JobGauge.FairyGauge >= 10 && DataCenter.HasPet && !HasSeraph
     };
 
-    public static IBaseAction FeyBlessing { get; } = new BaseAction(ActionID.FeyBlessing, isTimeline: true)
+    public static IBaseAction FeyBlessing { get; } = new BaseAction(ActionID.FeyBlessing, ActionOption.Heal)
     {
         ActionCheck = b => !HasSeraph && DataCenter.HasPet,
     };
@@ -123,14 +123,14 @@ public abstract class SCH_Base : CustomRotation
         ActionCheck = b => InCombat && !HasAetherflow
     };
 
-    public static IBaseAction Recitation { get; } = new BaseAction(ActionID.Recitation, isTimeline: true);
+    public static IBaseAction Recitation { get; } = new BaseAction(ActionID.Recitation, ActionOption.Heal);
 
     public static IBaseAction ChainStratagem { get; } = new BaseAction(ActionID.ChainStratagem)
     {
         ActionCheck = b => InCombat && IsTargetBoss
     };
 
-    public static IBaseAction DeploymentTactics { get; } = new BaseAction(ActionID.DeploymentTactics, true, isTimeline: true)
+    public static IBaseAction DeploymentTactics { get; } = new BaseAction(ActionID.DeploymentTactics, ActionOption.Heal)
     {
         ChoiceTarget = (friends, mustUse) =>
         {
@@ -142,8 +142,8 @@ public abstract class SCH_Base : CustomRotation
         },
     };
 
-    public static IBaseAction EmergencyTactics { get; } = new BaseAction(ActionID.EmergencyTactics, isTimeline: true);
+    public static IBaseAction EmergencyTactics { get; } = new BaseAction(ActionID.EmergencyTactics, ActionOption.Heal);
 
-    public static IBaseAction Expedient { get; } = new BaseAction(ActionID.Expedient, isTimeline: true);
+    public static IBaseAction Expedient { get; } = new BaseAction(ActionID.Expedient, ActionOption.Heal);
     #endregion
 }

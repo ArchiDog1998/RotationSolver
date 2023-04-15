@@ -285,9 +285,6 @@ internal class ControlWindow : Window
         }
     }
 
-
-
-
     static string GetHelp(SpecialCommandType command)
     {
         var help = command.ToHelp() + "\n ";

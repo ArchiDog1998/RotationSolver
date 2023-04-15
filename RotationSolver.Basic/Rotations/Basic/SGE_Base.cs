@@ -15,7 +15,7 @@ public abstract class SGE_Base : CustomRotation
         return EndAfter(JobGauge.AddersgallTimer / 1000f, time);
     }
 
-    protected static bool AddersgallEndAfterGCD(uint gctCount = 0, uint abilityCount = 0)
+    protected static bool AddersgallEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
     {
         return EndAfterGCD(JobGauge.AddersgallTimer / 1000f, gctCount, abilityCount);
     }
@@ -23,11 +23,11 @@ public abstract class SGE_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
     private sealed protected override IBaseAction Raise => Egeiro;
 
-    public static IBaseAction Egeiro { get; } = new BaseAction(ActionID.Egeiro, true);
+    public static IBaseAction Egeiro { get; } = new BaseAction(ActionID.Egeiro, ActionOption.Friendly);
 
     public static IBaseAction Dosis { get; } = new BaseAction(ActionID.Dosis);
 
-    public static IBaseAction EukrasianDosis { get; } = new BaseAction(ActionID.EukrasianDosis, isEot: true)
+    public static IBaseAction EukrasianDosis { get; } = new BaseAction(ActionID.EukrasianDosis, ActionOption.Dot)
     {
         TargetStatus = new StatusID[]
         {
@@ -43,9 +43,9 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Phlegma3 { get; } = new BaseAction(ActionID.Phlegma3);
 
-    public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, true);
+    public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, ActionOption.Heal);
 
-    public static IBaseAction Kardia { get; } = new BaseAction(ActionID.Kardia, true)
+    public static IBaseAction Kardia { get; } = new BaseAction(ActionID.Kardia, ActionOption.Heal)
     {
         StatusProvide = new StatusID[] { StatusID.Kardia },
         ChoiceTarget = (Targets, mustUse) =>
@@ -60,42 +60,42 @@ public abstract class SGE_Base : CustomRotation
         ActionCheck = b => !b.HasStatus(true, StatusID.Kardion),
     };
 
-    public static IBaseAction Prognosis { get; } = new BaseAction(ActionID.Prognosis, true, shouldEndSpecial: true, isTimeline: true);
+    public static IBaseAction Prognosis { get; } = new BaseAction(ActionID.Prognosis, ActionOption.Heal | ActionOption.EndSpecial);
 
-    public static IBaseAction Physis { get; } = new BaseAction(ActionID.Physis, true, isTimeline: true);
+    public static IBaseAction Physis { get; } = new BaseAction(ActionID.Physis, ActionOption.Heal);
 
-    public static IBaseAction Eukrasia { get; } = new BaseAction(ActionID.Eukrasia, true, isTimeline: true)
+    public static IBaseAction Eukrasia { get; } = new BaseAction(ActionID.Eukrasia, ActionOption.Heal)
     {
         ActionCheck = b => !JobGauge.Eukrasia,
     };
 
-    public static IBaseAction Soteria { get; } = new BaseAction(ActionID.Soteria, true, isTimeline: true);
+    public static IBaseAction Soteria { get; } = new BaseAction(ActionID.Soteria, ActionOption.Heal);
 
-    public static IBaseAction Icarus { get; } = new BaseAction(ActionID.Icarus, shouldEndSpecial: true)
+    public static IBaseAction Icarus { get; } = new BaseAction(ActionID.Icarus, ActionOption.EndSpecial)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 
-    public static IBaseAction Druochole { get; } = new BaseAction(ActionID.Druochole, true, isTimeline: true)
+    public static IBaseAction Druochole { get; } = new BaseAction(ActionID.Druochole, ActionOption.Heal)
     {
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
 
     public static IBaseAction Dyskrasia { get; } = new BaseAction(ActionID.Dyskrasia);
 
-    public static IBaseAction Kerachole { get; } = new BaseAction(ActionID.Kerachole, true, isTimeline: true)
+    public static IBaseAction Kerachole { get; } = new BaseAction(ActionID.Kerachole, ActionOption.Heal)
     {
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
 
-    public static IBaseAction Ixochole { get; } = new BaseAction(ActionID.Ixochole, true, isTimeline: true)
+    public static IBaseAction Ixochole { get; } = new BaseAction(ActionID.Ixochole, ActionOption.Heal)
     {
         ActionCheck = b => JobGauge.Addersgall > 0,
     };
 
-    public static IBaseAction Zoe { get; } = new BaseAction(ActionID.Zoe, isTimeline: true);
+    public static IBaseAction Zoe { get; } = new BaseAction(ActionID.Zoe, ActionOption.Heal);
 
-    public static IBaseAction Taurochole { get; } = new BaseAction(ActionID.Taurochole, true, isTimeline: true)
+    public static IBaseAction Taurochole { get; } = new BaseAction(ActionID.Taurochole, ActionOption.Heal)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = b => JobGauge.Addersgall > 0,
@@ -106,32 +106,32 @@ public abstract class SGE_Base : CustomRotation
         ActionCheck = b => JobGauge.Addersting > 0,
     };
 
-    public static IBaseAction Haima { get; } = new BaseAction(ActionID.Haima, true, isTimeline: true)
+    public static IBaseAction Haima { get; } = new BaseAction(ActionID.Haima, ActionOption.Heal)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
-    public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, true, isTimeline: true)
+    public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, ActionOption.Heal)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
-    public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, true, isTimeline: true);
+    public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, ActionOption.Heal);
 
-    public static IBaseAction Rhizomata { get; } = new BaseAction(ActionID.Rhizomata, isTimeline: true)
+    public static IBaseAction Rhizomata { get; } = new BaseAction(ActionID.Rhizomata)
     {
         ActionCheck = b => JobGauge.Addersgall < 3,
     };
 
-    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, true, isTimeline: true);
+    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, ActionOption.Heal);
 
-    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, true, isTimeline: true);
+    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, ActionOption.Heal);
 
-    public static IBaseAction Krasis { get; } = new BaseAction(ActionID.Krasis, true, isTimeline: true);
+    public static IBaseAction Krasis { get; } = new BaseAction(ActionID.Krasis, ActionOption.Heal);
 
-    public static IBaseAction Pneuma { get; } = new BaseAction(ActionID.Pneuma, isTimeline: true);
+    public static IBaseAction Pneuma { get; } = new BaseAction(ActionID.Pneuma);
 
-    public static IBaseAction Pepsis { get; } = new BaseAction(ActionID.Pepsis, true, isTimeline: true)
+    public static IBaseAction Pepsis { get; } = new BaseAction(ActionID.Pepsis, ActionOption.Heal)
     {
         ActionCheck = b =>
         {

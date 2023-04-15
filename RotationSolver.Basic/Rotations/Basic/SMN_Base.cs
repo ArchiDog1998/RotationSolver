@@ -96,7 +96,7 @@ public abstract class SMN_Base : CustomRotation
         ActionCheck = b => InBahamut,
     };
 
-    public static IBaseAction Rekindle { get; } = new BaseAction(ActionID.Rekindle, true)
+    public static IBaseAction Rekindle { get; } = new BaseAction(ActionID.Rekindle, ActionOption.Buff)
     {
         ActionCheck = b => InPhoenix,
     };
@@ -131,13 +131,13 @@ public abstract class SMN_Base : CustomRotation
     #endregion
 
     #region Abilities
-    public static IBaseAction SearingLight { get; } = new BaseAction(ActionID.SearingLight, true)
+    public static IBaseAction SearingLight { get; } = new BaseAction(ActionID.SearingLight, ActionOption.Buff)
     {
         StatusProvide = new[] { StatusID.SearingLight },
         ActionCheck = b => InCombat,
     };
 
-    public static IBaseAction RadiantAegis { get; } = new BaseAction(ActionID.RadiantAegis, true, isTimeline: true)
+    public static IBaseAction RadiantAegis { get; } = new BaseAction(ActionID.RadiantAegis, ActionOption.Heal)
     {
         ActionCheck = b => HaveSummon
     };
@@ -165,9 +165,9 @@ public abstract class SMN_Base : CustomRotation
     };
     #endregion
 
-    public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.ResurrectionSMN, true);
+    public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.ResurrectionSMN, ActionOption.Friendly);
 
-    public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, true);
+    public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, ActionOption.Heal);
 
     [RotationDesc(ActionID.RadiantAegis)]
     protected sealed override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)

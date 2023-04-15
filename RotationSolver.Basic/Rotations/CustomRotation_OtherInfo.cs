@@ -135,7 +135,7 @@ public abstract partial class CustomRotation
 
 
     /// <summary>
-    /// Actions successfully released. The first one is the latest one.
+    ///  The actions that were used by player successfully. The first one is the latest successfully used one.
     /// </summary>
     protected static ActionRec[] RecordActions => DataCenter.RecordActions;
 
@@ -202,7 +202,7 @@ public abstract partial class CustomRotation
     /// <param name="gcdCount"></param>
     /// <param name="abilityCount"></param>
     /// <returns></returns>
-    protected static bool EndAfterGCD(float remain, uint gcdCount = 0, uint abilityCount = 0)
+    protected static bool EndAfterGCD(float remain, uint gcdCount = 0, int abilityCount = 0)
         => CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount);
 
     /// <summary>

@@ -13,7 +13,7 @@ public static class ObjectHelper
         EventHandlerType.Quest,
     };
 
-    private unsafe static BNpcBase GetObjectNPC(this GameObject obj)
+    public static BNpcBase GetObjectNPC(this GameObject obj)
     {
         if (obj == null) return null;
         return Service.GetSheet<BNpcBase>().GetRow(obj.DataId);
@@ -25,7 +25,7 @@ public static class ObjectHelper
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
     }
 
-    private static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetAddress(this GameObject obj)
+    public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetAddress(this GameObject obj)
         => (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
 
     public static unsafe bool IsOthersPlayers(this GameObject obj)

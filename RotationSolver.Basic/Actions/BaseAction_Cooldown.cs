@@ -4,7 +4,12 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("Please use the int abilityCount one", false)]
     public bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, uint abilityCount = 0)
+        => ElapsedOneChargeAfterGCD(gcdCount, (int)abilityCount);
+
+    public bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, int abilityCount = 0)
     {
         if (!IsCoolingDown) return false;
         var elapsed = RecastTimeElapsedOneCharge;
@@ -18,7 +23,12 @@ public partial class BaseAction
         return CooldownHelper.ElapsedAfter(elapsed, time);
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("Please use the int abilityCount one", false)]
     public bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0)
+        => ElapsedAfterGCD(gcdCount, (int)abilityCount);
+
+    public bool ElapsedAfterGCD(uint gcdCount = 0, int abilityCount = 0)
     {
         if (!IsCoolingDown) return false;
         var elapsed = RecastTimeElapsed;
@@ -32,12 +42,18 @@ public partial class BaseAction
         return CooldownHelper.ElapsedAfter(elapsed, time);
     }
 
-    public bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0)
+
+    public bool WillHaveOneChargeGCD(uint gcdCount = 0, int abilityCount = 0)
     {
         if (HasOneCharge) return true;
         var recast = RecastTimeRemainOneCharge;
         return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount);
     }
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("Please use the int abilityCount one", false)]
+    public bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0)
+    => WillHaveOneChargeGCD(gcdCount, (int)abilityCount);
 
     public bool WillHaveOneCharge(float remain) => WillHaveOneCharge(remain, true);
 
@@ -47,7 +63,6 @@ public partial class BaseAction
         var recast = RecastTimeRemainOneCharge;
         return CooldownHelper.RecastAfter(recast, remain, addWeaponRemain);
     }
-
 
     private unsafe RecastDetail* CoolDownDetail => ActionManager.Instance()->GetRecastGroupDetail(CoolDownGroup - 1);
     /// <summary>
@@ -92,6 +107,6 @@ public partial class BaseAction
     /// 下一层转好的时间
     /// </summary>
     private float RecastTimeRemainOneCharge => RecastTimeRemain % RecastTimeOneCharge;
-    private float RecastTimeElapsedOneCharge => RecastTimeElapsed % RecastTimeOneCharge;
 
+    private float RecastTimeElapsedOneCharge => RecastTimeElapsed % RecastTimeOneCharge;
 }
