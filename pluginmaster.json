@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.2.9",
-    "Changelog": "2.2.9 (2023-04-15)\n\n\nBug Fixes\n\n* add a api for DPSTaken. (3d1f2cc)\n* add a feature to displayStatus on the `Rotation` in `Debug` (5a5623a)\n* add more for target status. (c22f5e9)\n* add the missed obsolete method. (1289409)\n* allowed the abilities count of cd is lower than 0. (3d3b6a8)\n* allowed to download pdb file. (483b813)\n* changed targetable to TargetSattus. (1631507)\n* changed the logic of auto defense area (613456b)\n* changed the receiveEffects. (92e20db)\n* changed the watcher for count check. (453ed68)\n* fixed the api for the previous version. (b9b65a6)\n* fixed the manual to cancel issue. (28fedef)\n* make SettingsBools saveable. (1665ac3)\n* never draw circle when aoe with role melee or tank. (786c3fd)",
-    "DownloadCount": "6722",
-    "LastUpdate": 1681576272,
+    "AssemblyVersion": "2.3.0",
+    "Changelog": "2.3.0 (2023-04-16)\n\n\nFeatures\n\n* for version to 2.3.0 (12c6562)\n\n\nBug Fixes\n\n* add an invalid rotation option. (d6aeb32)\n* changed some propery's access. (f69271f)\n* changed the access of some properties. (94fcbdd)\n* changed the cooldown window's action order. (1e47190)\n* No aoe uses for single `!` ! (3a59b3e)\n* removed some properties access. (d3daf7a)\n* Rotations' isValid. (2ff4381)",
+    "DownloadCount": "6607",
+    "LastUpdate": 1681632823,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.9/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.2.9/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.0/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.0/latest.zip"
   },
   {
     "Author": "ArchiDog1998",
