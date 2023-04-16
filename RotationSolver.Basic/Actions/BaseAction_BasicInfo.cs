@@ -109,22 +109,6 @@ public partial class BaseAction : IBaseAction
         CoolDownGroup = _action.GetCoolDownGroup();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="actionID"></param>
-    /// <param name="isFriendly">is a friendly or supporting action</param>
-    /// <param name="endSpecial">end special after using it</param>
-    /// <param name="isEot">is hot or dot action</param>
-    /// <param name="isTimeline">should I put it to the timeline (heal and defense only)</param>
-    [Obsolete("Please use the ActionOption one", false)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public BaseAction(ActionID actionID, bool isFriendly = false, bool endSpecial = false, bool isEot = false, bool isTimeline = false)
-        : this(actionID, GetOption(isFriendly, endSpecial, isEot, isTimeline))
-    {
-
-    }
-
     private static ActionOption GetOption(bool isFriendly = false, bool endSpecial = false, bool isEot = false, bool isTimeline = false)
     {
         ActionOption option = ActionOption.None;

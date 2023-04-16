@@ -44,11 +44,6 @@ public static class StatusHelper
 
     public static bool NeedHealing(this BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Please Use the abilityCount int one please.", true)]
-    public static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, uint abilityCount = 0, bool isFromSelf = true, params StatusID[] statusIDs)
-        => obj.WillStatusEndGCD(gcdCount, (int)abilityCount, isFromSelf, statusIDs);
-
     /// <summary>
     /// Will any of <paramref name="statusIDs"/> be end after <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
     /// </summary>

@@ -405,10 +405,6 @@ public partial class BaseAction
 
         switch (_action.CastType)
         {
-            case 10: //环形范围攻击也就这么判断吧，我烦了。
-                var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;
-                return dis <= _action.EffectRange && dis >= 8;
-
             case 2: // 圆形范围攻击
                 return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= _action.EffectRange;
 
@@ -420,6 +416,10 @@ public partial class BaseAction
             case 4: //直线范围攻击
                 if (subTarget.DistanceToPlayer() > _action.EffectRange) return false;
                 return Vector3.Cross(dir, tdir).Length() / dir.Length() <= 2 + target.HitboxRadius;
+
+            case 10: //环形范围攻击也就这么判断吧，我烦了。
+                var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;
+                return dis <= _action.EffectRange && dis >= 8;
         }
 
         PluginLog.LogDebug(Name + "'s CastType is not valid! The value is " + _action.CastType.ToString());
@@ -465,7 +465,6 @@ public partial class BaseAction
         return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Config.AddDotGCDCount, 
             0, true, TargetStatus);
     }
-
 
     public unsafe bool CanUseTo(BattleChara tar)
     {

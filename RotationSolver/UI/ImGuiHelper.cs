@@ -607,7 +607,6 @@ internal static class ImGuiHelper
                 ImGui.Text("Has One:" + action.HasOneCharge.ToString());
                 ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
                 ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());
-                ImGui.Text("Recast Remain: " + action.RecastTimeRemain.ToString());
                 ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, action.AdjustedID).ToString());
                 ImGui.Text("Cast Time: " + action.CastTime.ToString());
                 ImGui.Text("MP: " + action.MPNeed.ToString());
