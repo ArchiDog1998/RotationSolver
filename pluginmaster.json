@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.3.0",
-    "Changelog": "2.3.0 (2023-04-16)\n\n\nFeatures\n\n* for version to 2.3.0 (12c6562)\n\n\nBug Fixes\n\n* add an invalid rotation option. (d6aeb32)\n* changed some propery's access. (f69271f)\n* changed the access of some properties. (94fcbdd)\n* changed the cooldown window's action order. (1e47190)\n* No aoe uses for single `!` ! (3a59b3e)\n* removed some properties access. (d3daf7a)\n* Rotations' isValid. (2ff4381)",
-    "DownloadCount": "6607",
-    "LastUpdate": 1681632823,
+    "AssemblyVersion": "2.3.1",
+    "Changelog": "2.3.1 (2023-04-16)\n\n\nBug Fixes\n\n* add must donload for downloading. (e68d620)\n* changed the logic of Provoke (783f023)\n* changed the Rotation download window. (96935a6)",
+    "DownloadCount": "6485",
+    "LastUpdate": 1681657839,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.0/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.0/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.1/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.1/latest.zip"
   },
   {
     "Author": "ArchiDog1998",
@@ -35,7 +35,7 @@
     "ApplicableVersion": "any",
     "AssemblyVersion": "1.0.0.5",
     "Changelog": "",
-    "DownloadCount": "181",
+    "DownloadCount": "182",
     "LastUpdate": 1674699010,
     "RepoUrl": "https://github.com/ArchiDog1998/FakeName",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip",
