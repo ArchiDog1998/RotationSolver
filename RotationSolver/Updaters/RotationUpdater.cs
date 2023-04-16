@@ -14,13 +14,21 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
 
-    public static async void GetAllCustomRotations()
+    public static async void GetAllCustomRotations(bool download)
     {
         var relayFolder = Service.Interface.ConfigDirectory.FullName;
         if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
 
         LoadRotationsFromLocal(relayFolder);
 
+        if(download && Service.Config.DownloadRotations)await DownloadRotationsAsync(relayFolder);
+    }
+
+    static bool _isDownloading = false;
+    private static async Task DownloadRotationsAsync(string relayFolder)
+    {
+        if (_isDownloading) return;
+        _isDownloading= true;
         bool hasDownload = false;
         using (var client = new HttpClient())
         {
@@ -40,11 +48,10 @@ internal static class RotationUpdater
                 hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client);
                 var pdbUrl = Path.ChangeExtension(url, ".pdb");
                 await DownloadOneUrlAsync(pdbUrl, relayFolder, client);
-
             }
         }
-
         if (hasDownload) LoadRotationsFromLocal(relayFolder);
+        _isDownloading = false;
     }
 
     private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client)
@@ -117,7 +124,7 @@ internal static class RotationUpdater
             .Where(Directory.Exists)
             //.Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
 #if DEBUG
-            //.Append(relayFolder)
+            .Append(relayFolder)
 #else
             .Append(relayFolder)
 #endif

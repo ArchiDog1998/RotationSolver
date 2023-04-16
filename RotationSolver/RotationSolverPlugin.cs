@@ -70,7 +70,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #endif
         ChangeUITranslation();
 
-        RotationUpdater.GetAllCustomRotations();
+        RotationUpdater.GetAllCustomRotations(true);
         RotationHelper.LoadList();
 
         LinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>

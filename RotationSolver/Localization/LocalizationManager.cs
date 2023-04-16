@@ -45,7 +45,7 @@ internal class LocalizationManager : IDisposable
 #if DEBUG
     public void ExportLocalization()
     {
-        var directory = @"D:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\RotationSolver\Localization";
+        var directory = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\RotationSolver\Localization";
         if (!Directory.Exists(directory)) return;
 
         //Default values.

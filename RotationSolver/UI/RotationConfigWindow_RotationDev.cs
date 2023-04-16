@@ -9,9 +9,16 @@ internal partial class RotationConfigWindow
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_RotationDev_Description);
 
-        if (ImGui.Button("Load Rotations"))
+        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotationsButton))
         {
-            RotationUpdater.GetAllCustomRotations();
+            RotationUpdater.GetAllCustomRotations(true);
+        }
+
+        ImGui.SameLine();
+
+        if (ImGui.Button("Load Rotations Local"))
+        {
+            RotationUpdater.GetAllCustomRotations(false);
         }
 
         ImGui.SameLine();
@@ -24,11 +31,6 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
             ref Service.Config.InDebug, Service.Default.InDebug);
-
-        ImGui.SameLine();
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoUpdateRotations,
-            ref Service.Config.AutoUpdateRotations, Service.Default.AutoUpdateRotations);
 
         if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f), true))
         {
