@@ -39,14 +39,6 @@ jobs:
           Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
           Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev"
                       
-      - name: publish on version change
-        id: publish_nuget
-        uses: alirezanet/publish-nuget@v3.0.4
-        with:
-          PROJECT_FILE_PATH: RotationSolver.Basic/RotationSolver.Basic.csproj
-          VERSION_FILE_PATH: Directory.Build.props
-          NUGET_KEY: ${{secrets.nuget_api_key}}
-
       - name: Build Plugin
         run: |
           invoke-expression 'dotnet build --no-restore --configuration Release RotationSolver'
@@ -55,6 +47,14 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: .\RotationSolver\bin\Release\RotationSolver\
+
+      - name: publish on version change
+        id: publish_nuget
+        uses: alirezanet/publish-nuget@v3.0.4
+        with:
+          PROJECT_FILE_PATH: RotationSolver.Basic/RotationSolver.Basic.csproj
+          VERSION_FILE_PATH: Directory.Build.props
+          NUGET_KEY: ${{secrets.nuget_api_key}}
 
   release:
     name: release
@@ -78,10 +78,6 @@ jobs:
           asset_name: latest.zip
           asset_content_type: application/zip
 
-  on-released:
-    runs-on: ubuntu-latest
-    needs: release
-    steps:      
       - name: Trigger Repo Update
         uses: peter-evans/repository-dispatch@v2
         with:

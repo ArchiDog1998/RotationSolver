@@ -72,27 +72,12 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public IAction AntiKnockbackAbility { get; private set; }
 
-    public bool IsValid { get; } = false;   
+    public bool IsValid { get; private set; } = true;   
 
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this);
         Configs = CreateConfiguration();
-
-        try
-        {
-            for (byte i = 0; i < 3; i++)
-            {
-                Ability(i, GCD(i, true, true), out _, true, true);
-            }
-            IsValid = true;
-        }
-        catch (Exception ex) 
-        {
-            PluginLog.Warning(ex, $"The rotation {Name} is not valid, please tell to the author");
-            IsValid = false;
-        }
-
     }
 
     protected virtual IRotationConfigSet CreateConfiguration()
