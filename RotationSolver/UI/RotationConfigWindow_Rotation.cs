@@ -42,11 +42,7 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginTabItem("Info"))
         {
-            //if (ImGui.BeginChild("Third-party Libs", new Vector2(0f, -1f)))
-            //{
-                DrawInfos();
-            //    ImGui.EndChild();
-            //}
+            DrawInfos();
             ImGui.EndTabItem();
         }
     }
