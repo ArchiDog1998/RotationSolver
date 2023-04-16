@@ -88,6 +88,8 @@ public partial class BaseAction : IBaseAction
         }
     }
 
+    public uint SortKey => CoolDownGroup;
+
     public BaseAction(ActionID actionID, ActionOption option = ActionOption.None)
     {
         _action = Service.GetSheet<Action>().GetRow((uint)actionID);
