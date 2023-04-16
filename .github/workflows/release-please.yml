@@ -46,7 +46,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          path: .\RotationSolver\bin\Release\RotationSolver\
+          path: .\RotationSolver\bin\Release\net7.0-windows\
 
       - name: publish on version change
         id: publish_nuget
@@ -58,7 +58,9 @@ jobs:
 
   release:
     name: release
-    needs: build
+    needs: |
+      release-please
+      build
     runs-on: ubuntu-latest
 
     steps:
