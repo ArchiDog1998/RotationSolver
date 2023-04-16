@@ -76,7 +76,6 @@ internal partial class RotationConfigWindow
         //}
 
         ImGui.Text("Party Burst Ratio: " + DataCenter.RatioOfMembersIn2minsBurst.ToString());
-
         ImGui.Text("Party: " + DataCenter.PartyMembers.Count().ToString());
         ImGui.Text("CanHealSingleAbility: " + DataCenter.CanHealSingleAbility.ToString());
         ImGui.Text("CanHealSingleSpell: " + DataCenter.CanHealSingleSpell.ToString());
