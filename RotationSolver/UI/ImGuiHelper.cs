@@ -457,6 +457,10 @@ internal static class ImGuiHelper
 
             ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
             ImGui.Text(rotation.GetType().Assembly.GetName().Name);
+            if(!rotation.IsValid)
+            {
+                HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation);
+            }
             if (!rotation.IsAllowed(out _))
             {
                 var showStr = string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_HighEndWarning, rotation)
@@ -465,7 +469,7 @@ internal static class ImGuiHelper
 
                 HoveredString(showStr);
             }
-            if (rotation.IsBeta())
+            else if (rotation.IsBeta())
             {
                 HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation);
             }
@@ -615,7 +619,7 @@ internal static class ImGuiHelper
                 ImGui.Text($"Can Use: {action.CanUse(out _, option)} ");
                 ImGui.Text("Must Use:" + action.CanUse(out _, option | CanUseOption.MustUse).ToString());
                 ImGui.Text("Empty Use:" + action.CanUse(out _, option | CanUseOption.EmptyOrSkipCombo).ToString());
-                ImGui.Text("Must & Empty Use:" + action.CanUse(out _, option | CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo).ToString());
+                ImGui.Text("Must & Empty Use:" + action.CanUse(out _, option | CanUseOption.MustUseEmpty).ToString());
                 if (action.Target != null)
                 {
                     ImGui.Text("Target Name: " + action.Target.Name);

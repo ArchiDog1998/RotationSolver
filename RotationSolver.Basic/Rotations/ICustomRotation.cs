@@ -4,6 +4,8 @@ namespace RotationSolver.Basic.Rotations;
 
 public interface ICustomRotation : ITexture
 {
+    bool IsValid { get; }
+
     ClassJob Job { get; }
     ClassJobID[] JobIDs { get; }
 

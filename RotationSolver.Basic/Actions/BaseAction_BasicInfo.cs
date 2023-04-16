@@ -88,13 +88,6 @@ public partial class BaseAction : IBaseAction
         }
     }
 
-    public BaseAction(ActionID actionID)
-       : this(actionID, ActionOption.None)
-    {
-
-    }
-
-
     public BaseAction(ActionID actionID, ActionOption option = ActionOption.None)
     {
         _action = Service.GetSheet<Action>().GetRow((uint)actionID);
@@ -105,16 +98,6 @@ public partial class BaseAction : IBaseAction
         _option = option;
 
         CoolDownGroup = _action.GetCoolDownGroup();
-    }
-
-    private static ActionOption GetOption(bool isFriendly = false, bool endSpecial = false, bool isEot = false, bool isTimeline = false)
-    {
-        ActionOption option = ActionOption.None;
-        if (isFriendly)  option |= ActionOption.Friendly;
-        if (endSpecial)  option |= ActionOption.EndSpecial;
-        if (isEot)  option |= ActionOption.Eot;
-        if (isTimeline)  option |= ActionOption.Friendly;
-        return option;
     }
 
     public override string ToString() => Name;

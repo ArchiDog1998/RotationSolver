@@ -23,7 +23,8 @@ public partial class BaseAction
     private uint _targetId = Service.Player?.ObjectId ?? 0;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
-    public Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget
+
+    internal Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget
     {
         private get
         {
@@ -35,7 +36,7 @@ public partial class BaseAction
 
     internal Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { private get; set; } = null;
 
-    public StatusID[] TargetStatus { get; set; } = null;
+    public StatusID[] TargetStatus { get; internal set; } = null;
 
     internal static bool TankDefenseSelf(BattleChara chara)
     {

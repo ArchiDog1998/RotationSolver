@@ -14,8 +14,13 @@
 
         float Range { get; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         bool IsFriendly { get; }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         bool IsTimeline { get; }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         bool IsEot { get; }
 
         EnemyPositional EnemyPositional { get; }
@@ -123,7 +128,7 @@
         /// <summary>
         /// If target has these statuses from player self, this aciton will not used.
         /// </summary>
-        StatusID[] TargetStatus { get; set; }
+        StatusID[] TargetStatus { get; }
 
         BattleChara Target { get; }
 

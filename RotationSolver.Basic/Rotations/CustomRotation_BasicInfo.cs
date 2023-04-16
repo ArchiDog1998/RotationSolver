@@ -1,4 +1,5 @@
-﻿using Lumina.Excel.GeneratedSheets;
+﻿using Dalamud.Logging;
+using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -71,14 +72,27 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public IAction AntiKnockbackAbility { get; private set; }
 
-    /// <summary>
-    /// Description about the actions.
-    /// </summary>
-    //public virtual SortedList<DescType, string> DescriptionDict { get; } = new SortedList<DescType, string>();
+    public bool IsValid { get; } = false;   
+
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this);
         Configs = CreateConfiguration();
+
+        try
+        {
+            for (byte i = 0; i < 3; i++)
+            {
+                Ability(i, GCD(i, true, true), out _, true, true);
+            }
+            IsValid = true;
+        }
+        catch (Exception ex) 
+        {
+            PluginLog.Warning(ex, $"The rotation {Name} is not valid, please tell to the author");
+            IsValid = false;
+        }
+
     }
 
     protected virtual IRotationConfigSet CreateConfiguration()

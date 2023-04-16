@@ -275,6 +275,7 @@ internal partial class Strings
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
+    public string ConfigWindow_Rotation_InvalidRotation { get; set; } = "Invalid Rotation! Please contact to the author!";
     public string ConfigWindow_Rotation_ResetToDefault { get; set; } = "Click to reset the rotation configuration to default!";
     #endregion
 
