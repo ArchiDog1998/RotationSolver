@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.0...v2.3.1) (2023-04-16)
+
+
+### Bug Fixes
+
+* add must donload for downloading. ([e68d620](https://github.com/ArchiDog1998/RotationSolver/commit/e68d620ac4640d3aedeb9da1451b6f872e1e4071))
+* changed the logic of Provoke ([783f023](https://github.com/ArchiDog1998/RotationSolver/commit/783f023f44b8e747ce5f74c4878f820190ff85f7))
+* changed the Rotation download window. ([96935a6](https://github.com/ArchiDog1998/RotationSolver/commit/96935a6016f59987ebe1b943baa4ed1b08f887f1))
+
 ## [2.3.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.9...v2.3.0) (2023-04-16)
 
 
