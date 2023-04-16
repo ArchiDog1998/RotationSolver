@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.3.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.9...v2.3.0) (2023-04-16)
+
+
+### Features
+
+* for version to 2.3.0 ([12c6562](https://github.com/ArchiDog1998/RotationSolver/commit/12c6562e559df0dd2362c2ffc8e54268b875c122))
+
+
+### Bug Fixes
+
+* add an invalid rotation option. ([d6aeb32](https://github.com/ArchiDog1998/RotationSolver/commit/d6aeb3279b4e67d526c195532cd0de93010f32a8))
+* changed some propery's access. ([f69271f](https://github.com/ArchiDog1998/RotationSolver/commit/f69271fee70748833ec6046451566d93a863b8a9))
+* changed the access of some properties. ([94fcbdd](https://github.com/ArchiDog1998/RotationSolver/commit/94fcbdd272820b47327fe456adeaa8f3c89b8bde))
+* changed the cooldown window's action order. ([1e47190](https://github.com/ArchiDog1998/RotationSolver/commit/1e47190aae98d5714994388137650b79cf10dd1d))
+* No aoe uses for single `!` ! ([3a59b3e](https://github.com/ArchiDog1998/RotationSolver/commit/3a59b3e5496dedeb6b69ca322a7d59abbd4d3c7b))
+* removed some properties access. ([d3daf7a](https://github.com/ArchiDog1998/RotationSolver/commit/d3daf7a1e143fdb8764a221d708da8a5d677af28))
+* Rotations' isValid. ([2ff4381](https://github.com/ArchiDog1998/RotationSolver/commit/2ff4381588b62bc2ebd9d8650ad2adfba5a3896e))
+
 ## [2.2.9](https://github.com/ArchiDog1998/RotationSolver/compare/v2.2.8...v2.2.9) (2023-04-15)
 
 
