@@ -14,18 +14,18 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
 
-    public static async void GetAllCustomRotations(bool download)
+    public static async void GetAllCustomRotations(bool download, bool mustDownload)
     {
         var relayFolder = Service.Interface.ConfigDirectory.FullName;
         if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
 
         LoadRotationsFromLocal(relayFolder);
 
-        if(download && Service.Config.DownloadRotations)await DownloadRotationsAsync(relayFolder);
+        if(download && Service.Config.DownloadRotations)await DownloadRotationsAsync(relayFolder, mustDownload);
     }
 
     static bool _isDownloading = false;
-    private static async Task DownloadRotationsAsync(string relayFolder)
+    private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
     {
         if (_isDownloading) return;
         _isDownloading= true;
@@ -45,16 +45,16 @@ internal static class RotationUpdater
 
             foreach (var url in libs)
             {
-                hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client);
+                hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
                 var pdbUrl = Path.ChangeExtension(url, ".pdb");
-                await DownloadOneUrlAsync(pdbUrl, relayFolder, client);
+                await DownloadOneUrlAsync(pdbUrl, relayFolder, client, mustDownload);
             }
         }
         if (hasDownload) LoadRotationsFromLocal(relayFolder);
         _isDownloading = false;
     }
 
-    private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client)
+    private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client, bool mustDownload)
     {
         try
         {
@@ -77,7 +77,7 @@ internal static class RotationUpdater
             //Download
             using (HttpResponseMessage response = await client.GetAsync(url))
             {
-                if (File.Exists(filePath))
+                if (File.Exists(filePath) && !mustDownload)
                 {
                     if (new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
                     {

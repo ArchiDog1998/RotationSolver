@@ -11,14 +11,14 @@ internal partial class RotationConfigWindow
 
         if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotationsButton))
         {
-            RotationUpdater.GetAllCustomRotations(true);
+            RotationUpdater.GetAllCustomRotations(true, true);
         }
 
         ImGui.SameLine();
 
         if (ImGui.Button("Load Rotations Local"))
         {
-            RotationUpdater.GetAllCustomRotations(false);
+            RotationUpdater.GetAllCustomRotations(false, false);
         }
 
         ImGui.SameLine();
