@@ -6,7 +6,6 @@ namespace RotationSolver.Basic.Actions;
 public partial class BaseAction : IBaseAction
 {
     Action _action;
-
     ActionOption _option;
 
     public bool IsFriendly => _option.HasFlag(ActionOption.Friendly);
@@ -16,8 +15,7 @@ public partial class BaseAction : IBaseAction
     public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);
     public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
 
-
-    public Func<uint> GetDotGcdCount { private get; set; }
+    internal Func<uint> GetDotGcdCount { private get; set; }
 
     /// <summary>
     /// EnoughLevel for using.
@@ -72,7 +70,7 @@ public partial class BaseAction : IBaseAction
     {
         get
         {
-            if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)ID, out var location))
+            if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)AdjustedID, out var location))
             {
                 return location.Pos;
             }

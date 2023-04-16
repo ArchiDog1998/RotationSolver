@@ -21,30 +21,20 @@
         EnemyPositional EnemyPositional { get; }
 
         /// <summary>
-        /// If combo id is on this list, this action will not used.
-        /// </summary>
-        ActionID[] ComboIdsNot { set; }
-
-        /// <summary>
-        /// The combos that are not written on the action list.
-        /// </summary>
-        ActionID[] ComboIds { set; }
-
-        /// <summary>
         /// If player has these statuses from player self, this action will not used.
         /// </summary>
-        StatusID[] StatusProvide { get; set; }
+        StatusID[] StatusProvide { get; }
 
         /// <summary>
         /// If player doesn't have these statuses from player self, this action will not used.
         /// </summary>
-        StatusID[] StatusNeed { get; set; }
+        StatusID[] StatusNeed { get; }
 
         /// <summary>
         /// Check for this action, but not for the rotation. It is some additional conditions for this action.
         /// Input data is the target for this action.
         /// </summary>
-        Func<BattleChara, bool> ActionCheck { get; set; }
+        Func<BattleChara, bool> ActionCheck { get; }
 
         /// <summary>
         /// Is a GCD action.

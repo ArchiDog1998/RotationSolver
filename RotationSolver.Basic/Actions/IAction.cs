@@ -7,6 +7,9 @@ public interface IAction : ITexture
     uint AdjustedID { get; }
     float RecastTimeOneCharge { get; }
 
+    /// <summary>
+    /// Please don't use it.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     float RecastTimeElapsed { get; }
 
