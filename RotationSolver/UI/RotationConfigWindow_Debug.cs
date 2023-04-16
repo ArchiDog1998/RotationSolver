@@ -104,12 +104,13 @@ internal partial class RotationConfigWindow
             var npc = b.GetObjectNPC();
             if(npc != null)
             {
-                ImGui.Text("Unknown0: " + npc.Behavior.Value?.Unknown0.ToString());
-                ImGui.Text("Unknown1: " + npc.Behavior.Value?.Unknown1.ToString());
-                ImGui.Text("Condition0Type: " + npc.Behavior.Value?.Condition0Type.ToString());
-                ImGui.Text("Condition0Target: " + npc.Behavior.Value?.Condition0Target.ToString());
-                ImGui.Text("Condition1Type: " + npc.Behavior.Value?.Condition1Type.ToString());
-                ImGui.Text("Condition1Target: " + npc.Behavior.Value?.Condition1Target.ToString());
+                ImGui.Text("Unknown12: " + npc.Unknown12.ToString());
+
+                //ImGui.Text("Unknown15: " + npc.Unknown15.ToString());
+                //ImGui.Text("Unknown18: " + npc.Unknown18.ToString());
+                //ImGui.Text("Unknown19: " + npc.Unknown19.ToString());
+                //ImGui.Text("Unknown20: " + npc.Unknown20.ToString());
+                //ImGui.Text("Unknown21: " + npc.Unknown21.ToString());
             }
 
             foreach (var status in b.StatusList)
