@@ -396,7 +396,7 @@ public partial class BaseAction
     public bool CanGetTarget(BattleChara target, BattleChara subTarget)
     {
         if (target == null) return false;
-        if (!IsSingleTarget) return false;
+        if (IsSingleTarget) return false;
         if (target.DistanceToPlayer() > Range) return false;
 
         var pPos = Service.Player.Position;
