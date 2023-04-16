@@ -156,6 +156,26 @@ internal partial class RotationConfigWindow
 
     private static void DrawInfos()
     {
+        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotationsButton))
+        {
+            RotationUpdater.GetAllCustomRotations(true, true);
+        }
+
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotations,
+            ref Service.Config.DownloadRotations, Service.Default.DownloadRotations);
+
+        if (Service.Config.DownloadRotations)
+        {
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Rotation_AutoUpdateRotations,
+                ref Service.Config.AutoUpdateRotations, Service.Default.AutoUpdateRotations);
+        }
+
         var assemblyGrps = RotationUpdater.CustomRotationsDict
             .SelectMany(d => d.Value)
             .SelectMany(g => g.rotations)

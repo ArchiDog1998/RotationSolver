@@ -130,7 +130,6 @@ internal partial class Strings
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
     public string ConfigWindow_Param_ShowActionFlag { get; set; } = "Show action flag.";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
-    public string ConfigWindow_Param_AutoUpdateRotations { get; set; } = "Auto Update Rotaions.";
 
     public string ConfigWindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
 
@@ -275,6 +274,11 @@ internal partial class Strings
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
+    public string ConfigWindow_Rotation_DownloadRotationsButton { get; set; } = "Download Rotations";
+
+    public string ConfigWindow_Rotation_DownloadRotations { get; set; } = "Download Rotations.";
+    public string ConfigWindow_Rotation_AutoUpdateRotations { get; set; } = "Auto Update Rotations.";
+
     public string ConfigWindow_Rotation_InvalidRotation { get; set; } = "Invalid Rotation! \nPlease update to the latest version or contact to the {0}!";
     public string ConfigWindow_Rotation_ResetToDefault { get; set; } = "Click to reset the rotation configuration to default!";
     #endregion

@@ -174,10 +174,10 @@ public static class TargetFilter
 
         var targets = inputCharas.Where(target =>
         {
-            //有目标
-            if (target.TargetObject?.IsValid() ?? false)
+            //Target can move and has a target
+            if (target.GetObjectNPC()?.Unknown12 == 0 && (target.TargetObject?.IsValid() ?? false))
             {
-                //居然在打非T！
+                //the target is not a tank role
                 if (!tankIDS.Contains(target.TargetObjectId) && (!needDistance || Vector3.Distance(target.Position, loc) > 5))
                 {
                     return true;
@@ -186,9 +186,7 @@ public static class TargetFilter
             return false;
         });
 
-        //没有敌对势力，那随便用
         if (!targets.Any()) return inputCharas;
-        //返回在打队友的讨厌鬼！
         return targets;
     }
 

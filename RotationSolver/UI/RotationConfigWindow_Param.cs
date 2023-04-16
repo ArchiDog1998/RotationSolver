@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using RotationSolver.Commands;
+﻿using RotationSolver.Commands;
 using RotationSolver.Localization;
 
 namespace RotationSolver.UI;
