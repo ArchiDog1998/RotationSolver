@@ -174,7 +174,7 @@ public static class TargetFilter
 
         var targets = inputCharas.Where(target =>
         {
-            //Can attack and has a target
+            //Target can move and has a target
             if (target.GetObjectNPC()?.Unknown12 == 0 && (target.TargetObject?.IsValid() ?? false))
             {
                 //the target is not a tank role
