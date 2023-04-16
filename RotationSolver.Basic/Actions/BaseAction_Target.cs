@@ -6,7 +6,7 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
-    public byte AOECount { private get; set; } = 3;
+    public byte AOECount { private get; init; } = 3;
 
     public bool IsTargetDying => Target?.IsDying() ?? false;
 
@@ -23,6 +23,7 @@ public partial class BaseAction
     private uint _targetId = Service.Player?.ObjectId ?? 0;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
+
     public Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget
     {
         private get
@@ -30,12 +31,12 @@ public partial class BaseAction
             if (_choiceTarget != null) return _choiceTarget;
             return IsFriendly ? TargetFilter.DefaultChooseFriend : TargetFilter.DefaultFindHostile;
         }
-        set => _choiceTarget = value;
+        init => _choiceTarget = value;
     }
 
-    internal Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { private get; set; } = null;
+    public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { private get; init; } = null;
 
-    public StatusID[] TargetStatus { get; set; } = null;
+    public StatusID[] TargetStatus { get; init; } = null;
 
     internal static bool TankDefenseSelf(BattleChara chara)
     {
@@ -396,7 +397,7 @@ public partial class BaseAction
     public bool CanGetTarget(BattleChara target, BattleChara subTarget)
     {
         if (target == null) return false;
-        if (!IsSingleTarget) return false;
+        if (IsSingleTarget) return false;
         if (target.DistanceToPlayer() > Range) return false;
 
         var pPos = Service.Player.Position;
@@ -405,10 +406,6 @@ public partial class BaseAction
 
         switch (_action.CastType)
         {
-            case 10: //环形范围攻击也就这么判断吧，我烦了。
-                var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;
-                return dis <= _action.EffectRange && dis >= 8;
-
             case 2: // 圆形范围攻击
                 return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= _action.EffectRange;
 
@@ -420,6 +417,10 @@ public partial class BaseAction
             case 4: //直线范围攻击
                 if (subTarget.DistanceToPlayer() > _action.EffectRange) return false;
                 return Vector3.Cross(dir, tdir).Length() / dir.Length() <= 2 + target.HitboxRadius;
+
+            case 10: //环形范围攻击也就这么判断吧，我烦了。
+                var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;
+                return dis <= _action.EffectRange && dis >= 8;
         }
 
         PluginLog.LogDebug(Name + "'s CastType is not valid! The value is " + _action.CastType.ToString());
@@ -465,7 +466,6 @@ public partial class BaseAction
         return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Config.AddDotGCDCount, 
             0, true, TargetStatus);
     }
-
 
     public unsafe bool CanUseTo(BattleChara tar)
     {

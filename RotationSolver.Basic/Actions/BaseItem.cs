@@ -63,11 +63,14 @@ internal class BaseItem : IBaseItem
 
     public unsafe bool IsCoolingDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Item, ID);
 
-    public BaseItem(uint row, uint a4 = 65535)
+    public uint SortKey { get; }
+
+    public unsafe BaseItem(uint row, uint a4 = 65535)
     {
         _item = Service.GetSheet<Item>().GetRow(row);
         IconID = _item.Icon;
         A4 = a4;
+        SortKey = (uint)ActionManager.Instance()->GetRecastGroup((int)ActionType.Item, ID);
     }
 
     public unsafe bool CanUse(out IAction item)

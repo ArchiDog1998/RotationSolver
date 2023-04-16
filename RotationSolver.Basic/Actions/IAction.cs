@@ -6,7 +6,11 @@ public interface IAction : ITexture
     uint ID { get; }
     uint AdjustedID { get; }
     float RecastTimeOneCharge { get; }
+    uint SortKey { get; }
 
+    /// <summary>
+    /// Please don't use it.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     float RecastTimeElapsed { get; }
 

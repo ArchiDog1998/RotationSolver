@@ -4,6 +4,7 @@ namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
+    Exception _lastException;
     public bool TryInvoke(out IAction newAction, out IAction gcdAction)
     {
         newAction = gcdAction = null;
@@ -69,7 +70,12 @@ public abstract partial class CustomRotation
         }
         catch(Exception ex)
         {
-            PluginLog.Error(ex, "Failed to invoke the next action");
+            if(_lastException?.GetType() != ex.GetType())
+            {
+                PluginLog.Error(ex, "Failed to invoke the next action");
+            }
+            _lastException = ex;
+            IsValid = false;
         }
 
         return newAction != null;

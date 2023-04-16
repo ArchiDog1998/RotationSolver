@@ -116,7 +116,12 @@ internal static class RotationUpdater
         var directories = Service.Config.OtherLibs
             .Where(Directory.Exists)
             //.Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
-            .Append(relayFolder);
+#if DEBUG
+            //.Append(relayFolder)
+#else
+            .Append(relayFolder)
+#endif
+            ;
 
         var assemblies = from dir in directories
                          where Directory.Exists(dir)

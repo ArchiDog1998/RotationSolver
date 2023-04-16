@@ -6,7 +6,6 @@ namespace RotationSolver.Basic.Actions;
 public partial class BaseAction : IBaseAction
 {
     Action _action;
-
     ActionOption _option;
 
     public bool IsFriendly => _option.HasFlag(ActionOption.Friendly);
@@ -16,8 +15,7 @@ public partial class BaseAction : IBaseAction
     public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);
     public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
 
-
-    public Func<uint> GetDotGcdCount { private get; set; }
+    public Func<uint> GetDotGcdCount { private get; init; }
 
     /// <summary>
     /// EnoughLevel for using.
@@ -72,7 +70,7 @@ public partial class BaseAction : IBaseAction
     {
         get
         {
-            if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)ID, out var location))
+            if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)AdjustedID, out var location))
             {
                 return location.Pos;
             }
@@ -90,12 +88,7 @@ public partial class BaseAction : IBaseAction
         }
     }
 
-    public BaseAction(ActionID actionID)
-       : this(actionID, ActionOption.None)
-    {
-
-    }
-
+    public uint SortKey => CoolDownGroup;
 
     public BaseAction(ActionID actionID, ActionOption option = ActionOption.None)
     {
@@ -107,32 +100,6 @@ public partial class BaseAction : IBaseAction
         _option = option;
 
         CoolDownGroup = _action.GetCoolDownGroup();
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="actionID"></param>
-    /// <param name="isFriendly">is a friendly or supporting action</param>
-    /// <param name="endSpecial">end special after using it</param>
-    /// <param name="isEot">is hot or dot action</param>
-    /// <param name="isTimeline">should I put it to the timeline (heal and defense only)</param>
-    [Obsolete("Please use the ActionOption one", false)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public BaseAction(ActionID actionID, bool isFriendly = false, bool endSpecial = false, bool isEot = false, bool isTimeline = false)
-        : this(actionID, GetOption(isFriendly, endSpecial, isEot, isTimeline))
-    {
-
-    }
-
-    private static ActionOption GetOption(bool isFriendly = false, bool endSpecial = false, bool isEot = false, bool isTimeline = false)
-    {
-        ActionOption option = ActionOption.None;
-        if (isFriendly)  option |= ActionOption.Friendly;
-        if (endSpecial)  option |= ActionOption.EndSpecial;
-        if (isEot)  option |= ActionOption.Eot;
-        if (isTimeline)  option |= ActionOption.Friendly;
-        return option;
     }
 
     public override string ToString() => Name;

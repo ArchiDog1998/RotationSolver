@@ -418,7 +418,7 @@ internal static class ImGuiHelper
                         ImGui.Text(e.Message);
                         e = e.InnerException;
                     }
-                    ImGui.TextWrapped(ex.StackTrace);
+                    ImGui.Text(ex.StackTrace);
                 }
             }, "Popup" + rotation.GetHashCode().ToString());
         },
@@ -457,7 +457,12 @@ internal static class ImGuiHelper
 
             ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
             ImGui.Text(rotation.GetType().Assembly.GetName().Name);
-            if (!rotation.IsAllowed(out _))
+            if(!rotation.IsValid)
+            {
+                HoveredString(string.Format(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation, 
+                    rotation.GetType().Assembly.GetInfo().Author));
+            }
+            else if (!rotation.IsAllowed(out _))
             {
                 var showStr = string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_HighEndWarning, rotation)
                 + string.Join("", SocialUpdater.HighEndDuties.Select(x => x.PlaceName?.Value?.Name.ToString())
@@ -465,7 +470,7 @@ internal static class ImGuiHelper
 
                 HoveredString(showStr);
             }
-            if (rotation.IsBeta())
+            else if (rotation.IsBeta())
             {
                 HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation);
             }
@@ -607,7 +612,6 @@ internal static class ImGuiHelper
                 ImGui.Text("Has One:" + action.HasOneCharge.ToString());
                 ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
                 ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());
-                ImGui.Text("Recast Remain: " + action.RecastTimeRemain.ToString());
                 ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, action.AdjustedID).ToString());
                 ImGui.Text("Cast Time: " + action.CastTime.ToString());
                 ImGui.Text("MP: " + action.MPNeed.ToString());
@@ -616,7 +620,7 @@ internal static class ImGuiHelper
                 ImGui.Text($"Can Use: {action.CanUse(out _, option)} ");
                 ImGui.Text("Must Use:" + action.CanUse(out _, option | CanUseOption.MustUse).ToString());
                 ImGui.Text("Empty Use:" + action.CanUse(out _, option | CanUseOption.EmptyOrSkipCombo).ToString());
-                ImGui.Text("Must & Empty Use:" + action.CanUse(out _, option | CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo).ToString());
+                ImGui.Text("Must & Empty Use:" + action.CanUse(out _, option | CanUseOption.MustUseEmpty).ToString());
                 if (action.Target != null)
                 {
                     ImGui.Text("Target Name: " + action.Target.Name);

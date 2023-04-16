@@ -14,37 +14,32 @@
 
         float Range { get; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         bool IsFriendly { get; }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         bool IsTimeline { get; }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         bool IsEot { get; }
 
         EnemyPositional EnemyPositional { get; }
 
         /// <summary>
-        /// If combo id is on this list, this action will not used.
-        /// </summary>
-        ActionID[] ComboIdsNot { set; }
-
-        /// <summary>
-        /// The combos that are not written on the action list.
-        /// </summary>
-        ActionID[] ComboIds { set; }
-
-        /// <summary>
         /// If player has these statuses from player self, this action will not used.
         /// </summary>
-        StatusID[] StatusProvide { get; set; }
+        StatusID[] StatusProvide { get; }
 
         /// <summary>
         /// If player doesn't have these statuses from player self, this action will not used.
         /// </summary>
-        StatusID[] StatusNeed { get; set; }
+        StatusID[] StatusNeed { get; }
 
         /// <summary>
         /// Check for this action, but not for the rotation. It is some additional conditions for this action.
         /// Input data is the target for this action.
         /// </summary>
-        Func<BattleChara, bool> ActionCheck { get; set; }
+        Func<BattleChara, bool> ActionCheck { get; }
 
         /// <summary>
         /// Is a GCD action.
@@ -83,20 +78,12 @@
         bool HasOneCharge { get; }
 
         /// <summary>
-        /// recast time remain total.
-        /// </summary>
-        float RecastTimeRemain { get; }
-        /// <summary>
         /// Has it been in cooldown for <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
         /// </summary>
         /// <param name="gcdCount"></param>
         /// <param name="abilityCount"></param>
         /// <returns></returns>
         bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, int abilityCount = 0);
-
-        [Obsolete("Use int abilityCount one!", false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, uint abilityCount = 0);
 
         /// <summary>
         /// Has it been in cooldown for <paramref name="time"/> seconds?
@@ -113,10 +100,6 @@
         /// <returns></returns>
         bool ElapsedAfterGCD(uint gcdCount = 0, int abilityCount = 0);
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use int abilityCount one!", false)]
-        bool ElapsedAfterGCD(uint gcdCount = 0, uint abilityCount = 0);
-
         /// <summary>
         /// Has it been in cooldown for <paramref name="time"/> seconds?
         /// </summary>
@@ -132,10 +115,6 @@
         /// <returns></returns>
         bool WillHaveOneChargeGCD(uint gcdCount = 0, int abilityCount = 0);
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use int abilityCount one!", false)]
-        bool WillHaveOneChargeGCD(uint gcdCount = 0, uint abilityCount = 0);
-
         /// <summary>
         /// Will have at least one charge after <paramref name="remain"/> seconds?
         /// </summary>
@@ -149,7 +128,7 @@
         /// <summary>
         /// If target has these statuses from player self, this aciton will not used.
         /// </summary>
-        StatusID[] TargetStatus { get; set; }
+        StatusID[] TargetStatus { get; }
 
         BattleChara Target { get; }
 
@@ -162,11 +141,6 @@
         /// Is target will die immediately.
         /// </summary>
         bool IsTargetDying { get; }
-
-        /// <summary>
-        /// If this is an aoe action, how many hostile target would want to attack on, when you use this action.
-        /// </summary>
-        byte AOECount { set; }
 
         /// <summary>
         /// Is this action's target type is target only one.

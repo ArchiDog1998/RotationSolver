@@ -19,6 +19,7 @@ public abstract class NIN_Base : CustomRotation
     public class NinAction : BaseAction, INinAction
     {
         public IBaseAction[] Ninjutsu { get; }
+
         internal NinAction(ActionID actionID, params IBaseAction[] ninjutsu)
             : base(actionID)
         {
