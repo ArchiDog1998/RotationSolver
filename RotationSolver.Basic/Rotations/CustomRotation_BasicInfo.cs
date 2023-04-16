@@ -78,6 +78,20 @@ public abstract partial class CustomRotation : ICustomRotation
     {
         IconID = IconSet.GetJobIcon(this);
         Configs = CreateConfiguration();
+
+        try
+        {
+            for (byte i = 0; i < 3; i++)
+            {
+                Ability(i, GCD(i, true, true), out _, true, true);
+            }
+            IsValid = true;
+        }
+        catch (Exception ex) 
+        {
+            PluginLog.Warning(ex, $"The rotation \"{GetType().FullName}\" is not valid, please tell to the author");
+            IsValid = false;
+        }
     }
 
     protected virtual IRotationConfigSet CreateConfiguration()

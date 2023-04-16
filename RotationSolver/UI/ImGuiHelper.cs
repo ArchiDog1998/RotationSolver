@@ -418,7 +418,7 @@ internal static class ImGuiHelper
                         ImGui.Text(e.Message);
                         e = e.InnerException;
                     }
-                    ImGui.TextWrapped(ex.StackTrace);
+                    ImGui.Text(ex.StackTrace);
                 }
             }, "Popup" + rotation.GetHashCode().ToString());
         },
@@ -459,9 +459,10 @@ internal static class ImGuiHelper
             ImGui.Text(rotation.GetType().Assembly.GetName().Name);
             if(!rotation.IsValid)
             {
-                HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation);
+                HoveredString(string.Format(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation, 
+                    rotation.GetType().Assembly.GetInfo().Author));
             }
-            if (!rotation.IsAllowed(out _))
+            else if (!rotation.IsAllowed(out _))
             {
                 var showStr = string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_HighEndWarning, rotation)
                 + string.Join("", SocialUpdater.HighEndDuties.Select(x => x.PlaceName?.Value?.Name.ToString())

@@ -15,7 +15,7 @@ public partial class BaseAction : IBaseAction
     public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);
     public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
 
-    internal Func<uint> GetDotGcdCount { private get; set; }
+    public Func<uint> GetDotGcdCount { private get; init; }
 
     /// <summary>
     /// EnoughLevel for using.

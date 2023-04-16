@@ -70,7 +70,7 @@ public abstract partial class CustomRotation
         }
         catch(Exception ex)
         {
-            if(_lastException != ex)
+            if(_lastException?.GetType() != ex.GetType())
             {
                 PluginLog.Error(ex, "Failed to invoke the next action");
             }

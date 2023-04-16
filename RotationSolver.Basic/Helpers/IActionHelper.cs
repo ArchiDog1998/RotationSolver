@@ -48,6 +48,7 @@ public static class IActionHelper
 
     public static bool IsTheSameTo(this IAction action, bool isAdjust, params IAction[] actions)
     {
+        if (action == null) return false;
         return IsActionID(isAdjust ? (ActionID)action.AdjustedID : (ActionID)action.ID, GetIDFromActions(isAdjust, actions));
     }
 

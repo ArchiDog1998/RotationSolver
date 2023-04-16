@@ -6,15 +6,15 @@ public partial class BaseAction
 {
     public float Range => ActionManager.GetActionRange(ID);
 
-    internal ActionID[] ComboIdsNot { private get; set; } = null;
+    internal ActionID[] ComboIdsNot { private get; init; } = null;
 
-    internal ActionID[] ComboIds { private get; set; } = null;
+    internal ActionID[] ComboIds { private get; init; } = null;
 
-    public StatusID[] StatusProvide { get; internal set; } = null;
+    public StatusID[] StatusProvide { get; init; } = null;
 
-    public virtual StatusID[] StatusNeed { get; internal set; } = null;
+    public virtual StatusID[] StatusNeed { get; init; } = null;
 
-    public Func<BattleChara, bool> ActionCheck { get; internal set; } = null;
+    public Func<BattleChara, bool> ActionCheck { get; init; } = null;
 
     private bool WillCooldown
     {

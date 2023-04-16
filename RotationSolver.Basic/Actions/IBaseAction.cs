@@ -143,11 +143,6 @@
         bool IsTargetDying { get; }
 
         /// <summary>
-        /// If this is an aoe action, how many hostile target would want to attack on, when you use this action.
-        /// </summary>
-        byte AOECount { set; }
-
-        /// <summary>
         /// Is this action's target type is target only one.
         /// </summary>
         bool IsSingleTarget { get; }

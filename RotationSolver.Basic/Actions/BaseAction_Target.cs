@@ -6,7 +6,7 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
-    public byte AOECount { private get; set; } = 3;
+    public byte AOECount { private get; init; } = 3;
 
     public bool IsTargetDying => Target?.IsDying() ?? false;
 
@@ -24,19 +24,19 @@ public partial class BaseAction
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
 
-    internal Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget
+    public Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget
     {
         private get
         {
             if (_choiceTarget != null) return _choiceTarget;
             return IsFriendly ? TargetFilter.DefaultChooseFriend : TargetFilter.DefaultFindHostile;
         }
-        set => _choiceTarget = value;
+        init => _choiceTarget = value;
     }
 
-    internal Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { private get; set; } = null;
+    public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { private get; init; } = null;
 
-    public StatusID[] TargetStatus { get; internal set; } = null;
+    public StatusID[] TargetStatus { get; init; } = null;
 
     internal static bool TankDefenseSelf(BattleChara chara)
     {
