@@ -58,9 +58,7 @@ jobs:
 
   release:
     name: release
-    needs: |
-      release-please
-      build
+    needs: [release-please, build]
     runs-on: ubuntu-latest
 
     steps:
