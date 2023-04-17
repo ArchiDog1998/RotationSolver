@@ -87,9 +87,9 @@ internal static class EnumTranslations
         JobRole.Ranged => LocalizationManager.RightLang.JobRole_Ranged,
         JobRole.Healer => LocalizationManager.RightLang.JobRole_Healer,
         JobRole.RangedPhysical => LocalizationManager.RightLang.JobRole_RangedPhysical,
-        JobRole.RangedMagical => LocalizationManager.RightLang.JobRole_RangedMagicial,
-        JobRole.DiscipleOfTheLand => LocalizationManager.RightLang.JobRole_DiscipleoftheLand,
-        JobRole.DiscipleOfTheHand => LocalizationManager.RightLang.JobRole_DiscipleoftheHand,
+        JobRole.RangedMagical => LocalizationManager.RightLang.JobRole_RangedMagical,
+        JobRole.DiscipleOfTheLand => LocalizationManager.RightLang.JobRole_DiscipleOfTheLand,
+        JobRole.DiscipleOfTheHand => LocalizationManager.RightLang.JobRole_DiscipleOfTheHand,
         _ => string.Empty,
     };
 
