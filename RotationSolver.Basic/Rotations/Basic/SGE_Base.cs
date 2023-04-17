@@ -8,7 +8,9 @@ public abstract class SGE_Base : CustomRotation
     protected static byte Addersgall => JobGauge.Addersgall;
 
     protected static byte Addersting => JobGauge.Addersting;
-    public override MedicineType MedicineType => MedicineType.Strength;
+    public override MedicineType MedicineType => MedicineType.Mind;
+
+    protected static bool NoOgcds => JobGauge.Addersgall == 0 && (!Physis.EnoughLevel || Physis.IsCoolingDown) && (!Haima.EnoughLevel || Haima.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Soteria.EnoughLevel || Soteria.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Krasis.EnoughLevel || Krasis.IsCoolingDown) && (!Zoe.EnoughLevel || Zoe.IsCoolingDown);
 
     protected static bool AddersgallEndAfter(float time)
     {
@@ -43,7 +45,10 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Phlegma3 { get; } = new BaseAction(ActionID.Phlegma3);
 
-    public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, ActionOption.Heal);
+    public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, ActionOption.Heal)
+    {
+        ActionCheck = b => NoOgcds,
+    };
 
     public static IBaseAction Kardia { get; } = new BaseAction(ActionID.Kardia, ActionOption.Heal)
     {
@@ -60,7 +65,10 @@ public abstract class SGE_Base : CustomRotation
         ActionCheck = b => !b.HasStatus(true, StatusID.Kardion),
     };
 
-    public static IBaseAction Prognosis { get; } = new BaseAction(ActionID.Prognosis, ActionOption.Heal | ActionOption.EndSpecial);
+    public static IBaseAction Prognosis { get; } = new BaseAction(ActionID.Prognosis, ActionOption.Heal | ActionOption.EndSpecial)
+    {
+        ActionCheck = b => NoOgcds,
+    };
 
     public static IBaseAction Physis { get; } = new BaseAction(ActionID.Physis, ActionOption.Heal);
 
@@ -114,18 +122,28 @@ public abstract class SGE_Base : CustomRotation
     public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, ActionOption.Heal)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
+        ActionCheck = b => NoOgcds,
     };
 
-    public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, ActionOption.Heal);
+    public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, ActionOption.Heal)
+    {
+        ActionCheck = b => NoOgcds,
+    };
 
     public static IBaseAction Rhizomata { get; } = new BaseAction(ActionID.Rhizomata)
     {
         ActionCheck = b => JobGauge.Addersgall < 3,
     };
 
-    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, ActionOption.Heal);
+    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, ActionOption.Heal)
+    {
+        ActionCheck = b => (!Panhaima.IsCoolingDown || Panhaima.ElapsedAfter(60)),
+    };
 
-    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, ActionOption.Heal);
+    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, ActionOption.Heal)
+    {
+        ActionCheck = b => (Holos.IsCoolingDown && Holos.ElapsedAfter(60)),
+    };
 
     public static IBaseAction Krasis { get; } = new BaseAction(ActionID.Krasis, ActionOption.Heal);
 
@@ -149,7 +167,7 @@ public abstract class SGE_Base : CustomRotation
     [RotationDesc(ActionID.Icarus)]
     protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
     {
-        //ÉñÒí
+        //ï¿½ï¿½ï¿½ï¿½
         if (Icarus.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
