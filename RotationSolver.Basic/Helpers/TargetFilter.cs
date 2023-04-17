@@ -174,8 +174,9 @@ public static class TargetFilter
 
         var targets = inputCharas.Where(target =>
         {
-            //Target can move and has a target
-            if (target.GetObjectNPC()?.Unknown12 == 0 && (target.TargetObject?.IsValid() ?? false))
+            //Target can move or two big and has a target
+            if ((target.GetObjectNPC()?.Unknown12 == 0 || target.HitboxRadius >= 5)
+            && (target.TargetObject?.IsValid() ?? false))
             {
                 //the target is not a tank role
                 if (!tankIDS.Contains(target.TargetObjectId) && (!needDistance || Vector3.Distance(target.Position, loc) > 5))

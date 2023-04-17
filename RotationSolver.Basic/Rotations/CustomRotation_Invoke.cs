@@ -67,12 +67,13 @@ public abstract partial class CustomRotation
         try
         {
             newAction = Invoke(out gcdAction);
+            if (!IsValid) IsValid = true;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             if(_lastException?.GetType() != ex.GetType())
             {
-                PluginLog.Error(ex, "Failed to invoke the next action");
+                PluginLog.Error(ex, $"Failed to invoke the next action in \"{GetType().FullName}\", please contact to the author.");
             }
             _lastException = ex;
             IsValid = false;

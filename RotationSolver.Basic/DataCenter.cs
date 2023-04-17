@@ -138,7 +138,9 @@ public static class DataCenter
     public static uint[] BluSlots { get; set; } = new uint[24];
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
-    public static double SpecialTimeLeft => Service.Config.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds;
+    private static double SpecialTimeElapsed => (DateTime.Now - _specialStateStartTime).TotalSeconds;
+    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.SpecialDuration - SpecialTimeElapsed :
+        Math.Ceiling((Service.Config.SpecialDuration + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
 
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
     public static SpecialCommandType SpecialType =>
