@@ -135,9 +135,15 @@ public abstract class SGE_Base : CustomRotation
         ActionCheck = b => JobGauge.Addersgall < 3,
     };
 
-    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, true, isTimeline: true);
+    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, true, isTimeline: true)
+    {
+        ActionCheck = b => (!Panhaima.IsCoolingDown || Panhaima.ElapsedAfter(60)),
+    };
 
-    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, true, isTimeline: true);
+    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, true, isTimeline: true)
+    {
+        ActionCheck = b => (Holos.IsCoolingDown && Holos.ElapsedAfter(60)),
+    };
 
     public static IBaseAction Krasis { get; } = new BaseAction(ActionID.Krasis, true, isTimeline: true);
 
