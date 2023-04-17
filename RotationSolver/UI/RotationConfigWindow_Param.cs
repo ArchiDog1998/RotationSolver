@@ -42,10 +42,6 @@ internal partial class RotationConfigWindow
 
     private void DrawParamBasic()
     {
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
-            ref Service.Config.UseOverlayWindow, Service.Default.UseOverlayWindow,
-            LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindowDesc);
-
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AbilitiesInterval,
             ref Service.Config.AbilitiesInterval, Service.Default.AbilitiesInterval,
             min: 0.5f, max: 0.7f);
@@ -62,6 +58,8 @@ internal partial class RotationConfigWindow
         DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
             ref Service.Config.AddDotGCDCount, Service.Default.AddDotGCDCount, min: 0, max: 3);
 
+        ImGui.Spacing();
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffBetweenArea,
             ref Service.Config.AutoOffBetweenArea, Service.Default.AutoOffBetweenArea);
 
@@ -73,6 +71,10 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
             ref Service.Config.StartOnCountdown, Service.Default.StartOnCountdown);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
+            ref Service.Config.UseOverlayWindow, Service.Default.UseOverlayWindow,
+            LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindowDesc);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
             ref Service.Config.UseWorkTask, Service.Default.UseWorkTask);

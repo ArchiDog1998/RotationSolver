@@ -102,11 +102,11 @@ internal partial class Strings
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the time advance of using casting actions on counting down.";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
-    public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Turn off when player is between area.";
+    public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is between area.";
 
-    public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Turn off during cut scene.";
+    public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cut scene.";
 
-    public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Turn off when dead.";
+    public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";
@@ -188,7 +188,7 @@ internal partial class Strings
     public string ConfigWindow_Param_UseItem { get; set; } = "Use items";
     public string ConfigWindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
     public string ConfigWindow_Param_Conditon { get; set; } = "Condition";
-    public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Turn on auto-rotation on countdown";
+    public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto turn smart on countdown";
     public string ConfigWindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
     public string ConfigWindow_Param_InterruptibleMoreCheck { get; set; } = "Interrupt the action with action type check.";
 
