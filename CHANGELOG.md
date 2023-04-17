@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.3.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.1...v2.3.2) (2023-04-17)
+
+
+### Bug Fixes
+
+* can provoke the big target. ([9129ea2](https://github.com/ArchiDog1998/RotationSolver/commit/9129ea254e671f30f9f2fae62e36aca9c600fe81))
+* changed the time to check the rotation is valid. ([290476b](https://github.com/ArchiDog1998/RotationSolver/commit/290476b097370e1d53f43881929056f1831bc8c4))
+* fixed flow bug. ([ec7dd73](https://github.com/ArchiDog1998/RotationSolver/commit/ec7dd73d382590c75b16cff0a0f2a9676870302c))
+* fixed special time calculating. ([e5ad840](https://github.com/ArchiDog1998/RotationSolver/commit/e5ad84016eda4b3edd1cc59a517c78747fa9aab8))
+* fixed the sayout issue when manual toggle. ([b86b197](https://github.com/ArchiDog1998/RotationSolver/commit/b86b19718df79d5c33e48be321df0dd492690f54))
+
 ## [2.3.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.0...v2.3.1) (2023-04-16)
 
 
