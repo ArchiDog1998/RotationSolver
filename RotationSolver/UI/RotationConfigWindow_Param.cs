@@ -42,10 +42,6 @@ internal partial class RotationConfigWindow
 
     private void DrawParamBasic()
     {
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_NeverReplaceIcon,
-            ref Service.Config.NeverReplaceIcon, Service.Default.NeverReplaceIcon,
-            LocalizationManager.RightLang.ConfigWindow_Param_NeverReplaceIconDesc);
-
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
             ref Service.Config.UseOverlayWindow, Service.Default.UseOverlayWindow,
             LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindowDesc);

@@ -42,6 +42,7 @@ namespace RotationSolver.Commands
 
             _stateString = stateType.ToStateString(role);
             UpdateToast();
+            return stateType;
         });
 
         public static unsafe void UpdateStateNamePlate()
@@ -57,15 +58,16 @@ namespace RotationSolver.Commands
             _specialString = specialType.ToSpecialString(role);
             DataCenter.SetSpecialType(specialType);
             if (sayout) UpdateToast();
+            return specialType;
         });
 
-        private static void DoOneCommandType<T>(T type, Func<T, JobRole, string> sayout, Action<JobRole> doingSomething)
+        private static void DoOneCommandType<T>(T type, Func<T, JobRole, string> sayout, Func<JobRole, T> doingSomething)
             where T : struct, Enum
         {
             //Get jobrole.
             var role = Service.Player.ClassJob.GameData.GetJobRole();
 
-            doingSomething(role);
+            type =  doingSomething(role);
 
             //Saying out.
             if (Service.Config.SayOutStateChanged) SpeechHelper.Speak(sayout(type, role));

@@ -48,8 +48,6 @@
   "ConfigWindow_Events_DutyStart": "Duty Start: ",
   "ConfigWindow_Events_DutyEnd": "Duty End: ",
   "ConfigWindow_Params_Description": "In this window, you can set the parameters about the using way of actions.",
-  "ConfigWindow_Param_NeverReplaceIcon": "Never Replace Icons",
-  "ConfigWindow_Param_NeverReplaceIconDesc": "Icon replacement: Repose is automatically displayed as the next action to be used",
   "ConfigWindow_Param_UseOverlayWindow": "Display Top Overlay",
   "ConfigWindow_Param_UseOverlayWindowDesc": "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.",
   "ConfigWindow_Param_Basic": "Basic",

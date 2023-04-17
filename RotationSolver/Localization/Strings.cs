@@ -93,8 +93,6 @@ internal partial class Strings
     public string ConfigWindow_Events_DutyStart { get; set; } = "Duty Start: ";
     public string ConfigWindow_Events_DutyEnd{ get; set; } = "Duty End: ";
     public string ConfigWindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
-    public string ConfigWindow_Param_NeverReplaceIcon { get; set; } = "Never Replace Icons";
-    public string ConfigWindow_Param_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next action to be used";
     public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display Top Overlay";
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
     public string ConfigWindow_Param_Basic { get; set; } = "Basic";
