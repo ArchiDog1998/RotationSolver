@@ -59,7 +59,6 @@ public abstract partial class CustomRotation
     {
         act = null;
         
-        if (!InCombat) return false;
         if (!(Target?.IsDummy() ?? false) && !DataCenter.InHighEndDuty) return false;
 
         switch (MedicineType)
