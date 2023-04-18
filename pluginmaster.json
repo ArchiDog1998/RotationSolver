@@ -22,7 +22,7 @@
     "AcceptsFeedback": true,
     "AssemblyVersion": "2.3.2",
     "Changelog": "2.3.2 (2023-04-17)\n\n\nBug Fixes\n\n* can provoke the big target. (9129ea2)\n* changed the time to check the rotation is valid. (290476b)\n* fixed flow bug. (ec7dd73)\n* fixed special time calculating. (e5ad840)\n* fixed the sayout issue when manual toggle. (b86b197)",
-    "DownloadCount": "6450",
+    "DownloadCount": "6620",
     "LastUpdate": 1681741223,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.2/latest.zip",
