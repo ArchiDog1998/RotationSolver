@@ -73,6 +73,7 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector3 TargetColor = new(1f, 0.2f, 0f);
     public Vector3 SubTargetColor = new(1f, 0.9f, 0f);
     public bool KeyBoardNoise = true;
+    public bool KeyBoardNoiseBefore = true;
     public int KeyBoardNoiseMin = 2;
     public int KeyBoardNoiseMax = 3;
     public float KeyBoardNoiseTimeMin = 0.1f;

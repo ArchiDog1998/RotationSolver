@@ -144,6 +144,7 @@ internal partial class Strings
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
+    public string ConfigWindow_Param_KeyBoardNoiseBefore { get; set; } = "Simulate before action cast";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
     public string ConfigWindow_Param_KeyBoardNoiseTime { get; set; } = "Effect interval";
     public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";

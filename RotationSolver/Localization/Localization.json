@@ -89,6 +89,7 @@
   "ConfigWindow_Param_TargetColor": "Target color",
   "ConfigWindow_Param_SubTargetColor": "Sub-target color",
   "ConfigWindow_Param_KeyBoardNoise": "Simulate the effect of pressing",
+  "ConfigWindow_Param_KeyBoardNoiseBefore": "Simulate before action cast",
   "ConfigWindow_Param_KeyBoardNoiseTimes": "Effect times",
   "ConfigWindow_Param_KeyBoardNoiseTime": "Effect interval",
   "ConfigWindow_Param_VoiceVolume": "Voice volume",
