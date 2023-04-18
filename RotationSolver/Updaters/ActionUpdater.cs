@@ -154,7 +154,7 @@ internal static class ActionUpdater
             DataCenter.AbilityRemainCount = (byte)(abilityWhole - (int)(DataCenter.WeaponElapsed / interval));
         }
 
-        if (weaponTotal > 0) DataCenter.WeaponTotal = weaponTotal;
+        if (weaponTotal > 0 && DataCenter.WeaponElapsed > 0.2) DataCenter.WeaponTotal = weaponTotal;
     }
 
     static uint _lastMP = 0;
