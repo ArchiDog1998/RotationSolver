@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.3.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.2...v2.3.3) (2023-04-18)
+
+
+### Bug Fixes
+
+* changed the order of the panels. ([9df8eae](https://github.com/ArchiDog1998/RotationSolver/commit/9df8eaea5723e30ad502f5767311c50191be5658))
+* fixed the cooldown check for item use. ([47a8877](https://github.com/ArchiDog1998/RotationSolver/commit/47a887740e6c70ffed812dc7d7cdeca564e20d49))
+* fixed the sub targets show when action is targeting self. ([23b7604](https://github.com/ArchiDog1998/RotationSolver/commit/23b760491e0f11d2b40d75ffd3c16959d49a36f2))
+* fixed wrong value with WeaponTotal ([8815894](https://github.com/ArchiDog1998/RotationSolver/commit/881589458c174e7a1ee6c4bf4d559f5a50fc3153))
+
 ## [2.3.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.1...v2.3.2) (2023-04-17)
 
 
