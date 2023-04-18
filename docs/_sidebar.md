@@ -3,6 +3,9 @@
   - [Param Basic](param-basic.md)
   - [Rotation Settings](rotation-settings.md)
   - [Extra Rotations](extra-rotations.md)
+- **Guide**
+  - [Parameters](parameters.md)
+
 - **Development**
   - [Rotation Development](RotationDev/)
   - [Plugin Development](Development/)
