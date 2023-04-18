@@ -41,7 +41,7 @@ internal static class ActionUpdater
                         {
                             string positional = GcdAction.EnemyPositional.ToName();
                             if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
-                            if (Service.Config.FlytextPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                            if (Service.Config.ToastPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = GcdAction.IconID,
                             });
@@ -154,7 +154,7 @@ internal static class ActionUpdater
             DataCenter.AbilityRemainCount = (byte)(abilityWhole - (int)(DataCenter.WeaponElapsed / interval));
         }
 
-        if (weaponTotal > 0) DataCenter.WeaponTotal = weaponTotal;
+        if (weaponTotal > 0 && DataCenter.WeaponElapsed > 0.2) DataCenter.WeaponTotal = weaponTotal;
     }
 
     static uint _lastMP = 0;

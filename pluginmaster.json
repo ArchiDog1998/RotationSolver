@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.3.1",
-    "Changelog": "2.3.1 (2023-04-16)\n\n\nBug Fixes\n\n* add must donload for downloading. (e68d620)\n* changed the logic of Provoke (783f023)\n* changed the Rotation download window. (96935a6)",
-    "DownloadCount": "6671",
-    "LastUpdate": 1681657839,
+    "AssemblyVersion": "2.3.2",
+    "Changelog": "2.3.2 (2023-04-17)\n\n\nBug Fixes\n\n* can provoke the big target. (9129ea2)\n* changed the time to check the rotation is valid. (290476b)\n* fixed flow bug. (ec7dd73)\n* fixed special time calculating. (e5ad840)\n* fixed the sayout issue when manual toggle. (b86b197)",
+    "DownloadCount": "6620",
+    "LastUpdate": 1681741223,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.1/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.1/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.2/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.2/latest.zip"
   },
   {
     "Author": "ArchiDog1998",

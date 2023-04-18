@@ -46,7 +46,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          path: .\RotationSolver\bin\Release\net7.0-windows\
+          path: .\RotationSolver\bin\Release\net7.0-windows\RotationSolver\
 
       - name: publish on version change
         id: publish_nuget

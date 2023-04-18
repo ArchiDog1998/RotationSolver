@@ -44,7 +44,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool SayPositional = true;
 
-    public bool FlytextPositional = true;
+    public bool ToastPositional = true;
     public bool HealOutOfCombat = false;
     public bool ShowInfoOnToast = true;
     public bool RaiseAll = false;

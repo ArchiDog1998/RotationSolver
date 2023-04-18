@@ -609,13 +609,14 @@ internal static class ImGuiHelper
             {
 #if DEBUG
                 ImGui.Text("Is Real GCD: " + action.IsRealGCD.ToString());
-                ImGui.Text("Has One:" + action.HasOneCharge.ToString());
-                ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
-                ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());
                 ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Spell, action.AdjustedID).ToString());
                 ImGui.Text("Cast Time: " + action.CastTime.ToString());
                 ImGui.Text("MP: " + action.MPNeed.ToString());
 #endif
+                ImGui.Text("Has One:" + action.HasOneCharge.ToString());
+                ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
+                ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());
+
                 var option = CanUseOption.IgnoreTarget;
                 ImGui.Text($"Can Use: {action.CanUse(out _, option)} ");
                 ImGui.Text("Must Use:" + action.CanUse(out _, option | CanUseOption.MustUse).ToString());
@@ -653,8 +654,10 @@ internal static class ImGuiHelper
         if (Service.Config.InDebug)
         {
             ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID).ToString());
+            ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID + 1000000).ToString());
             var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, item.ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, item.ID);
             ImGui.Text("remain: " + remain.ToString());
+            ImGui.Text("CanUse: " + item.CanUse(out _).ToString());
         }
     });
     #endregion

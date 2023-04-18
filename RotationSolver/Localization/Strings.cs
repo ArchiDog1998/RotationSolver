@@ -147,25 +147,23 @@ internal partial class Strings
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
     public string ConfigWindow_Param_KeyBoardNoiseTime { get; set; } = "Effect interval";
     public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
-    public string ConfigWindow_Param_FlytextPositional { get; set; } = "Hint positional anticipation by flytext";
+    public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
-    public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback";
+    public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback on flytext";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
     public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
 
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
-    public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the pointing target of the move skill";
+    public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
     public string ConfigWindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
-    public string ConfigWindow_Param_PositionaErrorText { get; set; } = "Positional error prompt";
+    public string ConfigWindow_Param_PositionalErrorText { get; set; } = "Positional error prompt";
     public string ConfigWindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";
     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
-    public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on dtrbar";
-
-    public string ConfigWindow_Param_ShowWorkTaskFPS { get; set; } = "Display Task FPS on dtrbar";
+    public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
 
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
-    public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommand 61435, 61437";
+    public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommend 61435, 61437";
     public string ConfigWindow_Param_Action { get; set; } = "Action";
     public string ConfigWindow_Param_UseAOEAction { get; set; } = "Use AOE actions";
 
