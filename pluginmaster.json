@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.3.2",
-    "Changelog": "2.3.2 (2023-04-17)\n\n\nBug Fixes\n\n* can provoke the big target. (9129ea2)\n* changed the time to check the rotation is valid. (290476b)\n* fixed flow bug. (ec7dd73)\n* fixed special time calculating. (e5ad840)\n* fixed the sayout issue when manual toggle. (b86b197)",
-    "DownloadCount": "6620",
-    "LastUpdate": 1681741223,
+    "AssemblyVersion": "2.3.3",
+    "Changelog": "2.3.3 (2023-04-18)\n\n\nBug Fixes\n\n* changed the order of the panels. (9df8eae)\n* fixed the cooldown check for item use. (47a8877)\n* fixed the sub targets show when action is targeting self. (23b7604)\n* fixed wrong value with WeaponTotal (8815894)",
+    "DownloadCount": "6557",
+    "LastUpdate": 1681829749,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.2/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.2/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.3/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.3/latest.zip"
   },
   {
     "Author": "ArchiDog1998",
@@ -35,7 +35,7 @@
     "ApplicableVersion": "any",
     "AssemblyVersion": "1.0.0.5",
     "Changelog": "",
-    "DownloadCount": "185",
+    "DownloadCount": "186",
     "LastUpdate": 1674699010,
     "RepoUrl": "https://github.com/ArchiDog1998/FakeName",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip",
