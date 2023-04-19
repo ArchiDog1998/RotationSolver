@@ -229,6 +229,9 @@ internal partial class RotationConfigWindow
         {
             ImGui.Indent();
 
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseBefore,
+                ref Service.Config.KeyBoardNoiseBefore, Service.Default.KeyBoardNoiseBefore);
+
             DrawRangedInt(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
                 ref Service.Config.KeyBoardNoiseMin, ref Service.Config.KeyBoardNoiseMax,
                 Service.Default.KeyBoardNoiseMin, Service.Default.KeyBoardNoiseMax);

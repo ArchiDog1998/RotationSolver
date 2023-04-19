@@ -31,6 +31,9 @@ namespace RotationSolver.Commands
             //Do Action
             var nextAction = ActionUpdater.NextAction;
             if (nextAction == null) return;
+
+            if (Service.Config.KeyBoardNoise && Service.Config.KeyBoardNoiseBefore) Task.Run(() => PulseSimulation(nextAction.AdjustedID));
+
 #if DEBUG
             //if (nextAction is BaseAction acti)
             //    Service.ChatGui.Print($"Will Do {acti} {ActionUpdater.WeaponElapsed}");
@@ -51,7 +54,7 @@ namespace RotationSolver.Commands
             if (nextAction.Use())
             {
                 if (nextAction is BaseAction a && a.ShouldEndSpecial) ResetSpecial();
-                if (Service.Config.KeyBoardNoise) Task.Run(() => PulseSimulation(nextAction.AdjustedID));
+                if (Service.Config.KeyBoardNoise && !Service.Config.KeyBoardNoiseBefore) Task.Run(() => PulseSimulation(nextAction.AdjustedID));
                 if (nextAction is BaseAction act)
                 {
 #if DEBUG
