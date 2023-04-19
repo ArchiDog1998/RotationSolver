@@ -204,6 +204,8 @@ internal static class ActionUpdater
         if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
         if (canUseGCD) return;
 
+        var ping = 0.06f;
+
         //More then gcd.
         if (DataCenter.WeaponRemain < Service.Config.AbilitiesInterval
             || DataCenter.WeaponElapsed < Service.Config.AbilitiesInterval)

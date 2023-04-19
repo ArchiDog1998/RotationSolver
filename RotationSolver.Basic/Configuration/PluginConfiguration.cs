@@ -109,6 +109,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float SpecialDuration = 3;
     public float AbilitiesInterval = 0.67f;
     public float ActionAhead = 0.08f;
+    public float ActionAheadForLast0GCD = 0.06f;
 
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;

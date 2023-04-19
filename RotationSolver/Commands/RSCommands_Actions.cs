@@ -21,8 +21,7 @@ namespace RotationSolver.Commands
             }
             _lastState = DataCenter.StateType;
 
-            var localPlayer = Service.Player;
-            if (localPlayer == null) return;
+            if (Service.Player == null) return;
 
             //Do not click the button in random time.
             if (DateTime.Now - _fastClickStopwatch < TimeSpan.FromMilliseconds(new Random().Next(
