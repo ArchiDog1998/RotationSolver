@@ -205,24 +205,25 @@ internal static class ActionUpdater
         if (canUseGCD) return;
 
         var ping = 0.06f;
+        var nextAction = NextAction;
+        if (nextAction == null) return;
 
-        //More then gcd.
-        if (DataCenter.WeaponRemain < Service.Config.AbilitiesInterval
-            || DataCenter.WeaponElapsed < Service.Config.AbilitiesInterval)
-        {
-            return;
-        }
+        var timeToNext = (DataCenter.NextActionTime - DateTime.Now).TotalSeconds;
+
+        //No time to use 0gcd
+        if (timeToNext + nextAction.AnimationLockTime
+            > DataCenter.WeaponRemain) return;
 
         //Skip when casting
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return;
 
         //The last one.
-        if (DataCenter.WeaponRemain < 2 * Service.Config.AbilitiesInterval)
+        if (timeToNext +  nextAction.AnimationLockTime +ping + 0.6f > DataCenter.WeaponRemain)
         {
-            if (DataCenter.WeaponRemain > Service.Config.AbilitiesInterval + Service.Config.ActionAhead * 2) return;
+            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + Service.Config.ActionAhead) return;
             RSCommands.DoAnAction(false);
         }
-        else if ((DataCenter.WeaponElapsed - DataCenter.CastingTotal) % Service.Config.AbilitiesInterval <= Service.Config.ActionAhead)
+        else if (timeToNext < Service.Config.ActionAhead)
         {
             RSCommands.DoAnAction(false);
         }
