@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -47,6 +48,7 @@ internal partial class RotationConfigWindow
         }
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
         ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
+        ImGui.Text("AnimationLock: " + (*(float*)((IntPtr)ActionManager.Instance() + 0x8)).ToString());
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
         ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
