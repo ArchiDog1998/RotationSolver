@@ -7,7 +7,7 @@ namespace RotationSolver.Commands
 {
     public static partial class RSCommands
     {
-        static DateTime _fastClickStopwatch = DateTime.Now;
+        static DateTime _fastClickStopwatch = DateTime.MinValue;
         static byte _loop = 0;
         static StateCommandType _lastState;
 
@@ -25,7 +25,8 @@ namespace RotationSolver.Commands
             if (localPlayer == null) return;
 
             //Do not click the button in random time.
-            if (DateTime.Now - _fastClickStopwatch < TimeSpan.FromSeconds(new Random().Next(100, 250))) return;
+            if (DateTime.Now - _fastClickStopwatch < TimeSpan.FromMilliseconds(new Random().Next(
+                (int)(Service.Config.ClickingDelayMin * 1000), (int)(Service.Config.ClickingDelayMax * 1000)))) return;
             _fastClickStopwatch = DateTime.Now;
 
             //Do Action
@@ -34,7 +35,7 @@ namespace RotationSolver.Commands
 
 #if DEBUG
             //if (nextAction is BaseAction acti)
-            //    Service.ChatGui.Print($"Will Do {acti} {ActionUpdater.WeaponElapsed}");
+            //    Service.ChatGui.Print($"Will Do {acti}");
 #endif
             if (DataCenter.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
@@ -48,26 +49,23 @@ namespace RotationSolver.Commands
 
             if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
 
-            if (Service.Config.KeyBoardNoise && Service.Config.KeyBoardNoiseBefore)
-                Task.Run(() => PulseSimulation(nextAction.AdjustedID));
+            if (Service.Config.KeyBoardNoise)
+                PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
 
-            if (nextAction.Use())
+            if (nextAction.Use() && nextAction is BaseAction act)
             {
-                if (Service.Config.KeyBoardNoise && !Service.Config.KeyBoardNoiseBefore) 
+                if (Service.Config.KeyBoardNoise)
                     Task.Run(() => PulseSimulation(nextAction.AdjustedID));
 
-                if (nextAction is BaseAction act)
-                {
-                    if (act.ShouldEndSpecial) ResetSpecial();
+                if (act.ShouldEndSpecial) ResetSpecial();
 #if DEBUG
-                    //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
+                //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
-                    //Change Target
-                    if ((Service.TargetManager.Target?.IsNPCEnemy() ?? true) 
-                        && (act.Target?.IsNPCEnemy() ?? false))
-                    {
-                        Service.TargetManager.SetTarget(act.Target);
-                    }
+                //Change Target
+                if ((Service.TargetManager.Target?.IsNPCEnemy() ?? true)
+                    && (act.Target?.IsNPCEnemy() ?? false))
+                {
+                    Service.TargetManager.SetTarget(act.Target);
                 }
             }
             return;

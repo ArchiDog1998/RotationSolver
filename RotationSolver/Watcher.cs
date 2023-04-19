@@ -87,6 +87,7 @@ public class Watcher : IDisposable
 
         //Record
         DataCenter.AddActionRec(set.Action);
+        DataCenter.NextActionMinTime = DateTime.Now.AddSeconds(set.AnimationLock);
         ShowStrSelf = set.ToString();
 
         //Macro

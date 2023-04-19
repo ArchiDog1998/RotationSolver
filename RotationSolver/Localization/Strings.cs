@@ -121,6 +121,8 @@ internal partial class Strings
     public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
     public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
+
+    public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for the interval of clicking actions.";
     public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";

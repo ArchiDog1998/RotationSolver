@@ -257,6 +257,8 @@ public static class DataCenter
     public static Queue<MacroItem> Macros { get; } = new Queue<MacroItem>();
 
     #region Action Record
+    public static DateTime NextActionMinTime { get; set; }
+
     const int QUEUECAPACITY = 32;
     private static Queue<ActionRec> _actions = new Queue<ActionRec>(QUEUECAPACITY);
     private static Queue<DamageRec> _damages = new Queue<DamageRec>(QUEUECAPACITY);

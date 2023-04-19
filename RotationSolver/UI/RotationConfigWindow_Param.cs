@@ -47,7 +47,7 @@ internal partial class RotationConfigWindow
             min: 0.5f, max: 0.7f);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ActionAhead,
-            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 0.1f);
+            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 1f);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
             ref Service.Config.CountDownAhead, Service.Default.CountDownAhead, min: 0.5f, max: 0.7f);
@@ -113,6 +113,11 @@ internal partial class RotationConfigWindow
         DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_NotInCombatDelay, 
             ref Service.Config.NotInCombatDelayMin, ref Service.Config.NotInCombatDelayMax,
             Service.Default.NotInCombatDelayMin, Service.Default.NotInCombatDelayMax);
+
+        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_ClickingDelay,
+            ref Service.Config.ClickingDelayMin, ref Service.Config.ClickingDelayMax,
+            Service.Default.ClickingDelayMin, Service.Default.ClickingDelayMax
+            ,min : 0.05f, max: 0.25f);
 
         if (Service.Config.UseStopCasting)
         {
@@ -228,9 +233,6 @@ internal partial class RotationConfigWindow
         if (Service.Config.KeyBoardNoise)
         {
             ImGui.Indent();
-
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseBefore,
-                ref Service.Config.KeyBoardNoiseBefore, Service.Default.KeyBoardNoiseBefore);
 
             DrawRangedInt(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
                 ref Service.Config.KeyBoardNoiseMin, ref Service.Config.KeyBoardNoiseMax,
