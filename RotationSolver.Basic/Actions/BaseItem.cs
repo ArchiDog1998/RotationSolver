@@ -65,6 +65,8 @@ internal class BaseItem : IBaseItem
 
     public uint SortKey { get; }
 
+    public float AnimationLockTime => IActionHelper.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 1.1f;
+
     public unsafe BaseItem(uint row, uint a4 = 65535)
     {
         _item = Service.GetSheet<Item>().GetRow(row);
