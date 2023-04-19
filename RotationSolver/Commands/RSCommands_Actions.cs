@@ -46,10 +46,10 @@ namespace RotationSolver.Commands
                 return;
             }
 
-            if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
-
             if (Service.Config.KeyBoardNoise)
                 PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
+
+            if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
 
             if (nextAction.Use() && nextAction is BaseAction act)
             {
