@@ -9,6 +9,10 @@ public static class IActionHelper
 
     public static async void GetAnimationLockTimeAsync(string directory)
     {
+#if DEBUG
+        directory = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources";
+        if (!Directory.Exists(directory)) return;
+#endif
         var filename = $"{nameof(AnimationLockTime)}.json";
         var filePath = Path.Combine(directory, filename);
         if (File.Exists(filePath))
