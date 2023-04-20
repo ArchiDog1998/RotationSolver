@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.3.3",
-    "Changelog": "2.3.3 (2023-04-18)\n\n\nBug Fixes\n\n* changed the order of the panels. (9df8eae)\n* fixed the cooldown check for item use. (47a8877)\n* fixed the sub targets show when action is targeting self. (23b7604)\n* fixed wrong value with WeaponTotal (8815894)",
-    "DownloadCount": "6917",
-    "LastUpdate": 1681829749,
+    "AssemblyVersion": "2.3.4",
+    "Changelog": "2.3.4 (2023-04-20)\n\n\nBug Fixes\n\n* add a animation lock to check. (4b5c711)\n* add a animationLock Dictionary. (121c98b)\n* add a feature for clicking the actions more intense! (31d09b8)\n* add an OnLastAbility Option for ability using. (78d65d4)\n* add animationLock property. (ae10fa2)\n* add animationLockTime property for IAction. (8a9e8fc)\n* add AST play card restriction. (15ae1f7)\n* add Ping for rotation. (1eb1bd5)\n* add ping property. (e136ddc)\n* add Shield Bash for PLD. (3aab72c)\n* changed from count to animationLockTime. (d048383)\n* changed the click time by animationLockTime. (2af2bf2)\n* changed the EffectRange of LiturgyOfTheBell (39fa3b9)\n* fixed cd on NextWindow. (5f660a0)\n* fixed load rotation and pulse bug. (ae84281)\n* fixed some cd bug. (5ebd4bf)\n* fixed the ActionRemain. (fc77c0c)\n* for debug. (fed23fc)\n* remove noise time, using clicking delay instead. (435d44c)\n* removed nextAbilityToNextGCD from ability method. (9fd333d)\n* removed the `InCombat` check in base item. (953dbaf)\n* show on cd window only shows when using cd window. (b519dbc)\n* using tincture as late as possible. (0c64b88)",
+    "DownloadCount": "6962",
+    "LastUpdate": 1682002778,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.3/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.3/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.4/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.4/latest.zip"
   },
   {
     "Author": "ArchiDog1998",
