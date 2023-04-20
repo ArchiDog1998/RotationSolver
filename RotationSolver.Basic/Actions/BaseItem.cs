@@ -87,6 +87,8 @@ internal class BaseItem : IBaseItem
 
         var remain = RecastTimeOneCharge - RecastTimeElapsed;
 
+        if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinPing) return false;
+
         if (CooldownHelper.RecastAfter((float)(DataCenter.NextActionTime - DateTime.Now).TotalSeconds,
             remain, false)) return false;
 
