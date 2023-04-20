@@ -136,14 +136,14 @@ public abstract class GNB_Base : CustomRotation
         == ActionID.Hypervelocity,
     };
 
-    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(float nextAbilityToNextGCD, IAction nextGCD, out IAction act)
     {
         if (SuperBolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
-        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
+        return base.EmergencyAbility(nextAbilityToNextGCD, nextGCD, out act);
     }
 
     [RotationDesc(ActionID.RoughDivide)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(float nextAbilityToNextGCD, out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (RoughDivide.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;

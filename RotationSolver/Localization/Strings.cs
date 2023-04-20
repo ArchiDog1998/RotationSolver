@@ -98,7 +98,6 @@ internal partial class Strings
     public string ConfigWindow_Param_Basic { get; set; } = "Basic";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
-    public string ConfigWindow_Param_AbilitiesInterval { get; set; } = "Set the interval between 0GCD using";
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the time advance of using casting actions on counting down.";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";

@@ -129,9 +129,26 @@ public static class DataCenter
 
     public static float WeaponElapsed { get; set; }
 
-    public static byte AbilityRemainCount { get; set; }
+    /// <summary>
+    /// Time to the next action
+    /// </summary>
+    public static float ActionRemain => (float)(NextActionTime - DateTime.Now).TotalSeconds;
 
-    public static float AbilityRemain { get; set; }
+    public static float AbilityRemain
+    {
+        get
+        {
+            var gcdRemain = WeaponRemain;
+            var remain = (float)(NextActionTime - DateTime.Now).TotalSeconds;
+            if ((gcdRemain - 0.6f - Ping).IsLessThan(remain))
+            {
+                return gcdRemain + 0.6f + Ping;
+            }
+            return remain;
+        }
+    }
+
+    public static float NextAbilityToNextGCD => WeaponRemain - ActionRemain;
 
     public static float CastingTotal { get; set; }
     #endregion

@@ -201,14 +201,14 @@ public abstract class DNC_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.EnAvant)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(float nextAbilityToNextGCD, out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (EnAvant.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.CuringWaltz, ActionID.Improvisation)]
-    protected sealed override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool HealAreaAbility(float nextAbilityToNextGCD, out IAction act)
     {
         if (CuringWaltz.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         if (Improvisation.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
@@ -216,7 +216,7 @@ public abstract class DNC_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.ShieldSamba)]
-    protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenseAreaAbility(float nextAbilityToNextGCD, out IAction act)
     {
         if (ShieldSamba.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         return false;

@@ -4,11 +4,11 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
-    public bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, int abilityCount = 0)
+    public bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, float offset = 0)
     {
         if (!IsCoolingDown) return false;
         var elapsed = RecastTimeElapsedOneCharge;
-        return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount);
+        return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, offset);
     }
 
     public bool ElapsedOneChargeAfter(float time)
@@ -18,11 +18,11 @@ public partial class BaseAction
         return CooldownHelper.ElapsedAfter(elapsed, time);
     }
 
-    public bool ElapsedAfterGCD(uint gcdCount = 0, int abilityCount = 0)
+    public bool ElapsedAfterGCD(uint gcdCount = 0, float offset = 0)
     {
         if (!IsCoolingDown) return false;
         var elapsed = RecastTimeElapsed;
-        return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, abilityCount);
+        return CooldownHelper.ElapsedAfterGCD(elapsed, gcdCount, offset);
     }
 
     public bool ElapsedAfter(float time)
@@ -33,11 +33,11 @@ public partial class BaseAction
     }
 
 
-    public bool WillHaveOneChargeGCD(uint gcdCount = 0, int abilityCount = 0)
+    public bool WillHaveOneChargeGCD(uint gcdCount = 0, float offset = 0)
     {
         if (HasOneCharge) return true;
         var recast = RecastTimeRemainOneCharge;
-        return CooldownHelper.RecastAfterGCD(recast, gcdCount, abilityCount);
+        return CooldownHelper.RecastAfterGCD(recast, gcdCount, offset);
     }
 
     public bool WillHaveOneCharge(float remain) => WillHaveOneCharge(remain, true);

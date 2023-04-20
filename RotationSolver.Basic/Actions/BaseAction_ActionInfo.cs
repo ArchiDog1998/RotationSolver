@@ -32,7 +32,7 @@ public partial class BaseAction
                         && ChoiceTarget != TargetFilter.FindTargetForMoving
                         && DataCenter.LastAction == (ActionID)AdjustedID) return false;
 
-                    if (!WillHaveOneCharge(DataCenter.AbilityRemain, false)) return false;
+                    if (!WillHaveOneCharge(DataCenter.ActionRemain, false)) return false;
                 }
             }
 

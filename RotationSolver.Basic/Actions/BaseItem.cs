@@ -87,7 +87,8 @@ internal class BaseItem : IBaseItem
 
         var remain = RecastTimeOneCharge - RecastTimeElapsed;
 
-        if (CooldownHelper.RecastAfter(DataCenter.AbilityRemain, remain, false)) return false;
+        if (CooldownHelper.RecastAfter((float)(DataCenter.NextActionTime - DateTime.Now).TotalSeconds,
+            remain, false)) return false;
 
         if (OtherCheck != null && !OtherCheck()) return false;
 

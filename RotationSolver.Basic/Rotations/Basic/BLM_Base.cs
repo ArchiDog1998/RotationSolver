@@ -91,7 +91,7 @@ public abstract partial class BLM_Base : CustomRotation
 
     public static IBaseAction Thunder2 { get; } = new ThunderAction(ActionID.Thunder2);
 
-    public static IBaseAction Transpose { get; } = new BaseAction(ActionID.Transpose) { ActionCheck = b => DataCenter.AbilityRemain.IsLessThan(JobGauge.ElementTimeRemaining / 1000f) };
+    public static IBaseAction Transpose { get; } = new BaseAction(ActionID.Transpose) { ActionCheck = b => DataCenter.ActionRemain.IsLessThan(JobGauge.ElementTimeRemaining / 1000f) };
 
     public static IBaseAction UmbralSoul { get; } = new BaseAction(ActionID.UmbralSoul) { ActionCheck = b => JobGauge.InUmbralIce && Transpose.ActionCheck(b) };
 
@@ -190,7 +190,7 @@ public abstract partial class BLM_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Addle)]
-    protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenseAreaAbility(float nextAbilityToNextGCD, out IAction act)
     {
         if (Addle.CanUse(out act)) return true;
         return false;

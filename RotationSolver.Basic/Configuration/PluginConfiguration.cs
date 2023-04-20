@@ -107,7 +107,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;
-    public float AbilitiesInterval = 0.67f;
+
     public float ActionAhead = 0.08f;
     public float ActionAheadForLast0GCD = 0.06f;
 

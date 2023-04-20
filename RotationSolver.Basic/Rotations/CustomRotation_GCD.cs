@@ -2,7 +2,7 @@
 
 public abstract partial class CustomRotation
 {
-    private IAction GCD(byte abilityRemain, bool helpDefenseAOE, bool helpDefenseSingle)
+    private IAction GCD(float nextAbilityToNextGCD, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         IAction act = DataCenter.CommandNextAction;
         if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return act;
@@ -11,7 +11,7 @@ public abstract partial class CustomRotation
 
         var specialType = DataCenter.SpecialType;
 
-        if (RaiseSpell(specialType, out act, abilityRemain, false)) return act;
+        if (RaiseSpell(specialType, out act, nextAbilityToNextGCD, false)) return act;
 
         if (specialType == SpecialCommandType.MoveForward && MoveForwardGCD(out act))
         {
@@ -43,12 +43,12 @@ public abstract partial class CustomRotation
 
         if (GeneralGCD(out var action)) return action;
 
-        if (Service.Config.RaisePlayerByCasting && RaiseSpell(specialType, out act, abilityRemain, true)) return act;
+        if (Service.Config.RaisePlayerByCasting && RaiseSpell(specialType, out act, nextAbilityToNextGCD, true)) return act;
 
         return null;
     }
 
-    private bool RaiseSpell(SpecialCommandType specialType, out IAction act, byte actabilityRemain, bool mustUse)
+    private bool RaiseSpell(SpecialCommandType specialType, out IAction act, float nextAbilityToNextGCD, bool mustUse)
     {
         act = null;
         if (Raise == null || Player.CurrentMp <= Service.Config.LessMPNoRaise)
@@ -80,7 +80,7 @@ public abstract partial class CustomRotation
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
             }
-            else if (Service.Config.GetValue(SettingsCommand.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown && actabilityRemain > 0)
+            else if (Service.Config.GetValue(SettingsCommand.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown && nextAbilityToNextGCD > 0.6f + DataCenter.Ping)
             {
                 return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
             }

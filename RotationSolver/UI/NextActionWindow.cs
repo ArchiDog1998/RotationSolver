@@ -33,36 +33,21 @@ internal class NextActionWindow : InfoWindow
 
         var cursor = ImGui.GetCursorPos() + ImGui.GetWindowPos();
         var height = Service.Config.ControlProgressHeight;
-        var interval = Service.Config.AbilitiesInterval;
 
         ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);
 
-        foreach (var value in CalculateValue(total, interval))
+        var actionRemain = DataCenter.ActionRemain;
+        if(remain > actionRemain + 0.6f + DataCenter.Ping)
         {
-            if (value < DataCenter.CastingTotal) continue;
-            var pt = cursor + new Vector2(width, 0) * value / total;
+            var value = (total - remain + actionRemain) / total;
 
-            ImGui.GetWindowDrawList().AddLine(pt, pt + new Vector2(0, height),
-                ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudRed));
-        }
-    }
-
-    static float[] CalculateValue(float total, float interval)
-    {
-        if(interval <= 0 || total <= 0 || total <= interval) return new float[0];
-
-        var count = (int)(total / interval);
-        var result = new List<float>();
-
-        if(count > 1)
-        {
-            for (int i = 1; i < count-1; i++)
+            if (value > DataCenter.CastingTotal)
             {
-                result.Add(i * interval);
+                var pt = cursor + new Vector2(width, 0) * value / total;
+
+                ImGui.GetWindowDrawList().AddLine(pt, pt + new Vector2(0, height),
+                    ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudRed));
             }
         }
-
-        result.Add(total - interval);
-        return result.ToArray();
     }
 }

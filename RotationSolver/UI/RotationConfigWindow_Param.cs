@@ -42,12 +42,8 @@ internal partial class RotationConfigWindow
 
     private void DrawParamBasic()
     {
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AbilitiesInterval,
-            ref Service.Config.AbilitiesInterval, Service.Default.AbilitiesInterval,
-            min: 0.5f, max: 0.7f);
-
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ActionAhead,
-            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 1f);
+            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 0.5f);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
             ref Service.Config.CountDownAhead, Service.Default.CountDownAhead, min: 0.5f, max: 0.7f);
