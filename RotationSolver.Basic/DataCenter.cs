@@ -132,19 +132,18 @@ public static class DataCenter
     /// <summary>
     /// Time to the next action
     /// </summary>
-    public static float ActionRemain => (float)(NextActionTime - DateTime.Now).TotalSeconds;
+    public static unsafe float ActionRemain => (*(float*)((IntPtr)ActionManager.Instance() + 0x8));
 
     public static float AbilityRemain
     {
         get
         {
             var gcdRemain = WeaponRemain;
-            var remain = (float)(NextActionTime - DateTime.Now).TotalSeconds;
-            if ((gcdRemain - 0.6f - Ping).IsLessThan(remain))
+            if ((gcdRemain - 0.6f - Ping).IsLessThan(ActionRemain))
             {
                 return gcdRemain + 0.6f + Ping;
             }
-            return remain;
+            return ActionRemain;
         }
     }
 
@@ -274,8 +273,6 @@ public static class DataCenter
     public static Queue<MacroItem> Macros { get; } = new Queue<MacroItem>();
 
     #region Action Record
-    public static DateTime NextActionTime { get; set; }
-
     const int QUEUECAPACITY = 32;
     private static Queue<ActionRec> _actions = new Queue<ActionRec>(QUEUECAPACITY);
     private static Queue<DamageRec> _damages = new Queue<DamageRec>(QUEUECAPACITY);

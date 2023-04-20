@@ -89,8 +89,7 @@ internal class BaseItem : IBaseItem
 
         if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinPing) return false;
 
-        if (CooldownHelper.RecastAfter((float)(DataCenter.NextActionTime - DateTime.Now).TotalSeconds,
-            remain, false)) return false;
+        if (CooldownHelper.RecastAfter(DataCenter.ActionRemain, remain, false)) return false;
 
         if (OtherCheck != null && !OtherCheck()) return false;
 

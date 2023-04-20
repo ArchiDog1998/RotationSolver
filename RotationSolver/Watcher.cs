@@ -77,7 +77,7 @@ public class Watcher : IDisposable
         if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
         if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
-        DataCenter.NextActionTime = DateTime.Now.AddSeconds(IActionHelper.AnimationLockTime[id] = set.AnimationLock);
+        DateTime.Now.AddSeconds(IActionHelper.AnimationLockTime[id] = set.AnimationLock);
 
         if (!set.TargetEffects.Any()) return;
         var flag = set.TargetEffects.FirstOrDefault()[0].Param2;
