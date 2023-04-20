@@ -39,14 +39,14 @@ internal class NextActionWindow : InfoWindow
         var actionRemain = DataCenter.ActionRemain;
         if(remain > actionRemain + 0.6f + DataCenter.Ping)
         {
-            var value = (total - remain + actionRemain) / total;
+            var value = total - remain + actionRemain;
 
             if (value > DataCenter.CastingTotal)
             {
                 var pt = cursor + new Vector2(width, 0) * value / total;
 
                 ImGui.GetWindowDrawList().AddLine(pt, pt + new Vector2(0, height),
-                    ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudRed));
+                    ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudRed), 2);
             }
         }
     }

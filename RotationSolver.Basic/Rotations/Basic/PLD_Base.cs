@@ -38,6 +38,7 @@ public abstract class PLD_Base : CustomRotation
     {
         FilterForHostiles = LowBlow.FilterForHostiles,
         ActionCheck = b => LowBlow.IsCoolingDown,
+        StatusProvide = new StatusID[] { StatusID.Stun },
     };
 
     public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, ActionOption.Buff);
