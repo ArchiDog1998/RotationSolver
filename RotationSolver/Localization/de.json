@@ -69,6 +69,7 @@
   "ConfigWindow_Param_WeakenDelay": "Set the range of random delay for esuna weakens in second.",
   "ConfigWindow_Param_HealDelay": "Set the range of random delay for healing people in second.",
   "ConfigWindow_Param_NotInCombatDelay": "Set the range of random delay for Not In Combat in second.",
+  "ConfigWindow_Param_ClickingDelay": "Set the range of random delay for the interval of clicking actions.",
   "ConfigWindow_Param_StopCastingDelay": "Set the range of random delay for stopping casting when target is no need to cast in second.",
   "ConfigWindow_Param_Display": "Display",
   "ConfigWindow_Param_Advanced": "Advanced",
