@@ -86,8 +86,8 @@ namespace RotationSolver.Commands
                     Service.Config.KeyBoardNoiseMax); i++)
                 {
                     PreviewUpdater.PulseActionBar(id);
-                    var time = Service.Config.KeyBoardNoiseTimeMin + 
-                        new Random().NextDouble() * (Service.Config.KeyBoardNoiseTimeMax - Service.Config.KeyBoardNoiseTimeMin);
+                    var time = Service.Config.ClickingDelayMin + 
+                        new Random().NextDouble() * (Service.Config.ClickingDelayMax - Service.Config.ClickingDelayMin);
                     await Task.Delay((int)(time * 1000));
                 }
             }

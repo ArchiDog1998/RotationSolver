@@ -234,10 +234,6 @@ internal partial class RotationConfigWindow
                 ref Service.Config.KeyBoardNoiseMin, ref Service.Config.KeyBoardNoiseMax,
                 Service.Default.KeyBoardNoiseMin, Service.Default.KeyBoardNoiseMax);
 
-            DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTime, 
-                ref Service.Config.KeyBoardNoiseTimeMin, ref Service.Config.KeyBoardNoiseTimeMax, 
-                Service.Default.KeyBoardNoiseTimeMin, Service.Default.KeyBoardNoiseTimeMax);
-
             ImGui.Unindent();
         }
 

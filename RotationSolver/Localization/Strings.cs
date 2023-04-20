@@ -147,7 +147,6 @@ internal partial class Strings
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string ConfigWindow_Param_KeyBoardNoiseBefore { get; set; } = "Simulate before action cast";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
-    public string ConfigWindow_Param_KeyBoardNoiseTime { get; set; } = "Effect interval";
     public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
