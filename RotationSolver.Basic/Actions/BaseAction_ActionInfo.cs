@@ -82,9 +82,16 @@ public partial class BaseAction
             }
         }
 
-        if(option.HasFlag(CanUseOption.OnLastAbility) && !IsRealGCD)
+        if(!IsRealGCD)
         {
-            if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinPing) return false;
+            if (option.HasFlag(CanUseOption.OnLastAbility))
+            {
+                if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinPing) return false;
+            }
+            else
+            {
+                if (DataCenter.NextAbilityToNextGCD < AnimationLockTime) return false;
+            }
         }
 
         if (!option.HasFlag(CanUseOption.IgnoreCastCheck) && CastTime > 0 && DataCenter.IsMoving &&
