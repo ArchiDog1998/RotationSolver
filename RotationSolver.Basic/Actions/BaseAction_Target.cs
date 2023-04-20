@@ -34,7 +34,7 @@ public partial class BaseAction
         init => _choiceTarget = value;
     }
 
-    public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { private get; init; } = null;
+    public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; init; } = null;
 
     public StatusID[] TargetStatus { get; init; } = null;
 

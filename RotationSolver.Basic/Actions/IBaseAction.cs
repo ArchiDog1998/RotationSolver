@@ -52,6 +52,11 @@
         bool IsGeneralGCD { get; }
 
         /// <summary>
+        /// The filter for hostiles.
+        /// </summary>
+        Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; }
+
+        /// <summary>
         /// Can I use this action at this time. It will check a lot of things.
         /// Level, Enabled, Action Status, MP, Player Status, Coll down, Combo, Moving (for casting), Charges, Target, etc.
         /// </summary>

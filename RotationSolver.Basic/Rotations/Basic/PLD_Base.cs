@@ -34,6 +34,12 @@ public abstract class PLD_Base : CustomRotation
         ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
+    public static IBaseAction ShieldBash { get; } = new BaseAction(ActionID.ShieldBash, ActionOption.Timeline)
+    {
+        FilterForHostiles = LowBlow.FilterForHostiles,
+        ActionCheck = b => LowBlow.IsCoolingDown,
+    };
+
     public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, ActionOption.Buff);
 
     public static IBaseAction TotalEclipse { get; } = new BaseAction(ActionID.TotalEclipse);
