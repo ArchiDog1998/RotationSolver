@@ -129,6 +129,7 @@ public abstract partial class CustomRotation
     protected static ClientLanguage Language => Service.Language;
     protected static TerritoryContentType TerritoryContentType => DataCenter.TerritoryContentType;
 
+    protected static float Ping => DataCenter.Ping;
 
     public static uint AdjustId(uint id) => Service.GetAdjustedActionId(id);
     public static ActionID AdjustId(ActionID id) => Service.GetAdjustedActionId(id);

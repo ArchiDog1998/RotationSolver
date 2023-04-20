@@ -657,7 +657,7 @@ internal static class ImGuiHelper
         if (Service.Config.InDebug)
         {
             ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID).ToString());
-            ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID + 1000000).ToString());
+            ImGui.Text("Status HQ: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID + 1000000).ToString());
             var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, item.ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, item.ID);
             ImGui.Text("remain: " + remain.ToString());
             ImGui.Text("CanUse: " + item.CanUse(out _).ToString());
