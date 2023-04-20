@@ -637,15 +637,18 @@ internal static class ImGuiHelper
     public unsafe static void Display(this IBaseItem item, bool IsActive) => item.DrawEnableTexture(IsActive,
         () => RotationConfigWindow.ActiveAction = item, otherThing: () =>
     {
-        var enable = item.IsInCooldown;
-        if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Action_ShowOnCDWindow}##{item.Name}InCooldown", ref enable))
+        if (Service.Config.ShowCooldownWindow)
         {
-            item.IsInCooldown = enable;
-            Service.Config.Save();
-        }
+            var enable = item.IsInCooldown;
+            if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Action_ShowOnCDWindow}##{item.Name}InCooldown", ref enable))
+            {
+                item.IsInCooldown = enable;
+                Service.Config.Save();
+            }
 
-        ImGui.SameLine();
-        Spacing();
+            ImGui.SameLine();
+            Spacing();
+        }
 
         OtherCommandType.DoActions.DisplayCommandHelp($"{item}-{5}",
        type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, item, 5), false);
