@@ -127,33 +127,8 @@ internal static class ActionUpdater
         DataCenter.WeaponRemain = DataCenter.WeaponElapsed == 0 ? player.TotalCastTime - player.CurrentCastTime
             : Math.Max(weaponTotal - DataCenter.WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
-        //确定读条时间。
+        //Casting time.
         if (DataCenter.WeaponElapsed < 0.3) DataCenter.CastingTotal = castTotal;
-
-        //确认能力技的相关信息
-        var interval = Service.Config.AbilitiesInterval;
-        if (DataCenter.WeaponRemain < interval
-            || DataCenter.WeaponElapsed == 0)
-        {
-            DataCenter.AbilityRemain = 0;
-            if (DataCenter.WeaponRemain > 0)
-            {
-                DataCenter.AbilityRemain = DataCenter.WeaponRemain + interval;
-            }
-            DataCenter.AbilityRemainCount = 0;
-        }
-        else if (DataCenter.WeaponRemain < 2 * interval)
-        {
-            DataCenter.AbilityRemain = DataCenter.WeaponRemain - interval;
-            DataCenter.AbilityRemainCount = 1;
-        }
-        else
-        {
-            var abilityWhole = (int)(weaponTotal / Service.Config.AbilitiesInterval - 1);
-            DataCenter.AbilityRemain = interval - DataCenter.WeaponElapsed % interval;
-            DataCenter.AbilityRemainCount = (byte)(abilityWhole - (int)(DataCenter.WeaponElapsed / interval));
-        }
-
         if (weaponTotal > 0 && DataCenter.WeaponElapsed > 0.2) DataCenter.WeaponTotal = weaponTotal;
     }
 
@@ -204,23 +179,25 @@ internal static class ActionUpdater
         if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
         if (canUseGCD) return;
 
-        //More then gcd.
-        if (DataCenter.WeaponRemain < Service.Config.AbilitiesInterval
-            || DataCenter.WeaponElapsed < Service.Config.AbilitiesInterval)
-        {
-            return;
-        }
+        var nextAction = NextAction;
+        if (nextAction == null) return;
+
+        var timeToNext = DataCenter.ActionRemain;
+
+        //No time to use 0gcd
+        if (timeToNext + nextAction.AnimationLockTime
+            > DataCenter.WeaponRemain) return;
 
         //Skip when casting
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return;
 
         //The last one.
-        if (DataCenter.WeaponRemain < 2 * Service.Config.AbilitiesInterval)
+        if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinPing > DataCenter.WeaponRemain)
         {
-            if (DataCenter.WeaponRemain > Service.Config.AbilitiesInterval + Service.Config.ActionAhead * 2) return;
+            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + DataCenter.Ping + Service.Config.ActionAhead) return;
             RSCommands.DoAnAction(false);
         }
-        else if ((DataCenter.WeaponElapsed - DataCenter.CastingTotal) % Service.Config.AbilitiesInterval <= Service.Config.ActionAhead)
+        else if (timeToNext < Service.Config.ActionAhead)
         {
             RSCommands.DoAnAction(false);
         }

@@ -107,8 +107,9 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;
-    public float AbilitiesInterval = 0.67f;
+
     public float ActionAhead = 0.08f;
+    public float ActionAheadForLast0GCD = 0.06f;
 
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;
@@ -132,6 +133,9 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float NotInCombatDelayMin = 1f;
     public float NotInCombatDelayMax = 2;
+
+    public float ClickingDelayMin = 0.1f;
+    public float ClickingDelayMax = 0.15f;
 
     public bool UseWorkTask = true;
 

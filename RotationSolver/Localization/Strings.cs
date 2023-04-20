@@ -98,7 +98,6 @@ internal partial class Strings
     public string ConfigWindow_Param_Basic { get; set; } = "Basic";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
-    public string ConfigWindow_Param_AbilitiesInterval { get; set; } = "Set the interval between 0GCD using";
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the time advance of using casting actions on counting down.";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
@@ -121,6 +120,8 @@ internal partial class Strings
     public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
     public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
+
+    public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for the interval of clicking actions.";
     public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
@@ -144,8 +145,8 @@ internal partial class Strings
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
+    public string ConfigWindow_Param_KeyBoardNoiseBefore { get; set; } = "Simulate before action cast";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
-    public string ConfigWindow_Param_KeyBoardNoiseTime { get; set; } = "Effect interval";
     public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";

@@ -34,7 +34,7 @@ public partial class BaseAction
         init => _choiceTarget = value;
     }
 
-    public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { private get; init; } = null;
+    public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; init; } = null;
 
     public StatusID[] TargetStatus { get; init; } = null;
 
@@ -161,7 +161,8 @@ public partial class BaseAction
         //计算玩家和被打的Ｔ之间的关系。
         else
         {
-            var attackT = TargetFilter.FindAttackedTarget(DataCenter.PartyTanks.GetObjectInRadius(range + _action.EffectRange), mustUse);
+            var effectRange = (ActionID)ID == ActionID.LiturgyOfTheBell ? 20 : _action.EffectRange;
+            var attackT = TargetFilter.FindAttackedTarget(DataCenter.PartyTanks.GetObjectInRadius(range + effectRange), mustUse);
 
             if (attackT == null)
             {
@@ -171,15 +172,15 @@ public partial class BaseAction
             {
                 var disToTankRound = Vector3.Distance(player.Position, attackT.Position) + attackT.HitboxRadius;
 
-                if (disToTankRound < _action.EffectRange
-                    || disToTankRound > 2 * _action.EffectRange - player.HitboxRadius)
+                if (disToTankRound < effectRange
+                    || disToTankRound > 2 * effectRange - player.HitboxRadius)
                 {
                     _position = player.Position;
                 }
                 else
                 {
                     Vector3 directionToTank = attackT.Position - player.Position;
-                    var MoveDirection = directionToTank / directionToTank.Length() * Math.Max(0, disToTankRound - _action.EffectRange);
+                    var MoveDirection = directionToTank / directionToTank.Length() * Math.Max(0, disToTankRound - effectRange);
                     _position = player.Position + MoveDirection;
                 }
             }

@@ -34,6 +34,13 @@ public abstract class PLD_Base : CustomRotation
         ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
+    public static IBaseAction ShieldBash { get; } = new BaseAction(ActionID.ShieldBash, ActionOption.Timeline)
+    {
+        FilterForHostiles = LowBlow.FilterForHostiles,
+        ActionCheck = b => LowBlow.IsCoolingDown,
+        StatusProvide = new StatusID[] { StatusID.Stun },
+    };
+
     public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, ActionOption.Buff);
 
     public static IBaseAction TotalEclipse { get; } = new BaseAction(ActionID.TotalEclipse);
@@ -101,14 +108,14 @@ public abstract class PLD_Base : CustomRotation
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
-    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
-        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
+        return base.EmergencyAbility(nextGCD, out act);
     }
 
     [RotationDesc(ActionID.Intervene)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (Intervene.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;

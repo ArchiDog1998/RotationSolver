@@ -170,7 +170,7 @@ public abstract class SMN_Base : CustomRotation
     public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, ActionOption.Heal);
 
     [RotationDesc(ActionID.RadiantAegis)]
-    protected sealed override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenseSingleAbility(out IAction act)
     {
         if (RadiantAegis.CanUse(out act)) return true;
         return false;
@@ -184,7 +184,7 @@ public abstract class SMN_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Addle)]
-    protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenseAreaAbility(out IAction act)
     {
         if (Addle.CanUse(out act)) return true;
         return false;

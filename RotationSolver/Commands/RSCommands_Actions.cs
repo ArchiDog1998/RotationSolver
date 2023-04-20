@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Logging;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
@@ -6,11 +7,10 @@ namespace RotationSolver.Commands
 {
     public static partial class RSCommands
     {
-        static DateTime _fastClickStopwatch = DateTime.Now;
-        static readonly TimeSpan _fastSpan = new TimeSpan(0, 0, 0, 0, 200);
+        static DateTime _fastClickStopwatch = DateTime.MinValue;
         static byte _loop = 0;
-
         static StateCommandType _lastState;
+
         internal static unsafe void DoAnAction(bool isGCD)
         {
             if (_lastState == StateCommandType.Cancel 
@@ -21,49 +21,57 @@ namespace RotationSolver.Commands
             }
             _lastState = DataCenter.StateType;
 
-            var localPlayer = Service.Player;
-            if (localPlayer == null) return;
+            if (Service.Player == null) return;
 
-            //Do not click the button in 0.2s
-            if (DateTime.Now - _fastClickStopwatch < _fastSpan) return;
+            //Do not click the button in random time.
+            if (DateTime.Now - _fastClickStopwatch < TimeSpan.FromMilliseconds(new Random().Next(
+                (int)(Service.Config.ClickingDelayMin * 1000), (int)(Service.Config.ClickingDelayMax * 1000)))) return;
             _fastClickStopwatch = DateTime.Now;
 
             //Do Action
             var nextAction = ActionUpdater.NextAction;
             if (nextAction == null) return;
+
 #if DEBUG
             //if (nextAction is BaseAction acti)
-            //    Service.ChatGui.Print($"Will Do {acti} {ActionUpdater.WeaponElapsed}");
+            //    Service.ChatGui.Print($"Will Do {acti}");
 #endif
             if (DataCenter.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
-                if (_loop % 5 == 0)
+                if ((_loop %= 5) == 0)
                 {
                     Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
                 }
                 _loop++;
-                _loop %= 5;
                 return;
             }
 
-            if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
+            if (!isGCD && nextAction is IBaseAction act1 && act1.IsRealGCD) return;
+
+            if (Service.Config.KeyBoardNoise)
+            {
+                PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
+            }
 
             if (nextAction.Use())
             {
-                if (nextAction is BaseAction a && a.ShouldEndSpecial) ResetSpecial();
-                if (Service.Config.KeyBoardNoise) Task.Run(() => PulseSimulation(nextAction.AdjustedID));
                 if (nextAction is BaseAction act)
                 {
+                    if (Service.Config.KeyBoardNoise)
+                        Task.Run(() => PulseSimulation(nextAction.AdjustedID));
+
+                    if (act.ShouldEndSpecial) ResetSpecial();
 #if DEBUG
                     //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if ((Service.TargetManager.Target?.IsNPCEnemy() ?? true) 
+                    if ((Service.TargetManager.Target?.IsNPCEnemy() ?? true)
                         && (act.Target?.IsNPCEnemy() ?? false))
                     {
                         Service.TargetManager.SetTarget(act.Target);
                     }
                 }
+
             }
             return;
         }
@@ -79,10 +87,14 @@ namespace RotationSolver.Commands
                     Service.Config.KeyBoardNoiseMax); i++)
                 {
                     PreviewUpdater.PulseActionBar(id);
-                    var time = Service.Config.KeyBoardNoiseTimeMin + 
-                        new Random().NextDouble() * (Service.Config.KeyBoardNoiseTimeMax - Service.Config.KeyBoardNoiseTimeMin);
+                    var time = Service.Config.ClickingDelayMin + 
+                        new Random().NextDouble() * (Service.Config.ClickingDelayMax - Service.Config.ClickingDelayMin);
                     await Task.Delay((int)(time * 1000));
                 }
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Warning(ex, "Pulse Failed!");
             }
             finally { started = false; }
             started = false;

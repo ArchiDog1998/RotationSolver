@@ -6,6 +6,7 @@ public interface IAction : ITexture
     uint ID { get; }
     uint AdjustedID { get; }
     float RecastTimeOneCharge { get; }
+    float AnimationLockTime { get; }
     uint SortKey { get; }
 
     /// <summary>

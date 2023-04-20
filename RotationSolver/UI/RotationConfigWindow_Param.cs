@@ -42,12 +42,8 @@ internal partial class RotationConfigWindow
 
     private void DrawParamBasic()
     {
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AbilitiesInterval,
-            ref Service.Config.AbilitiesInterval, Service.Default.AbilitiesInterval,
-            min: 0.5f, max: 0.7f);
-
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ActionAhead,
-            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 0.1f);
+            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 0.5f);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
             ref Service.Config.CountDownAhead, Service.Default.CountDownAhead, min: 0.5f, max: 0.7f);
@@ -113,6 +109,11 @@ internal partial class RotationConfigWindow
         DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_NotInCombatDelay, 
             ref Service.Config.NotInCombatDelayMin, ref Service.Config.NotInCombatDelayMax,
             Service.Default.NotInCombatDelayMin, Service.Default.NotInCombatDelayMax);
+
+        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_ClickingDelay,
+            ref Service.Config.ClickingDelayMin, ref Service.Config.ClickingDelayMax,
+            Service.Default.ClickingDelayMin, Service.Default.ClickingDelayMax
+            ,min : 0.05f, max: 0.25f);
 
         if (Service.Config.UseStopCasting)
         {
@@ -232,10 +233,6 @@ internal partial class RotationConfigWindow
             DrawRangedInt(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
                 ref Service.Config.KeyBoardNoiseMin, ref Service.Config.KeyBoardNoiseMax,
                 Service.Default.KeyBoardNoiseMin, Service.Default.KeyBoardNoiseMax);
-
-            DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTime, 
-                ref Service.Config.KeyBoardNoiseTimeMin, ref Service.Config.KeyBoardNoiseTimeMax, 
-                Service.Default.KeyBoardNoiseTimeMin, Service.Default.KeyBoardNoiseTimeMax);
 
             ImGui.Unindent();
         }

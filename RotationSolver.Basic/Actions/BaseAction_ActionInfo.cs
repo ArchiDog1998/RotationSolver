@@ -32,7 +32,7 @@ public partial class BaseAction
                         && ChoiceTarget != TargetFilter.FindTargetForMoving
                         && DataCenter.LastAction == (ActionID)AdjustedID) return false;
 
-                    if (!WillHaveOneCharge(DataCenter.AbilityRemain, false)) return false;
+                    if (!WillHaveOneCharge(DataCenter.ActionRemain, false)) return false;
                 }
             }
 
@@ -79,6 +79,18 @@ public partial class BaseAction
             {
                 if (RecastTimeRemain > DataCenter.WeaponRemain + DataCenter.WeaponTotal * gcdCountForAbility)
                     return false;
+            }
+        }
+
+        if(!IsRealGCD)
+        {
+            if (option.HasFlag(CanUseOption.OnLastAbility))
+            {
+                if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinPing) return false;
+            }
+            else
+            {
+                if (DataCenter.NextAbilityToNextGCD < AnimationLockTime) return false;
             }
         }
 
