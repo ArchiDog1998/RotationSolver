@@ -204,7 +204,6 @@ internal static class ActionUpdater
         if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
         if (canUseGCD) return;
 
-        var ping = 0.06f;
         var nextAction = NextAction;
         if (nextAction == null) return;
 
@@ -218,9 +217,10 @@ internal static class ActionUpdater
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return;
 
         //The last one.
-        if (timeToNext +  nextAction.AnimationLockTime +ping + 0.6f > DataCenter.WeaponRemain)
+        var ping = 0.06f;
+        if (timeToNext +  nextAction.AnimationLockTime + ping + 0.6f > DataCenter.WeaponRemain)
         {
-            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + Service.Config.ActionAhead) return;
+            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + ping + Service.Config.ActionAhead) return;
             RSCommands.DoAnAction(false);
         }
         else if (timeToNext < Service.Config.ActionAhead)

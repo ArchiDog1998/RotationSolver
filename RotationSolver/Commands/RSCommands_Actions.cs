@@ -46,26 +46,31 @@ namespace RotationSolver.Commands
                 return;
             }
 
-            if (!isGCD && nextAction is BaseAction act1 && act1.IsRealGCD) return;
+            if (!isGCD && nextAction is IBaseAction act1 && act1.IsRealGCD) return;
 
-            if (Service.Config.KeyBoardNoise)
-                PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
-
-            if (nextAction.Use() && nextAction is BaseAction act)
+            if (nextAction.Use())
             {
-                if (Service.Config.KeyBoardNoise)
-                    Task.Run(() => PulseSimulation(nextAction.AdjustedID));
-
-                if (act.ShouldEndSpecial) ResetSpecial();
-#if DEBUG
-                //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
-#endif
-                //Change Target
-                if ((Service.TargetManager.Target?.IsNPCEnemy() ?? true)
-                    && (act.Target?.IsNPCEnemy() ?? false))
+                if (nextAction is BaseAction act)
                 {
-                    Service.TargetManager.SetTarget(act.Target);
+                    if (Service.Config.KeyBoardNoise)
+                        Task.Run(() => PulseSimulation(nextAction.AdjustedID));
+
+                    if (act.ShouldEndSpecial) ResetSpecial();
+#if DEBUG
+                    //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
+#endif
+                    //Change Target
+                    if ((Service.TargetManager.Target?.IsNPCEnemy() ?? true)
+                        && (act.Target?.IsNPCEnemy() ?? false))
+                    {
+                        Service.TargetManager.SetTarget(act.Target);
+                    }
                 }
+
+            }
+            else if (Service.Config.KeyBoardNoise)
+            {
+                PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
             }
             return;
         }

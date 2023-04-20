@@ -288,6 +288,7 @@ public static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
+    public static float Ping { get; private set; } = 0.07f;
     public static void AddActionRec(Action act)
     {
         var id = (ActionID)act.RowId;
@@ -298,6 +299,7 @@ public static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
+                Ping = WeaponElapsed;
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
