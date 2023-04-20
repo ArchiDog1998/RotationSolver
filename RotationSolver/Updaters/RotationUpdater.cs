@@ -147,7 +147,7 @@ internal static class RotationUpdater
 
         _customRotations = (
             from a in assemblies
-            from t in a.GetTypes()
+            from t in TryGetTypes(a)
             where t.GetInterfaces().Contains(typeof(ICustomRotation))
                  && !t.IsAbstract && !t.IsInterface
             select GetRotation(t) into rotation
@@ -158,6 +158,19 @@ internal static class RotationUpdater
         CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
             (_customRotations.GroupBy(g => g.rotations[0].Job.GetJobRole())
             .ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+    }
+
+    private static Type[] TryGetTypes(Assembly assembly)
+    {
+        try
+        {
+            return assembly.GetTypes();
+        }
+        catch(Exception ex)
+        {
+            PluginLog.Warning(ex, $"Failed to load the types from {assembly.FullName}");
+            return new Type[0];
+        }
     }
 
     private static ICustomRotation GetRotation(Type t)
