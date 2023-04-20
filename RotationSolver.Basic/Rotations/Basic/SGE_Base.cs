@@ -147,7 +147,7 @@ public abstract class SGE_Base : CustomRotation
     };
 
     [RotationDesc(ActionID.Icarus)]
-    protected sealed override bool MoveForwardAbility(float nextAbilityToNextGCD, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
         //…Ò“Ì
         if (Icarus.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;

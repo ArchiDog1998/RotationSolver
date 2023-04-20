@@ -131,6 +131,8 @@ public abstract partial class CustomRotation
 
     protected static float Ping => DataCenter.Ping;
 
+    protected static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
+
     public static uint AdjustId(uint id) => Service.GetAdjustedActionId(id);
     public static ActionID AdjustId(ActionID id) => Service.GetAdjustedActionId(id);
 

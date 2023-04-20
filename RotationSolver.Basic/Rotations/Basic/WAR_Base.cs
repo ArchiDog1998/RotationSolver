@@ -104,14 +104,14 @@ public abstract class WAR_Base : CustomRotation
         StatusNeed = new[] { StatusID.PrimalRendReady }
     };
 
-    protected override bool EmergencyAbility(float nextAbilityToNextGCD, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
-        return base.EmergencyAbility(nextAbilityToNextGCD, nextGCD, out act);
+        return base.EmergencyAbility(nextGCD, out act);
     }
 
     [RotationDesc(ActionID.Onslaught)]
-    protected sealed override bool MoveForwardAbility(float nextAbilityToNextGCD, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (Onslaught.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;

@@ -205,14 +205,14 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HellsIngress)]
-    protected sealed override bool MoveForwardAbility(float nextAbilityToNextGCD, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (HellsIngress.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Feint)]
-    protected sealed override bool DefenseAreaAbility(float nextAbilityToNextGCD, out IAction act)
+    protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (!SoulReaver && !Enshrouded)
         {
@@ -224,13 +224,13 @@ public abstract class RPR_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.ArcaneCrest)]
-    protected override bool DefenseSingleAbility(float nextAbilityToNextGCD, out IAction act)
+    protected override bool DefenseSingleAbility(out IAction act)
     {
         if (!SoulReaver && !Enshrouded)
         {
             if (ArcaneCrest.CanUse(out act)) return true;
         }
 
-        return base.DefenseSingleAbility(nextAbilityToNextGCD, out act);
+        return base.DefenseSingleAbility(out act);
     }
 }

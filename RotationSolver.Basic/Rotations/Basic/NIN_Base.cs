@@ -168,7 +168,7 @@ public abstract class NIN_Base : CustomRotation
     public static INinAction HyoshoRanryu { get; } = new NinAction(ActionID.HyoshoRanryu, Ten, Jin);
 
     [RotationDesc(ActionID.Shukuchi)]
-    protected sealed override bool MoveForwardAbility(float nextAbilityToNextGCD, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (Shukuchi.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
 
@@ -176,14 +176,14 @@ public abstract class NIN_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Feint)]
-    protected sealed override bool DefenseAreaAbility(float nextAbilityToNextGCD, out IAction act)
+    protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.ShadeShift)]
-    protected override bool DefenseSingleAbility(float nextAbilityToNextGCD, out IAction act)
+    protected override bool DefenseSingleAbility(out IAction act)
     {
         if (ShadeShift.CanUse(out act)) return true;
 

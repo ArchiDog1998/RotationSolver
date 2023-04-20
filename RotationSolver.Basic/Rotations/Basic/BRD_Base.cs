@@ -114,25 +114,25 @@ public abstract class BRD_Base : CustomRotation
             StatusID.ShieldSamba),
     };
 
-    protected override bool EmergencyAbility(float nextAbilityToNextGCD, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         //Esuna
         if (DataCenter.SpecialType == SpecialCommandType.EsunaStanceNorth && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any())
         {
             if (WardensPaean.CanUse(out act, CanUseOption.MustUse)) return true;
         }
-        return base.EmergencyAbility(nextAbilityToNextGCD, nextGCD, out act);
+        return base.EmergencyAbility(nextGCD, out act);
     }
 
     [RotationDesc(ActionID.Troubadour)]
-    protected sealed override bool DefenseAreaAbility(float nextAbilityToNextGCD, out IAction act)
+    protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (Troubadour.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.NaturesMinne)]
-    protected sealed override bool HealSingleAbility(float nextAbilityToNextGCD, out IAction act)
+    protected sealed override bool HealSingleAbility(out IAction act)
     {
         if (NaturesMinne.CanUse(out act)) return true;
         return false;

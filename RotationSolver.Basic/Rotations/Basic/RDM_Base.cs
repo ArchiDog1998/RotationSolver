@@ -132,14 +132,14 @@ public abstract class RDM_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.CorpsACorps)]
-    protected sealed override bool MoveForwardAbility(float nextAbilityToNextGCD, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (CorpsACorps.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Addle, ActionID.MagickBarrier)]
-    protected sealed override bool DefenseAreaAbility(float nextAbilityToNextGCD, out IAction act)
+    protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (Addle.CanUse(out act)) return true;
         if (MagickBarrier.CanUse(out act, CanUseOption.MustUse)) return true;

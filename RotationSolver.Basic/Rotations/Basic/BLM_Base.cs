@@ -190,7 +190,7 @@ public abstract partial class BLM_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Addle)]
-    protected override bool DefenseAreaAbility(float nextAbilityToNextGCD, out IAction act)
+    protected override bool DefenseAreaAbility(out IAction act)
     {
         if (Addle.CanUse(out act)) return true;
         return false;

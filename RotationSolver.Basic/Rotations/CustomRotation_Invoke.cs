@@ -15,13 +15,11 @@ public abstract partial class CustomRotation
         var role = Job.GetJobRole();
 
         ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
-        var movingTarget = MoveForwardAbility(1, out act, CanUseOption.IgnoreTarget);
+        var movingTarget = MoveForwardAbility(out act, CanUseOption.IgnoreTarget);
         ActionMoveForwardAbility = movingTarget ? act : null;
         MoveTarget = (movingTarget && act is IBaseAction a) ? a.Target : null;
 
-        var nextAbilityToNextGCD = DataCenter.NextAbilityToNextGCD;
-
-        ActionMoveBackAbility = MoveBackAbility(nextAbilityToNextGCD, out act) ? act : null;
+        ActionMoveBackAbility = MoveBackAbility(out act) ? act : null;
 
         if(!DataCenter.HPNotFull && role == JobRole.Healer)
         {
@@ -30,17 +28,17 @@ public abstract partial class CustomRotation
         else
         {
             ActionHealAreaGCD = HealAreaGCD(out act) ? act : null;
-            ActionHealAreaAbility = HealAreaAbility(nextAbilityToNextGCD, out act) ? act : null;
+            ActionHealAreaAbility = HealAreaAbility(out act) ? act : null;
 
             ActionHealSingleGCD = HealSingleGCD(out act) ? act : null;
-            ActionHealSingleAbility = HealSingleAbility(nextAbilityToNextGCD, out act) ? act : null;
+            ActionHealSingleAbility = HealSingleAbility(out act) ? act : null;
         }
 
         ActionDefenseAreaGCD = DefenseAreaGCD(out act) ? act : null;
-        ActionDefenseAreaAbility = DefenseAreaAbility(nextAbilityToNextGCD, out act) ? act : null;
+        ActionDefenseAreaAbility = DefenseAreaAbility(out act) ? act : null;
 
         ActionDefenseSingleGCD = DefenseSingleGCD(out act) ? act : null;
-        ActionDefenseSingleAbility = DefenseSingleAbility(nextAbilityToNextGCD, out act) ? act : null;
+        ActionDefenseSingleAbility = DefenseSingleAbility(out act) ? act : null;
 
         EsunaStanceNorthGCD = role switch
         {
@@ -93,7 +91,6 @@ public abstract partial class CustomRotation
             return CountDownAction(countDown);
         }
 
-        float nextAbilityToNextGCD = DataCenter.NextAbilityToNextGCD;
         var helpDefenseAOE = Service.Config.GetValue(SettingsCommand.UseDefenseAbility) && DataCenter.IsHostileCastingAOE;
 
         bool helpDefenseSingle = false;
@@ -109,19 +106,19 @@ public abstract partial class CustomRotation
             })) helpDefenseSingle = true;
         }
 
-        gcdAction = GCD(nextAbilityToNextGCD, helpDefenseAOE, helpDefenseSingle);
+        gcdAction = GCD(helpDefenseAOE, helpDefenseSingle);
 
         if (gcdAction != null)
         {
-            if (nextAbilityToNextGCD < DataCenter.MinPing + DataCenter.Ping || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
+            if (DataCenter.NextAbilityToNextGCD < DataCenter.MinPing + DataCenter.Ping || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
 
-            if (Ability(nextAbilityToNextGCD, gcdAction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
+            if (Ability(gcdAction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
 
             return gcdAction;
         }
         else if (gcdAction == null)
         {
-            if (Ability(nextAbilityToNextGCD, Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
+            if (Ability(Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
             return null;
         }
         return gcdAction;

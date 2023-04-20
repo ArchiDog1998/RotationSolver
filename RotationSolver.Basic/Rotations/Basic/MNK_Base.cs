@@ -94,28 +94,28 @@ public abstract class MNK_Base : CustomRotation
     public static IBaseAction RiddleOfWind { get; } = new BaseAction(ActionID.RiddleOfWind, ActionOption.Buff);
 
     [RotationDesc(ActionID.Thunderclap)]
-    protected sealed override bool MoveForwardAbility(float nextAbilityToNextGCD, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (Thunderclap.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Feint)]
-    protected sealed override bool DefenseAreaAbility(float nextAbilityToNextGCD, out IAction act)
+    protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Mantra)]
-    protected sealed override bool HealAreaAbility(float nextAbilityToNextGCD, out IAction act)
+    protected sealed override bool HealAreaAbility(out IAction act)
     {
         if (Mantra.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.RiddleOfEarth)]
-    protected sealed override bool DefenseSingleAbility(float nextAbilityToNextGCD, out IAction act)
+    protected sealed override bool DefenseSingleAbility(out IAction act)
     {
         if (RiddleOfEarth.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         return false;
