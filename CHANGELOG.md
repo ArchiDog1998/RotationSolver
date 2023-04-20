@@ -1,5 +1,34 @@
 # Changelog
 
+## [2.3.4](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.3...v2.3.4) (2023-04-20)
+
+
+### Bug Fixes
+
+* add a animation lock to check. ([4b5c711](https://github.com/ArchiDog1998/RotationSolver/commit/4b5c71128f7db672b91808d89bd49cf712eac0a7))
+* add a animationLock Dictionary. ([121c98b](https://github.com/ArchiDog1998/RotationSolver/commit/121c98b3dfaefb40499fd7a9a51102f09076f551))
+* add a feature for clicking the actions more intense! ([31d09b8](https://github.com/ArchiDog1998/RotationSolver/commit/31d09b8565fe98a23c37874e18387116008247f9))
+* add an OnLastAbility Option for ability using. ([78d65d4](https://github.com/ArchiDog1998/RotationSolver/commit/78d65d4af803647af4375e0f87d10d66cf06e002))
+* add animationLock property. ([ae10fa2](https://github.com/ArchiDog1998/RotationSolver/commit/ae10fa22c4b32d7b7896abf7d0d28548295e59d2))
+* add animationLockTime property for IAction. ([8a9e8fc](https://github.com/ArchiDog1998/RotationSolver/commit/8a9e8fc4ecc16fa54a20569c8f44ff3496907444))
+* add AST play card restriction. ([15ae1f7](https://github.com/ArchiDog1998/RotationSolver/commit/15ae1f7c4ab7706013a9d6e3203847a8d1331c94))
+* add Ping for rotation. ([1eb1bd5](https://github.com/ArchiDog1998/RotationSolver/commit/1eb1bd53f1877c29bc53d48144082d56cdf46bc8))
+* add ping property. ([e136ddc](https://github.com/ArchiDog1998/RotationSolver/commit/e136ddcc934a9af3d0cbd7bb30e41995ef4e0c5e))
+* add Shield Bash for PLD. ([3aab72c](https://github.com/ArchiDog1998/RotationSolver/commit/3aab72c137fcc3d2642d56c45c4938fdec08fb05))
+* changed from count to animationLockTime. ([d048383](https://github.com/ArchiDog1998/RotationSolver/commit/d04838347e6ab6bf5b951a27c9d18aa73e639c70))
+* changed the click time by animationLockTime. ([2af2bf2](https://github.com/ArchiDog1998/RotationSolver/commit/2af2bf245df6b6c1618fdc9de46128b161654348))
+* changed the EffectRange of LiturgyOfTheBell ([39fa3b9](https://github.com/ArchiDog1998/RotationSolver/commit/39fa3b9c7445180c5efc2095e3b40ea2bdb507a9))
+* fixed cd on NextWindow. ([5f660a0](https://github.com/ArchiDog1998/RotationSolver/commit/5f660a0cd1aa6c8615adb5e23f8efd68269045a0))
+* fixed load rotation and pulse bug. ([ae84281](https://github.com/ArchiDog1998/RotationSolver/commit/ae84281c0f65491b4c44b6526fe5bfb55f313a30))
+* fixed some cd bug. ([5ebd4bf](https://github.com/ArchiDog1998/RotationSolver/commit/5ebd4bf18333625c0ba2c66bbef768e6724faaa1))
+* fixed the ActionRemain. ([fc77c0c](https://github.com/ArchiDog1998/RotationSolver/commit/fc77c0ccc72480344989c257b58b730aeb894006))
+* for debug. ([fed23fc](https://github.com/ArchiDog1998/RotationSolver/commit/fed23fc6d9c9f3137a9827765b7fa49f19601b1f))
+* remove noise time, using clicking delay instead. ([435d44c](https://github.com/ArchiDog1998/RotationSolver/commit/435d44ca5dcbbdfb86d2a6b69d881543bc3333bb))
+* removed nextAbilityToNextGCD from ability method. ([9fd333d](https://github.com/ArchiDog1998/RotationSolver/commit/9fd333dfcf9b377bf54146ddfa00789bbd004ceb))
+* removed the `InCombat` check in base item. ([953dbaf](https://github.com/ArchiDog1998/RotationSolver/commit/953dbafad1bf391dd8ba53b3dfcae53021b97194))
+* show on cd window only shows when using cd window. ([b519dbc](https://github.com/ArchiDog1998/RotationSolver/commit/b519dbc72943b35821959449c6b6e0fff0c3dae5))
+* using tincture as late as possible. ([0c64b88](https://github.com/ArchiDog1998/RotationSolver/commit/0c64b88ec2383b4394673e34503c761747c526c8))
+
 ## [2.3.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.2...v2.3.3) (2023-04-18)
 
 
