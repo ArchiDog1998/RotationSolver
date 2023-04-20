@@ -306,6 +306,8 @@ public static class DataCenter
 
     public static ActionID LastAbility { get; private set; } = 0;
     public static float Ping { get; private set; } = 0.07f;
+
+    public const float MinPing = 0.6f;
     public static void AddActionRec(Action act)
     {
         var id = (ActionID)act.RowId;

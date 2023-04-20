@@ -113,7 +113,7 @@ public abstract partial class CustomRotation
 
         if (gcdAction != null)
         {
-            if (nextAbilityToNextGCD < 0.6f + DataCenter.Ping || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
+            if (nextAbilityToNextGCD < DataCenter.MinPing + DataCenter.Ping || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
 
             if (Ability(nextAbilityToNextGCD, gcdAction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
 

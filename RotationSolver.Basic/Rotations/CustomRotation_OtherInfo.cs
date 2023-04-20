@@ -134,7 +134,6 @@ public abstract partial class CustomRotation
     public static uint AdjustId(uint id) => Service.GetAdjustedActionId(id);
     public static ActionID AdjustId(ActionID id) => Service.GetAdjustedActionId(id);
 
-
     /// <summary>
     ///  The actions that were used by player successfully. The first one is the latest successfully used one.
     /// </summary>

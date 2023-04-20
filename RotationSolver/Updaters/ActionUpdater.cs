@@ -130,31 +130,6 @@ internal static class ActionUpdater
         //Casting time.
         if (DataCenter.WeaponElapsed < 0.3) DataCenter.CastingTotal = castTotal;
         if (weaponTotal > 0 && DataCenter.WeaponElapsed > 0.2) DataCenter.WeaponTotal = weaponTotal;
-
-        ////确认能力技的相关信息
-        //var interval = Service.Config.AbilitiesInterval;
-        //if (DataCenter.WeaponRemain < interval
-        //    || DataCenter.WeaponElapsed == 0)
-        //{
-        //    DataCenter.AbilityRemain = 0;
-        //    if (DataCenter.WeaponRemain > 0)
-        //    {
-        //        DataCenter.AbilityRemain = DataCenter.WeaponRemain + interval;
-        //    }
-        //    DataCenter.AbilityRemainCount = 0;
-        //}
-        //else if (DataCenter.WeaponRemain < 2 * interval)
-        //{
-        //    DataCenter.AbilityRemain = DataCenter.WeaponRemain - interval;
-        //    DataCenter.AbilityRemainCount = 1;
-        //}
-        //else
-        //{
-        //    var abilityWhole = (int)(weaponTotal / Service.Config.AbilitiesInterval - 1);
-        //    DataCenter.AbilityRemain = interval - DataCenter.WeaponElapsed % interval;
-        //    DataCenter.AbilityRemainCount = (byte)(abilityWhole - (int)(DataCenter.WeaponElapsed / interval));
-        //}
-
     }
 
     static uint _lastMP = 0;
@@ -217,10 +192,9 @@ internal static class ActionUpdater
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return;
 
         //The last one.
-        var ping = 0.06f;
-        if (timeToNext +  nextAction.AnimationLockTime + ping + 0.6f > DataCenter.WeaponRemain)
+        if (timeToNext +  nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinPing > DataCenter.WeaponRemain)
         {
-            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + ping + Service.Config.ActionAhead) return;
+            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + DataCenter.Ping + Service.Config.ActionAhead) return;
             RSCommands.DoAnAction(false);
         }
         else if (timeToNext < Service.Config.ActionAhead)

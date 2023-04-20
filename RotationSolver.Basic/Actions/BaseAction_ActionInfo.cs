@@ -82,6 +82,11 @@ public partial class BaseAction
             }
         }
 
+        if(option.HasFlag(CanUseOption.OnLastAbility) && !IsRealGCD)
+        {
+            if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinPing) return false;
+        }
+
         if (!option.HasFlag(CanUseOption.IgnoreCastCheck) && CastTime > 0 && DataCenter.IsMoving &&
             !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
 
