@@ -73,6 +73,7 @@ public abstract class RPR_Base : CustomRotation
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = ShadowOfDeath.ActionCheck,
+        AOECount = 2,
     };
 
     public static IBaseAction SoulScythe { get; } = new BaseAction(ActionID.SoulScythe)
