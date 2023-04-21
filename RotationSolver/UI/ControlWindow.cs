@@ -421,7 +421,7 @@ internal class ControlWindow : Window
                 bool canDoIt = false;
                 if(action is IBaseAction act)
                 {
-                    canDoIt = act.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | CanUseOption.SkipDisable);
+                    canDoIt = act.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | CanUseOption.SkipDisable | CanUseOption.IgnoreClippingCheck);
                 }
                 else if (action is IBaseItem item)
                 {

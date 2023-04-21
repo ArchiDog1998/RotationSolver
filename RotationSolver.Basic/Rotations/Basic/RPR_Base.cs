@@ -73,6 +73,7 @@ public abstract class RPR_Base : CustomRotation
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = ShadowOfDeath.ActionCheck,
+        AOECount = 2,
     };
 
     public static IBaseAction SoulScythe { get; } = new BaseAction(ActionID.SoulScythe)
@@ -207,7 +208,7 @@ public abstract class RPR_Base : CustomRotation
     [RotationDesc(ActionID.HellsIngress)]
     protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (HellsIngress.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
+        if (HellsIngress.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
         return false;
     }
 

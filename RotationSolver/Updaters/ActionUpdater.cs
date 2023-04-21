@@ -171,7 +171,8 @@ internal static class ActionUpdater
             || Service.Conditions[ConditionFlag.SufferingStatusAffliction2]
             || Service.Conditions[ConditionFlag.RolePlaying]
             || Service.Conditions[ConditionFlag.InFlight]
-            || ActionManager.Instance()->ActionQueued
+            ||  ActionManager.Instance()->ActionQueued && NextAction != null
+                && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Service.Player.CurrentHp == 0) return;
 
         //GCD
