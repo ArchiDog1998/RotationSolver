@@ -150,7 +150,7 @@ public abstract class SGE_Base : CustomRotation
     protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
         //…Ò“Ì
-        if (Icarus.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
+        if (Icarus.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
         return false;
     }
 }

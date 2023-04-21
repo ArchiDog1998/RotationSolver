@@ -134,7 +134,7 @@ public abstract class RDM_Base : CustomRotation
     [RotationDesc(ActionID.CorpsACorps)]
     protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (CorpsACorps.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
+        if (CorpsACorps.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
         return false;
     }
 

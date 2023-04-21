@@ -170,7 +170,7 @@ public abstract class NIN_Base : CustomRotation
     [RotationDesc(ActionID.Shukuchi)]
     protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (Shukuchi.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
+        if (Shukuchi.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
 
         return false;
     }
