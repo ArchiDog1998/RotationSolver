@@ -96,7 +96,7 @@ public abstract class MCH_Base : CustomRotation
     public static IBaseAction Dismantle { get; } = new BaseAction(ActionID.Dismantle, ActionOption.Defense);
 
     [RotationDesc(ActionID.Tactician, ActionID.Dismantle)]
-    protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (Tactician.CanUse(out act, CanUseOption.MustUse)) return true;
         if (Dismantle.CanUse(out act, CanUseOption.MustUse)) return true;

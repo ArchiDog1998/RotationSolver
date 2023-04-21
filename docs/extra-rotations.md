@@ -1,15 +1,26 @@
 # Extra Rotations
 
-If you want to add some extra rotations from other authors. 
+In this panel, you can add third party dll or your own dll to the rotation solver.
+
+## Add One
 
 First, you need to `Add One`.
 
 Then, put the `folder` that contains your `dll` file to this input box.
 
-![Add your folder](assets/1680965682669.png)
+Or add a download url to this input box.
 
-By the way, you can add an download `url` here to auto update the rotation.
+![Add your folder](assets/1681823974767.png)
 
-Last but not least, click `Load Rotations`.
+## Load
 
-It just like `dalamud`.
+`Download Rotations` will download all rotations from the urls you wrote, and then load them.
+
+`Load Rotations Local` Only load dlls from the folder.
+
+## Others
+
+`Dev Wiki` see the wiki about rotations development in the browser.
+
+`Debug Mode` show extra information about the rotation to help you debug for developing rotations.
+

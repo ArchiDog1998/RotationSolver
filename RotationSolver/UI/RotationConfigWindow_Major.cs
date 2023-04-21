@@ -32,9 +32,9 @@ internal partial class RotationConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_EventItem))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ControlItem))
             {
-                DrawEventTab();
+                DrawControlTab();
                 ImGui.EndTabItem();
             }
 
@@ -44,9 +44,9 @@ internal partial class RotationConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_ControlItem))
+            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_EventItem))
             {
-                DrawControlTab();
+                DrawEventTab();
                 ImGui.EndTabItem();
             }
 

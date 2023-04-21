@@ -40,6 +40,7 @@ internal class CooldownWindow : InfoWindow
     }
 
     static readonly uint progressCol = ImGui.ColorConvertFloat4ToU32(new Vector4(0.6f, 0.6f, 0.6f, 0.7f));
+
     private static void DrawActionCooldown(IAction act)
     {
         var width = Service.Config.CooldownWindowIconSize;

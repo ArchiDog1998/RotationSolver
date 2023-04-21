@@ -129,10 +129,12 @@ public abstract partial class CustomRotation
     protected static ClientLanguage Language => Service.Language;
     protected static TerritoryContentType TerritoryContentType => DataCenter.TerritoryContentType;
 
+    protected static float Ping => DataCenter.Ping;
+
+    protected static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
 
     public static uint AdjustId(uint id) => Service.GetAdjustedActionId(id);
     public static ActionID AdjustId(ActionID id) => Service.GetAdjustedActionId(id);
-
 
     /// <summary>
     ///  The actions that were used by player successfully. The first one is the latest successfully used one.
@@ -196,14 +198,14 @@ public abstract partial class CustomRotation
         => IActionHelper.IsLastAction(ids);
 
     /// <summary>
-    /// Is the thing still there after <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities.
+    /// Is the thing still there after <paramref name="gcdCount"/> gcds and <paramref name="offset"/> abilities.
     /// </summary>
     /// <param name="remain">jobgauge time</param>
     /// <param name="gcdCount"></param>
-    /// <param name="abilityCount"></param>
+    /// <param name="offset"></param>
     /// <returns></returns>
-    protected static bool EndAfterGCD(float remain, uint gcdCount = 0, int abilityCount = 0)
-        => CooldownHelper.RecastAfterGCD(remain, gcdCount, abilityCount);
+    protected static bool EndAfterGCD(float remain, uint gcdCount = 0, float offset = 0)
+        => CooldownHelper.RecastAfterGCD(remain, gcdCount, offset);
 
     /// <summary>
     /// Is the thing still there after <paramref name="remainNeed"/> seconds

@@ -35,7 +35,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AutoOffBetweenArea = true;
     public bool AutoOffCutScene = true;
     public bool AutoOffWhenDead = true;
-    public bool NeverReplaceIcon = false;
     public bool ChangeTargetForFate = true;
     public bool MoveTowardsScreenCenter = true;
 
@@ -45,7 +44,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool SayPositional = true;
 
-    public bool FlytextPositional = true;
+    public bool ToastPositional = true;
     public bool HealOutOfCombat = false;
     public bool ShowInfoOnToast = true;
     public bool RaiseAll = false;
@@ -108,8 +107,9 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool InterruptibleMoreCheck = true;
     public float SpecialDuration = 3;
-    public float AbilitiesInterval = 0.67f;
+
     public float ActionAhead = 0.08f;
+    public float ActionAheadForLast0GCD = 0.06f;
 
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;
@@ -133,6 +133,9 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float NotInCombatDelayMin = 1f;
     public float NotInCombatDelayMax = 2;
+
+    public float ClickingDelayMin = 0.1f;
+    public float ClickingDelayMax = 0.15f;
 
     public bool UseWorkTask = true;
 

@@ -40,4 +40,9 @@ public enum CanUseOption : byte
     /// The combination of <see cref="MustUse"/> and <see cref="EmptyOrSkipCombo"/>
     /// </summary>
     MustUseEmpty = MustUse | EmptyOrSkipCombo,
+
+    /// <summary>
+    /// On the last ability in one GCD.
+    /// </summary>
+    OnLastAbility = 1 << 5,
 }

@@ -93,22 +93,19 @@ internal partial class Strings
     public string ConfigWindow_Events_DutyStart { get; set; } = "Duty Start: ";
     public string ConfigWindow_Events_DutyEnd{ get; set; } = "Duty End: ";
     public string ConfigWindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
-    public string ConfigWindow_Param_NeverReplaceIcon { get; set; } = "Never Replace Icons";
-    public string ConfigWindow_Param_NeverReplaceIconDesc { get; set; } = "Icon replacement: Repose is automatically displayed as the next action to be used";
     public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display Top Overlay";
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
     public string ConfigWindow_Param_Basic { get; set; } = "Basic";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
-    public string ConfigWindow_Param_AbilitiesInterval { get; set; } = "Set the interval between 0GCD using";
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the time advance of using casting actions on counting down.";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
-    public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Turn off when player is between area.";
+    public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is between area.";
 
-    public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Turn off during cut scene.";
+    public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cut scene.";
 
-    public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Turn off when dead.";
+    public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";
@@ -123,6 +120,8 @@ internal partial class Strings
     public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
     public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
+
+    public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for the interval of clicking actions.";
     public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
@@ -146,28 +145,26 @@ internal partial class Strings
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
+    public string ConfigWindow_Param_KeyBoardNoiseBefore { get; set; } = "Simulate before action cast";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
-    public string ConfigWindow_Param_KeyBoardNoiseTime { get; set; } = "Effect interval";
     public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
-    public string ConfigWindow_Param_FlytextPositional { get; set; } = "Hint positional anticipation by flytext";
+    public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
-    public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback";
+    public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback on flytext";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
     public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
 
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
-    public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the pointing target of the move skill";
+    public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
     public string ConfigWindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
-    public string ConfigWindow_Param_PositionaErrorText { get; set; } = "Positional error prompt";
+    public string ConfigWindow_Param_PositionalErrorText { get; set; } = "Positional error prompt";
     public string ConfigWindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";
     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
-    public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on dtrbar";
-
-    public string ConfigWindow_Param_ShowWorkTaskFPS { get; set; } = "Display Task FPS on dtrbar";
+    public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
 
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
-    public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommand 61435, 61437";
+    public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommend 61435, 61437";
     public string ConfigWindow_Param_Action { get; set; } = "Action";
     public string ConfigWindow_Param_UseAOEAction { get; set; } = "Use AOE actions";
 
@@ -190,7 +187,7 @@ internal partial class Strings
     public string ConfigWindow_Param_UseItem { get; set; } = "Use items";
     public string ConfigWindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
     public string ConfigWindow_Param_Conditon { get; set; } = "Condition";
-    public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Turn on auto-rotation on countdown";
+    public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto turn smart on countdown";
     public string ConfigWindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
     public string ConfigWindow_Param_InterruptibleMoreCheck { get; set; } = "Interrupt the action with action type check.";
 
@@ -398,9 +395,9 @@ internal partial class Strings
     public string JobRole_Ranged { get; set; } = "Ranged";
     public string JobRole_Healer { get; set; } = "Healer";
     public string JobRole_RangedPhysical { get; set; } = "Ranged";
-    public string JobRole_RangedMagicial { get; set; } = "Magicial";
-    public string JobRole_DiscipleoftheLand { get; set; } = "Disciple of the Land";
-    public string JobRole_DiscipleoftheHand { get; set; } = "Disciple of the Hand";
+    public string JobRole_RangedMagical { get; set; } = "Magical";
+    public string JobRole_DiscipleOfTheLand { get; set; } = "Disciple of the Land";
+    public string JobRole_DiscipleOfTheHand { get; set; } = "Disciple of the Hand";
 
     #endregion
 

@@ -2,20 +2,19 @@
 
 public static class CooldownHelper
 {
-    private static float WeaponRemain(uint gcdCount = 0, int abilityCount = 0)
-        => WeaponTime(gcdCount, abilityCount) + DataCenter.WeaponRemain;
+    private static float WeaponRemain(uint gcdCount = 0, float offset = 0)
+        => WeaponTime(gcdCount, offset) + DataCenter.WeaponRemain;
 
-    private static float WeaponElapsed(uint gcdCount = 0, int abilityCount = 0)
-        => WeaponTime(gcdCount, abilityCount) + DataCenter.WeaponElapsed;
+    private static float WeaponElapsed(uint gcdCount = 0, float offset = 0)
+        => WeaponTime(gcdCount, offset) + DataCenter.WeaponElapsed;
 
 
-    private static float WeaponTime(uint gcdCount = 0, int abilityCount = 0)
-        => DataCenter.WeaponTotal * gcdCount
-        + Service.Config.AbilitiesInterval * abilityCount;
+    private static float WeaponTime(uint gcdCount = 0, float offset = 0)
+        => DataCenter.WeaponTotal * gcdCount + offset;
 
-    internal static bool ElapsedAfterGCD(float elapsed, uint gcdCount = 0, int abilityCount = 0)
+    internal static bool ElapsedAfterGCD(float elapsed, uint gcdCount = 0, float offset = 0)
     {
-        var gcdElapsed = WeaponElapsed(gcdCount, abilityCount);
+        var gcdElapsed = WeaponElapsed(gcdCount, offset);
 
         return gcdElapsed.IsLessThan(elapsed);
     }
@@ -26,9 +25,9 @@ public static class CooldownHelper
         return gcdElapsed.IsLessThan(elapsed);
     }
 
-    public static bool RecastAfterGCD(float recast, uint gcdCount = 0, int abilityCount = 0)
+    public static bool RecastAfterGCD(float recast, uint gcdCount = 0, float offset = 0)
     {
-        var remain = WeaponRemain(gcdCount, abilityCount);
+        var remain = WeaponRemain(gcdCount, offset);
 
         return recast.IsLessThan(remain);
     }
