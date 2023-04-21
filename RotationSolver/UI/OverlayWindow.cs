@@ -74,12 +74,12 @@ internal static class OverlayWindow
         if (!Service.Config.ShowHealthRatio) return;
 
         var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
-        foreach (BattleChara t in DataCenter.AllTargets)
+        foreach (GameObject t in DataCenter.AllTargets)
         {
-            if (t == null) continue;
+            if (t is not BattleChara b) continue;
             if (Service.WorldToScreen(t.Position, out var p))
             {
-                ImGui.GetWindowDrawList().AddText(p, HealthRatioColor, $"Health Ratio: {t.CurrentHp / calHealth:F2} / {t.MaxHp / calHealth:F2}");
+                ImGui.GetWindowDrawList().AddText(p, HealthRatioColor, $"Health Ratio: {b.CurrentHp / calHealth:F2} / {b.MaxHp / calHealth:F2}");
             }
         }
     }
