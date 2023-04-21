@@ -4,6 +4,21 @@ public abstract class DRG_Base : CustomRotation
 {
     private static DRGGauge JobGauge => Service.JobGauges.Get<DRGGauge>();
 
+    private static float LOTDTime => JobGauge.LOTDTimer / 1000f;
+
+
+    protected static bool SongEndAfter(float time) => EndAfter(LOTDTime, time);
+
+    protected static bool SongEndAfterGCD(uint gctCount = 0, float offset = 0)
+        => EndAfterGCD(LOTDTime, gctCount, offset);
+
+    protected static byte EyeCount => JobGauge.EyeCount;
+
+    /// <summary>
+    /// FocusCount
+    /// </summary>
+    protected static byte FocusCount => JobGauge.FirstmindsFocusCount;
+
     public override MedicineType MedicineType => MedicineType.Strength;
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
