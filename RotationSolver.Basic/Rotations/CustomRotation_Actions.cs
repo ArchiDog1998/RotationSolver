@@ -107,54 +107,33 @@ public abstract partial class CustomRotation
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
-    /// <summary>
-    /// 挑衅
-    /// </summary>
     public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, new JobRole[] { JobRole.Tank }, ActionOption.Timeline)
     {
         FilterForHostiles = b => TargetFilter.ProvokeTarget(b),
     };
 
-    /// <summary>
-    /// 雪仇
-    /// </summary>
     public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, ActionOption.Defense);
 
-    /// <summary>
-    /// 退避
-    /// </summary>
     public static IBaseAction Shirk { get; } = new RoleAction(ActionID.Shirk, new JobRole[] { JobRole.Tank }, ActionOption.Friendly | ActionOption.Timeline)
     {
         ChoiceTarget = (friends, mustUse) => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
     };
 
-    /// <summary>
-    /// 浴血
-    /// </summary>
     public static IBaseAction Bloodbath { get; } = new RoleAction(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, ActionOption.Heal)
     {
         ActionCheck = SecondWind.ActionCheck,
     };
 
-    /// <summary>
-    /// 牵制
-    /// </summary>
     public static IBaseAction Feint { get; } = new RoleAction(ActionID.Feint, new JobRole[] { JobRole.Melee }, ActionOption.Defense)
     {
         ActionCheck = b => !b.HasStatus(false, StatusID.Feint),
     };
 
-    /// <summary>
-    /// 插言
-    /// </summary>
     public static IBaseAction Interject { get; } = new RoleAction(ActionID.Interject, new JobRole[] { JobRole.Tank })
     {
         FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
     };
 
-    /// <summary>
-    /// 下踢
-    /// </summary>
     public static IBaseAction LowBlow { get; } = new RoleAction(ActionID.LowBlow, new JobRole[] { JobRole.Tank })
     {
         FilterForHostiles = bs => bs.Where(b =>

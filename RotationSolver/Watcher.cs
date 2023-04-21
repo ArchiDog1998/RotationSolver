@@ -38,7 +38,7 @@ public class Watcher : IDisposable
         {
             var set = new ActionEffectSet(sourceId, effectHeader, effectArray, effectTargets);
 
-            ActionFromSelf(sourceId, set);
+            ActionFromSelf(sourceId, set, effectHeader->actionId);
             ActionFromEnemy(sourceId, set);
         }
         catch(Exception ex) 
@@ -71,13 +71,15 @@ public class Watcher : IDisposable
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
     }
 
-    private static void ActionFromSelf(uint sourceId, ActionEffectSet set)
+    private static void ActionFromSelf(uint sourceId, ActionEffectSet set, uint id)
     {
         if (sourceId != Service.Player.ObjectId) return;
-        if (set.Type != ActionType.Spell) return;
+        if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
         if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
-        if(!set.TargetEffects.Any()) return;
+        DateTime.Now.AddSeconds(IActionHelper.AnimationLockTime[id] = set.AnimationLock);
+
+        if (!set.TargetEffects.Any()) return;
         var flag = set.TargetEffects.FirstOrDefault()[0].Param2;
 
         var action = set.Action;

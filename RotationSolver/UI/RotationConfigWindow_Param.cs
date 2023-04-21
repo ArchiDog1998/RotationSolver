@@ -42,20 +42,8 @@ internal partial class RotationConfigWindow
 
     private void DrawParamBasic()
     {
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_NeverReplaceIcon,
-            ref Service.Config.NeverReplaceIcon, Service.Default.NeverReplaceIcon,
-            LocalizationManager.RightLang.ConfigWindow_Param_NeverReplaceIconDesc);
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
-            ref Service.Config.UseOverlayWindow, Service.Default.UseOverlayWindow,
-            LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindowDesc);
-
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AbilitiesInterval,
-            ref Service.Config.AbilitiesInterval, Service.Default.AbilitiesInterval,
-            min: 0.5f, max: 0.7f);
-
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ActionAhead,
-            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 0.1f);
+            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 0.5f);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
             ref Service.Config.CountDownAhead, Service.Default.CountDownAhead, min: 0.5f, max: 0.7f);
@@ -65,6 +53,8 @@ internal partial class RotationConfigWindow
 
         DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
             ref Service.Config.AddDotGCDCount, Service.Default.AddDotGCDCount, min: 0, max: 3);
+
+        ImGui.Spacing();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffBetweenArea,
             ref Service.Config.AutoOffBetweenArea, Service.Default.AutoOffBetweenArea);
@@ -77,6 +67,10 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
             ref Service.Config.StartOnCountdown, Service.Default.StartOnCountdown);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
+            ref Service.Config.UseOverlayWindow, Service.Default.UseOverlayWindow,
+            LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindowDesc);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
             ref Service.Config.UseWorkTask, Service.Default.UseWorkTask);
@@ -116,6 +110,11 @@ internal partial class RotationConfigWindow
             ref Service.Config.NotInCombatDelayMin, ref Service.Config.NotInCombatDelayMax,
             Service.Default.NotInCombatDelayMin, Service.Default.NotInCombatDelayMax);
 
+        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_ClickingDelay,
+            ref Service.Config.ClickingDelayMin, ref Service.Config.ClickingDelayMax,
+            Service.Default.ClickingDelayMin, Service.Default.ClickingDelayMax
+            ,min : 0.05f, max: 0.25f);
+
         if (Service.Config.UseStopCasting)
         {
             DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_StopCastingDelay, 
@@ -135,7 +134,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayPositional,
             ref Service.Config.SayPositional, Service.Default.SayPositional);
 
-        DrawInputText(LocalizationManager.RightLang.ConfigWindow_Param_PositionaErrorText,
+        DrawInputText(LocalizationManager.RightLang.ConfigWindow_Param_PositionalErrorText,
             ref Service.Config.PositionalErrorText, 100,
             LocalizationManager.RightLang.ConfigWindow_Params_LocationWrongTextDesc);
 
@@ -235,10 +234,6 @@ internal partial class RotationConfigWindow
                 ref Service.Config.KeyBoardNoiseMin, ref Service.Config.KeyBoardNoiseMax,
                 Service.Default.KeyBoardNoiseMin, Service.Default.KeyBoardNoiseMax);
 
-            DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTime, 
-                ref Service.Config.KeyBoardNoiseTimeMin, ref Service.Config.KeyBoardNoiseTimeMax, 
-                Service.Default.KeyBoardNoiseTimeMin, Service.Default.KeyBoardNoiseTimeMax);
-
             ImGui.Unindent();
         }
 
@@ -256,8 +251,8 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_CastingDisplay,
             ref Service.Config.CastingDisplay, Service.Default.CastingDisplay);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_FlytextPositional,
-            ref Service.Config.FlytextPositional, Service.Default.FlytextPositional);
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToastPositional,
+            ref Service.Config.ToastPositional, Service.Default.ToastPositional);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PositionalFeedback,
             ref Service.Config.PositionalFeedback, Service.Default.PositionalFeedback,

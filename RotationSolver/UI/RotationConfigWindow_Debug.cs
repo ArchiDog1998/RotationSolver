@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -47,6 +48,8 @@ internal partial class RotationConfigWindow
         }
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
         ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
+        ImGui.Text("AnimationLock: " + (*(float*)((IntPtr)ActionManager.Instance() + 0x8)).ToString());
+        ImGui.Text("Ping: " + DataCenter.Ping.ToString());  
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
         ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
@@ -134,7 +137,7 @@ internal partial class RotationConfigWindow
 
         ActionUpdater.NextAction?.Display(false);
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
-        ImGui.Text("Ability Count: " + DataCenter.AbilityRemainCount.ToString());
+        ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
         ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
         ImGui.Text("Elapsed: " + CustomRotation.CombatElapsedLess(10).ToString());
         ImGui.Text("Time: " + (DataCenter.CombatTime + DataCenter.WeaponRemain).ToString());

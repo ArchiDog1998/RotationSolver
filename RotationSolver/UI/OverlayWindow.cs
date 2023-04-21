@@ -52,7 +52,7 @@ internal static class OverlayWindow
             DrawTarget(act.Target, Tcolor, 8, out _);
         }
 
-        if (DataCenter.HostileTargets.Contains(act.Target))
+        if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Service.Player && !act.IsFriendly)
         {
             var c = Service.Config.SubTargetColor;
             var Scolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));

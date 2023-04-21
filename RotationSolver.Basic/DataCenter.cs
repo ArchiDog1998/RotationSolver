@@ -129,16 +129,34 @@ public static class DataCenter
 
     public static float WeaponElapsed { get; set; }
 
-    public static byte AbilityRemainCount { get; set; }
+    /// <summary>
+    /// Time to the next action
+    /// </summary>
+    public static unsafe float ActionRemain => (*(float*)((IntPtr)ActionManager.Instance() + 0x8));
 
-    public static float AbilityRemain { get; set; }
+    public static float AbilityRemain
+    {
+        get
+        {
+            var gcdRemain = WeaponRemain;
+            if ((gcdRemain - 0.6f - Ping).IsLessThan(ActionRemain))
+            {
+                return gcdRemain + 0.6f + Ping;
+            }
+            return ActionRemain;
+        }
+    }
+
+    public static float NextAbilityToNextGCD => WeaponRemain - ActionRemain;
 
     public static float CastingTotal { get; set; }
     #endregion
     public static uint[] BluSlots { get; set; } = new uint[24];
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
-    public static double SpecialTimeLeft => Service.Config.SpecialDuration - (DateTime.Now - _specialStateStartTime).TotalSeconds;
+    private static double SpecialTimeElapsed => (DateTime.Now - _specialStateStartTime).TotalSeconds;
+    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.SpecialDuration - SpecialTimeElapsed :
+        Math.Ceiling((Service.Config.SpecialDuration + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
 
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
     public static SpecialCommandType SpecialType =>
@@ -284,6 +302,9 @@ public static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
+    public static float Ping { get; private set; } = 0.07f;
+
+    public const float MinPing = 0.6f;
     public static void AddActionRec(Action act)
     {
         var id = (ActionID)act.RowId;
@@ -294,6 +315,7 @@ public static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
+                Ping = WeaponElapsed;
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;

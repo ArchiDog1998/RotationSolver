@@ -52,6 +52,11 @@
         bool IsGeneralGCD { get; }
 
         /// <summary>
+        /// The filter for hostiles.
+        /// </summary>
+        Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; }
+
+        /// <summary>
         /// Can I use this action at this time. It will check a lot of things.
         /// Level, Enabled, Action Status, MP, Player Status, Coll down, Combo, Moving (for casting), Charges, Target, etc.
         /// </summary>
@@ -78,12 +83,12 @@
         bool HasOneCharge { get; }
 
         /// <summary>
-        /// Has it been in cooldown for <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
+        /// Has it been in cooldown for <paramref name="gcdCount"/> gcds and <paramref name="offset"/> abilities?
         /// </summary>
         /// <param name="gcdCount"></param>
-        /// <param name="abilityCount"></param>
+        /// <param name="offset"></param>
         /// <returns></returns>
-        bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, int abilityCount = 0);
+        bool ElapsedOneChargeAfterGCD(uint gcdCount = 0, float offset = 0);
 
         /// <summary>
         /// Has it been in cooldown for <paramref name="time"/> seconds?
@@ -93,12 +98,12 @@
         bool ElapsedOneChargeAfter(float time);
 
         /// <summary>
-        /// Has it been in cooldown for <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
+        /// Has it been in cooldown for <paramref name="gcdCount"/> gcds and <paramref name="offset"/> abilities?
         /// </summary>
         /// <param name="gcdCount"></param>
-        /// <param name="abilityCount"></param>
+        /// <param name="offset"></param>
         /// <returns></returns>
-        bool ElapsedAfterGCD(uint gcdCount = 0, int abilityCount = 0);
+        bool ElapsedAfterGCD(uint gcdCount = 0, float offset = 0);
 
         /// <summary>
         /// Has it been in cooldown for <paramref name="time"/> seconds?
@@ -108,12 +113,12 @@
         bool ElapsedAfter(float time);
 
         /// <summary>
-        /// Will have at least one charge after <paramref name="gcdCount"/> gcds and <paramref name="abilityCount"/> abilities?
+        /// Will have at least one charge after <paramref name="gcdCount"/> gcds and <paramref name="offset"/> abilities?
         /// </summary>
         /// <param name="gcdCount"></param>
-        /// <param name="abilityCount"></param>
+        /// <param name="offset"></param>
         /// <returns></returns>
-        bool WillHaveOneChargeGCD(uint gcdCount = 0, int abilityCount = 0);
+        bool WillHaveOneChargeGCD(uint gcdCount = 0, float offset = 0);
 
         /// <summary>
         /// Will have at least one charge after <paramref name="remain"/> seconds?

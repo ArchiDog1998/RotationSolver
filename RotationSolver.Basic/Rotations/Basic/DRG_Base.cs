@@ -114,7 +114,7 @@ public abstract class DRG_Base : CustomRotation
     public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, ActionOption.Buff);
 
     [RotationDesc(ActionID.Feint)]
-    protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;

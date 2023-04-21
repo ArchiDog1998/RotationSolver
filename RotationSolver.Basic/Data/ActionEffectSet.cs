@@ -1,4 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel.GeneratedSheets;
 using System.Collections;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -11,12 +12,15 @@ public unsafe struct ActionEffectSet
     public GameObject Target { get; }
     public GameObject Source { get; }
     public TargetEffect[] TargetEffects { get; }
+    public float AnimationLock { get;  }
+    public int MyProperty { get; set; }
     public ActionEffectSet(uint sourceId, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
         Type = effectHeader->actionType;
         Action = Service.GetSheet<Action>().GetRow(effectHeader->actionId);
         Target = Service.ObjectTable.SearchById(effectHeader->animationTargetId);
         Source = Service.ObjectTable.SearchById(sourceId);
+        AnimationLock = effectHeader->animationLockTime;
 
         TargetEffects = new TargetEffect[effectHeader->NumTargets];
         for (int i = 0; i < effectHeader->NumTargets; i++)
@@ -27,7 +31,7 @@ public unsafe struct ActionEffectSet
 
     public override string ToString()
     {
-        var str = $"S:{Source?.Name}, T:{Target?.Name}";
+        var str = $"S:{Source?.Name}, T:{Target?.Name}, Lock:{AnimationLock}";
         str += $"\nType: {Type}, Name: {Action?.Name}({Action?.RowId})";
         if (TargetEffects != null)
         {

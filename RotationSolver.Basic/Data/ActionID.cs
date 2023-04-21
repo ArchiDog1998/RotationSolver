@@ -846,6 +846,8 @@ public enum ActionID : uint
 
     ShieldLob = 24,
 
+    ShieldBash = 16,
+
     FightOrFlight = 20,
 
     TotalEclipse = 7381,

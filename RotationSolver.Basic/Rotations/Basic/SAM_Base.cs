@@ -169,21 +169,21 @@ public abstract class SAM_Base : CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HissatsuGyoten)]
-    protected sealed override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (HissatsuGyoten.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.Feint)]
-    protected sealed override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;
     }
 
     [RotationDesc(ActionID.ThirdEye)]
-    protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenseSingleAbility(out IAction act)
     {
         if (ThirdEye.CanUse(out act)) return true;
         return false;
