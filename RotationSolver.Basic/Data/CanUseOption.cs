@@ -45,4 +45,9 @@ public enum CanUseOption : byte
     /// On the last ability in one GCD.
     /// </summary>
     OnLastAbility = 1 << 5,
+
+    /// <summary>
+    /// Ignore clipping check for 0GCDs.
+    /// </summary>
+    IgnoreClippingCheck = 1 << 6,
 }

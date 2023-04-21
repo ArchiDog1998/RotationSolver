@@ -43,7 +43,7 @@ public abstract partial class CustomRotation
 
         //Run!
         if (!InCombat && IsMoving && role == JobRole.RangedPhysical
-            && Peloton.CanUse(out act, CanUseOption.MustUse)) return true;
+            && Peloton.CanUse(out act, CanUseOption.MustUse | CanUseOption.IgnoreClippingCheck)) return true;
 
         return false;
     }
@@ -90,7 +90,7 @@ public abstract partial class CustomRotation
 
         if (DataCenter.SetAutoStatus(AutoStatus.TankStance, Service.Config.GetValue(SettingsCommand.AutoTankStance)
             && !DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
-            && !HasTankStance && TankStance.CanUse(out act)))
+            && !HasTankStance && TankStance.CanUse(out act, CanUseOption.IgnoreClippingCheck)))
         {
             return true;
         }
