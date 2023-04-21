@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.3.5](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.4...v2.3.5) (2023-04-21)
+
+
+### Bug Fixes
+
+* add ignoreClipping check for actions. ([4ec1a3a](https://github.com/ArchiDog1998/RotationSolver/commit/4ec1a3a1c79e83db2860af2c66d25a8727366062))
+* fixed click command with no clipping. ([5797a27](https://github.com/ArchiDog1998/RotationSolver/commit/5797a27816ef1a18f8065ad024edf234cbba7da6))
+* fixed ShowHealtRation. ([026965d](https://github.com/ArchiDog1998/RotationSolver/commit/026965d87bbc3b3c4c07a6da8757b877af1a5c6b))
+* fixed with action ahead.. ([eb794a4](https://github.com/ArchiDog1998/RotationSolver/commit/eb794a4e44d8a0a762ee641f717858ab2c64ef82))
+* fixed with DRG jobGauge. ([9f3b4df](https://github.com/ArchiDog1998/RotationSolver/commit/9f3b4dfc3a5dc36d499947e2bd65d4bea43041fa))
+* make move ability can be clipping. ([e1fa7c4](https://github.com/ArchiDog1998/RotationSolver/commit/e1fa7c4805099ff6139b2bb6ffb4f2f9b6771d8c))
+* no clipping check for blu. ([39c99db](https://github.com/ArchiDog1998/RotationSolver/commit/39c99db018a92d91e19a7759b6ee551141287304))
+* RPR aoe count changed to 2. ([174fcdb](https://github.com/ArchiDog1998/RotationSolver/commit/174fcdb2a42000f255c64edac3b92a1fd33dbc3a))
+* update white list. ([953eb4c](https://github.com/ArchiDog1998/RotationSolver/commit/953eb4c17b86df7ed49db5a5c9f9208b128d5c0e))
+
 ## [2.3.4](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.3...v2.3.4) (2023-04-20)
 
 
