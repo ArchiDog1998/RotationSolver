@@ -30,8 +30,8 @@ public abstract class SMN_Base : CustomRotation
     private static float SummonTimerRemaining => JobGauge.SummonTimerRemaining / 1000f;
     protected static bool SummonTimeEndAfter(float time) => EndAfter(SummonTimerRemaining, time);
 
-    protected static bool SummonTimeEndAfterGCD(uint gctCount = 0, float offset = 0)
-        => EndAfterGCD(SummonTimerRemaining, gctCount, offset);
+    protected static bool SummonTimeEndAfterGCD(uint gcdCount = 0, float offset = 0)
+        => EndAfterGCD(SummonTimerRemaining, gcdCount, offset);
 
     private static float AttunmentTimerRemaining => JobGauge.AttunmentTimerRemaining / 1000f;
     protected static bool AttunmentTimeEndAfter(float time) => EndAfter(AttunmentTimerRemaining, time);
@@ -46,7 +46,7 @@ public abstract class SMN_Base : CustomRotation
     public static IBaseAction SummonRuby { get; } = new BaseAction(ActionID.SummonRuby)
     {
         StatusProvide = new[] { StatusID.IfritsFavor },
-        ActionCheck = b => DataCenter.HasPet && !SummonTimeEndAfterGCD() && IsIfritReady
+        ActionCheck = b => HasSummon && IsIfritReady
     };
 
     public static IBaseAction SummonTopaz { get; } = new BaseAction(ActionID.SummonTopaz)
