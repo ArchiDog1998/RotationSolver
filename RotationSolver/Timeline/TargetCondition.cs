@@ -253,7 +253,7 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.CastingAction:
                 ImGui.SameLine();
-                ImGui.InputText("##CastingActionName", ref CastingActionName, 100);
+                ImGui.InputText($"##CastingActionName{GetHashCode()}", ref CastingActionName, 100);
                 break;
         }
     }
