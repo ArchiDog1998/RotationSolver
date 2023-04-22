@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.3.6](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.5...v2.3.6) (2023-04-22)
+
+
+### Bug Fixes
+
+* add a method for IsTheSameTo ([b51f100](https://github.com/ArchiDog1998/RotationSolver/commit/b51f100af176739a0f65f3ae3f8a7c4c7402958e))
+* add an invincible status. ([8269d91](https://github.com/ArchiDog1998/RotationSolver/commit/8269d91e155d1031118737705fe4ccb6e8121a2e))
+* add an OtherOption for control actions as whole. ([a24d670](https://github.com/ArchiDog1998/RotationSolver/commit/a24d6705c840df1f5e734cd699e0c5e0b59508c3))
+* add maxPing. ([a4a55de](https://github.com/ArchiDog1998/RotationSolver/commit/a4a55dec0f3777350c59daa67d97ad1c88eea584))
+* changed the Move method signature. ([6625e29](https://github.com/ArchiDog1998/RotationSolver/commit/6625e29db03c00545988eeb8f8d7e17032c41d41))
+* fixed the base files of a lot of jobs ([42b7001](https://github.com/ArchiDog1998/RotationSolver/commit/42b7001805ea5df53b473b971dc27563df0466b9))
+* fixed the obsolete. ([4665771](https://github.com/ArchiDog1998/RotationSolver/commit/46657716240d304c657e21f63de5b5b7da8beb06))
+* fixed tooltip for rotations. ([4dc331c](https://github.com/ArchiDog1998/RotationSolver/commit/4dc331cf85b53d54180bc35933c4af7a1d3c55bb))
+* fixed try catch. ([507135b](https://github.com/ArchiDog1998/RotationSolver/commit/507135b9ae870c83919e8514a31d6e93b7d72a7e))
+* fixed with ping. ([dcd4578](https://github.com/ArchiDog1998/RotationSolver/commit/dcd4578d9e237838b5e17ace8f94bea956ca8cfd))
+* fixed with SAM. ([a7d4446](https://github.com/ArchiDog1998/RotationSolver/commit/a7d4446a7d5ae7cb36a2b9d46cc40599a68cb50a))
+* fixed with TargetCondition's Type convert. ([d0439eb](https://github.com/ArchiDog1998/RotationSolver/commit/d0439eb2e70d268f1e089923b77a260dca645a60))
+* format all base files. ([051b4b2](https://github.com/ArchiDog1998/RotationSolver/commit/051b4b299943ee831e9c0af8f078448153323a4c))
+* format some base files. ([a7ac0d1](https://github.com/ArchiDog1998/RotationSolver/commit/a7ac0d1a60178102c8f11cddb8dd424bd629fbde))
+* IgnoreClippingCheck on ActionPanel. ([bc9b86d](https://github.com/ArchiDog1998/RotationSolver/commit/bc9b86dd89ba0d9b16f29563bb7c2c75bb39b0d1))
+* make cooldown ation not adjust icon. ([4ab116f](https://github.com/ArchiDog1998/RotationSolver/commit/4ab116fbe589a032c7666cd41f74ebc356bbf61f))
+
 ## [2.3.5](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.4...v2.3.5) (2023-04-21)
 
 
