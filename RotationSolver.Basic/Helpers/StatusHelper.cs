@@ -76,6 +76,13 @@ public static class StatusHelper
         return CooldownHelper.RecastAfter(remain, time);
     }
 
+    /// <summary>
+    /// Please Do NOT use it!
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="isFromSelf"></param>
+    /// <param name="statusIDs"></param>
+    /// <returns></returns>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
