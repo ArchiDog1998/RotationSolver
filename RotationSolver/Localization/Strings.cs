@@ -368,6 +368,7 @@ internal partial class Strings
     public string TargetConditionType_StatusEnd { get; set; } = "Status End";
     public string TargetConditionType_StatusEndGCD { get; set; } = "Status End GCD";
     public string TargetConditionType_CastingAction { get; set; } = "Casting Action";
+    public string TargetConditionType_CastingActionTimeUntil { get; set; } = "Casting Action Time Until";
 
     #endregion
 

@@ -15,6 +15,7 @@ internal static class EnumTranslations
         TargetConditionType.StatusEnd => LocalizationManager.RightLang.TargetConditionType_StatusEnd,
         TargetConditionType.StatusEndGCD => LocalizationManager.RightLang.TargetConditionType_StatusEndGCD,
         TargetConditionType.CastingAction => LocalizationManager.RightLang.TargetConditionType_CastingAction,
+        TargetConditionType.CastingActionTimeUntil => LocalizationManager.RightLang.TargetConditionType_CastingActionTimeUntil,
         _ => string.Empty,
     };
 
