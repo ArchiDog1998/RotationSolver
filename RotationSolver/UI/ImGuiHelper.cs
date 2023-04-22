@@ -617,7 +617,7 @@ internal static class ImGuiHelper
                 ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
                 ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());
 
-                var option = CanUseOption.IgnoreTarget;
+                var option = CanUseOption.IgnoreTarget | CanUseOption.IgnoreClippingCheck;
                 ImGui.Text($"Can Use: {action.CanUse(out _, option)} ");
                 ImGui.Text("Must Use:" + action.CanUse(out _, option | CanUseOption.MustUse).ToString());
                 ImGui.Text("Empty Use:" + action.CanUse(out _, option | CanUseOption.EmptyOrSkipCombo).ToString());
