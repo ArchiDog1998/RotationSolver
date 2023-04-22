@@ -86,7 +86,7 @@ public partial class BaseAction
         {
             if (option.HasFlag(CanUseOption.OnLastAbility))
             {
-                if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinPing) return false;
+                if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock) return false;
             }
             else if (!option.HasFlag(CanUseOption.IgnoreClippingCheck))
             {

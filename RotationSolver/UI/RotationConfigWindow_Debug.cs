@@ -48,7 +48,9 @@ internal partial class RotationConfigWindow
         }
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
         ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
-        ImGui.Text("AnimationLock: " + (*(float*)((IntPtr)ActionManager.Instance() + 0x8)).ToString());
+        ImGui.Text("TimeToNext: " + DataCenter.NextAbilityToNextGCD.ToString());
+        ImGui.Text("WeaponElapsed: " + DataCenter.WeaponElapsed.ToString());
+        ImGui.Text("AnimationLock: " + DataCenter.ActionRemain.ToString());
         ImGui.Text("Ping: " + DataCenter.Ping.ToString());  
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
