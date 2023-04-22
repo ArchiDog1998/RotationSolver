@@ -108,17 +108,18 @@ public abstract class RDM_Base : CustomRotation
     private sealed protected override IBaseAction Raise => Verraise;
     public static IBaseAction Verraise { get; } = new BaseAction(ActionID.Verraise, ActionOption.Friendly);
 
+    public static IBaseAction Acceleration { get; } = new BaseAction(ActionID.Acceleration, ActionOption.Buff)
+    {
+        StatusProvide = new[] { StatusID.Acceleration },
+    };
+
+
     public static IBaseAction Vercure { get; } = new BaseAction(ActionID.Vercure, ActionOption.Heal)
     {
         StatusProvide = Swiftcast.StatusProvide.Union(Acceleration.StatusProvide).ToArray(),
     };
 
     public static IBaseAction MagickBarrier { get; } = new BaseAction(ActionID.MagickBarrier, ActionOption.Defense);
-
-    public static IBaseAction Acceleration { get; } = new BaseAction(ActionID.Acceleration, ActionOption.Buff)
-    {
-        StatusProvide = new[] { StatusID.Acceleration },
-    };
 
     public static IBaseAction Embolden { get; } = new BaseAction(ActionID.Embolden, ActionOption.Buff);
 

@@ -5,13 +5,12 @@ public abstract class SAM_Base : CustomRotation
     public override MedicineType MedicineType => MedicineType.Strength;
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
 
-    [Obsolete("Please use HasMoon", true)]
-    protected static bool HaveMoon => HasMoon;
     protected static bool HasMoon => Player.HasStatus(true, StatusID.Fugetsu);
 
-    [Obsolete("Please use HasFlower", true)]
-    protected static bool HaveFlower => HasFlower;
     protected static bool HasFlower => Player.HasStatus(true, StatusID.Fuka);
+
+    protected static bool IsMoonTimeLessThanFlower
+        => Player.StatusTime(true, StatusID.Fugetsu) < Player.StatusTime(true, StatusID.Fuka);
 
     #region JobGauge
     static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
