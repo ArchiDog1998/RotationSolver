@@ -149,6 +149,7 @@ public static class StatusHelper
     {
         StatusID.StoneSkin,
         StatusID.IceSpikesInvincible,
+        StatusID.VortexBarrier,
     };
 
     public static bool IsInvincible(this Status status)
