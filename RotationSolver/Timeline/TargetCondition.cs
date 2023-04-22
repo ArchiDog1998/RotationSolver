@@ -1,4 +1,6 @@
-﻿using RotationSolver.Localization;
+﻿using Dalamud.Logging;
+
+using RotationSolver.Localization;
 using RotationSolver.UI;
 
 namespace RotationSolver.Timeline;
@@ -95,14 +97,14 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.CastingActionTimeUntil:
-                if (CastingActionTime <= 0 || !tar.IsCasting)
+                if (!tar.IsCasting || tar.CastActionId == 0)
                 {
                     result = false;
                     break;
                 }
 
-                var castTime = tar.TotalCastTime - tar.CurrentCastTime;
-                result = castTime < CastingActionTime;
+                float castTime = tar.TotalCastTime - tar.CurrentCastTime;
+                result = castTime > CastingActionTime;
                 break;
         }
 
@@ -188,7 +190,8 @@ internal class TargetCondition : ICondition
         }
 
         ImGui.SameLine();
-        ImGui.SetNextItemWidth(60);
+        //ImGui.SetNextItemWidth(60);
+        ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
         if (ImGui.Combo($"##Comparation{GetHashCode()}", ref condition, combos, combos.Length))
         {
             Condition = condition > 0;
