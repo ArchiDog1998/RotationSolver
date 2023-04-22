@@ -272,6 +272,7 @@
   "TargetConditionType_StatusEnd": "Status End",
   "TargetConditionType_StatusEndGCD": "Status End GCD",
   "TargetConditionType_CastingAction": "Casting Action",
+  "TargetConditionType_CastingActionTimeUntil": "Casting Action Time Until",
   "DescType_BurstActions": "Burst Actions",
   "DescType_MoveForwardGCD": "Move Forward GCD",
   "DescType_HealAreaGCD": "Area Healing GCD",
