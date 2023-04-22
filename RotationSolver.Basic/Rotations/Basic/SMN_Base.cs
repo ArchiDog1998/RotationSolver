@@ -2,32 +2,18 @@
 
 public abstract class SMN_Base : CustomRotation
 {
-    private static SMNGauge JobGauge => Service.JobGauges.Get<SMNGauge>();
-
     public override MedicineType MedicineType => MedicineType.Strength;
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Summoner, ClassJobID.Arcanist };
+    protected override bool CanHealSingleSpell => false;
+    protected static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.DeathFlare;
+
+    protected static bool InPhoenix => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.Rekindle;
+    #region JobGauge
+    static SMNGauge JobGauge => Service.JobGauges.Get<SMNGauge>();
 
     protected static bool HasAetherflowStacks => JobGauge.HasAetherflowStacks;
 
     protected static byte Attunement => JobGauge.Attunement;
-
-    protected static bool SummonTimeEndAfter(float time)
-    {
-        return EndAfter(JobGauge.SummonTimerRemaining / 1000f, time);
-    }
-
-    protected static ushort SummonTimerRemaining => JobGauge.SummonTimerRemaining;
-
-    protected static ushort AttunmentTimerRemaining => JobGauge.AttunmentTimerRemaining;
-
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Summoner, ClassJobID.Arcanist };
-    protected override bool CanHealSingleSpell => false;
-    private sealed protected override IBaseAction Raise => Resurrection;
-
-    protected static bool HaveSummon => DataCenter.HasPet && JobGauge.SummonTimerRemaining == 0;
-
-    protected static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.DeathFlare;
-
-    protected static bool InPhoenix => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.Rekindle;
 
     protected static bool IsIfritReady => JobGauge.IsIfritReady;
 
@@ -41,22 +27,37 @@ public abstract class SMN_Base : CustomRotation
 
     protected static bool InGaruda => JobGauge.IsGarudaAttuned;
 
+    private static float SummonTimerRemaining => JobGauge.SummonTimerRemaining / 1000f;
+    protected static bool SummonTimeEndAfter(float time) => EndAfter(SummonTimerRemaining, time);
+
+    protected static bool SummonTimeEndAfterGCD(uint gctCount = 0, float offset = 0)
+        => EndAfterGCD(SummonTimerRemaining, gctCount, offset);
+
+    private static float AttunmentTimerRemaining => JobGauge.AttunmentTimerRemaining / 1000f;
+    protected static bool AttunmentTimeEndAfter(float time) => EndAfter(AttunmentTimerRemaining, time);
+
+    protected static bool AttunmentTimeEndAfterGCD(uint gctCount = 0, float offset = 0)
+        => EndAfterGCD(AttunmentTimerRemaining, gctCount, offset);
+
+    private static bool HasSummon => DataCenter.HasPet && SummonTimeEndAfterGCD();
+    #endregion
+
     #region Summon
     public static IBaseAction SummonRuby { get; } = new BaseAction(ActionID.SummonRuby)
     {
         StatusProvide = new[] { StatusID.IfritsFavor },
-        ActionCheck = b => HaveSummon && IsIfritReady
+        ActionCheck = b => DataCenter.HasPet && !SummonTimeEndAfterGCD() && IsIfritReady
     };
 
     public static IBaseAction SummonTopaz { get; } = new BaseAction(ActionID.SummonTopaz)
     {
-        ActionCheck = b => HaveSummon && IsTitanReady,
+        ActionCheck = b => HasSummon && IsTitanReady,
     };
 
     public static IBaseAction SummonEmerald { get; } = new BaseAction(ActionID.SummonEmerald)
     {
         StatusProvide = new[] { StatusID.GarudasFavor },
-        ActionCheck = b => HaveSummon && IsGarudaReady,
+        ActionCheck = b => HasSummon && IsGarudaReady,
     };
 
     public static IBaseAction SummonCarbuncle { get; } = new BaseAction(ActionID.SummonCarbuncle)
@@ -78,12 +79,12 @@ public abstract class SMN_Base : CustomRotation
 
     public static IBaseAction AetherCharge { get; } = new BaseAction(ActionID.AetherCharge)
     {
-        ActionCheck = b => InCombat && HaveSummon
+        ActionCheck = b => InCombat && HasSummon
     };
 
     public static IBaseAction SummonBahamut { get; } = new BaseAction(ActionID.SummonBahamut)
     {
-        ActionCheck = b => InCombat && HaveSummon
+        ActionCheck = b => InCombat && HasSummon
     };
 
     public static IBaseAction EnkindleBahamut { get; } = new BaseAction(ActionID.EnkindleBahamut)
@@ -139,7 +140,7 @@ public abstract class SMN_Base : CustomRotation
 
     public static IBaseAction RadiantAegis { get; } = new BaseAction(ActionID.RadiantAegis, ActionOption.Heal)
     {
-        ActionCheck = b => HaveSummon
+        ActionCheck = b => HasSummon
     };
 
     public static IBaseAction EnergyDrain { get; } = new BaseAction(ActionID.EnergyDrainSMN)
@@ -165,28 +166,32 @@ public abstract class SMN_Base : CustomRotation
     };
     #endregion
 
+    #region Heal
+    private sealed protected override IBaseAction Raise => Resurrection;
+
     public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.ResurrectionSMN, ActionOption.Friendly);
 
     public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, ActionOption.Heal);
+    #endregion
 
     [RotationDesc(ActionID.RadiantAegis)]
     protected sealed override bool DefenseSingleAbility(out IAction act)
     {
         if (RadiantAegis.CanUse(out act)) return true;
-        return false;
+        return base.DefenseSingleAbility(out act);
     }
 
     [RotationDesc(ActionID.Physick)]
-    protected override bool HealSingleGCD(out IAction act)
+    protected sealed override bool HealSingleGCD(out IAction act)
     {
         if (Physick.CanUse(out act)) return true;
-        return false;
+        return base.HealSingleGCD(out act);
     }
 
     [RotationDesc(ActionID.Addle)]
     protected override bool DefenseAreaAbility(out IAction act)
     {
         if (Addle.CanUse(out act)) return true;
-        return false;
+        return base.DefenseAreaAbility(out act);
     }
 }

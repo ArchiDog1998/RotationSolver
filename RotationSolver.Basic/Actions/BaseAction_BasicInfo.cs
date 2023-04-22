@@ -5,6 +5,8 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction : IBaseAction
 {
+    internal static CanUseOption OtherOption { get; set; } = CanUseOption.None;
+
     Action _action;
     ActionOption _option;
 

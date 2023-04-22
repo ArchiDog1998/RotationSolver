@@ -500,4 +500,6 @@ public enum StatusID : ushort
     Oblation = 2682,
 
     TheBlackestNight = 1178,
+
+    VortexBarrier = 3012,
 }

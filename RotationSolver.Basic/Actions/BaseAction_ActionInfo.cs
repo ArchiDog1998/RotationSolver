@@ -42,6 +42,8 @@ public partial class BaseAction
 
     public unsafe virtual bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
     {
+        option |= OtherOption;
+
         act = this;
         var mustUse = option.HasFlag(CanUseOption.MustUse);
 
@@ -86,7 +88,7 @@ public partial class BaseAction
         {
             if (option.HasFlag(CanUseOption.OnLastAbility))
             {
-                if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinPing) return false;
+                if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock) return false;
             }
             else if (!option.HasFlag(CanUseOption.IgnoreClippingCheck))
             {

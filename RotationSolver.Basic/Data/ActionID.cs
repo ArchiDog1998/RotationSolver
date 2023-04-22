@@ -544,7 +544,7 @@ public enum ActionID : uint
 
     AbyssalDrain = 3641,
 
-    CarveandSpit = 3643,
+    CarveAndSpit = 3643,
 
     BloodSpiller = 7392,
 

@@ -281,15 +281,23 @@ public static class DataCenter
     {
         get
         {
-            var recs = _damages.Where(r => DateTime.Now - r.ReceiveTime < TimeSpan.FromMilliseconds(5));
+            try
+            {
+                var recs = _damages.Where(r => DateTime.Now - r.ReceiveTime < TimeSpan.FromMilliseconds(5));
 
-            if(!recs.Any()) return 0;
-            
-            var damages = recs.Sum(r => r.Ratio);
+                if (!recs.Any()) return 0;
 
-            var time = recs.Last().ReceiveTime - recs.First().ReceiveTime + TimeSpan.FromMilliseconds(2.5f);
+                var damages = recs.Sum(r => r.Ratio);
 
-            return damages / (float)time.TotalSeconds;
+                var time = recs.Last().ReceiveTime - recs.First().ReceiveTime + TimeSpan.FromMilliseconds(2.5f);
+
+                return damages / (float)time.TotalSeconds;
+
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
 
@@ -304,8 +312,9 @@ public static class DataCenter
     public static ActionID LastAbility { get; private set; } = 0;
     public static float Ping { get; private set; } = 0.07f;
 
-    public const float MinPing = 0.6f;
-    public static void AddActionRec(Action act)
+    public const float MinAnimationLock = 0.6f;
+    const float MAX_PING = 0.2f;
+    public static unsafe void AddActionRec(Action act)
     {
         var id = (ActionID)act.RowId;
 
@@ -315,10 +324,18 @@ public static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
-                Ping = WeaponElapsed;
+                if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
+                {
+                    Ping = Math.Min(MAX_PING, WeaponElapsed);
+                }
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
+
+                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
+                {
+                    Ping = Math.Min(MAX_PING, ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed);
+                }
                 break;
             default:
                 return;

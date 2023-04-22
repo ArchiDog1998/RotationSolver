@@ -2,8 +2,18 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SAM_Base : CustomRotation
 {
-    private static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
     public override MedicineType MedicineType => MedicineType.Strength;
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
+
+    protected static bool HasMoon => Player.HasStatus(true, StatusID.Fugetsu);
+
+    protected static bool HasFlower => Player.HasStatus(true, StatusID.Fuka);
+
+    protected static bool IsMoonTimeLessThanFlower
+        => Player.StatusTime(true, StatusID.Fugetsu) < Player.StatusTime(true, StatusID.Fuka);
+
+    #region JobGauge
+    static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
 
     protected static bool HasSetsu => JobGauge.HasSetsu;
 
@@ -15,16 +25,11 @@ public abstract class SAM_Base : CustomRotation
 
     protected static byte MeditationStacks => JobGauge.MeditationStacks;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
-
     protected static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
+    #endregion
 
-    protected static bool HaveMoon => Player.HasStatus(true, StatusID.Fugetsu);
-    protected static float MoonTime => Player.StatusTime(true, StatusID.Fugetsu);
-    protected static bool HaveFlower => Player.HasStatus(true, StatusID.Fuka);
-    protected static float FlowerTime => Player.StatusTime(true, StatusID.Fuka);
 
-    #region Single
+    #region Attack Single
     public static IBaseAction Hakaze { get; } = new BaseAction(ActionID.Hakaze);
 
     public static IBaseAction Jinpu { get; } = new BaseAction(ActionID.Jinpu);
@@ -43,7 +48,7 @@ public abstract class SAM_Base : CustomRotation
     };
     #endregion
 
-    #region AoE
+    #region Attack Area
     public static IBaseAction Fuga { get; } = new BaseAction(ActionID.Fuga);
 
     public static IBaseAction Fuko { get; } = new BaseAction(ActionID.Fuko);
@@ -169,23 +174,23 @@ public abstract class SAM_Base : CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HissatsuGyoten)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (HissatsuGyoten.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
-        return false;
+        if (HissatsuGyoten.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
     }
 
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
-        return false;
+        return base.DefenseAreaAbility(out act);
     }
 
     [RotationDesc(ActionID.ThirdEye)]
     protected override bool DefenseSingleAbility(out IAction act)
     {
         if (ThirdEye.CanUse(out act)) return true;
-        return false;
+        return base.DefenseSingleAbility(out act);
     }
 }

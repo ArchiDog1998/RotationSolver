@@ -83,19 +83,15 @@ public static class IActionHelper
     }
 
     public static bool IsTheSameTo(this IAction action, bool isAdjust, params IAction[] actions)
+        => action.IsTheSameTo(GetIDFromActions(isAdjust, actions));
+
+    public static bool IsTheSameTo(this IAction action, params ActionID[] actions)
     {
         if (action == null) return false;
-        return IsActionID(isAdjust ? (ActionID)action.AdjustedID : (ActionID)action.ID, GetIDFromActions(isAdjust, actions));
+        return IsActionID((ActionID)action.AdjustedID, actions);
     }
 
-    private static bool IsActionID(ActionID id, params ActionID[] ids)
-    {
-        foreach (var i in ids)
-        {
-            if (i == id) return true;
-        }
-        return false;
-    }
+    private static bool IsActionID(ActionID id, params ActionID[] ids) => ids.Contains(id);
 
     private static ActionID[] GetIDFromActions(bool isAdjust, params IAction[] actions)
     {

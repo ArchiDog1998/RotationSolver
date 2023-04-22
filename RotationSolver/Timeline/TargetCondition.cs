@@ -47,7 +47,7 @@ internal class TargetCondition : ICondition
         }
         else
         {
-            tar = IsTarget ? (BattleChara)Service.TargetManager.Target : Service.Player;
+            tar = IsTarget ? Service.TargetManager.Target as BattleChara : Service.Player;
             tar ??= Service.Player;
         }
 

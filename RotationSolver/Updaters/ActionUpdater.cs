@@ -193,7 +193,7 @@ internal static class ActionUpdater
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return;
 
         //The last one.
-        if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinPing > DataCenter.WeaponRemain)
+        if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock > DataCenter.WeaponRemain)
         {
             if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + DataCenter.Ping + Service.Config.ActionAhead) return;
             RSCommands.DoAnAction(false);

@@ -2,24 +2,41 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class WAR_Base : CustomRotation
 {
-    private static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    protected static byte BeastGauge => JobGauge.BeastGauge;
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
-    private sealed protected override IBaseAction TankStance => Defiance;
 
-    public static IBaseAction Defiance { get; } = new BaseAction(ActionID.Defiance, ActionOption.Defense);
+    static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
 
+    protected static byte BeastGauge => JobGauge.BeastGauge;
+
+    #region Attack Single
+    /// <summary>
+    /// 1
+    /// </summary>
     public static IBaseAction HeavySwing { get; } = new BaseAction(ActionID.HeavySwing);
 
+    /// <summary>
+    /// 2
+    /// </summary>
     public static IBaseAction Maim { get; } = new BaseAction(ActionID.Maim);
 
+    /// <summary>
+    /// 3
+    /// </summary>
     public static IBaseAction StormsPath { get; } = new BaseAction(ActionID.StormsPath);
 
+    /// <summary>
+    /// 4
+    /// </summary>
     public static IBaseAction StormsEye { get; } = new BaseAction(ActionID.StormsEye)
     {
         ActionCheck = b => Player.WillStatusEndGCD(9, 0, true, StatusID.SurgingTempest),
+    };
+
+    public static IBaseAction InnerBeast { get; } = new BaseAction(ActionID.InnerBeast)
+    {
+        ActionCheck = b => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease),
     };
 
     public static IBaseAction Tomahawk { get; } = new BaseAction(ActionID.Tomahawk)
@@ -35,25 +52,44 @@ public abstract class WAR_Base : CustomRotation
 
     public static IBaseAction Upheaval { get; } = new BaseAction(ActionID.Upheaval)
     {
+        //TODO: Why is that status?
         StatusNeed = new StatusID[] { StatusID.SurgingTempest },
     };
+    #endregion
 
+    #region Attack Area
+    /// <summary>
+    /// 1
+    /// </summary>
     public static IBaseAction Overpower { get; } = new BaseAction(ActionID.Overpower);
 
+    /// <summary>
+    /// 2
+    /// </summary>
     public static IBaseAction MythrilTempest { get; } = new BaseAction(ActionID.MythrilTempest);
-
-    public static IBaseAction Orogeny { get; } = new BaseAction(ActionID.Orogeny);
-
-    public static IBaseAction InnerBeast { get; } = new BaseAction(ActionID.InnerBeast)
-    {
-        ActionCheck = b => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease),
-    };
 
     public static IBaseAction SteelCyclone { get; } = new BaseAction(ActionID.SteelCyclone)
     {
         ActionCheck = InnerBeast.ActionCheck,
     };
 
+    public static IBaseAction PrimalRend { get; } = new BaseAction(ActionID.PrimalRend)
+    {
+        StatusNeed = new[] { StatusID.PrimalRendReady }
+    };
+
+    public static IBaseAction Orogeny { get; } = new BaseAction(ActionID.Orogeny);
+
+    #endregion
+
+    #region Heal
+    private sealed protected override IBaseAction TankStance => Defiance;
+
+    public static IBaseAction Defiance { get; } = new BaseAction(ActionID.Defiance, ActionOption.Defense);
+    #endregion
+
+
+    #region Support
     public static IBaseAction Infuriate { get; } = new BaseAction(ActionID.Infuriate)
     {
         StatusProvide = new[] { StatusID.NascentChaos },
@@ -67,13 +103,13 @@ public abstract class WAR_Base : CustomRotation
     {
         ActionCheck = b => HasHostilesInRange && !InnerRelease.IsCoolingDown,
     };
+    #endregion
 
+    #region Defense Ability
     public static IBaseAction ThrillOfBattle { get; } = new BaseAction(ActionID.ThrillOfBattle, ActionOption.Defense);
 
     public static IBaseAction Equilibrium { get; } = new BaseAction(ActionID.Equilibrium, ActionOption.Defense);
 
-
-    #region Defense Ability
     public static IBaseAction Vengeance { get; } = new BaseAction(ActionID.Vengeance, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
@@ -98,12 +134,6 @@ public abstract class WAR_Base : CustomRotation
     };
     #endregion
 
-
-    public static IBaseAction PrimalRend { get; } = new BaseAction(ActionID.PrimalRend)
-    {
-        StatusNeed = new[] { StatusID.PrimalRendReady }
-    };
-
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
@@ -111,16 +141,16 @@ public abstract class WAR_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Onslaught)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (Onslaught.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
-        return false;
+        if (Onslaught.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
     }
 
     [RotationDesc(ActionID.PrimalRend)]
     protected sealed override bool MoveForwardGCD(out IAction act)
     {
         if (PrimalRend.CanUse(out act, CanUseOption.MustUse)) return true;
-        return false;
+        return base.MoveForwardGCD(out act);
     }
 }

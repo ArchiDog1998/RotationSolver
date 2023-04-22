@@ -2,29 +2,25 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SGE_Base : CustomRotation
 {
-    private static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
+    public override MedicineType MedicineType => MedicineType.Strength;
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
+
+    #region Job Gauge
+    static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
 
     protected static bool HasEukrasia => JobGauge.Eukrasia;
     protected static byte Addersgall => JobGauge.Addersgall;
 
     protected static byte Addersting => JobGauge.Addersting;
-    public override MedicineType MedicineType => MedicineType.Strength;
 
-    protected static bool AddersgallEndAfter(float time)
-    {
-        return EndAfter(JobGauge.AddersgallTimer / 1000f, time);
-    }
+    protected static float AddersgallTimer => JobGauge.AddersgallTimer / 1000f;
+    protected static bool AddersgallEndAfter(float time) => EndAfter(AddersgallTimer, time);
 
-    protected static bool AddersgallEndAfterGCD(uint gctCount = 0, int abilityCount = 0)
-    {
-        return EndAfterGCD(JobGauge.AddersgallTimer / 1000f, gctCount, abilityCount);
-    }
+    protected static bool AddersgallEndAfterGCD(uint gctCount = 0, float offset = 0)
+        => EndAfterGCD(AddersgallTimer, gctCount, offset);
+    #endregion
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
-    private sealed protected override IBaseAction Raise => Egeiro;
-
-    public static IBaseAction Egeiro { get; } = new BaseAction(ActionID.Egeiro, ActionOption.Friendly);
-
+    #region Attack
     public static IBaseAction Dosis { get; } = new BaseAction(ActionID.Dosis);
 
     public static IBaseAction EukrasianDosis { get; } = new BaseAction(ActionID.EukrasianDosis, ActionOption.Dot)
@@ -36,6 +32,8 @@ public abstract class SGE_Base : CustomRotation
              StatusID.EukrasianDosis3
         },
     };
+    public static IBaseAction Dyskrasia { get; } = new BaseAction(ActionID.Dyskrasia);
+
 
     public static IBaseAction Phlegma { get; } = new BaseAction(ActionID.Phlegma);
 
@@ -43,6 +41,22 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Phlegma3 { get; } = new BaseAction(ActionID.Phlegma3);
 
+    public static IBaseAction Toxikon { get; } = new BaseAction(ActionID.Toxikon)
+    {
+        ActionCheck = b => Addersting > 0,
+    };
+
+    public static IBaseAction Rhizomata { get; } = new BaseAction(ActionID.Rhizomata)
+    {
+        ActionCheck = b => Addersgall < 3,
+    };
+
+    public static IBaseAction Pneuma { get; } = new BaseAction(ActionID.Pneuma);
+    #endregion
+
+    #region Heal
+    private sealed protected override IBaseAction Raise => Egeiro;
+    public static IBaseAction Egeiro { get; } = new BaseAction(ActionID.Egeiro, ActionOption.Friendly);
     public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, ActionOption.Heal);
 
     public static IBaseAction Kardia { get; } = new BaseAction(ActionID.Kardia, ActionOption.Heal)
@@ -71,26 +85,14 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Soteria { get; } = new BaseAction(ActionID.Soteria, ActionOption.Heal);
 
-    public static IBaseAction Icarus { get; } = new BaseAction(ActionID.Icarus, ActionOption.EndSpecial)
-    {
-        ChoiceTarget = TargetFilter.FindTargetForMoving,
-    };
-
-    public static IBaseAction Druochole { get; } = new BaseAction(ActionID.Druochole, ActionOption.Heal)
-    {
-        ActionCheck = b => JobGauge.Addersgall > 0,
-    };
-
-    public static IBaseAction Dyskrasia { get; } = new BaseAction(ActionID.Dyskrasia);
-
     public static IBaseAction Kerachole { get; } = new BaseAction(ActionID.Kerachole, ActionOption.Heal)
     {
-        ActionCheck = b => JobGauge.Addersgall > 0,
+        ActionCheck = b => Addersgall > 0,
     };
 
     public static IBaseAction Ixochole { get; } = new BaseAction(ActionID.Ixochole, ActionOption.Heal)
     {
-        ActionCheck = b => JobGauge.Addersgall > 0,
+        ActionCheck = b => Addersgall > 0,
     };
 
     public static IBaseAction Zoe { get; } = new BaseAction(ActionID.Zoe, ActionOption.Heal);
@@ -98,39 +100,13 @@ public abstract class SGE_Base : CustomRotation
     public static IBaseAction Taurochole { get; } = new BaseAction(ActionID.Taurochole, ActionOption.Heal)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
-        ActionCheck = b => JobGauge.Addersgall > 0,
+        ActionCheck = b => Addersgall > 0,
     };
 
-    public static IBaseAction Toxikon { get; } = new BaseAction(ActionID.Toxikon)
+    public static IBaseAction Druochole { get; } = new BaseAction(ActionID.Druochole, ActionOption.Heal)
     {
-        ActionCheck = b => JobGauge.Addersting > 0,
+        ActionCheck = b => Addersgall > 0,
     };
-
-    public static IBaseAction Haima { get; } = new BaseAction(ActionID.Haima, ActionOption.Heal)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-    };
-
-    public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, ActionOption.Heal)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-    };
-
-    public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, ActionOption.Heal);
-
-    public static IBaseAction Rhizomata { get; } = new BaseAction(ActionID.Rhizomata)
-    {
-        ActionCheck = b => JobGauge.Addersgall < 3,
-    };
-
-    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, ActionOption.Heal);
-
-    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, ActionOption.Heal);
-
-    public static IBaseAction Krasis { get; } = new BaseAction(ActionID.Krasis, ActionOption.Heal);
-
-    public static IBaseAction Pneuma { get; } = new BaseAction(ActionID.Pneuma);
-
     public static IBaseAction Pepsis { get; } = new BaseAction(ActionID.Pepsis, ActionOption.Heal)
     {
         ActionCheck = b =>
@@ -146,11 +122,34 @@ public abstract class SGE_Base : CustomRotation
         },
     };
 
-    [RotationDesc(ActionID.Icarus)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    public static IBaseAction Haima { get; } = new BaseAction(ActionID.Haima, ActionOption.Heal)
     {
-        //…Ò“Ì
-        if (Icarus.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
-        return false;
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
+    public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, ActionOption.Heal)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
+    public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, ActionOption.Heal);
+
+    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, ActionOption.Heal);
+
+    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, ActionOption.Heal);
+
+    public static IBaseAction Krasis { get; } = new BaseAction(ActionID.Krasis, ActionOption.Heal);
+    #endregion
+
+    public static IBaseAction Icarus { get; } = new BaseAction(ActionID.Icarus, ActionOption.EndSpecial)
+    {
+        ChoiceTarget = TargetFilter.FindTargetForMoving,
+    };
+
+    [RotationDesc(ActionID.Icarus)]
+    protected sealed override bool MoveForwardAbility(out IAction act)
+    {
+        if (Icarus.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
     }
 }

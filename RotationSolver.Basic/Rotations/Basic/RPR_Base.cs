@@ -2,9 +2,14 @@
 
 public abstract class RPR_Base : CustomRotation
 {
-    private static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
-
     public override MedicineType MedicineType => MedicineType.Strength;
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
+    protected static bool Enshrouded => Player.HasStatus(true, StatusID.Enshrouded);
+
+    protected static bool SoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
+
+    #region JobGauge
+    static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
 
     protected static byte Soul => JobGauge.Soul;
 
@@ -13,40 +18,34 @@ public abstract class RPR_Base : CustomRotation
     protected static byte LemureShroud => JobGauge.LemureShroud;
 
     protected static byte VoidShroud => JobGauge.VoidShroud;
+    #endregion
 
-    protected static bool Enshrouded => Player.HasStatus(true, StatusID.Enshrouded);
-
-    protected static bool SoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
-
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
-
-    //public class PRPAction : BaseAction
-    //{
-    //    public override EnemyPositional EnemyPositional => Player.HasStatus(true, StatusID.Enshrouded)
-    //        ? EnemyPositional.None : base.EnemyPositional;
-    //    internal PRPAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
-    //        : base(actionID, isFriendly, shouldEndSpecial)
-    //    {
-    //    }
-    //}
-
-    #region Single
+    #region Attack Single
+    /// <summary>
+    /// 1
+    /// </summary>
     public static IBaseAction Slice { get; } = new BaseAction(ActionID.Slice)
     {
         ActionCheck = b => !Enshrouded && !SoulReaver,
     };
 
+    /// <summary>
+    /// 2
+    /// </summary>
     public static IBaseAction WaxingSlice { get; } = new BaseAction(ActionID.WaxingSlice)
     {
         ActionCheck = Slice.ActionCheck,
     };
 
+    /// <summary>
+    /// 3
+    /// </summary>
     public static IBaseAction InfernalSlice { get; } = new BaseAction(ActionID.InfernalSlice)
     {
         ActionCheck = Slice.ActionCheck,
     };
 
-    public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, ActionOption.Dot)
+        public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = b => !SoulReaver,
@@ -58,12 +57,18 @@ public abstract class RPR_Base : CustomRotation
     };
     #endregion
 
-    #region AoE
+    #region Attack Area
+    /// <summary>
+    /// 1
+    /// </summary>
     public static IBaseAction SpinningScythe { get; } = new BaseAction(ActionID.SpinningScythe)
     {
         ActionCheck = Slice.ActionCheck,
     };
 
+    /// <summary>
+    /// 2
+    /// </summary>
     public static IBaseAction NightmareScythe { get; } = new BaseAction(ActionID.NightmareScythe)
     {
         ActionCheck = Slice.ActionCheck,
@@ -206,32 +211,23 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HellsIngress)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (HellsIngress.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
-        return false;
+        if (HellsIngress.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
     }
 
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
-        if (!SoulReaver && !Enshrouded)
-        {
-            if (Feint.CanUse(out act)) return true;
-        }
-
-        act = null;
-        return false;
+        if (!SoulReaver && !Enshrouded && Feint.CanUse(out act)) return true;
+        return base.DefenseAreaAbility(out act);
     }
 
     [RotationDesc(ActionID.ArcaneCrest)]
     protected override bool DefenseSingleAbility(out IAction act)
     {
-        if (!SoulReaver && !Enshrouded)
-        {
-            if (ArcaneCrest.CanUse(out act)) return true;
-        }
-
+        if (!SoulReaver && !Enshrouded && ArcaneCrest.CanUse(out act)) return true;
         return base.DefenseSingleAbility(out act);
     }
 }

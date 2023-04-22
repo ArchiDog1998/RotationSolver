@@ -2,22 +2,19 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class AST_Base : CustomRotation
 {
-    private static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
-
     public override MedicineType MedicineType => MedicineType.Mind;
 
-    private static CardType DrawnCard => JobGauge.DrawnCard;
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Astrologian };
+
+    static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
+
+    protected static CardType DrawnCard => JobGauge.DrawnCard;
 
     protected static CardType DrawnCrownCard => JobGauge.DrawnCrownCard;
 
     protected static SealType[] Seals => JobGauge.Seals;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Astrologian };
-
-    private sealed protected override IBaseAction Raise => Ascend;
-
-    public static IBaseAction Ascend { get; } = new BaseAction(ActionID.Ascend, ActionOption.Friendly);
-
+    #region Attack
     public static IBaseAction Malefic { get; } = new BaseAction(ActionID.Malefic);
 
     public static IBaseAction Combust { get; } = new BaseAction(ActionID.Combust, ActionOption.Dot)
@@ -32,6 +29,12 @@ public abstract class AST_Base : CustomRotation
     };
 
     public static IBaseAction Gravity { get; } = new BaseAction(ActionID.Gravity);
+    #endregion
+
+    #region Heal Single
+    private sealed protected override IBaseAction Raise => Ascend;
+
+    public static IBaseAction Ascend { get; } = new BaseAction(ActionID.Ascend, ActionOption.Friendly);
 
     public static IBaseAction Benefic { get; } = new BaseAction(ActionID.Benefic, ActionOption.Heal);
 
@@ -45,19 +48,9 @@ public abstract class AST_Base : CustomRotation
     public static IBaseAction EssentialDignity { get; } = new BaseAction(ActionID.EssentialDignity, ActionOption.Heal);
 
     public static IBaseAction Synastry { get; } = new BaseAction(ActionID.Synastry, ActionOption.Heal);
+    #endregion
 
-    public static IBaseAction CelestialIntersection { get; } = new BaseAction(ActionID.CelestialIntersection, ActionOption.Heal)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-
-        TargetStatus = new StatusID[] { StatusID.Intersection },
-    };
-
-    public static IBaseAction Exaltation { get; } = new BaseAction(ActionID.Exaltation, ActionOption.Heal)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-    };
-
+    #region Heal Area
     public static IBaseAction Helios { get; } = new BaseAction(ActionID.Helios, ActionOption.Heal);
 
     public static IBaseAction AspectedHelios { get; } = new BaseAction(ActionID.AspectedHelios, ActionOption.Hot)
@@ -70,15 +63,37 @@ public abstract class AST_Base : CustomRotation
 
     public static IBaseAction EarthlyStar { get; } = new BaseAction(ActionID.EarthlyStar, ActionOption.Heal);
 
-    public static IBaseAction CollectiveUnconscious { get; } = new BaseAction(ActionID.CollectiveUnconscious, ActionOption.Heal);
-
     public static IBaseAction Horoscope { get; } = new BaseAction(ActionID.Horoscope, ActionOption.Heal);
 
+    public static IBaseAction Macrocosmos { get; } = new BaseAction(ActionID.Macrocosmos, ActionOption.Heal);
+
+    #endregion
+
+    #region Defense Single
+
+    public static IBaseAction CelestialIntersection { get; } = new BaseAction(ActionID.CelestialIntersection, ActionOption.Defense)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+        TargetStatus = new StatusID[] { StatusID.Intersection },
+    };
+
+    public static IBaseAction Exaltation { get; } = new BaseAction(ActionID.Exaltation, ActionOption.Heal)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+    #endregion
+
+    #region Defense Area
+
+    public static IBaseAction CollectiveUnconscious { get; } = new BaseAction(ActionID.CollectiveUnconscious, ActionOption.Defense);
+
+    #endregion
+
+
+    #region Support
     public static IBaseAction Lightspeed { get; } = new BaseAction(ActionID.Lightspeed);
 
     public static IBaseAction NeutralSect { get; } = new BaseAction(ActionID.NeutralSect, ActionOption.Heal);
-
-    public static IBaseAction Macrocosmos { get; } = new BaseAction(ActionID.Macrocosmos, ActionOption.Heal);
 
     public static IBaseAction Astrodyne { get; } = new BaseAction(ActionID.Astrodyne)
     {
@@ -103,52 +118,49 @@ public abstract class AST_Base : CustomRotation
         ActionCheck = b => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)),
     };
 
+
     public static IBaseAction MinorArcana { get; } = new BaseAction(ActionID.MinorArcana)
     {
         ActionCheck = b => InCombat && DrawnCrownCard == CardType.NONE,
     };
 
-    //public static IBaseAction CrownPlay { get; } = new BaseAction(ActionID.CrownPlay)
-    //{
-    //    ActionCheck = b => DrawnCrownCard is CardType.LADY or CardType.LORD,
-    //};
-
-    private static IBaseAction Balance { get; } = new BaseAction(ActionID.Balance)
+    static IBaseAction Balance { get; } = new BaseAction(ActionID.Balance)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = b => DrawnCard == CardType.BALANCE,
     };
 
-    private static IBaseAction Arrow { get; } = new BaseAction(ActionID.Arrow)
+    static IBaseAction Arrow { get; } = new BaseAction(ActionID.Arrow)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = b => DrawnCard == CardType.ARROW,
     };
 
-    private static IBaseAction Spear { get; } = new BaseAction(ActionID.Spear)
+    static IBaseAction Spear { get; } = new BaseAction(ActionID.Spear)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = b => DrawnCard == CardType.SPEAR,
     };
 
-    private static IBaseAction Bole { get; } = new BaseAction(ActionID.Bole)
+    static IBaseAction Bole { get; } = new BaseAction(ActionID.Bole)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = b => DrawnCard == CardType.BOLE,
     };
 
-    private static IBaseAction Ewer { get; } = new BaseAction(ActionID.Ewer)
+    static IBaseAction Ewer { get; } = new BaseAction(ActionID.Ewer)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = b => DrawnCard == CardType.EWER,
 
     };
 
-    private static IBaseAction Spire { get; } = new BaseAction(ActionID.Spire)
+    static IBaseAction Spire { get; } = new BaseAction(ActionID.Spire)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = b => DrawnCard == CardType.SPIRE,
     };
+    #endregion
 
     protected static bool PlayCard(out IAction act)
     {
@@ -165,7 +177,7 @@ public abstract class AST_Base : CustomRotation
         return false;
     }
 
-    private static SealType GetCardSeal(CardType card)
+    static SealType GetCardSeal(CardType card)
     {
         switch (card)
         {
