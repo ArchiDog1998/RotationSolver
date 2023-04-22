@@ -97,6 +97,7 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.CastingActionTimeUntil:
+
                 if (!tar.IsCasting || tar.CastActionId == 0)
                 {
                     result = false;
@@ -276,8 +277,9 @@ internal class TargetCondition : ICondition
             case TargetConditionType.CastingActionTimeUntil:
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(150, ImGui.CalcTextSize(CastingActionTime.ToString()).X));
-                ImGui.InputFloat($"Seconds##CastingActionTime{GetHashCode()}", ref CastingActionTime, .1f);
-                
+                ImGui.InputFloat($"Seconds##CastingActionTimeUntil{GetHashCode()}", ref CastingActionTime, .1f);
+                //ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref CastingActionTime);
+
                 break;
         }
     }
