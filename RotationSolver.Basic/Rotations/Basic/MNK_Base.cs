@@ -59,7 +59,6 @@ public abstract class MNK_Base : CustomRotation
 
     public static IBaseAction FlintStrike { get; } = new BaseAction(ActionID.FlintStrike);
 
-    [Obsolete("Please use FlintStrike instead")]
     public static IBaseAction RisingPhoenix { get; } = new BaseAction(ActionID.RisingPhoenix);
 
     public static IBaseAction CelestialRevolution { get; } = new BaseAction(ActionID.CelestialRevolution);
@@ -67,7 +66,6 @@ public abstract class MNK_Base : CustomRotation
 
     public static IBaseAction TornadoKick { get; } = new BaseAction(ActionID.TornadoKick);
 
-    [Obsolete("Please use TornadoKick instead")]
     public static IBaseAction PhantomRush { get; } = new BaseAction(ActionID.PhantomRush);
 
     #endregion

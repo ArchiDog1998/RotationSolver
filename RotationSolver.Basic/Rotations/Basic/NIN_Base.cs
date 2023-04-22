@@ -174,7 +174,7 @@ public abstract class NIN_Base : CustomRotation
 
     public static INinAction Huton { get; } = new NinAction(ActionID.Huton, Jin, Chi, Ten)
     {
-        ActionCheck = b => JobGauge.HutonTimer == 0,
+        ActionCheck = b => HutonEndAfterGCD(),
     };
 
     public static INinAction Doton { get; } = new NinAction(ActionID.Doton, Jin, Ten, Chi)
@@ -223,6 +223,6 @@ public abstract class NIN_Base : CustomRotation
     protected override bool DefenseSingleAbility(out IAction act)
     {
         if (ShadeShift.CanUse(out act)) return true;
-        return DefenseSingleAbility(out act);
+        return base.DefenseSingleAbility(out act);
     }
 }
