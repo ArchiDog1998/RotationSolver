@@ -119,7 +119,10 @@ public abstract partial class CustomRotation
         }
         else if (gcdAction == null)
         {
+            BaseAction.OtherOption = CanUseOption.IgnoreClippingCheck;
             if (Ability(Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
+            BaseAction.OtherOption = CanUseOption.None;
+
             return null;
         }
         return gcdAction;

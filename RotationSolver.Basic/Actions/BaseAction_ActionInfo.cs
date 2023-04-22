@@ -42,6 +42,8 @@ public partial class BaseAction
 
     public unsafe virtual bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
     {
+        option |= OtherOption;
+
         act = this;
         var mustUse = option.HasFlag(CanUseOption.MustUse);
 
