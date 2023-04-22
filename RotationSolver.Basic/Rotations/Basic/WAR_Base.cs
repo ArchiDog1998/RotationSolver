@@ -113,7 +113,7 @@ public abstract class WAR_Base : CustomRotation
     [RotationDesc(ActionID.Onslaught)]
     protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (Onslaught.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
+        if (Onslaught.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
         return false;
     }
 

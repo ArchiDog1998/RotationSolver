@@ -9,7 +9,9 @@
 
 Download it at this url:
 
-`https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/pluginmaster.json`
+```
+https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/pluginmaster.json
+```
 
 ## Brief
 

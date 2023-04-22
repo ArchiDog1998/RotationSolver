@@ -203,7 +203,7 @@ public abstract class DNC_Base : CustomRotation
     [RotationDesc(ActionID.EnAvant)]
     protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (EnAvant.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
+        if (EnAvant.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
         return false;
     }
 

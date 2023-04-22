@@ -88,7 +88,7 @@ public partial class BaseAction
             {
                 if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinPing) return false;
             }
-            else
+            else if (!option.HasFlag(CanUseOption.IgnoreClippingCheck))
             {
                 if (DataCenter.NextAbilityToNextGCD < AnimationLockTime) return false;
             }

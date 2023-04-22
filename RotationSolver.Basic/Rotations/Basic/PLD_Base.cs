@@ -117,7 +117,7 @@ public abstract class PLD_Base : CustomRotation
     [RotationDesc(ActionID.Intervene)]
     protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
     {
-        if (Intervene.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option)) return true;
+        if (Intervene.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
         return false;
     }
 

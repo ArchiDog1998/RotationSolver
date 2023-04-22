@@ -32,12 +32,12 @@ internal static class ImGuiHelper
         }
     }
     public static void DrawEnableTexture<T>(this T texture, bool isSelected, Action selected,
-        Action<string> showToolTip = null, Action<Action<string>> additionalHeader = null,
+        Action<T> showToolTip = null, Action<Action<T>> additionalHeader = null,
         Action otherThing = null) where T : class, ITexture
     {
         showToolTip ??= text =>
         {
-            if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
+            if (!string.IsNullOrEmpty(text.Description)) ImGui.SetTooltip(text.Description);
         };
 
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
@@ -53,7 +53,7 @@ internal static class ImGuiHelper
         var desc = texture?.Description;
         if (ImGui.IsItemHovered())
         {
-            showToolTip(desc);
+            showToolTip(texture);
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
             {
                 selected?.Invoke();
@@ -72,7 +72,7 @@ internal static class ImGuiHelper
 
         if (ImGui.IsItemHovered())
         {
-            showToolTip(desc);
+            showToolTip(texture);
         }
 
         if(texture is IAction)
@@ -386,15 +386,15 @@ internal static class ImGuiHelper
                 var t = IconSet.GetTexture(IconSet.GetJobIcon(rotation, IconType.Framed));
                 ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
 
-                if (!string.IsNullOrEmpty(text))
+                if (!string.IsNullOrEmpty(text.Description))
                 {
                     ImGui.SameLine();
                     ImGui.Text("  ");
                     ImGui.SameLine();
-                    ImGui.Text(text);
+                    ImGui.Text(text.Description);
                 }
 
-                var type = rotation.GetType();
+                var type = text.GetType();
 
                 var attrs = new List<RotationDescAttribute> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
 
@@ -407,7 +407,7 @@ internal static class ImGuiHelper
                 {
                     foreach (var a in RotationDescAttribute.Merge(attrs))
                     {
-                        RotationDescAttribute.MergeToOne(a)?.Display(rotation);
+                        RotationDescAttribute.MergeToOne(a)?.Display(text);
                     }
                 }
                 catch (Exception ex)
@@ -420,7 +420,7 @@ internal static class ImGuiHelper
                     }
                     ImGui.Text(ex.StackTrace);
                 }
-            }, "Popup" + rotation.GetHashCode().ToString());
+            }, "Popup" + text.GetHashCode().ToString());
         },
         showToolTip =>
         {
@@ -442,7 +442,7 @@ internal static class ImGuiHelper
                         }
                         if (ImGui.IsItemHovered())
                         {
-                            showToolTip?.Invoke(r.Description);
+                            showToolTip?.Invoke(r);
                         }
                         ImGui.PopStyleColor();
                     }
