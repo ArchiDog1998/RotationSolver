@@ -34,6 +34,7 @@ internal class TargetCondition : ICondition
     public int Ability;
 
     public string CastingActionName = string.Empty;
+    public float CastingActionTime = 0f;
 
     public bool IsTrue(ICustomRotation combo)
     {
@@ -91,6 +92,17 @@ internal class TargetCondition : ICondition
                 var castName = Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(tar.CastActionId)?.Name.ToString();
 
                 result = CastingActionName == castName;
+                break;
+
+            case TargetConditionType.CastingActionTimeUntil:
+                if (CastingActionTime <= 0f || !tar.IsCasting)
+                {
+                    result = false;
+                    break;
+                }
+
+                var castTime = tar.TotalCastTime - tar.CurrentCastTime;
+                result = castTime < CastingActionTime;
                 break;
         }
 
@@ -169,6 +181,7 @@ internal class TargetCondition : ICondition
                 };
                 break;
 
+            case TargetConditionType.CastingActionTimeUntil:
             case TargetConditionType.Distance:
             case TargetConditionType.StatusEnd:
                 combos = new string[] { ">", "<=" };
@@ -253,7 +266,12 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.CastingAction:
                 ImGui.SameLine();
-                ImGui.InputText("##CastingActionName", ref CastingActionName, 100);
+                ImGui.InputText($"##CastingActionName{GetHashCode()}", ref CastingActionName, 100);
+                break;
+
+            case TargetConditionType.CastingActionTimeUntil:
+                ImGui.SameLine();
+                ConditionHelper.DrawDragFloat($"s##CastingActionTime{GetHashCode()}", ref CastingActionTime);
                 break;
         }
     }
@@ -268,4 +286,5 @@ public enum TargetConditionType : int
     StatusEnd,
     StatusEndGCD,
     CastingAction,
+    CastingActionTimeUntil
 }
