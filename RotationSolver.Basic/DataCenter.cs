@@ -305,6 +305,7 @@ public static class DataCenter
     public static float Ping { get; private set; } = 0.07f;
 
     public const float MinAnimationLock = 0.6f;
+    const float MAX_PING = 0.2f;
     public static unsafe void AddActionRec(Action act)
     {
         var id = (ActionID)act.RowId;
@@ -317,7 +318,7 @@ public static class DataCenter
                 LastAction = LastGCD = id;
                 if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
                 {
-                    Ping = WeaponElapsed;
+                    Ping = Math.Min(MAX_PING, WeaponElapsed);
                 }
                 break;
             case ActionCate.Ability:
@@ -325,7 +326,7 @@ public static class DataCenter
 
                 if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
                 {
-                    Ping = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
+                    Ping = Math.Min(MAX_PING, ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed);
                 }
                 break;
             default:
