@@ -117,7 +117,7 @@ public abstract partial class CustomRotation
 
             return gcdAction;
         }
-        else if (gcdAction == null)
+        else
         {
             BaseAction.OtherOption = CanUseOption.IgnoreClippingCheck;
             if (Ability(Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
@@ -125,7 +125,6 @@ public abstract partial class CustomRotation
 
             return null;
         }
-        return gcdAction;
     }
 
     protected virtual IAction CountDownAction(float remainTime) => null;

@@ -20,16 +20,6 @@ public abstract class RPR_Base : CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
 
-    //public class PRPAction : BaseAction
-    //{
-    //    public override EnemyPositional EnemyPositional => Player.HasStatus(true, StatusID.Enshrouded)
-    //        ? EnemyPositional.None : base.EnemyPositional;
-    //    internal PRPAction(ActionID actionID, bool isFriendly = false, bool shouldEndSpecial = false)
-    //        : base(actionID, isFriendly, shouldEndSpecial)
-    //    {
-    //    }
-    //}
-
     #region Single
     public static IBaseAction Slice { get; } = new BaseAction(ActionID.Slice)
     {
