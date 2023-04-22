@@ -144,10 +144,10 @@ public abstract class PLD_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Intervene)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (Intervene.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
-        return base.MoveForwardAbility(out act, option);
+        if (Intervene.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
     }
 
     [RotationDesc(ActionID.Clemency)]

@@ -236,9 +236,9 @@ public abstract class DNC_Base : CustomRotation
     #endregion
 
     [RotationDesc(ActionID.EnAvant)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (EnAvant.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
+        if (EnAvant.CanUse(out act)) return true;
         return false;
     }
 

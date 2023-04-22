@@ -153,10 +153,9 @@ public abstract class DRK_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.Plunge)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (Plunge.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
-
+        if (Plunge.CanUse(out act)) return true;
         return false;
     }
 }

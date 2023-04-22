@@ -169,9 +169,9 @@ public abstract class SAM_Base : CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HissatsuGyoten)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (HissatsuGyoten.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
+        if (HissatsuGyoten.CanUse(out act)) return true;
         return false;
     }
 

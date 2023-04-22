@@ -106,10 +106,10 @@ public abstract class MNK_Base : CustomRotation
     };
 
     [RotationDesc(ActionID.Thunderclap)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (Thunderclap.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
-        return base.MoveForwardAbility(out act, option);
+        if (Thunderclap.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
     }
 
     [RotationDesc(ActionID.Feint)]

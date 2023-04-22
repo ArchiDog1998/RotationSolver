@@ -196,9 +196,9 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     [RotationDesc(ActionID.HellsIngress)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (HellsIngress.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
+        if (HellsIngress.CanUse(out act)) return true;
         return false;
     }
 

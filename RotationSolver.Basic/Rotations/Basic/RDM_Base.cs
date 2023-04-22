@@ -139,10 +139,10 @@ public abstract class RDM_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.CorpsACorps)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (CorpsACorps.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
-        return base.MoveForwardAbility(out act, option);
+        if (CorpsACorps.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
     }
 
     [RotationDesc(ActionID.Addle, ActionID.MagickBarrier)]

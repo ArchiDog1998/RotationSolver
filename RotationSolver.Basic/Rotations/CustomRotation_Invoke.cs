@@ -1,4 +1,5 @@
 ﻿using Dalamud.Logging;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -15,7 +16,11 @@ public abstract partial class CustomRotation
         var role = Job.GetJobRole();
 
         ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
-        var movingTarget = MoveForwardAbility(out act, CanUseOption.IgnoreTarget);
+
+        BaseAction.OtherOption = CanUseOption.IgnoreTarget | CanUseOption.EmptyOrSkipCombo | CanUseOption.IgnoreClippingCheck;
+        var movingTarget = MoveForwardAbility(out act);
+        BaseAction.OtherOption = CanUseOption.None;
+
         ActionMoveForwardAbility = movingTarget ? act : null;
         MoveTarget = (movingTarget && act is IBaseAction a) ? a.Target : null;
 

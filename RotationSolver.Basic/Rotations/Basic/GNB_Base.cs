@@ -164,9 +164,9 @@ public abstract class GNB_Base : CustomRotation
     }
 
     [RotationDesc(ActionID.RoughDivide)]
-    protected sealed override bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (RoughDivide.CanUse(out act, CanUseOption.EmptyOrSkipCombo | option | CanUseOption.IgnoreClippingCheck)) return true;
+        if (RoughDivide.CanUse(out act)) return true;
         return false;
     }
 }
