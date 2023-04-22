@@ -1,4 +1,8 @@
-﻿using RotationSolver.Localization;
+﻿using System.Xml.Linq;
+
+using Dalamud.Logging;
+
+using RotationSolver.Localization;
 using RotationSolver.UI;
 
 namespace RotationSolver.Timeline;
@@ -24,7 +28,7 @@ internal class ConditionSet : ICondition
             ImGuiHelper.DrawCondition(IsTrue(combo));
 
             ImGui.SameLine();
-
+            ImGui.SetNextItemWidth(65);
             int isAnd = IsAnd ? 1 : 0;
             if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
             {
@@ -68,6 +72,7 @@ internal class ConditionSet : ICondition
     {
         if (ImGui.Selectable(name))
         {
+            
             Conditions.Add(Activator.CreateInstance<T>());
             ImGui.CloseCurrentPopup();
         }

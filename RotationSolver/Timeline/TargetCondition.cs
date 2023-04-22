@@ -34,7 +34,7 @@ internal class TargetCondition : ICondition
     public int Ability;
 
     public string CastingActionName = string.Empty;
-    public float CastingActionTime = 0f;
+    public float CastingActionTime = 0.8f;
 
     public bool IsTrue(ICustomRotation combo)
     {
@@ -95,7 +95,7 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.CastingActionTimeUntil:
-                if (CastingActionTime <= 0f || !tar.IsCasting)
+                if (CastingActionTime <= 0 || !tar.IsCasting)
                 {
                     result = false;
                     break;
@@ -157,7 +157,6 @@ internal class TargetCondition : ICondition
         }
 
         ImGui.SameLine();
-
         ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref TargetConditionType, EnumTranslations.ToName);
 
         var condition = Condition ? 1 : 0;
@@ -266,12 +265,16 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.CastingAction:
                 ImGui.SameLine();
-                ImGui.InputText($"##CastingActionName{GetHashCode()}", ref CastingActionName, 100);
+                //ImGui.SetNextItemWidth(Math.Max(150, ImGui.CalcTextSize(CastingActionName).X));
+                ImGuiHelper.SetNextWidthWithName(CastingActionName);
+                ImGui.InputText($"Ability name##CastingActionName{GetHashCode()}", ref CastingActionName, 100);
                 break;
 
             case TargetConditionType.CastingActionTimeUntil:
                 ImGui.SameLine();
-                ConditionHelper.DrawDragFloat($"s##CastingActionTime{GetHashCode()}", ref CastingActionTime);
+                ImGui.SetNextItemWidth(Math.Max(150, ImGui.CalcTextSize(CastingActionTime.ToString()).X));
+                ImGui.InputFloat($"Seconds##CastingActionTime{GetHashCode()}", ref CastingActionTime, .1f);
+                
                 break;
         }
     }
