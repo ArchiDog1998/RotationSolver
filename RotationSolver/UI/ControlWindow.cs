@@ -321,10 +321,10 @@ internal class ControlWindow : Window
 
     static readonly Dictionary<uint, uint> _actionIcons = new Dictionary<uint, uint>();
 
-    static TextureWrap GetTexture(IAction action)
+    static TextureWrap GetTexture(IAction action, bool isAdjust = true)
     {
         uint iconId = 0;
-        if(action != null && !_actionIcons.TryGetValue(action.AdjustedID, out iconId))
+        if(action != null && !_actionIcons.TryGetValue(isAdjust ? action.AdjustedID : action.ID, out iconId))
         {
             iconId = action is IBaseAction ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon
                 : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(action.AdjustedID).Icon;
@@ -411,9 +411,9 @@ internal class ControlWindow : Window
         }
     }
 
-    internal static (Vector2, Vector2) DrawIAction(IAction action, float width, float percent)
+    internal static (Vector2, Vector2) DrawIAction(IAction action, float width, float percent, bool isAdjust = true)
     {
-        var result = DrawIAction(GetTexture(action).ImGuiHandle, width, action == null ? -1 : percent);
+        var result = DrawIAction(GetTexture(action, isAdjust).ImGuiHandle, width, action == null ? -1 : percent);
         if (action != null) ImGuiHelper.HoveredString(action.Name, () =>
         {
             if (DataCenter.StateType == StateCommandType.Cancel)

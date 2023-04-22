@@ -56,7 +56,7 @@ internal class CooldownWindow : InfoWindow
         {
             r = !act.EnoughLevel ? 0: recast == 0 || !act.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
         }
-        var pair = ControlWindow.DrawIAction(act, width, r);
+        var pair = ControlWindow.DrawIAction(act, width, r, false);
         var pos = pair.Item1;
         var size = pair.Item2;
         ImGuiHelper.HoveredString(act.Name + "\n" + LocalizationManager.RightLang.ConfigWindow_Control_ClickToUse);
