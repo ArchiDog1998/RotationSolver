@@ -502,4 +502,6 @@ public enum StatusID : ushort
     TheBlackestNight = 1178,
 
     VortexBarrier = 3012,
+
+    LivingDead = 810,
 }
