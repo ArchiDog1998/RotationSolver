@@ -2,37 +2,53 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class DRG_Base : CustomRotation
 {
-    private static DRGGauge JobGauge => Service.JobGauges.Get<DRGGauge>();
+    public override MedicineType MedicineType => MedicineType.Strength;
 
-    private static float LOTDTime => JobGauge.LOTDTimer / 1000f;
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
 
+
+    #region Job Gauge
+    static DRGGauge JobGauge => Service.JobGauges.Get<DRGGauge>();
+
+    protected static byte EyeCount => JobGauge.EyeCount;
+
+    /// <summary>
+    /// Firstminds Count
+    /// </summary>
+    protected static byte FocusCount => JobGauge.FirstmindsFocusCount;
+
+    static float LOTDTime => JobGauge.LOTDTimer / 1000f;
 
     protected static bool SongEndAfter(float time) => EndAfter(LOTDTime, time);
 
     protected static bool SongEndAfterGCD(uint gctCount = 0, float offset = 0)
         => EndAfterGCD(LOTDTime, gctCount, offset);
+    #endregion
 
-    protected static byte EyeCount => JobGauge.EyeCount;
-
+    #region Attack Single
     /// <summary>
-    /// FocusCount
+    /// 1
     /// </summary>
-    protected static byte FocusCount => JobGauge.FirstmindsFocusCount;
-
-    public override MedicineType MedicineType => MedicineType.Strength;
-
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
-
     public static IBaseAction TrueThrust { get; } = new BaseAction(ActionID.TrueThrust);
 
+    /// <summary>
+    /// 2
+    /// </summary>
     public static IBaseAction VorpalThrust { get; } = new BaseAction(ActionID.VorpalThrust)
     {
         ComboIds = new[] { ActionID.RaidenThrust }
     };
 
-    public static IBaseAction HeavensThrust { get; } = new BaseAction(ActionID.HeavensThrust);
-
+    /// <summary>
+    /// 3
+    /// </summary>
     public static IBaseAction FullThrust { get; } = new BaseAction(ActionID.FullThrust);
+
+    /// <summary>
+    /// 3
+    /// </summary>
+    [Obsolete("Please use Full Thrust instead.")]
+    public static IBaseAction HeavensThrust { get; } = new BaseAction(ActionID.HeavensThrust);
 
     public static IBaseAction Disembowel { get; } = new BaseAction(ActionID.Disembowel)
     {
@@ -57,20 +73,7 @@ public abstract class DRG_Base : CustomRotation
         ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
     };
 
-    public static IBaseAction DoomSpike { get; } = new BaseAction(ActionID.DoomSpike);
-
-    public static IBaseAction SonicThrust { get; } = new BaseAction(ActionID.SonicThrust)
-    {
-        ComboIds = new[] { ActionID.DraconianFury }
-    };
-
-    public static IBaseAction CoerthanTorment { get; } = new BaseAction(ActionID.CoerthanTorment);
-
     public static IBaseAction SpineShatterDive { get; } = new BaseAction(ActionID.SpineShatterDive);
-
-    public static IBaseAction DragonFireDive { get; } = new BaseAction(ActionID.DragonFireDive);
-
-    public static IBaseAction ElusiveJump { get; } = new BaseAction(ActionID.ElusiveJump);
 
     public static IBaseAction Jump { get; } = new BaseAction(ActionID.Jump)
     {
@@ -86,6 +89,28 @@ public abstract class DRG_Base : CustomRotation
     {
         StatusNeed = Jump.StatusProvide,
     };
+    #endregion
+
+    #region Attack Area
+    /// <summary>
+    /// 1
+    /// </summary>
+    public static IBaseAction DoomSpike { get; } = new BaseAction(ActionID.DoomSpike);
+
+    /// <summary>
+    /// 2
+    /// </summary>
+    public static IBaseAction SonicThrust { get; } = new BaseAction(ActionID.SonicThrust)
+    {
+        ComboIds = new[] { ActionID.DraconianFury }
+    };
+
+    /// <summary>
+    /// 3
+    /// </summary>
+    public static IBaseAction CoerthanTorment { get; } = new BaseAction(ActionID.CoerthanTorment);
+
+    public static IBaseAction DragonFireDive { get; } = new BaseAction(ActionID.DragonFireDive);
 
     public static IBaseAction Geirskogul { get; } = new BaseAction(ActionID.Geirskogul);
 
@@ -101,17 +126,18 @@ public abstract class DRG_Base : CustomRotation
 
     public static IBaseAction WyrmwindThrust { get; } = new BaseAction(ActionID.WyrmwindThrust)
     {
-        ActionCheck = b => JobGauge.FirstmindsFocusCount == 2,
+        ActionCheck = b => FocusCount == 2,
     };
+    #endregion
 
-    public static IBaseAction LifeSurge { get; } = new BaseAction(ActionID.LifeSurge, ActionOption.Buff)
+    #region Support
+    public static IBaseAction LifeSurge { get; } = new BaseAction(ActionID.LifeSurge)
     {
         StatusProvide = new[] { StatusID.LifeSurge },
-
         ActionCheck = b => !IsLastAbility(true, LifeSurge),
     };
 
-    public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge, ActionOption.Buff);
+    public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge);
 
     public static IBaseAction DragonSight { get; } = new BaseAction(ActionID.DragonSight, ActionOption.Buff)
     {
@@ -127,11 +153,21 @@ public abstract class DRG_Base : CustomRotation
     };
 
     public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, ActionOption.Buff);
+    #endregion
+
+    public static IBaseAction ElusiveJump { get; } = new BaseAction(ActionID.ElusiveJump);
 
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
         if (Feint.CanUse(out act)) return true;
         return false;
+    }
+
+    [RotationDesc(ActionID.ElusiveJump)]
+    protected override bool MoveBackAbility(out IAction act)
+    {
+        if(ElusiveJump.CanUse(out act, CanUseOption.IgnoreClippingCheck)) return true;
+        return base.MoveBackAbility(out act);
     }
 }
