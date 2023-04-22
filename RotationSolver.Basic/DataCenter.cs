@@ -281,15 +281,23 @@ public static class DataCenter
     {
         get
         {
-            var recs = _damages.Where(r => DateTime.Now - r.ReceiveTime < TimeSpan.FromMilliseconds(5));
+            try
+            {
+                var recs = _damages.Where(r => DateTime.Now - r.ReceiveTime < TimeSpan.FromMilliseconds(5));
 
-            if(!recs.Any()) return 0;
-            
-            var damages = recs.Sum(r => r.Ratio);
+                if (!recs.Any()) return 0;
 
-            var time = recs.Last().ReceiveTime - recs.First().ReceiveTime + TimeSpan.FromMilliseconds(2.5f);
+                var damages = recs.Sum(r => r.Ratio);
 
-            return damages / (float)time.TotalSeconds;
+                var time = recs.Last().ReceiveTime - recs.First().ReceiveTime + TimeSpan.FromMilliseconds(2.5f);
+
+                return damages / (float)time.TotalSeconds;
+
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
 
