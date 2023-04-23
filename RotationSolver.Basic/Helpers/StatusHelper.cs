@@ -189,7 +189,6 @@ public static class StatusHelper
     {
         if (!status.CanDispel()) return false;
         if (status.StackCount > 2) return true;
-        if (status.RemainingTime > 8 + DataCenter.WeaponRemain) return true;
         return dangerousStatus.Any(id => (uint)id == status.StatusId);
     }
 
