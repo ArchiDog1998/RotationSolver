@@ -6,9 +6,9 @@
 
 Almost all actions that RS do can be delayed for simulating human beings.
 
-![Delay](assets/image-20230418213626516.png)
+![Delay](assets/image-20230423221716060.png)
 
-You can Delay `GCD`, finding `Hostiles`, `Hostiles can be interrupt`, `Death Party Members`, `Weaken Party Members`, `Healing`, `Not in Combat`.
+You can Delay `GCD`, finding `Hostiles`, `Hostiles can be interrupt`, `Death Party Members`, `Weaken Party Members`, `Healing`, `Not in Combat`, `Interval of clicking actions`.
 
 ## Display
 
