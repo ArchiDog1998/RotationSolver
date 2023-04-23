@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.3.7](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.6...v2.3.7) (2023-04-23)
+
+
+### Bug Fixes
+
+* add restrict for Input Command. ([29402d7](https://github.com/ArchiDog1998/RotationSolver/commit/29402d7e74b26047b712c6669056ad4d40bba72e))
+* fixed with living dead. ([be7caf2](https://github.com/ArchiDog1998/RotationSolver/commit/be7caf2e83a9b4a17b94196de9bd2aa72a4fb39a))
+* fixed with SMN base. ([b9c8509](https://github.com/ArchiDog1998/RotationSolver/commit/b9c8509205906b9a3d047500d49c0d182ad1bc9c))
+* if the status is very long ,dispell it. ([28c3096](https://github.com/ArchiDog1998/RotationSolver/commit/28c3096c6ad4124f59d2b253caddca37b07d228d))
+
 ## [2.3.6](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.5...v2.3.6) (2023-04-22)
 
 
