@@ -124,7 +124,7 @@ internal static class RotationUpdater
             .Where(Directory.Exists)
             //.Append(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ICustomRotation)).Location))
 #if DEBUG
-            .Append(relayFolder)
+            //.Append(relayFolder)
 #else
             .Append(relayFolder)
 #endif
