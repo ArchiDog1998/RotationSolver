@@ -30,8 +30,8 @@ public abstract class SMN_Base : CustomRotation
     private static float SummonTimerRemaining => JobGauge.SummonTimerRemaining / 1000f;
     protected static bool SummonTimeEndAfter(float time) => EndAfter(SummonTimerRemaining, time);
 
-    protected static bool SummonTimeEndAfterGCD(uint gctCount = 0, float offset = 0)
-        => EndAfterGCD(SummonTimerRemaining, gctCount, offset);
+    protected static bool SummonTimeEndAfterGCD(uint gcdCount = 0, float offset = 0)
+        => EndAfterGCD(SummonTimerRemaining, gcdCount, offset);
 
     private static float AttunmentTimerRemaining => JobGauge.AttunmentTimerRemaining / 1000f;
     protected static bool AttunmentTimeEndAfter(float time) => EndAfter(AttunmentTimerRemaining, time);
@@ -42,11 +42,18 @@ public abstract class SMN_Base : CustomRotation
     private static bool HasSummon => DataCenter.HasPet && SummonTimeEndAfterGCD();
     #endregion
 
+    public override void DisplayStatus()
+    {
+        ImGui.Text("AttunmentTime: " + AttunmentTimerRemaining.ToString());
+        ImGui.Text("SummonTime: " + SummonTimerRemaining.ToString());
+        base.DisplayStatus();
+    }
+
     #region Summon
     public static IBaseAction SummonRuby { get; } = new BaseAction(ActionID.SummonRuby)
     {
         StatusProvide = new[] { StatusID.IfritsFavor },
-        ActionCheck = b => DataCenter.HasPet && !SummonTimeEndAfterGCD() && IsIfritReady
+        ActionCheck = b => HasSummon && IsIfritReady
     };
 
     public static IBaseAction SummonTopaz { get; } = new BaseAction(ActionID.SummonTopaz)
@@ -69,12 +76,12 @@ public abstract class SMN_Base : CustomRotation
     #region Summon Actions
     public static IBaseAction Gemshine { get; } = new BaseAction(ActionID.Gemshine)
     {
-        ActionCheck = b => Attunement > 0,
+        ActionCheck = b => Attunement > 0 && !AttunmentTimeEndAfter(Gemshine.CastTime),
     };
 
     public static IBaseAction PreciousBrilliance { get; } = new BaseAction(ActionID.PreciousBrilliance)
     {
-        ActionCheck = b => Attunement > 0,
+        ActionCheck = b => Attunement > 0 && !AttunmentTimeEndAfter(PreciousBrilliance.CastTime),
     };
 
     public static IBaseAction AetherCharge { get; } = new BaseAction(ActionID.AetherCharge)
@@ -84,7 +91,7 @@ public abstract class SMN_Base : CustomRotation
 
     public static IBaseAction SummonBahamut { get; } = new BaseAction(ActionID.SummonBahamut)
     {
-        ActionCheck = b => InCombat && HasSummon
+        ActionCheck = AetherCharge.ActionCheck
     };
 
     public static IBaseAction EnkindleBahamut { get; } = new BaseAction(ActionID.EnkindleBahamut)

@@ -22,7 +22,7 @@ public static class StatusHelper
 
     internal static StatusID[] NoNeedHealingStatus { get; } = new StatusID[]
     {
-        StatusID.Holmgang, StatusID.WillDead, StatusID.WalkingDead,
+        StatusID.Holmgang, StatusID.WillDead, StatusID.LivingDead
     };
 
 
@@ -189,11 +189,12 @@ public static class StatusHelper
     {
         if (!status.CanDispel()) return false;
         if (status.StackCount > 2) return true;
+        if (status.RemainingTime > 8 + DataCenter.WeaponRemain) return true;
         return dangerousStatus.Any(id => (uint)id == status.StatusId);
     }
 
     public static bool CanDispel(this Status status)
     {
-        return status.GameData.CanDispel && status.RemainingTime > 2;
+        return status.GameData.CanDispel && status.RemainingTime > 1 + DataCenter.WeaponRemain;
     }
 }

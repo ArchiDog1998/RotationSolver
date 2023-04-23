@@ -1,5 +1,8 @@
-﻿using Dalamud.Game.ClientState.GamePad;
+﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Game.ClientState.Keys;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
@@ -15,7 +18,18 @@ internal static class InputUpdater
 
     internal static unsafe void UpdateCommand()
     {
-        if(DateTime.Now - RecordingTime > TimeSpan.FromSeconds(10))
+        if (Service.Conditions[ConditionFlag.OccupiedInQuestEvent]
+            || Service.Conditions[ConditionFlag.Occupied33]
+            || Service.Conditions[ConditionFlag.Occupied38]
+            || Service.Conditions[ConditionFlag.Jumping61]
+            || Service.Conditions[ConditionFlag.BetweenAreas]
+            || Service.Conditions[ConditionFlag.BetweenAreas51]
+            || Service.Conditions[ConditionFlag.Mounted]
+            || Service.Conditions[ConditionFlag.SufferingStatusAffliction2]
+            || Service.Conditions[ConditionFlag.RolePlaying]
+            || Service.Conditions[ConditionFlag.InFlight]) return;
+
+        if (DateTime.Now - RecordingTime > TimeSpan.FromSeconds(10))
         {
             RecordingSpecialType = SpecialCommandType.None;
             RecordingStateType = StateCommandType.None;

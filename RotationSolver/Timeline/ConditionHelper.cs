@@ -31,7 +31,8 @@ public class ConditionHelper
     {
         var type = (int)(object)value;
         var names = Enum.GetValues<T>().Select(function).ToArray();
-        ImGui.SetNextItemWidth(100);
+        //ImGui.SetNextItemWidth(100);
+        ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
 
         if (ImGui.Combo(name, ref type, names, names.Length))
         {

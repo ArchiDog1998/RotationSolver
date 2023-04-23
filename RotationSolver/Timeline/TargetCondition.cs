@@ -1,4 +1,6 @@
-﻿using RotationSolver.Localization;
+﻿using Dalamud.Logging;
+
+using RotationSolver.Localization;
 using RotationSolver.UI;
 
 namespace RotationSolver.Timeline;
@@ -34,6 +36,7 @@ internal class TargetCondition : ICondition
     public int Ability;
 
     public string CastingActionName = string.Empty;
+    public float CastingActionTime = 0.8f;
 
     public bool IsTrue(ICustomRotation combo)
     {
@@ -92,6 +95,18 @@ internal class TargetCondition : ICondition
 
                 result = CastingActionName == castName;
                 break;
+
+            case TargetConditionType.CastingActionTimeUntil:
+
+                if (!tar.IsCasting || tar.CastActionId == 0)
+                {
+                    result = false;
+                    break;
+                }
+
+                float castTime = tar.TotalCastTime - tar.CurrentCastTime;
+                result = castTime > CastingActionTime;
+                break;
         }
 
         return Condition ? !result : result;
@@ -145,7 +160,6 @@ internal class TargetCondition : ICondition
         }
 
         ImGui.SameLine();
-
         ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref TargetConditionType, EnumTranslations.ToName);
 
         var condition = Condition ? 1 : 0;
@@ -169,6 +183,7 @@ internal class TargetCondition : ICondition
                 };
                 break;
 
+            case TargetConditionType.CastingActionTimeUntil:
             case TargetConditionType.Distance:
             case TargetConditionType.StatusEnd:
                 combos = new string[] { ">", "<=" };
@@ -176,7 +191,8 @@ internal class TargetCondition : ICondition
         }
 
         ImGui.SameLine();
-        ImGui.SetNextItemWidth(60);
+        //ImGui.SetNextItemWidth(60);
+        ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
         if (ImGui.Combo($"##Comparation{GetHashCode()}", ref condition, combos, combos.Length))
         {
             Condition = condition > 0;
@@ -253,7 +269,17 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.CastingAction:
                 ImGui.SameLine();
-                ImGui.InputText("##CastingActionName", ref CastingActionName, 100);
+                //ImGui.SetNextItemWidth(Math.Max(150, ImGui.CalcTextSize(CastingActionName).X));
+                ImGuiHelper.SetNextWidthWithName(CastingActionName);
+                ImGui.InputText($"Ability name##CastingActionName{GetHashCode()}", ref CastingActionName, 100);
+                break;
+
+            case TargetConditionType.CastingActionTimeUntil:
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150, ImGui.CalcTextSize(CastingActionTime.ToString()).X));
+                ImGui.InputFloat($"Seconds##CastingActionTimeUntil{GetHashCode()}", ref CastingActionTime, .1f);
+                //ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref CastingActionTime);
+
                 break;
         }
     }
@@ -268,4 +294,5 @@ public enum TargetConditionType : int
     StatusEnd,
     StatusEndGCD,
     CastingAction,
+    CastingActionTimeUntil
 }
