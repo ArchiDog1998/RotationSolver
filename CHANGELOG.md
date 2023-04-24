@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.9](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.8...v2.3.9) (2023-04-24)
+
+
+### Bug Fixes
+
+* fund back the `UpdateNextAction` method call. ([b24b0ba](https://github.com/ArchiDog1998/RotationSolver/commit/b24b0bac2bf8f964f0065f934a98f1cfd85b7f2e))
+
 ## [2.3.8](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.7...v2.3.8) (2023-04-24)
 
 
