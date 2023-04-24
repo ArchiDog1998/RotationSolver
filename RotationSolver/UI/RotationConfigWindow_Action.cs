@@ -14,7 +14,7 @@ internal partial class RotationConfigWindow
 
         ImGui.NextColumn();
 
-        DrawTimelineCondition();
+        DrawActionSequencerCondition();
 
         ImGui.Columns(1);
     }
@@ -45,19 +45,19 @@ internal partial class RotationConfigWindow
         ImGui.PopStyleVar();
     }
 
-    private void DrawTimelineCondition()
+    private void DrawActionSequencerCondition()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.Timeline_TimelineDescription);
+        ImGui.TextWrapped(LocalizationManager.RightLang.ActionSequencer_ActionSequencerDescription);
 
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
-        TimeLineUpdater.DrawHeader();
+        ActionSequencerUpdater.DrawHeader();
 
         if (ActiveAction == null) return;
         if (!RotationUpdater.RightRotationActions.Any(a => a.ID == ActiveAction.ID)) return;
 
-        var set = TimeLineUpdater.RightSet;
+        var set = ActionSequencerUpdater.RightSet;
         if (set == null) return;
 
         if (!set.Conditions.TryGetValue(ActiveAction.ID, out var conditionSet))

@@ -164,7 +164,7 @@ internal static class ImGuiHelper
             }
             else if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip(LocalizationManager.RightLang.Timeline_DragdropDescription);
+                ImGui.SetTooltip(LocalizationManager.RightLang.ActionSequencer_DragdropDescription);
 
                 if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
                     && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
@@ -296,7 +296,7 @@ internal static class ImGuiHelper
 
     internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null, Func<T, string> getDesc = null)
     {
-        ImGui.Text(LocalizationManager.RightLang.Timeline_SearchBar + ": ");
+        ImGui.Text(LocalizationManager.RightLang.ActionSequencer_SearchBar + ": ");
         ImGui.SetNextItemWidth(150);
         ImGui.InputText("##SearchBar", ref searchTxt, 16);
 

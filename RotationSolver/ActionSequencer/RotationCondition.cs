@@ -136,8 +136,8 @@ internal class RotationCondition : ICondition
                 ImGui.SetNextItemWidth(80);
                 ImGui.Combo($"##IsOrNot{GetHashCode()}", ref Condition, new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Is,
-                    LocalizationManager.RightLang.Timeline_Isnot,
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
                 }, 2);
                 break;
 
@@ -211,8 +211,8 @@ internal class RotationCondition : ICondition
                 ImGui.SetNextItemWidth(80);
                 ImGui.Combo($"##IsNot{GetHashCode()}", ref Condition, new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Is,
-                    LocalizationManager.RightLang.Timeline_Isnot,
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
                 }, 2);
 
                 ImGui.SameLine();

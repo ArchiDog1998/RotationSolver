@@ -91,7 +91,7 @@ internal static class MajorUpdater
 
             RotationUpdater.UpdateRotation();
 
-            TimeLineUpdater.UpdateTimelineAction();
+            ActionSequencerUpdater.UpdateActionSequencerAction();
             ActionUpdater.UpdateNextAction();
             RSCommands.UpdateRotationState();
 

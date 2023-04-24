@@ -281,30 +281,30 @@ internal partial class Strings
     #endregion
 
     #region ScriptWindow
-    public string Timeline_DragdropDescription { get; set; } = "Drag&drop to move，Ctrl+Alt+RightClick to delete.";
-    public string Timeline_SearchBar { get; set; } = "Search Bar";
-    public string Timeline_MustUse { get; set; } = "MustUse";
-    public string Timeline_MustUseDesc { get; set; } = "Skip AOE and Buff.";
-    public string Timeline_Empty { get; set; } = "UseUp";
-    public string Timeline_EmptyDesc { get; set; } = "UseUp or Skip Combo";
-    public string Timeline_TimelineDescription { get; set; } = "Add some condition to automatic use this action.";
-    public string Timeline_Can { get; set; } = "Can";
-    public string Timeline_Cannot { get; set; } = "Cannot";
-    public string Timeline_Is { get; set; } = "Is";
-    public string Timeline_Isnot { get; set; } = "Isnot";
-    public string Timeline_Have { get; set; } = "Have";
-    public string Timeline_Havenot { get; set; } = "Havenot";
-    public string Timeline_Ability { get; set; } = "Ability";
-    public string Timeline_Charges { get; set; } = "Charges";
-    public string Timeline_ConditionSet { get; set; } = "ConditionSet";
-    public string Timeline_ActionCondition { get; set; } = "ActionCondition";
-    public string Timeline_TargetCondition { get; set; } = "TargetCondition";
-    public string Timeline_RotationCondition { get; set; } = "RotationCondition";
-    public string Timeline_ActionTarget { get; set; } = "{0}'s target";
-    public string Timeline_Target { get; set; } = "Target";
-    public string Timeline_Player { get; set; } = "Player";
-    public string Timeline_StatusSelf { get; set; } = "StatusSelf";
-    public string Timeline_StatusSelfDesc { get; set; } = "StatusSelf";
+    public string ActionSequencer_DragdropDescription { get; set; } = "Drag&drop to move，Ctrl+Alt+RightClick to delete.";
+    public string ActionSequencer_SearchBar { get; set; } = "Search Bar";
+    public string ActionSequencer_MustUse { get; set; } = "MustUse";
+    public string ActionSequencer_MustUseDesc { get; set; } = "Skip AOE and Buff.";
+    public string ActionSequencer_Empty { get; set; } = "UseUp";
+    public string ActionSequencer_EmptyDesc { get; set; } = "UseUp or Skip Combo";
+    public string ActionSequencer_ActionSequencerDescription { get; set; } = "Add some condition to automatic use this action.";
+    public string ActionSequencer_Can { get; set; } = "Can";
+    public string ActionSequencer_Cannot { get; set; } = "Cannot";
+    public string ActionSequencer_Is { get; set; } = "Is";
+    public string ActionSequencer_Isnot { get; set; } = "Isnot";
+    public string ActionSequencer_Have { get; set; } = "Have";
+    public string ActionSequencer_Havenot { get; set; } = "Havenot";
+    public string ActionSequencer_Ability { get; set; } = "Ability";
+    public string ActionSequencer_Charges { get; set; } = "Charges";
+    public string ActionSequencer_ConditionSet { get; set; } = "ConditionSet";
+    public string ActionSequencer_ActionCondition { get; set; } = "ActionCondition";
+    public string ActionSequencer_TargetCondition { get; set; } = "TargetCondition";
+    public string ActionSequencer_RotationCondition { get; set; } = "RotationCondition";
+    public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
+    public string ActionSequencer_Target { get; set; } = "Target";
+    public string ActionSequencer_Player { get; set; } = "Player";
+    public string ActionSequencer_StatusSelf { get; set; } = "StatusSelf";
+    public string ActionSequencer_StatusSelfDesc { get; set; } = "StatusSelf";
     #endregion
 
     #region Actions
