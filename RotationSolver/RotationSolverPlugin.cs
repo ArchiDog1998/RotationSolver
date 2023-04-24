@@ -58,7 +58,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
-        ActionSequencerUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
+        ActionSequencerUpdater.Enable(pluginInterface.ConfigDirectory.FullName + "\\Conditions");
         IActionHelper.GetAnimationLockTimeAsync(pluginInterface.ConfigDirectory.FullName);
         SocialUpdater.Enable();
         _dis.Add(new Watcher());

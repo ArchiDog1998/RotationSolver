@@ -106,11 +106,9 @@ internal class ActionSequencerUpdater
 
         ImGui.Combo("##MajorConditionCombo", ref Service.Config.TimelineIndex, combos, combos.Length);
 
-        ImGui.SameLine();
-
-
         if (hasSet)
         {
+            ImGui.SameLine();
             if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, "##DeleteTimelineConditionSet"))
             {
                 Delete(set.Name);
@@ -118,6 +116,8 @@ internal class ActionSequencerUpdater
 
             ImGui.SameLine();
         }
+
+        ImGui.SameLine();
 
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
         {
@@ -128,6 +128,12 @@ internal class ActionSequencerUpdater
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Folder, "##OpenDefinationFolder"))
         {
             Process.Start("explorer.exe", _actionSequencerFolder);
+        }
+
+        ImGui.SameLine();
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Save, "##SaveTheConditions"))
+        {
+            SaveFiles();
         }
     }
 }
