@@ -11,7 +11,7 @@ internal static class MajorUpdater
         && !DataCenter.HasHostilesInRange;
 
 #if DEBUG
-    private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
+    private static readonly Dictionary<int, bool> _values = new Dictionary<int, bool>();
 #endif
 
     private static void FrameworkUpdate(Framework framework)
@@ -33,11 +33,11 @@ internal static class MajorUpdater
             {
                 string key = enumNames[i];
                 bool newValue = Service.Conditions[(Dalamud.Game.ClientState.Conditions.ConditionFlag)indexs[i]];
-                if (_valus.ContainsKey(i) && _valus[i] != newValue && indexs[i] != 48 && indexs[i] != 27)
+                if (_values.ContainsKey(i) && _values[i] != newValue && indexs[i] != 48 && indexs[i] != 27)
                 {
                     //Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
                 }
-                _valus[i] = newValue;
+                _values[i] = newValue;
             }
         }
 #endif
@@ -97,10 +97,7 @@ internal static class MajorUpdater
             RotationUpdater.UpdateRotation();
 
             ActionSequencerUpdater.UpdateActionSequencerAction();
-            if (!ShouldPreventActions)
-            {
-                ActionUpdater.DoAction();
-            }
+            ActionUpdater.UpdateNextAction();
 
             RSCommands.UpdateRotationState();
 
