@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.8](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.7...v2.3.8) (2023-04-24)
+
+
+### Bug Fixes
+
+* add a save button for action sequencer. ([4764ddd](https://github.com/ArchiDog1998/RotationSolver/commit/4764ddd80aa06f58457e4dc6310383a4ac4b6a85))
+* add a show list feature for download rotations. ([0cfb63a](https://github.com/ArchiDog1998/RotationSolver/commit/0cfb63af7b1bd4ab6ce3ac9d6fee13edcefe1484))
+* rename timeline to action sequencer. ([a829b61](https://github.com/ArchiDog1998/RotationSolver/commit/a829b61362b0d87adb8f5c0d68c3a67c8678034f))
+
 ## [2.3.7](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.6...v2.3.7) (2023-04-23)
 
 
