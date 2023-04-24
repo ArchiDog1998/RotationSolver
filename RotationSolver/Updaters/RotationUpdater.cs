@@ -1,6 +1,5 @@
 ﻿using Dalamud.Logging;
 using RotationSolver.Localization;
-using System;
 using System.Text;
 
 namespace RotationSolver.Updaters;
@@ -14,14 +13,35 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
 
-    public static async void GetAllCustomRotations(bool download, bool mustDownload)
+    [Flags]
+    public enum DownloadOption : byte
+    {
+        Local = 0,
+        Donwload = 1 << 0,
+        MustDownload = Donwload | 1 << 1,
+        ShowList = 1 << 2,
+    }
+
+    public static async void GetAllCustomRotations(DownloadOption option)
     {
         var relayFolder = Service.Interface.ConfigDirectory.FullName;
         if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
 
         LoadRotationsFromLocal(relayFolder);
 
-        if(download && Service.Config.DownloadRotations)await DownloadRotationsAsync(relayFolder, mustDownload);
+        if (option.HasFlag(DownloadOption.Donwload) && Service.Config.DownloadRotations)
+            await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
+
+        if (option.HasFlag(DownloadOption.ShowList))
+        {
+            foreach (var item in CustomRotationsDict
+            .SelectMany(d => d.Value)
+            .SelectMany(g => g.rotations)
+            .Select(r => r.GetType().Assembly.FullName).ToHashSet())
+            {
+                Service.ChatGui.Print("Loaded: " + item);
+            }
+        }
     }
 
     static bool _isDownloading = false;
@@ -215,7 +235,7 @@ internal static class RotationUpdater
                     }
                     else
                     {
-                        result = LocalizationManager.RightLang.Timeline_Ability;
+                        result = LocalizationManager.RightLang.ActionSequencer_Ability;
                     }
 
                     if (act.IsFriendly)

@@ -35,6 +35,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AutoOffBetweenArea = true;
     public bool AutoOffCutScene = true;
     public bool AutoOffWhenDead = true;
+    public bool PreventActionsIfOutOfCombat = false;
     public bool ChangeTargetForFate = true;
     public bool MoveTowardsScreenCenter = true;
 

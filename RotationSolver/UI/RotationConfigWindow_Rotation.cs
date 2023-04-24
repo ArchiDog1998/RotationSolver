@@ -158,7 +158,7 @@ internal partial class RotationConfigWindow
     {
         if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotationsButton))
         {
-            RotationUpdater.GetAllCustomRotations(true, true);
+            RotationUpdater.GetAllCustomRotations( RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
         }
 
         ImGui.SameLine();

@@ -128,22 +128,22 @@ internal class TargetCondition : ICondition
         ImGuiHelper.DrawCondition(IsTrue(combo));
         ImGui.SameLine();
 
-        var name = _action != null ? string.Format(LocalizationManager.RightLang.Timeline_ActionTarget, _action.Name)
+        var name = _action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, _action.Name)
             : IsTarget
-            ? LocalizationManager.RightLang.Timeline_Target
-            : LocalizationManager.RightLang.Timeline_Player;
+            ? LocalizationManager.RightLang.ActionSequencer_Target
+            : LocalizationManager.RightLang.ActionSequencer_Player;
 
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
         if (ImGui.BeginCombo($"##ActionChoice{GetHashCode()}", name, ImGuiComboFlags.HeightLargest))
         {
-            if (ImGui.Selectable(LocalizationManager.RightLang.Timeline_Target))
+            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Target))
             {
                 _action = null;
                 ID = ActionID.None;
                 IsTarget = true;
             }
 
-            if (ImGui.Selectable(LocalizationManager.RightLang.Timeline_Player))
+            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Player))
             {
                 _action = null;
                 ID = ActionID.None;
@@ -169,8 +169,8 @@ internal class TargetCondition : ICondition
             case TargetConditionType.HaveStatus:
                 combos = new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Have,
-                    LocalizationManager.RightLang.Timeline_Havenot,
+                    LocalizationManager.RightLang.ActionSequencer_Have,
+                    LocalizationManager.RightLang.ActionSequencer_Havenot,
                 };
                 break;
             case TargetConditionType.IsDying:
@@ -178,8 +178,8 @@ internal class TargetCondition : ICondition
             case TargetConditionType.CastingAction:
                 combos = new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Is,
-                    LocalizationManager.RightLang.Timeline_Isnot,
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
                 };
                 break;
 
@@ -211,10 +211,10 @@ internal class TargetCondition : ICondition
 
                 ImGui.SameLine();
 
-                ImGui.Checkbox($"{LocalizationManager.RightLang.Timeline_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
+                ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.Timeline_StatusSelfDesc);
+                    ImGui.SetTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
                 }
                 break;
 
@@ -229,10 +229,10 @@ internal class TargetCondition : ICondition
 
                 ImGui.SameLine();
 
-                ImGui.Checkbox($"{LocalizationManager.RightLang.Timeline_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
+                ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.Timeline_StatusSelfDesc);
+                    ImGui.SetTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
                 }
 
                 ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref DistanceOrTime);
@@ -250,14 +250,14 @@ internal class TargetCondition : ICondition
 
                 ImGui.SameLine();
 
-                ImGui.Checkbox($"{LocalizationManager.RightLang.Timeline_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
+                ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.Timeline_StatusSelfDesc);
+                    ImGui.SetTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
                 }
 
                 ConditionHelper.DrawDragInt($"GCD##GCD{GetHashCode()}", ref GCD);
-                ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.Timeline_Ability}##Ability{GetHashCode()}", ref Ability);
+                ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Ability}##Ability{GetHashCode()}", ref Ability);
                 break;
 
             case TargetConditionType.Distance:
