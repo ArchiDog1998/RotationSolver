@@ -29,12 +29,12 @@ public static class DataCenter
     }
 
     private static List<NextAct> NextActs = new List<NextAct>();
-    public static IAction TimeLineAction { private get; set; }
+    public static IAction ActionSequencerAction { private get; set; }
     public static IAction CommandNextAction
     {
         get
         {
-            if (TimeLineAction != null) return TimeLineAction;
+            if (ActionSequencerAction != null) return ActionSequencerAction;
 
             var next = NextActs.FirstOrDefault();
 

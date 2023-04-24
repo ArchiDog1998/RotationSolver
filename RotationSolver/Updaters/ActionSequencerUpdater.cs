@@ -4,16 +4,16 @@ using System.Diagnostics;
 
 namespace RotationSolver.Updaters;
 
-internal class TimeLineUpdater
+internal class ActionSequencerUpdater
 {
-    static string _timelineFolder;
+    static string _actionSequencerFolder;
 
     static IEnumerable<MajorConditionSet> _conditionSet;
     public static MajorConditionSet RightSet => _conditionSet?.ElementAtOrDefault(Service.Config.TimelineIndex);
 
     public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? new string[0];
 
-    public static void UpdateTimelineAction()
+    public static void UpdateActionSequencerAction()
     {
         if (_conditionSet == null) return;
         var customRotation = RotationUpdater.RightNowRotation;
@@ -32,30 +32,30 @@ internal class TimeLineUpdater
 
             if (!conditionPair.Value.IsTrue(customRotation)) continue;
 
-            DataCenter.TimeLineAction = nextAct;
+            DataCenter.ActionSequencerAction = nextAct;
             find = true;
             break;
         }
         if (!find)
         {
-            DataCenter.TimeLineAction = null;
+            DataCenter.ActionSequencerAction = null;
         }
     }
 
     public static void Enable(string folder)
     {
-        _timelineFolder = folder;
-        if (!Directory.Exists(_timelineFolder)) Directory.CreateDirectory(_timelineFolder);
+        _actionSequencerFolder = folder;
+        if (!Directory.Exists(_actionSequencerFolder)) Directory.CreateDirectory(_actionSequencerFolder);
 
-        _conditionSet = MajorConditionSet.Read(_timelineFolder);
+        _conditionSet = MajorConditionSet.Read(_actionSequencerFolder);
     }
 
     public static void SaveFiles()
     {
         try
         {
-            Directory.Delete(_timelineFolder);
-            Directory.CreateDirectory(_timelineFolder);
+            Directory.Delete(_actionSequencerFolder);
+            Directory.CreateDirectory(_actionSequencerFolder);
         }
         catch
         {
@@ -63,7 +63,7 @@ internal class TimeLineUpdater
         }
         foreach (var set in _conditionSet)
         {
-            set.Save(_timelineFolder);
+            set.Save(_actionSequencerFolder);
         }
     }
 
@@ -106,11 +106,9 @@ internal class TimeLineUpdater
 
         ImGui.Combo("##MajorConditionCombo", ref Service.Config.TimelineIndex, combos, combos.Length);
 
-        ImGui.SameLine();
-
-
         if (hasSet)
         {
+            ImGui.SameLine();
             if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, "##DeleteTimelineConditionSet"))
             {
                 Delete(set.Name);
@@ -118,6 +116,8 @@ internal class TimeLineUpdater
 
             ImGui.SameLine();
         }
+
+        ImGui.SameLine();
 
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
         {
@@ -127,7 +127,13 @@ internal class TimeLineUpdater
         ImGui.SameLine();
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Folder, "##OpenDefinationFolder"))
         {
-            Process.Start("explorer.exe", _timelineFolder);
+            Process.Start("explorer.exe", _actionSequencerFolder);
+        }
+
+        ImGui.SameLine();
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Save, "##SaveTheConditions"))
+        {
+            SaveFiles();
         }
     }
 }

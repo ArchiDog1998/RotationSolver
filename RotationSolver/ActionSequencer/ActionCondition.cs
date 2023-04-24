@@ -112,8 +112,8 @@ internal class ActionCondition : ICondition
             case ActionConditionType.ShouldUse:
                 combos = new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Can,
-                    LocalizationManager.RightLang.Timeline_Cannot,
+                    LocalizationManager.RightLang.ActionSequencer_Can,
+                    LocalizationManager.RightLang.ActionSequencer_Cannot,
                 };
                 break;
 
@@ -121,8 +121,8 @@ internal class ActionCondition : ICondition
             case ActionConditionType.IsCoolDown:
                 combos = new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Is,
-                    LocalizationManager.RightLang.Timeline_Isnot,
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
                 };
                 break;
         }
@@ -147,7 +147,7 @@ internal class ActionCondition : ICondition
                 {
                     Param1 = Math.Max(0, Param1);
                 }
-                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.Timeline_Ability}##Ability{GetHashCode()}", ref Param2))
+                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Ability}##Ability{GetHashCode()}", ref Param2))
                 {
                     Param2 = Math.Max(0, Param2);
                 }
@@ -155,13 +155,13 @@ internal class ActionCondition : ICondition
 
             case ActionConditionType.ShouldUse:
 
-                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Timeline_MustUse}##MustUse{GetHashCode()}", ref Param1, LocalizationManager.RightLang.Timeline_MustUseDesc);
-                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Timeline_Empty}##MustUse{GetHashCode()}", ref Param2, LocalizationManager.RightLang.Timeline_EmptyDesc);
+                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.ActionSequencer_MustUse}##MustUse{GetHashCode()}", ref Param1, LocalizationManager.RightLang.ActionSequencer_MustUseDesc);
+                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.ActionSequencer_Empty}##MustUse{GetHashCode()}", ref Param2, LocalizationManager.RightLang.ActionSequencer_EmptyDesc);
                 break;
 
             case ActionConditionType.CurrentCharges:
             case ActionConditionType.MaxCharges:
-                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.Timeline_Charges}##Charges{GetHashCode()}", ref Param1))
+                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Charges}##Charges{GetHashCode()}", ref Param1))
                 {
                     Param1 = Math.Max(0, Param1);
                 }
