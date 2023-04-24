@@ -7,8 +7,10 @@ namespace RotationSolver.Commands
         private static string _stateString = "Off", _specialString = string.Empty;
         private static string _aoeString => "AOE " + (Service.Config.GetValue(SettingsCommand.UseAOEAction) && (DataCenter.StateType != StateCommandType.Manual || Service.Config.GetValue(SettingsCommand.UseAOEWhenManual)) ? "on" : "off");
 
+        private static string _preventString => "Prevent " + (Service.Config.GetValue(SettingsCommand.PreventActions) ? "on" : "off");
+
         internal static string EntryString =>
-            $"{_stateString} ({_aoeString}) " +  (DataCenter.SpecialTimeLeft < 0 ? string.Empty : $" - {_specialString}: {DataCenter.SpecialTimeLeft:F2}s");
+            $"{_stateString} ({_aoeString}) ({_preventString})" +  (DataCenter.SpecialTimeLeft < 0 ? string.Empty : $" - {_specialString}: {DataCenter.SpecialTimeLeft:F2}s");
 
         private static void UpdateToast()
         {

@@ -77,6 +77,7 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToggleManual,
             ref Service.Config.ToggleManual, Service.Default.ToggleManual);
+
     }
 
     private void DrawParamDelay()
@@ -286,6 +287,9 @@ internal partial class RotationConfigWindow
                 ref Service.Config.NoNewHostiles, Service.Default.NoNewHostiles,
                 LocalizationManager.RightLang.ConfigWindow_Params_NoNewHostilesDesc);
         }
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfOutOfCombat,
+            SettingsCommand.PreventActions);
 
         ImGui.Separator();
 

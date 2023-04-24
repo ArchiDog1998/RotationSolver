@@ -7,6 +7,8 @@ namespace RotationSolver.Updaters;
 internal static class MajorUpdater
 {
     public static bool IsValid => Service.Conditions.Any() && Service.Player != null && !SocialUpdater.InPvp;
+    public static bool ShouldPreventActions => Service.Config.GetValue(SettingsCommand.PreventActions)
+        && !DataCenter.HasHostilesInRange;
 
 #if DEBUG
     private static readonly Dictionary<int, bool> _valus = new Dictionary<int, bool>();
@@ -46,7 +48,10 @@ internal static class MajorUpdater
             PreviewUpdater.UpdatePreview();
             ActionUpdater.UpdateActionInfo();
 
-            ActionUpdater.DoAction();
+            if (!ShouldPreventActions)
+            {
+                ActionUpdater.DoAction();
+            }
 
             MacroUpdater.UpdateMacro();
         }
@@ -92,7 +97,11 @@ internal static class MajorUpdater
             RotationUpdater.UpdateRotation();
 
             ActionSequencerUpdater.UpdateActionSequencerAction();
-            ActionUpdater.UpdateNextAction();
+            if (!ShouldPreventActions)
+            {
+                ActionUpdater.DoAction();
+            }
+
             RSCommands.UpdateRotationState();
 
             InputUpdater.UpdateCommand();

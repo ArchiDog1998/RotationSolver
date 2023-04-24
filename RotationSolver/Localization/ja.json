@@ -58,6 +58,7 @@
   "ConfigWindow_Param_AutoOffBetweenArea": "Auto turn off when player is between area.",
   "ConfigWindow_Param_AutoOffCutScene": "Auto turn off during cut scene.",
   "ConfigWindow_Param_AutoOffWhenDead": "Auto turn off when dead.",
+  "ConfigWindow_Param_PreventActionsIfOutOfCombat": "Prevent Actions if no hostiles in range",
   "ConfigWindow_Param_UseWorkTask": "Use work task for acceleration.",
   "ConfigWindow_Param_ToggleManual": "Make Manual Command as toggle.",
   "ConfigWindow_Param_Delay": "Delay",
