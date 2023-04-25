@@ -145,51 +145,18 @@ public static class StatusHelper
         || status.SourceObject?.OwnerId == Service.Player.ObjectId : true);
     }
 
-    static readonly StatusID[] invincibleStatus = new StatusID[]
-    {
-        StatusID.StoneSkin,
-        StatusID.IceSpikesInvincible,
-        StatusID.VortexBarrier,
-    };
-
     public static bool IsInvincible(this Status status)
     {
         if (status.GameData.Icon == 15024) return true;
 
-        return invincibleStatus.Any(id => (uint)id == status.StatusId);
+        return Service.Config.InvincibleStatus.Any(id => (uint)id == status.StatusId);
     }
-
-    static readonly StatusID[] dangerousStatus = new StatusID[]
-    {
-        StatusID.Doom,
-        StatusID.Amnesia,
-        StatusID.Stun,
-        StatusID.Stun2,
-        StatusID.Sleep,
-        StatusID.Sleep2,
-        StatusID.Sleep3,
-        StatusID.Pacification,
-        StatusID.Pacification2,
-        StatusID.Silence,
-        StatusID.Slow,
-        StatusID.Slow2,
-        StatusID.Slow3,
-        StatusID.Slow4,
-        StatusID.Slow5,
-        StatusID.Blind,
-        StatusID.Blind2,
-        StatusID.Blind3,
-        StatusID.Paralysis,
-        StatusID.Paralysis2,
-        StatusID.Nightmare,
-        StatusID.Necrosis,
-    };
 
     public static bool IsDangerous(this Status status)
     {
         if (!status.CanDispel()) return false;
         if (status.StackCount > 2) return true;
-        return dangerousStatus.Any(id => (uint)id == status.StatusId);
+        return Service.Config.DangerousStatus.Any(id => id == status.StatusId);
     }
 
     public static bool CanDispel(this Status status)

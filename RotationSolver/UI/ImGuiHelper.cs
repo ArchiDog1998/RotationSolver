@@ -258,7 +258,6 @@ internal static class ImGuiHelper
         if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
         {
             SearchItems(ref searchTxt, actions, selectAction);
-
             ImGui.EndCombo();
         }
     }

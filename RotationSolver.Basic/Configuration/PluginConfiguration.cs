@@ -88,6 +88,39 @@ public class PluginConfiguration : IPluginConfiguration
     public bool TargetFriendly = false;
     public float AlphaInFill = 0.15f;
 
+    public List<uint> DangerousStatus { get; set; } = new List<uint>()
+    {
+        (uint)StatusID.Doom,
+        (uint)StatusID.Amnesia,
+        (uint)StatusID.Stun,
+        (uint)StatusID.Stun2,
+        (uint)StatusID.Sleep,
+        (uint)StatusID.Sleep2,
+        (uint)StatusID.Sleep3,
+        (uint)StatusID.Pacification,
+        (uint)StatusID.Pacification2,
+        (uint)StatusID.Silence,
+        (uint)StatusID.Slow,
+        (uint)StatusID.Slow2,
+        (uint)StatusID.Slow3,
+        (uint)StatusID.Slow4,
+        (uint)StatusID.Slow5,
+        (uint)StatusID.Blind,
+        (uint)StatusID.Blind2,
+        (uint)StatusID.Blind3,
+        (uint)StatusID.Paralysis,
+        (uint)StatusID.Paralysis2,
+        (uint)StatusID.Nightmare,
+        (uint)StatusID.Necrosis,
+    };
+
+    public List<uint> InvincibleStatus = new List<uint>()
+    {
+        (uint)StatusID.StoneSkin,
+        (uint)StatusID.IceSpikesInvincible,
+        (uint)StatusID.VortexBarrier,
+    };
+
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();
 
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractAreas { get; set; } = new Dictionary<ClassJobID, float>();

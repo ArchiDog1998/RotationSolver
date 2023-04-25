@@ -19,6 +19,7 @@ internal partial class Strings
     public string ConfigWindow_Header { get; set; } = "Rotation Solver Settings v";
     public string ConfigWindow_RotationItem { get; set; } = "Rotation";
     public string ConfigWindow_ParamItem { get; set; } = "Param";
+    public string ConfigWindow_ListItem { get; set; } = "List";
     public string ConfigWindow_EventItem { get; set; } = "Event";
     public string ConfigWindow_ActionItem { get; set; } = "Action";
     public string ConfigWindow_ControlItem { get; set; } = "Control";
@@ -237,7 +238,7 @@ internal partial class Strings
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
     public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
-    public string ConfigWindow_Param_Hostile { get; set; } = "Hostile";
+
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_AddHostileCondition { get; set; } = "Add selection condition";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
@@ -280,6 +281,13 @@ internal partial class Strings
 
     public string ConfigWindow_Rotation_InvalidRotation { get; set; } = "Invalid Rotation! \nPlease update to the latest version or contact to the {0}!";
     public string ConfigWindow_Rotation_ResetToDefault { get; set; } = "Click to reset the rotation configuration to default!";
+
+    public string ConfigWindow_List_Description { get; set; } = "In this window, you can set the parameters about some list things.";
+    public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
+
+    public string ConfigWindow_List_Invinsibility { get; set; } = "Invincibility";
+    public string ConfigWindow_List_DangerousStatus { get; set; } = "Dangerous Status";
+
     #endregion
 
     #region ScriptWindow

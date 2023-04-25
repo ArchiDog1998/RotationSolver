@@ -72,7 +72,6 @@ internal class ConditionSet : ICondition
     {
         if (ImGui.Selectable(name))
         {
-            
             Conditions.Add(Activator.CreateInstance<T>());
             ImGui.CloseCurrentPopup();
         }
