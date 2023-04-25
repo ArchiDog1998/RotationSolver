@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.3.8",
-    "Changelog": "2.3.8 (2023-04-24)\n\n\nBug Fixes\n\n* add a save button for action sequencer. (4764ddd)\n* add a show list feature for download rotations. (0cfb63a)\n* rename timeline to action sequencer. (a829b61)",
-    "DownloadCount": "6823",
-    "LastUpdate": 1682349048,
+    "AssemblyVersion": "2.3.9",
+    "Changelog": "2.3.9 (2023-04-24)\n\n\nBug Fixes\n\n* fund back the `UpdateNextAction` method call. (b24b0ba)",
+    "DownloadCount": "6794",
+    "LastUpdate": 1682353545,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.8/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.8/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.9/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.9/latest.zip"
   },
   {
     "Author": "ArchiDog1998",

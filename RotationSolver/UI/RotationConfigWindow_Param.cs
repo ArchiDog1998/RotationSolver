@@ -4,20 +4,6 @@ using RotationSolver.Localization;
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
 {
-    private static void DrawParamTabItem(string name, Action act)
-    {
-        if (act == null) return;
-        if (ImGui.BeginTabItem(name))
-        {
-            if (ImGui.BeginChild("Param", new Vector2(0f, -1f), true))
-            {
-                act();
-                ImGui.EndChild();
-            }
-            ImGui.EndTabItem();
-        }
-    }
-
     private void DrawParamTab()
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Params_Description);
@@ -32,7 +18,6 @@ internal partial class RotationConfigWindow
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Action, DrawParamAction);
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Conditon, DrawParamCondition);
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Target, DrawParamTarget);
-            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Hostile, DrawParamHostile);
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Advanced, DrawParamAdvanced);
 
             ImGui.EndTabBar();
@@ -42,8 +27,17 @@ internal partial class RotationConfigWindow
 
     private void DrawParamBasic()
     {
+        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_MaxPing,
+            ref Service.Config.MaxPing, Service.Default.MaxPing, min: 100, max: 500);
+
+        ImGui.SameLine();
+        ImGui.Text("   Your Ping: " + DataCenter.RealPing.ToString("F3"));
+
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ActionAhead,
             ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 0.5f);
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MinLastAbilityAdvanced,
+            ref Service.Config.MinLastAbilityAdvanced, Service.Default.MinLastAbilityAdvanced, max: 0.4f);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
             ref Service.Config.CountDownAhead, Service.Default.CountDownAhead, min: 0.5f, max: 0.7f);
@@ -270,6 +264,9 @@ internal partial class RotationConfigWindow
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeOffset,
                 ref Service.Config.DrawMeleeOffset, Service.Default.DrawMeleeOffset);
+
+            DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AlphaInFill,
+                ref Service.Config.AlphaInFill, Service.Default.AlphaInFill);
         }
     }
 
@@ -435,192 +432,5 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseBrinkOfDeath,
             ref Service.Config.RaiseBrinkOfDeath, Service.Default.RaiseBrinkOfDeath);
-    }
-
-    private void DrawParamHostile()
-    {
-        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddHostileCondition))
-        {
-            Service.Config.TargetingTypes.Add(TargetingType.Big);
-        }
-        ImGui.SameLine();
-        ImGuiHelper.Spacing();
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Param_HostileDesc);
-        for (int i = 0; i < Service.Config.TargetingTypes.Count; i++)
-        {
-            ImGui.Separator();
-
-            var names = Enum.GetNames(typeof(TargetingType));
-            var targingType = (int)Service.Config.TargetingTypes[i];
-            if (ImGui.Combo(LocalizationManager.RightLang.ConfigWindow_Param_HostileCondition + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
-            {
-                Service.Config.TargetingTypes[i] = (TargetingType)targingType;
-                Service.Config.Save();
-            }
-
-            if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_ConditionUp + "##HostileUp" + i.ToString()))
-            {
-                if (i != 0)
-                {
-                    var value = Service.Config.TargetingTypes[i];
-                    Service.Config.TargetingTypes.RemoveAt(i);
-                    Service.Config.TargetingTypes.Insert(i - 1, value);
-                }
-            }
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
-            if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_ConditionDown + "##HostileDown" + i.ToString()))
-            {
-                if (i < Service.Config.TargetingTypes.Count - 1)
-                {
-                    var value = Service.Config.TargetingTypes[i];
-                    Service.Config.TargetingTypes.RemoveAt(i);
-                    Service.Config.TargetingTypes.Insert(i + 1, value);
-                }
-            }
-
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
-
-            if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_ConditionDelete + "##HostileDelete" + i.ToString()))
-            {
-                Service.Config.TargetingTypes.RemoveAt(i);
-            }
-        }
-    }
-
-    internal static void DrawCheckBox(string name, SettingsCommand command, string description = "", Action otherThing = null)
-    {
-        var value = Service.Config.GetValue(command);
-        DrawCheckBox(name, ref value, command.GetDefault(), description, () =>
-        {
-            Service.Config.SetValue(command, value);
-            otherThing?.Invoke();
-        });
-
-        ImGui.SameLine();
-        ImGuiHelper.Spacing();
-        ImGuiHelper.DisplayCommandHelp(OtherCommandType.Settings, command.ToString());
-    }
-
-    internal static void DrawCheckBox(string name, ref bool value, bool @default, string description = "", Action otherThing = null)
-    {
-        if (ImGui.Checkbox(name, ref value))
-        {
-            otherThing?.Invoke();
-            Service.Config.Save();
-        }
-        if (ImGuiHelper.HoveredStringReset(description) && value != @default)
-        {
-            otherThing?.Invoke();
-            value = @default;
-            Service.Config.Save();
-        }
-    }
-
-    private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float defaultMin, float defaultMax, float speed = 0.01f, float min = 0, float max = 3, string description = "")
-    {
-        ImGui.SetNextItemWidth(100);
-        if (ImGui.DragFloatRange2(name, ref minValue, ref maxValue, speed, min, max))
-        {
-            Service.Config.Save();
-        }
-        if (ImGuiHelper.HoveredStringReset(description) && (minValue != defaultMin || maxValue != defaultMax))
-        {
-            minValue = defaultMin;
-            maxValue = defaultMax;
-            Service.Config.Save();
-        }
-    }
-
-    private static void DrawRangedInt(string name, ref int minValue, ref int maxValue, int defaultMin, int defaultMax, float speed = 0.01f, int min = 0, int max = 3, string description = "")
-    {
-        ImGui.SetNextItemWidth(100);
-        if (ImGui.DragIntRange2(name, ref minValue, ref maxValue, speed, min, max))
-        {
-            Service.Config.Save();
-        }
-        if (ImGuiHelper.HoveredStringReset(description) && (minValue != defaultMin || maxValue != defaultMax))
-        {
-            minValue = defaultMin;
-            maxValue = defaultMax;
-            Service.Config.Save();
-        }
-    }
-
-    private static void DrawFloatNumber(string name, ref float value, float @default, float speed = 0.002f, float min = 0, float max = 1, string description = "", Action otherThing = null)
-    {
-        ImGui.SetNextItemWidth(100);
-        if (ImGui.DragFloat(name, ref value, speed, min, max))
-        {
-            Service.Config.Save();
-            otherThing?.Invoke();
-        }
-        if (ImGuiHelper.HoveredStringReset(description) && value != @default)
-        {
-            value = @default;
-            Service.Config.Save();
-            otherThing?.Invoke();
-        }
-    }
-
-    private static void DrawIntNumber(string name, ref int value, int @default, float speed = 0.2f, int min = 0, int max = 1, string description = "", Action otherThing = null)
-    {
-        ImGui.SetNextItemWidth(100);
-        if (ImGui.DragInt(name, ref value, speed, min, max))
-        {
-            Service.Config.Save();
-            otherThing?.Invoke();
-        }
-        if (ImGuiHelper.HoveredStringReset(description) && value != @default)
-        {
-            value = @default;
-            Service.Config.Save();
-            otherThing?.Invoke();
-        }
-    }
-
-    private static void DrawColor3(string name, ref Vector3 value, Vector3 @default, string description = "")
-    {
-        ImGui.SetNextItemWidth(210);
-        if (ImGui.ColorEdit3(name, ref value))
-        {
-            Service.Config.Save();
-        }
-        if (ImGuiHelper.HoveredStringReset(description) && value != @default)
-        {
-            value = @default;
-            Service.Config.Save();
-        }
-    }
-
-    private static void DrawCombo<T>(string name, ref int value, Func<T, string> toString, T[] choices = null, string description = "") where T : struct, Enum
-    {
-        choices = choices ?? Enum.GetValues<T>();
-
-        ImGui.SetNextItemWidth(100);
-        if (ImGui.BeginCombo(name, toString(choices[value])))
-        {
-            for (int i = 0; i < choices.Length; i++)
-            {
-                if (ImGui.Selectable(toString(choices[i])))
-                {
-                    value = i;
-                    Service.Config.Save();
-                }
-            }
-            ImGui.EndCombo();
-        }
-        ImGuiHelper.HoveredString(description);
-    }
-
-    private static void DrawInputText(string name, ref string value, uint maxLength, string description = "")
-    {
-        ImGui.SetNextItemWidth(210);
-        if (ImGui.InputText(name, ref value, maxLength))
-        {
-            Service.Config.Save();
-        }
-        ImGuiHelper.HoveredString(description);
     }
 }

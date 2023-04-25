@@ -19,6 +19,8 @@ public class Watcher : IDisposable
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
     private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
 
+    public static  DateTime HealTime { get; private set; } = DateTime.Now;
+    public static Dictionary<uint, (uint, uint)> HealHP { get; private set; } = new Dictionary<uint, (uint, uint)>();
     public Watcher()
     {
         SignatureHelper.Initialise(this);
@@ -86,6 +88,10 @@ public class Watcher : IDisposable
         var tar = set.Target;
 
         if (tar == null || action == null) return;
+
+        HealHP = set.TargetEffects.Where(e => e[0].Type == ActionEffectType.Heal).ToDictionary(e =>
+        e.Target.ObjectId, e =>((e.Target is BattleChara b ? b.CurrentHp : 0u), e[0].Value + (e.Target is BattleChara b1 ? b1.CurrentHp : 0u)));
+        HealTime = DateTime.Now;
 
         //Record
         DataCenter.AddActionRec(set.Action);

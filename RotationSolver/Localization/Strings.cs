@@ -19,6 +19,7 @@ internal partial class Strings
     public string ConfigWindow_Header { get; set; } = "Rotation Solver Settings v";
     public string ConfigWindow_RotationItem { get; set; } = "Rotation";
     public string ConfigWindow_ParamItem { get; set; } = "Param";
+    public string ConfigWindow_ListItem { get; set; } = "List";
     public string ConfigWindow_EventItem { get; set; } = "Event";
     public string ConfigWindow_ActionItem { get; set; } = "Action";
     public string ConfigWindow_ControlItem { get; set; } = "Control";
@@ -96,8 +97,11 @@ internal partial class Strings
     public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display Top Overlay";
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
     public string ConfigWindow_Param_Basic { get; set; } = "Basic";
+    public string ConfigWindow_Param_MaxPing { get; set; } = "Set your max Ping. If it is too low, may clip.";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
+    public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set min the time advance of using the last 0gcd.";
+
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the time advance of using casting actions on counting down.";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
@@ -156,6 +160,7 @@ internal partial class Strings
     public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
 
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
+    public string ConfigWindow_Param_AlphaInFill { get; set; } = "The alpha value in fill.";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
     public string ConfigWindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
@@ -236,7 +241,7 @@ internal partial class Strings
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
     public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
-    public string ConfigWindow_Param_Hostile { get; set; } = "Hostile";
+
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_AddHostileCondition { get; set; } = "Add selection condition";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
@@ -279,6 +284,15 @@ internal partial class Strings
 
     public string ConfigWindow_Rotation_InvalidRotation { get; set; } = "Invalid Rotation! \nPlease update to the latest version or contact to the {0}!";
     public string ConfigWindow_Rotation_ResetToDefault { get; set; } = "Click to reset the rotation configuration to default!";
+
+    public string ConfigWindow_List_Description { get; set; } = "In this window, you can set the parameters about some list things.";
+    public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
+
+    public string ConfigWindow_List_Invincibility { get; set; } = "Invincibility";
+    public string ConfigWindow_List_InvincibilityDesc { get; set; } = "If target get one of this status, it'll never attack it.";
+    public string ConfigWindow_List_DangerousStatus { get; set; } = "Dangerous Status";
+    public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "If one of your party member get this status, Esuna immediately.";
+
     #endregion
 
     #region ScriptWindow

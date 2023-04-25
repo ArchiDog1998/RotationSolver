@@ -258,7 +258,6 @@ internal static class ImGuiHelper
         if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
         {
             SearchItems(ref searchTxt, actions, selectAction);
-
             ImGui.EndCombo();
         }
     }
@@ -297,7 +296,7 @@ internal static class ImGuiHelper
     internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null, Func<T, string> getDesc = null)
     {
         ImGui.Text(LocalizationManager.RightLang.ActionSequencer_SearchBar + ": ");
-        ImGui.SetNextItemWidth(150);
+        ImGui.SetNextItemWidth(200);
         ImGui.InputText("##SearchBar", ref searchTxt, 16);
 
         if (!string.IsNullOrWhiteSpace(searchTxt))
@@ -306,7 +305,7 @@ internal static class ImGuiHelper
             actions = actions.OrderBy(a => !getName(a).Contains(src)).ToArray();
         }
 
-        if (ImGui.BeginChild($"##ActionsCandidateList", new Vector2(150, 400), true))
+        if (ImGui.BeginChild($"##ActionsCandidateList", new Vector2(200, 400), true))
         {
             foreach (var item in actions)
             {

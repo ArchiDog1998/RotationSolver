@@ -132,16 +132,16 @@ public static class DataCenter
     /// <summary>
     /// Time to the next action
     /// </summary>
-    public static unsafe float ActionRemain => (*(float*)((IntPtr)ActionManager.Instance() + 0x8));
+    public static unsafe float ActionRemain => *(float*)((IntPtr)ActionManager.Instance() + 0x8);
 
     public static float AbilityRemain
     {
         get
         {
             var gcdRemain = WeaponRemain;
-            if ((gcdRemain - 0.6f - Ping).IsLessThan(ActionRemain))
+            if ((gcdRemain - MinAnimationLock - Ping).IsLessThan(ActionRemain))
             {
-                return gcdRemain + 0.6f + Ping;
+                return gcdRemain + MinAnimationLock + Ping;
             }
             return ActionRemain;
         }
@@ -310,10 +310,10 @@ public static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping { get; private set; } = 0.07f;
+    public static float Ping => Math.Min(RealPing, Service.Config.MaxPing);
+    public static float RealPing { get; private set; } = 0.07f;
 
     public const float MinAnimationLock = 0.6f;
-    const float MAX_PING = 0.2f;
     public static unsafe void AddActionRec(Action act)
     {
         var id = (ActionID)act.RowId;
@@ -326,7 +326,7 @@ public static class DataCenter
                 LastAction = LastGCD = id;
                 if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
                 {
-                    Ping = Math.Min(MAX_PING, WeaponElapsed);
+                    RealPing = WeaponElapsed;
                 }
                 break;
             case ActionCate.Ability:
@@ -334,7 +334,7 @@ public static class DataCenter
 
                 if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
                 {
-                    Ping = Math.Min(MAX_PING, ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed);
+                    RealPing = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
                 }
                 break;
             default:
