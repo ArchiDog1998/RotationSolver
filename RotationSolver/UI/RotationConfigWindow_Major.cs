@@ -214,11 +214,12 @@ internal partial class RotationConfigWindow : Window
         ImGuiHelper.HoveredString(description);
     }
 
-    private static void DrawParamTabItem(string name, Action act)
+    private static void DrawParamTabItem(string name, Action act, Action outsideChild = null)
     {
         if (act == null) return;
         if (ImGui.BeginTabItem(name))
         {
+            outsideChild?.Invoke();
             if (ImGui.BeginChild("Param", new Vector2(0f, -1f), true))
             {
                 act();

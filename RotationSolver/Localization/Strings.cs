@@ -288,8 +288,10 @@ internal partial class Strings
     public string ConfigWindow_List_Description { get; set; } = "In this window, you can set the parameters about some list things.";
     public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
 
-    public string ConfigWindow_List_Invinsibility { get; set; } = "Invincibility";
+    public string ConfigWindow_List_Invincibility { get; set; } = "Invincibility";
+    public string ConfigWindow_List_InvincibilityDesc { get; set; } = "If target get one of this status, it'll never attack it.";
     public string ConfigWindow_List_DangerousStatus { get; set; } = "Dangerous Status";
+    public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "If one of your party member get this status, Esuna immediately.";
 
     #endregion
 

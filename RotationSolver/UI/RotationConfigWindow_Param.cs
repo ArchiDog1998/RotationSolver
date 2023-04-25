@@ -265,7 +265,7 @@ internal partial class RotationConfigWindow
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeOffset,
                 ref Service.Config.DrawMeleeOffset, Service.Default.DrawMeleeOffset);
 
-            DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeOffset,
+            DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AlphaInFill,
                 ref Service.Config.AlphaInFill, Service.Default.AlphaInFill);
         }
     }
