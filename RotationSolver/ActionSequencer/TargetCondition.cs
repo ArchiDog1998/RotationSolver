@@ -8,7 +8,7 @@ namespace RotationSolver.Timeline;
 internal class TargetCondition : ICondition
 {
     private static BaseStatus[] _allStatus = null;
-    public static BaseStatus[] AllStatus
+    private static BaseStatus[] AllStatus
     {
         get
         {

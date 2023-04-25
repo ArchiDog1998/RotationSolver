@@ -88,7 +88,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool TargetFriendly = false;
     public float AlphaInFill = 0.15f;
 
-    public List<uint> DangerousStatus { get; set; } = new List<uint>()
+    public SortedSet<uint> DangerousStatus { get; set; } = new SortedSet<uint>()
     {
         (uint)StatusID.Doom,
         (uint)StatusID.Amnesia,
@@ -114,7 +114,7 @@ public class PluginConfiguration : IPluginConfiguration
         (uint)StatusID.Necrosis,
     };
 
-    public List<uint> InvincibleStatus = new List<uint>()
+    public SortedSet<uint> InvincibleStatus = new SortedSet<uint>()
     {
         (uint)StatusID.StoneSkin,
         (uint)StatusID.IceSpikesInvincible,

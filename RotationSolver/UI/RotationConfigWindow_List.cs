@@ -11,19 +11,35 @@ namespace RotationSolver.UI;
 
 internal partial class RotationConfigWindow
 {
-    private static BaseStatus[] _allStatus = null;
-    public static BaseStatus[] AllStatus
+    private static BaseStatus[] _allDispelStatus = null;
+    public static BaseStatus[] AllDispelStatus
     {
         get
         {
-            if (_allStatus == null)
+            if (_allDispelStatus == null)
             {
-                _allStatus = Service.GetSheet<Status>()
+                _allDispelStatus = Service.GetSheet<Status>()
                     .Where(s => s.CanDispel)
                     .Select(s => new BaseStatus(s))
                     .ToArray();
             }
-            return _allStatus;
+            return _allDispelStatus;
+        }
+    }
+
+    private static BaseStatus[] _allInvStatus = null;
+    public static BaseStatus[] AllInvStatus
+    {
+        get
+        {
+            if (_allInvStatus == null)
+            {
+                _allInvStatus = Service.GetSheet<Status>()
+                    .Where(s => !s.CanDispel)
+                    .Select(s => new BaseStatus(s))
+                    .ToArray();
+            }
+            return _allInvStatus;
         }
     }
 
@@ -35,11 +51,16 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginTabBar("List Items"))
         {
-            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Hostile, DrawParamHostile);
+            try
+            {
+                DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Hostile, DrawParamHostile);
 
-            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Invinsibility, DrawInvinsibility);
+                DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Invinsibility, DrawInvinsibility);
 
-            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatus, DrawDangerousStatus);
+                DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatus, DrawDangerousStatus);
+            }
+            catch { }
+
 
             ImGui.EndTabBar();
         }
@@ -99,18 +120,41 @@ internal partial class RotationConfigWindow
         }
     }
 
+    string searchText = string.Empty;
     private void DrawDangerousStatus()
     {
-        if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "AddDangerousStatus"))
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "AddDangeriousStatus"))
         {
             Service.Config.DangerousStatus.Add(0);
         }
 
-        //for (int i = 0; i < Service.Config.DangerousStatus.Count; i++)
-        //{
-        //    ImGuiHelper.SearchCombo($"DangerousStatus{Service.Config.DangerousStatus[i]}",
-        //        )
-        //}
+        uint removeId = 0;
+        uint addId = 0;
+        foreach (var statusId in Service.Config.DangerousStatus)
+        {
+            ImGui.SetNextItemWidth(100);
+            ImGuiHelper.SearchCombo($"DangeriousStatus{statusId}",
+                Service.GetSheet<Status>().GetRow(statusId).Name,
+                ref searchText, AllDispelStatus, s =>
+                {
+                    removeId = statusId;
+                    addId = (uint)s.ID;
+                });
+
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.SquareXmark, $"RemoveDangerious{statusId}"))
+            {
+                removeId = statusId;
+            }
+        }
+
+        if(removeId != 0)
+        {
+            Service.Config.DangerousStatus.Remove(removeId);
+        }
+        if (addId != 0)
+        {
+            Service.Config.DangerousStatus.Add(addId);
+        }
     }
 
     private void DrawInvinsibility()
@@ -120,6 +164,32 @@ internal partial class RotationConfigWindow
             Service.Config.InvincibleStatus.Add(0);
         }
 
-        //TargetCondition.AllStatus;
+        uint removeId = 0;
+        uint addId = 0;
+        foreach (var statusId in Service.Config.InvincibleStatus)
+        {
+            ImGui.SetNextItemWidth(100);
+            ImGuiHelper.SearchCombo($"InvincibleStatus{statusId}",
+                Service.GetSheet<Status>().GetRow(statusId).Name,
+                ref searchText, AllInvStatus, s =>
+                {
+                    removeId = statusId;
+                    addId = (uint)s.ID;
+                });
+
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.SquareXmark, $"InvincibleStatus{statusId}"))
+            {
+                removeId = statusId;
+            }
+        }
+
+        if (removeId != 0)
+        {
+            Service.Config.InvincibleStatus.Remove(removeId);
+        }
+        if (addId != 0)
+        {
+            Service.Config.InvincibleStatus.Add(addId);
+        }
     }
 }
