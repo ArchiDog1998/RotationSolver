@@ -106,10 +106,11 @@ internal partial class RotationConfigWindow
             Service.Config.DangerousStatus.Add(0);
         }
 
-        for (int i = 0; i < Service.Config.DangerousStatus.Count; i++)
-        {
-            //ImGuiHelper.SearchCombo()
-        }
+        //for (int i = 0; i < Service.Config.DangerousStatus.Count; i++)
+        //{
+        //    ImGuiHelper.SearchCombo($"DangerousStatus{Service.Config.DangerousStatus[i]}",
+        //        )
+        //}
     }
 
     private void DrawInvinsibility()
@@ -119,6 +120,6 @@ internal partial class RotationConfigWindow
             Service.Config.InvincibleStatus.Add(0);
         }
 
-        TargetCondition.AllStatus;
+        //TargetCondition.AllStatus;
     }
 }
