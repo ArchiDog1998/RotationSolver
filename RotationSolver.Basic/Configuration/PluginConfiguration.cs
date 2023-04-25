@@ -87,6 +87,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float MeleeRangeOffset = 1;
     public bool TargetFriendly = false;
     public float AlphaInFill = 0.15f;
+    public int MaxPing = 200;
 
     public SortedSet<uint> DangerousStatus { get; set; } = new SortedSet<uint>()
     {
