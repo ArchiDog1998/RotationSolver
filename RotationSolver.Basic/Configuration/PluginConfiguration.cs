@@ -86,6 +86,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthDifference = 0.25f;
     public float MeleeRangeOffset = 1;
     public bool TargetFriendly = false;
+    public float AlphaInFill = 0.15f;
 
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();
 

@@ -156,6 +156,7 @@ internal partial class Strings
     public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
 
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
+    public string ConfigWindow_Param_AlphaInFill { get; set; } = "The alpha value in fill.";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
     public string ConfigWindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
