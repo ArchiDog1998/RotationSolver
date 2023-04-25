@@ -129,26 +129,10 @@ public static class DataCenter
 
     public static float WeaponElapsed { get; set; }
 
-    static float _lastRemain = 0;
     /// <summary>
     /// Time to the next action
     /// </summary>
-    public static unsafe float ActionRemain
-    {
-        get
-        {
-            var remain = *(float*)((IntPtr)ActionManager.Instance() + 0x8);
-
-            var mayPing = _lastRemain - remain;
-            if (mayPing > 0.04f)
-            {
-                RealPing = mayPing;
-            }
-            _lastRemain = remain;
-
-            return remain;
-        }
-    }
+    public static unsafe float ActionRemain => *(float*)((IntPtr)ActionManager.Instance() + 0x8);
 
     public static float AbilityRemain
     {
@@ -340,18 +324,18 @@ public static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
-                //if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
-                //{
-                //    RealPing = WeaponElapsed / 2;
-                //}
+                if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
+                {
+                    RealPing = WeaponElapsed;
+                }
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
 
-                //if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
-                //{
-                //    RealPing = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed / 2;
-                //}
+                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
+                {
+                    RealPing = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
+                }
                 break;
             default:
                 return;

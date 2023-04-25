@@ -51,7 +51,7 @@ internal partial class RotationConfigWindow
         ImGui.Text("TimeToNext: " + DataCenter.NextAbilityToNextGCD.ToString());
         ImGui.Text("WeaponElapsed: " + DataCenter.WeaponElapsed.ToString());
         ImGui.Text("AnimationLock: " + DataCenter.ActionRemain.ToString());
-        ImGui.Text("Ping: " + DataCenter.Ping.ToString());  
+        ImGui.Text("Real Ping: " + DataCenter.RealPing.ToString());  
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
         ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
