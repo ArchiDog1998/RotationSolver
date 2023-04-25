@@ -198,7 +198,9 @@ internal static class ActionUpdater
         //The last one.
         if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock > DataCenter.WeaponRemain)
         {
-            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + DataCenter.Ping + ahead) return;
+            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + ahead +
+                Math.Max(DataCenter.Ping, Service.Config.MinLastAbilityAdvanced)) return;
+
             RSCommands.DoAnAction(false);
         }
         else if (timeToNext < ahead)

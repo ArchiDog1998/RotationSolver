@@ -100,6 +100,8 @@ internal partial class Strings
     public string ConfigWindow_Param_MaxPing { get; set; } = "Set your max Ping. If it is too low, may clip.";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
+    public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set min the time advance of using the last 0gcd.";
+
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the time advance of using casting actions on counting down.";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";

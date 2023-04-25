@@ -88,6 +88,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool TargetFriendly = false;
     public float AlphaInFill = 0.15f;
     public int MaxPing = 200;
+    public float MinLastAbilityAdvanced = 0.1f;
 
     public SortedSet<uint> DangerousStatus { get; set; } = new SortedSet<uint>()
     {

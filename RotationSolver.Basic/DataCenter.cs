@@ -129,19 +129,35 @@ public static class DataCenter
 
     public static float WeaponElapsed { get; set; }
 
+    static float _lastRemain = 0;
     /// <summary>
     /// Time to the next action
     /// </summary>
-    public static unsafe float ActionRemain => (*(float*)((IntPtr)ActionManager.Instance() + 0x8));
+    public static unsafe float ActionRemain
+    {
+        get
+        {
+            var remain = *(float*)((IntPtr)ActionManager.Instance() + 0x8);
+
+            var mayPing = _lastRemain - remain;
+            if (mayPing > 0.04f)
+            {
+                RealPing = mayPing;
+            }
+            _lastRemain = remain;
+
+            return remain;
+        }
+    }
 
     public static float AbilityRemain
     {
         get
         {
             var gcdRemain = WeaponRemain;
-            if ((gcdRemain - 0.6f - Ping).IsLessThan(ActionRemain))
+            if ((gcdRemain - MinAnimationLock - Ping).IsLessThan(ActionRemain))
             {
-                return gcdRemain + 0.6f + Ping;
+                return gcdRemain + MinAnimationLock + Ping;
             }
             return ActionRemain;
         }
@@ -324,18 +340,18 @@ public static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
-                if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
-                {
-                    RealPing = WeaponElapsed;
-                }
+                //if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
+                //{
+                //    RealPing = WeaponElapsed / 2;
+                //}
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
 
-                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
-                {
-                    RealPing = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
-                }
+                //if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
+                //{
+                //    RealPing = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed / 2;
+                //}
                 break;
             default:
                 return;

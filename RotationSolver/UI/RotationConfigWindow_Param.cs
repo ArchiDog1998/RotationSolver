@@ -34,7 +34,10 @@ internal partial class RotationConfigWindow
         ImGui.Text("   Your Ping: " + DataCenter.RealPing.ToString("F3"));
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ActionAhead,
-            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 0.4f);
+            ref Service.Config.ActionAhead, Service.Default.ActionAhead, max: 0.5f);
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MinLastAbilityAdvanced,
+            ref Service.Config.MinLastAbilityAdvanced, Service.Default.MinLastAbilityAdvanced, max: 0.4f);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
             ref Service.Config.CountDownAhead, Service.Default.CountDownAhead, min: 0.5f, max: 0.7f);
