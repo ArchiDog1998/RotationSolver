@@ -22,7 +22,7 @@
     "AcceptsFeedback": true,
     "AssemblyVersion": "2.3.9",
     "Changelog": "2.3.9 (2023-04-24)\n\n\nBug Fixes\n\n* fund back the `UpdateNextAction` method call. (b24b0ba)",
-    "DownloadCount": "6662",
+    "DownloadCount": "6794",
     "LastUpdate": 1682353545,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.3.9/latest.zip",
