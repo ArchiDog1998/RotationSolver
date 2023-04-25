@@ -244,14 +244,17 @@ internal static partial class TargetUpdater
 
     private static float GetPartyMemberHPRatio(BattleChara member)
     {
-        if((DateTime.Now - Watcher.HealTime).TotalSeconds > 0.5
+        if((DateTime.Now - Watcher.HealTime).TotalSeconds > 1
             || !Watcher.HealHP.TryGetValue(member.ObjectId, out var hp))
         {
             return member.GetHealthRatio();
         }
 
-        return member.CurrentHp == 0 ? 0 
-            : Math.Min(1, (hp + member.CurrentHp) / (float)member.MaxHp);
+        if(member.CurrentHp > 0 && member.CurrentHp <= hp.Item1)
+        {
+            return Math.Min(1, hp.Item2 / (float)member.MaxHp);
+        }
+        return member.GetHealingRatio();
     }
 
 

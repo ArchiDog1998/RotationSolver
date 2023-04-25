@@ -86,6 +86,8 @@ internal partial class RotationConfigWindow
         ImGui.Text("CanHealSingleSpell: " + DataCenter.CanHealSingleSpell.ToString());
         ImGui.Text("CanHealAreaAbility: " + DataCenter.CanHealAreaAbility.ToString());
         ImGui.Text("CanHealAreaSpell: " + DataCenter.CanHealAreaSpell.ToString());
+
+        ImGui.Text("PartyMembersAverHP: " + DataCenter.PartyMembersAverHP.ToString());
     }
 
     private unsafe void DrawTargetData()
