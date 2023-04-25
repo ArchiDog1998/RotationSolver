@@ -175,7 +175,8 @@ internal static class ActionUpdater
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Service.Player.CurrentHp == 0) return;
 
-        var ahead = Math.Max(0.4f, Service.Config.ActionAhead);
+        var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping - 0.03f, 0.08f);
+        var ahead = Math.Min(maxAhead, Service.Config.ActionAhead);
 
         //GCD
         var canUseGCD = DataCenter.WeaponRemain <= ahead;
