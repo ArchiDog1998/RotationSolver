@@ -226,7 +226,9 @@ internal static partial class TargetUpdater
         DataCenter.WeakenPeople.Delay(DataCenter.PartyMembers.Where(p => p.StatusList.Any(StatusHelper.CanDispel)));
         DataCenter.DyingPeople.Delay(DataCenter.WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
 
-        DataCenter.PartyMembersHP = DataCenter.PartyMembers.Select(ObjectHelper.GetHealthRatio).Where(r => r > 0);
+        DataCenter.PartyMembersHP = DataCenter.PartyMembers
+            .Where(p => p.DistanceToPlayer() <= 30)
+            .Select(GetPartyMemberHPRatio).Where(r => r > 0);
         if (DataCenter.PartyMembersHP.Any())
         {
             DataCenter.PartyMembersAverHP = DataCenter.PartyMembersHP.Average();
@@ -238,6 +240,18 @@ internal static partial class TargetUpdater
         }
 
         UpdateCanHeal(Service.Player);
+    }
+
+    private static float GetPartyMemberHPRatio(BattleChara member)
+    {
+        if((DateTime.Now - Watcher.HealTime).TotalSeconds > 0.5
+            || !Watcher.HealHP.TryGetValue(member.ObjectId, out var hp))
+        {
+            return member.GetHealthRatio();
+        }
+
+        return member.CurrentHp == 0 ? 0 
+            : Math.Min(1, (hp + member.CurrentHp) / (float)member.MaxHp);
     }
 
 
