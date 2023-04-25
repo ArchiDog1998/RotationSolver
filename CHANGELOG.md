@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.4.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.9...v2.4.0) (2023-04-25)
+
+
+### Features
+
+* new Status Editor for esuna and hostile target. ([f36fd13](https://github.com/ArchiDog1998/RotationSolver/commit/f36fd13bae98c68f17b3dc11dda480b9f9fa3796))
+
+
+### Bug Fixes
+
+* ActionAhead can't be greater than 0.4s. ([e05b6d2](https://github.com/ArchiDog1998/RotationSolver/commit/e05b6d252065abbd25f9a43be9fc40c2163d65bd))
+* add an advanced of ability clicking. ([b4e4033](https://github.com/ArchiDog1998/RotationSolver/commit/b4e40339b99fd4121835a6ea91e06e46c1afc068))
+* add an alpha value for positional. ([4fe1a02](https://github.com/ArchiDog1998/RotationSolver/commit/4fe1a02aaaced6f3aba14e27259c4b0bb8b483e8))
+* add an option for showing Ping ans set max Ping. ([19570f8](https://github.com/ArchiDog1998/RotationSolver/commit/19570f83df8a7e62c1c8f79a89326ce375f065cb))
+* add hp check, make healing more precise. ([9acae08](https://github.com/ArchiDog1998/RotationSolver/commit/9acae0802702c4ad258500bb6c98cf15cdc44b60))
+* add status list for esuna or invinsibility. ([e859822](https://github.com/ArchiDog1998/RotationSolver/commit/e85982232527aa1aadc2cde375959cff090ebb1e))
+* add status list. ([d002ec8](https://github.com/ArchiDog1998/RotationSolver/commit/d002ec87cfc221cd464ea802b0086b27f2ddd977))
+* fixed with ping. ([701bfc7](https://github.com/ArchiDog1998/RotationSolver/commit/701bfc76e38180d28fa937d5e860a6fddda5556b))
+* more precise click ([b5eddf8](https://github.com/ArchiDog1998/RotationSolver/commit/b5eddf8dc633ce118893dce08818b819857d0afe))
+
 ## [2.3.9](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.8...v2.3.9) (2023-04-24)
 
 
