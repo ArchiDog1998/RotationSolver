@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.5.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.4.0...v2.5.0) (2023-04-26)
+
+
+### Features
+
+* add `OnTerritoryChanged` method for all rotations. ([cc57fec](https://github.com/ArchiDog1998/RotationSolver/commit/cc57fec97ea7da6fd3cd580e5424c599775eb02f))
+* added numberofhostiles for max range variable regardless of job ([3b43386](https://github.com/ArchiDog1998/RotationSolver/commit/3b43386bcb2a87b8e458161b5bb4a87e9273589c))
+
+
+### Bug Fixes
+
+* change Prevent option to use HasHostilesInMaxRange for less annoyances. ([90c70aa](https://github.com/ArchiDog1998/RotationSolver/commit/90c70aa6e165f47f4339d405a052b7ba54a07b16))
+* changed fetch time meaning. ([ad65bf1](https://github.com/ArchiDog1998/RotationSolver/commit/ad65bf19933f12425b75bb7c494b5ea45efdd4a1))
+* changed heal refine. ([67438f0](https://github.com/ArchiDog1998/RotationSolver/commit/67438f0531912e25e1903d5bb02239880a7ffd17))
+* changed the tips on Entry bar. ([86ef60e](https://github.com/ArchiDog1998/RotationSolver/commit/86ef60e8b2db682aafd108d5080b61266a6abe6f))
+* changed the way to get Ping. ([fec60bd](https://github.com/ArchiDog1998/RotationSolver/commit/fec60bda5384cad466fc81c7381c2a9ec3cf4e6f))
+* fixed move forward bug. ([815ace2](https://github.com/ArchiDog1998/RotationSolver/commit/815ace25668b95f3bdc7e08942d075651562deb8))
+* removed MaxPing property. ([9a02d9f](https://github.com/ArchiDog1998/RotationSolver/commit/9a02d9f8ad19e02d803a8be725d9922596d73d55))
+* removed ping caculation. ([fc545bd](https://github.com/ArchiDog1998/RotationSolver/commit/fc545bd01909ee11212a6fa5a90d167931b95084))
+
 ## [2.4.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.3.9...v2.4.0) (2023-04-25)
 
 
