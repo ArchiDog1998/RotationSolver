@@ -231,7 +231,6 @@ internal static partial class TargetUpdater
 
         DataCenter.PartyMembersHP = DataCenter.PartyMembers
             .Select(GetPartyMemberHPRatio).Where(r => r > 0);
-        _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
 
         if (DataCenter.PartyMembersHP.Any())
         {
@@ -244,11 +243,13 @@ internal static partial class TargetUpdater
         }
 
         UpdateCanHeal(Service.Player);
+
+        _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
     }
 
     private static float GetPartyMemberHPRatio(BattleChara member)
     {
-        if((DateTime.Now - Watcher.HealTime).TotalSeconds > 1
+        if ((DateTime.Now - Watcher.HealTime).TotalSeconds > 1
             || !Watcher.HealHP.TryGetValue(member.ObjectId, out var hp))
         {
             return member.GetHealthRatio();
@@ -258,14 +259,15 @@ internal static partial class TargetUpdater
         if (rightHp > 0)
         {
             if (!_lastHp.TryGetValue(member.ObjectId, out var lastHp)) lastHp = rightHp;
-            if(rightHp - lastHp == hp)
+
+            if (rightHp - lastHp == hp)
             {
                 Watcher.HealHP.Remove(member.ObjectId);
-                return member.GetHealingRatio();
+                return member.GetHealthRatio();
             }
-            return Math.Min(1, hp + rightHp / (float)member.MaxHp);
+            return Math.Min(1, (hp + rightHp) / (float)member.MaxHp);
         }
-        return member.GetHealingRatio();
+        return member.GetHealthRatio();
     }
 
 

@@ -99,13 +99,13 @@ public class Watcher : IDisposable
 
         if (tar == null || action == null) return;
 
-        HealHP = set.TargetEffects.Where(e => e[0].Type == ActionEffectType.Heal).ToDictionary(e =>
-        e.Target.ObjectId, e =>e[0].Value);
-        HealTime = DateTime.Now;
-
         //Record
         DataCenter.AddActionRec(set.Action);
         ShowStrSelf = set.ToString();
+
+        HealHP = set.TargetEffects.Where(e => e[0].Type == ActionEffectType.Heal).ToDictionary(e =>
+        e.Target.ObjectId, e => e[0].Value);
+        HealTime = DateTime.Now;
 
         //Macro
         foreach (var item in Service.Config.Events)
