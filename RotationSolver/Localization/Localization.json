@@ -52,7 +52,6 @@
   "ConfigWindow_Param_UseOverlayWindow": "Display Top Overlay",
   "ConfigWindow_Param_UseOverlayWindowDesc": "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.",
   "ConfigWindow_Param_Basic": "Basic",
-  "ConfigWindow_Param_MaxPing": "Set your max Ping. If it is too low, may clip.",
   "ConfigWindow_Param_ActionAhead": "Set the time advance of using actions",
   "ConfigWindow_Param_MinLastAbilityAdvanced": "Set min the time advance of using the last 0gcd.",
   "ConfigWindow_Param_CountDownAhead": "Set the time advance of using casting actions on counting down.",

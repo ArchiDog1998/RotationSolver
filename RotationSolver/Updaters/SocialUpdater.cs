@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
@@ -77,6 +78,15 @@ internal class SocialUpdater
         InPvp = territory.IsPvpZone;
         DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);
         DataCenter.InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
+
+        try
+        {
+            RotationUpdater.RightNowRotation?.OnTerritoryChanged();
+        }
+        catch(Exception ex)
+        {
+            PluginLog.Error(ex, "Failed on Territory changed.");
+        }
     }
 
     static void DutyState_DutyStarted(object sender, ushort e)

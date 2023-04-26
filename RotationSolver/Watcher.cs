@@ -2,6 +2,7 @@
 using Dalamud.Hooking;
 using Dalamud.Interface.Colors;
 using Dalamud.Logging;
+using Dalamud.Plugin.Ipc;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Localization;
@@ -18,14 +19,23 @@ public class Watcher : IDisposable
     /// </summary>
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
     private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
+    public static ICallGateSubscriber<object, object> IpcSubscriber;
 
     public static  DateTime HealTime { get; private set; } = DateTime.Now;
-    public static Dictionary<uint, (uint, uint)> HealHP { get; private set; } = new Dictionary<uint, (uint, uint)>();
+    public static Dictionary<uint,  ushort> HealHP { get; private set; } = new Dictionary<uint, ushort>();
     public Watcher()
     {
         SignatureHelper.Initialise(this);
-
         _receiveAbilityHook?.Enable();
+
+        IpcSubscriber = Service.Interface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
+        IpcSubscriber.Subscribe(UpdateRTTDetour);
+    }
+
+    private void UpdateRTTDetour(dynamic expando)
+    {
+        PluginLog.LogDebug($"LastRTT:{expando.LastRTT}");
+        DataCenter.Ping = (long)expando.LastRTT / 1000f;
     }
 
     public static string ShowStrSelf { get; private set; } = string.Empty;
@@ -89,13 +99,13 @@ public class Watcher : IDisposable
 
         if (tar == null || action == null) return;
 
-        HealHP = set.TargetEffects.Where(e => e[0].Type == ActionEffectType.Heal).ToDictionary(e =>
-        e.Target.ObjectId, e =>((e.Target is BattleChara b ? b.CurrentHp : 0u), e[0].Value + (e.Target is BattleChara b1 ? b1.CurrentHp : 0u)));
-        HealTime = DateTime.Now;
-
         //Record
         DataCenter.AddActionRec(set.Action);
         ShowStrSelf = set.ToString();
+
+        HealHP = set.TargetEffects.Where(e => e[0].Type == ActionEffectType.Heal).ToDictionary(e =>
+        e.Target.ObjectId, e => e[0].Value);
+        HealTime = DateTime.Now;
 
         //Macro
         foreach (var item in Service.Config.Events)

@@ -45,4 +45,9 @@ public interface ICustomRotation : ITexture
     /// This is an <seealso cref="ImGui"/> method for display the rotation status on Window.
     /// </summary>
     void DisplayStatus();
+
+    /// <summary>
+    /// It occur when territory changed or rotation changed.
+    /// </summary>
+    void OnTerritoryChanged();
 }

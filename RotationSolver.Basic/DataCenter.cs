@@ -209,7 +209,9 @@ public static class DataCenter
 
     public static uint[] TreasureCharas { get; set; } = new uint[0];
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
+    public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;
     public static int NumberOfHostilesInRange { get; set; }
+    public static int NumberOfHostilesInMaxRange { get; set; }
 
     public static bool IsHostileCastingAOE { get; set; }
 
@@ -310,8 +312,7 @@ public static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Math.Min(RealPing, Service.Config.MaxPing);
-    public static float RealPing { get; private set; } = 0.07f;
+    public static float Ping { get; set; } = 0.1f;
 
     public const float MinAnimationLock = 0.6f;
     public static unsafe void AddActionRec(Action act)
@@ -324,18 +325,9 @@ public static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
-                if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
-                {
-                    RealPing = WeaponElapsed;
-                }
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
-
-                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
-                {
-                    RealPing = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
-                }
                 break;
             default:
                 return;

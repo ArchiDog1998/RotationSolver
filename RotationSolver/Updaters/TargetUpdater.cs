@@ -86,6 +86,8 @@ internal static partial class TargetUpdater
 
         DataCenter.NumberOfHostilesInRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
 
+        DataCenter.NumberOfHostilesInMaxRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= 25);
+
         if (DataCenter.HostileTargets.Count() == 1)
         {
             var tar = DataCenter.HostileTargets.FirstOrDefault();
@@ -205,6 +207,7 @@ internal static partial class TargetUpdater
     #endregion
 
     #region Friends
+    private static Dictionary<uint, uint> _lastHp = new Dictionary<uint, uint>();
     private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
     {
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
@@ -227,8 +230,8 @@ internal static partial class TargetUpdater
         DataCenter.DyingPeople.Delay(DataCenter.WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
 
         DataCenter.PartyMembersHP = DataCenter.PartyMembers
-            .Where(p => p.DistanceToPlayer() <= 30)
             .Select(GetPartyMemberHPRatio).Where(r => r > 0);
+
         if (DataCenter.PartyMembersHP.Any())
         {
             DataCenter.PartyMembersAverHP = DataCenter.PartyMembersHP.Average();
@@ -240,21 +243,31 @@ internal static partial class TargetUpdater
         }
 
         UpdateCanHeal(Service.Player);
+
+        _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
     }
 
     private static float GetPartyMemberHPRatio(BattleChara member)
     {
-        if((DateTime.Now - Watcher.HealTime).TotalSeconds > 1
+        if ((DateTime.Now - Watcher.HealTime).TotalSeconds > 1
             || !Watcher.HealHP.TryGetValue(member.ObjectId, out var hp))
         {
             return member.GetHealthRatio();
         }
 
-        if(member.CurrentHp > 0 && member.CurrentHp <= hp.Item1)
+        var rightHp = member.CurrentHp;
+        if (rightHp > 0)
         {
-            return Math.Min(1, hp.Item2 / (float)member.MaxHp);
+            if (!_lastHp.TryGetValue(member.ObjectId, out var lastHp)) lastHp = rightHp;
+
+            if (rightHp - lastHp == hp)
+            {
+                Watcher.HealHP.Remove(member.ObjectId);
+                return member.GetHealthRatio();
+            }
+            return Math.Min(1, (hp + rightHp) / (float)member.MaxHp);
         }
-        return member.GetHealingRatio();
+        return member.GetHealthRatio();
     }
 
 

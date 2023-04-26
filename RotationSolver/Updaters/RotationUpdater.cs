@@ -275,7 +275,12 @@ internal static class RotationUpdater
         {
             if (!group.classJobIds.Contains(nowJob)) continue;
 
-            RightNowRotation = GetChooseRotation(group);
+            var rotation = GetChooseRotation(group);
+            if (rotation != RightNowRotation)
+            {
+                rotation?.OnTerritoryChanged();
+            }
+            RightNowRotation = rotation;
             RightRotationActions = RightNowRotation.AllActions;
             return;
         }

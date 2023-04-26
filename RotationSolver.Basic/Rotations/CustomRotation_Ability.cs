@@ -34,7 +34,9 @@ public abstract partial class CustomRotation
 
         if (AutoDefense(role, helpDefenseAOE, helpDefenseSingle, out act)) return true;
 
+        BaseAction.OtherOption |= CanUseOption.EmptyOrSkipCombo;
         if (MovingAbility(specialType, out act)) return true;
+        BaseAction.OtherOption &= ~CanUseOption.EmptyOrSkipCombo;
 
         if (GeneralUsingAbility(role, out act)) return true;
 
