@@ -205,6 +205,7 @@ internal static partial class TargetUpdater
     #endregion
 
     #region Friends
+    private static Dictionary<uint, uint> _lastHp = new Dictionary<uint, uint>();
     private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
     {
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
@@ -227,8 +228,9 @@ internal static partial class TargetUpdater
         DataCenter.DyingPeople.Delay(DataCenter.WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
 
         DataCenter.PartyMembersHP = DataCenter.PartyMembers
-            .Where(p => p.DistanceToPlayer() <= 30)
             .Select(GetPartyMemberHPRatio).Where(r => r > 0);
+        _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
+
         if (DataCenter.PartyMembersHP.Any())
         {
             DataCenter.PartyMembersAverHP = DataCenter.PartyMembersHP.Average();
@@ -250,9 +252,16 @@ internal static partial class TargetUpdater
             return member.GetHealthRatio();
         }
 
-        if(member.CurrentHp > 0 && member.CurrentHp <= hp.Item1)
+        var rightHp = member.CurrentHp;
+        if (rightHp > 0)
         {
-            return Math.Min(1, hp.Item2 / (float)member.MaxHp);
+            if (!_lastHp.TryGetValue(member.ObjectId, out var lastHp)) lastHp = rightHp;
+            if(rightHp - lastHp == hp)
+            {
+                Watcher.HealHP.Remove(member.ObjectId);
+                return member.GetHealingRatio();
+            }
+            return Math.Min(1, hp + rightHp / (float)member.MaxHp);
         }
         return member.GetHealingRatio();
     }

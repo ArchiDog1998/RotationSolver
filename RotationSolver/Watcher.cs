@@ -22,7 +22,7 @@ public class Watcher : IDisposable
     public static ICallGateSubscriber<object, object> IpcSubscriber;
 
     public static  DateTime HealTime { get; private set; } = DateTime.Now;
-    public static Dictionary<uint, (uint, uint)> HealHP { get; private set; } = new Dictionary<uint, (uint, uint)>();
+    public static Dictionary<uint,  ushort> HealHP { get; private set; } = new Dictionary<uint, ushort>();
     public Watcher()
     {
         SignatureHelper.Initialise(this);
@@ -100,7 +100,7 @@ public class Watcher : IDisposable
         if (tar == null || action == null) return;
 
         HealHP = set.TargetEffects.Where(e => e[0].Type == ActionEffectType.Heal).ToDictionary(e =>
-        e.Target.ObjectId, e =>((e.Target is BattleChara b ? b.CurrentHp : 0u), e[0].Value + (e.Target is BattleChara b1 ? b1.CurrentHp : 0u)));
+        e.Target.ObjectId, e =>e[0].Value);
         HealTime = DateTime.Now;
 
         //Record
