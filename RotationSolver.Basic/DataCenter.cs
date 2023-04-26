@@ -310,8 +310,10 @@ public static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Math.Min(RealPing, Service.Config.MaxPing);
-    public static float RealPing { get; private set; } = 0.07f;
+    public static float Ping => Math.Min(Math.Min(ActionFetchTime, Service.Config.MaxPing),
+        LastRTT == 0 ? float.MaxValue : LastRTT);
+    public static float ActionFetchTime { get; private set; } = 0.07f;
+    public static float LastRTT { get; set; } = 0;
 
     public const float MinAnimationLock = 0.6f;
     public static unsafe void AddActionRec(Action act)
@@ -326,7 +328,7 @@ public static class DataCenter
                 LastAction = LastGCD = id;
                 if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
                 {
-                    RealPing = WeaponElapsed;
+                    ActionFetchTime = WeaponElapsed / 2;
                 }
                 break;
             case ActionCate.Ability:
@@ -334,7 +336,7 @@ public static class DataCenter
 
                 if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
                 {
-                    RealPing = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
+                    ActionFetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed / 2;
                 }
                 break;
             default:
