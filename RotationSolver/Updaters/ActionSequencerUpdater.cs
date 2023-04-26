@@ -1,4 +1,6 @@
-﻿using RotationSolver.Timeline;
+﻿using FFXIVClientStructs.FFXIV.Client.Game.InstanceContent;
+
+using RotationSolver.Timeline;
 using RotationSolver.UI;
 using System.Diagnostics;
 
@@ -65,6 +67,11 @@ internal class ActionSequencerUpdater
         {
             set.Save(_actionSequencerFolder);
         }
+    }
+
+    public static void LoadFiles()
+    {
+        _conditionSet = MajorConditionSet.Read(_actionSequencerFolder);
     }
 
     private static void AddNew()
@@ -134,6 +141,12 @@ internal class ActionSequencerUpdater
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Save, "##SaveTheConditions"))
         {
             SaveFiles();
+        }
+
+        ImGui.SameLine();
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "##LoadTheConditions"))
+        {
+            LoadFiles();
         }
     }
 }
