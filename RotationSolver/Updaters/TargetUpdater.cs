@@ -86,6 +86,8 @@ internal static partial class TargetUpdater
 
         DataCenter.NumberOfHostilesInRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
 
+        DataCenter.NumberOfHostilesInMaxRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= 25);
+
         if (DataCenter.HostileTargets.Count() == 1)
         {
             var tar = DataCenter.HostileTargets.FirstOrDefault();

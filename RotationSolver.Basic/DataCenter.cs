@@ -209,7 +209,9 @@ public static class DataCenter
 
     public static uint[] TreasureCharas { get; set; } = new uint[0];
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
+    public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;
     public static int NumberOfHostilesInRange { get; set; }
+    public static int NumberOfHostilesInMaxRange { get; set; }
 
     public static bool IsHostileCastingAOE { get; set; }
 
