@@ -95,5 +95,7 @@ public abstract partial class CustomRotation : ICustomRotation
         ImGui.TextWrapped($"If you want to Display some extra information on this panel. Please override {nameof(DisplayStatus)} method!");
     }
 
+    public virtual void OnTerritoryChanged() { }
+
     public override string ToString() => RotationName;
 }
