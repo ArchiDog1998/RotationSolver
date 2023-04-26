@@ -93,6 +93,11 @@ public abstract partial class CustomRotation
     /// </summary>
     protected static int NumberOfHostilesInRange => DataCenter.NumberOfHostilesInRange;
 
+    /// <summary>
+    /// How many hostile targets in max range (25 yalms) regardless of job
+    /// </summary>
+    protected static int NumberOfHostilesInMaxRange => DataCenter.NumberOfHostilesInMaxRange;
+
     protected static IEnumerable<BattleChara> HostileTargets => DataCenter.HostileTargets;
 
     #endregion
