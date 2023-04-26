@@ -97,7 +97,6 @@ internal partial class Strings
     public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display Top Overlay";
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
     public string ConfigWindow_Param_Basic { get; set; } = "Basic";
-    public string ConfigWindow_Param_MaxPing { get; set; } = "Set your max Ping. If it is too low, may clip.";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
     public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set min the time advance of using the last 0gcd.";

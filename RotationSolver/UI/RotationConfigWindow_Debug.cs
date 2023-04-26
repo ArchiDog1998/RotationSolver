@@ -56,7 +56,7 @@ internal partial class RotationConfigWindow
         ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
         ImGui.Text("Hostile Near Count Max Range: " + DataCenter.NumberOfHostilesInMaxRange.ToString());
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
-        ImGui.Text("Targetable: " + Service.Player.IsTargetable().ToString());
+        ImGui.Text("Ping: " + DataCenter.Ping.ToString());
 
         foreach (var status in Service.Player.StatusList)
         {

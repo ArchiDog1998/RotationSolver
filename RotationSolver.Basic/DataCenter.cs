@@ -312,8 +312,7 @@ public static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Math.Min(Service.Config.MaxPing, LastRTT);
-    public static float LastRTT { get; set; } = 0.1f;
+    public static float Ping { get; set; } = 0.1f;
 
     public const float MinAnimationLock = 0.6f;
     public static unsafe void AddActionRec(Action act)
