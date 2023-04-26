@@ -8,7 +8,7 @@ internal static class MajorUpdater
 {
     public static bool IsValid => Service.Conditions.Any() && Service.Player != null && !SocialUpdater.InPvp;
     public static bool ShouldPreventActions => Service.Config.GetValue(SettingsCommand.PreventActions)
-        && !DataCenter.HasHostilesInRange;
+        && !DataCenter.HasHostilesInMaxRange;
 
 #if DEBUG
     private static readonly Dictionary<int, bool> _values = new Dictionary<int, bool>();
