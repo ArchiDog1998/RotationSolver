@@ -2,7 +2,6 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SGE_Base : CustomRotation
 {
-    public override MedicineType MedicineType => MedicineType.Strength;
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
 
     #region Job Gauge
@@ -51,6 +50,7 @@ public abstract class SGE_Base : CustomRotation
     {
         ActionCheck = b => NoOgcds,
     };
+    #endregion
 
     public static IBaseAction Kardia { get; } = new BaseAction(ActionID.Kardia, ActionOption.Heal)
     {
@@ -161,11 +161,13 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Icarus { get; } = new BaseAction(ActionID.Icarus, ActionOption.EndSpecial)
     {
-    ChoiceTarget = TargetFilter.FindTargetForMoving,
+        ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 
     [RotationDesc(ActionID.Icarus)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
-    if (Icarus.CanUse(out act)) return true;
-    return base.MoveForwardAbility(out act);
+        if (Icarus.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
+    }
+}
