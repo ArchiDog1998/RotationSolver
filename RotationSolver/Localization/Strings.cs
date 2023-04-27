@@ -19,6 +19,7 @@ internal partial class Strings
     public string ConfigWindow_Header { get; set; } = "Rotation Solver Settings v";
     public string ConfigWindow_RotationItem { get; set; } = "Rotation";
     public string ConfigWindow_ParamItem { get; set; } = "Param";
+    public string ConfigWindow_ListItem { get; set; } = "List";
     public string ConfigWindow_EventItem { get; set; } = "Event";
     public string ConfigWindow_ActionItem { get; set; } = "Action";
     public string ConfigWindow_ControlItem { get; set; } = "Control";
@@ -98,6 +99,8 @@ internal partial class Strings
     public string ConfigWindow_Param_Basic { get; set; } = "Basic";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
+    public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set min the time advance of using the last 0gcd.";
+
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the time advance of using casting actions on counting down.";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
@@ -106,6 +109,7 @@ internal partial class Strings
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cut scene.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
+    public string ConfigWindow_Param_PreventActionsIfOutOfCombat { get; set; } = "Prevent Actions if no hostiles in range";
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";
@@ -155,6 +159,7 @@ internal partial class Strings
     public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
 
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
+    public string ConfigWindow_Param_AlphaInFill { get; set; } = "The alpha value in fill.";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
     public string ConfigWindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
@@ -235,7 +240,7 @@ internal partial class Strings
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
     public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
-    public string ConfigWindow_Param_Hostile { get; set; } = "Hostile";
+
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_AddHostileCondition { get; set; } = "Add selection condition";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
@@ -278,33 +283,43 @@ internal partial class Strings
 
     public string ConfigWindow_Rotation_InvalidRotation { get; set; } = "Invalid Rotation! \nPlease update to the latest version or contact to the {0}!";
     public string ConfigWindow_Rotation_ResetToDefault { get; set; } = "Click to reset the rotation configuration to default!";
+
+    public string ConfigWindow_List_Description { get; set; } = "In this window, you can set the parameters about some list things.";
+    public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
+
+    public string ConfigWindow_List_Invincibility { get; set; } = "Invincibility";
+    public string ConfigWindow_List_InvincibilityDesc { get; set; } = "If target get one of this status, it'll never attack it.";
+    public string ConfigWindow_List_DangerousStatus { get; set; } = "Dangerous Status";
+    public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "If one of your party member get this status, Esuna immediately.";
+
     #endregion
 
     #region ScriptWindow
-    public string Timeline_DragdropDescription { get; set; } = "Drag&drop to move，Ctrl+Alt+RightClick to delete.";
-    public string Timeline_SearchBar { get; set; } = "Search Bar";
-    public string Timeline_MustUse { get; set; } = "MustUse";
-    public string Timeline_MustUseDesc { get; set; } = "Skip AOE and Buff.";
-    public string Timeline_Empty { get; set; } = "UseUp";
-    public string Timeline_EmptyDesc { get; set; } = "UseUp or Skip Combo";
-    public string Timeline_TimelineDescription { get; set; } = "Add some condition to automatic use this action.";
-    public string Timeline_Can { get; set; } = "Can";
-    public string Timeline_Cannot { get; set; } = "Cannot";
-    public string Timeline_Is { get; set; } = "Is";
-    public string Timeline_Isnot { get; set; } = "Isnot";
-    public string Timeline_Have { get; set; } = "Have";
-    public string Timeline_Havenot { get; set; } = "Havenot";
-    public string Timeline_Ability { get; set; } = "Ability";
-    public string Timeline_Charges { get; set; } = "Charges";
-    public string Timeline_ConditionSet { get; set; } = "ConditionSet";
-    public string Timeline_ActionCondition { get; set; } = "ActionCondition";
-    public string Timeline_TargetCondition { get; set; } = "TargetCondition";
-    public string Timeline_RotationCondition { get; set; } = "RotationCondition";
-    public string Timeline_ActionTarget { get; set; } = "{0}'s target";
-    public string Timeline_Target { get; set; } = "Target";
-    public string Timeline_Player { get; set; } = "Player";
-    public string Timeline_StatusSelf { get; set; } = "StatusSelf";
-    public string Timeline_StatusSelfDesc { get; set; } = "StatusSelf";
+    public string ActionSequencer_DragdropDescription { get; set; } = "Drag&drop to move，Ctrl+Alt+RightClick to delete.";
+    public string ActionSequencer_SearchBar { get; set; } = "Search Bar";
+    public string ActionSequencer_MustUse { get; set; } = "MustUse";
+    public string ActionSequencer_MustUseDesc { get; set; } = "Skip AOE and Buff.";
+    public string ActionSequencer_Empty { get; set; } = "UseUp";
+    public string ActionSequencer_EmptyDesc { get; set; } = "UseUp or Skip Combo";
+    public string ActionSequencer_ActionSequencerDescription { get; set; } = "Add some condition to automatic use this action.";
+    public string ActionSequencer_Can { get; set; } = "Can";
+    public string ActionSequencer_Cannot { get; set; } = "Cannot";
+    public string ActionSequencer_Is { get; set; } = "Is";
+    public string ActionSequencer_Isnot { get; set; } = "Isnot";
+    public string ActionSequencer_Have { get; set; } = "Have";
+    public string ActionSequencer_Havenot { get; set; } = "Havenot";
+    public string ActionSequencer_TimeOffset { get; set; } = "Time Offset";
+    public string ActionSequencer_Charges { get; set; } = "Charges";
+    public string ActionSequencer_ConditionSet { get; set; } = "ConditionSet";
+    public string ActionSequencer_ActionCondition { get; set; } = "ActionCondition";
+    public string ActionSequencer_TargetCondition { get; set; } = "TargetCondition";
+    public string ActionSequencer_RotationCondition { get; set; } = "RotationCondition";
+    public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
+    public string ActionSequencer_Target { get; set; } = "Target";
+    public string ActionSequencer_Player { get; set; } = "Player";
+    public string ActionSequencer_StatusSelf { get; set; } = "StatusSelf";
+    public string ActionSequencer_StatusSelfDesc { get; set; } = "StatusSelf";
+    public string ActionSequencer_NotAllowed { get; set; } = "This condition can't be used with this action.";
     #endregion
 
     #region Actions
@@ -368,6 +383,7 @@ internal partial class Strings
     public string TargetConditionType_StatusEnd { get; set; } = "Status End";
     public string TargetConditionType_StatusEndGCD { get; set; } = "Status End GCD";
     public string TargetConditionType_CastingAction { get; set; } = "Casting Action";
+    public string TargetConditionType_CastingActionTimeUntil { get; set; } = "Casting Action Time Until";
 
     #endregion
 

@@ -2,8 +2,11 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class WHM_Base : CustomRotation
 {
-    private static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
+    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
     public override MedicineType MedicineType => MedicineType.Mind;
+
+    #region Job Gauge
+    private static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
 
     protected static byte Lily => JobGauge.Lily;
 
@@ -14,20 +17,20 @@ public abstract class WHM_Base : CustomRotation
         return EndAfter(JobGauge.LilyTimer / 1000f, time);
     }
 
-    protected static bool LilyAfterGCD(uint gctCount = 0, int abilityCount = 0)
+    protected static bool LilyAfterGCD(uint gctCount = 0, float offset = 0)
     {
-        return EndAfterGCD(JobGauge.LilyTimer / 1000f, gctCount, abilityCount);
+        return EndAfterGCD(JobGauge.LilyTimer / 1000f, gctCount, offset);
     }
-
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
-    private sealed protected override IBaseAction Raise => Raise1;
+    #endregion
 
     #region Heal
+    private sealed protected override IBaseAction Raise => Raise1;
+    public static IBaseAction Raise1 { get; } = new BaseAction(ActionID.Raise1, ActionOption.Friendly);
+
     public static IBaseAction Cure { get; } = new BaseAction(ActionID.Cure, ActionOption.Heal);
 
     public static IBaseAction Medica { get; } = new BaseAction(ActionID.Medica, ActionOption.Heal);
 
-    public static IBaseAction Raise1 { get; } = new BaseAction(ActionID.Raise1, ActionOption.Friendly);
 
     public static IBaseAction Cure2 { get; } = new BaseAction(ActionID.Cure2, ActionOption.Heal);
 

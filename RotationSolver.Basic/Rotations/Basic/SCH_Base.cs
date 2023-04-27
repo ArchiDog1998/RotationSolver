@@ -2,21 +2,22 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SCH_Base : CustomRotation
 {
-    private static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
-
     public override MedicineType MedicineType => MedicineType.Mind;
-
-    protected static byte FairyGauge => JobGauge.FairyGauge;
-
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
 
-    private sealed protected override IBaseAction Raise => Resurrection;
+    #region Job Gauge
+    static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
+
+    protected static byte FairyGauge => JobGauge.FairyGauge;
 
     protected static bool HasAetherflow => JobGauge.Aetherflow > 0;
 
     protected static bool HasSeraph => JobGauge.SeraphTimer > 0;
+    #endregion
 
     #region Heal
+    private sealed protected override IBaseAction Raise => Resurrection;
+
     public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, ActionOption.Heal);
 
     public static IBaseAction Adloquium { get; } = new BaseAction(ActionID.Adloquium, ActionOption.Heal)

@@ -2,21 +2,19 @@
 
 In `Param` panel, we got some basic parameters to set.
 
-![Param Basic](assets/image-20230417205042237.png)
+![Param-Basic](assets/image-20230423220341573.png)
 
 ## Click Things
 
-This plugin helps you to click the right action during the combat.
-
-These two parameters are very **important** for click. Some delayed GCD problems are mostly caused by these two parameters. Here is a diagram.
+This plugin helps you to click the right action during the combat. Here is a diagram about the clicking things.
 
 ![Click](assets/HowAndWhenToClick.svg)
 
-And there are two very important parameters you need to know.
+`Time advance of using actions` is the amount of time in advance of using the actions. The value of this is related to your FPS of the game. Please set this value be greater than the time of one frame. If you want to simulate the intensive click, increasing the value of this upping to 0.5s. But if the value is big, it'll be hard to grab time with RS through the regular use of actions.
 
-`Interval between 0GCD using` determines how often to use a 0GCD, and how may 0GCDs are weaving into the GCD. The value of this parameter is related to the Ping value of the game. 0.6s - 0.7s are recommend.
+Left for 0.02s, right for 0.5s. Left is easier to click manully.
 
-`Time advance of using actions` is the amount of time in advance of using the actions. The value of this is related to your FPS of the game. Please set this value be little greater than the time of one frame. Based on this, the smaller the better.
+![ADV20](assets/ADV20.gif)![ADV500](assets/ADV500.gif)
 
 ## Time
 

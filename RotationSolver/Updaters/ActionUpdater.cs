@@ -175,8 +175,11 @@ internal static class ActionUpdater
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Service.Player.CurrentHp == 0) return;
 
+        var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
+        var ahead = Math.Min(maxAhead, Service.Config.ActionAhead);
+
         //GCD
-        var canUseGCD = DataCenter.WeaponRemain <= Service.Config.ActionAhead;
+        var canUseGCD = DataCenter.WeaponRemain <= ahead;
         if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
         if (canUseGCD) return;
 
@@ -193,12 +196,14 @@ internal static class ActionUpdater
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return;
 
         //The last one.
-        if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinPing > DataCenter.WeaponRemain)
+        if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock > DataCenter.WeaponRemain)
         {
-            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + DataCenter.Ping + Service.Config.ActionAhead) return;
+            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + ahead +
+                Math.Max(DataCenter.Ping, Service.Config.MinLastAbilityAdvanced)) return;
+
             RSCommands.DoAnAction(false);
         }
-        else if (timeToNext < Service.Config.ActionAhead)
+        else if (timeToNext < ahead)
         {
             RSCommands.DoAnAction(false);
         }

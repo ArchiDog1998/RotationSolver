@@ -1,19 +1,21 @@
-﻿using RotationSolver.Timeline;
+﻿using FFXIVClientStructs.FFXIV.Client.Game.InstanceContent;
+using RotationSolver.ActionSequencer;
 using RotationSolver.UI;
 using System.Diagnostics;
 
 namespace RotationSolver.Updaters;
 
-internal class TimeLineUpdater
+internal class ActionSequencerUpdater
 {
-    static string _timelineFolder;
+    static string _actionSequencerFolder;
 
     static IEnumerable<MajorConditionSet> _conditionSet;
-    public static MajorConditionSet RightSet => _conditionSet?.ElementAtOrDefault(Service.Config.TimelineIndex);
+    public static MajorConditionSet RightSet => _conditionSet?
+        .ElementAtOrDefault(Service.Config.ActionSequencerIndex);
 
     public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? new string[0];
 
-    public static void UpdateTimelineAction()
+    public static void UpdateActionSequencerAction()
     {
         if (_conditionSet == null) return;
         var customRotation = RotationUpdater.RightNowRotation;
@@ -30,32 +32,32 @@ internal class TimeLineUpdater
             var nextAct = allActions.FirstOrDefault(a => a.ID == conditionPair.Key);
             if (nextAct == null) continue;
 
-            if (!conditionPair.Value.IsTrue(customRotation)) continue;
+            if (!conditionPair.Value.IsTrue(customRotation, nextAct.IsActionSequencer)) continue;
 
-            DataCenter.TimeLineAction = nextAct;
+            DataCenter.ActionSequencerAction = nextAct;
             find = true;
             break;
         }
         if (!find)
         {
-            DataCenter.TimeLineAction = null;
+            DataCenter.ActionSequencerAction = null;
         }
     }
 
     public static void Enable(string folder)
     {
-        _timelineFolder = folder;
-        if (!Directory.Exists(_timelineFolder)) Directory.CreateDirectory(_timelineFolder);
+        _actionSequencerFolder = folder;
+        if (!Directory.Exists(_actionSequencerFolder)) Directory.CreateDirectory(_actionSequencerFolder);
 
-        _conditionSet = MajorConditionSet.Read(_timelineFolder);
+        _conditionSet = MajorConditionSet.Read(_actionSequencerFolder);
     }
 
     public static void SaveFiles()
     {
         try
         {
-            Directory.Delete(_timelineFolder);
-            Directory.CreateDirectory(_timelineFolder);
+            Directory.Delete(_actionSequencerFolder);
+            Directory.CreateDirectory(_actionSequencerFolder);
         }
         catch
         {
@@ -63,8 +65,13 @@ internal class TimeLineUpdater
         }
         foreach (var set in _conditionSet)
         {
-            set.Save(_timelineFolder);
+            set.Save(_actionSequencerFolder);
         }
+    }
+
+    public static void LoadFiles()
+    {
+        _conditionSet = MajorConditionSet.Read(_actionSequencerFolder);
     }
 
     private static void AddNew()
@@ -95,22 +102,20 @@ internal class TimeLineUpdater
         }
 
         var combos = ConditionSetsName;
-        if (combos != null && combos.Length > Service.Config.TimelineIndex)
+        if (combos != null && combos.Length > Service.Config.ActionSequencerIndex)
         {
-            ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[Service.Config.TimelineIndex]).X + 30);
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[Service.Config.ActionSequencerIndex]).X + 30);
         }
         else
         {
             ImGui.SetNextItemWidth(30);
         }
 
-        ImGui.Combo("##MajorConditionCombo", ref Service.Config.TimelineIndex, combos, combos.Length);
-
-        ImGui.SameLine();
-
+        ImGui.Combo("##MajorConditionCombo", ref Service.Config.ActionSequencerIndex, combos, combos.Length);
 
         if (hasSet)
         {
+            ImGui.SameLine();
             if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, "##DeleteTimelineConditionSet"))
             {
                 Delete(set.Name);
@@ -118,6 +123,8 @@ internal class TimeLineUpdater
 
             ImGui.SameLine();
         }
+
+        ImGui.SameLine();
 
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
         {
@@ -127,7 +134,19 @@ internal class TimeLineUpdater
         ImGui.SameLine();
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Folder, "##OpenDefinationFolder"))
         {
-            Process.Start("explorer.exe", _timelineFolder);
+            Process.Start("explorer.exe", _actionSequencerFolder);
+        }
+
+        ImGui.SameLine();
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Save, "##SaveTheConditions"))
+        {
+            SaveFiles();
+        }
+
+        ImGui.SameLine();
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "##LoadTheConditions"))
+        {
+            LoadFiles();
         }
     }
 }

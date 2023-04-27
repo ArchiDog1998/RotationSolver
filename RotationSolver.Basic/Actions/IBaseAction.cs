@@ -18,9 +18,6 @@
         bool IsFriendly { get; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        bool IsTimeline { get; }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         bool IsEot { get; }
 
         EnemyPositional EnemyPositional { get; }

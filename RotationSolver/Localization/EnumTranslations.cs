@@ -1,6 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using RotationSolver.ActionSequencer;
 using RotationSolver.Commands;
-using RotationSolver.Timeline;
 
 namespace RotationSolver.Localization;
 
@@ -8,13 +8,14 @@ internal static class EnumTranslations
 {
     internal static string ToName(this TargetConditionType type) => type switch
     {
-        TargetConditionType.HaveStatus => LocalizationManager.RightLang.TargetConditionType_HaveStatus,
+        TargetConditionType.HasStatus => LocalizationManager.RightLang.TargetConditionType_HaveStatus,
         TargetConditionType.IsDying => LocalizationManager.RightLang.TargetConditionType_IsDying,
         TargetConditionType.IsBoss => LocalizationManager.RightLang.TargetConditionType_IsBoss,
         TargetConditionType.Distance => LocalizationManager.RightLang.TargetConditionType_Distance,
         TargetConditionType.StatusEnd => LocalizationManager.RightLang.TargetConditionType_StatusEnd,
         TargetConditionType.StatusEndGCD => LocalizationManager.RightLang.TargetConditionType_StatusEndGCD,
         TargetConditionType.CastingAction => LocalizationManager.RightLang.TargetConditionType_CastingAction,
+        TargetConditionType.CastingActionTimeUntil => LocalizationManager.RightLang.TargetConditionType_CastingActionTimeUntil,
         _ => string.Empty,
     };
 
@@ -34,7 +35,7 @@ internal static class EnumTranslations
         ActionConditionType.ElapsedGCD => LocalizationManager.RightLang.ActionConditionType_ElapsedGCD,
         ActionConditionType.Remain => LocalizationManager.RightLang.ActionConditionType_Remain,
         ActionConditionType.RemainGCD => LocalizationManager.RightLang.ActionConditionType_RemainGCD,
-        ActionConditionType.ShouldUse => LocalizationManager.RightLang.ActionConditionType_ShouldUse,
+        ActionConditionType.CanUse => LocalizationManager.RightLang.ActionConditionType_ShouldUse,
         ActionConditionType.EnoughLevel => LocalizationManager.RightLang.ActionConditionType_EnoughLevel,
         ActionConditionType.IsCoolDown => LocalizationManager.RightLang.ActionConditionType_IsCoolDown,
         ActionConditionType.CurrentCharges => LocalizationManager.RightLang.ActionConditionType_CurrentCharges,

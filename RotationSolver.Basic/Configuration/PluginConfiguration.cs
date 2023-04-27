@@ -30,11 +30,12 @@ public class PluginConfiguration : IPluginConfiguration
 
     public int AddDotGCDCount = 2;
 
-    public int TimelineIndex = 0;
+    public int ActionSequencerIndex = 0;
 
     public bool AutoOffBetweenArea = true;
     public bool AutoOffCutScene = true;
     public bool AutoOffWhenDead = true;
+    public bool PreventActionsIfOutOfCombat = false;
     public bool ChangeTargetForFate = true;
     public bool MoveTowardsScreenCenter = true;
 
@@ -85,6 +86,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthDifference = 0.25f;
     public float MeleeRangeOffset = 1;
     public bool TargetFriendly = false;
+    public float AlphaInFill = 0.15f;
+    public float MinLastAbilityAdvanced = 0.1f;
 
     public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();
 

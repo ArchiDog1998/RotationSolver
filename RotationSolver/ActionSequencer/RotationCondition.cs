@@ -1,7 +1,8 @@
-﻿using RotationSolver.Localization;
+﻿using Dalamud.Interface.Colors;
+using RotationSolver.Localization;
 using RotationSolver.UI;
 
-namespace RotationSolver.Timeline;
+namespace RotationSolver.ActionSequencer;
 
 internal class RotationCondition : ICondition
 {
@@ -29,8 +30,10 @@ internal class RotationCondition : ICondition
         ConditionHelper.CheckMemberInfo(rotation, MethodName, ref _method);
     }
 
-    public bool IsTrue(ICustomRotation rotation)
+    public bool IsTrue(ICustomRotation rotation, bool isActionSequencer)
     {
+        if (!isActionSequencer) return false;
+
         if (Service.Player == null) return false;
         UpdateInfo(rotation);
 
@@ -112,13 +115,18 @@ internal class RotationCondition : ICondition
     public float Height => ICondition.DefaultHeight;
 
     string searchTxt = string.Empty;
-    public void Draw(ICustomRotation rotation)
+    public void Draw(ICustomRotation rotation, bool isActionSequencer)
     {
         UpdateInfo(rotation);
 
-
-        ImGuiHelper.DrawCondition(IsTrue(rotation));
+        ImGuiHelper.DrawCondition(IsTrue(rotation, isActionSequencer));
         ImGui.SameLine();
+
+        if (!isActionSequencer)
+        {
+            ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.ActionSequencer_NotAllowed);
+            return;
+        }
 
         ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref ComboConditionType, EnumTranslations.ToName);
 
@@ -136,8 +144,8 @@ internal class RotationCondition : ICondition
                 ImGui.SetNextItemWidth(80);
                 ImGui.Combo($"##IsOrNot{GetHashCode()}", ref Condition, new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Is,
-                    LocalizationManager.RightLang.Timeline_Isnot,
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
                 }, 2);
                 break;
 
@@ -211,8 +219,8 @@ internal class RotationCondition : ICondition
                 ImGui.SetNextItemWidth(80);
                 ImGui.Combo($"##IsNot{GetHashCode()}", ref Condition, new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Is,
-                    LocalizationManager.RightLang.Timeline_Isnot,
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
                 }, 2);
 
                 ImGui.SameLine();
@@ -232,7 +240,7 @@ internal class RotationCondition : ICondition
     }
 }
 
-public enum ComboConditionType : int
+public enum ComboConditionType : byte
 {
     Bool,
     Byte,

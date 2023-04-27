@@ -32,7 +32,7 @@ public static class CooldownHelper
         return recast.IsLessThan(remain);
     }
 
-    internal static bool RecastAfter(float recast, float remain, bool addWeaponRemain = true)
+    public static bool RecastAfter(float recast, float remain, bool addWeaponRemain = true)
     {
         if (addWeaponRemain) remain += DataCenter.WeaponRemain;
 

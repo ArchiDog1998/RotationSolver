@@ -34,7 +34,9 @@ public abstract partial class CustomRotation
 
         if (AutoDefense(role, helpDefenseAOE, helpDefenseSingle, out act)) return true;
 
+        BaseAction.OtherOption |= CanUseOption.EmptyOrSkipCombo;
         if (MovingAbility(specialType, out act)) return true;
+        BaseAction.OtherOption &= ~CanUseOption.EmptyOrSkipCombo;
 
         if (GeneralUsingAbility(role, out act)) return true;
 
@@ -266,7 +268,7 @@ public abstract partial class CustomRotation
     }
 
     [RotationDesc(DescType.MoveForwardAbility)]
-    protected virtual bool MoveForwardAbility(out IAction act, CanUseOption option = CanUseOption.None)
+    protected virtual bool MoveForwardAbility(out IAction act)
     {
         act = null; return false;
     }

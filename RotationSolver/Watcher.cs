@@ -2,6 +2,7 @@
 using Dalamud.Hooking;
 using Dalamud.Interface.Colors;
 using Dalamud.Logging;
+using Dalamud.Plugin.Ipc;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Localization;
@@ -18,12 +19,21 @@ public class Watcher : IDisposable
     /// </summary>
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
     private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
+    public static ICallGateSubscriber<object, object> IpcSubscriber;
 
     public Watcher()
     {
         SignatureHelper.Initialise(this);
-
         _receiveAbilityHook?.Enable();
+
+        IpcSubscriber = Service.Interface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
+        IpcSubscriber.Subscribe(UpdateRTTDetour);
+    }
+
+    private void UpdateRTTDetour(dynamic expando)
+    {
+        PluginLog.LogDebug($"LastRTT:{expando.LastRTT}");
+        DataCenter.Ping = (long)expando.LastRTT / 1000f;
     }
 
     public static string ShowStrSelf { get; private set; } = string.Empty;
@@ -90,6 +100,10 @@ public class Watcher : IDisposable
         //Record
         DataCenter.AddActionRec(set.Action);
         ShowStrSelf = set.ToString();
+
+        DataCenter.HealHP = set.GetSpecificTypeEffect(ActionEffectType.Heal);
+        DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
+        DataCenter.EffectTime = DateTime.Now;
 
         //Macro
         foreach (var item in Service.Config.Events)

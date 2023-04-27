@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Data;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
@@ -11,6 +12,20 @@ namespace RotationSolver.Basic;
 
 public static class DataCenter
 {
+    public static DateTime EffectTime { get; set; } = DateTime.Now;
+    public static Dictionary<uint, ushort> HealHP { get; set; } = new Dictionary<uint, ushort>();
+    public static Dictionary<uint, ushort> ApplyStatus { private get; set; } = new Dictionary<uint, ushort>();
+    public static bool HasApplyStatus(uint id, StatusID[] ids)
+    {
+        if ((DateTime.Now - EffectTime).TotalSeconds < 1)
+        {
+            if (ApplyStatus.TryGetValue(id, out var statusId))
+            {
+                if (ids.Any(s => (ushort)s == statusId)) return true;
+            }
+        }
+        return false;
+    }
     public static bool InHighEndDuty { get; set; } = false;
     public static TerritoryContentType TerritoryContentType { get; set; } = TerritoryContentType.None;
 
@@ -29,12 +44,12 @@ public static class DataCenter
     }
 
     private static List<NextAct> NextActs = new List<NextAct>();
-    public static IAction TimeLineAction { private get; set; }
+    public static IAction ActionSequencerAction { private get; set; }
     public static IAction CommandNextAction
     {
         get
         {
-            if (TimeLineAction != null) return TimeLineAction;
+            if (ActionSequencerAction != null) return ActionSequencerAction;
 
             var next = NextActs.FirstOrDefault();
 
@@ -132,16 +147,16 @@ public static class DataCenter
     /// <summary>
     /// Time to the next action
     /// </summary>
-    public static unsafe float ActionRemain => (*(float*)((IntPtr)ActionManager.Instance() + 0x8));
+    public static unsafe float ActionRemain => *(float*)((IntPtr)ActionManager.Instance() + 0x8);
 
     public static float AbilityRemain
     {
         get
         {
             var gcdRemain = WeaponRemain;
-            if ((gcdRemain - 0.6f - Ping).IsLessThan(ActionRemain))
+            if ((gcdRemain - MinAnimationLock - Ping).IsLessThan(ActionRemain))
             {
-                return gcdRemain + 0.6f + Ping;
+                return gcdRemain + MinAnimationLock + Ping;
             }
             return ActionRemain;
         }
@@ -209,7 +224,9 @@ public static class DataCenter
 
     public static uint[] TreasureCharas { get; set; } = new uint[0];
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
+    public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;
     public static int NumberOfHostilesInRange { get; set; }
+    public static int NumberOfHostilesInMaxRange { get; set; }
 
     public static bool IsHostileCastingAOE { get; set; }
 
@@ -255,6 +272,8 @@ public static class DataCenter
     }
 
     #region HP
+    public static Dictionary<uint, float> RefinedHP { get; set; } = new Dictionary<uint, float>();
+
     public static IEnumerable<float> PartyMembersHP { get; set; }
     public static float PartyMembersMinHP { get; set; }
     public static float PartyMembersAverHP { get; set; }
@@ -281,15 +300,23 @@ public static class DataCenter
     {
         get
         {
-            var recs = _damages.Where(r => DateTime.Now - r.ReceiveTime < TimeSpan.FromMilliseconds(5));
+            try
+            {
+                var recs = _damages.Where(r => DateTime.Now - r.ReceiveTime < TimeSpan.FromMilliseconds(5));
 
-            if(!recs.Any()) return 0;
-            
-            var damages = recs.Sum(r => r.Ratio);
+                if (!recs.Any()) return 0;
 
-            var time = recs.Last().ReceiveTime - recs.First().ReceiveTime + TimeSpan.FromMilliseconds(2.5f);
+                var damages = recs.Sum(r => r.Ratio);
 
-            return damages / (float)time.TotalSeconds;
+                var time = recs.Last().ReceiveTime - recs.First().ReceiveTime + TimeSpan.FromMilliseconds(2.5f);
+
+                return damages / (float)time.TotalSeconds;
+
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
 
@@ -302,10 +329,10 @@ public static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping { get; private set; } = 0.07f;
+    public static float Ping { get; set; } = 0.1f;
 
-    public const float MinPing = 0.6f;
-    public static void AddActionRec(Action act)
+    public const float MinAnimationLock = 0.6f;
+    public static unsafe void AddActionRec(Action act)
     {
         var id = (ActionID)act.RowId;
 
@@ -315,7 +342,6 @@ public static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
-                Ping = WeaponElapsed;
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;

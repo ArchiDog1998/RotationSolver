@@ -1,7 +1,8 @@
-﻿using RotationSolver.Localization;
+﻿using Dalamud.Interface.Colors;
+using RotationSolver.Localization;
 using RotationSolver.UI;
 
-namespace RotationSolver.Timeline;
+namespace RotationSolver.ActionSequencer;
 
 internal class ActionCondition : ICondition
 {
@@ -17,9 +18,9 @@ internal class ActionCondition : ICondition
     public int Param2;
     public float Time;
 
-
-    public bool IsTrue(ICustomRotation combo)
+    public bool IsTrue(ICustomRotation combo, bool isActionSequencer)
     {
+        if (!isActionSequencer) return false;
         if (!ConditionHelper.CheckBaseAction(combo, ID, ref _action)) return false;
 
         var result = false;
@@ -42,8 +43,8 @@ internal class ActionCondition : ICondition
                 result = !_action.WillHaveOneChargeGCD((uint)Param1, Param2); // Smaller
                 break;
 
-            case ActionConditionType.ShouldUse:
-                var option = CanUseOption.None;
+            case ActionConditionType.CanUse:
+                var option = CanUseOption.IgnoreTarget;
                 if (Param1 > 0) option |= CanUseOption.MustUse;
                 if (Param2 > 0) option |= CanUseOption.EmptyOrSkipCombo;
                 result = _action.CanUse(out _, option);
@@ -76,12 +77,18 @@ internal class ActionCondition : ICondition
 
     string searchTxt = string.Empty;
 
-    public void Draw(ICustomRotation combo)
+    public void Draw(ICustomRotation combo, bool isActionSequencer)
     {
         ConditionHelper.CheckBaseAction(combo, ID, ref _action);
 
-        ImGuiHelper.DrawCondition(IsTrue(combo));
+        ImGuiHelper.DrawCondition(IsTrue(combo, isActionSequencer));
         ImGui.SameLine();
+
+        if (!isActionSequencer)
+        {
+            ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.ActionSequencer_NotAllowed);
+            return;
+        }
 
         var name = _action?.Name ?? string.Empty;
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
@@ -109,11 +116,11 @@ internal class ActionCondition : ICondition
                 combos = new string[] { ">", "<=" };
                 break;
 
-            case ActionConditionType.ShouldUse:
+            case ActionConditionType.CanUse:
                 combos = new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Can,
-                    LocalizationManager.RightLang.Timeline_Cannot,
+                    LocalizationManager.RightLang.ActionSequencer_Can,
+                    LocalizationManager.RightLang.ActionSequencer_Cannot,
                 };
                 break;
 
@@ -121,8 +128,8 @@ internal class ActionCondition : ICondition
             case ActionConditionType.IsCoolDown:
                 combos = new string[]
                 {
-                    LocalizationManager.RightLang.Timeline_Is,
-                    LocalizationManager.RightLang.Timeline_Isnot,
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
                 };
                 break;
         }
@@ -147,21 +154,21 @@ internal class ActionCondition : ICondition
                 {
                     Param1 = Math.Max(0, Param1);
                 }
-                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.Timeline_Ability}##Ability{GetHashCode()}", ref Param2))
+                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{GetHashCode()}", ref Param2))
                 {
                     Param2 = Math.Max(0, Param2);
                 }
                 break;
 
-            case ActionConditionType.ShouldUse:
+            case ActionConditionType.CanUse:
 
-                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Timeline_MustUse}##MustUse{GetHashCode()}", ref Param1, LocalizationManager.RightLang.Timeline_MustUseDesc);
-                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.Timeline_Empty}##MustUse{GetHashCode()}", ref Param2, LocalizationManager.RightLang.Timeline_EmptyDesc);
+                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.ActionSequencer_MustUse}##MustUse{GetHashCode()}", ref Param1, LocalizationManager.RightLang.ActionSequencer_MustUseDesc);
+                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.ActionSequencer_Empty}##MustUse{GetHashCode()}", ref Param2, LocalizationManager.RightLang.ActionSequencer_EmptyDesc);
                 break;
 
             case ActionConditionType.CurrentCharges:
             case ActionConditionType.MaxCharges:
-                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.Timeline_Charges}##Charges{GetHashCode()}", ref Param1))
+                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Charges}##Charges{GetHashCode()}", ref Param1))
                 {
                     Param1 = Math.Max(0, Param1);
                 }
@@ -170,13 +177,13 @@ internal class ActionCondition : ICondition
     }
 }
 
-public enum ActionConditionType : int
+public enum ActionConditionType : byte
 {
     Elapsed,
     ElapsedGCD,
     Remain,
     RemainGCD,
-    ShouldUse,
+    CanUse,
     EnoughLevel,
     IsCoolDown,
     CurrentCharges,

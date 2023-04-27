@@ -86,6 +86,8 @@ internal static partial class TargetUpdater
 
         DataCenter.NumberOfHostilesInRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
 
+        DataCenter.NumberOfHostilesInMaxRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= 25);
+
         if (DataCenter.HostileTargets.Count() == 1)
         {
             var tar = DataCenter.HostileTargets.FirstOrDefault();
@@ -205,6 +207,7 @@ internal static partial class TargetUpdater
     #endregion
 
     #region Friends
+    private static Dictionary<uint, uint> _lastHp = new Dictionary<uint, uint>();
     private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
     {
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
@@ -226,7 +229,10 @@ internal static partial class TargetUpdater
         DataCenter.WeakenPeople.Delay(DataCenter.PartyMembers.Where(p => p.StatusList.Any(StatusHelper.CanDispel)));
         DataCenter.DyingPeople.Delay(DataCenter.WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
 
-        DataCenter.PartyMembersHP = DataCenter.PartyMembers.Select(ObjectHelper.GetHealthRatio).Where(r => r > 0);
+        DataCenter.RefinedHP = DataCenter.PartyMembers
+            .ToDictionary(p => p.ObjectId, GetPartyMemberHPRatio);
+        DataCenter.PartyMembersHP = DataCenter.RefinedHP.Values.Where(r => r > 0);
+
         if (DataCenter.PartyMembersHP.Any())
         {
             DataCenter.PartyMembersAverHP = DataCenter.PartyMembersHP.Average();
@@ -238,8 +244,34 @@ internal static partial class TargetUpdater
         }
 
         UpdateCanHeal(Service.Player);
+
+        _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
     }
 
+    private static float GetPartyMemberHPRatio(BattleChara member)
+    {
+        if (member == null) return 0;
+
+        if ((DateTime.Now - DataCenter.EffectTime).TotalSeconds > 1
+            || !DataCenter.HealHP.TryGetValue(member.ObjectId, out var hp))
+        {
+            return (float)member.CurrentHp / member.MaxHp;
+        }
+
+        var rightHp = member.CurrentHp;
+        if (rightHp > 0)
+        {
+            if (!_lastHp.TryGetValue(member.ObjectId, out var lastHp)) lastHp = rightHp;
+
+            if (rightHp - lastHp == hp)
+            {
+                DataCenter.HealHP.Remove(member.ObjectId);
+                return (float)member.CurrentHp / member.MaxHp;
+            }
+            return Math.Min(1, (hp + rightHp) / (float)member.MaxHp);
+        }
+        return (float)member.CurrentHp / member.MaxHp;
+    }
 
     private static IEnumerable<BattleChara> GetPartyMembers(IEnumerable<BattleChara> allTargets)
     {

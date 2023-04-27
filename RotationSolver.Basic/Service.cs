@@ -132,7 +132,7 @@ public class Service : IDisposable
     public static Condition Conditions { get; private set; }
 
     [PluginService]
-    public static JobGauges JobGauges { get; private set; }
+    internal static JobGauges JobGauges { get; private set; }
 
     [PluginService]
     public static ObjectTable ObjectTable { get; private set; }

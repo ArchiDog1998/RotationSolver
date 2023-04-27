@@ -5,13 +5,15 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction : IBaseAction
 {
+    internal static CanUseOption OtherOption { get; set; } = CanUseOption.None;
+
     Action _action;
     ActionOption _option;
 
     public bool IsFriendly => _option.HasFlag(ActionOption.Friendly);
     public bool IsEot => _option.HasFlag(ActionOption.Eot);
     public bool ShouldEndSpecial => _option.HasFlag(ActionOption.EndSpecial);
-    public bool IsTimeline => _option.HasFlag(ActionOption.Timeline) && IsFriendly;
+    public bool IsActionSequencer => _option.HasFlag(ActionOption.ActionSequencer) && IsFriendly;
     public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);
     public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
 

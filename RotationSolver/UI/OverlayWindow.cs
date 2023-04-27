@@ -220,7 +220,7 @@ internal static class OverlayWindow
         {
             ImGui.GetWindowDrawList().PathLineTo(pt);
         }
-        ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 0.15f)));
+        ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, Service.Config.AlphaInFill)));
     }
 
     static void DrawBoundary(IEnumerable<Vector2> pts, Vector3 color)

@@ -164,7 +164,7 @@ internal static class ImGuiHelper
             }
             else if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip(LocalizationManager.RightLang.Timeline_DragdropDescription);
+                ImGui.SetTooltip(LocalizationManager.RightLang.ActionSequencer_DragdropDescription);
 
                 if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
                     && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
@@ -258,7 +258,6 @@ internal static class ImGuiHelper
         if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
         {
             SearchItems(ref searchTxt, actions, selectAction);
-
             ImGui.EndCombo();
         }
     }
@@ -296,8 +295,8 @@ internal static class ImGuiHelper
 
     internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null, Func<T, string> getDesc = null)
     {
-        ImGui.Text(LocalizationManager.RightLang.Timeline_SearchBar + ": ");
-        ImGui.SetNextItemWidth(150);
+        ImGui.Text(LocalizationManager.RightLang.ActionSequencer_SearchBar + ": ");
+        ImGui.SetNextItemWidth(200);
         ImGui.InputText("##SearchBar", ref searchTxt, 16);
 
         if (!string.IsNullOrWhiteSpace(searchTxt))
@@ -306,7 +305,7 @@ internal static class ImGuiHelper
             actions = actions.OrderBy(a => !getName(a).Contains(src)).ToArray();
         }
 
-        if (ImGui.BeginChild($"##ActionsCandidateList", new Vector2(150, 400), true))
+        if (ImGui.BeginChild($"##ActionsCandidateList", new Vector2(200, 400), true))
         {
             foreach (var item in actions)
             {
@@ -584,7 +583,7 @@ internal static class ImGuiHelper
     }
     private unsafe static void Display(this IBaseAction action, bool IsActive) => action.DrawEnableTexture(IsActive, () =>
     {
-        if (action.IsTimeline) RotationConfigWindow.ActiveAction = action;
+        RotationConfigWindow.ActiveAction = action;
     }, otherThing: () =>
     {
         var enable = action.IsInCooldown;
@@ -594,7 +593,7 @@ internal static class ImGuiHelper
             Service.Config.Save();
         }
 
-        if (action.IsTimeline)
+        if (action.IsActionSequencer)
         {
             ImGui.SameLine();
             Spacing();
@@ -617,7 +616,7 @@ internal static class ImGuiHelper
                 ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
                 ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());
 
-                var option = CanUseOption.IgnoreTarget;
+                var option = CanUseOption.IgnoreTarget | CanUseOption.IgnoreClippingCheck;
                 ImGui.Text($"Can Use: {action.CanUse(out _, option)} ");
                 ImGui.Text("Must Use:" + action.CanUse(out _, option | CanUseOption.MustUse).ToString());
                 ImGui.Text("Empty Use:" + action.CanUse(out _, option | CanUseOption.EmptyOrSkipCombo).ToString());
@@ -704,6 +703,7 @@ internal static class ImGuiHelper
             else if (config is RotationConfigBoolean b) b.Draw(set, canAddButton);
             else if (config is RotationConfigFloat f) f.Draw(set, canAddButton);
             else if (config is RotationConfigString s) s.Draw(set, canAddButton);
+            else if (config is RotationConfigInt i) i.Draw(set, canAddButton);
         }
     }
 
@@ -786,6 +786,17 @@ internal static class ImGuiHelper
         if (ImGui.InputText($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", ref val, 15))
         {
             set.SetValue(config.Name, val);
+            Service.Config.Save();
+        }
+    }
+
+    static void Draw(this RotationConfigInt config, IRotationConfigSet set, bool canAddButton)
+    {
+        int val = set.GetInt(config.Name);
+        ImGui.SetNextItemWidth(100);
+        if (ImGui.DragInt($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", ref val, config.Speed, config.Min, config.Max))
+        {
+            set.SetValue(config.Name, val.ToString());
             Service.Config.Save();
         }
     }

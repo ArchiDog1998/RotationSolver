@@ -58,7 +58,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
-        TimeLineUpdater.Enable(pluginInterface.ConfigDirectory.FullName);
+        StatusHelper.Enable();
+        ActionSequencerUpdater.Enable(pluginInterface.ConfigDirectory.FullName + "\\Conditions");
         IActionHelper.GetAnimationLockTimeAsync(pluginInterface.ConfigDirectory.FullName);
         SocialUpdater.Enable();
         _dis.Add(new Watcher());
@@ -71,7 +72,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #endif
         ChangeUITranslation();
 
-        RotationUpdater.GetAllCustomRotations(true, false);
+        RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.Donwload);
         RotationHelper.LoadList();
 
         LinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
@@ -104,7 +105,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis?.Clear();
 
         MajorUpdater.Dispose();
-        TimeLineUpdater.SaveFiles();
+        ActionSequencerUpdater.SaveFiles();
         SocialUpdater.Disable();
 
         IconSet.Dispose();

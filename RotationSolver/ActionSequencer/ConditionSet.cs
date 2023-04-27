@@ -1,30 +1,31 @@
 ﻿using RotationSolver.Localization;
 using RotationSolver.UI;
 
-namespace RotationSolver.Timeline;
+namespace RotationSolver.ActionSequencer;
 
 internal class ConditionSet : ICondition
 {
-    public bool IsTrue(ICustomRotation combo) => Conditions.Count == 0 ? false :
-                          IsAnd ? Conditions.All(c => c.IsTrue(combo))
-                                : Conditions.Any(c => c.IsTrue(combo));
+    public bool IsTrue(ICustomRotation combo, bool isActionSequencer) => Conditions.Count == 0 ? false :
+                          IsAnd ? Conditions.All(c => c.IsTrue(combo, isActionSequencer))
+                                : Conditions.Any(c => c.IsTrue(combo, isActionSequencer));
     public List<ICondition> Conditions { get; set; } = new List<ICondition>();
     public bool IsAnd { get; set; }
 
     [JsonIgnore]
     public float Height => Conditions.Sum(c => c is ConditionSet ? c.Height + 10 : c.Height) + ICondition.DefaultHeight + 12;
-    public void Draw(ICustomRotation combo)
+
+    public void Draw(ICustomRotation combo, bool isActionSequencer)
     {
-        if (ImGui.BeginChild("ConditionSet" + GetHashCode().ToString(), new System.Numerics.Vector2(-1f, Height), true))
+        if (ImGui.BeginChild("ConditionSet" + GetHashCode().ToString(), new Vector2(-1f, Height), true))
         {
             AddButton();
 
             ImGui.SameLine();
 
-            ImGuiHelper.DrawCondition(IsTrue(combo));
+            ImGuiHelper.DrawCondition(IsTrue(combo, isActionSequencer));
 
             ImGui.SameLine();
-
+            ImGui.SetNextItemWidth(65);
             int isAnd = IsAnd ? 1 : 0;
             if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
             {
@@ -37,7 +38,7 @@ internal class ConditionSet : ICondition
             ImGui.Separator();
 
             var relay = Conditions;
-            if (ImGuiHelper.DrawEditorList(relay, i => i.Draw(combo)))
+            if (ImGuiHelper.DrawEditorList(relay, i => i.Draw(combo, isActionSequencer)))
             {
                 Conditions = relay;
             }
@@ -55,10 +56,10 @@ internal class ConditionSet : ICondition
 
         if (ImGui.BeginPopup("Popup" + GetHashCode().ToString()))
         {
-            AddOneCondition<ConditionSet>(LocalizationManager.RightLang.Timeline_ConditionSet);
-            AddOneCondition<ActionCondition>(LocalizationManager.RightLang.Timeline_ActionCondition);
-            AddOneCondition<TargetCondition>(LocalizationManager.RightLang.Timeline_TargetCondition);
-            AddOneCondition<RotationCondition>(LocalizationManager.RightLang.Timeline_RotationCondition);
+            AddOneCondition<ConditionSet>(LocalizationManager.RightLang.ActionSequencer_ConditionSet);
+            AddOneCondition<ActionCondition>(LocalizationManager.RightLang.ActionSequencer_ActionCondition);
+            AddOneCondition<TargetCondition>(LocalizationManager.RightLang.ActionSequencer_TargetCondition);
+            AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
 
             ImGui.EndPopup();
         }
