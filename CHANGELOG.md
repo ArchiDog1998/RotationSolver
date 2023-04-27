@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.6.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.5.0...v2.6.0) (2023-04-27)
+
+
+### Features
+
+* (sequencer) Added load files button ([9055c9e](https://github.com/ArchiDog1998/RotationSolver/commit/9055c9ee2cfffb0b9074919f051326375dcb306f))
+* added integer getter/setter for rotation config. ([ff22a3d](https://github.com/ArchiDog1998/RotationSolver/commit/ff22a3d95dce4f497a8702be87360691c4f79236))
+
+
+### Bug Fixes
+
+* add an api called `NumberOfHostilesIn` ([0a1804d](https://github.com/ArchiDog1998/RotationSolver/commit/0a1804d6cd8d06e405bc99f398bed60b3cbf25e0))
+* add an donate link for all rotations. ([6060051](https://github.com/ArchiDog1998/RotationSolver/commit/6060051756e6010c3ad5df72e74d8e2ceda8b2e5))
+* changed the casting time check for condition. ([dc40d32](https://github.com/ArchiDog1998/RotationSolver/commit/dc40d3265908dbac8027723cd9a194628f072eca))
+* changed the status saving location. ([ec2044f](https://github.com/ArchiDog1998/RotationSolver/commit/ec2044fafb3ec302b50f72159498879c71532eac))
+* fixed SAM moving action's targeting. ([e4987f9](https://github.com/ArchiDog1998/RotationSolver/commit/e4987f9767a2e44229cb13993c81536a3bb5225f))
+* fixed the get ratio calculation. ([bed059b](https://github.com/ArchiDog1998/RotationSolver/commit/bed059bb8a3b8f754192b0745823c58d929772dd))
+* make status check more precise ([a771748](https://github.com/ArchiDog1998/RotationSolver/commit/a7717482d64233e2997233570914bfd0dd9231b2))
+
 ## [2.5.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.4.0...v2.5.0) (2023-04-26)
 
 
