@@ -1,4 +1,5 @@
-﻿using RotationSolver.Localization;
+﻿using Dalamud.Interface.Colors;
+using RotationSolver.Localization;
 using RotationSolver.UI;
 
 namespace RotationSolver.Timeline;
@@ -18,8 +19,9 @@ internal class ActionCondition : ICondition
     public float Time;
 
 
-    public bool IsTrue(ICustomRotation combo)
+    public bool IsTrue(ICustomRotation combo, bool isActionSequencer)
     {
+        if(!isActionSequencer) return false;
         if (!ConditionHelper.CheckBaseAction(combo, ID, ref _action)) return false;
 
         var result = false;
@@ -76,12 +78,18 @@ internal class ActionCondition : ICondition
 
     string searchTxt = string.Empty;
 
-    public void Draw(ICustomRotation combo)
+    public void Draw(ICustomRotation combo, bool isActionSequencer)
     {
         ConditionHelper.CheckBaseAction(combo, ID, ref _action);
 
-        ImGuiHelper.DrawCondition(IsTrue(combo));
+        ImGuiHelper.DrawCondition(IsTrue(combo, isActionSequencer));
         ImGui.SameLine();
+
+        if (!isActionSequencer)
+        {
+            ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.ActionSequencer_NotAllowed);
+            return;
+        }
 
         var name = _action?.Name ?? string.Empty;
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
@@ -147,7 +155,7 @@ internal class ActionCondition : ICondition
                 {
                     Param1 = Math.Max(0, Param1);
                 }
-                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Ability}##Ability{GetHashCode()}", ref Param2))
+                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{GetHashCode()}", ref Param2))
                 {
                     Param2 = Math.Max(0, Param2);
                 }
@@ -170,7 +178,7 @@ internal class ActionCondition : ICondition
     }
 }
 
-public enum ActionConditionType : int
+public enum ActionConditionType : byte
 {
     Elapsed,
     ElapsedGCD,

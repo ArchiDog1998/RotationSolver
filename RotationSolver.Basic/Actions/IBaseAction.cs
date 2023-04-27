@@ -18,7 +18,7 @@
         bool IsFriendly { get; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        bool IsTimeline { get; }
+        bool IsActionSequencer { get; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         bool IsEot { get; }

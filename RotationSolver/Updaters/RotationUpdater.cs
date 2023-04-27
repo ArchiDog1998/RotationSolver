@@ -235,7 +235,7 @@ internal static class RotationUpdater
                     }
                     else
                     {
-                        result = LocalizationManager.RightLang.ActionSequencer_Ability;
+                        result = LocalizationManager.RightLang.ActionSequencer_TimeOffset;
                     }
 
                     if (act.IsFriendly)

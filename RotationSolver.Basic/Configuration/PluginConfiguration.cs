@@ -30,7 +30,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public int AddDotGCDCount = 2;
 
-    public int TimelineIndex = 0;
+    public int ActionSequencerIndex = 0;
 
     public bool AutoOffBetweenArea = true;
     public bool AutoOffCutScene = true;

@@ -583,7 +583,7 @@ internal static class ImGuiHelper
     }
     private unsafe static void Display(this IBaseAction action, bool IsActive) => action.DrawEnableTexture(IsActive, () =>
     {
-        if (action.IsTimeline) RotationConfigWindow.ActiveAction = action;
+        RotationConfigWindow.ActiveAction = action;
     }, otherThing: () =>
     {
         var enable = action.IsInCooldown;
@@ -593,7 +593,7 @@ internal static class ImGuiHelper
             Service.Config.Save();
         }
 
-        if (action.IsTimeline)
+        if (action.IsActionSequencer)
         {
             ImGui.SameLine();
             Spacing();

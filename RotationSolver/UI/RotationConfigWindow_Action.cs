@@ -65,6 +65,6 @@ internal partial class RotationConfigWindow
             conditionSet = set.Conditions[ActiveAction.ID] = new Timeline.ConditionSet();
         }
 
-        conditionSet?.Draw(rotation);
+        conditionSet?.Draw(rotation, ActiveAction.IsActionSequencer);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Timeline;
+﻿using Dalamud.Logging;
+
+namespace RotationSolver.Timeline;
 
 internal class MajorConditionSet
 {
@@ -24,7 +26,7 @@ internal class MajorConditionSet
         if (!Directory.Exists(folder)) return;
         var path = Path.Combine(folder, Name + ".json");
 
-        var str = JsonConvert.SerializeObject(this);
+        var str = JsonConvert.SerializeObject(this, Formatting.Indented);
         File.WriteAllText(path, str);
     }
 
@@ -36,7 +38,15 @@ internal class MajorConditionSet
         {
             var str = File.ReadAllText(p);
 
-            return JsonConvert.DeserializeObject<MajorConditionSet>(str, new IConditionConverter());
+            try
+            {
+                return JsonConvert.DeserializeObject<MajorConditionSet>(str, new IConditionConverter());
+            }
+            catch
+            {
+                Service.ChatGui.Print($"Failed to load the conditionSet from {p}");
+                return null;
+            }
         }).Where(set => set != null && !string.IsNullOrEmpty(set.Name)).ToArray();
     }
 }

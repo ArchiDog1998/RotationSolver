@@ -31,14 +31,11 @@ internal class TargetCondition : ICondition
     public TargetConditionType TargetConditionType;
 
     public float DistanceOrTime;
-
     public int GCD;
-    public int Ability;
 
     public string CastingActionName = string.Empty;
-    public float CastingActionTime = 0.8f;
 
-    public bool IsTrue(ICustomRotation combo)
+    public bool IsTrue(ICustomRotation combo, bool isActionSequencer)
     {
         if (Service.Player == null) return false;
 
@@ -60,7 +57,7 @@ internal class TargetCondition : ICondition
 
         switch (TargetConditionType)
         {
-            case TargetConditionType.HaveStatus:
+            case TargetConditionType.HasStatus:
                 result = tar.HasStatus(FromSelf, Status);
                 break;
 
@@ -81,7 +78,7 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.StatusEndGCD:
-                result = !tar.WillStatusEndGCD((uint)GCD, Ability, FromSelf, Status);
+                result = !tar.WillStatusEndGCD((uint)GCD, DistanceOrTime, FromSelf, Status);
                 break;
 
             case TargetConditionType.CastingAction:
@@ -105,7 +102,7 @@ internal class TargetCondition : ICondition
                 }
 
                 float castTime = tar.TotalCastTime - tar.CurrentCastTime;
-                result = castTime > CastingActionTime;
+                result = castTime > DistanceOrTime;
                 break;
         }
 
@@ -116,7 +113,7 @@ internal class TargetCondition : ICondition
     public float Height => ICondition.DefaultHeight;
 
     string searchTxt = string.Empty;
-    public void Draw(ICustomRotation combo)
+    public void Draw(ICustomRotation combo, bool isActionSequencer)
     {
         ConditionHelper.CheckBaseAction(combo, ID, ref _action);
 
@@ -125,7 +122,7 @@ internal class TargetCondition : ICondition
             _status = AllStatus.FirstOrDefault(a => a.ID == Status);
         }
 
-        ImGuiHelper.DrawCondition(IsTrue(combo));
+        ImGuiHelper.DrawCondition(IsTrue(combo, isActionSequencer));
         ImGui.SameLine();
 
         var name = _action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, _action.Name)
@@ -166,7 +163,7 @@ internal class TargetCondition : ICondition
         var combos = new string[0];
         switch (TargetConditionType)
         {
-            case TargetConditionType.HaveStatus:
+            case TargetConditionType.HasStatus:
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_Have,
@@ -200,7 +197,7 @@ internal class TargetCondition : ICondition
 
         switch (TargetConditionType)
         {
-            case TargetConditionType.HaveStatus:
+            case TargetConditionType.HasStatus:
                 ImGui.SameLine();
                 ImGuiHelper.SetNextWidthWithName(_status?.Name);
                 ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
@@ -257,11 +254,11 @@ internal class TargetCondition : ICondition
                 }
 
                 ConditionHelper.DrawDragInt($"GCD##GCD{GetHashCode()}", ref GCD);
-                ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Ability}##Ability{GetHashCode()}", ref Ability);
+                ConditionHelper.DrawDragFloat($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{GetHashCode()}", ref DistanceOrTime);
                 break;
 
             case TargetConditionType.Distance:
-                if (ConditionHelper.DrawDragFloat($"m##m{GetHashCode()}", ref DistanceOrTime))
+                if (ConditionHelper.DrawDragFloat($"yalm##yalm{GetHashCode()}", ref DistanceOrTime))
                 {
                     DistanceOrTime = Math.Max(0, DistanceOrTime);
                 }
@@ -276,8 +273,8 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.CastingActionTimeUntil:
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150, ImGui.CalcTextSize(CastingActionTime.ToString()).X));
-                ImGui.InputFloat($"Seconds##CastingActionTimeUntil{GetHashCode()}", ref CastingActionTime, .1f);
+                ImGui.SetNextItemWidth(Math.Max(150, ImGui.CalcTextSize(DistanceOrTime.ToString()).X));
+                ImGui.InputFloat($"Seconds##CastingActionTimeUntil{GetHashCode()}", ref DistanceOrTime, .1f);
                 //ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref CastingActionTime);
 
                 break;
@@ -285,9 +282,9 @@ internal class TargetCondition : ICondition
     }
 }
 
-public enum TargetConditionType : int
+public enum TargetConditionType : byte
 {
-    HaveStatus,
+    HasStatus,
     IsDying,
     IsBoss,
     Distance,

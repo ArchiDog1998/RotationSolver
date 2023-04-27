@@ -2,13 +2,12 @@
 
 public interface IAction : ITexture
 {
-    bool Use();
     uint ID { get; }
     uint AdjustedID { get; }
     float RecastTimeOneCharge { get; }
     float AnimationLockTime { get; }
     uint SortKey { get; }
-
+    public bool IsActionSequencer { get; }
     /// <summary>
     /// Please don't use it.
     /// </summary>
@@ -28,4 +27,6 @@ public interface IAction : ITexture
     internal byte Level { get; }
 
     bool IsInCooldown { get; set; }
+
+    bool Use();
 }

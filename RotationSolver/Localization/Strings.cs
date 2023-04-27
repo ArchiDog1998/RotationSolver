@@ -308,7 +308,7 @@ internal partial class Strings
     public string ActionSequencer_Isnot { get; set; } = "Isnot";
     public string ActionSequencer_Have { get; set; } = "Have";
     public string ActionSequencer_Havenot { get; set; } = "Havenot";
-    public string ActionSequencer_Ability { get; set; } = "Ability";
+    public string ActionSequencer_TimeOffset { get; set; } = "Time Offset";
     public string ActionSequencer_Charges { get; set; } = "Charges";
     public string ActionSequencer_ConditionSet { get; set; } = "ConditionSet";
     public string ActionSequencer_ActionCondition { get; set; } = "ActionCondition";
@@ -319,6 +319,7 @@ internal partial class Strings
     public string ActionSequencer_Player { get; set; } = "Player";
     public string ActionSequencer_StatusSelf { get; set; } = "StatusSelf";
     public string ActionSequencer_StatusSelfDesc { get; set; } = "StatusSelf";
+    public string ActionSequencer_NotAllowed { get; set; } = "This condition can't be used with this action.";
     #endregion
 
     #region Actions

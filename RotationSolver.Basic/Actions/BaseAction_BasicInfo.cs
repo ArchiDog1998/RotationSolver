@@ -13,7 +13,7 @@ public partial class BaseAction : IBaseAction
     public bool IsFriendly => _option.HasFlag(ActionOption.Friendly);
     public bool IsEot => _option.HasFlag(ActionOption.Eot);
     public bool ShouldEndSpecial => _option.HasFlag(ActionOption.EndSpecial);
-    public bool IsTimeline => _option.HasFlag(ActionOption.ActionSequencer) && IsFriendly;
+    public bool IsActionSequencer => _option.HasFlag(ActionOption.ActionSequencer) && IsFriendly;
     public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);
     public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
 
