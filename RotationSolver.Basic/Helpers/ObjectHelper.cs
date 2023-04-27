@@ -128,12 +128,8 @@ public static class ObjectHelper
     public static float GetHealthRatio(this BattleChara b)
     {
         if (b == null) return 0;
+        if(DataCenter.RefinedHP.TryGetValue(b.ObjectId, out var hp)) return hp;
         return (float)b.CurrentHp / b.MaxHp;
-    }
-
-    public static float GetHealingRatio(this BattleChara b)
-    {
-        return b.GetHealthRatio();
     }
 
     public static bool CanDot(this BattleChara b)

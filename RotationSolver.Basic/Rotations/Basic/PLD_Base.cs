@@ -43,7 +43,7 @@ public abstract class PLD_Base : CustomRotation
         StatusNeed = new[] { StatusID.SwordOath },
     };
 
-    public static IBaseAction ShieldBash { get; } = new BaseAction(ActionID.ShieldBash, ActionOption.Timeline)
+    public static IBaseAction ShieldBash { get; } = new BaseAction(ActionID.ShieldBash, ActionOption.ActionSequencer)
     {
         FilterForHostiles = LowBlow.FilterForHostiles,
         ActionCheck = b => LowBlow.IsCoolingDown,

@@ -1,4 +1,5 @@
-﻿using RotationSolver.Timeline;
+﻿using FFXIVClientStructs.FFXIV.Client.Game.InstanceContent;
+using RotationSolver.ActionSequencer;
 using RotationSolver.UI;
 using System.Diagnostics;
 
@@ -9,7 +10,8 @@ internal class ActionSequencerUpdater
     static string _actionSequencerFolder;
 
     static IEnumerable<MajorConditionSet> _conditionSet;
-    public static MajorConditionSet RightSet => _conditionSet?.ElementAtOrDefault(Service.Config.TimelineIndex);
+    public static MajorConditionSet RightSet => _conditionSet?
+        .ElementAtOrDefault(Service.Config.ActionSequencerIndex);
 
     public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? new string[0];
 
@@ -30,7 +32,7 @@ internal class ActionSequencerUpdater
             var nextAct = allActions.FirstOrDefault(a => a.ID == conditionPair.Key);
             if (nextAct == null) continue;
 
-            if (!conditionPair.Value.IsTrue(customRotation)) continue;
+            if (!conditionPair.Value.IsTrue(customRotation, nextAct.IsActionSequencer)) continue;
 
             DataCenter.ActionSequencerAction = nextAct;
             find = true;
@@ -67,6 +69,11 @@ internal class ActionSequencerUpdater
         }
     }
 
+    public static void LoadFiles()
+    {
+        _conditionSet = MajorConditionSet.Read(_actionSequencerFolder);
+    }
+
     private static void AddNew()
     {
         const string conditionName = "Unnamed";
@@ -95,16 +102,16 @@ internal class ActionSequencerUpdater
         }
 
         var combos = ConditionSetsName;
-        if (combos != null && combos.Length > Service.Config.TimelineIndex)
+        if (combos != null && combos.Length > Service.Config.ActionSequencerIndex)
         {
-            ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[Service.Config.TimelineIndex]).X + 30);
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[Service.Config.ActionSequencerIndex]).X + 30);
         }
         else
         {
             ImGui.SetNextItemWidth(30);
         }
 
-        ImGui.Combo("##MajorConditionCombo", ref Service.Config.TimelineIndex, combos, combos.Length);
+        ImGui.Combo("##MajorConditionCombo", ref Service.Config.ActionSequencerIndex, combos, combos.Length);
 
         if (hasSet)
         {
@@ -134,6 +141,12 @@ internal class ActionSequencerUpdater
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Save, "##SaveTheConditions"))
         {
             SaveFiles();
+        }
+
+        ImGui.SameLine();
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "##LoadTheConditions"))
+        {
+            LoadFiles();
         }
     }
 }

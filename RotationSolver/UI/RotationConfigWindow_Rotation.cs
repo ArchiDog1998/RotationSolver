@@ -294,6 +294,25 @@ internal partial class RotationConfigWindow
                     }
                 }
 
+                ImGui.PushStyleColor(ImGuiCol.Button, 0xFF5E5BFF);
+                ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD5E5BFF);
+                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA5E5BFF);
+                if (!string.IsNullOrEmpty(info.donate))
+                {
+                    if (ImGui.Button($"Donate##{grp.Key.GetHashCode()}"))
+                    {
+                        try
+                        {
+                            Util.OpenLink(info.donate);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+                ImGui.PopStyleColor(3);
+
                 if (!isAllowed) ImGui.PopStyleColor();
             }
             ImGui.EndTable();

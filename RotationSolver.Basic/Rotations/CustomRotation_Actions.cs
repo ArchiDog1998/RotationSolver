@@ -107,14 +107,14 @@ public abstract partial class CustomRotation
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
-    public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, new JobRole[] { JobRole.Tank }, ActionOption.Timeline)
+    public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, new JobRole[] { JobRole.Tank }, ActionOption.ActionSequencer)
     {
         FilterForHostiles = b => TargetFilter.ProvokeTarget(b),
     };
 
     public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, ActionOption.Defense);
 
-    public static IBaseAction Shirk { get; } = new RoleAction(ActionID.Shirk, new JobRole[] { JobRole.Tank }, ActionOption.Friendly | ActionOption.Timeline)
+    public static IBaseAction Shirk { get; } = new RoleAction(ActionID.Shirk, new JobRole[] { JobRole.Tank }, ActionOption.Friendly | ActionOption.ActionSequencer)
     {
         ChoiceTarget = (friends, mustUse) => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
     };

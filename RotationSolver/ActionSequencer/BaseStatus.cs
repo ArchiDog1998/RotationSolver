@@ -1,6 +1,6 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 
-namespace RotationSolver.Timeline;
+namespace RotationSolver.ActionSequencer;
 
 internal class BaseStatus : ITexture
 {

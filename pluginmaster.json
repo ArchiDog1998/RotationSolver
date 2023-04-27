@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.4.0",
-    "Changelog": "2.4.0 (2023-04-25)\n\n\nFeatures\n\n* new Status Editor for esuna and hostile target. (f36fd13)\n\n\nBug Fixes\n\n* ActionAhead can't be greater than 0.4s. (e05b6d2)\n* add an advanced of ability clicking. (b4e4033)\n* add an alpha value for positional. (4fe1a02)\n* add an option for showing Ping ans set max Ping. (19570f8)\n* add hp check, make healing more precise. (9acae08)\n* add status list for esuna or invinsibility. (e859822)\n* add status list. (d002ec8)\n* fixed with ping. (701bfc7)\n* more precise click (b5eddf8)",
-    "DownloadCount": "7055",
-    "LastUpdate": 1682437369,
+    "AssemblyVersion": "2.5.0",
+    "Changelog": "2.5.0 (2023-04-26)\n\n\nFeatures\n\n* add `OnTerritoryChanged` method for all rotations. (cc57fec)\n* added numberofhostiles for max range variable regardless of job (3b43386)\n\n\nBug Fixes\n\n* change Prevent option to use HasHostilesInMaxRange for less annoyances. (90c70aa)\n* changed fetch time meaning. (ad65bf1)\n* changed heal refine. (67438f0)\n* changed the tips on Entry bar. (86ef60e)\n* changed the way to get Ping. (fec60bd)\n* fixed move forward bug. (815ace2)\n* removed MaxPing property. (9a02d9f)\n* removed ping caculation. (fc545bd)",
+    "DownloadCount": "7289",
+    "LastUpdate": 1682520445,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.4.0/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.4.0/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.5.0/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.5.0/latest.zip"
   },
   {
     "Author": "ArchiDog1998",
@@ -35,7 +35,7 @@
     "ApplicableVersion": "any",
     "AssemblyVersion": "1.0.0.5",
     "Changelog": "",
-    "DownloadCount": "207",
+    "DownloadCount": "209",
     "LastUpdate": 1674699010,
     "RepoUrl": "https://github.com/ArchiDog1998/FakeName",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip",

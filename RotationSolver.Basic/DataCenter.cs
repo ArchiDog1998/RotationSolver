@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Data;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
@@ -11,6 +12,20 @@ namespace RotationSolver.Basic;
 
 public static class DataCenter
 {
+    public static DateTime EffectTime { get; set; } = DateTime.Now;
+    public static Dictionary<uint, ushort> HealHP { get; set; } = new Dictionary<uint, ushort>();
+    public static Dictionary<uint, ushort> ApplyStatus { private get; set; } = new Dictionary<uint, ushort>();
+    public static bool HasApplyStatus(uint id, StatusID[] ids)
+    {
+        if ((DateTime.Now - EffectTime).TotalSeconds < 1)
+        {
+            if (ApplyStatus.TryGetValue(id, out var statusId))
+            {
+                if (ids.Any(s => (ushort)s == statusId)) return true;
+            }
+        }
+        return false;
+    }
     public static bool InHighEndDuty { get; set; } = false;
     public static TerritoryContentType TerritoryContentType { get; set; } = TerritoryContentType.None;
 
@@ -257,6 +272,8 @@ public static class DataCenter
     }
 
     #region HP
+    public static Dictionary<uint, float> RefinedHP { get; set; } = new Dictionary<uint, float>();
+
     public static IEnumerable<float> PartyMembersHP { get; set; }
     public static float PartyMembersMinHP { get; set; }
     public static float PartyMembersAverHP { get; set; }
