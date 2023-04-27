@@ -18,7 +18,6 @@ internal class ActionCondition : ICondition
     public int Param2;
     public float Time;
 
-
     public bool IsTrue(ICustomRotation combo, bool isActionSequencer)
     {
         if (!isActionSequencer) return false;
@@ -44,8 +43,8 @@ internal class ActionCondition : ICondition
                 result = !_action.WillHaveOneChargeGCD((uint)Param1, Param2); // Smaller
                 break;
 
-            case ActionConditionType.ShouldUse:
-                var option = CanUseOption.None;
+            case ActionConditionType.CanUse:
+                var option = CanUseOption.IgnoreTarget;
                 if (Param1 > 0) option |= CanUseOption.MustUse;
                 if (Param2 > 0) option |= CanUseOption.EmptyOrSkipCombo;
                 result = _action.CanUse(out _, option);
@@ -117,7 +116,7 @@ internal class ActionCondition : ICondition
                 combos = new string[] { ">", "<=" };
                 break;
 
-            case ActionConditionType.ShouldUse:
+            case ActionConditionType.CanUse:
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_Can,
@@ -161,7 +160,7 @@ internal class ActionCondition : ICondition
                 }
                 break;
 
-            case ActionConditionType.ShouldUse:
+            case ActionConditionType.CanUse:
 
                 ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.ActionSequencer_MustUse}##MustUse{GetHashCode()}", ref Param1, LocalizationManager.RightLang.ActionSequencer_MustUseDesc);
                 ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.ActionSequencer_Empty}##MustUse{GetHashCode()}", ref Param2, LocalizationManager.RightLang.ActionSequencer_EmptyDesc);
@@ -184,7 +183,7 @@ public enum ActionConditionType : byte
     ElapsedGCD,
     Remain,
     RemainGCD,
-    ShouldUse,
+    CanUse,
     EnoughLevel,
     IsCoolDown,
     CurrentCharges,

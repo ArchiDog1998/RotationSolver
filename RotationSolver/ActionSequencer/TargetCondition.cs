@@ -40,7 +40,8 @@ internal class TargetCondition : ICondition
         BattleChara tar = null;
         if (_action != null)
         {
-            _action.CanUse(out _, CanUseOption.EmptyOrSkipCombo | CanUseOption.MustUse);
+            _action.CanUse(out _, CanUseOption.EmptyOrSkipCombo | CanUseOption.MustUse
+                |  CanUseOption.IgnoreTarget);
             tar = _action.Target;
         }
         else
@@ -100,7 +101,7 @@ internal class TargetCondition : ICondition
                 }
 
                 float castTime = tar.TotalCastTime - tar.CurrentCastTime;
-                result = castTime > DistanceOrTime;
+                result = !CooldownHelper.RecastAfter(castTime, DistanceOrTime);
                 break;
         }
 
