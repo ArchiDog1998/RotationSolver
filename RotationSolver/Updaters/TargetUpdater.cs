@@ -252,8 +252,8 @@ internal static partial class TargetUpdater
     {
         if (member == null) return 0;
 
-        if ((DateTime.Now - Watcher.HealTime).TotalSeconds > 1
-            || !Watcher.HealHP.TryGetValue(member.ObjectId, out var hp))
+        if ((DateTime.Now - DataCenter.EffectTime).TotalSeconds > 1
+            || !DataCenter.HealHP.TryGetValue(member.ObjectId, out var hp))
         {
             return (float)member.CurrentHp / member.MaxHp;
         }
@@ -265,7 +265,7 @@ internal static partial class TargetUpdater
 
             if (rightHp - lastHp == hp)
             {
-                Watcher.HealHP.Remove(member.ObjectId);
+                DataCenter.HealHP.Remove(member.ObjectId);
                 return (float)member.CurrentHp / member.MaxHp;
             }
             return Math.Min(1, (hp + rightHp) / (float)member.MaxHp);

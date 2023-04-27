@@ -134,6 +134,7 @@ public static class StatusHelper
     /// <returns></returns>
     public static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, float offset = 0, bool isFromSelf = true, params StatusID[] statusIDs)
     {
+        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return false;
         var remain = obj.StatusTime(isFromSelf, statusIDs);
         //as infinite
         if (remain < 0 && obj.HasStatus(isFromSelf, statusIDs)) return false;
@@ -151,6 +152,7 @@ public static class StatusHelper
     /// <returns></returns>
     public static bool WillStatusEnd(this BattleChara obj, float time, bool isFromSelf = true, params StatusID[] statusIDs)
     {
+        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return false;
         var remain = obj.StatusTime(isFromSelf, statusIDs);
         return CooldownHelper.RecastAfter(remain, time);
     }
@@ -165,6 +167,7 @@ public static class StatusHelper
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
+        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return float.MaxValue;
         var times = obj.StatusTimes(isFromSelf, statusIDs);
         if (times == null || !times.Any()) return 0;
         return times.Min();
@@ -196,6 +199,7 @@ public static class StatusHelper
     /// <returns></returns>
     public static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
+        if(DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return true;
         return obj.GetStatus(isFromSelf, statusIDs).Any();
     }
 
@@ -227,7 +231,6 @@ public static class StatusHelper
     public static bool IsInvincible(this Status status)
     {
         if (status.GameData.Icon == 15024) return true;
-
         return InvincibleStatus.Any(id => (uint)id == status.StatusId);
     }
 

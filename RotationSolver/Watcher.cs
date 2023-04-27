@@ -21,8 +21,6 @@ public class Watcher : IDisposable
     private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
     public static ICallGateSubscriber<object, object> IpcSubscriber;
 
-    public static  DateTime HealTime { get; private set; } = DateTime.Now;
-    public static Dictionary<uint,  ushort> HealHP { get; private set; } = new Dictionary<uint, ushort>();
     public Watcher()
     {
         SignatureHelper.Initialise(this);
@@ -103,9 +101,9 @@ public class Watcher : IDisposable
         DataCenter.AddActionRec(set.Action);
         ShowStrSelf = set.ToString();
 
-        HealHP = set.TargetEffects.Where(e => e[0].Type == ActionEffectType.Heal).ToDictionary(e =>
-        e.Target.ObjectId, e => e[0].Value);
-        HealTime = DateTime.Now;
+        DataCenter.HealHP = set.GetSpecificTypeEffect(ActionEffectType.Heal);
+        DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
+        DataCenter.EffectTime = DateTime.Now;
 
         //Macro
         foreach (var item in Service.Config.Events)

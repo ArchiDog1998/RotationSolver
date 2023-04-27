@@ -29,6 +29,19 @@ public unsafe struct ActionEffectSet
         }
     }
 
+    public Dictionary<uint, ushort> GetSpecificTypeEffect(ActionEffectType type)
+    {
+        var result = new Dictionary<uint, ushort>();
+        foreach (var effect in TargetEffects)
+        {
+            if(effect.GetSpecificTypeEffect(type, out var e))
+            {
+                result[effect.Target.ObjectId] = e.Value;
+            }
+        }
+        return result;
+    }
+
     public override string ToString()
     {
         var str = $"S:{Source?.Name}, T:{Target?.Name}, Lock:{AnimationLock}";
@@ -74,10 +87,25 @@ public unsafe struct TargetEffect
         var str = Target?.Name?.ToString();
         for (int i = 0; i < 8; i++)
         {
-            var e = _effects[i];
+            var e = this[i];
             str += "\n    " + e.ToString();
         }
         return str;
+    }
+
+    public bool GetSpecificTypeEffect(ActionEffectType type, out ActionEffect effect)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            var e = this[i];
+            if(e.Type == type)
+            {
+                effect = e;
+                return true;
+            }
+        }
+        effect = default;
+        return false;
     }
 }
 
