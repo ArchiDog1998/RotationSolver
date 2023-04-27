@@ -1,5 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Statuses;
-
+using Dalamud.Logging;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -24,6 +24,85 @@ public static class StatusHelper
     {
         StatusID.Holmgang, StatusID.WillDead, StatusID.LivingDead
     };
+
+    public static SortedSet<uint> DangerousStatus { get; set; } = new SortedSet<uint>()
+    {
+        (uint)StatusID.Doom,
+        (uint)StatusID.Amnesia,
+        (uint)StatusID.Stun,
+        (uint)StatusID.Stun2,
+        (uint)StatusID.Sleep,
+        (uint)StatusID.Sleep2,
+        (uint)StatusID.Sleep3,
+        (uint)StatusID.Pacification,
+        (uint)StatusID.Pacification2,
+        (uint)StatusID.Silence,
+        (uint)StatusID.Slow,
+        (uint)StatusID.Slow2,
+        (uint)StatusID.Slow3,
+        (uint)StatusID.Slow4,
+        (uint)StatusID.Slow5,
+        (uint)StatusID.Blind,
+        (uint)StatusID.Blind2,
+        (uint)StatusID.Blind3,
+        (uint)StatusID.Paralysis,
+        (uint)StatusID.Paralysis2,
+        (uint)StatusID.Nightmare,
+        (uint)StatusID.Necrosis,
+    };
+
+    public static SortedSet<uint> InvincibleStatus { get; set; } = new SortedSet<uint>()
+    {
+        (uint)StatusID.StoneSkin,
+        (uint)StatusID.IceSpikesInvincible,
+        (uint)StatusID.VortexBarrier,
+    };
+
+    static string s_dangerousStatusFile => Service.Interface.ConfigDirectory.FullName + $"\\{nameof(DangerousStatus)}.json";
+
+    static string s_invincibleStatusFile => Service.Interface.ConfigDirectory.FullName + $"\\{nameof(InvincibleStatus)}.json";
+    public static async void Enable()
+    {
+        if(File.Exists(s_dangerousStatusFile))
+        {
+            try
+            {
+                DangerousStatus = JsonConvert.DeserializeObject<SortedSet<uint>>(await File.ReadAllTextAsync(s_dangerousStatusFile));
+            }
+            catch(Exception ex)
+            {
+                PluginLog.Warning(ex, "Failed to load Dangerous Status List.");
+                SaveDangerousStatus();
+            }
+        }
+        else SaveDangerousStatus();
+
+        if (File.Exists(s_invincibleStatusFile))
+        {
+            try
+            {
+                InvincibleStatus = JsonConvert.DeserializeObject<SortedSet<uint>>(await File.ReadAllTextAsync(s_invincibleStatusFile));
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Warning(ex, "Failed to load Invincible Status List.");
+                SaveInvincibleStatus();
+            }
+        }
+        else SaveInvincibleStatus();
+    }
+
+    public static void SaveDangerousStatus()
+    {
+        File.WriteAllTextAsync(s_dangerousStatusFile,
+        JsonConvert.SerializeObject(DangerousStatus, Formatting.Indented));
+    }
+
+    public static void SaveInvincibleStatus()
+    {
+        File.WriteAllTextAsync(s_invincibleStatusFile,
+        JsonConvert.SerializeObject(InvincibleStatus, Formatting.Indented));
+    }
 
 
     internal record Burst2MinsInfo( StatusID status, bool isOnHostile, byte level, params ClassJobID[] jobs);
@@ -149,14 +228,14 @@ public static class StatusHelper
     {
         if (status.GameData.Icon == 15024) return true;
 
-        return Service.Config.InvincibleStatus.Any(id => (uint)id == status.StatusId);
+        return InvincibleStatus.Any(id => (uint)id == status.StatusId);
     }
 
     public static bool IsDangerous(this Status status)
     {
         if (!status.CanDispel()) return false;
         if (status.StackCount > 2) return true;
-        return Service.Config.DangerousStatus.Any(id => id == status.StatusId);
+        return DangerousStatus.Any(id => id == status.StatusId);
     }
 
     public static bool CanDispel(this Status status)

@@ -73,7 +73,9 @@ internal partial class RotationConfigWindow
                         "Add One",
                         ref searchText, AllInvStatus, s =>
                         {
-                            Service.Config.InvincibleStatus.Add((uint)s.ID);
+                            StatusHelper.InvincibleStatus.Add((uint)s.ID);
+                            StatusHelper.SaveInvincibleStatus();
+
                         });
 
                     ImGui.SameLine();
@@ -89,7 +91,8 @@ internal partial class RotationConfigWindow
                         "Add One",
                         ref searchText, AllDispelStatus, s =>
                         {
-                             Service.Config.DangerousStatus.Add((uint)s.ID);
+                            StatusHelper.DangerousStatus.Add((uint)s.ID);
+                            StatusHelper.SaveDangerousStatus();
                         });
 
                     ImGui.SameLine();
@@ -160,7 +163,7 @@ internal partial class RotationConfigWindow
     {
         uint removeId = 0;
         uint addId = 0;
-        foreach (var statusId in Service.Config.DangerousStatus)
+        foreach (var statusId in StatusHelper.DangerousStatus)
         {
             var status = Service.GetSheet<Status>().GetRow(statusId);
             ImGui.Image(IconSet.GetTexture(status.Icon).ImGuiHandle, new Vector2(24, 30));
@@ -190,11 +193,13 @@ internal partial class RotationConfigWindow
 
         if(removeId != 0)
         {
-            Service.Config.DangerousStatus.Remove(removeId);
+            StatusHelper.DangerousStatus.Remove(removeId);
+            StatusHelper.SaveDangerousStatus();
         }
         if (addId != 0)
         {
-            Service.Config.DangerousStatus.Add(addId);
+            StatusHelper.DangerousStatus.Add(addId);
+            StatusHelper.SaveDangerousStatus();
         }
     }
 
@@ -202,7 +207,7 @@ internal partial class RotationConfigWindow
     {
         uint removeId = 0;
         uint addId = 0;
-        foreach (var statusId in Service.Config.InvincibleStatus)
+        foreach (var statusId in StatusHelper.InvincibleStatus)
         {
             var status = Service.GetSheet<Status>().GetRow(statusId);
             ImGui.Image(IconSet.GetTexture(status.Icon).ImGuiHandle, new Vector2(24, 30));
@@ -231,11 +236,13 @@ internal partial class RotationConfigWindow
 
         if (removeId != 0)
         {
-            Service.Config.InvincibleStatus.Remove(removeId);
+            StatusHelper.InvincibleStatus.Remove(removeId);
+            StatusHelper.SaveInvincibleStatus();
         }
         if (addId != 0)
         {
-            Service.Config.InvincibleStatus.Add(addId);
+            StatusHelper.InvincibleStatus.Add(addId);
+            StatusHelper.SaveInvincibleStatus();
         }
     }
 }
