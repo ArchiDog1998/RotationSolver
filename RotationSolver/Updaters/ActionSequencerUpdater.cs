@@ -1,6 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.InstanceContent;
-
-using RotationSolver.Timeline;
+using RotationSolver.ActionSequencer;
 using RotationSolver.UI;
 using System.Diagnostics;
 

@@ -2,7 +2,7 @@
 using RotationSolver.Localization;
 using RotationSolver.UI;
 
-namespace RotationSolver.Timeline;
+namespace RotationSolver.ActionSequencer;
 
 internal class ActionCondition : ICondition
 {
@@ -21,7 +21,7 @@ internal class ActionCondition : ICondition
 
     public bool IsTrue(ICustomRotation combo, bool isActionSequencer)
     {
-        if(!isActionSequencer) return false;
+        if (!isActionSequencer) return false;
         if (!ConditionHelper.CheckBaseAction(combo, ID, ref _action)) return false;
 
         var result = false;

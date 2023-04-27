@@ -1,6 +1,4 @@
-﻿using Dalamud.Logging;
-
-namespace RotationSolver.Timeline;
+﻿namespace RotationSolver.ActionSequencer;
 
 internal class MajorConditionSet
 {

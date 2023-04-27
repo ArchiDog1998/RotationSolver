@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Timeline;
+﻿namespace RotationSolver.ActionSequencer;
 
 internal interface ICondition
 {

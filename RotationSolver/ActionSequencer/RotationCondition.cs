@@ -2,7 +2,7 @@
 using RotationSolver.Localization;
 using RotationSolver.UI;
 
-namespace RotationSolver.Timeline;
+namespace RotationSolver.ActionSequencer;
 
 internal class RotationCondition : ICondition
 {
@@ -127,7 +127,7 @@ internal class RotationCondition : ICondition
             ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.ActionSequencer_NotAllowed);
             return;
         }
-        
+
         ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref ComboConditionType, EnumTranslations.ToName);
 
         switch (ComboConditionType)

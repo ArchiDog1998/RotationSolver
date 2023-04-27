@@ -1,9 +1,7 @@
-﻿using Dalamud.Logging;
-
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 using RotationSolver.UI;
 
-namespace RotationSolver.Timeline;
+namespace RotationSolver.ActionSequencer;
 
 internal class TargetCondition : ICondition
 {

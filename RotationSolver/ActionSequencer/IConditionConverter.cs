@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace RotationSolver.Timeline;
+namespace RotationSolver.ActionSequencer;
 
 internal class IConditionConverter : JsonCreationConverter<ICondition>
 {

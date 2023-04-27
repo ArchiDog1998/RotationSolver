@@ -1,4 +1,5 @@
-﻿using RotationSolver.Localization;
+﻿using RotationSolver.ActionSequencer;
+using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -62,7 +63,7 @@ internal partial class RotationConfigWindow
 
         if (!set.Conditions.TryGetValue(ActiveAction.ID, out var conditionSet))
         {
-            conditionSet = set.Conditions[ActiveAction.ID] = new Timeline.ConditionSet();
+            conditionSet = set.Conditions[ActiveAction.ID] = new ConditionSet();
         }
 
         conditionSet?.Draw(rotation, ActiveAction.IsActionSequencer);

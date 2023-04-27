@@ -1,6 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using RotationSolver.ActionSequencer;
 using RotationSolver.Commands;
-using RotationSolver.Timeline;
 
 namespace RotationSolver.Localization;
 
