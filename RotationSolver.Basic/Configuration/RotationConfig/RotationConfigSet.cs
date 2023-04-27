@@ -39,6 +39,12 @@ public class RotationConfigSet : IRotationConfigSet
         return this;
     }
 
+    public IRotationConfigSet SetInt(string name, int value, string displayName, int min = 0, int max = 10, int speed = 1)
+    {
+        Configs.Add(new RotationConfigInt(name, value, displayName, min, max, speed));
+        return this;
+    }
+
     public void SetValue(string name, string value)
     {
         var config = Configs.FirstOrDefault(config => config.Name == name);
@@ -73,6 +79,13 @@ public class RotationConfigSet : IRotationConfigSet
     {
         var config = GetConfig(name);
         return config?.GetValue(_job, _rotationName);
+    }
+
+    public int GetInt(string name)
+    {
+        var result = GetString(name);
+        if (int.TryParse(result, out var f)) return f;
+        return 0;
     }
 
     public string GetDisplayString(string name)

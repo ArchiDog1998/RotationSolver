@@ -703,6 +703,7 @@ internal static class ImGuiHelper
             else if (config is RotationConfigBoolean b) b.Draw(set, canAddButton);
             else if (config is RotationConfigFloat f) f.Draw(set, canAddButton);
             else if (config is RotationConfigString s) s.Draw(set, canAddButton);
+            else if (config is RotationConfigInt i) i.Draw(set, canAddButton);
         }
     }
 
@@ -785,6 +786,17 @@ internal static class ImGuiHelper
         if (ImGui.InputText($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", ref val, 15))
         {
             set.SetValue(config.Name, val);
+            Service.Config.Save();
+        }
+    }
+
+    static void Draw(this RotationConfigInt config, IRotationConfigSet set, bool canAddButton)
+    {
+        int val = set.GetInt(config.Name);
+        ImGui.SetNextItemWidth(100);
+        if (ImGui.DragInt($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", ref val, config.Speed, config.Min, config.Max))
+        {
+            set.SetValue(config.Name, val.ToString());
             Service.Config.Save();
         }
     }

@@ -12,6 +12,8 @@ public interface IRotationConfigSet : IEnumerable<IRotationConfig>
 
     IRotationConfigSet SetCombo(string name, int value, string displayName, params string[] items);
 
+    IRotationConfigSet SetInt(string name, int value, string displayName, int min = 0, int max = 10, int speed = 1);
+
     void SetValue(string name, string value);
 
     int GetCombo(string name);
@@ -19,6 +21,8 @@ public interface IRotationConfigSet : IEnumerable<IRotationConfig>
     bool GetBool(string name);
 
     float GetFloat(string name);
+
+    int GetInt(string name);
 
     /// <summary>
     /// Get the raw string value in the saved dictionary, is not readable.
