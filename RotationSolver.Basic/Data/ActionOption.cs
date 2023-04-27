@@ -21,9 +21,9 @@ public enum ActionOption : byte
     EndSpecial = 1 << 2,
 
     /// <summary>
-    /// should I put it to the timeline (heal and defense only)
+    /// should I put it to the Action Sequencer (Doesn't affect dps much)
     /// </summary>
-    Timeline = 1 << 3,
+    ActionSequencer = 1 << 3,
 
     /// <summary>
     /// Is a GCD action.
@@ -48,7 +48,7 @@ public enum ActionOption : byte
     /// <summary>
     /// Heal action
     /// </summary>
-    Heal = Friendly | Timeline,
+    Heal = Friendly | ActionSequencer,
 
     /// <summary>
     /// Defense action (you need to change the targeting strategy.
