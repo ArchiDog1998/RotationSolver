@@ -242,5 +242,6 @@ public abstract partial class CustomRotation
             && types[1].ParameterType == typeof(IAction[]);
     });
 
-
+    protected static int NumberOfHostilesIn(float range)
+    => DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= range);
 }
