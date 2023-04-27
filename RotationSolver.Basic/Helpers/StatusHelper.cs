@@ -45,7 +45,7 @@ public static class StatusHelper
     public static bool NeedHealing(this BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
     /// <summary>
-    /// Will any of <paramref name="statusIDs"/> be end after <paramref name="gcdCount"/> gcds add <paramref name="offset" times/> ?
+    /// Will any of <paramref name="statusIDs"/> be end after <paramref name="gcdCount"/> gcds add <paramref name="offset"/> seconds?
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="gcdCount"></param>

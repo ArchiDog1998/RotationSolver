@@ -229,8 +229,9 @@ internal static partial class TargetUpdater
         DataCenter.WeakenPeople.Delay(DataCenter.PartyMembers.Where(p => p.StatusList.Any(StatusHelper.CanDispel)));
         DataCenter.DyingPeople.Delay(DataCenter.WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
 
-        DataCenter.PartyMembersHP = DataCenter.PartyMembers
-            .Select(GetPartyMemberHPRatio).Where(r => r > 0);
+        DataCenter.RefinedHP = DataCenter.PartyMembers
+            .ToDictionary(p => p.ObjectId, GetPartyMemberHPRatio);
+        DataCenter.PartyMembersHP = DataCenter.RefinedHP.Values.Where(r => r > 0);
 
         if (DataCenter.PartyMembersHP.Any())
         {
@@ -249,10 +250,12 @@ internal static partial class TargetUpdater
 
     private static float GetPartyMemberHPRatio(BattleChara member)
     {
+        if (member == null) return 0;
+
         if ((DateTime.Now - Watcher.HealTime).TotalSeconds > 1
             || !Watcher.HealHP.TryGetValue(member.ObjectId, out var hp))
         {
-            return member.GetHealthRatio();
+            return (float)member.CurrentHp / member.MaxHp;
         }
 
         var rightHp = member.CurrentHp;
@@ -263,13 +266,12 @@ internal static partial class TargetUpdater
             if (rightHp - lastHp == hp)
             {
                 Watcher.HealHP.Remove(member.ObjectId);
-                return member.GetHealthRatio();
+                return (float)member.CurrentHp / member.MaxHp;
             }
             return Math.Min(1, (hp + rightHp) / (float)member.MaxHp);
         }
-        return member.GetHealthRatio();
+        return (float)member.CurrentHp / member.MaxHp;
     }
-
 
     private static IEnumerable<BattleChara> GetPartyMembers(IEnumerable<BattleChara> allTargets)
     {

@@ -133,6 +133,7 @@ public static class TargetFilter
     /// 发现被攻击的目标
     /// </summary>
     /// <param name="charas"></param>
+    /// <param name="mustUse"></param>
     /// <returns></returns>
     public static BattleChara FindAttackedTarget(IEnumerable<BattleChara> charas, bool mustUse)
     {

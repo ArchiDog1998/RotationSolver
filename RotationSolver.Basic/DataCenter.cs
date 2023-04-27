@@ -257,6 +257,8 @@ public static class DataCenter
     }
 
     #region HP
+    public static Dictionary<uint, float> RefinedHP { get; set; } = new Dictionary<uint, float>();
+
     public static IEnumerable<float> PartyMembersHP { get; set; }
     public static float PartyMembersMinHP { get; set; }
     public static float PartyMembersAverHP { get; set; }

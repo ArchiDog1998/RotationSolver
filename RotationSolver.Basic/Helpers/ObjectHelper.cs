@@ -128,6 +128,7 @@ public static class ObjectHelper
     public static float GetHealthRatio(this BattleChara b)
     {
         if (b == null) return 0;
+        if(DataCenter.RefinedHP.TryGetValue(b.ObjectId, out var hp)) return hp;
         return (float)b.CurrentHp / b.MaxHp;
     }
 
