@@ -131,11 +131,6 @@ public static class ObjectHelper
         return (float)b.CurrentHp / b.MaxHp;
     }
 
-    public static float GetHealingRatio(this BattleChara b)
-    {
-        return b.GetHealthRatio();
-    }
-
     public static bool CanDot(this BattleChara b)
     {
         if (b == null) return false;

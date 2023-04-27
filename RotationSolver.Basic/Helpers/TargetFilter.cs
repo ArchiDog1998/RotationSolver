@@ -18,16 +18,16 @@ public static class TargetFilter
         var healerTars = availableCharas.GetJobCategory(JobRole.Healer);
         var tankTars = availableCharas.GetJobCategory(JobRole.Tank);
 
-        var healerTar = tankTars.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
-        if (healerTar != null && healerTar.GetHealingRatio() < Service.Config.HealthTankHealerRatio)
+        var healerTar = tankTars.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
+        if (healerTar != null && healerTar.GetHealthRatio() < Service.Config.HealthTankHealerRatio)
             return healerTar;
 
-        var tankTar = tankTars.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
-        if (tankTar != null &&　tankTar.GetHealingRatio() < Service.Config.HealthTankHealerRatio)
+        var tankTar = tankTars.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
+        if (tankTar != null &&　tankTar.GetHealthRatio() < Service.Config.HealthTankHealerRatio)
             return tankTar;
 
-        var tar = availableCharas.OrderBy(ObjectHelper.GetHealingRatio).FirstOrDefault();
-        if (tar.GetHealingRatio() < 1) return tar;
+        var tar = availableCharas.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
+        if (tar.GetHealthRatio() < 1) return tar;
 
         return tankTars.FirstOrDefault(t => t.HasStatus(false, StatusHelper.TankStanceStatus))
            ?? tankTars.FirstOrDefault();
