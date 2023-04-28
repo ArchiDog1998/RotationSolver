@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.6.0",
-    "Changelog": "2.6.0 (2023-04-27)\n\n\nFeatures\n\n* (sequencer) Added load files button (9055c9e)\n* added integer getter/setter for rotation config. (ff22a3d)\n\n\nBug Fixes\n\n* add an api called `NumberOfHostilesIn` (0a1804d)\n* add an donate link for all rotations. (6060051)\n* changed the casting time check for condition. (dc40d32)\n* changed the status saving location. (ec2044f)\n* fixed SAM moving action's targeting. (e4987f9)\n* fixed the get ratio calculation. (bed059b)\n* make status check more precise (a771748)",
-    "DownloadCount": "7350",
-    "LastUpdate": 1682611382,
+    "AssemblyVersion": "2.7.0",
+    "Changelog": "2.7.0 (2023-04-28)\n\n\nFeatures\n\n* add a keybinding for next action. (aa67501)\n\n\nBug Fixes\n\n* add a distance order for priority hostiles. (6419a09)\n* add restrict about animation timeline. (bf0e33e)\n* add RiotsRotations to Donwload list. (b8d3ab4)\n* add shadowtime for DRK. (1572491)\n* changed warning in High-end duty. (0f696b7)\n* fixed with DrawByteEnum (d8a3986)\n* improve the attack mark priority. (a498ef4)\n* make some actions' method public. (2f42de8)\n* seperate heal ratio from tank and healer. (3ded391)",
+    "DownloadCount": "7270",
+    "LastUpdate": 1682691368,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.6.0/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.6.0/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.7.0/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.7.0/latest.zip"
   },
   {
     "Author": "ArchiDog1998",
