@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.7.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.6.0...v2.7.0) (2023-04-28)
+
+
+### Features
+
+* add a keybinding for next action. ([aa67501](https://github.com/ArchiDog1998/RotationSolver/commit/aa675019656fdbdf21e56826d4eb98a3a45c9cad))
+
+
+### Bug Fixes
+
+* add a distance order for priority hostiles. ([6419a09](https://github.com/ArchiDog1998/RotationSolver/commit/6419a09a9d43436c2866d9c2e0c4e2ffc6dd7777))
+* add restrict about animation timeline. ([bf0e33e](https://github.com/ArchiDog1998/RotationSolver/commit/bf0e33e5034eb092ecaa1f38474db3327d65eb32))
+* add RiotsRotations to Donwload list. ([b8d3ab4](https://github.com/ArchiDog1998/RotationSolver/commit/b8d3ab46ae705f7a140f9a87796f5e8039b1f38e))
+* add shadowtime for DRK. ([1572491](https://github.com/ArchiDog1998/RotationSolver/commit/1572491b979dd4e107527bc311163edfccce7d8e))
+* changed warning in High-end duty. ([0f696b7](https://github.com/ArchiDog1998/RotationSolver/commit/0f696b7d1010af13e4ba907463c7002ca6af871e))
+* fixed with DrawByteEnum ([d8a3986](https://github.com/ArchiDog1998/RotationSolver/commit/d8a3986be9cf48263df213b61380ad50adc1b4b1))
+* improve the attack mark priority. ([a498ef4](https://github.com/ArchiDog1998/RotationSolver/commit/a498ef42c7c8b0109f02a564d5e1c1176ac9b1ae))
+* make some actions' method public. ([2f42de8](https://github.com/ArchiDog1998/RotationSolver/commit/2f42de83f8dfa8363400453a69bc7fd743388997))
+* seperate heal ratio from tank and healer. ([3ded391](https://github.com/ArchiDog1998/RotationSolver/commit/3ded39180afb1d4e2ef922b6ffe14a4f79d6480c))
+
 ## [2.6.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.5.0...v2.6.0) (2023-04-27)
 
 
