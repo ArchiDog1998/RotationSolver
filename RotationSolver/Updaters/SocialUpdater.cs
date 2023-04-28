@@ -91,11 +91,20 @@ internal class SocialUpdater
 
     static void DutyState_DutyStarted(object sender, ushort e)
     {
+        if(Service.Player == null) return;
+        if (!Service.Player.IsJobCategory(JobRole.Tank) && !Service.Player.IsJobCategory(JobRole.Healer)) return;
+
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
         if (HighEndDuties.Any(t => t.RowId == territory.RowId))
         {
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
-            Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndWarning, str));
+            var message = string.Format(LocalizationManager.RightLang.HighEndWarning, str);
+            Service.ToastGui.ShowError(message);
+            Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            {
+                Message = message,
+                Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
+            });
         }
     }
 

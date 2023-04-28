@@ -24,6 +24,18 @@ public abstract class DRK_Base : CustomRotation
     {
         return EndAfterGCD(DarkSideTimeRemaining, gctCount, offset);
     }
+
+    private static float ShadowTimeRemaining => JobGauge.ShadowTimeRemaining / 1000f;
+
+    protected static bool ShadowTimeEndAfter(float time)
+    {
+        return EndAfter(ShadowTimeRemaining, time);
+    }
+
+    protected static bool ShadowTimeEndAfterGCD(uint gctCount = 0, float offset = 0)
+    {
+        return EndAfterGCD(ShadowTimeRemaining, gctCount, offset);
+    }
     #endregion
 
     #region Attack Single
@@ -97,7 +109,7 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction ShadowBringer { get; } = new BaseAction(ActionID.ShadowBringer)
     {
-        ActionCheck = b => DarkSideTimeRemaining > 0,
+        ActionCheck = b => !DarkSideEndAfterGCD(),
     };
     #endregion
 

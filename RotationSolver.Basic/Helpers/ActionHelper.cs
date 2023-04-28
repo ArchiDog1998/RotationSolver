@@ -7,12 +7,12 @@ public static class ActionHelper
 {
     public const byte GCDCooldownGroup = 58;
 
-    internal static ActionCate GetActionType(this Action action) => (ActionCate)action.ActionCategory.Value.RowId;
-    internal static bool IsGeneralGCD(this Action action) => action.CooldownGroup == GCDCooldownGroup;
+    public static ActionCate GetActionType(this Action action) => (ActionCate)action.ActionCategory.Value.RowId;
+    public static bool IsGeneralGCD(this Action action) => action.CooldownGroup == GCDCooldownGroup;
 
-    internal static bool IsRealGCD(this Action action) => action.IsGeneralGCD() || action.AdditionalCooldownGroup == GCDCooldownGroup;
+    public static bool IsRealGCD(this Action action) => action.IsGeneralGCD() || action.AdditionalCooldownGroup == GCDCooldownGroup;
 
-    internal static byte GetCoolDownGroup(this Action action)
+    public static byte GetCoolDownGroup(this Action action)
     {
         var group = action.IsGeneralGCD() ? action.AdditionalCooldownGroup : action.CooldownGroup;
         if (group == 0) group = GCDCooldownGroup;

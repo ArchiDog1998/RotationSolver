@@ -276,6 +276,17 @@ public partial class BaseAction
             return false;
         }
 
+        //找到被标记攻击的怪
+        if (Service.Config.ChooseAttackMark)
+        {
+            var b = MarkingHelper.GetAttackMarkChara(DataCenter.HostileTargets);
+            if (b != null && TargetFilterFuncEot(new BattleChara[] { b }, mustUse).Any())
+            {
+                target = b;
+                return true;
+            }
+        }
+
         target = ChoiceTarget(GetMostObjects(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), aoeCount), mustUse);
         if (target == null) return false;
         return true;

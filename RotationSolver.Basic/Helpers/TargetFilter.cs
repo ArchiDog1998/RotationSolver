@@ -19,11 +19,11 @@ public static class TargetFilter
         var tankTars = availableCharas.GetJobCategory(JobRole.Tank);
 
         var healerTar = tankTars.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
-        if (healerTar != null && healerTar.GetHealthRatio() < Service.Config.HealthTankHealerRatio)
+        if (healerTar != null && healerTar.GetHealthRatio() < Service.Config.HealthHealerRatio)
             return healerTar;
 
         var tankTar = tankTars.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
-        if (tankTar != null &&　tankTar.GetHealthRatio() < Service.Config.HealthTankHealerRatio)
+        if (tankTar != null &&　tankTar.GetHealthRatio() < Service.Config.HealthTankRatio)
             return tankTar;
 
         var tar = availableCharas.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
@@ -37,33 +37,30 @@ public static class TargetFilter
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
 
-        //找到被标记攻击的怪
-        var b = MarkingHelper.GetAttackMarkChara(availableCharas);
-        if (Service.Config.ChooseAttackMark && b != null) return b;
-
-        //去掉停止标记的怪
         if (Service.Config.FilterStopMark)
         {
             var charas = MarkingHelper.FilterStopCharaes(availableCharas);
             if (charas?.Any() ?? false) availableCharas = charas;
         }
 
-        b = availableCharas.FirstOrDefault(ObjectHelper.IsTopPriorityHostile);
-        if (b != null) return b;
-
         if (DataCenter.TreasureCharas.Length > 0)
         {
-            b = availableCharas.FirstOrDefault(b => b.ObjectId == DataCenter.TreasureCharas[0]);
+            var b = availableCharas.FirstOrDefault(b => b.ObjectId == DataCenter.TreasureCharas[0]);
             if (b != null) return b;
             availableCharas = availableCharas.Where(b => !DataCenter.TreasureCharas.Contains(b.ObjectId));
         }
 
-        //根据默认设置排序怪
-        availableCharas = DefaultTargetingType(availableCharas);
+        var highPriority = availableCharas.Where(ObjectHelper.IsTopPriorityHostile);
+        if (highPriority.Any())
+        {
+            availableCharas = highPriority;
+        }
+        else
+        {
+            availableCharas = DefaultTargetingType(availableCharas);
+        }
 
-        //找到体积一样小的
         float radius = availableCharas.FirstOrDefault()?.HitboxRadius ?? 0.5f;
-
         return availableCharas.Where(c => c.HitboxRadius == radius)
             .OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
     }

@@ -121,7 +121,7 @@ public abstract class AST_Base : CustomRotation
 
     public static IBaseAction MinorArcana { get; } = new BaseAction(ActionID.MinorArcana)
     {
-        ActionCheck = b => InCombat && DrawnCrownCard == CardType.NONE,
+        ActionCheck = b => InCombat,
     };
 
     static IBaseAction Balance { get; } = new BaseAction(ActionID.Balance)

@@ -5,7 +5,7 @@ namespace RotationSolver.Basic.Helpers;
 
 public static class IActionHelper
 {
-    public static SortedList<uint, float> AnimationLockTime = new SortedList<uint, float>();
+    public static SortedList<uint, float> AnimationLockTime { get; private set; } = new SortedList<uint, float>();
 
     public static async void GetAnimationLockTimeAsync(string directory)
     {

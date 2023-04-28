@@ -539,6 +539,50 @@ internal class ControlWindow : Window
         var next = ActionUpdater.NextGCDAction != ActionUpdater.NextAction ? ActionUpdater.NextAction : null;
 
         ImGui.SameLine();
+
         DrawIAction(next, ability, -1);
+        if (ImGui.IsItemHovered())
+        {
+            var help = string.Empty;
+            if (Service.Config.ButtonDoAction != null)
+            {
+                help += "\n" + Service.Config.ButtonDoAction.ToStr();
+                if (!Service.Config.UseGamepadCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
+
+            }
+            if (Service.Config.KeyDoAction != null)
+            {
+                help += "\n" + Service.Config.KeyDoAction.ToStr();
+                if (!Service.Config.UseKeyboardCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
+            }
+            help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
+
+            ImGui.SetTooltip(help);
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Right) && !InputUpdater.RecordingDoAction)
+            {
+                InputUpdater.RecordingTime = DateTime.Now;
+                InputUpdater.RecordingDoAction = true;
+                Service.ToastGui.ShowQuest($"Recording: Do Action",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                    });
+            }
+
+            if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
+            {
+                Service.Config.KeyDoAction = null;
+                Service.Config.ButtonDoAction = null;
+                Service.Config.Save();
+
+                Service.ToastGui.ShowQuest($"Clear Recording: Do Action",
+                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                    {
+                        IconId = 101,
+                        PlaySound = true,
+                        DisplayCheckmark = true,
+                    });
+            }
+        }
     }
 }

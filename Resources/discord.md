@@ -18,51 +18,35 @@ Change Logs are here: https://github.com/ArchiDog1998/RotationSolver/blob/releas
 
 :RotationSolver:  **Brief explanation of the staff roles** :RotationSolver:
 
-**Developer**: maintain the entire framework, support the **Job Dev** to develop the job rotation.
+**Main Developer**: maintain the entire framework, support the **Job Dev** to develop the job rotation.
 
 **Moderator**: Manage this Discord Server.
 
 **Supporter**: Someone who supported this plugin.
 
+**Developer**: Someone involved in the development.
+
+**Document Writer**: Someone involved in writing the document.
+
 **Translator**: Localization this plugin
 
 **Job Dev**: Develop the special job rotation.
 
-You can choose your roles on #roles channel.
+You can choose your roles on #customize channel.
+
+
+
+:RotationSolver:  **Author's Statement** :RotationSolver:
+
+I, ArchiTed, a player who has never played high-end duty in ff14, an architectural designing researcher without computer-related professional training mainly developed this plugin. Whether in terms of coding ability or jobs understanding, I don't think I am very good. If possible, you are very welcome to come and develop plugins together.
+
+RotationSolver is updated more than twice a week, and the update time is about <t:1682690400:t> to <t:1682697600:t>.
 
 
 
 :RotationSolver:  **Inviting new people** :RotationSolver:
 
-You can invite new people with the invite link below (in a separate message).
+You can invite new people with the invite link below.
 
 https://discord.gg/4fECHunam9
-
-## Role
-
-To Be A Translator
-
-If you want to be a translator to localization `Rotation Solver`. Please click :bookmark_tabs: .
-
-https://crowdin.com/project/rotationsolver
-
-
-
-Choose Your Dev Roles
-
-If you want to develop the rotation. please click on the icon of the job you want to develop. So you will get the support in development.
-
-https://github.com/ArchiDog1998/RotationSolver
-
-You'd better not choose more than three...
-
-
-
-Choose Your Player Roles
-
-If you are a player, please click on the icons of your jobs. So you will find the job forum to raise your own issue.
-
-At least choose one...
-
-
 
