@@ -1,8 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Game.ClientState.Keys;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
@@ -14,6 +12,7 @@ internal static class InputUpdater
 
     public static SpecialCommandType RecordingSpecialType { get ; set; }
     public static StateCommandType RecordingStateType { get ; set; }
+    public static bool RecordingDoAction { get; set; }
     public static DateTime RecordingTime { get; set; } = DateTime.MinValue;
 
     internal static unsafe void UpdateCommand()
@@ -33,6 +32,7 @@ internal static class InputUpdater
         {
             RecordingSpecialType = SpecialCommandType.None;
             RecordingStateType = StateCommandType.None;
+            RecordingDoAction = false;
         }
 
         foreach (var key in Service.KeyState.GetValidVirtualKeys())
@@ -93,13 +93,21 @@ internal static class InputUpdater
             Service.Config.Save();
             return;
         }
-        else  if (RecordingStateType != StateCommandType.None )
+        else if (RecordingStateType != StateCommandType.None )
         {
             Service.Config.KeyState[RecordingStateType] = key;
             Service.ToastGui.ShowQuest($"{RecordingStateType}: {key.ToStr()}",
                 QUEST);
 
             RecordingStateType = StateCommandType.None;
+            Service.Config.Save();
+            return;
+        }
+        else if (RecordingDoAction)
+        {
+            Service.Config.KeyDoAction = key;
+            Service.ToastGui.ShowQuest($"Do Action: {key.ToStr()}", QUEST);
+            RecordingDoAction = false;
             Service.Config.Save();
             return;
         }
@@ -111,11 +119,14 @@ internal static class InputUpdater
             Service.CommandManager.ProcessCommand(Service.Config.KeyState
                 .FirstOrDefault(k => k.Value == key && k.Key != StateCommandType.None).Key.GetCommandStr());
         }
-
-        if (Service.Config.KeySpecial.ContainsValue(key))
+        else if (Service.Config.KeySpecial.ContainsValue(key))
         {
             Service.CommandManager.ProcessCommand(Service.Config.KeySpecial
                 .FirstOrDefault(k => k.Value == key && k.Key != SpecialCommandType.None).Key.GetCommandStr());
+        }
+        else if(Service.Config.KeyDoAction == key)
+        {
+            RSCommands.DoAction();
         }
     }
 
@@ -141,6 +152,14 @@ internal static class InputUpdater
             Service.Config.Save();
             return;
         }
+        else if (RecordingDoAction)
+        {
+            Service.Config.ButtonDoAction = button;
+            Service.ToastGui.ShowQuest($"Do Action: {button.ToStr()}", QUEST);
+            RecordingDoAction = false;
+            Service.Config.Save();
+            return;
+        }
 
         if (!Service.Config.UseGamepadCommand) return;
 
@@ -149,11 +168,14 @@ internal static class InputUpdater
             Service.CommandManager.ProcessCommand(Service.Config.ButtonState
                 .FirstOrDefault(k => k.Value == button && k.Key != StateCommandType.None).Key.GetCommandStr());
         }
-
-        if (Service.Config.ButtonSpecial.ContainsValue(button))
+        else if (Service.Config.ButtonSpecial.ContainsValue(button))
         {
             Service.CommandManager.ProcessCommand(Service.Config.ButtonSpecial
                 .FirstOrDefault(k => k.Value == button && k.Key != SpecialCommandType.None).Key.GetCommandStr());
+        }
+        else if (Service.Config.ButtonDoAction == button)
+        {
+            RSCommands.DoAction();
         }
     }
 }

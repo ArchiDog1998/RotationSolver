@@ -201,7 +201,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
     public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();
-
+    public KeyRecord KeyDoAction { get; set; } = null;
     public Dictionary<StateCommandType, ButtonRecord> ButtonState { get; set; } = new Dictionary<StateCommandType, ButtonRecord>()
     {
         {StateCommandType.Smart, new ButtonRecord( GamepadButtons.East, false, true) },
@@ -226,6 +226,9 @@ public class PluginConfiguration : IPluginConfiguration
         {SpecialCommandType.AntiKnockback, new ButtonRecord( GamepadButtons.DpadUp, true, false) },
 
     };
+
+    public ButtonRecord ButtonDoAction { get; set; } = null;
+
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

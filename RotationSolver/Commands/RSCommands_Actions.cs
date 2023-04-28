@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
@@ -28,6 +29,13 @@ namespace RotationSolver.Commands
                 (int)(Service.Config.ClickingDelayMin * 1000), (int)(Service.Config.ClickingDelayMax * 1000)))) return;
             _fastClickStopwatch = DateTime.Now;
 
+            if (!isGCD && ActionUpdater.NextAction is IBaseAction act1 && act1.IsRealGCD) return;
+
+            DoAction();
+        }
+
+        public static void DoAction()
+        {
             //Do Action
             var nextAction = ActionUpdater.NextAction;
             if (nextAction == null) return;
@@ -45,8 +53,6 @@ namespace RotationSolver.Commands
                 _loop++;
                 return;
             }
-
-            if (!isGCD && nextAction is IBaseAction act1 && act1.IsRealGCD) return;
 
             if (Service.Config.KeyBoardNoise)
             {
@@ -73,7 +79,6 @@ namespace RotationSolver.Commands
                 }
 
             }
-            return;
         }
 
         static bool started = false;
