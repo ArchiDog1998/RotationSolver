@@ -37,10 +37,6 @@ public static class TargetFilter
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
 
-        //找到被标记攻击的怪
-        var b = MarkingHelper.GetAttackMarkChara(availableCharas);
-        if (Service.Config.ChooseAttackMark && b != null) return b;
-
         //去掉停止标记的怪
         if (Service.Config.FilterStopMark)
         {
@@ -48,7 +44,7 @@ public static class TargetFilter
             if (charas?.Any() ?? false) availableCharas = charas;
         }
 
-        b = availableCharas.FirstOrDefault(ObjectHelper.IsTopPriorityHostile);
+        var b = availableCharas.FirstOrDefault(ObjectHelper.IsTopPriorityHostile);
         if (b != null) return b;
 
         if (DataCenter.TreasureCharas.Length > 0)
