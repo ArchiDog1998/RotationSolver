@@ -101,7 +101,7 @@ internal class ActionCondition : ICondition
 
         ImGui.SameLine();
 
-        ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref ActionConditionType, EnumTranslations.ToName);
+        ConditionHelper.DrawByteEnum($"##Category{GetHashCode()}", ref ActionConditionType, EnumTranslations.ToName);
 
         var condition = Condition ? 1 : 0;
         var combos = new string[0];

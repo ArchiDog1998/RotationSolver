@@ -128,7 +128,7 @@ internal class RotationCondition : ICondition
             return;
         }
 
-        ConditionHelper.DrawIntEnum($"##Category{GetHashCode()}", ref ComboConditionType, EnumTranslations.ToName);
+        ConditionHelper.DrawByteEnum($"##Category{GetHashCode()}", ref ComboConditionType, EnumTranslations.ToName);
 
         switch (ComboConditionType)
         {
