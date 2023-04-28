@@ -13,7 +13,9 @@ public abstract class SGE_Base : CustomRotation
     protected static byte Addersting => JobGauge.Addersting;
     public override MedicineType MedicineType => MedicineType.Mind;
 
-    protected static bool NoOgcds => JobGauge.Addersgall == 0 && (!Physis.EnoughLevel || Physis.IsCoolingDown) && (!Haima.EnoughLevel || Haima.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Soteria.EnoughLevel || Soteria.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Krasis.EnoughLevel || Krasis.IsCoolingDown) && (!Zoe.EnoughLevel || Zoe.IsCoolingDown);
+    protected static bool NoOgcds => JobGauge.Addersgall == 0 && (!Physis.EnoughLevel || Physis.IsCoolingDown) && (!Haima.EnoughLevel || Haima.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Soteria.EnoughLevel || Soteria.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Pneuma.EnoughLevel || Krasis.IsCoolingDown) && (!Pneuma.EnoughLevel || Zoe.IsCoolingDown);
+
+    protected static bool NoOgcdsAOE => JobGauge.Addersgall == 0 && (!Physis.EnoughLevel || Physis.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Pneuma.EnoughLevel || Krasis.IsCoolingDown) && (!Pneuma.EnoughLevel || Zoe.IsCoolingDown);
 
     protected static float AddersgallTimer => JobGauge.AddersgallTimer / 1000f;
     protected static bool AddersgallEndAfter(float time) => EndAfter(AddersgallTimer, time);
@@ -69,7 +71,7 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Prognosis { get; } = new BaseAction(ActionID.Prognosis, ActionOption.Heal | ActionOption.EndSpecial)
     {
-        ActionCheck = b => NoOgcds,
+        ActionCheck = b => NoOgcdsAOE,
     };
 
     public static IBaseAction Physis { get; } = new BaseAction(ActionID.Physis, ActionOption.Heal);
@@ -117,7 +119,7 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, ActionOption.Heal)
     {
-        ActionCheck = b => NoOgcds,
+        ActionCheck = b => NoOgcdsAOE,
     };
 
     public static IBaseAction Toxikon { get; } = new BaseAction(ActionID.Toxikon)
