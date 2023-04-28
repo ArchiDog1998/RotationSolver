@@ -37,29 +37,30 @@ public static class TargetFilter
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
 
-        //去掉停止标记的怪
         if (Service.Config.FilterStopMark)
         {
             var charas = MarkingHelper.FilterStopCharaes(availableCharas);
             if (charas?.Any() ?? false) availableCharas = charas;
         }
 
-        var b = availableCharas.FirstOrDefault(ObjectHelper.IsTopPriorityHostile);
-        if (b != null) return b;
-
         if (DataCenter.TreasureCharas.Length > 0)
         {
-            b = availableCharas.FirstOrDefault(b => b.ObjectId == DataCenter.TreasureCharas[0]);
+            var b = availableCharas.FirstOrDefault(b => b.ObjectId == DataCenter.TreasureCharas[0]);
             if (b != null) return b;
             availableCharas = availableCharas.Where(b => !DataCenter.TreasureCharas.Contains(b.ObjectId));
         }
 
-        //根据默认设置排序怪
-        availableCharas = DefaultTargetingType(availableCharas);
+        var highPriority = availableCharas.Where(ObjectHelper.IsTopPriorityHostile);
+        if (highPriority.Any())
+        {
+            availableCharas = highPriority;
+        }
+        else
+        {
+            availableCharas = DefaultTargetingType(availableCharas);
+        }
 
-        //找到体积一样小的
         float radius = availableCharas.FirstOrDefault()?.HitboxRadius ?? 0.5f;
-
         return availableCharas.Where(c => c.HitboxRadius == radius)
             .OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
     }
