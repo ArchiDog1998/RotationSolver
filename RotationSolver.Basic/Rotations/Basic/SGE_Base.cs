@@ -75,6 +75,8 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Physis { get; } = new BaseAction(ActionID.Physis, ActionOption.Heal);
 
+    public static IBaseAction Physis2 { get; } = new BaseAction(ActionID.Physis2, ActionOption.Heal);
+
     public static IBaseAction Eukrasia { get; } = new BaseAction(ActionID.Eukrasia, ActionOption.Heal)
     {
         ActionCheck = b => !JobGauge.Eukrasia,
