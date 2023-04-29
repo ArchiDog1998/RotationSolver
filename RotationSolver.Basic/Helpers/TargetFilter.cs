@@ -329,7 +329,7 @@ public static class TargetFilter
 
     private static BattleChara RandomObject(IEnumerable<BattleChara> objs)
     {
-        Random ran = new Random(DateTime.Now.Millisecond);
+        Random ran = new(DateTime.Now.Millisecond);
         return objs.ElementAt(ran.Next(objs.Count()));
     }
 

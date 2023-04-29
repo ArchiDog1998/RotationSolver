@@ -58,16 +58,16 @@ public static class StatusHelper
         (uint)StatusID.VortexBarrier,
     };
 
-    static string s_dangerousStatusFile => Service.Interface.ConfigDirectory.FullName + $"\\{nameof(DangerousStatus)}.json";
+    static string DangerousStatusFile => Service.Interface.ConfigDirectory.FullName + $"\\{nameof(DangerousStatus)}.json";
 
-    static string s_invincibleStatusFile => Service.Interface.ConfigDirectory.FullName + $"\\{nameof(InvincibleStatus)}.json";
+    static string InvincibleStatusFile => Service.Interface.ConfigDirectory.FullName + $"\\{nameof(InvincibleStatus)}.json";
     public static async void Enable()
     {
-        if(File.Exists(s_dangerousStatusFile))
+        if(File.Exists(DangerousStatusFile))
         {
             try
             {
-                DangerousStatus = JsonConvert.DeserializeObject<SortedSet<uint>>(await File.ReadAllTextAsync(s_dangerousStatusFile));
+                DangerousStatus = JsonConvert.DeserializeObject<SortedSet<uint>>(await File.ReadAllTextAsync(DangerousStatusFile));
             }
             catch(Exception ex)
             {
@@ -77,11 +77,11 @@ public static class StatusHelper
         }
         else SaveDangerousStatus();
 
-        if (File.Exists(s_invincibleStatusFile))
+        if (File.Exists(InvincibleStatusFile))
         {
             try
             {
-                InvincibleStatus = JsonConvert.DeserializeObject<SortedSet<uint>>(await File.ReadAllTextAsync(s_invincibleStatusFile));
+                InvincibleStatus = JsonConvert.DeserializeObject<SortedSet<uint>>(await File.ReadAllTextAsync(InvincibleStatusFile));
             }
             catch (Exception ex)
             {
@@ -94,13 +94,13 @@ public static class StatusHelper
 
     public static void SaveDangerousStatus()
     {
-        File.WriteAllTextAsync(s_dangerousStatusFile,
+        File.WriteAllTextAsync(DangerousStatusFile,
         JsonConvert.SerializeObject(DangerousStatus, Formatting.Indented));
     }
 
     public static void SaveInvincibleStatus()
     {
-        File.WriteAllTextAsync(s_invincibleStatusFile,
+        File.WriteAllTextAsync(InvincibleStatusFile,
         JsonConvert.SerializeObject(InvincibleStatus, Formatting.Indented));
     }
 

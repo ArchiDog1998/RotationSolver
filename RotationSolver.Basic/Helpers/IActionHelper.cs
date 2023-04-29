@@ -38,7 +38,7 @@ public static class IActionHelper
 
     }
 
-    public static ActionID[] MovingActions = new ActionID[]
+    public readonly static ActionID[] MovingActions = new ActionID[]
     {
         ActionID.EnAvant,
         ActionID.Plunge,

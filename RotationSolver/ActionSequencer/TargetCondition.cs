@@ -20,8 +20,8 @@ internal class TargetCondition : ICondition
 
     public bool Condition;
     public bool FromSelf;
-    private BaseStatus _status { get; set; }
-    public StatusID Status { get; set; }
+    private BaseStatus Status { get; set; }
+    public StatusID StatusId { get; set; }
     public bool IsTarget;
     public TargetConditionType TargetConditionType;
 
@@ -54,7 +54,7 @@ internal class TargetCondition : ICondition
         switch (TargetConditionType)
         {
             case TargetConditionType.HasStatus:
-                result = tar.HasStatus(FromSelf, Status);
+                result = tar.HasStatus(FromSelf, StatusId);
                 break;
 
             case TargetConditionType.IsBoss:
@@ -70,11 +70,11 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.StatusEnd:
-                result = !tar.WillStatusEnd(DistanceOrTime, FromSelf, Status);
+                result = !tar.WillStatusEnd(DistanceOrTime, FromSelf, StatusId);
                 break;
 
             case TargetConditionType.StatusEndGCD:
-                result = !tar.WillStatusEndGCD((uint)GCD, DistanceOrTime, FromSelf, Status);
+                result = !tar.WillStatusEndGCD((uint)GCD, DistanceOrTime, FromSelf, StatusId);
                 break;
 
             case TargetConditionType.CastingAction:
@@ -113,9 +113,9 @@ internal class TargetCondition : ICondition
     {
         ConditionHelper.CheckBaseAction(combo, ID, ref _action);
 
-        if (Status != StatusID.None && (_status == null || _status.ID != Status))
+        if (StatusId != StatusID.None && (Status == null || Status.ID != StatusId))
         {
-            _status = AllStatus.FirstOrDefault(a => a.ID == Status);
+            Status = AllStatus.FirstOrDefault(a => a.ID == StatusId);
         }
 
         ImGuiHelper.DrawCondition(IsTrue(combo, isActionSequencer));
@@ -195,11 +195,11 @@ internal class TargetCondition : ICondition
         {
             case TargetConditionType.HasStatus:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(_status?.Name);
-                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ImGuiHelper.SetNextWidthWithName(Status?.Name);
+                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", Status?.Name, ref searchTxt, AllStatus, i =>
                 {
-                    _status = i;
-                    Status = _status.ID;
+                    Status = i;
+                    StatusId = Status.ID;
                 });
 
                 ImGui.SameLine();
@@ -213,11 +213,11 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.StatusEnd:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(_status?.Name);
-                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ImGuiHelper.SetNextWidthWithName(Status?.Name);
+                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", Status?.Name, ref searchTxt, AllStatus, i =>
                 {
-                    _status = i;
-                    Status = _status.ID;
+                    Status = i;
+                    StatusId = Status.ID;
                 });
 
                 ImGui.SameLine();
@@ -234,11 +234,11 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.StatusEndGCD:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(_status?.Name);
-                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ImGuiHelper.SetNextWidthWithName(Status?.Name);
+                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", Status?.Name, ref searchTxt, AllStatus, i =>
                 {
-                    _status = i;
-                    Status = _status.ID;
+                    Status = i;
+                    StatusId = Status.ID;
                 });
 
                 ImGui.SameLine();

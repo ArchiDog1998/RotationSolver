@@ -68,7 +68,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         var manager = new LocalizationManager();
         _dis.Add(manager);
 #if DEBUG
-        manager.ExportLocalization();
+        LocalizationManager.ExportLocalization();
 #endif
         ChangeUITranslation();
 

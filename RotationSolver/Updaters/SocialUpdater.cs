@@ -16,6 +16,7 @@ internal class SocialUpdater
 {
     public static bool InPvp { get; private set; }
 
+    /* 
     private static readonly List<string> _macroToAuthor = new()
     {
         "blush",
@@ -25,7 +26,8 @@ internal class SocialUpdater
         "clap",
         "cheer",
         "stroke",
-    };
+    }; 
+    */
 
     static bool _canSaying = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();

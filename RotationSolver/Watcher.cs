@@ -20,6 +20,7 @@ public class Watcher : IDisposable
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
     private static readonly Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
     private static ICallGateSubscriber<object, object> IpcSubscriber;
+    private bool _disposed;
 
     public Watcher()
     {
@@ -137,6 +138,17 @@ public class Watcher : IDisposable
 
     public void Dispose()
     {
-        _receiveAbilityHook?.Dispose();
+         Dispose(true);
+         GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+
+        if (disposing)
+             _receiveAbilityHook?.Dispose();
+
+        _disposed = true;
     }
 }

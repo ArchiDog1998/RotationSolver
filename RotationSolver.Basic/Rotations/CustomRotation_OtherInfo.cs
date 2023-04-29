@@ -109,15 +109,15 @@ public abstract partial class CustomRotation
     /// </summary>
     protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoBurst);
 
-    bool _canUseHealAction => Job.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer;
+    bool CanUseHealAction => Job.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer;
 
-    protected virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && _canUseHealAction;
+    protected virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && CanUseHealAction;
 
-    protected virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && _canUseHealAction;
+    protected virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && CanUseHealAction;
 
-    protected virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && _canUseHealAction;
+    protected virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && CanUseHealAction;
 
-    protected virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && _canUseHealAction;
+    protected virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && CanUseHealAction;
 
     protected static SpecialCommandType SpecialType => DataCenter.SpecialType;
     protected static StateCommandType StateType => DataCenter.StateType;
