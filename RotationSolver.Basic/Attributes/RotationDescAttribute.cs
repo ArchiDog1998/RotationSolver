@@ -32,37 +32,17 @@ public class RotationDescAttribute : Attribute
         get
         {
             var command = DataCenter.SpecialType;
-            switch (Type)
+            return Type switch
             {
-                case DescType.BurstActions:
-                    return command == SpecialCommandType.Burst;
-
-                case DescType.HealAreaAbility:
-                case DescType.HealAreaGCD:
-                    return command == SpecialCommandType.HealArea;
-
-                case DescType.HealSingleAbility:
-                case DescType.HealSingleGCD:
-                    return command == SpecialCommandType.HealSingle;
-
-                case DescType.DefenseAreaGCD:
-                case DescType.DefenseAreaAbility:
-                    return command == SpecialCommandType.DefenseArea;
-
-                case DescType.DefenseSingleGCD:
-                case DescType.DefenseSingleAbility:
-                    return command == SpecialCommandType.DefenseSingle;
-
-                case DescType.MoveForwardGCD:
-                case DescType.MoveForwardAbility:
-                    return command == SpecialCommandType.MoveForward;
-
-                case DescType.MoveBackAbility:
-                    return command == SpecialCommandType.MoveBack;
-
-                default:
-                    return false;
-            }
+                DescType.BurstActions => command == SpecialCommandType.Burst,
+                DescType.HealAreaAbility or DescType.HealAreaGCD => command == SpecialCommandType.HealArea,
+                DescType.HealSingleAbility or DescType.HealSingleGCD => command == SpecialCommandType.HealSingle,
+                DescType.DefenseAreaGCD or DescType.DefenseAreaAbility => command == SpecialCommandType.DefenseArea,
+                DescType.DefenseSingleGCD or DescType.DefenseSingleAbility => command == SpecialCommandType.DefenseSingle,
+                DescType.MoveForwardGCD or DescType.MoveForwardAbility => command == SpecialCommandType.MoveForward,
+                DescType.MoveBackAbility => command == SpecialCommandType.MoveBack,
+                _ => false,
+            };
         }
     }
 
@@ -89,7 +69,7 @@ public class RotationDescAttribute : Attribute
 
     public static IEnumerable<RotationDescAttribute[]> Merge(IEnumerable<RotationDescAttribute> rotationDescAttributes)
         => from r in rotationDescAttributes
-           where r is RotationDescAttribute
+           where r is not null
            group r by r.Type into gr
            orderby gr.Key
            select gr.ToArray();

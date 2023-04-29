@@ -7,11 +7,11 @@ namespace RotationSolver.Updaters;
 internal static class MajorUpdater
 {
     public static bool IsValid => Service.Conditions.Any() && Service.Player != null && !SocialUpdater.InPvp;
-    public static bool ShouldPreventActions => Service.Config.GetValue(SettingsCommand.PreventActions)
+    public static bool ShouldPreventActions => Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
         && !DataCenter.HasHostilesInMaxRange;
 
 #if DEBUG
-    private static readonly Dictionary<int, bool> _values = new Dictionary<int, bool>();
+    private static readonly Dictionary<int, bool> _values = new();
 #endif
 
     private static void FrameworkUpdate(Framework framework)
@@ -33,7 +33,7 @@ internal static class MajorUpdater
             {
                 string key = enumNames[i];
                 bool newValue = Service.Conditions[(Dalamud.Game.ClientState.Conditions.ConditionFlag)indexs[i]];
-                if (_values.ContainsKey(i) && _values[i] != newValue && indexs[i] != 48 && indexs[i] != 27)
+                if (_values.TryGetValue(i, out bool value) && value != newValue && indexs[i] != 48 && indexs[i] != 27)
                 {
                     //Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
                 }

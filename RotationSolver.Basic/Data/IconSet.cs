@@ -22,11 +22,11 @@ public enum IconType : byte
 
 public static class IconSet
 {
-    static readonly Dictionary<uint, TextureWrap> _texturesIds = new Dictionary<uint, TextureWrap>();
-    static readonly HashSet<uint> _loadingTextureID = new HashSet<uint>();
+    static readonly Dictionary<uint, TextureWrap> _texturesIds = new();
+    static readonly HashSet<uint> _loadingTextureID = new();
 
-    static readonly SortedDictionary<string, TextureWrap> _texturesPath = new SortedDictionary<string, TextureWrap>();
-    static readonly HashSet<string> _loadingTexturePath = new HashSet<string>();
+    static readonly SortedDictionary<string, TextureWrap> _texturesPath = new();
+    static readonly HashSet<string> _loadingTexturePath = new();
 
     public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
 
@@ -121,7 +121,7 @@ public static class IconSet
         }
     }
 
-    private static readonly Dictionary<IconType, uint[]> _icons = new Dictionary<IconType, uint[]>()
+    private static readonly Dictionary<IconType, uint[]> _icons = new()
     {
         { IconType.Gold, new uint[40]
         {

@@ -19,13 +19,10 @@ internal partial class RotationConfigWindow
     {
         get
         {
-            if (_allDispelStatus == null)
-            {
-                _allDispelStatus = Service.GetSheet<Status>()
+            _allDispelStatus ??= Service.GetSheet<Status>()
                     .Where(s => s.CanDispel)
                     .Select(s => new BaseStatus(s))
                     .ToArray();
-            }
             return _allDispelStatus;
         }
     }
@@ -35,14 +32,11 @@ internal partial class RotationConfigWindow
     {
         get
         {
-            if (_allInvStatus == null)
-            {
-                _allInvStatus = Service.GetSheet<Status>()
+            _allInvStatus ??= Service.GetSheet<Status>()
                     .Where(s => !s.CanDispel && !s.LockMovement && !s.IsPermanent && !s.IsGaze && !s.IsFcBuff && s.HitEffect.Row == 16 && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
                         && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
                     .Select(s => new BaseStatus(s))
                     .ToArray();
-            }
             return _allInvStatus;
         }
     }

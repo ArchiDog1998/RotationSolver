@@ -25,8 +25,8 @@ public class PluginConfiguration : IPluginConfiguration
 
     [JsonProperty]
     private Dictionary<SettingsCommand, bool> SettingsBools { get; set; } = new Dictionary<SettingsCommand, bool>();
-    public bool GetValue(SettingsCommand command) => Service.Config.SettingsBools.TryGetValue(command, out var value) ? value : command.GetDefault();
-    public void SetValue(SettingsCommand command, bool value) => Service.Config.SettingsBools[command] = value;
+    public static bool GetValue(SettingsCommand command) => Service.Config.SettingsBools.TryGetValue(command, out var value) ? value : command.GetDefault();
+    public static void SetValue(SettingsCommand command, bool value) => Service.Config.SettingsBools[command] = value;
 
     public int AddDotGCDCount = 2;
 
@@ -163,8 +163,8 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool InDebug = false;
     public bool AutoUpdateLibs = true;
-    public string[] OtherLibs = new string[0];
-    public string[] NoHostileNames = new string[0];
+    public string[] OtherLibs = Array.Empty<string>();
+    public string[] NoHostileNames = Array.Empty<string>();
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
@@ -189,9 +189,9 @@ public class PluginConfiguration : IPluginConfiguration
     public int CooldownActionOneLine = 15;
     public float CooldownFontSize = 16;
 
-    public Vector4 ControlWindowLockBg = new Vector4(0, 0, 0, 0.6f);
-    public Vector4 ControlWindowUnlockBg = new Vector4(0, 0, 0, 0.9f);
-    public Vector4 InfoWindowBg = new Vector4(0, 0, 0, 0.4f);
+    public Vector4 ControlWindowLockBg = new(0, 0, 0, 0.6f);
+    public Vector4 ControlWindowUnlockBg = new(0, 0, 0, 0.9f);
+    public Vector4 InfoWindowBg = new(0, 0, 0, 0.4f);
 
     public float ControlWindowGCDSize = 40;
     public float ControlWindow0GCDSize = 30;

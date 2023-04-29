@@ -105,7 +105,7 @@ public static class StatusHelper
     }
 
 
-    internal record Burst2MinsInfo( StatusID status, bool isOnHostile, byte level, params ClassJobID[] jobs);
+    internal record Burst2MinsInfo(StatusID Status, bool IsOnHostile, byte Level, params ClassJobID[] Jobs);
 
     internal static Burst2MinsInfo[] Burst2Mins { get; } = new Burst2MinsInfo[]
     {
@@ -222,10 +222,11 @@ public static class StatusHelper
 
     private static IEnumerable<Status> GetAllStatus(this BattleChara obj, bool isFromSelf)
     {
-        if (obj == null) return new Status[0];
+        if (obj == null) return Array.Empty<Status>();
 
-        return obj.StatusList.Where(status => isFromSelf ? status.SourceId == Service.Player.ObjectId
-        || status.SourceObject?.OwnerId == Service.Player.ObjectId : true);
+        return obj.StatusList.Where(status => !isFromSelf 
+                                              || status.SourceId == Service.Player.ObjectId
+                                              || status.SourceObject?.OwnerId == Service.Player.ObjectId);
     }
 
     public static bool IsInvincible(this Status status)

@@ -15,7 +15,8 @@ namespace RotationSolver.Updaters;
 internal class SocialUpdater
 {
     public static bool InPvp { get; private set; }
-    static List<string> _macroToAuthor = new List<string>()
+
+    private static readonly List<string> _macroToAuthor = new()
     {
         "blush",
         "hug",
@@ -27,7 +28,7 @@ internal class SocialUpdater
     };
 
     static bool _canSaying = false;
-    public static TerritoryType[] HighEndDuties { get; private set; } = new TerritoryType[0];
+    public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
 
     static bool CanSocial
     {
@@ -124,7 +125,7 @@ internal class SocialUpdater
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
-    static RandomDelay socialDelay = new RandomDelay(() => (3, 5));
+    static RandomDelay socialDelay = new(() => (3, 5));
     internal static async void UpdateSocial()
     {
         if (DataCenter.InCombat) return;
@@ -154,9 +155,9 @@ internal class SocialUpdater
             })
             .Where(p => !string.IsNullOrEmpty(p.nameDesc));
 
-        foreach (var author in authors)
+        foreach (var (c, nameDesc) in authors)
         {
-            while (!author.c.IsTargetable() && !DataCenter.InCombat)
+            while (!c.IsTargetable() && !DataCenter.InCombat)
             {
                 await Task.Delay(100);
             }
@@ -169,10 +170,10 @@ internal class SocialUpdater
             var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
 
                           new UIForegroundPayload(31),
-                          new PlayerPayload(author.c.Name.TextValue, author.c.HomeWorld.Id),
+                          new PlayerPayload(c.Name.TextValue, c.HomeWorld.Id),
                           UIForegroundPayload.UIForegroundOff,
 
-                          new TextPayload($"({author.nameDesc}) is one of the authors of "),
+                          new TextPayload($"({nameDesc}) is one of the authors of "),
 
                           new IconPayload(BitmapFontIcon.DPS),
                           RotationSolverPlugin.LinkPayload,
@@ -201,7 +202,7 @@ internal class SocialUpdater
         byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString()
             + " - " + player.Name.ToString() + "U6Wy.zCG");
 
-        var tmpHash = MD5.Create().ComputeHash(inputByteArray);
+        var tmpHash = MD5.HashData(inputByteArray);
         var retB = Convert.ToBase64String(tmpHash);
         return retB;
     }

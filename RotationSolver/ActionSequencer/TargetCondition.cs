@@ -10,10 +10,7 @@ internal class TargetCondition : ICondition
     {
         get
         {
-            if (_allStatus == null)
-            {
-                _allStatus = Enum.GetValues<StatusID>().Select(id => new BaseStatus(id)).ToArray();
-            }
+            _allStatus ??= Enum.GetValues<StatusID>().Select(id => new BaseStatus(id)).ToArray();
             return _allStatus;
         }
     }
@@ -37,7 +34,7 @@ internal class TargetCondition : ICondition
     {
         if (Service.Player == null) return false;
 
-        BattleChara tar = null;
+        BattleChara tar;
         if (_action != null)
         {
             _action.CanUse(out _, CanUseOption.EmptyOrSkipCombo | CanUseOption.MustUse
@@ -159,7 +156,7 @@ internal class TargetCondition : ICondition
         ConditionHelper.DrawByteEnum($"##Category{GetHashCode()}", ref TargetConditionType, EnumTranslations.ToName);
 
         var condition = Condition ? 1 : 0;
-        var combos = new string[0];
+        var combos = Array.Empty<string>();
         switch (TargetConditionType)
         {
             case TargetConditionType.HasStatus:

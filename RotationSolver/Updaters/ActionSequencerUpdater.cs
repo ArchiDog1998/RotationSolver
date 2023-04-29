@@ -13,7 +13,7 @@ internal class ActionSequencerUpdater
     public static MajorConditionSet RightSet => _conditionSet?
         .ElementAtOrDefault(Service.Config.ActionSequencerIndex);
 
-    public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? new string[0];
+    public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? Array.Empty<string>();
 
     public static void UpdateActionSequencerAction()
     {

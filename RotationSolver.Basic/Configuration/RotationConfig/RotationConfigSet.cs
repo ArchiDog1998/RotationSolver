@@ -4,8 +4,8 @@ namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public class RotationConfigSet : IRotationConfigSet
 {
-    ClassJobID _job;
-    string _rotationName;
+    readonly ClassJobID _job;
+    readonly string _rotationName;
     public HashSet<IRotationConfig> Configs { get; } = new HashSet<IRotationConfig>(new RotationConfigComparer());
 
     public RotationConfigSet(ClassJobID job, string rotationName)

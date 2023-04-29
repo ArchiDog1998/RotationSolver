@@ -120,7 +120,7 @@ public partial class BaseAction
 
         var comboActions = _action.ActionCombo?.Row != 0
             ? new ActionID[] { (ActionID)_action.ActionCombo.Row }
-            : new ActionID[0];
+            : Array.Empty<ActionID>();
         if (ComboIds != null) comboActions = comboActions.Union(ComboIds).ToArray();
 
         if (comboActions.Length > 0)

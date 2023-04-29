@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
 {
-    private void DrawRotationTab()
+    private static void DrawRotationTab()
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Rotation_Description);
 
@@ -249,13 +249,13 @@ internal partial class RotationConfigWindow
 
                 ImGui.TableNextColumn();
 
-                if (!string.IsNullOrEmpty(info.support))
+                if (!string.IsNullOrEmpty(info.Support))
                 {
                     if (ImGui.Button($"Support##{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
-                            Util.OpenLink(info.support);
+                            Util.OpenLink(info.Support);
                         }
                         catch
                         {
@@ -264,13 +264,13 @@ internal partial class RotationConfigWindow
                     }
                 }
 
-                if (!string.IsNullOrEmpty(info.help))
+                if (!string.IsNullOrEmpty(info.Help))
                 {
                     if (ImGui.Button($"Help##{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
-                            Util.OpenLink(info.help);
+                            Util.OpenLink(info.Help);
                         }
                         catch
                         {
@@ -279,13 +279,13 @@ internal partial class RotationConfigWindow
                     }
                 }
 
-                if (!string.IsNullOrEmpty(info.changeLog))
+                if (!string.IsNullOrEmpty(info.ChangeLog))
                 {
                     if (ImGui.Button($"ChangeLog##{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
-                            Util.OpenLink(info.changeLog);
+                            Util.OpenLink(info.ChangeLog);
                         }
                         catch
                         {
@@ -297,13 +297,13 @@ internal partial class RotationConfigWindow
                 ImGui.PushStyleColor(ImGuiCol.Button, 0xFF5E5BFF);
                 ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD5E5BFF);
                 ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA5E5BFF);
-                if (!string.IsNullOrEmpty(info.donate))
+                if (!string.IsNullOrEmpty(info.Donate))
                 {
                     if (ImGui.Button($"Donate##{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
-                            Util.OpenLink(info.donate);
+                            Util.OpenLink(info.Donate);
                         }
                         catch
                         {

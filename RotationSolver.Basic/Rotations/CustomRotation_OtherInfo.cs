@@ -36,7 +36,7 @@ public abstract partial class CustomRotation
     /// </summary>
     protected static bool InCombat => DataCenter.InCombat;
 
-    static RandomDelay _notInCombatDelay = new RandomDelay(() =>
+    static RandomDelay _notInCombatDelay = new(() =>
         (Service.Config.NotInCombatDelayMin, Service.Config.NotInCombatDelayMax));
     protected static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
 
@@ -107,7 +107,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Is in burst right now? Usually it used with team support actions.
     /// </summary>
-    protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(SettingsCommand.AutoBurst);
+    protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoBurst);
 
     bool _canUseHealAction => Job.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer;
 

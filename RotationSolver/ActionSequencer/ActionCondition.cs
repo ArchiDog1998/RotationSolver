@@ -104,7 +104,7 @@ internal class ActionCondition : ICondition
         ConditionHelper.DrawByteEnum($"##Category{GetHashCode()}", ref ActionConditionType, EnumTranslations.ToName);
 
         var condition = Condition ? 1 : 0;
-        var combos = new string[0];
+        var combos = Array.Empty<string>();
         switch (ActionConditionType)
         {
             case ActionConditionType.ElapsedGCD:

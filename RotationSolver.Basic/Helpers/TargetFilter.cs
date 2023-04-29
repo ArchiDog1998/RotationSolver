@@ -90,14 +90,14 @@ public static class TargetFilter
     {
         Vector3 pPosition = Service.Player.Position;
         float rotation = Service.Player.Rotation;
-        Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+        Vector2 faceVec = new((float)Math.Cos(rotation), (float)Math.Sin(rotation));
 
         var tars = charas.Where(t =>
         {
             if (t.DistanceToPlayer() < DISTANCE_TO_MOVE) return false;
 
             Vector3 dir = t.Position - pPosition;
-            Vector2 dirVec = new Vector2(dir.Z, dir.X);
+            Vector2 dirVec = new(dir.Z, dir.X);
             double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
             return angle <= Math.PI * Service.Config.MoveTargetAngle / 360;
         }).OrderByDescending(ObjectHelper.DistanceToPlayer);
@@ -305,10 +305,10 @@ public static class TargetFilter
         foreach (var role in roles)
         {
             var targets = GetASTCardTargets(tars.GetJobCategory(role));
-            if (targets.Count() > 0) return RandomObject(targets);
+            if (targets.Any()) return RandomObject(targets);
         }
         var ts = GetASTCardTargets(tars);
-        if (ts.Count() > 0) return RandomObject(ts);
+        if (ts.Any()) return RandomObject(ts);
 
         return null;
     }
@@ -349,26 +349,14 @@ public static class TargetFilter
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
     {
-        switch (DataCenter.TargetingType)
+        return DataCenter.TargetingType switch
         {
-            default:
-            case TargetingType.Big:
-                return charas.OrderByDescending(p => p.HitboxRadius);
-
-            case TargetingType.Small:
-                return charas.OrderBy(p => p.HitboxRadius);
-
-            case TargetingType.HighHP:
-                return charas.OrderByDescending(p => p.CurrentHp);
-
-            case TargetingType.LowHP:
-                return charas.OrderBy(p => p.CurrentHp);
-
-            case TargetingType.HighMaxHP:
-                return charas.OrderByDescending(p => p.MaxHp);
-
-            case TargetingType.LowMaxHP:
-                return charas.OrderBy(p => p.MaxHp);
-        }
+            TargetingType.Small => charas.OrderBy(p => p.HitboxRadius),
+            TargetingType.HighHP => charas.OrderByDescending(p => p.CurrentHp),
+            TargetingType.LowHP => charas.OrderBy(p => p.CurrentHp),
+            TargetingType.HighMaxHP => charas.OrderByDescending(p => p.MaxHp),
+            TargetingType.LowMaxHP => charas.OrderBy(p => p.MaxHp),
+            _ => charas.OrderByDescending(p => p.HitboxRadius),
+        };
     }
 }

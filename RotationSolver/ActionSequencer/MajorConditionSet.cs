@@ -30,7 +30,7 @@ internal class MajorConditionSet
 
     public static MajorConditionSet[] Read(string folder)
     {
-        if (!Directory.Exists(folder)) return new MajorConditionSet[0];
+        if (!Directory.Exists(folder)) return Array.Empty<MajorConditionSet>();
 
         return Directory.EnumerateFiles(folder, "*.json").Select(p =>
         {

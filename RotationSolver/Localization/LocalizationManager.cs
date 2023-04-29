@@ -6,7 +6,7 @@ internal class LocalizationManager : IDisposable
 {
     public static Strings RightLang { get; private set; } = new Strings();
 
-    private readonly Dictionary<string, Strings> _translations = new Dictionary<string, Strings>();
+    private readonly Dictionary<string, Strings> _translations = new();
     public LocalizationManager()
     {
         var assembly = Assembly.GetCallingAssembly();
@@ -24,7 +24,7 @@ internal class LocalizationManager : IDisposable
     {
         Stream manifestResourceStream = assembly.GetManifestResourceStream("RotationSolver.Localization." + lang + ".json");
         if (manifestResourceStream == null) return;
-        using StreamReader streamReader = new StreamReader(manifestResourceStream);
+        using StreamReader streamReader = new(manifestResourceStream);
         _translations[lang] = JsonConvert.DeserializeObject<Strings>(streamReader.ReadToEnd());
     }
 

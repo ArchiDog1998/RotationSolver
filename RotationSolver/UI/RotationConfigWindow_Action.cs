@@ -7,7 +7,7 @@ internal partial class RotationConfigWindow
 {
     internal static IAction ActiveAction { get; set; }
 
-    private void DrawActionTab()
+    private static void DrawActionTab()
     {
         ImGui.Columns(2);
 
@@ -20,7 +20,7 @@ internal partial class RotationConfigWindow
         ImGui.Columns(1);
     }
 
-    private void DrawActionList()
+    private static void DrawActionList()
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_ActionItem_Description);
 
@@ -46,7 +46,7 @@ internal partial class RotationConfigWindow
         ImGui.PopStyleVar();
     }
 
-    private void DrawActionSequencerCondition()
+    private static void DrawActionSequencerCondition()
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ActionSequencer_ActionSequencerDescription);
 

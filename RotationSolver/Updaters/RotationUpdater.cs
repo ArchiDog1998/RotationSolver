@@ -6,12 +6,12 @@ namespace RotationSolver.Updaters;
 
 internal static class RotationUpdater
 {
-    public record CustomRotationGroup(ClassJobID jobId, ClassJobID[] classJobIds, ICustomRotation[] rotations);
+    public record CustomRotationGroup(ClassJobID JobId, ClassJobID[] ClassJobIds, ICustomRotation[] Rotations);
 
     internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
 
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
-    static CustomRotationGroup[] _customRotations { get; set; } = new CustomRotationGroup[0];
+    static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
 
     [Flags]
     public enum DownloadOption : byte
@@ -36,7 +36,7 @@ internal static class RotationUpdater
         {
             foreach (var item in CustomRotationsDict
             .SelectMany(d => d.Value)
-            .SelectMany(g => g.rotations)
+            .SelectMany(g => g.Rotations)
             .Select(r => r.GetType().Assembly.FullName).ToHashSet())
             {
                 Service.ChatGui.Print("Loaded: " + item);
@@ -106,11 +106,9 @@ internal static class RotationUpdater
                     File.Delete(filePath);
                 }
 
-                using (var stream = new FileStream(filePath, File.Exists(filePath)
-                    ? FileMode.Open : FileMode.CreateNew))
-                {
-                    await response.Content.CopyToAsync(stream);
-                }
+                using var stream = new FileStream(filePath, File.Exists(filePath)
+                    ? FileMode.Open : FileMode.CreateNew);
+                await response.Content.CopyToAsync(stream);
             }
 
             PluginLog.Log($"Successfully download the {filePath}");
@@ -159,7 +157,7 @@ internal static class RotationUpdater
              select (gr.Key.Hash, string.Join(", ", gr.Select(i => i.a.GetInfo().Author + " - " + i.a.GetInfo().Name))))
              .ToDictionary(i => i.Hash, i => i.Item2));
 
-        _customRotations = (
+        CustomRotations = (
             from a in assemblies
             from t in TryGetTypes(a)
             where t.GetInterfaces().Contains(typeof(ICustomRotation))
@@ -170,8 +168,8 @@ internal static class RotationUpdater
             select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
 
         CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
-            (_customRotations.GroupBy(g => g.rotations[0].Job.GetJobRole())
-            .ToDictionary(set => set.Key, set => set.OrderBy(i => i.jobId).ToArray()));
+            (CustomRotations.GroupBy(g => g.Rotations[0].Job.GetJobRole())
+            .ToDictionary(set => set.Key, set => set.OrderBy(i => i.JobId).ToArray()));
     }
 
     private static Type[] TryGetTypes(Assembly assembly)
@@ -183,7 +181,7 @@ internal static class RotationUpdater
         catch(Exception ex)
         {
             PluginLog.Warning(ex, $"Failed to load the types from {assembly.FullName}");
-            return new Type[0];
+            return Array.Empty<Type>();
         }
     }
 
@@ -259,15 +257,15 @@ internal static class RotationUpdater
 
             }).OrderBy(g => g.Key);
 
-    public static IAction[] RightRotationActions { get; private set; } = new IAction[0];
+    public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
 
     public static void UpdateRotation()
     {
         var nowJob = (ClassJobID)Service.Player.ClassJob.Id;
 
-        foreach (var group in _customRotations)
+        foreach (var group in CustomRotations)
         {
-            if (!group.classJobIds.Contains(nowJob)) continue;
+            if (!group.ClassJobIds.Contains(nowJob)) continue;
 
             var rotation = GetChooseRotation(group);
             if (rotation != RightNowRotation)
@@ -279,20 +277,20 @@ internal static class RotationUpdater
             return;
         }
         RightNowRotation = null;
-        RightRotationActions = new IAction[0];
+        RightRotationActions = Array.Empty<IAction>();
     }
 
     internal static ICustomRotation GetChooseRotation(CustomRotationGroup group)
     {
-        var has = Service.Config.RotationChoices.TryGetValue((uint)group.jobId, out var name);
+        var has = Service.Config.RotationChoices.TryGetValue((uint)group.JobId, out var name);
        
-        var rotation = group.rotations.FirstOrDefault(r => r.GetType().FullName == name);
-        rotation ??= group.rotations.FirstOrDefault(r => r.IsAllowed(out _));
-        rotation ??= group.rotations.FirstOrDefault();
+        var rotation = group.Rotations.FirstOrDefault(r => r.GetType().FullName == name);
+        rotation ??= group.Rotations.FirstOrDefault(r => r.IsAllowed(out _));
+        rotation ??= group.Rotations.FirstOrDefault();
 
         if (!has && rotation != null)
         {
-            Service.Config.RotationChoices[(uint)group.jobId] = rotation.GetType().FullName;
+            Service.Config.RotationChoices[(uint)group.JobId] = rotation.GetType().FullName;
         }
         return rotation;
     }

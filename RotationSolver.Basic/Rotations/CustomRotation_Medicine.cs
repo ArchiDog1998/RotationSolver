@@ -61,17 +61,13 @@ public abstract partial class CustomRotation
         
         if (!(Target?.IsDummy() ?? false) && !DataCenter.InHighEndDuty) return false;
 
-        switch (MedicineType)
+        return MedicineType switch
         {
-            case MedicineType.Strength:
-                return UseStrength(out act);
-            case MedicineType.Dexterity:
-                return UseDexterity(out act);
-            case MedicineType.Intelligence:
-                return UseIntelligence(out act);
-            case MedicineType.Mind:
-                return UseMind(out act);
-        }
-        return false;
+            MedicineType.Strength => UseStrength(out act),
+            MedicineType.Dexterity => UseDexterity(out act),
+            MedicineType.Intelligence => UseIntelligence(out act),
+            MedicineType.Mind => UseMind(out act),
+            _ => false,
+        };
     }
 }

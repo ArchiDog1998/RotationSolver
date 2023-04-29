@@ -5,9 +5,8 @@ namespace RotationSolver.ActionSequencer;
 
 internal class ConditionSet : ICondition
 {
-    public bool IsTrue(ICustomRotation combo, bool isActionSequencer) => Conditions.Count == 0 ? false :
-                          IsAnd ? Conditions.All(c => c.IsTrue(combo, isActionSequencer))
-                                : Conditions.Any(c => c.IsTrue(combo, isActionSequencer));
+    public bool IsTrue(ICustomRotation combo, bool isActionSequencer) => Conditions.Count != 0 && (IsAnd ? Conditions.All(c => c.IsTrue(combo, isActionSequencer))
+                                : Conditions.Any(c => c.IsTrue(combo, isActionSequencer)));
     public List<ICondition> Conditions { get; set; } = new List<ICondition>();
     public bool IsAnd { get; set; }
 

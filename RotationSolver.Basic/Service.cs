@@ -105,7 +105,7 @@ public class Service : IDisposable
 
     public unsafe static IEnumerable<IntPtr> GetAddons<T>() where T : struct
     {
-        if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return new IntPtr[0];
+        if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return Array.Empty<nint>();
 
         return on.AddonIdentifiers
             .Select(str => GameGui.GetAddonByName(str, 1))
@@ -175,14 +175,12 @@ public class Service : IDisposable
     {
         IntPtr uiModule = GameGui.GetUIModule();
 
-        using (ChatPayload payload = new ChatPayload(text))
-        {
-            IntPtr mem1 = Marshal.AllocHGlobal(400);
-            Marshal.StructureToPtr(payload, mem1, false);
+        using ChatPayload payload = new(text);
+        IntPtr mem1 = Marshal.AllocHGlobal(400);
+        Marshal.StructureToPtr(payload, mem1, false);
 
-            GetChatBox(uiModule, mem1, IntPtr.Zero, 0);
+        GetChatBox(uiModule, mem1, IntPtr.Zero, 0);
 
-            Marshal.FreeHGlobal(mem1);
-        }
+        Marshal.FreeHGlobal(mem1);
     }
 }

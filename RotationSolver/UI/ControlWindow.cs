@@ -319,7 +319,7 @@ internal class ControlWindow : Window
         return help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
     }
 
-    static readonly Dictionary<uint, uint> _actionIcons = new Dictionary<uint, uint>();
+    static readonly Dictionary<uint, uint> _actionIcons = new();
 
     static TextureWrap GetTexture(IAction action, bool isAdjust = true)
     {
