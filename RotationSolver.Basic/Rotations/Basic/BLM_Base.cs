@@ -27,17 +27,19 @@ public abstract partial class BLM_Base : CustomRotation
 
     protected static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? PolyglotStacks == 2 : PolyglotStacks == 1;
 
-    static float ElementTime => JobGauge.EnochianTimer / 1000f;
+    static float EnochianTime => JobGauge.EnochianTimer / 1000f;
 
     protected static bool EnchinaEndAfter(float time)
     {
-        return EndAfter(JobGauge.EnochianTimer / 1000f, time);
+        return EndAfter(EnochianTime, time);
     }
 
     protected static bool EnchinaEndAfterGCD(uint gctCount = 0, float offset = 0)
     {
-        return EndAfterGCD(JobGauge.EnochianTimer / 1000f, gctCount, offset);
+        return EndAfterGCD(EnochianTime, gctCount, offset);
     }
+
+    static float ElementTime => JobGauge.ElementTimeRemaining / 1000f;
 
     protected static bool ElementTimeEndAfter(float time)
     {

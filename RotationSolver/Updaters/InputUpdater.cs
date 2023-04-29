@@ -26,6 +26,7 @@ internal static class InputUpdater
             || Service.Conditions[ConditionFlag.Mounted]
             || Service.Conditions[ConditionFlag.SufferingStatusAffliction2]
             || Service.Conditions[ConditionFlag.RolePlaying]
+            || Service.Conditions[ConditionFlag.UsingParasol]
             || Service.Conditions[ConditionFlag.InFlight]) return;
 
         if (DateTime.Now - RecordingTime > TimeSpan.FromSeconds(10))

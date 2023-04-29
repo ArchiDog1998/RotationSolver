@@ -111,7 +111,9 @@ public abstract partial class CustomRotation
             })) helpDefenseSingle = true;
         }
 
+        BaseAction.OtherOption = CanUseOption.IgnoreClippingCheck;
         gcdAction = GCD(helpDefenseAOE, helpDefenseSingle);
+        BaseAction.OtherOption = CanUseOption.None;
 
         if (gcdAction != null)
         {

@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Updaters;
@@ -115,6 +116,7 @@ internal static partial class TargetUpdater
 
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
+            if (Service.Config.NoHostileNames.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
             return fateId > 0 ? b.FateId() == fateId : true;
         });
 

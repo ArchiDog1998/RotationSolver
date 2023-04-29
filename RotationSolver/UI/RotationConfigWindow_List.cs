@@ -1,7 +1,9 @@
-﻿using Lumina.Excel.GeneratedSheets;
+﻿using Dalamud.Utility;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Data;
 using RotationSolver.Localization;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,57 +55,96 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginTabBar("List Items"))
         {
-            try
+            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Hostile, DrawParamHostile, () =>
             {
-                DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Hostile, DrawParamHostile, () =>
+                if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddOne))
                 {
-                    if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddHostileCondition))
+                    Service.Config.TargetingTypes.Add(TargetingType.Big);
+                }
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
+                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Param_HostileDesc);
+            });
+
+            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_NoHostile, DrawParamNoHostile, () =>
+            {
+                if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddOne))
+                {
+                    Service.Config.NoHostileNames = Service.Config.NoHostileNames.Append(string.Empty).ToArray();
+                }
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
+                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_NoHostileDesc);
+            });
+
+            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Invincibility, DrawInvincibility, () =>
+            {
+                ImGui.SetNextItemWidth(200);
+                ImGuiHelper.SearchCombo("##AddInvincibleStatus",
+                    LocalizationManager.RightLang.ConfigWindow_Param_AddOne,
+                    ref searchText, AllInvStatus, s =>
                     {
-                        Service.Config.TargetingTypes.Add(TargetingType.Big);
-                    }
-                    ImGui.SameLine();
-                    ImGuiHelper.Spacing();
-                    ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Param_HostileDesc);
-                });
+                        StatusHelper.InvincibleStatus.Add((uint)s.ID);
+                        StatusHelper.SaveInvincibleStatus();
 
-                DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Invincibility, DrawInvincibility, () =>
+                    });
+
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
+
+                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_InvincibilityDesc);
+            });
+
+            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatus, DrawDangerousStatus, () =>
+            {
+                ImGui.SetNextItemWidth(200);
+                ImGuiHelper.SearchCombo("##AddDangerousStatus",
+                    LocalizationManager.RightLang.ConfigWindow_Param_AddOne,
+                    ref searchText, AllDispelStatus, s =>
+                    {
+                        StatusHelper.DangerousStatus.Add((uint)s.ID);
+                        StatusHelper.SaveDangerousStatus();
+                    });
+
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
+
+                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatusDesc);
+            });
+
+
+            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Rotations, DrawRotationDevTab, () =>
+            {
+                if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotationsButton))
                 {
-                    ImGui.SetNextItemWidth(200);
-                    ImGuiHelper.SearchCombo("##AddInvincibleStatus",
-                        "Add One",
-                        ref searchText, AllInvStatus, s =>
-                        {
-                            StatusHelper.InvincibleStatus.Add((uint)s.ID);
-                            StatusHelper.SaveInvincibleStatus();
+                    RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
+                }
 
-                        });
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
 
-                    ImGui.SameLine();
-                    ImGuiHelper.Spacing();
-
-                    ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_InvincibilityDesc);
-                });
-
-                DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatus, DrawDangerousStatus, () =>
+                if (ImGui.Button("Load Rotations Local"))
                 {
-                    ImGui.SetNextItemWidth(200);
-                    ImGuiHelper.SearchCombo("##AddDangerousStatus",
-                        "Add One",
-                        ref searchText, AllDispelStatus, s =>
-                        {
-                            StatusHelper.DangerousStatus.Add((uint)s.ID);
-                            StatusHelper.SaveDangerousStatus();
-                        });
+                    RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.ShowList);
+                }
 
-                    ImGui.SameLine();
-                    ImGuiHelper.Spacing();
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
 
-                    ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatusDesc);
+                if (ImGui.Button("Dev Wiki"))
+                {
+                    Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
+                }
 
-                });
-            }
-            catch { }
+                if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddOne))
+                {
+                    Service.Config.OtherLibs = Service.Config.OtherLibs.Append(string.Empty).ToArray();
+                }
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
 
+                ImGui.TextWrapped("Third-party Rotation Libraries");
+            });
 
             ImGui.EndTabBar();
         }
@@ -185,7 +226,7 @@ internal partial class RotationConfigWindow
             ImGuiHelper.Spacing();
 
 
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.SquareXmark, $"RemoveDangerous{statusId}"))
+            if (ImGui.Button($"X##RemoveDangerous{statusId}"))
             {
                 removeId = statusId;
             }
@@ -228,7 +269,7 @@ internal partial class RotationConfigWindow
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.SquareXmark, $"InvincibleStatus{statusId}"))
+            if (ImGui.Button($"X##InvincibleStatus{statusId}"))
             {
                 removeId = statusId;
             }
@@ -245,4 +286,57 @@ internal partial class RotationConfigWindow
             StatusHelper.SaveInvincibleStatus();
         }
     }
+
+    private void DrawRotationDevTab()
+    {
+        int removeIndex = -1;
+        for (int i = 0; i < Service.Config.OtherLibs.Length; i++)
+        {
+            if (ImGui.InputText($"##OtherLib{i}", ref Service.Config.OtherLibs[i], 1024))
+            {
+                Service.Config.Save();
+            }
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            if (ImGui.Button($"X##RemoveOtherLibs{i}"))
+            {
+                removeIndex = i;
+            }
+        }
+        if (removeIndex > -1)
+        {
+            var list = Service.Config.OtherLibs.ToList();
+            list.RemoveAt(removeIndex);
+            Service.Config.OtherLibs = list.ToArray();
+            Service.Config.Save();
+        }
+    }
+
+    private void DrawParamNoHostile()
+    {
+        int removeIndex = -1;
+        for (int i = 0; i < Service.Config.NoHostileNames.Length; i++)
+        {
+            if (ImGui.InputText($"##NoHostileNames{i}", ref Service.Config.NoHostileNames[i], 1024))
+            {
+                Service.Config.Save();
+            }
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            if (ImGui.Button($"X##RemoveNoHostileNames{i}"))
+            {
+                removeIndex = i;
+            }
+        }
+        if (removeIndex > -1)
+        {
+            var list = Service.Config.NoHostileNames.ToList();
+            list.RemoveAt(removeIndex);
+            Service.Config.NoHostileNames = list.ToArray();
+            Service.Config.Save();
+        }
+    }
+
 }
