@@ -56,7 +56,6 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Kardia { get; } = new BaseAction(ActionID.Kardia, ActionOption.Heal)
     {
-        StatusProvide = new StatusID[] { StatusID.Kardia },
         ChoiceTarget = (Targets, mustUse) =>
         {
             var targets = Targets.GetJobCategory(JobRole.Tank);
