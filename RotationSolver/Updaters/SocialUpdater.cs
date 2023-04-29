@@ -99,11 +99,20 @@ internal class SocialUpdater
         {
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
             var message = string.Format(LocalizationManager.RightLang.HighEndWarning, str);
-            Service.ToastGui.ShowError(message);
+            
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = message,
                 Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
+            });
+
+            Task.Run(async() =>
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    await Task.Delay(3000);
+                    Service.ToastGui.ShowError(message);
+                }
             });
         }
     }

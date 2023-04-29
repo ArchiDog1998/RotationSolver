@@ -87,7 +87,7 @@ public class Watcher : IDisposable
         if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
         if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
-        if(set.Action.ClassJob.Row > 0)
+        if(set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id))
         {
             IActionHelper.AnimationLockTime[id] = set.AnimationLock;
         }

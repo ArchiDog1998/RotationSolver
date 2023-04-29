@@ -146,6 +146,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             && !Service.Conditions[ConditionFlag.BetweenAreas]
             && !Service.Conditions[ConditionFlag.BetweenAreas51]
             && !Service.Conditions[ConditionFlag.WaitingForDuty]
+            && !Service.Conditions[ConditionFlag.UsingParasol]
             && !Service.Conditions[ConditionFlag.OccupiedInQuestEvent]);
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;

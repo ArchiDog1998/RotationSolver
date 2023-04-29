@@ -13,60 +13,8 @@ public abstract partial class CustomRotation
         {
             return false;
         }
-        var role = Job.GetJobRole();
+        UpdateActions(Job.GetJobRole());
 
-        ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
-
-        BaseAction.OtherOption = CanUseOption.IgnoreTarget | CanUseOption.EmptyOrSkipCombo | CanUseOption.IgnoreClippingCheck;
-        var movingTarget = MoveForwardAbility(out act);
-        BaseAction.OtherOption = CanUseOption.None;
-
-        ActionMoveForwardAbility = movingTarget ? act : null;
-        MoveTarget = (movingTarget && act is IBaseAction a) ? a.Target : null;
-
-        ActionMoveBackAbility = MoveBackAbility(out act) ? act : null;
-
-        if(!DataCenter.HPNotFull && role == JobRole.Healer)
-        {
-            ActionHealAreaGCD = ActionHealAreaAbility = ActionHealSingleGCD = ActionHealSingleAbility = null;
-        }
-        else
-        {
-            ActionHealAreaGCD = HealAreaGCD(out act) ? act : null;
-            ActionHealAreaAbility = HealAreaAbility(out act) ? act : null;
-
-            ActionHealSingleGCD = HealSingleGCD(out act) ? act : null;
-            ActionHealSingleAbility = HealSingleAbility(out act) ? act : null;
-        }
-
-        ActionDefenseAreaGCD = DefenseAreaGCD(out act) ? act : null;
-        ActionDefenseAreaAbility = DefenseAreaAbility(out act) ? act : null;
-
-        ActionDefenseSingleGCD = DefenseSingleGCD(out act) ? act : null;
-        ActionDefenseSingleAbility = DefenseSingleAbility(out act) ? act : null;
-
-        EsunaStanceNorthGCD = role switch
-        {
-            JobRole.Healer => DataCenter.WeakenPeople.Any() && Esuna.CanUse(out act, CanUseOption.MustUse) ? act : null,
-            _ => null,
-        };
-        EsunaStanceNorthAbility = role switch
-        {
-            JobRole.Melee => TrueNorth.CanUse(out act) ? act : null,
-            JobRole.Tank => TankStance.CanUse(out act) ? act : null,
-            _ => null,
-        };
-        RaiseShirkGCD = role switch
-        {
-            JobRole.Healer => DataCenter.DeathPeopleAll.Any() && Raise.CanUse(out act) ? act : null,
-            _ => null,
-        };
-        RaiseShirkAbility = role switch
-        {
-            JobRole.Tank => Shirk.CanUse(out act) ? act : null,
-            _ => null,
-        };
-        AntiKnockbackAbility = AntiKnockback(role, SpecialCommandType.AntiKnockback, out act) ? act : null;
         UpdateInfo();
 
         try
@@ -85,6 +33,77 @@ public abstract partial class CustomRotation
         }
 
         return newAction != null;
+    }
+
+    private void UpdateActions(JobRole role)
+    {
+        BaseAction.OtherOption = CanUseOption.IgnoreTarget;
+
+        ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
+
+        if (!DataCenter.HPNotFull && role == JobRole.Healer)
+        {
+            ActionHealAreaGCD = ActionHealAreaAbility = ActionHealSingleGCD = ActionHealSingleAbility = null;
+        }
+        else
+        {
+            ActionHealAreaGCD = HealAreaGCD(out act) ? act : null;
+            ActionHealSingleGCD = HealSingleGCD(out act) ? act : null;
+
+            BaseAction.OtherOption |= CanUseOption.IgnoreClippingCheck;
+
+            ActionHealAreaAbility = HealAreaAbility(out act) ? act : null;
+            ActionHealSingleAbility = HealSingleAbility(out act) ? act : null;
+
+            BaseAction.OtherOption &= ~CanUseOption.IgnoreClippingCheck;
+        }
+
+        ActionDefenseAreaGCD = DefenseAreaGCD(out act) ? act : null;
+
+        ActionDefenseSingleGCD = DefenseSingleGCD(out act) ? act : null;
+
+        EsunaStanceNorthGCD = role switch
+        {
+            JobRole.Healer => DataCenter.WeakenPeople.Any() && Esuna.CanUse(out act, CanUseOption.MustUse) ? act : null,
+            _ => null,
+        };
+
+        RaiseShirkGCD = role switch
+        {
+            JobRole.Healer => DataCenter.DeathPeopleAll.Any() && Raise.CanUse(out act) ? act : null,
+            _ => null,
+        };
+
+        BaseAction.OtherOption |= CanUseOption.IgnoreClippingCheck;
+
+        ActionDefenseAreaAbility = DefenseAreaAbility(out act) ? act : null;
+
+        ActionDefenseSingleAbility = DefenseSingleAbility(out act) ? act : null;
+
+
+        EsunaStanceNorthAbility = role switch
+        {
+            JobRole.Melee => TrueNorth.CanUse(out act) ? act : null,
+            JobRole.Tank => TankStance.CanUse(out act) ? act : null,
+            _ => null,
+        };
+
+        RaiseShirkAbility = role switch
+        {
+            JobRole.Tank => Shirk.CanUse(out act) ? act : null,
+            _ => null,
+        };
+        AntiKnockbackAbility = AntiKnockback(role, SpecialCommandType.AntiKnockback, out act) ? act : null;
+
+        BaseAction.OtherOption |= CanUseOption.EmptyOrSkipCombo;
+
+        var movingTarget = MoveForwardAbility(out act);
+        ActionMoveForwardAbility = movingTarget ? act : null;
+        MoveTarget = (movingTarget && act is IBaseAction a) ? a.Target : null;
+
+        ActionMoveBackAbility = MoveBackAbility(out act) ? act : null;
+
+        BaseAction.OtherOption = CanUseOption.None;
     }
 
     private IAction Invoke(out IAction gcdAction)
@@ -111,7 +130,9 @@ public abstract partial class CustomRotation
             })) helpDefenseSingle = true;
         }
 
+        BaseAction.OtherOption = CanUseOption.IgnoreClippingCheck;
         gcdAction = GCD(helpDefenseAOE, helpDefenseSingle);
+        BaseAction.OtherOption = CanUseOption.None;
 
         if (gcdAction != null)
         {
