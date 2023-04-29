@@ -165,6 +165,11 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowActionFlag,
             ref Service.Config.ShowActionFlag, Service.Default.ShowActionFlag);
+
+        ImGui.Separator();
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
+            ref Service.Config.InDebug, Service.Default.InDebug);
     }
 
     private void DrawParamDisplay()

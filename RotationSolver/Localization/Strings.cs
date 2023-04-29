@@ -24,8 +24,6 @@ internal partial class Strings
     public string ConfigWindow_ActionItem { get; set; } = "Action";
     public string ConfigWindow_ControlItem { get; set; } = "Control";
     public string ConfigWindow_HelpItem { get; set; } = "Help";
-    public string ConfigWindow_RotationDev { get; set; } = "RotationDev";
-
     public string ConfigWindow_ActionItem_Description { get; set; }
         = "Modify the usage for each action.";
 
@@ -81,8 +79,6 @@ internal partial class Strings
     public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
     public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
     public string ConfigWindow_Rotation_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
-
-    public string ConfigWindow_RotationDev_Description { get; set; } = "You can get some extra rotation development information here.";
 
     public string ConfigWindow_Rotation_KeyName { get; set; } = "The key name is";
     public string ConfigWindow_Events_AddEvent { get; set; } = "AddEvents";
@@ -242,7 +238,7 @@ internal partial class Strings
     public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
 
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
-    public string ConfigWindow_Param_AddHostileCondition { get; set; } = "Add selection condition";
+    public string ConfigWindow_Param_AddOne { get; set; } = "Add One";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
     public string ConfigWindow_Param_ConditionUp { get; set; } = "Up";
     public string ConfigWindow_Param_ConditionDown { get; set; } = "Down";
@@ -291,6 +287,9 @@ internal partial class Strings
     public string ConfigWindow_List_InvincibilityDesc { get; set; } = "If target get one of this status, it'll never attack it.";
     public string ConfigWindow_List_DangerousStatus { get; set; } = "Dangerous Status";
     public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "If one of your party member get this status, Esuna immediately.";
+    public string ConfigWindow_List_Rotations { get; set; } = "Rotations";
+    public string ConfigWindow_List_NoHostile { get; set; } = "No Hostile";
+    public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add a name of target that never be the hostile for you.";
 
     #endregion
 

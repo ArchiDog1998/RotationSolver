@@ -62,12 +62,6 @@ internal partial class RotationConfigWindow : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem(LocalizationManager.RightLang.ConfigWindow_RotationDev))
-            {
-                DrawRotationDevTab();
-                ImGui.EndTabItem();
-            }
-
             if (Service.Config.InDebug && ImGui.BeginTabItem("Debug"))
             {
                 DrawDebugTab();
