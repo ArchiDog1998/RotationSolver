@@ -95,15 +95,24 @@ internal class SocialUpdater
         if (!Service.Player.IsJobCategory(JobRole.Tank) && !Service.Player.IsJobCategory(JobRole.Healer)) return;
 
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
-        if (HighEndDuties.Any(t => t.RowId == territory.RowId))
+        //if (HighEndDuties.Any(t => t.RowId == territory.RowId))
         {
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
             var message = string.Format(LocalizationManager.RightLang.HighEndWarning, str);
-            Service.ToastGui.ShowError(message);
+            
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = message,
                 Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
+            });
+
+            Task.Run(async() =>
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    await Task.Delay(3000);
+                    Service.ToastGui.ShowError(message);
+                }
             });
         }
     }
