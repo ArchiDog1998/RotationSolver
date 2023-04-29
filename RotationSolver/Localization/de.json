@@ -144,7 +144,8 @@
   "ConfigWindow_Param_HealingOfTimeSubtractArea": "Set the HP threshold reduce with hot effect(AOE)",
   "ConfigWindow_Param_HealthSingleAbility": "Set the HP threshold for using single healing ability",
   "ConfigWindow_Param_HealthSingleSpell": "Set the HP threshold for using single healing spell",
-  "ConfigWindow_Param_HealthTankHealerRatio": "Heal healer or tank first if its HP threshold is lower than this.",
+  "ConfigWindow_Param_HealthHealerRatio": "Heal healer first if its HP threshold is lower than this.",
+  "ConfigWindow_Param_HealthTankRatio": "Heal tank first if its HP threshold is lower than this.",
   "ConfigWindow_Param_HealingOfTimeSubtractSingle": "Set the HP threshold reduce with hot effect(single)",
   "ConfigWindow_Param_HealthForDyingTank": "Set the HP threshold for tank to use invincibility",
   "ConfigWindow_Param_MeleeRangeOffset": "Melee Range action using offset",
@@ -414,6 +415,6 @@
     "OverheatedEndAfterGCD": "OverheatedEndAfterGCD",
     "Chakra": "Chakra"
   },
-  "HighEndWarning": "You'd better not use Rotation Solver in {0}!",
+  "HighEndWarning": "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!",
   "HighEndBan": "{0} can not be used in High-end Duty!"
 }
