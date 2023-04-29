@@ -7,7 +7,7 @@
 public class Simple_Template : AST_Base 
 {
     //Change this to the game version right now.
-    public override string GameVersion => "6.35";
+    public override string GameVersion => "6.38";
 
     public override string RotationName => "$safeitemname$";
 
@@ -18,7 +18,7 @@ public class Simple_Template : AST_Base
     }
 
     //0GCD actions here.
-    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(out IAction act)
     {
         throw new NotImplementedException();
     }

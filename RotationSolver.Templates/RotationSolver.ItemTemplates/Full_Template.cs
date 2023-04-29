@@ -8,7 +8,7 @@
 internal class Full_Template : AST_Base
 {
     //Change this to the game version right now.
-    public override string GameVersion => "6.35";
+    public override string GameVersion => "6.38";
 
     public override string RotationName => "$safeitemname$";
 
@@ -71,69 +71,101 @@ internal class Full_Template : AST_Base
     #endregion
 
     #region 0GCD actions
-    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(out IAction act)
     {
         throw new NotImplementedException();
     }
 
     //For some 0gcds very important, even more than healing, defense, interrupt, etc.
-    protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        return base.EmergencyAbility(abilitiesRemaining, nextGCD, out act);
+        return base.EmergencyAbility(nextGCD, out act);
     }
 
     //Some 0gcds that don't need to a hostile target in attack range.
-    protected override bool GeneralAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool GeneralAbility(out IAction act)
     {
-        return base.GeneralAbility(abilitiesRemaining, out act);
+        return base.GeneralAbility(out act);
     }
 
     //Some 0gcds that moving forward. In general, it doesn't need to be override.
     [RotationDesc("Optional description for Moving Forward 0GCD")]
     [RotationDesc(ActionID.None)]
-    protected override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act, bool recordTarget = true)
+    protected override bool MoveForwardAbility(out IAction act)
     {
-        return base.MoveForwardAbility(abilitiesRemaining, out act, recordTarget);
+        return base.MoveForwardAbility(out act);
     }
 
     //Some 0gcds that moving back. In general, it doesn't need to be override.
     [RotationDesc("Optional description for Moving Back 0GCD")]
     [RotationDesc(ActionID.None)]
-    protected override bool MoveBackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool MoveBackAbility(out IAction act)
     {
-        return base.MoveBackAbility(abilitiesRemaining, out act);
+        return base.MoveBackAbility(out act);
     }
 
     //Some 0gcds that defense area.
     [RotationDesc("Optional description for Defense Area 0GCD")]
     [RotationDesc(ActionID.None)]
-    protected override bool DefenseAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenseAreaAbility(out IAction act)
     {
-        return base.DefenseAreaAbility(abilitiesRemaining, out act);
+        return base.DefenseAreaAbility(out act);
     }
 
     //Some 0gcds that defense single.
     [RotationDesc("Optional description for Defense Single 0GCD")]
     [RotationDesc(ActionID.None)]
-    protected override bool DefenseSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool DefenseSingleAbility(out IAction act)
     {
-        return base.DefenseSingleAbility(abilitiesRemaining, out act);
+        return base.DefenseSingleAbility(out act);
     }
 
     //Some 0gcds that healing area.
     [RotationDesc("Optional description for Healing Area 0GCD")]
     [RotationDesc(ActionID.None)]
-    protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealAreaAbility(out IAction act)
     {
-        return base.HealAreaAbility(abilitiesRemaining, out act);
+        return base.HealAreaAbility(out act);
     }
 
     //Some 0gcds that healing single.
     [RotationDesc("Optional description for Healing Single 0GCD")]
     [RotationDesc(ActionID.None)]
-    protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool HealSingleAbility(out IAction act)
     {
-        return base.HealSingleAbility(abilitiesRemaining, out act);
+        return base.HealSingleAbility(out act);
+    }
+    #endregion
+
+    #region Extra
+    //For counting down action when pary counting down is active.
+    protected override IAction CountDownAction(float remainTime)
+    {
+        return base.CountDownAction(remainTime);
+    }
+
+    //Extra configurations you want to show on your rotation config.
+    protected override IRotationConfigSet CreateConfiguration()
+    {
+        return base.CreateConfiguration();
+    }
+
+    //This is the method to update all field you wrote, it is used first during one frame.
+    protected override void UpdateInfo()
+    {
+        base.UpdateInfo();
+    }
+
+    //This method is used when player change the terriroty, such as go into one duty, you can use it to set the field.
+    public override void OnTerritoryChanged()
+    {
+        base.OnTerritoryChanged();
+    }
+
+    //This method is used to debug. If you want to show some information in Debug panel, show something here.
+    public override void DisplayStatus()
+    {
+        base.DisplayStatus();
     }
     #endregion
 }
