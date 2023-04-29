@@ -87,7 +87,7 @@ public static class IconSet
 
     private static async Task<byte[]> LoadBytes(string url)
     {
-        var data = await Util.HttpClient.GetAsync(url);
+        var data = await new HttpClient().GetAsync(url);
         if (data.StatusCode == HttpStatusCode.NotFound)
             return null;
 
