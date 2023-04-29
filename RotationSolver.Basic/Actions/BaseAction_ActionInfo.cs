@@ -57,7 +57,7 @@ public partial class BaseAction
 
         if (!EnoughLevel) return false;
 
-        if (player.CurrentMp < MPNeed) return false;
+        if (player.GetMP() < MPNeed) return false;
 
         if (StatusNeed != null)
         {

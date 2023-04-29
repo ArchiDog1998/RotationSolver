@@ -66,6 +66,17 @@ public static class ObjectHelper
         return false;
     }
 
+    public static uint GetMP(this BattleChara b)
+    {
+        if(b == null) return 0;
+        var mp = b.CurrentMp;
+        if (!b.IsCasting) return mp;
+
+        var subMp = (uint)ActionManager.GetActionCost(ActionType.Spell, b.CastActionId, 0, 0, 0, 0);
+        if (subMp < 100) subMp = 0;
+        return mp - subMp;
+    }
+
     public static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.GetAddress()->NamePlateIconId;
     public static unsafe void SetNamePlateIcon(this GameObject obj, uint id) => obj.GetAddress()->NamePlateIconId = id;
     public static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.GetAddress()->EventId.Type;
