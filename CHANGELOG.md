@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.7.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.0...v2.7.1) (2023-04-29)
+
+
+### Bug Fixes
+
+* add a NoHostiles  feature. ([85950e7](https://github.com/ArchiDog1998/RotationSolver/commit/85950e70eee01fcb36a85c2df83ee72295fc8c9d))
+* add Physis2. ([0eeba6c](https://github.com/ArchiDog1998/RotationSolver/commit/0eeba6c9d86414e173e7330693fe704c6bbc1d8d))
+* changed the high-end prompt ([b34eb2b](https://github.com/ArchiDog1998/RotationSolver/commit/b34eb2b4805cc6728df1c2b89d15fff33dd20ac8))
+* fixed BLM timer. ([2efbb65](https://github.com/ArchiDog1998/RotationSolver/commit/2efbb656a614d57eca31733c1b953465727b494e))
+* fixed update actions in control window. ([227b7cd](https://github.com/ArchiDog1998/RotationSolver/commit/227b7cd48be06457845683d788854affe0d4023f))
+* if actionid isdefined, record the timeline. ([fb6cbe4](https://github.com/ArchiDog1998/RotationSolver/commit/fb6cbe44a3927e1c18dc91410e3876c47dbc3c01))
+* refine the MP check. ([a4f3198](https://github.com/ArchiDog1998/RotationSolver/commit/a4f3198d0ad579148356104861f3604926a7cc27))
+* remove UsingParasol state. ([b6fabe7](https://github.com/ArchiDog1998/RotationSolver/commit/b6fabe7084b8e9a08eb301ebbf6b594cb65954fc))
+* removed the mp predict. ([5c0cfcd](https://github.com/ArchiDog1998/RotationSolver/commit/5c0cfcd739ce9b3d53ca27b9451c57fe6b8ca73b))
+* removed the statsu provide from kardia. ([d6668ab](https://github.com/ArchiDog1998/RotationSolver/commit/d6668ab4cebd992d63b84287750aa341f9ff4ee4))
+* update the template. ([d69c108](https://github.com/ArchiDog1998/RotationSolver/commit/d69c1083a0594dd532be83d0263e2a58333967d4))
+
 ## [2.7.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.6.0...v2.7.0) (2023-04-28)
 
 
