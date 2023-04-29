@@ -247,15 +247,15 @@ public static class DataCenter
             {
                 foreach (var burstInfo in StatusHelper.Burst2Mins)
                 {
-                    if (burstInfo.jobs.Contains((ClassJobID)member.ClassJob.Id))
+                    if (burstInfo.Jobs.Contains((ClassJobID)member.ClassJob.Id))
                     {
-                        if (member.Level >= burstInfo.level)
+                        if (member.Level >= burstInfo.Level)
                         {
-                            var tar = burstInfo.isOnHostile 
+                            var tar = burstInfo.IsOnHostile 
                                 && Service.TargetManager.Target is BattleChara b ? b 
                                 : Service.Player;
-                            if (tar.HasStatus(false, burstInfo.status)
-                                && !tar.WillStatusEndGCD(0, 0, false, burstInfo.status))
+                            if (tar.HasStatus(false, burstInfo.Status)
+                                && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
                             {
                                 burst++;
                             }

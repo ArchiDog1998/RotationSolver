@@ -59,7 +59,7 @@ internal partial class RotationConfigWindow
             var canAddButton = Service.Player != null
                 && rotation.JobIDs.Contains((ClassJobID)Service.Player.ClassJob.Id);
 
-            rotation.Display(group.rotations, canAddButton);
+            rotation.Display(group.Rotations, canAddButton);
         }
     }
 
@@ -178,7 +178,7 @@ internal partial class RotationConfigWindow
 
         var assemblyGrps = RotationUpdater.CustomRotationsDict
             .SelectMany(d => d.Value)
-            .SelectMany(g => g.rotations)
+            .SelectMany(g => g.Rotations)
             .GroupBy(r => r.GetType().Assembly);
 
         if (ImGui.BeginTable("AssemblyTable", 5, ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY 
