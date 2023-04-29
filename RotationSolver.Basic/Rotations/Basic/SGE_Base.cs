@@ -13,9 +13,9 @@ public abstract class SGE_Base : CustomRotation
     protected static byte Addersting => JobGauge.Addersting;
     public override MedicineType MedicineType => MedicineType.Mind;
 
-    protected static bool NoOgcds => JobGauge.Addersgall < 1 && (!Physis.EnoughLevel || Physis.IsCoolingDown) && (!Haima.EnoughLevel || Haima.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Soteria.EnoughLevel || Soteria.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Pneuma.EnoughLevel || Krasis.IsCoolingDown) && (!Pneuma.EnoughLevel || Zoe.IsCoolingDown);
+    protected static bool NoOgcds => JobGauge.Addersgall < 1 && (!Physis.EnoughLevel || Physis.IsCoolingDown || Physis2.IsCoolingDown) && (!Haima.EnoughLevel || Haima.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Pneuma.EnoughLevel || Krasis.IsCoolingDown);
 
-    protected static bool NoOgcdsAOE => JobGauge.Addersgall < 1 && (!Physis.EnoughLevel || Physis.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Pneuma.EnoughLevel || Krasis.IsCoolingDown) && (!Pneuma.EnoughLevel || Zoe.IsCoolingDown);
+    protected static bool NoOgcdsAOE => JobGauge.Addersgall < 1 && (!Physis.EnoughLevel || Physis.IsCoolingDown || Physis2.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Pneuma.EnoughLevel || Krasis.IsCoolingDown);
 
     protected static float AddersgallTimer => JobGauge.AddersgallTimer / 1000f;
     protected static bool AddersgallEndAfter(float time) => EndAfter(AddersgallTimer, time);
