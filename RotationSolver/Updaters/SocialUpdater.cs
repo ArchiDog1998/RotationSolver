@@ -95,7 +95,7 @@ internal class SocialUpdater
         if (!Service.Player.IsJobCategory(JobRole.Tank) && !Service.Player.IsJobCategory(JobRole.Healer)) return;
 
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
-        //if (HighEndDuties.Any(t => t.RowId == territory.RowId))
+        if (HighEndDuties.Any(t => t.RowId == territory.RowId))
         {
             var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
             var message = string.Format(LocalizationManager.RightLang.HighEndWarning, str);
