@@ -66,6 +66,14 @@ internal partial class RotationConfigWindow
 
     private void DrawListTab()
     {
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.FileDownload, "##Load All"))
+        {
+            OtherConfiguration.Init();
+        }
+
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_Description);
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
@@ -112,6 +120,7 @@ internal partial class RotationConfigWindow
                         hostileNames = Array.Empty<string>();
                     OtherConfiguration.NoHostileNames[_territoryId] = hostileNames.Append(string.Empty).ToArray();
                 }
+
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
                 ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_NoHostileDesc);

@@ -1,4 +1,6 @@
 ﻿using Dalamud.Logging;
+using Newtonsoft.Json.Linq;
+using System.IO;
 using System.Xml.Linq;
 
 namespace RotationSolver.Basic.Configuration;
