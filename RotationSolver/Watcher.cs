@@ -80,7 +80,7 @@ public class Watcher : IDisposable
         DataCenter.AddDamageRec(damageRatio);
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
 
-        if(set.Type == ActionType.Spell && DataCenter.PartyMembers.Count() >= 4)
+        if(set.Type == ActionType.Spell && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
         {
             var type = set.Action.GetActionType();
 
