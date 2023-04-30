@@ -156,9 +156,9 @@ internal partial class RotationConfigWindow
 
     private static void DrawInfos()
     {
-        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotationsButton))
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "DownloadRotationsButtonInfo"))
         {
-            RotationUpdater.GetAllCustomRotations( RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
+            RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
         }
 
         ImGui.SameLine();

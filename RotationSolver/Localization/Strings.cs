@@ -242,9 +242,6 @@ internal partial class Strings
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_AddOne { get; set; } = "Add One";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
-    public string ConfigWindow_Param_ConditionUp { get; set; } = "Up";
-    public string ConfigWindow_Param_ConditionDown { get; set; } = "Down";
-    public string ConfigWindow_Param_ConditionDelete { get; set; } = "Delete";
     public string ConfigWindow_Param_ResetToDefault { get; set; } = "Press left ctrl + shift and press right mouse button to reset this value";
 
     public string ConfigWindow_Action_ShowOnCDWindow { get; set; } = "Show on CD window";
@@ -274,7 +271,6 @@ internal partial class Strings
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
-    public string ConfigWindow_Rotation_DownloadRotationsButton { get; set; } = "Download Rotations";
 
     public string ConfigWindow_Rotation_DownloadRotations { get; set; } = "Download Rotations.";
     public string ConfigWindow_Rotation_AutoUpdateRotations { get; set; } = "Auto Update Rotations.";

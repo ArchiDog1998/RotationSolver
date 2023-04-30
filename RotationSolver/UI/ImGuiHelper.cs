@@ -531,7 +531,7 @@ internal static class ImGuiHelper
                     }
                     var hasTexture = texture.Texture != null;
 
-                    if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.QuestionCircle,
+                    if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.Question,
                         "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
                     {
                         try

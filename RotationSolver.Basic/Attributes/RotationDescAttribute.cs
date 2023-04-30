@@ -86,7 +86,6 @@ public class RotationDescAttribute : Attribute
 
     }
 
-
     public static IEnumerable<RotationDescAttribute[]> Merge(IEnumerable<RotationDescAttribute> rotationDescAttributes)
         => from r in rotationDescAttributes
            where r is RotationDescAttribute

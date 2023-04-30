@@ -2,6 +2,7 @@
 using Lumina.Data.Parsing;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Data;
 using RotationSolver.Localization;
 using RotationSolver.TextureItems;
 using RotationSolver.Updaters;
@@ -73,7 +74,7 @@ internal partial class RotationConfigWindow
         {
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Hostile, DrawParamHostile, () =>
             {
-                if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddOne))
+                if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "Add Hostile"))
                 {
                     Service.Config.TargetingTypes.Add(TargetingType.Big);
                 }
@@ -105,9 +106,9 @@ internal partial class RotationConfigWindow
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
 
-                if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddOne))
+                if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "Add Territory"))
                 {
-                    if(!OtherConfiguration.NoHostileNames.TryGetValue(_territoryId, out var hostileNames))
+                    if (!OtherConfiguration.NoHostileNames.TryGetValue(_territoryId, out var hostileNames))
                         hostileNames = Array.Empty<string>();
                     OtherConfiguration.NoHostileNames[_territoryId] = hostileNames.Append(string.Empty).ToArray();
                 }
@@ -154,7 +155,7 @@ internal partial class RotationConfigWindow
 
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Rotations, DrawRotationDevTab, () =>
             {
-                if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotationsButton))
+                if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "DownloadRotationsButton"))
                 {
                     RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
                 }
@@ -162,7 +163,7 @@ internal partial class RotationConfigWindow
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
 
-                if (ImGui.Button("Load Rotations Local"))
+                if (ImGuiHelper.IconButton(FontAwesomeIcon.FileDownload, "##LoadLocalRotations"))
                 {
                     RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.ShowList);
                 }
@@ -170,12 +171,12 @@ internal partial class RotationConfigWindow
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
 
-                if (ImGui.Button("Dev Wiki"))
+                if (ImGuiHelper.IconButton(FontAwesomeIcon.Question, "##OpenWiki"))
                 {
                     Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
                 }
 
-                if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddOne))
+                if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "Add Rotation"))
                 {
                     Service.Config.OtherLibs = Service.Config.OtherLibs.Append(string.Empty).ToArray();
                 }
@@ -207,9 +208,9 @@ internal partial class RotationConfigWindow
                 Service.Config.Save();
             }
 
-            if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_ConditionUp + "##HostileUp" + i.ToString()))
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.ArrowUp, $"##HostileUp{i}"))
             {
-                if (i != 0)
+                if (i > 0)
                 {
                     var value = Service.Config.TargetingTypes[i];
                     Service.Config.TargetingTypes.RemoveAt(i);
@@ -218,7 +219,7 @@ internal partial class RotationConfigWindow
             }
             ImGui.SameLine();
             ImGuiHelper.Spacing();
-            if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_ConditionDown + "##HostileDown" + i.ToString()))
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.ArrowDown, $"##HostileDown{i}"))
             {
                 if (i < Service.Config.TargetingTypes.Count - 1)
                 {
@@ -231,7 +232,7 @@ internal partial class RotationConfigWindow
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_ConditionDelete + "##HostileDelete" + i.ToString()))
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##HostileDelete{i}"))
             {
                 Service.Config.TargetingTypes.RemoveAt(i);
             }
@@ -265,7 +266,7 @@ internal partial class RotationConfigWindow
             ImGuiHelper.Spacing();
 
 
-            if (ImGui.Button($"X##RemoveDangerous{statusId}"))
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##RemoveDangerous{statusId}"))
             {
                 removeId = statusId;
             }
@@ -308,7 +309,7 @@ internal partial class RotationConfigWindow
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            if (ImGui.Button($"X##InvincibleStatus{statusId}"))
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##InvincibleStatus{statusId}"))
             {
                 removeId = statusId;
             }
@@ -338,7 +339,7 @@ internal partial class RotationConfigWindow
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            if (ImGui.Button($"X##RemoveOtherLibs{i}"))
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##RemoveOtherLibs{i}"))
             {
                 removeIndex = i;
             }
@@ -368,7 +369,7 @@ internal partial class RotationConfigWindow
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            if (ImGui.Button($"X##RemoveNoHostileNames{i}"))
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##RemoveNoHostileNames{i}"))
             {
                 removeIndex = i;
             }
@@ -381,5 +382,4 @@ internal partial class RotationConfigWindow
             OtherConfiguration.SaveNoHostileNames();
         }
     }
-
 }
