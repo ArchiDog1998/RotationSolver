@@ -7,6 +7,9 @@ namespace RotationSolver.Basic.Configuration;
 
 public class OtherConfiguration
 {
+    public static SortedSet<uint> HostileCastingArea = new SortedSet<uint>();
+    public static SortedSet<uint> HostileCastingTank = new SortedSet<uint>();
+
     public static SortedList<uint, float> AnimationLockTime = new SortedList<uint, float>();
 
     public static Dictionary<uint, string[]> NoHostileNames = new Dictionary<uint, string[]>();
@@ -39,9 +42,9 @@ public class OtherConfiguration
 
     public static SortedSet<uint> InvincibleStatus = new SortedSet<uint>()
     {
-        (uint)StatusID.StoneSkin,
-        (uint)StatusID.IceSpikesInvincible,
-        (uint)StatusID.VortexBarrier,
+        151, //StoneSkin
+        198, //IceSpikesInvincible
+        3012, //VortexBarrier
     };
 
     public static void Init()
@@ -50,6 +53,7 @@ public class OtherConfiguration
         {
             Directory.CreateDirectory(Service.Interface.ConfigDirectory.FullName);
         }
+
         Task.Run(() => InitOne(ref DangerousStatus, nameof(DangerousStatus)));
 
         Task.Run(() => InitOne(ref InvincibleStatus, nameof(InvincibleStatus)));
@@ -57,6 +61,10 @@ public class OtherConfiguration
         Task.Run(() => InitOne(ref NoHostileNames, nameof(NoHostileNames)));
 
         Task.Run(() => InitOne(ref AnimationLockTime, nameof(AnimationLockTime)));
+
+        Task.Run(() => InitOne(ref HostileCastingArea, nameof(HostileCastingArea)));
+
+        Task.Run(() => InitOne(ref HostileCastingTank, nameof(HostileCastingTank)));
     }
 
     public static void Save()
@@ -65,6 +73,18 @@ public class OtherConfiguration
         SaveInvincibleStatus();
         SaveNoHostileNames();
         SaveAnimationLockTime();
+        SaveHostileCastingArea();
+        SaveHostileCastingTank();
+    }
+
+    public static void SaveHostileCastingArea()
+    {
+        Task.Run(() => Save(HostileCastingArea, nameof(HostileCastingArea)));
+    }
+
+    public static void SaveHostileCastingTank()
+    {
+        Task.Run(() => Save(HostileCastingTank, nameof(HostileCastingTank)));
     }
 
     public static void SaveDangerousStatus()
@@ -137,6 +157,4 @@ public class OtherConfiguration
             }
         }
     }
-
-
 }

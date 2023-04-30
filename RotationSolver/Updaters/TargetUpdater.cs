@@ -174,7 +174,9 @@ internal static partial class TargetUpdater
     {
         return IsHostileCastingBase(h, (act) =>
         {
-            return h.CastTargetObjectId == h.TargetObjectId;
+            return OtherConfiguration.HostileCastingTank.Contains(act.RowId);
+
+            //return h.CastTargetObjectId == h.TargetObjectId;
         });
     }
 
@@ -182,20 +184,22 @@ internal static partial class TargetUpdater
     {
         return IsHostileCastingBase(h, (act) =>
         {
-            if ((act.CastType == 1 || act.CastType == 2)
-              && act.Range == 0
-              && act.EffectRange >= 40)
-                return true;
+            return OtherConfiguration.HostileCastingArea.Contains(act.RowId);
 
-            if (act.CastType == 2
-             && act.EffectRange == 6
-             && act.Cast100ms == 50
-             && act.CanTargetHostile
-             && !act.CanTargetSelf
-             && act.Range == 100)
-                return true;
+            //if ((act.CastType == 1 || act.CastType == 2)
+            //  && act.Range == 0
+            //  && act.EffectRange >= 40)
+            //    return true;
 
-            return false;
+            //if (act.CastType == 2
+            // && act.EffectRange == 6
+            // && act.Cast100ms == 50
+            // && act.CanTargetHostile
+            // && !act.CanTargetSelf
+            // && act.Range == 100)
+            //    return true;
+
+            //return false;
         });
     }
 

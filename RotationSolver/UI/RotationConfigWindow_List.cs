@@ -7,6 +7,7 @@ using RotationSolver.Localization;
 using RotationSolver.TextureItems;
 using RotationSolver.Updaters;
 using System.Xml.Linq;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
 
@@ -61,6 +62,23 @@ internal partial class RotationConfigWindow
                     .ToArray();
             }
             return _allInvStatus;
+        }
+    }
+
+    private static ActionTexture[] _allActions = null;
+    public static ActionTexture[] AllActions
+    {
+        get
+        {
+            if (_allActions == null)
+            {
+                _allActions = Service.GetSheet<Action>()
+                    .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction 
+                    && a.ClassJob.Value == null)
+                    .Select(a => new ActionTexture(a))
+                    .ToArray();
+            }
+            return _allActions;
         }
     }
 
@@ -161,6 +179,39 @@ internal partial class RotationConfigWindow
                 ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatusDesc);
             });
 
+            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingTank, DrawHostileCastingTank, () =>
+            {
+                ImGui.SetNextItemWidth(200);
+                ImGuiHelper.SearchCombo("##AddCastingTank",
+                    LocalizationManager.RightLang.ConfigWindow_Param_AddOne,
+                    ref searchText, AllActions, a =>
+                    {
+                        OtherConfiguration.HostileCastingTank.Add(a.ID);
+                        OtherConfiguration.SaveHostileCastingTank();
+                    });
+
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
+
+                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingTankDesc);
+            });
+
+            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingArea, DrawHostileCastingArea, () =>
+            {
+                ImGui.SetNextItemWidth(200);
+                ImGuiHelper.SearchCombo("##AddCastingArea",
+                    LocalizationManager.RightLang.ConfigWindow_Param_AddOne,
+                    ref searchText, AllActions, a =>
+                    {
+                        OtherConfiguration.HostileCastingArea.Add(a.ID);
+                        OtherConfiguration.SaveHostileCastingArea();
+                    });
+
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
+
+                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingAreaDesc);
+            });
 
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_Rotations, DrawRotationDevTab, () =>
             {
@@ -359,6 +410,92 @@ internal partial class RotationConfigWindow
             list.RemoveAt(removeIndex);
             Service.Config.OtherLibs = list.ToArray();
             Service.Config.Save();
+        }
+    }
+
+    private void DrawHostileCastingTank()
+    {
+        uint removeId = 0;
+        uint addId = 0;
+        foreach (var actionId in OtherConfiguration.HostileCastingTank)
+        {
+            var status = Service.GetSheet<Action>().GetRow(actionId);
+            ImGui.Image(IconSet.GetTexture(status.Icon).ImGuiHandle, new Vector2(24, 24));
+
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            ImGui.SetNextItemWidth(150);
+
+            ImGuiHelper.SearchCombo($"##SaveHostileCastingTank{actionId}",
+                $"{status.Name} ({status.RowId})",
+                ref searchText, AllActions, s =>
+                {
+                    removeId = actionId;
+                    addId = s.ID;
+                });
+
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##SaveHostileCastingTank{actionId}"))
+            {
+                removeId = actionId;
+            }
+        }
+
+        if (removeId != 0)
+        {
+            OtherConfiguration.HostileCastingTank.Remove(removeId);
+            OtherConfiguration.SaveHostileCastingTank();
+        }
+        if (addId != 0)
+        {
+            OtherConfiguration.HostileCastingTank.Add(addId);
+            OtherConfiguration.SaveHostileCastingTank();
+        }
+    }
+
+    private void DrawHostileCastingArea()
+    {
+        uint removeId = 0;
+        uint addId = 0;
+        foreach (var actionId in OtherConfiguration.HostileCastingArea)
+        {
+            var status = Service.GetSheet<Action>().GetRow(actionId);
+            ImGui.Image(IconSet.GetTexture(status.Icon).ImGuiHandle, new Vector2(24, 24));
+
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            ImGui.SetNextItemWidth(150);
+
+            ImGuiHelper.SearchCombo($"##SaveHostileCastingArea{actionId}",
+                $"{status.Name} ({status.RowId})",
+                ref searchText, AllActions, s =>
+                {
+                    removeId = actionId;
+                    addId = s.ID;
+                });
+
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##SaveHostileCastingArea{actionId}"))
+            {
+                removeId = actionId;
+            }
+        }
+
+        if (removeId != 0)
+        {
+            OtherConfiguration.HostileCastingArea.Remove(removeId);
+            OtherConfiguration.SaveHostileCastingArea();
+        }
+        if (addId != 0)
+        {
+            OtherConfiguration.HostileCastingArea.Add(addId);
+            OtherConfiguration.SaveHostileCastingArea();
         }
     }
 

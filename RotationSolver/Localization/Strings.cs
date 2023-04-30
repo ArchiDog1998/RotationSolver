@@ -284,7 +284,17 @@ internal partial class Strings
     public string ConfigWindow_List_Invincibility { get; set; } = "Invincibility";
     public string ConfigWindow_List_InvincibilityDesc { get; set; } = "If target get one of this status, it'll never attack it.";
     public string ConfigWindow_List_DangerousStatus { get; set; } = "Dangerous Status";
+
     public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "If one of your party member get this status, Esuna immediately.";
+
+    public string ConfigWindow_List_HostileCastingTank { get; set; } = "Tank Buster";
+
+    public string ConfigWindow_List_HostileCastingTankDesc { get; set; } = "If the target is casting the action like this, it'll reduction.";
+
+    public string ConfigWindow_List_HostileCastingArea { get; set; } = "AOE";
+
+    public string ConfigWindow_List_HostileCastingAreaDesc { get; set; } = "If the target is casting the action like this, it'll defense area.";
+
     public string ConfigWindow_List_Rotations { get; set; } = "Rotations";
     public string ConfigWindow_List_NoHostile { get; set; } = "No Hostile";
     public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add a name of target that never be the hostile for you.";

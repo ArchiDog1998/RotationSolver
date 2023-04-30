@@ -482,9 +482,6 @@ public enum StatusID : ushort
     RespellingSpray = 556,
     Magitek = 2166,
 
-    StoneSkin = 151,
-    IceSpikesInvincible = 198,
-
     CircleOfPower = 738,
 
     Aetherpact = 1223,
@@ -500,8 +497,6 @@ public enum StatusID : ushort
     Oblation = 2682,
 
     TheBlackestNight = 1178,
-
-    VortexBarrier = 3012,
 
     LivingDead = 810,
 }
