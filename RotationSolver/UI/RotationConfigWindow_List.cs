@@ -181,11 +181,6 @@ internal partial class RotationConfigWindow
 
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingTank, DrawHostileCastingTank, () =>
             {
-                DrawCheckBox("Record", ref Service.Config.RecordCastingTank, Service.Default.RecordCastingTank);
-
-                ImGui.SameLine();
-                ImGuiHelper.Spacing();
-
                 ImGui.SetNextItemWidth(200);
                 ImGuiHelper.SearchCombo("##AddCastingTank",
                     LocalizationManager.RightLang.ConfigWindow_Param_AddOne,

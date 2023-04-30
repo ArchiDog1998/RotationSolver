@@ -80,7 +80,7 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Eukrasia { get; } = new BaseAction(ActionID.Eukrasia, ActionOption.Heal)
     {
-        ActionCheck = b => !JobGauge.Eukrasia,
+        ActionCheck = b => !HasEukrasia,
     };
 
     public static IBaseAction Soteria { get; } = new BaseAction(ActionID.Soteria, ActionOption.Heal);
@@ -122,12 +122,12 @@ public abstract class SGE_Base : CustomRotation
         },
     };
 
-    public static IBaseAction Haima { get; } = new BaseAction(ActionID.Haima, ActionOption.Heal)
+    public static IBaseAction Haima { get; } = new BaseAction(ActionID.Haima, ActionOption.Defense)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
-    public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, ActionOption.Heal)
+    public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, ActionOption.Defense)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };

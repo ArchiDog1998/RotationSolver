@@ -33,7 +33,7 @@ internal partial class RotationConfigWindow
                 {
                     if (ImGui.CollapsingHeader(pair.Key))
                     {
-                        foreach (var item in pair)
+                        foreach (var item in pair.OrderBy(t => t.ID))
                         {
                             item.Display(ActiveAction == item);
                             ImGui.Separator();

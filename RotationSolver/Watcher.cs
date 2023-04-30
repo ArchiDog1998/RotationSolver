@@ -98,18 +98,6 @@ public class Watcher : IDisposable
                         OtherConfiguration.SaveHostileCastingArea();
                     }
                 }
-                else if (DataCenter.PartyTanks.Any(p => p.ObjectId == set.Target?.ObjectId)
-                    || set.TargetEffects.Any(e =>
-                    DataCenter.PartyTanks.Any(p => p.ObjectId == e.Target?.ObjectId)
-                    && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
-                    && (effect.Value > 0 || (effect.Param0 & 6) == 6)))
-                {
-                    if (Service.Config.RecordCastingTank)
-                    {
-                        OtherConfiguration.HostileCastingTank.Add(set.Action.RowId);
-                        OtherConfiguration.SaveHostileCastingTank();
-                    }
-                }
             }
         }
     }
