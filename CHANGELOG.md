@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.7.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.1...v2.7.2) (2023-04-30)
+
+
+### Bug Fixes
+
+* add a class for extra configuration. ([81147c1](https://github.com/ArchiDog1998/RotationSolver/commit/81147c1de5a09a82268f43ca1513635baa714897))
+* add a param to control the melee distance. ([f62ad16](https://github.com/ArchiDog1998/RotationSolver/commit/f62ad16b05bff9c3287e0244611ffb0ab55aa5de))
+* add casting action check list. ([ab4c248](https://github.com/ArchiDog1998/RotationSolver/commit/ab4c24854ff545715e892a0eac578fe4de42e78d))
+* add load for list. ([5893683](https://github.com/ArchiDog1998/RotationSolver/commit/5893683087fa5887d809f0ca5dd7875f9a7b3bd0))
+* changed the ui icon. ([20c8f8c](https://github.com/ArchiDog1998/RotationSolver/commit/20c8f8ce8b844dbb1464e8fa03164eb202919c67))
+* changed ui. ([51ad02c](https://github.com/ArchiDog1998/RotationSolver/commit/51ad02c6d37b75173a97c6f2567a07bf205e15d6))
+* fixed raising using in macro. ([7f8233f](https://github.com/ArchiDog1998/RotationSolver/commit/7f8233f76e227bb255160dbf42dc24bd4d3380ba))
+* fixed with ui. ([b1096a8](https://github.com/ArchiDog1998/RotationSolver/commit/b1096a8ebbf2694f6a7a88a28d1711bfad6ea853))
+* make No hostile as a dictionary about the territory. ([5d28272](https://github.com/ArchiDog1998/RotationSolver/commit/5d28272e9e0b4f2c7dc60c2c32ccd681c34ab36f))
+* merge the saving files ([22b275c](https://github.com/ArchiDog1998/RotationSolver/commit/22b275cc0030e1eca176b77fb971adf1f54734b3))
+* only record casting action. ([a34416c](https://github.com/ArchiDog1998/RotationSolver/commit/a34416caf43eef2c4e094701ab80e681c6af1889))
+
 ## [2.7.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.0...v2.7.1) (2023-04-29)
 
 
