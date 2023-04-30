@@ -45,7 +45,6 @@ public unsafe struct ActionEffectSet
     public override string ToString()
     {
         var str = $"S:{Source?.Name}, T:{Target?.Name}, Lock:{AnimationLock}";
-        str = $"Lock:{AnimationLock}";
         str += $"\nType: {Type}, Name: {Action?.Name}({Action?.RowId})";
         if (TargetEffects != null)
         {

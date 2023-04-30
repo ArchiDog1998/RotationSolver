@@ -14,38 +14,9 @@ public class OtherConfiguration
 
     public static Dictionary<uint, string[]> NoHostileNames = new Dictionary<uint, string[]>();
 
-    public static SortedSet<uint> DangerousStatus = new SortedSet<uint>()
-    {
-        (uint)StatusID.Doom,
-        (uint)StatusID.Amnesia,
-        (uint)StatusID.Stun,
-        (uint)StatusID.Stun2,
-        (uint)StatusID.Sleep,
-        (uint)StatusID.Sleep2,
-        (uint)StatusID.Sleep3,
-        (uint)StatusID.Pacification,
-        (uint)StatusID.Pacification2,
-        (uint)StatusID.Silence,
-        (uint)StatusID.Slow,
-        (uint)StatusID.Slow2,
-        (uint)StatusID.Slow3,
-        (uint)StatusID.Slow4,
-        (uint)StatusID.Slow5,
-        (uint)StatusID.Blind,
-        (uint)StatusID.Blind2,
-        (uint)StatusID.Blind3,
-        (uint)StatusID.Paralysis,
-        (uint)StatusID.Paralysis2,
-        (uint)StatusID.Nightmare,
-        (uint)StatusID.Necrosis,
-    };
+    public static SortedSet<uint> DangerousStatus = new SortedSet<uint>();
 
-    public static SortedSet<uint> InvincibleStatus = new SortedSet<uint>()
-    {
-        151, //StoneSkin
-        198, //IceSpikesInvincible
-        3012, //VortexBarrier
-    };
+    public static SortedSet<uint> InvincibleStatus = new SortedSet<uint>();
 
     public static void Init()
     {

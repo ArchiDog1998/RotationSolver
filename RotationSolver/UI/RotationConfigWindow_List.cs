@@ -246,6 +246,9 @@ internal partial class RotationConfigWindow
                     Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
                 }
 
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
+
                 if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "Add Rotation"))
                 {
                     Service.Config.OtherLibs = Service.Config.OtherLibs.Append(string.Empty).ToArray();
