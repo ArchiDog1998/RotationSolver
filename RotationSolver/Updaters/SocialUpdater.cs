@@ -161,8 +161,11 @@ internal class SocialUpdater
                 await Task.Delay(100);
             }
 
+#if DEBUG
+#else
             Service.TargetManager.SetTarget(author.c);
             Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
+#endif
             var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
 
                           new UIForegroundPayload(31),

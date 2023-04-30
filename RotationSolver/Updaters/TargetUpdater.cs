@@ -174,9 +174,8 @@ internal static partial class TargetUpdater
     {
         return IsHostileCastingBase(h, (act) =>
         {
-            return OtherConfiguration.HostileCastingTank.Contains(act.RowId);
-
-            //return h.CastTargetObjectId == h.TargetObjectId;
+            return OtherConfiguration.HostileCastingTank.Contains(act.RowId)
+                || h.CastTargetObjectId == h.TargetObjectId;
         });
     }
 
