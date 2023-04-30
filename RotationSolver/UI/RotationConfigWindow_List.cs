@@ -1,6 +1,7 @@
 ﻿using Dalamud.Utility;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.ActionSequencer;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
@@ -70,7 +71,7 @@ internal partial class RotationConfigWindow
             {
                 if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddOne))
                 {
-                    Service.Config.NoHostileNames = Service.Config.NoHostileNames.Append(string.Empty).ToArray();
+                    OtherConfiguration.NoHostileNames = OtherConfiguration.NoHostileNames.Append(string.Empty).ToArray();
                 }
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
@@ -84,8 +85,8 @@ internal partial class RotationConfigWindow
                     LocalizationManager.RightLang.ConfigWindow_Param_AddOne,
                     ref searchText, AllInvStatus, s =>
                     {
-                        StatusHelper.InvincibleStatus.Add((uint)s.ID);
-                        StatusHelper.SaveInvincibleStatus();
+                        OtherConfiguration.InvincibleStatus.Add((uint)s.ID);
+                        OtherConfiguration.SaveInvincibleStatus();
 
                     });
 
@@ -102,8 +103,8 @@ internal partial class RotationConfigWindow
                     LocalizationManager.RightLang.ConfigWindow_Param_AddOne,
                     ref searchText, AllDispelStatus, s =>
                     {
-                        StatusHelper.DangerousStatus.Add((uint)s.ID);
-                        StatusHelper.SaveDangerousStatus();
+                        OtherConfiguration.DangerousStatus.Add((uint)s.ID);
+                        OtherConfiguration.SaveDangerousStatus();
                     });
 
                 ImGui.SameLine();
@@ -204,7 +205,7 @@ internal partial class RotationConfigWindow
     {
         uint removeId = 0;
         uint addId = 0;
-        foreach (var statusId in StatusHelper.DangerousStatus)
+        foreach (var statusId in OtherConfiguration.DangerousStatus)
         {
             var status = Service.GetSheet<Status>().GetRow(statusId);
             ImGui.Image(IconSet.GetTexture(status.Icon).ImGuiHandle, new Vector2(24, 30));
@@ -234,13 +235,13 @@ internal partial class RotationConfigWindow
 
         if(removeId != 0)
         {
-            StatusHelper.DangerousStatus.Remove(removeId);
-            StatusHelper.SaveDangerousStatus();
+            OtherConfiguration.DangerousStatus.Remove(removeId);
+            OtherConfiguration.SaveDangerousStatus();
         }
         if (addId != 0)
         {
-            StatusHelper.DangerousStatus.Add(addId);
-            StatusHelper.SaveDangerousStatus();
+            OtherConfiguration.DangerousStatus.Add(addId);
+            OtherConfiguration.SaveDangerousStatus();
         }
     }
 
@@ -248,7 +249,7 @@ internal partial class RotationConfigWindow
     {
         uint removeId = 0;
         uint addId = 0;
-        foreach (var statusId in StatusHelper.InvincibleStatus)
+        foreach (var statusId in OtherConfiguration.InvincibleStatus)
         {
             var status = Service.GetSheet<Status>().GetRow(statusId);
             ImGui.Image(IconSet.GetTexture(status.Icon).ImGuiHandle, new Vector2(24, 30));
@@ -277,13 +278,13 @@ internal partial class RotationConfigWindow
 
         if (removeId != 0)
         {
-            StatusHelper.InvincibleStatus.Remove(removeId);
-            StatusHelper.SaveInvincibleStatus();
+            OtherConfiguration.InvincibleStatus.Remove(removeId);
+            OtherConfiguration.SaveInvincibleStatus();
         }
         if (addId != 0)
         {
-            StatusHelper.InvincibleStatus.Add(addId);
-            StatusHelper.SaveInvincibleStatus();
+            OtherConfiguration.InvincibleStatus.Add(addId);
+            OtherConfiguration.SaveInvincibleStatus();
         }
     }
 
@@ -316,11 +317,11 @@ internal partial class RotationConfigWindow
     private void DrawParamNoHostile()
     {
         int removeIndex = -1;
-        for (int i = 0; i < Service.Config.NoHostileNames.Length; i++)
+        for (int i = 0; i < OtherConfiguration.NoHostileNames.Length; i++)
         {
-            if (ImGui.InputText($"##NoHostileNames{i}", ref Service.Config.NoHostileNames[i], 1024))
+            if (ImGui.InputText($"##NoHostileNames{i}", ref OtherConfiguration.NoHostileNames[i], 1024))
             {
-                Service.Config.Save();
+                OtherConfiguration.SaveNoHostileNames();
             }
             ImGui.SameLine();
             ImGuiHelper.Spacing();
@@ -332,10 +333,10 @@ internal partial class RotationConfigWindow
         }
         if (removeIndex > -1)
         {
-            var list = Service.Config.NoHostileNames.ToList();
+            var list = OtherConfiguration.NoHostileNames.ToList();
             list.RemoveAt(removeIndex);
-            Service.Config.NoHostileNames = list.ToArray();
-            Service.Config.Save();
+            OtherConfiguration.NoHostileNames = list.ToArray();
+            OtherConfiguration.SaveNoHostileNames();
         }
     }
 

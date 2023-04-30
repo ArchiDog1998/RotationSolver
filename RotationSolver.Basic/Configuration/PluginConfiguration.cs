@@ -163,8 +163,8 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool InDebug = false;
     public bool AutoUpdateLibs = true;
-    public string[] OtherLibs = new string[0];
-    public string[] NoHostileNames = new string[0];
+    public string[] OtherLibs = Array.Empty<string>();
+
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;

@@ -144,6 +144,7 @@
   "ConfigWindow_Param_HealthSingleSpell": "Set the HP threshold for using single healing spell",
   "ConfigWindow_Param_HealthHealerRatio": "Heal healer first if its HP threshold is lower than this.",
   "ConfigWindow_Param_HealthTankRatio": "Heal tank first if its HP threshold is lower than this.",
+  "ConfigWindow_Param_DistanceForMoving": "If the distance between Melee or Tank to target is less than this, using moving ability as attack ability.",
   "ConfigWindow_Param_HealingOfTimeSubtractSingle": "Set the HP threshold reduce with hot effect(single)",
   "ConfigWindow_Param_HealthForDyingTank": "Set the HP threshold for tank to use invincibility",
   "ConfigWindow_Param_MeleeRangeOffset": "Melee Range action using offset",
