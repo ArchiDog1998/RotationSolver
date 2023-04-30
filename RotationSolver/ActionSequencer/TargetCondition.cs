@@ -1,18 +1,19 @@
 ﻿using RotationSolver.Localization;
+using RotationSolver.TextureItems;
 using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
 internal class TargetCondition : ICondition
 {
-    private static BaseStatus[] _allStatus = null;
-    private static BaseStatus[] AllStatus
+    private static StatusTexture[] _allStatus = null;
+    private static StatusTexture[] AllStatus
     {
         get
         {
             if (_allStatus == null)
             {
-                _allStatus = Enum.GetValues<StatusID>().Select(id => new BaseStatus(id)).ToArray();
+                _allStatus = Enum.GetValues<StatusID>().Select(id => new StatusTexture(id)).ToArray();
             }
             return _allStatus;
         }
@@ -23,7 +24,7 @@ internal class TargetCondition : ICondition
 
     public bool Condition;
     public bool FromSelf;
-    private BaseStatus _status { get; set; }
+    private StatusTexture _status { get; set; }
     public StatusID Status { get; set; }
     public bool IsTarget;
     public TargetConditionType TargetConditionType;

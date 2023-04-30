@@ -13,12 +13,11 @@ public abstract partial class CustomRotation
         {
             return false;
         }
-        UpdateActions(Job.GetJobRole());
-
-        UpdateInfo();
 
         try
         {
+            UpdateInfo();
+            UpdateActions(Job.GetJobRole());
             newAction = Invoke(out gcdAction);
             if (!IsValid) IsValid = true;
         }

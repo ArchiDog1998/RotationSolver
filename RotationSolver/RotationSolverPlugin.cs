@@ -58,9 +58,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
-        StatusHelper.Enable();
+        OtherConfiguration.Init();
         ActionSequencerUpdater.Enable(pluginInterface.ConfigDirectory.FullName + "\\Conditions");
-        IActionHelper.GetAnimationLockTimeAsync(pluginInterface.ConfigDirectory.FullName);
         SocialUpdater.Enable();
         _dis.Add(new Watcher());
         _dis.Add(new MovingController());
@@ -80,7 +79,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             if(id == 0) OpenConfigWindow();
         });
     }
-
 
     internal static void ChangeUITranslation()
     {
@@ -109,17 +107,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         SocialUpdater.Disable();
 
         IconSet.Dispose();
-
-#if DEBUG
-        var directory = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources";
-#else
-        var directory = Service.Interface.ConfigDirectory.FullName;
-#endif
-        if (!Directory.Exists(directory)) return;
-
-        //Default values.
-        var path = Path.Combine(directory, $"{nameof(IActionHelper.AnimationLockTime)}.json");
-        File.WriteAllText(path, JsonConvert.SerializeObject(IActionHelper.AnimationLockTime, Formatting.Indented));
+        OtherConfiguration.Save();
     }
 
     private void OnOpenConfigUi()

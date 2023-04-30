@@ -6,40 +6,39 @@ internal partial class RotationConfigWindow
 {
     private void DrawHelpTab()
     {
-        if (ImGui.Button("Github"))
+        if(ImGuiHelper.IconButton(FontAwesomeIcon.Code, "Github"))
         {
             Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
         }
 
         ImGui.SameLine();
 
-        if (ImGui.Button("Discord"))
+        if(ImGuiHelper.IconButton(FontAwesomeIcon.HandPaper, "Discord"))
         {
             Util.OpenLink("https://discord.gg/4fECHunam9");
         }
 
         ImGui.SameLine();
 
-        if (ImGui.Button("Wiki"))
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Book, "Wiki"))
         {
             Util.OpenLink("https://archidog1998.github.io/RotationSolver/");
         }
 
         ImGui.SameLine();
 
-        if (ImGui.Button("Changelog"))
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.History, "ChangeLog"))
         {
             Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver/blob/release/CHANGELOG.md");
         }
 
         ImGui.SameLine();
 
-        var support = "Support on Ko-fi";
-        ImGui.SetCursorPosX(ImGui.GetWindowSize().X - ImGui.CalcTextSize(support).X - ImGui.GetStyle().ItemSpacing.X * 2);
         ImGui.PushStyleColor(ImGuiCol.Button, 0xFF5E5BFF);
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD5E5BFF);
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA5E5BFF);
-        if (ImGui.Button(support))
+
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Coffee, "Support"))
         {
             Util.OpenLink("https://ko-fi.com/rotationsolver");
         }

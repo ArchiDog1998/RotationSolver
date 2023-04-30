@@ -1,5 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -65,7 +66,7 @@ internal class BaseItem : IBaseItem
 
     public uint SortKey { get; }
 
-    public float AnimationLockTime => IActionHelper.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 1.1f;
+    public float AnimationLockTime => OtherConfiguration.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 1.1f;
 
     public bool IsActionSequencer => false;
 

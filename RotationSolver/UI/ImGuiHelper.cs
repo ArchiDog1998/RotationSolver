@@ -253,18 +253,18 @@ internal static class ImGuiHelper
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(name).X + 30);
     }
 
-    internal static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
+    internal static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] data, Action<T> selectAction) where T : ITexture
     {
         if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
         {
-            SearchItems(ref searchTxt, actions, selectAction);
+            SearchItems(ref searchTxt, data, selectAction);
             ImGui.EndCombo();
         }
     }
 
-    internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> actions, Action<T> selectAction) where T : ITexture
+    internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> data, Action<T> selectAction) where T : ITexture
     {
-        SearchItems(ref searchTxt, actions, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)));
+        SearchItems(ref searchTxt, data, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)));
     }
 
     internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
@@ -501,7 +501,7 @@ internal static class ImGuiHelper
                 ImGui.SameLine();
                 Spacing();
 
-                if (IconButton(FontAwesomeIcon.Globe, "Code" + rotation.GetHashCode().ToString()))
+                if (IconButton(FontAwesomeIcon.Code, "Code" + rotation.GetHashCode().ToString()))
                 {
                     try
                     {
@@ -531,7 +531,7 @@ internal static class ImGuiHelper
                     }
                     var hasTexture = texture.Texture != null;
 
-                    if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.QuestionCircle,
+                    if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.Question,
                         "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
                     {
                         try

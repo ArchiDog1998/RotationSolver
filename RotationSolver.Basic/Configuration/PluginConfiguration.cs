@@ -163,8 +163,10 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool InDebug = false;
     public bool AutoUpdateLibs = true;
-    public string[] OtherLibs = new string[0];
-    public string[] NoHostileNames = new string[0];
+    public string[] OtherLibs = Array.Empty<string>();
+
+    public bool RecordCastingTank = true;
+    public bool RecordCastingArea = true;
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
@@ -199,6 +201,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;
+    public float DistanceForMoving = 1.2f;
 
     public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
     public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();
@@ -225,7 +228,6 @@ public class PluginConfiguration : IPluginConfiguration
 
         {SpecialCommandType.Burst, new ButtonRecord( GamepadButtons.DpadDown, true, false) },
         {SpecialCommandType.AntiKnockback, new ButtonRecord( GamepadButtons.DpadUp, true, false) },
-
     };
 
     public ButtonRecord ButtonDoAction { get; set; } = null;

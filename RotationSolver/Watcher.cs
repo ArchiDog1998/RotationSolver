@@ -5,6 +5,7 @@ using Dalamud.Logging;
 using Dalamud.Plugin.Ipc;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using System.Text.RegularExpressions;
 
@@ -77,8 +78,40 @@ public class Watcher : IDisposable
             .Sum(e => (float)e.Value / Service.Player.MaxHp);
 
         DataCenter.AddDamageRec(damageRatio);
-
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
+
+        if(set.Type == ActionType.Spell && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
+        {
+            var type = set.Action.GetActionType();
+
+            if(type is ActionCate.Spell or ActionCate.WeaponSkill or ActionCate.Ability)
+            {
+                if (set.TargetEffects.Count(e =>
+                    DataCenter.PartyMembers.Any(p => p.ObjectId == e.Target?.ObjectId)
+                    && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
+                    && (effect.Value > 0 || (effect.Param0 & 6) == 6))
+                    == DataCenter.PartyMembers.Count())
+                {
+                    if (Service.Config.RecordCastingArea)
+                    {
+                        OtherConfiguration.HostileCastingArea.Add(set.Action.RowId);
+                        OtherConfiguration.SaveHostileCastingArea();
+                    }
+                }
+                else if (DataCenter.PartyTanks.Any(p => p.ObjectId == set.Target?.ObjectId)
+                    || set.TargetEffects.Any(e =>
+                    DataCenter.PartyTanks.Any(p => p.ObjectId == e.Target?.ObjectId)
+                    && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
+                    && (effect.Value > 0 || (effect.Param0 & 6) == 6)))
+                {
+                    if (Service.Config.RecordCastingTank)
+                    {
+                        OtherConfiguration.HostileCastingTank.Add(set.Action.RowId);
+                        OtherConfiguration.SaveHostileCastingTank();
+                    }
+                }
+            }
+        }
     }
 
     private static void ActionFromSelf(uint sourceId, ActionEffectSet set, uint id)
@@ -89,7 +122,7 @@ public class Watcher : IDisposable
 
         if(set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id))
         {
-            IActionHelper.AnimationLockTime[id] = set.AnimationLock;
+            OtherConfiguration.AnimationLockTime[id] = set.AnimationLock;
         }
 
         if (!set.TargetEffects.Any()) return;

@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -116,7 +117,15 @@ internal static partial class TargetUpdater
 
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
-            if (Service.Config.NoHostileNames.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
+            IEnumerable<string> names = Array.Empty<string>();
+            if(OtherConfiguration.NoHostileNames.TryGetValue(Service.ClientState.TerritoryType, out var ns1))
+                names = names.Union(ns1);
+
+            if (OtherConfiguration.NoHostileNames.TryGetValue(0, out var ns2))
+                names = names.Union(ns2);
+
+            if (names.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
+
             return fateId > 0 ? b.FateId() == fateId : true;
         });
 
@@ -165,7 +174,9 @@ internal static partial class TargetUpdater
     {
         return IsHostileCastingBase(h, (act) =>
         {
-            return h.CastTargetObjectId == h.TargetObjectId;
+            return OtherConfiguration.HostileCastingTank.Contains(act.RowId);
+
+            //return h.CastTargetObjectId == h.TargetObjectId;
         });
     }
 
@@ -173,20 +184,22 @@ internal static partial class TargetUpdater
     {
         return IsHostileCastingBase(h, (act) =>
         {
-            if ((act.CastType == 1 || act.CastType == 2)
-              && act.Range == 0
-              && act.EffectRange >= 40)
-                return true;
+            return OtherConfiguration.HostileCastingArea.Contains(act.RowId);
 
-            if (act.CastType == 2
-             && act.EffectRange == 6
-             && act.Cast100ms == 50
-             && act.CanTargetHostile
-             && !act.CanTargetSelf
-             && act.Range == 100)
-                return true;
+            //if ((act.CastType == 1 || act.CastType == 2)
+            //  && act.Range == 0
+            //  && act.EffectRange >= 40)
+            //    return true;
 
-            return false;
+            //if (act.CastType == 2
+            // && act.EffectRange == 6
+            // && act.Cast100ms == 50
+            // && act.CanTargetHostile
+            // && !act.CanTargetSelf
+            // && act.Range == 100)
+            //    return true;
+
+            //return false;
         });
     }
 
