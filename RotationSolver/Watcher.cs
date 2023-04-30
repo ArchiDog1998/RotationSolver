@@ -5,6 +5,7 @@ using Dalamud.Logging;
 using Dalamud.Plugin.Ipc;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using System.Text.RegularExpressions;
 
@@ -89,7 +90,7 @@ public class Watcher : IDisposable
 
         if(set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id))
         {
-            IActionHelper.AnimationLockTime[id] = set.AnimationLock;
+            OtherConfiguration.AnimationLockTime[id] = set.AnimationLock;
         }
 
         if (!set.TargetEffects.Any()) return;

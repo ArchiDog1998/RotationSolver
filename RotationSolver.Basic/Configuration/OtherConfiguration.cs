@@ -7,6 +7,8 @@ namespace RotationSolver.Basic.Configuration;
 
 public class OtherConfiguration
 {
+    public static SortedList<uint, float> AnimationLockTime = new SortedList<uint, float>();
+
     public static Dictionary<uint, string[]> NoHostileNames = new Dictionary<uint, string[]>();
 
     public static SortedSet<uint> DangerousStatus = new SortedSet<uint>()
@@ -44,11 +46,25 @@ public class OtherConfiguration
 
     public static void Init()
     {
+        if (!Directory.Exists(Service.Interface.ConfigDirectory.FullName))
+        {
+            Directory.CreateDirectory(Service.Interface.ConfigDirectory.FullName);
+        }
         Task.Run(() => InitOne(ref DangerousStatus, nameof(DangerousStatus)));
 
         Task.Run(() => InitOne(ref InvincibleStatus, nameof(InvincibleStatus)));
 
         Task.Run(() => InitOne(ref NoHostileNames, nameof(NoHostileNames)));
+
+        Task.Run(() => InitOne(ref AnimationLockTime, nameof(AnimationLockTime)));
+    }
+
+    public static void Save()
+    {
+        SaveDangerousStatus();
+        SaveInvincibleStatus();
+        SaveNoHostileNames();
+        SaveAnimationLockTime();
     }
 
     public static void SaveDangerousStatus()
@@ -66,8 +82,21 @@ public class OtherConfiguration
         Task.Run(() => Save(NoHostileNames, nameof(NoHostileNames)));
     }
 
+    public static void SaveAnimationLockTime()
+    {
+        Task.Run(() => Save(AnimationLockTime, nameof(AnimationLockTime)));
+    }
+
     private static string GetFilePath(string name)
-        => Service.Interface.ConfigDirectory.FullName + $"\\{name}.json";
+    {
+        var directory = Service.Interface.ConfigDirectory.FullName;
+#if DEBUG
+        var dir = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources";
+        if (Directory.Exists(dir)) directory = dir;
+#endif
+
+        return directory + $"\\{name}.json";
+    }
 
     private static void Save<T>(T value, string name)
         => SavePath(value, GetFilePath(name));
@@ -92,6 +121,22 @@ public class OtherConfiguration
                 PluginLog.Warning(ex, $"Failed to load {name}.");
             }
         }
-        else SavePath(value, path);
+        else
+        {
+            try
+            {
+                var client = new HttpClient();
+                var str = client.GetStringAsync($"https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/{name}.json").Result;
+
+                File.WriteAllText(path, str);
+                value = JsonConvert.DeserializeObject<T>(str);
+            }
+            catch
+            {
+                SavePath(value, path);
+            }
+        }
     }
+
+
 }
