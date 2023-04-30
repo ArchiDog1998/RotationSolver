@@ -78,8 +78,40 @@ public class Watcher : IDisposable
             .Sum(e => (float)e.Value / Service.Player.MaxHp);
 
         DataCenter.AddDamageRec(damageRatio);
-
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
+
+        if(set.Type == ActionType.Spell && DataCenter.PartyMembers.Count() >= 4)
+        {
+            var type = set.Action.GetActionType();
+
+            if(type is ActionCate.Spell or ActionCate.WeaponSkill or ActionCate.Ability)
+            {
+                if (set.TargetEffects.Count(e =>
+                    DataCenter.PartyMembers.Any(p => p.ObjectId == e.Target?.ObjectId)
+                    && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
+                    && (effect.Value > 0 || (effect.Param0 & 6) == 6))
+                    == DataCenter.PartyMembers.Count())
+                {
+                    if (Service.Config.RecordCastingArea)
+                    {
+                        OtherConfiguration.HostileCastingArea.Add(set.Action.RowId);
+                        OtherConfiguration.SaveHostileCastingArea();
+                    }
+                }
+                else if (DataCenter.PartyTanks.Any(p => p.ObjectId == set.Target?.ObjectId)
+                    || set.TargetEffects.Any(e =>
+                    DataCenter.PartyTanks.Any(p => p.ObjectId == e.Target?.ObjectId)
+                    && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
+                    && (effect.Value > 0 || (effect.Param0 & 6) == 6)))
+                {
+                    if (Service.Config.RecordCastingTank)
+                    {
+                        OtherConfiguration.HostileCastingTank.Add(set.Action.RowId);
+                        OtherConfiguration.SaveHostileCastingTank();
+                    }
+                }
+            }
+        }
     }
 
     private static void ActionFromSelf(uint sourceId, ActionEffectSet set, uint id)

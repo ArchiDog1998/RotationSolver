@@ -165,6 +165,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AutoUpdateLibs = true;
     public string[] OtherLibs = Array.Empty<string>();
 
+    public bool RecordCastingTank = true;
+    public bool RecordCastingArea = true;
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;

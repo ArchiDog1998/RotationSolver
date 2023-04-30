@@ -242,6 +242,7 @@
   "ActionSequencer_StatusSelfDesc": "StatusSelf",
   "ActionSequencer_NotAllowed": "This condition can't be used with this action.",
   "Action_Friendly": "Support",
+  "Action_Ability": "0GCD",
   "Action_Attack": "Attack",
   "ComboConditionType_Bool": "Boolean",
   "ComboConditionType_Byte": "Byte",

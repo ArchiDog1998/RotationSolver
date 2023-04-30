@@ -331,6 +331,7 @@ internal partial class Strings
 
     #region Actions
     public string Action_Friendly { get; set; } = "Support";
+    public string Action_Ability { get; set; } = "0GCD";
     public string Action_Attack { get; set; } = "Attack";
     #endregion
 

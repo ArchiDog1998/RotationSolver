@@ -251,7 +251,7 @@ internal partial class RotationConfigWindow
 
                 if (!string.IsNullOrEmpty(info.support))
                 {
-                    if (ImGui.Button($"Support##{grp.Key.GetHashCode()}"))
+                    if (ImGuiHelper.IconButton(FontAwesomeIcon.HandPaper, $"Support{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
@@ -264,9 +264,11 @@ internal partial class RotationConfigWindow
                     }
                 }
 
+                ImGui.SameLine();
+
                 if (!string.IsNullOrEmpty(info.help))
                 {
-                    if (ImGui.Button($"Help##{grp.Key.GetHashCode()}"))
+                    if (ImGuiHelper.IconButton(FontAwesomeIcon.Book, $"Help{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
@@ -279,9 +281,11 @@ internal partial class RotationConfigWindow
                     }
                 }
 
+                ImGui.SameLine();
+
                 if (!string.IsNullOrEmpty(info.changeLog))
                 {
-                    if (ImGui.Button($"ChangeLog##{grp.Key.GetHashCode()}"))
+                    if (ImGuiHelper.IconButton(FontAwesomeIcon.History, $"ChangeLog{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
@@ -294,12 +298,14 @@ internal partial class RotationConfigWindow
                     }
                 }
 
+                ImGui.SameLine();
+
                 ImGui.PushStyleColor(ImGuiCol.Button, 0xFF5E5BFF);
                 ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD5E5BFF);
                 ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA5E5BFF);
                 if (!string.IsNullOrEmpty(info.donate))
                 {
-                    if (ImGui.Button($"Donate##{grp.Key.GetHashCode()}"))
+                    if (ImGuiHelper.IconButton(FontAwesomeIcon.Coffee, $"Donate##{grp.Key.GetHashCode()}"))
                     {
                         try
                         {

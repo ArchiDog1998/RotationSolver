@@ -501,7 +501,7 @@ internal static class ImGuiHelper
                 ImGui.SameLine();
                 Spacing();
 
-                if (IconButton(FontAwesomeIcon.Globe, "Code" + rotation.GetHashCode().ToString()))
+                if (IconButton(FontAwesomeIcon.Code, "Code" + rotation.GetHashCode().ToString()))
                 {
                     try
                     {
