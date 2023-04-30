@@ -117,7 +117,15 @@ internal static partial class TargetUpdater
 
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
-            if (OtherConfiguration.NoHostileNames.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
+            IEnumerable<string> names = Array.Empty<string>();
+            if(OtherConfiguration.NoHostileNames.TryGetValue(Service.ClientState.TerritoryType, out var ns1))
+                names = names.Union(ns1);
+
+            if (OtherConfiguration.NoHostileNames.TryGetValue(0, out var ns2))
+                names = names.Union(ns2);
+
+            if (names.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
+
             return fateId > 0 ? b.FateId() == fateId : true;
         });
 

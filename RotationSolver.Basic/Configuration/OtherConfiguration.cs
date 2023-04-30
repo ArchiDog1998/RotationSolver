@@ -1,10 +1,11 @@
 ﻿using Dalamud.Logging;
+using System.Xml.Linq;
 
 namespace RotationSolver.Basic.Configuration;
 
 public class OtherConfiguration
 {
-    public static string[] NoHostileNames = Array.Empty<string>();
+    public static Dictionary<uint, string[]> NoHostileNames = new Dictionary<uint, string[]>();
 
     public static SortedSet<uint> DangerousStatus = new SortedSet<uint>()
     {
@@ -76,10 +77,8 @@ public class OtherConfiguration
     }
 
     private static void InitOne<T>(ref T value, string name)
-        => InitOnePath(ref value, GetFilePath(name));
-
-    private static void InitOnePath<T>(ref T value, string path)
     {
+        var path = GetFilePath(name);
         if (File.Exists(path))
         {
             try
@@ -88,7 +87,7 @@ public class OtherConfiguration
             }
             catch (Exception ex)
             {
-                PluginLog.Warning(ex, "Failed to load Dangerous Status List.");
+                PluginLog.Warning(ex, $"Failed to load {name}.");
             }
         }
         else SavePath(value, path);

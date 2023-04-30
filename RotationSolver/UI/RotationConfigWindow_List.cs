@@ -1,22 +1,37 @@
 ﻿using Dalamud.Utility;
+using Lumina.Data.Parsing;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Data;
 using RotationSolver.Localization;
+using RotationSolver.TextureItems;
 using RotationSolver.Updaters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace RotationSolver.UI;
 
 internal partial class RotationConfigWindow
 {
-    private static BaseStatus[] _allDispelStatus = null;
-    public static BaseStatus[] AllDispelStatus
+    private static uint _territoryId = 0;
+    private static TerritoryTypeTexture[] _allTerritories = null;
+    public static TerritoryTypeTexture[] AllTerritories
+    {
+        get
+        {
+            if (_allTerritories == null)
+            {
+                _allTerritories = Service.GetSheet<TerritoryType>()
+                    .Where(t => t!= null
+                        && t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId != 0)
+                    .OrderBy(t => t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId)
+                    .Select(t => new TerritoryTypeTexture(t))
+                    .ToArray();
+            }
+            return _allTerritories;
+        }
+    }
+
+    private static StatusTexture[] _allDispelStatus = null;
+    public static StatusTexture[] AllDispelStatus
     {
         get
         {
@@ -24,15 +39,15 @@ internal partial class RotationConfigWindow
             {
                 _allDispelStatus = Service.GetSheet<Status>()
                     .Where(s => s.CanDispel)
-                    .Select(s => new BaseStatus(s))
+                    .Select(s => new StatusTexture(s))
                     .ToArray();
             }
             return _allDispelStatus;
         }
     }
 
-    private static BaseStatus[] _allInvStatus = null;
-    public static BaseStatus[] AllInvStatus
+    private static StatusTexture[] _allInvStatus = null;
+    public static StatusTexture[] AllInvStatus
     {
         get
         {
@@ -41,7 +56,7 @@ internal partial class RotationConfigWindow
                 _allInvStatus = Service.GetSheet<Status>()
                     .Where(s => !s.CanDispel && !s.LockMovement && !s.IsPermanent && !s.IsGaze && !s.IsFcBuff && s.HitEffect.Row == 16 && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
                         && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
-                    .Select(s => new BaseStatus(s))
+                    .Select(s => new StatusTexture(s))
                     .ToArray();
             }
             return _allInvStatus;
@@ -69,9 +84,32 @@ internal partial class RotationConfigWindow
 
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_NoHostile, DrawParamNoHostile, () =>
             {
+                ImGui.SetNextItemWidth(200);
+
+                if (ImGui.BeginCombo("##AddNoHostileNames",
+                    Service.GetSheet<TerritoryType>().GetRow(_territoryId)?.PlaceName?.Value?.Name.ToString() ?? "Everywhere", ImGuiComboFlags.HeightLargest))
+                {
+                    if (ImGui.Selectable("Everywhere"))
+                    {
+                        _territoryId = 0;
+                    }
+
+                     ImGuiHelper.SearchItems(ref searchText, AllTerritories, s =>
+                    {
+                        _territoryId = s.ID;
+                    });
+
+                    ImGui.EndCombo();
+                }
+
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
+
                 if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Param_AddOne))
                 {
-                    OtherConfiguration.NoHostileNames = OtherConfiguration.NoHostileNames.Append(string.Empty).ToArray();
+                    if(!OtherConfiguration.NoHostileNames.TryGetValue(_territoryId, out var hostileNames))
+                        hostileNames = Array.Empty<string>();
+                    OtherConfiguration.NoHostileNames[_territoryId] = hostileNames.Append(string.Empty).ToArray();
                 }
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
@@ -317,10 +355,14 @@ internal partial class RotationConfigWindow
     private void DrawParamNoHostile()
     {
         int removeIndex = -1;
-        for (int i = 0; i < OtherConfiguration.NoHostileNames.Length; i++)
+
+        if (!OtherConfiguration.NoHostileNames.TryGetValue(_territoryId, out var names)) names = Array.Empty<string>();
+
+        for (int i = 0; i < names.Length; i++)
         {
-            if (ImGui.InputText($"##NoHostileNames{i}", ref OtherConfiguration.NoHostileNames[i], 1024))
+            if (ImGui.InputText($"##NoHostileNames{i}", ref names[i], 1024))
             {
+                OtherConfiguration.NoHostileNames[_territoryId] = names;
                 OtherConfiguration.SaveNoHostileNames();
             }
             ImGui.SameLine();
@@ -333,9 +375,9 @@ internal partial class RotationConfigWindow
         }
         if (removeIndex > -1)
         {
-            var list = OtherConfiguration.NoHostileNames.ToList();
+            var list = names.ToList();
             list.RemoveAt(removeIndex);
-            OtherConfiguration.NoHostileNames = list.ToArray();
+            OtherConfiguration.NoHostileNames[_territoryId] = list.ToArray();
             OtherConfiguration.SaveNoHostileNames();
         }
     }

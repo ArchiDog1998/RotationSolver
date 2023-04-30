@@ -1,29 +1,29 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 
-namespace RotationSolver.ActionSequencer;
+namespace RotationSolver.TextureItems;
 
-internal class BaseStatus : ITexture
+internal class StatusTexture : ITexture
 {
-    public Status _status;
+    readonly Status _status;
     public uint IconID => _status.Icon;
     public StatusID ID => (StatusID)_status.RowId;
     public string Name => $"{_status.Name} ({_status.RowId})";
 
     public string Description => string.Empty;
 
-    public bool IsEnabled { get; set; }
+    public bool IsEnabled { get; set; } = true;
 
-    public BaseStatus(StatusID id)
+    public StatusTexture(StatusID id)
         : this((uint)id)
     {
     }
 
-    public BaseStatus(uint id)
+    public StatusTexture(uint id)
      : this(Service.GetSheet<Status>().GetRow(id))
     {
     }
 
-    public BaseStatus(Status status)
+    public StatusTexture(Status status)
     {
         _status = status;
     }
