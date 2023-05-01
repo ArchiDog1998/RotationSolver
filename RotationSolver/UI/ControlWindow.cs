@@ -19,7 +19,7 @@ internal class ControlWindow : Window
     public ControlWindow()
         : base(nameof(ControlWindow), BaseFlags)
     {
-        Size = new Vector2(540f, 300f);
+        Size = new Vector2(570f, 300f);
         SizeCondition = ImGuiCond.FirstUseEver;
     }
 
@@ -55,29 +55,42 @@ internal class ControlWindow : Window
         var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
         var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
 
-        ImGui.SetColumnWidth(0, width + ImGui.GetStyle().ColumnsMinSpacing * 2);
         ImGui.SetColumnWidth(1, 8);
 
         DrawNextAction(gcd, ability, width);
 
+        ImGui.SameLine();
+        var columnWidth = ImGui.GetCursorPosX();
+        ImGui.NewLine();
+
         ImGui.Spacing();
 
-        DrawCommandAction(61751, StateCommandType.ManualTarget, ImGuiColors.DPSRed);
+        DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
 
         ImGui.SameLine();
         DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DalamudWhite2);
 
-        DrawCommandAction(61822, StateCommandType.AutoTarget, ImGuiColors.DPSRed);
+        ImGui.SameLine();
+        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
+        ImGui.NewLine();
+
+        DrawCommandAction(61822, StateCommandType.Auto, ImGuiColors.DPSRed);
 
         ImGui.SameLine();
 
         ImGui.BeginGroup();
 
-        ImGui.Text(DataCenter.TargetingType.ToName());
+        ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.ToName());
 
         RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
             ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
         ImGui.EndGroup();
+
+        ImGui.SameLine();
+        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
+        ImGui.NewLine();
+
+        ImGui.SetColumnWidth(0, columnWidth);
 
         ImGui.NextColumn();
         ImGui.NextColumn();

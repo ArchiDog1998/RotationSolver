@@ -20,8 +20,8 @@ public enum SpecialCommandType : byte
 public enum StateCommandType : byte
 {
     Cancel,
-    AutoTarget,
-    ManualTarget,
+    Auto,
+    Manual,
 
     None,
 }

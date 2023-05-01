@@ -259,7 +259,7 @@ public partial class BaseAction
     private bool TargetHostile(float range, bool mustUse, int aoeCount, out BattleChara target)
     {
         //如果不用自动找目标，那就直接返回。
-        if (DataCenter.StateType == StateCommandType.ManualTarget)
+        if (DataCenter.StateType == StateCommandType.Manual)
         {
             if (Service.TargetManager.Target is BattleChara b && b.IsNPCEnemy() && b.DistanceToPlayer() <= range)
             {
@@ -335,7 +335,7 @@ public partial class BaseAction
             }
 
             //not use when aoe.
-            if (DataCenter.StateType == StateCommandType.ManualTarget)
+            if (DataCenter.StateType == StateCommandType.Manual)
             {
                 if (!Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;
             }

@@ -5,7 +5,7 @@ namespace RotationSolver.Commands
     public static partial class RSCommands
     {
         private static string _stateString = "Off", _specialString = string.Empty;
-        private static string _aoeString => "AOE " + (Service.Config.GetValue(SettingsCommand.UseAOEAction) && (DataCenter.StateType != StateCommandType.ManualTarget || Service.Config.GetValue(SettingsCommand.UseAOEWhenManual)) ? "on" : "off");
+        private static string _aoeString => "AOE " + (Service.Config.GetValue(SettingsCommand.UseAOEAction) && (DataCenter.StateType != StateCommandType.Manual || Service.Config.GetValue(SettingsCommand.UseAOEWhenManual)) ? "on" : "off");
 
         private static string _preventString => "Prevent " + (Service.Config.GetValue(SettingsCommand.PreventActions) ? "on" : "off");
 
@@ -24,16 +24,16 @@ namespace RotationSolver.Commands
 
         private static unsafe void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
         {
-            if (DataCenter.StateType == StateCommandType.AutoTarget
-                && stateType == StateCommandType.AutoTarget)
+            if (DataCenter.StateType == StateCommandType.Auto
+                && stateType == StateCommandType.Auto)
             {
                 Service.Config.TargetingIndex += 1;
                 Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count;
             }
 
             if (Service.Config.ToggleManual 
-                && DataCenter.StateType == StateCommandType.ManualTarget
-                && stateType == StateCommandType.ManualTarget)
+                && DataCenter.StateType == StateCommandType.Manual
+                && stateType == StateCommandType.Manual)
             {
                 stateType = StateCommandType.Cancel;
             }
