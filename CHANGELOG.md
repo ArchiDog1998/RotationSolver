@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.7.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.2...v2.7.3) (2023-05-01)
+
+
+### Bug Fixes
+
+* add heal potion. ([408992f](https://github.com/ArchiDog1998/RotationSolver/commit/408992f3426fd166f97994fa0a743865e1ea0e58))
+* add tooltip for some button. ([61a3cb7](https://github.com/ArchiDog1998/RotationSolver/commit/61a3cb783b405b4c4101782cc547ce6b46afb860))
+* changed macro. ([58c837c](https://github.com/ArchiDog1998/RotationSolver/commit/58c837c93d139753cbe9f846fc1beb61e1248be7))
+* changed relay folder to a seperater folder. ([d5173c3](https://github.com/ArchiDog1998/RotationSolver/commit/d5173c3810928ee37198faac48e220b0528b78b5))
+* changed the macro! ([9c3a60f](https://github.com/ArchiDog1998/RotationSolver/commit/9c3a60fbaacb5b273154aca815a9c15753fef91e))
+* fixed saving for hostile list. ([61f3650](https://github.com/ArchiDog1998/RotationSolver/commit/61f365037372e9dd488ed4fe0ca02e81f09e4212))
+* fixed the mark action check. ([d340b19](https://github.com/ArchiDog1998/RotationSolver/commit/d340b195c28f9d038158d25e8b3e0d8220baf1bb))
+* moved input config. ([1cfc28b](https://github.com/ArchiDog1998/RotationSolver/commit/1cfc28b2473834d825bc4d5e4b6ac87e5a03bf3e))
+* refined the MP check. ([284c7fe](https://github.com/ArchiDog1998/RotationSolver/commit/284c7fe24a79973015c7f2241296824b4b8643fa))
+* removed loading log. ([ff04826](https://github.com/ArchiDog1998/RotationSolver/commit/ff048269cacb5c90831b1c68e5fcbb24e0c0bb21))
+* removed the tank buster check. ([5afb0e0](https://github.com/ArchiDog1998/RotationSolver/commit/5afb0e06ef72a6680c7ced745a0b11b46bd693a9))
+* roll back the SGE base file. ([bf7b72c](https://github.com/ArchiDog1998/RotationSolver/commit/bf7b72cfecac5afebe96366a58937c36b79ce545))
+
 ## [2.7.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.1...v2.7.2) (2023-04-30)
 
 
