@@ -24,7 +24,7 @@ internal static class RotationUpdater
 
     public static async void GetAllCustomRotations(DownloadOption option)
     {
-        var relayFolder = Service.Interface.ConfigDirectory.FullName;
+        var relayFolder = Service.Interface.ConfigDirectory.FullName + "\\Rotations";
         if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
 
         LoadRotationsFromLocal(relayFolder);
