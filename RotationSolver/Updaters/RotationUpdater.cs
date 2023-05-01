@@ -127,9 +127,7 @@ internal static class RotationUpdater
     {
         try
         {
-            var assembly = RotationHelper.LoadFrom(filePath);
-            PluginLog.Log("Successfully loaded " + assembly.FullName);
-            return assembly;
+            return RotationHelper.LoadFrom(filePath);
         }
         catch (Exception ex)
         {
