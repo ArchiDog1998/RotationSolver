@@ -291,9 +291,11 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst, SettingsCommand.AutoBurst);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseItem,
-            ref Service.Config.UseItem, Service.Default.UseItem,
-            LocalizationManager.RightLang.ConfigWindow_Param_UseItemDesc);
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseTinctures,
+            ref Service.Config.UseTinctures, Service.Default.UseTinctures);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseHealPotions,
+            ref Service.Config.UseHealPotions, Service.Default.UseHealPotions);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAbility,
             SettingsCommand.UseAbility);

@@ -56,7 +56,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool RaiseBrinkOfDeath = true;
     public int LessMPNoRaise = 0;
     public bool AddEnemyListToHostile = true;
-    public bool UseItem = false;
+    public bool UseTinctures = false;
+    public bool UseHealPotions = false;
     public bool PositionalFeedback = true;
     public bool DrawPositional = true;
     public bool DrawMeleeRange = true;

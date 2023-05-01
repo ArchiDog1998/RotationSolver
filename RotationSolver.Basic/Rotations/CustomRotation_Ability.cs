@@ -144,7 +144,11 @@ public abstract partial class CustomRotation
         if ((DataCenter.HPNotFull || Job.GetJobRole() != JobRole.Healer) && InCombat)
         {
             if ((DataCenter.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && HealAreaAbility(out act)) return true;
-            if ((DataCenter.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility) && HealSingleAbility(out act)) return true;
+            if (DataCenter.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility)
+            {
+                if (HealSingleAbility(out act)) return true;
+                if (UseHealPotion(out act)) return true;
+            }
         }
 
         return false;
