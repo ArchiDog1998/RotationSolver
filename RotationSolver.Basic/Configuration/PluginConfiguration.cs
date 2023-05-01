@@ -203,35 +203,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowCooldownWindow = false;
     public float DistanceForMoving = 1.2f;
 
-    public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
-    public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();
-    public KeyRecord KeyDoAction { get; set; } = null;
-    public Dictionary<StateCommandType, ButtonRecord> ButtonState { get; set; } = new Dictionary<StateCommandType, ButtonRecord>()
-    {
-        {StateCommandType.AutoTarget, new ButtonRecord( GamepadButtons.East, false, true) },
-        {StateCommandType.ManualTarget, new ButtonRecord( GamepadButtons.North, false, true) },
-        {StateCommandType.Cancel, new ButtonRecord( GamepadButtons.South, false, true) },
-    };
-    public Dictionary<SpecialCommandType, ButtonRecord> ButtonSpecial { get; set; } = new Dictionary<SpecialCommandType, ButtonRecord>()
-    {
-        {SpecialCommandType.EndSpecial, new ButtonRecord( GamepadButtons.West, false, true) },
-
-        {SpecialCommandType.EsunaStanceNorth, new ButtonRecord( GamepadButtons.DpadRight, false, true) },
-        {SpecialCommandType.MoveForward, new ButtonRecord( GamepadButtons.DpadUp, false, true) },
-        {SpecialCommandType.MoveBack, new ButtonRecord( GamepadButtons.DpadDown, false, true) },
-        {SpecialCommandType.RaiseShirk, new ButtonRecord( GamepadButtons.DpadLeft, false, true) },
-
-        {SpecialCommandType.DefenseArea, new ButtonRecord( GamepadButtons.North, true, false) },
-        {SpecialCommandType.DefenseSingle, new ButtonRecord( GamepadButtons.East, true, false) },
-        {SpecialCommandType.HealArea, new ButtonRecord( GamepadButtons.South, true, false) },
-        {SpecialCommandType.HealSingle, new ButtonRecord( GamepadButtons.West, true, false) },
-
-        {SpecialCommandType.Burst, new ButtonRecord( GamepadButtons.DpadDown, true, false) },
-        {SpecialCommandType.AntiKnockback, new ButtonRecord( GamepadButtons.DpadUp, true, false) },
-    };
-
-    public ButtonRecord ButtonDoAction { get; set; } = null;
-
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);
