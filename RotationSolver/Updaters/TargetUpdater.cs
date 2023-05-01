@@ -222,6 +222,7 @@ internal static partial class TargetUpdater
 
     #region Friends
     private static Dictionary<uint, uint> _lastHp = new Dictionary<uint, uint>();
+    private static uint _lastMp = 0;
     private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
     {
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
@@ -260,13 +261,28 @@ internal static partial class TargetUpdater
         UpdateCanHeal(Service.Player);
 
         _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
+
+        if (DataCenter.InEffectTime)
+        {
+            var rightMp = Service.Player.CurrentMp;
+            if(rightMp - _lastMp == DataCenter.MPGain)
+            {
+                DataCenter.MPGain = 0;
+            }
+            DataCenter.CurrentMp = Math.Min(10000, Service.Player.CurrentMp + DataCenter.MPGain);
+        }
+        else
+        {
+            DataCenter.CurrentMp = Service.Player.CurrentMp;
+        }
+        _lastMp = Service.Player.CurrentMp;
     }
 
     private static float GetPartyMemberHPRatio(BattleChara member)
     {
         if (member == null) return 0;
 
-        if ((DateTime.Now - DataCenter.EffectTime).TotalSeconds > 1
+        if (!DataCenter.InEffectTime
             || !DataCenter.HealHP.TryGetValue(member.ObjectId, out var hp))
         {
             return (float)member.CurrentHp / member.MaxHp;
