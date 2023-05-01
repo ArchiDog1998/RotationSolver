@@ -57,6 +57,7 @@ internal partial class RotationConfigWindow
         ImGui.Text("Hostile Near Count Max Range: " + DataCenter.NumberOfHostilesInMaxRange.ToString());
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
         ImGui.Text("Ping: " + DataCenter.Ping.ToString());
+        ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
 
         foreach (var status in Service.Player.StatusList)
         {
@@ -135,19 +136,21 @@ internal partial class RotationConfigWindow
             ImGui.Text(item.Name.ToString());
         }
     }
+
     private void DrawNextAction()
     {
         ImGui.Text(RotationUpdater.RightNowRotation.RotationName);
         ImGui.Text(DataCenter.SpecialType.ToString());
 
-        ActionUpdater.NextAction?.Display(false);
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
         ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
         ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
         ImGui.Text("Elapsed: " + CustomRotation.CombatElapsedLess(10).ToString());
         ImGui.Text("Time: " + (DataCenter.CombatTime + DataCenter.WeaponRemain).ToString());
 
+        ActionUpdater.NextAction?.Display(false);
     }
+
     private void DrawLastAction()
     {
         DrawAction(DataCenter.LastAction, nameof(DataCenter.LastAction));

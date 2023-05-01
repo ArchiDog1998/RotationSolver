@@ -20,13 +20,13 @@
     "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
     "Punchline": "Based on the pve combat information in one frame, find the best action.",
     "AcceptsFeedback": true,
-    "AssemblyVersion": "2.7.1",
-    "Changelog": "2.7.1 (2023-04-29)\n\n\nBug Fixes\n\n* add a NoHostiles  feature. (85950e7)\n* add Physis2. (0eeba6c)\n* changed the high-end prompt (b34eb2b)\n* fixed BLM timer. (2efbb65)\n* fixed update actions in control window. (227b7cd)\n* if actionid isdefined, record the timeline. (fb6cbe4)\n* refine the MP check. (a4f3198)\n* remove UsingParasol state. (b6fabe7)\n* removed the mp predict. (5c0cfcd)\n* removed the statsu provide from kardia. (d6668ab)\n* update the template. (d69c108)",
-    "DownloadCount": "7472",
-    "LastUpdate": 1682777755,
+    "AssemblyVersion": "2.7.2",
+    "Changelog": "2.7.2 (2023-04-30)\n\n\nBug Fixes\n\n* add a class for extra configuration. (81147c1)\n* add a param to control the melee distance. (f62ad16)\n* add casting action check list. (ab4c248)\n* add load for list. (5893683)\n* changed the ui icon. (20c8f8c)\n* changed ui. (51ad02c)\n* fixed raising using in macro. (7f8233f)\n* fixed with ui. (b1096a8)\n* make No hostile as a dictionary about the territory. (5d28272)\n* merge the saving files (22b275c)\n* only record casting action. (a34416c)",
+    "DownloadCount": "7464",
+    "LastUpdate": 1682845077,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
-    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.7.1/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.7.1/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.7.2/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.7.2/latest.zip"
   },
   {
     "Author": "ArchiDog1998",
@@ -35,7 +35,7 @@
     "ApplicableVersion": "any",
     "AssemblyVersion": "1.0.0.5",
     "Changelog": "",
-    "DownloadCount": "212",
+    "DownloadCount": "215",
     "LastUpdate": 1674699010,
     "RepoUrl": "https://github.com/ArchiDog1998/FakeName",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/FakeName/releases/download/v1.0.0.5/latest.zip",

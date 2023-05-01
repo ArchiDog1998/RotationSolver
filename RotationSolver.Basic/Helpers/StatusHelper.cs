@@ -101,6 +101,7 @@ public static class StatusHelper
 
     public static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
+        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return byte.MaxValue;
         var stacks = obj.StatusStacks(isFromSelf, statusIDs);
         if (stacks == null || !stacks.Any()) return 0;
         return stacks.Min();

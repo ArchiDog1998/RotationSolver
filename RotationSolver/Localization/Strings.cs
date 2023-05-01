@@ -30,11 +30,11 @@ internal partial class Strings
     public string ConfigWindow_HelpItem_Description { get; set; }
         = "In this window, you can see all Rotation Solver built-in commands for combat. ";
 
-    public string ConfigWindow_HelpItem_AttackSmart { get; set; }
-        = "Start attacking in smart mode(auto-targeting) when out of combat, otherwise switch the target according to the conditions.";
+    public string ConfigWindow_HelpItem_AttackAuto { get; set; }
+        = "Start attacking in auto target mode when out of combat, otherwise switch the target according to the conditions.";
 
     public string ConfigWindow_HelpItem_AttackManual { get; set; }
-        = "Start attacking in manual mode. You need to choose the target manually.";
+        = "Start attacking in manual target mode. You need to choose the target manually.";
 
     public string ConfigWindow_HelpItem_AttackCancel { get; set; }
         = "Stop attacking. Remember to turn it off when not in use!";
@@ -185,8 +185,8 @@ internal partial class Strings
     public string ConfigWindow_Param_RaisePlayerByCasting { get; set; } = "Raise player by casting when swift is in cooldown";
     public string ConfigWindow_Param_UseHealWhenNotAHealer { get; set; } = "Use heal when not-healer";
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
-    public string ConfigWindow_Param_UseItem { get; set; } = "Use items";
-    public string ConfigWindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
+    public string ConfigWindow_Param_UseTinctures { get; set; } = "Use Tinctures";
+    public string ConfigWindow_Param_UseHealPotions { get; set; } = "Use Heal Potions";
     public string ConfigWindow_Param_Conditon { get; set; } = "Condition";
     public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto turn smart on countdown";
     public string ConfigWindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";

@@ -30,7 +30,6 @@ public abstract partial class CustomRotation
     /// </summary>
     protected static bool IsMoving => DataCenter.IsMoving;
 
-
     /// <summary>
     /// Is in combat.
     /// </summary>
@@ -39,6 +38,11 @@ public abstract partial class CustomRotation
     static RandomDelay _notInCombatDelay = new RandomDelay(() =>
         (Service.Config.NotInCombatDelayMin, Service.Config.NotInCombatDelayMax));
     protected static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
+
+    /// <summary>
+    /// Player's MP.
+    /// </summary>
+    protected static uint CurrentMp => DataCenter.CurrentMp;
 
     #endregion
 

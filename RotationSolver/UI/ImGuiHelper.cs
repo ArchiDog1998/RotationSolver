@@ -98,11 +98,26 @@ internal static class ImGuiHelper
         ImGui.PopStyleVar();
     }
 
-    public static bool IconButton(FontAwesomeIcon icon, string name)
+    public static bool IconButton(FontAwesomeIcon icon, string name, string description = null)
     {
         ImGui.PushFont(UiBuilder.IconFont);
         var result = ImGui.Button($"{icon.ToIconString()}##{name}");
         ImGui.PopFont();
+        HoveredString(description ?? icon switch
+        {
+            FontAwesomeIcon.Coffee => "Donate",
+            FontAwesomeIcon.History => "ChangeLog",
+            FontAwesomeIcon.Book => "Wiki / Help",
+            FontAwesomeIcon.HandPaper => "Support",
+            FontAwesomeIcon.Code => "Source Code",
+            FontAwesomeIcon.ArrowUp => "Move Up",
+            FontAwesomeIcon.ArrowDown => "Move Down",
+            FontAwesomeIcon.Ban => "Delete",
+            FontAwesomeIcon.Plus => "Add",
+            FontAwesomeIcon.Download => "Download",
+            FontAwesomeIcon.FileDownload => "Local load",
+            _ => null,
+        });
         return result;
     }
 
@@ -484,7 +499,8 @@ internal static class ImGuiHelper
             {
                 ImGui.SameLine();
                 Spacing();
-                if (IconButton(FontAwesomeIcon.Undo, $"#{rotation.GetHashCode()}Undo"))
+                if (IconButton(FontAwesomeIcon.Undo, $"#{rotation.GetHashCode()}Undo",
+                    LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault))
                 {
                     if (Service.Config.RotationsConfigurations.TryGetValue(rotation.Job.RowId, out var jobDict)
                         && jobDict.ContainsKey(rotation.GetType().FullName))
@@ -492,7 +508,6 @@ internal static class ImGuiHelper
                         jobDict.Remove(rotation.GetType().FullName);
                     }
                 }
-                HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault);
             }
 
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();

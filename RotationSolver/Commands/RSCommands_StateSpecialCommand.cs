@@ -24,8 +24,8 @@ namespace RotationSolver.Commands
 
         private static unsafe void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
         {
-            if (DataCenter.StateType == StateCommandType.Smart
-                && stateType == StateCommandType.Smart)
+            if (DataCenter.StateType == StateCommandType.Auto
+                && stateType == StateCommandType.Auto)
             {
                 Service.Config.TargetingIndex += 1;
                 Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count;

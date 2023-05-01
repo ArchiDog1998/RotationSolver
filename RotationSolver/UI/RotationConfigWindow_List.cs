@@ -181,11 +181,6 @@ internal partial class RotationConfigWindow
 
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingTank, DrawHostileCastingTank, () =>
             {
-                DrawCheckBox("Record", ref Service.Config.RecordCastingTank, Service.Default.RecordCastingTank);
-
-                ImGui.SameLine();
-                ImGuiHelper.Spacing();
-
                 ImGui.SetNextItemWidth(200);
                 ImGuiHelper.SearchCombo("##AddCastingTank",
                     LocalizationManager.RightLang.ConfigWindow_Param_AddOne,
@@ -288,6 +283,7 @@ internal partial class RotationConfigWindow
                     var value = Service.Config.TargetingTypes[i];
                     Service.Config.TargetingTypes.RemoveAt(i);
                     Service.Config.TargetingTypes.Insert(i - 1, value);
+                    Service.Config.Save();
                 }
             }
             ImGui.SameLine();
@@ -299,6 +295,7 @@ internal partial class RotationConfigWindow
                     var value = Service.Config.TargetingTypes[i];
                     Service.Config.TargetingTypes.RemoveAt(i);
                     Service.Config.TargetingTypes.Insert(i + 1, value);
+                    Service.Config.Save();
                 }
             }
 
@@ -308,6 +305,7 @@ internal partial class RotationConfigWindow
             if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##HostileDelete{i}"))
             {
                 Service.Config.TargetingTypes.RemoveAt(i);
+                Service.Config.Save();
             }
         }
     }

@@ -1,0 +1,80 @@
+{
+  "KeyState": {},
+  "KeySpecial": {},
+  "KeyDoAction": null,
+  "ButtonState": {
+    "Auto": {
+      "button": 128,
+      "l2": false,
+      "r2": true
+    },
+    "Manual": {
+      "button": 16,
+      "l2": false,
+      "r2": true
+    },
+    "Cancel": {
+      "button": 32,
+      "l2": false,
+      "r2": true
+    }
+  },
+  "ButtonSpecial": {
+    "EndSpecial": {
+      "button": 64,
+      "l2": false,
+      "r2": true
+    },
+    "EsunaStanceNorth": {
+      "button": 8,
+      "l2": false,
+      "r2": true
+    },
+    "MoveForward": {
+      "button": 1,
+      "l2": false,
+      "r2": true
+    },
+    "MoveBack": {
+      "button": 2,
+      "l2": false,
+      "r2": true
+    },
+    "RaiseShirk": {
+      "button": 4,
+      "l2": false,
+      "r2": true
+    },
+    "DefenseArea": {
+      "button": 16,
+      "l2": true,
+      "r2": false
+    },
+    "DefenseSingle": {
+      "button": 128,
+      "l2": true,
+      "r2": false
+    },
+    "HealArea": {
+      "button": 32,
+      "l2": true,
+      "r2": false
+    },
+    "HealSingle": {
+      "button": 64,
+      "l2": true,
+      "r2": false
+    },
+    "Burst": {
+      "button": 2,
+      "l2": true,
+      "r2": false
+    },
+    "AntiKnockback": {
+      "button": 1,
+      "l2": true,
+      "r2": false
+    }
+  },
+  "ButtonDoAction": null
+}

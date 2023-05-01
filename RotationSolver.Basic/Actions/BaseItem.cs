@@ -68,7 +68,9 @@ internal class BaseItem : IBaseItem
 
     public float AnimationLockTime => OtherConfiguration.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 1.1f;
 
-    public bool IsActionSequencer => false;
+    public virtual bool IsActionSequencer => false;
+
+    protected virtual bool CanUseThis => true;
 
     public unsafe BaseItem(uint row, uint a4 = 65535)
     {
@@ -78,12 +80,11 @@ internal class BaseItem : IBaseItem
         SortKey = (uint)ActionManager.Instance()->GetRecastGroup((int)ActionType.Item, ID);
     }
 
-    public unsafe bool CanUse(out IAction item)
+    public virtual unsafe bool CanUse(out IAction item)
     {
         item = this;
         if (_item == null) return false;
-
-        if (!Service.Config.UseItem) return false;
+        if (!CanUseThis) return false;
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))
             && ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID + 1000000))) return false;

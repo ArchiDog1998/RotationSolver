@@ -42,20 +42,22 @@ public class Watcher : IDisposable
 
     private static unsafe void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
+
+        if (Service.Player != null)
+        {
+            try
+            {
+                var set = new ActionEffectSet(sourceId, effectHeader, effectArray, effectTargets);
+
+                ActionFromSelf(sourceId, set, effectHeader->actionId);
+                ActionFromEnemy(sourceId, set);
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Error(ex, "Error at Ability Receive.");
+            }
+        }
         _receiveAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTargets);
-        if (Service.Player == null) return;
-
-        try
-        {
-            var set = new ActionEffectSet(sourceId, effectHeader, effectArray, effectTargets);
-
-            ActionFromSelf(sourceId, set, effectHeader->actionId);
-            ActionFromEnemy(sourceId, set);
-        }
-        catch(Exception ex) 
-        {
-            PluginLog.Error(ex, "Error at Ability Receive.");
-        }
     }
 
     private static void ActionFromEnemy(uint sourceId, ActionEffectSet set)
@@ -98,18 +100,6 @@ public class Watcher : IDisposable
                         OtherConfiguration.SaveHostileCastingArea();
                     }
                 }
-                else if (DataCenter.PartyTanks.Any(p => p.ObjectId == set.Target?.ObjectId)
-                    || set.TargetEffects.Any(e =>
-                    DataCenter.PartyTanks.Any(p => p.ObjectId == e.Target?.ObjectId)
-                    && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
-                    && (effect.Value > 0 || (effect.Param0 & 6) == 6)))
-                {
-                    if (Service.Config.RecordCastingTank)
-                    {
-                        OtherConfiguration.HostileCastingTank.Add(set.Action.RowId);
-                        OtherConfiguration.SaveHostileCastingTank();
-                    }
-                }
             }
         }
     }
@@ -139,7 +129,9 @@ public class Watcher : IDisposable
 
         DataCenter.HealHP = set.GetSpecificTypeEffect(ActionEffectType.Heal);
         DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
+        DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Service.Player.ObjectId).Sum(i => i.Value);
         DataCenter.EffectTime = DateTime.Now;
+        DataCenter.EffectEndTime = DateTime.Now.AddSeconds(set.AnimationLock + 1);
 
         //Macro
         foreach (var item in Service.Config.Events)

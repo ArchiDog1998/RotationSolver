@@ -20,7 +20,7 @@ public enum SpecialCommandType : byte
 public enum StateCommandType : byte
 {
     Cancel,
-    Smart,
+    Auto,
     Manual,
 
     None,
