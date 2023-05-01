@@ -208,8 +208,8 @@ public class PluginConfiguration : IPluginConfiguration
     public KeyRecord KeyDoAction { get; set; } = null;
     public Dictionary<StateCommandType, ButtonRecord> ButtonState { get; set; } = new Dictionary<StateCommandType, ButtonRecord>()
     {
-        {StateCommandType.Smart, new ButtonRecord( GamepadButtons.East, false, true) },
-        {StateCommandType.Manual, new ButtonRecord( GamepadButtons.North, false, true) },
+        {StateCommandType.AutoTarget, new ButtonRecord( GamepadButtons.East, false, true) },
+        {StateCommandType.ManualTarget, new ButtonRecord( GamepadButtons.North, false, true) },
         {StateCommandType.Cancel, new ButtonRecord( GamepadButtons.South, false, true) },
     };
     public Dictionary<SpecialCommandType, ButtonRecord> ButtonSpecial { get; set; } = new Dictionary<SpecialCommandType, ButtonRecord>()

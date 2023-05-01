@@ -50,9 +50,9 @@ internal partial class RotationConfigWindow
         {
             ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-            StateCommandType.Smart.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+            StateCommandType.AutoTarget.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
-            StateCommandType.Manual.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+            StateCommandType.ManualTarget.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
             StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 

@@ -61,12 +61,12 @@ internal class ControlWindow : Window
 
         ImGui.Spacing();
 
-        DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
+        DrawCommandAction(61751, StateCommandType.ManualTarget, ImGuiColors.DPSRed);
 
         ImGui.SameLine();
         DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DalamudWhite2);
 
-        DrawCommandAction(61822, StateCommandType.Smart, ImGuiColors.DPSRed);
+        DrawCommandAction(61822, StateCommandType.AutoTarget, ImGuiColors.DPSRed);
 
         ImGui.SameLine();
 

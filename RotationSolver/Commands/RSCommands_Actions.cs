@@ -146,7 +146,7 @@ namespace RotationSolver.Commands
                 _lastCountdownTime = Service.CountDownTime;
                 if (DataCenter.StateType == StateCommandType.Cancel)
                 {
-                    DoStateCommandType(StateCommandType.Smart);
+                    DoStateCommandType(StateCommandType.AutoTarget);
                 }
             }
         }
