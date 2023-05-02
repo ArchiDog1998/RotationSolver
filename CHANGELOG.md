@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.7.4](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.3...v2.7.4) (2023-05-02)
+
+
+### Bug Fixes
+
+* add a fetch time for ping check. ([476737a](https://github.com/ArchiDog1998/RotationSolver/commit/476737ac479ba2962d94ac191109b405dad5e197))
+* add a upper limit of ping, and restriction of  healPotion usage ([ef07570](https://github.com/ArchiDog1998/RotationSolver/commit/ef07570dafd1eda66a306f1f096c38c3a8b97153))
+* add another ping check method to refine the ping. ([1e751cd](https://github.com/ArchiDog1998/RotationSolver/commit/1e751cd7dae115eba0eb0a518081fde27a2cbfcb))
+* changed high-end error message. ([0d74a6c](https://github.com/ArchiDog1998/RotationSolver/commit/0d74a6cbe10a6091fd4ec215ef6dc4beace272df))
+* changed state string. ([c11e8a6](https://github.com/ArchiDog1998/RotationSolver/commit/c11e8a66c436194836ea63fe927c0ebcec8351ec))
+* fixed the heal potion usage. ([ef42c91](https://github.com/ArchiDog1998/RotationSolver/commit/ef42c91bc119535f37506a2baa5ff63c8dd5f8d3))
+* fixed with auto status tank stance. ([015c5ba](https://github.com/ArchiDog1998/RotationSolver/commit/015c5ba3f764cdd642f568882bb4dc4357e9d8fa))
+
 ## [2.7.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.2...v2.7.3) (2023-05-01)
 
 
