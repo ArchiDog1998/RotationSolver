@@ -15,28 +15,19 @@ public class Watcher : IDisposable
 {
     private unsafe delegate void ReceiveAbilityDelegate(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets);
 
-    private delegate long ActionRequestDelegate(long a1, uint a2, uint a3);
     /// <summary>
     /// https://github.com/Tischel/ActionTimeline/blob/master/ActionTimeline/Helpers/TimelineManager.cs#L86
     /// </summary>
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
     private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
 
-    /// <summary>
-    /// https://github.com/Bluefissure/DoubleWeaver/blob/master/DoubleWeaver/Plugin.cs#L94
-    /// </summary>
-    [Signature("E8 ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? FF 50 18", DetourName = nameof(ActionRequest))]
-    private static Hook<ActionRequestDelegate> _actionRequestDelegate;
 
     public static ICallGateSubscriber<object, object> IpcSubscriber;
-
-    private static SortedDictionary<uint, DateTime> _requestTime = new SortedDictionary<uint, DateTime>();
 
     public Watcher()
     {
         SignatureHelper.Initialise(this);
         _receiveAbilityHook?.Enable();
-        _actionRequestDelegate?.Enable();
 
         IpcSubscriber = Service.Interface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
         IpcSubscriber.Subscribe(UpdateRTTDetour);
@@ -50,13 +41,6 @@ public class Watcher : IDisposable
 
     public static string ShowStrSelf { get; private set; } = string.Empty;
     public static string ShowStrEnemy { get; private set; } = string.Empty;
-
-    private static long ActionRequest(long a1, uint a2, uint a3)
-    {
-        _requestTime[a3] = DateTime.Now;
-        Service.ChatGui.Print($"Sent: {a3}");
-        return _actionRequestDelegate.Original(a1, a2, a3);
-    }
 
     private static unsafe void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
@@ -125,11 +109,6 @@ public class Watcher : IDisposable
     private static void ActionFromSelf(uint sourceId, ActionEffectSet set, uint id)
     {
         if (sourceId != Service.Player.ObjectId) return;
-        if(_requestTime.TryGetValue(id, out var time))
-        {
-            DataCenter.FetchTime = (float)(DateTime.Now - time).TotalSeconds;
-            _requestTime.Remove(id);
-        }
         if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
         if (set.Action == null) return;
         if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;

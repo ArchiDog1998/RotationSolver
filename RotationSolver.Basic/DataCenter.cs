@@ -347,9 +347,18 @@ public static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
+                if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
+                {
+                    FetchTime = WeaponElapsed;
+                }
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
+
+                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
+                {
+                    FetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
+                }
                 break;
             default:
                 return;
