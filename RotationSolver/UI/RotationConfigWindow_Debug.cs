@@ -26,7 +26,6 @@ internal partial class RotationConfigWindow
             DrawParamTabItem("Target Data", DrawTargetData);
             DrawParamTabItem("Next Action", DrawNextAction);
             DrawParamTabItem("Last Action", DrawLastAction);
-            DrawParamTabItem("CD, EX", DrawCDEX);
             DrawParamTabItem("Icon", DrawIcon);
             DrawParamTabItem("Effect", () =>
             {
@@ -58,6 +57,8 @@ internal partial class RotationConfigWindow
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
         ImGui.Text("Ping: " + DataCenter.Ping.ToString());
         ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
+        ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
+        ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
 
         foreach (var status in Service.Player.StatusList)
         {
@@ -157,17 +158,6 @@ internal partial class RotationConfigWindow
         DrawAction(DataCenter.LastAbility, nameof(DataCenter.LastAbility));
         DrawAction(DataCenter.LastGCD, nameof(DataCenter.LastGCD));
         DrawAction(DataCenter.LastComboAction, nameof(DataCenter.LastComboAction));
-    }
-
-    private void DrawCDEX()
-    {
-        ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
-
-        if (ActionUpdater.exception != null)
-        {
-            ImGui.Text(ActionUpdater.exception.Message);
-            ImGui.Text(ActionUpdater.exception.StackTrace);
-        }
     }
 
     private unsafe void DrawIcon()

@@ -66,7 +66,7 @@ namespace RotationSolver.Commands
         private static void DoOneCommandType<T>(T type, Func<T, JobRole, string> sayout, Func<JobRole, T> doingSomething)
             where T : struct, Enum
         {
-            //Get jobrole.
+            //Get job role.
             var role = Service.Player.ClassJob.GameData.GetJobRole();
 
             type =  doingSomething(role);

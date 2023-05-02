@@ -26,6 +26,9 @@ internal class HealPotionItem : BaseItem
     {
         item = null;
         if (Service.Player == null) return false;
+        var job = (ClassJobID)Service.Player.ClassJob.Id;
+        if (Service.Player.GetHealthRatio() > job.GetHealSingleAbility() - 
+            job.GetHealingOfTimeSubtractSingle()) return false;
         if (Service.Player.MaxHp - Service.Player.CurrentHp < MaxHealHp) return false;
         return base.CanUse(out item);
     }

@@ -20,6 +20,8 @@ public class Watcher : IDisposable
     /// </summary>
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
     private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
+
+
     public static ICallGateSubscriber<object, object> IpcSubscriber;
 
     public Watcher()
@@ -31,10 +33,10 @@ public class Watcher : IDisposable
         IpcSubscriber.Subscribe(UpdateRTTDetour);
     }
 
-    private void UpdateRTTDetour(dynamic expando)
+    private void UpdateRTTDetour(dynamic obj)
     {
-        PluginLog.LogDebug($"LastRTT:{expando.LastRTT}");
-        DataCenter.Ping = (long)expando.LastRTT / 1000f;
+        PluginLog.LogDebug($"LastRTT:{obj.LastRTT}");
+        DataCenter.RTT = (long)obj.LastRTT / 1000f;
     }
 
     public static string ShowStrSelf { get; private set; } = string.Empty;
@@ -108,7 +110,8 @@ public class Watcher : IDisposable
     {
         if (sourceId != Service.Player.ObjectId) return;
         if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
-        if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
+        if (set.Action == null) return;
+        if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
         if(set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id))
         {

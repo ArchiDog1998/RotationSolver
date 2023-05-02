@@ -77,7 +77,10 @@ public abstract partial class CustomRotation
     private bool ShirkOrShield(JobRole role, SpecialCommandType specialType, out IAction act)
     {
         act = null;
-        if (role != JobRole.Tank) return false;
+        if (role != JobRole.Tank)
+        {
+            return DataCenter.SetAutoStatus(AutoStatus.TankStance, false);
+        }
 
         switch (specialType)
         {
@@ -147,7 +150,6 @@ public abstract partial class CustomRotation
             if (DataCenter.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility)
             {
                 if (HealSingleAbility(out act)) return true;
-                if (UseHealPotion(out act)) return true;
             }
         }
 
@@ -286,7 +288,7 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.HealSingleAbility)]
     protected virtual bool HealSingleAbility(out IAction act)
     {
-        act = null; return false;
+        return UseHealPotion(out act);
     }
 
     [RotationDesc(DescType.HealAreaAbility)]

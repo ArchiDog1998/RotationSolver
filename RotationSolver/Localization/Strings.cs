@@ -365,8 +365,8 @@ internal partial class Strings
     public string SpecialCommandType_AntiKnockback { get; set; } = "Anti-Knockback";
     public string SpecialCommandType_Burst { get; set; } = "Burst";
     public string SpecialCommandType_EndSpecial { get; set; } = "End Special";
-    public string SpecialCommandType_Smart { get; set; } = "Smart ";
-    public string SpecialCommandType_Manual { get; set; } = "Manual";
+    public string SpecialCommandType_Smart { get; set; } = "Auto Target ";
+    public string SpecialCommandType_Manual { get; set; } = "Manual Target";
     public string SpecialCommandType_Cancel { get; set; } = "Cancel";
     public string SpecialCommandType_Off { get; set; } = "Off";
     #endregion

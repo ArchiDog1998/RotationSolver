@@ -102,8 +102,16 @@ internal class SocialUpdater
             
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
-                Message = message,
-                Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
+                Message = new SeString(
+                          new IconPayload(BitmapFontIcon.DPS),
+                          RotationSolverPlugin.LinkPayload,
+                          new UIForegroundPayload(31),
+                          new TextPayload("Rotation Solver"),
+                          UIForegroundPayload.UIForegroundOff,
+                          RawPayload.LinkTerminator,
+
+                          new TextPayload(": " + message)),
+            Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
             });
 
             Task.Run(async() =>
