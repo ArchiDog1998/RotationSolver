@@ -77,7 +77,10 @@ public abstract partial class CustomRotation
     private bool ShirkOrShield(JobRole role, SpecialCommandType specialType, out IAction act)
     {
         act = null;
-        if (role != JobRole.Tank) return false;
+        if (role != JobRole.Tank)
+        {
+            return DataCenter.SetAutoStatus(AutoStatus.TankStance, false);
+        }
 
         switch (specialType)
         {
