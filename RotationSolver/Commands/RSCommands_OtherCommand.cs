@@ -38,11 +38,11 @@ namespace RotationSolver.Commands
                 return;
             }
 
-            Service.Config.SetValue(type, !Service.Config.GetValue(type));
+            Basic.Configuration.PluginConfiguration.SetValue(type, !Basic.Configuration.PluginConfiguration.GetValue(type));
 
             //Say out.
             Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
-                type.ToString(), Service.Config.GetValue(type)));
+                type.ToString(), Basic.Configuration.PluginConfiguration.GetValue(type)));
         }
 
         private static void ToggleActionCommand(string str)

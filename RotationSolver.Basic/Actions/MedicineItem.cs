@@ -10,7 +10,7 @@ public enum MedicineType : byte
 
 internal class MedicineItem : BaseItem
 {
-    private MedicineType _type;
+    private readonly MedicineType _type;
 
     protected override bool CanUseThis => Service.Config.UseTinctures;
 

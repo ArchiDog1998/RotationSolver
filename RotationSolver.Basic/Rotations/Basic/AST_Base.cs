@@ -179,21 +179,12 @@ public abstract class AST_Base : CustomRotation
 
     static SealType GetCardSeal(CardType card)
     {
-        switch (card)
+        return card switch
         {
-            default: return SealType.NONE;
-
-            case CardType.BALANCE:
-            case CardType.BOLE:
-                return SealType.SUN;
-
-            case CardType.ARROW:
-            case CardType.EWER:
-                return SealType.MOON;
-
-            case CardType.SPEAR:
-            case CardType.SPIRE:
-                return SealType.CELESTIAL;
-        }
+            CardType.BALANCE or CardType.BOLE => SealType.SUN,
+            CardType.ARROW or CardType.EWER => SealType.MOON,
+            CardType.SPEAR or CardType.SPIRE => SealType.CELESTIAL,
+            _ => SealType.NONE,
+        };
     }
 }

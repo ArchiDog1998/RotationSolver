@@ -44,6 +44,8 @@ public class Service : IDisposable
     private static IntPtr _countDown = IntPtr.Zero;
 
     static float _lastTime = 0;
+    private bool _disposed;
+
     public static float CountDownTime { get; private set; }
 
     private static GetChatBoxModuleDelegate GetChatBox { get; set; }
@@ -74,8 +76,23 @@ public class Service : IDisposable
 
     public void Dispose()
     {
-        _countdownTimerHook?.Dispose();
-        Framework.Update -= Framework_Update;
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        if (disposing)
+        {
+            _countdownTimerHook?.Dispose();
+            Framework.Update -= Framework_Update;
+        }
+        _disposed = true;
     }
     public static PluginConfiguration Config { get; set; }
     public static PluginConfiguration Default { get; } = new PluginConfiguration();
@@ -105,7 +122,7 @@ public class Service : IDisposable
 
     public unsafe static IEnumerable<IntPtr> GetAddons<T>() where T : struct
     {
-        if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return new IntPtr[0];
+        if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return Array.Empty<nint>();
 
         return on.AddonIdentifiers
             .Select(str => GameGui.GetAddonByName(str, 1))
@@ -175,14 +192,12 @@ public class Service : IDisposable
     {
         IntPtr uiModule = GameGui.GetUIModule();
 
-        using (ChatPayload payload = new ChatPayload(text))
-        {
-            IntPtr mem1 = Marshal.AllocHGlobal(400);
-            Marshal.StructureToPtr(payload, mem1, false);
+        using ChatPayload payload = new(text);
+        IntPtr mem1 = Marshal.AllocHGlobal(400);
+        Marshal.StructureToPtr(payload, mem1, false);
 
-            GetChatBox(uiModule, mem1, IntPtr.Zero, 0);
+        GetChatBox(uiModule, mem1, IntPtr.Zero, 0);
 
-            Marshal.FreeHGlobal(mem1);
-        }
+        Marshal.FreeHGlobal(mem1);
     }
 }

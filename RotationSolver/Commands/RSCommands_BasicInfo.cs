@@ -46,7 +46,7 @@ public static partial class RSCommands
         }
         else if (TryGetOneEnum<OtherCommandType>(str, out var otherType))
         {
-            DoOtherCommand(otherType, str.Substring(otherType.ToString().Length).Trim());
+            DoOtherCommand(otherType, str[otherType.ToString().Length..].Trim());
         }
         else
         {

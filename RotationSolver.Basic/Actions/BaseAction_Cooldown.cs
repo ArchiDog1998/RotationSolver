@@ -77,7 +77,7 @@ public partial class BaseAction
     /// <summary>
     /// 是否起码有一层技能
     /// </summary>
-    public bool HasOneCharge => IsCoolingDown ? RecastTimeElapsed >= RecastTimeOneCharge : true;
+    public bool HasOneCharge => !IsCoolingDown || RecastTimeElapsed >= RecastTimeOneCharge;
     /// <summary>
     /// 当前技能层数
     /// </summary>

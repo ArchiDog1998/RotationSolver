@@ -60,7 +60,7 @@ public unsafe struct ActionEffectSet
 public unsafe struct TargetEffect
 {
     public GameObject Target;
-    private ActionEffect* _effects;
+    private readonly ActionEffect* _effects;
 
     public TargetEffect(GameObject target, ActionEffect* effects)
     {

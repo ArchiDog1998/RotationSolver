@@ -10,7 +10,7 @@ internal class MovingController : IDisposable
     private delegate bool MovingControllerDelegate(IntPtr ptr);
 
     [Signature("40 55 53 48 8D 6C 24 ?? 48 81 EC ?? ?? ?? ?? 48 83 79 ?? ??", DetourName = nameof(MovingDetour))]
-    private static Hook<MovingControllerDelegate> movingHook = null;
+    private static readonly Hook<MovingControllerDelegate> movingHook = null;
     internal static unsafe bool IsMoving
     {
         set => _posLocker = !value;

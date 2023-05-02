@@ -57,13 +57,12 @@ internal static class PreviewUpdater
 
     static bool _canMove;
     static bool _isTarNoNeedCast;
-    static RandomDelay _tarStopCastDelay = new RandomDelay(() =>
+    static RandomDelay _tarStopCastDelay = new(() =>
     (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
     internal static void UpdateCastBarState()
     {
-        var tardead = Service.Config.UseStopCasting ?
-            Service.ObjectTable.SearchById(Service.Player.CastTargetObjectId) is BattleChara b
-            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0) : false;
+        var tardead = Service.Config.UseStopCasting && Service.ObjectTable.SearchById(Service.Player.CastTargetObjectId) is BattleChara b
+            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0);
         _isTarNoNeedCast = _tarStopCastDelay.Delay(tardead);
 
         bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
@@ -72,12 +71,13 @@ internal static class PreviewUpdater
         //For lock
         var specialStatus = Service.Player.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);
 
-        MovingController.IsMoving = _canMove = specialStatus ? false : canMove;
+        _canMove = !specialStatus && canMove;
+        MovingController.IsMoving = _canMove;
     }
 
     static bool _showCanMove;
-    static readonly ByteColor _redColor = new ByteColor() { A = 255, R = 120, G = 0, B = 60 };
-    static readonly ByteColor _greenColor = new ByteColor() { A = 255, R = 60, G = 120, B = 30 };
+    static readonly ByteColor _redColor = new() { A = 255, R = 120, G = 0, B = 60 };
+    static readonly ByteColor _greenColor = new() { A = 255, R = 60, G = 120, B = 30 };
     private static unsafe void UpdateCastBar()
     {
         if (_isTarNoNeedCast)

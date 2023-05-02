@@ -43,7 +43,7 @@ public static class DataCenter
         return keep;
     }
 
-    private static List<NextAct> NextActs = new List<NextAct>();
+    private static List<NextAct> NextActs = new();
     public static IAction ActionSequencerAction { private get; set; }
     public static IAction CommandNextAction
     {
@@ -53,18 +53,18 @@ public static class DataCenter
 
             var next = NextActs.FirstOrDefault();
 
-            while (next != null && NextActs.Count > 0 && (next.deadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.act)))
+            while (next != null && NextActs.Count > 0 && (next.DeadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.Act)))
             {
                 NextActs.RemoveAt(0);
                 next = NextActs.FirstOrDefault();
             }
-            return next?.act;
+            return next?.Act;
         }
     }
 
     public static void AddCommandAction(IAction act, double time)
     {
-        var index = NextActs.FindIndex(i => i.act.ID == act.ID);
+        var index = NextActs.FindIndex(i => i.Act.ID == act.ID);
         var newItem = new NextAct(act, DateTime.Now.AddSeconds(time));
         if (index < 0)
         {
@@ -74,7 +74,7 @@ public static class DataCenter
         {
             NextActs[index] = newItem;
         }
-        NextActs = NextActs.OrderBy(i => i.deadTime).ToList();
+        NextActs = NextActs.OrderBy(i => i.DeadTime).ToList();
     }
 
     public static TargetHostileType RightNowTargetToHostileType
@@ -188,15 +188,15 @@ public static class DataCenter
 
     public static float CombatTime { get; set; }
 
-    public static IEnumerable<BattleChara> PartyMembers { get; set; } = new PlayerCharacter[0];
+    public static IEnumerable<BattleChara> PartyMembers { get; set; } = Array.Empty<PlayerCharacter>();
 
-    public static IEnumerable<BattleChara> PartyTanks { get; set; } = new PlayerCharacter[0];
+    public static IEnumerable<BattleChara> PartyTanks { get; set; } = Array.Empty<PlayerCharacter>();
 
-    public static IEnumerable<BattleChara> PartyHealers { get; set; } = new PlayerCharacter[0];
+    public static IEnumerable<BattleChara> PartyHealers { get; set; } = Array.Empty<PlayerCharacter>();
 
-    public static IEnumerable<BattleChara> AllianceMembers { get; set; } = new PlayerCharacter[0];
+    public static IEnumerable<BattleChara> AllianceMembers { get; set; } = Array.Empty<PlayerCharacter>();
 
-    public static IEnumerable<BattleChara> AllianceTanks { get; set; } = new PlayerCharacter[0];
+    public static IEnumerable<BattleChara> AllianceTanks { get; set; } = Array.Empty<PlayerCharacter>();
 
     public static ObjectListDelay<BattleChara> DeathPeopleAll { get; } = new(
     () => (Service.Config.DeathDelayMin, Service.Config.DeathDelayMax));
@@ -213,16 +213,16 @@ public static class DataCenter
     public static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
     () => (Service.Config.HostileDelayMin, Service.Config.HostileDelayMax));
 
-    public static IEnumerable<BattleChara> AllHostileTargets { get; set; } = new BattleChara[0];
+    public static IEnumerable<BattleChara> AllHostileTargets { get; set; } = Array.Empty<BattleChara>();
 
-    public static IEnumerable<BattleChara> TarOnMeTargets { get; set; } = new BattleChara[0];
+    public static IEnumerable<BattleChara> TarOnMeTargets { get; set; } = Array.Empty<BattleChara>();
 
     public static ObjectListDelay<BattleChara> CanInterruptTargets { get; } = new ObjectListDelay<BattleChara>(
         () => (Service.Config.InterruptDelayMin, Service.Config.InterruptDelayMax));
 
     public static IEnumerable<GameObject> AllTargets { get; set; }
 
-    public static uint[] TreasureCharas { get; set; } = new uint[0];
+    public static uint[] TreasureCharas { get; set; } = Array.Empty<uint>();
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
     public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;
     public static int NumberOfHostilesInRange { get; set; }
@@ -235,8 +235,8 @@ public static class DataCenter
     public static bool HasPet { get; set; }
 
 
-    public static unsafe bool HasCompanion => (IntPtr)Service.RawPlayer == IntPtr.Zero ? false :
-        (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Service.RawPlayer) != IntPtr.Zero;
+    public static unsafe bool HasCompanion => (IntPtr)Service.RawPlayer != IntPtr.Zero 
+                                           && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Service.RawPlayer) != IntPtr.Zero;
 
     public static float RatioOfMembersIn2minsBurst
     {
@@ -248,15 +248,15 @@ public static class DataCenter
             {
                 foreach (var burstInfo in StatusHelper.Burst2Mins)
                 {
-                    if (burstInfo.jobs.Contains((ClassJobID)member.ClassJob.Id))
+                    if (burstInfo.Jobs.Contains((ClassJobID)member.ClassJob.Id))
                     {
-                        if (member.Level >= burstInfo.level)
+                        if (member.Level >= burstInfo.Level)
                         {
-                            var tar = burstInfo.isOnHostile 
+                            var tar = burstInfo.IsOnHostile 
                                 && Service.TargetManager.Target is BattleChara b ? b 
                                 : Service.Player;
-                            if (tar.HasStatus(false, burstInfo.status)
-                                && !tar.WillStatusEndGCD(0, 0, false, burstInfo.status))
+                            if (tar.HasStatus(false, burstInfo.Status)
+                                && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
                             {
                                 burst++;
                             }
@@ -295,8 +295,8 @@ public static class DataCenter
 
     #region Action Record
     const int QUEUECAPACITY = 32;
-    private static Queue<ActionRec> _actions = new Queue<ActionRec>(QUEUECAPACITY);
-    private static Queue<DamageRec> _damages = new Queue<DamageRec>(QUEUECAPACITY);
+    private static readonly Queue<ActionRec> _actions = new(QUEUECAPACITY);
+    private static readonly Queue<DamageRec> _damages = new(QUEUECAPACITY);
 
     public static float DPSTaken
     {

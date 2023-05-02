@@ -114,7 +114,7 @@ public abstract partial class CustomRotation
             return CountDownAction(countDown);
         }
 
-        var helpDefenseAOE = Service.Config.GetValue(SettingsCommand.UseDefenseAbility) && DataCenter.IsHostileCastingAOE;
+        var helpDefenseAOE = Configuration.PluginConfiguration.GetValue(SettingsCommand.UseDefenseAbility) && DataCenter.IsHostileCastingAOE;
 
         bool helpDefenseSingle = false;
         if (Job.GetJobRole() == JobRole.Healer || Job.RowId == (uint)ClassJobID.Paladin)

@@ -175,7 +175,7 @@ public enum StatusID : ushort
 
     ImmortalSacrifice = 2592,
 
-    BloodSownCircle = 2972,
+    BloodSownCircle = CircleOfSacrifice,
 
     ArcaneCircle = 2599,
 
@@ -401,7 +401,7 @@ public enum StatusID : ushort
 
     Blind = 15,
     Blind2 = 564,
-    Blind3 = 1345,
+    Blind3 = Blind2,
 
     Paralysis = 17,
     Paralysis2 = 482,
@@ -486,7 +486,7 @@ public enum StatusID : ushort
 
     Aetherpact = 1223,
 
-    ConfiteorReady = 3019,
+    ConfiteorReady = ReadyForBladeOfFaith,
 
     Bulwark = 77,
 
@@ -498,5 +498,5 @@ public enum StatusID : ushort
 
     TheBlackestNight = 1178,
 
-    LivingDead = 810,
+    LivingDead = WillDead,
 }

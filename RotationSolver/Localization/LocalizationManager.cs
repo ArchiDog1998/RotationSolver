@@ -6,7 +6,7 @@ internal class LocalizationManager : IDisposable
 {
     public static Strings RightLang { get; private set; } = new Strings();
 
-    private readonly Dictionary<string, Strings> _translations = new Dictionary<string, Strings>();
+    private readonly Dictionary<string, Strings> _translations = new();
     public LocalizationManager()
     {
         var assembly = Assembly.GetCallingAssembly();
@@ -24,7 +24,7 @@ internal class LocalizationManager : IDisposable
     {
         Stream manifestResourceStream = assembly.GetManifestResourceStream("RotationSolver.Localization." + lang + ".json");
         if (manifestResourceStream == null) return;
-        using StreamReader streamReader = new StreamReader(manifestResourceStream);
+        using StreamReader streamReader = new(manifestResourceStream);
         _translations[lang] = JsonConvert.DeserializeObject<Strings>(streamReader.ReadToEnd());
     }
 
@@ -43,7 +43,7 @@ internal class LocalizationManager : IDisposable
     }
 
 #if DEBUG
-    public void ExportLocalization()
+    public static void ExportLocalization()
     {
         var directory = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\RotationSolver\Localization";
         if (!Directory.Exists(directory)) return;
