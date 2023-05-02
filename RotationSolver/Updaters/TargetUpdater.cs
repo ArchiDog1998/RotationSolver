@@ -21,7 +21,7 @@ internal static partial class TargetUpdater
 
     internal static void ClearTarget()
     {
-        var empty = Array.Empty<BattleChara>();
+        var empty = new BattleChara[0];
         DataCenter.AllTargets
             = DataCenter.AllHostileTargets 
             = DataCenter.TarOnMeTargets
@@ -153,16 +153,16 @@ internal static partial class TargetUpdater
 
     private static unsafe uint[] GetEnemies()
     {
-        if (!Service.Config.AddEnemyListToHostile) return Array.Empty<uint>();
+        if (!Service.Config.AddEnemyListToHostile) return new uint[0];
 
         var addons = Service.GetAddons<AddonEnemyList>();
 
-        if(!addons.Any()) return Array.Empty<uint>();
+        if(!addons.Any()) return new uint[0];
         var addon = addons.FirstOrDefault();
         var enemy = (AddonEnemyList*)addon;
 
         var numArray = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder.NumberArrays[19];
-        List<uint> list = new(enemy->EnemyCount);
+        List<uint> list = new List<uint>(enemy->EnemyCount);
         for (var i = 0; i < enemy->EnemyCount; i++)
         {
             list.Add((uint)numArray->IntArray[8 + i * 6]);
@@ -222,6 +222,7 @@ internal static partial class TargetUpdater
 
     #region Friends
     private static Dictionary<uint, uint> _lastHp = new Dictionary<uint, uint>();
+    private static uint _lastMp = 0;
     private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
     {
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
@@ -311,10 +312,10 @@ internal static partial class TargetUpdater
         return party.Union(allTargets.Where(obj => obj.SubKind == 9));
     }
 
-    static SortedDictionary<uint, Vector3> _locations = new();
+    static SortedDictionary<uint, Vector3> _locations = new SortedDictionary<uint, Vector3>();
     private static void MaintainDeathPeople(ref IEnumerable<BattleChara> deathAll, ref IEnumerable<BattleChara> deathParty)
     {
-        SortedDictionary<uint, Vector3> locs = new();
+        SortedDictionary<uint, Vector3> locs = new SortedDictionary<uint, Vector3>();
         foreach (var item in deathAll)
         {
             locs[item.ObjectId] = item.Position;
@@ -340,10 +341,10 @@ internal static partial class TargetUpdater
 
     static (float min, float max) GetHealRange() => (Service.Config.HealDelayMin, Service.Config.HealDelayMax);
 
-    static RandomDelay _healDelay1 = new(GetHealRange);
-    static RandomDelay _healDelay2 = new(GetHealRange);
-    static RandomDelay _healDelay3 = new(GetHealRange);
-    static RandomDelay _healDelay4 = new(GetHealRange);
+    static RandomDelay _healDelay1 = new RandomDelay(GetHealRange);
+    static RandomDelay _healDelay2 = new RandomDelay(GetHealRange);
+    static RandomDelay _healDelay3 = new RandomDelay(GetHealRange);
+    static RandomDelay _healDelay4 = new RandomDelay(GetHealRange);
     static void UpdateCanHeal(PlayerCharacter player)
     {
         var job = (ClassJobID)player.ClassJob.Id;
@@ -406,7 +407,7 @@ internal static partial class TargetUpdater
 
     private static void UpdateNamePlate(IEnumerable<BattleChara> allTargets)
     {
-        List<uint> charas = new(5);
+        List<uint> charas = new List<uint>(5);
         //60687 - 60691 For treasure hunt.
         for (int i = 60687; i <= 60691; i++)
         {
