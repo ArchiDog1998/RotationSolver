@@ -22,7 +22,7 @@
     "AcceptsFeedback": true,
     "AssemblyVersion": "2.7.3",
     "Changelog": "2.7.3 (2023-05-01)\n\n\nBug Fixes\n\n* add heal potion. (408992f)\n* add tooltip for some button. (61a3cb7)\n* changed macro. (58c837c)\n* changed relay folder to a seperater folder. (d5173c3)\n* changed the macro! (9c3a60f)\n* fixed saving for hostile list. (61f3650)\n* fixed the mark action check. (d340b19)\n* moved input config. (1cfc28b)\n* refined the MP check. (284c7fe)\n* removed loading log. (ff04826)\n* removed the tank buster check. (5afb0e0)\n* roll back the SGE base file. (bf7b72c)",
-    "DownloadCount": "7459",
+    "DownloadCount": "7633",
     "LastUpdate": 1682948264,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.7.3/latest.zip",
