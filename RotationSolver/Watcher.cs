@@ -34,7 +34,8 @@ public class Watcher : IDisposable
     private void UpdateRTTDetour(dynamic expando)
     {
         PluginLog.LogDebug($"LastRTT:{expando.LastRTT}");
-        DataCenter.Ping = (long)expando.LastRTT / 1000f;
+        var ping = (long)expando.LastRTT / 1000f;
+        DataCenter.Ping = ping > 0.3f ? 0.1f : ping;
     }
 
     public static string ShowStrSelf { get; private set; } = string.Empty;
