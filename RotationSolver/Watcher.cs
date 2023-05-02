@@ -108,7 +108,8 @@ public class Watcher : IDisposable
     {
         if (sourceId != Service.Player.ObjectId) return;
         if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
-        if ((ActionCate)set.Action?.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
+        if (set.Action == null) return;
+        if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
         if(set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id))
         {

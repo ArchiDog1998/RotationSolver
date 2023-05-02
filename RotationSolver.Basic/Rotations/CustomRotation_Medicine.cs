@@ -74,9 +74,9 @@ public abstract partial class CustomRotation
 
     private bool UseHealPotion(out IAction act)
     {
-        var acts = from prop in GetType().GetProperties()
-                   where typeof(HealPotionItem).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)
-                   select (HealPotionItem)prop.GetValue(this) into a
+        var acts = from prop in typeof(CustomRotation).GetProperties()
+                   where !(prop.GetMethod?.IsPrivate ?? true) && typeof(IBaseItem).IsAssignableFrom(prop.PropertyType)
+                    select prop.GetValue(this) as HealPotionItem into a
                    where a != null && a.CanUse(out _)
                    orderby a.MaxHealHp
                    select a;

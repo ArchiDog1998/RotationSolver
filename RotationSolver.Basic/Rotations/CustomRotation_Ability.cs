@@ -147,7 +147,6 @@ public abstract partial class CustomRotation
             if (DataCenter.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility)
             {
                 if (HealSingleAbility(out act)) return true;
-                if (UseHealPotion(out act)) return true;
             }
         }
 
@@ -286,7 +285,7 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.HealSingleAbility)]
     protected virtual bool HealSingleAbility(out IAction act)
     {
-        act = null; return false;
+        return UseHealPotion(out act);
     }
 
     [RotationDesc(DescType.HealAreaAbility)]
