@@ -58,6 +58,7 @@ internal partial class RotationConfigWindow
         ImGui.Text("Ping: " + DataCenter.Ping.ToString());
         ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
         ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
+        ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
 
         foreach (var status in Service.Player.StatusList)
         {

@@ -93,7 +93,7 @@ internal class BaseItem : IBaseItem
 
         if(DataCenter.WeaponRemain > 0)
         {
-            if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock) return false;
+            if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping) return false;
 
             if (CooldownHelper.RecastAfter(DataCenter.ActionRemain, remain, false)) return false;
         }
