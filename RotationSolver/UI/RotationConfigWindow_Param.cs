@@ -238,7 +238,7 @@ internal partial class RotationConfigWindow
             ref Service.Config.ShowInfoOnToast, Service.Default.ShowInfoOnToast);
 
         DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_NamePlateIconId,
-            ref Service.Config.NamePlateIconId, 5, 0, 150000, otherThing: RSCommands.UpdateStateNamePlate);
+            ref Service.Config.NamePlateIconId, Service.Default.NamePlateIconId, 5, 0, 150000, otherThing: RSCommands.UpdateStateNamePlate);
 
         ImGui.Spacing();
 
@@ -291,9 +291,11 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst, SettingsCommand.AutoBurst);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseItem,
-            ref Service.Config.UseItem, Service.Default.UseItem,
-            LocalizationManager.RightLang.ConfigWindow_Param_UseItemDesc);
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseTinctures,
+            ref Service.Config.UseTinctures, Service.Default.UseTinctures);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseHealPotions,
+            ref Service.Config.UseHealPotions, Service.Default.UseHealPotions);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAbility,
             SettingsCommand.UseAbility);
@@ -332,7 +334,7 @@ internal partial class RotationConfigWindow
             ref Service.Config.UseHealWhenNotAHealer, Service.Default.UseHealWhenNotAHealer);
 
         DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_LessMPNoRaise,
-            ref Service.Config.LessMPNoRaise, 200, 0, 2000000);
+            ref Service.Config.LessMPNoRaise, Service.Default.LessMPNoRaise, 200, 0, 2000000);
     }
 
     private void DrawParamCondition()
@@ -357,30 +359,33 @@ internal partial class RotationConfigWindow
 
         const float speed = 0.005f;
 
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_DistanceForMoving,
+            ref Service.Config.DistanceForMoving, Service.Default.DistanceForMoving, speed * 3);
+
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MeleeRangeOffset,
-            ref Service.Config.MeleeRangeOffset, 5 * speed, max: 5);
+            ref Service.Config.MeleeRangeOffset, Service.Default.MeleeRangeOffset, 5 * speed, max: 5);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthDifference,
-             ref Service.Config.HealthDifference,
+             ref Service.Config.HealthDifference, Service.Default.HealthDifference, 
              speed * 2, 0, 0.5f);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility,
-            ref Service.Config.HealthAreaAbility, speed);
+            ref Service.Config.HealthAreaAbility, Service.Default.HealthAreaAbility, speed);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell,
-            ref Service.Config.HealthAreaSpell, speed);
+            ref Service.Config.HealthAreaSpell, Service.Default.HealthAreaSpell, speed);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility,
-            ref Service.Config.HealthSingleAbility, speed);
+            ref Service.Config.HealthSingleAbility, Service.Default.HealthSingleAbility, speed);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell,
-            ref Service.Config.HealthSingleSpell, speed);
+            ref Service.Config.HealthSingleSpell, Service.Default.HealthSingleSpell, speed);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
-            ref Service.Config.HealthHealerRatio, speed);
+            ref Service.Config.HealthHealerRatio, Service.Default.HealthHealerRatio, speed);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
-            ref Service.Config.HealthTankRatio, speed);
+            ref Service.Config.HealthTankRatio, Service.Default.HealthTankRatio, speed);
     }
 
     private void DrawParamTarget()

@@ -2,6 +2,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SGE_Base : CustomRotation
 {
+    public override MedicineType MedicineType => MedicineType.Mind;
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
 
     #region Job Gauge
@@ -11,11 +12,6 @@ public abstract class SGE_Base : CustomRotation
     protected static byte Addersgall => JobGauge.Addersgall;
 
     protected static byte Addersting => JobGauge.Addersting;
-    public override MedicineType MedicineType => MedicineType.Mind;
-
-    protected static bool NoOgcds => JobGauge.Addersgall < 1 && (!Physis.EnoughLevel || Physis.IsCoolingDown) && (!Haima.EnoughLevel || Haima.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Soteria.EnoughLevel || Soteria.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Pneuma.EnoughLevel || Krasis.IsCoolingDown) && (!Pneuma.EnoughLevel || Zoe.IsCoolingDown);
-
-    protected static bool NoOgcdsAOE => JobGauge.Addersgall < 1 && (!Physis.EnoughLevel || Physis.IsCoolingDown) && (!Panhaima.EnoughLevel || Panhaima.IsCoolingDown) && (!Holos.EnoughLevel || Holos.IsCoolingDown) && (!Pneuma.EnoughLevel || Pneuma.IsCoolingDown) && (!Rhizomata.EnoughLevel || Rhizomata.IsCoolingDown) && (!Pneuma.EnoughLevel || Krasis.IsCoolingDown) && (!Pneuma.EnoughLevel || Zoe.IsCoolingDown);
 
     protected static float AddersgallTimer => JobGauge.AddersgallTimer / 1000f;
     protected static bool AddersgallEndAfter(float time) => EndAfter(AddersgallTimer, time);
@@ -45,14 +41,23 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Phlegma3 { get; } = new BaseAction(ActionID.Phlegma3);
 
+    public static IBaseAction Toxikon { get; } = new BaseAction(ActionID.Toxikon)
+    {
+        ActionCheck = b => Addersting > 0,
+    };
+
+    public static IBaseAction Rhizomata { get; } = new BaseAction(ActionID.Rhizomata)
+    {
+        ActionCheck = b => Addersgall < 3,
+    };
+
+    public static IBaseAction Pneuma { get; } = new BaseAction(ActionID.Pneuma);
+    #endregion
+
+    #region Heal
     private sealed protected override IBaseAction Raise => Egeiro;
     public static IBaseAction Egeiro { get; } = new BaseAction(ActionID.Egeiro, ActionOption.Friendly);
-
-    public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, ActionOption.Heal)
-    {
-        ActionCheck = b => NoOgcds,
-    };
-    #endregion
+    public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, ActionOption.Heal);
 
     public static IBaseAction Kardia { get; } = new BaseAction(ActionID.Kardia, ActionOption.Heal)
     {
@@ -68,18 +73,14 @@ public abstract class SGE_Base : CustomRotation
         ActionCheck = b => !b.HasStatus(true, StatusID.Kardion),
     };
 
-    public static IBaseAction Prognosis { get; } = new BaseAction(ActionID.Prognosis, ActionOption.Heal | ActionOption.EndSpecial)
-    {
-        ActionCheck = b => NoOgcdsAOE,
-    };
+    public static IBaseAction Prognosis { get; } = new BaseAction(ActionID.Prognosis, ActionOption.Heal | ActionOption.EndSpecial);
 
     public static IBaseAction Physis { get; } = new BaseAction(ActionID.Physis, ActionOption.Heal);
-
     public static IBaseAction Physis2 { get; } = new BaseAction(ActionID.Physis2, ActionOption.Heal);
 
     public static IBaseAction Eukrasia { get; } = new BaseAction(ActionID.Eukrasia, ActionOption.Heal)
     {
-        ActionCheck = b => !JobGauge.Eukrasia,
+        ActionCheck = b => !HasEukrasia,
     };
 
     public static IBaseAction Soteria { get; } = new BaseAction(ActionID.Soteria, ActionOption.Heal);
@@ -106,47 +107,6 @@ public abstract class SGE_Base : CustomRotation
     {
         ActionCheck = b => Addersgall > 0,
     };
-
-    public static IBaseAction Haima { get; } = new BaseAction(ActionID.Haima, ActionOption.Heal)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-    };
-
-    public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, ActionOption.Heal)
-    {
-        ChoiceTarget = TargetFilter.FindAttackedTarget,
-        ActionCheck = b => NoOgcds,
-    };
-
-    public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, ActionOption.Heal)
-    {
-        ActionCheck = b => NoOgcdsAOE,
-    };
-
-    public static IBaseAction Toxikon { get; } = new BaseAction(ActionID.Toxikon)
-    {
-        ActionCheck = b => Addersting > 0,
-    };
-
-    public static IBaseAction Rhizomata { get; } = new BaseAction(ActionID.Rhizomata)
-    {
-        ActionCheck = b => JobGauge.Addersgall < 3,
-    };
-
-    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, ActionOption.Heal)
-    {
-        ActionCheck = b => (!Panhaima.IsCoolingDown || Panhaima.ElapsedAfter(60)),
-    };
-
-    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, ActionOption.Heal)
-    {
-        ActionCheck = b => (Holos.IsCoolingDown && Holos.ElapsedAfter(60)),
-    };
-
-    public static IBaseAction Krasis { get; } = new BaseAction(ActionID.Krasis, ActionOption.Heal);
-
-    public static IBaseAction Pneuma { get; } = new BaseAction(ActionID.Pneuma);
-
     public static IBaseAction Pepsis { get; } = new BaseAction(ActionID.Pepsis, ActionOption.Heal)
     {
         ActionCheck = b =>
@@ -161,6 +121,25 @@ public abstract class SGE_Base : CustomRotation
             return false;
         },
     };
+
+    public static IBaseAction Haima { get; } = new BaseAction(ActionID.Haima, ActionOption.Defense)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
+    public static IBaseAction EukrasianDiagnosis { get; } = new BaseAction(ActionID.EukrasianDiagnosis, ActionOption.Defense)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
+
+    public static IBaseAction EukrasianPrognosis { get; } = new BaseAction(ActionID.EukrasianPrognosis, ActionOption.Heal);
+
+    public static IBaseAction Holos { get; } = new BaseAction(ActionID.Holos, ActionOption.Heal);
+
+    public static IBaseAction Panhaima { get; } = new BaseAction(ActionID.Panhaima, ActionOption.Heal);
+
+    public static IBaseAction Krasis { get; } = new BaseAction(ActionID.Krasis, ActionOption.Heal);
+    #endregion
 
     public static IBaseAction Icarus { get; } = new BaseAction(ActionID.Icarus, ActionOption.EndSpecial)
     {

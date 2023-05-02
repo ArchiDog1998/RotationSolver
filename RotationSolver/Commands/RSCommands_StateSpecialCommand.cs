@@ -24,8 +24,8 @@ namespace RotationSolver.Commands
 
         private static unsafe void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(EnumTranslations.ToSayout, role =>
         {
-            if (DataCenter.StateType == StateCommandType.Smart
-                && stateType == StateCommandType.Smart)
+            if (DataCenter.StateType == StateCommandType.Auto
+                && stateType == StateCommandType.Auto)
             {
                 Service.Config.TargetingIndex += 1;
                 Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count;
@@ -66,7 +66,7 @@ namespace RotationSolver.Commands
         private static void DoOneCommandType<T>(Func<T, JobRole, string> sayout, Func<JobRole, T> doingSomething)
             where T : struct, Enum
         {
-            //Get jobrole.
+            //Get job role.
             var role = Service.Player.ClassJob.GameData.GetJobRole();
 
             T type = doingSomething(role);

@@ -1,12 +1,13 @@
 ﻿using RotationSolver.Localization;
+using RotationSolver.TextureItems;
 using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
 internal class TargetCondition : ICondition
 {
-    private static BaseStatus[] _allStatus = null;
-    private static BaseStatus[] AllStatus
+    private static StatusTexture[] _allStatus = null;
+    private static StatusTexture[] AllStatus
     {
         get
         {
@@ -20,7 +21,7 @@ internal class TargetCondition : ICondition
 
     public bool Condition;
     public bool FromSelf;
-    private BaseStatus Status { get; set; }
+    private StatusTexture Status { get; set; }
     public StatusID StatusId { get; set; }
     public bool IsTarget;
     public TargetConditionType TargetConditionType;

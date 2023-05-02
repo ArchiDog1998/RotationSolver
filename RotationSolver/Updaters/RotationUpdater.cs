@@ -24,7 +24,7 @@ internal static class RotationUpdater
 
     public static async void GetAllCustomRotations(DownloadOption option)
     {
-        var relayFolder = Service.Interface.ConfigDirectory.FullName;
+        var relayFolder = Service.Interface.ConfigDirectory.FullName + "\\Rotations";
         if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
 
         LoadRotationsFromLocal(relayFolder);
@@ -125,9 +125,7 @@ internal static class RotationUpdater
     {
         try
         {
-            var assembly = RotationHelper.LoadFrom(filePath);
-            PluginLog.Log("Successfully loaded " + assembly.FullName);
-            return assembly;
+            return RotationHelper.LoadFrom(filePath);
         }
         catch (Exception ex)
         {
@@ -227,7 +225,7 @@ internal static class RotationUpdater
                     }
                     else
                     {
-                        result = LocalizationManager.RightLang.ActionSequencer_TimeOffset;
+                        result = LocalizationManager.RightLang.Action_Ability;
                     }
 
                     if (act.IsFriendly)

@@ -56,7 +56,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool RaiseBrinkOfDeath = true;
     public int LessMPNoRaise = 0;
     public bool AddEnemyListToHostile = true;
-    public bool UseItem = false;
+    public bool UseTinctures = false;
+    public bool UseHealPotions = false;
     public bool PositionalFeedback = true;
     public bool DrawPositional = true;
     public bool DrawMeleeRange = true;
@@ -164,7 +165,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool InDebug = false;
     public bool AutoUpdateLibs = true;
     public string[] OtherLibs = Array.Empty<string>();
-    public string[] NoHostileNames = Array.Empty<string>();
+
+    public bool RecordCastingArea = true;
 
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
     public int TargetingIndex { get; set; } = 0;
@@ -199,36 +201,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float ControlWindowNextSizeRatio = 1.5f;
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;
-
-    public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
-    public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();
-    public KeyRecord KeyDoAction { get; set; } = null;
-    public Dictionary<StateCommandType, ButtonRecord> ButtonState { get; set; } = new Dictionary<StateCommandType, ButtonRecord>()
-    {
-        {StateCommandType.Smart, new ButtonRecord( GamepadButtons.East, false, true) },
-        {StateCommandType.Manual, new ButtonRecord( GamepadButtons.North, false, true) },
-        {StateCommandType.Cancel, new ButtonRecord( GamepadButtons.South, false, true) },
-    };
-    public Dictionary<SpecialCommandType, ButtonRecord> ButtonSpecial { get; set; } = new Dictionary<SpecialCommandType, ButtonRecord>()
-    {
-        {SpecialCommandType.EndSpecial, new ButtonRecord( GamepadButtons.West, false, true) },
-
-        {SpecialCommandType.EsunaStanceNorth, new ButtonRecord( GamepadButtons.DpadRight, false, true) },
-        {SpecialCommandType.MoveForward, new ButtonRecord( GamepadButtons.DpadUp, false, true) },
-        {SpecialCommandType.MoveBack, new ButtonRecord( GamepadButtons.DpadDown, false, true) },
-        {SpecialCommandType.RaiseShirk, new ButtonRecord( GamepadButtons.DpadLeft, false, true) },
-
-        {SpecialCommandType.DefenseArea, new ButtonRecord( GamepadButtons.North, true, false) },
-        {SpecialCommandType.DefenseSingle, new ButtonRecord( GamepadButtons.East, true, false) },
-        {SpecialCommandType.HealArea, new ButtonRecord( GamepadButtons.South, true, false) },
-        {SpecialCommandType.HealSingle, new ButtonRecord( GamepadButtons.West, true, false) },
-
-        {SpecialCommandType.Burst, new ButtonRecord( GamepadButtons.DpadDown, true, false) },
-        {SpecialCommandType.AntiKnockback, new ButtonRecord( GamepadButtons.DpadUp, true, false) },
-
-    };
-
-    public ButtonRecord ButtonDoAction { get; set; } = null;
+    public float DistanceForMoving = 1.2f;
 
     public void Save()
     {

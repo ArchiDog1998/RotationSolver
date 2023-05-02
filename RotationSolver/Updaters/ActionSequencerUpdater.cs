@@ -144,7 +144,7 @@ internal class ActionSequencerUpdater
         }
 
         ImGui.SameLine();
-        if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "##LoadTheConditions"))
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.FileDownload, "##LoadTheConditions"))
         {
             LoadFiles();
         }

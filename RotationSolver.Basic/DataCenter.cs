@@ -11,17 +11,18 @@ namespace RotationSolver.Basic;
 
 public static class DataCenter
 {
-    public static DateTime EffectTime { get; set; } = DateTime.Now;
+    public static DateTime EffectTime { private get; set; } = DateTime.Now;
+    public static DateTime EffectEndTime { private get; set; } = DateTime.Now;
+
+    public static bool InEffectTime => DateTime.Now >= EffectTime && DateTime.Now <= EffectEndTime;
     public static Dictionary<uint, ushort> HealHP { get; set; } = new Dictionary<uint, ushort>();
     public static Dictionary<uint, ushort> ApplyStatus { private get; set; } = new Dictionary<uint, ushort>();
+    public static uint MPGain { get; set; }
     public static bool HasApplyStatus(uint id, StatusID[] ids)
     {
-        if ((DateTime.Now - EffectTime).TotalSeconds < 1)
+        if (InEffectTime && ApplyStatus.TryGetValue(id, out var statusId))
         {
-            if (ApplyStatus.TryGetValue(id, out var statusId))
-            {
-                if (ids.Any(s => (ushort)s == statusId)) return true;
-            }
+            if (ids.Any(s => (ushort)s == statusId)) return true;
         }
         return false;
     }
@@ -287,6 +288,8 @@ public static class DataCenter
     public static bool CanHealSingleAbility { get; set; }
 
     public static bool CanHealSingleSpell { get; set; }
+
+    public static uint CurrentMp { get; set; }
     #endregion
     public static Queue<MacroItem> Macros { get; } = new Queue<MacroItem>();
 
@@ -328,7 +331,10 @@ public static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping { get; set; } = 0.1f;
+    public static float Ping => Math.Min(RTT, FetchTime);
+    public static float RTT { get; set; } = 0.1f;
+    public static float FetchTime { get; set; } = 0.1f;
+
 
     public const float MinAnimationLock = 0.6f;
     public static unsafe void AddActionRec(Action act)
@@ -341,9 +347,18 @@ public static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
+                if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
+                {
+                    FetchTime = WeaponElapsed;
+                }
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
+
+                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
+                {
+                    FetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
+                }
                 break;
             default:
                 return;

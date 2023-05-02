@@ -14,6 +14,6 @@ public unsafe struct ActionEffect
     public ushort Value;
 
     public override string ToString()
-        => $"Type: {Type}; 0-4: {Param0},{Param1},{Param2},{Param3},{Param4}; Value: {Value}";
+        => $"Type: {Type}; {Param0},{Param1},{Param2},{Param3},{Param4}; Value: {Value}";
 }
  

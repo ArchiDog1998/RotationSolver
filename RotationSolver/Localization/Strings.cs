@@ -30,11 +30,11 @@ internal partial class Strings
     public string ConfigWindow_HelpItem_Description { get; set; }
         = "In this window, you can see all Rotation Solver built-in commands for combat. ";
 
-    public string ConfigWindow_HelpItem_AttackSmart { get; set; }
-        = "Start attacking in smart mode(auto-targeting) when out of combat, otherwise switch the target according to the conditions.";
+    public string ConfigWindow_HelpItem_AttackAuto { get; set; }
+        = "Start attacking in auto target mode when out of combat, otherwise switch the target according to the conditions.";
 
     public string ConfigWindow_HelpItem_AttackManual { get; set; }
-        = "Start attacking in manual mode. You need to choose the target manually.";
+        = "Start attacking in manual target mode. You need to choose the target manually.";
 
     public string ConfigWindow_HelpItem_AttackCancel { get; set; }
         = "Stop attacking. Remember to turn it off when not in use!";
@@ -185,8 +185,8 @@ internal partial class Strings
     public string ConfigWindow_Param_RaisePlayerByCasting { get; set; } = "Raise player by casting when swift is in cooldown";
     public string ConfigWindow_Param_UseHealWhenNotAHealer { get; set; } = "Use heal when not-healer";
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
-    public string ConfigWindow_Param_UseItem { get; set; } = "Use items";
-    public string ConfigWindow_Param_UseItemDesc { get; set; } = "Use poison, WIP";
+    public string ConfigWindow_Param_UseTinctures { get; set; } = "Use Tinctures";
+    public string ConfigWindow_Param_UseHealPotions { get; set; } = "Use Heal Potions";
     public string ConfigWindow_Param_Conditon { get; set; } = "Condition";
     public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto turn smart on countdown";
     public string ConfigWindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
@@ -208,6 +208,8 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthHealerRatio { get; set; } = "Heal healer first if its HP threshold is lower than this.";
 
     public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP threshold is lower than this.";
+
+    public string ConfigWindow_Param_DistanceForMoving { get; set; } = "If the distance between Melee or Tank to target is less than this, using moving ability as attack ability.";
     public string ConfigWindow_Param_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP threshold for tank to use invincibility";
 
@@ -240,9 +242,6 @@ internal partial class Strings
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_AddOne { get; set; } = "Add One";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
-    public string ConfigWindow_Param_ConditionUp { get; set; } = "Up";
-    public string ConfigWindow_Param_ConditionDown { get; set; } = "Down";
-    public string ConfigWindow_Param_ConditionDelete { get; set; } = "Delete";
     public string ConfigWindow_Param_ResetToDefault { get; set; } = "Press left ctrl + shift and press right mouse button to reset this value";
 
     public string ConfigWindow_Action_ShowOnCDWindow { get; set; } = "Show on CD window";
@@ -272,7 +271,6 @@ internal partial class Strings
     public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
-    public string ConfigWindow_Rotation_DownloadRotationsButton { get; set; } = "Download Rotations";
 
     public string ConfigWindow_Rotation_DownloadRotations { get; set; } = "Download Rotations.";
     public string ConfigWindow_Rotation_AutoUpdateRotations { get; set; } = "Auto Update Rotations.";
@@ -286,7 +284,17 @@ internal partial class Strings
     public string ConfigWindow_List_Invincibility { get; set; } = "Invincibility";
     public string ConfigWindow_List_InvincibilityDesc { get; set; } = "If target get one of this status, it'll never attack it.";
     public string ConfigWindow_List_DangerousStatus { get; set; } = "Dangerous Status";
+
     public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "If one of your party member get this status, Esuna immediately.";
+
+    public string ConfigWindow_List_HostileCastingTank { get; set; } = "Tank Buster";
+
+    public string ConfigWindow_List_HostileCastingTankDesc { get; set; } = "If the target is casting the action like this, it'll reduction.";
+
+    public string ConfigWindow_List_HostileCastingArea { get; set; } = "AOE";
+
+    public string ConfigWindow_List_HostileCastingAreaDesc { get; set; } = "If the target is casting the action like this, it'll defense area.";
+
     public string ConfigWindow_List_Rotations { get; set; } = "Rotations";
     public string ConfigWindow_List_NoHostile { get; set; } = "No Hostile";
     public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add a name of target that never be the hostile for you.";
@@ -323,6 +331,7 @@ internal partial class Strings
 
     #region Actions
     public string Action_Friendly { get; set; } = "Support";
+    public string Action_Ability { get; set; } = "0GCD";
     public string Action_Attack { get; set; } = "Attack";
     #endregion
 
@@ -356,8 +365,8 @@ internal partial class Strings
     public string SpecialCommandType_AntiKnockback { get; set; } = "Anti-Knockback";
     public string SpecialCommandType_Burst { get; set; } = "Burst";
     public string SpecialCommandType_EndSpecial { get; set; } = "End Special";
-    public string SpecialCommandType_Smart { get; set; } = "Smart ";
-    public string SpecialCommandType_Manual { get; set; } = "Manual";
+    public string SpecialCommandType_Smart { get; set; } = "Auto Target ";
+    public string SpecialCommandType_Manual { get; set; } = "Manual Target";
     public string SpecialCommandType_Cancel { get; set; } = "Cancel";
     public string SpecialCommandType_Off { get; set; } = "Off";
     #endregion

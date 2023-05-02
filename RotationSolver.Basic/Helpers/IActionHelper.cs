@@ -5,40 +5,7 @@ namespace RotationSolver.Basic.Helpers;
 
 public static class IActionHelper
 {
-    public static SortedList<uint, float> AnimationLockTime { get; private set; } = new SortedList<uint, float>();
-
-    public static async void GetAnimationLockTimeAsync(string directory)
-    {
-#if DEBUG
-        directory = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources";
-        if (!Directory.Exists(directory)) return;
-#endif
-        var filename = $"{nameof(AnimationLockTime)}.json";
-        var filePath = Path.Combine(directory, filename);
-        if (File.Exists(filePath))
-        {
-            var str = File.ReadAllText(filePath);
-            AnimationLockTime = JsonConvert.DeserializeObject<SortedList<uint, float>>(str);
-        }
-        else
-        {
-            try
-            {
-                var client = new HttpClient();
-                var str = await client.GetStringAsync($"https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/{nameof(AnimationLockTime)}.json");
-                File.WriteAllText(filePath, str);
-
-                AnimationLockTime = JsonConvert.DeserializeObject<SortedList<uint, float>>(str);
-            }
-            catch (Exception ex)
-            {
-                PluginLog.Warning(ex, "Failed to download the animation lock time.");
-            }
-        }
-
-    }
-
-    public readonly static ActionID[] MovingActions = new ActionID[]
+    public static ActionID[] MovingActions { get; } = new ActionID[]
     {
         ActionID.EnAvant,
         ActionID.Plunge,

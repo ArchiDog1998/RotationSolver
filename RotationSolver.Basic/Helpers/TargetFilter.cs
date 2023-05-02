@@ -71,7 +71,7 @@ public static class TargetFilter
         {
             var tar = charas.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
             if (tar == null) return null;
-            if (tar.DistanceToPlayer() < 1) return tar;
+            if (tar.DistanceToPlayer() < Service.Config.DistanceForMoving) return tar;
             return null;
         }
 

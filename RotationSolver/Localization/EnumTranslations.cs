@@ -146,7 +146,7 @@ internal static class EnumTranslations
 
     internal static string ToStateString(this StateCommandType type, JobRole role) => type switch
     {
-        StateCommandType.Smart => LocalizationManager.RightLang.SpecialCommandType_Smart + RSCommands.TargetingType.ToName(),
+        StateCommandType.Auto => LocalizationManager.RightLang.SpecialCommandType_Smart + RSCommands.TargetingType.ToName(),
         StateCommandType.Manual => LocalizationManager.RightLang.SpecialCommandType_Manual,
         StateCommandType.Cancel => LocalizationManager.RightLang.SpecialCommandType_Off,
         _ => string.Empty,
@@ -170,7 +170,7 @@ internal static class EnumTranslations
 
     internal static string ToHelp(this StateCommandType type) => type switch
     {
-        StateCommandType.Smart => LocalizationManager.RightLang.ConfigWindow_HelpItem_AttackSmart,
+        StateCommandType.Auto => LocalizationManager.RightLang.ConfigWindow_HelpItem_AttackAuto,
         StateCommandType.Manual => LocalizationManager.RightLang.ConfigWindow_HelpItem_AttackManual,
         StateCommandType.Cancel => LocalizationManager.RightLang.ConfigWindow_HelpItem_AttackCancel,
         _ => string.Empty,

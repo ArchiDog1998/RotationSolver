@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -116,8 +117,16 @@ internal static partial class TargetUpdater
 
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
-            if (Service.Config.NoHostileNames.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
-            return fateId == 0 || b.FateId() == fateId;
+            IEnumerable<string> names = Array.Empty<string>();
+            if(OtherConfiguration.NoHostileNames.TryGetValue(Service.ClientState.TerritoryType, out var ns1))
+                names = names.Union(ns1);
+
+            if (OtherConfiguration.NoHostileNames.TryGetValue(0, out var ns2))
+                names = names.Union(ns2);
+
+            if (names.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
+
+            return fateId > 0 ? b.FateId() == fateId : true;
         });
 
         var hostiles = allAttackableTargets.Where(t =>
@@ -165,7 +174,8 @@ internal static partial class TargetUpdater
     {
         return IsHostileCastingBase(h, (act) =>
         {
-            return h.CastTargetObjectId == h.TargetObjectId;
+            return OtherConfiguration.HostileCastingTank.Contains(act.RowId)
+                || h.CastTargetObjectId == h.TargetObjectId;
         });
     }
 
@@ -173,20 +183,22 @@ internal static partial class TargetUpdater
     {
         return IsHostileCastingBase(h, (act) =>
         {
-            if ((act.CastType == 1 || act.CastType == 2)
-              && act.Range == 0
-              && act.EffectRange >= 40)
-                return true;
+            return OtherConfiguration.HostileCastingArea.Contains(act.RowId);
 
-            if (act.CastType == 2
-             && act.EffectRange == 6
-             && act.Cast100ms == 50
-             && act.CanTargetHostile
-             && !act.CanTargetSelf
-             && act.Range == 100)
-                return true;
+            //if ((act.CastType == 1 || act.CastType == 2)
+            //  && act.Range == 0
+            //  && act.EffectRange >= 40)
+            //    return true;
 
-            return false;
+            //if (act.CastType == 2
+            // && act.EffectRange == 6
+            // && act.Cast100ms == 50
+            // && act.CanTargetHostile
+            // && !act.CanTargetSelf
+            // && act.Range == 100)
+            //    return true;
+
+            //return false;
         });
     }
 
@@ -209,7 +221,7 @@ internal static partial class TargetUpdater
     #endregion
 
     #region Friends
-    private static Dictionary<uint, uint> _lastHp = new();
+    private static Dictionary<uint, uint> _lastHp = new Dictionary<uint, uint>();
     private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
     {
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
@@ -248,13 +260,28 @@ internal static partial class TargetUpdater
         UpdateCanHeal(Service.Player);
 
         _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
+
+        if (DataCenter.InEffectTime)
+        {
+            var rightMp = Service.Player.CurrentMp;
+            if(rightMp - _lastMp == DataCenter.MPGain)
+            {
+                DataCenter.MPGain = 0;
+            }
+            DataCenter.CurrentMp = Math.Min(10000, Service.Player.CurrentMp + DataCenter.MPGain);
+        }
+        else
+        {
+            DataCenter.CurrentMp = Service.Player.CurrentMp;
+        }
+        _lastMp = Service.Player.CurrentMp;
     }
 
     private static float GetPartyMemberHPRatio(BattleChara member)
     {
         if (member == null) return 0;
 
-        if ((DateTime.Now - DataCenter.EffectTime).TotalSeconds > 1
+        if (!DataCenter.InEffectTime
             || !DataCenter.HealHP.TryGetValue(member.ObjectId, out var hp))
         {
             return (float)member.CurrentHp / member.MaxHp;

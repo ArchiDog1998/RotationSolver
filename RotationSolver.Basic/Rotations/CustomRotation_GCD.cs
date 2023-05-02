@@ -58,7 +58,7 @@ public abstract partial class CustomRotation
 
         if (specialType == SpecialCommandType.RaiseShirk && DataCenter.DeathPeopleAll.Any())
         {
-            return true;
+            if (Raise.CanUse(out act)) return true;
         }
 
         if ((Service.Config.RaiseAll ? DataCenter.DeathPeopleAll.Any() : DataCenter.DeathPeopleParty.Any())

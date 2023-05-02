@@ -98,11 +98,26 @@ internal static class ImGuiHelper
         ImGui.PopStyleVar();
     }
 
-    public static bool IconButton(FontAwesomeIcon icon, string name)
+    public static bool IconButton(FontAwesomeIcon icon, string name, string description = null)
     {
         ImGui.PushFont(UiBuilder.IconFont);
         var result = ImGui.Button($"{icon.ToIconString()}##{name}");
         ImGui.PopFont();
+        HoveredString(description ?? icon switch
+        {
+            FontAwesomeIcon.Coffee => "Donate",
+            FontAwesomeIcon.History => "ChangeLog",
+            FontAwesomeIcon.Book => "Wiki / Help",
+            FontAwesomeIcon.HandPaper => "Support",
+            FontAwesomeIcon.Code => "Source Code",
+            FontAwesomeIcon.ArrowUp => "Move Up",
+            FontAwesomeIcon.ArrowDown => "Move Down",
+            FontAwesomeIcon.Ban => "Delete",
+            FontAwesomeIcon.Plus => "Add",
+            FontAwesomeIcon.Download => "Download",
+            FontAwesomeIcon.FileDownload => "Local load",
+            _ => null,
+        });
         return result;
     }
 
@@ -253,18 +268,18 @@ internal static class ImGuiHelper
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(name).X + 30);
     }
 
-    internal static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : ITexture
+    internal static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] data, Action<T> selectAction) where T : ITexture
     {
         if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
         {
-            SearchItems(ref searchTxt, actions, selectAction);
+            SearchItems(ref searchTxt, data, selectAction);
             ImGui.EndCombo();
         }
     }
 
-    internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> actions, Action<T> selectAction) where T : ITexture
+    internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> data, Action<T> selectAction) where T : ITexture
     {
-        SearchItems(ref searchTxt, actions, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)));
+        SearchItems(ref searchTxt, data, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)));
     }
 
     internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
@@ -484,7 +499,8 @@ internal static class ImGuiHelper
             {
                 ImGui.SameLine();
                 Spacing();
-                if (IconButton(FontAwesomeIcon.Undo, $"#{rotation.GetHashCode()}Undo"))
+                if (IconButton(FontAwesomeIcon.Undo, $"#{rotation.GetHashCode()}Undo",
+                    LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault))
                 {
                     if (Service.Config.RotationsConfigurations.TryGetValue(rotation.Job.RowId, out var jobDict)
                         && jobDict.ContainsKey(rotation.GetType().FullName))
@@ -492,7 +508,6 @@ internal static class ImGuiHelper
                         jobDict.Remove(rotation.GetType().FullName);
                     }
                 }
-                HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault);
             }
 
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
@@ -501,7 +516,7 @@ internal static class ImGuiHelper
                 ImGui.SameLine();
                 Spacing();
 
-                if (IconButton(FontAwesomeIcon.Globe, "Code" + rotation.GetHashCode().ToString()))
+                if (IconButton(FontAwesomeIcon.Code, "Code" + rotation.GetHashCode().ToString()))
                 {
                     try
                     {
@@ -531,7 +546,7 @@ internal static class ImGuiHelper
                     }
                     var hasTexture = texture.Texture != null;
 
-                    if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.QuestionCircle,
+                    if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.Question,
                         "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
                     {
                         try

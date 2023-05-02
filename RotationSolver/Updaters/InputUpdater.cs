@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Game.ClientState.Keys;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
@@ -86,46 +87,46 @@ internal static class InputUpdater
     {
         if (RecordingSpecialType != SpecialCommandType.None)
         {
-            Service.Config.KeySpecial[RecordingSpecialType] = key;
+            OtherConfiguration.InputConfig.KeySpecial[RecordingSpecialType] = key;
             Service.ToastGui.ShowQuest($"{RecordingSpecialType}: {key.ToStr()}",
                QUEST);
 
             RecordingSpecialType = SpecialCommandType.None;
-            Service.Config.Save();
+            OtherConfiguration.SaveInputConfig();
             return;
         }
         else if (RecordingStateType != StateCommandType.None )
         {
-            Service.Config.KeyState[RecordingStateType] = key;
+            OtherConfiguration.InputConfig.KeyState[RecordingStateType] = key;
             Service.ToastGui.ShowQuest($"{RecordingStateType}: {key.ToStr()}",
                 QUEST);
 
             RecordingStateType = StateCommandType.None;
-            Service.Config.Save();
+            OtherConfiguration.SaveInputConfig();
             return;
         }
         else if (RecordingDoAction)
         {
-            Service.Config.KeyDoAction = key;
+            OtherConfiguration.InputConfig.KeyDoAction = key;
             Service.ToastGui.ShowQuest($"Do Action: {key.ToStr()}", QUEST);
             RecordingDoAction = false;
-            Service.Config.Save();
+            OtherConfiguration.SaveInputConfig();
             return;
         }
 
         if (!Service.Config.UseKeyboardCommand) return;
 
-        if (Service.Config.KeyState.ContainsValue(key))
+        if (OtherConfiguration.InputConfig.KeyState.ContainsValue(key))
         {
-            Service.CommandManager.ProcessCommand(Service.Config.KeyState
+            Service.CommandManager.ProcessCommand(OtherConfiguration.InputConfig.KeyState
                 .FirstOrDefault(k => k.Value == key && k.Key != StateCommandType.None).Key.GetCommandStr());
         }
-        else if (Service.Config.KeySpecial.ContainsValue(key))
+        else if (OtherConfiguration.InputConfig.KeySpecial.ContainsValue(key))
         {
-            Service.CommandManager.ProcessCommand(Service.Config.KeySpecial
+            Service.CommandManager.ProcessCommand(OtherConfiguration.InputConfig.KeySpecial
                 .FirstOrDefault(k => k.Value == key && k.Key != SpecialCommandType.None).Key.GetCommandStr());
         }
-        else if(Service.Config.KeyDoAction == key)
+        else if(OtherConfiguration.InputConfig.KeyDoAction == key)
         {
             RSCommands.DoAction();
         }
@@ -135,46 +136,46 @@ internal static class InputUpdater
     {
         if (RecordingSpecialType != SpecialCommandType.None)
         {
-            Service.Config.ButtonSpecial[RecordingSpecialType] = button;
+            OtherConfiguration.InputConfig.ButtonSpecial[RecordingSpecialType] = button;
             Service.ToastGui.ShowQuest($"{RecordingSpecialType}: {button.ToStr()}",
                 QUEST);
 
             RecordingSpecialType = SpecialCommandType.None;
-            Service.Config.Save();
+            OtherConfiguration.SaveInputConfig();
             return;
         }
         else if (RecordingStateType != StateCommandType.None)
         {
-            Service.Config.ButtonState[RecordingStateType] = button;
+            OtherConfiguration.InputConfig.ButtonState[RecordingStateType] = button;
             Service.ToastGui.ShowQuest($"{RecordingStateType}: {button.ToStr()}",
                 QUEST);
 
             RecordingStateType = StateCommandType.None;
-            Service.Config.Save();
+            OtherConfiguration.SaveInputConfig();
             return;
         }
         else if (RecordingDoAction)
         {
-            Service.Config.ButtonDoAction = button;
+            OtherConfiguration.InputConfig.ButtonDoAction = button;
             Service.ToastGui.ShowQuest($"Do Action: {button.ToStr()}", QUEST);
             RecordingDoAction = false;
-            Service.Config.Save();
+            OtherConfiguration.SaveInputConfig();
             return;
         }
 
         if (!Service.Config.UseGamepadCommand) return;
 
-        if (Service.Config.ButtonState.ContainsValue(button))
+        if (OtherConfiguration.InputConfig.ButtonState.ContainsValue(button))
         {
-            Service.CommandManager.ProcessCommand(Service.Config.ButtonState
+            Service.CommandManager.ProcessCommand(OtherConfiguration.InputConfig.ButtonState
                 .FirstOrDefault(k => k.Value == button && k.Key != StateCommandType.None).Key.GetCommandStr());
         }
-        else if (Service.Config.ButtonSpecial.ContainsValue(button))
+        else if (OtherConfiguration.InputConfig.ButtonSpecial.ContainsValue(button))
         {
-            Service.CommandManager.ProcessCommand(Service.Config.ButtonSpecial
+            Service.CommandManager.ProcessCommand(OtherConfiguration.InputConfig.ButtonSpecial
                 .FirstOrDefault(k => k.Value == button && k.Key != SpecialCommandType.None).Key.GetCommandStr());
         }
-        else if (Service.Config.ButtonDoAction == button)
+        else if (OtherConfiguration.InputConfig.ButtonDoAction == button)
         {
             RSCommands.DoAction();
         }

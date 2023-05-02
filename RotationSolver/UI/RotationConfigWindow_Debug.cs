@@ -26,7 +26,6 @@ internal partial class RotationConfigWindow
             DrawParamTabItem("Target Data", DrawTargetData);
             DrawParamTabItem("Next Action", DrawNextAction);
             DrawParamTabItem("Last Action", DrawLastAction);
-            DrawParamTabItem("CD, EX", DrawCDEX);
             DrawParamTabItem("Icon", DrawIcon);
             DrawParamTabItem("Effect", () =>
             {
@@ -57,6 +56,9 @@ internal partial class RotationConfigWindow
         ImGui.Text("Hostile Near Count Max Range: " + DataCenter.NumberOfHostilesInMaxRange.ToString());
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
         ImGui.Text("Ping: " + DataCenter.Ping.ToString());
+        ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
+        ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
+        ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
 
         foreach (var status in Service.Player.StatusList)
         {
@@ -135,36 +137,27 @@ internal partial class RotationConfigWindow
             ImGui.Text(item.Name.ToString());
         }
     }
+
     private void DrawNextAction()
     {
         ImGui.Text(RotationUpdater.RightNowRotation.RotationName);
         ImGui.Text(DataCenter.SpecialType.ToString());
 
-        ActionUpdater.NextAction?.Display(false);
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
         ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
         ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
         ImGui.Text("Elapsed: " + CustomRotation.CombatElapsedLess(10).ToString());
         ImGui.Text("Time: " + (DataCenter.CombatTime + DataCenter.WeaponRemain).ToString());
 
+        ActionUpdater.NextAction?.Display(false);
     }
+
     private void DrawLastAction()
     {
         DrawAction(DataCenter.LastAction, nameof(DataCenter.LastAction));
         DrawAction(DataCenter.LastAbility, nameof(DataCenter.LastAbility));
         DrawAction(DataCenter.LastGCD, nameof(DataCenter.LastGCD));
         DrawAction(DataCenter.LastComboAction, nameof(DataCenter.LastComboAction));
-    }
-
-    private void DrawCDEX()
-    {
-        ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
-
-        if (ActionUpdater.exception != null)
-        {
-            ImGui.Text(ActionUpdater.exception.Message);
-            ImGui.Text(ActionUpdater.exception.StackTrace);
-        }
     }
 
     private unsafe void DrawIcon()

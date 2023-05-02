@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
@@ -14,8 +15,6 @@ internal static class ActionUpdater
 
     internal static IAction NextAction { get; private set; }
     internal static IBaseAction NextGCDAction { get; private set; }
-
-    internal static Exception exception;
 
     internal static void UpdateNextAction()
     {
@@ -58,7 +57,7 @@ internal static class ActionUpdater
         }
         catch (Exception ex)
         {
-            exception = ex;
+            PluginLog.Error(ex, "Failed to update next action.");
         }
 
         NextAction = NextGCDAction = null;

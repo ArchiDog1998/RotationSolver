@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Logging;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -24,86 +25,6 @@ public static class StatusHelper
     {
         StatusID.Holmgang, StatusID.WillDead, StatusID.LivingDead
     };
-
-    public static SortedSet<uint> DangerousStatus { get; set; } = new SortedSet<uint>()
-    {
-        (uint)StatusID.Doom,
-        (uint)StatusID.Amnesia,
-        (uint)StatusID.Stun,
-        (uint)StatusID.Stun2,
-        (uint)StatusID.Sleep,
-        (uint)StatusID.Sleep2,
-        (uint)StatusID.Sleep3,
-        (uint)StatusID.Pacification,
-        (uint)StatusID.Pacification2,
-        (uint)StatusID.Silence,
-        (uint)StatusID.Slow,
-        (uint)StatusID.Slow2,
-        (uint)StatusID.Slow3,
-        (uint)StatusID.Slow4,
-        (uint)StatusID.Slow5,
-        (uint)StatusID.Blind,
-        (uint)StatusID.Blind2,
-        (uint)StatusID.Blind3,
-        (uint)StatusID.Paralysis,
-        (uint)StatusID.Paralysis2,
-        (uint)StatusID.Nightmare,
-        (uint)StatusID.Necrosis,
-    };
-
-    public static SortedSet<uint> InvincibleStatus { get; set; } = new SortedSet<uint>()
-    {
-        (uint)StatusID.StoneSkin,
-        (uint)StatusID.IceSpikesInvincible,
-        (uint)StatusID.VortexBarrier,
-    };
-
-    static string DangerousStatusFile => Service.Interface.ConfigDirectory.FullName + $"\\{nameof(DangerousStatus)}.json";
-
-    static string InvincibleStatusFile => Service.Interface.ConfigDirectory.FullName + $"\\{nameof(InvincibleStatus)}.json";
-    public static async void Enable()
-    {
-        if(File.Exists(DangerousStatusFile))
-        {
-            try
-            {
-                DangerousStatus = JsonConvert.DeserializeObject<SortedSet<uint>>(await File.ReadAllTextAsync(DangerousStatusFile));
-            }
-            catch(Exception ex)
-            {
-                PluginLog.Warning(ex, "Failed to load Dangerous Status List.");
-                SaveDangerousStatus();
-            }
-        }
-        else SaveDangerousStatus();
-
-        if (File.Exists(InvincibleStatusFile))
-        {
-            try
-            {
-                InvincibleStatus = JsonConvert.DeserializeObject<SortedSet<uint>>(await File.ReadAllTextAsync(InvincibleStatusFile));
-            }
-            catch (Exception ex)
-            {
-                PluginLog.Warning(ex, "Failed to load Invincible Status List.");
-                SaveInvincibleStatus();
-            }
-        }
-        else SaveInvincibleStatus();
-    }
-
-    public static void SaveDangerousStatus()
-    {
-        File.WriteAllTextAsync(DangerousStatusFile,
-        JsonConvert.SerializeObject(DangerousStatus, Formatting.Indented));
-    }
-
-    public static void SaveInvincibleStatus()
-    {
-        File.WriteAllTextAsync(InvincibleStatusFile,
-        JsonConvert.SerializeObject(InvincibleStatus, Formatting.Indented));
-    }
-
 
     internal record Burst2MinsInfo(StatusID Status, bool IsOnHostile, byte Level, params ClassJobID[] Jobs);
 
@@ -180,6 +101,7 @@ public static class StatusHelper
 
     public static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
+        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return byte.MaxValue;
         var stacks = obj.StatusStacks(isFromSelf, statusIDs);
         if (stacks == null || !stacks.Any()) return 0;
         return stacks.Min();
@@ -232,14 +154,14 @@ public static class StatusHelper
     public static bool IsInvincible(this Status status)
     {
         if (status.GameData.Icon == 15024) return true;
-        return InvincibleStatus.Any(id => (uint)id == status.StatusId);
+        return OtherConfiguration.InvincibleStatus.Any(id => (uint)id == status.StatusId);
     }
 
     public static bool IsDangerous(this Status status)
     {
         if (!status.CanDispel()) return false;
         if (status.StackCount > 2) return true;
-        return DangerousStatus.Any(id => id == status.StatusId);
+        return OtherConfiguration.DangerousStatus.Any(id => id == status.StatusId);
     }
 
     public static bool CanDispel(this Status status)

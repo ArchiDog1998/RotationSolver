@@ -1,5 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -65,9 +66,11 @@ internal class BaseItem : IBaseItem
 
     public uint SortKey { get; }
 
-    public float AnimationLockTime => IActionHelper.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 1.1f;
+    public float AnimationLockTime => OtherConfiguration.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 1.1f;
 
-    public bool IsActionSequencer => false;
+    public virtual bool IsActionSequencer => false;
+
+    protected virtual bool CanUseThis => true;
 
     public unsafe BaseItem(uint row, uint a4 = 65535)
     {
@@ -77,21 +80,23 @@ internal class BaseItem : IBaseItem
         SortKey = (uint)ActionManager.Instance()->GetRecastGroup((int)ActionType.Item, ID);
     }
 
-    public unsafe bool CanUse(out IAction item)
+    public virtual unsafe bool CanUse(out IAction item)
     {
         item = this;
         if (_item == null) return false;
-
-        if (!Service.Config.UseItem) return false;
+        if (!CanUseThis) return false;
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))
             && ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID + 1000000))) return false;
 
         var remain = RecastTimeOneCharge - RecastTimeElapsed;
 
-        if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock) return false;
+        if(DataCenter.WeaponRemain > 0)
+        {
+            if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping) return false;
 
-        if (CooldownHelper.RecastAfter(DataCenter.ActionRemain, remain, false)) return false;
+            if (CooldownHelper.RecastAfter(DataCenter.ActionRemain, remain, false)) return false;
+        }
 
         if (OtherCheck != null && !OtherCheck()) return false;
 

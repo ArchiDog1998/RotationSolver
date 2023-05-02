@@ -1,4 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using RotationSolver.Basic.Configuration;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Basic.Actions;
@@ -92,7 +93,7 @@ public partial class BaseAction : IBaseAction
 
     public uint SortKey => CoolDownGroup;
 
-    public float AnimationLockTime => IActionHelper.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 0.6f;
+    public float AnimationLockTime => OtherConfiguration.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 0.6f;
 
     public BaseAction(ActionID actionID, ActionOption option = ActionOption.None)
     {

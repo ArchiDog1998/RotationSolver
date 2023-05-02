@@ -144,6 +144,6 @@ public abstract class BRD_Base : CustomRotation
     protected sealed override bool HealSingleAbility(out IAction act)
     {
         if (NaturesMinne.CanUse(out act)) return true;
-        return false;
+        return base.HealSingleAbility(out act);
     }
 }

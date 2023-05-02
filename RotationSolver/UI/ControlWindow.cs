@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using ImGuiScene;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
@@ -18,7 +19,7 @@ internal class ControlWindow : Window
     public ControlWindow()
         : base(nameof(ControlWindow), BaseFlags)
     {
-        Size = new Vector2(540f, 300f);
+        Size = new Vector2(570f, 300f);
         SizeCondition = ImGuiCond.FirstUseEver;
     }
 
@@ -36,7 +37,6 @@ internal class ControlWindow : Window
             Flags |= ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
         }
 
-        //ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
         ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
     }
 
@@ -54,10 +54,13 @@ internal class ControlWindow : Window
         var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
         var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
 
-        ImGui.SetColumnWidth(0, width + ImGui.GetStyle().ColumnsMinSpacing * 2);
         ImGui.SetColumnWidth(1, 8);
 
         DrawNextAction(gcd, ability, width);
+
+        ImGui.SameLine();
+        var columnWidth = ImGui.GetCursorPosX();
+        ImGui.NewLine();
 
         ImGui.Spacing();
 
@@ -66,17 +69,27 @@ internal class ControlWindow : Window
         ImGui.SameLine();
         DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DalamudWhite2);
 
-        DrawCommandAction(61822, StateCommandType.Smart, ImGuiColors.DPSRed);
+        ImGui.SameLine();
+        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
+        ImGui.NewLine();
+
+        DrawCommandAction(61822, StateCommandType.Auto, ImGuiColors.DPSRed);
 
         ImGui.SameLine();
 
         ImGui.BeginGroup();
 
-        ImGui.Text(DataCenter.TargetingType.ToName());
+        ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.ToName());
 
         RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
             ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
         ImGui.EndGroup();
+
+        ImGui.SameLine();
+        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
+        ImGui.NewLine();
+
+        ImGui.SetColumnWidth(0, columnWidth);
 
         ImGui.NextColumn();
         ImGui.NextColumn();
@@ -288,13 +301,13 @@ internal class ControlWindow : Window
     static string GetHelp(SpecialCommandType command)
     {
         var help = command.ToHelp() + "\n ";
-        if (Service.Config.ButtonSpecial.TryGetValue(command, out var button))
+        if (OtherConfiguration.InputConfig.ButtonSpecial.TryGetValue(command, out var button))
         {
             help += "\n" + button.ToStr();
             if (!Service.Config.UseGamepadCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
 
         }
-        if (Service.Config.KeySpecial.TryGetValue(command, out var key))
+        if (OtherConfiguration.InputConfig.KeySpecial.TryGetValue(command, out var key))
         {
             help += "\n" + key.ToStr();
             if (!Service.Config.UseKeyboardCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
@@ -305,12 +318,12 @@ internal class ControlWindow : Window
     static string GetHelp(StateCommandType command)
     {
         var help = command.ToHelp() + "\n ";
-        if (Service.Config.ButtonState.TryGetValue(command, out var button))
+        if (OtherConfiguration.InputConfig.ButtonState.TryGetValue(command, out var button))
         {
             help += "\n" + button.ToStr();
             if (!Service.Config.UseGamepadCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
         }
-        if (Service.Config.KeyState.TryGetValue(command, out var key))
+        if (OtherConfiguration.InputConfig.KeyState.TryGetValue(command, out var key))
         {
             help += "\n" + key.ToStr();
             if (!Service.Config.UseKeyboardCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
@@ -357,9 +370,9 @@ internal class ControlWindow : Window
 
             if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
             {
-                Service.Config.KeySpecial.Remove(command);
-                Service.Config.ButtonSpecial.Remove(command);
-                Service.Config.Save();
+                OtherConfiguration.InputConfig.KeySpecial.Remove(command);
+                OtherConfiguration.InputConfig.ButtonSpecial.Remove(command);
+                OtherConfiguration.SaveInputConfig();
 
                 Service.ToastGui.ShowQuest($"Clear Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
@@ -396,9 +409,9 @@ internal class ControlWindow : Window
 
             if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
             {
-                Service.Config.KeyState.Remove(command);
-                Service.Config.ButtonState.Remove(command);
-                Service.Config.Save();
+                OtherConfiguration.InputConfig.KeyState.Remove(command);
+                OtherConfiguration.InputConfig.ButtonState.Remove(command);
+                OtherConfiguration.SaveInputConfig();
 
                 Service.ToastGui.ShowQuest($"Clear Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
@@ -544,15 +557,15 @@ internal class ControlWindow : Window
         if (ImGui.IsItemHovered())
         {
             var help = string.Empty;
-            if (Service.Config.ButtonDoAction != null)
+            if (OtherConfiguration.InputConfig.ButtonDoAction != null)
             {
-                help += "\n" + Service.Config.ButtonDoAction.ToStr();
+                help += "\n" + OtherConfiguration.InputConfig.ButtonDoAction.ToStr();
                 if (!Service.Config.UseGamepadCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
 
             }
-            if (Service.Config.KeyDoAction != null)
+            if (OtherConfiguration.InputConfig.KeyDoAction != null)
             {
-                help += "\n" + Service.Config.KeyDoAction.ToStr();
+                help += "\n" + OtherConfiguration.InputConfig.KeyDoAction.ToStr();
                 if (!Service.Config.UseKeyboardCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
             }
             help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
@@ -571,9 +584,9 @@ internal class ControlWindow : Window
 
             if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
             {
-                Service.Config.KeyDoAction = null;
-                Service.Config.ButtonDoAction = null;
-                Service.Config.Save();
+                OtherConfiguration.InputConfig.KeyDoAction = null;
+                OtherConfiguration.InputConfig.ButtonDoAction = null;
+                OtherConfiguration.SaveInputConfig();
 
                 Service.ToastGui.ShowQuest($"Clear Recording: Do Action",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
