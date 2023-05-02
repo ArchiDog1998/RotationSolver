@@ -11,7 +11,7 @@ internal class TargetCondition : ICondition
     {
         get
         {
-            _allStatus ??= Enum.GetValues<StatusID>().Select(id => new BaseStatus(id)).ToArray();
+            _allStatus ??= Enum.GetValues<StatusID>().Select(id => new StatusTexture(id)).ToArray();
             return _allStatus;
         }
     }

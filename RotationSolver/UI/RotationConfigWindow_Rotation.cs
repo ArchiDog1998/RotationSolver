@@ -283,7 +283,7 @@ internal partial class RotationConfigWindow
 
                 ImGui.SameLine();
                 
-                if (!string.IsNullOrEmpty(info.changeLog))
+                if (!string.IsNullOrEmpty(info.ChangeLog))
                 {
                     if (ImGuiHelper.IconButton(FontAwesomeIcon.History, $"ChangeLog{grp.Key.GetHashCode()}"))
                     {

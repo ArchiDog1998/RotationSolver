@@ -23,7 +23,7 @@ public static class TargetFilter
             return healerTar;
 
         var tankTar = tankTars.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
-        if (tankTar != null &&　tankTar.GetHealthRatio() < Service.Config.HealthTankRatio)
+        if (tankTar != null && tankTar.GetHealthRatio() < Service.Config.HealthTankRatio)
             return tankTar;
 
         var tar = availableCharas.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();

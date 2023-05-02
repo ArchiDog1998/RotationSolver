@@ -19,15 +19,12 @@ internal partial class RotationConfigWindow
     {
         get
         {
-            if (_allTerritories == null)
-            {
-                _allTerritories = Service.GetSheet<TerritoryType>()
+            _allTerritories ??= Service.GetSheet<TerritoryType>()
                     .Where(t => t!= null
                         && t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId != 0)
                     .OrderBy(t => t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId)
                     .Select(t => new TerritoryTypeTexture(t))
                     .ToArray();
-            }
             return _allTerritories;
         }
     }
@@ -64,14 +61,11 @@ internal partial class RotationConfigWindow
     {
         get
         {
-            if (_allActions == null)
-            {
-                _allActions = Service.GetSheet<Action>()
+            _allActions ??= Service.GetSheet<Action>()
                     .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction 
                     && a.ClassJob.Value == null)
                     .Select(a => new ActionTexture(a))
                     .ToArray();
-            }
             return _allActions;
         }
     }

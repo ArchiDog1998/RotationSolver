@@ -1140,7 +1140,7 @@ public enum ActionID : uint
 
     Dosis = 24283,
 
-    EukrasianDosis = 24283,
+    EukrasianDosis = Dosis,
 
     Phlegma = 24289,
 
@@ -1224,7 +1224,7 @@ public enum ActionID : uint
 
     SummonEmerald = 25804,
 
-    ResurrectionSMN = 173,
+    ResurrectionSMN = Resurrection,
 
     EnergyDrainSMN = 16508,
 
