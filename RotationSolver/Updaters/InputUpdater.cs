@@ -21,7 +21,6 @@ internal static class InputUpdater
         if (Service.Conditions[ConditionFlag.OccupiedInQuestEvent]
             || Service.Conditions[ConditionFlag.Occupied33]
             || Service.Conditions[ConditionFlag.Occupied38]
-            || Service.Conditions[ConditionFlag.Jumping61]
             || Service.Conditions[ConditionFlag.BetweenAreas]
             || Service.Conditions[ConditionFlag.BetweenAreas51]
             || Service.Conditions[ConditionFlag.Mounted]

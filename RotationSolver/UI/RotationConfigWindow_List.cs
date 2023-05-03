@@ -56,7 +56,7 @@ internal partial class RotationConfigWindow
             if (_allInvStatus == null)
             {
                 _allInvStatus = Service.GetSheet<Status>()
-                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsPermanent && !s.IsGaze && !s.IsFcBuff && s.HitEffect.Row == 16 && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
+                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff && s.HitEffect.Row == 16 && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
                         && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
                     .Select(s => new StatusTexture(s))
                     .ToArray();
@@ -121,7 +121,7 @@ internal partial class RotationConfigWindow
                         _territoryId = 0;
                     }
 
-                     ImGuiHelper.SearchItems(ref searchText, AllTerritories, s =>
+                    ImGuiHelper.SearchItems(ref searchText, AllTerritories, s =>
                     {
                         _territoryId = s.ID;
                     });
@@ -319,6 +319,7 @@ internal partial class RotationConfigWindow
         {
             var status = Service.GetSheet<Status>().GetRow(statusId);
             ImGui.Image(IconSet.GetTexture(status.Icon).ImGuiHandle, new Vector2(24, 30));
+            ImGuiHelper.HoveredString(status.Description?.ToString());
 
             ImGui.SameLine();
             ImGuiHelper.Spacing();
@@ -363,6 +364,7 @@ internal partial class RotationConfigWindow
         {
             var status = Service.GetSheet<Status>().GetRow(statusId);
             ImGui.Image(IconSet.GetTexture(status.Icon).ImGuiHandle, new Vector2(24, 30));
+            ImGuiHelper.HoveredString(status.Description?.ToString());
 
             ImGui.SameLine();
             ImGuiHelper.Spacing();
