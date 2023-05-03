@@ -22,33 +22,40 @@ internal static class RotationUpdater
         ShowList = 1 << 2,
     }
 
-    public static async void GetAllCustomRotations(DownloadOption option)
+    static bool _isLoading = false;
+
+    public static void GetAllCustomRotations(DownloadOption option)
     {
-        var relayFolder = Service.Interface.ConfigDirectory.FullName + "\\Rotations";
-        if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
+        if (_isLoading) return;
 
-        LoadRotationsFromLocal(relayFolder);
-
-        if (option.HasFlag(DownloadOption.Donwload) && Service.Config.DownloadRotations)
-            await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
-
-        if (option.HasFlag(DownloadOption.ShowList))
+        Task.Run(async () =>
         {
-            foreach (var item in CustomRotationsDict
-            .SelectMany(d => d.Value)
-            .SelectMany(g => g.Rotations)
-            .Select(r => r.GetType().Assembly.FullName).ToHashSet())
+            _isLoading = true;
+
+            var relayFolder = Service.Interface.ConfigDirectory.FullName + "\\Rotations";
+            if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
+
+            LoadRotationsFromLocal(relayFolder);
+
+            if (option.HasFlag(DownloadOption.Donwload) && Service.Config.DownloadRotations)
+                await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
+
+            if (option.HasFlag(DownloadOption.ShowList))
             {
-                Service.ChatGui.Print("Loaded: " + item);
+                foreach (var item in CustomRotationsDict
+                .SelectMany(d => d.Value)
+                .SelectMany(g => g.Rotations)
+                .Select(r => r.GetType().Assembly.FullName).ToHashSet())
+                {
+                    Service.ChatGui.Print("Loaded: " + item);
+                }
             }
-        }
+            _isLoading = false;
+        });
     }
 
-    static bool _isDownloading = false;
     private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
     {
-        if (_isDownloading) return;
-        _isDownloading= true;
         bool hasDownload = false;
         using (var client = new HttpClient())
         {
@@ -71,7 +78,6 @@ internal static class RotationUpdater
             }
         }
         if (hasDownload) LoadRotationsFromLocal(relayFolder);
-        _isDownloading = false;
     }
 
     private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client, bool mustDownload)
@@ -136,7 +142,7 @@ internal static class RotationUpdater
 
     private static void LoadRotationsFromLocal(string relayFolder)
     {
-        var directories = new string[] { relayFolder }
+        var directories = new string[] { }
             .Union(Service.Config.OtherLibs
             .Where(Directory.Exists));
 

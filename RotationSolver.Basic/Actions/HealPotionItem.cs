@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Basic.Actions;
 
-internal class HealPotionItem : BaseItem
+public class HealPotionItem : BaseItem
 {
     readonly float _percent;
     readonly uint _maxHp;
@@ -27,7 +27,7 @@ internal class HealPotionItem : BaseItem
         item = null;
         if (Service.Player == null) return false;
         var job = (ClassJobID)Service.Player.ClassJob.Id;
-        if (Service.Player.GetHealthRatio() > job.GetHealSingleAbility() - 
+        if (Service.Player.GetHealthRatio() > job.GetHealSingleAbility() -
             job.GetHealingOfTimeSubtractSingle()) return false;
         if (Service.Player.MaxHp - Service.Player.CurrentHp < MaxHealHp) return false;
         return base.CanUse(out item);

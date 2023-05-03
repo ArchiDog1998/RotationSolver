@@ -675,6 +675,11 @@ internal static class ImGuiHelper
             var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, item.ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, item.ID);
             ImGui.Text("remain: " + remain.ToString());
             ImGui.Text("CanUse: " + item.CanUse(out _).ToString());
+
+            if(item is HealPotionItem healPotionItem)
+            {
+                ImGui.Text("MaxHP:" +  healPotionItem.MaxHealHp.ToString());
+            }
         }
     });
     #endregion
