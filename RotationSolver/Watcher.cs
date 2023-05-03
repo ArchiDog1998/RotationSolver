@@ -19,10 +19,11 @@ public class Watcher : IDisposable
     /// https://github.com/Tischel/ActionTimeline/blob/master/ActionTimeline/Helpers/TimelineManager.cs#L86
     /// </summary>
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
-    private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
+    private static readonly Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
 
 
     public static ICallGateSubscriber<object, object> IpcSubscriber;
+    private bool _disposed;
 
     public Watcher()
     {
@@ -165,6 +166,17 @@ public class Watcher : IDisposable
 
     public void Dispose()
     {
-        _receiveAbilityHook?.Dispose();
+         Dispose(true);
+         GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+
+        if (disposing)
+             _receiveAbilityHook?.Dispose();
+
+        _disposed = true;
     }
 }

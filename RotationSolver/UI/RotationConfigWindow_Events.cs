@@ -4,7 +4,7 @@ using RotationSolver.Localization;
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
 {
-    private void DrawEventTab()
+    private static void DrawEventTab()
     {
         if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Events_AddEvent))
         {

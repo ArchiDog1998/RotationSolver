@@ -818,7 +818,7 @@ internal static class ImGuiHelper
     #endregion
 
 
-    static readonly Vector2 PIC_SIZE = new Vector2(24, 24);
+    static readonly Vector2 PIC_SIZE = new(24, 24);
     const float ATTR_INDENT = 170;
 
     public static void Display(this RotationDescAttribute attr, ICustomRotation rotation)

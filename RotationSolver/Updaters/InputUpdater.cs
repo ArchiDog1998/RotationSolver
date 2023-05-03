@@ -8,8 +8,8 @@ namespace RotationSolver.Updaters;
 
 internal static class InputUpdater
 {
-    static readonly SortedList<VirtualKey, bool> _keys = new SortedList<VirtualKey, bool>();
-    static readonly SortedList<GamepadButtons, bool> _buttons = new SortedList<GamepadButtons, bool>();
+    static readonly SortedList<VirtualKey, bool> _keys = new();
+    static readonly SortedList<GamepadButtons, bool> _buttons = new();
 
     public static SpecialCommandType RecordingSpecialType { get ; set; }
     public static StateCommandType RecordingStateType { get ; set; }
@@ -75,7 +75,7 @@ internal static class InputUpdater
         }
     }
 
-    static readonly Dalamud.Game.Gui.Toast.QuestToastOptions QUEST = new Dalamud.Game.Gui.Toast.QuestToastOptions()
+    static readonly Dalamud.Game.Gui.Toast.QuestToastOptions QUEST = new()
     {
         IconId = 101,
         PlaySound = true,

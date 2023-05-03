@@ -4,8 +4,8 @@ public struct RandomDelay
 {
     DateTime _startDelayTime = DateTime.Now;
     float _delayTime = -1;
-    Func<(float min, float max)> _getRange;
-    Random _ran = new Random(DateTime.Now.Millisecond);
+    readonly Func<(float min, float max)> _getRange;
+    readonly Random _ran = new(DateTime.Now.Millisecond);
     bool _lastValue = false;
     public RandomDelay(Func<(float min, float max)> getRange)
     {
@@ -28,8 +28,8 @@ public struct RandomDelay
         {
             _lastValue = true;
             _startDelayTime = DateTime.Now;
-            var range = _getRange();
-            _delayTime = range.min + (float)_ran.NextDouble() * (range.max - range.min);
+            var (min, max) = _getRange();
+            _delayTime = min + (float)_ran.NextDouble() * (max - min);
         }
         //Times up
         else if ((DateTime.Now - _startDelayTime).TotalSeconds >= _delayTime)

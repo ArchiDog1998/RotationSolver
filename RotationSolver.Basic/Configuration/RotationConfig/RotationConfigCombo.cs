@@ -19,7 +19,7 @@ public class RotationConfigCombo : RotationConfigBase
     {
         if (!base.DoCommand(set, str)) return false;
 
-        string numStr = str.Substring(Name.Length).Trim();
+        string numStr = str[Name.Length..].Trim();
         var length = Items.Length;
 
         int nextId = (set.GetCombo(Name) + 1) % length;

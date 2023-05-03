@@ -19,15 +19,12 @@ internal partial class RotationConfigWindow
     {
         get
         {
-            if (_allTerritories == null)
-            {
-                _allTerritories = Service.GetSheet<TerritoryType>()
+            _allTerritories ??= Service.GetSheet<TerritoryType>()
                     .Where(t => t!= null
                         && t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId != 0)
                     .OrderBy(t => t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId)
                     .Select(t => new TerritoryTypeTexture(t))
                     .ToArray();
-            }
             return _allTerritories;
         }
     }
@@ -37,13 +34,10 @@ internal partial class RotationConfigWindow
     {
         get
         {
-            if (_allDispelStatus == null)
-            {
-                _allDispelStatus = Service.GetSheet<Status>()
+            _allDispelStatus ??= Service.GetSheet<Status>()
                     .Where(s => s.CanDispel)
                     .Select(s => new StatusTexture(s))
                     .ToArray();
-            }
             return _allDispelStatus;
         }
     }
@@ -53,14 +47,11 @@ internal partial class RotationConfigWindow
     {
         get
         {
-            if (_allInvStatus == null)
-            {
-                _allInvStatus = Service.GetSheet<Status>()
+            _allInvStatus ??= Service.GetSheet<Status>()
                     .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff && s.HitEffect.Row == 16 && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
                         && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
                     .Select(s => new StatusTexture(s))
                     .ToArray();
-            }
             return _allInvStatus;
         }
     }
@@ -70,14 +61,11 @@ internal partial class RotationConfigWindow
     {
         get
         {
-            if (_allActions == null)
-            {
-                _allActions = Service.GetSheet<Action>()
+            _allActions ??= Service.GetSheet<Action>()
                     .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction 
                     && a.ClassJob.Value == null)
                     .Select(a => new ActionTexture(a))
                     .ToArray();
-            }
             return _allActions;
         }
     }

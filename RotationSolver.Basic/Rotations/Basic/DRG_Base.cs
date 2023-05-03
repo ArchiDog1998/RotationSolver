@@ -146,7 +146,7 @@ public abstract class DRG_Base : CustomRotation
             Targets = Targets.Where(b => b.ObjectId != Player.ObjectId &&
             !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkOfDeath)).ToArray();
 
-            if (Targets.Count() == 0) return Player;
+            if (!Targets.Any()) return Player;
 
             return Targets.GetJobCategory(JobRole.Melee, JobRole.RangedMagical, JobRole.RangedPhysical, JobRole.Tank).FirstOrDefault();
         },

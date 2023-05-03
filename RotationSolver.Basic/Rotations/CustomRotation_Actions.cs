@@ -4,7 +4,7 @@ public abstract partial class CustomRotation
 {
     internal class RoleAction : BaseAction
     {
-        private JobRole[] _roles;
+        private readonly JobRole[] _roles;
         internal RoleAction(ActionID actionID, JobRole[] roles, ActionOption option = ActionOption.None) 
             : base(actionID, option)
         {
@@ -193,7 +193,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public virtual IBaseAction[] AllBaseActions => GetBaseActions(GetType()).ToArray();
 
-    public IAction[] AllActions => new IAction[0].Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
+    public IAction[] AllActions => Array.Empty<IAction>().Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
 
     /// <summary>
     /// 这个类所有的公开bool值
@@ -219,17 +219,17 @@ public abstract partial class CustomRotation
 
     private IEnumerable<IBaseAction> GetBaseActions(Type type)
     {
-        return GetIActions(type).OfType<IBaseAction>().Where(a => a is RoleAction role ? role.InRole(Job.GetJobRole()) : true);
+        return GetIActions(type).OfType<IBaseAction>().Where(a => a is not RoleAction role || role.InRole(Job.GetJobRole()));
     }
 
     private IEnumerable<IBaseItem> GetBaseItems(Type type)
     {
-        return GetIActions(type).OfType<IBaseItem>().Where(a => a is MedicineItem medicine ? medicine.InType(this) : true).Reverse();
+        return GetIActions(type).OfType<IBaseItem>().Where(a => a is not MedicineItem medicine || medicine.InType(this)).Reverse();
     }
 
     private IEnumerable<IAction> GetIActions(Type type)
     {
-        if (type == null) return new IAction[0];
+        if (type == null) return Array.Empty<IAction>();
 
         var acts = from prop in type.GetProperties()
                    where typeof(IAction).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)

@@ -6,7 +6,7 @@ namespace RotationSolver.Basic.Actions;
 
 internal class BaseItem : IBaseItem
 {
-    private Item _item = null;
+    private readonly Item _item = null;
     private uint A4 { get; } = 0;
 
     public uint ID => _item.RowId;

@@ -4,7 +4,7 @@ using RotationSolver.Localization;
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow
 {
-    private void DrawHelpTab()
+    private static void DrawHelpTab()
     {
         if(ImGuiHelper.IconButton(FontAwesomeIcon.Code, "Github"))
         {

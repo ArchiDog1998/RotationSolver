@@ -8,8 +8,8 @@ public partial class BaseAction : IBaseAction
 {
     internal static CanUseOption OtherOption { get; set; } = CanUseOption.None;
 
-    Action _action;
-    ActionOption _option;
+    readonly Action _action;
+    readonly ActionOption _option;
 
     public bool IsFriendly => _option.HasFlag(ActionOption.Friendly);
     public bool IsEot => _option.HasFlag(ActionOption.Eot);

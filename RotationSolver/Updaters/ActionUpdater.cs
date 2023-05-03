@@ -11,7 +11,7 @@ internal static class ActionUpdater
 {
     static DateTime _startCombatTime = DateTime.MinValue;
 
-    static  RandomDelay _GCDDelay = new RandomDelay(() => (Service.Config.WeaponDelayMin, Service.Config.WeaponDelayMax));
+    static  RandomDelay _GCDDelay = new(() => (Service.Config.WeaponDelayMin, Service.Config.WeaponDelayMax));
 
     internal static IAction NextAction { get; private set; }
     internal static IBaseAction NextGCDAction { get; private set; }
