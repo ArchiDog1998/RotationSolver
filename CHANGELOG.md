@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.7.5](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.4...v2.7.5) (2023-05-04)
+
+
+### Bug Fixes
+
+* add a ActionFilter for List Action. ([2a5db28](https://github.com/ArchiDog1998/RotationSolver/commit/2a5db28d99d1114b6bb2d2e4082770e9e0716420))
+* fixed cd check for items. ([0403739](https://github.com/ArchiDog1998/RotationSolver/commit/0403739e7024e5690ac118f9ac016f597aaccf65))
+* fixed the hook bug. ([a5f7cf0](https://github.com/ArchiDog1998/RotationSolver/commit/a5f7cf03b7fc52eb2c0505f6907adfa654bd7459))
+* fixed with Invincible Status. ([c24e105](https://github.com/ArchiDog1998/RotationSolver/commit/c24e10532c4a31803c6c3f68438f3245b3b2c347))
+* removed plugin master. ([e98e375](https://github.com/ArchiDog1998/RotationSolver/commit/e98e37596ba4ca4ce039f9da753042535a8da806))
+
 ## [2.7.4](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.3...v2.7.4) (2023-05-02)
 
 
