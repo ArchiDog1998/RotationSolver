@@ -22,7 +22,7 @@
     "AcceptsFeedback": true,
     "AssemblyVersion": "2.7.4",
     "Changelog": "2.7.4 (2023-05-02)\n\n\nBug Fixes\n\n* add a fetch time for ping check. (476737a)\n* add a upper limit of ping, and restriction of  healPotion usage (ef07570)\n* add another ping check method to refine the ping. (1e751cd)\n* changed high-end error message. (0d74a6c)\n* changed state string. (c11e8a6)\n* fixed the heal potion usage. (ef42c91)\n* fixed with auto status tank stance. (015c5ba)",
-    "DownloadCount": "7594",
+    "DownloadCount": "7729",
     "LastUpdate": 1683034603,
     "RepoUrl": "https://github.com/ArchiDog1998/RotationSolver",
     "DownloadLinkInstall": "https://github.com/ArchiDog1998/RotationSolver/releases/download/v2.7.4/latest.zip",
