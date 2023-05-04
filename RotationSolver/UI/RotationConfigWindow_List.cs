@@ -63,7 +63,7 @@ internal partial class RotationConfigWindow
         {
             _allActions ??= Service.GetSheet<Action>()
                     .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction 
-                    && a.ClassJob.Value == null)
+                    && a.ClassJob.Value == null && a.Cast100ms > 0)
                     .Select(a => new ActionTexture(a))
                     .ToArray();
             return _allActions;
