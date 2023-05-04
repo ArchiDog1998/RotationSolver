@@ -80,6 +80,9 @@ internal static class MajorUpdater
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
+        ActionSequencerUpdater.Enable(Service.Interface.ConfigDirectory.FullName + "\\Conditions");
+
+        SocialUpdater.Enable();
     }
 
     static bool _work;
@@ -115,5 +118,7 @@ internal static class MajorUpdater
     {
         Service.Framework.Update -= FrameworkUpdate;
         PreviewUpdater.Dispose();
+        ActionSequencerUpdater.SaveFiles();
+        SocialUpdater.Disable();
     }
 }

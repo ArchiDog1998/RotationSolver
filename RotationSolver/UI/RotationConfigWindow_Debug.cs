@@ -99,7 +99,11 @@ internal partial class RotationConfigWindow
         {
             ImGui.Text("Kind: " + Service.TargetManager.Target.GetObjectKind().ToString());
             ImGui.Text("SubKind: " + Service.TargetManager.Target.GetBattleNPCSubKind().ToString());
-
+            var owner = Service.ObjectTable.SearchById(Service.TargetManager.Target.OwnerId);
+            if(owner != null)
+            {
+                ImGui.Text("Owner: " + owner.Name.ToString());
+            }
         }
         if (Service.TargetManager.Target is BattleChara b)
         {

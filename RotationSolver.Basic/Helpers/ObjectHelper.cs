@@ -182,7 +182,7 @@ public static class ObjectHelper
     }
 
     /// <summary>
-    /// 对象<paramref name="obj"/>距玩家的距离
+    /// The distance from <paramref name="obj"/> to the player
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>

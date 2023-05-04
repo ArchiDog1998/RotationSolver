@@ -59,8 +59,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         MajorUpdater.Enable();
         OtherConfiguration.Init();
-        ActionSequencerUpdater.Enable(pluginInterface.ConfigDirectory.FullName + "\\Conditions");
-        SocialUpdater.Enable();
         _dis.Add(new Watcher());
         _dis.Add(new MovingController());
 
@@ -103,8 +101,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis?.Clear();
 
         MajorUpdater.Dispose();
-        ActionSequencerUpdater.SaveFiles();
-        SocialUpdater.Disable();
 
         IconSet.Dispose();
         OtherConfiguration.Save();
