@@ -11,10 +11,7 @@ internal class TargetCondition : ICondition
     {
         get
         {
-            if (_allStatus == null)
-            {
-                _allStatus = Enum.GetValues<StatusID>().Select(id => new StatusTexture(id)).ToArray();
-            }
+            _allStatus ??= Enum.GetValues<StatusID>().Select(id => new StatusTexture(id)).ToArray();
             return _allStatus;
         }
     }
@@ -24,8 +21,8 @@ internal class TargetCondition : ICondition
 
     public bool Condition;
     public bool FromSelf;
-    private StatusTexture _status { get; set; }
-    public StatusID Status { get; set; }
+    private StatusTexture Status { get; set; }
+    public StatusID StatusId { get; set; }
     public bool IsTarget;
     public TargetConditionType TargetConditionType;
 
@@ -38,7 +35,7 @@ internal class TargetCondition : ICondition
     {
         if (Service.Player == null) return false;
 
-        BattleChara tar = null;
+        BattleChara tar;
         if (_action != null)
         {
             _action.CanUse(out _, CanUseOption.EmptyOrSkipCombo | CanUseOption.MustUse
@@ -58,7 +55,7 @@ internal class TargetCondition : ICondition
         switch (TargetConditionType)
         {
             case TargetConditionType.HasStatus:
-                result = tar.HasStatus(FromSelf, Status);
+                result = tar.HasStatus(FromSelf, StatusId);
                 break;
 
             case TargetConditionType.IsBoss:
@@ -74,11 +71,11 @@ internal class TargetCondition : ICondition
                 break;
 
             case TargetConditionType.StatusEnd:
-                result = !tar.WillStatusEnd(DistanceOrTime, FromSelf, Status);
+                result = !tar.WillStatusEnd(DistanceOrTime, FromSelf, StatusId);
                 break;
 
             case TargetConditionType.StatusEndGCD:
-                result = !tar.WillStatusEndGCD((uint)GCD, DistanceOrTime, FromSelf, Status);
+                result = !tar.WillStatusEndGCD((uint)GCD, DistanceOrTime, FromSelf, StatusId);
                 break;
 
             case TargetConditionType.CastingAction:
@@ -117,9 +114,9 @@ internal class TargetCondition : ICondition
     {
         ConditionHelper.CheckBaseAction(combo, ID, ref _action);
 
-        if (Status != StatusID.None && (_status == null || _status.ID != Status))
+        if (StatusId != StatusID.None && (Status == null || Status.ID != StatusId))
         {
-            _status = AllStatus.FirstOrDefault(a => a.ID == Status);
+            Status = AllStatus.FirstOrDefault(a => a.ID == StatusId);
         }
 
         ImGuiHelper.DrawCondition(IsTrue(combo, isActionSequencer));
@@ -160,7 +157,7 @@ internal class TargetCondition : ICondition
         ConditionHelper.DrawByteEnum($"##Category{GetHashCode()}", ref TargetConditionType, EnumTranslations.ToName);
 
         var condition = Condition ? 1 : 0;
-        var combos = new string[0];
+        var combos = Array.Empty<string>();
         switch (TargetConditionType)
         {
             case TargetConditionType.HasStatus:
@@ -199,11 +196,11 @@ internal class TargetCondition : ICondition
         {
             case TargetConditionType.HasStatus:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(_status?.Name);
-                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ImGuiHelper.SetNextWidthWithName(Status?.Name);
+                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", Status?.Name, ref searchTxt, AllStatus, i =>
                 {
-                    _status = i;
-                    Status = _status.ID;
+                    Status = i;
+                    StatusId = Status.ID;
                 });
 
                 ImGui.SameLine();
@@ -217,11 +214,11 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.StatusEnd:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(_status?.Name);
-                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ImGuiHelper.SetNextWidthWithName(Status?.Name);
+                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", Status?.Name, ref searchTxt, AllStatus, i =>
                 {
-                    _status = i;
-                    Status = _status.ID;
+                    Status = i;
+                    StatusId = Status.ID;
                 });
 
                 ImGui.SameLine();
@@ -238,11 +235,11 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.StatusEndGCD:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(_status?.Name);
-                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", _status?.Name, ref searchTxt, AllStatus, i =>
+                ImGuiHelper.SetNextWidthWithName(Status?.Name);
+                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", Status?.Name, ref searchTxt, AllStatus, i =>
                 {
-                    _status = i;
-                    Status = _status.ID;
+                    Status = i;
+                    StatusId = Status.ID;
                 });
 
                 ImGui.SameLine();

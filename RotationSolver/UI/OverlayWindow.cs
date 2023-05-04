@@ -145,10 +145,10 @@ internal static class OverlayWindow
         if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
         {
             var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
-            List<Vector2> pts1 = new List<Vector2>(4 * COUNT);
+            List<Vector2> pts1 = new(4 * COUNT);
             SectorPlots(ref pts1, pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
 
-            List<Vector2> pts2 = new List<Vector2>(4 * COUNT);
+            List<Vector2> pts2 = new(4 * COUNT);
             SectorPlots(ref pts2, pPosition, radius + Service.Config.MeleeRangeOffset, 0, 4 * COUNT, 2 * Math.PI);
 
             DrawFill(pts1.ToArray(), pts2.ToArray(), offsetColor);
@@ -157,7 +157,7 @@ internal static class OverlayWindow
             DrawBoundary(pts2, offsetColor);
         }
 
-        List<Vector2> pts = new List<Vector2>(4 * COUNT);
+        List<Vector2> pts = new(4 * COUNT);
         bool wrong = target.DistanceToPlayer() > 3;
         if (Service.Config.DrawPositional && !Service.Player.HasStatus(true, StatusID.TrueNorth))
         {

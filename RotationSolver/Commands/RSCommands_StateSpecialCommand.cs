@@ -5,12 +5,12 @@ namespace RotationSolver.Commands
     public static partial class RSCommands
     {
         private static string _stateString = "Off", _specialString = string.Empty;
-        private static string _aoeString => "AOE " + (Service.Config.GetValue(SettingsCommand.UseAOEAction) && (DataCenter.StateType != StateCommandType.Manual || Service.Config.GetValue(SettingsCommand.UseAOEWhenManual)) ? "on" : "off");
+        private static string AoeString => "AOE " + (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction) && (DataCenter.StateType != StateCommandType.Manual || Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEWhenManual)) ? "on" : "off");
 
-        private static string _preventString => "Prevent " + (Service.Config.GetValue(SettingsCommand.PreventActions) ? "on" : "off");
+        private static string PreventString => "Prevent " + (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions) ? "on" : "off");
 
         internal static string EntryString =>
-            $"{_stateString} ({_aoeString}, {_preventString})" +  (DataCenter.SpecialTimeLeft < 0 ? string.Empty : $" - {_specialString}: {DataCenter.SpecialTimeLeft:F2}s");
+            $"{_stateString} ({AoeString}, {PreventString})" +  (DataCenter.SpecialTimeLeft < 0 ? string.Empty : $" - {_specialString}: {DataCenter.SpecialTimeLeft:F2}s");
 
         private static void UpdateToast()
         {
@@ -22,7 +22,7 @@ namespace RotationSolver.Commands
             });
         }
 
-        private static unsafe void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(stateType, EnumTranslations.ToSayout, role =>
+        private static unsafe void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(EnumTranslations.ToSayout, role =>
         {
             if (DataCenter.StateType == StateCommandType.Auto
                 && stateType == StateCommandType.Auto)
@@ -55,7 +55,7 @@ namespace RotationSolver.Commands
                 DataCenter.StateType == StateCommandType.Cancel ? 0u : (uint)Service.Config.NamePlateIconId);
         }
 
-        private static void DoSpecialCommandType(SpecialCommandType specialType, bool sayout = true) => DoOneCommandType(specialType, sayout ? EnumTranslations.ToSayout : (s, r) => string.Empty, role =>
+        private static void DoSpecialCommandType(SpecialCommandType specialType, bool sayout = true) => DoOneCommandType(sayout ? EnumTranslations.ToSayout : (s, r) => string.Empty, role =>
         {
             _specialString = specialType.ToSpecialString(role);
             DataCenter.SetSpecialType(specialType);
@@ -63,13 +63,13 @@ namespace RotationSolver.Commands
             return specialType;
         });
 
-        private static void DoOneCommandType<T>(T type, Func<T, JobRole, string> sayout, Func<JobRole, T> doingSomething)
+        private static void DoOneCommandType<T>(Func<T, JobRole, string> sayout, Func<JobRole, T> doingSomething)
             where T : struct, Enum
         {
             //Get job role.
             var role = Service.Player.ClassJob.GameData.GetJobRole();
 
-            type =  doingSomething(role);
+            T type = doingSomething(role);
 
             //Saying out.
             if (Service.Config.SayOutStateChanged) SpeechHelper.Speak(sayout(type, role));

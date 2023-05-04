@@ -9,7 +9,7 @@ internal class StatusTexture : ITexture
     public StatusID ID => (StatusID)_status.RowId;
     public string Name => $"{_status.Name} ({_status.RowId})";
 
-    public string Description => string.Empty;
+    public string Description => _status.Description?.ToString();
 
     public bool IsEnabled { get; set; } = true;
 

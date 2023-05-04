@@ -23,6 +23,7 @@ public class Watcher : IDisposable
 
 
     public static ICallGateSubscriber<object, object> IpcSubscriber;
+    private bool _disposed;
 
     public Watcher()
     {
@@ -165,6 +166,17 @@ public class Watcher : IDisposable
 
     public void Dispose()
     {
-        _receiveAbilityHook?.Dispose();
+         Dispose(true);
+         GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+
+        if (disposing)
+             _receiveAbilityHook?.Dispose();
+
+        _disposed = true;
     }
 }

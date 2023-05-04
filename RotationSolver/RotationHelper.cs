@@ -10,15 +10,15 @@ using System.Text;
 
 namespace RotationSolver;
 
-internal record AssemblyInfo(string Name, string Author, string Path, string support, string help, string changeLog, string donate);
+internal record AssemblyInfo(string Name, string Author, string Path, string Support, string Help, string ChangeLog, string Donate);
 
 internal static class RotationHelper
 {
     private class RotationLoadContext : AssemblyLoadContext
     {
-        DirectoryInfo _directory;
+        readonly DirectoryInfo _directory;
 
-        static Dictionary<string, Assembly> _handledAssemblies;
+        static readonly Dictionary<string, Assembly> _handledAssemblies;
         public RotationLoadContext(DirectoryInfo directoryInfo) : base(true)
         {
             _directory = directoryInfo;
@@ -46,9 +46,9 @@ internal static class RotationHelper
 
         protected override Assembly Load(AssemblyName assemblyName)
         {
-            if (assemblyName.Name != null && _handledAssemblies.ContainsKey(assemblyName.Name))
+            if (assemblyName.Name != null && _handledAssemblies.TryGetValue(assemblyName.Name, out Assembly value))
             {
-                return _handledAssemblies[assemblyName.Name];
+                return value;
             }
 
             var file = Path.Join(_directory.FullName, $"{assemblyName.Name}.dll");
@@ -81,9 +81,9 @@ internal static class RotationHelper
         }
     }
 
-    public static readonly Dictionary<Assembly, AssemblyInfo> _assemblyInfos = new Dictionary<Assembly, AssemblyInfo>();
+    public static readonly Dictionary<Assembly, AssemblyInfo> _assemblyInfos = new();
 
-    public static string[] _allowedAssembly { get; private set; } = new string[0];
+    public static string[] AllowedAssembly { get; private set; } = Array.Empty<string>();
     public static AssemblyInfo GetInfo(this Assembly assembly)
     {
         if(_assemblyInfos.TryGetValue(assembly, out var value))
@@ -94,17 +94,15 @@ internal static class RotationHelper
     }
     public static async void LoadList()
     {
-        using (var client = new HttpClient())
+        using var client = new HttpClient();
+        try
         {
-            try
-            {
-                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/whitelist.json");
-                _allowedAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts));
-            }
-            catch (Exception ex)
-            {
-                PluginLog.Log(ex, "Failed to load white List.");
-            }
+            var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/whitelist.json");
+            AllowedAssembly = JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts));
+        }
+        catch (Exception ex)
+        {
+            PluginLog.Log(ex, "Failed to load white List.");
         }
     }
     
@@ -125,7 +123,7 @@ internal static class RotationHelper
     {
         if (_assemblyInfos.TryGetValue(assembly, out var info))
         {
-            return _allowedAssembly.Contains(info.Name + " - " + info.Author);
+            return AllowedAssembly.Contains(info.Name + " - " + info.Author);
         }
         return false;
     }

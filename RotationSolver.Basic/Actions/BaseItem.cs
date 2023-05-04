@@ -4,9 +4,9 @@ using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
-internal class BaseItem : IBaseItem
+public class BaseItem : IBaseItem
 {
-    private Item _item = null;
+    private readonly Item _item = null;
     private uint A4 { get; } = 0;
 
     public uint ID => _item.RowId;
@@ -95,7 +95,7 @@ internal class BaseItem : IBaseItem
         {
             if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping) return false;
 
-            if (CooldownHelper.RecastAfter(DataCenter.ActionRemain, remain, false)) return false;
+            if (!CooldownHelper.RecastAfter(remain, DataCenter.ActionRemain,  false)) return false;
         }
 
         if (OtherCheck != null && !OtherCheck()) return false;

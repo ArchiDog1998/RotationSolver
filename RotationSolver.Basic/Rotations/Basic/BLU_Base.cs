@@ -51,7 +51,7 @@ public abstract class BLU_Base : CustomRotation
             StatusID.Magitek,
         };
 
-        private BLUActionType _type;
+        private readonly BLUActionType _type;
         public bool RightType
         {
             get

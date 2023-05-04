@@ -75,10 +75,10 @@ internal partial class RotationConfigWindow : Window
 
     internal static void DrawCheckBox(string name, SettingsCommand command, string description = "", Action otherThing = null)
     {
-        var value = Service.Config.GetValue(command);
+        var value = Basic.Configuration.PluginConfiguration.GetValue(command);
         DrawCheckBox(name, ref value, command.GetDefault(), description, () =>
         {
-            Service.Config.SetValue(command, value);
+            Basic.Configuration.PluginConfiguration.SetValue(command, value);
             otherThing?.Invoke();
         });
 
@@ -180,7 +180,7 @@ internal partial class RotationConfigWindow : Window
 
     private static void DrawCombo<T>(string name, ref int value, Func<T, string> toString, T[] choices = null, string description = "") where T : struct, Enum
     {
-        choices = choices ?? Enum.GetValues<T>();
+        choices ??= Enum.GetValues<T>();
 
         ImGui.SetNextItemWidth(100);
         if (ImGui.BeginCombo(name, toString(choices[value])))

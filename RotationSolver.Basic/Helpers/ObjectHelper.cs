@@ -76,7 +76,7 @@ public static class ObjectHelper
 
     public static unsafe bool IsTargetable(this GameObject obj) => obj.GetAddress()->GetIsTargetable();
 
-    static readonly Dictionary<uint, bool> _effectRangeCheck = new Dictionary<uint, bool>();
+    static readonly Dictionary<uint, bool> _effectRangeCheck = new();
     public static bool CanInterrupt(this BattleChara b)
     {
         var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2;
@@ -143,10 +143,10 @@ public static class ObjectHelper
     {
         Vector3 pPosition = enemy.Position;
         float rotation = enemy.Rotation;
-        Vector2 faceVec = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+        Vector2 faceVec = new((float)Math.Cos(rotation), (float)Math.Sin(rotation));
 
         Vector3 dir = Service.Player.Position - pPosition;
-        Vector2 dirVec = new Vector2(dir.Z, dir.X);
+        Vector2 dirVec = new(dir.Z, dir.X);
 
         double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
 
@@ -182,7 +182,7 @@ public static class ObjectHelper
     }
 
     /// <summary>
-    /// 对象<paramref name="obj"/>距玩家的距离
+    /// The distance from <paramref name="obj"/> to the player
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>

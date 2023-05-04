@@ -95,14 +95,22 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawTargetData()
     {
+        if(Service.TargetManager.Target != null)
+        {
+            ImGui.Text("Kind: " + Service.TargetManager.Target.GetObjectKind().ToString());
+            ImGui.Text("SubKind: " + Service.TargetManager.Target.GetBattleNPCSubKind().ToString());
+            var owner = Service.ObjectTable.SearchById(Service.TargetManager.Target.OwnerId);
+            if(owner != null)
+            {
+                ImGui.Text("Owner: " + owner.Name.ToString());
+            }
+        }
         if (Service.TargetManager.Target is BattleChara b)
         {
             ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
             ImGui.Text("Is Boss: " + b.IsBoss().ToString());
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());
-            ImGui.Text("Kind: " + b.GetObjectKind().ToString());
-            ImGui.Text("SubKind: " + b.GetBattleNPCSubKind().ToString());
             ImGui.Text("EventType: " + b.GetEventType().ToString());
             ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
             ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());

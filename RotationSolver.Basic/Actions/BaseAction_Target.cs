@@ -147,7 +147,7 @@ public partial class BaseAction
     private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
         //如果用户不想使用自动友方地面放置功能
-        if (!Service.Config.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
+        if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
 
         if (Service.Config.BeneficialAreaOnTarget && Service.TargetManager.Target != null)
         {
@@ -247,7 +247,7 @@ public partial class BaseAction
         return mustUse || CheckStatus(target);
     }
 
-    private bool TargetDeath(out BattleChara target)
+    private static bool TargetDeath(out BattleChara target)
     {
         target = TargetFilter.GetDeathPeople(DataCenter.DeathPeopleAll, DataCenter.DeathPeopleParty);
         if (target == null) return false;
@@ -312,8 +312,8 @@ public partial class BaseAction
             return true;
         }
 
-        if (Service.Config.GetValue(SettingsCommand.UseAOEAction) 
-            && Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) || mustUse)
+        if (Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction) 
+            && Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEWhenManual) || mustUse)
         {
             if (GetMostObjects(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), aoeCount).Contains(b))
             {
@@ -337,7 +337,7 @@ public partial class BaseAction
             //not use when aoe.
             if (DataCenter.StateType == StateCommandType.Manual)
             {
-                if (!Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;
+                if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;
             }
 
             var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), _action.EffectRange);
@@ -359,7 +359,7 @@ public partial class BaseAction
         if (_action.CastType == 1) return canGetObj;
 
         //能打到MaxCount以上数量的怪的怪。
-        List<BattleChara> objectMax = new List<BattleChara>(canGetObj.Count());
+        List<BattleChara> objectMax = new(canGetObj.Count());
 
         //循环能打中的目标。
         foreach (var t in canGetObj)
@@ -502,7 +502,7 @@ public partial class BaseAction
     {
         get
         {
-            if (!Service.Config.GetValue(SettingsCommand.UseAOEAction)) return true;
+            if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction)) return true;
 
             return Service.Config.ChooseAttackMark
                 && !Service.Config.CanAttackMarkAOE

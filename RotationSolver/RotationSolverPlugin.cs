@@ -24,7 +24,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static NextActionWindow _nextActionWindow;
     static CooldownWindow _cooldownWindow;
 
-    static readonly List<IDisposable> _dis = new List<IDisposable>();
+    static readonly List<IDisposable> _dis = new();
     public string Name => "Rotation Solver";
 
     public static DalamudLinkPayload LinkPayload { get; private set; }
@@ -59,15 +59,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         MajorUpdater.Enable();
         OtherConfiguration.Init();
-        ActionSequencerUpdater.Enable(pluginInterface.ConfigDirectory.FullName + "\\Conditions");
-        SocialUpdater.Enable();
         _dis.Add(new Watcher());
         _dis.Add(new MovingController());
 
         var manager = new LocalizationManager();
         _dis.Add(manager);
 #if DEBUG
-        manager.ExportLocalization();
+        LocalizationManager.ExportLocalization();
 #endif
         ChangeUITranslation();
 
@@ -103,8 +101,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis?.Clear();
 
         MajorUpdater.Dispose();
-        ActionSequencerUpdater.SaveFiles();
-        SocialUpdater.Disable();
 
         IconSet.Dispose();
         OtherConfiguration.Save();
@@ -120,7 +116,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _comboConfigWindow.Toggle();
     }
 
-    static RandomDelay validDelay = new RandomDelay(() => (0.2f, 0.2f));
+    static RandomDelay validDelay = new(() => (0.2f, 0.2f));
 
     internal static void UpdateDisplayWindow()
     {

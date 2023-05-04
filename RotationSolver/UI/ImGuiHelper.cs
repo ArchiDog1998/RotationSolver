@@ -279,7 +279,7 @@ internal static class ImGuiHelper
 
     internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> data, Action<T> selectAction) where T : ITexture
     {
-        SearchItems(ref searchTxt, data, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)));
+        SearchItems(ref searchTxt, data, i => i.Name, selectAction, i => ImGui.Image(i.GetTexture().ImGuiHandle, new Vector2(24, 24)), texture => texture.Description);
     }
 
     internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
@@ -675,6 +675,11 @@ internal static class ImGuiHelper
             var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, item.ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, item.ID);
             ImGui.Text("remain: " + remain.ToString());
             ImGui.Text("CanUse: " + item.CanUse(out _).ToString());
+
+            if(item is HealPotionItem healPotionItem)
+            {
+                ImGui.Text("MaxHP:" +  healPotionItem.MaxHealHp.ToString());
+            }
         }
     });
     #endregion
@@ -818,7 +823,7 @@ internal static class ImGuiHelper
     #endregion
 
 
-    static readonly Vector2 PIC_SIZE = new Vector2(24, 24);
+    static readonly Vector2 PIC_SIZE = new(24, 24);
     const float ATTR_INDENT = 170;
 
     public static void Display(this RotationDescAttribute attr, ICustomRotation rotation)

@@ -4,7 +4,7 @@ namespace RotationSolver.UI;
 
 internal partial class RotationConfigWindow
 {
-    private void DrawControlTab()
+    private static void DrawControlTab()
     {
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 

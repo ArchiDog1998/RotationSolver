@@ -4,7 +4,7 @@ public static class ReflectionHelper
 {
     internal static PropertyInfo[] GetStaticProperties<T>(this Type type)
     {
-        if (type == null) return new PropertyInfo[0];
+        if (type == null) return Array.Empty<PropertyInfo>();
 
         var props = from prop in type.GetRuntimeProperties()
                     where typeof(T).IsAssignableFrom(prop.PropertyType)
@@ -22,7 +22,7 @@ public static class ReflectionHelper
 
     public static IEnumerable<MethodInfo> GetAllMethodInfo(this Type type)
     {
-        if (type == null) return new MethodInfo[0];
+        if (type == null) return Array.Empty<MethodInfo>();
 
         var methods = from method in type.GetRuntimeMethods()
                       where !method.IsConstructor

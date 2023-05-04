@@ -37,17 +37,17 @@ public class InputConfiguration
 
 public class OtherConfiguration
 {
-    public static InputConfiguration InputConfig = new InputConfiguration();
-    public static SortedSet<uint> HostileCastingArea = new SortedSet<uint>();
-    public static SortedSet<uint> HostileCastingTank = new SortedSet<uint>();
+    public static InputConfiguration InputConfig = new();
+    public static SortedSet<uint> HostileCastingArea = new();
+    public static SortedSet<uint> HostileCastingTank = new();
 
-    public static SortedList<uint, float> AnimationLockTime = new SortedList<uint, float>();
+    public static SortedList<uint, float> AnimationLockTime = new();
 
-    public static Dictionary<uint, string[]> NoHostileNames = new Dictionary<uint, string[]>();
+    public static Dictionary<uint, string[]> NoHostileNames = new();
 
-    public static SortedSet<uint> DangerousStatus = new SortedSet<uint>();
+    public static SortedSet<uint> DangerousStatus = new();
 
-    public static SortedSet<uint> InvincibleStatus = new SortedSet<uint>();
+    public static SortedSet<uint> InvincibleStatus = new();
 
     public static void Init()
     {

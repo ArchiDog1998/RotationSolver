@@ -12,7 +12,9 @@ It is designed for `general combat`, not for savage or ultimate. So use it caref
 
 After installing [Dalamud](https://goatcorp.github.io/), input `/xlplugins` command to the chat box. Add go to`Settings` -> `Experimental` -> `Custom Plugin Repositories`, add url here. Finally, save it.
 
-`https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/pluginmaster.json`
+```
+https://raw.githubusercontent.com/ArchiDog1998/Dalamud_Plugins/main/pluginmaster.json
+```
 
 ![Add Url](assets/image-20230129154207892.png)
 

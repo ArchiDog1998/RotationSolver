@@ -71,7 +71,8 @@ namespace RotationSolver.Commands
                     //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if ((Service.TargetManager.Target?.IsNPCEnemy() ?? true)
+                    if (((Service.TargetManager.Target?.IsNPCEnemy() ?? true)
+                        || Service.TargetManager.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
                         && (act.Target?.IsNPCEnemy() ?? false))
                     {
                         Service.TargetManager.SetTarget(act.Target);

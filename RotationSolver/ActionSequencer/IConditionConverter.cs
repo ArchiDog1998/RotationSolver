@@ -28,7 +28,7 @@ internal class IConditionConverter : JsonCreationConverter<ICondition>
         }
     }
 
-    private bool FieldExists(string fieldName, JObject jObject)
+    private static bool FieldExists(string fieldName, JObject jObject)
     {
         return jObject[fieldName] != null;
     }
