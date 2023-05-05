@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.6](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.5...v2.7.6) (2023-05-05)
+
+
+### Bug Fixes
+
+* add back the relayFolder.. ([a187349](https://github.com/ArchiDog1998/RotationSolver/commit/a1873490545d442c11b4f7f131a1ab071a3ce68f))
+* fix some bug with release. ([598bf41](https://github.com/ArchiDog1998/RotationSolver/commit/598bf41426e407a1466becd99161d0f86b4690f2))
+
 ## [2.7.5](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.4...v2.7.5) (2023-05-04)
 
 
