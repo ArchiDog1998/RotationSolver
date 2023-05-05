@@ -142,7 +142,7 @@ internal static class RotationUpdater
 
     private static void LoadRotationsFromLocal(string relayFolder)
     {
-        var directories = new string[] { }
+        var directories = new string[] { relayFolder }
             .Union(Service.Config.OtherLibs
             .Where(Directory.Exists));
 
