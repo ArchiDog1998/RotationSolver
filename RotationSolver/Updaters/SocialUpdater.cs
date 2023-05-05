@@ -16,7 +16,6 @@ internal class SocialUpdater
 {
     public static bool InPvp { get; private set; }
 
-    /* 
     private static readonly List<string> _macroToAuthor = new()
     {
         "blush",
@@ -27,7 +26,7 @@ internal class SocialUpdater
         "cheer",
         "stroke",
     }; 
-    */
+
 
     static bool _canSaying = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
@@ -174,7 +173,7 @@ internal class SocialUpdater
 
 #if DEBUG
 #else
-            Service.TargetManager.SetTarget(author.c);
+            Service.TargetManager.SetTarget(c);
             Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
             var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
