@@ -221,6 +221,7 @@ public static class DataCenter
         () => (Service.Config.InterruptDelayMin, Service.Config.InterruptDelayMax));
 
     public static IEnumerable<GameObject> AllTargets { get; set; }
+    public static IEnumerable<BattleChara> AllBattles { get; set; }
 
     public static uint[] TreasureCharas { get; set; } = Array.Empty<uint>();
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
