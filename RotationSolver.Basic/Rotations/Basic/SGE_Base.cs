@@ -70,7 +70,8 @@ public abstract class SGE_Base : CustomRotation
 
             return TargetFilter.FindAttackedTarget(targets, mustUse);
         },
-        ActionCheck = b => !b.HasStatus(true, StatusID.Kardion),
+        ActionCheck = b => !b.HasStatus(true, StatusID.Kardion) 
+            && DataCenter.AllBattles.All(o => !o.HasStatus(true, StatusID.Kardion)),
     };
 
     public static IBaseAction Prognosis { get; } = new BaseAction(ActionID.Prognosis, ActionOption.Heal | ActionOption.EndSpecial);

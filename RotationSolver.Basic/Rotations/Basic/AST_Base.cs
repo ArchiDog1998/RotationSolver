@@ -89,7 +89,6 @@ public abstract class AST_Base : CustomRotation
 
     #endregion
 
-
     #region Support
     public static IBaseAction Lightspeed { get; } = new BaseAction(ActionID.Lightspeed);
 

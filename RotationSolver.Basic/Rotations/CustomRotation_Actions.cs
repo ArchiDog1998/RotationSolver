@@ -112,7 +112,7 @@ public abstract partial class CustomRotation
         FilterForHostiles = b => TargetFilter.ProvokeTarget(b),
     };
 
-    public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, ActionOption.Defense);
+    public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, ActionOption.ActionSequencer);
 
     public static IBaseAction Shirk { get; } = new RoleAction(ActionID.Shirk, new JobRole[] { JobRole.Tank }, ActionOption.Friendly | ActionOption.ActionSequencer)
     {
