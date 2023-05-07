@@ -33,7 +33,7 @@ internal partial class RotationConfigWindow
             ActionEventInfo remove = null;
             foreach (var eve in Service.Config.Events)
             {
-                eve.DisplayMacro();
+                eve.DisplayEvent();
 
                 ImGui.SameLine();
                 ImGuiHelper.Spacing();
