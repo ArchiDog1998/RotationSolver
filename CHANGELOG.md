@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.7.7](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.6...v2.7.7) (2023-05-07)
+
+
+### Bug Fixes
+
+* add another check for Karida. ([c28aeda](https://github.com/ArchiDog1998/RotationSolver/commit/c28aedae251de52a4a6aa1962bcb999e2ee89e3a))
+* changed reprisal action type. ([f721872](https://github.com/ArchiDog1998/RotationSolver/commit/f7218721d0c57b3a5d6d900c02231e7b18594899))
+* fixed event showing. ([d4a4d2a](https://github.com/ArchiDog1998/RotationSolver/commit/d4a4d2a2f7899c823980d4d28cc3f7e0c0fb579c))
+
 ## [2.7.6](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.5...v2.7.6) (2023-05-05)
 
 
