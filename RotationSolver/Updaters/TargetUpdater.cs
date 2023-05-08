@@ -13,9 +13,9 @@ internal static partial class TargetUpdater
     internal static void UpdateTarget()
     {
         DataCenter.AllTargets = Service.ObjectTable.GetObjectInRadius(30);
-        DataCenter.AllBattles = DataCenter.AllTargets.OfType<BattleChara>();
-        UpdateHostileTargets(DataCenter.AllBattles);
-        UpdateFriends(DataCenter.AllBattles);
+        var battles = DataCenter.AllTargets.OfType<BattleChara>();
+        UpdateHostileTargets(battles);
+        UpdateFriends(battles);
         UpdateNamePlate(Service.ObjectTable.OfType<BattleChara>());
     }
 
@@ -23,7 +23,6 @@ internal static partial class TargetUpdater
     {
         var empty = Array.Empty<BattleChara>();
         DataCenter.AllTargets
-            = DataCenter.AllBattles
             = DataCenter.AllHostileTargets 
             = DataCenter.TarOnMeTargets
             = DataCenter.PartyMembers
