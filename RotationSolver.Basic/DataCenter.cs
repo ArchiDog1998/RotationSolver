@@ -42,6 +42,7 @@ public static class DataCenter
         }
         return keep;
     }
+    public static HashSet<uint> DisabledAction { get; set; }
 
     private static List<NextAct> NextActs = new();
     public static IAction ActionSequencerAction { private get; set; }

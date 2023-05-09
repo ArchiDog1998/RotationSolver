@@ -52,6 +52,8 @@ public partial class BaseAction
 
         if (!option.HasFlag(CanUseOption.SkipDisable) && !IsEnabled) return false;
 
+        if (DataCenter.DisabledAction.Contains(ID)) return false;
+
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
             return false;
 
