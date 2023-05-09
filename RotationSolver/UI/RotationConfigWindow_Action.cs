@@ -61,10 +61,22 @@ internal partial class RotationConfigWindow
         var set = ActionSequencerUpdater.RightSet;
         if (set == null) return;
 
-        if (!set.Conditions.TryGetValue(ActiveAction.ID, out var conditionSet))
+        ConditionSet conditionSet;
+        if (ActionSequencerUpdater.IsDisableCondition)
         {
-            conditionSet = set.Conditions[ActiveAction.ID] = new ConditionSet();
+            if (!set.DiableConditions.TryGetValue(ActiveAction.ID, out conditionSet))
+            {
+                conditionSet = set.DiableConditions[ActiveAction.ID] = new ConditionSet();
+            }
         }
+        else
+        {
+            if (!set.Conditions.TryGetValue(ActiveAction.ID, out conditionSet))
+            {
+                conditionSet = set.Conditions[ActiveAction.ID] = new ConditionSet();
+            }
+        }
+
 
         conditionSet?.Draw(rotation, ActiveAction.IsActionSequencer);
     }

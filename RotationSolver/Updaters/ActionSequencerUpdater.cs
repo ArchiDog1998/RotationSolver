@@ -15,6 +15,8 @@ internal class ActionSequencerUpdater
 
     public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? Array.Empty<string>();
 
+    public static bool IsDisableCondition = false;
+
     public static void UpdateActionSequencerAction()
     {
         if (_conditionSet == null) return;
@@ -115,6 +117,8 @@ internal class ActionSequencerUpdater
         }
 
         ImGui.Combo("##MajorConditionCombo", ref Service.Config.ActionSequencerIndex, combos, combos.Length);
+
+        ImGui.Checkbox("Is Disabled Condition", ref IsDisableCondition);
 
         if (hasSet)
         {
