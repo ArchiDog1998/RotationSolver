@@ -4,9 +4,14 @@ public abstract class RPR_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
-    protected static bool Enshrouded => Player.HasStatus(true, StatusID.Enshrouded);
 
-    protected static bool SoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
+    [Obsolete("Please Use HasEnshrouded Instead")]
+    protected static bool Enshrouded => HasEnshrouded;
+    protected static bool HasEnshrouded => Player.HasStatus(true, StatusID.Enshrouded);
+
+    [Obsolete("Please Use HasSoulReaver Instead")]
+    protected static bool SoulReaver => HasSoulReaver;
+    protected static bool HasSoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
 
     #region JobGauge
     static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
@@ -26,7 +31,7 @@ public abstract class RPR_Base : CustomRotation
     /// </summary>
     public static IBaseAction Slice { get; } = new BaseAction(ActionID.Slice)
     {
-        ActionCheck = b => !Enshrouded && !SoulReaver,
+        ActionCheck = b => !HasEnshrouded && !HasSoulReaver,
     };
 
     /// <summary>
@@ -45,15 +50,15 @@ public abstract class RPR_Base : CustomRotation
         ActionCheck = Slice.ActionCheck,
     };
 
-        public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, ActionOption.Dot)
+    public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
-        ActionCheck = b => !SoulReaver,
+        ActionCheck = b => !HasSoulReaver,
     };
 
     public static IBaseAction SoulSlice { get; } = new BaseAction(ActionID.SoulSlice)
     {
-        ActionCheck = b => !Enshrouded && !SoulReaver && Soul <= 50,
+        ActionCheck = b => Slice.ActionCheck(b) && Soul <= 50,
     };
     #endregion
 
@@ -107,7 +112,7 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction BloodStalk { get; } = new BaseAction(ActionID.BloodStalk)
     {
         StatusProvide = new[] { StatusID.SoulReaver },
-        ActionCheck = b => !SoulReaver && !Enshrouded && Soul >= 50
+        ActionCheck = b => Slice.ActionCheck(b) && Soul >= 50
     };
 
     public static IBaseAction GrimSwathe { get; } = new BaseAction(ActionID.GrimSwathe)
@@ -140,7 +145,7 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction Enshroud { get; } = new BaseAction(ActionID.Enshroud)
     {
         StatusProvide = new[] { StatusID.Enshrouded },
-        ActionCheck = b => Shroud >= 50 && !SoulReaver && !Enshrouded
+        ActionCheck = b => Shroud >= 50 && Slice.ActionCheck(b)
     };
 
     public static IBaseAction Communio { get; } = new BaseAction(ActionID.Communio)
@@ -180,7 +185,7 @@ public abstract class RPR_Base : CustomRotation
     #region Others
     public static IBaseAction Harpe { get; } = new BaseAction(ActionID.Harpe)
     {
-        ActionCheck = b => !SoulReaver && !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = b => !HasSoulReaver && !IsLastAction(IActionHelper.MovingActions),
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
     };
 
@@ -220,14 +225,14 @@ public abstract class RPR_Base : CustomRotation
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
-        if (!SoulReaver && !Enshrouded && Feint.CanUse(out act)) return true;
+        if (!HasSoulReaver && !HasEnshrouded && Feint.CanUse(out act)) return true;
         return base.DefenseAreaAbility(out act);
     }
 
     [RotationDesc(ActionID.ArcaneCrest)]
     protected override bool DefenseSingleAbility(out IAction act)
     {
-        if (!SoulReaver && !Enshrouded && ArcaneCrest.CanUse(out act)) return true;
+        if (!HasSoulReaver && !HasEnshrouded && ArcaneCrest.CanUse(out act)) return true;
         return base.DefenseSingleAbility(out act);
     }
 }

@@ -77,7 +77,6 @@ internal partial class RotationConfigWindow
             }
         }
 
-
-        conditionSet?.Draw(rotation, ActiveAction.IsActionSequencer);
+        conditionSet?.Draw(rotation, ActionSequencerUpdater.IsDisableCondition || ActiveAction.IsActionSequencer);
     }
 }
