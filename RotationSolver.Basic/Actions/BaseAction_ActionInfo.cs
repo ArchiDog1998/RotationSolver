@@ -5,7 +5,7 @@ namespace RotationSolver.Basic.Actions;
 public partial class BaseAction
 {
     public float Range => ActionManager.GetActionRange(ID);
-
+    public float EffectRange => _action?.EffectRange ?? 0;
     internal ActionID[] ComboIdsNot { private get; init; } = null;
 
     internal ActionID[] ComboIds { private get; init; } = null;
@@ -51,6 +51,8 @@ public partial class BaseAction
         if (player == null) return false;
 
         if (!option.HasFlag(CanUseOption.SkipDisable) && !IsEnabled) return false;
+
+        if (DataCenter.DisabledAction.Contains(ID)) return false;
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
             return false;

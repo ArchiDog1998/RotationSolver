@@ -85,6 +85,8 @@ public class BaseItem : IBaseItem
         item = this;
         if (_item == null) return false;
         if (!CanUseThis) return false;
+        if (DataCenter.DisabledAction.Contains(ID)) return false;
+        if(!IsEnabled) return false;
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))
             && ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID + 1000000))) return false;

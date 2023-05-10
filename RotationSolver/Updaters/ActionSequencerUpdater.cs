@@ -15,6 +15,8 @@ internal class ActionSequencerUpdater
 
     public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? Array.Empty<string>();
 
+    public static bool IsDisableCondition = false;
+
     public static void UpdateActionSequencerAction()
     {
         if (_conditionSet == null) return;
@@ -25,6 +27,9 @@ internal class ActionSequencerUpdater
 
         var set = RightSet;
         if (set == null) return;
+
+        DataCenter.DisabledAction = new HashSet<uint>(set.DiableConditions.Where(pair => pair.Value.IsTrue(customRotation, true))
+             .Select(pair => pair.Key));
 
         bool find = false;
         foreach (var conditionPair in set.Conditions)
@@ -112,6 +117,8 @@ internal class ActionSequencerUpdater
         }
 
         ImGui.Combo("##MajorConditionCombo", ref Service.Config.ActionSequencerIndex, combos, combos.Length);
+
+        ImGui.Checkbox("Is Disabled Condition", ref IsDisableCondition);
 
         if (hasSet)
         {

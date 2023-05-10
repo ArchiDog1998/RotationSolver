@@ -390,9 +390,6 @@ internal partial class RotationConfigWindow
 
     private void DrawParamTarget()
     {
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ObjectMinRadius,
-            ref Service.Config.ObjectMinRadius, 0.02f, 0, 10);
-
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
             ref Service.Config.AddEnemyListToHostile, Service.Default.AddEnemyListToHostile);
 

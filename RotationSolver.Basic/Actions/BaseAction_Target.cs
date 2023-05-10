@@ -61,7 +61,7 @@ public partial class BaseAction
         float range = Range;
 
         //如果都没有距离，这个还需要选对象嘛？选自己啊！
-        if (range == 0 && _action.EffectRange == 0)
+        if (range == 0 && EffectRange == 0)
         {
             target = player;
             return true;
@@ -99,7 +99,7 @@ public partial class BaseAction
     private bool TargetArea(float range, bool mustUse, int aoeCount, PlayerCharacter player)
     {
         //移动
-        if (_action.EffectRange == 1 && range >= 15)
+        if (EffectRange == 1 && range >= 15)
         {
             return TargetAreaMove(range, mustUse);
         }
@@ -161,7 +161,7 @@ public partial class BaseAction
         //计算玩家和被打的Ｔ之间的关系。
         else
         {
-            var effectRange = (ActionID)ID == ActionID.LiturgyOfTheBell ? 20 : _action.EffectRange;
+            var effectRange = (ActionID)ID == ActionID.LiturgyOfTheBell ? 20 : EffectRange;
             var attackT = TargetFilter.FindAttackedTarget(DataCenter.PartyTanks.GetObjectInRadius(range + effectRange), mustUse);
 
             if (attackT == null)
@@ -327,7 +327,7 @@ public partial class BaseAction
 
     private bool TargetSelf(bool mustUse, int aoeCount)
     {
-        if (_action.EffectRange > 0 && !IsFriendly)
+        if (EffectRange > 0 && !IsFriendly)
         {
             if (NoAOE)
             {
@@ -340,10 +340,10 @@ public partial class BaseAction
                 if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;
             }
 
-            var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), _action.EffectRange);
+            var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), EffectRange);
             if (tars.Count() < aoeCount) return false;
             
-            if (Service.Config.NoNewHostiles && TargetFilter.GetObjectInRadius(DataCenter.AllHostileTargets, _action.EffectRange)
+            if (Service.Config.NoNewHostiles && TargetFilter.GetObjectInRadius(DataCenter.AllHostileTargets, EffectRange)
                 .Any(t => t.TargetObject == null)) return false;
         }
         return true;
@@ -353,7 +353,7 @@ public partial class BaseAction
     private IEnumerable<BattleChara> GetMostObjects(IEnumerable<BattleChara> targets, int maxCount)
     {
         var range = Range;
-        var canAttack = TargetFilter.GetObjectInRadius(targets, range + _action.EffectRange);
+        var canAttack = TargetFilter.GetObjectInRadius(targets, range + EffectRange);
         var canGetObj = TargetFilter.GetObjectInRadius(canAttack, range).Where(CanUseTo);
 
         if (_action.CastType == 1) return canGetObj;
@@ -419,20 +419,20 @@ public partial class BaseAction
         switch (_action.CastType)
         {
             case 2: // 圆形范围攻击
-                return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= _action.EffectRange;
+                return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= EffectRange;
 
             case 3: // Sector
-                if(subTarget.DistanceToPlayer() > _action.EffectRange) return false;
+                if(subTarget.DistanceToPlayer() > EffectRange) return false;
                 tdir += dir / dir.Length() * target.HitboxRadius / (float)Math.Sin(_alpha);
                 return Vector3.Dot(dir, tdir) / (dir.Length() * tdir.Length()) >= Math.Cos(_alpha);
 
             case 4: //直线范围攻击
-                if (subTarget.DistanceToPlayer() > _action.EffectRange) return false;
+                if (subTarget.DistanceToPlayer() > EffectRange) return false;
                 return Vector3.Cross(dir, tdir).Length() / dir.Length() <= 2 + target.HitboxRadius;
 
             case 10: //环形范围攻击也就这么判断吧，我烦了。
                 var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;
-                return dis <= _action.EffectRange && dis >= 8;
+                return dis <= EffectRange && dis >= 8;
         }
 
         PluginLog.LogDebug(Name + "'s CastType is not valid! The value is " + _action.CastType.ToString());

@@ -83,7 +83,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool StartOnCountdown = true;
     public bool NoNewHostiles = false;
     public bool UseHealWhenNotAHealer = true;
-    public float ObjectMinRadius = 0f;
     public float HealthDifference = 0.25f;
     public float MeleeRangeOffset = 1;
     public bool TargetFriendly = false;

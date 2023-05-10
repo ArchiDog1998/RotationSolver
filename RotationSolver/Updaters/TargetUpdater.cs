@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using System.Text.RegularExpressions;
@@ -13,9 +14,9 @@ internal static partial class TargetUpdater
     internal static void UpdateTarget()
     {
         DataCenter.AllTargets = Service.ObjectTable.GetObjectInRadius(30);
-        DataCenter.AllBattles = DataCenter.AllTargets.OfType<BattleChara>();
-        UpdateHostileTargets(DataCenter.AllBattles);
-        UpdateFriends(DataCenter.AllBattles);
+        var battles = DataCenter.AllTargets.OfType<BattleChara>();
+        UpdateHostileTargets(battles);
+        UpdateFriends(battles);
         UpdateNamePlate(Service.ObjectTable.OfType<BattleChara>());
     }
 
@@ -23,7 +24,6 @@ internal static partial class TargetUpdater
     {
         var empty = Array.Empty<BattleChara>();
         DataCenter.AllTargets
-            = DataCenter.AllBattles
             = DataCenter.AllHostileTargets 
             = DataCenter.TarOnMeTargets
             = DataCenter.PartyMembers
@@ -229,8 +229,7 @@ internal static partial class TargetUpdater
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
         DataCenter.AllianceMembers = allTargets.OfType<PlayerCharacter>();
 
-        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.Player.ObjectId);
-        DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
+        DataCenter.HasPet = HasPet();
 
         DataCenter.PartyTanks = DataCenter.PartyMembers.GetJobCategory(JobRole.Tank);
         DataCenter.PartyHealers = DataCenter.PartyMembers.GetJobCategory(JobRole.Healer);
@@ -277,6 +276,23 @@ internal static partial class TargetUpdater
             DataCenter.CurrentMp = Service.Player.CurrentMp;
         }
         _lastMp = Service.Player.CurrentMp;
+    }
+
+    private unsafe static bool HasPet()
+    {
+        var hud = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()
+            ->GetUiModule()->GetAgentModule()->GetAgentHUD();
+        if (hud == null) return false;
+
+        var list = (HudPartyMember*)hud->PartyMemberList;
+        for (var i = 0; i < hud->PartyMemberCount; i++)
+        {
+            if(Service.ObjectTable.SearchById(list[i].ObjectId)?.GetBattleNPCSubKind() == BattleNpcSubKind.Pet) return true;
+        }
+        return false;
+
+        //var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.Player.ObjectId);
+        //return mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
     }
 
     private static float GetPartyMemberHPRatio(BattleChara member)

@@ -193,7 +193,7 @@ public static class ObjectHelper
         if (player == null) return float.MaxValue;
 
         var distance = Vector3.Distance(player.Position, obj.Position) - player.HitboxRadius;
-        distance -= Math.Max(obj.HitboxRadius, Service.Config.ObjectMinRadius);
+        distance -= obj.HitboxRadius;
         return distance;
     }
 }
