@@ -13,6 +13,7 @@
         float CastTime { get; }
 
         float Range { get; }
+        float EffectRange { get; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         bool IsFriendly { get; }

@@ -5,7 +5,7 @@ namespace RotationSolver.Basic.Actions;
 public partial class BaseAction
 {
     public float Range => ActionManager.GetActionRange(ID);
-
+    public float EffectRange => _action?.EffectRange ?? 0;
     internal ActionID[] ComboIdsNot { private get; init; } = null;
 
     internal ActionID[] ComboIds { private get; init; } = null;
