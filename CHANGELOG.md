@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.8.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.7...v2.8.0) (2023-05-10)
+
+
+### Features
+
+* add disable action sequence. ([dce3d5a](https://github.com/ArchiDog1998/RotationSolver/commit/dce3d5ae20caa721074b8bb78a1ba25d70322881))
+
+
+### Bug Fixes
+
+* add effect range. ([9d377c0](https://github.com/ArchiDog1998/RotationSolver/commit/9d377c075d91b950dc90fbbc5aab6cdc406a9166))
+* another release. ([1cacc18](https://github.com/ArchiDog1998/RotationSolver/commit/1cacc1858ecfa736189a841dbaeafa62cf5714a3))
+* changed karida target. ([b3a0040](https://github.com/ArchiDog1998/RotationSolver/commit/b3a0040ff4140eb36222c68d7f268f5c2a03c456))
+* changed the way to find pet. ([5b3d7e9](https://github.com/ArchiDog1998/RotationSolver/commit/5b3d7e9049e1172a54bdc2b077e77a2b81e9683f))
+* fixed item can't be disabled bug. ([b29999b](https://github.com/ArchiDog1998/RotationSolver/commit/b29999befdd836cd7082fa1567dad21decac0a44))
+* fixed with RPR property. ([7fb5d94](https://github.com/ArchiDog1998/RotationSolver/commit/7fb5d947955d203625c3bdb678b65c0876614edc))
+* remove option ObjectMinRadius. ([54148f8](https://github.com/ArchiDog1998/RotationSolver/commit/54148f8e589e2686456bea69699ac2e8a7cc3295))
+
 ## [2.7.7](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.6...v2.7.7) (2023-05-07)
 
 
