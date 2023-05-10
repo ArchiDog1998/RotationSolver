@@ -290,6 +290,7 @@ internal static partial class TargetUpdater
             if(Service.ObjectTable.SearchById(list[i].ObjectId)?.GetBattleNPCSubKind() == BattleNpcSubKind.Pet) return true;
         }
         return false;
+
         //var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.Player.ObjectId);
         //return mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
     }
