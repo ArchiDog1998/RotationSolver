@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.8.0...v2.8.1) (2023-05-13)
+
+
+### Bug Fixes
+
+* fixed the error prompt. ([5540fa0](https://github.com/ArchiDog1998/RotationSolver/commit/5540fa0205e38b20d5556288720c0de7bc554b44))
+* revert pet detection change for now to make summoner usable again. ([953011f](https://github.com/ArchiDog1998/RotationSolver/commit/953011f416c74640ea23f80b89de53dbdf6afbfe))
+
 ## [2.8.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.7.7...v2.8.0) (2023-05-10)
 
 
