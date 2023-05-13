@@ -229,7 +229,9 @@ internal static partial class TargetUpdater
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
         DataCenter.AllianceMembers = allTargets.OfType<PlayerCharacter>();
 
-        DataCenter.HasPet = HasPet();
+        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.Player.ObjectId);
+        DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
+        //DataCenter.HasPet = HasPet();
 
         DataCenter.PartyTanks = DataCenter.PartyMembers.GetJobCategory(JobRole.Tank);
         DataCenter.PartyHealers = DataCenter.PartyMembers.GetJobCategory(JobRole.Healer);
