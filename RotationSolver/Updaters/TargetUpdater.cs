@@ -229,7 +229,9 @@ internal static partial class TargetUpdater
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
         DataCenter.AllianceMembers = allTargets.OfType<PlayerCharacter>();
 
-        DataCenter.HasPet = HasPet();
+        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.Player.ObjectId);
+        DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
+        //DataCenter.HasPet = HasPet();
 
         DataCenter.PartyTanks = DataCenter.PartyMembers.GetJobCategory(JobRole.Tank);
         DataCenter.PartyHealers = DataCenter.PartyMembers.GetJobCategory(JobRole.Healer);
@@ -276,23 +278,6 @@ internal static partial class TargetUpdater
             DataCenter.CurrentMp = Service.Player.CurrentMp;
         }
         _lastMp = Service.Player.CurrentMp;
-    }
-
-    private unsafe static bool HasPet()
-    {
-        var hud = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()
-            ->GetUiModule()->GetAgentModule()->GetAgentHUD();
-        if (hud == null) return false;
-
-        var list = (HudPartyMember*)hud->PartyMemberList;
-        for (var i = 0; i < hud->PartyMemberCount; i++)
-        {
-            if(Service.ObjectTable.SearchById(list[i].ObjectId)?.GetBattleNPCSubKind() == BattleNpcSubKind.Pet) return true;
-        }
-        return false;
-
-        //var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.Player.ObjectId);
-        //return mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
     }
 
     private static float GetPartyMemberHPRatio(BattleChara member)
