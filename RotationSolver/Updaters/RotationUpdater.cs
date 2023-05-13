@@ -144,6 +144,7 @@ internal static class RotationUpdater
     {
         var directories = new string[] {
 #if DEBUG
+            relayFolder 
 #else
             relayFolder 
 #endif

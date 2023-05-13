@@ -25,7 +25,7 @@ public abstract partial class CustomRotation
         {
             if(_lastException?.GetType() != ex.GetType())
             {
-                PluginLog.Error(ex, $"Failed to invoke the next action in \"{GetType().FullName}\", please contact to the author.");
+                PluginLog.Error(ex, $"Failed to invoke the next action in \"{GetType().FullName}\",\nplease contact to the author with your logs in /xllog.");
             }
             _lastException = ex;
             IsValid = false;
