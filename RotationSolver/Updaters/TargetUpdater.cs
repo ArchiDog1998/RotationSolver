@@ -280,23 +280,6 @@ internal static partial class TargetUpdater
         _lastMp = Service.Player.CurrentMp;
     }
 
-    private unsafe static bool HasPet()
-    {
-        var hud = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()
-            ->GetUiModule()->GetAgentModule()->GetAgentHUD();
-        if (hud == null) return false;
-
-        var list = (HudPartyMember*)hud->PartyMemberList;
-        for (var i = 0; i < hud->PartyMemberCount; i++)
-        {
-            if(Service.ObjectTable.SearchById(list[i].ObjectId)?.GetBattleNPCSubKind() == BattleNpcSubKind.Pet) return true;
-        }
-        return false;
-
-        //var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.Player.ObjectId);
-        //return mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
-    }
-
     private static float GetPartyMemberHPRatio(BattleChara member)
     {
         if (member == null) return 0;
