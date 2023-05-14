@@ -279,12 +279,14 @@ internal partial class RotationConfigWindow
 
         if(Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction))
         {
+            ImGui.Indent();
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEWhenManual,
                 SettingsCommand.UseAOEWhenManual);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_NoNewHostiles,
                 ref Service.Config.NoNewHostiles, Service.Default.NoNewHostiles,
                 LocalizationManager.RightLang.ConfigWindow_Params_NoNewHostilesDesc);
+            ImGui.Unindent();
         }
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfOutOfCombat,
@@ -292,8 +294,10 @@ internal partial class RotationConfigWindow
 
         if (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions))
         {
+            ImGui.Indent();
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfDutyRing,
             SettingsCommand.PreventActionsDuty);
+            ImGui.Unindent();
         }
 
         ImGui.Separator();
