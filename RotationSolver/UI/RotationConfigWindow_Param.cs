@@ -290,6 +290,12 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfOutOfCombat,
             SettingsCommand.PreventActions);
 
+        if (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions))
+        {
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfDutyRing,
+            SettingsCommand.PreventActionsDuty);
+        }
+
         ImGui.Separator();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst, SettingsCommand.AutoBurst);
