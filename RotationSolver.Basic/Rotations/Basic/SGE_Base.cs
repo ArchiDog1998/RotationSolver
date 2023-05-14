@@ -43,12 +43,12 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Toxikon { get; } = new BaseAction(ActionID.Toxikon)
     {
-        ActionCheck = b => Addersting > 0,
+        ActionCheck = (b, m) => Addersting > 0,
     };
 
     public static IBaseAction Rhizomata { get; } = new BaseAction(ActionID.Rhizomata)
     {
-        ActionCheck = b => Addersgall < 3,
+        ActionCheck = (b, m) => Addersgall < 3,
     };
 
     public static IBaseAction Pneuma { get; } = new BaseAction(ActionID.Pneuma);
@@ -70,7 +70,7 @@ public abstract class SGE_Base : CustomRotation
 
             return TargetFilter.FindAttackedTarget(targets, mustUse);
         },
-        ActionCheck = b => Service.ObjectTable.OfType<BattleChara>()
+        ActionCheck = (b, m) => Service.ObjectTable.OfType<BattleChara>()
             .Where(o => o.CurrentHp > 0)
             .All(o => !o.HasStatus(true, StatusID.Kardion)),
     };
@@ -82,19 +82,19 @@ public abstract class SGE_Base : CustomRotation
 
     public static IBaseAction Eukrasia { get; } = new BaseAction(ActionID.Eukrasia, ActionOption.Heal)
     {
-        ActionCheck = b => !HasEukrasia,
+        ActionCheck = (b, m) => !HasEukrasia,
     };
 
     public static IBaseAction Soteria { get; } = new BaseAction(ActionID.Soteria, ActionOption.Heal);
 
     public static IBaseAction Kerachole { get; } = new BaseAction(ActionID.Kerachole, ActionOption.Heal)
     {
-        ActionCheck = b => Addersgall > 0,
+        ActionCheck = (b, m) => Addersgall > 0,
     };
 
     public static IBaseAction Ixochole { get; } = new BaseAction(ActionID.Ixochole, ActionOption.Heal)
     {
-        ActionCheck = b => Addersgall > 0,
+        ActionCheck = (b, m) => Addersgall > 0,
     };
 
     public static IBaseAction Zoe { get; } = new BaseAction(ActionID.Zoe, ActionOption.Heal);
@@ -102,16 +102,16 @@ public abstract class SGE_Base : CustomRotation
     public static IBaseAction Taurochole { get; } = new BaseAction(ActionID.Taurochole, ActionOption.Heal)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
-        ActionCheck = b => Addersgall > 0,
+        ActionCheck = (b, m) => Addersgall > 0,
     };
 
     public static IBaseAction Druochole { get; } = new BaseAction(ActionID.Druochole, ActionOption.Heal)
     {
-        ActionCheck = b => Addersgall > 0,
+        ActionCheck = (b, m) => Addersgall > 0,
     };
     public static IBaseAction Pepsis { get; } = new BaseAction(ActionID.Pepsis, ActionOption.Heal)
     {
-        ActionCheck = b =>
+        ActionCheck = (b, m) =>
         {
             foreach (var chara in DataCenter.PartyMembers)
             {

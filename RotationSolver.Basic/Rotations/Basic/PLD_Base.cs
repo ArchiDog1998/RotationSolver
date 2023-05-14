@@ -46,14 +46,14 @@ public abstract class PLD_Base : CustomRotation
     public static IBaseAction ShieldBash { get; } = new BaseAction(ActionID.ShieldBash, ActionOption.ActionSequencer)
     {
         FilterForHostiles = LowBlow.FilterForHostiles,
-        ActionCheck = b => LowBlow.IsCoolingDown,
+        ActionCheck = (b, m) => LowBlow.IsCoolingDown,
         StatusProvide = new StatusID[] { StatusID.Stun },
     };
 
     public static IBaseAction ShieldLob { get; } = new BaseAction(ActionID.ShieldLob)
     {
         FilterForHostiles = TargetFilter.TankRangeTarget,
-        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = (b, m) => !IsLastAction(IActionHelper.MovingActions),
     };
 
     public static IBaseAction HolySpirit { get; } = new BaseAction(ActionID.HolySpirit);
@@ -115,7 +115,7 @@ public abstract class PLD_Base : CustomRotation
     public static IBaseAction Cover { get; } = new BaseAction(ActionID.Cover, ActionOption.Defense)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
-        ActionCheck = b => OathGauge >= 50,
+        ActionCheck = (b, m) => OathGauge >= 50,
     };
 
     public static IBaseAction Intervention { get; } = new BaseAction(ActionID.Intervention, ActionOption.Defense)
@@ -126,7 +126,7 @@ public abstract class PLD_Base : CustomRotation
 
     public static IBaseAction Sheltron { get; } = new BaseAction(ActionID.Sheltron, ActionOption.Defense)
     {
-        ActionCheck = b => BaseAction.TankDefenseSelf(b) && Cover.ActionCheck(b),
+        ActionCheck = (b, m) => BaseAction.TankDefenseSelf(b, m) && Cover.ActionCheck(b, m),
     };
 
     public static IBaseAction Bulwark { get; } = new BaseAction(ActionID.Bulwark, ActionOption.Defense)

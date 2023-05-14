@@ -38,9 +38,9 @@ public partial class BaseAction
 
     public StatusID[] TargetStatus { get; init; } = null;
 
-    internal static bool TankDefenseSelf(BattleChara chara)
+    internal static bool TankDefenseSelf(BattleChara chara, bool mustUse)
     {
-        return DataCenter.TarOnMeTargets.Any();
+        return DataCenter.TarOnMeTargets.Any() | mustUse;
     }
     internal static bool TankBreakOtherCheck(ClassJobID id)
     {

@@ -37,7 +37,7 @@
         /// Check for this action, but not for the rotation. It is some additional conditions for this action.
         /// Input data is the target for this action.
         /// </summary>
-        Func<BattleChara, bool> ActionCheck { get; }
+        Func<BattleChara, bool, bool> ActionCheck { get; }
 
         /// <summary>
         /// Is a GCD action.

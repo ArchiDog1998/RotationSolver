@@ -49,12 +49,12 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction ArmorCrush { get; } = new BaseAction(ActionID.ArmorCrush)
     {
-        ActionCheck = b => HutonEndAfter(25) && !HutonEndAfterGCD(),
+        ActionCheck = (b, m) => HutonEndAfter(25) && !HutonEndAfterGCD(),
     };
 
     public static IBaseAction Huraijin { get; } = new BaseAction(ActionID.Huraijin)
     {
-        ActionCheck = b => HutonEndAfterGCD(),
+        ActionCheck = (b, m) => HutonEndAfterGCD(),
     };
 
     public static IBaseAction PhantomKamaitachi { get; } = new BaseAction(ActionID.PhantomKamaitachi)
@@ -65,7 +65,7 @@ public abstract class NIN_Base : CustomRotation
     public static IBaseAction ThrowingDagger { get; } = new BaseAction(ActionID.ThrowingDagger)
     {
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
-        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = (b, m) => !IsLastAction(IActionHelper.MovingActions),
     };
 
     public static IBaseAction Assassinate { get; } = new BaseAction(ActionID.Assassinate);
@@ -73,7 +73,7 @@ public abstract class NIN_Base : CustomRotation
 
     public static IBaseAction Bhavacakra { get; } = new BaseAction(ActionID.Bhavacakra)
     {
-        ActionCheck = b => Ninki >= 50,
+        ActionCheck = (b, m) => Ninki >= 50,
     };
 
     #endregion
@@ -99,14 +99,14 @@ public abstract class NIN_Base : CustomRotation
     public static IBaseAction Meisui { get; } = new BaseAction(ActionID.Meisui)
     {
         StatusNeed = new[] { StatusID.Suiton },
-        ActionCheck = b => JobGauge.Ninki <= 50,
+        ActionCheck = (b, m) => JobGauge.Ninki <= 50,
     };
     public static IBaseAction Hide { get; } = new BaseAction(ActionID.Hide, ActionOption.Buff);
     public static IBaseAction ShadeShift { get; } = new BaseAction(ActionID.ShadeShift, ActionOption.Defense);
 
     public static IBaseAction Mug { get; } = new BaseAction(ActionID.Mug)
     {
-        ActionCheck = b => JobGauge.Ninki <= 60,
+        ActionCheck = (b, m) => JobGauge.Ninki <= 60,
     };
 
     public static IBaseAction TrickAttack { get; } = new BaseAction(ActionID.TrickAttack)
@@ -131,7 +131,7 @@ public abstract class NIN_Base : CustomRotation
     public static IBaseAction TenChiJin { get; } = new BaseAction(ActionID.TenChiJin)
     {
         StatusProvide = new[] { StatusID.Kassatsu, StatusID.TenChiJin },
-        ActionCheck = b => !HutonEndAfterGCD(),
+        ActionCheck = (b, m) => !HutonEndAfterGCD(),
     };
 
     public static IBaseAction FumaShurikenTen { get; } = new BaseAction(ActionID.FumaShurikenTen);
@@ -174,7 +174,7 @@ public abstract class NIN_Base : CustomRotation
 
     public static INinAction Huton { get; } = new NinAction(ActionID.Huton, Jin, Chi, Ten)
     {
-        ActionCheck = b => HutonEndAfterGCD(),
+        ActionCheck = (b, m) => HutonEndAfterGCD(),
     };
 
     public static INinAction Doton { get; } = new NinAction(ActionID.Doton, Jin, Ten, Chi)

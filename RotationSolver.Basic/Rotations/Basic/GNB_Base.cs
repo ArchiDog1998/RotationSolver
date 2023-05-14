@@ -36,49 +36,49 @@ public abstract class GNB_Base : CustomRotation
 
     public static IBaseAction BurstStrike { get; } = new BaseAction(ActionID.BurstStrike)
     {
-        ActionCheck = b => Ammo > 0,
+        ActionCheck = (b, m) => Ammo > 0,
     };
 
     public static IBaseAction GnashingFang { get; } = new BaseAction(ActionID.GnashingFang)
     {
-        ActionCheck = b => AmmoComboStep == 0 && Ammo > 0,
+        ActionCheck = (b, m) => AmmoComboStep == 0 && Ammo > 0,
     };
 
     public static IBaseAction SavageClaw { get; } = new BaseAction(ActionID.SavageClaw)
     {
-        ActionCheck = b => Service.GetAdjustedActionId(ActionID.GnashingFang) == ActionID.SavageClaw,
+        ActionCheck = (b, m) => Service.GetAdjustedActionId(ActionID.GnashingFang) == ActionID.SavageClaw,
     };
 
     public static IBaseAction WickedTalon { get; } = new BaseAction(ActionID.WickedTalon)
     {
-        ActionCheck = b => Service.GetAdjustedActionId(ActionID.GnashingFang) == ActionID.WickedTalon,
+        ActionCheck = (b, m) => Service.GetAdjustedActionId(ActionID.GnashingFang) == ActionID.WickedTalon,
     };
 
     public static IBaseAction JugularRip { get; } = new BaseAction(ActionID.JugularRip)
     {
-        ActionCheck = b => Service.GetAdjustedActionId(ActionID.Continuation) == ActionID.JugularRip,
+        ActionCheck = (b, m) => Service.GetAdjustedActionId(ActionID.Continuation) == ActionID.JugularRip,
     };
 
     public static IBaseAction AbdomenTear { get; } = new BaseAction(ActionID.AbdomenTear)
     {
-        ActionCheck = b => Service.GetAdjustedActionId(ActionID.Continuation) == ActionID.AbdomenTear,
+        ActionCheck = (b, m) => Service.GetAdjustedActionId(ActionID.Continuation) == ActionID.AbdomenTear,
     };
 
     public static IBaseAction EyeGouge { get; } = new BaseAction(ActionID.EyeGouge)
     {
-        ActionCheck = b => Service.GetAdjustedActionId(ActionID.Continuation) == ActionID.EyeGouge,
+        ActionCheck = (b, m) => Service.GetAdjustedActionId(ActionID.Continuation) == ActionID.EyeGouge,
     };
 
     public static IBaseAction Hypervelocity { get; } = new BaseAction(ActionID.Hypervelocity)
     {
-        ActionCheck = b => Service.GetAdjustedActionId(ActionID.Continuation) == ActionID.Hypervelocity,
+        ActionCheck = (b, m) => Service.GetAdjustedActionId(ActionID.Continuation) == ActionID.Hypervelocity,
     };
 
 
     public static IBaseAction LightningShot { get; } = new BaseAction(ActionID.LightningShot)
     {
         FilterForHostiles = TargetFilter.TankRangeTarget,
-        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = (b, m) => !IsLastAction(IActionHelper.MovingActions),
     };
     public static IBaseAction RoughDivide { get; } = new BaseAction(ActionID.RoughDivide, ActionOption.EndSpecial)
     {
@@ -105,11 +105,11 @@ public abstract class GNB_Base : CustomRotation
 
     public static IBaseAction FatedCircle { get; } = new BaseAction(ActionID.FatedCircle)
     {
-        ActionCheck = b => Ammo > 0,
+        ActionCheck = (b, m) => Ammo > 0,
     };
     public static IBaseAction DoubleDown { get; } = new BaseAction(ActionID.DoubleDown)
     {
-        ActionCheck = b => Ammo > 1,
+        ActionCheck = (b, m) => Ammo > 1,
     };
     public static IBaseAction BowShock { get; } = new BaseAction(ActionID.BowShock);
 
@@ -152,7 +152,7 @@ public abstract class GNB_Base : CustomRotation
 
     public static IBaseAction BloodFest { get; } = new BaseAction(ActionID.BloodFest, ActionOption.Buff)
     {
-        ActionCheck = b => MaxAmmo - Ammo > 1,
+        ActionCheck = (b, m) => MaxAmmo - Ammo > 1,
     };
 
     #endregion

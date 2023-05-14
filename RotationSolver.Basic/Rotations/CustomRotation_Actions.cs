@@ -19,7 +19,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, new JobRole[] { JobRole.RangedMagical }, ActionOption.Defense)
     {
-        ActionCheck = b => !b.HasStatus(false, StatusID.Addle),
+        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle),
     };
 
     /// <summary>
@@ -70,7 +70,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LucidDreaming { get; } = new RoleAction(ActionID.LucidDreaming,
         new JobRole[] { JobRole.Healer, JobRole.RangedMagical }, ActionOption.Buff)
     {
-        ActionCheck = b => Player.CurrentMp < 6000 && InCombat,
+        ActionCheck = (b, m) => Player.CurrentMp < 6000 && InCombat,
     };
 
     /// <summary>
@@ -79,7 +79,7 @@ public abstract partial class CustomRotation
     public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,
         new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, ActionOption.Heal)
     {
-        ActionCheck = b => Player?.GetHealthRatio() < Service.Config.HealthSingleAbility && InCombat,
+        ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.HealthSingleAbility && InCombat,
     };
 
     /// <summary>
@@ -126,7 +126,7 @@ public abstract partial class CustomRotation
 
     public static IBaseAction Feint { get; } = new RoleAction(ActionID.Feint, new JobRole[] { JobRole.Melee }, ActionOption.Defense)
     {
-        ActionCheck = b => !b.HasStatus(false, StatusID.Feint),
+        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Feint),
     };
 
     public static IBaseAction Interject { get; } = new RoleAction(ActionID.Interject, new JobRole[] { JobRole.Tank })
@@ -181,7 +181,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Buff)
     {
-        ActionCheck = b => NotInCombatDelay && PartyMembers.GetObjectInRadius(20)
+        ActionCheck = (b, m) => NotInCombatDelay && PartyMembers.GetObjectInRadius(20)
             .Any(p => p.WillStatusEnd(3, false, StatusID.Peloton)),
     };
 

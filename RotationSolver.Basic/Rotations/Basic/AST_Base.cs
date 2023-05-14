@@ -55,7 +55,7 @@ public abstract class AST_Base : CustomRotation
 
     public static IBaseAction AspectedHelios { get; } = new BaseAction(ActionID.AspectedHelios, ActionOption.Hot)
     {
-        ActionCheck = b => !IsLastGCD(ActionID.AspectedHelios),
+        ActionCheck = (b, m) => !IsLastGCD(ActionID.AspectedHelios),
         StatusProvide = new StatusID[] { StatusID.AspectedHelios },
     };
 
@@ -96,7 +96,7 @@ public abstract class AST_Base : CustomRotation
 
     public static IBaseAction Astrodyne { get; } = new BaseAction(ActionID.Astrodyne)
     {
-        ActionCheck = b =>
+        ActionCheck = (b, m) =>
         {
             if (JobGauge.Seals.Length != 3) return false;
             if (JobGauge.Seals.Contains(SealType.NONE)) return false;
@@ -108,56 +108,56 @@ public abstract class AST_Base : CustomRotation
 
     public static IBaseAction Draw { get; } = new BaseAction(ActionID.Draw)
     {
-        ActionCheck = b => DrawnCard == CardType.NONE,
+        ActionCheck = (b, m) => DrawnCard == CardType.NONE,
     };
 
     public static IBaseAction Redraw { get; } = new BaseAction(ActionID.Redraw)
     {
         StatusNeed = new[] { StatusID.ClarifyingDraw },
-        ActionCheck = b => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)),
+        ActionCheck = (b, m) => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)),
     };
 
 
     public static IBaseAction MinorArcana { get; } = new BaseAction(ActionID.MinorArcana)
     {
-        ActionCheck = b => InCombat,
+        ActionCheck = (b, m) => InCombat,
     };
 
     static IBaseAction Balance { get; } = new BaseAction(ActionID.Balance)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
-        ActionCheck = b => DrawnCard == CardType.BALANCE,
+        ActionCheck = (b, m) => DrawnCard == CardType.BALANCE,
     };
 
     static IBaseAction Arrow { get; } = new BaseAction(ActionID.Arrow)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
-        ActionCheck = b => DrawnCard == CardType.ARROW,
+        ActionCheck = (b, m) => DrawnCard == CardType.ARROW,
     };
 
     static IBaseAction Spear { get; } = new BaseAction(ActionID.Spear)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
-        ActionCheck = b => DrawnCard == CardType.SPEAR,
+        ActionCheck = (b, m) => DrawnCard == CardType.SPEAR,
     };
 
     static IBaseAction Bole { get; } = new BaseAction(ActionID.Bole)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
-        ActionCheck = b => DrawnCard == CardType.BOLE,
+        ActionCheck = (b, m) => DrawnCard == CardType.BOLE,
     };
 
     static IBaseAction Ewer { get; } = new BaseAction(ActionID.Ewer)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
-        ActionCheck = b => DrawnCard == CardType.EWER,
+        ActionCheck = (b, m) => DrawnCard == CardType.EWER,
 
     };
 
     static IBaseAction Spire { get; } = new BaseAction(ActionID.Spire)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
-        ActionCheck = b => DrawnCard == CardType.SPIRE,
+        ActionCheck = (b, m) => DrawnCard == CardType.SPIRE,
     };
     #endregion
 

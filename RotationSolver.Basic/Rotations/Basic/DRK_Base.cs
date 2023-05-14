@@ -60,13 +60,13 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction BloodSpiller { get; } = new BaseAction(ActionID.BloodSpiller)
     {
-        ActionCheck = b => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
+        ActionCheck = (b, m) => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
     };
 
     public static IBaseAction Unmend { get; } = new BaseAction(ActionID.Unmend)
     {
         FilterForHostiles = TargetFilter.TankRangeTarget,
-        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = (b, m) => !IsLastAction(IActionHelper.MovingActions),
     };
 
     public static IBaseAction Plunge { get; } = new BaseAction(ActionID.Plunge, ActionOption.EndSpecial)
@@ -76,7 +76,7 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction LivingShadow { get; } = new BaseAction(ActionID.LivingShadow)
     {
-        ActionCheck = b => JobGauge.Blood >= 50,
+        ActionCheck = (b, m) => JobGauge.Blood >= 50,
     };
     #endregion
 
@@ -109,7 +109,7 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction ShadowBringer { get; } = new BaseAction(ActionID.ShadowBringer)
     {
-        ActionCheck = b => !DarkSideEndAfterGCD(),
+        ActionCheck = (b, m) => !DarkSideEndAfterGCD(),
     };
     #endregion
 

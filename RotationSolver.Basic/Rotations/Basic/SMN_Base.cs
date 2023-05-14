@@ -53,40 +53,40 @@ public abstract class SMN_Base : CustomRotation
     public static IBaseAction SummonRuby { get; } = new BaseAction(ActionID.SummonRuby)
     {
         StatusProvide = new[] { StatusID.IfritsFavor },
-        ActionCheck = b => HasSummon && IsIfritReady
+        ActionCheck = (b, m) => HasSummon && IsIfritReady
     };
 
     public static IBaseAction SummonTopaz { get; } = new BaseAction(ActionID.SummonTopaz)
     {
-        ActionCheck = b => HasSummon && IsTitanReady,
+        ActionCheck = (b, m) => HasSummon && IsTitanReady,
     };
 
     public static IBaseAction SummonEmerald { get; } = new BaseAction(ActionID.SummonEmerald)
     {
         StatusProvide = new[] { StatusID.GarudasFavor },
-        ActionCheck = b => HasSummon && IsGarudaReady,
+        ActionCheck = (b, m) => HasSummon && IsGarudaReady,
     };
 
     public static IBaseAction SummonCarbuncle { get; } = new BaseAction(ActionID.SummonCarbuncle)
     {
-        ActionCheck = b => !DataCenter.HasPet,
+        ActionCheck = (b, m) => !DataCenter.HasPet,
     };
     #endregion
 
     #region Summon Actions
     public static IBaseAction Gemshine { get; } = new BaseAction(ActionID.Gemshine)
     {
-        ActionCheck = b => Attunement > 0 && !AttunmentTimeEndAfter(Gemshine.CastTime),
+        ActionCheck = (b, m) => Attunement > 0 && !AttunmentTimeEndAfter(Gemshine.CastTime),
     };
 
     public static IBaseAction PreciousBrilliance { get; } = new BaseAction(ActionID.PreciousBrilliance)
     {
-        ActionCheck = b => Attunement > 0 && !AttunmentTimeEndAfter(PreciousBrilliance.CastTime),
+        ActionCheck = (b, m) => Attunement > 0 && !AttunmentTimeEndAfter(PreciousBrilliance.CastTime),
     };
 
     public static IBaseAction AetherCharge { get; } = new BaseAction(ActionID.AetherCharge)
     {
-        ActionCheck = b => InCombat && HasSummon
+        ActionCheck = (b, m) => InCombat && HasSummon
     };
 
     public static IBaseAction SummonBahamut { get; } = new BaseAction(ActionID.SummonBahamut)
@@ -96,17 +96,17 @@ public abstract class SMN_Base : CustomRotation
 
     public static IBaseAction EnkindleBahamut { get; } = new BaseAction(ActionID.EnkindleBahamut)
     {
-        ActionCheck = b => InBahamut || InPhoenix,
+        ActionCheck = (b, m) => InBahamut || InPhoenix,
     };
 
     public static IBaseAction DeathFlare { get; } = new BaseAction(ActionID.DeathFlare)
     {
-        ActionCheck = b => InBahamut,
+        ActionCheck = (b, m) => InBahamut,
     };
 
     public static IBaseAction Rekindle { get; } = new BaseAction(ActionID.Rekindle, ActionOption.Buff)
     {
-        ActionCheck = b => InPhoenix,
+        ActionCheck = (b, m) => InPhoenix,
     };
 
     public static IBaseAction CrimsonCyclone { get; } = new BaseAction(ActionID.CrimsonCyclone)
@@ -142,34 +142,34 @@ public abstract class SMN_Base : CustomRotation
     public static IBaseAction SearingLight { get; } = new BaseAction(ActionID.SearingLight, ActionOption.Buff)
     {
         StatusProvide = new[] { StatusID.SearingLight },
-        ActionCheck = b => InCombat,
+        ActionCheck = (b, m) => InCombat,
     };
 
     public static IBaseAction RadiantAegis { get; } = new BaseAction(ActionID.RadiantAegis, ActionOption.Heal)
     {
-        ActionCheck = b => HasSummon
+        ActionCheck = (b, m) => HasSummon
     };
 
     public static IBaseAction EnergyDrain { get; } = new BaseAction(ActionID.EnergyDrainSMN)
     {
         StatusProvide = new[] { StatusID.FurtherRuin },
-        ActionCheck = b => !HasAetherflowStacks
+        ActionCheck = (b, m) => !HasAetherflowStacks
     };
 
     public static IBaseAction Fester { get; } = new BaseAction(ActionID.Fester)
     {
-        ActionCheck = b => HasAetherflowStacks
+        ActionCheck = EnergyDrain.ActionCheck,
     };
 
     public static IBaseAction EnergySiphon { get; } = new BaseAction(ActionID.EnergySiphon)
     {
         StatusProvide = new[] { StatusID.FurtherRuin },
-        ActionCheck = b => !HasAetherflowStacks
+        ActionCheck = EnergyDrain.ActionCheck,
     };
 
     public static IBaseAction PainFlare { get; } = new BaseAction(ActionID.PainFlare)
     {
-        ActionCheck = b => HasAetherflowStacks
+        ActionCheck = EnergyDrain.ActionCheck,
     };
     #endregion
 

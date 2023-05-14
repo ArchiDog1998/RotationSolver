@@ -98,39 +98,39 @@ public abstract partial class BLM_Base : CustomRotation
 
     public static IBaseAction Fire3 { get; } = new Fire3Action(ActionID.Fire3)
     {
-        ActionCheck = b => !IsLastGCD(ActionID.Fire3),
+        ActionCheck = (b, m) => !IsLastGCD(ActionID.Fire3),
     };
     public static IBaseAction Fire4 { get; } = new ElementAction(ActionID.Fire4)
     {
-        ActionCheck = b => InAstralFire && !ElementTimeEndAfter(Fire4.CastTime),
+        ActionCheck = (b, m) => InAstralFire && !ElementTimeEndAfter(Fire4.CastTime),
     };
 
     public static IBaseAction Despair { get; } = new ElementAction(ActionID.Despair)
     {
-        ActionCheck = b => InAstralFire && !ElementTimeEndAfter(Despair.CastTime),
+        ActionCheck = (b, m) => InAstralFire && !ElementTimeEndAfter(Despair.CastTime),
     };
 
     public static IBaseAction Blizzard { get; } = new BaseAction(ActionID.Blizzard);
 
     public static IBaseAction Blizzard3 { get; } = new BaseAction(ActionID.Blizzard3)
     {
-        ActionCheck = b => !IsLastGCD(ActionID.Blizzard3),
+        ActionCheck = (b, m) => !IsLastGCD(ActionID.Blizzard3),
     };
     public static IBaseAction Blizzard4 { get; } = new ElementAction(ActionID.Blizzard4)
     {
-        ActionCheck = b => InUmbralIce && !ElementTimeEndAfter(Blizzard4.CastTime),
+        ActionCheck = (b, m) => InUmbralIce && !ElementTimeEndAfter(Blizzard4.CastTime),
     };
 
     public static IBaseAction Thunder { get; } = new ThunderAction(ActionID.Thunder);
 
     public static IBaseAction Xenoglossy { get; } = new BaseAction(ActionID.Xenoglossy) 
     { 
-        ActionCheck = b => PolyglotStacks > 0 
+        ActionCheck = (b, m) => PolyglotStacks > 0 
     };
 
     public static IBaseAction Paradox { get; } = new BaseAction(ActionID.Paradox)
     {
-        ActionCheck = b => IsParadoxActive,
+        ActionCheck = (b, m) => IsParadoxActive,
     };
     public static IBaseAction Scathe { get; } = new BaseAction(ActionID.Scathe);
     #endregion
@@ -140,7 +140,7 @@ public abstract partial class BLM_Base : CustomRotation
 
     public static IBaseAction Flare { get; } = new ElementAction(ActionID.Flare)
     {
-        ActionCheck = b => InAstralFire && !ElementTimeEndAfter(Flare.CastTime),
+        ActionCheck = (b, m) => InAstralFire && !ElementTimeEndAfter(Flare.CastTime),
     };
 
     public static IBaseAction Blizzard2 { get; } = new BaseAction(ActionID.Blizzard2);
@@ -163,14 +163,14 @@ public abstract partial class BLM_Base : CustomRotation
 
     public static IBaseAction Amplifier { get; } = new BaseAction(ActionID.Amplifier) 
     { 
-        ActionCheck = b => !EnchinaEndAfter(10) && PolyglotStacks < 2 
+        ActionCheck = (b, m) => !EnchinaEndAfter(10) && PolyglotStacks < 2 
     };
 
     public static IBaseAction Manaward { get; } = new BaseAction(ActionID.Manaward, ActionOption.Defense);
 
     public static IBaseAction Manafont { get; } = new BaseAction(ActionID.Manafont)
     {
-        ActionCheck = b => Player.CurrentMp <= 7000,
+        ActionCheck = (b, m) => Player.CurrentMp <= 7000,
     };
 
     public static IBaseAction LeyLines { get; } = new BaseAction(ActionID.LeyLines, ActionOption.Buff | ActionOption.EndSpecial)
@@ -186,7 +186,7 @@ public abstract partial class BLM_Base : CustomRotation
     public static IBaseAction SharpCast { get; } = new BaseAction(ActionID.SharpCast)
     {
         StatusProvide = new[] { StatusID.SharpCast },
-        ActionCheck = b => HasHostilesInRange,
+        ActionCheck = (b, m) => HasHostilesInRange,
     };
 
     public static IBaseAction TripleCast { get; } = new BaseAction(ActionID.TripleCast)
@@ -196,12 +196,12 @@ public abstract partial class BLM_Base : CustomRotation
 
     public static IBaseAction Transpose { get; } = new BaseAction(ActionID.Transpose) 
     { 
-        ActionCheck = b => DataCenter.ActionRemain.IsLessThan(ElementTime) 
+        ActionCheck = (b, m) => DataCenter.ActionRemain.IsLessThan(ElementTime) 
     };
 
     public static IBaseAction UmbralSoul { get; } = new BaseAction(ActionID.UmbralSoul) 
     { 
-        ActionCheck = b => JobGauge.InUmbralIce && Transpose.ActionCheck(b) 
+        ActionCheck = (b, m) => JobGauge.InUmbralIce && Transpose.ActionCheck(b, m) 
     };
     #endregion
 

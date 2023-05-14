@@ -44,7 +44,7 @@ public abstract class SAM_Base : CustomRotation
 
     public static IBaseAction Shoha { get; } = new BaseAction(ActionID.Shoha)
     {
-        ActionCheck = b => MeditationStacks == 3
+        ActionCheck = (b, m) => MeditationStacks == 3
     };
     #endregion
 
@@ -71,47 +71,47 @@ public abstract class SAM_Base : CustomRotation
 
     public static IBaseAction Shoha2 { get; } = new BaseAction(ActionID.Shoha2)
     {
-        ActionCheck = b => MeditationStacks == 3
+        ActionCheck = (b, m) => MeditationStacks == 3
     };
 
     public static IBaseAction OgiNamikiri { get; } = new BaseAction(ActionID.OgiNamikiri)
     {
         StatusNeed = new[] { StatusID.OgiNamikiriReady },
-        ActionCheck = b => !IsMoving
+        ActionCheck = (b, m) => !IsMoving
     };
 
     public static IBaseAction KaeshiNamikiri { get; } = new BaseAction(ActionID.KaeshiNamikiri)
     {
-        ActionCheck = b => JobGauge.Kaeshi == Kaeshi.NAMIKIRI
+        ActionCheck = (b, m) => JobGauge.Kaeshi == Kaeshi.NAMIKIRI
     };
     #endregion
 
     #region Sen
     public static IBaseAction Higanbana { get; } = new BaseAction(ActionID.Higanbana, ActionOption.Dot)
     {
-        ActionCheck = b => !IsMoving && SenCount == 1,
+        ActionCheck = (b, m) => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
     };
 
     public static IBaseAction TenkaGoken { get; } = new BaseAction(ActionID.TenkaGoken)
     {
-        ActionCheck = b => !IsMoving && SenCount == 2,
+        ActionCheck = (b, m) => !IsMoving && SenCount == 2,
     };
 
     public static IBaseAction MidareSetsugekka { get; } = new BaseAction(ActionID.MidareSetsugekka)
     {
-        ActionCheck = b => !IsMoving && SenCount == 3,
+        ActionCheck = (b, m) => !IsMoving && SenCount == 3,
     };
     public static IBaseAction TsubameGaeshi { get; } = new BaseAction(ActionID.TsubameGaeshi);
 
     public static IBaseAction KaeshiGoken { get; } = new BaseAction(ActionID.KaeshiGoken)
     {
-        ActionCheck = b => JobGauge.Kaeshi == Kaeshi.GOKEN
+        ActionCheck = (b, m) => JobGauge.Kaeshi == Kaeshi.GOKEN
     };
 
     public static IBaseAction KaeshiSetsugekka { get; } = new BaseAction(ActionID.KaeshiSetsugekka)
     {
-        ActionCheck = b => JobGauge.Kaeshi == Kaeshi.SETSUGEKKA
+        ActionCheck = (b, m) => JobGauge.Kaeshi == Kaeshi.SETSUGEKKA
     };
     #endregion
 
@@ -121,7 +121,7 @@ public abstract class SAM_Base : CustomRotation
     public static IBaseAction Enpi { get; } = new BaseAction(ActionID.Enpi)
     {
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
-        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = (b, m) => !IsLastAction(IActionHelper.MovingActions),
     };
 
     public static IBaseAction MeikyoShisui { get; } = new BaseAction(ActionID.MeikyoShisui)
@@ -131,25 +131,25 @@ public abstract class SAM_Base : CustomRotation
 
     public static IBaseAction Hagakure { get; } = new BaseAction(ActionID.Hagakure)
     {
-        ActionCheck = b => SenCount > 0
+        ActionCheck = (b, m) => SenCount > 0
     };
 
     public static IBaseAction Ikishoten { get; } = new BaseAction(ActionID.Ikishoten)
     {
         StatusProvide = new[] { StatusID.OgiNamikiriReady },
-        ActionCheck = b => InCombat
+        ActionCheck = (b, m) => InCombat
     };
     #endregion
 
     #region Kenki
     public static IBaseAction HissatsuShinten { get; } = new BaseAction(ActionID.HissatsuShinten)
     {
-        ActionCheck = b => Kenki >= 25
+        ActionCheck = (b, m) => Kenki >= 25
     };
 
     public static IBaseAction HissatsuGyoten { get; } = new BaseAction(ActionID.HissatsuGyoten)
     {
-        ActionCheck = b => Kenki >= 10 && !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2),
+        ActionCheck = (b, m) => Kenki >= 10 && !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2),
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 
@@ -160,17 +160,17 @@ public abstract class SAM_Base : CustomRotation
 
     public static IBaseAction HissatsuKyuten { get; } = new BaseAction(ActionID.HissatsuKyuten)
     {
-        ActionCheck = b => Kenki >= 25
+        ActionCheck = (b, m) => Kenki >= 25
     };
 
     public static IBaseAction HissatsuGuren { get; } = new BaseAction(ActionID.HissatsuGuren)
     {
-        ActionCheck = b => Kenki >= 25
+        ActionCheck = HissatsuKyuten.ActionCheck,
     };
 
     public static IBaseAction HissatsuSenei { get; } = new BaseAction(ActionID.HissatsuSenei)
     {
-        ActionCheck = b => Kenki >= 25
+        ActionCheck = HissatsuKyuten.ActionCheck,
     };
     #endregion
 

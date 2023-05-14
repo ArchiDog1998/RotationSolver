@@ -72,7 +72,7 @@ public abstract class BLU_Base : CustomRotation
             : base(actionID, option)
         {
             _type = type;
-            ActionCheck = t => OnSlot && RightType;
+            ActionCheck = (t, m) => OnSlot && RightType;
         }
 
         public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
@@ -95,7 +95,7 @@ public abstract class BLU_Base : CustomRotation
 
     public static IBLUAction BloodDrain { get; } = new BLUAction(ActionID.BloodDrain, BLUActionType.Magical)
     {
-        ActionCheck = b => Player.CurrentMp <= 9500,
+        ActionCheck = (b, m) => Player.CurrentMp <= 9500,
     };
 
     public static IBLUAction SonicBoom { get; } = new BLUAction(ActionID.SonicBoom, BLUActionType.Magical);
@@ -112,7 +112,7 @@ public abstract class BLU_Base : CustomRotation
 
     public static IBLUAction WhiteDeath { get; } = new BLUAction(ActionID.WhiteDeath, BLUActionType.Magical)
     {
-        ActionCheck = b => Player.HasStatus(true, StatusID.TouchOfFrost)
+        ActionCheck = (b, m) => Player.HasStatus(true, StatusID.TouchOfFrost)
     };
     #endregion
 
@@ -194,19 +194,19 @@ public abstract class BLU_Base : CustomRotation
 
     public static IBLUAction DivineCataract { get; } = new BLUAction(ActionID.DivineCataract, BLUActionType.Magical)
     {
-        ActionCheck = b => Player.HasStatus(true, StatusID.AuspiciousTrance)
+        ActionCheck = (b, m) => Player.HasStatus(true, StatusID.AuspiciousTrance)
     };
 
     public static IBLUAction PhantomFlurry2 { get; } = new BLUAction(ActionID.PhantomFlurry2, BLUActionType.Magical)
     {
-        ActionCheck = b => Player.HasStatus(true, StatusID.PhantomFlurry)
+        ActionCheck = (b, m) => Player.HasStatus(true, StatusID.PhantomFlurry)
     };
     #endregion
 
     #region Physical Single
     public static IBLUAction FinalSting { get; } = new BLUAction(ActionID.FinalSting, BLUActionType.Physical)
     {
-        ActionCheck = b => !Player.HasStatus(true, StatusID.BrushWithDeath),
+        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.BrushWithDeath),
     };
 
     public static IBLUAction SharpenedKnife { get; } = new BLUAction(ActionID.SharpenedKnife, BLUActionType.Physical);
@@ -219,7 +219,7 @@ public abstract class BLU_Base : CustomRotation
 
     public static IBLUAction RevengeBlast { get; } = new BLUAction(ActionID.RevengeBlast, BLUActionType.Physical)
     {
-        ActionCheck = b => b.GetHealthRatio() < 0.2f,
+        ActionCheck = (b, m) => b.GetHealthRatio() < 0.2f,
     };
     #endregion
 
@@ -264,7 +264,7 @@ public abstract class BLU_Base : CustomRotation
 
     public static IBLUAction SelfDestruct { get; } = new BLUAction(ActionID.SelfDestruct, BLUActionType.None)
     {
-        ActionCheck = b => !Player.HasStatus(true, StatusID.BrushWithDeath),
+        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.BrushWithDeath),
     };
 
     public static IBLUAction Faze { get; } = new BLUAction(ActionID.Faze, BLUActionType.None);
@@ -360,7 +360,7 @@ public abstract class BLU_Base : CustomRotation
     #region Heal
     public static IBLUAction WhiteWind { get; } = new BLUAction(ActionID.WhiteWind, BLUActionType.None, ActionOption.Heal)
     {
-        ActionCheck = b => Player.GetHealthRatio() is > 0.3f and < 0.5f,
+        ActionCheck = (b, m) => Player.GetHealthRatio() is > 0.3f and < 0.5f,
     };
 
     public static IBLUAction Stotram { get; } = new BLUAction(ActionID.Stotram, BLUActionType.Magical, ActionOption.Heal);
@@ -380,12 +380,7 @@ public abstract class BLU_Base : CustomRotation
     public static IBLUAction BasicInstinct { get; } = new BLUAction(ActionID.BasicInstinct, BLUActionType.None)
     {
         StatusProvide = new StatusID[] { StatusID.BasicInstinct },
-        ActionCheck = b =>
-        {
-            //TODO: 还需要判断是否为多人本
-            return Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56]
-                && DataCenter.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1;
-        },
+        ActionCheck = (b, m) =>  Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56] && DataCenter.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1,
     };
 
     private static IBLUAction AethericMimicry { get; } = new BLUAction(ActionID.AethericMimicry, BLUActionType.None, ActionOption.Friendly)

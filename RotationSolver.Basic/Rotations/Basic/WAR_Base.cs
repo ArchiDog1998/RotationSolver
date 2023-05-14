@@ -31,18 +31,18 @@ public abstract class WAR_Base : CustomRotation
     /// </summary>
     public static IBaseAction StormsEye { get; } = new BaseAction(ActionID.StormsEye)
     {
-        ActionCheck = b => Player.WillStatusEndGCD(9, 0, true, StatusID.SurgingTempest),
+        ActionCheck = (b, m) => Player.WillStatusEndGCD(9, 0, true, StatusID.SurgingTempest),
     };
 
     public static IBaseAction InnerBeast { get; } = new BaseAction(ActionID.InnerBeast)
     {
-        ActionCheck = b => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease),
+        ActionCheck = (b, m) => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease),
     };
 
     public static IBaseAction Tomahawk { get; } = new BaseAction(ActionID.Tomahawk)
     {
         FilterForHostiles = TargetFilter.TankRangeTarget,
-        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = (b, m) => !IsLastAction(IActionHelper.MovingActions),
     };
 
     public static IBaseAction Onslaught { get; } = new BaseAction(ActionID.Onslaught, ActionOption.EndSpecial)
@@ -93,7 +93,7 @@ public abstract class WAR_Base : CustomRotation
     public static IBaseAction Infuriate { get; } = new BaseAction(ActionID.Infuriate)
     {
         StatusProvide = new[] { StatusID.NascentChaos },
-        ActionCheck = b => HasHostilesInRange && JobGauge.BeastGauge <= 50 && InCombat,
+        ActionCheck = (b, m) => HasHostilesInRange && JobGauge.BeastGauge <= 50 && InCombat,
     };
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -101,7 +101,7 @@ public abstract class WAR_Base : CustomRotation
 
     public static IBaseAction Berserk { get; } = new BaseAction(ActionID.Berserk)
     {
-        ActionCheck = b => HasHostilesInRange && !InnerRelease.IsCoolingDown,
+        ActionCheck = (b, m) => HasHostilesInRange && !InnerRelease.IsCoolingDown,
     };
     #endregion
 
