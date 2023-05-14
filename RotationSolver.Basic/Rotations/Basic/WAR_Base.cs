@@ -85,7 +85,7 @@ public abstract class WAR_Base : CustomRotation
     #region Heal
     private sealed protected override IBaseAction TankStance => Defiance;
 
-    public static IBaseAction Defiance { get; } = new BaseAction(ActionID.Defiance, ActionOption.Defense);
+    public static IBaseAction Defiance { get; } = new BaseAction(ActionID.Defiance, ActionOption.Defense | ActionOption.EndSpecial);
     #endregion
 
 

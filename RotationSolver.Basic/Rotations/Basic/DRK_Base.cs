@@ -115,12 +115,7 @@ public abstract class DRK_Base : CustomRotation
 
     #region Heal Single
     private sealed protected override IBaseAction TankStance => Grit;
-    public static IBaseAction Grit { get; } = new BaseAction(ActionID.Grit, ActionOption.EndSpecial);
-    #endregion
-
-    #region Support
-    public static IBaseAction BloodWeapon { get; } = new BaseAction(ActionID.BloodWeapon);
-
+    public static IBaseAction Grit { get; } = new BaseAction(ActionID.Grit, ActionOption.Defense | ActionOption.EndSpecial);
     #endregion
 
     #region Defense Single
@@ -155,6 +150,8 @@ public abstract class DRK_Base : CustomRotation
     #endregion
 
     #region Support
+    public static IBaseAction BloodWeapon { get; } = new BaseAction(ActionID.BloodWeapon);
+
     public static IBaseAction Delirium { get; } = new BaseAction(ActionID.Delirium);
     #endregion
 

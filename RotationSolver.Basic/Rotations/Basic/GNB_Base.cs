@@ -116,9 +116,6 @@ public abstract class GNB_Base : CustomRotation
     #endregion
 
     #region Heal
-    private sealed protected override IBaseAction TankStance => RoyalGuard;
-    public static IBaseAction RoyalGuard { get; } = new BaseAction(ActionID.RoyalGuard, ActionOption.EndSpecial);
-
     public static IBaseAction Aurora { get; } = new BaseAction(ActionID.Aurora, ActionOption.Heal)
     {
         TargetStatus = new StatusID[] { StatusID.Aurora },
@@ -148,6 +145,9 @@ public abstract class GNB_Base : CustomRotation
     #endregion
 
     #region Support
+    private sealed protected override IBaseAction TankStance => RoyalGuard;
+    public static IBaseAction RoyalGuard { get; } = new BaseAction(ActionID.RoyalGuard, ActionOption.Defense | ActionOption.EndSpecial);
+
     public static IBaseAction NoMercy { get; } = new BaseAction(ActionID.NoMercy);
 
     public static IBaseAction BloodFest { get; } = new BaseAction(ActionID.BloodFest, ActionOption.Buff)
