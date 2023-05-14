@@ -133,6 +133,7 @@ public abstract partial class CustomRotation
     {
         act = null;
 
+        BaseAction.OtherOption |= CanUseOption.MustUse;
         switch (specialType)
         {
             case SpecialCommandType.DefenseArea:
@@ -143,6 +144,7 @@ public abstract partial class CustomRotation
                 if (DefenseSingleAbility(out act)) return true;
                 break;
         }
+        BaseAction.OtherOption &= ~CanUseOption.MustUse;
 
         if ((DataCenter.HPNotFull || Job.GetJobRole() != JobRole.Healer) && InCombat)
         {
