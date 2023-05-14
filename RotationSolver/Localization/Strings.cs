@@ -125,7 +125,7 @@ internal partial class Strings
     public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
-    public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";
+    public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or has TenChiJin or PhantomFlurry status.";
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
     public string ConfigWindow_Param_ShowActionFlag { get; set; } = "Show action flag.";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
