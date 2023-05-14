@@ -373,6 +373,13 @@ public static class DataCenter
         _actions.Enqueue(new ActionRec(_timeLastActionUsed, act));
     }
 
+    public static void ResetAllLastActions()
+    {
+        LastAction = 0;
+        LastGCD = 0;
+        LastAbility = 0;
+    }
+
     public static void AddDamageRec(float damageRatio)
     {
         if (_damages.Count >= QUEUECAPACITY)

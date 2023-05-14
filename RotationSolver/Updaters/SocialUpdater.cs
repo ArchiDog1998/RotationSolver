@@ -52,6 +52,7 @@ internal class SocialUpdater
     internal static void Enable()
     {
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
+        Service.DutyState.DutyWiped += DutyState_DutyWiped;
         Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
         Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
@@ -127,9 +128,16 @@ internal class SocialUpdater
         }
     }
 
+    static void DutyState_DutyWiped(object sender, ushort e)
+    {
+        if (Service.Player == null) return;
+        DataCenter.ResetAllLastActions();
+    }
+
     internal static void Disable()
     {
         Service.DutyState.DutyStarted -= DutyState_DutyStarted;
+        Service.DutyState.DutyWiped -= DutyState_DutyWiped;
         Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
         Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
