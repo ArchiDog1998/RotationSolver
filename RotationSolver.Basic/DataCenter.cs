@@ -332,7 +332,7 @@ public static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Math.Min(RTT, FetchTime);
+    public static float Ping => Math.Min(Math.Min(RTT, FetchTime), Service.Config.MaxPing);
     public static float RTT { get; set; } = 0.1f;
     public static float FetchTime { get; set; } = 0.1f;
 

@@ -201,6 +201,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;
     public float DistanceForMoving = 1.2f;
+    public int MaxPing = 300;
 
     public void Save()
     {

@@ -42,6 +42,9 @@ internal partial class RotationConfigWindow
         DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
             ref Service.Config.AddDotGCDCount, Service.Default.AddDotGCDCount, min: 0, max: 3);
 
+        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_MaxPing,
+                ref Service.Config.MaxPing, Service.Default.MaxPing, min: 50, max: 500);
+
         ImGui.Spacing();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffBetweenArea,
