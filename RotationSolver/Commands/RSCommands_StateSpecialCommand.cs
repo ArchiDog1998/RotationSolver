@@ -9,8 +9,11 @@ namespace RotationSolver.Commands
 
         private static string PreventString => "Prevent " + (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions) ? "on" : "off");
 
+        private static string BurstString => "Burst " + (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoBurst) ? "on" : "off");
+
+
         internal static string EntryString =>
-            $"{_stateString} ({AoeString}, {PreventString})" +  (DataCenter.SpecialTimeLeft < 0 ? string.Empty : $" - {_specialString}: {DataCenter.SpecialTimeLeft:F2}s");
+            $"{_stateString} ({AoeString}, {PreventString}, {BurstString})" +  (DataCenter.SpecialTimeLeft < 0 ? string.Empty : $" - {_specialString}: {DataCenter.SpecialTimeLeft:F2}s");
 
         private static void UpdateToast()
         {
