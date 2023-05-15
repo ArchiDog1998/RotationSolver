@@ -11,14 +11,14 @@ namespace RotationSolver.Basic;
 
 public static class DataCenter
 {
-    public static DateTime EffectTime { private get; set; } = DateTime.Now;
-    public static DateTime EffectEndTime { private get; set; } = DateTime.Now;
+    internal static DateTime EffectTime { private get; set; } = DateTime.Now;
+    internal static DateTime EffectEndTime { private get; set; } = DateTime.Now;
 
-    public static bool InEffectTime => DateTime.Now >= EffectTime && DateTime.Now <= EffectEndTime;
-    public static Dictionary<uint, ushort> HealHP { get; set; } = new Dictionary<uint, ushort>();
-    public static Dictionary<uint, ushort> ApplyStatus { private get; set; } = new Dictionary<uint, ushort>();
-    public static uint MPGain { get; set; }
-    public static bool HasApplyStatus(uint id, StatusID[] ids)
+    internal static bool InEffectTime => DateTime.Now >= EffectTime && DateTime.Now <= EffectEndTime;
+    internal static Dictionary<uint, ushort> HealHP { get; set; } = new Dictionary<uint, ushort>();
+    internal static Dictionary<uint, ushort> ApplyStatus { private get; set; } = new Dictionary<uint, ushort>();
+    internal static uint MPGain { get; set; }
+    internal static bool HasApplyStatus(uint id, StatusID[] ids)
     {
         if (InEffectTime && ApplyStatus.TryGetValue(id, out var statusId))
         {
@@ -63,7 +63,7 @@ public static class DataCenter
         }
     }
 
-    public static void AddCommandAction(IAction act, double time)
+    internal static void AddCommandAction(IAction act, double time)
     {
         var index = NextActs.FindIndex(i => i.Act.ID == act.ID);
         var newItem = new NextAct(act, DateTime.Now.AddSeconds(time));
@@ -139,11 +139,11 @@ public static class DataCenter
     }
 
     #region GCD
-    public static float WeaponRemain { get; set; }
+    public static float WeaponRemain { get; internal set; }
 
-    public static float WeaponTotal { get; set; }
+    public static float WeaponTotal { get; internal set; }
 
-    public static float WeaponElapsed { get; set; }
+    public static float WeaponElapsed { get; internal set; }
 
     /// <summary>
     /// Time to the next action
@@ -165,9 +165,9 @@ public static class DataCenter
 
     public static float NextAbilityToNextGCD => WeaponRemain - ActionRemain;
 
-    public static float CastingTotal { get; set; }
+    public static float CastingTotal { get; internal set; }
     #endregion
-    public static uint[] BluSlots { get; set; } = new uint[24];
+    public static uint[] BluSlots { get; internal set; } = new uint[24];
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
     private static double SpecialTimeElapsed => (DateTime.Now - _specialStateStartTime).TotalSeconds;
@@ -189,15 +189,15 @@ public static class DataCenter
 
     public static float CombatTime { get; set; }
 
-    public static IEnumerable<BattleChara> PartyMembers { get; set; } = Array.Empty<PlayerCharacter>();
+    public static IEnumerable<BattleChara> PartyMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
 
-    public static IEnumerable<BattleChara> PartyTanks { get; set; } = Array.Empty<PlayerCharacter>();
+    public static IEnumerable<BattleChara> PartyTanks { get; internal set; } = Array.Empty<PlayerCharacter>();
 
-    public static IEnumerable<BattleChara> PartyHealers { get; set; } = Array.Empty<PlayerCharacter>();
+    public static IEnumerable<BattleChara> PartyHealers { get; internal set; } = Array.Empty<PlayerCharacter>();
 
-    public static IEnumerable<BattleChara> AllianceMembers { get; set; } = Array.Empty<PlayerCharacter>();
+    public static IEnumerable<BattleChara> AllianceMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
 
-    public static IEnumerable<BattleChara> AllianceTanks { get; set; } = Array.Empty<PlayerCharacter>();
+    public static IEnumerable<BattleChara> AllianceTanks { get; internal set; } = Array.Empty<PlayerCharacter>();
 
     public static ObjectListDelay<BattleChara> DeathPeopleAll { get; } = new(
     () => (Service.Config.DeathDelayMin, Service.Config.DeathDelayMax));
@@ -214,26 +214,26 @@ public static class DataCenter
     public static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
     () => (Service.Config.HostileDelayMin, Service.Config.HostileDelayMax));
 
-    public static IEnumerable<BattleChara> AllHostileTargets { get; set; } = Array.Empty<BattleChara>();
+    public static IEnumerable<BattleChara> AllHostileTargets { get; internal set; } = Array.Empty<BattleChara>();
 
-    public static IEnumerable<BattleChara> TarOnMeTargets { get; set; } = Array.Empty<BattleChara>();
+    public static IEnumerable<BattleChara> TarOnMeTargets { get; internal set; } = Array.Empty<BattleChara>();
 
     public static ObjectListDelay<BattleChara> CanInterruptTargets { get; } = new ObjectListDelay<BattleChara>(
         () => (Service.Config.InterruptDelayMin, Service.Config.InterruptDelayMax));
 
     public static IEnumerable<GameObject> AllTargets { get; set; }
 
-    public static uint[] TreasureCharas { get; set; } = Array.Empty<uint>();
+    public static uint[] TreasureCharas { get; internal set; } = Array.Empty<uint>();
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
     public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;
-    public static int NumberOfHostilesInRange { get; set; }
-    public static int NumberOfHostilesInMaxRange { get; set; }
+    public static int NumberOfHostilesInRange { get; internal set; }
+    public static int NumberOfHostilesInMaxRange { get; internal set; }
 
-    public static bool IsHostileCastingAOE { get; set; }
+    public static bool IsHostileCastingAOE { get; internal set; }
 
-    public static bool IsHostileCastingToTank { get; set; }
+    public static bool IsHostileCastingToTank { get; internal set; }
 
-    public static bool HasPet { get; set; }
+    public static bool HasPet { get; internal set; }
 
 
     public static unsafe bool HasCompanion => (IntPtr)Service.RawPlayer != IntPtr.Zero 
@@ -273,26 +273,26 @@ public static class DataCenter
     }
 
     #region HP
-    public static Dictionary<uint, float> RefinedHP { get; set; } = new Dictionary<uint, float>();
+    public static Dictionary<uint, float> RefinedHP { get; internal set; } = new Dictionary<uint, float>();
 
-    public static IEnumerable<float> PartyMembersHP { get; set; }
-    public static float PartyMembersMinHP { get; set; }
-    public static float PartyMembersAverHP { get; set; }
-    public static float PartyMembersDifferHP { get; set; }
+    public static IEnumerable<float> PartyMembersHP { get; internal set; }
+    public static float PartyMembersMinHP { get; internal set; }
+    public static float PartyMembersAverHP { get; internal set; }
+    public static float PartyMembersDifferHP { get; internal set; }
 
-    public static bool HPNotFull { get; set; }
+    public static bool HPNotFull { get; internal set; }
 
-    public static bool CanHealAreaAbility { get; set; }
+    public static bool CanHealAreaAbility { get; internal set; }
 
-    public static bool CanHealAreaSpell { get; set; }
+    public static bool CanHealAreaSpell { get; internal set; }
 
-    public static bool CanHealSingleAbility { get; set; }
+    public static bool CanHealSingleAbility { get; internal set; }
 
-    public static bool CanHealSingleSpell { get; set; }
+    public static bool CanHealSingleSpell { get; internal set; }
 
-    public static uint CurrentMp { get; set; }
+    public static uint CurrentMp { get; internal set; }
     #endregion
-    public static Queue<MacroItem> Macros { get; } = new Queue<MacroItem>();
+    internal static Queue<MacroItem> Macros { get; } = new Queue<MacroItem>();
 
     #region Action Record
     const int QUEUECAPACITY = 32;
@@ -333,12 +333,12 @@ public static class DataCenter
 
     public static ActionID LastAbility { get; private set; } = 0;
     public static float Ping => Math.Min(Math.Min(RTT, FetchTime), Service.Config.MaxPing);
-    public static float RTT { get; set; } = 0.1f;
-    public static float FetchTime { get; set; } = 0.1f;
+    public static float RTT { get; internal set; } = 0.1f;
+    public static float FetchTime { get; private set; } = 0.1f;
 
 
     public const float MinAnimationLock = 0.6f;
-    public static unsafe void AddActionRec(Action act)
+    internal static unsafe void AddActionRec(Action act)
     {
         var id = (ActionID)act.RowId;
 
@@ -373,7 +373,7 @@ public static class DataCenter
         _actions.Enqueue(new ActionRec(_timeLastActionUsed, act));
     }
 
-    public static void ResetAllLastActions()
+    internal static void ResetAllLastActions()
     {
         LastAction = 0;
         LastGCD = 0;
@@ -382,7 +382,7 @@ public static class DataCenter
         _actions.Clear();
     }
 
-    public static void AddDamageRec(float damageRatio)
+    internal static void AddDamageRec(float damageRatio)
     {
         if (_damages.Count >= QUEUECAPACITY)
         {
