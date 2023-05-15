@@ -46,7 +46,8 @@ public enum SettingsCommand : byte
     UseGroundBeneficialAbility,
     UseAOEAction,
     UseAOEWhenManual,
-    PreventActions
+    PreventActions,
+    PreventActionsDuty
 }
 
 public static class SettingsCommandExtension
@@ -64,6 +65,7 @@ public static class SettingsCommandExtension
         SettingsCommand.UseAOEAction => true,
         SettingsCommand.UseAOEWhenManual => false,
         SettingsCommand.PreventActions => false,
+        SettingsCommand.PreventActionsDuty => false,
         _ => false,
     };
 }

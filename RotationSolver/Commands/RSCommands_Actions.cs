@@ -120,6 +120,7 @@ namespace RotationSolver.Commands
                 CancelState();
             }
             else if (Service.Config.AutoOffWhenDead 
+                && Service.Player != null 
                 && Service.Player.CurrentHp == 0)
             {
                 CancelState();
