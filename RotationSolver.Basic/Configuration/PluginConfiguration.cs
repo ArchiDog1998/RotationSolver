@@ -205,6 +205,7 @@ public class PluginConfiguration : IPluginConfiguration
     public int MaxPing = 300;
 
     public bool ShowStatusWindow = false;
+    public bool AutoLoadCustomRotations = false;
 
     public void Save()
     {

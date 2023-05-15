@@ -240,6 +240,9 @@ internal partial class RotationConfigWindow
                 ImGuiHelper.Spacing();
 
                 ImGui.TextWrapped("Third-party Rotation Libraries");
+
+                ImGui.Checkbox("Auto load rotations",
+                    ref Service.Config.AutoLoadCustomRotations);
             });
 
             ImGui.EndTabBar();

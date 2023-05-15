@@ -4,16 +4,28 @@ using Dalamud.Plugin;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel;
 using Lumina.Excel.CustomSheets;
+
+using RotationSolver.Updaters;
+
 using System.Diagnostics;
 using System.Runtime.Loader;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace RotationSolver;
 
 internal record AssemblyInfo(string Name, string Author, string Path, string Support, string Help, string ChangeLog, string Donate);
 
+internal class LoadedAssembly
+{
+    public string Path { get; set; }
+    public string LastModified { get; set; }
+}
+
 internal static class RotationHelper
 {
+    public static List<LoadedAssembly> LoadedCustomRotations = new();
+
     private class RotationLoadContext : AssemblyLoadContext
     {
         readonly DirectoryInfo _directory;
@@ -23,6 +35,8 @@ internal static class RotationHelper
         {
             _directory = directoryInfo;
         }
+
+        
 
         static RotationLoadContext()
         {
@@ -77,6 +91,9 @@ internal static class RotationHelper
             }
             using var pdbFile = File.Open(pdbPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var assembly = LoadFromStream(file, pdbFile);
+
+            file.Dispose();
+            pdbFile.Dispose();
             return assembly;
         }
     }
@@ -152,12 +169,19 @@ internal static class RotationHelper
     public static Assembly LoadFrom(string filePath)
     {
         var loadContext = new RotationLoadContext(new FileInfo(filePath).Directory);
+
         var assembly = loadContext.LoadFromFile(filePath);
 
         var name = assembly.GetName().Name;
 
         var attr = assembly.GetCustomAttribute<AssemblyLinkAttribute>();
         _assemblyInfos[assembly] = new AssemblyInfo(name, GetAuthor(filePath, name), filePath, attr?.SupportLink, attr?.HelpLink, attr?.ChangeLog, attr?.Donate);
+
+        var loaded = new LoadedAssembly();
+        loaded.Path = filePath;
+        loaded.LastModified = File.GetLastWriteTimeUtc(filePath).ToString();
+        LoadedCustomRotations.Add(loaded);
+        
         return assembly;
     }
 }
