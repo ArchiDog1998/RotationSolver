@@ -108,6 +108,7 @@
   "ConfigWindow_Params_LocationWrongTextDesc": "How do you want to be scolded if you have a positional error ?!",
   "ConfigWindow_Param_SayOutStateChanged": "Saying the state changes out",
   "ConfigWindow_Param_ShowInfoOnDtr": "Display plugin state on server info",
+  "ConfigWindow_Param_ShowStatusWindow": "Display plugin state in a window.",
   "ConfigWindow_Param_ShowInfoOnToast": "Display plugin state on toast",
   "ConfigWindow_Param_NamePlateIconId": "Player's name plate icon id when state is on. Recommend 61435, 61437",
   "ConfigWindow_Param_Action": "Action",

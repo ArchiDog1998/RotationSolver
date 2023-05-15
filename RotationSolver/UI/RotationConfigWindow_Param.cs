@@ -237,6 +237,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnDtr,
             ref Service.Config.ShowInfoOnDtr, Service.Default.ShowInfoOnDtr);
 
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowStatusWindow,
+            ref Service.Config.ShowStatusWindow, Service.Default.ShowStatusWindow);
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnToast,
             ref Service.Config.ShowInfoOnToast, Service.Default.ShowInfoOnToast);
 

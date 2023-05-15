@@ -204,6 +204,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float DistanceForMoving = 1.2f;
     public int MaxPing = 300;
 
+    public bool ShowStatusWindow = false;
+
     public void Save()
     {
         Service.Interface.SavePluginConfig(this);

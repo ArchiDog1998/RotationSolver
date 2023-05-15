@@ -4,7 +4,7 @@ namespace RotationSolver.Commands
 {
     public static partial class RSCommands
     {
-        private static string _stateString = "Off", _specialString = string.Empty;
+        internal static string _stateString = "Off", _specialString = string.Empty;
         private static string AoeString => "AOE " + (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction) && (DataCenter.StateType != StateCommandType.Manual || Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEWhenManual)) ? "on" : "off");
 
         private static string PreventString => "Prevent " + (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions) ? "on" : "off");
