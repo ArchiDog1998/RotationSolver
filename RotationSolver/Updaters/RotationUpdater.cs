@@ -204,6 +204,7 @@ internal static class RotationUpdater
 
         foreach (var dir in dirs)
         {
+            if (string.IsNullOrWhiteSpace(dir)) continue;
             var dlls = Directory.GetFiles(dir, "*.dll");
             
             foreach (var dll in dlls)
