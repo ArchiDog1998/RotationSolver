@@ -30,7 +30,7 @@ internal static class RotationHelper
     {
         readonly DirectoryInfo _directory;
 
-        static readonly Dictionary<string, Assembly> _handledAssemblies;
+        static Dictionary<string, Assembly> _handledAssemblies;
         public RotationLoadContext(DirectoryInfo directoryInfo) : base(true)
         {
             _directory = directoryInfo;
@@ -174,12 +174,30 @@ internal static class RotationHelper
 
         var name = assembly.GetName().Name;
 
+        Assembly tempAsm = null;
+
+        foreach (var asm in _assemblyInfos)
+        {
+            if (asm.Value.Path == filePath)
+            {
+                tempAsm = asm.Key;
+            }
+        }
+
+        if (tempAsm != null)
+        {
+            _assemblyInfos.Remove(tempAsm);
+        }
+
         var attr = assembly.GetCustomAttribute<AssemblyLinkAttribute>();
         _assemblyInfos[assembly] = new AssemblyInfo(name, GetAuthor(filePath, name), filePath, attr?.SupportLink, attr?.HelpLink, attr?.ChangeLog, attr?.Donate);
+
 
         var loaded = new LoadedAssembly();
         loaded.Path = filePath;
         loaded.LastModified = File.GetLastWriteTimeUtc(filePath).ToString();
+        var idx = LoadedCustomRotations.FindIndex(item => item.Path == loaded.Path);
+        if (idx != -1) LoadedCustomRotations.RemoveAt(idx);
         LoadedCustomRotations.Add(loaded);
         
         return assembly;
