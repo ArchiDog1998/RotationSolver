@@ -216,12 +216,7 @@ internal static class RotationUpdater
 
                 if (index == -1)
                 {
-                    PluginLog.LogWarning("Loading: " + dll);
                     GetAllCustomRotations(DownloadOption.Local);
-                }
-                else
-                {
-                    PluginLog.LogWarning("Already loaded: " + dll);
                 }
             }
         }

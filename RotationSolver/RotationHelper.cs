@@ -91,6 +91,9 @@ internal static class RotationHelper
             }
             using var pdbFile = File.Open(pdbPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var assembly = LoadFromStream(file, pdbFile);
+
+            file.Dispose();
+            pdbFile.Dispose();
             return assembly;
         }
     }
@@ -180,17 +183,5 @@ internal static class RotationHelper
         LoadedCustomRotations.Add(loaded);
         
         return assembly;
-    }
-
-    public static string GetFileMD5Hash(string filePath)
-    {
-        using (var md5 = MD5.Create())
-        {
-            using (var stream = File.OpenRead(filePath))
-            {
-                byte[] hashBytes = md5.ComputeHash(stream);
-                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
-            }
-        }
     }
 }
