@@ -356,7 +356,7 @@ public static class DataCenter
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
 
-                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player.Level) < 2)
+                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player?.Level ?? 1) < 2)
                 {
                     FetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
                 }
