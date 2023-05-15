@@ -180,6 +180,9 @@ internal static class RotationHelper
         var loaded = new LoadedAssembly();
         loaded.Path = filePath;
         loaded.LastModified = File.GetLastWriteTimeUtc(filePath).ToString();
+
+        var idx = LoadedCustomRotations.FindIndex(item => item.Path == loaded.Path);
+        if (idx != -1) LoadedCustomRotations.RemoveAt(idx);
         LoadedCustomRotations.Add(loaded);
         
         return assembly;
