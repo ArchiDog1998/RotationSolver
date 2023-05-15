@@ -378,6 +378,8 @@ public static class DataCenter
         LastAction = 0;
         LastGCD = 0;
         LastAbility = 0;
+        _timeLastActionUsed = DateTime.Now;
+        _actions.Clear();
     }
 
     public static void AddDamageRec(float damageRatio)
