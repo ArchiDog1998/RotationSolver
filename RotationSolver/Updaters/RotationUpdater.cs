@@ -142,15 +142,13 @@ internal static class RotationUpdater
 
     private static void LoadRotationsFromLocal(string relayFolder)
     {
-        var directories = new string[] {
+        var directories = Service.Config.OtherLibs
 #if DEBUG
-            relayFolder 
+            .Append(relayFolder)
 #else
-            relayFolder 
+            .Append(relayFolder)
 #endif
-        }
-            .Union(Service.Config.OtherLibs
-            .Where(Directory.Exists));
+            .Where(Directory.Exists);
 
         var assemblies = from dir in directories
                          where Directory.Exists(dir)
