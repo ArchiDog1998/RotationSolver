@@ -47,7 +47,8 @@ public enum SettingsCommand : byte
     UseAOEAction,
     UseAOEWhenManual,
     PreventActions,
-    PreventActionsDuty
+    PreventActionsDuty,
+    AutoLoadCustomRotations,
 }
 
 public static class SettingsCommandExtension

@@ -101,8 +101,14 @@ internal static class MajorUpdater
         {
             PreviewUpdater.UpdateCastBarState();
             TargetUpdater.UpdateTarget();
+            
+            if (Service.Config.AutoLoadCustomRotations)
+            {
+                RotationUpdater.LocalRotationWatcher();
+            }
 
             RotationUpdater.UpdateRotation();
+            
 
             ActionSequencerUpdater.UpdateActionSequencerAction();
             ActionUpdater.UpdateNextAction();
@@ -118,6 +124,8 @@ internal static class MajorUpdater
 
         _work = false;
     }
+
+
 
     public static void Dispose()
     {
