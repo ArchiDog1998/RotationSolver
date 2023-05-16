@@ -13,10 +13,15 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
 
+    public static ICustomRotation RightNowRotation { get; private set; }
+    public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
+
     private static DateTime LastRunTime;
 
     static bool _isLoading = false;
 
+    // Retrieves custom rotations from local and/or downloads
+    // them from remote server based on DownloadOption
     public static async Task GetAllCustomRotationsAsync(DownloadOption option)
     {
         if (_isLoading) return;
@@ -58,6 +63,8 @@ internal static class RotationUpdater
         }
     }
 
+    // This method loads custom rotation groups from local directories and assemblies, creates a sorted list of
+    // author hashes, and creates a sorted list of custom rotations grouped by job role.
     private static void LoadRotationsFromLocal(string relayFolder)
     {
         var directories = Service.Config.OtherLibs
@@ -108,10 +115,25 @@ internal static class RotationUpdater
         }
 
         CustomRotations = LoadCustomRotationGroup(assemblies);
+        var customRotationsGroupedByJobRole = new Dictionary<JobRole, List<CustomRotationGroup>>();
+        foreach (var customRotationGroup in CustomRotations)
+        {
+            var jobRole = customRotationGroup.Rotations[0].Job.GetJobRole();
+            if (!customRotationsGroupedByJobRole.ContainsKey(jobRole))
+            {
+                customRotationsGroupedByJobRole[jobRole] = new List<CustomRotationGroup>();
+            }
+            customRotationsGroupedByJobRole[jobRole].Add(customRotationGroup);
+        }
 
-        CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
-            (CustomRotations.GroupBy(g => g.Rotations[0].Job.GetJobRole())
-            .ToDictionary(set => set.Key, set => set.OrderBy(i => i.JobId).ToArray()));
+        CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>();
+        foreach (var jobRole in customRotationsGroupedByJobRole.Keys)
+        {
+            var customRotationGroups = customRotationsGroupedByJobRole[jobRole];
+            var sortedCustomRotationGroups = customRotationGroups.OrderBy(crg => crg.JobId).ToArray();
+            CustomRotationsDict[jobRole] = sortedCustomRotationGroups;
+        }
+
     }
 
     private static CustomRotationGroup[] LoadCustomRotationGroup(List<Assembly> assemblies)
@@ -156,8 +178,9 @@ internal static class RotationUpdater
         return result.ToArray();
     }
 
-
-
+    // Downloads rotation files from a remote server and saves them to a local folder.
+    // The download list is obtained from a JSON file on the remote server.
+    // If mustDownload is set to true, it will always download the files, otherwise it will only download if the file doesn't exist locally.
     private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
     {
         // Code to download rotations from remote server
@@ -253,9 +276,14 @@ internal static class RotationUpdater
         return null;
     }
 
+
+    // This method watches for changes in local rotation files by checking the
+    // last modified time of the files in the directories specified in the configuration.
+    // If there are new changes, it triggers a reload of the custom rotation.
+    // This method uses Parallel.ForEach to improve performance.
+    // It also has a check to ensure it's not running too frequently, to avoid hurting the FPS of the game.
     public static void LocalRotationWatcher()
     {
-        // This will cripple FPS is run on every frame.
         if (DateTime.Now < LastRunTime.AddSeconds(2))
         {
             return;
@@ -332,8 +360,6 @@ internal static class RotationUpdater
         return result.ToArray();
     }
 
-    public static ICustomRotation RightNowRotation { get; private set; }
-
     public static IEnumerable<IGrouping<string, IAction>> AllGroupedActions
         => RightNowRotation?.AllActions.GroupBy(a =>
             {
@@ -376,8 +402,6 @@ internal static class RotationUpdater
                 return string.Empty;
 
             }).OrderBy(g => g.Key);
-
-    public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
 
     public static void UpdateRotation()
     {

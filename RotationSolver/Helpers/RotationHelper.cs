@@ -90,7 +90,6 @@ namespace RotationSolver.Helpers
         {
             if (!rotation.IsValid)
             {
-                PluginLog.Log("This is not a valid rotation: " + rotation.RotationName);
                 return ImGuiColors.DPSRed;
             }
 
