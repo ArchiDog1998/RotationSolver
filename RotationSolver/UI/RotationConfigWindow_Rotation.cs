@@ -222,7 +222,7 @@ internal partial class RotationConfigWindow
 
                 if (ImGui.Button(info.Name))
                 {
-                    Process.Start("explorer.exe", "/select, \"" + info.Path + "\"" );
+                    Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"" );
                 }
 
                 ImGui.TableNextColumn();
@@ -255,13 +255,13 @@ internal partial class RotationConfigWindow
 
                 ImGui.TableNextColumn();
 
-                if (!string.IsNullOrEmpty(info.Support))
+                if (!string.IsNullOrEmpty(info.SupportLink))
                 {
                     if (ImGuiHelper.IconButton(FontAwesomeIcon.HandPaper, $"Support{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
-                            Util.OpenLink(info.Support);
+                            Util.OpenLink(info.SupportLink);
                         }
                         catch
                         {
@@ -272,13 +272,13 @@ internal partial class RotationConfigWindow
 
                 ImGui.SameLine();
 
-                if (!string.IsNullOrEmpty(info.Help))
+                if (!string.IsNullOrEmpty(info.HelpLink))
                 {
                     if (ImGuiHelper.IconButton(FontAwesomeIcon.Book, $"Help{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
-                            Util.OpenLink(info.Help);
+                            Util.OpenLink(info.HelpLink);
                         }
                         catch
                         {
@@ -309,13 +309,13 @@ internal partial class RotationConfigWindow
                 ImGui.PushStyleColor(ImGuiCol.Button, 0xFF5E5BFF);
                 ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD5E5BFF);
                 ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA5E5BFF);
-                if (!string.IsNullOrEmpty(info.Donate))
+                if (!string.IsNullOrEmpty(info.DonateLink))
                 {
                     if (ImGuiHelper.IconButton(FontAwesomeIcon.Coffee, $"Donate##{grp.Key.GetHashCode()}"))
                     {
                         try
                         {
-                            Util.OpenLink(info.Donate);
+                            Util.OpenLink(info.DonateLink);
                         }
                         catch
                         {

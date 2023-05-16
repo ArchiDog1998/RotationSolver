@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace RotationSolver.Helpers;
 
-internal record AssemblyInfo(string Name, string Author, string Path, string Support, string Help, string ChangeLog, string Donate);
+internal record AssemblyInfo(string Name, string Author, string FilePath, string SupportLink, string HelpLink, string ChangeLog, string DonateLink);
 
 internal static class RotationHelper
 {
@@ -153,12 +153,11 @@ internal static class RotationHelper
         return assembly;
     }
 
-
     private static Assembly GetAssemblyFromPath(string filePath)
     {
         foreach (var asm in _assemblyInfos)
         {
-            if (asm.Value.Path == filePath)
+            if (asm.Value.FilePath == filePath)
             {
                 return asm.Key;
             }
