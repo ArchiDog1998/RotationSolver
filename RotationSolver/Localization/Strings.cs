@@ -165,8 +165,6 @@ internal partial class Strings
     public string ConfigWindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";
     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
-    public string ConfigWindow_Param_ShowStatusWindow { get; set; } = "Display plugin state in a window.";
-
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
     public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommend 61435, 61437";
     public string ConfigWindow_Param_Action { get; set; } = "Action";

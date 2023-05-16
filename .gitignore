@@ -1,5 +1,13 @@
 .vs/
 bin/
+!RotationSolver/bin/
+RotationSolver/bin/*
+!RotationSolver/bin/Release/
+RotationSolver/bin/Release/*
+!RotationSolver/bin/Release/net7.0-windows/
+RotationSolver/bin/Release/net7.0-windows/*
+!RotationSolver/bin/Release/net7.0-windows/RotationSolver/
+RotationSolver/bin/Release/net7.0-windows/RotationSolver/*
+!RotationSolver/bin/Release/net7.0-windows/RotationSolver/latest.zip
 obj/
-/lib/
-gifs/
+lib/

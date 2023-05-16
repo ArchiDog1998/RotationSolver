@@ -204,7 +204,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float DistanceForMoving = 1.2f;
     public int MaxPing = 300;
 
-    public bool ShowStatusWindow = false;
     public bool AutoLoadCustomRotations = false;
 
     public void Save()
