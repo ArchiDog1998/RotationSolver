@@ -91,7 +91,7 @@ internal static class MajorUpdater
     }
 
     static bool _work;
-    private static async void UpdateWork()
+    private static void UpdateWork()
     {
         if (!IsValid) return;
         if (_work) return;

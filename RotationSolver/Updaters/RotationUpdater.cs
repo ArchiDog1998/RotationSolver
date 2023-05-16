@@ -87,13 +87,26 @@ internal static class RotationUpdater
             }
         }
 
-        AuthorHashes = new SortedList<string, string>(
-            (from a in assemblies
-             select (a, a.GetCustomAttribute<AuthorHashAttribute>()) into author
-             where author.Item2 != null
-             group author by author.Item2 into gr
-             select (gr.Key.Hash, string.Join(", ", gr.Select(i => i.a.GetInfo().Author + " - " + i.a.GetInfo().Name))))
-             .ToDictionary(i => i.Hash, i => i.Item2));
+        AuthorHashes = new SortedList<string, string>();
+        foreach (var assembly in assemblies)
+        {
+            var authorHashAttribute = assembly.GetCustomAttribute<AuthorHashAttribute>();
+            if (authorHashAttribute != null)
+            {
+                var key = authorHashAttribute.Hash;
+                var value = $"{assembly.GetInfo().Author} - {assembly.GetInfo().Name}";
+
+                if (AuthorHashes.ContainsKey(key))
+                {
+                    AuthorHashes[key] += $", {value}";
+                }
+                else
+                {
+                    AuthorHashes.Add(key, value);
+                }
+            }
+        }
+
 
         CustomRotations = (
             from a in assemblies
@@ -104,6 +117,7 @@ internal static class RotationUpdater
             where rotation != null
             group rotation by rotation.JobIDs[0] into rotationGrp
             select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
+
 
         CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
             (CustomRotations.GroupBy(g => g.Rotations[0].Job.GetJobRole())
