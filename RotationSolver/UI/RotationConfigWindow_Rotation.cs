@@ -159,7 +159,10 @@ internal partial class RotationConfigWindow
     {
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "DownloadRotationsButtonInfo"))
         {
-            RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
+            Task.Run(async () =>
+            {
+                await RotationUpdater.GetAllCustomRotationsAsync(RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
+            });
         }
 
         ImGui.SameLine();

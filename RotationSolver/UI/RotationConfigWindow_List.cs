@@ -210,7 +210,10 @@ internal partial class RotationConfigWindow
             {
                 if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "DownloadRotationsButton"))
                 {
-                    RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
+                    Task.Run(async () =>
+                    {
+                        await RotationUpdater.GetAllCustomRotationsAsync(RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
+                    });
                 }
 
                 ImGui.SameLine();
@@ -218,7 +221,10 @@ internal partial class RotationConfigWindow
 
                 if (ImGuiHelper.IconButton(FontAwesomeIcon.FileDownload, "##LoadLocalRotations"))
                 {
-                    RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.ShowList);
+                    Task.Run(async () =>
+                    {
+                        await RotationUpdater.GetAllCustomRotationsAsync(RotationUpdater.DownloadOption.ShowList);
+                    });
                 }
 
                 ImGui.SameLine();

@@ -1,5 +1,5 @@
 ﻿using Dalamud.Logging;
-using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Text;
@@ -15,133 +15,46 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
 
-    //public static List<string> LoadedPlugins = new List<string>();
-
-    [Flags]
-    public enum DownloadOption : byte
-    {
-        Local = 0,
-        Donwload = 1 << 0,
-        MustDownload = Donwload | 1 << 1,
-        ShowList = 1 << 2,
-    }
+    private static DateTime LastRunTime;
 
     static bool _isLoading = false;
 
-    public static void GetAllCustomRotations(DownloadOption option)
+    public static async Task GetAllCustomRotationsAsync(DownloadOption option)
     {
         if (_isLoading) return;
 
-        Task.Run(async () =>
-        {
-            _isLoading = true;
+        _isLoading = true;
 
+        try
+        {
             var relayFolder = Service.Interface.ConfigDirectory.FullName + "\\Rotations";
-            if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
+            Directory.CreateDirectory(relayFolder);
 
             LoadRotationsFromLocal(relayFolder);
 
-            if (option.HasFlag(DownloadOption.Donwload) && Service.Config.DownloadRotations)
+            if (option.HasFlag(DownloadOption.Download) && Service.Config.DownloadRotations)
                 await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
 
             if (option.HasFlag(DownloadOption.ShowList))
             {
-                foreach (var item in CustomRotationsDict
-                .SelectMany(d => d.Value)
-                .SelectMany(g => g.Rotations)
-                .Select(r => r.GetType().Assembly.FullName).ToHashSet())
-                {
-                    Service.ChatGui.Print("Loaded: " + item);
-                }
+                var assemblies = CustomRotationsDict
+                    .SelectMany(d => d.Value)
+                    .SelectMany(g => g.Rotations)
+                    .Select(r => r.GetType().Assembly.FullName)
+                    .Distinct()
+                    .ToList();
+
+                PrintLoadedAssemblies(assemblies);
             }
+        }
+        catch (Exception ex)
+        {
+            PluginLog.LogError(ex, "Failed to get custom rotations");
+        }
+        finally
+        {
             _isLoading = false;
-        });
-    }
-
-    private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
-    {
-        bool hasDownload = false;
-        using (var client = new HttpClient())
-        {
-            IEnumerable<string> libs = Service.Config.OtherLibs;
-            try
-            {
-                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/downloadList.json");
-                libs = libs.Union(JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts)));
-            }
-            catch (Exception ex)
-            {
-                PluginLog.Log(ex, "Failed to load downloading List.");
-            }
-
-            foreach (var url in libs)
-            {
-                hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
-                var pdbUrl = Path.ChangeExtension(url, ".pdb");
-                await DownloadOneUrlAsync(pdbUrl, relayFolder, client, mustDownload);
-            }
         }
-        if (hasDownload) LoadRotationsFromLocal(relayFolder);
-    }
-
-    private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client, bool mustDownload)
-    {
-        try
-        {
-            var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
-                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-            if (!valid) return false;
-        }
-        catch
-        {
-            return false;
-        }
-        try
-        {
-            var fileName = url.Split('/').LastOrDefault();
-            if (string.IsNullOrEmpty(fileName)) return false;
-            //if (Path.GetExtension(fileName) != ".dll") continue;
-            var filePath = Path.Combine(relayFolder, fileName);
-            if (!Service.Config.AutoUpdateRotations && File.Exists(filePath)) return false;
-
-            //Download
-            using (HttpResponseMessage response = await client.GetAsync(url))
-            {
-                if (File.Exists(filePath) && !mustDownload)
-                {
-                    if (new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
-                    {
-                        return false;
-                    }
-                    File.Delete(filePath);
-                }
-
-                using var stream = new FileStream(filePath, File.Exists(filePath)
-                    ? FileMode.Open : FileMode.CreateNew);
-                await response.Content.CopyToAsync(stream);
-            }
-
-            PluginLog.Log($"Successfully download the {filePath}");
-            return true;
-        }
-        catch (Exception ex)
-        {
-            PluginLog.LogError(ex, $"failed to download from {url}");
-        }
-        return false;
-    }
-
-    private static Assembly LoadOne(string filePath)
-    {
-        try
-        {
-            return RotationHelper.LoadFrom(filePath);
-        }
-        catch (Exception ex)
-        {
-            PluginLog.Log(ex, "Failed to load " + filePath);
-        }
-        return null;
     }
 
     private static void LoadRotationsFromLocal(string relayFolder)
@@ -196,8 +109,107 @@ internal static class RotationUpdater
             .ToDictionary(set => set.Key, set => set.OrderBy(i => i.JobId).ToArray()));
     }
 
-    private static DateTime LastRunTime;
-    public static void LocalRotationWatcher()
+    private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
+    {
+        // Code to download rotations from remote server
+        bool hasDownload = false;
+        using (var client = new HttpClient())
+        {
+            IEnumerable<string> libs = Service.Config.OtherLibs;
+            try
+            {
+                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/downloadList.json");
+                libs = libs.Union(JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts)));
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Log(ex, "Failed to load downloading List.");
+            }
+
+            foreach (var url in libs)
+            {
+                hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
+                var pdbUrl = Path.ChangeExtension(url, ".pdb");
+                await DownloadOneUrlAsync(pdbUrl, relayFolder, client, mustDownload);
+            }
+        }
+        if (hasDownload) LoadRotationsFromLocal(relayFolder);
+    }
+
+    private static void PrintLoadedAssemblies(IEnumerable<string> assemblies)
+    {
+        foreach (var assembly in assemblies)
+        {
+            Service.ChatGui.Print("Loaded: " + assembly);
+        }
+    }
+
+    //private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
+    //{
+
+    //}
+
+    private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client, bool mustDownload)
+    {
+        try
+        {
+            var valid = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out var uriResult)
+                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+            if (!valid) return false;
+        }
+        catch
+        {
+            return false;
+        }
+        try
+        {
+            var fileName = url.Split('/').LastOrDefault();
+            if (string.IsNullOrEmpty(fileName)) return false;
+            //if (Path.GetExtension(fileName) != ".dll") continue;
+            var filePath = Path.Combine(relayFolder, fileName);
+            if (!Service.Config.AutoUpdateRotations && File.Exists(filePath)) return false;
+
+            //Download
+            using (HttpResponseMessage response = await client.GetAsync(url))
+            {
+                if (File.Exists(filePath) && !mustDownload)
+                {
+                    if (new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
+                    {
+                        return false;
+                    }
+                    File.Delete(filePath);
+                }
+
+                using var stream = new FileStream(filePath, File.Exists(filePath)
+                    ? FileMode.Open : FileMode.CreateNew);
+                await response.Content.CopyToAsync(stream);
+            }
+
+            PluginLog.Log($"Successfully download the {filePath}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            PluginLog.LogError(ex, $"failed to download from {url}");
+        }
+        return false;
+    }
+
+    private static Assembly LoadOne(string filePath)
+    {
+        try
+        {
+            return RotationHelper.LoadCustomRotationAssembly(filePath);
+        }
+        catch (Exception ex)
+        {
+            PluginLog.Log(ex, "Failed to load " + filePath);
+        }
+        return null;
+    }
+
+    public static async Task LocalRotationWatcher()
     {
         // This will cripple FPS is run on every frame.
         if (DateTime.Now < LastRunTime.AddSeconds(2)) return;
@@ -219,7 +231,8 @@ internal static class RotationUpdater
 
                 if (index == -1)
                 {
-                    GetAllCustomRotations(DownloadOption.Local);
+                    await GetAllCustomRotationsAsync(DownloadOption.Local);
+                    //PluginLog.Log("Load a file here");
                 }
             }
         }

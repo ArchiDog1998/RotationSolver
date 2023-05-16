@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Loader;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Loader;
+
 using Dalamud.Logging;
 using Dalamud.Plugin;
+
 using FFXIVClientStructs.Interop;
 
-using Lumina.Excel.CustomSheets;
-
 using Lumina.Excel;
+using Lumina.Excel.CustomSheets;
 
 namespace RotationSolver.Helpers
 {
