@@ -12,7 +12,7 @@ using System.Runtime.Loader;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace RotationSolver;
+namespace RotationSolver.Helpers;
 
 internal record AssemblyInfo(string Name, string Author, string Path, string Support, string Help, string ChangeLog, string Donate);
 
@@ -36,7 +36,7 @@ internal static class RotationHelper
             _directory = directoryInfo;
         }
 
-        
+
 
         static RotationLoadContext()
         {
@@ -103,7 +103,7 @@ internal static class RotationHelper
     public static string[] AllowedAssembly { get; private set; } = Array.Empty<string>();
     public static AssemblyInfo GetInfo(this Assembly assembly)
     {
-        if(_assemblyInfos.TryGetValue(assembly, out var value))
+        if (_assemblyInfos.TryGetValue(assembly, out var value))
         {
             return value;
         }
@@ -122,7 +122,7 @@ internal static class RotationHelper
             PluginLog.Log(ex, "Failed to load white List.");
         }
     }
-    
+
     public static bool IsAllowed(this ICustomRotation rotation, out string name)
     {
         name = "Unknown";
@@ -146,9 +146,9 @@ internal static class RotationHelper
     }
 
     public static Vector4 GetColor(this ICustomRotation rotation)
-        => ! rotation.IsValid ? ImGuiColors.DPSRed :
-        !rotation.IsAllowed(out _) ? ImGuiColors.DalamudViolet : rotation.IsBeta() 
-        ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite ;
+        => !rotation.IsValid ? ImGuiColors.DPSRed :
+        !rotation.IsAllowed(out _) ? ImGuiColors.DalamudViolet : rotation.IsBeta()
+        ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite;
 
     public static bool IsBeta(this ICustomRotation rotation)
         => rotation.GetType().GetCustomAttribute<BetaRotationAttribute>() != null;
@@ -157,7 +157,7 @@ internal static class RotationHelper
     {
         try
         {
-            return  FileVersionInfo.GetVersionInfo(path)?.CompanyName 
+            return FileVersionInfo.GetVersionInfo(path)?.CompanyName
                 ?? name ?? "Unknown";
         }
         catch
@@ -199,7 +199,7 @@ internal static class RotationHelper
         var idx = LoadedCustomRotations.FindIndex(item => item.Path == loaded.Path);
         if (idx != -1) LoadedCustomRotations.RemoveAt(idx);
         LoadedCustomRotations.Add(loaded);
-        
+
         return assembly;
     }
 }
