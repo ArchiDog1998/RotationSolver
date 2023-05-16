@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -16,6 +17,28 @@ internal class NextActionWindow : InfoWindow
         var width = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
         DrawGcdCooldown(width, false);
         ControlWindow.DrawIAction(ActionUpdater.NextAction, width, 1);
+
+        var strs = new List<string>(3);
+        if(PluginConfiguration.GetValue(SettingsCommand.UseAOEAction)
+            && (DataCenter.StateType != StateCommandType.Manual
+            || PluginConfiguration.GetValue(SettingsCommand.UseAOEWhenManual)))
+        {
+            strs.Add("AOE");
+        }
+        if (PluginConfiguration.GetValue(SettingsCommand.PreventActions))
+        {
+            strs.Add("Prevent");
+        }
+        if (PluginConfiguration.GetValue(SettingsCommand.AutoBurst))
+        {
+            strs.Add("Burst");
+        }
+        if(strs.Count > 0)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudWhite2);
+            ImGui.TextWrapped(string.Join(", ", strs));
+            ImGui.PopStyleColor();
+        }
     }
 
     public static unsafe void DrawGcdCooldown(float width, bool drawTittle)

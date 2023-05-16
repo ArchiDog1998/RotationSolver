@@ -18,7 +18,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static ControlWindow _controlWindow;
     static NextActionWindow _nextActionWindow;
     static CooldownWindow _cooldownWindow;
-    static StatusWindow _statusWindow;
 
     static readonly List<IDisposable> _dis = new();
     public string Name => "Rotation Solver";
@@ -43,14 +42,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _controlWindow = new();
         _nextActionWindow = new();
         _cooldownWindow = new();
-        _statusWindow = new();
 
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(_comboConfigWindow);
         windowSystem.AddWindow(_controlWindow);
         windowSystem.AddWindow(_nextActionWindow);
         windowSystem.AddWindow(_cooldownWindow);
-        windowSystem.AddWindow(_statusWindow);
 
         Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Interface.UiBuilder.Draw += windowSystem.Draw;
@@ -135,6 +132,5 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
         _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;
         _cooldownWindow.IsOpen = isValid && Service.Config.ShowCooldownWindow;
-        _statusWindow.IsOpen = isValid && Service.Config.ShowStatusWindow;
     }
 }
