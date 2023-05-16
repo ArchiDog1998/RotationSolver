@@ -48,14 +48,14 @@ public abstract class BRD_Base : CustomRotation
     public static IBaseAction IronJaws { get; } = new BaseAction(ActionID.IronJaws, ActionOption.Dot)
     {
         TargetStatus = VenomousBite.TargetStatus.Union(WindBite.TargetStatus).ToArray(),
-        ActionCheck = b => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, WindBite.TargetStatus),
+        ActionCheck = (b, m) => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, WindBite.TargetStatus),
     };
 
     public static IBaseAction EmpyrealArrow { get; } = new BaseAction(ActionID.EmpyrealArrow);
 
     public static IBaseAction PitchPerfect { get; } = new BaseAction(ActionID.PitchPerfect)
     {
-        ActionCheck = b => Song == Song.WANDERER && Repertoire > 0,
+        ActionCheck = (b, m) => Song == Song.WANDERER && Repertoire > 0,
     };
 
     public static IBaseAction Bloodletter { get; } = new BaseAction(ActionID.Bloodletter);
@@ -76,12 +76,12 @@ public abstract class BRD_Base : CustomRotation
 
     public static IBaseAction ApexArrow { get; } = new BaseAction(ActionID.ApexArrow)
     {
-        ActionCheck = b => SoulVoice >= 20 && !Player.HasStatus(true, StatusID.BlastArrowReady),
+        ActionCheck = (b, m) => SoulVoice >= 20 && !Player.HasStatus(true, StatusID.BlastArrowReady),
     };
 
     public static IBaseAction BlastArrow { get; } = new BaseAction(ActionID.BlastArrow)
     {
-        ActionCheck = b => Player.HasStatus(true, StatusID.BlastArrowReady),
+        ActionCheck = (b, m) => Player.HasStatus(true, StatusID.BlastArrowReady),
     };
 
     public static IBaseAction RainOfDeath { get; } = new BaseAction(ActionID.RainOfDeath)
@@ -95,7 +95,7 @@ public abstract class BRD_Base : CustomRotation
 
     public static IBaseAction RadiantFinale { get; } = new BaseAction(ActionID.RadiantFinale, ActionOption.Buff)
     {
-        ActionCheck = b => JobGauge.Coda.Any(s => s != Song.NONE),
+        ActionCheck = (b, m) => JobGauge.Coda.Any(s => s != Song.NONE),
     };
 
     public static IBaseAction Barrage { get; } = new BaseAction(ActionID.Barrage);
@@ -116,10 +116,8 @@ public abstract class BRD_Base : CustomRotation
 
     public static IBaseAction Troubadour { get; } = new BaseAction(ActionID.Troubadour, ActionOption.Defense)
     {
-        ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
-            StatusID.Tactician1,
-            StatusID.Tactician2,
-            StatusID.ShieldSamba),
+        ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour,
+            StatusID.Tactician1, StatusID.Tactician2, StatusID.ShieldSamba),
     };
     #endregion
 

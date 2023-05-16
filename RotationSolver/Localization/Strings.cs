@@ -100,12 +100,14 @@ internal partial class Strings
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the time advance of using casting actions on counting down.";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
+    public string ConfigWindow_Param_MaxPing { get; set; } = "Set the Max Ping that RS can get.";
     public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is between area.";
 
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cut scene.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
-    public string ConfigWindow_Param_PreventActionsIfOutOfCombat { get; set; } = "Prevent Actions if no hostiles in range";
+    public string ConfigWindow_Param_PreventActionsIfOutOfCombat { get; set; } = "Prevent Actions if no hostiles in range.";
+    public string ConfigWindow_Param_PreventActionsIfDutyRing { get; set; } = "Also prevent if in duty until duty start.";
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";
@@ -125,7 +127,7 @@ internal partial class Strings
     public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
-    public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting.";
+    public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or has TenChiJin or PhantomFlurry status.";
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
     public string ConfigWindow_Param_ShowActionFlag { get; set; } = "Show action flag.";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
@@ -163,6 +165,7 @@ internal partial class Strings
     public string ConfigWindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";
     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
+    public string ConfigWindow_Param_ShowStatusWindow { get; set; } = "Display plugin state in a window.";
 
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
     public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommend 61435, 61437";

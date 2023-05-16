@@ -47,16 +47,16 @@ public abstract class RDM_Base : CustomRotation
 
     public static IBaseAction Riposte { get; } = new BaseAction(ActionID.Riposte)
     {
-        ActionCheck = b => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
+        ActionCheck = (b, m) => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
     };
     public static IBaseAction Zwerchhau { get; } = new BaseAction(ActionID.Zwerchhau)
     {
-        ActionCheck = b => BlackMana >= 15 && WhiteMana >= 15,
+        ActionCheck = (b, m) => BlackMana >= 15 && WhiteMana >= 15,
     };
 
     public static IBaseAction Redoublement { get; } = new BaseAction(ActionID.Redoublement)
     {
-        ActionCheck = b => BlackMana >= 15 && WhiteMana >= 15,
+        ActionCheck = (b, m) => BlackMana >= 15 && WhiteMana >= 15,
     };
 
     public static IBaseAction Engagement { get; } = new BaseAction(ActionID.Engagement);
@@ -86,7 +86,7 @@ public abstract class RDM_Base : CustomRotation
 
     public static IBaseAction Moulinet { get; } = new BaseAction(ActionID.Moulinet)
     {
-        ActionCheck = b => BlackMana >= 20 && WhiteMana >= 20,
+        ActionCheck = (b, m) => BlackMana >= 20 && WhiteMana >= 20,
     };
 
     public static IBaseAction Verflare { get; } = new BaseAction(ActionID.Verflare);
@@ -125,7 +125,7 @@ public abstract class RDM_Base : CustomRotation
 
     public static IBaseAction Manafication { get; } = new BaseAction(ActionID.Manafication)
     {
-        ActionCheck = b => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0,
+        ActionCheck = (b, m) => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0,
         ComboIdsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
     #endregion

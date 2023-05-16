@@ -166,9 +166,7 @@ public static class TargetFilter
     /// <returns></returns>
     internal static IEnumerable<BattleChara> ProvokeTarget(IEnumerable<BattleChara> inputCharas, bool needDistance = false)
     {
-        var tankIDS = DataCenter.AllianceMembers.GetJobCategory(JobRole.Tank).Select(member => (ulong)member.ObjectId);
         var loc = Service.Player.Position;
-        var id = Service.Player.ObjectId;
 
         var targets = inputCharas.Where(target =>
         {
@@ -177,7 +175,9 @@ public static class TargetFilter
             && (target.TargetObject?.IsValid() ?? false))
             {
                 //the target is not a tank role
-                if (!tankIDS.Contains(target.TargetObjectId) && (!needDistance || Vector3.Distance(target.Position, loc) > 5))
+                if (Service.ObjectTable.SearchById(target.TargetObjectId) is BattleChara battle 
+                    && !battle.IsJobCategory(JobRole.Tank)
+                    && (!needDistance || Vector3.Distance(target.Position, loc) > 5))
                 {
                     return true;
                 }

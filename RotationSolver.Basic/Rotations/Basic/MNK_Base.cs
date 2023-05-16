@@ -36,7 +36,7 @@ public abstract class MNK_Base : CustomRotation
 
     public static IBaseAction SteelPeak { get; } = new BaseAction(ActionID.SteelPeak)
     {
-        ActionCheck = b => InCombat && Chakra == 5,
+        ActionCheck = (b, m) => InCombat && Chakra == 5,
     };
     #endregion
 
@@ -83,7 +83,7 @@ public abstract class MNK_Base : CustomRotation
 
     public static IBaseAction PerfectBalance { get; } = new BaseAction(ActionID.PerfectBalance)
     {
-        ActionCheck = b => InCombat,
+        ActionCheck = (b, m) => InCombat,
     };
 
     public static IBaseAction Meditation { get; } = new BaseAction(ActionID.Meditation);

@@ -42,6 +42,9 @@ internal partial class RotationConfigWindow
         DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
             ref Service.Config.AddDotGCDCount, Service.Default.AddDotGCDCount, min: 0, max: 3);
 
+        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_MaxPing,
+                ref Service.Config.MaxPing, Service.Default.MaxPing, min: 50, max: 500);
+
         ImGui.Spacing();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffBetweenArea,
@@ -234,6 +237,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnDtr,
             ref Service.Config.ShowInfoOnDtr, Service.Default.ShowInfoOnDtr);
 
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowStatusWindow,
+            ref Service.Config.ShowStatusWindow, Service.Default.ShowStatusWindow);
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnToast,
             ref Service.Config.ShowInfoOnToast, Service.Default.ShowInfoOnToast);
 
@@ -276,16 +282,26 @@ internal partial class RotationConfigWindow
 
         if(Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction))
         {
+            ImGui.Indent();
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEWhenManual,
                 SettingsCommand.UseAOEWhenManual);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_NoNewHostiles,
                 ref Service.Config.NoNewHostiles, Service.Default.NoNewHostiles,
                 LocalizationManager.RightLang.ConfigWindow_Params_NoNewHostilesDesc);
+            ImGui.Unindent();
         }
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfOutOfCombat,
             SettingsCommand.PreventActions);
+
+        if (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions))
+        {
+            ImGui.Indent();
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfDutyRing,
+            SettingsCommand.PreventActionsDuty);
+            ImGui.Unindent();
+        }
 
         ImGui.Separator();
 

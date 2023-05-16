@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
 using RotationSolver.Commands;
 
@@ -8,7 +9,11 @@ internal static class MajorUpdater
 {
     public static bool IsValid => Service.Conditions.Any() && Service.Player != null && !SocialUpdater.InPvp;
     public static bool ShouldPreventActions => Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
-        && !DataCenter.HasHostilesInMaxRange;
+            && Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActionsDuty)
+            && Service.Conditions[ConditionFlag.BoundByDuty]
+            && !Service.DutyState.IsDutyStarted
+        || Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
+            && !DataCenter.HasHostilesInMaxRange;
 
 #if DEBUG
     private static readonly Dictionary<int, bool> _values = new();
@@ -96,8 +101,14 @@ internal static class MajorUpdater
         {
             PreviewUpdater.UpdateCastBarState();
             TargetUpdater.UpdateTarget();
+            
+            if (Service.Config.AutoLoadCustomRotations)
+            {
+                RotationUpdater.LocalRotationWatcher();
+            }
 
             RotationUpdater.UpdateRotation();
+            
 
             ActionSequencerUpdater.UpdateActionSequencerAction();
             ActionUpdater.UpdateNextAction();
@@ -113,6 +124,8 @@ internal static class MajorUpdater
 
         _work = false;
     }
+
+
 
     public static void Dispose()
     {

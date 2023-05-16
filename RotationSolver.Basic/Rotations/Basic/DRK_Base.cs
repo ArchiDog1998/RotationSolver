@@ -60,13 +60,13 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction BloodSpiller { get; } = new BaseAction(ActionID.BloodSpiller)
     {
-        ActionCheck = b => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
+        ActionCheck = (b, m) => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
     };
 
     public static IBaseAction Unmend { get; } = new BaseAction(ActionID.Unmend)
     {
         FilterForHostiles = TargetFilter.TankRangeTarget,
-        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = (b, m) => !IsLastAction(IActionHelper.MovingActions),
     };
 
     public static IBaseAction Plunge { get; } = new BaseAction(ActionID.Plunge, ActionOption.EndSpecial)
@@ -76,7 +76,7 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction LivingShadow { get; } = new BaseAction(ActionID.LivingShadow)
     {
-        ActionCheck = b => JobGauge.Blood >= 50,
+        ActionCheck = (b, m) => JobGauge.Blood >= 50,
     };
     #endregion
 
@@ -109,18 +109,13 @@ public abstract class DRK_Base : CustomRotation
 
     public static IBaseAction ShadowBringer { get; } = new BaseAction(ActionID.ShadowBringer)
     {
-        ActionCheck = b => !DarkSideEndAfterGCD(),
+        ActionCheck = (b, m) => !DarkSideEndAfterGCD(),
     };
     #endregion
 
     #region Heal Single
     private sealed protected override IBaseAction TankStance => Grit;
-    public static IBaseAction Grit { get; } = new BaseAction(ActionID.Grit, ActionOption.EndSpecial);
-    #endregion
-
-    #region Support
-    public static IBaseAction BloodWeapon { get; } = new BaseAction(ActionID.BloodWeapon);
-
+    public static IBaseAction Grit { get; } = new BaseAction(ActionID.Grit, ActionOption.Defense | ActionOption.EndSpecial);
     #endregion
 
     #region Defense Single
@@ -155,6 +150,8 @@ public abstract class DRK_Base : CustomRotation
     #endregion
 
     #region Support
+    public static IBaseAction BloodWeapon { get; } = new BaseAction(ActionID.BloodWeapon);
+
     public static IBaseAction Delirium { get; } = new BaseAction(ActionID.Delirium);
     #endregion
 

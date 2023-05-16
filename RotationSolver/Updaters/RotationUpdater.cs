@@ -1,4 +1,6 @@
 ﻿using Dalamud.Logging;
+using Lumina.Excel.GeneratedSheets;
+
 using RotationSolver.Localization;
 using System.Text;
 
@@ -12,6 +14,8 @@ internal static class RotationUpdater
 
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
+
+    //public static List<string> LoadedPlugins = new List<string>();
 
     [Flags]
     public enum DownloadOption : byte
@@ -142,22 +146,32 @@ internal static class RotationUpdater
 
     private static void LoadRotationsFromLocal(string relayFolder)
     {
-        var directories = new string[] {
-#if DEBUG
-            relayFolder 
-#else
-            relayFolder 
-#endif
-        }
-            .Union(Service.Config.OtherLibs
-            .Where(Directory.Exists));
+        var directories = Service.Config.OtherLibs
+            .Append(relayFolder)
+            .Where(Directory.Exists);
 
-        var assemblies = from dir in directories
-                         where Directory.Exists(dir)
-                         from l in Directory.GetFiles(dir, "*.dll")
-                         select LoadOne(l) into a
-                         where a != null
-                         select a;
+        var assemblies = new List<Assembly>();
+
+        foreach (var dir in directories)
+        {
+            if (Directory.Exists(dir))
+            {
+                var dlls = Directory.GetFiles(dir, "*.dll");
+                foreach (var dll in dlls)
+                {
+                    var assembly = LoadOne(dll);
+
+                    if (assembly != null)
+                    {
+                        assemblies.Add(assembly);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+        }
 
         AuthorHashes = new SortedList<string, string>(
             (from a in assemblies
@@ -180,6 +194,37 @@ internal static class RotationUpdater
         CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
             (CustomRotations.GroupBy(g => g.Rotations[0].Job.GetJobRole())
             .ToDictionary(set => set.Key, set => set.OrderBy(i => i.JobId).ToArray()));
+    }
+
+    private static DateTime LastRunTime;
+    public static void LocalRotationWatcher()
+    {
+        // This will cripple FPS is run on every frame.
+        if (DateTime.Now < LastRunTime.AddSeconds(2)) return;
+
+        var dirs = Service.Config.OtherLibs;
+
+        foreach (var dir in dirs)
+        {
+            if (string.IsNullOrWhiteSpace(dir)) continue;
+            var dlls = Directory.GetFiles(dir, "*.dll");
+            
+            foreach (var dll in dlls)
+            {
+                var loaded = new LoadedAssembly();
+                loaded.Path = dll;
+                loaded.LastModified = File.GetLastWriteTimeUtc(dll).ToString();
+
+                int index = RotationHelper.LoadedCustomRotations.FindIndex(item => item.LastModified == loaded.LastModified);
+
+                if (index == -1)
+                {
+                    GetAllCustomRotations(DownloadOption.Local);
+                }
+            }
+        }
+
+        LastRunTime = DateTime.Now;
     }
 
     private static Type[] TryGetTypes(Assembly assembly)

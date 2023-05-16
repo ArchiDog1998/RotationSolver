@@ -31,7 +31,7 @@ public abstract class RPR_Base : CustomRotation
     /// </summary>
     public static IBaseAction Slice { get; } = new BaseAction(ActionID.Slice)
     {
-        ActionCheck = b => !HasEnshrouded && !HasSoulReaver,
+        ActionCheck = (b, m) => !HasEnshrouded && !HasSoulReaver,
     };
 
     /// <summary>
@@ -53,12 +53,12 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
-        ActionCheck = b => !HasSoulReaver,
+        ActionCheck = (b, m) => !HasSoulReaver,
     };
 
     public static IBaseAction SoulSlice { get; } = new BaseAction(ActionID.SoulSlice)
     {
-        ActionCheck = b => Slice.ActionCheck(b) && Soul <= 50,
+        ActionCheck = (b, m) => Slice.ActionCheck(b, m) && Soul <= 50,
     };
     #endregion
 
@@ -112,7 +112,7 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction BloodStalk { get; } = new BaseAction(ActionID.BloodStalk)
     {
         StatusProvide = new[] { StatusID.SoulReaver },
-        ActionCheck = b => Slice.ActionCheck(b) && Soul >= 50
+        ActionCheck = (b, m) => Slice.ActionCheck(b, m) && Soul >= 50
     };
 
     public static IBaseAction GrimSwathe { get; } = new BaseAction(ActionID.GrimSwathe)
@@ -137,7 +137,7 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction PlentifulHarvest { get; } = new BaseAction(ActionID.PlentifulHarvest)
     {
         StatusNeed = new[] { StatusID.ImmortalSacrifice },
-        ActionCheck = b => !Player.HasStatus(true, StatusID.BloodSownCircle)
+        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.BloodSownCircle)
     };
     #endregion
 
@@ -145,25 +145,25 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction Enshroud { get; } = new BaseAction(ActionID.Enshroud)
     {
         StatusProvide = new[] { StatusID.Enshrouded },
-        ActionCheck = b => Shroud >= 50 && Slice.ActionCheck(b)
+        ActionCheck = (b, m) => Shroud >= 50 && Slice.ActionCheck(b, m)
     };
 
     public static IBaseAction Communio { get; } = new BaseAction(ActionID.Communio)
     {
         StatusNeed = new[] { StatusID.Enshrouded },
-        ActionCheck = b => LemureShroud == 1
+        ActionCheck = (b, m) => LemureShroud == 1
     };
 
     public static IBaseAction LemuresSlice { get; } = new BaseAction(ActionID.LemuresSlice)
     {
         StatusNeed = new[] { StatusID.Enshrouded },
-        ActionCheck = b => VoidShroud >= 2,
+        ActionCheck = (b, m) => VoidShroud >= 2,
     };
 
     public static IBaseAction LemuresScythe { get; } = new BaseAction(ActionID.LemuresScythe)
     {
         StatusNeed = new[] { StatusID.Enshrouded },
-        ActionCheck = b => VoidShroud >= 2,
+        ActionCheck = LemuresSlice.ActionCheck,
     };
 
     public static IBaseAction VoidReaping { get; } = new BaseAction(ActionID.VoidReaping)
@@ -185,14 +185,14 @@ public abstract class RPR_Base : CustomRotation
     #region Others
     public static IBaseAction Harpe { get; } = new BaseAction(ActionID.Harpe)
     {
-        ActionCheck = b => !HasSoulReaver && !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = (b, m) => !HasSoulReaver && !IsLastAction(IActionHelper.MovingActions),
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
     };
 
     public static IBaseAction HellsIngress { get; } = new BaseAction(ActionID.HellsIngress)
     {
         StatusProvide = new[] { StatusID.EnhancedHarpe },
-        ActionCheck = b => !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
+        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
     };
 
     public static IBaseAction HellsEgress { get; } = new BaseAction(ActionID.HellsEgress)
@@ -204,7 +204,7 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction SoulSow { get; } = new BaseAction(ActionID.SoulSow)
     {
         StatusProvide = new[] { StatusID.SoulSow },
-        ActionCheck = b => !InCombat,
+        ActionCheck = (b, m) => !InCombat,
     };
 
     public static IBaseAction HarvestMoon { get; } = new BaseAction(ActionID.HarvestMoon)

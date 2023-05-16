@@ -52,7 +52,7 @@ public abstract class MCH_Base : CustomRotation
 
     public static IBaseAction HeatBlast { get; } = new BaseAction(ActionID.HeatBlast)
     {
-        ActionCheck = b => IsOverheated && !OverheatedEndAfterGCD(),
+        ActionCheck = (b, m) => IsOverheated && !OverheatedEndAfterGCD(),
     };
 
     public static IBaseAction HotShot { get; } = new BaseAction(ActionID.HotShot);
@@ -87,7 +87,7 @@ public abstract class MCH_Base : CustomRotation
 
     public static IBaseAction RookAutoturret { get; } = new BaseAction(ActionID.RookAutoturret)
     {
-        ActionCheck = b => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
+        ActionCheck = (b, m) => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
     };
     #endregion
 
@@ -95,19 +95,19 @@ public abstract class MCH_Base : CustomRotation
     public static IBaseAction Reassemble { get; } = new BaseAction(ActionID.Reassemble)
     {
         StatusProvide = new StatusID[] { StatusID.Reassemble },
-        ActionCheck = b => HasHostilesInRange,
+        ActionCheck = (b, m) => HasHostilesInRange,
     };
 
     public static IBaseAction Hypercharge { get; } = new BaseAction(ActionID.Hypercharge)
     {
-        ActionCheck = b => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
+        ActionCheck = (b, m) => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
     };
 
     public static IBaseAction Wildfire { get; } = new BaseAction(ActionID.Wildfire);
 
     public static IBaseAction BarrelStabilizer { get; } = new BaseAction(ActionID.BarrelStabilizer)
     {
-        ActionCheck = b => JobGauge.Heat <= 50 && InCombat,
+        ActionCheck = (b, m) => JobGauge.Heat <= 50 && InCombat,
     };
     #endregion
 
@@ -115,10 +115,7 @@ public abstract class MCH_Base : CustomRotation
     #region Defense
     public static IBaseAction Tactician { get; } = new BaseAction(ActionID.Tactician, ActionOption.Defense)
     {
-        ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
-            StatusID.Tactician1,
-            StatusID.Tactician2,
-            StatusID.ShieldSamba),
+        ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour, StatusID.Tactician1, StatusID.Tactician2, StatusID.ShieldSamba),
     };
 
     public static IBaseAction Dismantle { get; } = new BaseAction(ActionID.Dismantle, ActionOption.Defense);

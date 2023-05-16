@@ -70,7 +70,7 @@ public abstract class DRG_Base : CustomRotation
     public static IBaseAction PiercingTalon { get; } = new BaseAction(ActionID.PiercingTalon)
     {
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
-        ActionCheck = b => !IsLastAction(IActionHelper.MovingActions),
+        ActionCheck = (b, m) => !IsLastAction(IActionHelper.MovingActions),
     };
 
     public static IBaseAction SpineShatterDive { get; } = new BaseAction(ActionID.SpineShatterDive);
@@ -116,17 +116,17 @@ public abstract class DRG_Base : CustomRotation
 
     public static IBaseAction Nastrond { get; } = new BaseAction(ActionID.Nastrond)
     {
-        ActionCheck = b => JobGauge.IsLOTDActive,
+        ActionCheck = (b, m) => JobGauge.IsLOTDActive,
     };
 
     public static IBaseAction StarDiver { get; } = new BaseAction(ActionID.StarDiver)
     {
-        ActionCheck = b => JobGauge.IsLOTDActive,
+        ActionCheck = (b, m) => JobGauge.IsLOTDActive,
     };
 
     public static IBaseAction WyrmwindThrust { get; } = new BaseAction(ActionID.WyrmwindThrust)
     {
-        ActionCheck = b => FocusCount == 2,
+        ActionCheck = (b, m) => FocusCount == 2,
     };
     #endregion
 
@@ -134,7 +134,7 @@ public abstract class DRG_Base : CustomRotation
     public static IBaseAction LifeSurge { get; } = new BaseAction(ActionID.LifeSurge)
     {
         StatusProvide = new[] { StatusID.LifeSurge },
-        ActionCheck = b => !IsLastAbility(true, LifeSurge),
+        ActionCheck = (b, m) => !IsLastAbility(true, LifeSurge),
     };
 
     public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge);

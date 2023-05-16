@@ -36,6 +36,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AutoOffCutScene = true;
     public bool AutoOffWhenDead = true;
     public bool PreventActionsIfOutOfCombat = false;
+    public bool PreventActionsIfDutyRing = false;
     public bool ChangeTargetForFate = true;
     public bool MoveTowardsScreenCenter = true;
 
@@ -201,6 +202,10 @@ public class PluginConfiguration : IPluginConfiguration
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;
     public float DistanceForMoving = 1.2f;
+    public int MaxPing = 300;
+
+    public bool ShowStatusWindow = false;
+    public bool AutoLoadCustomRotations = false;
 
     public void Save()
     {

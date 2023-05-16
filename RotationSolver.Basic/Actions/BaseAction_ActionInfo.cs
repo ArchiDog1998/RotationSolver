@@ -14,7 +14,7 @@ public partial class BaseAction
 
     public virtual StatusID[] StatusNeed { get; init; } = null;
 
-    public Func<BattleChara, bool> ActionCheck { get; init; } = null;
+    public Func<BattleChara, bool, bool> ActionCheck { get; init; } = null;
 
     private bool WillCooldown
     {
@@ -107,7 +107,7 @@ public partial class BaseAction
 
         if (!FindTarget(mustUse, out var target) || target == null) return false;
 
-        if (ActionCheck != null && !ActionCheck(target)) return false;
+        if (ActionCheck != null && !ActionCheck(target, mustUse)) return false;
 
         Target = target;
         if(!option.HasFlag(CanUseOption.IgnoreTarget)) _targetId = target.ObjectId;

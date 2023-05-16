@@ -51,7 +51,7 @@ public abstract class DNC_Base : CustomRotation
 
     public static IBaseAction FanDance { get; } = new BaseAction(ActionID.FanDance)
     {
-        ActionCheck = b => Feathers > 0,
+        ActionCheck = (b, m) => Feathers > 0,
         StatusProvide = new[] { StatusID.ThreefoldFanDance },
     };
     #endregion
@@ -92,7 +92,7 @@ public abstract class DNC_Base : CustomRotation
 
     public static IBaseAction FanDance2 { get; } = new BaseAction(ActionID.FanDance2)
     {
-        ActionCheck = b => Feathers > 0,
+        ActionCheck = (b, m) => Feathers > 0,
         AOECount = 2,
         StatusProvide = new[] { StatusID.ThreefoldFanDance },
     };
@@ -109,7 +109,7 @@ public abstract class DNC_Base : CustomRotation
 
     public static IBaseAction SaberDance { get; } = new BaseAction(ActionID.SaberDance)
     {
-        ActionCheck = b => Esprit >= 50,
+        ActionCheck = (b, m) => Esprit >= 50,
     };
 
     public static IBaseAction StarFallDance { get; } = new BaseAction(ActionID.StarFallDance)
@@ -131,7 +131,7 @@ public abstract class DNC_Base : CustomRotation
 
     public static IBaseAction ShieldSamba { get; } = new BaseAction(ActionID.ShieldSamba, ActionOption.Defense)
     {
-        ActionCheck = b => !Player.HasStatus(false, StatusID.Troubadour,
+        ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1,
             StatusID.Tactician2,
             StatusID.ShieldSamba),
@@ -165,7 +165,7 @@ public abstract class DNC_Base : CustomRotation
             StatusID.ThreefoldFanDance,
             StatusID.FourfoldFanDance,
         },
-        ActionCheck = b => InCombat,
+        ActionCheck = (b, m) => InCombat,
     };
     #endregion
 
@@ -191,33 +191,33 @@ public abstract class DNC_Base : CustomRotation
     protected static IBaseAction StandardFinish { get; } = new BaseAction(ActionID.StandardFinish)
     {
         StatusNeed = new[] { StatusID.StandardStep },
-        ActionCheck = b => IsDancing && CompletedSteps == 2,
+        ActionCheck = (b, m) => IsDancing && CompletedSteps == 2,
     };
 
     protected static IBaseAction TechnicalFinish { get; } = new BaseAction(ActionID.TechnicalFinish)
     {
         StatusNeed = new[] { StatusID.TechnicalStep },
-        ActionCheck = b => IsDancing && CompletedSteps == 4,
+        ActionCheck = (b, m) => IsDancing && CompletedSteps == 4,
     };
 
     private static IBaseAction Emboite { get; } = new BaseAction(ActionID.Emboite)
     {
-        ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Emboite,
+        ActionCheck = (b, m) => (ActionID)JobGauge.NextStep == ActionID.Emboite,
     };
 
     private static IBaseAction Entrechat { get; } = new BaseAction(ActionID.Entrechat)
     {
-        ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Entrechat,
+        ActionCheck = (b, m) => (ActionID)JobGauge.NextStep == ActionID.Entrechat,
     };
 
     private static IBaseAction Jete { get; } = new BaseAction(ActionID.Jete)
     {
-        ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Jete,
+        ActionCheck = (b, m) => (ActionID)JobGauge.NextStep == ActionID.Jete,
     };
 
     private static IBaseAction Pirouette { get; } = new BaseAction(ActionID.Pirouette)
     {
-        ActionCheck = b => (ActionID)JobGauge.NextStep == ActionID.Pirouette,
+        ActionCheck = (b, m) => (ActionID)JobGauge.NextStep == ActionID.Pirouette,
     };
 
     protected static bool ExecuteStepGCD(out IAction act)

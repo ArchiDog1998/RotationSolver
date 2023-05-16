@@ -22,9 +22,8 @@ public abstract class SCH_Base : CustomRotation
 
     public static IBaseAction Adloquium { get; } = new BaseAction(ActionID.Adloquium, ActionOption.Heal)
     {
-        ActionCheck = b => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
-            StatusID.EukrasianPrognosis,
-            StatusID.Galvanize),
+        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.EukrasianDiagnosis, 
+            StatusID.EukrasianPrognosis, StatusID.Galvanize),
     };
 
     public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.Resurrection, ActionOption.Friendly);
@@ -36,27 +35,27 @@ public abstract class SCH_Base : CustomRotation
 
     public static IBaseAction Lustrate { get; } = new BaseAction(ActionID.Lustrate, ActionOption.Heal)
     {
-        ActionCheck = b => HasAetherflow
+        ActionCheck = (b, m) => HasAetherflow
     };
 
     public static IBaseAction SacredSoil { get; } = new BaseAction(ActionID.SacredSoil, ActionOption.Heal)
     {
-        ActionCheck = b => HasAetherflow && !IsMoving,
+        ActionCheck = (b, m) => HasAetherflow && !IsMoving,
     };
 
     public static IBaseAction Indomitability { get; } = new BaseAction(ActionID.Indomitability, ActionOption.Heal)
     {
-        ActionCheck = b => HasAetherflow
+        ActionCheck = (b, m) => HasAetherflow
     };
 
     public static IBaseAction Excogitation { get; } = new BaseAction(ActionID.Excogitation, ActionOption.Heal)
     {
-        ActionCheck = b => HasAetherflow
+        ActionCheck = (b, m) => HasAetherflow
     };
 
     public static IBaseAction Consolation { get; } = new BaseAction(ActionID.Consolation, ActionOption.Heal)
     {
-        ActionCheck = b => HasSeraph,
+        ActionCheck = (b, m) => HasSeraph,
     };
 
     public static IBaseAction Protraction { get; } = new BaseAction(ActionID.Protraction, ActionOption.Heal);
@@ -74,7 +73,7 @@ public abstract class SCH_Base : CustomRotation
 
     public static IBaseAction EnergyDrain { get; } = new BaseAction(ActionID.EnergyDrain)
     {
-        ActionCheck = b => HasAetherflow
+        ActionCheck = (b, m) => HasAetherflow
     };
 
     public static IBaseAction ArtOfWar { get; } = new BaseAction(ActionID.ArtOfWar);//裂阵法 25866
@@ -83,52 +82,52 @@ public abstract class SCH_Base : CustomRotation
     #region Seraph
     public static IBaseAction SummonSeraph { get; } = new BaseAction(ActionID.SummonSeraph, ActionOption.Heal)
     {
-        ActionCheck = b => DataCenter.HasPet,
+        ActionCheck = (b, m) => DataCenter.HasPet,
     };
 
     public static IBaseAction SummonEos { get; } = new BaseAction(ActionID.SummonEos)//夕月召唤 17216
     {
-        ActionCheck = b => !DataCenter.HasPet && (!Player.HasStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
+        ActionCheck = (b, m) => !DataCenter.HasPet && (!Player.HasStatus(true, StatusID.Dissipation) || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel),
     };
 
     public static IBaseAction WhisperingDawn { get; } = new BaseAction(ActionID.WhisperingDawn, ActionOption.Heal)
     {
-        ActionCheck = b => DataCenter.HasPet,
+        ActionCheck = (b, m) => DataCenter.HasPet,
     };
 
     public static IBaseAction FeyIllumination { get; } = new BaseAction(ActionID.FeyIllumination, ActionOption.Heal)
     {
-        ActionCheck = b => DataCenter.HasPet,
+        ActionCheck = (b, m) => DataCenter.HasPet,
     };
 
     public static IBaseAction Dissipation { get; } = new BaseAction(ActionID.Dissipation)
     {
         StatusProvide = new[] { StatusID.Dissipation },
-        ActionCheck = b => !HasAetherflow && !HasSeraph && InCombat && DataCenter.HasPet,
+        ActionCheck = (b, m) => !HasAetherflow && !HasSeraph && InCombat && DataCenter.HasPet,
     };
 
     public static IBaseAction Aetherpact { get; } = new BaseAction(ActionID.Aetherpact, ActionOption.Heal)
     {
-        ActionCheck = b => JobGauge.FairyGauge >= 10 && DataCenter.HasPet && !HasSeraph
+        ActionCheck = (b, m) => JobGauge.FairyGauge >= 10 && DataCenter.HasPet && !HasSeraph
     };
 
     public static IBaseAction FeyBlessing { get; } = new BaseAction(ActionID.FeyBlessing, ActionOption.Heal)
     {
-        ActionCheck = b => !HasSeraph && DataCenter.HasPet,
+        ActionCheck = (b, m) => !HasSeraph && DataCenter.HasPet,
     };
     #endregion
 
     #region Others
     public static IBaseAction Aetherflow { get; } = new BaseAction(ActionID.Aetherflow)
     {
-        ActionCheck = b => InCombat && !HasAetherflow
+        ActionCheck = (b, m) => InCombat && !HasAetherflow
     };
 
     public static IBaseAction Recitation { get; } = new BaseAction(ActionID.Recitation, ActionOption.Heal);
 
     public static IBaseAction ChainStratagem { get; } = new BaseAction(ActionID.ChainStratagem)
     {
-        ActionCheck = b => InCombat && IsTargetBoss
+        ActionCheck = (b, m) => InCombat && IsTargetBoss
     };
 
     public static IBaseAction DeploymentTactics { get; } = new BaseAction(ActionID.DeploymentTactics, ActionOption.Heal)

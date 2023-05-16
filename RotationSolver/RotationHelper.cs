@@ -4,25 +4,39 @@ using Dalamud.Plugin;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel;
 using Lumina.Excel.CustomSheets;
+
+using RotationSolver.Updaters;
+
 using System.Diagnostics;
 using System.Runtime.Loader;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace RotationSolver;
 
 internal record AssemblyInfo(string Name, string Author, string Path, string Support, string Help, string ChangeLog, string Donate);
 
+internal class LoadedAssembly
+{
+    public string Path { get; set; }
+    public string LastModified { get; set; }
+}
+
 internal static class RotationHelper
 {
+    public static List<LoadedAssembly> LoadedCustomRotations = new();
+
     private class RotationLoadContext : AssemblyLoadContext
     {
         readonly DirectoryInfo _directory;
 
-        static readonly Dictionary<string, Assembly> _handledAssemblies;
+        static Dictionary<string, Assembly> _handledAssemblies;
         public RotationLoadContext(DirectoryInfo directoryInfo) : base(true)
         {
             _directory = directoryInfo;
         }
+
+        
 
         static RotationLoadContext()
         {
@@ -72,11 +86,14 @@ internal static class RotationHelper
             var pdbPath = Path.ChangeExtension(filePath, ".pdb");
             if (!File.Exists(pdbPath))
             {
-                PluginLog.Information($"Failed to load{pdbPath}");
+                PluginLog.Information($"Failed to load {pdbPath}");
                 return LoadFromStream(file);
             }
             using var pdbFile = File.Open(pdbPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var assembly = LoadFromStream(file, pdbFile);
+
+            file.Dispose();
+            pdbFile.Dispose();
             return assembly;
         }
     }
@@ -152,12 +169,37 @@ internal static class RotationHelper
     public static Assembly LoadFrom(string filePath)
     {
         var loadContext = new RotationLoadContext(new FileInfo(filePath).Directory);
+
         var assembly = loadContext.LoadFromFile(filePath);
 
         var name = assembly.GetName().Name;
 
+        Assembly tempAsm = null;
+
+        foreach (var asm in _assemblyInfos)
+        {
+            if (asm.Value.Path == filePath)
+            {
+                tempAsm = asm.Key;
+            }
+        }
+
+        if (tempAsm != null)
+        {
+            _assemblyInfos.Remove(tempAsm);
+        }
+
         var attr = assembly.GetCustomAttribute<AssemblyLinkAttribute>();
         _assemblyInfos[assembly] = new AssemblyInfo(name, GetAuthor(filePath, name), filePath, attr?.SupportLink, attr?.HelpLink, attr?.ChangeLog, attr?.Donate);
+
+
+        var loaded = new LoadedAssembly();
+        loaded.Path = filePath;
+        loaded.LastModified = File.GetLastWriteTimeUtc(filePath).ToString();
+        var idx = LoadedCustomRotations.FindIndex(item => item.Path == loaded.Path);
+        if (idx != -1) LoadedCustomRotations.RemoveAt(idx);
+        LoadedCustomRotations.Add(loaded);
+        
         return assembly;
     }
 }

@@ -57,7 +57,7 @@ public abstract class WHM_Base : CustomRotation
 
     public static IBaseAction AfflatusSolace { get; } = new BaseAction(ActionID.AfflatusSolace, ActionOption.Heal)
     {
-        ActionCheck = b => JobGauge.Lily > 0,
+        ActionCheck = (b, m) => JobGauge.Lily > 0,
     };
 
     public static IBaseAction Tetragrammaton { get; } = new BaseAction(ActionID.Tetragrammaton, ActionOption.Heal);
@@ -70,7 +70,7 @@ public abstract class WHM_Base : CustomRotation
 
     public static IBaseAction AfflatusRapture { get; } = new BaseAction(ActionID.AfflatusRapture, ActionOption.Heal)
     {
-        ActionCheck = b => JobGauge.Lily > 0,
+        ActionCheck = (b, m) => JobGauge.Lily > 0,
     };
 
     public static IBaseAction Aquaveil { get; } = new BaseAction(ActionID.Aquaveil, ActionOption.Heal);
@@ -97,14 +97,14 @@ public abstract class WHM_Base : CustomRotation
 
     public static IBaseAction AfflatusMisery { get; } = new BaseAction(ActionID.AfflatusMisery)
     {
-        ActionCheck = b => JobGauge.BloodLily == 3,
+        ActionCheck = (b, m) => JobGauge.BloodLily == 3,
     };
     #endregion
 
     #region buff
     public static IBaseAction PresenseOfMind { get; } = new BaseAction(ActionID.PresenseOfMind, ActionOption.Buff)
     {
-        ActionCheck = b => !IsMoving
+        ActionCheck = (b, m) => !IsMoving
     };
 
     public static IBaseAction ThinAir { get; } = new BaseAction(ActionID.ThinAir, ActionOption.Buff);
