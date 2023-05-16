@@ -1,6 +1,8 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 
+using ImGuiNET;
+
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -68,18 +70,30 @@ internal partial class RotationConfigWindow
 
     internal static void DrawRotationRole(ICustomRotation rotation, bool canAddButton)
     {
-        DrawTargetHostileTYpe(rotation);
-        if (ImGui.CollapsingHeader($"{rotation.JobIDs[0]} rotation settings##Settings"))
+        DrawTargetHostileType(rotation);
+
+        if (rotation.Configs.Configs.Count != 0)
         {
-            ImGui.Indent();
+            if (ImGui.CollapsingHeader($"{rotation.JobIDs[0]} rotation settings##Settings"))
+            {
+                ImGui.Indent();
+
+                DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);
+                rotation.Configs.Draw(canAddButton);
+
+                ImGui.Unindent();
+
+                ImGui.Spacing();
+            }
+        }
+        else
+        {
             DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);
             rotation.Configs.Draw(canAddButton);
-            ImGui.Unindent();
-            ImGui.Spacing();
         }
     }
 
-    private static void DrawTargetHostileTYpe(ICustomRotation rotation)
+    private static void DrawTargetHostileType(ICustomRotation rotation)
     {
         var isAllTargetAsHostile = (int)DataCenter.GetTargetHostileType(rotation.Job);
         ImGui.SetNextItemWidth(300);
