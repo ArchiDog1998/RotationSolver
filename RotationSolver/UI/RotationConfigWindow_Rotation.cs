@@ -50,7 +50,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawRotations(RotationUpdater.CustomRotationGroup[] rotations)
+    private static void DrawRotations(CustomRotationGroup[] rotations)
     {
         for (int i = 0; i < rotations.Length; i++)
         {
