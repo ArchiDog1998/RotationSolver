@@ -4,6 +4,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
@@ -73,7 +74,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         Task.Run(async () =>
         {
-            await RotationUpdater.GetAllCustomRotationsAsync(RotationUpdater.DownloadOption.Download);
+            await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
             await RotationHelper.LoadListAsync();
         });
 

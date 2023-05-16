@@ -3,6 +3,7 @@ using Lumina.Data.Parsing;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Data;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.TextureItems;
 using RotationSolver.Updaters;
@@ -212,7 +213,7 @@ internal partial class RotationConfigWindow
                 {
                     Task.Run(async () =>
                     {
-                        await RotationUpdater.GetAllCustomRotationsAsync(RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
+                        await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
                     });
                 }
 
@@ -223,7 +224,7 @@ internal partial class RotationConfigWindow
                 {
                     Task.Run(async () =>
                     {
-                        await RotationUpdater.GetAllCustomRotationsAsync(RotationUpdater.DownloadOption.ShowList);
+                        await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.ShowList);
                     });
                 }
 

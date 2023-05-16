@@ -1,5 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Utility;
+
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
@@ -161,7 +163,7 @@ internal partial class RotationConfigWindow
         {
             Task.Run(async () =>
             {
-                await RotationUpdater.GetAllCustomRotationsAsync(RotationUpdater.DownloadOption.MustDownload | RotationUpdater.DownloadOption.ShowList);
+                await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
             });
         }
 
