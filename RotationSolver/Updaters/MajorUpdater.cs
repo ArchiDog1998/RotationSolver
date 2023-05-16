@@ -91,7 +91,7 @@ internal static class MajorUpdater
     }
 
     static bool _work;
-    private static void UpdateWork()
+    private static async void UpdateWork()
     {
         if (!IsValid) return;
         if (_work) return;
@@ -104,7 +104,7 @@ internal static class MajorUpdater
             
             if (Service.Config.AutoLoadCustomRotations)
             {
-                RotationUpdater.LocalRotationWatcher();
+                await RotationUpdater.LocalRotationWatcher();
             }
 
             RotationUpdater.UpdateRotation();
