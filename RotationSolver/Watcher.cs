@@ -128,7 +128,7 @@ public class Watcher : IDisposable
         if (tar == null || action == null) return;
 
         //Record
-        DataCenter.AddActionRec(set.Action);
+        DataCenter.AddActionRec(action);
         ShowStrSelf = set.ToString();
 
         DataCenter.HealHP = set.GetSpecificTypeEffect(ActionEffectType.Heal);
