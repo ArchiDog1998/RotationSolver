@@ -107,22 +107,56 @@ internal static class RotationUpdater
             }
         }
 
-
-        CustomRotations = (
-            from a in assemblies
-            from t in TryGetTypes(a)
-            where t.GetInterfaces().Contains(typeof(ICustomRotation))
-                 && !t.IsAbstract && !t.IsInterface
-            select GetRotation(t) into rotation
-            where rotation != null
-            group rotation by rotation.JobIDs[0] into rotationGrp
-            select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
-
+        CustomRotations = LoadCustomRotationGroup(assemblies);
 
         CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
             (CustomRotations.GroupBy(g => g.Rotations[0].Job.GetJobRole())
             .ToDictionary(set => set.Key, set => set.OrderBy(i => i.JobId).ToArray()));
     }
+
+    private static CustomRotationGroup[] LoadCustomRotationGroup(List<Assembly> assemblies)
+    {
+        var rotationList = new List<ICustomRotation>();
+        foreach (var assembly in assemblies)
+        {
+            foreach (var type in TryGetTypes(assembly))
+            {
+                if (type.GetInterfaces().Contains(typeof(ICustomRotation))
+                    && !type.IsAbstract && !type.IsInterface)
+                {
+                    var rotation = GetRotation(type);
+                    if (rotation != null)
+                    {
+                        rotationList.Add(rotation);
+                    }
+                }
+            }
+        }
+
+        var rotationGroups = new Dictionary<ClassJobID, List<ICustomRotation>>();
+        foreach (var rotation in rotationList)
+        {
+            var jobId = rotation.JobIDs[0];
+            if (!rotationGroups.ContainsKey(jobId))
+            {
+                rotationGroups.Add(jobId, new List<ICustomRotation>());
+            }
+            rotationGroups[jobId].Add(rotation);
+        }
+
+        var result = new List<CustomRotationGroup>();
+        foreach (var kvp in rotationGroups)
+        {
+            var jobId = kvp.Key;
+            var rotations = kvp.Value.ToArray();
+            result.Add(new CustomRotationGroup(jobId, rotations[0].JobIDs, CreateRotationSet(rotations)));
+        }
+
+
+        return result.ToArray();
+    }
+
+
 
     private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
     {
