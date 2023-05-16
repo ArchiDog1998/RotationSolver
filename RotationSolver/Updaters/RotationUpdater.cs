@@ -411,7 +411,7 @@ internal static class RotationUpdater
         {
             if (!group.ClassJobIds.Contains(nowJob)) continue;
 
-            var rotation = GetChooseRotation(group);
+            var rotation = GetChosenRotation(group);
             if (rotation != RightNowRotation)
             {
                 rotation?.OnTerritoryChanged();
@@ -424,7 +424,7 @@ internal static class RotationUpdater
         RightRotationActions = Array.Empty<IAction>();
     }
 
-    internal static ICustomRotation GetChooseRotation(CustomRotationGroup group)
+    internal static ICustomRotation GetChosenRotation(CustomRotationGroup group)
     {
         var has = Service.Config.RotationChoices.TryGetValue((uint)group.JobId, out var name);
        

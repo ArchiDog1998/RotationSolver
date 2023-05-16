@@ -59,7 +59,7 @@ internal partial class RotationConfigWindow
             if (i > 0) ImGui.Separator();
 
             var group = rotations[i];
-            var rotation = RotationUpdater.GetChooseRotation(group);
+            var rotation = RotationUpdater.GetChosenRotation(group);
 
             var canAddButton = Service.Player != null
                 && rotation.JobIDs.Contains((ClassJobID)Service.Player.ClassJob.Id);
