@@ -141,13 +141,11 @@ internal static class RotationHelper
 
         _assemblyInfos[assembly] = assemblyInfo;
 
-        var loadedAssembly = new LoadedAssembly
-        {
-            Path = filePath,
-            LastModified = File.GetLastWriteTimeUtc(filePath).ToString()
-        };
+        var loadedAssembly = new LoadedAssembly(
+            filePath,
+            File.GetLastWriteTimeUtc(filePath).ToString());
 
-        LoadedCustomRotations.RemoveAll(item => item.Path == loadedAssembly.Path);
+        LoadedCustomRotations.RemoveAll(item => item.FilePath == loadedAssembly.FilePath);
         LoadedCustomRotations.Add(loadedAssembly);
 
         return assembly;

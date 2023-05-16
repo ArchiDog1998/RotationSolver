@@ -223,11 +223,11 @@ internal static class RotationUpdater
             
             foreach (var dll in dlls)
             {
-                var loaded = new LoadedAssembly();
-                loaded.Path = dll;
-                loaded.LastModified = File.GetLastWriteTimeUtc(dll).ToString();
+                var loadedAssembly = new LoadedAssembly(
+                    dll,
+                    File.GetLastWriteTimeUtc(dll).ToString());
 
-                int index = RotationHelper.LoadedCustomRotations.FindIndex(item => item.LastModified == loaded.LastModified);
+                int index = RotationHelper.LoadedCustomRotations.FindIndex(item => item.LastModified == loadedAssembly.LastModified);
 
                 if (index == -1)
                 {
