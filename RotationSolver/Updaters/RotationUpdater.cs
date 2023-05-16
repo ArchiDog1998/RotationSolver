@@ -8,8 +8,6 @@ namespace RotationSolver.Updaters;
 
 internal static class RotationUpdater
 {
-    public record CustomRotationGroup(ClassJobID JobId, ClassJobID[] ClassJobIds, ICustomRotation[] Rotations);
-
     internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
 
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
