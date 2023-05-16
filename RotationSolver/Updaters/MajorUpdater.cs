@@ -104,7 +104,7 @@ internal static class MajorUpdater
             
             if (Service.Config.AutoLoadCustomRotations)
             {
-                await RotationUpdater.LocalRotationWatcher();
+                RotationUpdater.LocalRotationWatcher();
             }
 
             RotationUpdater.UpdateRotation();

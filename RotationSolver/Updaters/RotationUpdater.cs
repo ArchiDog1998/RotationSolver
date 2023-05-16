@@ -30,7 +30,10 @@ internal static class RotationUpdater
             var relayFolder = Service.Interface.ConfigDirectory.FullName + "\\Rotations";
             Directory.CreateDirectory(relayFolder);
 
-            LoadRotationsFromLocal(relayFolder);
+            if (option.HasFlag(DownloadOption.Local))
+            {
+                LoadRotationsFromLocal(relayFolder);
+            }
 
             if (option.HasFlag(DownloadOption.Download) && Service.Config.DownloadRotations)
                 await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
@@ -209,19 +212,28 @@ internal static class RotationUpdater
         return null;
     }
 
-    public static async Task LocalRotationWatcher()
+    public static void LocalRotationWatcher()
     {
         // This will cripple FPS is run on every frame.
-        if (DateTime.Now < LastRunTime.AddSeconds(2)) return;
+        if (DateTime.Now < LastRunTime.AddSeconds(2))
+        {
+            return;
+        }
 
         var dirs = Service.Config.OtherLibs;
 
         foreach (var dir in dirs)
         {
-            if (string.IsNullOrWhiteSpace(dir)) continue;
+            if (string.IsNullOrEmpty(dir))
+            {
+                continue;
+            }
+
             var dlls = Directory.GetFiles(dir, "*.dll");
-            
-            foreach (var dll in dlls)
+
+            // There may be many files in these directories,
+            // so we opt to use Parallel.ForEach for performance.
+            Parallel.ForEach(dlls, async dll =>
             {
                 var loadedAssembly = new LoadedAssembly(
                     dll,
@@ -232,9 +244,8 @@ internal static class RotationUpdater
                 if (index == -1)
                 {
                     await GetAllCustomRotationsAsync(DownloadOption.Local);
-                    //PluginLog.Log("Load a file here");
                 }
-            }
+            });
         }
 
         LastRunTime = DateTime.Now;
