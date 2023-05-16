@@ -66,12 +66,17 @@ internal partial class RotationConfigWindow
         }
     }
 
-    internal static void DrawRotationRole(ICustomRotation rotation)
+    internal static void DrawRotationRole(ICustomRotation rotation, bool canAddButton)
     {
         DrawTargetHostileTYpe(rotation);
-        DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);
-
-        ImGui.Spacing();
+        if (ImGui.CollapsingHeader($"{rotation.JobIDs[0]} rotation settings##Settings"))
+        {
+            ImGui.Indent();
+            DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);
+            rotation.Configs.Draw(canAddButton);
+            ImGui.Unindent();
+            ImGui.Spacing();
+        }
     }
 
     private static void DrawTargetHostileTYpe(ICustomRotation rotation)
