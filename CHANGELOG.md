@@ -1,5 +1,40 @@
 # Changelog
 
+## [2.9.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.8.1...v2.9.0) (2023-05-16)
+
+
+### Features
+
+* Add DutyWiped method that resets all IsLastXYZ ([e086fed](https://github.com/ArchiDog1998/RotationSolver/commit/e086fedd6754bfd9431f69b3d76b809b70a867a3))
+* Added burst info to DTR bar. ([9000450](https://github.com/ArchiDog1998/RotationSolver/commit/9000450c4b62b06037f4c16f00bdae7308a70e05))
+* Auto load rotations ([5cc14f3](https://github.com/ArchiDog1998/RotationSolver/commit/5cc14f3d7fc5045c9f57afdc50b3bf0eea4a1a55))
+* New Prevention option to prevent actions until duty ring disappears. ([3d50368](https://github.com/ArchiDog1998/RotationSolver/commit/3d503681ebcb1e164d2a79ef09d1824e3a80c903))
+* Show plugin status in a window ([9351df3](https://github.com/ArchiDog1998/RotationSolver/commit/9351df3a9393e0bbf666447f318c6c683ef2b35a))
+
+
+### Bug Fixes
+
+* add a parameter called mustUse in the ActionCheck. ([85cd1b9](https://github.com/ArchiDog1998/RotationSolver/commit/85cd1b98bc86d90bfa3e0aa0cd5a42f25b784b14))
+* add an maxping option. ([06ab250](https://github.com/ArchiDog1998/RotationSolver/commit/06ab250fbd7ea63377da3f87201806075ebd0c58))
+* add player null check. ([cf9d9d4](https://github.com/ArchiDog1998/RotationSolver/commit/cf9d9d4677d92acfc5db17b939d6e061d3f693a7))
+* add test file. ([ffc9250](https://github.com/ArchiDog1998/RotationSolver/commit/ffc925003c0d7d43ee1df50991bf76ce600e6b28))
+* Added check for empty dir ([cd91989](https://github.com/ArchiDog1998/RotationSolver/commit/cd91989e0784caa2972572d9f4b6b62299aa0011))
+* Added indent/unindent to make Param-&gt;Action look cleaner. ([ef29552](https://github.com/ArchiDog1998/RotationSolver/commit/ef29552dba45e197472b121a781368ee2fa55b0f))
+* change the order of loading file. ([5884bc3](https://github.com/ArchiDog1998/RotationSolver/commit/5884bc30ffe5b8cfa1448c1535eaf2403ba26ba2))
+* change the order of rotations loading. ([06356bf](https://github.com/ArchiDog1998/RotationSolver/commit/06356bf48d07d2ca8b926cca927bdeebde5f3eaf))
+* changed the description of Poslock. ([e5613f5](https://github.com/ArchiDog1998/RotationSolver/commit/e5613f5e7c84ef41176bc973189c2a9a6151a0f5))
+* clean the StateString, show more info in `Status Window` ([5817d58](https://github.com/ArchiDog1998/RotationSolver/commit/5817d5886d443bfc6b474ca6f3864575fb75be92))
+* Cleaned left-over logging, ([7b62da0](https://github.com/ArchiDog1998/RotationSolver/commit/7b62da0732ea0c345350886909077b06f08553cb))
+* finished method ResetAllLastActions. ([bd9a3d7](https://github.com/ArchiDog1998/RotationSolver/commit/bd9a3d70de6492a6ff68cd9837d88a5e229f1f33))
+* fixed provoke check. ([ceab36e](https://github.com/ArchiDog1998/RotationSolver/commit/ceab36ee3b8daed990560a27cf630c9aaf892ebb))
+* internal change. ([6d6d35f](https://github.com/ArchiDog1998/RotationSolver/commit/6d6d35f39bef6ccf2b2439ec142ab773e0994d1f))
+* make all tank stance can end the special duration. ([5e11739](https://github.com/ArchiDog1998/RotationSolver/commit/5e117394f276307535931d20a80527a56a21ba3b))
+* make defense command must use. ([b806420](https://github.com/ArchiDog1998/RotationSolver/commit/b8064205c92a0fad3ca4332986393e1a3f9d4222))
+* Prevent bloating of LoadedCustomRotations whenever a change was detected. ([af170cd](https://github.com/ArchiDog1998/RotationSolver/commit/af170cdf7d42e98ede0dbeed986cc308dec6d2e1))
+* Prevent buildup of _handledAssemblies. Still needs more done. ([aff9a63](https://github.com/ArchiDog1998/RotationSolver/commit/aff9a63db457878de017e26f719d53c52938c00c))
+* Prevent nullref exception if Dalamud has lost player character. ([39d3242](https://github.com/ArchiDog1998/RotationSolver/commit/39d32428cae8ac20647a2de3e31aeea62d611dce))
+* Removed warning spam in dalamud log ([868bd3c](https://github.com/ArchiDog1998/RotationSolver/commit/868bd3cb8cf31cc79d60e54802fd195be6f74d52))
+
 ## [2.8.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.8.0...v2.8.1) (2023-05-13)
 
 
