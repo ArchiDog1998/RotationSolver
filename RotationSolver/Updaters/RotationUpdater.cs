@@ -151,19 +151,6 @@ internal static class RotationUpdater
         if (hasDownload) LoadRotationsFromLocal(relayFolder);
     }
 
-    private static void PrintLoadedAssemblies(IEnumerable<string> assemblies)
-    {
-        foreach (var assembly in assemblies)
-        {
-            Service.ChatGui.Print("Loaded: " + assembly);
-        }
-    }
-
-    //private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
-    //{
-
-    //}
-
     private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client, bool mustDownload)
     {
         try
@@ -209,6 +196,14 @@ internal static class RotationUpdater
             PluginLog.LogError(ex, $"failed to download from {url}");
         }
         return false;
+    }
+
+    private static void PrintLoadedAssemblies(IEnumerable<string> assemblies)
+    {
+        foreach (var assembly in assemblies)
+        {
+            Service.ChatGui.Print("Loaded: " + assembly);
+        }
     }
 
     private static Assembly LoadOne(string filePath)

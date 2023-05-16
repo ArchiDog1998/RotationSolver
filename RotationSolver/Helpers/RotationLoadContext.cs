@@ -76,9 +76,8 @@ namespace RotationSolver.Helpers
             using var pdbFile = File.Open(pdbPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var assembly = LoadFromStream(file, pdbFile);
 
-            file.Dispose();
-            pdbFile.Dispose();
             return assembly;
         }
+
     }
 }
