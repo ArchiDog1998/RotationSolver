@@ -224,13 +224,6 @@ internal static class RotationUpdater
             }
         }
 
-        foreach (var item in RotationHelper.LoadedCustomRotations)
-        {
-            PluginLog.LogWarning("Loaded: " + item.Path);
-        }
-
-        PluginLog.LogWarning("----------------------------");
-
         LastRunTime = DateTime.Now;
     }
 
