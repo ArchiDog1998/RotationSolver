@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
+		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
 		<EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
 	</ItemGroup>
 </Project>
