@@ -1,7 +1,9 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
 using Dalamud.Plugin;
+using ECommons;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
@@ -26,6 +28,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
+
+        ECommonsMain.Init(pluginInterface, this, ECommons.Module.SplatoonAPI);
 
         try
         {
