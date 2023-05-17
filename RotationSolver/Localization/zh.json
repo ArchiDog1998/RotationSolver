@@ -109,7 +109,6 @@
   "ConfigWindow_Params_LocationWrongTextDesc": "如果你打错身位，你想被怎么骂？",
   "ConfigWindow_Param_SayOutStateChanged": "语音说出插件状态改变",
   "ConfigWindow_Param_ShowInfoOnDtr": "在服务器信息上显示插件状态",
-  "ConfigWindow_Param_ShowStatusWindow": "在一个窗口上显示插件状态",
   "ConfigWindow_Param_ShowInfoOnToast": "在弹窗上显示插件状态",
   "ConfigWindow_Param_NamePlateIconId": "当插件启用时玩家头顶显示的图标ID. 推荐使用 61435, 61437",
   "ConfigWindow_Param_Action": "技能",
