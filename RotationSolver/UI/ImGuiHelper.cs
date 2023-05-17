@@ -480,7 +480,7 @@ internal static class ImGuiHelper
             else if (!rotation.IsAllowed(out _))
             {
                 var showStr = string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_HighEndWarning, rotation)
-                + string.Join("", SocialUpdater.HighEndDuties.Select(x => x.PlaceName?.Value?.Name.ToString())
+                + string.Join("", SocialUpdater.HighEndDuties.Select(SocialUpdater.GetDutyName)
                 .Where(s => !string.IsNullOrEmpty(s)).Select(t => "\n - " + t));
 
                 HoveredString(showStr);

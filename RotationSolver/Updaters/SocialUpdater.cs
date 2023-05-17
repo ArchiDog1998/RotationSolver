@@ -31,6 +31,12 @@ internal class SocialUpdater
     static bool _canSaying = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
 
+    public static string GetDutyName(TerritoryType territory)
+    {
+        return territory.ContentFinderCondition?.Value?.Name?.RawString ?? "High-end Duty";
+        //return territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
+    }
+
     static bool CanSocial
     {
         get
@@ -100,8 +106,7 @@ internal class SocialUpdater
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
         if (HighEndDuties.Any(t => t.RowId == territory.RowId))
         {
-            var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
-            var message = string.Format(LocalizationManager.RightLang.HighEndWarning, str);
+            var message = string.Format(LocalizationManager.RightLang.HighEndWarning, GetDutyName(territory));
             
             Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
