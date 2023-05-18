@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.ActionSequencer;
+﻿using ECommons.GameHelpers;
+
+namespace RotationSolver.ActionSequencer;
 
 public class ConditionHelper
 {
@@ -8,7 +10,7 @@ public class ConditionHelper
         {
             action = rotation.AllBaseActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == id);
         }
-        if (action == null || Service.Player == null) return false;
+        if (action == null || !Player.Available) return false;
         return true;
     }
 

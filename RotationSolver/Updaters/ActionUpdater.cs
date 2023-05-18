@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
@@ -18,7 +19,7 @@ internal static class ActionUpdater
 
     internal static void UpdateNextAction()
     {
-        PlayerCharacter localPlayer = Service.Player;
+        PlayerCharacter localPlayer = Player.Object;
         if (localPlayer == null) return;
 
         try
@@ -111,7 +112,7 @@ internal static class ActionUpdater
 
     private static unsafe void UpdateWeaponTime()
     {
-        var player = Service.Player;
+        var player = Player.Object;
         if (player == null) return;
 
         var instance = ActionManager.Instance();
@@ -140,7 +141,7 @@ internal static class ActionUpdater
 
     private static void UpdateMPTimer()
     {
-        var player = Service.Player;
+        var player = Player.Object;
         if (player == null) return;
 
         //不是黑魔不考虑啊
@@ -172,7 +173,7 @@ internal static class ActionUpdater
             || Service.Conditions[ConditionFlag.InFlight]
             ||  ActionManager.Instance()->ActionQueued && NextAction != null
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
-            || Service.Player.CurrentHp == 0) return;
+            || Player.Object.CurrentHp == 0) return;
 
         var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
         var ahead = Math.Min(maxAhead, Service.Config.ActionAhead);

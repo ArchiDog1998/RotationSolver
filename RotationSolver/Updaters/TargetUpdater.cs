@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
@@ -47,9 +48,9 @@ internal static partial class TargetUpdater
         get
         {
             float radius = 25;
-            if (Service.Player == null) return radius;
+            if (!Player.Available) return radius;
             switch (Service.GetSheet<ClassJob>().GetRow(
-                Service.Player.ClassJob.Id).GetJobRole())
+                Player.Object.ClassJob.Id).GetJobRole())
             {
                 case JobRole.Tank:
                 case JobRole.Melee:
@@ -85,7 +86,7 @@ internal static partial class TargetUpdater
 
         DataCenter.CanInterruptTargets.Delay(DataCenter.HostileTargets.Where(ObjectHelper.CanInterrupt));
 
-        DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Service.Player.ObjectId);
+        DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Player.Object.ObjectId);
 
         DataCenter.NumberOfHostilesInRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
 
@@ -133,8 +134,8 @@ internal static partial class TargetUpdater
         var hostiles = allAttackableTargets.Where(t =>
         {
             if (ids.Contains(t.ObjectId)) return true;
-            if (t.TargetObject == Service.Player
-            || t.TargetObject?.OwnerId == Service.Player.ObjectId) return true;
+            if (t.TargetObject == Player.Object
+            || t.TargetObject?.OwnerId == Player.Object.ObjectId) return true;
 
             //Remove other's treasure.
             if (t.IsOthersPlayers()) return false;
@@ -229,7 +230,7 @@ internal static partial class TargetUpdater
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
         DataCenter.AllianceMembers = allTargets.OfType<PlayerCharacter>();
 
-        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Service.Player.ObjectId);
+        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.ObjectId);
         DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
         //DataCenter.HasPet = HasPet();
 
@@ -260,24 +261,24 @@ internal static partial class TargetUpdater
             DataCenter.PartyMembersAverHP = DataCenter.PartyMembersDifferHP = 0;
         }
 
-        UpdateCanHeal(Service.Player);
+        UpdateCanHeal(Player.Object);
 
         _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
 
         if (DataCenter.InEffectTime)
         {
-            var rightMp = Service.Player.CurrentMp;
+            var rightMp = Player.Object.CurrentMp;
             if(rightMp - _lastMp == DataCenter.MPGain)
             {
                 DataCenter.MPGain = 0;
             }
-            DataCenter.CurrentMp = Math.Min(10000, Service.Player.CurrentMp + DataCenter.MPGain);
+            DataCenter.CurrentMp = Math.Min(10000, Player.Object.CurrentMp + DataCenter.MPGain);
         }
         else
         {
-            DataCenter.CurrentMp = Service.Player.CurrentMp;
+            DataCenter.CurrentMp = Player.Object.CurrentMp;
         }
-        _lastMp = Service.Player.CurrentMp;
+        _lastMp = Player.Object.CurrentMp;
     }
 
     private static float GetPartyMemberHPRatio(BattleChara member)
@@ -309,7 +310,7 @@ internal static partial class TargetUpdater
     {
         var party = Service.PartyList.Select(p => p.GameObject).OfType<BattleChara>().Where(b => b.DistanceToPlayer() <= 30);
 
-        if (!party.Any()) party = new BattleChara[] { Service.Player };
+        if (!party.Any()) party = new BattleChara[] { Player.Object };
 
         return party.Union(allTargets.Where(obj => obj.SubKind == 9));
     }

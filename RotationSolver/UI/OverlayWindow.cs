@@ -1,4 +1,5 @@
 ﻿using Dalamud.Interface;
+using ECommons.GameHelpers;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -7,7 +8,7 @@ internal static class OverlayWindow
 {
     public static void Draw()
     {
-        if (Service.Player == null || !Service.Config.UseOverlayWindow) return;
+        if (!Player.Available || !Service.Config.UseOverlayWindow) return;
 
         if (Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent]
             || Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas]
@@ -45,14 +46,14 @@ internal static class OverlayWindow
 
         if (act.Target == null) return;
 
-        if (act.Target != Service.Player)
+        if (act.Target != Player.Object)
         {
             var c = Service.Config.TargetColor;
             var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
             DrawTarget(act.Target, Tcolor, 8, out _);
         }
 
-        if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Service.Player && !act.IsFriendly)
+        if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Player.Object && !act.IsFriendly)
         {
             var c = Service.Config.SubTargetColor;
             var Scolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
@@ -92,11 +93,11 @@ internal static class OverlayWindow
         var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
         var tar = CustomRotation.MoveTarget;
-        if (tar == null || tar == Service.Player) return;
+        if (tar == null || tar == Player.Object) return;
 
         DrawTarget(tar, color, 8, out var scrPos);
 
-        if (Service.WorldToScreen(Service.Player.Position, out var plyPos))
+        if (Service.WorldToScreen(Player.Object.Position, out var plyPos))
         {
             var dir = scrPos - plyPos;
 
@@ -122,8 +123,8 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        if (!Service.Player.IsJobCategory(JobRole.Tank)
-            && !Service.Player.IsJobCategory(JobRole.Melee) ) return;
+        if (!Player.Object.IsJobCategory(JobRole.Tank)
+            && !Player.Object.IsJobCategory(JobRole.Melee) ) return;
 
         var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
             ? ActionUpdater.NextGCDAction.Target
@@ -139,7 +140,7 @@ internal static class OverlayWindow
         Vector3 pPosition = target.Position;
         Service.WorldToScreen(pPosition, out var scrPos);
 
-        float radius = target.HitboxRadius + Service.Player.HitboxRadius + 3;
+        float radius = target.HitboxRadius + Player.Object.HitboxRadius + 3;
         float rotation = target.Rotation;
 
         if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
@@ -159,7 +160,7 @@ internal static class OverlayWindow
 
         List<Vector2> pts = new(4 * COUNT);
         bool wrong = target.DistanceToPlayer() > 3;
-        if (Service.Config.DrawPositional && !Service.Player.HasStatus(true, StatusID.TrueNorth))
+        if (Service.Config.DrawPositional && !Player.Object.HasStatus(true, StatusID.TrueNorth))
         {
             var shouldPos = ActionUpdater.NextGCDAction?.EnemyPositional ?? EnemyPositional.None;
 

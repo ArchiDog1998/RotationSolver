@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -82,8 +83,8 @@ public static class DataCenter
     {
         get
         {
-            if (Service.Player == null) return 0;
-            var id = Service.Player.ClassJob.Id;
+            if (!Player.Available) return 0;
+            var id = Player.Object.ClassJob.Id;
             return GetTargetHostileType(Service.GetSheet<ClassJob>().GetRow(id));
         }
     }
@@ -125,7 +126,7 @@ public static class DataCenter
             {
                 if (Service.Config.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero
                     && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
-                    && Service.Player.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
+                    && Player.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
                 {
                     return FateManager.Instance()->CurrentFate->FateId;
                 }
@@ -255,7 +256,7 @@ public static class DataCenter
                         {
                             var tar = burstInfo.IsOnHostile 
                                 && Service.TargetManager.Target is BattleChara b ? b 
-                                : Service.Player;
+                                : Player.Object;
                             if (tar.HasStatus(false, burstInfo.Status)
                                 && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
                             {
@@ -356,7 +357,7 @@ public static class DataCenter
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
 
-                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player?.Level ?? 1) < 2)
+                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Player.Object?.Level ?? 1) < 2)
                 {
                     FetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
                 }

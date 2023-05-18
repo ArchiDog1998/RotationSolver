@@ -35,6 +35,8 @@
 	  <Using Include="RotationSolver.Basic.Rotations" />
 	  <Using Include="RotationSolver.Basic.Rotations.Basic" />
 
+	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+
 	  <None Include="..\COPYING.LESSER">
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>

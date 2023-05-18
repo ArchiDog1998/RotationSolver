@@ -1,4 +1,4 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using RotationSolver.Updaters;
 
@@ -8,8 +8,8 @@ internal partial class RotationConfigWindow
 {
     private void DrawDebugTab()
     {
-        if (Service.Player == null) return;
-        var str = SocialUpdater.EncryptString(Service.Player);
+        if (!Player.Available) return;
+        var str = SocialUpdater.EncryptString(Player.Object);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH", ref str, 100);
 
@@ -60,9 +60,9 @@ internal partial class RotationConfigWindow
         ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
         ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
 
-        foreach (var status in Service.Player.StatusList)
+        foreach (var status in Player.Object.StatusList)
         {
-            var source = status.SourceId == Service.Player.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
+            var source = status.SourceId == Player.Object.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
         }
     }
@@ -133,7 +133,7 @@ internal partial class RotationConfigWindow
 
             foreach (var status in b.StatusList)
             {
-                var source = status.SourceId == Service.Player.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
+                var source = status.SourceId == Player.Object.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
                 ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
         }

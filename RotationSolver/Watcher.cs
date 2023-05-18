@@ -4,6 +4,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Logging;
 using Dalamud.Plugin.Ipc;
 using Dalamud.Utility.Signatures;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -46,7 +47,7 @@ public class Watcher : IDisposable
     private static unsafe void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
 
-        if (Service.Player != null)
+        if (Player.Available)
         {
             try
             {
@@ -74,13 +75,13 @@ public class Watcher : IDisposable
         if (Service.ObjectTable.SearchById(battle.ObjectId) is PlayerCharacter) return;
 
         var damageRatio = set.TargetEffects
-            .Where(e => e.Target == Service.Player)
+            .Where(e => e.Target == Player.Object)
             .SelectMany(e => new ActionEffect[]
             {
                 e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]
             })
             .Where(e => e.Type == ActionEffectType.Damage)
-            .Sum(e => (float)e.Value / Service.Player.MaxHp);
+            .Sum(e => (float)e.Value / Player.Object.MaxHp);
 
         DataCenter.AddDamageRec(damageRatio);
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
@@ -109,7 +110,7 @@ public class Watcher : IDisposable
 
     private static void ActionFromSelf(uint sourceId, ActionEffectSet set, uint id)
     {
-        if (sourceId != Service.Player.ObjectId) return;
+        if (sourceId != Player.Object.ObjectId) return;
         if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
         if (set.Action == null) return;
         if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
@@ -133,7 +134,7 @@ public class Watcher : IDisposable
 
         DataCenter.HealHP = set.GetSpecificTypeEffect(ActionEffectType.Heal);
         DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
-        DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Service.Player.ObjectId).Sum(i => i.Value);
+        DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Player.Object.ObjectId).Sum(i => i.Value);
         DataCenter.EffectTime = DateTime.Now;
         DataCenter.EffectEndTime = DateTime.Now.AddSeconds(set.AnimationLock + 1);
 

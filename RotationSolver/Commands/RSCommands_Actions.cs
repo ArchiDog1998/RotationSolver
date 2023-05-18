@@ -1,6 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
-using Lumina.Excel.GeneratedSheets;
+using ECommons.GameHelpers;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
@@ -23,7 +23,7 @@ namespace RotationSolver.Commands
             }
             _lastState = DataCenter.StateType;
 
-            if (Service.Player == null) return;
+            if (!Player.Available) return;
 
             //Do not click the button in random time.
             if (DateTime.Now - _fastClickStopwatch < TimeSpan.FromMilliseconds(new Random().Next(
@@ -121,8 +121,8 @@ namespace RotationSolver.Commands
                 CancelState();
             }
             else if (Service.Config.AutoOffWhenDead 
-                && Service.Player != null 
-                && Service.Player.CurrentHp == 0)
+                && Player.Available
+                && Player.Object.CurrentHp == 0)
             {
                 CancelState();
             }

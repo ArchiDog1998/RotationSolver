@@ -8,12 +8,12 @@ public abstract partial class CustomRotation
     /// <summary>
     /// This is the player.
     /// </summary>
-    protected static PlayerCharacter Player => Service.Player;
+    protected static PlayerCharacter Player => ECommons.GameHelpers.Player.Object;
 
     /// <summary>
     /// The level of the player.
     /// </summary>
-    protected static byte Level => Player?.Level ?? 0;
+    protected static byte Level => (byte)ECommons.GameHelpers.Player.Level;
 
     /// <summary>
     /// Does player have swift cast, dual cast or triple cast.

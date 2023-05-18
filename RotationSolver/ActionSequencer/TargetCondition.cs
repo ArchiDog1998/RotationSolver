@@ -1,4 +1,5 @@
-﻿using RotationSolver.Localization;
+﻿using ECommons.GameHelpers;
+using RotationSolver.Localization;
 using RotationSolver.TextureItems;
 using RotationSolver.UI;
 
@@ -33,7 +34,7 @@ internal class TargetCondition : ICondition
 
     public bool IsTrue(ICustomRotation combo, bool isActionSequencer)
     {
-        if (Service.Player == null) return false;
+        if (!Player.Available) return false;
 
         BattleChara tar;
         if (_action != null)
@@ -44,8 +45,8 @@ internal class TargetCondition : ICondition
         }
         else
         {
-            tar = IsTarget ? Service.TargetManager.Target as BattleChara : Service.Player;
-            tar ??= Service.Player;
+            tar = IsTarget ? Service.TargetManager.Target as BattleChara : Player.Object;
+            tar ??= Player.Object;
         }
 
         if (tar == null) return false;

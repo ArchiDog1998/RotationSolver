@@ -1,4 +1,5 @@
 ﻿using Dalamud.Logging;
+using ECommons.GameHelpers;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -405,7 +406,7 @@ internal static class RotationUpdater
 
     public static void UpdateRotation()
     {
-        var nowJob = (ClassJobID)Service.Player.ClassJob.Id;
+        var nowJob = (ClassJobID)Player.Object.ClassJob.Id;
 
         foreach (var group in CustomRotations)
         {

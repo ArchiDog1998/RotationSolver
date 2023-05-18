@@ -48,14 +48,9 @@ public class Service : IDisposable
 
     public static float CountDownTime { get; private set; }
 
-    private static GetChatBoxModuleDelegate GetChatBox { get; set; }
 
     public Service()
     {
-        //https://github.com/BardMusicPlayer/Hypnotoad-Plugin/blob/develop/HypnotoadPlugin/Offsets/Offsets.cs#L18
-        GetChatBox = Marshal.GetDelegateForFunctionPointer<GetChatBoxModuleDelegate>(
-            SigScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9"));
-
         SignatureHelper.Initialise(this);
         Framework.Update += Framework_Update;
         _countdownTimerHook?.Enable();
@@ -129,7 +124,6 @@ public class Service : IDisposable
             .Where(ptr => ptr != IntPtr.Zero);
     }
 
-    public static PlayerCharacter Player => ClientState.LocalPlayer;
     [PluginService]
     public static ClientState ClientState { get; set; }
 
@@ -179,25 +173,4 @@ public class Service : IDisposable
 
     public static ClientLanguage Language => ClientState.ClientLanguage;
 
-
-    private delegate void GetChatBoxModuleDelegate(IntPtr uiModule, IntPtr message, IntPtr unused, byte a4);
-
-
-    /// <summary>
-    /// Submit text/command to outgoing chat.
-    /// Can be used to enter chat commands.
-    /// </summary>
-    /// <param name="text">Text to submit.</param>
-    public unsafe static void SubmitToChat(string text)
-    {
-        IntPtr uiModule = GameGui.GetUIModule();
-
-        using ChatPayload payload = new(text);
-        IntPtr mem1 = Marshal.AllocHGlobal(400);
-        Marshal.StructureToPtr(payload, mem1, false);
-
-        GetChatBox(uiModule, mem1, IntPtr.Zero, 0);
-
-        Marshal.FreeHGlobal(mem1);
-    }
 }

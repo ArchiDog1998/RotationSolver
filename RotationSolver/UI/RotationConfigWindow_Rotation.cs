@@ -1,6 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Utility;
-
+using ECommons.GameHelpers;
 using ImGuiNET;
 
 using RotationSolver.Data;
@@ -61,8 +61,8 @@ internal partial class RotationConfigWindow
             var group = rotations[i];
             var rotation = RotationUpdater.GetChosenRotation(group);
 
-            var canAddButton = Service.Player != null
-                && rotation.JobIDs.Contains((ClassJobID)Service.Player.ClassJob.Id);
+            var canAddButton = Player.Available
+                && rotation.JobIDs.Contains((ClassJobID)Player.Object.ClassJob.Id);
 
             rotation.Display(group.Rotations, canAddButton);
         }

@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -73,7 +74,7 @@ public partial class BaseAction
     /// <summary>
     /// 技能的最大层数
     /// </summary>
-    public unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(AdjustedID, Service.Player.Level), (ushort)1);
+    public unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(AdjustedID, (uint)Player.Level), (ushort)1);
     /// <summary>
     /// 是否起码有一层技能
     /// </summary>

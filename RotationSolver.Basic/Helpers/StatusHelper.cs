@@ -1,5 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Logging;
+using ECommons.Automation;
+using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Helpers;
@@ -127,8 +129,8 @@ public static class StatusHelper
 
     public static void StatusOff(StatusID status)
     {
-        if (!Service.Player?.HasStatus(false, status) ?? true) return;
-        Service.SubmitToChat($"/statusoff {GetStatusName(status)}");
+        if (!Player.Object?.HasStatus(false, status) ?? true) return;
+        Chat.Instance.SendMessage($"/statusoff {GetStatusName(status)}");
     }
 
     internal static string GetStatusName(StatusID id)
@@ -147,8 +149,8 @@ public static class StatusHelper
         if (obj == null) return Array.Empty<Status>();
 
         return obj.StatusList.Where(status => !isFromSelf 
-                                              || status.SourceId == Service.Player.ObjectId
-                                              || status.SourceObject?.OwnerId == Service.Player.ObjectId);
+                                              || status.SourceId == Player.Object.ObjectId
+                                              || status.SourceObject?.OwnerId == Player.Object.ObjectId);
     }
 
     public static bool IsInvincible(this Status status)

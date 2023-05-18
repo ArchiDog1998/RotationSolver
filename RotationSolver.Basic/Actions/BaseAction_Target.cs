@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace RotationSolver.Basic.Actions;
@@ -17,10 +18,10 @@ public partial class BaseAction
     /// <summary>
     /// The action's target.
     /// </summary>
-    public BattleChara Target { get; private set; } = Service.Player;
+    public BattleChara Target { get; private set; } = Player.Object;
 
     private Vector3 _position = default;
-    private uint _targetId = Service.Player?.ObjectId ?? 0;
+    private uint _targetId = Player.Object?.ObjectId ?? 0;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
 
@@ -47,7 +48,7 @@ public partial class BaseAction
         var tankHealth = id.GetHealthForDyingTank();
 
         return DataCenter.HasHostilesInRange
-            && Service.Player.GetHealthRatio() < tankHealth
+            && Player.Object.GetHealthRatio() < tankHealth
             && DataCenter.PartyMembersAverHP > tankHealth + 0.01f;
     }
 
@@ -55,8 +56,8 @@ public partial class BaseAction
     {
         int aoeCount = mustUse ? 1 : AOECount;
 
-        _position = Service.Player.Position;
-        var player = Service.Player;
+        _position = Player.Object.Position;
+        var player = Player.Object;
 
         float range = Range;
 
@@ -128,15 +129,15 @@ public partial class BaseAction
     {
         if (Service.Config.MoveAreaActionFarthest)
         {
-            Vector3 pPosition = Service.Player.Position;
-            float rotation = Service.Player.Rotation;
+            Vector3 pPosition = Player.Object.Position;
+            float rotation = Player.Object.Rotation;
             _position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
                 pPosition.Z + (float)Math.Cos(rotation) * range);
             return true;
         }
         else
         {
-            var availableCharas = DataCenter.AllTargets.Where(b => b.ObjectId != Service.Player.ObjectId);
+            var availableCharas = DataCenter.AllTargets.Where(b => b.ObjectId != Player.Object.ObjectId);
             var target = TargetFilter.GetObjectInRadius(availableCharas, range).FindTargetForMoving(mustUse);
             if (target == null) return false;
             _position = target.Position;
@@ -192,7 +193,7 @@ public partial class BaseAction
     private bool TargetPartyAndHostile(float range, bool mustUse, out BattleChara target)
     {
         var availableCharas = DataCenter.PartyMembers.Union(DataCenter.HostileTargets)
-            .Where(b => b.ObjectId != Service.Player.ObjectId);
+            .Where(b => b.ObjectId != Player.Object.ObjectId);
         availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range).Where(CanUseTo);
 
         target = ChoiceTarget(availableCharas, mustUse);
@@ -218,7 +219,7 @@ public partial class BaseAction
         }
         if (!_action.CanTargetSelf)
         {
-            availableCharas = availableCharas.Where(p => p.ObjectId != Service.Player.ObjectId);
+            availableCharas = availableCharas.Where(p => p.ObjectId != Player.Object.ObjectId);
         }
         if (!availableCharas.Any())
         {
@@ -412,7 +413,7 @@ public partial class BaseAction
         if (IsSingleTarget) return false;
         if (target.DistanceToPlayer() > Range) return false;
 
-        var pPos = Service.Player.Position;
+        var pPos = Player.Object.Position;
         Vector3 dir = target.Position - pPos;
         Vector3 tdir = subTarget.Position - pPos;
 

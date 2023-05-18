@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
@@ -48,8 +49,7 @@ internal class SocialUpdater
                 || Service.Conditions[ConditionFlag.BetweenAreas]
                 || Service.Conditions[ConditionFlag.BetweenAreas51]) return false;
 
-            if(Service.Player == null) return false;
-            if (!Service.Player.IsTargetable()) return false;
+            if (!Player.Interactable) return false;
 
             return Service.Conditions[ConditionFlag.BoundByDuty];
         }
@@ -100,8 +100,8 @@ internal class SocialUpdater
 
     static void DutyState_DutyStarted(object sender, ushort e)
     {
-        if(Service.Player == null) return;
-        if (!Service.Player.IsJobCategory(JobRole.Tank) && !Service.Player.IsJobCategory(JobRole.Healer)) return;
+        if (!Player.Available) return;
+        if (!Player.Object.IsJobCategory(JobRole.Tank) && !Player.Object.IsJobCategory(JobRole.Healer)) return;
 
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
         if (HighEndDuties.Any(t => t.RowId == territory.RowId))
@@ -135,7 +135,7 @@ internal class SocialUpdater
 
     static void DutyState_DutyWiped(object sender, ushort e)
     {
-        if (Service.Player == null) return;
+        if (!Player.Available) return;
         DataCenter.ResetAllLastActions();
     }
 

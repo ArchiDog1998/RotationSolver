@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 
@@ -111,10 +112,10 @@ public class BaseItem : IBaseItem
 
         if (InventoryManager.Instance()->GetInventoryItemCount(ID, true) > 0)
         {
-            return ActionManager.Instance()->UseAction(ActionType.Item, ID + 1000000, Service.Player.ObjectId, A4);
+            return ActionManager.Instance()->UseAction(ActionType.Item, ID + 1000000, Player.Object.ObjectId, A4);
         }
 
-        return ActionManager.Instance()->UseAction(ActionType.Item, ID, Service.Player.ObjectId, A4);
+        return ActionManager.Instance()->UseAction(ActionType.Item, ID, Player.Object.ObjectId, A4);
     }
 
     public override string ToString() => Name;
