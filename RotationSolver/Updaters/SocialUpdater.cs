@@ -3,6 +3,8 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
+using ECommons.Automation;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
@@ -108,7 +110,7 @@ internal class SocialUpdater
         {
             var message = string.Format(LocalizationManager.RightLang.HighEndWarning, GetDutyName(territory));
             
-            Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = new SeString(
                           new IconPayload(BitmapFontIcon.DPS),
@@ -155,7 +157,7 @@ internal class SocialUpdater
         {
             _canSaying = false;
 #if DEBUG
-            Service.ChatGui.Print("Macro now.");
+            Svc.Chat.Print("Macro now.");
 #endif
             Service.Config.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
@@ -187,7 +189,7 @@ internal class SocialUpdater
 #if DEBUG
 #else
             Service.TargetManager.SetTarget(c);
-            Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
+            Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
             var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
 
@@ -206,7 +208,7 @@ internal class SocialUpdater
 
                           new TextPayload(". So say hello to him/her!"));
 
-            Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = message,
                 Type = Dalamud.Game.Text.XivChatType.Notice,

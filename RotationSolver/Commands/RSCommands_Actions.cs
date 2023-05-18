@@ -43,7 +43,7 @@ namespace RotationSolver.Commands
 
 #if DEBUG
             //if (nextAction is BaseAction acti)
-            //    Service.ChatGui.Print($"Will Do {acti}");
+            //    Svc.Chat.Print($"Will Do {acti}");
 #endif
             if (DataCenter.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
@@ -69,7 +69,7 @@ namespace RotationSolver.Commands
 
                     if (act.ShouldEndSpecial) ResetSpecial();
 #if DEBUG
-                    //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
+                    //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
                     if (((Service.TargetManager.Target?.IsNPCEnemy() ?? true)

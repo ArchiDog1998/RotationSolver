@@ -261,7 +261,7 @@ internal static class RotationUpdater
     {
         foreach (var assembly in assemblies)
         {
-            Service.ChatGui.Print("Loaded: " + assembly);
+            Svc.Chat.Print("Loaded: " + assembly);
         }
     }
 

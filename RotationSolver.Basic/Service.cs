@@ -100,9 +100,6 @@ public class Service : IDisposable
     => ActionManager.Instance()->GetAdjustedActionId(id);
 
 
-    [PluginService]
-    public static ChatGui ChatGui { get; private set; }
-
     public unsafe static IEnumerable<IntPtr> GetAddons<T>() where T : struct
     {
         if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return Array.Empty<nint>();
