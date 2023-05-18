@@ -158,7 +158,7 @@ public abstract class SMN_Base : CustomRotation
 
     public static IBaseAction Fester { get; } = new BaseAction(ActionID.Fester)
     {
-        ActionCheck = EnergyDrain.ActionCheck,
+        ActionCheck = (b, m) => HasAetherflowStacks
     };
 
     public static IBaseAction EnergySiphon { get; } = new BaseAction(ActionID.EnergySiphon)
