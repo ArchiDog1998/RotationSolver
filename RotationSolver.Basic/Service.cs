@@ -118,9 +118,6 @@ public class Service : IDisposable
     private static DataManager DataManager { get; set; }
 
     [PluginService]
-    public static ObjectTable ObjectTable { get; private set; }
-
-    [PluginService]
     public static TargetManager TargetManager { get; private set; }
 
     [PluginService]

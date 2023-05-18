@@ -177,7 +177,7 @@ public static class TargetFilter
             && (target.TargetObject?.IsValid() ?? false))
             {
                 //the target is not a tank role
-                if (Service.ObjectTable.SearchById(target.TargetObjectId) is BattleChara battle 
+                if (Svc.Objects.SearchById(target.TargetObjectId) is BattleChara battle 
                     && !battle.IsJobCategory(JobRole.Tank)
                     && (!needDistance || Vector3.Distance(target.Position, loc) > 5))
                 {

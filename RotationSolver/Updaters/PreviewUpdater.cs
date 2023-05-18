@@ -63,7 +63,7 @@ internal static class PreviewUpdater
     (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
     internal static void UpdateCastBarState()
     {
-        var tardead = Service.Config.UseStopCasting && Service.ObjectTable.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
+        var tardead = Service.Config.UseStopCasting && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
             && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0);
         _isTarNoNeedCast = _tarStopCastDelay.Delay(tardead);
 

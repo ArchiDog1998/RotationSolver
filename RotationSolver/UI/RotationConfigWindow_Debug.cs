@@ -63,7 +63,7 @@ internal partial class RotationConfigWindow
 
         foreach (var status in Player.Object.StatusList)
         {
-            var source = status.SourceId == Player.Object.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
+            var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
         }
     }
@@ -100,7 +100,7 @@ internal partial class RotationConfigWindow
         {
             ImGui.Text("Kind: " + Service.TargetManager.Target.GetObjectKind().ToString());
             ImGui.Text("SubKind: " + Service.TargetManager.Target.GetBattleNPCSubKind().ToString());
-            var owner = Service.ObjectTable.SearchById(Service.TargetManager.Target.OwnerId);
+            var owner = Svc.Objects.SearchById(Service.TargetManager.Target.OwnerId);
             if(owner != null)
             {
                 ImGui.Text("Owner: " + owner.Name.ToString());
@@ -134,7 +134,7 @@ internal partial class RotationConfigWindow
 
             foreach (var status in b.StatusList)
             {
-                var source = status.SourceId == Player.Object.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
+                var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
                 ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
         }

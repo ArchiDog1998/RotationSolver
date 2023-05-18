@@ -72,7 +72,7 @@ public abstract class SGE_Base : CustomRotation
 
             return TargetFilter.FindAttackedTarget(targets, mustUse);
         },
-        ActionCheck = (b, m) => Service.ObjectTable.OfType<BattleChara>()
+        ActionCheck = (b, m) => Svc.Objects.OfType<BattleChara>()
             .Where(o => o.CurrentHp > 0)
             .All(o => !o.HasStatus(true, StatusID.Kardion)),
     };

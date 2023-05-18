@@ -1,4 +1,5 @@
-﻿using ECommons.GameHelpers;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace RotationSolver.Basic.Actions;
@@ -149,7 +150,7 @@ public partial class BaseAction
         {
             return ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Player.Object.ObjectId, &loc);
         }
-        else if(Service.ObjectTable.SearchById(_targetId) == null)
+        else if(Svc.Objects.SearchById(_targetId) == null)
         {
             return false;
         }

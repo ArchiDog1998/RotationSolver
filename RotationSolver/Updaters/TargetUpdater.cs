@@ -3,7 +3,6 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using System.Text.RegularExpressions;
@@ -15,11 +14,11 @@ internal static partial class TargetUpdater
 {
     internal static void UpdateTarget()
     {
-        DataCenter.AllTargets = Service.ObjectTable.GetObjectInRadius(30);
+        DataCenter.AllTargets = Svc.Objects.GetObjectInRadius(30);
         var battles = DataCenter.AllTargets.OfType<BattleChara>();
         UpdateHostileTargets(battles);
         UpdateFriends(battles);
-        UpdateNamePlate(Service.ObjectTable.OfType<BattleChara>());
+        UpdateNamePlate(Svc.Objects.OfType<BattleChara>());
     }
 
     internal static void ClearTarget()

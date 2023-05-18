@@ -68,12 +68,12 @@ public class Watcher : IDisposable
     private static void ActionFromEnemy(uint sourceId, ActionEffectSet set)
     {
         //Check Source.
-        var source = Service.ObjectTable.SearchById(sourceId);
+        var source = Svc.Objects.SearchById(sourceId);
         if (source == null) return;
         if (source is not BattleChara battle) return;
         if (battle is PlayerCharacter) return;
         if (battle.SubKind == 9) return; //Friend!
-        if (Service.ObjectTable.SearchById(battle.ObjectId) is PlayerCharacter) return;
+        if (Svc.Objects.SearchById(battle.ObjectId) is PlayerCharacter) return;
 
         var damageRatio = set.TargetEffects
             .Where(e => e.Target == Player.Object)
