@@ -130,16 +130,16 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     {
         var isValid = validDelay.Delay(MajorUpdater.IsValid
         && (!Service.Config.OnlyShowWithHostileOrInDuty
-                || Service.Conditions[ConditionFlag.BoundByDuty]
+                || Svc.Condition[ConditionFlag.BoundByDuty]
                 || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
             && RotationUpdater.RightNowRotation != null
-            && !Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
-            && !Service.Conditions[ConditionFlag.Occupied38] //Treasure hunt.
-            && !Service.Conditions[ConditionFlag.BetweenAreas]
-            && !Service.Conditions[ConditionFlag.BetweenAreas51]
-            && !Service.Conditions[ConditionFlag.WaitingForDuty]
-            && !Service.Conditions[ConditionFlag.UsingParasol]
-            && !Service.Conditions[ConditionFlag.OccupiedInQuestEvent]);
+            && !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
+            && !Svc.Condition[ConditionFlag.Occupied38] //Treasure hunt.
+            && !Svc.Condition[ConditionFlag.BetweenAreas]
+            && !Svc.Condition[ConditionFlag.BetweenAreas51]
+            && !Svc.Condition[ConditionFlag.WaitingForDuty]
+            && !Svc.Condition[ConditionFlag.UsingParasol]
+            && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
         _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;

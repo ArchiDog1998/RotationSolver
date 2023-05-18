@@ -2,6 +2,7 @@
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
@@ -66,8 +67,8 @@ internal static class PreviewUpdater
             && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0);
         _isTarNoNeedCast = _tarStopCastDelay.Delay(tardead);
 
-        bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
-            && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
+        bool canMove = !Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
+            && !Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
         //For lock
         var specialStatus = Player.Object.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);

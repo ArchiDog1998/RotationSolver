@@ -117,10 +117,6 @@ public class Service : IDisposable
     [PluginService]
     private static DataManager DataManager { get; set; }
 
-
-    [PluginService]
-    public static Condition Conditions { get; private set; }
-
     [PluginService]
     internal static JobGauges JobGauges { get; private set; }
 

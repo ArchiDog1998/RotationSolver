@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
+using ECommons.DalamudServices;
 
 namespace RotationSolver.Updaters;
 
@@ -27,7 +28,7 @@ internal class MovingController : IDisposable
 
     private static bool MovingDetour(IntPtr ptr)
     {
-        if (Service.Conditions[ConditionFlag.OccupiedInEvent])
+        if (Svc.Condition[ConditionFlag.OccupiedInEvent])
             return movingHook.Original(ptr);
 
         if (Service.Config.PoslockCasting && _posLocker && DataCenter.InCombat)

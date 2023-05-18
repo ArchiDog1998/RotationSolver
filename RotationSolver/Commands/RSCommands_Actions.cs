@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -116,7 +117,7 @@ namespace RotationSolver.Commands
         static float _lastCountdownTime = 0;
         internal static void UpdateRotationState()
         {
-            if (Service.Conditions[ConditionFlag.LoggingOut])
+            if (Svc.Condition[ConditionFlag.LoggingOut])
             {
                 CancelState();
             }
@@ -127,13 +128,13 @@ namespace RotationSolver.Commands
                 CancelState();
             }
             else if (Service.Config.AutoOffCutScene
-                && Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent])
+                && Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent])
             {
                 CancelState();
             }
             else if (Service.Config.AutoOffBetweenArea && (
-                Service.Conditions[ConditionFlag.BetweenAreas]
-                || Service.Conditions[ConditionFlag.BetweenAreas51]))
+                Svc.Condition[ConditionFlag.BetweenAreas]
+                || Svc.Condition[ConditionFlag.BetweenAreas51]))
             {
                 CancelState();
             }

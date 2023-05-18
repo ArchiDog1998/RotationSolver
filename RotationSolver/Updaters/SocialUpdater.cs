@@ -44,16 +44,16 @@ internal class SocialUpdater
     {
         get
         {
-            if (Service.Conditions[ConditionFlag.OccupiedInQuestEvent]
-                || Service.Conditions[ConditionFlag.WaitingForDuty]
-                || Service.Conditions[ConditionFlag.WaitingForDutyFinder]
-                || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
-                || Service.Conditions[ConditionFlag.BetweenAreas]
-                || Service.Conditions[ConditionFlag.BetweenAreas51]) return false;
+            if (Svc.Condition[ConditionFlag.OccupiedInQuestEvent]
+                || Svc.Condition[ConditionFlag.WaitingForDuty]
+                || Svc.Condition[ConditionFlag.WaitingForDutyFinder]
+                || Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
+                || Svc.Condition[ConditionFlag.BetweenAreas]
+                || Svc.Condition[ConditionFlag.BetweenAreas51]) return false;
 
             if (!Player.Interactable) return false;
 
-            return Service.Conditions[ConditionFlag.BoundByDuty];
+            return Svc.Condition[ConditionFlag.BoundByDuty];
         }
     }
 

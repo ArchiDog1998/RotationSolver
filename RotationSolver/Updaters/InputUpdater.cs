@@ -19,16 +19,16 @@ internal static class InputUpdater
 
     internal static unsafe void UpdateCommand()
     {
-        if (Service.Conditions[ConditionFlag.OccupiedInQuestEvent]
-            || Service.Conditions[ConditionFlag.Occupied33]
-            || Service.Conditions[ConditionFlag.Occupied38]
-            || Service.Conditions[ConditionFlag.BetweenAreas]
-            || Service.Conditions[ConditionFlag.BetweenAreas51]
-            || Service.Conditions[ConditionFlag.Mounted]
-            || Service.Conditions[ConditionFlag.SufferingStatusAffliction2]
-            || Service.Conditions[ConditionFlag.RolePlaying]
-            || Service.Conditions[ConditionFlag.UsingParasol]
-            || Service.Conditions[ConditionFlag.InFlight]) return;
+        if (Svc.Condition[ConditionFlag.OccupiedInQuestEvent]
+            || Svc.Condition[ConditionFlag.Occupied33]
+            || Svc.Condition[ConditionFlag.Occupied38]
+            || Svc.Condition[ConditionFlag.BetweenAreas]
+            || Svc.Condition[ConditionFlag.BetweenAreas51]
+            || Svc.Condition[ConditionFlag.Mounted]
+            || Svc.Condition[ConditionFlag.SufferingStatusAffliction2]
+            || Svc.Condition[ConditionFlag.RolePlaying]
+            || Svc.Condition[ConditionFlag.UsingParasol]
+            || Svc.Condition[ConditionFlag.InFlight]) return;
 
         if (DateTime.Now - RecordingTime > TimeSpan.FromSeconds(10))
         {
