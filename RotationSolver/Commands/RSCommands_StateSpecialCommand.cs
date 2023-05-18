@@ -1,4 +1,5 @@
-﻿using ECommons.GameHelpers;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using RotationSolver.Localization;
 
 namespace RotationSolver.Commands;
@@ -13,7 +14,7 @@ public static partial class RSCommands
     {
         if (!Service.Config.ShowInfoOnToast) return;
 
-        Service.ToastGui.ShowQuest(" " + EntryString, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+        Svc.Toasts.ShowQuest(" " + EntryString, new Dalamud.Game.Gui.Toast.QuestToastOptions()
         {
             IconId = 101,
         });

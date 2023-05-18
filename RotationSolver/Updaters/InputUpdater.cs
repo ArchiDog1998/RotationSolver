@@ -37,20 +37,21 @@ internal static class InputUpdater
             RecordingDoAction = false;
         }
 
-        foreach (var key in Service.KeyState.GetValidVirtualKeys())
+        
+        foreach (var key in Svc.KeyState.GetValidVirtualKeys())
         {
             if (key is VirtualKey.CONTROL) continue;
             if (key is VirtualKey.MENU) continue;
             if (key is VirtualKey.SHIFT) continue;
 
-            var value = Service.KeyState[key];
+            var value = Svc.KeyState[key];
 
             if (_keys.ContainsKey(key))
             {
                 if (!_keys[key] && value)
                 {
-                    KeyDown(new KeyRecord(key, Service.KeyState[VirtualKey.CONTROL], 
-                        Service.KeyState[VirtualKey.MENU], Service.KeyState[VirtualKey.SHIFT]));
+                    KeyDown(new KeyRecord(key, Svc.KeyState[VirtualKey.CONTROL], 
+                        Svc.KeyState[VirtualKey.MENU], Svc.KeyState[VirtualKey.SHIFT]));
                 }
             }
             _keys[key] = value;
@@ -61,15 +62,15 @@ internal static class InputUpdater
             if (button is GamepadButtons.L2) continue;
             if (button is GamepadButtons.R2) continue;
 
-
-            var value = Service.GamepadState.Raw(button) > 0.5f;
+            
+            var value = Svc.GamepadState.Raw(button) > 0.5f;
             if (_buttons.ContainsKey(button))
             {
                 if (!_buttons[button] && value)
                 {
                     ButtonDown(new ButtonRecord(button,
-                        Service.GamepadState.Raw(GamepadButtons.L2) > 0.5f, 
-                        Service.GamepadState.Raw(GamepadButtons.R2) > 0.5f));
+                        Svc.GamepadState.Raw(GamepadButtons.L2) > 0.5f, 
+                        Svc.GamepadState.Raw(GamepadButtons.R2) > 0.5f));
                 }
             }
             _buttons[button] = value;
@@ -88,7 +89,7 @@ internal static class InputUpdater
         if (RecordingSpecialType != SpecialCommandType.None)
         {
             OtherConfiguration.InputConfig.KeySpecial[RecordingSpecialType] = key;
-            Service.ToastGui.ShowQuest($"{RecordingSpecialType}: {key.ToStr()}",
+            Svc.Toasts.ShowQuest($"{RecordingSpecialType}: {key.ToStr()}",
                QUEST);
 
             RecordingSpecialType = SpecialCommandType.None;
@@ -98,7 +99,7 @@ internal static class InputUpdater
         else if (RecordingStateType != StateCommandType.None )
         {
             OtherConfiguration.InputConfig.KeyState[RecordingStateType] = key;
-            Service.ToastGui.ShowQuest($"{RecordingStateType}: {key.ToStr()}",
+            Svc.Toasts.ShowQuest($"{RecordingStateType}: {key.ToStr()}",
                 QUEST);
 
             RecordingStateType = StateCommandType.None;
@@ -108,7 +109,7 @@ internal static class InputUpdater
         else if (RecordingDoAction)
         {
             OtherConfiguration.InputConfig.KeyDoAction = key;
-            Service.ToastGui.ShowQuest($"Do Action: {key.ToStr()}", QUEST);
+            Svc.Toasts.ShowQuest($"Do Action: {key.ToStr()}", QUEST);
             RecordingDoAction = false;
             OtherConfiguration.SaveInputConfig();
             return;
@@ -137,7 +138,7 @@ internal static class InputUpdater
         if (RecordingSpecialType != SpecialCommandType.None)
         {
             OtherConfiguration.InputConfig.ButtonSpecial[RecordingSpecialType] = button;
-            Service.ToastGui.ShowQuest($"{RecordingSpecialType}: {button.ToStr()}",
+            Svc.Toasts.ShowQuest($"{RecordingSpecialType}: {button.ToStr()}",
                 QUEST);
 
             RecordingSpecialType = SpecialCommandType.None;
@@ -147,7 +148,7 @@ internal static class InputUpdater
         else if (RecordingStateType != StateCommandType.None)
         {
             OtherConfiguration.InputConfig.ButtonState[RecordingStateType] = button;
-            Service.ToastGui.ShowQuest($"{RecordingStateType}: {button.ToStr()}",
+            Svc.Toasts.ShowQuest($"{RecordingStateType}: {button.ToStr()}",
                 QUEST);
 
             RecordingStateType = StateCommandType.None;
@@ -157,7 +158,7 @@ internal static class InputUpdater
         else if (RecordingDoAction)
         {
             OtherConfiguration.InputConfig.ButtonDoAction = button;
-            Service.ToastGui.ShowQuest($"Do Action: {button.ToStr()}", QUEST);
+            Svc.Toasts.ShowQuest($"Do Action: {button.ToStr()}", QUEST);
             RecordingDoAction = false;
             OtherConfiguration.SaveInputConfig();
             return;

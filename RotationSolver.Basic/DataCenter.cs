@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
@@ -255,7 +256,7 @@ public static class DataCenter
                         if (member.Level >= burstInfo.Level)
                         {
                             var tar = burstInfo.IsOnHostile 
-                                && Service.TargetManager.Target is BattleChara b ? b 
+                                && Svc.Targets.Target is BattleChara b ? b 
                                 : Player.Object;
                             if (tar.HasStatus(false, burstInfo.Status)
                                 && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))

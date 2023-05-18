@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 
@@ -91,7 +92,7 @@ public partial class BaseAction
         }
         else
         {
-            target = Service.TargetManager.Target is BattleChara battle ? battle : player;
+            target = Svc.Targets.Target is BattleChara battle ? battle : player;
             return true;
         }
     }
@@ -150,11 +151,11 @@ public partial class BaseAction
         //如果用户不想使用自动友方地面放置功能
         if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
 
-        if (Service.Config.BeneficialAreaOnTarget && Service.TargetManager.Target != null)
+        if (Service.Config.BeneficialAreaOnTarget && Svc.Targets.Target != null)
         {
-            _position = Service.TargetManager.Target.Position;
+            _position = Svc.Targets.Target.Position;
         }
-        else if (Service.TargetManager.Target is BattleChara b && b.DistanceToPlayer() < range && 
+        else if (Svc.Targets.Target is BattleChara b && b.DistanceToPlayer() < range && 
             b.IsBoss() && b.HasPositional() && b.HitboxRadius <= 8)
         {
             _position = b.Position;
@@ -262,7 +263,7 @@ public partial class BaseAction
         //如果不用自动找目标，那就直接返回。
         if (DataCenter.StateType == StateCommandType.Manual)
         {
-            if (Service.TargetManager.Target is BattleChara b && b.IsNPCEnemy() && b.DistanceToPlayer() <= range)
+            if (Svc.Targets.Target is BattleChara b && b.IsNPCEnemy() && b.DistanceToPlayer() <= range)
             {
                 return TargetHostileManual(b, mustUse, aoeCount, out target);
             }

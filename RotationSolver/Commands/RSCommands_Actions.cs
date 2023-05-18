@@ -50,7 +50,7 @@ namespace RotationSolver.Commands
             {
                 if ((_loop %= 5) == 0)
                 {
-                    Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
+                    Svc.Toasts.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
                 }
                 _loop++;
                 return;
@@ -73,11 +73,11 @@ namespace RotationSolver.Commands
                     //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (((Service.TargetManager.Target?.IsNPCEnemy() ?? true)
-                        || Service.TargetManager.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
+                    if (((Svc.Targets.Target?.IsNPCEnemy() ?? true)
+                        || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
                         && (act.Target?.IsNPCEnemy() ?? false))
                     {
-                        Service.TargetManager.SetTarget(act.Target);
+                        Svc.Targets.SetTarget(act.Target);
                     }
                 }
 

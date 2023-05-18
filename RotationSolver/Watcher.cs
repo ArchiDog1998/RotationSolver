@@ -148,7 +148,7 @@ public class Watcher : IDisposable
 
         if (flag != 0 && Service.Config.ShowActionFlag)
         {
-            Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
+            Svc.FlyText.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
             ImGui.GetColorU32(ImGuiColors.DPSRed), 0, action.Icon);
         }
 
@@ -157,7 +157,7 @@ public class Watcher : IDisposable
             && ConfigurationHelper.ActionPositional.TryGetValue((ActionID)action.RowId, out var pos)
             && pos.Tags.Length > 0 && !pos.Tags.Contains(flag))
         {
-            Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, pos.Pos.ToName(), "",
+            Svc.FlyText.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, pos.Pos.ToName(), "",
                 ImGui.GetColorU32(ImGuiColors.DPSRed), 94662, action.Icon);
             if (!string.IsNullOrEmpty(Service.Config.PositionalErrorText))
             {

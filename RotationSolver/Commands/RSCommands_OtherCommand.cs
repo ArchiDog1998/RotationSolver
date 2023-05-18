@@ -54,7 +54,7 @@ namespace RotationSolver.Commands
                 {
                     act.IsEnabled = !act.IsEnabled;
 
-                    //Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
+                    //Svc.Toasts.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
                     //    new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     //    {
                     //        IconId = act.IconID,
@@ -81,7 +81,7 @@ namespace RotationSolver.Commands
                     {
                         DataCenter.AddCommandAction(iAct, time);
 
-                        Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
+                        Svc.Toasts.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
                             new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = iAct.IconID,

@@ -96,17 +96,17 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawTargetData()
     {
-        if(Service.TargetManager.Target != null)
+        if(Svc.Targets.Target != null)
         {
-            ImGui.Text("Kind: " + Service.TargetManager.Target.GetObjectKind().ToString());
-            ImGui.Text("SubKind: " + Service.TargetManager.Target.GetBattleNPCSubKind().ToString());
-            var owner = Svc.Objects.SearchById(Service.TargetManager.Target.OwnerId);
+            ImGui.Text("Kind: " + Svc.Targets.Target.GetObjectKind().ToString());
+            ImGui.Text("SubKind: " + Svc.Targets.Target.GetBattleNPCSubKind().ToString());
+            var owner = Svc.Objects.SearchById(Svc.Targets.Target.OwnerId);
             if(owner != null)
             {
                 ImGui.Text("Owner: " + owner.Name.ToString());
             }
         }
-        if (Service.TargetManager.Target is BattleChara b)
+        if (Svc.Targets.Target is BattleChara b)
         {
             ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
             ImGui.Text("Is Boss: " + b.IsBoss().ToString());

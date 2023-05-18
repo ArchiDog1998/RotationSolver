@@ -42,7 +42,7 @@ internal static class MajorUpdater
                 bool newValue = Svc.Condition[(ConditionFlag)indexs[i]];
                 if (_values.TryGetValue(i, out bool value) && value != newValue && indexs[i] != 48 && indexs[i] != 27)
                 {
-                    //Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
+                    //Svc.Toasts.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
                 }
                 _values[i] = newValue;
             }
@@ -86,7 +86,7 @@ internal static class MajorUpdater
 
     public static void Enable()
     {
-        Service.Framework.Update += FrameworkUpdate;
+        Svc.Framework.Update += FrameworkUpdate;
         ActionSequencerUpdater.Enable(Svc.PluginInterface.ConfigDirectory.FullName + "\\Conditions");
 
         SocialUpdater.Enable();
@@ -131,7 +131,7 @@ internal static class MajorUpdater
 
     public static void Dispose()
     {
-        Service.Framework.Update -= FrameworkUpdate;
+        Svc.Framework.Update -= FrameworkUpdate;
         PreviewUpdater.Dispose();
         ActionSequencerUpdater.SaveFiles();
         SocialUpdater.Disable();

@@ -129,8 +129,8 @@ internal static class OverlayWindow
 
         var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
             ? ActionUpdater.NextGCDAction.Target
-            : Service.TargetManager.Target?.IsNPCEnemy() ?? false
-            ? Service.TargetManager.Target
+            : Svc.Targets.Target?.IsNPCEnemy() ?? false
+            ? Svc.Targets.Target
             : null;
 
         if(target == null) return;

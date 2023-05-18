@@ -42,7 +42,7 @@ internal static class ActionUpdater
                         {
                             string positional = GcdAction.EnemyPositional.ToName();
                             if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
-                            if (Service.Config.ToastPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                            if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = GcdAction.IconID,
                             });

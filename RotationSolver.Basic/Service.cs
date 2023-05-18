@@ -1,28 +1,13 @@
 ﻿using Dalamud;
-using Dalamud.Data;
 using Dalamud.Game;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.GamePad;
-using Dalamud.Game.ClientState.JobGauge;
-using Dalamud.Game.ClientState.Keys;
-using Dalamud.Game.ClientState.Objects;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Party;
-using Dalamud.Game.Command;
 using Dalamud.Game.DutyState;
-using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
-using Dalamud.Game.Gui.FlyText;
-using Dalamud.Game.Gui.Toast;
 using Dalamud.Hooking;
 using Dalamud.IoC;
-using Dalamud.Plugin;
 using Dalamud.Utility.Signatures;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.Attributes;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiScene;
 using Lumina.Excel;
 using RotationSolver.Basic.Configuration;
@@ -53,7 +38,7 @@ public class Service : IDisposable
     public Service()
     {
         SignatureHelper.Initialise(this);
-        Framework.Update += Framework_Update;
+        Svc.Framework.Update += Framework_Update;
         _countdownTimerHook?.Enable();
     }
 
@@ -86,7 +71,7 @@ public class Service : IDisposable
         if (disposing)
         {
             _countdownTimerHook?.Dispose();
-            Framework.Update -= Framework_Update;
+            Svc.Framework.Update -= Framework_Update;
         }
         _disposed = true;
     }
@@ -109,27 +94,13 @@ public class Service : IDisposable
             .Where(ptr => ptr != IntPtr.Zero);
     }
 
-    public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => DataManager.GetExcelSheet<T>();
+    public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => Svc.Data.GetExcelSheet<T>();
 
-    internal static TextureWrap GetTextureIcon(uint id) => DataManager.GetImGuiTextureIcon(id);
-    internal static TextureWrap GetTexture(string path) => DataManager.GetImGuiTexture(path);
-
-    [PluginService]
-    private static DataManager DataManager { get; set; }
+    internal static TextureWrap GetTextureIcon(uint id) => Svc.Data.GetImGuiTextureIcon(id);
+    internal static TextureWrap GetTexture(string path) => Svc.Data.GetImGuiTexture(path);
 
     [PluginService]
-    public static TargetManager TargetManager { get; private set; }
-
-    [PluginService]
-    public static ToastGui ToastGui { get; private set; }
-    [PluginService]
-    public static FlyTextGui FlyTextGui { get; private set; }
-    [PluginService]
-    public static KeyState KeyState { get; private set; }
-    [PluginService]
-    public static GamepadState GamepadState { get; private set; }
-    [PluginService]
-    public static Framework Framework { get; private set; }
+    public static DtrBar DtrBar { get; private set; }
 
     [PluginService]
     public static DutyState DutyState { get; private set; }

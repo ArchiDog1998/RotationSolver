@@ -1,5 +1,6 @@
 ﻿using Dalamud;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -74,7 +75,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// The player's target.
     /// </summary>
-    protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : Player;
+    protected static BattleChara Target => Svc.Targets.Target is BattleChara b ? b : Player;
 
     /// <summary>
     /// Shortcut for Target.IsDying();

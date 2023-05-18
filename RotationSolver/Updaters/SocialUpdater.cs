@@ -129,7 +129,7 @@ internal class SocialUpdater
                 for (int i = 0; i < 3; i++)
                 {
                     await Task.Delay(3000);
-                    Service.ToastGui.ShowError(message);
+                    Svc.Toasts.ShowError(message);
                 }
             });
         }
@@ -188,7 +188,7 @@ internal class SocialUpdater
 
 #if DEBUG
 #else
-            Service.TargetManager.SetTarget(c);
+            Svc.Targets.SetTarget(c);
             Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
             var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
@@ -216,7 +216,7 @@ internal class SocialUpdater
             UIModule.PlaySound(20, 0, 0, 0);
 
             await Task.Delay(new Random().Next(800, 1200));
-            Service.TargetManager.SetTarget(null);
+            Svc.Targets.SetTarget(null);
             await Task.Delay(new Random().Next(800, 1200));
         }
     }

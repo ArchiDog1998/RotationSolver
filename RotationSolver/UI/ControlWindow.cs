@@ -362,7 +362,7 @@ internal class ControlWindow : Window
             {
                 InputUpdater.RecordingTime = DateTime.Now;
                 InputUpdater.RecordingSpecialType = command;
-                Service.ToastGui.ShowQuest($"Recording: {command}",
+                Svc.Toasts.ShowQuest($"Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -375,7 +375,7 @@ internal class ControlWindow : Window
                 OtherConfiguration.InputConfig.ButtonSpecial.Remove(command);
                 OtherConfiguration.SaveInputConfig();
 
-                Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                Svc.Toasts.ShowQuest($"Clear Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -401,7 +401,7 @@ internal class ControlWindow : Window
             {
                 InputUpdater.RecordingTime = DateTime.Now;
                 InputUpdater.RecordingStateType = command;
-                Service.ToastGui.ShowQuest($"Recording: {command}",
+                Svc.Toasts.ShowQuest($"Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -414,7 +414,7 @@ internal class ControlWindow : Window
                 OtherConfiguration.InputConfig.ButtonState.Remove(command);
                 OtherConfiguration.SaveInputConfig();
 
-                Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                Svc.Toasts.ShowQuest($"Clear Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -576,7 +576,7 @@ internal class ControlWindow : Window
             {
                 InputUpdater.RecordingTime = DateTime.Now;
                 InputUpdater.RecordingDoAction = true;
-                Service.ToastGui.ShowQuest($"Recording: Do Action",
+                Svc.Toasts.ShowQuest($"Recording: Do Action",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -589,7 +589,7 @@ internal class ControlWindow : Window
                 OtherConfiguration.InputConfig.ButtonDoAction = null;
                 OtherConfiguration.SaveInputConfig();
 
-                Service.ToastGui.ShowQuest($"Clear Recording: Do Action",
+                Svc.Toasts.ShowQuest($"Clear Recording: Do Action",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,

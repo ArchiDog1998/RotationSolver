@@ -34,9 +34,9 @@ internal class MovingController : IDisposable
         if (Service.Config.PoslockCasting && _posLocker && DataCenter.InCombat)
         {
             //没有键盘取消
-            if (!Service.KeyState[ConfigurationHelper.Keys[Service.Config.PoslockModifier]]
+            if (!Svc.KeyState[ConfigurationHelper.Keys[Service.Config.PoslockModifier]]
               //也没有手柄取消
-              && Service.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) <= 0.5f) return false;
+              && Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) <= 0.5f) return false;
         }
         return movingHook.Original(ptr);
     }

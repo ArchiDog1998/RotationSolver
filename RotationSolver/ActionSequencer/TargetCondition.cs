@@ -1,4 +1,5 @@
-﻿using ECommons.GameHelpers;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using RotationSolver.Localization;
 using RotationSolver.TextureItems;
 using RotationSolver.UI;
@@ -45,7 +46,7 @@ internal class TargetCondition : ICondition
         }
         else
         {
-            tar = IsTarget ? Service.TargetManager.Target as BattleChara : Player.Object;
+            tar = IsTarget ? Svc.Targets.Target as BattleChara : Player.Object;
             tar ??= Player.Object;
         }
 
