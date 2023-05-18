@@ -308,7 +308,7 @@ internal static partial class TargetUpdater
 
     private static IEnumerable<BattleChara> GetPartyMembers(IEnumerable<BattleChara> allTargets)
     {
-        var party = Service.PartyList.Select(p => p.GameObject).OfType<BattleChara>().Where(b => b.DistanceToPlayer() <= 30);
+        var party = Svc.Party.Select(p => p.GameObject).OfType<BattleChara>().Where(b => b.DistanceToPlayer() <= 30);
 
         if (!party.Any()) party = new BattleChara[] { Player.Object };
 

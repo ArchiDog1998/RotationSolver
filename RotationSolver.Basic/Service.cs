@@ -121,12 +121,6 @@ public class Service : IDisposable
     public static TargetManager TargetManager { get; private set; }
 
     [PluginService]
-    public static PartyList PartyList { get; private set; }
-
-    [PluginService]
-    public static DtrBar DtrBar { get; private set; }
-
-    [PluginService]
     public static ToastGui ToastGui { get; private set; }
     [PluginService]
     public static FlyTextGui FlyTextGui { get; private set; }
