@@ -109,9 +109,6 @@ public class Service : IDisposable
             .Where(ptr => ptr != IntPtr.Zero);
     }
 
-    [PluginService]
-    public static ClientState ClientState { get; set; }
-
     public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => DataManager.GetExcelSheet<T>();
 
     internal static TextureWrap GetTextureIcon(uint id) => DataManager.GetImGuiTextureIcon(id);
@@ -156,6 +153,6 @@ public class Service : IDisposable
     [PluginService]
     public static DutyState DutyState { get; private set; }
 
-    public static ClientLanguage Language => ClientState.ClientLanguage;
+    public static ClientLanguage Language => Svc.ClientState.ClientLanguage;
 
 }

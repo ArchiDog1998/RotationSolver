@@ -62,7 +62,7 @@ internal class SocialUpdater
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
         Service.DutyState.DutyWiped += DutyState_DutyWiped;
         Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
-        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
+        Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
         HighEndDuties = Service.GetSheet<TerritoryType>()
             .Where(t => t?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
@@ -146,7 +146,7 @@ internal class SocialUpdater
         Service.DutyState.DutyStarted -= DutyState_DutyStarted;
         Service.DutyState.DutyWiped -= DutyState_DutyWiped;
         Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
-        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+        Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
     static RandomDelay socialDelay = new(() => (3, 5));

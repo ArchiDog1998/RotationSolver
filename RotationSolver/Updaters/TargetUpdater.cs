@@ -121,7 +121,7 @@ internal static partial class TargetUpdater
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
             IEnumerable<string> names = Array.Empty<string>();
-            if(OtherConfiguration.NoHostileNames.TryGetValue(Service.ClientState.TerritoryType, out var ns1))
+            if(OtherConfiguration.NoHostileNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
                 names = names.Union(ns1);
 
             if (OtherConfiguration.NoHostileNames.TryGetValue(0, out var ns2))
