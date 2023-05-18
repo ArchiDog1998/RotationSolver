@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
+using ECommons.DalamudServices;
 using ImGuiScene;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
@@ -351,7 +352,7 @@ internal class ControlWindow : Window
         ImGui.PushID(id);
         if (ImGui.ImageButton(handle, new Vector2(width, width)))
         {
-            Service.CommandManager.ProcessCommand(command.GetCommandStr());
+            Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
         ImGui.PopID();
         if (ImGui.IsItemHovered())
@@ -390,7 +391,7 @@ internal class ControlWindow : Window
         ImGui.PushID(id);
         if (ImGui.ImageButton(handle, new Vector2(width, width)))
         {
-            Service.CommandManager.ProcessCommand(command.GetCommandStr());
+            Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
         ImGui.PopID();
         if (ImGui.IsItemHovered())

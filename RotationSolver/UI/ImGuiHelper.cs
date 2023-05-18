@@ -360,7 +360,7 @@ internal static class ImGuiHelper
 
         if (ImGui.Button(cmdStr))
         {
-            Service.CommandManager.ProcessCommand(cmdStr);
+            Svc.Commands.ProcessCommand(cmdStr);
         }
         if (ImGui.IsItemHovered())
         {

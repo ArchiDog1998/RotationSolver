@@ -119,9 +119,6 @@ public class Service : IDisposable
 
 
     [PluginService]
-    public static CommandManager CommandManager { get; private set; }
-
-    [PluginService]
     public static Condition Conditions { get; private set; }
 
     [PluginService]

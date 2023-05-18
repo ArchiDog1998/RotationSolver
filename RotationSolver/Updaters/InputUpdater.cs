@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Game.ClientState.Keys;
+using ECommons.DalamudServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 
@@ -117,12 +118,12 @@ internal static class InputUpdater
 
         if (OtherConfiguration.InputConfig.KeyState.ContainsValue(key))
         {
-            Service.CommandManager.ProcessCommand(OtherConfiguration.InputConfig.KeyState
+            Svc.Commands.ProcessCommand(OtherConfiguration.InputConfig.KeyState
                 .FirstOrDefault(k => k.Value == key && k.Key != StateCommandType.None).Key.GetCommandStr());
         }
         else if (OtherConfiguration.InputConfig.KeySpecial.ContainsValue(key))
         {
-            Service.CommandManager.ProcessCommand(OtherConfiguration.InputConfig.KeySpecial
+            Svc.Commands.ProcessCommand(OtherConfiguration.InputConfig.KeySpecial
                 .FirstOrDefault(k => k.Value == key && k.Key != SpecialCommandType.None).Key.GetCommandStr());
         }
         else if(OtherConfiguration.InputConfig.KeyDoAction == key)
@@ -166,12 +167,12 @@ internal static class InputUpdater
 
         if (OtherConfiguration.InputConfig.ButtonState.ContainsValue(button))
         {
-            Service.CommandManager.ProcessCommand(OtherConfiguration.InputConfig.ButtonState
+            Svc.Commands.ProcessCommand(OtherConfiguration.InputConfig.ButtonState
                 .FirstOrDefault(k => k.Value == button && k.Key != StateCommandType.None).Key.GetCommandStr());
         }
         else if (OtherConfiguration.InputConfig.ButtonSpecial.ContainsValue(button))
         {
-            Service.CommandManager.ProcessCommand(OtherConfiguration.InputConfig.ButtonSpecial
+            Svc.Commands.ProcessCommand(OtherConfiguration.InputConfig.ButtonSpecial
                 .FirstOrDefault(k => k.Value == button && k.Key != SpecialCommandType.None).Key.GetCommandStr());
         }
         else if (OtherConfiguration.InputConfig.ButtonDoAction == button)
