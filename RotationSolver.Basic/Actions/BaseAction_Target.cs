@@ -488,7 +488,7 @@ public partial class BaseAction
 
         if (!ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
-        if((IntPtr)Service.RawPlayer == IntPtr.Zero || (IntPtr)tarAddress == IntPtr.Zero) return false;
+        if((IntPtr)Player.BattleChara == IntPtr.Zero || (IntPtr)tarAddress == IntPtr.Zero) return false;
 
         return true;
 

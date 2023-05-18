@@ -4,6 +4,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
 using Dalamud.Plugin;
 using ECommons;
+using ECommons.DalamudServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
@@ -36,7 +37,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         try
         {
             Service.Config = JsonConvert.DeserializeObject<PluginConfiguration>(
-                File.ReadAllText(Service.Interface.ConfigFile.FullName)) 
+                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName)) 
                 ?? new PluginConfiguration();
         }
         catch
@@ -55,9 +56,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         windowSystem.AddWindow(_nextActionWindow);
         windowSystem.AddWindow(_cooldownWindow);
 
-        Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
-        Service.Interface.UiBuilder.Draw += windowSystem.Draw;
-        Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
+        Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
+        Svc.PluginInterface.UiBuilder.Draw += windowSystem.Draw;
+        Svc.PluginInterface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
         OtherConfiguration.Init();
@@ -97,9 +98,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public void Dispose()
     {
         RSCommands.Disable();
-        Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
-        Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
-        Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
+        Svc.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
+        Svc.PluginInterface.UiBuilder.Draw -= windowSystem.Draw;
+        Svc.PluginInterface.UiBuilder.Draw -= OverlayWindow.Draw;
 
         foreach (var item in _dis)
         {

@@ -1,6 +1,7 @@
 using Dalamud.Configuration;
 using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -208,6 +209,6 @@ public class PluginConfiguration : IPluginConfiguration
 
     public void Save()
     {
-        Service.Interface.SavePluginConfig(this);
+        Svc.PluginInterface.SavePluginConfig(this);
     }
 }

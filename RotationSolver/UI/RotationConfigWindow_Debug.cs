@@ -1,4 +1,5 @@
-﻿using ECommons.GameHelpers;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using RotationSolver.Updaters;
 
@@ -114,7 +115,7 @@ internal partial class RotationConfigWindow
             ImGui.Text("EventType: " + b.GetEventType().ToString());
             ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
             ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
-            ImGui.Text("InView: " + Service.WorldToScreen(b.Position, out _).ToString());
+            ImGui.Text("InView: " + Svc.GameGui.WorldToScreen(b.Position, out _).ToString());
             ImGui.Text("Name Id: " + b.NameId.ToString());
             ImGui.Text("Data Id: " + b.DataId.ToString());
             ImGui.Text("Targetable: " + b.GetAddress()->TargetableStatus.ToString());

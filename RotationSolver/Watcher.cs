@@ -4,6 +4,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Logging;
 using Dalamud.Plugin.Ipc;
 using Dalamud.Utility.Signatures;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
@@ -31,7 +32,7 @@ public class Watcher : IDisposable
         SignatureHelper.Initialise(this);
         _receiveAbilityHook?.Enable();
 
-        IpcSubscriber = Service.Interface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
+        IpcSubscriber = Svc.PluginInterface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
         IpcSubscriber.Subscribe(UpdateRTTDetour);
     }
 

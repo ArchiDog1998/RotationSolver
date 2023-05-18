@@ -1,4 +1,5 @@
-﻿using ECommons.GameHelpers;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
 using System.Data;
 
@@ -109,13 +110,13 @@ public static class TargetFilter
     private static T FindMoveTargetScreenCenter<T>(IEnumerable<T> charas) where T : GameObject
     {
         var pPosition = Player.Object.Position;
-        if (!Service.WorldToScreen(pPosition, out var playerScrPos)) return null;
+        if (!Svc.GameGui.WorldToScreen(pPosition, out var playerScrPos)) return null;
 
         var tars = charas.Where(t =>
         {
             if (t.DistanceToPlayer() < DISTANCE_TO_MOVE) return false;
 
-            if (!Service.WorldToScreen(t.Position, out var scrPos)) return false;
+            if (!Svc.GameGui.WorldToScreen(t.Position, out var scrPos)) return false;
 
             var dir = scrPos - playerScrPos;
 

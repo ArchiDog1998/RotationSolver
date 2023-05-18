@@ -1,4 +1,5 @@
 ﻿using Dalamud.Logging;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -31,7 +32,7 @@ internal static class RotationUpdater
 
         try
         {
-            var relayFolder = Service.Interface.ConfigDirectory.FullName + "\\Rotations";
+            var relayFolder = Svc.PluginInterface.ConfigDirectory.FullName + "\\Rotations";
             Directory.CreateDirectory(relayFolder);
 
             if (option.HasFlag(DownloadOption.Local))

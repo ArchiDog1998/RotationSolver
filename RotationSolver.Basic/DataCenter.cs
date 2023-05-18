@@ -237,8 +237,8 @@ public static class DataCenter
     public static bool HasPet { get; internal set; }
 
 
-    public static unsafe bool HasCompanion => (IntPtr)Service.RawPlayer != IntPtr.Zero 
-                                           && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Service.RawPlayer) != IntPtr.Zero;
+    public static unsafe bool HasCompanion => (IntPtr)Player.BattleChara != IntPtr.Zero 
+                                           && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Player.BattleChara) != IntPtr.Zero;
 
     public static float RatioOfMembersIn2minsBurst
     {

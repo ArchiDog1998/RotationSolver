@@ -19,6 +19,7 @@ using Dalamud.Hooking;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Utility.Signatures;
+using ECommons.DalamudServices;
 using FFXIVClientStructs.Attributes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
@@ -92,35 +93,22 @@ public class Service : IDisposable
     public static PluginConfiguration Config { get; set; }
     public static PluginConfiguration Default { get; } = new PluginConfiguration();
 
-    internal static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.BattleChara* RawPlayer
-    => Control.Instance()->LocalPlayer;
-
-
     public static ActionID GetAdjustedActionId(ActionID id)
         => (ActionID)GetAdjustedActionId((uint)id);
 
     public static unsafe uint GetAdjustedActionId(uint id)
     => ActionManager.Instance()->GetAdjustedActionId(id);
 
-    [PluginService]
-    public static DalamudPluginInterface Interface { get; private set; }
-    [PluginService]
-    public static SigScanner SigScanner { get; private set; }
 
     [PluginService]
     public static ChatGui ChatGui { get; private set; }
-
-    [PluginService]
-    public static GameGui GameGui { get; set; }
-
-    public static bool WorldToScreen(Vector3 worldPos, out Vector2 screenPos) => GameGui.WorldToScreen(worldPos, out screenPos);
 
     public unsafe static IEnumerable<IntPtr> GetAddons<T>() where T : struct
     {
         if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return Array.Empty<nint>();
 
         return on.AddonIdentifiers
-            .Select(str => GameGui.GetAddonByName(str, 1))
+            .Select(str => Svc.GameGui.GetAddonByName(str, 1))
             .Where(ptr => ptr != IntPtr.Zero);
     }
 

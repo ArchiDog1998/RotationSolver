@@ -1,4 +1,5 @@
 ﻿using Dalamud.Utility;
+using ECommons.DalamudServices;
 using ImGuiScene;
 using System.Net;
 
@@ -102,7 +103,7 @@ public static class IconSet
 
         try
         {
-            return Service.Interface.UiBuilder.LoadImage(bytes);
+            return Svc.PluginInterface.UiBuilder.LoadImage(bytes);
         }
         catch
         {

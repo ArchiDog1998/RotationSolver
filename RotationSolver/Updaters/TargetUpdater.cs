@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -76,7 +77,7 @@ internal static partial class TargetUpdater
 
             if (Service.Config.OnlyAttackInView)
             {
-                if (!Service.WorldToScreen(b.Position, out _)) return false;
+                if (!Svc.GameGui.WorldToScreen(b.Position, out _)) return false;
             }
 
             return true;

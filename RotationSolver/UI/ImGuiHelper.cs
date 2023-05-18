@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Utility;
+using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
@@ -875,7 +876,7 @@ internal static class ImGuiHelper
     public unsafe static ImFontPtr GetFont(float size)
     {
         var style = new Dalamud.Interface.GameFonts.GameFontStyle(Dalamud.Interface.GameFonts.GameFontStyle.GetRecommendedFamilyAndSize(Dalamud.Interface.GameFonts.GameFontFamily.Axis, size));
-        var font = Service.Interface.UiBuilder.GetGameFontHandle(style).ImFont;
+        var font = Svc.PluginInterface.UiBuilder.GetGameFontHandle(style).ImFont;
 
         if((IntPtr)font.NativePtr == IntPtr.Zero) 
         {

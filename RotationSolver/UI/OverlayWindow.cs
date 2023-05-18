@@ -1,4 +1,5 @@
 ﻿using Dalamud.Interface;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Updaters;
 
@@ -78,7 +79,7 @@ internal static class OverlayWindow
         foreach (GameObject t in DataCenter.AllTargets)
         {
             if (t is not BattleChara b) continue;
-            if (Service.WorldToScreen(t.Position, out var p))
+            if (Svc.GameGui.WorldToScreen(t.Position, out var p))
             {
                 ImGui.GetWindowDrawList().AddText(p, HealthRatioColor, $"Health Ratio: {b.CurrentHp / calHealth:F2} / {b.MaxHp / calHealth:F2}");
             }
@@ -97,7 +98,7 @@ internal static class OverlayWindow
 
         DrawTarget(tar, color, 8, out var scrPos);
 
-        if (Service.WorldToScreen(Player.Object.Position, out var plyPos))
+        if (Svc.GameGui.WorldToScreen(Player.Object.Position, out var plyPos))
         {
             var dir = scrPos - plyPos;
 
@@ -114,7 +115,7 @@ internal static class OverlayWindow
 
     private static void DrawTarget(BattleChara tar, uint color, float radius, out Vector2 scrPos)
     {
-        if (Service.WorldToScreen(tar.Position, out scrPos))
+        if (Svc.GameGui.WorldToScreen(tar.Position, out scrPos))
         {
             ImGui.GetWindowDrawList().AddCircle(scrPos, radius, color, COUNT, radius * 0.8f);
         }
@@ -138,7 +139,7 @@ internal static class OverlayWindow
             && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
 
         Vector3 pPosition = target.Position;
-        Service.WorldToScreen(pPosition, out var scrPos);
+        Svc.GameGui.WorldToScreen(pPosition, out var scrPos);
 
         float radius = target.HitboxRadius + Player.Object.HitboxRadius + 3;
         float rotation = target.Rotation;
@@ -238,7 +239,7 @@ internal static class OverlayWindow
         var step = round / segments;
         for (int i = 0; i <= segments; i++)
         {
-            Service.WorldToScreen(ChangePoint(centre, radius, rotation + i * step), out var pt);
+            Svc.GameGui.WorldToScreen(ChangePoint(centre, radius, rotation + i * step), out var pt);
             pts.Add(pt);
         }
     }

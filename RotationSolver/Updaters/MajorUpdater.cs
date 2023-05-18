@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Commands;
 
@@ -86,7 +87,7 @@ internal static class MajorUpdater
     public static void Enable()
     {
         Service.Framework.Update += FrameworkUpdate;
-        ActionSequencerUpdater.Enable(Service.Interface.ConfigDirectory.FullName + "\\Conditions");
+        ActionSequencerUpdater.Enable(Svc.PluginInterface.ConfigDirectory.FullName + "\\Conditions");
 
         SocialUpdater.Enable();
     }
