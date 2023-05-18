@@ -118,9 +118,6 @@ public class Service : IDisposable
     private static DataManager DataManager { get; set; }
 
     [PluginService]
-    internal static JobGauges JobGauges { get; private set; }
-
-    [PluginService]
     public static ObjectTable ObjectTable { get; private set; }
 
     [PluginService]

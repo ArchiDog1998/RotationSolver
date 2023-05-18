@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class WAR_Base : CustomRotation
@@ -6,7 +8,7 @@ public abstract class WAR_Base : CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
 
-    static WARGauge JobGauge => Service.JobGauges.Get<WARGauge>();
+    static WARGauge JobGauge => Svc.Gauges.Get<WARGauge>();
 
     protected static byte BeastGauge => JobGauge.BeastGauge;
 

@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SAM_Base : CustomRotation
@@ -13,7 +15,7 @@ public abstract class SAM_Base : CustomRotation
         => Player.StatusTime(true, StatusID.Fugetsu) < Player.StatusTime(true, StatusID.Fuka);
 
     #region JobGauge
-    static SAMGauge JobGauge => Service.JobGauges.Get<SAMGauge>();
+    static SAMGauge JobGauge => Svc.Gauges.Get<SAMGauge>();
 
     protected static bool HasSetsu => JobGauge.HasSetsu;
 

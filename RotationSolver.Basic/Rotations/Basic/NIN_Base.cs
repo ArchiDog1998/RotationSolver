@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public interface INinAction : IBaseAction
@@ -11,7 +13,7 @@ public abstract class NIN_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Ninja, ClassJobID.Rogue };
 
     #region Job Gauge
-    static NINGauge JobGauge => Service.JobGauges.Get<NINGauge>();
+    static NINGauge JobGauge => Svc.Gauges.Get<NINGauge>();
 
     [Obsolete("Better not use this.")]
     protected static bool InHuton => HutonTime > 0;

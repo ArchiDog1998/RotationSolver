@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class DNC_Base : CustomRotation
 {
@@ -5,7 +7,7 @@ public abstract class DNC_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dancer };
 
     #region Job Gauge
-    static DNCGauge JobGauge => Service.JobGauges.Get<DNCGauge>();
+    static DNCGauge JobGauge => Svc.Gauges.Get<DNCGauge>();
 
     protected static bool IsDancing => JobGauge.IsDancing;
 

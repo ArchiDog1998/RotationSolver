@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class AST_Base : CustomRotation
@@ -6,7 +8,7 @@ public abstract class AST_Base : CustomRotation
 
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Astrologian };
 
-    static ASTGauge JobGauge => Service.JobGauges.Get<ASTGauge>();
+    static ASTGauge JobGauge => Svc.Gauges.Get<ASTGauge>();
 
     protected static CardType DrawnCard => JobGauge.DrawnCard;
 

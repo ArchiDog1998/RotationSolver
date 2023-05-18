@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class PLD_Base : CustomRotation
@@ -15,7 +17,7 @@ public abstract class PLD_Base : CustomRotation
     protected static bool HasFightOrFlight => !Player.WillStatusEndGCD(0, 0, true, StatusID.FightOrFlight);
 
     #region Job Gauge
-    private static PLDGauge JobGauge => Service.JobGauges.Get<PLDGauge>();
+    private static PLDGauge JobGauge => Svc.Gauges.Get<PLDGauge>();
 
     protected static byte OathGauge => JobGauge.OathGauge;
     #endregion

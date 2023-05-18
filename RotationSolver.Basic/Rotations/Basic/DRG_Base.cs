@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class DRG_Base : CustomRotation
@@ -8,7 +10,7 @@ public abstract class DRG_Base : CustomRotation
 
 
     #region Job Gauge
-    static DRGGauge JobGauge => Service.JobGauges.Get<DRGGauge>();
+    static DRGGauge JobGauge => Svc.Gauges.Get<DRGGauge>();
 
     protected static byte EyeCount => JobGauge.EyeCount;
 

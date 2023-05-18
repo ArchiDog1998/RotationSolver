@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class GNB_Base : CustomRotation
@@ -8,7 +10,7 @@ public abstract class GNB_Base : CustomRotation
     protected override bool CanHealAreaSpell => false;
 
     #region Job Gauge
-    static GNBGauge JobGauge => Service.JobGauges.Get<GNBGauge>();
+    static GNBGauge JobGauge => Svc.Gauges.Get<GNBGauge>();
 
     protected static byte Ammo => JobGauge.Ammo;
     protected static byte AmmoComboStep => JobGauge.AmmoComboStep;
