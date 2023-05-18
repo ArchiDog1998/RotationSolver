@@ -6,6 +6,8 @@ using Dalamud.Plugin;
 using ECommons;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
@@ -25,7 +27,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public string Name => "Rotation Solver";
 
     public static DalamudLinkPayload LinkPayload { get; private set; }
-    public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
+    public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
 
@@ -69,8 +71,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #endif
         ChangeUITranslation();
 
-        RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.Donwload);
-        RotationHelper.LoadList();
+        
+
+        Task.Run(async () =>
+        {
+            await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
+            await RotationHelper.LoadListAsync();
+        });
 
         LinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
         {

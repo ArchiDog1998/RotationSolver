@@ -4,6 +4,7 @@ using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.ComponentModel;
@@ -579,9 +580,7 @@ internal static class ImGuiHelper
             }
         }, () =>
         {
-            RotationConfigWindow.DrawRotationRole(rotation);
-
-            rotation.Configs.Draw(canAddButton);
+            RotationConfigWindow.DrawRotationRole(rotation, canAddButton);
         });
 
     #region IAction
@@ -715,7 +714,7 @@ internal static class ImGuiHelper
     }
 
     #region Rotation Config Display
-    static void Draw(this IRotationConfigSet set, bool canAddButton)
+    internal static void Draw(this IRotationConfigSet set, bool canAddButton)
     {
         foreach (var config in set.Configs)
         {
