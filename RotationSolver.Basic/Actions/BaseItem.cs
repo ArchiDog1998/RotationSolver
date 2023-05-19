@@ -67,7 +67,7 @@ public class BaseItem : IBaseItem
 
     public uint SortKey { get; }
 
-    public float AnimationLockTime => OtherConfiguration.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 1.1f;
+    public float AnimationLockTime => 1.1f;
 
     public virtual bool IsActionSequencer => false;
 

@@ -66,9 +66,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         OtherConfiguration.Init();
         _dis.Add(new Watcher());
         _dis.Add(new MovingController());
-
-        var manager = new LocalizationManager();
-        _dis.Add(manager);
+        _dis.Add(new LocalizationManager());
 #if DEBUG
         LocalizationManager.ExportLocalization();
 #endif

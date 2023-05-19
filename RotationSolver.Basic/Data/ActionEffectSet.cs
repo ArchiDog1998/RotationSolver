@@ -14,7 +14,6 @@ public unsafe struct ActionEffectSet
     public GameObject Source { get; }
     public TargetEffect[] TargetEffects { get; }
     public float AnimationLock { get;  }
-    public int MyProperty { get; set; }
     public ActionEffectSet(uint sourceId, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
         Type = effectHeader->actionType;

@@ -1,5 +1,4 @@
-﻿using Dalamud.Interface;
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Updaters;
 
