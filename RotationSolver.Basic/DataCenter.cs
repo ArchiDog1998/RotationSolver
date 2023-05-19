@@ -342,6 +342,8 @@ public static class DataCenter
     public const float MinAnimationLock = 0.6f;
     internal static unsafe void AddActionRec(Action act)
     {
+        if (!Player.Available) return;
+            
         var id = (ActionID)act.RowId;
 
         //Record
@@ -358,10 +360,15 @@ public static class DataCenter
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
 
-                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Player.Object?.Level ?? 1) < 2)
+                try
                 {
-                    FetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
+                    if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Player.Object?.Level ?? 1) < 2)
+                    {
+                        FetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
+                    }
                 }
+                catch { }
+
                 break;
             default:
                 return;

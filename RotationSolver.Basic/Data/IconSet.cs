@@ -1,4 +1,5 @@
-﻿using Dalamud.Utility;
+﻿using Dalamud.Logging;
+using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ImGuiScene;
 using System.Net;
@@ -105,8 +106,9 @@ public static class IconSet
         {
             return Svc.PluginInterface.UiBuilder.LoadImage(bytes);
         }
-        catch
+        catch(Exception e)
         {
+            PluginLog.Warning(e, "Load image failed in RS!");
             return null;
         }
     }
@@ -116,7 +118,7 @@ public static class IconSet
         {
             item?.Dispose();
         }
-        foreach (var item in _texturesPath.Values)
+        foreach (var item in _texturesPath.Values)  
         {
             item?.Dispose();
         }
