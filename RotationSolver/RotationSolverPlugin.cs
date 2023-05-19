@@ -5,6 +5,8 @@ using Dalamud.Logging;
 using Dalamud.Plugin;
 using ECommons;
 using ECommons.DalamudServices;
+using ECommons.GameHelpers;
+using ECommons.SplatoonAPI;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
@@ -30,9 +32,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public static DalamudLinkPayload LinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
-        pluginInterface.Create<Service>();
-
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.SplatoonAPI);
+
+        pluginInterface.Create<Service>();
 
         try
         {
@@ -72,8 +74,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #endif
         ChangeUITranslation();
 
-        
-
         Task.Run(async () =>
         {
             await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
@@ -83,6 +83,21 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         LinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
         {
             if(id == 0) OpenConfigWindow();
+        });
+
+
+        Task.Run(async () =>
+        {
+            await Task.Delay(1000);
+            Splatoon.RemoveDynamicElements("Test");
+            //var element = new Element(ElementType.CircleRelativeToActorPosition);
+            //element.refActorObjectID = Player.Object.ObjectId;
+            //element.refActorComparisonType = RefActorComparisonType.ObjectID;
+            //element.includeHitbox = true;
+            //element.radius = 0.5f;
+            //element.Donut = 0.8f;
+            //element.color = ImGui.GetColorU32(new Vector4(1, 1, 1, 0.4f));
+            //Svc.Toasts.ShowQuest(Splatoon.AddDynamicElement("Test", element, -2).ToString());
         });
     }
 
@@ -112,6 +127,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         IconSet.Dispose();
         OtherConfiguration.Save();
+
+        ECommonsMain.Dispose();
     }
 
     private void OnOpenConfigUi()
