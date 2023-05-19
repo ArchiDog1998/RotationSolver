@@ -170,7 +170,7 @@ internal class SocialUpdater
         var authors = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
 #if DEBUG
 #else
-            .Where(c => c.ObjectId != Service.ClientState.LocalPlayer.ObjectId)
+            .Where(c => c.ObjectId != Player.Object.ObjectId)
 #endif
             .Select(c =>
             {
