@@ -34,7 +34,7 @@ internal static class PreviewUpdater
         {
             try
             {
-                _dtrEntry ??= Service.DtrBar.Get("Rotation Solver");
+                _dtrEntry ??= Svc.DtrBar.Get("Rotation Solver");
             }
             catch
             {

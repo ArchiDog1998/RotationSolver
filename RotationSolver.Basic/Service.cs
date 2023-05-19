@@ -100,9 +100,6 @@ public class Service : IDisposable
     internal static TextureWrap GetTexture(string path) => Svc.Data.GetImGuiTexture(path);
 
     [PluginService]
-    public static DtrBar DtrBar { get; private set; }
-
-    [PluginService]
     public static DutyState DutyState { get; private set; }
 
     public static ClientLanguage Language => Svc.ClientState.ClientLanguage;
