@@ -1,5 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -124,7 +125,7 @@ internal static class OverlayWindow
     private static void DrawPositional()
     {
         if (!Player.Object.IsJobCategory(JobRole.Tank)
-            && !Player.Object.IsJobCategory(JobRole.Melee) ) return;
+            && !Player.Object.IsJobCategory(JobRole.Melee)) return;
 
         var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
             ? ActionUpdater.NextGCDAction.Target
@@ -132,7 +133,7 @@ internal static class OverlayWindow
             ? Svc.Targets.Target
             : null;
 
-        if(target == null) return;
+        if (target == null) return;
 
         if (ActionUpdater.NextGCDAction != null
             && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
@@ -235,12 +236,18 @@ internal static class OverlayWindow
 
     private static void SectorPlots(ref List<Vector2> pts, Vector3 centre, float radius, double rotation, int segments, double round = Math.PI / 2)
     {
+        var pts3 = new List<Vector3>();
         var step = round / segments;
-        for (int i = 0; i <= segments; i++)
+        for (int i = 0; i < segments; i++)
         {
-            Svc.GameGui.WorldToScreen(ChangePoint(centre, radius, rotation + i * step), out var pt);
-            pts.Add(pt);
+            pts3.Add(ChangePoint(centre, radius, rotation + i * step));
         }
+        pts.AddRange(pts3.Select(p =>
+        {
+            Svc.GameGui.WorldToScreen(p, out var pos);
+            return pos;
+        }));
+        pts.AddRange(GetPtsOnScreen(pts3));
     }
 
     private static Vector3 ChangePoint(Vector3 pt, double radius, double rotation)
@@ -248,5 +255,81 @@ internal static class OverlayWindow
         var x = Math.Sin(rotation) * radius + pt.X;
         var z = Math.Cos(rotation) * radius + pt.Z;
         return new Vector3((float)x, pt.Y, (float)z);
+    }
+
+    public static IEnumerable<Vector2> GetPtsOnScreen(IEnumerable<Vector3> pts)
+    {
+        var cameraPts = pts.Select(WorldToCamera).ToArray();
+        var changedPts = new List<Vector3>(cameraPts.Length * 2);
+
+        for (int i = 0; i < cameraPts.Length; i++)
+        {
+            var pt1 = cameraPts[i];
+            var pt2 = cameraPts[(i + 1) % cameraPts.Length];
+
+            if (pt1.Z > 0 && pt2.Z <= 0)
+            {
+                GetPointOnPlane(pt1, ref pt2);
+            }
+            if (pt2.Z > 0 && pt1.Z <= 0)
+            {
+                GetPointOnPlane(pt2, ref pt1);
+            }
+
+            if (changedPts.Count > 0 && Vector3.Distance(pt1, changedPts[changedPts.Count - 1]) > 0.001f)
+            {
+                changedPts.Add(pt1);
+            }
+
+            changedPts.Add(pt2);
+        }
+
+        return changedPts.Where(p => p.Z > 0).Select(p =>
+        {
+            CameraToScreen(p, out var screenPos, out _);
+            return screenPos;
+        });
+    }
+
+    const float PLANE_Z = 0.001f;
+    public static void GetPointOnPlane(Vector3 front, ref Vector3 back)
+    {
+        if (front.Z < 0) return;
+        if (back.Z > 0) return;
+
+        var ratio = (PLANE_Z - back.Z) / (front.Z - back.Z);
+        back.X = (front.X - back.X) * ratio + back.X;
+        back.Y = (front.Y - back.Y) * ratio + back.Y;
+        back.Z = PLANE_Z;
+    }
+
+    public static unsafe Vector3 WorldToCamera(Vector3 worldPos)
+    {
+        var f = Svc.GameGui.GetType().GetRuntimeFields().FirstOrDefault(f => f.Name == "getMatrixSingleton");
+        var matrix = (MulticastDelegate)f.GetValue(Svc.GameGui);
+        var matrixSingleton = (IntPtr)matrix.DynamicInvoke();
+
+        var viewProjectionMatrix = *(Matrix4x4*)(matrixSingleton + 0x1b4);
+        return Vector3.Transform(worldPos, viewProjectionMatrix);
+    }
+
+    public static unsafe bool CameraToScreen(Vector3 cameraPos, out Vector2 screenPos, out bool inView)
+    {
+        screenPos = new Vector2(cameraPos.X / MathF.Abs(cameraPos.Z), cameraPos.Y / MathF.Abs(cameraPos.Z));
+        var windowPos = ImGuiHelpers.MainViewport.Pos;
+
+        var device = Device.Instance();
+        float width = device->Width;
+        float height = device->Height;
+
+        screenPos.X = (0.5f * width * (screenPos.X + 1f)) + windowPos.X;
+        screenPos.Y = (0.5f * height * (1f - screenPos.Y)) + windowPos.Y;
+
+        var inFront = cameraPos.Z > 0;
+        inView = inFront &&
+                 screenPos.X > windowPos.X && screenPos.X < windowPos.X + width &&
+                 screenPos.Y > windowPos.Y && screenPos.Y < windowPos.Y + height;
+
+        return inFront;
     }
 }

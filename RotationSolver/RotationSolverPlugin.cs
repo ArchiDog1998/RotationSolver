@@ -83,20 +83,19 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             if(id == 0) OpenConfigWindow();
         });
 
-
-        Task.Run(async () =>
-        {
-            await Task.Delay(1000);
-            Splatoon.RemoveDynamicElements("Test");
-            //var element = new Element(ElementType.CircleRelativeToActorPosition);
-            //element.refActorObjectID = Player.Object.ObjectId;
-            //element.refActorComparisonType = RefActorComparisonType.ObjectID;
-            //element.includeHitbox = true;
-            //element.radius = 0.5f;
-            //element.Donut = 0.8f;
-            //element.color = ImGui.GetColorU32(new Vector4(1, 1, 1, 0.4f));
-            //Svc.Toasts.ShowQuest(Splatoon.AddDynamicElement("Test", element, -2).ToString());
-        });
+        //Task.Run(async () =>
+        //{
+        //    await Task.Delay(1000);
+        //    Splatoon.RemoveDynamicElements("Test");
+        //    var element = new Element(ElementType.CircleRelativeToActorPosition);
+        //    element.refActorObjectID = Player.Object.ObjectId;
+        //    element.refActorComparisonType = RefActorComparisonType.ObjectID;
+        //    element.includeHitbox = true;
+        //    element.radius = 0.5f;
+        //    element.Donut = 0.8f;
+        //    element.color = ImGui.GetColorU32(new Vector4(1, 1, 1, 0.4f));
+        //    Svc.Toasts.ShowQuest(Splatoon.AddDynamicElement("Test", element, -2).ToString());
+        //});
     }
 
     internal static void ChangeUITranslation()
