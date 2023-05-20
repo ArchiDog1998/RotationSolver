@@ -16,7 +16,7 @@
   "LoadSync": false,
   "CanUnloadAsync": false,
   "LoadPriority": 0,
-  "TestingAssemblyVersion": "2.9.0.1",
+  "TestingAssemblyVersion": "2.9.0.2",
   "IsTestingExclusive": false,
   "IconUrl": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png",
   "DownloadLinkTesting": "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/RotationSolver/bin/Release/net7.0-windows/RotationSolver/latest.zip",
