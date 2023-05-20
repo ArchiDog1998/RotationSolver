@@ -1,5 +1,40 @@
 # Changelog
 
+## [2.9.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.9.0...v2.9.1) (2023-05-20)
+
+
+### Bug Fixes
+
+* add a test download link. ([c7155d5](https://github.com/ArchiDog1998/RotationSolver/commit/c7155d503ebc644cd7351c256730061d624bbf69))
+* add ECommons real! ([3ead70c](https://github.com/ArchiDog1998/RotationSolver/commit/3ead70c57f7a9931686acc7d02db9bb1e9eb0f0a))
+* addECommons. ([ab6739f](https://github.com/ArchiDog1998/RotationSolver/commit/ab6739f2868d35952d20a22b6d07c1ce27915bbc))
+* Added some comments, unwrapped last LINQ ([059efa8](https://github.com/ArchiDog1998/RotationSolver/commit/059efa83403bbb4b09fcf1396df9227801788f81))
+* Better UI and less clutter for rotation view by using a collapsing header. ([02ab8f0](https://github.com/ArchiDog1998/RotationSolver/commit/02ab8f0fe9d1ad911536e8d747585235cb48e5b8))
+* change chat gui. ([c6b2185](https://github.com/ArchiDog1998/RotationSolver/commit/c6b2185b300ca6ab6e357b452a8963341f05c47a))
+* change ClientState. ([a411c7e](https://github.com/ArchiDog1998/RotationSolver/commit/a411c7ec777b26b964550ec3e9c0c3c036fbaa23))
+* change condition. ([55e168d](https://github.com/ArchiDog1998/RotationSolver/commit/55e168da615c86f657f2d0e103e55080c763e26a))
+* change for ECommons. ([b5054a5](https://github.com/ArchiDog1998/RotationSolver/commit/b5054a55d225a0c0e61de21889e57e715ad13b69))
+* change interface. ([719e0ff](https://github.com/ArchiDog1998/RotationSolver/commit/719e0ff5781315169e4f8ddddb427784bc9eb43d))
+* change jobgauge. ([0cdb7ae](https://github.com/ArchiDog1998/RotationSolver/commit/0cdb7aeba3969c9222d7fb6b943122382b96b40f))
+* changed the duty name. ([3e565f2](https://github.com/ArchiDog1998/RotationSolver/commit/3e565f2d2b5b58273be3c5260219621399e807c6))
+* changed the style of status show. ([0a927be](https://github.com/ArchiDog1998/RotationSolver/commit/0a927bea046afcd802e498698dfd1fa5452c4b2a))
+* changed the unit of ping. ([ef29ee1](https://github.com/ArchiDog1998/RotationSolver/commit/ef29ee1b26d231235173e09106f26c17654ff00c))
+* fixed some bugs. ([8dc381d](https://github.com/ArchiDog1998/RotationSolver/commit/8dc381d86e8f6a85f77e95ca8cb9417e9cada764))
+* logs for image loading. ([b6f389c](https://github.com/ArchiDog1998/RotationSolver/commit/b6f389c6d2a70ab4d2443838d3a234103bbb5391))
+* Method renaming. ([cd15cde](https://github.com/ArchiDog1998/RotationSolver/commit/cd15cde063f539cc2cbd7c0a96adf58694616355))
+* Only draw collapsible header if rotation has settings at all. ([54b902c](https://github.com/ArchiDog1998/RotationSolver/commit/54b902cd77433170c1e259e533f2e759bd5728c3))
+* Refactor AuthorHashes away from LinQ. ([1bb2cd6](https://github.com/ArchiDog1998/RotationSolver/commit/1bb2cd6c0f5254b7b40e1fc9270cd42a91459c6a))
+* remove DtrBar. ([c8d79bd](https://github.com/ArchiDog1998/RotationSolver/commit/c8d79bd19c938a725e6b8113d73bb047ff7f8451))
+* remove object Table. ([982cea6](https://github.com/ArchiDog1998/RotationSolver/commit/982cea6b09445e8d8db5864df57e50d3c7a302b2))
+* remove partyList. ([81eb558](https://github.com/ArchiDog1998/RotationSolver/commit/81eb5582cf4c1d61b91ea65c8c06a09f66b43f11))
+* removed one option. ([a337da6](https://github.com/ArchiDog1998/RotationSolver/commit/a337da6468e6ea6e2ddc60b83bf9199d3ad339a2))
+* removed the player. ([20f9eb3](https://github.com/ArchiDog1998/RotationSolver/commit/20f9eb3dcf93e63b6df882b8d107c2cddd90b83d))
+* Removed unnecessary file.Dispose() after loading with using. Oops. ([9f57e24](https://github.com/ArchiDog1998/RotationSolver/commit/9f57e245cb100062de818adb362bfe4954c2efdd))
+* RotationHelper formatting ([b73ab67](https://github.com/ArchiDog1998/RotationSolver/commit/b73ab67d1cd2cd6dd319b591f65d1d1e9d58eb61))
+* Summoner ability "Fester" relies to aetherflow gauge, but was using !HasAether from EnergyDrain. ([b50c086](https://github.com/ArchiDog1998/RotationSolver/commit/b50c0860d6a6d6d65d9705c038493fde90a5bda7))
+* test with Splatoon. ([b22b73a](https://github.com/ArchiDog1998/RotationSolver/commit/b22b73a3eb67619ae9486e9c9998c42f9815c1c0))
+* Unwrapped CustomRotations linq. ([d3ed73e](https://github.com/ArchiDog1998/RotationSolver/commit/d3ed73eec0bc9d43799d4086a060b56504f997a7))
+
 ## [2.9.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.8.1...v2.9.0) (2023-05-16)
 
 
