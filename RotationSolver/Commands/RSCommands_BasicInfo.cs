@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.Command;
+using ECommons.DalamudServices;
 using RotationSolver.Localization;
 
 namespace RotationSolver.Commands;
@@ -21,13 +22,13 @@ public static partial class RSCommands
     }
 
     internal static void Enable()
-        => Service.CommandManager.AddHandler(Service.Command, new CommandInfo(OnCommand)
+        => Svc.Commands.AddHandler(Service.Command, new CommandInfo(OnCommand)
         {
             HelpMessage = LocalizationManager.RightLang.Commands_Rotation,
             ShowInHelp = true,
         });
 
-    internal static void Disable() => Service.CommandManager.RemoveHandler(Service.Command);
+    internal static void Disable() => Svc.Commands.RemoveHandler(Service.Command);
 
     private static void OnCommand(string command, string arguments)
     {

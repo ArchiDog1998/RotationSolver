@@ -1,4 +1,6 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -28,7 +30,7 @@ public partial class BaseAction
                 }
                 else
                 {
-                    if ((ClassJobID)Service.Player.ClassJob.Id != ClassJobID.BlueMage
+                    if ((ClassJobID)Player.Object.ClassJob.Id != ClassJobID.BlueMage
                         && ChoiceTarget != TargetFilter.FindTargetForMoving
                         && DataCenter.LastAction == (ActionID)AdjustedID) return false;
 
@@ -47,7 +49,7 @@ public partial class BaseAction
         act = this;
         var mustUse = option.HasFlag(CanUseOption.MustUse);
 
-        var player = Service.Player;
+        var player = Player.Object;
         if (player == null) return false;
 
         if (!option.HasFlag(CanUseOption.SkipDisable) && !IsEnabled) return false;
@@ -146,9 +148,9 @@ public partial class BaseAction
 
         if (_action.TargetArea)
         {
-            return ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Service.Player.ObjectId, &loc);
+            return ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Player.Object.ObjectId, &loc);
         }
-        else if(Service.ObjectTable.SearchById(_targetId) == null)
+        else if(Svc.Objects.SearchById(_targetId) == null)
         {
             return false;
         }

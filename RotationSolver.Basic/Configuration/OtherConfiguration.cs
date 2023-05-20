@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -51,9 +52,10 @@ public class OtherConfiguration
 
     public static void Init()
     {
-        if (!Directory.Exists(Service.Interface.ConfigDirectory.FullName))
+        
+        if (!Directory.Exists(Svc.PluginInterface.ConfigDirectory.FullName))
         {
-            Directory.CreateDirectory(Service.Interface.ConfigDirectory.FullName);
+            Directory.CreateDirectory(Svc.PluginInterface.ConfigDirectory.FullName);
         }
 
         Task.Run(() => InitOne(ref DangerousStatus, nameof(DangerousStatus)));
@@ -119,7 +121,7 @@ public class OtherConfiguration
 
     private static string GetFilePath(string name)
     {
-        var directory = Service.Interface.ConfigDirectory.FullName;
+        var directory = Svc.PluginInterface.ConfigDirectory.FullName;
 #if DEBUG
         var dir = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources";
         if (Directory.Exists(dir)) directory = dir;

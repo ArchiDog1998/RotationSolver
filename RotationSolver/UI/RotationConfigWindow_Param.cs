@@ -42,8 +42,8 @@ internal partial class RotationConfigWindow
         DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
             ref Service.Config.AddDotGCDCount, Service.Default.AddDotGCDCount, min: 0, max: 3);
 
-        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_MaxPing,
-                ref Service.Config.MaxPing, Service.Default.MaxPing, min: 50, max: 500);
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MaxPing,
+                ref Service.Config.MaxPing, Service.Default.MaxPing, min: 0.01f, max: 0.5f);
 
         ImGui.Spacing();
 
@@ -236,9 +236,6 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnDtr,
             ref Service.Config.ShowInfoOnDtr, Service.Default.ShowInfoOnDtr);
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowStatusWindow,
-            ref Service.Config.ShowStatusWindow, Service.Default.ShowStatusWindow);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnToast,
             ref Service.Config.ShowInfoOnToast, Service.Default.ShowInfoOnToast);

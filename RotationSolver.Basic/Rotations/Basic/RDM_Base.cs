@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class RDM_Base : CustomRotation
@@ -7,7 +9,7 @@ public abstract class RDM_Base : CustomRotation
     protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
     #region Job Gauge
-    static RDMGauge JobGauge => Service.JobGauges.Get<RDMGauge>();
+    static RDMGauge JobGauge => Svc.Gauges.Get<RDMGauge>();
 
     protected static byte WhiteMana => JobGauge.WhiteMana;
 

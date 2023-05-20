@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
+using ECommons.DalamudServices;
 using ImGuiScene;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
@@ -351,7 +352,7 @@ internal class ControlWindow : Window
         ImGui.PushID(id);
         if (ImGui.ImageButton(handle, new Vector2(width, width)))
         {
-            Service.CommandManager.ProcessCommand(command.GetCommandStr());
+            Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
         ImGui.PopID();
         if (ImGui.IsItemHovered())
@@ -361,7 +362,7 @@ internal class ControlWindow : Window
             {
                 InputUpdater.RecordingTime = DateTime.Now;
                 InputUpdater.RecordingSpecialType = command;
-                Service.ToastGui.ShowQuest($"Recording: {command}",
+                Svc.Toasts.ShowQuest($"Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -374,7 +375,7 @@ internal class ControlWindow : Window
                 OtherConfiguration.InputConfig.ButtonSpecial.Remove(command);
                 OtherConfiguration.SaveInputConfig();
 
-                Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                Svc.Toasts.ShowQuest($"Clear Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -390,7 +391,7 @@ internal class ControlWindow : Window
         ImGui.PushID(id);
         if (ImGui.ImageButton(handle, new Vector2(width, width)))
         {
-            Service.CommandManager.ProcessCommand(command.GetCommandStr());
+            Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
         ImGui.PopID();
         if (ImGui.IsItemHovered())
@@ -400,7 +401,7 @@ internal class ControlWindow : Window
             {
                 InputUpdater.RecordingTime = DateTime.Now;
                 InputUpdater.RecordingStateType = command;
-                Service.ToastGui.ShowQuest($"Recording: {command}",
+                Svc.Toasts.ShowQuest($"Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -413,7 +414,7 @@ internal class ControlWindow : Window
                 OtherConfiguration.InputConfig.ButtonState.Remove(command);
                 OtherConfiguration.SaveInputConfig();
 
-                Service.ToastGui.ShowQuest($"Clear Recording: {command}",
+                Svc.Toasts.ShowQuest($"Clear Recording: {command}",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -575,7 +576,7 @@ internal class ControlWindow : Window
             {
                 InputUpdater.RecordingTime = DateTime.Now;
                 InputUpdater.RecordingDoAction = true;
-                Service.ToastGui.ShowQuest($"Recording: Do Action",
+                Svc.Toasts.ShowQuest($"Recording: Do Action",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,
@@ -588,7 +589,7 @@ internal class ControlWindow : Window
                 OtherConfiguration.InputConfig.ButtonDoAction = null;
                 OtherConfiguration.SaveInputConfig();
 
-                Service.ToastGui.ShowQuest($"Clear Recording: Do Action",
+                Svc.Toasts.ShowQuest($"Clear Recording: Do Action",
                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     {
                         IconId = 101,

@@ -2,6 +2,8 @@
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
@@ -32,7 +34,7 @@ internal static class PreviewUpdater
         {
             try
             {
-                _dtrEntry ??= Service.DtrBar.Get("Rotation Solver");
+                _dtrEntry ??= Svc.DtrBar.Get("Rotation Solver");
             }
             catch
             {
@@ -61,15 +63,15 @@ internal static class PreviewUpdater
     (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
     internal static void UpdateCastBarState()
     {
-        var tardead = Service.Config.UseStopCasting && Service.ObjectTable.SearchById(Service.Player.CastTargetObjectId) is BattleChara b
+        var tardead = Service.Config.UseStopCasting && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
             && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0);
         _isTarNoNeedCast = _tarStopCastDelay.Delay(tardead);
 
-        bool canMove = !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
-            && !Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
+        bool canMove = !Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
+            && !Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
 
         //For lock
-        var specialStatus = Service.Player.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);
+        var specialStatus = Player.Object.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);
 
         _canMove = !specialStatus && canMove;
         MovingController.IsMoving = _canMove;

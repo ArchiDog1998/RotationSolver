@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class MCH_Base : CustomRotation
@@ -7,7 +9,7 @@ public abstract class MCH_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Machinist };
 
     #region Job Gauge
-    static MCHGauge JobGauge => Service.JobGauges.Get<MCHGauge>();
+    static MCHGauge JobGauge => Svc.Gauges.Get<MCHGauge>();
 
     protected static bool IsOverheated => JobGauge.IsOverheated;
 

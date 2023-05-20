@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Lumina.Excel.GeneratedSheets;
@@ -145,7 +146,7 @@ public static class ObjectHelper
         float rotation = enemy.Rotation;
         Vector2 faceVec = new((float)Math.Cos(rotation), (float)Math.Sin(rotation));
 
-        Vector3 dir = Service.Player.Position - pPosition;
+        Vector3 dir = Player.Object.Position - pPosition;
         Vector2 dirVec = new(dir.Z, dir.X);
 
         double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
@@ -157,10 +158,10 @@ public static class ObjectHelper
 
     public static uint GetHealthFromMulty(float mult)
     {
-        if (Service.Player == null) return 0;
+        if (!Player.Available) return 0;
 
         var role = Service.GetSheet<ClassJob>().GetRow(
-                Service.Player.ClassJob.Id).GetJobRole();
+                Player.Object.ClassJob.Id).GetJobRole();
         float multi = mult * role switch
         {
             JobRole.Tank => 1,
@@ -178,7 +179,7 @@ public static class ObjectHelper
             multi *= 3.5f;
         }
 
-        return (uint)(multi * Service.Player.MaxHp);
+        return (uint)(multi * Player.Object.MaxHp);
     }
 
     /// <summary>
@@ -189,7 +190,7 @@ public static class ObjectHelper
     public static float DistanceToPlayer(this GameObject obj)
     {
         if (obj == null) return float.MaxValue;
-        var player = Service.Player;
+        var player = Player.Object;
         if (player == null) return float.MaxValue;
 
         var distance = Vector3.Distance(player.Position, obj.Position) - player.HitboxRadius;

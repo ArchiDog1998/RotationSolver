@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class RPR_Base : CustomRotation
 {
@@ -14,7 +16,7 @@ public abstract class RPR_Base : CustomRotation
     protected static bool HasSoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
 
     #region JobGauge
-    static RPRGauge JobGauge => Service.JobGauges.Get<RPRGauge>();
+    static RPRGauge JobGauge => Svc.Gauges.Get<RPRGauge>();
 
     protected static byte Soul => JobGauge.Soul;
 

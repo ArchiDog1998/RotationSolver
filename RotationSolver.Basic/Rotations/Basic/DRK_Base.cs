@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class DRK_Base : CustomRotation
 {
 
@@ -7,7 +9,7 @@ public abstract class DRK_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
 
     #region Job Gauge
-    private static DRKGauge JobGauge => Service.JobGauges.Get<DRKGauge>();
+    private static DRKGauge JobGauge => Svc.Gauges.Get<DRKGauge>();
 
     protected static byte Blood => JobGauge.Blood;
 

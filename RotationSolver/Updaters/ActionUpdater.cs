@@ -1,6 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
@@ -18,7 +20,7 @@ internal static class ActionUpdater
 
     internal static void UpdateNextAction()
     {
-        PlayerCharacter localPlayer = Service.Player;
+        PlayerCharacter localPlayer = Player.Object;
         if (localPlayer == null) return;
 
         try
@@ -40,7 +42,7 @@ internal static class ActionUpdater
                         {
                             string positional = GcdAction.EnemyPositional.ToName();
                             if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
-                            if (Service.Config.ToastPositional) Service.ToastGui.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                            if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = GcdAction.IconID,
                             });
@@ -84,7 +86,7 @@ internal static class ActionUpdater
     private unsafe static void UpdateTimeInfo()
     {
         var last = DataCenter.InCombat;
-        DataCenter.InCombat = Service.Conditions[ConditionFlag.InCombat];
+        DataCenter.InCombat = Svc.Condition[ConditionFlag.InCombat];
         if(!last && DataCenter.InCombat)
         {
             _startCombatTime = DateTime.Now;
@@ -111,7 +113,7 @@ internal static class ActionUpdater
 
     private static unsafe void UpdateWeaponTime()
     {
-        var player = Service.Player;
+        var player = Player.Object;
         if (player == null) return;
 
         var instance = ActionManager.Instance();
@@ -140,7 +142,7 @@ internal static class ActionUpdater
 
     private static void UpdateMPTimer()
     {
-        var player = Service.Player;
+        var player = Player.Object;
         if (player == null) return;
 
         //不是黑魔不考虑啊
@@ -158,21 +160,21 @@ internal static class ActionUpdater
 
     internal unsafe static void DoAction()
     {
-        if (Service.Conditions[ConditionFlag.OccupiedInQuestEvent]
-            || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
-            || Service.Conditions[ConditionFlag.Occupied33]
-            || Service.Conditions[ConditionFlag.Occupied38]
-            || Service.Conditions[ConditionFlag.Jumping61]
-            || Service.Conditions[ConditionFlag.BetweenAreas]
-            || Service.Conditions[ConditionFlag.BetweenAreas51]
-            || Service.Conditions[ConditionFlag.Mounted]
-            //|| Service.Conditions[ConditionFlag.SufferingStatusAffliction] //Because of BLU30!
-            || Service.Conditions[ConditionFlag.SufferingStatusAffliction2]
-            || Service.Conditions[ConditionFlag.RolePlaying]
-            || Service.Conditions[ConditionFlag.InFlight]
+        if (Svc.Condition[ConditionFlag.OccupiedInQuestEvent]
+            || Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
+            || Svc.Condition[ConditionFlag.Occupied33]
+            || Svc.Condition[ConditionFlag.Occupied38]
+            || Svc.Condition[ConditionFlag.Jumping61]
+            || Svc.Condition[ConditionFlag.BetweenAreas]
+            || Svc.Condition[ConditionFlag.BetweenAreas51]
+            || Svc.Condition[ConditionFlag.Mounted]
+            //|| Svc.Condition[ConditionFlag.SufferingStatusAffliction] //Because of BLU30!
+            || Svc.Condition[ConditionFlag.SufferingStatusAffliction2]
+            || Svc.Condition[ConditionFlag.RolePlaying]
+            || Svc.Condition[ConditionFlag.InFlight]
             ||  ActionManager.Instance()->ActionQueued && NextAction != null
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
-            || Service.Player.CurrentHp == 0) return;
+            || Player.Object.CurrentHp == 0) return;
 
         var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
         var ahead = Math.Min(maxAhead, Service.Config.ActionAhead);

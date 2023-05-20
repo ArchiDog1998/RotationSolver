@@ -1,4 +1,5 @@
 ﻿using Dalamud.Interface.Colors;
+using ECommons.GameHelpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 
@@ -34,7 +35,7 @@ internal class RotationCondition : ICondition
     {
         if (!isActionSequencer) return false;
 
-        if (Service.Player == null) return false;
+        if (!Player.Available) return false;
         UpdateInfo(rotation);
 
         switch (ComboConditionType)

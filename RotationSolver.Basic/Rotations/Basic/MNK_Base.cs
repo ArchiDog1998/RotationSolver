@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class MNK_Base : CustomRotation
@@ -7,7 +9,7 @@ public abstract class MNK_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
 
     #region Job Gauge
-    static MNKGauge JobGauge => Service.JobGauges.Get<MNKGauge>();
+    static MNKGauge JobGauge => Svc.Gauges.Get<MNKGauge>();
 
     protected static BeastChakra[] BeastChakras => JobGauge.BeastChakra;
 

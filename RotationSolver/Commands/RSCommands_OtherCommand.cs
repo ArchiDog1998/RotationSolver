@@ -1,4 +1,5 @@
-﻿using RotationSolver.Localization;
+﻿using ECommons.DalamudServices;
+using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.Commands
@@ -41,7 +42,7 @@ namespace RotationSolver.Commands
             Basic.Configuration.PluginConfiguration.SetValue(type, !Basic.Configuration.PluginConfiguration.GetValue(type));
 
             //Say out.
-            Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
+            Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
                 type.ToString(), Basic.Configuration.PluginConfiguration.GetValue(type)));
         }
 
@@ -53,7 +54,7 @@ namespace RotationSolver.Commands
                 {
                     act.IsEnabled = !act.IsEnabled;
 
-                    //Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
+                    //Svc.Toasts.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
                     //    new Dalamud.Game.Gui.Toast.QuestToastOptions()
                     //    {
                     //        IconId = act.IconID,
@@ -80,7 +81,7 @@ namespace RotationSolver.Commands
                     {
                         DataCenter.AddCommandAction(iAct, time);
 
-                        Service.ToastGui.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
+                        Svc.Toasts.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
                             new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = iAct.IconID,
@@ -91,7 +92,7 @@ namespace RotationSolver.Commands
                 }
             }
 
-            Service.ChatGui.PrintError(LocalizationManager.RightLang.Commands_InsertActionFailure);
+            Svc.Chat.PrintError(LocalizationManager.RightLang.Commands_InsertActionFailure);
         }
 
 
@@ -102,13 +103,13 @@ namespace RotationSolver.Commands
             {
                 if (config.DoCommand(configs, str))
                 {
-                    Service.ChatGui.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
+                    Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
                         config.DisplayName, configs.GetDisplayString(config.Name)));
 
                     return;
                 }
             }
-            Service.ChatGui.Print(LocalizationManager.RightLang.Commands_CannotFindRotationConfig);
+            Svc.Chat.Print(LocalizationManager.RightLang.Commands_CannotFindRotationConfig);
         }
     }
 }

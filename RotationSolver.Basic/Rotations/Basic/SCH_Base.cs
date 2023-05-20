@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SCH_Base : CustomRotation
@@ -6,7 +8,7 @@ public abstract class SCH_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
 
     #region Job Gauge
-    static SCHGauge JobGauge => Service.JobGauges.Get<SCHGauge>();
+    static SCHGauge JobGauge => Svc.Gauges.Get<SCHGauge>();
 
     protected static byte FairyGauge => JobGauge.FairyGauge;
 

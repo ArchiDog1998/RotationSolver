@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SMN_Base : CustomRotation
 {
@@ -9,7 +11,7 @@ public abstract class SMN_Base : CustomRotation
 
     protected static bool InPhoenix => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.Rekindle;
     #region JobGauge
-    static SMNGauge JobGauge => Service.JobGauges.Get<SMNGauge>();
+    static SMNGauge JobGauge => Svc.Gauges.Get<SMNGauge>();
 
     protected static bool HasAetherflowStacks => JobGauge.HasAetherflowStacks;
 
@@ -158,7 +160,7 @@ public abstract class SMN_Base : CustomRotation
 
     public static IBaseAction Fester { get; } = new BaseAction(ActionID.Fester)
     {
-        ActionCheck = EnergyDrain.ActionCheck,
+        ActionCheck = (b, m) => HasAetherflowStacks
     };
 
     public static IBaseAction EnergySiphon { get; } = new BaseAction(ActionID.EnergySiphon)

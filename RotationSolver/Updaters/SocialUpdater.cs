@@ -3,6 +3,9 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
+using ECommons.Automation;
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
@@ -31,21 +34,26 @@ internal class SocialUpdater
     static bool _canSaying = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
 
+    public static string GetDutyName(TerritoryType territory)
+    {
+        return territory.ContentFinderCondition?.Value?.Name?.RawString ?? "High-end Duty";
+        //return territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
+    }
+
     static bool CanSocial
     {
         get
         {
-            if (Service.Conditions[ConditionFlag.OccupiedInQuestEvent]
-                || Service.Conditions[ConditionFlag.WaitingForDuty]
-                || Service.Conditions[ConditionFlag.WaitingForDutyFinder]
-                || Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
-                || Service.Conditions[ConditionFlag.BetweenAreas]
-                || Service.Conditions[ConditionFlag.BetweenAreas51]) return false;
+            if (Svc.Condition[ConditionFlag.OccupiedInQuestEvent]
+                || Svc.Condition[ConditionFlag.WaitingForDuty]
+                || Svc.Condition[ConditionFlag.WaitingForDutyFinder]
+                || Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
+                || Svc.Condition[ConditionFlag.BetweenAreas]
+                || Svc.Condition[ConditionFlag.BetweenAreas51]) return false;
 
-            if(Service.Player == null) return false;
-            if (!Service.Player.IsTargetable()) return false;
+            if (!Player.Interactable) return false;
 
-            return Service.Conditions[ConditionFlag.BoundByDuty];
+            return Svc.Condition[ConditionFlag.BoundByDuty];
         }
     }
 
@@ -54,7 +62,7 @@ internal class SocialUpdater
         Service.DutyState.DutyStarted += DutyState_DutyStarted;
         Service.DutyState.DutyWiped += DutyState_DutyWiped;
         Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
-        Service.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
+        Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
         HighEndDuties = Service.GetSheet<TerritoryType>()
             .Where(t => t?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
@@ -94,16 +102,15 @@ internal class SocialUpdater
 
     static void DutyState_DutyStarted(object sender, ushort e)
     {
-        if(Service.Player == null) return;
-        if (!Service.Player.IsJobCategory(JobRole.Tank) && !Service.Player.IsJobCategory(JobRole.Healer)) return;
+        if (!Player.Available) return;
+        if (!Player.Object.IsJobCategory(JobRole.Tank) && !Player.Object.IsJobCategory(JobRole.Healer)) return;
 
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
         if (HighEndDuties.Any(t => t.RowId == territory.RowId))
         {
-            var str = territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
-            var message = string.Format(LocalizationManager.RightLang.HighEndWarning, str);
+            var message = string.Format(LocalizationManager.RightLang.HighEndWarning, GetDutyName(territory));
             
-            Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = new SeString(
                           new IconPayload(BitmapFontIcon.DPS),
@@ -122,7 +129,7 @@ internal class SocialUpdater
                 for (int i = 0; i < 3; i++)
                 {
                     await Task.Delay(3000);
-                    Service.ToastGui.ShowError(message);
+                    Svc.Toasts.ShowError(message);
                 }
             });
         }
@@ -130,7 +137,7 @@ internal class SocialUpdater
 
     static void DutyState_DutyWiped(object sender, ushort e)
     {
-        if (Service.Player == null) return;
+        if (!Player.Available) return;
         DataCenter.ResetAllLastActions();
     }
 
@@ -139,7 +146,7 @@ internal class SocialUpdater
         Service.DutyState.DutyStarted -= DutyState_DutyStarted;
         Service.DutyState.DutyWiped -= DutyState_DutyWiped;
         Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
-        Service.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+        Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
     static RandomDelay socialDelay = new(() => (3, 5));
@@ -150,7 +157,7 @@ internal class SocialUpdater
         {
             _canSaying = false;
 #if DEBUG
-            Service.ChatGui.Print("Macro now.");
+            Svc.Chat.Print("Macro now.");
 #endif
             Service.Config.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
@@ -163,7 +170,7 @@ internal class SocialUpdater
         var authors = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
 #if DEBUG
 #else
-            .Where(c => c.ObjectId != Service.ClientState.LocalPlayer.ObjectId)
+            .Where(c => c.ObjectId != Player.Object.ObjectId)
 #endif
             .Select(c =>
             {
@@ -181,8 +188,8 @@ internal class SocialUpdater
 
 #if DEBUG
 #else
-            Service.TargetManager.SetTarget(c);
-            Service.SubmitToChat($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
+            Svc.Targets.SetTarget(c);
+            Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
             var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
 
@@ -201,7 +208,7 @@ internal class SocialUpdater
 
                           new TextPayload(". So say hello to him/her!"));
 
-            Service.ChatGui.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = message,
                 Type = Dalamud.Game.Text.XivChatType.Notice,
@@ -209,7 +216,7 @@ internal class SocialUpdater
             UIModule.PlaySound(20, 0, 0, 0);
 
             await Task.Delay(new Random().Next(800, 1200));
-            Service.TargetManager.SetTarget(null);
+            Svc.Targets.SetTarget(null);
             await Task.Delay(new Random().Next(800, 1200));
         }
     }

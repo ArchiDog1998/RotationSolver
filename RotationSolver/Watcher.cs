@@ -4,6 +4,8 @@ using Dalamud.Interface.Colors;
 using Dalamud.Logging;
 using Dalamud.Plugin.Ipc;
 using Dalamud.Utility.Signatures;
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -19,7 +21,7 @@ public class Watcher : IDisposable
     /// https://github.com/Tischel/ActionTimeline/blob/master/ActionTimeline/Helpers/TimelineManager.cs#L86
     /// </summary>
     [Signature("4C 89 44 24 ?? 55 56 41 54 41 55 41 56", DetourName = nameof(ReceiveAbilityEffect))]
-    private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook;
+    private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook = null;
 
 
     public static ICallGateSubscriber<object, object> IpcSubscriber;
@@ -30,7 +32,7 @@ public class Watcher : IDisposable
         SignatureHelper.Initialise(this);
         _receiveAbilityHook?.Enable();
 
-        IpcSubscriber = Service.Interface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
+        IpcSubscriber = Svc.PluginInterface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
         IpcSubscriber.Subscribe(UpdateRTTDetour);
     }
 
@@ -46,7 +48,7 @@ public class Watcher : IDisposable
     private static unsafe void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
 
-        if (Service.Player != null)
+        if (Player.Available)
         {
             try
             {
@@ -66,21 +68,21 @@ public class Watcher : IDisposable
     private static void ActionFromEnemy(uint sourceId, ActionEffectSet set)
     {
         //Check Source.
-        var source = Service.ObjectTable.SearchById(sourceId);
+        var source = Svc.Objects.SearchById(sourceId);
         if (source == null) return;
         if (source is not BattleChara battle) return;
         if (battle is PlayerCharacter) return;
         if (battle.SubKind == 9) return; //Friend!
-        if (Service.ObjectTable.SearchById(battle.ObjectId) is PlayerCharacter) return;
+        if (Svc.Objects.SearchById(battle.ObjectId) is PlayerCharacter) return;
 
         var damageRatio = set.TargetEffects
-            .Where(e => e.Target == Service.Player)
+            .Where(e => e.Target == Player.Object)
             .SelectMany(e => new ActionEffect[]
             {
                 e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]
             })
             .Where(e => e.Type == ActionEffectType.Damage)
-            .Sum(e => (float)e.Value / Service.Player.MaxHp);
+            .Sum(e => (float)e.Value / Player.Object.MaxHp);
 
         DataCenter.AddDamageRec(damageRatio);
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
@@ -109,7 +111,7 @@ public class Watcher : IDisposable
 
     private static void ActionFromSelf(uint sourceId, ActionEffectSet set, uint id)
     {
-        if (sourceId != Service.Player.ObjectId) return;
+        if (sourceId != Player.Object.ObjectId) return;
         if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
         if (set.Action == null) return;
         if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
@@ -133,7 +135,7 @@ public class Watcher : IDisposable
 
         DataCenter.HealHP = set.GetSpecificTypeEffect(ActionEffectType.Heal);
         DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
-        DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Service.Player.ObjectId).Sum(i => i.Value);
+        DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Player.Object.ObjectId).Sum(i => i.Value);
         DataCenter.EffectTime = DateTime.Now;
         DataCenter.EffectEndTime = DateTime.Now.AddSeconds(set.AnimationLock + 1);
 
@@ -146,7 +148,7 @@ public class Watcher : IDisposable
 
         if (flag != 0 && Service.Config.ShowActionFlag)
         {
-            Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
+            Svc.FlyText.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
             ImGui.GetColorU32(ImGuiColors.DPSRed), 0, action.Icon);
         }
 
@@ -155,7 +157,7 @@ public class Watcher : IDisposable
             && ConfigurationHelper.ActionPositional.TryGetValue((ActionID)action.RowId, out var pos)
             && pos.Tags.Length > 0 && !pos.Tags.Contains(flag))
         {
-            Service.FlyTextGui.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, pos.Pos.ToName(), "",
+            Svc.FlyText.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, pos.Pos.ToName(), "",
                 ImGui.GetColorU32(ImGuiColors.DPSRed), 94662, action.Icon);
             if (!string.IsNullOrEmpty(Service.Config.PositionalErrorText))
             {

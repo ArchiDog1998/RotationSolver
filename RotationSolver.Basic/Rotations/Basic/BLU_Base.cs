@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Rotations.Basic;
 
 public interface IBLUAction : IBaseAction
 {
@@ -380,7 +382,7 @@ public abstract class BLU_Base : CustomRotation
     public static IBLUAction BasicInstinct { get; } = new BLUAction(ActionID.BasicInstinct, BLUActionType.None)
     {
         StatusProvide = new StatusID[] { StatusID.BasicInstinct },
-        ActionCheck = (b, m) =>  Service.Conditions[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56] && DataCenter.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1,
+        ActionCheck = (b, m) =>  Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56] && DataCenter.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1,
     };
 
     private static IBLUAction AethericMimicry { get; } = new BLUAction(ActionID.AethericMimicry, BLUActionType.None, ActionOption.Friendly)

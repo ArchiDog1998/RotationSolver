@@ -1,4 +1,5 @@
 ﻿using Dalamud.Logging;
+using ECommons.DalamudServices;
 
 namespace RotationSolver.Localization;
 
@@ -16,8 +17,8 @@ internal class LocalizationManager : IDisposable
             ReadFile(lang, assembly);
         }
 
-        SetLanguage(Service.Interface.UiLanguage);
-        Service.Interface.LanguageChanged += OnLanguageChange;
+        SetLanguage(Svc.PluginInterface.UiLanguage);
+        Svc.PluginInterface.LanguageChanged += OnLanguageChange;
     }
 
     private void ReadFile(string lang, Assembly assembly)
@@ -56,7 +57,7 @@ internal class LocalizationManager : IDisposable
 
     public void Dispose()
     {
-        Service.Interface.LanguageChanged -= OnLanguageChange;
+        Svc.PluginInterface.LanguageChanged -= OnLanguageChange;
     }
 
     private void OnLanguageChange(string languageCode)

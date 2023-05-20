@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using RotationSolver.Updaters;
 
@@ -8,8 +9,8 @@ internal partial class RotationConfigWindow
 {
     private void DrawDebugTab()
     {
-        if (Service.Player == null) return;
-        var str = SocialUpdater.EncryptString(Service.Player);
+        if (!Player.Available) return;
+        var str = SocialUpdater.EncryptString(Player.Object);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH", ref str, 100);
 
@@ -60,9 +61,9 @@ internal partial class RotationConfigWindow
         ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
         ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
 
-        foreach (var status in Service.Player.StatusList)
+        foreach (var status in Player.Object.StatusList)
         {
-            var source = status.SourceId == Service.Player.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
+            var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
         }
     }
@@ -95,17 +96,17 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawTargetData()
     {
-        if(Service.TargetManager.Target != null)
+        if(Svc.Targets.Target != null)
         {
-            ImGui.Text("Kind: " + Service.TargetManager.Target.GetObjectKind().ToString());
-            ImGui.Text("SubKind: " + Service.TargetManager.Target.GetBattleNPCSubKind().ToString());
-            var owner = Service.ObjectTable.SearchById(Service.TargetManager.Target.OwnerId);
+            ImGui.Text("Kind: " + Svc.Targets.Target.GetObjectKind().ToString());
+            ImGui.Text("SubKind: " + Svc.Targets.Target.GetBattleNPCSubKind().ToString());
+            var owner = Svc.Objects.SearchById(Svc.Targets.Target.OwnerId);
             if(owner != null)
             {
                 ImGui.Text("Owner: " + owner.Name.ToString());
             }
         }
-        if (Service.TargetManager.Target is BattleChara b)
+        if (Svc.Targets.Target is BattleChara b)
         {
             ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
             ImGui.Text("Is Boss: " + b.IsBoss().ToString());
@@ -114,7 +115,7 @@ internal partial class RotationConfigWindow
             ImGui.Text("EventType: " + b.GetEventType().ToString());
             ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
             ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
-            ImGui.Text("InView: " + Service.WorldToScreen(b.Position, out _).ToString());
+            ImGui.Text("InView: " + Svc.GameGui.WorldToScreen(b.Position, out _).ToString());
             ImGui.Text("Name Id: " + b.NameId.ToString());
             ImGui.Text("Data Id: " + b.DataId.ToString());
             ImGui.Text("Targetable: " + b.GetAddress()->TargetableStatus.ToString());
@@ -133,7 +134,7 @@ internal partial class RotationConfigWindow
 
             foreach (var status in b.StatusList)
             {
-                var source = status.SourceId == Service.Player.ObjectId ? "You" : Service.ObjectTable.SearchById(status.SourceId) == null ? "None" : "Others";
+                var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
                 ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
         }

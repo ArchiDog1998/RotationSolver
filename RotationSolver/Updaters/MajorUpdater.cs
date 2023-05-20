@@ -1,16 +1,18 @@
 ﻿using Dalamud.Game;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
 
 internal static class MajorUpdater
 {
-    public static bool IsValid => Service.Conditions.Any() && Service.Player != null && !SocialUpdater.InPvp;
+    public static bool IsValid => Svc.Condition.Any() && Player.Available && !SocialUpdater.InPvp;
     public static bool ShouldPreventActions => Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
             && Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActionsDuty)
-            && Service.Conditions[ConditionFlag.BoundByDuty]
+            && Svc.Condition[ConditionFlag.BoundByDuty]
             && !Service.DutyState.IsDutyStarted
         || Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
             && !DataCenter.HasHostilesInMaxRange;
@@ -30,17 +32,17 @@ internal static class MajorUpdater
 
 #if DEBUG
         //Get changed condition.
-        string[] enumNames = Enum.GetNames(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
-        int[] indexs = (int[])Enum.GetValues(typeof(Dalamud.Game.ClientState.Conditions.ConditionFlag));
+        string[] enumNames = Enum.GetNames(typeof(ConditionFlag));
+        int[] indexs = (int[])Enum.GetValues(typeof(ConditionFlag));
         if (enumNames.Length == indexs.Length)
         {
             for (int i = 0; i < enumNames.Length; i++)
             {
                 string key = enumNames[i];
-                bool newValue = Service.Conditions[(Dalamud.Game.ClientState.Conditions.ConditionFlag)indexs[i]];
+                bool newValue = Svc.Condition[(ConditionFlag)indexs[i]];
                 if (_values.TryGetValue(i, out bool value) && value != newValue && indexs[i] != 48 && indexs[i] != 27)
                 {
-                    //Service.ToastGui.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
+                    //Svc.Toasts.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
                 }
                 _values[i] = newValue;
             }
@@ -84,8 +86,8 @@ internal static class MajorUpdater
 
     public static void Enable()
     {
-        Service.Framework.Update += FrameworkUpdate;
-        ActionSequencerUpdater.Enable(Service.Interface.ConfigDirectory.FullName + "\\Conditions");
+        Svc.Framework.Update += FrameworkUpdate;
+        ActionSequencerUpdater.Enable(Svc.PluginInterface.ConfigDirectory.FullName + "\\Conditions");
 
         SocialUpdater.Enable();
     }
@@ -129,7 +131,7 @@ internal static class MajorUpdater
 
     public static void Dispose()
     {
-        Service.Framework.Update -= FrameworkUpdate;
+        Svc.Framework.Update -= FrameworkUpdate;
         PreviewUpdater.Dispose();
         ActionSequencerUpdater.SaveFiles();
         SocialUpdater.Disable();

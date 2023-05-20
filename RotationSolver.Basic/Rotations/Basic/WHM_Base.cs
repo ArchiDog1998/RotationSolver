@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class WHM_Base : CustomRotation
@@ -6,7 +8,7 @@ public abstract class WHM_Base : CustomRotation
     public override MedicineType MedicineType => MedicineType.Mind;
 
     #region Job Gauge
-    private static WHMGauge JobGauge => Service.JobGauges.Get<WHMGauge>();
+    private static WHMGauge JobGauge => Svc.Gauges.Get<WHMGauge>();
 
     protected static byte Lily => JobGauge.Lily;
 

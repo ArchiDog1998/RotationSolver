@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Actions;
+﻿using ECommons.GameHelpers;
+
+namespace RotationSolver.Basic.Actions;
 
 public class HealPotionItem : BaseItem
 {
@@ -9,8 +11,8 @@ public class HealPotionItem : BaseItem
     {
         get
         {
-            if (Service.Player == null) return 0;
-            return Math.Min((uint)(Service.Player.MaxHp * _percent), _maxHp);
+            if (!Player.Available) return 0;
+            return Math.Min((uint)(Player.Object.MaxHp * _percent), _maxHp);
         }
     }
 
@@ -25,11 +27,11 @@ public class HealPotionItem : BaseItem
     public override bool CanUse(out IAction item)
     {
         item = null;
-        if (Service.Player == null) return false;
-        var job = (ClassJobID)Service.Player.ClassJob.Id;
-        if (Service.Player.GetHealthRatio() > job.GetHealSingleAbility() -
+        if (!Player.Available) return false;
+        var job = (ClassJobID)Player.Object.ClassJob.Id;
+        if (Player.Object.GetHealthRatio() > job.GetHealSingleAbility() -
             job.GetHealingOfTimeSubtractSingle()) return false;
-        if (Service.Player.MaxHp - Service.Player.CurrentHp < MaxHealHp) return false;
+        if (Player.Object.MaxHp - Player.Object.CurrentHp < MaxHealHp) return false;
         return base.CanUse(out item);
     }
 }

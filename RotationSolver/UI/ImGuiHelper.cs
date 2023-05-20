@@ -1,9 +1,11 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Utility;
+using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.ComponentModel;
@@ -358,7 +360,7 @@ internal static class ImGuiHelper
 
         if (ImGui.Button(cmdStr))
         {
-            Service.CommandManager.ProcessCommand(cmdStr);
+            Svc.Commands.ProcessCommand(cmdStr);
         }
         if (ImGui.IsItemHovered())
         {
@@ -479,7 +481,7 @@ internal static class ImGuiHelper
             else if (!rotation.IsAllowed(out _))
             {
                 var showStr = string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_HighEndWarning, rotation)
-                + string.Join("", SocialUpdater.HighEndDuties.Select(x => x.PlaceName?.Value?.Name.ToString())
+                + string.Join("", SocialUpdater.HighEndDuties.Select(SocialUpdater.GetDutyName)
                 .Where(s => !string.IsNullOrEmpty(s)).Select(t => "\n - " + t));
 
                 HoveredString(showStr);
@@ -579,9 +581,7 @@ internal static class ImGuiHelper
             }
         }, () =>
         {
-            RotationConfigWindow.DrawRotationRole(rotation);
-
-            rotation.Configs.Draw(canAddButton);
+            RotationConfigWindow.DrawRotationRole(rotation, canAddButton);
         });
 
     #region IAction
@@ -715,7 +715,7 @@ internal static class ImGuiHelper
     }
 
     #region Rotation Config Display
-    static void Draw(this IRotationConfigSet set, bool canAddButton)
+    internal static void Draw(this IRotationConfigSet set, bool canAddButton)
     {
         foreach (var config in set.Configs)
         {
@@ -876,7 +876,7 @@ internal static class ImGuiHelper
     public unsafe static ImFontPtr GetFont(float size)
     {
         var style = new Dalamud.Interface.GameFonts.GameFontStyle(Dalamud.Interface.GameFonts.GameFontStyle.GetRecommendedFamilyAndSize(Dalamud.Interface.GameFonts.GameFontFamily.Axis, size));
-        var font = Service.Interface.UiBuilder.GetGameFontHandle(style).ImFont;
+        var font = Svc.PluginInterface.UiBuilder.GetGameFontHandle(style).ImFont;
 
         if((IntPtr)font.NativePtr == IntPtr.Zero) 
         {

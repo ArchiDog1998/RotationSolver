@@ -1,5 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -82,8 +84,8 @@ public static class DataCenter
     {
         get
         {
-            if (Service.Player == null) return 0;
-            var id = Service.Player.ClassJob.Id;
+            if (!Player.Available) return 0;
+            var id = Player.Object.ClassJob.Id;
             return GetTargetHostileType(Service.GetSheet<ClassJob>().GetRow(id));
         }
     }
@@ -125,7 +127,7 @@ public static class DataCenter
             {
                 if (Service.Config.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero
                     && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
-                    && Service.Player.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
+                    && Player.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
                 {
                     return FateManager.Instance()->CurrentFate->FateId;
                 }
@@ -236,8 +238,8 @@ public static class DataCenter
     public static bool HasPet { get; internal set; }
 
 
-    public static unsafe bool HasCompanion => (IntPtr)Service.RawPlayer != IntPtr.Zero 
-                                           && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Service.RawPlayer) != IntPtr.Zero;
+    public static unsafe bool HasCompanion => (IntPtr)Player.BattleChara != IntPtr.Zero 
+                                           && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Player.BattleChara) != IntPtr.Zero;
 
     public static float RatioOfMembersIn2minsBurst
     {
@@ -254,8 +256,8 @@ public static class DataCenter
                         if (member.Level >= burstInfo.Level)
                         {
                             var tar = burstInfo.IsOnHostile 
-                                && Service.TargetManager.Target is BattleChara b ? b 
-                                : Service.Player;
+                                && Svc.Targets.Target is BattleChara b ? b 
+                                : Player.Object;
                             if (tar.HasStatus(false, burstInfo.Status)
                                 && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
                             {
@@ -340,6 +342,8 @@ public static class DataCenter
     public const float MinAnimationLock = 0.6f;
     internal static unsafe void AddActionRec(Action act)
     {
+        if (!Player.Available) return;
+            
         var id = (ActionID)act.RowId;
 
         //Record
@@ -356,10 +360,15 @@ public static class DataCenter
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
 
-                if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Service.Player?.Level ?? 1) < 2)
+                try
                 {
-                    FetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
+                    if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Player.Object?.Level ?? 1) < 2)
+                    {
+                        FetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
+                    }
                 }
+                catch { }
+
                 break;
             default:
                 return;

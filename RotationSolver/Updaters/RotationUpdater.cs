@@ -1,6 +1,8 @@
 ﻿using Dalamud.Logging;
-using Lumina.Excel.GeneratedSheets;
-
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Text;
 
@@ -8,58 +10,182 @@ namespace RotationSolver.Updaters;
 
 internal static class RotationUpdater
 {
-    public record CustomRotationGroup(ClassJobID JobId, ClassJobID[] ClassJobIds, ICustomRotation[] Rotations);
-
     internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
 
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
 
-    //public static List<string> LoadedPlugins = new List<string>();
+    public static ICustomRotation RightNowRotation { get; private set; }
+    public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
 
-    [Flags]
-    public enum DownloadOption : byte
-    {
-        Local = 0,
-        Donwload = 1 << 0,
-        MustDownload = Donwload | 1 << 1,
-        ShowList = 1 << 2,
-    }
+    private static DateTime LastRunTime;
 
     static bool _isLoading = false;
 
-    public static void GetAllCustomRotations(DownloadOption option)
+    // Retrieves custom rotations from local and/or downloads
+    // them from remote server based on DownloadOption
+    public static async Task GetAllCustomRotationsAsync(DownloadOption option)
     {
         if (_isLoading) return;
 
-        Task.Run(async () =>
+        _isLoading = true;
+
+        try
         {
-            _isLoading = true;
+            var relayFolder = Svc.PluginInterface.ConfigDirectory.FullName + "\\Rotations";
+            Directory.CreateDirectory(relayFolder);
 
-            var relayFolder = Service.Interface.ConfigDirectory.FullName + "\\Rotations";
-            if (!Directory.Exists(relayFolder)) Directory.CreateDirectory(relayFolder);
+            if (option.HasFlag(DownloadOption.Local))
+            {
+                LoadRotationsFromLocal(relayFolder);
+            }
 
-            LoadRotationsFromLocal(relayFolder);
-
-            if (option.HasFlag(DownloadOption.Donwload) && Service.Config.DownloadRotations)
+            if (option.HasFlag(DownloadOption.Download) && Service.Config.DownloadRotations)
                 await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
 
             if (option.HasFlag(DownloadOption.ShowList))
             {
-                foreach (var item in CustomRotationsDict
-                .SelectMany(d => d.Value)
-                .SelectMany(g => g.Rotations)
-                .Select(r => r.GetType().Assembly.FullName).ToHashSet())
-                {
-                    Service.ChatGui.Print("Loaded: " + item);
-                }
+                var assemblies = CustomRotationsDict
+                    .SelectMany(d => d.Value)
+                    .SelectMany(g => g.Rotations)
+                    .Select(r => r.GetType().Assembly.FullName)
+                    .Distinct()
+                    .ToList();
+
+                PrintLoadedAssemblies(assemblies);
             }
+        }
+        catch (Exception ex)
+        {
+            PluginLog.LogError(ex, "Failed to get custom rotations");
+        }
+        finally
+        {
             _isLoading = false;
-        });
+        }
     }
 
+    // This method loads custom rotation groups from local directories and assemblies, creates a sorted list of
+    // author hashes, and creates a sorted list of custom rotations grouped by job role.
+    private static void LoadRotationsFromLocal(string relayFolder)
+    {
+        var directories = Service.Config.OtherLibs
+            .Append(relayFolder)
+            .Where(Directory.Exists);
+
+        var assemblies = new List<Assembly>();
+
+        foreach (var dir in directories)
+        {
+            if (Directory.Exists(dir))
+            {
+                var dlls = Directory.GetFiles(dir, "*.dll");
+                foreach (var dll in dlls)
+                {
+                    var assembly = LoadOne(dll);
+
+                    if (assembly != null)
+                    {
+                        assemblies.Add(assembly);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        AuthorHashes = new SortedList<string, string>();
+        foreach (var assembly in assemblies)
+        {
+            var authorHashAttribute = assembly.GetCustomAttribute<AuthorHashAttribute>();
+            if (authorHashAttribute != null)
+            {
+                var key = authorHashAttribute.Hash;
+                var value = $"{assembly.GetInfo().Author} - {assembly.GetInfo().Name}";
+
+                if (AuthorHashes.ContainsKey(key))
+                {
+                    AuthorHashes[key] += $", {value}";
+                }
+                else
+                {
+                    AuthorHashes.Add(key, value);
+                }
+            }
+        }
+
+        CustomRotations = LoadCustomRotationGroup(assemblies);
+        var customRotationsGroupedByJobRole = new Dictionary<JobRole, List<CustomRotationGroup>>();
+        foreach (var customRotationGroup in CustomRotations)
+        {
+            var jobRole = customRotationGroup.Rotations[0].Job.GetJobRole();
+            if (!customRotationsGroupedByJobRole.ContainsKey(jobRole))
+            {
+                customRotationsGroupedByJobRole[jobRole] = new List<CustomRotationGroup>();
+            }
+            customRotationsGroupedByJobRole[jobRole].Add(customRotationGroup);
+        }
+
+        CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>();
+        foreach (var jobRole in customRotationsGroupedByJobRole.Keys)
+        {
+            var customRotationGroups = customRotationsGroupedByJobRole[jobRole];
+            var sortedCustomRotationGroups = customRotationGroups.OrderBy(crg => crg.JobId).ToArray();
+            CustomRotationsDict[jobRole] = sortedCustomRotationGroups;
+        }
+
+    }
+
+    private static CustomRotationGroup[] LoadCustomRotationGroup(List<Assembly> assemblies)
+    {
+        var rotationList = new List<ICustomRotation>();
+        foreach (var assembly in assemblies)
+        {
+            foreach (var type in TryGetTypes(assembly))
+            {
+                if (type.GetInterfaces().Contains(typeof(ICustomRotation))
+                    && !type.IsAbstract && !type.IsInterface)
+                {
+                    var rotation = GetRotation(type);
+                    if (rotation != null)
+                    {
+                        rotationList.Add(rotation);
+                    }
+                }
+            }
+        }
+
+        var rotationGroups = new Dictionary<ClassJobID, List<ICustomRotation>>();
+        foreach (var rotation in rotationList)
+        {
+            var jobId = rotation.JobIDs[0];
+            if (!rotationGroups.ContainsKey(jobId))
+            {
+                rotationGroups.Add(jobId, new List<ICustomRotation>());
+            }
+            rotationGroups[jobId].Add(rotation);
+        }
+
+        var result = new List<CustomRotationGroup>();
+        foreach (var kvp in rotationGroups)
+        {
+            var jobId = kvp.Key;
+            var rotations = kvp.Value.ToArray();
+            result.Add(new CustomRotationGroup(jobId, rotations[0].JobIDs, CreateRotationSet(rotations)));
+        }
+
+
+        return result.ToArray();
+    }
+
+    // Downloads rotation files from a remote server and saves them to a local folder.
+    // The download list is obtained from a JSON file on the remote server.
+    // If mustDownload is set to true, it will always download the files, otherwise it will only download if the file doesn't exist locally.
     private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
     {
+        // Code to download rotations from remote server
         bool hasDownload = false;
         using (var client = new HttpClient())
         {
@@ -131,11 +257,19 @@ internal static class RotationUpdater
         return false;
     }
 
+    private static void PrintLoadedAssemblies(IEnumerable<string> assemblies)
+    {
+        foreach (var assembly in assemblies)
+        {
+            Svc.Chat.Print("Loaded: " + assembly);
+        }
+    }
+
     private static Assembly LoadOne(string filePath)
     {
         try
         {
-            return RotationHelper.LoadFrom(filePath);
+            return RotationHelper.LoadCustomRotationAssembly(filePath);
         }
         catch (Exception ex)
         {
@@ -144,84 +278,45 @@ internal static class RotationUpdater
         return null;
     }
 
-    private static void LoadRotationsFromLocal(string relayFolder)
-    {
-        var directories = Service.Config.OtherLibs
-            .Append(relayFolder)
-            .Where(Directory.Exists);
 
-        var assemblies = new List<Assembly>();
-
-        foreach (var dir in directories)
-        {
-            if (Directory.Exists(dir))
-            {
-                var dlls = Directory.GetFiles(dir, "*.dll");
-                foreach (var dll in dlls)
-                {
-                    var assembly = LoadOne(dll);
-
-                    if (assembly != null)
-                    {
-                        assemblies.Add(assembly);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-            }
-        }
-
-        AuthorHashes = new SortedList<string, string>(
-            (from a in assemblies
-             select (a, a.GetCustomAttribute<AuthorHashAttribute>()) into author
-             where author.Item2 != null
-             group author by author.Item2 into gr
-             select (gr.Key.Hash, string.Join(", ", gr.Select(i => i.a.GetInfo().Author + " - " + i.a.GetInfo().Name))))
-             .ToDictionary(i => i.Hash, i => i.Item2));
-
-        CustomRotations = (
-            from a in assemblies
-            from t in TryGetTypes(a)
-            where t.GetInterfaces().Contains(typeof(ICustomRotation))
-                 && !t.IsAbstract && !t.IsInterface
-            select GetRotation(t) into rotation
-            where rotation != null
-            group rotation by rotation.JobIDs[0] into rotationGrp
-            select new CustomRotationGroup(rotationGrp.Key, rotationGrp.First().JobIDs, CreateRotationSet(rotationGrp.ToArray()))).ToArray();
-
-        CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>
-            (CustomRotations.GroupBy(g => g.Rotations[0].Job.GetJobRole())
-            .ToDictionary(set => set.Key, set => set.OrderBy(i => i.JobId).ToArray()));
-    }
-
-    private static DateTime LastRunTime;
+    // This method watches for changes in local rotation files by checking the
+    // last modified time of the files in the directories specified in the configuration.
+    // If there are new changes, it triggers a reload of the custom rotation.
+    // This method uses Parallel.ForEach to improve performance.
+    // It also has a check to ensure it's not running too frequently, to avoid hurting the FPS of the game.
     public static void LocalRotationWatcher()
     {
-        // This will cripple FPS is run on every frame.
-        if (DateTime.Now < LastRunTime.AddSeconds(2)) return;
+        if (DateTime.Now < LastRunTime.AddSeconds(2))
+        {
+            return;
+        }
 
         var dirs = Service.Config.OtherLibs;
 
         foreach (var dir in dirs)
         {
-            if (string.IsNullOrWhiteSpace(dir)) continue;
-            var dlls = Directory.GetFiles(dir, "*.dll");
-            
-            foreach (var dll in dlls)
+            if (string.IsNullOrEmpty(dir))
             {
-                var loaded = new LoadedAssembly();
-                loaded.Path = dll;
-                loaded.LastModified = File.GetLastWriteTimeUtc(dll).ToString();
+                continue;
+            }
 
-                int index = RotationHelper.LoadedCustomRotations.FindIndex(item => item.LastModified == loaded.LastModified);
+            var dlls = Directory.GetFiles(dir, "*.dll");
+
+            // There may be many files in these directories,
+            // so we opt to use Parallel.ForEach for performance.
+            Parallel.ForEach(dlls, async dll =>
+            {
+                var loadedAssembly = new LoadedAssembly(
+                    dll,
+                    File.GetLastWriteTimeUtc(dll).ToString());
+
+                int index = RotationHelper.LoadedCustomRotations.FindIndex(item => item.LastModified == loadedAssembly.LastModified);
 
                 if (index == -1)
                 {
-                    GetAllCustomRotations(DownloadOption.Local);
+                    await GetAllCustomRotationsAsync(DownloadOption.Local);
                 }
-            }
+            });
         }
 
         LastRunTime = DateTime.Now;
@@ -267,8 +362,6 @@ internal static class RotationUpdater
         return result.ToArray();
     }
 
-    public static ICustomRotation RightNowRotation { get; private set; }
-
     public static IEnumerable<IGrouping<string, IAction>> AllGroupedActions
         => RightNowRotation?.AllActions.GroupBy(a =>
             {
@@ -312,17 +405,15 @@ internal static class RotationUpdater
 
             }).OrderBy(g => g.Key);
 
-    public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
-
     public static void UpdateRotation()
     {
-        var nowJob = (ClassJobID)Service.Player.ClassJob.Id;
+        var nowJob = (ClassJobID)Player.Object.ClassJob.Id;
 
         foreach (var group in CustomRotations)
         {
             if (!group.ClassJobIds.Contains(nowJob)) continue;
 
-            var rotation = GetChooseRotation(group);
+            var rotation = GetChosenRotation(group);
             if (rotation != RightNowRotation)
             {
                 rotation?.OnTerritoryChanged();
@@ -335,7 +426,7 @@ internal static class RotationUpdater
         RightRotationActions = Array.Empty<IAction>();
     }
 
-    internal static ICustomRotation GetChooseRotation(CustomRotationGroup group)
+    internal static ICustomRotation GetChosenRotation(CustomRotationGroup group)
     {
         var has = Service.Config.RotationChoices.TryGetValue((uint)group.JobId, out var name);
        

@@ -1,5 +1,6 @@
 ﻿using Dalamud;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -8,12 +9,12 @@ public abstract partial class CustomRotation
     /// <summary>
     /// This is the player.
     /// </summary>
-    protected static PlayerCharacter Player => Service.Player;
+    protected static PlayerCharacter Player => ECommons.GameHelpers.Player.Object;
 
     /// <summary>
     /// The level of the player.
     /// </summary>
-    protected static byte Level => Player?.Level ?? 0;
+    protected static byte Level => (byte)ECommons.GameHelpers.Player.Level;
 
     /// <summary>
     /// Does player have swift cast, dual cast or triple cast.
@@ -74,7 +75,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// The player's target.
     /// </summary>
-    protected static BattleChara Target => Service.TargetManager.Target is BattleChara b ? b : Player;
+    protected static BattleChara Target => Svc.Targets.Target is BattleChara b ? b : Player;
 
     /// <summary>
     /// Shortcut for Target.IsDying();

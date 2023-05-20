@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract partial class BLM_Base : CustomRotation
 {
@@ -7,7 +9,7 @@ public abstract partial class BLM_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
 
     #region Job Gauge
-    static BLMGauge JobGauge => Service.JobGauges.Get<BLMGauge>();
+    static BLMGauge JobGauge => Svc.Gauges.Get<BLMGauge>();
 
     protected static byte UmbralIceStacks => JobGauge.UmbralIceStacks;
 

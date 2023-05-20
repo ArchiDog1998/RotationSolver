@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class SGE_Base : CustomRotation
@@ -6,7 +8,7 @@ public abstract class SGE_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
 
     #region Job Gauge
-    static SGEGauge JobGauge => Service.JobGauges.Get<SGEGauge>();
+    static SGEGauge JobGauge => Svc.Gauges.Get<SGEGauge>();
 
     protected static bool HasEukrasia => JobGauge.Eukrasia;
     protected static byte Addersgall => JobGauge.Addersgall;
@@ -70,7 +72,7 @@ public abstract class SGE_Base : CustomRotation
 
             return TargetFilter.FindAttackedTarget(targets, mustUse);
         },
-        ActionCheck = (b, m) => Service.ObjectTable.OfType<BattleChara>()
+        ActionCheck = (b, m) => Svc.Objects.OfType<BattleChara>()
             .Where(o => o.CurrentHp > 0)
             .All(o => !o.HasStatus(true, StatusID.Kardion)),
     };

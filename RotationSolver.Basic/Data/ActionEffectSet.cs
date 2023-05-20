@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using ECommons.DalamudServices;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using System.Collections;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -13,19 +14,18 @@ public unsafe struct ActionEffectSet
     public GameObject Source { get; }
     public TargetEffect[] TargetEffects { get; }
     public float AnimationLock { get;  }
-    public int MyProperty { get; set; }
     public ActionEffectSet(uint sourceId, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
         Type = effectHeader->actionType;
         Action = Service.GetSheet<Action>().GetRow(effectHeader->actionId);
-        Target = Service.ObjectTable.SearchById(effectHeader->animationTargetId);
-        Source = Service.ObjectTable.SearchById(sourceId);
+        Target = Svc.Objects.SearchById(effectHeader->animationTargetId);
+        Source = Svc.Objects.SearchById(sourceId);
         AnimationLock = effectHeader->animationLockTime;
 
         TargetEffects = new TargetEffect[effectHeader->NumTargets];
         for (int i = 0; i < effectHeader->NumTargets; i++)
         {
-            TargetEffects[i] = new TargetEffect(Service.ObjectTable.SearchById(effectTargets[i]), effectArray + 8 * i);
+            TargetEffects[i] = new TargetEffect(Svc.Objects.SearchById(effectTargets[i]), effectArray + 8 * i);
         }
     }
 

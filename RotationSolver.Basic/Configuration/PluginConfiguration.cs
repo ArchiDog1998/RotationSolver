@@ -1,6 +1,7 @@
 using Dalamud.Configuration;
 using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Logging;
+using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -202,13 +203,12 @@ public class PluginConfiguration : IPluginConfiguration
     public float ControlProgressHeight = 8;
     public bool ShowCooldownWindow = false;
     public float DistanceForMoving = 1.2f;
-    public int MaxPing = 300;
+    public float MaxPing = 0.3f;
 
-    public bool ShowStatusWindow = false;
     public bool AutoLoadCustomRotations = false;
 
     public void Save()
     {
-        Service.Interface.SavePluginConfig(this);
+        Svc.PluginInterface.SavePluginConfig(this);
     }
 }

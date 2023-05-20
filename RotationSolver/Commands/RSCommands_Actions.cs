@@ -1,6 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
-using Lumina.Excel.GeneratedSheets;
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
@@ -22,7 +24,7 @@ namespace RotationSolver.Commands
             }
             _lastState = DataCenter.StateType;
 
-            if (Service.Player == null) return;
+            if (!Player.Available) return;
 
             //Do not click the button in random time.
             if (DateTime.Now - _fastClickStopwatch < TimeSpan.FromMilliseconds(new Random().Next(
@@ -42,13 +44,13 @@ namespace RotationSolver.Commands
 
 #if DEBUG
             //if (nextAction is BaseAction acti)
-            //    Service.ChatGui.Print($"Will Do {acti}");
+            //    Svc.Chat.Print($"Will Do {acti}");
 #endif
             if (DataCenter.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
                 if ((_loop %= 5) == 0)
                 {
-                    Service.ToastGui.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
+                    Svc.Toasts.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
                 }
                 _loop++;
                 return;
@@ -68,14 +70,14 @@ namespace RotationSolver.Commands
 
                     if (act.ShouldEndSpecial) ResetSpecial();
 #if DEBUG
-                    //Service.ChatGui.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
+                    //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (((Service.TargetManager.Target?.IsNPCEnemy() ?? true)
-                        || Service.TargetManager.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
+                    if (((Svc.Targets.Target?.IsNPCEnemy() ?? true)
+                        || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
                         && (act.Target?.IsNPCEnemy() ?? false))
                     {
-                        Service.TargetManager.SetTarget(act.Target);
+                        Svc.Targets.SetTarget(act.Target);
                     }
                 }
 
@@ -115,24 +117,24 @@ namespace RotationSolver.Commands
         static float _lastCountdownTime = 0;
         internal static void UpdateRotationState()
         {
-            if (Service.Conditions[ConditionFlag.LoggingOut])
+            if (Svc.Condition[ConditionFlag.LoggingOut])
             {
                 CancelState();
             }
             else if (Service.Config.AutoOffWhenDead 
-                && Service.Player != null 
-                && Service.Player.CurrentHp == 0)
+                && Player.Available
+                && Player.Object.CurrentHp == 0)
             {
                 CancelState();
             }
             else if (Service.Config.AutoOffCutScene
-                && Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent])
+                && Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent])
             {
                 CancelState();
             }
             else if (Service.Config.AutoOffBetweenArea && (
-                Service.Conditions[ConditionFlag.BetweenAreas]
-                || Service.Conditions[ConditionFlag.BetweenAreas51]))
+                Svc.Condition[ConditionFlag.BetweenAreas]
+                || Svc.Condition[ConditionFlag.BetweenAreas51]))
             {
                 CancelState();
             }

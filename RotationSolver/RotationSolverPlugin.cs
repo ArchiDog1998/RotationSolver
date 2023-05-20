@@ -1,9 +1,16 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
 using Dalamud.Plugin;
+using ECommons;
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
+using ECommons.SplatoonAPI;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
@@ -18,20 +25,21 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static ControlWindow _controlWindow;
     static NextActionWindow _nextActionWindow;
     static CooldownWindow _cooldownWindow;
-    static StatusWindow _statusWindow;
 
     static readonly List<IDisposable> _dis = new();
     public string Name => "Rotation Solver";
 
     public static DalamudLinkPayload LinkPayload { get; private set; }
-    public unsafe RotationSolverPlugin(DalamudPluginInterface pluginInterface)
+    public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
+        ECommonsMain.Init(pluginInterface, this, ECommons.Module.SplatoonAPI);
+
         pluginInterface.Create<Service>();
 
         try
         {
             Service.Config = JsonConvert.DeserializeObject<PluginConfiguration>(
-                File.ReadAllText(Service.Interface.ConfigFile.FullName)) 
+                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName)) 
                 ?? new PluginConfiguration();
         }
         catch
@@ -43,38 +51,51 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _controlWindow = new();
         _nextActionWindow = new();
         _cooldownWindow = new();
-        _statusWindow = new();
 
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(_comboConfigWindow);
         windowSystem.AddWindow(_controlWindow);
         windowSystem.AddWindow(_nextActionWindow);
         windowSystem.AddWindow(_cooldownWindow);
-        windowSystem.AddWindow(_statusWindow);
 
-        Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
-        Service.Interface.UiBuilder.Draw += windowSystem.Draw;
-        Service.Interface.UiBuilder.Draw += OverlayWindow.Draw;
+        Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
+        Svc.PluginInterface.UiBuilder.Draw += windowSystem.Draw;
+        Svc.PluginInterface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
         OtherConfiguration.Init();
         _dis.Add(new Watcher());
         _dis.Add(new MovingController());
-
-        var manager = new LocalizationManager();
-        _dis.Add(manager);
+        _dis.Add(new LocalizationManager());
 #if DEBUG
         LocalizationManager.ExportLocalization();
 #endif
         ChangeUITranslation();
 
-        RotationUpdater.GetAllCustomRotations(RotationUpdater.DownloadOption.Donwload);
-        RotationHelper.LoadList();
+        Task.Run(async () =>
+        {
+            await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
+            await RotationHelper.LoadListAsync();
+        });
 
         LinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
         {
             if(id == 0) OpenConfigWindow();
         });
+
+        //Task.Run(async () =>
+        //{
+        //    await Task.Delay(1000);
+        //    Splatoon.RemoveDynamicElements("Test");
+        //    var element = new Element(ElementType.CircleRelativeToActorPosition);
+        //    element.refActorObjectID = Player.Object.ObjectId;
+        //    element.refActorComparisonType = RefActorComparisonType.ObjectID;
+        //    element.includeHitbox = true;
+        //    element.radius = 0.5f;
+        //    element.Donut = 0.8f;
+        //    element.color = ImGui.GetColorU32(new Vector4(1, 1, 1, 0.4f));
+        //    Svc.Toasts.ShowQuest(Splatoon.AddDynamicElement("Test", element, -2).ToString());
+        //});
     }
 
     internal static void ChangeUITranslation()
@@ -89,9 +110,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public void Dispose()
     {
         RSCommands.Disable();
-        Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
-        Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
-        Service.Interface.UiBuilder.Draw -= OverlayWindow.Draw;
+        Svc.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
+        Svc.PluginInterface.UiBuilder.Draw -= windowSystem.Draw;
+        Svc.PluginInterface.UiBuilder.Draw -= OverlayWindow.Draw;
 
         foreach (var item in _dis)
         {
@@ -103,6 +124,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         IconSet.Dispose();
         OtherConfiguration.Save();
+
+        ECommonsMain.Dispose();
     }
 
     private void OnOpenConfigUi()
@@ -121,20 +144,19 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     {
         var isValid = validDelay.Delay(MajorUpdater.IsValid
         && (!Service.Config.OnlyShowWithHostileOrInDuty
-                || Service.Conditions[ConditionFlag.BoundByDuty]
+                || Svc.Condition[ConditionFlag.BoundByDuty]
                 || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
             && RotationUpdater.RightNowRotation != null
-            && !Service.Conditions[ConditionFlag.OccupiedInCutSceneEvent]
-            && !Service.Conditions[ConditionFlag.Occupied38] //Treasure hunt.
-            && !Service.Conditions[ConditionFlag.BetweenAreas]
-            && !Service.Conditions[ConditionFlag.BetweenAreas51]
-            && !Service.Conditions[ConditionFlag.WaitingForDuty]
-            && !Service.Conditions[ConditionFlag.UsingParasol]
-            && !Service.Conditions[ConditionFlag.OccupiedInQuestEvent]);
+            && !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
+            && !Svc.Condition[ConditionFlag.Occupied38] //Treasure hunt.
+            && !Svc.Condition[ConditionFlag.BetweenAreas]
+            && !Svc.Condition[ConditionFlag.BetweenAreas51]
+            && !Svc.Condition[ConditionFlag.WaitingForDuty]
+            && !Svc.Condition[ConditionFlag.UsingParasol]
+            && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
         _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;
         _cooldownWindow.IsOpen = isValid && Service.Config.ShowCooldownWindow;
-        _statusWindow.IsOpen = isValid && Service.Config.ShowStatusWindow;
     }
 }

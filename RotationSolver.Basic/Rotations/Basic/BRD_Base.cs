@@ -1,3 +1,5 @@
+using ECommons.DalamudServices;
+
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class BRD_Base : CustomRotation
@@ -7,7 +9,7 @@ public abstract class BRD_Base : CustomRotation
     public sealed override ClassJobID[] JobIDs => new[] { ClassJobID.Bard, ClassJobID.Archer };
 
     #region Job Gauge
-    static BRDGauge JobGauge => Service.JobGauges.Get<BRDGauge>();
+    static BRDGauge JobGauge => Svc.Gauges.Get<BRDGauge>();
 
     protected static byte Repertoire => JobGauge.Repertoire;
 

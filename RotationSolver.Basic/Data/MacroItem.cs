@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using ECommons.DalamudServices;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 
 namespace RotationSolver.Basic.Data;
@@ -20,8 +21,8 @@ public unsafe class MacroItem
     {
         if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
 
-        _lastTarget = Service.TargetManager.Target;
-        Service.TargetManager.SetTarget(Target);
+        _lastTarget = Svc.Targets.Target;
+        Svc.Targets.SetTarget(Target);
         RaptureShellModule.Instance->ExecuteMacro(Macro);
 
         IsRunning = true;
@@ -32,7 +33,7 @@ public unsafe class MacroItem
     {
         if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
 
-        Service.TargetManager.SetTarget(_lastTarget);
+        Svc.Targets.SetTarget(_lastTarget);
 
         IsRunning = false;
         return true;

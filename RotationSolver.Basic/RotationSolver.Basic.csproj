@@ -24,6 +24,18 @@
 	  <Using Include="System.ComponentModel" />
 	  <Using Include="Dalamud.Game.ClientState.JobGauge.Types" />
 
+	  <Using Include="Dalamud.Game.ClientState.Objects.Types" />
+
+	  <Using Include="RotationSolver.Basic" />
+	  <Using Include="RotationSolver.Basic.Actions" />
+	  <Using Include="RotationSolver.Basic.Attributes" />
+	  <Using Include="RotationSolver.Basic.Configuration.RotationConfig" />
+	  <Using Include="RotationSolver.Basic.Data" />
+	  <Using Include="RotationSolver.Basic.Helpers" />
+	  <Using Include="RotationSolver.Basic.Rotations" />
+	  <Using Include="RotationSolver.Basic.Rotations.Basic" />
+
+	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
 
 	  <None Include="..\COPYING.LESSER">
 		<Pack>True</Pack>
@@ -37,5 +49,6 @@
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
 	  </None>
+	  
   </ItemGroup>
 </Project>

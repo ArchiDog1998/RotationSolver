@@ -10,6 +10,18 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
+		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
 		<EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
+
+		<Using Include="Dalamud.Game.ClientState.Objects.Types" />
+
+		<Using Include="RotationSolver.Basic" />
+		<Using Include="RotationSolver.Basic.Actions" />
+		<Using Include="RotationSolver.Basic.Attributes" />
+		<Using Include="RotationSolver.Basic.Configuration.RotationConfig" />
+		<Using Include="RotationSolver.Basic.Data" />
+		<Using Include="RotationSolver.Basic.Helpers" />
+		<Using Include="RotationSolver.Basic.Rotations" />
+		<Using Include="RotationSolver.Basic.Rotations.Basic" />
 	</ItemGroup>
 </Project>

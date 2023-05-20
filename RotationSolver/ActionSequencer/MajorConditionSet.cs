@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.ActionSequencer;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.ActionSequencer;
 
 internal class MajorConditionSet
 {
@@ -44,7 +46,7 @@ internal class MajorConditionSet
             }
             catch
             {
-                Service.ChatGui.Print($"Failed to load the conditionSet from {p}");
+                Svc.Chat.Print($"Failed to load the conditionSet from {p}");
                 return null;
             }
         }).Where(set => set != null && !string.IsNullOrEmpty(set.Name)).ToArray();

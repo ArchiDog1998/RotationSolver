@@ -1,4 +1,6 @@
-﻿using Lumina.Excel.GeneratedSheets;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
+using Lumina.Excel.GeneratedSheets;
 using System.Data;
 
 namespace RotationSolver.Basic.Helpers;
@@ -88,8 +90,8 @@ public static class TargetFilter
     const float DISTANCE_TO_MOVE = 3;
     private static T FindMoveTargetFaceDirection<T>(IEnumerable<T> charas) where T : GameObject
     {
-        Vector3 pPosition = Service.Player.Position;
-        float rotation = Service.Player.Rotation;
+        Vector3 pPosition = Player.Object.Position;
+        float rotation = Player.Object.Rotation;
         Vector2 faceVec = new((float)Math.Cos(rotation), (float)Math.Sin(rotation));
 
         var tars = charas.Where(t =>
@@ -107,14 +109,14 @@ public static class TargetFilter
 
     private static T FindMoveTargetScreenCenter<T>(IEnumerable<T> charas) where T : GameObject
     {
-        var pPosition = Service.Player.Position;
-        if (!Service.WorldToScreen(pPosition, out var playerScrPos)) return null;
+        var pPosition = Player.Object.Position;
+        if (!Svc.GameGui.WorldToScreen(pPosition, out var playerScrPos)) return null;
 
         var tars = charas.Where(t =>
         {
             if (t.DistanceToPlayer() < DISTANCE_TO_MOVE) return false;
 
-            if (!Service.WorldToScreen(t.Position, out var scrPos)) return false;
+            if (!Svc.GameGui.WorldToScreen(t.Position, out var scrPos)) return false;
 
             var dir = scrPos - playerScrPos;
 
@@ -166,7 +168,7 @@ public static class TargetFilter
     /// <returns></returns>
     internal static IEnumerable<BattleChara> ProvokeTarget(IEnumerable<BattleChara> inputCharas, bool needDistance = false)
     {
-        var loc = Service.Player.Position;
+        var loc = Player.Object.Position;
 
         var targets = inputCharas.Where(target =>
         {
@@ -175,7 +177,7 @@ public static class TargetFilter
             && (target.TargetObject?.IsValid() ?? false))
             {
                 //the target is not a tank role
-                if (Service.ObjectTable.SearchById(target.TargetObjectId) is BattleChara battle 
+                if (Svc.Objects.SearchById(target.TargetObjectId) is BattleChara battle 
                     && !battle.IsJobCategory(JobRole.Tank)
                     && (!needDistance || Vector3.Distance(target.Position, loc) > 5))
                 {
