@@ -139,7 +139,6 @@ internal static class OverlayWindow
             && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
 
         Vector3 pPosition = target.Position;
-        Svc.GameGui.WorldToScreen(pPosition, out var scrPos);
 
         float radius = target.HitboxRadius + Player.Object.HitboxRadius + 3;
         float rotation = target.Rotation;
@@ -147,11 +146,9 @@ internal static class OverlayWindow
         if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
         {
             var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
-            List<Vector2> pts1 = new(4 * COUNT);
-            SectorPlots(ref pts1, pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
+            var pts1 = SectorPlots(pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
 
-            List<Vector2> pts2 = new(4 * COUNT);
-            SectorPlots(ref pts2, pPosition, radius + Service.Config.MeleeRangeOffset, 0, 4 * COUNT, 2 * Math.PI);
+            var pts2 = SectorPlots(pPosition, radius + Service.Config.MeleeRangeOffset, 0, 4 * COUNT, 2 * Math.PI);
 
             DrawFill(pts1.ToArray(), pts2.ToArray(), offsetColor);
 
@@ -161,39 +158,34 @@ internal static class OverlayWindow
 
         List<Vector2> pts = new(4 * COUNT);
         bool wrong = target.DistanceToPlayer() > 3;
-        if (Service.Config.DrawPositional && !Player.Object.HasStatus(true, StatusID.TrueNorth))
-        {
-            var shouldPos = ActionUpdater.NextGCDAction?.EnemyPositional ?? EnemyPositional.None;
 
-            switch (shouldPos)
-            {
-                case EnemyPositional.Flank:
-                    pts.Add(scrPos);
-                    SectorPlots(ref pts, pPosition, radius, Math.PI * 0.25 + rotation, COUNT);
-                    pts.Add(scrPos);
-                    SectorPlots(ref pts, pPosition, radius, Math.PI * 1.25 + rotation, COUNT);
-                    pts.Add(scrPos);
-                    break;
-                case EnemyPositional.Rear:
-                    pts.Add(scrPos);
-                    SectorPlots(ref pts, pPosition, radius, Math.PI * 0.75 + rotation, COUNT);
-                    pts.Add(scrPos);
-                    break;
-            }
-            if (!wrong && pts.Count > 0)
-            {
-                wrong = shouldPos != target.FindEnemyPositional();
-            }
-        }
-        if (pts.Count == 0 && Service.Config.DrawMeleeRange)
+        var shouldPos = ActionUpdater.NextGCDAction?.EnemyPositional ?? EnemyPositional.None;
+        if (!wrong && shouldPos is EnemyPositional.Rear or EnemyPositional.Flank)
         {
-            SectorPlots(ref pts, pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
+            wrong = shouldPos != target.FindEnemyPositional();
         }
 
-        if (pts.Count > 0) DrawRange(pts, wrong);
+        switch (shouldPos)
+        {
+            case EnemyPositional.Flank when Service.Config.DrawPositional && !Player.Object.HasStatus(true, StatusID.TrueNorth):
+                DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 0.25 + rotation, COUNT).Append(pPosition))), wrong);
+                DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 1.25 + rotation, COUNT).Append(pPosition))), wrong);
+                break;
+            case EnemyPositional.Rear when Service.Config.DrawPositional && !Player.Object.HasStatus(true, StatusID.TrueNorth):
+                DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 0.75 + rotation, COUNT).Append(pPosition))), wrong);
+                break;
+
+            default:
+                if (Service.Config.DrawMeleeRange)
+                {
+                    DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, 0, 4 * COUNT, 2 * Math.PI))), wrong);
+                }
+                break;
+        }
+
     }
 
-    static void DrawFill(Vector2[] pts1, Vector2[] pts2, Vector3 color)
+    static void DrawFill(Vector3[] pts1, Vector3[] pts2, Vector3 color)
     {
         if (pts1 == null || pts2 == null) return;
         if (pts1.Length != pts2.Length) return;
@@ -205,7 +197,7 @@ internal static class OverlayWindow
             var p3 = pts2[(i + 1) % length];
             var p4 = pts1[(i + 1) % length];
 
-            DrawFill(new Vector2[] { p1, p2, p3, p4}, color);
+            DrawFill(GetPtsOnScreen(new Vector3[] { p1, p2, p3, p4}), color);
         }
     }
 
@@ -225,6 +217,11 @@ internal static class OverlayWindow
         ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, Service.Config.AlphaInFill)));
     }
 
+    static void DrawBoundary(IEnumerable<Vector3> pts, Vector3 color)
+    {
+        DrawBoundary(ClosePoints(GetPtsOnScreen(pts)), color);
+    }
+
     static void DrawBoundary(IEnumerable<Vector2> pts, Vector3 color)
     {
         foreach (var pt in pts)
@@ -234,20 +231,15 @@ internal static class OverlayWindow
         ImGui.GetWindowDrawList().PathStroke(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, 1f)), ImDrawFlags.None, 2);
     }
 
-    private static void SectorPlots(ref List<Vector2> pts, Vector3 centre, float radius, double rotation, int segments, double round = Math.PI / 2)
+    private static List<Vector3> SectorPlots(Vector3 center, float radius, double rotation, int segments, double round = Math.PI / 2)
     {
-        var pts3 = new List<Vector3>();
+        var pts = new List<Vector3>(4 * COUNT);
         var step = round / segments;
         for (int i = 0; i < segments; i++)
         {
-            pts3.Add(ChangePoint(centre, radius, rotation + i * step));
+            pts.Add(ChangePoint(center, radius, rotation + i * step));
         }
-        pts.AddRange(pts3.Select(p =>
-        {
-            Svc.GameGui.WorldToScreen(p, out var pos);
-            return pos;
-        }));
-        pts.AddRange(GetPtsOnScreen(pts3));
+        return pts;
     }
 
     private static Vector3 ChangePoint(Vector3 pt, double radius, double rotation)
@@ -255,6 +247,14 @@ internal static class OverlayWindow
         var x = Math.Sin(rotation) * radius + pt.X;
         var z = Math.Cos(rotation) * radius + pt.Z;
         return new Vector3((float)x, pt.Y, (float)z);
+    }
+
+    public static IEnumerable<Vector2> ClosePoints(IEnumerable<Vector2> pts)
+    {
+        if(pts.Count() < 3) return pts;
+        if (Vector2.Distance(pts.First(), pts.Last()) < 0.001f) return pts;
+        pts = pts.Append(pts.First());
+        return pts;
     }
 
     public static IEnumerable<Vector2> GetPtsOnScreen(IEnumerable<Vector3> pts)
@@ -303,10 +303,10 @@ internal static class OverlayWindow
         back.Z = PLANE_Z;
     }
 
+    static readonly FieldInfo _matrix = Svc.GameGui.GetType().GetRuntimeFields().FirstOrDefault(f => f.Name == "getMatrixSingleton");
     public static unsafe Vector3 WorldToCamera(Vector3 worldPos)
     {
-        var f = Svc.GameGui.GetType().GetRuntimeFields().FirstOrDefault(f => f.Name == "getMatrixSingleton");
-        var matrix = (MulticastDelegate)f.GetValue(Svc.GameGui);
+        var matrix = (MulticastDelegate)_matrix.GetValue(Svc.GameGui);
         var matrixSingleton = (IntPtr)matrix.DynamicInvoke();
 
         var viewProjectionMatrix = *(Matrix4x4*)(matrixSingleton + 0x1b4);
