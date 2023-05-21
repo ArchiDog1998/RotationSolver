@@ -41,6 +41,7 @@ jobs:
                       
       - name: Build Plugin
         run: |
+          invoke-expression 'dotnet build --no-restore --configuration Release ECommons'
           invoke-expression 'dotnet build --no-restore --configuration Release RotationSolver'
            
       - name: Upload Artifact
