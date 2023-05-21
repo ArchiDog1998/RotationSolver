@@ -34,57 +34,63 @@ public static class IconSet
 
     public static TextureWrap GetTexture(uint id)
     {
-        if (!_texturesIds.TryGetValue(id, out var texture))
+        lock (_texturesIds)
         {
-            if (!_loadingTextureID.Contains(id))
+            if (!_texturesIds.TryGetValue(id, out var texture))
             {
-                _loadingTextureID.Add(id);
-                Task.Run(() =>
+                if (!_loadingTextureID.Contains(id))
                 {
-                    texture = Service.GetTextureIcon(id);
-                    _texturesIds[id] = texture;
-                });
+                    _loadingTextureID.Add(id);
+                    Task.Run(() =>
+                    {
+                        texture = Service.GetTextureIcon(id);
+                        _texturesIds[id] = texture;
+                    });
+                }
+
+                if (!_texturesIds.TryGetValue(0, out texture))
+                {
+                    texture = Service.GetTextureIcon(0);
+                    _texturesIds[0] = texture;
+                }
+                return texture;
             }
 
-            if (!_texturesIds.TryGetValue(0, out texture))
-            {
-                texture = Service.GetTextureIcon(0);
-                _texturesIds[0] = texture;
-            }
             return texture;
         }
-
-        return texture;
     }
 
     public static TextureWrap GetTexture(string path)
     {
-        if (!_texturesPath.TryGetValue(path, out var t))
+        lock (_texturesPath)
         {
-            if (!_loadingTexturePath.Contains(path))
+            if (!_texturesPath.TryGetValue(path, out var t))
             {
-                _loadingTexturePath.Add(path);
-
-                try
+                if (!_loadingTexturePath.Contains(path))
                 {
-                    Task.Run(async () =>
+                    _loadingTexturePath.Add(path);
+
+                    try
                     {
-                        if (path.StartsWith("https:"))
+                        Task.Run(async () =>
                         {
-                            var bytes = await LoadBytes(path);
-                            _texturesPath[path] = TryLoadImage(bytes);
-                        }
-                        else if(path.StartsWith("ui/"))
-                        {
-                            _texturesPath[path] = Service.GetTexture(path);
-                        }
-                    });
+                            if (path.StartsWith("https:"))
+                            {
+                                var bytes = await LoadBytes(path);
+                                _texturesPath[path] = TryLoadImage(bytes);
+                            }
+                            else if (path.StartsWith("ui/"))
+                            {
+                                _texturesPath[path] = Service.GetTexture(path);
+                            }
+                        });
+                    }
+                    finally { }
                 }
-                finally { }
+                return null;
             }
-            return null;
+            return t;
         }
-        return t;
     }
 
     private static async Task<byte[]> LoadBytes(string url)
