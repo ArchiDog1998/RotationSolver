@@ -195,7 +195,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_HealOutOfCombat { get; set; } = "Heal party members outside of combat.";
 
-    public string ConfigWindow_Param_OnlyHotOnTanks { get; set; } = "Only use hot actions on tank rols.";
+    public string ConfigWindow_Param_OnlyHotOnTanks { get; set; } = "Use single target healing over time actions only on tanks";
 
     public string ConfigWindow_Param_BeneficialAreaOnTarget { get; set; } = "Use Beneficial Area abilities on target.";
 
