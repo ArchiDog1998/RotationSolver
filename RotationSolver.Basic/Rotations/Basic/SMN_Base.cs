@@ -171,7 +171,7 @@ public abstract class SMN_Base : CustomRotation
 
     public static IBaseAction PainFlare { get; } = new BaseAction(ActionID.PainFlare)
     {
-        ActionCheck = EnergyDrain.ActionCheck,
+        ActionCheck = Fester.ActionCheck,
     };
     #endregion
 
