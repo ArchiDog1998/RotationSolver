@@ -186,7 +186,7 @@ internal static class OverlayWindow
 
     private static bool CanDrawPositional(GameObject target)
     {
-        return !Player.Object.HasStatus(true, StatusID.TrueNorth) && !Player.Object.HasStatus(true, StatusID.RightEye) && target.HasPositional();
+        return !Player.Object.HasStatus(true, CustomRotation.TrueNorth.StatusProvide) && target.HasPositional();
     }
 
     static void DrawFill(Vector3[] pts1, Vector3[] pts2, Vector3 color)

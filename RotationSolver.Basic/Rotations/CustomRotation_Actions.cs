@@ -173,7 +173,7 @@ public abstract partial class CustomRotation
     public static IBaseAction TrueNorth { get; } = new RoleAction(ActionID.TrueNorth,
         new JobRole[] { JobRole.Melee }, ActionOption.Heal)
     {
-        StatusProvide = new StatusID[] { StatusID.TrueNorth },
+        StatusProvide = new StatusID[] { StatusID.TrueNorth, StatusID.RightEye },
     };
 
     /// <summary>
