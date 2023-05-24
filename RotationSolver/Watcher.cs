@@ -6,6 +6,8 @@ using Dalamud.Plugin.Ipc;
 using Dalamud.Utility.Signatures;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using ECommons.Hooks;
+using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -13,30 +15,27 @@ using System.Text.RegularExpressions;
 
 namespace RotationSolver;
 
-public class Watcher : IDisposable
+public static class Watcher
 {
-    private unsafe delegate void ReceiveAbilityDelegate(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets);
-
-    /// <summary>
-    /// https://github.com/Tischel/ActionTimeline/blob/master/ActionTimeline/Helpers/TimelineManager.cs#L86
-    /// </summary>
-    [Signature("40 55 53 57 41 54 41 55 41 56 41 57 48 8D AC 24 ?? ?? ?? ?? 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 45 70", DetourName = nameof(ReceiveAbilityEffect))]
-    private static Hook<ReceiveAbilityDelegate> _receiveAbilityHook = null;
-
-
     public static ICallGateSubscriber<object, object> IpcSubscriber;
-    private bool _disposed;
 
-    public Watcher()
+    public static void Enable()
     {
-        SignatureHelper.Initialise(this);
-        _receiveAbilityHook?.Enable();
-
         IpcSubscriber = Svc.PluginInterface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
         IpcSubscriber.Subscribe(UpdateRTTDetour);
+
+        ActionEffect.ActionEffectEvent += ActionFromEnemy;
+        ActionEffect.ActionEffectEvent += ActionFromSelf;
     }
 
-    private void UpdateRTTDetour(dynamic obj)
+    public static void Disable()
+    {
+        IpcSubscriber.Unsubscribe(UpdateRTTDetour);
+        ActionEffect.ActionEffectEvent -= ActionFromEnemy;
+        ActionEffect.ActionEffectEvent -= ActionFromSelf;
+    }
+
+    private static void UpdateRTTDetour(dynamic obj)
     {
         PluginLog.LogDebug($"LastRTT:{obj.LastRTT}");
         DataCenter.RTT = (long)obj.LastRTT / 1000f;
@@ -44,25 +43,6 @@ public class Watcher : IDisposable
 
     public static string ShowStrSelf { get; private set; } = string.Empty;
     public static string ShowStrEnemy { get; private set; } = string.Empty;
-
-    private static unsafe void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
-    {
-        if (Player.Available)
-        {
-            try
-            {
-                var set = new ActionEffectSet(sourceId, effectHeader, effectArray, effectTargets);
-
-                ActionFromSelf(set);
-                ActionFromEnemy(set);
-            }
-            catch (Exception ex)
-            {
-                PluginLog.Error(ex, "Error at Ability Receive.");
-            }
-        }
-        _receiveAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTargets);
-    }
 
     private static void ActionFromEnemy(ActionEffectSet set)
     {
@@ -75,27 +55,27 @@ public class Watcher : IDisposable
         if (Svc.Objects.SearchById(battle.ObjectId) is PlayerCharacter) return;
 
         var damageRatio = set.TargetEffects
-            .Where(e => e.Target == Player.Object)
-            .SelectMany(e => new ActionEffect[]
+            .Where(e => e.TargetID == Player.Object.ObjectId)
+            .SelectMany(e => new EffectEntry[]
             {
                 e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]
             })
-            .Where(e => e.Type == ActionEffectType.Damage)
-            .Sum(e => (float)e.Value / Player.Object.MaxHp);
+            .Where(e => e.type == ActionEffectType.Damage)
+            .Sum(e => (float)e.value / Player.Object.MaxHp);
 
         DataCenter.AddDamageRec(damageRatio);
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
 
-        if(set.Type == ActionType.Spell && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
+        if(set.Header.ActionType == ActionType.Spell && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
         {
             var type = set.Action.GetActionType();
 
             if(type is ActionCate.Spell or ActionCate.WeaponSkill or ActionCate.Ability)
             {
                 if (set.TargetEffects.Count(e =>
-                    DataCenter.PartyMembers.Any(p => p.ObjectId == e.Target?.ObjectId)
+                    DataCenter.PartyMembers.Any(p => p.ObjectId == e.TargetID)
                     && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
-                    && (effect.Value > 0 || (effect.Param0 & 6) == 6))
+                    && (effect.value > 0 || (effect.param0 & 6) == 6))
                     == DataCenter.PartyMembers.Count())
                 {
                     if (Service.Config.RecordCastingArea)
@@ -111,18 +91,18 @@ public class Watcher : IDisposable
     private static void ActionFromSelf(ActionEffectSet set)
     {
         if (set.Source.ObjectId != Player.Object.ObjectId) return;
-        if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
+        if (set.Header.ActionType != ActionType.Spell && set.Header.ActionType != ActionType.Item) return;
         if (set.Action == null) return;
         if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
         var id = set.Action.RowId;
         if(set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id))
         {
-            OtherConfiguration.AnimationLockTime[id] = set.AnimationLock;
+            OtherConfiguration.AnimationLockTime[id] = set.Header.AnimationLockTime;
         }
 
         if (!set.TargetEffects.Any()) return;
-        var flag = set.TargetEffects.FirstOrDefault()[0].Param2;
+        var flag = set.TargetEffects.FirstOrDefault()[0].param2;
 
         var action = set.Action;
         var tar = set.Target;
@@ -137,7 +117,7 @@ public class Watcher : IDisposable
         DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
         DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Player.Object.ObjectId).Sum(i => i.Value);
         DataCenter.EffectTime = DateTime.Now;
-        DataCenter.EffectEndTime = DateTime.Now.AddSeconds(set.AnimationLock + 1);
+        DataCenter.EffectEndTime = DateTime.Now.AddSeconds(set.Header.AnimationLockTime + 1);
 
         //Macro
         foreach (var item in Service.Config.Events)
@@ -164,21 +144,5 @@ public class Watcher : IDisposable
                 SpeechHelper.Speak(Service.Config.PositionalErrorText);
             }
         }
-    }
-
-    public void Dispose()
-    {
-         Dispose(true);
-         GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (_disposed) return;
-
-        if (disposing)
-             _receiveAbilityHook?.Dispose();
-
-        _disposed = true;
     }
 }

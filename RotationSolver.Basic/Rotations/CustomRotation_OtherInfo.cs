@@ -136,7 +136,7 @@ public abstract partial class CustomRotation
     protected static float WeaponElapsed => DataCenter.WeaponElapsed;
     #endregion
 
-    protected static ClientLanguage Language => Service.Language;
+    protected static ClientLanguage Language => Svc.ClientState.ClientLanguage;
     protected static TerritoryContentType TerritoryContentType => DataCenter.TerritoryContentType;
 
     protected static float Ping => DataCenter.Ping;

@@ -21,7 +21,6 @@ public static class Service
 
     public static float CountDownTime => Countdown.TimeRemaining;
 
-
     public static PluginConfiguration Config { get; set; }
     public static PluginConfiguration Default { get; } = new PluginConfiguration();
 
@@ -30,7 +29,6 @@ public static class Service
 
     public static unsafe uint GetAdjustedActionId(uint id)
     => ActionManager.Instance()->GetAdjustedActionId(id);
-
 
     public unsafe static IEnumerable<IntPtr> GetAddons<T>() where T : struct
     {
@@ -45,7 +43,4 @@ public static class Service
 
     internal static TextureWrap GetTextureIcon(uint id) => Svc.Data.GetImGuiTextureIcon(id);
     internal static TextureWrap GetTexture(string path) => Svc.Data.GetImGuiTexture(path);
-
-    public static ClientLanguage Language => Svc.ClientState.ClientLanguage;
-
 }

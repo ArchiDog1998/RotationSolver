@@ -58,8 +58,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
+        Watcher.Enable();
         OtherConfiguration.Init();
-        _dis.Add(new Watcher());
         _dis.Add(new MovingController());
         _dis.Add(new LocalizationManager());
 #if DEBUG
@@ -91,6 +91,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public void Dispose()
     {
         RSCommands.Disable();
+        Watcher.Disable();
+
         Svc.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw -= windowSystem.Draw;
         Svc.PluginInterface.UiBuilder.Draw -= OverlayWindow.Draw;
