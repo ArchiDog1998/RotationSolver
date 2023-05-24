@@ -1,4 +1,5 @@
 ﻿using Dalamud;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 
@@ -44,6 +45,11 @@ public abstract partial class CustomRotation
     /// Player's MP.
     /// </summary>
     protected static uint CurrentMp => DataCenter.CurrentMp;
+
+    /// <summary>
+    /// Condition.
+    /// </summary>
+    protected static Condition Condition => Svc.Condition;
 
     #endregion
 
