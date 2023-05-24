@@ -59,9 +59,9 @@ internal class SocialUpdater
 
     internal static void Enable()
     {
-        Service.DutyState.DutyStarted += DutyState_DutyStarted;
-        Service.DutyState.DutyWiped += DutyState_DutyWiped;
-        Service.DutyState.DutyCompleted += DutyState_DutyCompleted;
+        Svc.DutyState.DutyStarted += DutyState_DutyStarted;
+        Svc.DutyState.DutyWiped += DutyState_DutyWiped;
+        Svc.DutyState.DutyCompleted += DutyState_DutyCompleted;
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
         HighEndDuties = Service.GetSheet<TerritoryType>()
@@ -143,9 +143,9 @@ internal class SocialUpdater
 
     internal static void Disable()
     {
-        Service.DutyState.DutyStarted -= DutyState_DutyStarted;
-        Service.DutyState.DutyWiped -= DutyState_DutyWiped;
-        Service.DutyState.DutyCompleted -= DutyState_DutyCompleted;
+        Svc.DutyState.DutyStarted -= DutyState_DutyStarted;
+        Svc.DutyState.DutyWiped -= DutyState_DutyWiped;
+        Svc.DutyState.DutyCompleted -= DutyState_DutyCompleted;
         Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
