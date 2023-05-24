@@ -264,7 +264,7 @@ public abstract partial class CustomRotation
             if (Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoUseTrueNorth)
                 && action.EnemyPositional != EnemyPositional.None && action.Target != null)
             {
-                if (action.EnemyPositional != action.Target.FindEnemyPositional() && action.Target.HasPositional())
+                if (action.EnemyPositional != action.Target.FindEnemyPositional() && action.Target.HasPositional() && !Player.HasStatus(true, StatusID.RightEye))
                 {
                     if (TrueNorth.CanUse(out act, CanUseOption.EmptyOrSkipCombo | CanUseOption.OnLastAbility)) return true;
                 }
