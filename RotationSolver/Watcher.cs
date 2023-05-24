@@ -47,15 +47,14 @@ public class Watcher : IDisposable
 
     private static unsafe void ReceiveAbilityEffect(uint sourceId, IntPtr sourceCharacter, Vector3* pos, ActionEffectHeader* effectHeader, ActionEffect* effectArray, ulong* effectTargets)
     {
-
         if (Player.Available)
         {
             try
             {
                 var set = new ActionEffectSet(sourceId, effectHeader, effectArray, effectTargets);
 
-                ActionFromSelf(sourceId, set, effectHeader->actionId);
-                ActionFromEnemy(sourceId, set);
+                ActionFromSelf(set);
+                ActionFromEnemy(set);
             }
             catch (Exception ex)
             {
@@ -65,10 +64,10 @@ public class Watcher : IDisposable
         _receiveAbilityHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTargets);
     }
 
-    private static void ActionFromEnemy(uint sourceId, ActionEffectSet set)
+    private static void ActionFromEnemy(ActionEffectSet set)
     {
         //Check Source.
-        var source = Svc.Objects.SearchById(sourceId);
+        var source = set.Source;
         if (source == null) return;
         if (source is not BattleChara battle) return;
         if (battle is PlayerCharacter) return;
@@ -109,13 +108,14 @@ public class Watcher : IDisposable
         }
     }
 
-    private static void ActionFromSelf(uint sourceId, ActionEffectSet set, uint id)
+    private static void ActionFromSelf(ActionEffectSet set)
     {
-        if (sourceId != Player.Object.ObjectId) return;
+        if (set.Source.ObjectId != Player.Object.ObjectId) return;
         if (set.Type != ActionType.Spell && set.Type != ActionType.Item) return;
         if (set.Action == null) return;
         if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
+        var id = set.Action.RowId;
         if(set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id))
         {
             OtherConfiguration.AnimationLockTime[id] = set.AnimationLock;
