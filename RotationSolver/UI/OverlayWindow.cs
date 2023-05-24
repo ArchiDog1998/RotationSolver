@@ -167,11 +167,11 @@ internal static class OverlayWindow
 
         switch (shouldPos)
         {
-            case EnemyPositional.Flank when Service.Config.DrawPositional && !Player.Object.HasStatus(true, StatusID.TrueNorth):
+            case EnemyPositional.Flank when Service.Config.DrawPositional && CanDrawPositional(target):
                 DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 0.25 + rotation, COUNT).Append(pPosition))), wrong);
                 DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 1.25 + rotation, COUNT).Append(pPosition))), wrong);
                 break;
-            case EnemyPositional.Rear when Service.Config.DrawPositional && !Player.Object.HasStatus(true, StatusID.TrueNorth):
+            case EnemyPositional.Rear when Service.Config.DrawPositional && CanDrawPositional(target):
                 DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 0.75 + rotation, COUNT).Append(pPosition))), wrong);
                 break;
 
@@ -182,7 +182,11 @@ internal static class OverlayWindow
                 }
                 break;
         }
+    }
 
+    private static bool CanDrawPositional(GameObject target)
+    {
+        return !Player.Object.HasStatus(true, StatusID.TrueNorth) && !Player.Object.HasStatus(true, StatusID.RightEye) && target.HasPositional();
     }
 
     static void DrawFill(Vector3[] pts1, Vector3[] pts2, Vector3 color)
