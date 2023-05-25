@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.9.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.9.1...v2.9.2) (2023-05-25)
+
+
+### Bug Fixes
+
+* add condition for all rotations. ([e1a1c04](https://github.com/ArchiDog1998/RotationSolver/commit/e1a1c04c38208f3e4828db81f4e1ab8844cb9a9d))
+* add grade 8 tinctures. ([84065f3](https://github.com/ArchiDog1998/RotationSolver/commit/84065f306a267fd36d64c0179e2f83e4ba50d65b))
+* add lock for texture. ([4a064ac](https://github.com/ArchiDog1998/RotationSolver/commit/4a064ac6443682da0a7a3fce861544945b6d31c5))
+* add traits. ([2c607ed](https://github.com/ArchiDog1998/RotationSolver/commit/2c607ed4693ba352698461ad1fccdc7885dd23e6))
+* add warning about unrecommond methods. ([592b4e8](https://github.com/ArchiDog1998/RotationSolver/commit/592b4e815e6f60c2809fc180f1e260260d7d80a6))
+* change countdown. ([537c7cc](https://github.com/ArchiDog1998/RotationSolver/commit/537c7cc0baf1db2272f688b584bd93fc3e031460))
+* change the Job. ([47f3975](https://github.com/ArchiDog1998/RotationSolver/commit/47f39751a5f3bb2eac24282755bcafb4dbb487b3))
+* changed icon loading. ([7129014](https://github.com/ArchiDog1998/RotationSolver/commit/712901489827c848f499a7a6b0cabde3faf2b0e8))
+* changed the status check. ([427ba70](https://github.com/ArchiDog1998/RotationSolver/commit/427ba7004b5b3b44feb32219adafdfb07bc7e920))
+* Do not automagically use True North if player has Right Eye status. ([1753cec](https://github.com/ArchiDog1998/RotationSolver/commit/1753cecdc3a1d8e11fb6675b748953b409ea9882))
+* fixed description about OnlyHotOnTanks. ([1c6003d](https://github.com/ArchiDog1998/RotationSolver/commit/1c6003df178709c29818105dcbdf4f07b3c391be))
+* fixed reference bug. ([712cd8c](https://github.com/ArchiDog1998/RotationSolver/commit/712cd8c1f479bc189172de600bb436224b8ec7dc))
+* fixed with drawing. ([ffeb164](https://github.com/ArchiDog1998/RotationSolver/commit/ffeb16480accc9c658ff1821667f4cab211a2562))
+* fixed with PainFlare check in SMN. ([cde7bfd](https://github.com/ArchiDog1998/RotationSolver/commit/cde7bfd8889bccbd955448c6ca8a27c38ad46a11))
+* make `ParamTabItem` shown safer. ([a6d47d5](https://github.com/ArchiDog1998/RotationSolver/commit/a6d47d5477f07d6abe6ede6eae4ac641aed5e320))
+* New sig for timelinemanager. ([9519a45](https://github.com/ArchiDog1998/RotationSolver/commit/9519a45d73eb5d9dc0a8d07d9dae09ae4bfbfb07))
+* No drawing of positional overlay if player has Right Eye, True North, or target has no positionals available. ([4d41cf1](https://github.com/ArchiDog1998/RotationSolver/commit/4d41cf1a781e020e68424d5281393c40ca148cae))
+* remove splatoon. Goodbye. ([3e5b51b](https://github.com/ArchiDog1998/RotationSolver/commit/3e5b51b09ea450bb2106625062bd9d49c6dceb6b))
+* update io for events. ([9e42f92](https://github.com/ArchiDog1998/RotationSolver/commit/9e42f927148d0644ea0c2cc8e75412c6ba5e54de))
+* update watcher. ([76816e0](https://github.com/ArchiDog1998/RotationSolver/commit/76816e027f9cd23506c3146c56883ff9756ac69d))
+
 ## [2.9.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.9.0...v2.9.1) (2023-05-20)
 
 
