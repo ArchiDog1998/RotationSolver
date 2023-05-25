@@ -1,4 +1,7 @@
+using Dalamud.Interface.Animation;
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Traits;
+using System.Reflection.PortableExecutable;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -156,4 +159,19 @@ public abstract class SGE_Base : CustomRotation
         if (Icarus.CanUse(out act)) return true;
         return base.MoveForwardAbility(out act);
     }
+
+    #region Traits
+    protected static IBaseTrait MaimAndMend    { get; } = new BaseTrait(368);
+    protected static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(369);
+    protected static IBaseTrait AddersgallTrait    { get; } = new BaseTrait(370);
+    protected static IBaseTrait SomanouticOath    { get; } = new BaseTrait(371);
+    protected static IBaseTrait SomanouticOath2    { get; } = new BaseTrait(372);
+    protected static IBaseTrait AdderstingTrait    { get; } = new BaseTrait(373);
+    protected static IBaseTrait OffensiveMagicMastery    { get; } = new BaseTrait(374);
+    protected static IBaseTrait EnhancedKerachole    { get; } = new BaseTrait(375);
+    protected static IBaseTrait OffensiveMagicMastery2 { get; } = new BaseTrait(376);
+    protected static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(377);
+    protected static IBaseTrait EnhancedZoe    { get; } = new BaseTrait(378);
+    protected static IBaseTrait PhysisMastery    { get; } = new BaseTrait(510);
+    #endregion
 }

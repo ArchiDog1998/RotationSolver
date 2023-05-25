@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -27,8 +28,6 @@ public abstract class NIN_Base : CustomRotation
     protected static bool HutonEndAfterGCD(uint gctCount = 0, float offset = 0)
         => EndAfterGCD(HutonTime, gctCount, offset);
     #endregion
-
-
 
     #region Attack Single
     /// <summary>
@@ -122,7 +121,6 @@ public abstract class NIN_Base : CustomRotation
     };
     #endregion
 
-
     #region Ninjutsu
     public static IBaseAction Ten { get; } = new BaseAction(ActionID.Ten, ActionOption.Buff);
 
@@ -204,8 +202,25 @@ public abstract class NIN_Base : CustomRotation
     };
     #endregion
 
-    public static IBaseAction Shukuchi { get; } = new BaseAction(ActionID.Shukuchi, ActionOption.EndSpecial);
+    #region Traits
+    protected static IBaseTrait AllFours { get; } = new BaseTrait(90);
+    protected static IBaseTrait FleetOfFoot    { get; } = new BaseTrait(93);
+    protected static IBaseTrait Shukiho    { get; } = new BaseTrait(165);
+    protected static IBaseTrait EnhancedShukuchi    { get; } = new BaseTrait(166);
+    protected static IBaseTrait EnhancedMug    { get; } = new BaseTrait(167);
+    protected static IBaseTrait EnhancedKassatsu    { get; } = new BaseTrait(250);
+    protected static IBaseTrait EnhancedShukuchi2    { get; } = new BaseTrait(279);
+    protected static IBaseTrait Shukiho2 { get; } = new BaseTrait(280);
+    protected static IBaseTrait Shukiho3 { get; } = new BaseTrait(439);
+    protected static IBaseTrait EnhancedMeisui { get; } = new BaseTrait(440);
+    protected static IBaseTrait EnhancedRaiton { get; } = new BaseTrait(441);
+    protected static IBaseTrait AdeptAssassination { get; } = new BaseTrait(515);
+    protected static IBaseTrait MeleeMastery { get; } = new BaseTrait(516);
+    protected static IBaseTrait MeleeMastery2 { get; } = new BaseTrait(522);
 
+    #endregion
+
+    public static IBaseAction Shukuchi { get; } = new BaseAction(ActionID.Shukuchi, ActionOption.EndSpecial);
 
     [RotationDesc(ActionID.Shukuchi)]
     protected sealed override bool MoveForwardAbility(out IAction act)

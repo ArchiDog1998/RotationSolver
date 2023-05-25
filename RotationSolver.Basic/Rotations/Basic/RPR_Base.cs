@@ -1,4 +1,6 @@
 ﻿using ECommons.DalamudServices;
+using RotationSolver.Basic.Traits;
+using System;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -93,6 +95,7 @@ public abstract class RPR_Base : CustomRotation
         ActionCheck = SoulSlice.ActionCheck,
     };
     #endregion
+
     #region Soul Reaver
     public static IBaseAction Gibbet { get; } = new BaseAction(ActionID.Gibbet)
     {
@@ -215,6 +218,19 @@ public abstract class RPR_Base : CustomRotation
     };
 
     public static IBaseAction ArcaneCrest { get; } = new BaseAction(ActionID.ArcaneCrest, ActionOption.Defense);
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait SoulGauge { get; } = new BaseTrait(379);
+    protected static IBaseTrait DeathScytheMastery    { get; } = new BaseTrait(380);
+    protected static IBaseTrait EnhancedAvatar    { get; } = new BaseTrait(381);
+    protected static IBaseTrait Hellsgate    { get; } = new BaseTrait(382);
+    protected static IBaseTrait TemperedSoul    { get; } = new BaseTrait(383);
+    protected static IBaseTrait ShroudGauge    { get; } = new BaseTrait(384);
+    protected static IBaseTrait EnhancedArcaneCrest    { get; } = new BaseTrait(385);
+    protected static IBaseTrait EnhancedShroud    { get; } = new BaseTrait(386);
+    protected static IBaseTrait EnhancedArcaneCircle    { get; } = new BaseTrait(387);
+    protected static IBaseTrait DeathScytheMastery2    { get; } = new BaseTrait(523);
     #endregion
 
     [RotationDesc(ActionID.HellsIngress)]

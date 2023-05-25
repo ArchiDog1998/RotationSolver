@@ -251,7 +251,6 @@ public abstract partial class CustomRotation
         return (DataCenter.CombatTime + DataCenter.WeaponRemain).IsLessThan(time);
     }
 
-
     /// <summary>
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>

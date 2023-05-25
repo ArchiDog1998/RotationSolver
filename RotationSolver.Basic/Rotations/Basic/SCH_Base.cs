@@ -1,4 +1,6 @@
+using Dalamud.Interface.Animation;
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -147,5 +149,18 @@ public abstract class SCH_Base : CustomRotation
     public static IBaseAction EmergencyTactics { get; } = new BaseAction(ActionID.EmergencyTactics, ActionOption.Heal);
 
     public static IBaseAction Expedient { get; } = new BaseAction(ActionID.Expedient, ActionOption.Heal);
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait BroilMastery2 { get; } = new BaseTrait(184);
+    protected static IBaseTrait BroilMastery { get; } = new BaseTrait(214);
+    protected static IBaseTrait CorruptionMastery2    { get; } = new BaseTrait(311);
+    protected static IBaseTrait BroilMastery3 { get; } = new BaseTrait(312);
+    protected static IBaseTrait EnhancedSacredSoil    { get; } = new BaseTrait(313);
+    protected static IBaseTrait CorruptionMastery    { get; } = new BaseTrait(324);
+    protected static IBaseTrait BroilMastery4 { get; } = new BaseTrait(491);
+    protected static IBaseTrait ArtOfWarMastery { get; } = new BaseTrait(492);
+    protected static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(493);
+    protected static IBaseTrait EnhancedDeploymentTactics    { get; } = new BaseTrait(494);
     #endregion
 }

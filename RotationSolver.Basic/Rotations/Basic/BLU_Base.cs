@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -418,7 +419,16 @@ public abstract class BLU_Base : CustomRotation
 
     #endregion
 
-    protected override bool MoveForwardGCD(out IAction act)
+    #region Traits
+    protected static IBaseTrait Learning { get; } = new BaseTrait(219);
+    protected static IBaseTrait MaimAndMend { get; } = new BaseTrait(220);
+    protected static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(221);
+    protected static IBaseTrait MaimAndMend3 { get; } = new BaseTrait(222);
+    protected static IBaseTrait MaimAndMend4 { get; } = new BaseTrait(223);
+    protected static IBaseTrait MaimAndMend5 { get; } = new BaseTrait(224);
+    #endregion
+
+    protected sealed override bool MoveForwardGCD(out IAction act)
     {
         if (Loom.CanUse(out act)) return true;
         return base.MoveForwardGCD(out act);

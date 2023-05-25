@@ -1,4 +1,6 @@
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Traits;
+using System.Security.Policy;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -14,7 +16,7 @@ public abstract class GNB_Base : CustomRotation
 
     protected static byte Ammo => JobGauge.Ammo;
     protected static byte AmmoComboStep => JobGauge.AmmoComboStep;
-    protected static byte MaxAmmo => Level >= 88 ? (byte)3 : (byte)2;
+    protected static byte MaxAmmo => CartridgeCharge2.EnoughLevel ? (byte)3 : (byte)2;
     #endregion
 
     #region Attack Single
@@ -156,6 +158,19 @@ public abstract class GNB_Base : CustomRotation
     {
         ActionCheck = (b, m) => MaxAmmo - Ammo > 1,
     };
+
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait CartridgeCharge { get; } = new BaseTrait(257);
+    protected static IBaseTrait EnhancedBrutalShell    { get; } = new BaseTrait(258);
+    protected static IBaseTrait DangerZoneMastery    { get; } = new BaseTrait(259);
+    protected static IBaseTrait TankMastery    { get; } = new BaseTrait(320);
+    protected static IBaseTrait HeartOfStoneMastery    { get; } = new BaseTrait(424);
+    protected static IBaseTrait EnhancedAurora    { get; } = new BaseTrait(425);
+    protected static IBaseTrait EnhancedContinuation    { get; } = new BaseTrait(426);
+    protected static IBaseTrait CartridgeCharge2 { get; } = new BaseTrait(427);
+    protected static IBaseTrait MeleeMastery { get; } = new BaseTrait(507);
 
     #endregion
 

@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -29,7 +30,6 @@ public abstract class SAM_Base : CustomRotation
 
     protected static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
     #endregion
-
 
     #region Attack Single
     public static IBaseAction Hakaze { get; } = new BaseAction(ActionID.Hakaze);
@@ -174,6 +174,19 @@ public abstract class SAM_Base : CustomRotation
     {
         ActionCheck = HissatsuKyuten.ActionCheck,
     };
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait KenkiMastery2 { get; } = new BaseTrait(208);
+    protected static IBaseTrait KenkiMastery { get; } = new BaseTrait(215);
+    protected static IBaseTrait EnhancedIaijutsu { get; } = new BaseTrait(277);
+    protected static IBaseTrait EnhancedFugetsuAndFuka { get; } = new BaseTrait(278);
+    protected static IBaseTrait EnhancedTsubameGaeshi { get; } = new BaseTrait(442);
+    protected static IBaseTrait EnhancedMeikyoShisui    { get; } = new BaseTrait(443);
+    protected static IBaseTrait EnhancedIkishoten    { get; } = new BaseTrait(514);
+    protected static IBaseTrait FugaMastery    { get; } = new BaseTrait(519);
+    protected static IBaseTrait WayOfTheSamurai    { get; } = new BaseTrait(520);
+    protected static IBaseTrait WayOfTheSamurai2    { get; } = new BaseTrait(521);
     #endregion
 
     [RotationDesc(ActionID.HissatsuGyoten)]

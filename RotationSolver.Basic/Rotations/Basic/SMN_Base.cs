@@ -1,4 +1,6 @@
 ﻿using ECommons.DalamudServices;
+using Lumina.Data.Parsing;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -181,6 +183,30 @@ public abstract class SMN_Base : CustomRotation
     public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.ResurrectionSMN, ActionOption.Friendly);
 
     public static IBaseAction Physick { get; } = new BaseAction(ActionID.Physick, ActionOption.Heal);
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait MaimAndMend    { get; } = new BaseTrait(66);
+    protected static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(69);
+    protected static IBaseTrait EnhancedDreadwyrmTrance    { get; } = new BaseTrait(178);
+    protected static IBaseTrait RuinMastery    { get; } = new BaseTrait(217);
+    protected static IBaseTrait EnhancedAethercharge    { get; } = new BaseTrait(466);
+    protected static IBaseTrait EnhancedAethercharge2    { get; } = new BaseTrait(467);
+    protected static IBaseTrait RubySummoningMastery    { get; } = new BaseTrait(468);
+    protected static IBaseTrait TopazSummoningMastery    { get; } = new BaseTrait(469);
+    protected static IBaseTrait EmeraldSummoningMastery    { get; } = new BaseTrait(470);
+    protected static IBaseTrait Enkindle    { get; } = new BaseTrait(471);
+    protected static IBaseTrait RuinMastery2    { get; } = new BaseTrait(473);
+    protected static IBaseTrait AetherchargeMastery    { get; } = new BaseTrait(474);
+    protected static IBaseTrait EnhancedEnergySiphon    { get; } = new BaseTrait(475);
+    protected static IBaseTrait RuinMastery3    { get; } = new BaseTrait(476);
+    protected static IBaseTrait OutburstMastery    { get; } = new BaseTrait(477);
+    protected static IBaseTrait OutburstMastery2    { get; } = new BaseTrait(478);
+    protected static IBaseTrait RuinMastery4    { get; } = new BaseTrait(479);
+    protected static IBaseTrait EnhancedRadiantAegis    { get; } = new BaseTrait(480);
+    protected static IBaseTrait Enkindle2    { get; } = new BaseTrait(481);
+    protected static IBaseTrait EnhancedSummonBahamut    { get; } = new BaseTrait(502);
+    protected static IBaseTrait ElementalMastery    { get; } = new BaseTrait(503);
     #endregion
 
     [RotationDesc(ActionID.RadiantAegis)]

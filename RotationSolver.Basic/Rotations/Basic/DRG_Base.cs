@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -155,6 +156,21 @@ public abstract class DRG_Base : CustomRotation
     };
 
     public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, ActionOption.Buff);
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait LanceMastery { get; } = new BaseTrait(162);
+    protected static IBaseTrait LifeOfTheDragon { get; } = new BaseTrait(163);
+    protected static IBaseTrait LanceMastery2 { get; } = new BaseTrait(247);
+    protected static IBaseTrait JumpMastery { get; } = new BaseTrait(275);
+    protected static IBaseTrait LifeOfTheDragonMastery { get; } = new BaseTrait(276);
+    protected static IBaseTrait BloodOfTheDragon { get; } = new BaseTrait(434);
+    protected static IBaseTrait EnhancedCoerthanTorment    { get; } = new BaseTrait(435);
+    protected static IBaseTrait EnhancedSpineshatterDive    { get; } = new BaseTrait(436);
+    protected static IBaseTrait LanceMastery3 { get; } = new BaseTrait(437);
+    protected static IBaseTrait EnhancedLifeSurge    { get; } = new BaseTrait(438);
+    protected static IBaseTrait LanceMastery4    { get; } = new BaseTrait(508);
+
     #endregion
 
     public static IBaseAction ElusiveJump { get; } = new BaseAction(ActionID.ElusiveJump);

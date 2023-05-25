@@ -1,4 +1,6 @@
+using Dalamud.Interface.Animation;
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -161,6 +163,41 @@ public abstract class AST_Base : CustomRotation
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = (b, m) => DrawnCard == CardType.SPIRE,
     };
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait MaimAndMend { get; } = new BaseTrait(122);
+
+    protected static IBaseTrait EnhancedBenefic { get; } = new BaseTrait(124);
+
+    protected static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(125);
+
+    protected static IBaseTrait CombustMastery { get; } = new BaseTrait(186);
+
+    protected static IBaseTrait MaleficMastery { get; } = new BaseTrait(187);
+
+    protected static IBaseTrait MaleficMastery2 { get; } = new BaseTrait(188);
+
+    protected static IBaseTrait HyperLightspeed { get; } = new BaseTrait(189);
+
+    protected static IBaseTrait CombustMastery2 { get; } = new BaseTrait(314);
+
+    protected static IBaseTrait MaleficMastery3 { get; } = new BaseTrait(315);
+
+    protected static IBaseTrait EnhancedEssentialDignity { get; } = new BaseTrait(316);
+
+    protected static IBaseTrait EnhancedDraw { get; } = new BaseTrait(495);
+
+    protected static IBaseTrait EnhancedDraw2 { get; } = new BaseTrait(496);
+
+    protected static IBaseTrait MaleficMastery4 { get; } = new BaseTrait(497);
+
+    protected static IBaseTrait GravityMastery { get; } = new BaseTrait(498);
+
+    protected static IBaseTrait EnhancedHealingMagic { get; } = new BaseTrait(499);
+
+    protected static IBaseTrait EnhancedCelestialIntersection { get; } = new BaseTrait(500);
+
     #endregion
 
     protected static bool PlayCard(out IAction act)
