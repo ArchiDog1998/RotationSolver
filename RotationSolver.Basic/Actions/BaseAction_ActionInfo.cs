@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 
@@ -30,7 +31,7 @@ public partial class BaseAction
                 }
                 else
                 {
-                    if ((ClassJobID)Player.Object.ClassJob.Id != ClassJobID.BlueMage
+                    if ((Job)Player.Object.ClassJob.Id != Job.BLU
                         && ChoiceTarget != TargetFilter.FindTargetForMoving
                         && DataCenter.LastAction == (ActionID)AdjustedID) return false;
 

@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
@@ -7,7 +8,7 @@ public abstract partial class BLM_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Intelligence;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
+    public sealed override Job[] Jobs => new Job[] { ECommons.ExcelServices.Job.BLM, ECommons.ExcelServices.Job.THM };
 
     #region Job Gauge
     static BLMGauge JobGauge => Svc.Gauges.Get<BLMGauge>();

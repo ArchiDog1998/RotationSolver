@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
 using RotationSolver.Basic.Traits;
 using System.Reflection.PortableExecutable;
@@ -9,7 +10,7 @@ public abstract class PLD_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.PLD, ECommons.ExcelServices.Job.GLA };
 
     protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
@@ -162,7 +163,7 @@ public abstract class PLD_Base : CustomRotation
 
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

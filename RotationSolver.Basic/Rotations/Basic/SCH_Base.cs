@@ -1,5 +1,6 @@
 using Dalamud.Interface.Animation;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
@@ -7,7 +8,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class SCH_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Mind;
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Scholar };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.SCH };
 
     #region Job Gauge
     static SCHGauge JobGauge => Svc.Gauges.Get<SCHGauge>();

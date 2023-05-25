@@ -16,7 +16,7 @@ public abstract partial class CustomRotation
         }
 
         if (EmergencyAbility(nextGCD, out act)) return true;
-        var role = Job.GetJobRole();
+        var role = ClassJob.GetJobRole();
 
         if (InterruptAbility(role, out act)) return true;
 
@@ -146,7 +146,7 @@ public abstract partial class CustomRotation
         }
         BaseAction.OtherOption &= ~CanUseOption.MustUse;
 
-        if ((DataCenter.HPNotFull || Job.GetJobRole() != JobRole.Healer) && InCombat)
+        if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer) && InCombat)
         {
             if ((DataCenter.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && HealAreaAbility(out act)) return true;
             if (DataCenter.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility)
@@ -242,7 +242,7 @@ public abstract partial class CustomRotation
 
             case JobRole.Healer:
             case JobRole.RangedMagical:
-                if (JobIDs[0] == ClassJobID.BlackMage) break;
+                if (Jobs[0] == ECommons.ExcelServices.Job.BLM) break;
                 if (LucidDreaming.CanUse(out act)) return true;
                 break;
 
@@ -258,7 +258,7 @@ public abstract partial class CustomRotation
     {
         if (nextGCD is BaseAction action)
         {
-            if (Job.GetJobRole() is JobRole.Healer or JobRole.RangedMagical &&
+            if (ClassJob.GetJobRole() is JobRole.Healer or JobRole.RangedMagical &&
             action.CastTime >= 5 && Swiftcast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
             if (Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoUseTrueNorth)

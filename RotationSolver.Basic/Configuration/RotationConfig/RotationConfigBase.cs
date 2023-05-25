@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
+﻿using ECommons.ExcelServices;
+
+namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public abstract class RotationConfigBase : IRotationConfig
 {
@@ -13,7 +15,7 @@ public abstract class RotationConfigBase : IRotationConfig
         DisplayName = displayName;
     }
 
-    public string GetValue(ClassJobID job, string rotationName)
+    public string GetValue(Job job, string rotationName)
     {
         if (!Service.Config.RotationsConfigurations.TryGetValue((uint)job, out var jobDict)) return DefaultValue;
         if (!jobDict.TryGetValue(rotationName, out var configDict)) return DefaultValue;
@@ -21,9 +23,9 @@ public abstract class RotationConfigBase : IRotationConfig
         return config;
     }
 
-    public virtual string GetDisplayValue(ClassJobID job, string rotationName) => GetValue(job, rotationName);
+    public virtual string GetDisplayValue(Job job, string rotationName) => GetValue(job, rotationName);
 
-    public void SetValue(ClassJobID job, string rotationName, string value)
+    public void SetValue(Job job, string rotationName, string value)
     {
         if (!Service.Config.RotationsConfigurations.TryGetValue((uint)job, out var jobDict))
         {

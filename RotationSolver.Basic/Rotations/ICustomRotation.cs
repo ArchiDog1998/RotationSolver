@@ -1,4 +1,5 @@
-﻿using Lumina.Excel.GeneratedSheets;
+﻿using ECommons.ExcelServices;
+using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -6,8 +7,8 @@ public interface ICustomRotation : ITexture
 {
     bool IsValid { get; }
 
-    ClassJob Job { get; }
-    ClassJobID[] JobIDs { get; }
+    ClassJob ClassJob { get; }
+    Job[] Jobs { get; }
 
     string GameVersion { get; }
     string RotationName { get; }

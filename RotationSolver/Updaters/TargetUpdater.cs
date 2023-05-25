@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
@@ -350,7 +351,7 @@ internal static partial class TargetUpdater
     static RandomDelay _healDelay4 = new(GetHealRange);
     static void UpdateCanHeal(PlayerCharacter player)
     {
-        var job = (ClassJobID)player.ClassJob.Id;
+        var job = (Job)player.ClassJob.Id;
 
         var hotSubSingle = job.GetHealingOfTimeSubtractSingle();
         var singleAbility = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealSingleAbility(), hotSubSingle);

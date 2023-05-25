@@ -1,5 +1,6 @@
 using Dalamud.Interface.Animation;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 using System.Reflection.PortableExecutable;
 
@@ -8,7 +9,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class SGE_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Mind;
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Sage };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.SGE };
 
     #region Job Gauge
     static SGEGauge JobGauge => Svc.Gauges.Get<SGEGauge>();

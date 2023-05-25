@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
@@ -7,7 +8,7 @@ public abstract class MCH_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Dexterity;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Machinist };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.MCH };
 
     #region Job Gauge
     static MCHGauge JobGauge => Svc.Gauges.Get<MCHGauge>();

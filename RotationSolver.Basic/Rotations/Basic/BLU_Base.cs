@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
@@ -33,8 +34,7 @@ public abstract class BLU_Base : CustomRotation
         Physical,
     }
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlueMage };
-
+    public sealed override Job[] Jobs => new Job[] { ECommons.ExcelServices.Job.BLU };
     protected static BLUAttackType AttackType { get; set; } = BLUAttackType.Both;
 
     protected static BLUID BlueId { get; set; } = BLUID.DPS;
@@ -430,6 +430,7 @@ public abstract class BLU_Base : CustomRotation
 
     protected sealed override bool MoveForwardGCD(out IAction act)
     {
+        if (JKick.CanUse(out act, CanUseOption.MustUse)) return true;
         if (Loom.CanUse(out act)) return true;
         return base.MoveForwardGCD(out act);
     }

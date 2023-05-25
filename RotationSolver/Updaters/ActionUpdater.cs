@@ -146,7 +146,7 @@ internal static class ActionUpdater
         if (player == null) return;
 
         //不是黑魔不考虑啊
-        if (player.ClassJob.Id != (uint)ClassJobID.BlackMage) return;
+        if (player.ClassJob.Id != (uint)ECommons.ExcelServices.Job.BLM) return;
 
         //有醒梦，就算了啊
         if (player.HasStatus(true, StatusID.LucidDreaming)) return;

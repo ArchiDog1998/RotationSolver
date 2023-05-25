@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
@@ -7,7 +8,7 @@ public abstract class DRG_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dragoon, ClassJobID.Lancer };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.DRG, ECommons.ExcelServices.Job.LNC };
 
 
     #region Job Gauge

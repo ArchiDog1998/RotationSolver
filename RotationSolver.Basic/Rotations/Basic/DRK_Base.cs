@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
@@ -6,7 +7,7 @@ public abstract class DRK_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.DRK };
 
     #region Job Gauge
     private static DRKGauge JobGauge => Svc.Gauges.Get<DRKGauge>();
@@ -172,7 +173,7 @@ public abstract class DRK_Base : CustomRotation
 
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

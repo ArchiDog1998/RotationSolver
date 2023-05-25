@@ -1,4 +1,5 @@
-﻿using ECommons.GameHelpers;
+﻿using ECommons.ExcelServices;
+using ECommons.GameHelpers;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -28,7 +29,7 @@ public class HealPotionItem : BaseItem
     {
         item = null;
         if (!Player.Available) return false;
-        var job = (ClassJobID)Player.Object.ClassJob.Id;
+        var job = (Job)Player.Object.ClassJob.Id;
         if (Player.Object.GetHealthRatio() > job.GetHealSingleAbility() -
             job.GetHealingOfTimeSubtractSingle()) return false;
         if (Player.Object.MaxHp - Player.Object.CurrentHp < MaxHealHp) return false;

@@ -219,7 +219,7 @@ public abstract partial class CustomRotation
 
     private IEnumerable<IBaseAction> GetBaseActions(Type type)
     {
-        return GetIActions(type).OfType<IBaseAction>().Where(a => a is not RoleAction role || role.InRole(Job.GetJobRole()));
+        return GetIActions(type).OfType<IBaseAction>().Where(a => a is not RoleAction role || role.InRole(ClassJob.GetJobRole()));
     }
 
     private IEnumerable<IBaseItem> GetBaseItems(Type type)

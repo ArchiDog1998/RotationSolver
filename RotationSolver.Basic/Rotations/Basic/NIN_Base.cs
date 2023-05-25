@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
@@ -11,7 +12,7 @@ public interface INinAction : IBaseAction
 public abstract class NIN_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Dexterity;
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Ninja, ClassJobID.Rogue };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.NIN, ECommons.ExcelServices.Job.ROG };
 
     #region Job Gauge
     static NINGauge JobGauge => Svc.Gauges.Get<NINGauge>();

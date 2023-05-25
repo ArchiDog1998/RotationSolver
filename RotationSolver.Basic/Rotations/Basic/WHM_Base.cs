@@ -1,13 +1,12 @@
-using Dalamud.Interface.Animation;
 using ECommons.DalamudServices;
-using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class WHM_Base : CustomRotation
 {
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
+    public sealed override Job[] Jobs => new Job[] { ECommons.ExcelServices.Job.WHM, ECommons.ExcelServices.Job.CNJ };
     public override MedicineType MedicineType => MedicineType.Mind;
 
     #region Job Gauge

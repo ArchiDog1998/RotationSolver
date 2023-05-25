@@ -1,5 +1,6 @@
 ﻿using Dalamud.Logging;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -120,7 +121,7 @@ internal static class RotationUpdater
         var customRotationsGroupedByJobRole = new Dictionary<JobRole, List<CustomRotationGroup>>();
         foreach (var customRotationGroup in CustomRotations)
         {
-            var jobRole = customRotationGroup.Rotations[0].Job.GetJobRole();
+            var jobRole = customRotationGroup.Rotations[0].ClassJob.GetJobRole();
             if (!customRotationsGroupedByJobRole.ContainsKey(jobRole))
             {
                 customRotationsGroupedByJobRole[jobRole] = new List<CustomRotationGroup>();
@@ -157,10 +158,10 @@ internal static class RotationUpdater
             }
         }
 
-        var rotationGroups = new Dictionary<ClassJobID, List<ICustomRotation>>();
+        var rotationGroups = new Dictionary<Job, List<ICustomRotation>>();
         foreach (var rotation in rotationList)
         {
-            var jobId = rotation.JobIDs[0];
+            var jobId = rotation.Jobs[0];
             if (!rotationGroups.ContainsKey(jobId))
             {
                 rotationGroups.Add(jobId, new List<ICustomRotation>());
@@ -173,7 +174,7 @@ internal static class RotationUpdater
         {
             var jobId = kvp.Key;
             var rotations = kvp.Value.ToArray();
-            result.Add(new CustomRotationGroup(jobId, rotations[0].JobIDs, CreateRotationSet(rotations)));
+            result.Add(new CustomRotationGroup(jobId, rotations[0].Jobs, CreateRotationSet(rotations)));
         }
 
 
@@ -407,7 +408,7 @@ internal static class RotationUpdater
 
     public static void UpdateRotation()
     {
-        var nowJob = (ClassJobID)Player.Object.ClassJob.Id;
+        var nowJob = (Job)Player.Object.ClassJob.Id;
 
         foreach (var group in CustomRotations)
         {

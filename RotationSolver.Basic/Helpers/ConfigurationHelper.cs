@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using ECommons.ExcelServices;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -33,25 +34,25 @@ public static class ConfigurationHelper
 
     public static readonly VirtualKey[] Keys = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
 
-    public static float GetHealAreaAbility(this ClassJobID job)
+    public static float GetHealAreaAbility(this Job job)
         => Service.Config.HealthAreaAbilities.TryGetValue(job, out var value) ? value : Service.Config.HealthAreaAbility;
 
-    public static float GetHealAreaSpell(this ClassJobID job)
+    public static float GetHealAreaSpell(this Job job)
         => Service.Config.HealthAreaSpells.TryGetValue(job, out var value) ? value : Service.Config.HealthAreaSpell;
 
-    public static float GetHealingOfTimeSubtractArea(this ClassJobID job)
+    public static float GetHealingOfTimeSubtractArea(this Job job)
         => Service.Config.HealingOfTimeSubtractAreas.TryGetValue(job, out var value) ? value : HealingOfTimeSubtractAreasDefault;
 
-    public static float GetHealSingleAbility(this ClassJobID job)
+    public static float GetHealSingleAbility(this Job job)
         => Service.Config.HealthSingleAbilities.TryGetValue(job, out var value) ? value : Service.Config.HealthSingleAbility;
 
-    public static float GetHealSingleSpell(this ClassJobID job)
+    public static float GetHealSingleSpell(this Job job)
         => Service.Config.HealthSingleSpells.TryGetValue(job, out var value) ? value : Service.Config.HealthSingleSpell;
 
-    public static float GetHealingOfTimeSubtractSingle(this ClassJobID job)
+    public static float GetHealingOfTimeSubtractSingle(this Job job)
         => Service.Config.HealingOfTimeSubtractSingles.TryGetValue(job, out var value) ? value : HealingOfTimeSubtractSinglesDefault;
 
-    public static float GetHealthForDyingTank(this ClassJobID job)
+    public static float GetHealthForDyingTank(this Job job)
         => Service.Config.HealthForDyingTanks.TryGetValue(job, out var value) ? value : HealthForDyingTanksDefault;
 
     public const float HealingOfTimeSubtractAreasDefault = 0.2f;

@@ -453,7 +453,7 @@ internal static class ImGuiHelper
                         ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
                         if (ImGui.Selectable(r.RotationName))
                         {
-                            Service.Config.RotationChoices[rotation.Job.RowId] = r.GetType().FullName;
+                            Service.Config.RotationChoices[rotation.ClassJob.RowId] = r.GetType().FullName;
                             Service.Config.Save();
                         }
                         if (ImGui.IsItemHovered())
@@ -504,7 +504,7 @@ internal static class ImGuiHelper
                 if (IconButton(FontAwesomeIcon.Undo, $"#{rotation.GetHashCode()}Undo",
                     LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault))
                 {
-                    if (Service.Config.RotationsConfigurations.TryGetValue(rotation.Job.RowId, out var jobDict)
+                    if (Service.Config.RotationsConfigurations.TryGetValue(rotation.ClassJob.RowId, out var jobDict)
                         && jobDict.ContainsKey(rotation.GetType().FullName))
                     {
                         jobDict.Remove(rotation.GetType().FullName);

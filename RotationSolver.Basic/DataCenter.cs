@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
@@ -251,7 +252,7 @@ public static class DataCenter
             {
                 foreach (var burstInfo in StatusHelper.Burst2Mins)
                 {
-                    if (burstInfo.Jobs.Contains((ClassJobID)member.ClassJob.Id))
+                    if (burstInfo.Jobs.Contains((Job)member.ClassJob.Id))
                     {
                         if (member.Level >= burstInfo.Level)
                         {

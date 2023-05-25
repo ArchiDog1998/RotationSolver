@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ public abstract class MNK_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.MNK, ECommons.ExcelServices.Job.PGL };
 
     #region Job Gauge
     static MNKGauge JobGauge => Svc.Gauges.Get<MNKGauge>();

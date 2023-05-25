@@ -1,12 +1,12 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
-using System.Security.Policy;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class GNB_Base : CustomRotation
 {
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.GNB };
     public override MedicineType MedicineType => MedicineType.Strength;
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
@@ -176,7 +176,7 @@ public abstract class GNB_Base : CustomRotation
 
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (SuperBolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (SuperBolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

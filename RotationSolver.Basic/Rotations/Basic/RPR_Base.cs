@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 using System;
 
@@ -7,7 +8,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class RPR_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Reaper };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.RPR };
 
     [Obsolete("Please Use HasEnshrouded Instead")]
     protected static bool Enshrouded => HasEnshrouded;

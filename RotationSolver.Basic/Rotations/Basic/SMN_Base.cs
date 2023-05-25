@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using Lumina.Data.Parsing;
 using RotationSolver.Basic.Traits;
 
@@ -7,7 +8,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class SMN_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Summoner, ClassJobID.Arcanist };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.SMN, ECommons.ExcelServices.Job.ACN };
     protected override bool CanHealSingleSpell => false;
     protected static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.DeathFlare;
 

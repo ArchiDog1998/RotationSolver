@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
@@ -7,7 +8,7 @@ public abstract class WAR_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.WAR, ECommons.ExcelServices.Job.MRD };
 
     static WARGauge JobGauge => Svc.Gauges.Get<WARGauge>();
 
@@ -156,7 +157,7 @@ public abstract class WAR_Base : CustomRotation
 
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

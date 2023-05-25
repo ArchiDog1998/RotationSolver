@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 using System.Reflection.PortableExecutable;
 
@@ -7,7 +8,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class RDM_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Intelligence;
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.RedMage };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.RDM };
     protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
     #region Job Gauge

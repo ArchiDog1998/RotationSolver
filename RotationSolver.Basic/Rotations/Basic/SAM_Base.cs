@@ -1,4 +1,5 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
@@ -6,7 +7,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class SAM_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Samurai };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.SAM };
 
     protected static bool HasMoon => Player.HasStatus(true, StatusID.Fugetsu);
 

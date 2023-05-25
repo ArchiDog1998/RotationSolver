@@ -1,4 +1,5 @@
 ﻿using Dalamud.Logging;
+using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Rotations;
@@ -6,13 +7,13 @@ namespace RotationSolver.Basic.Rotations;
 [RotationDesc(DescType.BurstActions)]
 public abstract partial class CustomRotation : ICustomRotation
 {
-    public abstract ClassJobID[] JobIDs { get; }
+    public abstract Job[] Jobs { get; }
 
     public abstract string GameVersion { get; }
 
-    public ClassJob Job => Service.GetSheet<ClassJob>().GetRow((uint)JobIDs[0]);
+    public ClassJob ClassJob => Service.GetSheet<ClassJob>().GetRow((uint)Jobs[0]);
 
-    public string Name => Job.Abbreviation + " - " + Job.Name;
+    public string Name => ClassJob.Abbreviation + " - " + ClassJob.Name;
 
     public abstract string RotationName { get; }
 
@@ -82,7 +83,7 @@ public abstract partial class CustomRotation : ICustomRotation
 
     protected virtual IRotationConfigSet CreateConfiguration()
     {
-        return new RotationConfigSet(JobIDs[0], GetType().FullName);
+        return new RotationConfigSet(Jobs[0], GetType().FullName);
     }
 
     /// <summary>

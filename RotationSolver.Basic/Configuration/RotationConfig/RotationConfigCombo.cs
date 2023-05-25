@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
+﻿using ECommons.ExcelServices;
+
+namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public class RotationConfigCombo : RotationConfigBase
 {
@@ -8,7 +10,7 @@ public class RotationConfigCombo : RotationConfigBase
         Items = items;
     }
 
-    public override string GetDisplayValue(ClassJobID job, string rotationName)
+    public override string GetDisplayValue(Job job, string rotationName)
     {
         var indexStr = base.GetDisplayValue(job, rotationName);
         if (!int.TryParse(indexStr, out var index)) return Items[0];

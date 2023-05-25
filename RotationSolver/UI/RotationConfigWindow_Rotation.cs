@@ -1,7 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Utility;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
-using ImGuiNET;
 
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -62,7 +62,7 @@ internal partial class RotationConfigWindow
             var rotation = RotationUpdater.GetChosenRotation(group);
 
             var canAddButton = Player.Available
-                && rotation.JobIDs.Contains((ClassJobID)Player.Object.ClassJob.Id);
+                && rotation.Jobs.Contains((Job)Player.Object.ClassJob.Id);
 
             rotation.Display(group.Rotations, canAddButton);
         }
@@ -74,11 +74,11 @@ internal partial class RotationConfigWindow
 
         if (rotation.Configs.Configs.Count != 0)
         {
-            if (ImGui.CollapsingHeader($"{rotation.JobIDs[0]} rotation settings##Settings"))
+            if (ImGui.CollapsingHeader($"{rotation.Jobs[0]} rotation settings##Settings"))
             {
                 ImGui.Indent();
 
-                DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);
+                DrawSpecialRoleSettings(rotation.ClassJob.GetJobRole(), rotation.Jobs[0]);
                 rotation.Configs.Draw(canAddButton);
 
                 ImGui.Unindent();
@@ -88,14 +88,14 @@ internal partial class RotationConfigWindow
         }
         else
         {
-            DrawSpecialRoleSettings(rotation.Job.GetJobRole(), rotation.JobIDs[0]);
+            DrawSpecialRoleSettings(rotation.ClassJob.GetJobRole(), rotation.Jobs[0]);
             rotation.Configs.Draw(canAddButton);
         }
     }
 
     private static void DrawTargetHostileType(ICustomRotation rotation)
     {
-        var isAllTargetAsHostile = (int)DataCenter.GetTargetHostileType(rotation.Job);
+        var isAllTargetAsHostile = (int)DataCenter.GetTargetHostileType(rotation.ClassJob);
         ImGui.SetNextItemWidth(300);
         if (ImGui.Combo(LocalizationManager.RightLang.ConfigWindow_Param_RightNowTargetToHostileType + $"##HostileType{rotation.GetHashCode()}", ref isAllTargetAsHostile, new string[]
         {
@@ -104,7 +104,7 @@ internal partial class RotationConfigWindow
              LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
         }, 3))
         {
-            Service.Config.TargetToHostileTypes[rotation.Job.RowId] = (byte)isAllTargetAsHostile;
+            Service.Config.TargetToHostileTypes[rotation.ClassJob.RowId] = (byte)isAllTargetAsHostile;
             Service.Config.Save();
         }
 
@@ -114,7 +114,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawSpecialRoleSettings(JobRole role, ClassJobID job)
+    private static void DrawSpecialRoleSettings(JobRole role, Job job)
     {
         if (role == JobRole.Healer)
         {
@@ -129,7 +129,7 @@ internal partial class RotationConfigWindow
         }
     }
 
-    private static void DrawHealerSettings(ClassJobID job)
+    private static void DrawHealerSettings(Job job)
     {
         DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility,
             () => ConfigurationHelper.GetHealAreaAbility(job),
@@ -162,7 +162,7 @@ internal partial class RotationConfigWindow
             ConfigurationHelper.HealingOfTimeSubtractSinglesDefault);
     }
 
-    private static void DrawDragFloat(ClassJobID job, string desc, Func<float> getValue, Action<float> setValue, float @default)
+    private static void DrawDragFloat(Job job, string desc, Func<float> getValue, Action<float> setValue, float @default)
     {
         if (getValue == null || setValue == null) return;
 
@@ -261,7 +261,7 @@ internal partial class RotationConfigWindow
                 var lastRole = JobRole.None;
                 foreach (var jobs in grp.GroupBy(r => r.IconID))
                 {
-                    var role = jobs.FirstOrDefault().Job.GetJobRole();
+                    var role = jobs.FirstOrDefault().ClassJob.GetJobRole();
                     if(lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
                     lastRole = role;
 

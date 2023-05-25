@@ -246,7 +246,7 @@ public static class IconSet
     public static uint GetJobIcon(ICustomRotation combo)
     {
         IconType type = IconType.Gold;
-        switch (combo.Job.GetJobRole())
+        switch (combo.ClassJob.GetJobRole())
         {
             case JobRole.Tank:
                 type = IconType.Blue;
@@ -265,6 +265,6 @@ public static class IconSet
 
     public static uint GetJobIcon(ICustomRotation combo, IconType type)
     {
-        return _icons[type][(uint)combo.JobIDs[0] - 1];
+        return _icons[type][(uint)combo.Jobs[0] - 1];
     }
 }
