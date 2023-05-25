@@ -105,7 +105,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         MajorUpdater.Dispose();
 
-        IconSet.Dispose();
         OtherConfiguration.Save();
 
         ECommonsMain.Dispose();

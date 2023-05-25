@@ -40,7 +40,4 @@ public static class Service
     }
 
     public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => Svc.Data.GetExcelSheet<T>();
-
-    internal static TextureWrap GetTextureIcon(uint id) => Svc.Data.GetImGuiTextureIcon(id);
-    internal static TextureWrap GetTexture(string path) => Svc.Data.GetImGuiTexture(path);
 }
