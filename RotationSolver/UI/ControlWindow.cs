@@ -195,9 +195,17 @@ internal class ControlWindow : Window
 
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
 
-        DrawIAction(GetTexture(gcd).ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
-        ImGui.SameLine();
-        DrawIAction(GetTexture(ability).ImGuiHandle, baseId + nameof(ability), abilityW, command, help);
+        var texture = GetTexture(gcd);
+        if(texture != null)
+        {
+            DrawIAction(texture.ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
+            texture = GetTexture(ability);
+            if (texture != null)
+            {
+                ImGui.SameLine();
+                DrawIAction(texture.ImGuiHandle, baseId + nameof(ability), abilityW, command, help);
+            }
+        }
         ImGui.EndGroup();
 
         if (DataCenter.SpecialType == command)
@@ -251,7 +259,7 @@ internal class ControlWindow : Window
         string baseId = "ImgButton" + command.ToString();
 
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
-        DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
+        if(texture != null) DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
         ImGui.EndGroup();
 
         if (DataCenter.SpecialType == command)
@@ -427,7 +435,9 @@ internal class ControlWindow : Window
 
     internal static (Vector2, Vector2) DrawIAction(IAction action, float width, float percent, bool isAdjust = true)
     {
-        var result = DrawIAction(GetTexture(action, isAdjust).ImGuiHandle, width, action == null ? -1 : percent);
+        var texture = GetTexture(action, isAdjust);
+        if (texture == null) return (default, default);
+        var result = DrawIAction(texture.ImGuiHandle, width, action == null ? -1 : percent);
         if (action != null) ImGuiHelper.HoveredString(action.Name, () =>
         {
             if (DataCenter.StateType == StateCommandType.Cancel)

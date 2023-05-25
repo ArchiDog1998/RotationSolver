@@ -1,12 +1,13 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class DRK_Base : CustomRotation
 {
-
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.DarkKnight };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.DRK };
 
     #region Job Gauge
     private static DRKGauge JobGauge => Svc.Gauges.Get<DRKGauge>();
@@ -157,9 +158,22 @@ public abstract class DRK_Base : CustomRotation
     public static IBaseAction Delirium { get; } = new BaseAction(ActionID.Delirium);
     #endregion
 
+    #region Traits
+    protected static IBaseTrait Blackblood    { get; } = new BaseTrait(158);
+    protected static IBaseTrait EnhancedBlackblood    { get; } = new BaseTrait(159);
+    protected static IBaseTrait DarksideMastery    { get; } = new BaseTrait(271);
+    protected static IBaseTrait EnhancedPlunge    { get; } = new BaseTrait(272);
+    protected static IBaseTrait TankMastery    { get; } = new BaseTrait(319);
+    protected static IBaseTrait EnhancedUnmend    { get; } = new BaseTrait(422);
+    protected static IBaseTrait EnhancedLivingShadow2    { get; } = new BaseTrait(423);
+    protected static IBaseTrait MeleeMastery    { get; } = new BaseTrait(506);
+    protected static IBaseTrait EnhancedLivingShadow { get; } = new BaseTrait(511);
+
+    #endregion
+
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

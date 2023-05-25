@@ -1,10 +1,12 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class WHM_Base : CustomRotation
 {
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.WhiteMage, ClassJobID.Conjurer };
+    public sealed override Job[] Jobs => new Job[] { ECommons.ExcelServices.Job.WHM, ECommons.ExcelServices.Job.CNJ };
     public override MedicineType MedicineType => MedicineType.Mind;
 
     #region Job Gauge
@@ -114,5 +116,24 @@ public abstract class WHM_Base : CustomRotation
     public static IBaseAction PlenaryIndulgence { get; } = new BaseAction(ActionID.PlenaryIndulgence, ActionOption.Heal);
 
     public static IBaseAction Temperance { get; } = new BaseAction(ActionID.Temperance, ActionOption.Heal);
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait MaimAndMend    { get; } = new BaseTrait(23);
+    protected static IBaseTrait Freecure    { get; } = new BaseTrait(25);
+    protected static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(26);
+    protected static IBaseTrait StoneMastery { get; } = new BaseTrait(179);
+    protected static IBaseTrait AeroMastery { get; } = new BaseTrait(180);
+    protected static IBaseTrait StoneMastery2 { get; } = new BaseTrait(181);
+    protected static IBaseTrait StoneMastery3 { get; } = new BaseTrait(182);
+    protected static IBaseTrait SecretOfTheLily { get; } = new BaseTrait(196);
+    protected static IBaseTrait AeroMastery2    { get; } = new BaseTrait(307);
+    protected static IBaseTrait StoneMastery4    { get; } = new BaseTrait(308);
+    protected static IBaseTrait TranscendentAfflatus    { get; } = new BaseTrait(309);
+    protected static IBaseTrait EnhancedAsylum    { get; } = new BaseTrait(310);
+    protected static IBaseTrait GlareMastery    { get; } = new BaseTrait(487);
+    protected static IBaseTrait HolyMastery    { get; } = new BaseTrait(488);
+    protected static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(489);
+    protected static IBaseTrait EnhancedDivineBenison    { get; } = new BaseTrait(490);
     #endregion
 }

@@ -1,4 +1,6 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -32,8 +34,7 @@ public abstract class BLU_Base : CustomRotation
         Physical,
     }
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlueMage };
-
+    public sealed override Job[] Jobs => new Job[] { ECommons.ExcelServices.Job.BLU };
     protected static BLUAttackType AttackType { get; set; } = BLUAttackType.Both;
 
     protected static BLUID BlueId { get; set; } = BLUID.DPS;
@@ -418,8 +419,18 @@ public abstract class BLU_Base : CustomRotation
 
     #endregion
 
-    protected override bool MoveForwardGCD(out IAction act)
+    #region Traits
+    protected static IBaseTrait Learning { get; } = new BaseTrait(219);
+    protected static IBaseTrait MaimAndMend { get; } = new BaseTrait(220);
+    protected static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(221);
+    protected static IBaseTrait MaimAndMend3 { get; } = new BaseTrait(222);
+    protected static IBaseTrait MaimAndMend4 { get; } = new BaseTrait(223);
+    protected static IBaseTrait MaimAndMend5 { get; } = new BaseTrait(224);
+    #endregion
+
+    protected sealed override bool MoveForwardGCD(out IAction act)
     {
+        if (JKick.CanUse(out act, CanUseOption.MustUse)) return true;
         if (Loom.CanUse(out act)) return true;
         return base.MoveForwardGCD(out act);
     }

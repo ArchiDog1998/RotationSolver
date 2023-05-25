@@ -1,4 +1,6 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -6,7 +8,7 @@ public abstract partial class BLM_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Intelligence;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.BlackMage, ClassJobID.Thaumaturge };
+    public sealed override Job[] Jobs => new Job[] { ECommons.ExcelServices.Job.BLM, ECommons.ExcelServices.Job.THM };
 
     #region Job Gauge
     static BLMGauge JobGauge => Svc.Gauges.Get<BLMGauge>();
@@ -207,7 +209,50 @@ public abstract partial class BLM_Base : CustomRotation
     };
     #endregion
 
+    #region Traits
+    protected static IBaseTrait MaimAndMend { get; } = new BaseTrait(29);
 
+    protected static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(31);
+
+    protected static IBaseTrait Firestarter { get; } = new BaseTrait(32);
+
+    protected static IBaseTrait Thundercloud { get; } = new BaseTrait(33);
+
+    protected static IBaseTrait ThunderMastery { get; } = new BaseTrait(171);
+
+    protected static IBaseTrait ThunderMastery2 { get; } = new BaseTrait(172);
+
+    protected static IBaseTrait EnhancedEnochian {get; } = new BaseTrait(174);
+
+    protected static IBaseTrait EnhancedFreeze {get; } = new BaseTrait(295);
+
+    protected static IBaseTrait AspectMastery {get; } = new BaseTrait(296);
+
+    protected static IBaseTrait EnhancedPolyglot {get; } = new BaseTrait(297);
+
+    protected static IBaseTrait EnhancedSharpcast { get; } = new BaseTrait(321);
+
+    protected static IBaseTrait EnhancedEnochian2 { get; } = new BaseTrait(322);
+
+    protected static IBaseTrait AspectMastery2 { get; } = new BaseTrait(458);
+
+    protected static IBaseTrait AspectMastery3 { get; } = new BaseTrait(459);
+
+    protected static IBaseTrait Enochian { get; } = new BaseTrait(460);
+
+    protected static IBaseTrait EnhancedFoul { get; } = new BaseTrait(461);
+
+    protected static IBaseTrait AspectMastery4 { get; } = new BaseTrait(462);
+
+    protected static IBaseTrait EnhancedManafont { get; } = new BaseTrait(463);
+
+    protected static IBaseTrait EnhancedSharpcast2    { get; } = new BaseTrait(464);
+
+    protected static IBaseTrait AspectMastery5 { get; } = new BaseTrait(465);
+
+    protected static IBaseTrait EnhancedEnochian3 { get; } = new BaseTrait(509);
+
+    #endregion
     protected static float Fire4Time { get; private set; }
     protected override void UpdateInfo()
     {

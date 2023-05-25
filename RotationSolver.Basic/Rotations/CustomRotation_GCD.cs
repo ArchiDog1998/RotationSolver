@@ -19,7 +19,7 @@ public abstract partial class CustomRotation
         }
 
         //General Heal
-        if ((DataCenter.HPNotFull || Job.GetJobRole() != JobRole.Healer)
+        if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer)
             && (DataCenter.InCombat || Service.Config.HealOutOfCombat))
         {
             if ((specialType == SpecialCommandType.HealArea || CanHealAreaSpell) && HealAreaGCD(out act)) return act;
@@ -38,7 +38,7 @@ public abstract partial class CustomRotation
             && DataCenter.WeakenPeople.Any() 
             || DataCenter.DyingPeople.Any()))
         {
-            if (Job.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, CanUseOption.MustUse)) return act;
+            if (ClassJob.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, CanUseOption.MustUse)) return act;
         }
 
         if (GeneralGCD(out var action)) return action;

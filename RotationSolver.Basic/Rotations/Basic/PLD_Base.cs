@@ -1,4 +1,8 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
+using RotationSolver.Basic.Traits;
+using System.Reflection.PortableExecutable;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -6,7 +10,7 @@ public abstract class PLD_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Paladin, ClassJobID.Gladiator };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.PLD, ECommons.ExcelServices.Job.GLA };
 
     protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
@@ -138,10 +142,28 @@ public abstract class PLD_Base : CustomRotation
     };
     public static IBaseAction Clemency { get; } = new BaseAction(ActionID.Clemency, ActionOption.Defense | ActionOption.EndSpecial);
     #endregion
+    #region Traits
+    protected static IBaseTrait DivineMagicMastery    { get; } = new BaseTrait(207);
+    protected static IBaseTrait OathMastery    { get; } = new BaseTrait(209);
+    protected static IBaseTrait Chivalry    { get; } = new BaseTrait(246);
+    protected static IBaseTrait RageOfHaloneMastery    { get; } = new BaseTrait(260);
+    protected static IBaseTrait EnhancedProminence    { get; } = new BaseTrait(261);
+    protected static IBaseTrait EnhancedSheltron    { get; } = new BaseTrait(262);
+    protected static IBaseTrait EnhancedRequiescat    { get; } = new BaseTrait(263);
+    protected static IBaseTrait SwordOath    { get; } = new BaseTrait(264);
+    protected static IBaseTrait TankMastery    { get; } = new BaseTrait(317);
+    protected static IBaseTrait SheltronMastery    { get; } = new BaseTrait(412);
+    protected static IBaseTrait EnhancedIntervention    { get; } = new BaseTrait(413);
+    protected static IBaseTrait DivineMagicMastery2    { get; } = new BaseTrait(414);
+    protected static IBaseTrait SpiritsWithinMastery    { get; } = new BaseTrait(415);
+    protected static IBaseTrait EnhancedDivineVeil    { get; } = new BaseTrait(416);
+    protected static IBaseTrait MeleeMastery    { get; } = new BaseTrait(504);
+    #endregion
+
 
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

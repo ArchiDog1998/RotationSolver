@@ -1,10 +1,12 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class GNB_Base : CustomRotation
 {
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Gunbreaker };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.GNB };
     public override MedicineType MedicineType => MedicineType.Strength;
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
@@ -14,7 +16,7 @@ public abstract class GNB_Base : CustomRotation
 
     protected static byte Ammo => JobGauge.Ammo;
     protected static byte AmmoComboStep => JobGauge.AmmoComboStep;
-    protected static byte MaxAmmo => Level >= 88 ? (byte)3 : (byte)2;
+    protected static byte MaxAmmo => CartridgeCharge2.EnoughLevel ? (byte)3 : (byte)2;
     #endregion
 
     #region Attack Single
@@ -159,9 +161,22 @@ public abstract class GNB_Base : CustomRotation
 
     #endregion
 
+    #region Traits
+    protected static IBaseTrait CartridgeCharge { get; } = new BaseTrait(257);
+    protected static IBaseTrait EnhancedBrutalShell    { get; } = new BaseTrait(258);
+    protected static IBaseTrait DangerZoneMastery    { get; } = new BaseTrait(259);
+    protected static IBaseTrait TankMastery    { get; } = new BaseTrait(320);
+    protected static IBaseTrait HeartOfStoneMastery    { get; } = new BaseTrait(424);
+    protected static IBaseTrait EnhancedAurora    { get; } = new BaseTrait(425);
+    protected static IBaseTrait EnhancedContinuation    { get; } = new BaseTrait(426);
+    protected static IBaseTrait CartridgeCharge2 { get; } = new BaseTrait(427);
+    protected static IBaseTrait MeleeMastery { get; } = new BaseTrait(507);
+
+    #endregion
+
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (SuperBolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (SuperBolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

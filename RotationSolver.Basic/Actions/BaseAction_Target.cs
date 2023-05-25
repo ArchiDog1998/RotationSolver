@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 
@@ -44,7 +45,7 @@ public partial class BaseAction
     {
         return DataCenter.TarOnMeTargets.Any() | mustUse;
     }
-    internal static bool TankBreakOtherCheck(ClassJobID id)
+    internal static bool TankBreakOtherCheck(Job id)
     {
         var tankHealth = id.GetHealthForDyingTank();
 

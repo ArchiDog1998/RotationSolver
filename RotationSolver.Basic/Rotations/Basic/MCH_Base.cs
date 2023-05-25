@@ -1,4 +1,6 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -6,7 +8,7 @@ public abstract class MCH_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Dexterity;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Machinist };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.MCH };
 
     #region Job Gauge
     static MCHGauge JobGauge => Svc.Gauges.Get<MCHGauge>();
@@ -113,7 +115,6 @@ public abstract class MCH_Base : CustomRotation
     };
     #endregion
 
-
     #region Defense
     public static IBaseAction Tactician { get; } = new BaseAction(ActionID.Tactician, ActionOption.Defense)
     {
@@ -121,6 +122,23 @@ public abstract class MCH_Base : CustomRotation
     };
 
     public static IBaseAction Dismantle { get; } = new BaseAction(ActionID.Dismantle, ActionOption.Defense);
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(117);
+    protected static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(119);
+    protected static IBaseTrait SplitShotMastery    { get; } = new BaseTrait(288);
+    protected static IBaseTrait SlugShotMastery    { get; } = new BaseTrait(289);
+    protected static IBaseTrait CleanShotMastery    { get; } = new BaseTrait(290);
+    protected static IBaseTrait HotShotMastery    { get; } = new BaseTrait(291);
+    protected static IBaseTrait ChargedActionMastery    { get; } = new BaseTrait(292);
+    protected static IBaseTrait EnhancedWildfire    { get; } = new BaseTrait(293);
+    protected static IBaseTrait Promotion    { get; } = new BaseTrait(294);
+    protected static IBaseTrait SpreadShotMastery    { get; } = new BaseTrait(449);
+    protected static IBaseTrait EnhancedReassemble    { get; } = new BaseTrait(450);
+    protected static IBaseTrait QueensGambit    { get; } = new BaseTrait(451);
+    protected static IBaseTrait EnhancedTactician    { get; } = new BaseTrait(452);
+    protected static IBaseTrait MarksmansMastery    { get; } = new BaseTrait(517);
     #endregion
 
     [RotationDesc(ActionID.Tactician, ActionID.Dismantle)]

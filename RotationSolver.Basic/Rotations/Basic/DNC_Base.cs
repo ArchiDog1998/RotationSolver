@@ -1,10 +1,12 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class DNC_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Dexterity;
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Dancer };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.DNC };
 
     #region Job Gauge
     static DNCGauge JobGauge => Svc.Gauges.Get<DNCGauge>();
@@ -237,6 +239,20 @@ public abstract class DNC_Base : CustomRotation
     }
     #endregion
 
+    #region Traits
+    protected static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(251);
+    protected static IBaseTrait FourfoldFantasy { get; } = new BaseTrait(252);
+    protected static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(253);
+    protected static IBaseTrait EnhancedEnAvant    { get; } = new BaseTrait(254);
+    protected static IBaseTrait EspritTrait { get; } = new BaseTrait(255);
+    protected static IBaseTrait EnhancedEnAvant2    { get; } = new BaseTrait(256);
+    protected static IBaseTrait EnhancedTechnicalFinish    { get; } = new BaseTrait(453);
+    protected static IBaseTrait EnhancedEsprit    { get; } = new BaseTrait(454);
+    protected static IBaseTrait EnhancedFlourish    { get; } = new BaseTrait(455);
+    protected static IBaseTrait EnhancedShieldSamba    { get; } = new BaseTrait(456);
+    protected static IBaseTrait EnhancedDevilment    { get; } = new BaseTrait(457);
+
+    #endregion
     [RotationDesc(ActionID.EnAvant)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {

@@ -1,4 +1,5 @@
 ﻿using Dalamud;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 
@@ -14,6 +15,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// The level of the player.
     /// </summary>
+    [Obsolete("Please use EnoughLevel of action or trait instead.", true)]
     protected static byte Level => (byte)ECommons.GameHelpers.Player.Level;
 
     /// <summary>
@@ -44,6 +46,11 @@ public abstract partial class CustomRotation
     /// Player's MP.
     /// </summary>
     protected static uint CurrentMp => DataCenter.CurrentMp;
+
+    /// <summary>
+    /// Condition.
+    /// </summary>
+    protected static Condition Condition => Svc.Condition;
 
     #endregion
 
@@ -114,7 +121,7 @@ public abstract partial class CustomRotation
     /// </summary>
     protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoBurst);
 
-    bool CanUseHealAction => Job.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer;
+    bool CanUseHealAction => ClassJob.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer;
 
     protected virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && CanUseHealAction;
 
@@ -136,7 +143,7 @@ public abstract partial class CustomRotation
     protected static float WeaponElapsed => DataCenter.WeaponElapsed;
     #endregion
 
-    protected static ClientLanguage Language => Service.Language;
+    protected static ClientLanguage Language => Svc.ClientState.ClientLanguage;
     protected static TerritoryContentType TerritoryContentType => DataCenter.TerritoryContentType;
 
     protected static float Ping => DataCenter.Ping;
@@ -158,6 +165,7 @@ public abstract partial class CustomRotation
 
     /// <summary>
     /// Check for GCD Record.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
@@ -167,6 +175,7 @@ public abstract partial class CustomRotation
 
     /// <summary>
     /// Check for GCD Record.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     /// <param name="ids">True if any of this is matched.</param>
     /// <returns></returns>
@@ -175,6 +184,7 @@ public abstract partial class CustomRotation
 
     /// <summary>
     /// Check for ability Record.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
@@ -184,6 +194,7 @@ public abstract partial class CustomRotation
 
     /// <summary>
     /// Check for ability Record.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     /// <param name="ids">True if any of this is matched.</param>
     /// <returns></returns>
@@ -192,6 +203,7 @@ public abstract partial class CustomRotation
 
     /// <summary>
     /// Check for action Record.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
@@ -201,6 +213,7 @@ public abstract partial class CustomRotation
 
     /// <summary>
     /// Check for action Record.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     /// <param name="ids">True if any of this is matched.</param>
     /// <returns></returns>
@@ -228,16 +241,22 @@ public abstract partial class CustomRotation
 
     /// <summary>
     /// Whether the battle lasted less than <paramref name="time"/> seconds
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     /// <param name="time">time in second.</param>
     /// <returns></returns>
-    public static bool CombatElapsedLess(float time)
+    protected static bool CombatElapsedLess(float time)
     {
         if (!InCombat) return true;
         return (DataCenter.CombatTime + DataCenter.WeaponRemain).IsLessThan(time);
     }
 
-    public static bool CombatElapsedLessGCD(int GCD) => CombatElapsedLess(GCD * DataCenter.WeaponTotal);
+    /// <summary>
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
+    /// </summary>
+    /// <param name="GCD"></param>
+    /// <returns></returns>
+    protected static bool CombatElapsedLessGCD(int GCD) => CombatElapsedLess(GCD * DataCenter.WeaponTotal);
 
     public MethodInfo[] AllLast => GetType().GetStaticBoolMethodInfo(m =>
     {

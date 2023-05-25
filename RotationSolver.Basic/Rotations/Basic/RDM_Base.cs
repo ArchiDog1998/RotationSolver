@@ -1,11 +1,14 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
+using System.Reflection.PortableExecutable;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public abstract class RDM_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Intelligence;
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.RedMage };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.RDM };
     protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
     #region Job Gauge
@@ -132,7 +135,21 @@ public abstract class RDM_Base : CustomRotation
     };
     #endregion
 
-
+    #region Traits
+    protected static IBaseTrait EnhancedJolt { get; } = new BaseTrait(195);
+    protected static IBaseTrait MaimAndMend    { get; } = new BaseTrait(200);
+    protected static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(201);
+    protected static IBaseTrait Dualcast    { get; } = new BaseTrait(216);
+    protected static IBaseTrait ScatterMastery    { get; } = new BaseTrait(303);
+    protected static IBaseTrait EnhancedDisplacement    { get; } = new BaseTrait(304);
+    protected static IBaseTrait EnhancedManafication    { get; } = new BaseTrait(305);
+    protected static IBaseTrait RedMagicMastery    { get; } = new BaseTrait(306);
+    protected static IBaseTrait ManaStack    { get; } = new BaseTrait(482);
+    protected static IBaseTrait RedMagicMastery2    { get; } = new BaseTrait(483);
+    protected static IBaseTrait RedMagicMastery3    { get; } = new BaseTrait(484);
+    protected static IBaseTrait EnhancedAcceleration    { get; } = new BaseTrait(485);
+    protected static IBaseTrait EnhancedManafication2    { get; } = new BaseTrait(486);
+    #endregion
 
     [RotationDesc(ActionID.Vercure)]
     protected sealed override bool HealSingleGCD(out IAction act)

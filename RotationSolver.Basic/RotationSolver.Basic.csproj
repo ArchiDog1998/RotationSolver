@@ -12,6 +12,7 @@
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;1591</NoWarn>
@@ -35,7 +36,9 @@
 	  <Using Include="RotationSolver.Basic.Rotations" />
 	  <Using Include="RotationSolver.Basic.Rotations.Basic" />
 
-	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj">
+		  <PrivateAssets>all</PrivateAssets>
+	  </ProjectReference>
 
 	  <None Include="..\COPYING.LESSER">
 		<Pack>True</Pack>

@@ -1,4 +1,6 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -6,7 +8,7 @@ public abstract class WAR_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Warrior, ClassJobID.Marauder };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.WAR, ECommons.ExcelServices.Job.MRD };
 
     static WARGauge JobGauge => Svc.Gauges.Get<WARGauge>();
 
@@ -90,7 +92,6 @@ public abstract class WAR_Base : CustomRotation
     public static IBaseAction Defiance { get; } = new BaseAction(ActionID.Defiance, ActionOption.Defense | ActionOption.EndSpecial);
     #endregion
 
-
     #region Support
     public static IBaseAction Infuriate { get; } = new BaseAction(ActionID.Infuriate)
     {
@@ -136,9 +137,27 @@ public abstract class WAR_Base : CustomRotation
     };
     #endregion
 
+    #region Traits
+    protected static IBaseTrait EnhancedInfuriate { get; } = new BaseTrait(157);
+    protected static IBaseTrait BerserkMastery { get; } = new BaseTrait(218);
+    protected static IBaseTrait TheBeastWithin    { get; } = new BaseTrait(249);
+    protected static IBaseTrait InnerBeastMastery    { get; } = new BaseTrait(265);
+    protected static IBaseTrait SteelCycloneMastery    { get; } = new BaseTrait(266);
+    protected static IBaseTrait NascentChaos    { get; } = new BaseTrait(267);
+    protected static IBaseTrait MasteringTheBeast    { get; } = new BaseTrait(268);
+    protected static IBaseTrait EnhancedThrillOfBattle    { get; } = new BaseTrait(269);
+    protected static IBaseTrait TankMastery    { get; } = new BaseTrait(318);
+    protected static IBaseTrait EnhancedShakeItOff    { get; } = new BaseTrait(417);
+    protected static IBaseTrait RawIntuitionMastery    { get; } = new BaseTrait(418);
+    protected static IBaseTrait EnhancedNascentFlash    { get; } = new BaseTrait(419);
+    protected static IBaseTrait EnhancedEquilibrium    { get; } = new BaseTrait(420);
+    protected static IBaseTrait EnhancedOnslaught    { get; } = new BaseTrait(421);
+    protected static IBaseTrait MeleeMastery    { get; } = new BaseTrait(505);
+    #endregion
+
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(JobIDs[0])) return true;
+        if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

@@ -2,6 +2,7 @@ using Dalamud.Configuration;
 using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -91,22 +92,22 @@ public class PluginConfiguration : IPluginConfiguration
     public float AlphaInFill = 0.15f;
     public float MinLastAbilityAdvanced = 0.1f;
 
-    public Dictionary<ClassJobID, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<ClassJobID, float>();
+    public Dictionary<Job, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<Job, float>();
 
-    public Dictionary<ClassJobID, float> HealingOfTimeSubtractAreas { get; set; } = new Dictionary<ClassJobID, float>();
-    public Dictionary<ClassJobID, float> HealthAreaAbilities { get; set; } = new Dictionary<ClassJobID, float>();
+    public Dictionary<Job, float> HealingOfTimeSubtractAreas { get; set; } = new Dictionary<Job, float>();
+    public Dictionary<Job, float> HealthAreaAbilities { get; set; } = new Dictionary<Job, float>();
     public float HealthAreaAbility = 0.75f;
 
-    public Dictionary<ClassJobID, float> HealthAreaSpells { get; set; } = new Dictionary<ClassJobID, float>();
+    public Dictionary<Job, float> HealthAreaSpells { get; set; } = new Dictionary<Job, float>();
     public float HealthAreaSpell = 0.65f;
 
-    public Dictionary<ClassJobID, float> HealthSingleAbilities { get; set; } = new Dictionary<ClassJobID, float>();
+    public Dictionary<Job, float> HealthSingleAbilities { get; set; } = new Dictionary<Job, float>();
     public float HealthSingleAbility = 0.7f;
 
-    public Dictionary<ClassJobID, float> HealthSingleSpells { get; set; } = new Dictionary<ClassJobID, float>();
+    public Dictionary<Job, float> HealthSingleSpells { get; set; } = new Dictionary<Job, float>();
     public float HealthSingleSpell = 0.55f;
 
-    public Dictionary<ClassJobID, float> HealthForDyingTanks { get; set; } = new Dictionary<ClassJobID, float>();
+    public Dictionary<Job, float> HealthForDyingTanks { get; set; } = new Dictionary<Job, float>();
 
     public float HealthTankRatio = 0.4f;
     public float HealthHealerRatio = 0.4f;

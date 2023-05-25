@@ -13,7 +13,7 @@ internal static class MajorUpdater
     public static bool ShouldPreventActions => Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
             && Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActionsDuty)
             && Svc.Condition[ConditionFlag.BoundByDuty]
-            && !Service.DutyState.IsDutyStarted
+            && !Svc.DutyState.IsDutyStarted
         || Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
             && !DataCenter.HasHostilesInMaxRange;
 

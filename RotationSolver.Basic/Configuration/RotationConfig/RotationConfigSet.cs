@@ -1,14 +1,15 @@
-﻿using System.Collections;
+﻿using ECommons.ExcelServices;
+using System.Collections;
 
 namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 public class RotationConfigSet : IRotationConfigSet
 {
-    readonly ClassJobID _job;
+    readonly Job _job;
     readonly string _rotationName;
     public HashSet<IRotationConfig> Configs { get; } = new HashSet<IRotationConfig>(new RotationConfigComparer());
 
-    public RotationConfigSet(ClassJobID job, string rotationName)
+    public RotationConfigSet(Job job, string rotationName)
     {
         _job = job;
         _rotationName = rotationName;

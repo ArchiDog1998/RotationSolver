@@ -1,12 +1,9 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
-using Dalamud.Logging;
 using Dalamud.Plugin;
 using ECommons;
 using ECommons.DalamudServices;
-using ECommons.GameHelpers;
-using ECommons.SplatoonAPI;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
@@ -32,9 +29,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public static DalamudLinkPayload LinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
-        ECommonsMain.Init(pluginInterface, this, ECommons.Module.SplatoonAPI);
-
-        pluginInterface.Create<Service>();
+        ECommonsMain.Init(pluginInterface, this);
 
         try
         {
@@ -63,8 +58,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
+        Watcher.Enable();
         OtherConfiguration.Init();
-        _dis.Add(new Watcher());
         _dis.Add(new MovingController());
         _dis.Add(new LocalizationManager());
 #if DEBUG
@@ -82,20 +77,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             if(id == 0) OpenConfigWindow();
         });
-
-        //Task.Run(async () =>
-        //{
-        //    await Task.Delay(1000);
-        //    Splatoon.RemoveDynamicElements("Test");
-        //    var element = new Element(ElementType.CircleRelativeToActorPosition);
-        //    element.refActorObjectID = Player.Object.ObjectId;
-        //    element.refActorComparisonType = RefActorComparisonType.ObjectID;
-        //    element.includeHitbox = true;
-        //    element.radius = 0.5f;
-        //    element.Donut = 0.8f;
-        //    element.color = ImGui.GetColorU32(new Vector4(1, 1, 1, 0.4f));
-        //    Svc.Toasts.ShowQuest(Splatoon.AddDynamicElement("Test", element, -2).ToString());
-        //});
     }
 
     internal static void ChangeUITranslation()
@@ -110,6 +91,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public void Dispose()
     {
         RSCommands.Disable();
+        Watcher.Disable();
+
         Svc.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw -= windowSystem.Draw;
         Svc.PluginInterface.UiBuilder.Draw -= OverlayWindow.Draw;
@@ -122,7 +105,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         MajorUpdater.Dispose();
 
-        IconSet.Dispose();
         OtherConfiguration.Save();
 
         ECommonsMain.Dispose();
@@ -152,7 +134,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             && !Svc.Condition[ConditionFlag.BetweenAreas]
             && !Svc.Condition[ConditionFlag.BetweenAreas51]
             && !Svc.Condition[ConditionFlag.WaitingForDuty]
-            && !Svc.Condition[ConditionFlag.UsingParasol]
             && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;

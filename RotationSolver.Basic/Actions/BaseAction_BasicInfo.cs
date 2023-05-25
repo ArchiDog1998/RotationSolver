@@ -21,9 +21,6 @@ public partial class BaseAction : IBaseAction
 
     public Func<uint> GetDotGcdCount { private get; init; }
 
-    /// <summary>
-    /// EnoughLevel for using.
-    /// </summary>
     public bool EnoughLevel => Player.Level >= Level;
     public byte Level => _action.ClassJobLevel;
     public string Name => _action.Name;

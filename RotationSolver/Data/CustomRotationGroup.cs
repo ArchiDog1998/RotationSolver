@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ECommons.ExcelServices;
 
 namespace RotationSolver.Data
 {
-    internal record CustomRotationGroup(ClassJobID JobId, ClassJobID[] ClassJobIds, ICustomRotation[] Rotations);
+    internal record CustomRotationGroup(Job JobId, Job[] ClassJobIds, ICustomRotation[] Rotations);
 }

@@ -1,9 +1,6 @@
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
+using Dalamud.Logging;
 using RotationSolver.Localization;
-using RotationSolver.Updaters;
-using System.Collections;
-using System.Text;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow : Window
@@ -213,12 +210,20 @@ internal partial class RotationConfigWindow : Window
         if (act == null) return;
         if (ImGui.BeginTabItem(name))
         {
-            outsideChild?.Invoke();
-            if (ImGui.BeginChild("Param", new Vector2(0f, -1f), true))
+            try
             {
-                act();
-                ImGui.EndChild();
+                outsideChild?.Invoke();
+                if (ImGui.BeginChild("Param", new Vector2(0f, -1f), true))
+                {
+                    act();
+                    ImGui.EndChild();
+                }
             }
+            catch (Exception ex)
+            {
+                PluginLog.Warning(ex, $"{name} displays failed.");
+            }
+
             ImGui.EndTabItem();
         }
     }

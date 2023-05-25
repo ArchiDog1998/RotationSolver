@@ -1,4 +1,6 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -6,7 +8,7 @@ public abstract class BRD_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Dexterity;
 
-    public sealed override ClassJobID[] JobIDs => new[] { ClassJobID.Bard, ClassJobID.Archer };
+    public sealed override Job[] Jobs => new[] { ECommons.ExcelServices.Job.BRD, ECommons.ExcelServices.Job.ARC };
 
     #region Job Gauge
     static BRDGauge JobGauge => Svc.Gauges.Get<BRDGauge>();
@@ -121,6 +123,26 @@ public abstract class BRD_Base : CustomRotation
         ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour,
             StatusID.Tactician1, StatusID.Tactician2, StatusID.ShieldSamba),
     };
+    #endregion
+
+    #region Traits
+    protected static IBaseTrait HeavierShot { get; } = new BaseTrait(17);
+    protected static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(18);
+    protected static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(20);
+    protected static IBaseTrait BiteMastery { get; } = new BaseTrait(168);
+    protected static IBaseTrait EnhancedEmpyrealArrow    { get; } = new BaseTrait(169);
+    protected static IBaseTrait StraightShotMastery    { get; } = new BaseTrait(282);
+    protected static IBaseTrait EnhancedQuickNock    { get; } = new BaseTrait(283);
+    protected static IBaseTrait BiteMastery2 { get; } = new BaseTrait(284);
+    protected static IBaseTrait HeavyShotMastery    { get; } = new BaseTrait(285);
+    protected static IBaseTrait EnhancedArmysPaeon    { get; } = new BaseTrait(286);
+    protected static IBaseTrait SoulVoiceTraits    { get; } = new BaseTrait(287);
+    protected static IBaseTrait QuickNockMastery    { get; } = new BaseTrait(444);
+    protected static IBaseTrait EnhancedBloodletter    { get; } = new BaseTrait(445);
+    protected static IBaseTrait EnhancedApexArrow    { get; } = new BaseTrait(446);
+    protected static IBaseTrait EnhancedTroubadour    { get; } = new BaseTrait(447);
+    protected static IBaseTrait MinstrelsCoda    { get; } = new BaseTrait(448);
+
     #endregion
 
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)

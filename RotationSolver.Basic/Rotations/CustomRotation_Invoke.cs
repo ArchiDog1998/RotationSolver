@@ -1,4 +1,5 @@
 ﻿using Dalamud.Logging;
+using ECommons.ExcelServices;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Rotations;
@@ -17,7 +18,7 @@ public abstract partial class CustomRotation
         try
         {
             UpdateInfo();
-            UpdateActions(Job.GetJobRole());
+            UpdateActions(ClassJob.GetJobRole());
             newAction = Invoke(out gcdAction);
             if (!IsValid) IsValid = true;
         }
@@ -117,7 +118,7 @@ public abstract partial class CustomRotation
         var helpDefenseAOE = Configuration.PluginConfiguration.GetValue(SettingsCommand.UseDefenseAbility) && DataCenter.IsHostileCastingAOE;
 
         bool helpDefenseSingle = false;
-        if (Job.GetJobRole() == JobRole.Healer || Job.RowId == (uint)ClassJobID.Paladin)
+        if (ClassJob.GetJobRole() == JobRole.Healer || ClassJob.RowId == (uint)ECommons.ExcelServices.Job.PLD)
         {
             if (DataCenter.PartyTanks.Any((tank) =>
             {

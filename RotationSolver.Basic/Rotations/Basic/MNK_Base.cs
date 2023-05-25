@@ -1,4 +1,7 @@
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Traits;
+using System.Collections.Generic;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -6,7 +9,7 @@ public abstract class MNK_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Strength;
 
-    public sealed override ClassJobID[] JobIDs => new ClassJobID[] { ClassJobID.Monk, ClassJobID.Pugilist };
+    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.MNK, ECommons.ExcelServices.Job.PGL };
 
     #region Job Gauge
     static MNKGauge JobGauge => Svc.Gauges.Get<MNKGauge>();
@@ -72,7 +75,6 @@ public abstract class MNK_Base : CustomRotation
 
     #endregion
 
-
     #region Support
     public static IBaseAction Mantra { get; } = new BaseAction(ActionID.Mantra, ActionOption.Heal);
 
@@ -100,6 +102,23 @@ public abstract class MNK_Base : CustomRotation
     public static IBaseAction RiddleOfFire { get; } = new BaseAction(ActionID.RiddleOfFire);
     #endregion
 
+    #region Traits
+    protected static IBaseTrait DeepMeditation { get; } = new BaseTrait(160);
+    protected static IBaseTrait DeepMeditation2 { get; } = new BaseTrait(245);
+    protected static IBaseTrait GreasedLightning { get; } = new BaseTrait(364);
+    protected static IBaseTrait EnhancedGreasedLightning    { get; } = new BaseTrait(365);
+    protected static IBaseTrait EnhancedGreasedLightning2    { get; } = new BaseTrait(366);
+    protected static IBaseTrait EnhancedGreasedLightning3    { get; } = new BaseTrait(367);
+    protected static IBaseTrait SteelPeakMastery    { get; } = new BaseTrait(428);
+    protected static IBaseTrait HowlingFistMastery    { get; } = new BaseTrait(429);
+    protected static IBaseTrait ArmOfTheDestroyerMastery    { get; } = new BaseTrait(430);
+    protected static IBaseTrait EnhancedThunderclap    { get; } = new BaseTrait(431);
+    protected static IBaseTrait EnhancedBrotherhood    { get; } = new BaseTrait(432);
+    protected static IBaseTrait EnhancedPerfectBalance    { get; } = new BaseTrait(433);
+    protected static IBaseTrait FlintStrikeMastery    { get; } = new BaseTrait(512);
+    protected static IBaseTrait TornadoKickMastery    { get; } = new BaseTrait(513);
+    protected static IBaseTrait MeleeMastery    { get; } = new BaseTrait(518);
+    #endregion
     public static IBaseAction Thunderclap { get; } = new BaseAction(ActionID.Thunderclap, ActionOption.EndSpecial)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,

@@ -1,7 +1,9 @@
 ﻿using Dalamud.Logging;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
+using ECommons.ImGuiMethods;
 using ImGuiScene;
+using System.IO;
 using System.Net;
 
 namespace RotationSolver.Basic.Data;
@@ -24,105 +26,14 @@ public enum IconType : byte
 
 public static class IconSet
 {
-    static readonly Dictionary<uint, TextureWrap> _texturesIds = new();
-    static readonly HashSet<uint> _loadingTextureID = new();
-
-    static readonly SortedDictionary<string, TextureWrap> _texturesPath = new();
-    static readonly HashSet<string> _loadingTexturePath = new();
-
     public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
 
     public static TextureWrap GetTexture(uint id)
-    {
-        if (!_texturesIds.TryGetValue(id, out var texture))
-        {
-            if (!_loadingTextureID.Contains(id))
-            {
-                _loadingTextureID.Add(id);
-                Task.Run(() =>
-                {
-                    texture = Service.GetTextureIcon(id);
-                    _texturesIds[id] = texture;
-                });
-            }
-
-            if (!_texturesIds.TryGetValue(0, out texture))
-            {
-                texture = Service.GetTextureIcon(0);
-                _texturesIds[0] = texture;
-            }
-            return texture;
-        }
-
-        return texture;
-    }
-
+        => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out var texture) ? texture :
+        ThreadLoadImageHandler.TryGetIconTextureWrap(0 , false, out texture) ? texture : null;
     public static TextureWrap GetTexture(string path)
-    {
-        if (!_texturesPath.TryGetValue(path, out var t))
-        {
-            if (!_loadingTexturePath.Contains(path))
-            {
-                _loadingTexturePath.Add(path);
+        => ThreadLoadImageHandler.TryGetTextureWrap(path, out var texture) ? texture : null;
 
-                try
-                {
-                    Task.Run(async () =>
-                    {
-                        if (path.StartsWith("https:"))
-                        {
-                            var bytes = await LoadBytes(path);
-                            _texturesPath[path] = TryLoadImage(bytes);
-                        }
-                        else if(path.StartsWith("ui/"))
-                        {
-                            _texturesPath[path] = Service.GetTexture(path);
-                        }
-                    });
-                }
-                finally { }
-            }
-            return null;
-        }
-        return t;
-    }
-
-    private static async Task<byte[]> LoadBytes(string url)
-    {
-        var data = await new HttpClient().GetAsync(url);
-        if (data.StatusCode == HttpStatusCode.NotFound)
-            return null;
-
-        data.EnsureSuccessStatusCode();
-        return await data.Content.ReadAsByteArrayAsync();
-    }
-
-    private static TextureWrap TryLoadImage(byte[] bytes)
-    {
-        if (bytes == null)
-            return null;
-
-        try
-        {
-            return Svc.PluginInterface.UiBuilder.LoadImage(bytes);
-        }
-        catch(Exception e)
-        {
-            PluginLog.Warning(e, "Load image failed in RS!");
-            return null;
-        }
-    }
-    public static void Dispose()
-    {
-        foreach (var item in _texturesIds.Values)
-        {
-            item?.Dispose();
-        }
-        foreach (var item in _texturesPath.Values)  
-        {
-            item?.Dispose();
-        }
-    }
 
     private static readonly Dictionary<IconType, uint[]> _icons = new()
     {
@@ -240,7 +151,7 @@ public static class IconSet
     public static uint GetJobIcon(ICustomRotation combo)
     {
         IconType type = IconType.Gold;
-        switch (combo.Job.GetJobRole())
+        switch (combo.ClassJob.GetJobRole())
         {
             case JobRole.Tank:
                 type = IconType.Blue;
@@ -259,6 +170,6 @@ public static class IconSet
 
     public static uint GetJobIcon(ICustomRotation combo, IconType type)
     {
-        return _icons[type][(uint)combo.JobIDs[0] - 1];
+        return _icons[type][(uint)combo.Jobs[0] - 1];
     }
 }
