@@ -4,6 +4,8 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using ECommons;
 using ECommons.DalamudServices;
+using ECommons.GameHelpers;
+using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
@@ -30,6 +32,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this);
+        ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out _);
 
         try
         {
@@ -134,6 +137,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             && !Svc.Condition[ConditionFlag.BetweenAreas]
             && !Svc.Condition[ConditionFlag.BetweenAreas51]
             && !Svc.Condition[ConditionFlag.WaitingForDuty]
+            && (!Svc.Condition[ConditionFlag.UsingParasol] || Player.Object.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.WeaponOut))
             && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;

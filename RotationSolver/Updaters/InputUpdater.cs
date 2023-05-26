@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Game.ClientState.Keys;
 using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 
@@ -27,8 +28,9 @@ internal static class InputUpdater
             || Svc.Condition[ConditionFlag.Mounted]
             || Svc.Condition[ConditionFlag.SufferingStatusAffliction2]
             || Svc.Condition[ConditionFlag.RolePlaying]
-            || Svc.Condition[ConditionFlag.UsingParasol]
+            || Svc.Condition[ConditionFlag.UsingParasol] && !Player.Object.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.WeaponOut)
             || Svc.Condition[ConditionFlag.InFlight]) return;
+
 
         if (DateTime.Now - RecordingTime > TimeSpan.FromSeconds(10))
         {

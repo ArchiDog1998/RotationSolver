@@ -294,8 +294,13 @@ internal class ControlWindow : Window
         var help = GetHelp(command);
         string baseId = "ImgButton" + command.ToString();
 
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
-        DrawIAction(IconSet.GetTexture(iconId).ImGuiHandle, baseId, abilityW, command, help);
+        var texture = IconSet.GetTexture(iconId);
+        if(texture != null)
+        {
+            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+            DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
+        }
+
         ImGui.EndGroup();
 
         if (DataCenter.StateType == command)

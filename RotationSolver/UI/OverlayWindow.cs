@@ -1,7 +1,10 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
+using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using RotationSolver.Updaters;
+using System.Drawing;
 
 namespace RotationSolver.UI;
 
@@ -124,19 +127,21 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        if (!Player.Object.IsJobCategory(JobRole.Tank)
-            && !Player.Object.IsJobCategory(JobRole.Melee)) return;
+        //if (!Player.Object.IsJobCategory(JobRole.Tank)
+        //    && !Player.Object.IsJobCategory(JobRole.Melee)) return;
 
-        var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
-            ? ActionUpdater.NextGCDAction.Target
-            : Svc.Targets.Target?.IsNPCEnemy() ?? false
-            ? Svc.Targets.Target
-            : null;
+        //var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
+        //    ? ActionUpdater.NextGCDAction.Target
+        //    : Svc.Targets.Target?.IsNPCEnemy() ?? false
+        //    ? Svc.Targets.Target
+        //    : null;
+
+        var target = Player.Object;
 
         if (target == null) return;
 
-        if (ActionUpdater.NextGCDAction != null
-            && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
+        //if (ActionUpdater.NextGCDAction != null
+        //    && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
 
         Vector3 pPosition = target.Position;
 
@@ -263,6 +268,7 @@ internal static class OverlayWindow
 
     public static IEnumerable<Vector2> GetPtsOnScreen(IEnumerable<Vector3> pts)
     {
+        //pts = ProjectPts(pts, 3);
         var cameraPts = pts.Select(WorldToCamera).ToArray();
         var changedPts = new List<Vector3>(cameraPts.Length * 2);
 
@@ -292,6 +298,19 @@ internal static class OverlayWindow
         {
             CameraToScreen(p, out var screenPos, out _);
             return screenPos;
+        });
+    }
+
+    private static IEnumerable<Vector3> ProjectPts(IEnumerable<Vector3> pts, float height)
+    {
+        return pts.Select(pt =>
+        {
+            var pUp = pt + Vector3.UnitY * height;
+            if (BGCollisionModule.Raycast(pUp, -Vector3.UnitY, out var hit))
+            {
+                return hit.Point;
+            }
+            return pt;
         });
     }
 

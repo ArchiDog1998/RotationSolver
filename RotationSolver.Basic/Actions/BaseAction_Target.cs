@@ -484,7 +484,7 @@ public partial class BaseAction
         var point = Player.Object.Position;
         var tarPt = tar.Position;
         var direction = tarPt - point;
-        if(BGCollisionModule.Raycast2(point, direction, out var _, direction.Length())) return false;
+        if(BGCollisionModule.Raycast(point, direction, out var _, direction.Length())) return false;
 
         return true;
     }

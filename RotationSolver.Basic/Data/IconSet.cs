@@ -1,10 +1,5 @@
-﻿using Dalamud.Logging;
-using Dalamud.Utility;
-using ECommons.DalamudServices;
-using ECommons.ImGuiMethods;
+﻿using ECommons.ImGuiMethods;
 using ImGuiScene;
-using System.IO;
-using System.Net;
 
 namespace RotationSolver.Basic.Data;
 
