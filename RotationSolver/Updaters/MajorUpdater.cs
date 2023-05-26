@@ -42,7 +42,7 @@ internal static class MajorUpdater
                 bool newValue = Svc.Condition[(ConditionFlag)indexs[i]];
                 if (_values.TryGetValue(i, out bool value) && value != newValue && indexs[i] != 48 && indexs[i] != 27)
                 {
-                    Svc.Toasts.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
+                    //Svc.Toasts.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
                 }
                 _values[i] = newValue;
             }

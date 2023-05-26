@@ -127,21 +127,19 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        //if (!Player.Object.IsJobCategory(JobRole.Tank)
-        //    && !Player.Object.IsJobCategory(JobRole.Melee)) return;
+        if (!Player.Object.IsJobCategory(JobRole.Tank)
+            && !Player.Object.IsJobCategory(JobRole.Melee)) return;
 
-        //var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
-        //    ? ActionUpdater.NextGCDAction.Target
-        //    : Svc.Targets.Target?.IsNPCEnemy() ?? false
-        //    ? Svc.Targets.Target
-        //    : null;
-
-        var target = Player.Object;
+        var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
+            ? ActionUpdater.NextGCDAction.Target
+            : Svc.Targets.Target?.IsNPCEnemy() ?? false
+            ? Svc.Targets.Target
+            : null;
 
         if (target == null) return;
 
-        //if (ActionUpdater.NextGCDAction != null
-        //    && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
+        if (ActionUpdater.NextGCDAction != null
+            && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
 
         Vector3 pPosition = target.Position;
 

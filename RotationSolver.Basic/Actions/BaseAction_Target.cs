@@ -481,8 +481,8 @@ public partial class BaseAction
 
         if (!ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
-        var point = Player.Object.Position;
-        var tarPt = tar.Position;
+        var point = Player.Object.Position + Vector3.UnitY * Player.GameObject->Height;
+        var tarPt = tar.Position + Vector3.UnitY * tar.GetAddress()->Height;
         var direction = tarPt - point;
         if(BGCollisionModule.Raycast(point, direction, out var _, direction.Length())) return false;
 
