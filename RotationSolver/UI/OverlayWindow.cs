@@ -159,7 +159,6 @@ internal static class OverlayWindow
             DrawBoundary(pts2, offsetColor);
         }
 
-        List<Vector2> pts = new(4 * COUNT);
         bool wrong = target.DistanceToPlayer() > 3;
 
         var shouldPos = ActionUpdater.NextGCDAction?.EnemyPositional ?? EnemyPositional.None;

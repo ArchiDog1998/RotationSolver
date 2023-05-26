@@ -1,6 +1,7 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -61,6 +62,10 @@ internal partial class RotationConfigWindow
         ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
         ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
         ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
+
+        //ImGui.Text(CameraManager.Instance()->CurrentCamera->LookAtVector.ToString());
+        //ImGui.Text(CameraManager.Instance()->CurrentCamera->Vector_1.ToString());
+        //ImGui.Text(Player.Object.Position.ToString());
 
         foreach (var status in Player.Object.StatusList)
         {
