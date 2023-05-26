@@ -4,6 +4,7 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -63,7 +64,6 @@ public partial class BaseAction
 
         float range = Range;
 
-        //如果都没有距离，这个还需要选对象嘛？选自己啊！
         if (range == 0 && EffectRange == 0)
         {
             target = player;
@@ -206,13 +206,11 @@ public partial class BaseAction
     #region Target party
     private bool TargetParty(float range, int aoeCount, bool mustUse, out BattleChara target)
     {
-        //还消耗2400的蓝，那肯定是复活的。
         if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 || (ActionID)ID == ActionID.AngelWhisper)
         {
             return TargetDeath(out target);
         }
 
-        //找到没死的队友们。
         var availableCharas = DataCenter.PartyMembers.Where(player => player.CurrentHp != 0);
 
         if (Service.Config.TargetFriendly ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
@@ -229,10 +227,8 @@ public partial class BaseAction
             return false;
         }
 
-        //判断是否是范围。
         if (_action.CastType > 1 && (ActionID)ID != ActionID.DeploymentTactics)
         {
-            //找到能覆盖最多的位置，并且选血最少的来。
             target = ChoiceTarget(GetMostObjects(availableCharas, aoeCount), mustUse);
         }
         else
@@ -242,7 +238,7 @@ public partial class BaseAction
                 availableCharas = availableCharas.Where(b => b.IsJobCategory(JobRole.Tank));
             }
             availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range).Where(CanUseTo);
-            //特殊选队友的方法。
+
             target = ChoiceTarget(availableCharas, mustUse);
         }
         if (target == null) return false;
@@ -261,7 +257,6 @@ public partial class BaseAction
     #region Target Hostile
     private bool TargetHostile(float range, bool mustUse, int aoeCount, out BattleChara target)
     {
-        //如果不用自动找目标，那就直接返回。
         if (DataCenter.StateType == StateCommandType.Manual)
         {
             if (Svc.Targets.Target is BattleChara b && b.IsNPCEnemy() && b.DistanceToPlayer() <= range)
@@ -279,7 +274,6 @@ public partial class BaseAction
             return false;
         }
 
-        //找到被标记攻击的怪
         if (Service.Config.ChooseAttackMark)
         {
             var b = MarkingHelper.GetAttackMarkChara(DataCenter.HostileTargets);
@@ -361,13 +355,10 @@ public partial class BaseAction
 
         if (_action.CastType == 1) return canGetObj;
 
-        //能打到MaxCount以上数量的怪的怪。
         List<BattleChara> objectMax = new(canGetObj.Count());
 
-        //循环能打中的目标。
         foreach (var t in canGetObj)
         {
-            //计算能达到的所有怪的数量。
             int count = CanGetTargetCount(t, canAttack);
 
             if (count == maxCount)
@@ -421,7 +412,7 @@ public partial class BaseAction
 
         switch (_action.CastType)
         {
-            case 2: // 圆形范围攻击
+            case 2: // Circle
                 return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= EffectRange;
 
             case 3: // Sector
@@ -429,11 +420,11 @@ public partial class BaseAction
                 tdir += dir / dir.Length() * target.HitboxRadius / (float)Math.Sin(_alpha);
                 return Vector3.Dot(dir, tdir) / (dir.Length() * tdir.Length()) >= Math.Cos(_alpha);
 
-            case 4: //直线范围攻击
+            case 4: //Line
                 if (subTarget.DistanceToPlayer() > EffectRange) return false;
                 return Vector3.Cross(dir, tdir).Length() / dir.Length() <= 2 + target.HitboxRadius;
 
-            case 10: //环形范围攻击也就这么判断吧，我烦了。
+            case 10: //Donut
                 var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;
                 return dis <= EffectRange && dis >= 8;
         }
@@ -484,21 +475,18 @@ public partial class BaseAction
 
     public unsafe bool CanUseTo(BattleChara tar)
     {
-        if (tar == null) return false;
+        if (tar == null || !Player.Available) return false;
 
-        var tarAddress = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)tar.Address;
+        var tarAddress = tar.GetAddress();
 
         if (!ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
-        if((IntPtr)Player.BattleChara == IntPtr.Zero || (IntPtr)tarAddress == IntPtr.Zero) return false;
+        var point = Player.Object.Position;
+        var tarPt = tar.Position;
+        var direction = tarPt - point;
+        if(BGCollisionModule.Raycast2(point, direction, out var _, direction.Length())) return false;
 
         return true;
-
-//        var id = ActionManager.GetActionInRangeOrLoS(AdjustedID,
-//(FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)Service.RawPlayer,
-//    tarAddress);
-
-//        return id is 0 or 565;
     }
 
     private static bool NoAOE

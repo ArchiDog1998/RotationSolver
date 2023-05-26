@@ -1,6 +1,4 @@
 using Dalamud.Configuration;
-using Dalamud.Game.ClientState.GamePad;
-using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 

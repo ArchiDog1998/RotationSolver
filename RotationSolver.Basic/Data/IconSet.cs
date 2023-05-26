@@ -34,7 +34,6 @@ public static class IconSet
     public static TextureWrap GetTexture(string path)
         => ThreadLoadImageHandler.TryGetTextureWrap(path, out var texture) ? texture : null;
 
-
     private static readonly Dictionary<IconType, uint[]> _icons = new()
     {
         { IconType.Gold, new uint[40]
