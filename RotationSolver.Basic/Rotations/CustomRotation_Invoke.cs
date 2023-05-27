@@ -1,6 +1,4 @@
 ﻿using Dalamud.Logging;
-using ECommons.ExcelServices;
-using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -79,7 +77,6 @@ public abstract partial class CustomRotation
         ActionDefenseAreaAbility = DefenseAreaAbility(out act) ? act : null;
 
         ActionDefenseSingleAbility = DefenseSingleAbility(out act) ? act : null;
-
 
         EsunaStanceNorthAbility = role switch
         {

@@ -9,7 +9,11 @@ namespace RotationSolver.Updaters;
 
 internal static class MajorUpdater
 {
-    public static bool IsValid => Svc.Condition.Any() && Player.Available && !SocialUpdater.InPvp;
+    public static bool IsValid => Svc.Condition.Any() 
+        && !Svc.Condition[ConditionFlag.BetweenAreas] 
+        && !Svc.Condition[ConditionFlag.BetweenAreas51]
+        && Player.Available && !SocialUpdater.InPvp;
+
     public static bool ShouldPreventActions => Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
             && Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActionsDuty)
             && Svc.Condition[ConditionFlag.BoundByDuty]
@@ -21,6 +25,7 @@ internal static class MajorUpdater
     private static readonly Dictionary<int, bool> _values = new();
 #endif
 
+    static bool _showed;
     private static void FrameworkUpdate(Framework framework)
     {
         RotationSolverPlugin.UpdateDisplayWindow();
@@ -29,6 +34,14 @@ internal static class MajorUpdater
             TargetUpdater.ClearTarget();
             return;
         }
+        if ((int)Svc.ClientState.ClientLanguage == 4 && !_showed)
+        {
+            _showed = true;
+            var warning = "Rotation Solver 未进行国服适配并不提供相关支持!";
+            Svc.Toasts.ShowError(warning);
+            Svc.Chat.PrintError(warning);
+        }
+
 
 #if DEBUG
         //Get changed condition.
@@ -42,7 +55,9 @@ internal static class MajorUpdater
                 bool newValue = Svc.Condition[(ConditionFlag)indexs[i]];
                 if (_values.TryGetValue(i, out bool value) && value != newValue && indexs[i] != 48 && indexs[i] != 27)
                 {
-                    //Svc.Toasts.ShowQuest(indexs[i].ToString() + " " + key + ": " + newValue.ToString());
+                    //var str = indexs[i].ToString() + " " + key + ": " + newValue.ToString();
+                    //Svc.Chat.Print(str);
+                    //Svc.Toasts.ShowQuest(str);
                 }
                 _values[i] = newValue;
             }

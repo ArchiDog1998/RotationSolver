@@ -1,6 +1,7 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -10,6 +11,7 @@ internal partial class RotationConfigWindow
     private void DrawDebugTab()
     {
         if (!Player.Available) return;
+
         var str = SocialUpdater.EncryptString(Player.Object);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH", ref str, 100);
@@ -98,6 +100,7 @@ internal partial class RotationConfigWindow
     {
         if(Svc.Targets.Target != null)
         {
+            ImGui.Text("Height: " + Svc.Targets.Target.GetAddress()->Height.ToString());
             ImGui.Text("Kind: " + Svc.Targets.Target.GetObjectKind().ToString());
             ImGui.Text("SubKind: " + Svc.Targets.Target.GetBattleNPCSubKind().ToString());
             var owner = Svc.Objects.SearchById(Svc.Targets.Target.OwnerId);

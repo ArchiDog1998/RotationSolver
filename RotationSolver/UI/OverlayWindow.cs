@@ -1,7 +1,15 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Interface.Colors;
+using Dalamud.Logging;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Game.Event;
+using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using RotationSolver.Updaters;
+using System.Drawing;
 
 namespace RotationSolver.UI;
 
@@ -156,7 +164,6 @@ internal static class OverlayWindow
             DrawBoundary(pts2, offsetColor);
         }
 
-        List<Vector2> pts = new(4 * COUNT);
         bool wrong = target.DistanceToPlayer() > 3;
 
         var shouldPos = ActionUpdater.NextGCDAction?.EnemyPositional ?? EnemyPositional.None;
@@ -214,11 +221,14 @@ internal static class OverlayWindow
 
     static void DrawFill(IEnumerable<Vector2> pts, Vector3 color)
     {
-        foreach (var pt in pts)
+        foreach (var set in ConvexPoints(pts.ToArray()))
         {
-            ImGui.GetWindowDrawList().PathLineTo(pt);
+            foreach (var pt in set)
+            {
+                ImGui.GetWindowDrawList().PathLineTo(pt);
+            }
+            ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, Service.Config.AlphaInFill)));
         }
-        ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, Service.Config.AlphaInFill)));
     }
 
     static void DrawBoundary(IEnumerable<Vector3> pts, Vector3 color)
@@ -261,15 +271,112 @@ internal static class OverlayWindow
         return pts;
     }
 
-    public static IEnumerable<Vector2> GetPtsOnScreen(IEnumerable<Vector3> pts)
+    private static IEnumerable<Vector2[]> ConvexPoints(Vector2[] points)
     {
-        var cameraPts = pts.Select(WorldToCamera).ToArray();
+        if(points.Length < 4)
+        {
+            return new Vector2[][] { points };
+        }
+
+        int breakIndex = -1;
+        Vector2 dir = Vector2.Zero;
+        for (int i = 0; i < points.Length; i++)
+        {
+            var pt1 = points[(i - 1 + points.Length) % points.Length];
+            var pt2 = points[i];
+            var pt3 = points[(i + 1) % points.Length];
+
+            var vec1 = pt2 - pt1;
+            var vec2 = pt3 - pt2;
+            if(Vector3.Cross(new Vector3(vec1.X, vec1.Y, 0), new Vector3(vec2.X, vec2.Y, 0)).Z > 0)
+            {
+                breakIndex = i;
+                dir = vec1 / vec1.Length() - vec2 / vec2.Length();
+                dir /= dir.Length();
+                break;
+            }
+        }
+
+        if (breakIndex < 0)
+        {
+            return new Vector2[][] { points };
+        }
+        else
+        {
+            try
+            {
+                var pt = points[breakIndex];
+                var index = 0;
+                double maxValue = double.MinValue;
+                for (int i = 0; i < points.Length; i++)
+                {
+                    if (Math.Abs(i - breakIndex) < 2) continue;
+                    if (Math.Abs(i + points.Length - breakIndex) < 2) continue;
+                    if (Math.Abs(i - points.Length - breakIndex) < 2) continue;
+                    var d = points[i] - pt;
+                    d /= d.Length();
+
+                    var angle = Vector2.Dot(d, dir);
+
+                    if (angle > maxValue)
+                    {
+                        maxValue = angle;
+                        index = i;
+                    }
+                }
+
+                var minIndex = Math.Min(breakIndex, index);
+                var maxIndex = Math.Max(breakIndex, index);
+
+                var list1 = new List<Vector2>(points.Length);
+                var list2 = new List<Vector2>(points.Length);
+                for (int i = 0; i < points.Length; i++)
+                {
+                    if (i <= minIndex || i >= maxIndex)
+                    {
+                        list1.Add(points[i]);
+                    }
+
+                    if (i >= minIndex && i <= maxIndex)
+                    {
+                        list2.Add(points[i]);
+                    }
+                }
+
+                return ConvexPoints(list1.ToArray()).Union(ConvexPoints(list2.ToArray())).Where(l => l.Count() > 2);
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Warning(ex, "Bad at drawing");
+                return new Vector2[][] { points };
+            }
+        }
+    }
+
+    public static unsafe IEnumerable<Vector2> GetPtsOnScreen(IEnumerable<Vector3> pts)
+    {
+        var camera = (Vector3)CameraManager.Instance()->CurrentCamera->Object.Position;
+        var cameraPts = ProjectPtsOnGround(pts, 3)
+            //.Where(p =>
+            //{
+            //    var vec = p - camera;
+            //    var dis = vec.Length() - 0.1f;
+            //    return !BGCollisionModule.Raycast(camera, vec, out _, dis);
+            //})
+            .Select(WorldToCamera).ToArray();
+        var changedPts = ChangePtsBehindCamera(cameraPts);
+
+        return changedPts.Select(CameraToScreen);
+    }
+
+    private static IEnumerable<Vector3> ChangePtsBehindCamera(Vector3[] cameraPts)
+    {
         var changedPts = new List<Vector3>(cameraPts.Length * 2);
 
         for (int i = 0; i < cameraPts.Length; i++)
         {
-            var pt1 = cameraPts[i];
-            var pt2 = cameraPts[(i + 1) % cameraPts.Length];
+            var pt1 = cameraPts[(i - 1 + cameraPts.Length) % cameraPts.Length];
+            var pt2 = cameraPts[i];
 
             if (pt1.Z > 0 && pt2.Z <= 0)
             {
@@ -288,12 +395,27 @@ internal static class OverlayWindow
             changedPts.Add(pt2);
         }
 
-        return changedPts.Where(p => p.Z > 0).Select(p =>
-        {
-            CameraToScreen(p, out var screenPos, out _);
-            return screenPos;
-        });
+        return changedPts.Where(p => p.Z > 0);
     }
+
+    private static IEnumerable<Vector3> ProjectPtsOnGround(IEnumerable<Vector3> pts, float height)
+        => pts.Select(pt =>
+        {
+            Vector3? result;
+            var pUp = pt + Vector3.UnitY * height;
+            if (BGCollisionModule.Raycast(pt + Vector3.UnitY * 100, -Vector3.UnitY, out var hit))
+            {
+                var p = hit.Point;
+                p.Y = Math.Max(p.Y, pt.Y - height);
+                p.Y = Math.Min(p.Y, pt.Y + height);
+                result = p;
+            }
+            else
+            {
+                result = null;
+            }
+            return result;
+        }).Where(pt => pt.HasValue).Select(pt => pt.Value);
 
     const float PLANE_Z = 0.001f;
     public static void GetPointOnPlane(Vector3 front, ref Vector3 back)
@@ -307,19 +429,15 @@ internal static class OverlayWindow
         back.Z = PLANE_Z;
     }
 
-    static readonly FieldInfo _matrix = Svc.GameGui.GetType().GetRuntimeFields().FirstOrDefault(f => f.Name == "getMatrixSingleton");
     public static unsafe Vector3 WorldToCamera(Vector3 worldPos)
     {
-        var matrix = (MulticastDelegate)_matrix.GetValue(Svc.GameGui);
-        var matrixSingleton = (IntPtr)matrix.DynamicInvoke();
-
-        var viewProjectionMatrix = *(Matrix4x4*)(matrixSingleton + 0x1b4);
-        return Vector3.Transform(worldPos, viewProjectionMatrix);
+        var camera = CameraManager.Instance()->CurrentCamera;
+        return Vector3.Transform(worldPos, camera->ViewMatrix * camera->RenderCamera->ProjectionMatrix);
     }
 
-    public static unsafe bool CameraToScreen(Vector3 cameraPos, out Vector2 screenPos, out bool inView)
+    public static unsafe Vector2 CameraToScreen(Vector3 cameraPos)
     {
-        screenPos = new Vector2(cameraPos.X / MathF.Abs(cameraPos.Z), cameraPos.Y / MathF.Abs(cameraPos.Z));
+        var screenPos = new Vector2(cameraPos.X / MathF.Abs(cameraPos.Z), cameraPos.Y / MathF.Abs(cameraPos.Z));
         var windowPos = ImGuiHelpers.MainViewport.Pos;
 
         var device = Device.Instance();
@@ -329,11 +447,6 @@ internal static class OverlayWindow
         screenPos.X = (0.5f * width * (screenPos.X + 1f)) + windowPos.X;
         screenPos.Y = (0.5f * height * (1f - screenPos.Y)) + windowPos.Y;
 
-        var inFront = cameraPos.Z > 0;
-        inView = inFront &&
-                 screenPos.X > windowPos.X && screenPos.X < windowPos.X + width &&
-                 screenPos.Y > windowPos.Y && screenPos.Y < windowPos.Y + height;
-
-        return inFront;
+        return screenPos;
     }
 }

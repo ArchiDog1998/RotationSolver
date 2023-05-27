@@ -136,7 +136,7 @@
   "ConfigWindow_Param_EsunaAll": "Esuna All Statuses.",
   "ConfigWindow_Param_InterruptibleMoreCheck": "Interrupt the action with action type check.",
   "ConfigWindow_Param_HealOutOfCombat": "Heal party members outside of combat.",
-  "ConfigWindow_Param_OnlyHotOnTanks": "Only use hot actions on tank rols.",
+  "ConfigWindow_Param_OnlyHotOnTanks": "Use single target healing over time actions only on tanks",
   "ConfigWindow_Param_BeneficialAreaOnTarget": "Use Beneficial Area abilities on target.",
   "ConfigWindow_Param_HealthDifference": "Set the HP standard deviation threshold for using AOE heal (ability & spell)",
   "ConfigWindow_Param_HealthAreaAbility": "Set the HP threshold for using AOE healing ability",

@@ -1,10 +1,5 @@
-﻿using Dalamud.Logging;
-using Dalamud.Utility;
-using ECommons.DalamudServices;
-using ECommons.ImGuiMethods;
+﻿using ECommons.ImGuiMethods;
 using ImGuiScene;
-using System.IO;
-using System.Net;
 
 namespace RotationSolver.Basic.Data;
 
@@ -33,7 +28,6 @@ public static class IconSet
         ThreadLoadImageHandler.TryGetIconTextureWrap(0 , false, out texture) ? texture : null;
     public static TextureWrap GetTexture(string path)
         => ThreadLoadImageHandler.TryGetTextureWrap(path, out var texture) ? texture : null;
-
 
     private static readonly Dictionary<IconType, uint[]> _icons = new()
     {

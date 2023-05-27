@@ -1,6 +1,4 @@
 using Dalamud.Configuration;
-using Dalamud.Game.ClientState.GamePad;
-using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 
@@ -91,6 +89,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool TargetFriendly = false;
     public float AlphaInFill = 0.15f;
     public float MinLastAbilityAdvanced = 0.1f;
+
+    public float HealWhenNothingTodoBelow = 0.8f;
 
     public Dictionary<Job, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<Job, float>();
 

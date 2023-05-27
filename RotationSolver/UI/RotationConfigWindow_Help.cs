@@ -40,7 +40,7 @@ internal partial class RotationConfigWindow
 
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Coffee, "Support"))
         {
-            Util.OpenLink("https://ko-fi.com/rotationsolver");
+            Util.OpenLink("https://ko-fi.com/archited");
         }
         ImGui.PopStyleColor(3);
 
