@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.9.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.9.2...v2.9.3) (2023-05-27)
+
+
+### Bug Fixes
+
+* add a collision check for action target. ([95ddb00](https://github.com/ArchiDog1998/RotationSolver/commit/95ddb000a2eab6b3f34a29d50ddd853fd8be02cc))
+* add healing in combat when nothing to do option. ([876e591](https://github.com/ArchiDog1998/RotationSolver/commit/876e5917fa4bf0f42717acf946c6fa130e6dc61e))
+* add sight check for action target. ([6bb38be](https://github.com/ArchiDog1998/RotationSolver/commit/6bb38be5cd3c0cbc40f5ff0baf827518119d0941))
+* add warning in CN server. ([5b06021](https://github.com/ArchiDog1998/RotationSolver/commit/5b060215e13898ce1cd9b3ebeb140caa42437e11))
+* changed ko-fi link. ([5bc40f1](https://github.com/ArchiDog1998/RotationSolver/commit/5bc40f101f9f7cdf59dd6600bfadfb354caae163))
+* changed the positional showcase. ([db83258](https://github.com/ArchiDog1998/RotationSolver/commit/db832587031a626d1c4ae367f859f7c313aa873c))
+* fix with Parasol. ([f3e14cd](https://github.com/ArchiDog1998/RotationSolver/commit/f3e14cde20b1babe297248e59d93370d851a4ed3))
+
 ## [2.9.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.9.1...v2.9.2) (2023-05-25)
 
 
