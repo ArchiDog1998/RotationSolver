@@ -136,7 +136,7 @@
   "ConfigWindow_Param_EsunaAll": "康复所有状态",
   "ConfigWindow_Param_InterruptibleMoreCheck": "使用动作类型检查来中断动作",
   "ConfigWindow_Param_HealOutOfCombat": "在战斗之外治疗小队队员",
-  "ConfigWindow_Param_OnlyHotOnTanks": "只对坦克职业挂HOT",
+  "ConfigWindow_Param_OnlyHotOnTanks": "Use single target healing over time actions only on tanks",
   "ConfigWindow_Param_BeneficialAreaOnTarget": "在目标位置放置增益性范围能力技",
   "ConfigWindow_Param_HealthDifference": "多少的HP标准差以下，可以用群疗 (能力技和GCD)",
   "ConfigWindow_Param_HealthAreaAbility": "多少的HP，可以用能力技群疗",
