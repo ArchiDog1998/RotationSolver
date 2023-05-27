@@ -211,6 +211,9 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP threshold is lower than this.";
 
     public string ConfigWindow_Param_DistanceForMoving { get; set; } = "If the distance between Melee or Tank to target is less than this, using moving ability as attack ability.";
+
+    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "Healing the members with GCD if there is nothing to do in combat.";
+
     public string ConfigWindow_Param_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP threshold for tank to use invincibility";
 

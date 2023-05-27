@@ -43,6 +43,12 @@ public abstract partial class CustomRotation
 
         if (GeneralGCD(out var action)) return action;
 
+        if(DataCenter.PartyMembersMinHP < Service.Config.HealWhenNothingTodoBelow && DataCenter.InCombat)
+        {
+            if (DataCenter.PartyMembersDifferHP < DataCenter.PartyMembersDifferHP && HealAreaGCD(out act)) return act;
+            if (HealSingleGCD(out act)) return act;
+        }
+
         if (Service.Config.RaisePlayerByCasting && RaiseSpell(specialType, out act, true)) return act;
 
         return null;

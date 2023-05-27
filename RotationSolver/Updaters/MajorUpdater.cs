@@ -13,6 +13,7 @@ internal static class MajorUpdater
         && !Svc.Condition[ConditionFlag.BetweenAreas] 
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
         && Player.Available && !SocialUpdater.InPvp;
+
     public static bool ShouldPreventActions => Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
             && Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActionsDuty)
             && Svc.Condition[ConditionFlag.BoundByDuty]
@@ -54,9 +55,9 @@ internal static class MajorUpdater
                 bool newValue = Svc.Condition[(ConditionFlag)indexs[i]];
                 if (_values.TryGetValue(i, out bool value) && value != newValue && indexs[i] != 48 && indexs[i] != 27)
                 {
-                    var str = indexs[i].ToString() + " " + key + ": " + newValue.ToString();
-                    Svc.Chat.Print(str);
-                    Svc.Toasts.ShowQuest(str);
+                    //var str = indexs[i].ToString() + " " + key + ": " + newValue.ToString();
+                    //Svc.Chat.Print(str);
+                    //Svc.Toasts.ShowQuest(str);
                 }
                 _values[i] = newValue;
             }

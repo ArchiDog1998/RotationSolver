@@ -1,7 +1,11 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Logging;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
+using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using RotationSolver.Updaters;
 using System.Drawing;
@@ -127,26 +131,27 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        if (!Player.Object.IsJobCategory(JobRole.Tank)
-            && !Player.Object.IsJobCategory(JobRole.Melee)) return;
+        //if (!Player.Object.IsJobCategory(JobRole.Tank)
+        //    && !Player.Object.IsJobCategory(JobRole.Melee)) return;
 
-        var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
-            ? ActionUpdater.NextGCDAction.Target
-            : Svc.Targets.Target?.IsNPCEnemy() ?? false
-            ? Svc.Targets.Target
-            : null;
+        //var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
+        //    ? ActionUpdater.NextGCDAction.Target
+        //    : Svc.Targets.Target?.IsNPCEnemy() ?? false
+        //    ? Svc.Targets.Target
+        //    : null;
 
+        var target = Player.Object;
         if (target == null) return;
 
-        if (ActionUpdater.NextGCDAction != null
-            && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
+        //if (ActionUpdater.NextGCDAction != null
+        //    && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
 
         Vector3 pPosition = target.Position;
 
         float radius = target.HitboxRadius + Player.Object.HitboxRadius + 3;
         float rotation = target.Rotation;
 
-        if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
+        //if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
         {
             var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
             var pts1 = SectorPlots(pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
@@ -265,14 +270,24 @@ internal static class OverlayWindow
 
     public static IEnumerable<Vector2> GetPtsOnScreen(IEnumerable<Vector3> pts)
     {
-        //pts = ProjectPts(pts, 3);
-        var cameraPts = pts.Select(WorldToCamera).ToArray();
+        var cameraPts = ProjectPtsOnGround(pts, 3).Select(WorldToCamera).ToArray();
+        var changedPts = ChangePtsBehindCamera(cameraPts);
+
+        return changedPts.Select(p =>
+        {
+            Vector2? result = CameraToScreenCanSee(p, out var screenPos) ? screenPos : null;
+            return result;
+        }).Where(p => p.HasValue).Select(p => p.Value);
+    }
+
+    private static IEnumerable<Vector3> ChangePtsBehindCamera(Vector3[] cameraPts)
+    {
         var changedPts = new List<Vector3>(cameraPts.Length * 2);
 
         for (int i = 0; i < cameraPts.Length; i++)
         {
-            var pt1 = cameraPts[i];
-            var pt2 = cameraPts[(i + 1) % cameraPts.Length];
+            var pt1 = cameraPts[(i - 1 + cameraPts.Length) % cameraPts.Length];
+            var pt2 = cameraPts[i];
 
             if (pt1.Z > 0 && pt2.Z <= 0)
             {
@@ -291,16 +306,11 @@ internal static class OverlayWindow
             changedPts.Add(pt2);
         }
 
-        return changedPts.Where(p => p.Z > 0).Select(p =>
-        {
-            CameraToScreen(p, out var screenPos, out _);
-            return screenPos;
-        });
+        return changedPts.Where(p => p.Z > 0);
     }
 
-    private static IEnumerable<Vector3> ProjectPts(IEnumerable<Vector3> pts, float height)
-    {
-        return pts.Select(pt =>
+    private static IEnumerable<Vector3> ProjectPtsOnGround(IEnumerable<Vector3> pts, float height)
+        => pts.Select(pt =>
         {
             var pUp = pt + Vector3.UnitY * height;
             if (BGCollisionModule.Raycast(pUp, -Vector3.UnitY, out var hit))
@@ -309,7 +319,6 @@ internal static class OverlayWindow
             }
             return pt;
         });
-    }
 
     const float PLANE_Z = 0.001f;
     public static void GetPointOnPlane(Vector3 front, ref Vector3 back)
@@ -323,19 +332,45 @@ internal static class OverlayWindow
         back.Z = PLANE_Z;
     }
 
-    static readonly FieldInfo _matrix = Svc.GameGui.GetType().GetRuntimeFields().FirstOrDefault(f => f.Name == "getMatrixSingleton");
-    public static unsafe Vector3 WorldToCamera(Vector3 worldPos)
+    static unsafe Matrix4x4 worldToCamera
     {
-        var matrix = (MulticastDelegate)_matrix.GetValue(Svc.GameGui);
-        var matrixSingleton = (IntPtr)matrix.DynamicInvoke();
-
-        var viewProjectionMatrix = *(Matrix4x4*)(matrixSingleton + 0x1b4);
-        return Vector3.Transform(worldPos, viewProjectionMatrix);
+        get
+        {
+            var camera = CameraManager.Instance()->CurrentCamera;
+            return camera->ViewMatrix * camera->RenderCamera->ProjectionMatrix;
+        }
     }
 
-    public static unsafe bool CameraToScreen(Vector3 cameraPos, out Vector2 screenPos, out bool inView)
+    public static Vector3 WorldToCamera(Vector3 worldPos)
     {
-        screenPos = new Vector2(cameraPos.X / MathF.Abs(cameraPos.Z), cameraPos.Y / MathF.Abs(cameraPos.Z));
+        return Vector3.Transform(worldPos, worldToCamera);
+    }
+
+    private static unsafe bool CameraToScreenCanSee(Vector3 cameraPos, out Vector2 screenPos)
+    {
+        screenPos = CameraToScreen(cameraPos);
+        try
+        {
+            var camera = CameraManager.Instance()->CurrentCamera;
+            Ray ray = camera->ScreenPointToRay(screenPos);
+
+            if (BGCollisionModule.Raycast(ray.Origin, ray.Direction, out var hit) 
+                && Math.Abs(cameraPos.Length() - Vector3.Distance(hit.Point, camera->Object.Position)) > 0.1)
+            {
+                return false;
+            }
+            return true;
+        }
+        catch(Exception e) 
+        {
+            PluginLog.Warning(e, e.Message);
+            return false;
+        }
+    }
+
+    public static unsafe Vector2 CameraToScreen(Vector3 cameraPos)
+    {
+        var screenPos = new Vector2(cameraPos.X / MathF.Abs(cameraPos.Z), cameraPos.Y / MathF.Abs(cameraPos.Z));
         var windowPos = ImGuiHelpers.MainViewport.Pos;
 
         var device = Device.Instance();
@@ -345,11 +380,6 @@ internal static class OverlayWindow
         screenPos.X = (0.5f * width * (screenPos.X + 1f)) + windowPos.X;
         screenPos.Y = (0.5f * height * (1f - screenPos.Y)) + windowPos.Y;
 
-        var inFront = cameraPos.Z > 0;
-        inView = inFront &&
-                 screenPos.X > windowPos.X && screenPos.X < windowPos.X + width &&
-                 screenPos.Y > windowPos.Y && screenPos.Y < windowPos.Y + height;
-
-        return inFront;
+        return screenPos;
     }
 }

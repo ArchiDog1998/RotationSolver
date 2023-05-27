@@ -361,6 +361,11 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_HealOutOfCombat,
             ref Service.Config.HealOutOfCombat, Service.Default.HealOutOfCombat);
 
+        const float speed = 0.005f;
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoBelow,
+    ref Service.Config.HealWhenNothingTodoBelow, Service.Default.HealWhenNothingTodoBelow, speed);
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
             ref Service.Config.OnlyHotOnTanks, Service.Default.OnlyHotOnTanks);
 
@@ -369,8 +374,6 @@ internal partial class RotationConfigWindow
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
                 ref Service.Config.BeneficialAreaOnTarget, Service.Default.BeneficialAreaOnTarget);
         }
-
-        const float speed = 0.005f;
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_DistanceForMoving,
             ref Service.Config.DistanceForMoving, Service.Default.DistanceForMoving, speed * 3);

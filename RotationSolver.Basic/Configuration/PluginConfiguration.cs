@@ -90,6 +90,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float AlphaInFill = 0.15f;
     public float MinLastAbilityAdvanced = 0.1f;
 
+    public float HealWhenNothingTodoBelow = 0.8f;
+
     public Dictionary<Job, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<Job, float>();
 
     public Dictionary<Job, float> HealingOfTimeSubtractAreas { get; set; } = new Dictionary<Job, float>();
