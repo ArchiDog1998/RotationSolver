@@ -1,4 +1,5 @@
-﻿using Dalamud.Logging;
+﻿using Dalamud.Interface.Colors;
+using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
@@ -131,27 +132,26 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        //if (!Player.Object.IsJobCategory(JobRole.Tank)
-        //    && !Player.Object.IsJobCategory(JobRole.Melee)) return;
+        if (!Player.Object.IsJobCategory(JobRole.Tank)
+            && !Player.Object.IsJobCategory(JobRole.Melee)) return;
 
-        //var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
-        //    ? ActionUpdater.NextGCDAction.Target
-        //    : Svc.Targets.Target?.IsNPCEnemy() ?? false
-        //    ? Svc.Targets.Target
-        //    : null;
+        var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
+            ? ActionUpdater.NextGCDAction.Target
+            : Svc.Targets.Target?.IsNPCEnemy() ?? false
+            ? Svc.Targets.Target
+            : null;
 
-        var target = Player.Object;
         if (target == null) return;
 
-        //if (ActionUpdater.NextGCDAction != null
-        //    && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
+        if (ActionUpdater.NextGCDAction != null
+            && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
 
         Vector3 pPosition = target.Position;
 
         float radius = target.HitboxRadius + Player.Object.HitboxRadius + 3;
         float rotation = target.Rotation;
 
-        //if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
+        if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
         {
             var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
             var pts1 = SectorPlots(pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
@@ -221,11 +221,14 @@ internal static class OverlayWindow
 
     static void DrawFill(IEnumerable<Vector2> pts, Vector3 color)
     {
-        foreach (var pt in pts)
+        foreach (var set in ConvexPoints(pts.ToArray()))
         {
-            ImGui.GetWindowDrawList().PathLineTo(pt);
+            foreach (var pt in set)
+            {
+                ImGui.GetWindowDrawList().PathLineTo(pt);
+            }
+            ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, Service.Config.AlphaInFill)));
         }
-        ImGui.GetWindowDrawList().PathFillConvex(ImGui.GetColorU32(new Vector4(color.X, color.Y, color.Z, Service.Config.AlphaInFill)));
     }
 
     static void DrawBoundary(IEnumerable<Vector3> pts, Vector3 color)
@@ -268,16 +271,102 @@ internal static class OverlayWindow
         return pts;
     }
 
-    public static IEnumerable<Vector2> GetPtsOnScreen(IEnumerable<Vector3> pts)
+    private static IEnumerable<Vector2[]> ConvexPoints(Vector2[] points)
     {
-        var cameraPts = ProjectPtsOnGround(pts, 3).Select(WorldToCamera).ToArray();
+        if(points.Length < 4)
+        {
+            return new Vector2[][] { points };
+        }
+
+        int breakIndex = -1;
+        Vector2 dir = Vector2.Zero;
+        for (int i = 0; i < points.Length; i++)
+        {
+            var pt1 = points[(i - 1 + points.Length) % points.Length];
+            var pt2 = points[i];
+            var pt3 = points[(i + 1) % points.Length];
+
+            var vec1 = pt2 - pt1;
+            var vec2 = pt3 - pt2;
+            if(Vector3.Cross(new Vector3(vec1.X, vec1.Y, 0), new Vector3(vec2.X, vec2.Y, 0)).Z > 0)
+            {
+                breakIndex = i;
+                dir = vec1 / vec1.Length() - vec2 / vec2.Length();
+                dir /= dir.Length();
+                break;
+            }
+        }
+
+        if (breakIndex < 0)
+        {
+            return new Vector2[][] { points };
+        }
+        else
+        {
+            try
+            {
+                var pt = points[breakIndex];
+                var index = 0;
+                double maxValue = double.MinValue;
+                for (int i = 0; i < points.Length; i++)
+                {
+                    if (Math.Abs(i - breakIndex) < 2) continue;
+                    if (Math.Abs(i + points.Length - breakIndex) < 2) continue;
+                    if (Math.Abs(i - points.Length - breakIndex) < 2) continue;
+                    var d = points[i] - pt;
+                    d /= d.Length();
+
+                    var angle = Vector2.Dot(d, dir);
+
+                    if (angle > maxValue)
+                    {
+                        maxValue = angle;
+                        index = i;
+                    }
+                }
+
+                var minIndex = Math.Min(breakIndex, index);
+                var maxIndex = Math.Max(breakIndex, index);
+
+                var list1 = new List<Vector2>(points.Length);
+                var list2 = new List<Vector2>(points.Length);
+                for (int i = 0; i < points.Length; i++)
+                {
+                    if (i <= minIndex || i >= maxIndex)
+                    {
+                        list1.Add(points[i]);
+                    }
+
+                    if (i >= minIndex && i <= maxIndex)
+                    {
+                        list2.Add(points[i]);
+                    }
+                }
+
+                return ConvexPoints(list1.ToArray()).Union(ConvexPoints(list2.ToArray())).Where(l => l.Count() > 2);
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Warning(ex, "Bad at drawing");
+                return new Vector2[][] { points };
+            }
+        }
+    }
+
+    public static unsafe IEnumerable<Vector2> GetPtsOnScreen(IEnumerable<Vector3> pts)
+    {
+        var camera = (Vector3)CameraManager.Instance()->CurrentCamera->Object.Position;
+        var cameraPts = ProjectPtsOnGround(pts, 3)
+            //.Where(p =>
+            //{
+            //    var vec = p - camera;
+            //    var dis = vec.Length() - 0.1f;
+            //    return !BGCollisionModule.Raycast(camera, vec, out _, dis);
+            //})
+            .Select(WorldToCamera).ToArray();
         var changedPts = ChangePtsBehindCamera(cameraPts);
 
-        return changedPts.Select(p =>
-        {
-            Vector2? result = CameraToScreenCanSee(p, out var screenPos) ? screenPos : null;
-            return result;
-        }).Where(p => p.HasValue).Select(p => p.Value);
+        return changedPts.Select(CameraToScreen);
     }
 
     private static IEnumerable<Vector3> ChangePtsBehindCamera(Vector3[] cameraPts)
@@ -312,13 +401,21 @@ internal static class OverlayWindow
     private static IEnumerable<Vector3> ProjectPtsOnGround(IEnumerable<Vector3> pts, float height)
         => pts.Select(pt =>
         {
+            Vector3? result;
             var pUp = pt + Vector3.UnitY * height;
-            if (BGCollisionModule.Raycast(pUp, -Vector3.UnitY, out var hit))
+            if (BGCollisionModule.Raycast(pt + Vector3.UnitY * 100, -Vector3.UnitY, out var hit))
             {
-                return hit.Point;
+                var p = hit.Point;
+                p.Y = Math.Max(p.Y, pt.Y - height);
+                p.Y = Math.Min(p.Y, pt.Y + height);
+                result = p;
             }
-            return pt;
-        });
+            else
+            {
+                result = null;
+            }
+            return result;
+        }).Where(pt => pt.HasValue).Select(pt => pt.Value);
 
     const float PLANE_Z = 0.001f;
     public static void GetPointOnPlane(Vector3 front, ref Vector3 back)
@@ -332,40 +429,10 @@ internal static class OverlayWindow
         back.Z = PLANE_Z;
     }
 
-    static unsafe Matrix4x4 worldToCamera
+    public static unsafe Vector3 WorldToCamera(Vector3 worldPos)
     {
-        get
-        {
-            var camera = CameraManager.Instance()->CurrentCamera;
-            return camera->ViewMatrix * camera->RenderCamera->ProjectionMatrix;
-        }
-    }
-
-    public static Vector3 WorldToCamera(Vector3 worldPos)
-    {
-        return Vector3.Transform(worldPos, worldToCamera);
-    }
-
-    private static unsafe bool CameraToScreenCanSee(Vector3 cameraPos, out Vector2 screenPos)
-    {
-        screenPos = CameraToScreen(cameraPos);
-        try
-        {
-            var camera = CameraManager.Instance()->CurrentCamera;
-            Ray ray = camera->ScreenPointToRay(screenPos);
-
-            if (BGCollisionModule.Raycast(ray.Origin, ray.Direction, out var hit) 
-                && Math.Abs(cameraPos.Length() - Vector3.Distance(hit.Point, camera->Object.Position)) > 0.1)
-            {
-                return false;
-            }
-            return true;
-        }
-        catch(Exception e) 
-        {
-            PluginLog.Warning(e, e.Message);
-            return false;
-        }
+        var camera = CameraManager.Instance()->CurrentCamera;
+        return Vector3.Transform(worldPos, camera->ViewMatrix * camera->RenderCamera->ProjectionMatrix);
     }
 
     public static unsafe Vector2 CameraToScreen(Vector3 cameraPos)

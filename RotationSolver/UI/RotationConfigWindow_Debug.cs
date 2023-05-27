@@ -63,10 +63,6 @@ internal partial class RotationConfigWindow
         ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
         ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
 
-        //ImGui.Text(CameraManager.Instance()->CurrentCamera->LookAtVector.ToString());
-        //ImGui.Text(CameraManager.Instance()->CurrentCamera->Vector_1.ToString());
-        //ImGui.Text(Player.Object.Position.ToString());
-
         foreach (var status in Player.Object.StatusList)
         {
             var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
