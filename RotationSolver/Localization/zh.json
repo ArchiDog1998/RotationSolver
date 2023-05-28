@@ -147,6 +147,7 @@
   "ConfigWindow_Param_HealthHealerRatio": "如果治疗职业的HP阈值低于此值，则首先治疗治疗职业。",
   "ConfigWindow_Param_HealthTankRatio": "如果坦克职业的HP阈值低于此值，则首先治疗坦克职业。",
   "ConfigWindow_Param_DistanceForMoving": "如果近战或坦克与目标之间的距离小于此，则考虑使用突进技能作为攻击能力。",
+  "ConfigWindow_Param_HealWhenNothingTodoBelow": "Healing the members with GCD if there is nothing to do in combat and their min HP ratio is lower than this.",
   "ConfigWindow_Param_HealingOfTimeSubtractSingle": "Hot持续时的阈值减少量(单体)",
   "ConfigWindow_Param_HealthForDyingTank": "坦克使用无敌技能的血量阈值",
   "ConfigWindow_Param_MeleeRangeOffset": "近战职业使用远程技能的距离最小值",
