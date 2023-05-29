@@ -92,9 +92,7 @@
   "ConfigWindow_Param_TargetColor": "Target color",
   "ConfigWindow_Param_SubTargetColor": "Sub-target color",
   "ConfigWindow_Param_KeyBoardNoise": "Simulate the effect of pressing",
-  "ConfigWindow_Param_KeyBoardNoiseBefore": "Simulate before action cast",
   "ConfigWindow_Param_KeyBoardNoiseTimes": "Effect times",
-  "ConfigWindow_Param_VoiceVolume": "Voice volume",
   "ConfigWindow_Param_ToastPositional": "Hint positional anticipation by Toast",
   "ConfigWindow_Param_SayPositional": "Hint positional anticipation by shouting",
   "ConfigWindow_Param_DrawPositional": "Draw Positional on the screen",
@@ -417,5 +415,6 @@
     "Chakra": "Chakra"
   },
   "HighEndWarning": "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!",
-  "HighEndBan": "{0} can not be used in High-end Duty!"
+  "HighEndBan": "{0} can not be used in High-end Duty!",
+  "TextToTalkWarning": "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!"
 }

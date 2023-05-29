@@ -147,9 +147,7 @@ internal partial class Strings
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
-    public string ConfigWindow_Param_KeyBoardNoiseBefore { get; set; } = "Simulate before action cast";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
-    public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
@@ -601,4 +599,5 @@ internal partial class Strings
 
     public string HighEndWarning { get; set; } = "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!";
     public string HighEndBan { get; set; } = "{0} can not be used in High-end Duty!";
+    public string TextToTalkWarning { get; set; } = "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!";
 }

@@ -1,37 +1,36 @@
-﻿using System.Diagnostics;
-using System.Text;
+﻿using Dalamud.Plugin;
+using ECommons.DalamudServices;
+using ECommons.Reflection;
+using RotationSolver.Localization;
 
 namespace RotationSolver;
 
 internal static class SpeechHelper
 {
+    static IDalamudPlugin _textToTalk = null;
+    static MethodInfo _say = null;
+    static object _manager = null;
+    static MethodInfo _stop = null;
+    static bool _showed = false;
     internal static void Speak(string text)
     {
-        ExecuteCommand(
-            $@"Add-Type -AssemblyName System.speech; 
-                    $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; 
-                    $speak.Volume = ""{Service.Config.VoiceVolume}"";
-                    $speak.Speak(""{text}"");");
-
-        static void ExecuteCommand(string command)
+        if(_textToTalk == null)
         {
-            string path = Path.GetTempPath() + Guid.NewGuid() + ".ps1";
-
-            // make sure to be using System.Text
-            using StreamWriter sw = new(path, false, Encoding.UTF8);
-            sw.Write(command);
-
-            ProcessStartInfo start = new()
+            if (!DalamudReflector.TryGetDalamudPlugin("TextToTalk", out _textToTalk))
             {
-                FileName = @"C:\Windows\System32\windowspowershell\v1.0\powershell.exe",
-                LoadUserProfile = false,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                Arguments = $"-executionpolicy bypass -File {path}",
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-            Process process = Process.Start(start);
+                if (!_showed)
+                {
+                    _showed = true;
+                    Svc.Chat.PrintError(LocalizationManager.RightLang.TextToTalkWarning);
+                }
+            }
         }
+        _say ??= _textToTalk?.GetType().GetRuntimeMethods().FirstOrDefault(m => m.Name == "Say");
+        _manager ??= _textToTalk?.GetType().GetRuntimeFields().FirstOrDefault(m => m.Name == "backendManager").GetValue(_textToTalk);
+        _stop ??= _manager?.GetType().GetRuntimeMethods().FirstOrDefault(m => m.Name == "CancelAllSpeech");
+
+
+        _stop?.Invoke(_manager, Array.Empty<object>());
+        _say?.Invoke(_textToTalk, new object[] { null, text, 1 });
     }
 }

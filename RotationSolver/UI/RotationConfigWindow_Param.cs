@@ -117,9 +117,6 @@ internal partial class RotationConfigWindow
 
     private void DrawParamAdvanced()
     {
-        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_VoiceVolume,
-            ref Service.Config.VoiceVolume, Service.Default.VoiceVolume, max: 100);
-
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayOutStateChanged,
             ref Service.Config.SayOutStateChanged, Service.Default.SayOutStateChanged);
 
