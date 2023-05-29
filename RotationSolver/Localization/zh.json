@@ -34,7 +34,7 @@
   "ConfigWindow_Helper_GameVersion": "游戏版本",
   "ConfigWindow_Helper_OpenSource": "打开源码网址",
   "ConfigWindow_Helper_RunCommand": "单击左键以执行命令",
-  "ConfigWindow_Helper_CopyCommand": "单击右键以复制命令",
+  "ConfigWindow_Helper_CopyCommand": "Right-click to copy the command",
   "ConfigWindow_Helper_InsertCommand": "在{1}s内优先插入\"{0}\"",
   "ConfigWindow_Rotation_Description": "你可以为每个你想要的职业启用该功能，并配置关于如何使用这些动作。",
   "ConfigWindow_Rotation_KeyName": "关键名称为",
