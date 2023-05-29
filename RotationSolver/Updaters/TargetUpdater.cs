@@ -120,6 +120,8 @@ internal static partial class TargetUpdater
 
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
+            if(Svc.ClientState == null) return false;
+
             IEnumerable<string> names = Array.Empty<string>();
             if(OtherConfiguration.NoHostileNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
                 names = names.Union(ns1);
