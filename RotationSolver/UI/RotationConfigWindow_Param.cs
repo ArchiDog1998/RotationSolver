@@ -126,10 +126,6 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayPositional,
             ref Service.Config.SayPositional, Service.Default.SayPositional);
 
-        DrawInputText(LocalizationManager.RightLang.ConfigWindow_Param_PositionalErrorText,
-            ref Service.Config.PositionalErrorText, 100,
-            LocalizationManager.RightLang.ConfigWindow_Params_LocationWrongTextDesc);
-
         ImGui.Separator();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PoslockCasting,
@@ -251,15 +247,10 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToastPositional,
             ref Service.Config.ToastPositional, Service.Default.ToastPositional);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PositionalFeedback,
-            ref Service.Config.PositionalFeedback, Service.Default.PositionalFeedback,
-            LocalizationManager.RightLang.ConfigWindow_Param_PositionalFeedbackDesc);
-
         if (useOverlayWindow)
         {
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawPositional,
-                ref Service.Config.DrawPositional, Service.Default.DrawPositional,
-                LocalizationManager.RightLang.ConfigWindow_Param_PositionalFeedbackDesc);
+                ref Service.Config.DrawPositional, Service.Default.DrawPositional);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeRange,
                 ref Service.Config.DrawMeleeRange, Service.Default.DrawMeleeRange);

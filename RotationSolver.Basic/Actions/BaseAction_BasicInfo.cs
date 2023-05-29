@@ -73,7 +73,7 @@ public partial class BaseAction : IBaseAction
         {
             if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)AdjustedID, out var location))
             {
-                return location.Pos;
+                return location;
             }
             return EnemyPositional.None;
         }

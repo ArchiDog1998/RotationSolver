@@ -59,7 +59,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AddEnemyListToHostile = true;
     public bool UseTinctures = false;
     public bool UseHealPotions = false;
-    public bool PositionalFeedback = true;
     public bool DrawPositional = true;
     public bool DrawMeleeRange = true;
     public bool DrawMeleeOffset = true;
@@ -152,7 +151,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool OnlyHotOnTanks = false;
     public bool BeneficialAreaOnTarget = false;
 
-    public string PositionalErrorText = string.Empty;
     public float CountDownAhead = 0.6f;
 
     public int NamePlateIconId = 61437; // 61435, 0

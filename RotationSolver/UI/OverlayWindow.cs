@@ -1,15 +1,10 @@
-﻿using Dalamud.Interface.Colors;
-using Dalamud.Logging;
+﻿using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using FFXIVClientStructs.FFXIV.Client.Game.Event;
-using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using RotationSolver.Updaters;
-using System.Drawing;
 
 namespace RotationSolver.UI;
 

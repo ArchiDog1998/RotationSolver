@@ -5,22 +5,21 @@ namespace RotationSolver.Basic.Helpers;
 
 public static class ConfigurationHelper
 {
-    public record PositionalInfo(EnemyPositional Pos, byte[] Tags);
-    public static readonly SortedList<ActionID, PositionalInfo> ActionPositional = new()
+    public static readonly SortedList<ActionID, EnemyPositional> ActionPositional = new()
     {
-        {ActionID.FangandClaw, new(EnemyPositional.Flank, new byte[] { 13, 10 })},
-        {ActionID.WheelingThrust, new(EnemyPositional.Rear, new byte[] { 10, 13 }) },
-        {ActionID.ChaosThrust, new(EnemyPositional.Rear, new byte[] { 61, 28 }) },
-        {ActionID.ChaoticSpring, new(EnemyPositional.Rear, new byte[] { 66, 28 }) },
-        {ActionID.Demolish, new(EnemyPositional.Rear, new byte[] { 46, 60 }) },
-        {ActionID.SnapPunch, new(EnemyPositional.Flank, new byte[] { 19, 21 }) },
-        {ActionID.TrickAttack, new(EnemyPositional.Rear, new byte[] { 25 }) },
-        {ActionID.AeolianEdge,new(EnemyPositional.Rear, new byte[] { 30, 68 }) },
-        {ActionID.ArmorCrush, new(EnemyPositional.Flank, new byte[] { 30, 66 }) },
-        {ActionID.Gibbet, new(EnemyPositional.Flank , new byte[] { 11 })},
-        {ActionID.Gallows, new(EnemyPositional.Rear, new byte[] { 11 }) },
-        {ActionID.Gekko, new(EnemyPositional.Rear , new byte[] { 68, 29, 72 })},
-        {ActionID.Kasha, new(EnemyPositional.Flank, new byte[] { 29, 68, 72 }) },
+        {ActionID.FangandClaw, EnemyPositional.Flank},
+        {ActionID.WheelingThrust, EnemyPositional.Rear},
+        {ActionID.ChaosThrust, EnemyPositional.Rear },
+        {ActionID.ChaoticSpring, EnemyPositional.Rear },
+        {ActionID.Demolish, EnemyPositional.Rear },
+        {ActionID.SnapPunch, EnemyPositional.Flank },
+        {ActionID.TrickAttack, EnemyPositional.Rear },
+        {ActionID.AeolianEdge,EnemyPositional.Rear },
+        {ActionID.ArmorCrush, EnemyPositional.Flank },
+        {ActionID.Gibbet, EnemyPositional.Flank},
+        {ActionID.Gallows, EnemyPositional.Rear },
+        {ActionID.Gekko, EnemyPositional.Rear},
+        {ActionID.Kasha, EnemyPositional.Flank },
     };
 
     public static readonly uint[] BadStatus = new uint[]

@@ -76,7 +76,7 @@ internal partial class Strings
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game Version";
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
-    public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
+    public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy the command";
     public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
     public string ConfigWindow_Rotation_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
 
@@ -152,7 +152,6 @@ internal partial class Strings
     public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
-    public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback on flytext";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
     public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
 
@@ -160,10 +159,7 @@ internal partial class Strings
     public string ConfigWindow_Param_AlphaInFill { get; set; } = "The alpha value in fill.";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
-    public string ConfigWindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
-    public string ConfigWindow_Param_PositionalErrorText { get; set; } = "Positional error prompt";
-    public string ConfigWindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";
-    public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
+     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
     public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommend 61435, 61437";
