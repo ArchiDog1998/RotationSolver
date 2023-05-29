@@ -34,7 +34,7 @@
   "ConfigWindow_Helper_GameVersion": "Versión del Juego",
   "ConfigWindow_Helper_OpenSource": "Abrir la URL del código fuente",
   "ConfigWindow_Helper_RunCommand": "Haga clic para ejecutar el comando",
-  "ConfigWindow_Helper_CopyCommand": "Haga clic derecho para copiar el comando",
+  "ConfigWindow_Helper_CopyCommand": "Right-click to copy the command",
   "ConfigWindow_Helper_InsertCommand": "Insertar \"{0}\" primero en {1}s",
   "ConfigWindow_Rotation_Description": "Puede activar la función para cada trabajo que desee y configurar cómo usar acciones.",
   "ConfigWindow_Rotation_KeyName": "El nombre de la tecla es",
