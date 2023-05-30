@@ -31,13 +31,13 @@ internal partial class Strings
         = "In this window, you can see all Rotation Solver built-in commands for combat. ";
 
     public string ConfigWindow_HelpItem_AttackAuto { get; set; }
-        = "Start attacking in auto target mode when out of combat, otherwise switch the target according to the conditions.";
+        = "Start the addon in Auto mode (auto-targeting) when out of combat or when combat starts, otherwise switch the target according to the set condition.";
 
     public string ConfigWindow_HelpItem_AttackManual { get; set; }
-        = "Start attacking in manual target mode. You need to choose the target manually.";
+        = "Start the addon in manual mode. You need to choose the target manually. This will bypass any  Hostile target filtering conditions that you have set up and will start attacking immediately once something is targeted.";
 
     public string ConfigWindow_HelpItem_AttackCancel { get; set; }
-        = "Stop attacking. Remember to turn it off when not in use!";
+        = "Stop the addon. Always remember to turn it off when not in use!";
 
     public string ConfigWindow_HelpItem_HealArea { get; set; }
         = "Open a window to use AoE heal.";
@@ -52,7 +52,7 @@ internal partial class Strings
         = "Open a window to use single defense.";
 
     public string ConfigWindow_HelpItem_Esuna { get; set; }
-        = "Open a window to use Esuna,tank stance actions or True North.";
+        = "Open a window to use Esuna, tank stance actions or True North.";
 
     public string ConfigWindow_HelpItem_RaiseShirk { get; set; }
         = "Open a window to use Raise or Shirk.";
@@ -70,7 +70,7 @@ internal partial class Strings
         = "Open a window to move back.";
 
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
-        = "Close special window.";
+        = "To end this special duration before the set time.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
     public string ConfigWindow_Helper_HighEndWarning { get; set; } = "This <{0}> rotation is not allowed to be used in High-end Duty!";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game Version";

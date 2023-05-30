@@ -29,7 +29,6 @@ internal static class SpeechHelper
         _manager ??= _textToTalk?.GetType().GetRuntimeFields().FirstOrDefault(m => m.Name == "backendManager").GetValue(_textToTalk);
         _stop ??= _manager?.GetType().GetRuntimeMethods().FirstOrDefault(m => m.Name == "CancelAllSpeech");
 
-
         _stop?.Invoke(_manager, Array.Empty<object>());
         _say?.Invoke(_textToTalk, new object[] { null, text, 1 });
     }
