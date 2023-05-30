@@ -92,21 +92,15 @@
   "ConfigWindow_Param_TargetColor": "Target color",
   "ConfigWindow_Param_SubTargetColor": "Sub-target color",
   "ConfigWindow_Param_KeyBoardNoise": "Simulate the effect of pressing",
-  "ConfigWindow_Param_KeyBoardNoiseBefore": "Simulate before action cast",
   "ConfigWindow_Param_KeyBoardNoiseTimes": "Effect times",
-  "ConfigWindow_Param_VoiceVolume": "Voice volume",
   "ConfigWindow_Param_ToastPositional": "Hint positional anticipation by Toast",
   "ConfigWindow_Param_SayPositional": "Hint positional anticipation by shouting",
-  "ConfigWindow_Param_PositionalFeedback": "Positional error feedback on flytext",
   "ConfigWindow_Param_DrawPositional": "Draw Positional on the screen",
   "ConfigWindow_Param_DrawMeleeRange": "Draw the range of melee on the screen",
   "ConfigWindow_Param_DrawMeleeOffset": "Draw the offset of melee on the screen",
   "ConfigWindow_Param_AlphaInFill": "The alpha value in fill.",
   "ConfigWindow_Param_ShowMoveTarget": "Show the target of the move action",
   "ConfigWindow_Param_ShowTarget": "Show Target",
-  "ConfigWindow_Param_PositionalFeedbackDesc": "Attention: Positional anticipation is experimental, just for reference only.",
-  "ConfigWindow_Param_PositionalErrorText": "Positional error prompt",
-  "ConfigWindow_Params_LocationWrongTextDesc": "How do you want to be scolded if you have a positional error ?!",
   "ConfigWindow_Param_SayOutStateChanged": "Saying the state changes out",
   "ConfigWindow_Param_ShowInfoOnDtr": "Display plugin state on server info",
   "ConfigWindow_Param_ShowInfoOnToast": "Display plugin state on toast",
@@ -421,5 +415,6 @@
     "Chakra": "Chakra"
   },
   "HighEndWarning": "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!",
-  "HighEndBan": "{0} can not be used in High-end Duty!"
+  "HighEndBan": "{0} can not be used in High-end Duty!",
+  "TextToTalkWarning": "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!"
 }
