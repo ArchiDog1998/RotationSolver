@@ -92,21 +92,15 @@
   "ConfigWindow_Param_TargetColor": "目标颜色",
   "ConfigWindow_Param_SubTargetColor": "子目标颜色",
   "ConfigWindow_Param_KeyBoardNoise": "模拟按下键盘效果",
-  "ConfigWindow_Param_KeyBoardNoiseBefore": "在技能发动前开始模拟",
   "ConfigWindow_Param_KeyBoardNoiseTimes": "模拟按下次数",
-  "ConfigWindow_Param_VoiceVolume": "语音音量",
   "ConfigWindow_Param_ToastPositional": "使用弹窗提示身位预测",
   "ConfigWindow_Param_SayPositional": "使用语音提示身位预测",
-  "ConfigWindow_Param_PositionalFeedback": "弹出文字以反馈身位错误",
   "ConfigWindow_Param_DrawPositional": "在屏幕上绘制身位图",
   "ConfigWindow_Param_DrawMeleeRange": "在屏幕上绘制近战距离",
   "ConfigWindow_Param_DrawMeleeOffset": "在屏幕上绘制近战最大边缘距离",
   "ConfigWindow_Param_AlphaInFill": "绘制时Alpha通道值（透明度）",
   "ConfigWindow_Param_ShowMoveTarget": "显示移动技能的目标",
   "ConfigWindow_Param_ShowTarget": "显示目标",
-  "ConfigWindow_Param_PositionalFeedbackDesc": "注意： 身位预测是实验性的，仅作参考。",
-  "ConfigWindow_Param_PositionalErrorText": "身位错误提示",
-  "ConfigWindow_Params_LocationWrongTextDesc": "如果你打错身位，你想被怎么骂？",
   "ConfigWindow_Param_SayOutStateChanged": "语音说出插件状态改变",
   "ConfigWindow_Param_ShowInfoOnDtr": "在服务器信息上显示插件状态",
   "ConfigWindow_Param_ShowInfoOnToast": "在弹窗上显示插件状态",
@@ -421,5 +415,6 @@
     "Chakra": "斗气数量"
   },
   "HighEndWarning": "当在{0} 时, 请单独绑定减伤/护盾的冷却时间, 以防RS在关键时刻失效!",
-  "HighEndBan": "{0} 循环不可以用于高难战斗！"
+  "HighEndBan": "{0} 循环不可以用于高难战斗！",
+  "TextToTalkWarning": "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!"
 }
