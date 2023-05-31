@@ -11,6 +11,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
 		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+		<ProjectReference Include="..\XIVPainter\XIVPainter\XIVPainter.csproj" />
 		<EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
 
 		<Using Include="Dalamud.Game.ClientState.Objects.Types" />
