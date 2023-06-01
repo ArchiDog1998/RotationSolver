@@ -80,6 +80,8 @@ internal class SocialUpdater
 
     static void ClientState_TerritoryChanged(object sender, ushort e)
     {
+        DataCenter.ResetAllLastActions();
+
         RSCommands.UpdateStateNamePlate();
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
         if (territory?.ContentFinderCondition?.Value?.RowId != 0)
