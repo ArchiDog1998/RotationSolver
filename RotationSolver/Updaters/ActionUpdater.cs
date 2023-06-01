@@ -41,17 +41,9 @@ internal static class ActionUpdater
                         var pos = !GcdAction.Target.HasPositional() || localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide) ?
                            EnemyPositional.None : GcdAction.EnemyPositional;
 
-                        var rightJob = Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee);
-                        if(rightJob && Service.Config.DrawMeleeOffset)
-                        {
-                            PainterManager.UpdateOffset(GcdAction.Target);
-                        }
-                        else
-                        {
-                            PainterManager.UpdateOffset(null);
-                        }
+                        var rightJobAndTarget = (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && GcdAction.Target.IsNPCEnemy();
 
-                        if (Service.Config.DrawPositional && GcdAction.IsSingleTarget && rightJob)
+                        if (Service.Config.DrawPositional && rightJobAndTarget && GcdAction.IsSingleTarget)
                         {
                             PainterManager.UpdatePositional(pos, GcdAction.Target);
                         }

@@ -96,7 +96,6 @@
   "ConfigWindow_Param_ToastPositional": "Hint positional anticipation by Toast",
   "ConfigWindow_Param_SayPositional": "Hint positional anticipation by shouting",
   "ConfigWindow_Param_DrawPositional": "Draw Positional on the screen",
-  "ConfigWindow_Param_DrawMeleeRange": "Draw the range of melee on the screen",
   "ConfigWindow_Param_DrawMeleeOffset": "Draw the offset of melee on the screen",
   "ConfigWindow_Param_AlphaInFill": "The alpha value in fill.",
   "ConfigWindow_Param_ShowMoveTarget": "Show the target of the move action",
