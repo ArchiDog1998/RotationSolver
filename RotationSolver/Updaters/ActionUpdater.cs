@@ -6,6 +6,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
+using RotationSolver.UI;
 
 namespace RotationSolver.Updaters;
 
@@ -33,19 +34,45 @@ internal static class ActionUpdater
 
                 if (gcdAction is IBaseAction GcdAction)
                 {
-                    NextGCDAction = GcdAction;
-
-                    if (GcdAction.EnemyPositional != EnemyPositional.None && GcdAction.Target.HasPositional()
-                         && !localPlayer.HasStatus(true, StatusID.TrueNorth))
+                    if(NextGCDAction != GcdAction)
                     {
-                        if (CheckAction(GcdAction.ID))
+                        NextGCDAction = GcdAction;
+
+                        var pos = !GcdAction.Target.HasPositional() || localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide) ?
+                           EnemyPositional.None : GcdAction.EnemyPositional;
+
+                        var rightJob = Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee);
+                        if(rightJob && Service.Config.DrawMeleeOffset)
                         {
-                            string positional = GcdAction.EnemyPositional.ToName();
-                            if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
-                            if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional, new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                            PainterManager.UpdateOffset(GcdAction.Target);
+                        }
+                        else
+                        {
+                            PainterManager.UpdateOffset(null);
+                        }
+
+                        if (Service.Config.DrawPositional && GcdAction.IsSingleTarget && rightJob)
+                        {
+                            PainterManager.UpdatePositional(pos, GcdAction.Target);
+                        }
+                        else
+                        {
+                            PainterManager.ClearPositional();
+                        }
+
+                        if (pos != EnemyPositional.None)
+                        {
+
+                            if (CheckAction(GcdAction.ID))
                             {
-                                IconId = GcdAction.IconID,
-                            });
+                                string positional = GcdAction.EnemyPositional.ToName();
+                                if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
+                                if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional,
+                                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                                {
+                                    IconId = GcdAction.IconID,
+                                });
+                            }
                         }
                     }
                 }
@@ -55,7 +82,6 @@ internal static class ActionUpdater
                 }
                 return;
             }
-            NextAction = NextGCDAction = null;
         }
         catch (Exception ex)
         {
@@ -65,13 +91,11 @@ internal static class ActionUpdater
         NextAction = NextGCDAction = null;
     }
 
-    static uint _lastSayingGCDAction;
     static DateTime lastTime;
     static bool CheckAction(uint actionID)
     {
-        if ((_lastSayingGCDAction != actionID || DateTime.Now - lastTime > new TimeSpan(0, 0, 3)) && DataCenter.StateType != StateCommandType.Cancel)
+        if (DateTime.Now - lastTime > new TimeSpan(0, 0, 3) && DataCenter.StateType != StateCommandType.Cancel)
         {
-            _lastSayingGCDAction = actionID;
             lastTime = DateTime.Now;
             return true;
         }

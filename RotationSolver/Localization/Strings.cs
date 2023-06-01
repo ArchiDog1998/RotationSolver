@@ -151,7 +151,6 @@ internal partial class Strings
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
-    public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
 
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
     public string ConfigWindow_Param_AlphaInFill { get; set; } = "The alpha value in fill.";

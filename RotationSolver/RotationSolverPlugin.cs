@@ -64,6 +64,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
+        PainterManager.Init();
         Watcher.Enable();
         OtherConfiguration.Init();
         _dis.Add(new MovingController());
@@ -110,7 +111,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis?.Clear();
 
         MajorUpdater.Dispose();
-
+        PainterManager.Dispose();
         OtherConfiguration.Save();
 
         ECommonsMain.Dispose();

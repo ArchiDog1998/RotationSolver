@@ -127,69 +127,69 @@ internal static class OverlayWindow
     const int COUNT = 20;
     private static void DrawPositional()
     {
-        if (!Player.Object.IsJobCategory(JobRole.Tank)
-            && !Player.Object.IsJobCategory(JobRole.Melee)) return;
+        //if (!Player.Object.IsJobCategory(JobRole.Tank)
+        //    && !Player.Object.IsJobCategory(JobRole.Melee)) return;
 
-        var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
-            ? ActionUpdater.NextGCDAction.Target
-            : Svc.Targets.Target?.IsNPCEnemy() ?? false
-            ? Svc.Targets.Target
-            : null;
+        //var target = ActionUpdater.NextGCDAction?.Target?.IsNPCEnemy() ?? false
+        //    ? ActionUpdater.NextGCDAction.Target
+        //    : Svc.Targets.Target?.IsNPCEnemy() ?? false
+        //    ? Svc.Targets.Target
+        //    : null;
 
-        if (target == null) return;
+        //if (target == null) return;
 
-        if (ActionUpdater.NextGCDAction != null
-            && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
+        //if (ActionUpdater.NextGCDAction != null
+        //    && !ActionUpdater.NextGCDAction.IsSingleTarget) return;
 
-        Vector3 pPosition = target.Position;
+        //Vector3 pPosition = target.Position;
 
-        float radius = target.HitboxRadius + Player.Object.HitboxRadius + 3;
-        float rotation = target.Rotation;
+        //float radius = target.HitboxRadius + Player.Object.HitboxRadius + 3;
+        //float rotation = target.Rotation;
 
-        if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
-        {
-            var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
-            var pts1 = SectorPlots(pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
+        //if (Service.Config.DrawMeleeOffset && DataCenter.StateType != StateCommandType.Cancel)
+        //{
+        //    var offsetColor = new Vector3(0.8f, 0.3f, 0.2f);
+        //    var pts1 = SectorPlots(pPosition, radius, 0, 4 * COUNT, 2 * Math.PI);
 
-            var pts2 = SectorPlots(pPosition, radius + Service.Config.MeleeRangeOffset, 0, 4 * COUNT, 2 * Math.PI);
+        //    var pts2 = SectorPlots(pPosition, radius + Service.Config.MeleeRangeOffset, 0, 4 * COUNT, 2 * Math.PI);
 
-            DrawFill(pts1.ToArray(), pts2.ToArray(), offsetColor);
+        //    DrawFill(pts1.ToArray(), pts2.ToArray(), offsetColor);
 
-            DrawBoundary(pts1, offsetColor);
-            DrawBoundary(pts2, offsetColor);
-        }
+        //    DrawBoundary(pts1, offsetColor);
+        //    DrawBoundary(pts2, offsetColor);
+        //}
 
-        bool wrong = target.DistanceToPlayer() > 3;
+        //bool wrong = target.DistanceToPlayer() > 3;
 
-        var shouldPos = ActionUpdater.NextGCDAction?.EnemyPositional ?? EnemyPositional.None;
-        if (!wrong && shouldPos is EnemyPositional.Rear or EnemyPositional.Flank)
-        {
-            wrong = shouldPos != target.FindEnemyPositional();
-        }
+        //var shouldPos = ActionUpdater.NextGCDAction?.EnemyPositional ?? EnemyPositional.None;
+        //if (!wrong && shouldPos is EnemyPositional.Rear or EnemyPositional.Flank)
+        //{
+        //    wrong = shouldPos != target.FindEnemyPositional();
+        //}
 
-        switch (shouldPos)
-        {
-            case EnemyPositional.Flank when Service.Config.DrawPositional && CanDrawPositional(target):
-                DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 0.25 + rotation, COUNT).Append(pPosition))), wrong);
-                DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 1.25 + rotation, COUNT).Append(pPosition))), wrong);
-                break;
-            case EnemyPositional.Rear when Service.Config.DrawPositional && CanDrawPositional(target):
-                DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 0.75 + rotation, COUNT).Append(pPosition))), wrong);
-                break;
+        //switch (shouldPos)
+        //{
+        //    case EnemyPositional.Flank when Service.Config.DrawPositional && CanDrawPositional(target):
+        //        DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 0.25 + rotation, COUNT).Append(pPosition))), wrong);
+        //        DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 1.25 + rotation, COUNT).Append(pPosition))), wrong);
+        //        break;
+        //    case EnemyPositional.Rear when Service.Config.DrawPositional && CanDrawPositional(target):
+        //        DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, Math.PI * 0.75 + rotation, COUNT).Append(pPosition))), wrong);
+        //        break;
 
-            default:
-                if (Service.Config.DrawMeleeRange)
-                {
-                    DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, 0, 4 * COUNT, 2 * Math.PI))), wrong);
-                }
-                break;
-        }
+        //    default:
+        //        //if (Service.Config.DrawMeleeRange)
+        //        {
+        //            DrawRange(ClosePoints(GetPtsOnScreen(SectorPlots(pPosition, radius, 0, 4 * COUNT, 2 * Math.PI))), wrong);
+        //        }
+        //        break;
+        //}
     }
 
-    private static bool CanDrawPositional(GameObject target)
-    {
-        return !Player.Object.HasStatus(true, CustomRotation.TrueNorth.StatusProvide) && target.HasPositional();
-    }
+    //private static bool CanDrawPositional(GameObject target)
+    //{
+    //    return !Player.Object.HasStatus(true, CustomRotation.TrueNorth.StatusProvide) && target.HasPositional();
+    //}
 
     static void DrawFill(Vector3[] pts1, Vector3[] pts2, Vector3 color)
     {
