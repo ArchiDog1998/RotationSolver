@@ -38,21 +38,20 @@ internal static class ActionUpdater
                     {
                         NextGCDAction = GcdAction;
 
-                        var pos = !GcdAction.Target.HasPositional() || localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide) ?
-                           EnemyPositional.None : GcdAction.EnemyPositional;
-
                         var rightJobAndTarget = (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && GcdAction.Target.IsNPCEnemy();
 
                         if (Service.Config.DrawPositional && rightJobAndTarget && GcdAction.IsSingleTarget)
                         {
-                            PainterManager.UpdatePositional(pos, GcdAction.Target);
+                            PainterManager.UpdatePositional(GcdAction.EnemyPositional, GcdAction.Target);
                         }
                         else
                         {
                             PainterManager.ClearPositional();
                         }
 
-                        if (pos != EnemyPositional.None)
+                        if (GcdAction.EnemyPositional != EnemyPositional.None 
+                            && GcdAction.Target.HasPositional()
+                            && !localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
                         {
 
                             if (CheckAction(GcdAction.ID))
