@@ -14,17 +14,11 @@ public abstract partial class CustomRotation
         internal bool InRole(JobRole role) => _roles.Contains(role);
     }
 
-    /// <summary>
-    /// 昏乱
-    /// </summary>
     public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, new JobRole[] { JobRole.RangedMagical }, ActionOption.Defense)
     {
         ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle),
     };
 
-    /// <summary>
-    /// 即刻咏唱
-    /// </summary>
     public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.SwiftCast, new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, ActionOption.Buff)
     {
         StatusProvide = new StatusID[]
@@ -35,9 +29,6 @@ public abstract partial class CustomRotation
         }
     };
 
-    /// <summary>
-    /// 康复
-    /// </summary>
     public static IBaseAction Esuna { get; } = new RoleAction(ActionID.Esuna, new JobRole[] { JobRole.Healer }, ActionOption.Heal)
     {
         ChoiceTarget = (tars, mustUse) =>
@@ -54,42 +45,24 @@ public abstract partial class CustomRotation
         },
     };
 
-    /// <summary>
-    /// 营救
-    /// </summary>
     public static IBaseAction Rescue { get; } = new RoleAction(ActionID.Rescue, new JobRole[] { JobRole.Healer }, ActionOption.Heal);
 
-    /// <summary>
-    /// 沉静
-    /// </summary>
     public static IBaseAction Repose { get; } = new RoleAction(ActionID.Repose, new JobRole[] { JobRole.Healer });
 
-    /// <summary>
-    /// 醒梦（如果MP低于6000那么使用）
-    /// </summary>
     public static IBaseAction LucidDreaming { get; } = new RoleAction(ActionID.LucidDreaming,
         new JobRole[] { JobRole.Healer, JobRole.RangedMagical }, ActionOption.Buff)
     {
         ActionCheck = (b, m) => Player.CurrentMp < 6000 && InCombat,
     };
 
-    /// <summary>
-    /// 内丹
-    /// </summary>
     public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,
         new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, ActionOption.Heal)
     {
         ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.HealthSingleAbility && InCombat,
     };
 
-    /// <summary>
-    /// 亲疏自行
-    /// </summary>
     public static IBaseAction ArmsLength { get; } = new RoleAction(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical }, ActionOption.Defense | ActionOption.EndSpecial);
 
-    /// <summary>
-    /// 铁壁
-    /// </summary>
     public static IBaseAction Rampart { get; } = new RoleAction(ActionID.Rampart, new JobRole[] { JobRole.Tank }, ActionOption.Defense)
     {
         StatusProvide = new StatusID[]
@@ -145,64 +118,40 @@ public abstract partial class CustomRotation
         }),
     };
 
-    /// <summary>
-    /// 扫腿
-    /// </summary>
     public static IBaseAction LegSweep { get; } = new RoleAction(ActionID.LegSweep, new JobRole[] { JobRole.Melee })
     {
         FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
     };
 
-    /// <summary>
-    /// 伤头
-    /// </summary>
     public static IBaseAction HeadGraze { get; } = new RoleAction(ActionID.HeadGraze, new JobRole[] { JobRole.RangedPhysical })
     {
         FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
     };
 
-    /// <summary>
-    /// 沉稳咏唱
-    /// </summary>
     public static IBaseAction SureCast { get; } = new RoleAction(ActionID.SureCast,
         new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, ActionOption.Heal);
 
-    /// <summary>
-    /// 真北
-    /// </summary>
     public static IBaseAction TrueNorth { get; } = new RoleAction(ActionID.TrueNorth,
         new JobRole[] { JobRole.Melee }, ActionOption.Heal)
     {
         StatusProvide = new StatusID[] { StatusID.TrueNorth, StatusID.RightEye },
     };
 
-    /// <summary>
-    /// 速行
-    /// </summary>
     public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Buff)
     {
         ActionCheck = (b, m) => NotInCombatDelay && PartyMembers.GetObjectInRadius(20)
-            .Any(p => p.WillStatusEnd(3, false, StatusID.Peloton)),
+            .Any(p => p.WillStatusEnd(3, false, StatusID.Peloton) && !p.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.InCombat)),
     };
 
     private protected virtual IBaseAction Raise => null;
     private protected virtual IBaseAction TankStance => null;
 
-    /// <summary>
-    /// 当前这个类所有的BaseAction
-    /// </summary>
     public virtual IBaseAction[] AllBaseActions => GetBaseActions(GetType()).ToArray();
 
     public IAction[] AllActions => Array.Empty<IAction>().Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
 
-    /// <summary>
-    /// 这个类所有的公开bool值
-    /// </summary>
     public PropertyInfo[] AllBools => GetType().GetStaticProperties<bool>();
 
-    /// <summary>
-    /// 这个类所有的公开float值
-    /// </summary>
     public PropertyInfo[] AllBytes => GetType().GetStaticProperties<byte>();
 
     public MethodInfo[] AllTimes => GetType().GetStaticBoolMethodInfo(m =>
