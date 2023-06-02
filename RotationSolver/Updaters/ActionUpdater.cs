@@ -70,6 +70,7 @@ internal static class ActionUpdater
                 else
                 {
                     NextGCDAction = null;
+                    PainterManager.ClearPositional();
                 }
                 return;
             }

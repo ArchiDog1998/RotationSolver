@@ -151,7 +151,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float CountDownAhead = 0.6f;
 
-    public int NamePlateIconId = 61437; // 61435, 0
+    public int NamePlateIconId = 0; // 61435, 61437
     public bool ShowActionFlag = false;
 
 

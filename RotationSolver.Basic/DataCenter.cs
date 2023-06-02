@@ -211,8 +211,7 @@ public static class DataCenter
     public static ObjectListDelay<BattleChara> WeakenPeople { get; } = new(
         () => (Service.Config.WeakenDelayMin, Service.Config.WeakenDelayMax));
 
-    public static ObjectListDelay<BattleChara> DyingPeople { get; } = new(
-        () => (Service.Config.WeakenDelayMin, Service.Config.WeakenDelayMax));
+    public static IEnumerable<BattleChara> DyingPeople { get; internal set; } = Array.Empty<BattleChara>();
 
     public static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
     () => (Service.Config.HostileDelayMin, Service.Config.HostileDelayMax));

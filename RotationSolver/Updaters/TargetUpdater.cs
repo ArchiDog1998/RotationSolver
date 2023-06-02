@@ -33,12 +33,12 @@ internal static partial class TargetUpdater
             = DataCenter.PartyHealers
             = DataCenter.AllianceMembers
             = DataCenter.AllianceTanks
+            = DataCenter.DyingPeople
             = empty;
 
         DataCenter.DeathPeopleAll.Delay(empty);
         DataCenter.DeathPeopleParty.Delay(empty);
         DataCenter.WeakenPeople.Delay(empty);
-        DataCenter.DyingPeople.Delay(empty);
         DataCenter.HostileTargets.Delay(empty);
         DataCenter.CanInterruptTargets.Delay(empty);
     }
@@ -248,7 +248,7 @@ internal static partial class TargetUpdater
         DataCenter.DeathPeopleParty.Delay(deathParty);
 
         DataCenter.WeakenPeople.Delay(DataCenter.PartyMembers.Where(p => p.StatusList.Any(StatusHelper.CanDispel)));
-        DataCenter.DyingPeople.Delay(DataCenter.WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous)));
+        DataCenter.DyingPeople = DataCenter.WeakenPeople.Where(p => p.StatusList.Any(StatusHelper.IsDangerous));
 
         DataCenter.RefinedHP = DataCenter.PartyMembers
             .ToDictionary(p => p.ObjectId, GetPartyMemberHPRatio);

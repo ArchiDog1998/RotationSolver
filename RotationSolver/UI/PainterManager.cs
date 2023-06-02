@@ -71,8 +71,8 @@ internal static class PainterManager
         _painter = Svc.PluginInterface.Create<XIVPainter.XIVPainter>("RotationSolverOverlay");
         _painter.UseTaskForAccelerate = false;
 
-        _annulus = new Drawing3DAnnulusFO(null, 3, 3 + Service.Config.MeleeRangeOffset,
-            ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 2);
+        _annulus = new Drawing3DAnnulusFO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset,
+            ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f)), 2);
         _annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
 
         _annulus.UpdateEveryFrame = () =>
@@ -91,11 +91,7 @@ internal static class PainterManager
         _positional = new PositionalDrawing();
 
         _painter.AddDrawings(_positional, _annulus);
-    }
-
-    public static void UpdateOffset(GameObject target)
-    {
-        _annulus.Target = target;
+        //_painter.AddDrawings(new Drawing3DCircularSectorFO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
     }
 
     public static void UpdatePositional(EnemyPositional positional, GameObject target)
