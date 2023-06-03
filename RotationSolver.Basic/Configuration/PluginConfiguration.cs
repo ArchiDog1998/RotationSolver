@@ -9,7 +9,6 @@ public class PluginConfiguration : IPluginConfiguration
 {
     public int Version { get; set; } = 6;
 
-    public int VoiceVolume = 100;
     public SortedSet<string> DisabledCombos { get; private set; } = new SortedSet<string>();
     public SortedSet<uint> DisabledActions { get; private set; } = new SortedSet<uint>();
     public SortedSet<uint> NotInCoolDownActions { get; private set; } = new SortedSet<uint>();
@@ -59,9 +58,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AddEnemyListToHostile = true;
     public bool UseTinctures = false;
     public bool UseHealPotions = false;
-    public bool PositionalFeedback = true;
     public bool DrawPositional = true;
-    public bool DrawMeleeRange = true;
     public bool DrawMeleeOffset = true;
     public bool ShowMoveTarget = true;
     public bool ShowHealthRatio = false;
@@ -152,10 +149,9 @@ public class PluginConfiguration : IPluginConfiguration
     public bool OnlyHotOnTanks = false;
     public bool BeneficialAreaOnTarget = false;
 
-    public string PositionalErrorText = string.Empty;
     public float CountDownAhead = 0.6f;
 
-    public int NamePlateIconId = 61437; // 61435, 0
+    public int NamePlateIconId = 0; // 61435, 61437
     public bool ShowActionFlag = false;
 
 

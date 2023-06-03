@@ -31,13 +31,13 @@ internal partial class Strings
         = "In this window, you can see all Rotation Solver built-in commands for combat. ";
 
     public string ConfigWindow_HelpItem_AttackAuto { get; set; }
-        = "Start attacking in auto target mode when out of combat, otherwise switch the target according to the conditions.";
+        = "Start the addon in Auto mode (auto-targeting) when out of combat or when combat starts, otherwise switch the target according to the set condition.";
 
     public string ConfigWindow_HelpItem_AttackManual { get; set; }
-        = "Start attacking in manual target mode. You need to choose the target manually.";
+        = "Start the addon in manual mode. You need to choose the target manually. This will bypass any  Hostile target filtering conditions that you have set up and will start attacking immediately once something is targeted.";
 
     public string ConfigWindow_HelpItem_AttackCancel { get; set; }
-        = "Stop attacking. Remember to turn it off when not in use!";
+        = "Stop the addon. Always remember to turn it off when not in use!";
 
     public string ConfigWindow_HelpItem_HealArea { get; set; }
         = "Open a window to use AoE heal.";
@@ -52,7 +52,7 @@ internal partial class Strings
         = "Open a window to use single defense.";
 
     public string ConfigWindow_HelpItem_Esuna { get; set; }
-        = "Open a window to use Esuna,tank stance actions or True North.";
+        = "Open a window to use Esuna, tank stance actions or True North.";
 
     public string ConfigWindow_HelpItem_RaiseShirk { get; set; }
         = "Open a window to use Raise or Shirk.";
@@ -70,13 +70,13 @@ internal partial class Strings
         = "Open a window to move back.";
 
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
-        = "Close special window.";
+        = "To end this special duration before the set time.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
     public string ConfigWindow_Helper_HighEndWarning { get; set; } = "This <{0}> rotation is not allowed to be used in High-end Duty!";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game Version";
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
-    public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy command";
+    public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy the command";
     public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
     public string ConfigWindow_Rotation_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
 
@@ -147,23 +147,16 @@ internal partial class Strings
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
-    public string ConfigWindow_Param_KeyBoardNoiseBefore { get; set; } = "Simulate before action cast";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
-    public string ConfigWindow_Param_VoiceVolume { get; set; } = "Voice volume";
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
-    public string ConfigWindow_Param_PositionalFeedback { get; set; } = "Positional error feedback on flytext";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
-    public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
 
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
     public string ConfigWindow_Param_AlphaInFill { get; set; } = "The alpha value in fill.";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
-    public string ConfigWindow_Param_PositionalFeedbackDesc { get; set; } = "Attention: Positional anticipation is experimental, just for reference only.";
-    public string ConfigWindow_Param_PositionalErrorText { get; set; } = "Positional error prompt";
-    public string ConfigWindow_Params_LocationWrongTextDesc { get; set; } = "How do you want to be scolded if you have a positional error ?!";
-    public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
+     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
     public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommend 61435, 61437";
@@ -605,4 +598,5 @@ internal partial class Strings
 
     public string HighEndWarning { get; set; } = "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!";
     public string HighEndBan { get; set; } = "{0} can not be used in High-end Duty!";
+    public string TextToTalkWarning { get; set; } = "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!";
 }

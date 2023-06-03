@@ -187,6 +187,11 @@ internal partial class RotationConfigWindow
         //    ImGui.Text($"UseLeftSide: {pointer2->UseLeftSide}");
         //    ImGui.Text($"MergedPositioning: {pointer2->MergedPositioning}");
         //}
+
+        var a = new  int[]{ 0,1,3,4, 6, 6, 7};
+        var index = Array.BinarySearch<int>(a, -1);
+        if (index < 0) index = - 1 - index;
+        ImGui.Text(index.ToString());
     }
 
     private static void DrawAction(ActionID id, string type)

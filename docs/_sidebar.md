@@ -1,8 +1,9 @@
 - **Getting Started**
-  - [Basic Settings](basic-settings.md)
-  - [Param Basic](param-basic.md)
+  - [Basic Usage](basic-settings.md)
+  - [Settings](param-basic.md)
   - [Rotation Settings](rotation-settings.md)
   - [Extra Rotations](extra-rotations.md)
+  - [FAQ](FAQ.md)
 - **Guide**
   - [Parameters](parameters.md)
 

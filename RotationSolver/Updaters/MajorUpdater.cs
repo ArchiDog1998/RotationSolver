@@ -15,11 +15,10 @@ internal static class MajorUpdater
         && Player.Available && !SocialUpdater.InPvp;
 
     public static bool ShouldPreventActions => Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
-            && Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActionsDuty)
+            && (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActionsDuty)
             && Svc.Condition[ConditionFlag.BoundByDuty]
             && !Svc.DutyState.IsDutyStarted
-        || Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
-            && !DataCenter.HasHostilesInMaxRange;
+            || !DataCenter.HasHostilesInMaxRange);
 
 #if DEBUG
     private static readonly Dictionary<int, bool> _values = new();
