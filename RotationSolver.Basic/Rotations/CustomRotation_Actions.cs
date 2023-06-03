@@ -94,7 +94,7 @@ public abstract partial class CustomRotation
 
     public static IBaseAction Bloodbath { get; } = new RoleAction(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, ActionOption.Heal)
     {
-        ActionCheck = SecondWind.ActionCheck,
+        ActionCheck = (t, m) => SecondWind.ActionCheck(t, m) && HasHostilesInRange,
     };
 
     public static IBaseAction Feint { get; } = new RoleAction(ActionID.Feint, new JobRole[] { JobRole.Melee }, ActionOption.Defense)

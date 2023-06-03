@@ -33,31 +33,41 @@ internal static class PainterManager
 
         public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
         {
-            var pos = Positional;
-            if (!Target.HasPositional() || Player.Available && Player.Object.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
+            if (Target == null || !Target.IsNPCEnemy())
             {
-                pos = EnemyPositional.None;
+                _flankCir.Target = null;
+                _rearCir.Target = null;
+                _noneCir.Target = null;
             }
-            switch (pos)
+            else
             {
-                case EnemyPositional.Flank:
-                    _flankCir.Target = Target;
-                    _rearCir.Target = null;
-                    _noneCir.Target = null;
-                    break;
+                var pos = Positional;
+                if (!Target.HasPositional() || Player.Available && Player.Object.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
+                {
+                    pos = EnemyPositional.None;
+                }
+                switch (pos)
+                {
+                    case EnemyPositional.Flank:
+                        _flankCir.Target = Target;
+                        _rearCir.Target = null;
+                        _noneCir.Target = null;
+                        break;
 
-                case EnemyPositional.Rear:
-                    _flankCir.Target = null;
-                    _rearCir.Target = Target;
-                    _noneCir.Target = null;
-                    break;
+                    case EnemyPositional.Rear:
+                        _flankCir.Target = null;
+                        _rearCir.Target = Target;
+                        _noneCir.Target = null;
+                        break;
 
-                default:
-                    _flankCir.Target = null;
-                    _rearCir.Target = null;
-                    _noneCir.Target = Target;
-                    break;
+                    default:
+                        _flankCir.Target = null;
+                        _rearCir.Target = null;
+                        _noneCir.Target = Target;
+                        break;
+                }
             }
+
             base.UpdateOnFrame(painter);
         }
     }
@@ -94,11 +104,11 @@ internal static class PainterManager
 
 #if DEBUG
         //_painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
-        var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
+        //var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
 
-        var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);
-        p.ClosestPtDis = 0.5f;
-        _painter.AddDrawings(p);
+        //var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);
+        //p.ClosestPtDis = 0.5f;
+        //_painter.AddDrawings(p);
 #endif
     }
 

@@ -81,6 +81,7 @@ internal static class ActionUpdater
         }
 
         NextAction = NextGCDAction = null;
+        PainterManager.ClearPositional();
     }
 
     static DateTime lastTime;
