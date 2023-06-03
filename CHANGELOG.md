@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.10.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.9.3...v2.10.0) (2023-06-03)
+
+
+### Features
+
+* XIVPainter submodule added ([e8b865f](https://github.com/ArchiDog1998/RotationSolver/commit/e8b865f4963418ab10951eac3ed9874f1094c103))
+
+
+### Bug Fixes
+
+* add a incombat check on Peloton. ([a695d17](https://github.com/ArchiDog1998/RotationSolver/commit/a695d178f2832dc47add94ac98b71360fee76654))
+* add XIVPainter for future using. ([16359fe](https://github.com/ArchiDog1998/RotationSolver/commit/16359fe48bb7bc6ca372283e2a132d3f1aa8a9be))
+* changed SMN medicine. ([1cf69b1](https://github.com/ArchiDog1998/RotationSolver/commit/1cf69b1ae322a2a8302a6ef93eb3b5e52224e9ed))
+* fixed target update. ([5e1d9be](https://github.com/ArchiDog1998/RotationSolver/commit/5e1d9be311671d5c361cc7cdb8d6f7bfe1859e90))
+* fixed with drawing. ([99eb830](https://github.com/ArchiDog1998/RotationSolver/commit/99eb830db2ae8e4d6b42a98db323257dcab25c9a))
+* fixed with painter. ([8549dc3](https://github.com/ArchiDog1998/RotationSolver/commit/8549dc399bad127dfd55ab9a3daafb38fc7ecb93))
+* fixed with some bugs. ([a151047](https://github.com/ArchiDog1998/RotationSolver/commit/a151047407b813a6520cc688bcfa789b4402e20c))
+* patch painter. ([fa01bbc](https://github.com/ArchiDog1998/RotationSolver/commit/fa01bbc9f3c655ea548d0e177b9f6f635842eb0b))
+* removed the positional feedback. ([d98bf95](https://github.com/ArchiDog1998/RotationSolver/commit/d98bf95568c2b00d855843459c5eb902a00b53b6))
+* Reset IsLast on territory change ([1538ee7](https://github.com/ArchiDog1998/RotationSolver/commit/1538ee76d1b40eecfefe217c3d9a65ef8b8f8862))
+* saying things with TextToTalk! ([5662865](https://github.com/ArchiDog1998/RotationSolver/commit/56628650a05ad8bd35638fa57f075bcb67f0c79b))
+* update drawing. ([e3d546a](https://github.com/ArchiDog1998/RotationSolver/commit/e3d546a2a7c2a8bc2d021be2160495d0d5387160))
+* update drawing. ([46a2417](https://github.com/ArchiDog1998/RotationSolver/commit/46a2417580a12de60ec880912043987c95c3b2d4))
+* update positional drawing. ([e8822f3](https://github.com/ArchiDog1998/RotationSolver/commit/e8822f32026421ba8093656b2cd56313025f4a68))
+
 ## [2.9.3](https://github.com/ArchiDog1998/RotationSolver/compare/v2.9.2...v2.9.3) (2023-05-27)
 
 
