@@ -8,7 +8,7 @@ internal static class PainterManager
 {
     class PositionalDrawing : Drawing3DPoly
     {
-        Drawing3DCircularSectorFO _noneCir, _flankCir, _rearCir;
+        Drawing3DCircularSectorO _noneCir, _flankCir, _rearCir;
 
         public EnemyPositional Positional { get; set; }
 
@@ -19,11 +19,11 @@ internal static class PainterManager
             var right = ImGui.ColorConvertFloat4ToU32(new Vector4(1, 1, 1, 0.15f));
             var wrong = ImGui.ColorConvertFloat4ToU32(new Vector4(0.3f, 0.8f, 0.2f, 0.15f));
 
-            _noneCir = new Drawing3DCircularSectorFO(null, 3, wrong, 2);
+            _noneCir = new Drawing3DCircularSectorO(null, 3, wrong, 2);
 
-            _flankCir = new Drawing3DCircularSectorFO(null, 3, wrong, 2, XIVPainter.Enum.RadiusInclude.IncludeBoth,
+            _flankCir = new Drawing3DCircularSectorO(null, 3, wrong, 2, XIVPainter.Enum.RadiusInclude.IncludeBoth,
                 new Vector2(MathF.PI * 0.25f, MathF.PI / 2), new Vector2(MathF.PI * 1.25f, MathF.PI / 2));
-            _rearCir = new Drawing3DCircularSectorFO(null, 3, wrong, 2, XIVPainter.Enum.RadiusInclude.IncludeBoth,
+            _rearCir = new Drawing3DCircularSectorO(null, 3, wrong, 2, XIVPainter.Enum.RadiusInclude.IncludeBoth,
                 new Vector2(MathF.PI * 0.75f, MathF.PI / 2));
 
             _noneCir.InsideColor = _flankCir.InsideColor = _rearCir.InsideColor = right;
@@ -64,14 +64,14 @@ internal static class PainterManager
 
     static XIVPainter.XIVPainter _painter;
     static PositionalDrawing _positional;
-    static Drawing3DAnnulusFO _annulus;
+    static Drawing3DAnnulusO _annulus;
 
     public static void Init()
     {
         _painter = Svc.PluginInterface.Create<XIVPainter.XIVPainter>("RotationSolverOverlay");
         _painter.UseTaskForAccelerate = false;
 
-        _annulus = new Drawing3DAnnulusFO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset,
+        _annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset,
             ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f)), 2);
         _annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
 
@@ -91,7 +91,15 @@ internal static class PainterManager
         _positional = new PositionalDrawing();
 
         _painter.AddDrawings(_positional, _annulus);
-        //_painter.AddDrawings(new Drawing3DCircularSectorFO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
+
+#if DEBUG
+        //_painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
+        var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
+
+        var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);
+        p.ClosestPtDis = 0.5f;
+        _painter.AddDrawings(p);
+#endif
     }
 
     public static void UpdatePositional(EnemyPositional positional, GameObject target)
