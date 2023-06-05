@@ -1,5 +1,7 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using RotationSolver.Commands;
+using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Element3D;
 
@@ -88,7 +90,7 @@ internal static class PainterManager
         annulus.UpdateEveryFrame = () =>
         {
             if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsNPCEnemy() ?? false) && Service.Config.DrawMeleeOffset
-            && DataCenter.StateType != StateCommandType.Cancel)
+            && DataCenter.StateType != StateCommandType.Cancel && ActionUpdater.NextGCDAction == null)
             {
                 annulus.Target = Svc.Targets.Target;
             }
@@ -102,7 +104,7 @@ internal static class PainterManager
 
         var c = Service.Config.MovingTargetColor;
         var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
-        var movingTarget = new Drawing3DHighlightLine(default, default, 0.5f, color, 2);
+        var movingTarget = new Drawing3DHighlightLine(default, default, 0.5f, color, 3);
         movingTarget.UpdateEveryFrame = () =>
         {
             var tar = CustomRotation.MoveTarget;
