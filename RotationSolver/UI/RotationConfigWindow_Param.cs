@@ -159,9 +159,6 @@ internal partial class RotationConfigWindow
             ref Service.Config.HealthRatioDot, Service.Default.HealthRatioDot, 
             speed: 0.02f, min: 0, max: 10);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowActionFlag,
-            ref Service.Config.ShowActionFlag, Service.Default.ShowActionFlag);
-
         ImGui.Separator();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,

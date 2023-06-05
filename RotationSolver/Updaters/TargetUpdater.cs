@@ -131,7 +131,7 @@ internal static partial class TargetUpdater
 
             if (names.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
 
-            return fateId == 0 || b.FateId() == fateId;
+            return fateId == 0 || b.FateId() == fateId || b.TargetObject == Player.Object || b.TargetObject?.OwnerId == Player.Object.ObjectId;
         });
 
         var hostiles = allAttackableTargets.Where(t =>

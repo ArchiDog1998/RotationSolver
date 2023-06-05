@@ -1,5 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using XIVPainter;
 using XIVPainter.Element3D;
 
 namespace RotationSolver.UI;
@@ -74,33 +75,63 @@ internal static class PainterManager
 
     static XIVPainter.XIVPainter _painter;
     static PositionalDrawing _positional;
-    static Drawing3DAnnulusO _annulus;
 
     public static void Init()
     {
         _painter = Svc.PluginInterface.Create<XIVPainter.XIVPainter>("RotationSolverOverlay");
         _painter.UseTaskForAccelerate = false;
 
-        _annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset,
-            ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f)), 2);
-        _annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
+        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset,
+            ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0)), 2);
+        annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
 
-        _annulus.UpdateEveryFrame = () =>
+        annulus.UpdateEveryFrame = () =>
         {
             if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsNPCEnemy() ?? false) && Service.Config.DrawMeleeOffset
             && DataCenter.StateType != StateCommandType.Cancel)
             {
-                _annulus.Target = Svc.Targets.Target;
+                annulus.Target = Svc.Targets.Target;
             }
             else
             {
-                _annulus.Target = null;
+                annulus.Target = null;
             }
         };
 
         _positional = new PositionalDrawing();
 
-        _painter.AddDrawings(_positional, _annulus);
+        var c = Service.Config.MovingTargetColor;
+        var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+        var movingTarget = new Drawing3DHighlightLine(default, default, 0.5f, color, 2);
+        movingTarget.UpdateEveryFrame = () =>
+        {
+            var tar = CustomRotation.MoveTarget;
+
+            if (!Service.Config.ShowMoveTarget
+            || tar == null || tar == Player.Object)
+            {
+                movingTarget.Radius = 0;
+                return;
+            }
+            var dir = Player.Object.Position - tar.Position;
+            var length = dir.Length();
+            if (!dir.Normalize())
+            {
+                movingTarget.Radius = 0;
+                return;
+            }
+
+            movingTarget.Radius = 0.5f;
+
+            var c = Service.Config.MovingTargetColor;
+            movingTarget.Color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+
+            movingTarget.From = Player.Object.Position;
+
+            movingTarget.To = tar.Position + dir * MathF.Min(length, Player.Object.HitboxRadius + tar.HitboxRadius);
+        };
+
+        _painter.AddDrawings(_positional, annulus, movingTarget);
 
 #if DEBUG
         //_painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));

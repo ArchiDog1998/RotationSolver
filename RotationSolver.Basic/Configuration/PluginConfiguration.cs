@@ -152,8 +152,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float CountDownAhead = 0.6f;
 
     public int NamePlateIconId = 0; // 61435, 61437
-    public bool ShowActionFlag = false;
-
 
     public int MoveTargetAngle = 24;
     public float HealthRatioBoss = 1.85f;
