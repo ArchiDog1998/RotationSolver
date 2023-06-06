@@ -149,7 +149,6 @@ public partial class BaseAction
 
     private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
-        //如果用户不想使用自动友方地面放置功能
         if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
 
         if (Service.Config.BeneficialAreaOnTarget && Svc.Targets.Target != null)
@@ -161,7 +160,6 @@ public partial class BaseAction
         {
             _position = b.Position;
         }
-        //计算玩家和被打的Ｔ之间的关系。
         else
         {
             var effectRange = (ActionID)ID == ActionID.LiturgyOfTheBell ? 20 : EffectRange;

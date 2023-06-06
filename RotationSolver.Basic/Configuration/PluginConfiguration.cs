@@ -66,7 +66,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ChooseAttackMark = true;
     public bool CanAttackMarkAOE = true;
     public bool FilterStopMark = true;
-    public bool UseOverlayWindow = true;
     public bool TeachingMode = true;
     public Vector3 TeachingModeColor = new(0f, 1f, 0.8f);
     public Vector3 MovingTargetColor = new(0f, 1f, 0.8f);

@@ -59,10 +59,6 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
             ref Service.Config.StartOnCountdown, Service.Default.StartOnCountdown);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
-            ref Service.Config.UseOverlayWindow, Service.Default.UseOverlayWindow,
-            LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindowDesc);
-
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
             ref Service.Config.UseWorkTask, Service.Default.UseWorkTask);
 
@@ -167,7 +163,6 @@ internal partial class RotationConfigWindow
 
     private void DrawParamDisplay()
     {
-        var useOverlayWindow = Service.Config.UseOverlayWindow;
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TeachingMode,
             ref Service.Config.TeachingMode, Service.Default.TeachingMode);
@@ -180,8 +175,6 @@ internal partial class RotationConfigWindow
                 ref Service.Config.TeachingModeColor, Service.Default.TeachingModeColor);
         }
 
-        if (useOverlayWindow)
-        {
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowMoveTarget,
                 ref Service.Config.ShowMoveTarget, Service.Default.ShowMoveTarget);
 
@@ -208,7 +201,6 @@ internal partial class RotationConfigWindow
                 DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_SubTargetColor,
                     ref Service.Config.SubTargetColor, Service.Default.SubTargetColor);
             }
-        }
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoise,
             ref Service.Config.KeyBoardNoise, Service.Default.KeyBoardNoise);
@@ -241,8 +233,6 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToastPositional,
             ref Service.Config.ToastPositional, Service.Default.ToastPositional);
 
-        if (useOverlayWindow)
-        {
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawPositional,
                 ref Service.Config.DrawPositional, Service.Default.DrawPositional);
 
@@ -251,7 +241,6 @@ internal partial class RotationConfigWindow
 
             DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AlphaInFill,
                 ref Service.Config.AlphaInFill, Service.Default.AlphaInFill);
-        }
     }
 
     private void DrawParamAction()

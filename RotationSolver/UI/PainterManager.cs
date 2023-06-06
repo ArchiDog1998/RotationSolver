@@ -75,6 +75,11 @@ internal static class PainterManager
         }
     }
 
+    class TargetDrawing : Drawing3DPoly
+    {
+        
+    }
+
     static XIVPainter.XIVPainter _painter;
     static PositionalDrawing _positional;
 
@@ -90,7 +95,7 @@ internal static class PainterManager
         annulus.UpdateEveryFrame = () =>
         {
             if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsNPCEnemy() ?? false) && Service.Config.DrawMeleeOffset
-            && DataCenter.StateType != StateCommandType.Cancel && ActionUpdater.NextGCDAction == null)
+            && ActionUpdater.NextGCDAction == null)
             {
                 annulus.Target = Svc.Targets.Target;
             }
@@ -104,13 +109,13 @@ internal static class PainterManager
 
         var c = Service.Config.MovingTargetColor;
         var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
-        var movingTarget = new Drawing3DHighlightLine(default, default, 0.5f, color, 3);
+        var movingTarget = new Drawing3DHighlightLine(default, default, 0, color, 3);
         movingTarget.UpdateEveryFrame = () =>
         {
             var tar = CustomRotation.MoveTarget;
 
             if (!Service.Config.ShowMoveTarget
-            || tar == null || tar == Player.Object)
+            || tar == null || !Player.Available || tar == Player.Object )
             {
                 movingTarget.Radius = 0;
                 return;
@@ -133,7 +138,9 @@ internal static class PainterManager
             movingTarget.To = tar.Position + dir * MathF.Min(length, Player.Object.HitboxRadius + tar.HitboxRadius);
         };
 
-        _painter.AddDrawings(_positional, annulus, movingTarget);
+        var targetDrawing = new TargetDrawing();
+
+        _painter.AddDrawings(_positional, annulus, movingTarget, targetDrawing);
 
 #if DEBUG
         //_painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
