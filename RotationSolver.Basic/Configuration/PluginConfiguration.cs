@@ -72,7 +72,6 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector3 TargetColor = new(1f, 0.2f, 0f);
     public Vector3 SubTargetColor = new(1f, 0.9f, 0f);
 
-    public int CircleSegment = 100;
     public float DrawingHeight = 3;
     public float SampleLength = 0.2f;
 

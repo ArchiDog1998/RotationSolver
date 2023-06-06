@@ -204,11 +204,6 @@ internal partial class RotationConfigWindow
                 ref Service.Config.SubTargetColor, Service.Default.SubTargetColor);
         }
 
-        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_CircleSegment, ref Service.Config.CircleSegment, Service.Default.CircleSegment, otherThing: () =>
-        {
-            PainterManager._painter.CircleSegment = (ushort)Service.Config.CircleSegment;
-        });
-
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_DrawingHeight, ref Service.Config.DrawingHeight, Service.Default.DrawingHeight, otherThing: () =>
         {
             PainterManager._painter.DrawingHeight = Service.Config.DrawingHeight;

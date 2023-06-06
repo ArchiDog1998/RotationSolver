@@ -87,6 +87,8 @@ internal static class PainterManager
                 IsFill = false,
             };
         }
+
+        const float targetRadius = 0.15f;
         public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
         {
             SubItems = Array.Empty<IDrawing3D>();
@@ -106,7 +108,7 @@ internal static class PainterManager
 
             List<IDrawing3D> subItems = new List<IDrawing3D>() { _target };
             _target.Center = act.Target.Position;
-            _target.Radius = (act.Target.HitboxRadius + act.EffectRange) * ratio;
+            _target.Radius = targetRadius * ratio;
 
             if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Player.Object && !act.IsFriendly)
             {
@@ -118,7 +120,7 @@ internal static class PainterManager
                     if (t == act.Target) continue;
                     if (act.CanGetTarget(act.Target, t))
                     {
-                        subItems.Add(new Drawing3DCircularSector(t.Position, t.HitboxRadius * ratio, Scolor, 3)
+                        subItems.Add(new Drawing3DCircularSector(t.Position, targetRadius * ratio, Scolor, 3)
                         {
                             IsFill = false,
                         });
@@ -181,7 +183,6 @@ internal static class PainterManager
     {
         _painter = Svc.PluginInterface.Create<XIVPainter.XIVPainter>("RotationSolverOverlay");
 
-        _painter.CircleSegment = (ushort)Service.Config.CircleSegment;
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
 
