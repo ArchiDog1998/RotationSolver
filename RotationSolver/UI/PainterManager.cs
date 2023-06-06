@@ -1,6 +1,5 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using RotationSolver.Commands;
 using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Element3D;
@@ -77,7 +76,99 @@ internal static class PainterManager
 
     class TargetDrawing : Drawing3DPoly
     {
-        
+        Drawing3DCircularSector _target;
+
+        public TargetDrawing()
+        {
+            var c = Service.Config.TargetColor;
+            var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+            _target = new Drawing3DCircularSector(default, 0, Tcolor, 3)
+            {
+                IsFill = false,
+            };
+        }
+        public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        {
+            SubItems = Array.Empty<IDrawing3D>();
+
+            if (!Service.Config.ShowTarget) return;
+
+            if (ActionUpdater.NextAction is not BaseAction act) return;
+
+            if (act.Target == null) return;
+
+            var d = DateTime.Now.Millisecond / 1000f;
+            var ratio = (float)DrawingHelper.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
+
+
+            List<IDrawing3D> subItems = new List<IDrawing3D>() { _target };
+            _target.Center = act.Target.Position;
+            _target.Radius = (act.Target.HitboxRadius + act.EffectRange) * ratio;
+
+            if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Player.Object && !act.IsFriendly)
+            {
+                var c = Service.Config.SubTargetColor;
+                var Scolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+
+                foreach (var t in DataCenter.HostileTargets)
+                {
+                    if (t == act.Target) continue;
+                    if (act.CanGetTarget(act.Target, t))
+                    {
+                        subItems.Add(new Drawing3DCircularSector(t.Position, t.HitboxRadius * ratio, Scolor, 3)
+                        {
+                            IsFill = false,
+                        });
+                    }
+                }
+            }
+
+            SubItems = subItems.ToArray();
+
+            base.UpdateOnFrame(painter);
+        }
+    }
+
+    class TargetText : Drawing3DPoly
+    {
+        const int ItemsCount = 16;
+
+        static readonly uint HealthRatioColor = ImGui.GetColorU32(new Vector4(0, 1, 0.8f, 1));
+        public TargetText()
+        {
+            SubItems = new IDrawing3D[ItemsCount];
+            for (int i = 0; i < ItemsCount; i++)
+            {
+                SubItems[i] = new Drawing3DText(string.Empty, default);
+            }
+        }
+
+        public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        {
+            for (int i = 0; i < ItemsCount; i++)
+            {
+                ((Drawing3DText)SubItems[i]).Text = string.Empty;
+            }
+
+            if (!Service.Config.ShowHealthRatio) return;
+
+            var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
+
+            int index = 0;
+            foreach (GameObject t in DataCenter.AllTargets.OrderBy(ObjectHelper.DistanceToPlayer))
+            {
+                if (t is not BattleChara b) continue;
+
+                var item = (Drawing3DText)SubItems[index++];
+
+                item.Text = $"Health Ratio: {b.CurrentHp / calHealth:F2} / {b.MaxHp / calHealth:F2}";
+                item.Color = HealthRatioColor;
+                item.Position = b.Position;
+
+                if(index >= ItemsCount) break;
+            }
+            base.UpdateOnFrame(painter);
+        }
     }
 
     static XIVPainter.XIVPainter _painter;
@@ -114,15 +205,7 @@ internal static class PainterManager
         {
             var tar = CustomRotation.MoveTarget;
 
-            if (!Service.Config.ShowMoveTarget
-            || tar == null || !Player.Available || tar == Player.Object )
-            {
-                movingTarget.Radius = 0;
-                return;
-            }
-            var dir = Player.Object.Position - tar.Position;
-            var length = dir.Length();
-            if (!dir.Normalize())
+            if (!Service.Config.ShowMoveTarget || !Player.Available || !tar.HasValue || Vector3.Distance(tar.Value, Player.Object.Position) < 0.01f)
             {
                 movingTarget.Radius = 0;
                 return;
@@ -134,13 +217,10 @@ internal static class PainterManager
             movingTarget.Color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
             movingTarget.From = Player.Object.Position;
-
-            movingTarget.To = tar.Position + dir * MathF.Min(length, Player.Object.HitboxRadius + tar.HitboxRadius);
+            movingTarget.To = tar.Value;
         };
 
-        var targetDrawing = new TargetDrawing();
-
-        _painter.AddDrawings(_positional, annulus, movingTarget, targetDrawing);
+        _painter.AddDrawings(_positional, annulus, movingTarget, new TargetDrawing(), new TargetText());
 
 #if DEBUG
         //_painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));

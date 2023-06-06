@@ -23,7 +23,7 @@ public partial class BaseAction
     /// </summary>
     public BattleChara Target { get; private set; } = Player.Object;
 
-    private Vector3 _position = default;
+    public Vector3 Position { get; private set; } = default;
     private uint _targetId = Player.Object?.ObjectId ?? 0;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
@@ -59,7 +59,7 @@ public partial class BaseAction
     {
         int aoeCount = mustUse ? 1 : AOECount;
 
-        _position = Player.Object.Position;
+        Position = Player.Object.Position;
         var player = Player.Object;
 
         float range = Range;
@@ -101,17 +101,15 @@ public partial class BaseAction
     #region TargetArea
     private bool TargetArea(float range, bool mustUse, int aoeCount, PlayerCharacter player)
     {
-        //移动
-        if (EffectRange == 1 && range >= 15)
+        //Moving
+        if (EffectRange == 1 && range >= 15 && (ActionID)ID != ActionID.LiturgyOfTheBell)
         {
             return TargetAreaMove(range, mustUse);
         }
-        //其他友方
         else if (IsFriendly)
         {
             return TargetAreaFriend(range, mustUse, player);
         }
-        //敌方
         else
         {
             return TargetAreaHostile(aoeCount);
@@ -123,7 +121,7 @@ public partial class BaseAction
         var target = GetMostObjects(DataCenter.HostileTargets, aoeCount)
             .OrderByDescending(ObjectHelper.GetHealthRatio).FirstOrDefault();
         if (target == null) return false;
-        _position = target.Position;
+        Position = target.Position;
         return true;
     }
 
@@ -133,7 +131,7 @@ public partial class BaseAction
         {
             Vector3 pPosition = Player.Object.Position;
             float rotation = Player.Object.Rotation;
-            _position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
+            Position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
                 pPosition.Z + (float)Math.Cos(rotation) * range);
             return true;
         }
@@ -142,7 +140,7 @@ public partial class BaseAction
             var availableCharas = DataCenter.AllTargets.Where(b => b.ObjectId != Player.Object.ObjectId);
             var target = TargetFilter.GetObjectInRadius(availableCharas, range).FindTargetForMoving(mustUse);
             if (target == null) return false;
-            _position = target.Position;
+            Position = target.Position;
             return true;
         }
     }
@@ -153,12 +151,12 @@ public partial class BaseAction
 
         if (Service.Config.BeneficialAreaOnTarget && Svc.Targets.Target != null)
         {
-            _position = Svc.Targets.Target.Position;
+            Position = Svc.Targets.Target.Position;
         }
         else if (Svc.Targets.Target is BattleChara b && b.DistanceToPlayer() < range && 
             b.IsBoss() && b.HasPositional() && b.HitboxRadius <= 8)
         {
-            _position = b.Position;
+            Position = b.Position;
         }
         else
         {
@@ -167,7 +165,7 @@ public partial class BaseAction
 
             if (attackT == null)
             {
-                _position = player.Position;
+                Position = player.Position;
             }
             else
             {
@@ -176,13 +174,13 @@ public partial class BaseAction
                 if (disToTankRound < effectRange
                     || disToTankRound > 2 * effectRange - player.HitboxRadius)
                 {
-                    _position = player.Position;
+                    Position = player.Position;
                 }
                 else
                 {
                     Vector3 directionToTank = attackT.Position - player.Position;
                     var MoveDirection = directionToTank / directionToTank.Length() * Math.Max(0, disToTankRound - effectRange);
-                    _position = player.Position + MoveDirection;
+                    Position = player.Position + MoveDirection;
                 }
             }
         }
