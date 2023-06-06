@@ -5,7 +5,9 @@ public abstract partial class CustomRotation
     private bool Ability(IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         act = DataCenter.CommandNextAction;
-        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,  CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return true;
+        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,  
+            CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return true;
+
         if(act is IBaseItem i &&  i.CanUse(out _)) return true;
 
         if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAbility) 
@@ -39,6 +41,14 @@ public abstract partial class CustomRotation
         BaseAction.OtherOption &= ~CanUseOption.EmptyOrSkipCombo;
 
         if (GeneralUsingAbility(role, out act)) return true;
+
+        if (DataCenter.HPNotFull && InCombat)
+        {
+            if (DataCenter.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility)
+            {
+                if (UseHealPotion(out act)) return true;
+            }
+        }
 
         if (HasHostilesInRange && AttackAbility(out act)) return true;
         if (GeneralAbility(out act)) return true;
@@ -148,7 +158,10 @@ public abstract partial class CustomRotation
 
         if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer) && InCombat)
         {
-            if ((DataCenter.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility) && HealAreaAbility(out act)) return true;
+            if (DataCenter.SpecialType == SpecialCommandType.HealArea || CanHealAreaAbility)
+            {
+                if (HealAreaAbility(out act)) return true;
+            }
             if (DataCenter.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility)
             {
                 if (HealSingleAbility(out act)) return true;
@@ -290,7 +303,7 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.HealSingleAbility)]
     protected virtual bool HealSingleAbility(out IAction act)
     {
-        return UseHealPotion(out act);
+        act = null; return false;
     }
 
     [RotationDesc(DescType.HealAreaAbility)]
