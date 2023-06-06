@@ -1,13 +1,12 @@
 ﻿using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
 public class BaseItem : IBaseItem
 {
-    private readonly Item _item = null;
+    protected readonly Item _item = null;
     private uint A4 { get; } = 0;
 
     public uint ID => _item.RowId;
@@ -74,8 +73,13 @@ public class BaseItem : IBaseItem
     protected virtual bool CanUseThis => true;
 
     public unsafe BaseItem(uint row, uint a4 = 65535)
+        :this (Service.GetSheet<Item>().GetRow(row), a4)
     {
-        _item = Service.GetSheet<Item>().GetRow(row);
+    }
+
+    public unsafe BaseItem(Item item, uint a4 = 65535)
+    {
+        _item = item;
         IconID = _item.Icon;
         A4 = a4;
         SortKey = (uint)ActionManager.Instance()->GetRecastGroup((int)ActionType.Item, ID);
