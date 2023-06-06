@@ -230,7 +230,7 @@ internal static class PainterManager
         _painter.AddDrawings(_positional, annulus, movingTarget, new TargetDrawing(), new TargetText());
 
 #if DEBUG
-        //_painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
+        _painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
         //var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
 
         //var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);

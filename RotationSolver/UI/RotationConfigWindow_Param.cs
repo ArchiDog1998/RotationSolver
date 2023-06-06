@@ -204,12 +204,12 @@ internal partial class RotationConfigWindow
                 ref Service.Config.SubTargetColor, Service.Default.SubTargetColor);
         }
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_DrawingHeight, ref Service.Config.DrawingHeight, Service.Default.DrawingHeight, otherThing: () =>
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_DrawingHeight, ref Service.Config.DrawingHeight, Service.Default.DrawingHeight, 0.02f, 0, 8, otherThing: () =>
         {
             PainterManager._painter.DrawingHeight = Service.Config.DrawingHeight;
         });
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_SampleLength, ref Service.Config.SampleLength, Service.Default.SampleLength, otherThing: () =>
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_SampleLength, ref Service.Config.SampleLength, Service.Default.SampleLength, 0.005f, 0.1f, 3, otherThing: () =>
         {
             PainterManager._painter.SampleLength = Service.Config.SampleLength;
         });
