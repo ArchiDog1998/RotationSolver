@@ -100,6 +100,9 @@ internal static class PainterManager
             var d = DateTime.Now.Millisecond / 1000f;
             var ratio = (float)DrawingHelper.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
 
+            var c = Service.Config.TargetColor;
+            var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+            _target.Color = Tcolor;
 
             List<IDrawing3D> subItems = new List<IDrawing3D>() { _target };
             _target.Center = act.Target.Position;
@@ -107,7 +110,7 @@ internal static class PainterManager
 
             if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Player.Object && !act.IsFriendly)
             {
-                var c = Service.Config.SubTargetColor;
+                c = Service.Config.SubTargetColor;
                 var Scolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
                 foreach (var t in DataCenter.HostileTargets)
@@ -171,13 +174,16 @@ internal static class PainterManager
         }
     }
 
-    static XIVPainter.XIVPainter _painter;
+    internal static XIVPainter.XIVPainter _painter;
     static PositionalDrawing _positional;
 
     public static void Init()
     {
         _painter = Svc.PluginInterface.Create<XIVPainter.XIVPainter>("RotationSolverOverlay");
-        _painter.UseTaskForAccelerate = false;
+
+        _painter.CircleSegment = (ushort)Service.Config.CircleSegment;
+        _painter.DrawingHeight = Service.Config.DrawingHeight;
+        _painter.SampleLength = Service.Config.SampleLength;
 
         var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset,
             ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0)), 2);

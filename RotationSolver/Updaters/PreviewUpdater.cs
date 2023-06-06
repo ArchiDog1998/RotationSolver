@@ -26,7 +26,6 @@ internal static class PreviewUpdater
     }
 
     static DtrBarEntry _dtrEntry;
-    static string _showValue;
     private static void UpdateEntry()
     {
         var showStr = RSCommands.EntryString;
@@ -42,14 +41,11 @@ internal static class PreviewUpdater
             }
 
             if (!_dtrEntry.Shown) _dtrEntry.Shown = true;
-            if (_showValue != showStr)
-            {
-                _showValue = showStr;
-                _dtrEntry.Text = new SeString(
-                    new IconPayload(BitmapFontIcon.DPS),
-                    new TextPayload(_showValue)
-                    );
-            }
+
+            _dtrEntry.Text = new SeString(
+                new IconPayload(BitmapFontIcon.DPS),
+                new TextPayload(showStr)
+                );
         }
         else if (_dtrEntry != null && _dtrEntry.Shown)
         {
