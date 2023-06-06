@@ -77,7 +77,6 @@
   "ConfigWindow_Param_Advanced": "高级",
   "ConfigWindow_Param_PoslockCasting": "当读条、释放天地人或鬼宿脚时时禁止移动",
   "ConfigWindow_Param_UseStopCasting": "当目标死亡后终止读条",
-  "ConfigWindow_Param_ShowActionFlag": "显示动作标识",
   "ConfigWindow_Param_InDebug": "Debug 模式",
   "ConfigWindow_Param_ShowHealthRatio": "显示用于检测目标为正常状态、濒死状态、是否可挂DOT状态的当前血量百分比",
   "ConfigWindow_Param_HealthRatioBoss": "如果目标的当前血量百分比高于这个值，则认为其为正常状态。",
