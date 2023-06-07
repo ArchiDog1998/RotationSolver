@@ -109,7 +109,12 @@ internal static class MajorUpdater
     static bool _work;
     private static void UpdateWork()
     {
-        if (!IsValid) return;
+        if (!IsValid)
+        {
+            ActionUpdater.NextAction = ActionUpdater.NextGCDAction = null;
+            CustomRotation.MoveTarget = null;
+            return;
+        }
         if (_work) return;
         _work = true;
 

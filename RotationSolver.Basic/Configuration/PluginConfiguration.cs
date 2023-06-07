@@ -33,7 +33,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool AutoOffBetweenArea = true;
     public bool AutoOffCutScene = true;
-    public float AutoOffAfterCombat = 2.5f;
+    public float AutoOffAfterCombat = 8;
     public bool AutoOffWhenDead = true;
     public bool PreventActionsIfOutOfCombat = false;
     public bool PreventActionsIfDutyRing = false;
@@ -75,6 +75,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float DrawingHeight = 3;
     public float SampleLength = 0.2f;
+    public bool UseTaskToDrawing = false;
 
     public bool KeyBoardNoise = true;
     public int KeyBoardNoiseMin = 2;

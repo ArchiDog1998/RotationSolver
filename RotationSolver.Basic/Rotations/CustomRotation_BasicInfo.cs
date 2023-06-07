@@ -37,7 +37,7 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public IRotationConfigSet Configs { get; }
 
-    public static Vector3? MoveTarget { get; private set; }
+    public static Vector3? MoveTarget { get; internal set; }
 
     public virtual string Description { get; } = string.Empty;
 

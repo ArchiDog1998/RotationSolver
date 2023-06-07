@@ -99,7 +99,7 @@ internal partial class Strings
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string ConfigWindow_Param_MaxPing { get; set; } = "Set the Max Ping that RS can get.";
-    public string ConfigWindow_Param_AutoOffAfterCombat { get; set; } = "Auto turn off when combat is over more than near several seconds.";
+    public string ConfigWindow_Param_AutoOffAfterCombat { get; set; } = "Auto turn off when combat is over more than several seconds.";
     public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is between area.";
 
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cut scene.";
@@ -146,6 +146,7 @@ internal partial class Strings
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_DrawingHeight { get; set; } = "The height of drawing.";
     public string ConfigWindow_Param_SampleLength { get; set; } = "The sample length of the line.";
+    public string ConfigWindow_Param_UseTaskToDrawing { get; set; } = "Use Task for accelerating drawing (Not recommended)";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";

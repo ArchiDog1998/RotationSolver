@@ -13,12 +13,12 @@ namespace RotationSolver.Updaters;
 internal static class ActionUpdater
 {
     static DateTime _startCombatTime = DateTime.MinValue;
-    internal static DateTime _endCombatTime = DateTime.MinValue;
+    internal static DateTime _cancelTime = DateTime.MinValue;
 
     static  RandomDelay _GCDDelay = new(() => (Service.Config.WeaponDelayMin, Service.Config.WeaponDelayMax));
 
-    internal static IAction NextAction { get; private set; }
-    internal static IBaseAction NextGCDAction { get; private set; }
+    internal static IAction NextAction { get; set; }
+    internal static IBaseAction NextGCDAction { get; set; }
 
     internal static void UpdateNextAction()
     {
@@ -55,7 +55,7 @@ internal static class ActionUpdater
                             && !localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
                         {
 
-                            if (CheckAction(GcdAction.ID))
+                            if (CheckAction())
                             {
                                 string positional = GcdAction.EnemyPositional.ToName();
                                 if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
@@ -86,7 +86,7 @@ internal static class ActionUpdater
     }
 
     static DateTime lastTime;
-    static bool CheckAction(uint actionID)
+    static bool CheckAction()
     {
         if (DateTime.Now - lastTime > new TimeSpan(0, 0, 3) && DataCenter.StateType != StateCommandType.Cancel)
         {
@@ -112,7 +112,10 @@ internal static class ActionUpdater
         else if(last && !DataCenter.InCombat)
         {
             _startCombatTime = DateTime.MinValue;
-            _endCombatTime = DateTime.Now;
+            if (Service.Config.AutoOffAfterCombat > 0)
+            {
+                _cancelTime = DateTime.Now.AddSeconds(Service.Config.AutoOffAfterCombat);
+            }
         }
         if (_startCombatTime == DateTime.MinValue)
         {

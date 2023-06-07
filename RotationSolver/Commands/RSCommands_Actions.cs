@@ -117,6 +117,11 @@ namespace RotationSolver.Commands
         static float _lastCountdownTime = 0;
         internal static void UpdateRotationState()
         {
+            if(DataCenter.StateType == StateCommandType.Cancel && ActionUpdater._cancelTime != DateTime.MinValue)
+            {
+                ActionUpdater._cancelTime = DateTime.MinValue;
+            }
+
             if (Svc.Condition[ConditionFlag.LoggingOut])
             {
                 CancelState();
@@ -154,13 +159,11 @@ namespace RotationSolver.Commands
                 }
             }
             //Cancel when after combat.
-            else if (Service.Config.AutoOffAfterCombat > 0)
+            else if (ActionUpdater._cancelTime != DateTime.MinValue
+                && DateTime.Now > ActionUpdater._cancelTime)
             {
-                var time = (float)(DateTime.Now - ActionUpdater._endCombatTime).TotalSeconds;
-                if(time > Service.Config.AutoOffAfterCombat && time < Service.Config.AutoOffAfterCombat + 1)
-                {
-                    CancelState();
-                }
+                CancelState();
+                ActionUpdater._cancelTime = DateTime.MinValue;
             }
         }
     }
