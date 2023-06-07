@@ -102,7 +102,7 @@ public partial class BaseAction
     private bool TargetArea(float range, bool mustUse, int aoeCount, PlayerCharacter player)
     {
         //Moving
-        if (EffectRange == 1 && range >= 15 && (ActionID)ID != ActionID.LiturgyOfTheBell)
+        if (EffectRange == 1 && range >= 15)
         {
             return TargetAreaMove(range, mustUse);
         }
@@ -160,7 +160,7 @@ public partial class BaseAction
         }
         else
         {
-            var effectRange = (ActionID)ID == ActionID.LiturgyOfTheBell ? 20 : EffectRange;
+            var effectRange = EffectRange;
             var attackT = TargetFilter.FindAttackedTarget(DataCenter.PartyTanks.GetObjectInRadius(range + effectRange), mustUse);
 
             if (attackT == null)

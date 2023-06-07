@@ -81,8 +81,8 @@ internal static class PainterManager
         public TargetDrawing()
         {
             var c = Service.Config.TargetColor;
-            var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
-            _target = new Drawing3DCircularSector(default, 0, Tcolor, 3)
+            var TColor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+            _target = new Drawing3DCircularSector(default, 0, TColor, 3)
             {
                 IsFill = false,
             };
@@ -103,8 +103,8 @@ internal static class PainterManager
             var ratio = (float)DrawingHelper.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
 
             var c = Service.Config.TargetColor;
-            var Tcolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
-            _target.Color = Tcolor;
+            var TColor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+            _target.Color = TColor;
 
             List<IDrawing3D> subItems = new List<IDrawing3D>() { _target };
             _target.Center = act.Target.Position;
@@ -113,14 +113,14 @@ internal static class PainterManager
             if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Player.Object && !act.IsFriendly)
             {
                 c = Service.Config.SubTargetColor;
-                var Scolor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+                var SColor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
 
                 foreach (var t in DataCenter.HostileTargets)
                 {
                     if (t == act.Target) continue;
                     if (act.CanGetTarget(act.Target, t))
                     {
-                        subItems.Add(new Drawing3DCircularSector(t.Position, targetRadius * ratio, Scolor, 3)
+                        subItems.Add(new Drawing3DCircularSector(t.Position, targetRadius * ratio, SColor, 3)
                         {
                             IsFill = false,
                         });
@@ -230,7 +230,9 @@ internal static class PainterManager
         _painter.AddDrawings(_positional, annulus, movingTarget, new TargetDrawing(), new TargetText());
 
 #if DEBUG
-        _painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
+        //_painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5), 
+        //    new Drawing3DAnnulus(Player.Object.Position, 10, 10 + Service.Config.MeleeRangeOffset,
+        //    ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f)), 2));
         //var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
 
         //var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);

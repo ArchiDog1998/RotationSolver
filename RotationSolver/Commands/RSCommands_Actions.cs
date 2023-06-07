@@ -153,6 +153,15 @@ namespace RotationSolver.Commands
                     DoStateCommandType(StateCommandType.Auto);
                 }
             }
+            //Cancel when after combat.
+            else if (Service.Config.AutoOffAfterCombat > 0)
+            {
+                var time = (float)(DateTime.Now - ActionUpdater._endCombatTime).TotalSeconds;
+                if(time > Service.Config.AutoOffAfterCombat && time < Service.Config.AutoOffAfterCombat + 1)
+                {
+                    CancelState();
+                }
+            }
         }
     }
 }

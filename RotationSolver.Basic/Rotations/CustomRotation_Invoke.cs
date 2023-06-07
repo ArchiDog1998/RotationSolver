@@ -99,9 +99,9 @@ public abstract partial class CustomRotation
 
         if (movingTarget && act is IBaseAction a)
         {
-            if(a.Target == null)
+            if(a.Target == null || a.Target == Player)
             {
-                MoveTarget = a.Position;
+                MoveTarget = a.Position == a.Target.Position ? null : a.Position;
             }
             else
             {

@@ -13,6 +13,7 @@ namespace RotationSolver.Updaters;
 internal static class ActionUpdater
 {
     static DateTime _startCombatTime = DateTime.MinValue;
+    internal static DateTime _endCombatTime = DateTime.MinValue;
 
     static  RandomDelay _GCDDelay = new(() => (Service.Config.WeaponDelayMin, Service.Config.WeaponDelayMax));
 
@@ -111,6 +112,7 @@ internal static class ActionUpdater
         else if(last && !DataCenter.InCombat)
         {
             _startCombatTime = DateTime.MinValue;
+            _endCombatTime = DateTime.Now;
         }
         if (_startCombatTime == DateTime.MinValue)
         {

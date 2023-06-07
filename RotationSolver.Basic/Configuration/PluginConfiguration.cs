@@ -33,6 +33,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool AutoOffBetweenArea = true;
     public bool AutoOffCutScene = true;
+    public float AutoOffAfterCombat = 2.5f;
     public bool AutoOffWhenDead = true;
     public bool PreventActionsIfOutOfCombat = false;
     public bool PreventActionsIfDutyRing = false;
@@ -138,8 +139,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float InterruptDelayMin = 0.5f;
     public float InterruptDelayMax = 1;
 
-    public float NotInCombatDelayMin = 1f;
-    public float NotInCombatDelayMax = 2;
+    public float NotInCombatDelayMin = 3;
+    public float NotInCombatDelayMax = 4;
 
     public float ClickingDelayMin = 0.1f;
     public float ClickingDelayMax = 0.15f;

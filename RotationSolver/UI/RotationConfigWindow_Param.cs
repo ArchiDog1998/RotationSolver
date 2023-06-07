@@ -56,6 +56,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffWhenDead,
             ref Service.Config.AutoOffWhenDead, Service.Default.AutoOffWhenDead);
 
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombat,
+        ref Service.Config.AutoOffAfterCombat, Service.Default.AutoOffAfterCombat, min: 0, max: 10);
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
             ref Service.Config.StartOnCountdown, Service.Default.StartOnCountdown);
 
@@ -209,9 +212,9 @@ internal partial class RotationConfigWindow
             PainterManager._painter.DrawingHeight = Service.Config.DrawingHeight;
         });
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_SampleLength, ref Service.Config.SampleLength, Service.Default.SampleLength, 0.005f, 0.1f, 3, otherThing: () =>
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_SampleLength, ref Service.Config.SampleLength, Service.Default.SampleLength, 0.005f, 0.05f, 3, otherThing: () =>
         {
-            PainterManager._painter.SampleLength = Service.Config.SampleLength;
+            PainterManager._painter.SampleLength = Math.Max(0.05f, Service.Config.SampleLength);
         });
 
         ImGui.Separator();
