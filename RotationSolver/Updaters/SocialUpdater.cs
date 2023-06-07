@@ -225,11 +225,19 @@ internal class SocialUpdater
 
     internal static string EncryptString(PlayerCharacter player)
     {
-        byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString()
-            + " - " + player.Name.ToString() + "U6Wy.zCG");
+        try
+        {
+            byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString()
+    + " - " + player.Name.ToString() + "U6Wy.zCG");
 
-        var tmpHash = MD5.HashData(inputByteArray);
-        var retB = Convert.ToBase64String(tmpHash);
-        return retB;
+            var tmpHash = MD5.HashData(inputByteArray);
+            var retB = Convert.ToBase64String(tmpHash);
+            return retB;
+        }
+        catch (Exception ex)
+        {
+            PluginLog.Warning(ex, "Failed to read the player's name and world.");
+            return string.Empty;
+        }
     }
 }

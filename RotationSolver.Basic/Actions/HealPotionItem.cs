@@ -1,5 +1,6 @@
 ﻿using ECommons.ExcelServices;
 using ECommons.GameHelpers;
+using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -19,10 +20,11 @@ public class HealPotionItem : BaseItem
 
     protected override bool CanUseThis => Service.Config.UseHealPotions;
 
-    public HealPotionItem(uint row, float percent, uint maxHp, uint a4 = 65535) : base(row, a4)
+    public HealPotionItem(Item item, uint a4 = 65535) : base(item, a4)
     {
-        _percent = percent;
-        _maxHp = maxHp;
+        var data = _item.ItemAction.Value.DataHQ;
+        _percent = data[0] / 100f;
+        _maxHp = data[1];
     }
 
     public override bool CanUse(out IAction item)

@@ -15,23 +15,23 @@ https://raw.githubusercontent.com/ArchiDog1998/Dalamud_Plugins/main/pluginmaster
 
 ## Brief
 
-> Based on the pve combat information in one frame, find the best action.
+> Analyses PvE combat information every frame and finds the best action.
 
-The `information` is almost all the information available in one frame in combat, including the status of the all players in party, the status of the hostile targets, action cooling, the number of action stack, the MP and HP of characters, the location of characters, casting action of the hostile target, combo ID, combat duration, player level, etc. In this case, opener is also a kind of information that a lot of abilities are not cooling down.
+This means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.
 
-Then, it will highlight the best action one the hot bar, or help you to click on it.
+Then, it will highlight the best action on the hot bar, or help you to click on it.
 
-It is designed for `general combat`, not for savage or ultimate. So use it carefully.
+It is designed for `general combat`, not for savage or ultimate. Use it carefully.
 
 ## Concept
 
-I have to admit, I'm not a good arpg player. But I enjoy the experience of FFXIV. So I want to design a plugin that can improve my gaming experience without affecting other player's gaming experience. So there goes to `Rotation Solver`. 
+I have to admit, I'm not a good RPG player. But I enjoy the experience of FFXIV. So I want to design a plugin that can improve my gaming experience without affecting other players' gaming experience. So there goes to `Rotation Solver`. 
 
-I have to admit, it does have an automatic component, which might not good for some player. But it can NOT affect any other player's game experience. pvp is absolutely NOT allowed in this plugin.
+I have to admit, it does have an automatic component, which might not be good for some players. But it can NOT affect any other player's game experience. pvp is absolutely NOT allowed in this plugin.
 
 ## Compatibility
 
-literally, `Rotation Solver` helps you to choose the target and then click the action. So any plugin who changes these will affect its decision. 
+literally, `Rotation Solver` helps you to choose the target and then click the action. So any plugin that changes these will affect its decision. 
 
 - [XIVCombo](https://github.com/daemitus/XIVComboPlugin)
 - [ReAction](https://github.com/UnknownX7/ReAction)
@@ -44,7 +44,7 @@ I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXI
 
 ## Links
 
-If you have any questions about usage, please check the [Wiki](https://archidog1998.github.io/RotationSolver/#/). Wiki is NOT ready yet...
+If you have any questions about usage, please check the [Wiki](https://archidog1998.github.io/RotationSolver/#/).
 
 The rotations definitions are [here](https://github.com/ArchiDog1998/FFXIVRotations)
 

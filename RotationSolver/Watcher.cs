@@ -102,7 +102,6 @@ public static class Watcher
         }
 
         if (!set.TargetEffects.Any()) return;
-        var flag = set.TargetEffects.FirstOrDefault()[0].param2;
 
         var action = set.Action;
         var tar = set.Target;
@@ -124,12 +123,6 @@ public static class Watcher
         {
             if (!new Regex(item.Name).Match(action.Name).Success) continue;
             if (item.AddMacro(tar)) break;
-        }
-
-        if (flag != 0 && Service.Config.ShowActionFlag)
-        {
-            Svc.FlyText.AddFlyText(Dalamud.Game.Gui.FlyText.FlyTextKind.NamedIcon, 0, 0, 0, "Flag:" + flag.ToString(), "",
-            ImGui.GetColorU32(ImGuiColors.DPSRed), 0, action.Icon);
         }
     }
 }

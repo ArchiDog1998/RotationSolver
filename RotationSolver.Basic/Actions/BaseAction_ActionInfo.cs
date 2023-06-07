@@ -8,7 +8,7 @@ namespace RotationSolver.Basic.Actions;
 public partial class BaseAction
 {
     public float Range => ActionManager.GetActionRange(ID);
-    public float EffectRange => _action?.EffectRange ?? 0;
+    public float EffectRange => (ActionID)ID == ActionID.LiturgyOfTheBell ? 20 : _action?.EffectRange ?? 0;
     internal ActionID[] ComboIdsNot { private get; init; } = null;
 
     internal ActionID[] ComboIds { private get; init; } = null;
@@ -145,7 +145,7 @@ public partial class BaseAction
 
     public unsafe bool Use()
     {
-        var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = _position.X, Y = _position.Y, Z = _position.Z };
+        var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = Position.X, Y = Position.Y, Z = Position.Z };
 
         if (_action.TargetArea)
         {

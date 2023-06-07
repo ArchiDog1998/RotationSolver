@@ -33,6 +33,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool AutoOffBetweenArea = true;
     public bool AutoOffCutScene = true;
+    public float AutoOffAfterCombat = 8;
     public bool AutoOffWhenDead = true;
     public bool PreventActionsIfOutOfCombat = false;
     public bool PreventActionsIfDutyRing = false;
@@ -66,12 +67,16 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ChooseAttackMark = true;
     public bool CanAttackMarkAOE = true;
     public bool FilterStopMark = true;
-    public bool UseOverlayWindow = true;
     public bool TeachingMode = true;
     public Vector3 TeachingModeColor = new(0f, 1f, 0.8f);
     public Vector3 MovingTargetColor = new(0f, 1f, 0.8f);
     public Vector3 TargetColor = new(1f, 0.2f, 0f);
     public Vector3 SubTargetColor = new(1f, 0.9f, 0f);
+
+    public float DrawingHeight = 3;
+    public float SampleLength = 0.2f;
+    public bool UseTaskToDrawing = false;
+
     public bool KeyBoardNoise = true;
     public int KeyBoardNoiseMin = 2;
     public int KeyBoardNoiseMax = 3;
@@ -135,8 +140,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float InterruptDelayMin = 0.5f;
     public float InterruptDelayMax = 1;
 
-    public float NotInCombatDelayMin = 1f;
-    public float NotInCombatDelayMax = 2;
+    public float NotInCombatDelayMin = 3;
+    public float NotInCombatDelayMax = 4;
 
     public float ClickingDelayMin = 0.1f;
     public float ClickingDelayMax = 0.15f;
@@ -152,8 +157,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float CountDownAhead = 0.6f;
 
     public int NamePlateIconId = 0; // 61435, 61437
-    public bool ShowActionFlag = false;
-
 
     public int MoveTargetAngle = 24;
     public float HealthRatioBoss = 1.85f;

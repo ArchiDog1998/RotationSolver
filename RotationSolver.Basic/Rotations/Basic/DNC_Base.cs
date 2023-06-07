@@ -128,10 +128,7 @@ public abstract class DNC_Base : CustomRotation
     #endregion
 
     #region Support
-    /// <summary>
-    /// Moving
-    /// </summary>
-    public static IBaseAction EnAvant { get; } = new BaseAction(ActionID.EnAvant, ActionOption.Heal | ActionOption.EndSpecial);
+    public static IBaseAction EnAvant { get; } = new BaseAction(ActionID.EnAvant, ActionOption.Friendly | ActionOption.EndSpecial);
 
     public static IBaseAction ShieldSamba { get; } = new BaseAction(ActionID.ShieldSamba, ActionOption.Defense)
     {
@@ -256,7 +253,7 @@ public abstract class DNC_Base : CustomRotation
     [RotationDesc(ActionID.EnAvant)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (EnAvant.CanUse(out act)) return true;
+        if (EnAvant.CanUse(out act, CanUseOption.MustUseEmpty)) return true;
         return false;
     }
 

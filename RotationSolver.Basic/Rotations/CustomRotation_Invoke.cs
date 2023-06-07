@@ -96,7 +96,33 @@ public abstract partial class CustomRotation
 
         var movingTarget = MoveForwardAbility(out act);
         ActionMoveForwardAbility = movingTarget ? act : null;
-        MoveTarget = (movingTarget && act is IBaseAction a) ? a.Target : null;
+
+        if (movingTarget && act is IBaseAction a)
+        {
+            if(a.Target == null || a.Target == Player)
+            {
+                MoveTarget = a.Position == a.Target.Position ? null : a.Position;
+            }
+            else
+            {
+                var dir = Player.Position - a.Target.Position;
+                var length = dir.Length();
+                if(length != 0)
+                {
+                    dir /= length;
+
+                    MoveTarget = a.Target.Position + dir * MathF.Min(length, Player.HitboxRadius + a.Target.HitboxRadius);
+                }
+                else
+                {
+                    MoveTarget = a.Target.Position;
+                }
+            }
+        }
+        else
+        {
+            MoveTarget = null;
+        }
 
         ActionMoveBackAbility = MoveBackAbility(out act) ? act : null;
 

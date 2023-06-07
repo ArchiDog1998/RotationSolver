@@ -90,8 +90,6 @@ internal partial class Strings
     public string ConfigWindow_Events_DutyStart { get; set; } = "Duty Start: ";
     public string ConfigWindow_Events_DutyEnd{ get; set; } = "Duty End: ";
     public string ConfigWindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
-    public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display Top Overlay";
-    public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
     public string ConfigWindow_Param_Basic { get; set; } = "Basic";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
@@ -101,6 +99,7 @@ internal partial class Strings
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string ConfigWindow_Param_MaxPing { get; set; } = "Set the Max Ping that RS can get.";
+    public string ConfigWindow_Param_AutoOffAfterCombat { get; set; } = "Auto turn off when combat is over more than several seconds.";
     public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is between area.";
 
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cut scene.";
@@ -129,7 +128,6 @@ internal partial class Strings
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or has TenChiJin or PhantomFlurry status.";
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
-    public string ConfigWindow_Param_ShowActionFlag { get; set; } = "Show action flag.";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
 
     public string ConfigWindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
@@ -146,6 +144,9 @@ internal partial class Strings
     public string ConfigWindow_Param_MovingTargetColor { get; set; } = "Prompt box color of moving target";
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
+    public string ConfigWindow_Param_DrawingHeight { get; set; } = "The height of drawing.";
+    public string ConfigWindow_Param_SampleLength { get; set; } = "The sample length of the line.";
+    public string ConfigWindow_Param_UseTaskToDrawing { get; set; } = "Use Task for accelerating drawing (Not recommended)";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";

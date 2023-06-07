@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations;
+﻿using Lumina.Excel.GeneratedSheets;
+
+namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
@@ -79,14 +81,14 @@ public abstract partial class CustomRotation
     public static IBaseItem EchoDrops { get; } = new BaseItem(4566);
 
     #region Heal Potion
-    public static IBaseItem HyperPotion { get; } = new HealPotionItem(38956, 0.25f, 11000);
+    public static HealPotionItem[] Potions { get; } = Service.GetSheet<Item>()
+        .Where(i => i.FilterGroup == 8 && i.ItemSearchCategory.Row == 43)
+        .Select(i => new HealPotionItem(i)).ToArray();
 
     private bool UseHealPotion(out IAction act)
     {
-        var acts = from prop in typeof(CustomRotation).GetProperties()
-                   where !(prop.GetMethod?.IsPrivate ?? true) && typeof(IBaseItem).IsAssignableFrom(prop.PropertyType)
-                    select prop.GetValue(this) as HealPotionItem into a
-                   where a != null && a.CanUse(out _)
+        var acts = from a in Potions
+                   where a.CanUse(out _)
                    orderby a.MaxHealHp
                    select a;
 

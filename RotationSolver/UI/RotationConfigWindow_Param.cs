@@ -56,12 +56,11 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffWhenDead,
             ref Service.Config.AutoOffWhenDead, Service.Default.AutoOffWhenDead);
 
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombat,
+        ref Service.Config.AutoOffAfterCombat, Service.Default.AutoOffAfterCombat, min: 0, max: 10);
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
             ref Service.Config.StartOnCountdown, Service.Default.StartOnCountdown);
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
-            ref Service.Config.UseOverlayWindow, Service.Default.UseOverlayWindow,
-            LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindowDesc);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
             ref Service.Config.UseWorkTask, Service.Default.UseWorkTask);
@@ -159,9 +158,6 @@ internal partial class RotationConfigWindow
             ref Service.Config.HealthRatioDot, Service.Default.HealthRatioDot, 
             speed: 0.02f, min: 0, max: 10);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowActionFlag,
-            ref Service.Config.ShowActionFlag, Service.Default.ShowActionFlag);
-
         ImGui.Separator();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
@@ -170,7 +166,6 @@ internal partial class RotationConfigWindow
 
     private void DrawParamDisplay()
     {
-        var useOverlayWindow = Service.Config.UseOverlayWindow;
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TeachingMode,
             ref Service.Config.TeachingMode, Service.Default.TeachingMode);
@@ -183,35 +178,52 @@ internal partial class RotationConfigWindow
                 ref Service.Config.TeachingModeColor, Service.Default.TeachingModeColor);
         }
 
-        if (useOverlayWindow)
+        ImGui.Separator();
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowMoveTarget,
+            ref Service.Config.ShowMoveTarget, Service.Default.ShowMoveTarget);
+
+        if (Service.Config.ShowMoveTarget)
         {
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowMoveTarget,
-                ref Service.Config.ShowMoveTarget, Service.Default.ShowMoveTarget);
+            ImGuiHelper.Spacing();
 
-            if (Service.Config.ShowMoveTarget)
-            {
-                ImGuiHelper.Spacing();
-
-                DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_MovingTargetColor,
-                    ref Service.Config.MovingTargetColor, Service.Default.MovingTargetColor);
-            }
-
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowTarget,
-                ref Service.Config.ShowTarget, Service.Default.ShowTarget);
-
-            if (Service.Config.ShowTarget)
-            {
-                ImGuiHelper.Spacing();
-
-                DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_TargetColor,
-                    ref Service.Config.TargetColor, Service.Default.TargetColor);
-
-                ImGuiHelper.Spacing();
-
-                DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_SubTargetColor,
-                    ref Service.Config.SubTargetColor, Service.Default.SubTargetColor);
-            }
+            DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_MovingTargetColor,
+                ref Service.Config.MovingTargetColor, Service.Default.MovingTargetColor);
         }
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowTarget,
+            ref Service.Config.ShowTarget, Service.Default.ShowTarget);
+
+        if (Service.Config.ShowTarget)
+        {
+            ImGuiHelper.Spacing();
+
+            DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_TargetColor,
+                ref Service.Config.TargetColor, Service.Default.TargetColor);
+
+            ImGuiHelper.Spacing();
+
+            DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_SubTargetColor,
+                ref Service.Config.SubTargetColor, Service.Default.SubTargetColor);
+        }
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_DrawingHeight, ref Service.Config.DrawingHeight, Service.Default.DrawingHeight, 0.02f, 0, 8, otherThing: () =>
+        {
+            PainterManager._painter.DrawingHeight = Service.Config.DrawingHeight;
+        });
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_SampleLength, ref Service.Config.SampleLength, Service.Default.SampleLength, 0.005f, 0.05f, 3, otherThing: () =>
+        {
+            PainterManager._painter.SampleLength = Math.Max(0.05f, Service.Config.SampleLength);
+        });
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseTaskToDrawing,
+            ref Service.Config.UseTaskToDrawing, Service.Default.UseTaskToDrawing, otherThing: () =>
+        {
+            PainterManager._painter.UseTaskForAccelerate = Service.Config.UseTaskToDrawing;
+        });
+
+        ImGui.Separator();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoise,
             ref Service.Config.KeyBoardNoise, Service.Default.KeyBoardNoise);
@@ -244,17 +256,14 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToastPositional,
             ref Service.Config.ToastPositional, Service.Default.ToastPositional);
 
-        if (useOverlayWindow)
-        {
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawPositional,
-                ref Service.Config.DrawPositional, Service.Default.DrawPositional);
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawPositional,
+            ref Service.Config.DrawPositional, Service.Default.DrawPositional);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeOffset,
-                ref Service.Config.DrawMeleeOffset, Service.Default.DrawMeleeOffset);
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeOffset,
+            ref Service.Config.DrawMeleeOffset, Service.Default.DrawMeleeOffset);
 
-            DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AlphaInFill,
-                ref Service.Config.AlphaInFill, Service.Default.AlphaInFill);
-        }
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AlphaInFill,
+            ref Service.Config.AlphaInFill, Service.Default.AlphaInFill);
     }
 
     private void DrawParamAction()

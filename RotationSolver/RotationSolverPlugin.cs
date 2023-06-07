@@ -61,7 +61,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw += windowSystem.Draw;
-        Svc.PluginInterface.UiBuilder.Draw += OverlayWindow.Draw;
 
         MajorUpdater.Enable();
         PainterManager.Init();
@@ -102,7 +101,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         Svc.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw -= windowSystem.Draw;
-        Svc.PluginInterface.UiBuilder.Draw -= OverlayWindow.Draw;
 
         foreach (var item in _dis)
         {
