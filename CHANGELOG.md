@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.10.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.10.0...v2.10.1) (2023-06-07)
+
+
+### Bug Fixes
+
+* add all heal items. ([a250ac8](https://github.com/ArchiDog1998/RotationSolver/commit/a250ac8e84c787c26bd624a579c7bd86c66a5141))
+* add feature for auto off when combat end. ([6d444b9](https://github.com/ArchiDog1998/RotationSolver/commit/6d444b9e99fcf0646bee3b17ee8bd16016ef2bde))
+* more options. ([8a05b6d](https://github.com/ArchiDog1998/RotationSolver/commit/8a05b6dbe65dde1a35b08ecf33dc9e3d19926d41))
+* more painter. ([aa12acf](https://github.com/ArchiDog1998/RotationSolver/commit/aa12acf83e919d4eda52e4cacd602196b6502f9e))
+* more painting things. ([7007fbe](https://github.com/ArchiDog1998/RotationSolver/commit/7007fbee5a34a07fd2e24a7146c5322206d4bafc))
+* new logic of healing potion usage. ([bd7b6b7](https://github.com/ArchiDog1998/RotationSolver/commit/bd7b6b7271acef603940a7489a372aceb202033e))
+* remove using overlay window. ([f67038a](https://github.com/ArchiDog1998/RotationSolver/commit/f67038a4607f3a0dcfe971ccb36eaca5c1f3092b))
+* update drawing. ([0209f4a](https://github.com/ArchiDog1998/RotationSolver/commit/0209f4a36a4f734f2ff67e539e7f4c854c5cf1f6))
+* update drawing. ([896ebdb](https://github.com/ArchiDog1998/RotationSolver/commit/896ebdb4c4013914d578afde7be069395e3e66f4))
+* update with painter. ([bf68a22](https://github.com/ArchiDog1998/RotationSolver/commit/bf68a22335291b05ede2a3875333cee41f2f6c87))
+
 ## [2.10.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.9.3...v2.10.0) (2023-06-03)
 
 
