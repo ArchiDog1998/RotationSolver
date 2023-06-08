@@ -1,3 +1,4 @@
+using Clipper2Lib;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -15,6 +16,7 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
+using System.IO;
 using Module = ECommons.Module;
 
 namespace RotationSolver;
@@ -35,8 +37,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector);
-        ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out _);
 
+        //Init!
+        //ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out _);
+        Clipper.InflatePaths(new PathsD(new PathD[] { Clipper.MakePath(new double[] {0, 0, 1, 1 }) }), 0, JoinType.Round, EndType.Joined);
         try
         {
             Service.Config = JsonConvert.DeserializeObject<PluginConfiguration>(

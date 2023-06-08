@@ -187,7 +187,7 @@ internal partial class RotationConfigWindow
         {
             ImGuiHelper.Spacing();
 
-            DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_MovingTargetColor,
+            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Param_MovingTargetColor,
                 ref Service.Config.MovingTargetColor, Service.Default.MovingTargetColor);
         }
 
@@ -198,12 +198,12 @@ internal partial class RotationConfigWindow
         {
             ImGuiHelper.Spacing();
 
-            DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_TargetColor,
+            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Param_TargetColor,
                 ref Service.Config.TargetColor, Service.Default.TargetColor);
 
             ImGuiHelper.Spacing();
 
-            DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_SubTargetColor,
+            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Param_SubTargetColor,
                 ref Service.Config.SubTargetColor, Service.Default.SubTargetColor);
         }
 

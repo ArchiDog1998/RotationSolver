@@ -69,9 +69,9 @@ public class PluginConfiguration : IPluginConfiguration
     public bool FilterStopMark = true;
     public bool TeachingMode = true;
     public Vector3 TeachingModeColor = new(0f, 1f, 0.8f);
-    public Vector3 MovingTargetColor = new(0f, 1f, 0.8f);
-    public Vector3 TargetColor = new(1f, 0.2f, 0f);
-    public Vector3 SubTargetColor = new(1f, 0.9f, 0f);
+    public Vector4 MovingTargetColor = new(0f, 1f, 0.8f, 0.6f);
+    public Vector4 TargetColor = new(1f, 0.2f, 0f, 0.8f);
+    public Vector4 SubTargetColor = new(1f, 0.9f, 0f, 0.8f);
 
     public float DrawingHeight = 3;
     public float SampleLength = 0.2f;
