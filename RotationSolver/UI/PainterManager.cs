@@ -92,7 +92,7 @@ internal static class PainterManager
         {
             SubItems = Array.Empty<IDrawing3D>();
 
-            if (!Service.Config.ShowTarget) return;
+            if (!Service.Config.ShowTarget || DataCenter.StateType == StateCommandType.Cancel) return;
 
             if (ActionUpdater.NextAction is not BaseAction act) return;
 
@@ -101,9 +101,11 @@ internal static class PainterManager
             var d = DateTime.Now.Millisecond / 1000f;
             var ratio = (float)DrawingHelper.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
 
-            _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
+            List<IDrawing3D> subItems = new List<IDrawing3D>() { _target, 
+                new Drawing3DImage(act.GetTexture(), act.Target.Position) 
+            };
 
-            List<IDrawing3D> subItems = new List<IDrawing3D>() { _target };
+            _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
             _target.Center = act.Target.Position;
             _target.Radius = targetRadius * ratio;
 
@@ -181,9 +183,9 @@ internal static class PainterManager
 
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
+        _painter.UseTaskForAccelerate = Service.Config.UseTaskToDrawing;
 
-        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset,
-            ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0)), 2);
+        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2);
         annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
 
         annulus.UpdateEveryFrame = () =>
@@ -224,24 +226,36 @@ internal static class PainterManager
         _painter.AddDrawings(_positional, annulus, movingTarget, new TargetDrawing(), new TargetText());
 
 #if DEBUG
-        //_painter.AddDrawings(
-        //    new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.5f)), -5, arcStartSpan: new Vector2(0, MathF.PI /2))
-        //    {
-        //        IsFill = false,
-        //    },
+        var deadTime = DateTime.Now.AddSeconds(5);
+        var r = new Random();
+        var col = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f));
+        var colIn = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.8f));
+        _painter.AddDrawings(
+            new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, 10, col, 2)
+            {
+                DeadTime = deadTime,
+                InsideColor = colIn,
+                PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
+            },
 
-        //    new Drawing3DAnnulus(Player.Object.Position, 10, 10 + Service.Config.MeleeRangeOffset,
-        //    ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f)), 2)
-        //    {
-        //        DeadTime = DateTime.Now.AddSeconds(5),
-        //    }
+            new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, col, 2)
+            {
+                DeadTime = deadTime,
+                InsideColor = colIn,
+                PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
+            }
 
-            //new Drawing3DCircularSector(Player.Object.Position, 10, 
+            //new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.5f)), -5, arcStartSpan: new Vector2(0, MathF.PI / 2))
+            //{
+            //    IsFill = false,
+            //},
+
+            //new Drawing3DCircularSector(Player.Object.Position, 5,
             //ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f)), 2)
             //{
             //    DeadTime = DateTime.Now.AddSeconds(5),
             //}
-        //    );
+            );
         //var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
 
         //var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);
