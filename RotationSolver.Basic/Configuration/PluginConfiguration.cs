@@ -73,6 +73,7 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector4 TargetColor = new(1f, 0.2f, 0f, 0.8f);
     public Vector4 SubTargetColor = new(1f, 0.9f, 0f, 0.8f);
     public bool DrawMeleeRange = false;
+    public bool UseOverlayWindow = true;
 
     public float DrawingHeight = 3;
     public float SampleLength = 0.2f;
@@ -90,7 +91,6 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealthDifference = 0.25f;
     public float MeleeRangeOffset = 1;
     public bool TargetFriendly = false;
-    public float AlphaInFill = 0.15f;
     public float MinLastAbilityAdvanced = 0.1f;
 
     public float HealWhenNothingTodoBelow = 0.8f;
