@@ -50,22 +50,28 @@ internal static class PainterManager
                 }
                 switch (pos)
                 {
-                    case EnemyPositional.Flank:
+                    case EnemyPositional.Flank when Service.Config.DrawPositional:
                         _flankCir.Target = Target;
                         _rearCir.Target = null;
                         _noneCir.Target = null;
                         break;
 
-                    case EnemyPositional.Rear:
+                    case EnemyPositional.Rear when Service.Config.DrawPositional:
                         _flankCir.Target = null;
                         _rearCir.Target = Target;
                         _noneCir.Target = null;
                         break;
 
-                    default:
+                    case EnemyPositional.None when Service.Config.DrawMeleeRange:
                         _flankCir.Target = null;
                         _rearCir.Target = null;
                         _noneCir.Target = Target;
+                        break;
+
+                    default:
+                        _flankCir.Target = null;
+                        _rearCir.Target = null;
+                        _noneCir.Target = null;
                         break;
                 }
             }

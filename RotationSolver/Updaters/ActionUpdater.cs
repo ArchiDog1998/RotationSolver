@@ -41,7 +41,7 @@ internal static class ActionUpdater
 
                         var rightJobAndTarget = (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && GcdAction.Target.IsNPCEnemy();
 
-                        if (Service.Config.DrawPositional && rightJobAndTarget && GcdAction.IsSingleTarget)
+                        if (rightJobAndTarget && GcdAction.IsSingleTarget)
                         {
                             PainterManager.UpdatePositional(GcdAction.EnemyPositional, GcdAction.Target);
                         }
