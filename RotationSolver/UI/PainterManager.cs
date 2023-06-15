@@ -108,7 +108,7 @@ internal static class PainterManager
             var ratio = (float)DrawingHelper.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
 
             List<IDrawing3D> subItems = new List<IDrawing3D>() { _target, 
-                new Drawing3DImage(act.GetTexture(), act.Target.Position) 
+                new Drawing3DImage(act.GetTexture(), act.Target.Position, 0.2f) 
             };
 
             _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);

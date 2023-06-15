@@ -40,7 +40,7 @@ public static class ObjectHelper
     }
 
     public static unsafe bool IsNPCEnemy(this GameObject obj)
-        => obj.GetObjectKind() == ObjectKind.BattleNpc
+        => obj != null && obj.GetObjectKind() == ObjectKind.BattleNpc
         && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.GetAddress());
 
 
