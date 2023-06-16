@@ -159,7 +159,8 @@ internal partial class Strings
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
-     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
+    public string ConfigWindow_Param_TargetIconSize { get; set; } = "The size of drawing target action icon.";
+    public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
     public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommend 61435, 61437";

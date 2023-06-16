@@ -205,10 +205,11 @@ internal partial class RotationConfigWindow
 
             if (Service.Config.ShowTarget)
             {
-                ImGuiHelper.Spacing();
-
                 DrawColor4(LocalizationManager.RightLang.ConfigWindow_Param_TargetColor,
                     ref Service.Config.TargetColor, Service.Default.TargetColor);
+
+                DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_TargetIconSize,
+                    ref Service.Config.TargetIconSize, Service.Default.TargetIconSize);
 
                 ImGuiHelper.Spacing();
 

@@ -94,6 +94,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float MinLastAbilityAdvanced = 0.1f;
 
     public float HealWhenNothingTodoBelow = 0.8f;
+    public float TargetIconSize = 0.2f;
 
     public Dictionary<Job, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<Job, float>();
 
