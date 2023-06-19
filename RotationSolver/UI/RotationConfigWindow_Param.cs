@@ -235,12 +235,6 @@ internal partial class RotationConfigWindow
             {
                 PainterManager._painter.SampleLength = Math.Max(0.05f, Service.Config.SampleLength);
             });
-
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseTaskToDrawing,
-                ref Service.Config.UseTaskToDrawing, Service.Default.UseTaskToDrawing, otherThing: () =>
-                {
-                    PainterManager._painter.UseTaskForAccelerate = Service.Config.UseTaskToDrawing;
-                });
         }
 
         ImGui.Separator();

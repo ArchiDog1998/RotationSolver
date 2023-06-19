@@ -191,7 +191,7 @@ internal static class PainterManager
 
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
-        _painter.UseTaskForAccelerate = Service.Config.UseTaskToDrawing;
+        //_painter.UseTaskForAccelerate = Service.Config.UseTaskToDrawing;
 
         var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2);
         annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
@@ -234,41 +234,38 @@ internal static class PainterManager
         _painter.AddDrawings(_positional, annulus, movingTarget, new TargetDrawing(), new TargetText());
 
 #if DEBUG
-        var deadTime = DateTime.Now.AddSeconds(5);
-        var r = new Random();
-        var col = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f));
-        var colIn = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.8f));
-        _painter.AddDrawings(
-            new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, 10, col, 2)
-            {
-                DeadTime = deadTime,
-                InsideColor = colIn,
-                PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
-            },
 
-            new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, col, 2)
-            {
-                DeadTime = deadTime,
-                InsideColor = colIn,
-                PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
-            }
+        try
+        {
+            var deadTime = DateTime.Now.AddSeconds(10);
+            var r = new Random();
+            var col = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.15f));
+            var colIn = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.5f));
+            _painter.AddDrawings(
+                new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, 10, col, 2)
+                {
+                    DeadTime = deadTime,
+                    InsideColor = colIn,
+                    PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
+                },
 
-            //new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.5f)), -5, arcStartSpan: new Vector2(0, MathF.PI / 2))
-            //{
-            //    IsFill = false,
-            //},
+                new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, col, 2)
+                {
+                    DeadTime = deadTime,
+                    InsideColor = colIn,
+                    PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
+                }
+                );
+            //var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
 
-            //new Drawing3DCircularSector(Player.Object.Position, 5,
-            //ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f)), 2)
-            //{
-            //    DeadTime = DateTime.Now.AddSeconds(5),
-            //}
-            );
-        //var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
+            //var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);
+            //p.ClosestPtDis = 0.5f;
+            //_painter.AddDrawings(p);
+        }
+        catch
+        {
 
-        //var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);
-        //p.ClosestPtDis = 0.5f;
-        //_painter.AddDrawings(p);
+        }
 #endif
     }
 

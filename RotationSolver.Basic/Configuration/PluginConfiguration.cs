@@ -77,7 +77,6 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float DrawingHeight = 3;
     public float SampleLength = 0.2f;
-    public bool UseTaskToDrawing = false;
 
     public bool KeyBoardNoise = true;
     public int KeyBoardNoiseMin = 2;
@@ -94,7 +93,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float MinLastAbilityAdvanced = 0.1f;
 
     public float HealWhenNothingTodoBelow = 0.8f;
-    public float TargetIconSize = 0.2f;
+    public float TargetIconSize = 0.6f;
 
     public Dictionary<Job, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<Job, float>();
 

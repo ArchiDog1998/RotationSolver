@@ -149,7 +149,6 @@ internal partial class Strings
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_DrawingHeight { get; set; } = "The height of drawing.";
     public string ConfigWindow_Param_SampleLength { get; set; } = "The sample length of the line.";
-    public string ConfigWindow_Param_UseTaskToDrawing { get; set; } = "Use Task for accelerating drawing (Not recommended)";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
