@@ -37,6 +37,20 @@ public static class IconSet
     static readonly SortedDictionary<string, TextureWrap> _texturesPath = new();
     static readonly HashSet<string> _loadingTexturePath = new();
 
+    static readonly Dictionary<uint, uint> _actionIcons = new();
+
+    public static TextureWrap GetTexture(this IAction action, bool isAdjust = true)
+    {
+        uint iconId = 0;
+        if (action != null && !_actionIcons.TryGetValue(isAdjust ? action.AdjustedID : action.ID, out iconId))
+        {
+            iconId = action is IBaseAction ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon
+                : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(action.AdjustedID).Icon;
+            _actionIcons[action.AdjustedID] = iconId;
+        }
+        return GetTexture(iconId);
+    }
+
     public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
 
     public static TextureWrap GetTexture(uint id)

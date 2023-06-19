@@ -108,14 +108,21 @@ internal static class PainterManager
 
             var d = DateTime.Now.Millisecond / 1000f;
             var ratio = (float)DrawingHelper.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
-            List<IDrawing3D> subItems = new List<IDrawing3D>() { _target, _targetImage };
+            List<IDrawing3D> subItems = new List<IDrawing3D>();
 
-            _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
-            _target.Center = act.Target.Position;
-            _target.Radius = targetRadius * ratio;
-
-            _targetImage.Position = act.Target.Position;
-            _targetImage.SetTexture(act.GetTexture(), Service.Config.TargetIconSize);
+            if(Service.Config.TargetIconSize > 0)
+            {
+                _targetImage.Position = act.Target.Position;
+                _targetImage.SetTexture(act.GetTexture(true), Service.Config.TargetIconSize);
+                subItems.Add(_targetImage);
+            }
+            else
+            {
+                _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
+                _target.Center = act.Target.Position;
+                _target.Radius = targetRadius * ratio;
+                subItems.Add(_target);
+            }
 
             if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Player.Object && !act.IsFriendly)
             {
