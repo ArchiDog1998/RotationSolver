@@ -198,7 +198,6 @@ internal static class PainterManager
 
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
-        //_painter.UseTaskForAccelerate = Service.Config.UseTaskToDrawing;
 
         var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2);
         annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
@@ -263,11 +262,11 @@ internal static class PainterManager
                     PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
                 }
                 );
-            //var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
 
-            //var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);
-            //p.ClosestPtDis = 0.5f;
-            //_painter.AddDrawings(p);
+            color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
+
+            var p = new Drawing3DCircularSectorO(Player.Object, 5, color, 5);
+            _painter.AddDrawings(p);
         }
         catch
         {
