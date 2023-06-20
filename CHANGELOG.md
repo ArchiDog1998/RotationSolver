@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.10.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.10.1...v2.10.2) (2023-06-20)
+
+
+### Bug Fixes
+
+* add enable toggle. ([4d90cb2](https://github.com/ArchiDog1998/RotationSolver/commit/4d90cb28543868d0b785df4b21ebfcf5c15a8091))
+* add melee range showing. ([53e6bd4](https://github.com/ArchiDog1998/RotationSolver/commit/53e6bd4f9fd0ac2fda689889590038f63e6664eb))
+* an icon target config. ([1e11608](https://github.com/ArchiDog1998/RotationSolver/commit/1e11608c13f8f8650c9dc3fec37fab84c2a3b4a1))
+* blu try catch. ([f39fc12](https://github.com/ArchiDog1998/RotationSolver/commit/f39fc12f3a2c776b9f45a2264468df2b5f7b56d7))
+* fixed auto cancel and texture icon. ([f5af92c](https://github.com/ArchiDog1998/RotationSolver/commit/f5af92c026b53262640d7ed5bb1adb500d486bcc))
+* fixed null exception in ObjectHelper. ([6be0386](https://github.com/ArchiDog1998/RotationSolver/commit/6be0386301b56c8ed031c366113b6311bda3bfdb))
+* fixed some config bug. ([6969218](https://github.com/ArchiDog1998/RotationSolver/commit/69692181e57d45a25d33a98db941631c74c9c062))
+* fixed the drawing bug. ([af7198a](https://github.com/ArchiDog1998/RotationSolver/commit/af7198ab7ef84c4b9cccbf0c4de42397f86a598d))
+* fixed with teaching mode. ([2f2c8f2](https://github.com/ArchiDog1998/RotationSolver/commit/2f2c8f24d51f20cf11e97974195ae48f67fb59c4))
+* moving highlight. ([0571ae9](https://github.com/ArchiDog1998/RotationSolver/commit/0571ae9aea0bc98c41031c2083b65fbc3018b40c))
+* patch for drawing. ([f316549](https://github.com/ArchiDog1998/RotationSolver/commit/f316549fc2576f63cefea72fb6753cc7ce0b1b18))
+
 ## [2.10.1](https://github.com/ArchiDog1998/RotationSolver/compare/v2.10.0...v2.10.1) (2023-06-07)
 
 
