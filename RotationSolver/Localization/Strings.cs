@@ -90,6 +90,9 @@ internal partial class Strings
     public string ConfigWindow_Events_DutyStart { get; set; } = "Duty Start: ";
     public string ConfigWindow_Events_DutyEnd{ get; set; } = "Duty End: ";
     public string ConfigWindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
+
+    public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display Top Overlay";
+    public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
     public string ConfigWindow_Param_Basic { get; set; } = "Basic";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
@@ -146,18 +149,17 @@ internal partial class Strings
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
     public string ConfigWindow_Param_DrawingHeight { get; set; } = "The height of drawing.";
     public string ConfigWindow_Param_SampleLength { get; set; } = "The sample length of the line.";
-    public string ConfigWindow_Param_UseTaskToDrawing { get; set; } = "Use Task for accelerating drawing (Not recommended)";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
     public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
     public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
-
+    public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
-    public string ConfigWindow_Param_AlphaInFill { get; set; } = "The alpha value in fill.";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
-     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
+    public string ConfigWindow_Param_TargetIconSize { get; set; } = "The size of drawing target action icon.";
+    public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
     public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommend 61435, 61437";

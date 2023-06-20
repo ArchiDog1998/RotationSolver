@@ -195,11 +195,11 @@ internal class ControlWindow : Window
 
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
 
-        var texture = GetTexture(gcd);
+        var texture = IconSet.GetTexture(gcd);
         if(texture != null)
         {
             DrawIAction(texture.ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
-            texture = GetTexture(ability);
+            texture = IconSet.GetTexture(ability);
             if (texture != null)
             {
                 ImGui.SameLine();
@@ -234,7 +234,7 @@ internal class ControlWindow : Window
 
     static void DrawCommandAction(IAction ability, SpecialCommandType command, Vector4 color)
     {
-        DrawCommandAction(GetTexture(ability), command, color);
+        DrawCommandAction(IconSet.GetTexture(ability), command, color);
     }
 
     static void DrawCommandAction(uint iconId, SpecialCommandType command, Vector4 color)
@@ -346,19 +346,6 @@ internal class ControlWindow : Window
         return help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
     }
 
-    static readonly Dictionary<uint, uint> _actionIcons = new();
-
-    static TextureWrap GetTexture(IAction action, bool isAdjust = true)
-    {
-        uint iconId = 0;
-        if(action != null && !_actionIcons.TryGetValue(isAdjust ? action.AdjustedID : action.ID, out iconId))
-        {
-            iconId = action is IBaseAction ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon
-                : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(action.AdjustedID).Icon;
-            _actionIcons[action.AdjustedID] = iconId;
-        }
-        return IconSet.GetTexture(iconId);
-    }
 
     static void DrawIAction(nint handle, string id, float width, SpecialCommandType command, string help)
     {
@@ -440,7 +427,7 @@ internal class ControlWindow : Window
 
     internal static (Vector2, Vector2) DrawIAction(IAction action, float width, float percent, bool isAdjust = true)
     {
-        var texture = GetTexture(action, isAdjust);
+        var texture = IconSet.GetTexture(action, isAdjust);
         if (texture == null) return (default, default);
         var result = DrawIAction(texture.ImGuiHandle, width, action == null ? -1 : percent);
         if (action != null) ImGuiHelper.HoveredString(action.Name, () =>

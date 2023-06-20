@@ -3,6 +3,7 @@ using ECommons.GameHelpers;
 using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Element3D;
+using XIVPainter.ElementSpecial;
 
 namespace RotationSolver.UI;
 
@@ -50,22 +51,28 @@ internal static class PainterManager
                 }
                 switch (pos)
                 {
-                    case EnemyPositional.Flank:
+                    case EnemyPositional.Flank when Service.Config.DrawPositional:
                         _flankCir.Target = Target;
                         _rearCir.Target = null;
                         _noneCir.Target = null;
                         break;
 
-                    case EnemyPositional.Rear:
+                    case EnemyPositional.Rear when Service.Config.DrawPositional:
                         _flankCir.Target = null;
                         _rearCir.Target = Target;
                         _noneCir.Target = null;
                         break;
 
-                    default:
+                    case EnemyPositional.None when Service.Config.DrawMeleeRange:
                         _flankCir.Target = null;
                         _rearCir.Target = null;
                         _noneCir.Target = Target;
+                        break;
+
+                    default:
+                        _flankCir.Target = null;
+                        _rearCir.Target = null;
+                        _noneCir.Target = null;
                         break;
                 }
             }
@@ -77,15 +84,16 @@ internal static class PainterManager
     class TargetDrawing : Drawing3DPoly
     {
         Drawing3DCircularSector _target;
+        Drawing3DImage _targetImage;
 
         public TargetDrawing()
         {
-            var c = Service.Config.TargetColor;
-            var TColor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+            var TColor = ImGui.GetColorU32(Service.Config.TargetColor);
             _target = new Drawing3DCircularSector(default, 0, TColor, 3)
             {
                 IsFill = false,
             };
+            _targetImage = new Drawing3DImage(null, default, 0);
         }
 
         const float targetRadius = 0.15f;
@@ -93,7 +101,7 @@ internal static class PainterManager
         {
             SubItems = Array.Empty<IDrawing3D>();
 
-            if (!Service.Config.ShowTarget) return;
+            if (!Service.Config.ShowTarget || DataCenter.StateType == StateCommandType.Cancel) return;
 
             if (ActionUpdater.NextAction is not BaseAction act) return;
 
@@ -101,19 +109,25 @@ internal static class PainterManager
 
             var d = DateTime.Now.Millisecond / 1000f;
             var ratio = (float)DrawingHelper.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
+            List<IDrawing3D> subItems = new List<IDrawing3D>();
 
-            var c = Service.Config.TargetColor;
-            var TColor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
-            _target.Color = TColor;
-
-            List<IDrawing3D> subItems = new List<IDrawing3D>() { _target };
-            _target.Center = act.Target.Position;
-            _target.Radius = targetRadius * ratio;
+            if(Service.Config.TargetIconSize > 0)
+            {
+                _targetImage.Position = act.Target.Position;
+                _targetImage.SetTexture(act.GetTexture(true), Service.Config.TargetIconSize);
+                subItems.Add(_targetImage);
+            }
+            else
+            {
+                _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
+                _target.Center = act.Target.Position;
+                _target.Radius = targetRadius * ratio;
+                subItems.Add(_target);
+            }
 
             if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Player.Object && !act.IsFriendly)
             {
-                c = Service.Config.SubTargetColor;
-                var SColor = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+                var SColor = ImGui.GetColorU32(Service.Config.SubTargetColor);
 
                 foreach (var t in DataCenter.HostileTargets)
                 {
@@ -177,7 +191,20 @@ internal static class PainterManager
     }
 
     internal static XIVPainter.XIVPainter _painter;
-    static PositionalDrawing _positional;
+    static PositionalDrawing _positional = new ();
+    static DrawingHighlightHotbar _highLight = new ();
+
+    public static uint ActionId
+    { 
+        get => _highLight.ActionId;
+        set => _highLight.ActionId = value;
+    }
+
+    public static Vector4 HighlightColor
+    {
+        get => _highLight.Color;
+        set => _highLight.Color = value;
+    }
 
     public static void Init()
     {
@@ -185,9 +212,9 @@ internal static class PainterManager
 
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
+        HighlightColor = Service.Config.TeachingModeColor;
 
-        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset,
-            ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0)), 2);
+        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2);
         annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
 
         annulus.UpdateEveryFrame = () =>
@@ -203,10 +230,7 @@ internal static class PainterManager
             }
         };
 
-        _positional = new PositionalDrawing();
-
-        var c = Service.Config.MovingTargetColor;
-        var color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+        var color = ImGui.GetColorU32(Service.Config.MovingTargetColor);
         var movingTarget = new Drawing3DHighlightLine(default, default, 0, color, 3);
         movingTarget.UpdateEveryFrame = () =>
         {
@@ -220,24 +244,46 @@ internal static class PainterManager
 
             movingTarget.Radius = 0.5f;
 
-            var c = Service.Config.MovingTargetColor;
-            movingTarget.Color = ImGui.GetColorU32(new Vector4(c.X, c.Y, c.Z, 1));
+            movingTarget.Color = ImGui.GetColorU32(Service.Config.MovingTargetColor);
 
             movingTarget.From = Player.Object.Position;
             movingTarget.To = tar.Value;
         };
 
-        _painter.AddDrawings(_positional, annulus, movingTarget, new TargetDrawing(), new TargetText());
+        _painter.AddDrawings(_positional, _highLight, annulus, movingTarget, new TargetDrawing(), new TargetText());
 
 #if DEBUG
-        //_painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 3, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5), 
-        //    new Drawing3DAnnulus(Player.Object.Position, 10, 10 + Service.Config.MeleeRangeOffset,
-        //    ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.8f, 0.75f, 0.15f)), 2));
-        //var color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
+        //try
+        //{
+        //    var deadTime = DateTime.Now.AddSeconds(10);
+        //    var r = new Random();
+        //    var col = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.15f));
+        //    var colIn = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.5f));
+        //    _painter.AddDrawings(
+        //        new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, 10, col, 2)
+        //        {
+        //            DeadTime = deadTime,
+        //            InsideColor = colIn,
+        //            PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
+        //        },
 
-        //var p = new Drawing3DCircularSector(Player.Object.Position, 5, color, 5);
-        //p.ClosestPtDis = 0.5f;
-        //_painter.AddDrawings(p);
+        //        new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, col, 2)
+        //        {
+        //            DeadTime = deadTime,
+        //            InsideColor = colIn,
+        //            PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
+        //        }
+        //        );
+
+        //    color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
+
+        //    var p = new Drawing3DCircularSectorO(Player.Object, 5, color, 5);
+        //    _painter.AddDrawings(p);
+        //}
+        //catch
+        //{
+
+        //}
 #endif
     }
 

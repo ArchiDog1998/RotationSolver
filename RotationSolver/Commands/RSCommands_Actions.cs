@@ -117,7 +117,8 @@ namespace RotationSolver.Commands
         static float _lastCountdownTime = 0;
         internal static void UpdateRotationState()
         {
-            if(DataCenter.StateType == StateCommandType.Cancel && ActionUpdater._cancelTime != DateTime.MinValue)
+            if(ActionUpdater._cancelTime != DateTime.MinValue && 
+                (DataCenter.StateType == StateCommandType.Cancel || DataCenter.InCombat))
             {
                 ActionUpdater._cancelTime = DateTime.MinValue;
             }

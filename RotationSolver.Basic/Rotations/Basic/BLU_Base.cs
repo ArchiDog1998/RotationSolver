@@ -1,4 +1,5 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Logging;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
@@ -34,7 +35,7 @@ public abstract class BLU_Base : CustomRotation
         Physical,
     }
 
-    public sealed override Job[] Jobs => new Job[] { ECommons.ExcelServices.Job.BLU };
+    public sealed override Job[] Jobs => new Job[] { Job.BLU };
     protected static BLUAttackType AttackType { get; set; } = BLUAttackType.Both;
 
     protected static BLUID BlueId { get; set; } = BLUID.DPS;
@@ -63,8 +64,15 @@ public abstract class BLU_Base : CustomRotation
                 if (AttackType == BLUAttackType.Physical && _type == BLUActionType.Magical) return false;
                 if (AttackType == BLUAttackType.Magical && _type == BLUActionType.Physical) return false;
 
-                if (Target.HasStatus(false, NoPhysic) && _type == BLUActionType.Physical) return false;
-                if (Target.HasStatus(false, NoMagic) && _type == BLUActionType.Magical) return false;
+                try
+                {
+                    if (Target.HasStatus(false, NoPhysic) && _type == BLUActionType.Physical) return false;
+                    if (Target.HasStatus(false, NoMagic) && _type == BLUActionType.Magical) return false;
+                }
+                catch(Exception ex)
+                {
+                    PluginLog.Warning(ex, "Failed for checking target status.");
+                }
                 return true;
             }
         }
