@@ -253,37 +253,37 @@ internal static class PainterManager
         _painter.AddDrawings(_positional, _highLight, annulus, movingTarget, new TargetDrawing(), new TargetText());
 
 #if DEBUG
-        try
-        {
-            var deadTime = DateTime.Now.AddSeconds(10);
-            var r = new Random();
-            var col = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.15f));
-            var colIn = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.5f));
-            _painter.AddDrawings(
-                new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, 10, col, 2)
-                {
-                    DeadTime = deadTime,
-                    InsideColor = colIn,
-                    PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
-                },
+        //try
+        //{
+        //    var deadTime = DateTime.Now.AddSeconds(10);
+        //    var r = new Random();
+        //    var col = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.15f));
+        //    var colIn = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.5f));
+        //    _painter.AddDrawings(
+        //        new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, 10, col, 2)
+        //        {
+        //            DeadTime = deadTime,
+        //            InsideColor = colIn,
+        //            PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
+        //        },
 
-                new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, col, 2)
-                {
-                    DeadTime = deadTime,
-                    InsideColor = colIn,
-                    PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
-                }
-                );
+        //        new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, col, 2)
+        //        {
+        //            DeadTime = deadTime,
+        //            InsideColor = colIn,
+        //            PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
+        //        }
+        //        );
 
-            color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
+        //    color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
 
-            var p = new Drawing3DCircularSectorO(Player.Object, 5, color, 5);
-            _painter.AddDrawings(p);
-        }
-        catch
-        {
+        //    var p = new Drawing3DCircularSectorO(Player.Object, 5, color, 5);
+        //    _painter.AddDrawings(p);
+        //}
+        //catch
+        //{
 
-        }
+        //}
 #endif
     }
 
