@@ -4,6 +4,7 @@ using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Commands;
+using RotationSolver.UI;
 
 namespace RotationSolver.Updaters;
 
@@ -67,6 +68,7 @@ internal static class MajorUpdater
         {
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
+            PainterManager.ActionId = Service.Config.TeachingMode ? ActionUpdater.NextAction?.AdjustedID ?? 0 : 0;
             ActionUpdater.UpdateActionInfo();
 
             if (!ShouldPreventActions)

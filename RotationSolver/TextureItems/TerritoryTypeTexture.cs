@@ -17,8 +17,8 @@ internal class TerritoryTypeTexture : ITexture
     {
     }
 
-    public TerritoryTypeTexture(TerritoryType status)
+    public TerritoryTypeTexture(TerritoryType territory)
     {
-        _territory = status;
+        _territory = territory;
     }
 }

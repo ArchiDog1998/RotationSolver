@@ -97,11 +97,12 @@ internal partial class RotationConfigWindow
         ImGui.PopStyleVar();
     }
 
-    private static void DrawColor4(string name, ref Vector4 value, Vector4 @default, string description = "")
+    private static void DrawColor4(string name, ref Vector4 value, Vector4 @default, Action otherthing = null, string description = "")
     {
         ImGui.SetNextItemWidth(210);
         if (ImGui.ColorEdit4(name, ref value))
         {
+            otherthing?.Invoke();
             Service.Config.Save();
         }
         if (ImGuiHelper.HoveredStringReset(description) && value != @default)

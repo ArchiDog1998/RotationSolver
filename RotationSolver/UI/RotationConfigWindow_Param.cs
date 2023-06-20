@@ -173,8 +173,11 @@ internal partial class RotationConfigWindow
         {
             ImGuiHelper.Spacing();
 
-            DrawColor3(LocalizationManager.RightLang.ConfigWindow_Param_TeachingModeColor,
-                ref Service.Config.TeachingModeColor, Service.Default.TeachingModeColor);
+            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Param_TeachingModeColor,
+                ref Service.Config.TeachingModeColor, Service.Default.TeachingModeColor, otherthing: () =>
+                {
+                    PainterManager.HighlightColor = Service.Config.TeachingModeColor;
+                });
         }
 
         ImGui.Separator();

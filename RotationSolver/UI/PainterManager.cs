@@ -3,6 +3,7 @@ using ECommons.GameHelpers;
 using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Element3D;
+using XIVPainter.ElementSpecial;
 
 namespace RotationSolver.UI;
 
@@ -190,7 +191,20 @@ internal static class PainterManager
     }
 
     internal static XIVPainter.XIVPainter _painter;
-    static PositionalDrawing _positional;
+    static PositionalDrawing _positional = new ();
+    static DrawingHightlightHotbar _highLight = new ();
+
+    public static uint ActionId
+    { 
+        get => _highLight.ActionId;
+        set => _highLight.ActionId = value;
+    }
+
+    public static Vector4 HighlightColor
+    {
+        get => _highLight.Color;
+        set => _highLight.Color = value;
+    }
 
     public static void Init()
     {
@@ -198,6 +212,7 @@ internal static class PainterManager
 
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
+        HighlightColor = Service.Config.TeachingModeColor;
 
         var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2);
         annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
@@ -214,8 +229,6 @@ internal static class PainterManager
                 annulus.Target = null;
             }
         };
-
-        _positional = new PositionalDrawing();
 
         var color = ImGui.GetColorU32(Service.Config.MovingTargetColor);
         var movingTarget = new Drawing3DHighlightLine(default, default, 0, color, 3);
@@ -237,10 +250,9 @@ internal static class PainterManager
             movingTarget.To = tar.Value;
         };
 
-        _painter.AddDrawings(_positional, annulus, movingTarget, new TargetDrawing(), new TargetText());
+        _painter.AddDrawings(_positional, _highLight, annulus, movingTarget, new TargetDrawing(), new TargetText());
 
 #if DEBUG
-
         try
         {
             var deadTime = DateTime.Now.AddSeconds(10);

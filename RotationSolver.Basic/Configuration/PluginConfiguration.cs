@@ -68,7 +68,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool CanAttackMarkAOE = true;
     public bool FilterStopMark = true;
     public bool TeachingMode = true;
-    public Vector3 TeachingModeColor = new(0f, 1f, 0.8f);
+    public Vector4 TeachingModeColor = new(0f, 1f, 0.8f, 1f);
     public Vector4 MovingTargetColor = new(0f, 1f, 0.8f, 0.6f);
     public Vector4 TargetColor = new(1f, 0.2f, 0f, 0.8f);
     public Vector4 SubTargetColor = new(1f, 0.9f, 0f, 0.8f);
