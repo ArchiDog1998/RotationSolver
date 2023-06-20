@@ -166,22 +166,6 @@ internal partial class RotationConfigWindow
 
     private void DrawParamDisplay()
     {
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TeachingMode,
-            ref Service.Config.TeachingMode, Service.Default.TeachingMode);
-
-        if (Service.Config.TeachingMode)
-        {
-            ImGuiHelper.Spacing();
-
-            DrawColor4(LocalizationManager.RightLang.ConfigWindow_Param_TeachingModeColor,
-                ref Service.Config.TeachingModeColor, Service.Default.TeachingModeColor, otherthing: () =>
-                {
-                    PainterManager.HighlightColor = Service.Config.TeachingModeColor;
-                });
-        }
-
-        ImGui.Separator();
-
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
             ref Service.Config.UseOverlayWindow, Service.Default.UseOverlayWindow,
             LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindowDesc, otherThing: () =>
@@ -191,6 +175,19 @@ internal partial class RotationConfigWindow
 
         if (Service.Config.UseOverlayWindow)
         {
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TeachingMode,
+                ref Service.Config.TeachingMode, Service.Default.TeachingMode);
+
+            if (Service.Config.TeachingMode)
+            {
+                ImGuiHelper.Spacing();
+
+                DrawColor4(LocalizationManager.RightLang.ConfigWindow_Param_TeachingModeColor,
+                    ref Service.Config.TeachingModeColor, Service.Default.TeachingModeColor, otherthing: () =>
+                    {
+                        PainterManager.HighlightColor = Service.Config.TeachingModeColor;
+                    });
+            }
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowMoveTarget,
                 ref Service.Config.ShowMoveTarget, Service.Default.ShowMoveTarget);
