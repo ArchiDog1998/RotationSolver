@@ -213,9 +213,10 @@ internal static partial class TargetUpdater
         {
             if (h.IsCastInterruptible) return false;
             var last = h.TotalCastTime - h.CurrentCastTime;
+            var t = last - DataCenter.WeaponRemain;
 
             if (!(h.TotalCastTime > 2.5 &&
-                CooldownHelper.RecastAfterGCD(last, 2) && !CooldownHelper.RecastAfterGCD(last, 0))) return false;
+                t > 0 && t < DataCenter.GCDTime(2))) return false;
 
             var action = Service.GetSheet<Action>().GetRow(h.CastActionId);
             return check?.Invoke(action) ?? false;

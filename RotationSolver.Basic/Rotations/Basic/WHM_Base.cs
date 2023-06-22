@@ -15,16 +15,13 @@ public abstract class WHM_Base : CustomRotation
     protected static byte Lily => JobGauge.Lily;
 
     protected static byte BloodLily => JobGauge.BloodLily;
+    static float LilyTimerRaw => JobGauge.LilyTimer / 1000f;
+    protected static float LilyTimer => LilyTimerRaw - DataCenter.WeaponRemain;
 
-    protected static bool LilyAfter(float time)
-    {
-        return EndAfter(JobGauge.LilyTimer / 1000f, time);
-    }
+    protected static bool LilyAfter(float time) => LilyTimer <= time;
 
-    protected static bool LilyAfterGCD(uint gctCount = 0, float offset = 0)
-    {
-        return EndAfterGCD(JobGauge.LilyTimer / 1000f, gctCount, offset);
-    }
+    protected static bool LilyAfterGCD(uint gcdCount = 0, float offset = 0)
+        => LilyAfter(GCDTime(gcdCount, offset));
     #endregion
 
     #region Heal

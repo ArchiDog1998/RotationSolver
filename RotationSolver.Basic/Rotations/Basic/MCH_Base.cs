@@ -19,17 +19,14 @@ public abstract class MCH_Base : CustomRotation
 
     protected static byte Battery => JobGauge.Battery;
 
-    static float OverheatTimeRemaining => JobGauge.OverheatTimeRemaining / 1000f;
+    static float OverheatTimeRemainingRaw => JobGauge.OverheatTimeRemaining / 1000f;
+    protected static float OverheatTimeRemaining => OverheatTimeRemainingRaw - DataCenter.WeaponRemain;
 
-    protected static bool OverheatedEndAfter(float time)
-    {
-        return EndAfter(OverheatTimeRemaining, time);
-    }
+    protected static bool OverheatedEndAfter(float time) => OverheatTimeRemaining <= time;
 
     protected static bool OverheatedEndAfterGCD(uint gctCount = 0, float offset = 0)
-    {
-        return EndAfterGCD(OverheatTimeRemaining, gctCount, offset);
-    }
+        => OverheatedEndAfter(GCDTime(gctCount, offset));
+
     #endregion
 
     #region Attack Single

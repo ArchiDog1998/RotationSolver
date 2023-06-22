@@ -35,7 +35,7 @@ public partial class BaseAction
                         && ChoiceTarget != TargetFilter.FindTargetForMoving
                         && DataCenter.LastAction == (ActionID)AdjustedID) return false;
 
-                    if (!WillHaveOneCharge(DataCenter.ActionRemain, false)) return false;
+                    if (RecastTimeRemainOneChargeRaw > DataCenter.ActionRemain) return false;
                 }
             }
 

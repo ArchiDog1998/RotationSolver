@@ -148,6 +148,9 @@ public static class DataCenter
 
     public static float WeaponElapsed { get; internal set; }
 
+    public static float GCDTime(uint gcdCount = 0, float offset = 0)
+        => WeaponTotal * gcdCount + offset;
+
     /// <summary>
     /// Time to the next action
     /// </summary>
@@ -158,7 +161,7 @@ public static class DataCenter
         get
         {
             var gcdRemain = WeaponRemain;
-            if ((gcdRemain - MinAnimationLock - Ping).IsLessThan(ActionRemain))
+            if (gcdRemain - MinAnimationLock - Ping <= ActionRemain)
             {
                 return gcdRemain + MinAnimationLock + Ping;
             }
@@ -190,7 +193,7 @@ public static class DataCenter
 
     public static bool InCombat { get; set; }
 
-    public static float CombatTime { get; set; }
+    internal static float CombatTimeRaw { get; set; }
 
     public static IEnumerable<BattleChara> PartyMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
 

@@ -16,29 +16,20 @@ public abstract class DRK_Base : CustomRotation
 
     protected static bool HasDarkArts => JobGauge.HasDarkArts;
 
-    private static float DarkSideTimeRemaining => JobGauge.DarksideTimeRemaining / 1000f;
+    private static float DarkSideTimeRemainingRaw => JobGauge.DarksideTimeRemaining / 1000f;
+    protected static float DarkSideTimeRemaining => DarkSideTimeRemainingRaw - DataCenter.WeaponRemain;
 
-    protected static bool DarkSideEndAfter(float time)
-    {
-        return EndAfter(DarkSideTimeRemaining, time);
-    }
+    protected static bool DarkSideEndAfter(float time) => DarkSideTimeRemaining <= time;
 
     protected static bool DarkSideEndAfterGCD(uint gctCount = 0, float offset = 0)
-    {
-        return EndAfterGCD(DarkSideTimeRemaining, gctCount, offset);
-    }
+        => DarkSideEndAfter(GCDTime(gctCount, offset));
 
-    private static float ShadowTimeRemaining => JobGauge.ShadowTimeRemaining / 1000f;
-
-    protected static bool ShadowTimeEndAfter(float time)
-    {
-        return EndAfter(ShadowTimeRemaining, time);
-    }
+    private static float ShadowTimeRemainingRaw => JobGauge.ShadowTimeRemaining / 1000f;
+    protected static float ShadowTimeRemaining => ShadowTimeRemainingRaw - DataCenter.WeaponRemain;
+    protected static bool ShadowTimeEndAfter(float time) => ShadowTimeRemainingRaw <= time;
 
     protected static bool ShadowTimeEndAfterGCD(uint gctCount = 0, float offset = 0)
-    {
-        return EndAfterGCD(ShadowTimeRemaining, gctCount, offset);
-    }
+        => ShadowTimeEndAfter(GCDTime(gctCount, offset));
     #endregion
 
     #region Attack Single

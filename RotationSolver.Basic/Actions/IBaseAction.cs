@@ -16,10 +16,10 @@
         float EffectRange { get; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        bool IsFriendly { get; }
+        internal bool IsFriendly { get; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        bool IsEot { get; }
+        internal bool IsEot { get; }
 
         EnemyPositional EnemyPositional { get; }
 
@@ -124,7 +124,6 @@
         /// <param name="remain"></param>
         /// <returns></returns>
         bool WillHaveOneCharge(float remain);
-
         #endregion
 
         #region Target

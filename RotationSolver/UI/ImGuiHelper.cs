@@ -628,8 +628,8 @@ internal static class ImGuiHelper
                 ImGui.Text("MP: " + action.MPNeed.ToString());
 #endif
                 ImGui.Text("Has One:" + action.HasOneCharge.ToString());
-                ImGui.Text("Recast One: " + action.RecastTimeOneCharge.ToString());
-                ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsed.ToString());
+                ImGui.Text("Recast One: " + action.RecastTimeOneChargeRaw.ToString());
+                ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsedRaw.ToString());
 
                 var option = CanUseOption.IgnoreTarget | CanUseOption.IgnoreClippingCheck;
                 ImGui.Text($"Can Use: {action.CanUse(out _, option)} ");

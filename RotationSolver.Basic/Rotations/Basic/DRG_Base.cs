@@ -21,12 +21,13 @@ public abstract class DRG_Base : CustomRotation
     /// </summary>
     protected static byte FocusCount => JobGauge.FirstmindsFocusCount;
 
-    static float LOTDTime => JobGauge.LOTDTimer / 1000f;
+    static float LOTDTimeRaw => JobGauge.LOTDTimer / 1000f;
+    protected static float LOTDTime => LOTDTimeRaw - DataCenter.WeaponRemain;
 
-    protected static bool SongEndAfter(float time) => EndAfter(LOTDTime, time);
+    protected static bool LOTDEndAfter(float time) => LOTDTime <= time;
 
-    protected static bool SongEndAfterGCD(uint gctCount = 0, float offset = 0)
-        => EndAfterGCD(LOTDTime, gctCount, offset);
+    protected static bool LOTDEndAfterGCD(uint gctCount = 0, float offset = 0)
+        => LOTDEndAfter(GCDTime(gctCount, offset));
     #endregion
 
     #region Attack Single

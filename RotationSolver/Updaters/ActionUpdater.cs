@@ -119,11 +119,11 @@ internal static class ActionUpdater
         }
         if (_startCombatTime == DateTime.MinValue)
         {
-            DataCenter.CombatTime = 0;
+            DataCenter.CombatTimeRaw = 0;
         }
         else
         {
-            DataCenter.CombatTime = (float)(DateTime.Now - _startCombatTime).TotalSeconds;
+            DataCenter.CombatTimeRaw = (float)(DateTime.Now - _startCombatTime).TotalSeconds;
         }
 
         for (int i = 0; i < DataCenter.BluSlots.Length; i++)

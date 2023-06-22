@@ -18,16 +18,17 @@ public abstract class NIN_Base : CustomRotation
     static NINGauge JobGauge => Svc.Gauges.Get<NINGauge>();
 
     [Obsolete("Better not use this.")]
-    protected static bool InHuton => HutonTime > 0;
+    protected static bool InHuton => HutonTimeRaw > 0;
 
     protected static byte Ninki => JobGauge.Ninki;
 
-    protected static float HutonTime => JobGauge.HutonTimer / 1000f;
+    static float HutonTimeRaw => JobGauge.HutonTimer / 1000f;
+    protected static float HutonTime => HutonTimeRaw - DataCenter.WeaponRemain;
 
-    protected static bool HutonEndAfter(float time) => EndAfter(HutonTime, time);
+    protected static bool HutonEndAfter(float time) => HutonTime <= time;
 
     protected static bool HutonEndAfterGCD(uint gctCount = 0, float offset = 0)
-        => EndAfterGCD(HutonTime, gctCount, offset);
+        => HutonEndAfter(GCDTime(gctCount, offset));
     #endregion
 
     #region Attack Single

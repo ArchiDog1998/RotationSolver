@@ -221,35 +221,17 @@ public abstract partial class CustomRotation
         => IActionHelper.IsLastAction(ids);
 
     /// <summary>
-    /// Is the thing still there after <paramref name="gcdCount"/> gcds and <paramref name="offset"/> abilities.
-    /// </summary>
-    /// <param name="remain">jobgauge time</param>
-    /// <param name="gcdCount"></param>
-    /// <param name="offset"></param>
-    /// <returns></returns>
-    protected static bool EndAfterGCD(float remain, uint gcdCount = 0, float offset = 0)
-        => CooldownHelper.RecastAfterGCD(remain, gcdCount, offset);
-
-    /// <summary>
-    /// Is the thing still there after <paramref name="remainNeed"/> seconds
-    /// </summary>
-    /// <param name="remain">jobgauge time</param>
-    /// <param name="remainNeed">seconds</param>
-    /// <returns></returns>
-    protected static bool EndAfter(float remain, float remainNeed)
-        => CooldownHelper.RecastAfter(remain, remainNeed);
-
-    /// <summary>
     /// Whether the battle lasted less than <paramref name="time"/> seconds
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     /// <param name="time">time in second.</param>
     /// <returns></returns>
-    protected static bool CombatElapsedLess(float time)
-    {
-        if (!InCombat) return true;
-        return (DataCenter.CombatTime + DataCenter.WeaponRemain).IsLessThan(time);
-    }
+    protected static bool CombatElapsedLess(float time) => CombatTime <= time;
+
+    protected static float CombatTime => InCombat ? DataCenter.CombatTimeRaw + DataCenter.WeaponRemain : 0;
+
+    protected static float GCDTime(uint gcdCount = 0, float offset = 0)
+        => DataCenter.GCDTime(gcdCount, offset);
 
     /// <summary>
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>

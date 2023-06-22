@@ -101,7 +101,7 @@ internal class TargetCondition : ICondition
                 }
 
                 float castTime = tar.TotalCastTime - tar.CurrentCastTime;
-                result = !CooldownHelper.RecastAfter(castTime, DistanceOrTime);
+                result = castTime > DistanceOrTime + DataCenter.WeaponRemain;
                 break;
         }
 
