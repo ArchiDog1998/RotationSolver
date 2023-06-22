@@ -68,7 +68,11 @@ internal static class MajorUpdater
         {
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
-            PainterManager.ActionId = Service.Config.TeachingMode ? ActionUpdater.NextAction?.AdjustedID ?? 0 : 0;
+            PainterManager.ActionIds.Clear();
+            if (Service.Config.TeachingMode && ActionUpdater.NextAction!= null)
+            {
+                PainterManager.ActionIds.Add(ActionUpdater.NextAction.AdjustedID);
+            }
             ActionUpdater.UpdateActionInfo();
 
             if (!ShouldPreventActions)

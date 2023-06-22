@@ -113,7 +113,7 @@ public partial class BaseAction
         if (ActionCheck != null && !ActionCheck(target, mustUse)) return false;
 
         Target = target;
-        if(!option.HasFlag(CanUseOption.IgnoreTarget)) _targetId = target.ObjectId;
+        if (!option.HasFlag(CanUseOption.IgnoreTarget)) _targetId = target.ObjectId;
         return true;
     }
 

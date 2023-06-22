@@ -92,6 +92,10 @@ internal class SocialUpdater
         DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);
         DataCenter.InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
 
+#if DEBUG
+        //PluginLog.Information($"Territory: {e}");
+#endif
+
         try
         {
             RotationUpdater.RightNowRotation?.OnTerritoryChanged();
