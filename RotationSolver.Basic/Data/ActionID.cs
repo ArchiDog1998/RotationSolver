@@ -670,6 +670,10 @@ public enum ActionID : uint
 
     Wildfire = 2878,
 
+    Detonator = 16766,
+
+    QueenOverdrive = 16502,
+
     GaussRound = 2874,
 
     Ricochet = 2890,
