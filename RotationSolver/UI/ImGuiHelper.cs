@@ -9,6 +9,8 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.ComponentModel;
+using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RotationSolver.UI;
 
@@ -39,7 +41,7 @@ internal static class ImGuiHelper
     {
         showToolTip ??= text =>
         {
-            if (!string.IsNullOrEmpty(text.Description)) ImGui.SetTooltip(text.Description);
+            ShowTooltip(text.Description);
         };
 
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
@@ -136,7 +138,8 @@ internal static class ImGuiHelper
     {
         if (ImGui.IsItemHovered())
         {
-            if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
+            ImGuiHelper.ShowTooltip(text);
+
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
             {
                 selected?.Invoke();
@@ -144,18 +147,24 @@ internal static class ImGuiHelper
         }
     }
 
+    public static void ShowTooltip(string text)
+    {
+        if (!Service.Config.ShowTooltips) return;
+        if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
+    }
+
     public static bool HoveredStringReset(string text)
     {
         if (ImGui.IsItemHovered())
         {
             text = string.IsNullOrEmpty(text)? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault
-                : text + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault;
+            : text + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault;
 
-            ImGui.SetTooltip(text);
+            ImGuiHelper.ShowTooltip(text);
 
             return ImGui.IsMouseDown(ImGuiMouseButton.Right)
-                && ImGui.IsKeyPressed(ImGuiKey.LeftShift)
-                && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl);
+            && ImGui.IsKeyPressed(ImGuiKey.LeftShift)
+            && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl);
         }
         return false;
     }
@@ -181,7 +190,7 @@ internal static class ImGuiHelper
             }
             else if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip(LocalizationManager.RightLang.ActionSequencer_DragdropDescription);
+                ImGuiHelper.ShowTooltip(LocalizationManager.RightLang.ActionSequencer_DragdropDescription);
 
                 if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
                     && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
@@ -342,10 +351,7 @@ internal static class ImGuiHelper
                 if (getDesc != null && ImGui.IsItemHovered())
                 {
                     var desc = getDesc(item);
-                    if (!string.IsNullOrEmpty(desc))
-                    {
-                        ImGui.SetTooltip(desc);
-                    }
+                    ImGuiHelper.ShowTooltip(desc);
                 }
             }
             ImGui.EndChild();
@@ -364,7 +370,7 @@ internal static class ImGuiHelper
         }
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip($"{LocalizationManager.RightLang.ConfigWindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager.RightLang.ConfigWindow_Helper_CopyCommand}: {cmdStr}");
+            ImGuiHelper.ShowTooltip($"{LocalizationManager.RightLang.ConfigWindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager.RightLang.ConfigWindow_Helper_CopyCommand}: {cmdStr}");
 
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
             {
@@ -753,12 +759,8 @@ internal static class ImGuiHelper
             }
             ImGui.EndCombo();
         }
-        if (ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip(LocalizationManager.RightLang.ConfigWindow_Rotation_KeyName + ": " + config.Name);
-        }
+        HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_KeyName + ": " + config.Name);
 
-        //显示可以设置的按键
         if (canAddButton)
         {
             ImGui.SameLine();
@@ -775,10 +777,7 @@ internal static class ImGuiHelper
             set.SetValue(config.Name, val.ToString());
             Service.Config.Save();
         }
-        if (ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip(LocalizationManager.RightLang.ConfigWindow_Rotation_KeyName + ": " + config.Name);
-        }
+        HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_KeyName + ": " + config.Name);
 
         //显示可以设置的案件
         if (canAddButton)

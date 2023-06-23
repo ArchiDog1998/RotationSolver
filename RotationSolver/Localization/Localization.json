@@ -78,6 +78,7 @@
   "ConfigWindow_Param_Advanced": "Advanced",
   "ConfigWindow_Param_PoslockCasting": "Lock the movement when casting or has TenChiJin or PhantomFlurry status.",
   "ConfigWindow_Param_UseStopCasting": "Use stopping casting when target is dead.",
+  "ConfigWindow_Param_ShowTooltips": "Show tooltips",
   "ConfigWindow_Param_InDebug": "Debug Mode",
   "ConfigWindow_Param_ShowHealthRatio": "Show the health ratio for the check of Boss, Dying, Dot.",
   "ConfigWindow_Param_HealthRatioBoss": "If target's max health ratio is higher than this, regard it as Boss.",

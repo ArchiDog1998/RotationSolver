@@ -208,10 +208,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
-                }
+                ImGuiHelper.HoveredString(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
                 break;
 
             case TargetConditionType.StatusEnd:
@@ -226,10 +223,8 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
-                }
+
+                ImGuiHelper.HoveredString(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
 
                 ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref DistanceOrTime);
                 break;
@@ -247,10 +242,8 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
-                }
+
+                ImGuiHelper.HoveredString(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
 
                 ConditionHelper.DrawDragInt($"GCD##GCD{GetHashCode()}", ref GCD);
                 ConditionHelper.DrawDragFloat($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{GetHashCode()}", ref DistanceOrTime);

@@ -6,6 +6,7 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RotationSolver.UI;
 
@@ -357,7 +358,7 @@ internal class ControlWindow : Window
         ImGui.PopID();
         if (ImGui.IsItemHovered())
         {
-            if (!string.IsNullOrEmpty(help)) ImGui.SetTooltip(help);
+            ImGuiHelper.ShowTooltip(help);
             if (ImGui.IsMouseDown(ImGuiMouseButton.Right) && InputUpdater.RecordingSpecialType == SpecialCommandType.None)
             {
                 InputUpdater.RecordingTime = DateTime.Now;
@@ -396,7 +397,7 @@ internal class ControlWindow : Window
         ImGui.PopID();
         if (ImGui.IsItemHovered())
         {
-            if (!string.IsNullOrEmpty(help)) ImGui.SetTooltip(help);
+            ImGuiHelper.ShowTooltip(help);
             if (ImGui.IsMouseDown(ImGuiMouseButton.Right)&& InputUpdater.RecordingStateType == StateCommandType.None)
             {
                 InputUpdater.RecordingTime = DateTime.Now;
@@ -573,7 +574,8 @@ internal class ControlWindow : Window
             }
             help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
 
-            ImGui.SetTooltip(help);
+            ImGuiHelper.ShowTooltip(help);
+
             if (ImGui.IsMouseDown(ImGuiMouseButton.Right) && !InputUpdater.RecordingDoAction)
             {
                 InputUpdater.RecordingTime = DateTime.Now;

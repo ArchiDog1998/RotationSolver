@@ -266,10 +266,8 @@ internal partial class RotationConfigWindow
                     lastRole = role;
 
                     ImGui.Image(IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed)).ImGuiHandle, new Vector2(30, 30));
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip(string.Join('\n', jobs));
-                    }
+
+                    ImGuiHelper.HoveredString(string.Join('\n', jobs));
                 }
 
                 ImGui.TableNextColumn();

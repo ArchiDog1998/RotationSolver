@@ -131,6 +131,7 @@ internal partial class Strings
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or has TenChiJin or PhantomFlurry status.";
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
+    public string ConfigWindow_Param_ShowTooltips { get; set; } = "Show tooltips";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
 
     public string ConfigWindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
