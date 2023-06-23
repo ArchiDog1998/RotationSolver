@@ -256,14 +256,14 @@ internal static class PainterManager
         //    var col = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.15f));
         //    var colIn = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.5f));
         //    _painter.AddDrawings(
-        //        new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, 10, col, 2)
+        //        new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 3, 5, col, 2)
         //        {
         //            DeadTime = deadTime,
         //            InsideColor = colIn,
         //            PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
         //        },
 
-        //        new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, col, 2)
+        //        new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 3, col, 2)
         //        {
         //            DeadTime = deadTime,
         //            InsideColor = colIn,
@@ -271,10 +271,9 @@ internal static class PainterManager
         //        }
         //        );
 
-        //    color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
+        //    _painter.AddDrawings(new DrawingHighlightHotbar(new(0f, 1f, 0.8f, 1f), 7411));
 
-        //    var p = new Drawing3DCircularSectorO(Player.Object, 5, color, 5);
-        //    _painter.AddDrawings(p);
+        //    _painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 5, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
         //}
         //catch
         //{
