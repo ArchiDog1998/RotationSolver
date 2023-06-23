@@ -8,7 +8,7 @@ Check the source code [here](https://github.com/ArchiDog1998/RotationSolver/blob
 
 ## Usage
 
-So the action with high damage always have multiple restricts.  Use them at first, then aoe, then single. Dot actions always have some target status, so use it above.
+High-damage actions always have multiple restrictions.  Use them at first, then AOEs, then single targets. DOT actions always have some target status, so use it above.
 
 ## Param
 
@@ -16,18 +16,18 @@ some param you can use here.
 
 ### mustUse
 
-AOE only need one target to use.
+AOE action will be used on a single target.
 
-Moving action don't need to have enough distance to use. 
+Moving actions will skip checking for distance. 
 
 Skip for StatusProvide and TargetStatus checking.
 
 ### emptyOrSkipCombo
 
-Use all charges, no keeping one.
+Use up all charges, without keeping one.
 
 Do not need to check the combo.
 
 ### skipDisable
 
-Skip the diable for emergency use. Please always set this to false.
+Skip the disable for emergency use. Please always set this to false.
