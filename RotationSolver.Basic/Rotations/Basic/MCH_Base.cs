@@ -106,6 +106,10 @@ public abstract class MCH_Base : CustomRotation
 
     public static IBaseAction Wildfire { get; } = new BaseAction(ActionID.Wildfire);
 
+    public static IBaseAction Detonator { get; } = new BaseAction(ActionID.Detonator);
+
+    public static IBaseAction QueenOverdrive { get; } = new BaseAction(ActionID.QueenOverdrive);
+
     public static IBaseAction BarrelStabilizer { get; } = new BaseAction(ActionID.BarrelStabilizer)
     {
         ActionCheck = (b, m) => JobGauge.Heat <= 50 && InCombat,
