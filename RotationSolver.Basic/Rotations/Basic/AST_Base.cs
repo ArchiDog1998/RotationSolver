@@ -102,8 +102,8 @@ public abstract class AST_Base : CustomRotation
     {
         ActionCheck = (b, m) =>
         {
-            if (JobGauge.Seals.Length != 3) return false;
-            if (JobGauge.Seals.Contains(SealType.NONE)) return false;
+            if (Seals.Length != 3) return false;
+            if (Seals.Contains(SealType.NONE)) return false;
             return true;
         },
     };
@@ -118,7 +118,8 @@ public abstract class AST_Base : CustomRotation
     public static IBaseAction Redraw { get; } = new BaseAction(ActionID.Redraw)
     {
         StatusNeed = new[] { StatusID.ClarifyingDraw },
-        ActionCheck = (b, m) => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)),
+        ActionCheck = (b, m) => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)) 
+        && !Astrodyne.ActionCheck(b, m),
     };
 
 
