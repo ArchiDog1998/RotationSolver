@@ -1,4 +1,5 @@
 ﻿using ECommons.GameHelpers;
+using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
@@ -68,10 +69,8 @@ public class ConditionHelper
             value = @bool ? 1 : 0;
             result = true;
         }
-        if (!string.IsNullOrEmpty(desc) && ImGui.IsItemHovered())
-        {
-            ImGui.SetTooltip(desc);
-        }
+
+        ImGuiHelper.HoveredString(desc);
 
         return result;
     }

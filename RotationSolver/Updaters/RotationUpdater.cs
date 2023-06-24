@@ -296,7 +296,7 @@ internal static class RotationUpdater
 
         foreach (var dir in dirs)
         {
-            if (string.IsNullOrEmpty(dir))
+            if (string.IsNullOrEmpty(dir) || !Directory.Exists(dir))
             {
                 continue;
             }

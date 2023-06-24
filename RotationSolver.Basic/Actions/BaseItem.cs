@@ -54,9 +54,9 @@ public class BaseItem : IBaseItem
 
     public string Description => string.Empty;
 
-    public unsafe float RecastTimeOneCharge => ActionManager.Instance()->GetRecastTime(ActionType.Item, ID);
+    public unsafe float RecastTimeOneChargeRaw => ActionManager.Instance()->GetRecastTime(ActionType.Item, ID);
 
-    public unsafe float RecastTimeElapsed => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, ID);
+    public unsafe float RecastTimeElapsedRaw => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, ID);
 
     public bool EnoughLevel => true;
 
@@ -96,13 +96,13 @@ public class BaseItem : IBaseItem
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))
             && ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID + 1000000))) return false;
 
-        var remain = RecastTimeOneCharge - RecastTimeElapsed;
+        var remain = RecastTimeOneChargeRaw - RecastTimeElapsedRaw;
 
         if(DataCenter.WeaponRemain > 0)
         {
             if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping) return false;
 
-            if (!CooldownHelper.RecastAfter(remain, DataCenter.ActionRemain,  false)) return false;
+            if (remain > DataCenter.ActionRemain) return false;
         }
 
         if (OtherCheck != null && !OtherCheck()) return false;

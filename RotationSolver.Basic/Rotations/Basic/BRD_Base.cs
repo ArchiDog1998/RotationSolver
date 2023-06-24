@@ -20,12 +20,13 @@ public abstract class BRD_Base : CustomRotation
     protected static Song LastSong => JobGauge.LastSong;
 
     protected static byte SoulVoice => JobGauge.SoulVoice;
-    static float SongTime => JobGauge.SongTimer / 1000f;
+    static float SongTimeRaw => JobGauge.SongTimer / 1000f;
+    protected static float SongTime => SongTimeRaw - DataCenter.WeaponRemain;
 
-    protected static bool SongEndAfter(float time) => EndAfter(SongTime, time);
+    protected static bool SongEndAfter(float time) => SongTime <= time;
 
     protected static bool SongEndAfterGCD(uint gctCount = 0, float offset = 0)
-        => EndAfterGCD(SongTime, gctCount, offset);
+        => SongEndAfter(GCDTime(gctCount, offset));
     #endregion
 
     #region Attack Single

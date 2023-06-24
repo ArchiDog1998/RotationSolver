@@ -101,14 +101,14 @@ internal static class PainterManager
         {
             SubItems = Array.Empty<IDrawing3D>();
 
-            if (!Service.Config.ShowTarget || DataCenter.StateType == StateCommandType.Cancel) return;
+            if (!Service.Config.ShowTarget) return;
 
             if (ActionUpdater.NextAction is not BaseAction act) return;
 
             if (act.Target == null) return;
 
             var d = DateTime.Now.Millisecond / 1000f;
-            var ratio = (float)DrawingHelper.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
+            var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
             List<IDrawing3D> subItems = new List<IDrawing3D>();
 
             if(Service.Config.TargetIconSize > 0)
@@ -194,11 +194,7 @@ internal static class PainterManager
     static PositionalDrawing _positional = new ();
     static DrawingHighlightHotbar _highLight = new ();
 
-    public static uint ActionId
-    { 
-        get => _highLight.ActionId;
-        set => _highLight.ActionId = value;
-    }
+    public static HashSet<uint> ActionIds => _highLight.ActionIds;
 
     public static Vector4 HighlightColor
     {
@@ -208,7 +204,7 @@ internal static class PainterManager
 
     public static void Init()
     {
-        _painter = Svc.PluginInterface.Create<XIVPainter.XIVPainter>("RotationSolverOverlay");
+        _painter = XIVPainter.XIVPainter.Create(Svc.PluginInterface, "RotationSolverOverlay");
 
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
@@ -260,14 +256,14 @@ internal static class PainterManager
         //    var col = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.15f));
         //    var colIn = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.5f));
         //    _painter.AddDrawings(
-        //        new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, 10, col, 2)
+        //        new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 3, 5, col, 2)
         //        {
         //            DeadTime = deadTime,
         //            InsideColor = colIn,
         //            PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
         //        },
 
-        //        new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 5, col, 2)
+        //        new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 3, col, 2)
         //        {
         //            DeadTime = deadTime,
         //            InsideColor = colIn,
@@ -275,10 +271,9 @@ internal static class PainterManager
         //        }
         //        );
 
-        //    color = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f));
+        //    _painter.AddDrawings(new DrawingHighlightHotbar(new(0f, 1f, 0.8f, 1f), 7411));
 
-        //    var p = new Drawing3DCircularSectorO(Player.Object, 5, color, 5);
-        //    _painter.AddDrawings(p);
+        //    _painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 5, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
         //}
         //catch
         //{

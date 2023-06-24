@@ -158,7 +158,7 @@ internal partial class RotationConfigWindow
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
         ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
         ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
-        ImGui.Text("Time: " + (DataCenter.CombatTime + DataCenter.WeaponRemain).ToString());
+        ImGui.Text("Time: " + (DataCenter.CombatTimeRaw + DataCenter.WeaponRemain).ToString());
 
         ActionUpdater.NextAction?.Display(false);
     }

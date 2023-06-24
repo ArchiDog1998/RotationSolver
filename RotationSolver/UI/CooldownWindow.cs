@@ -44,8 +44,8 @@ internal class CooldownWindow : InfoWindow
     private static void DrawActionCooldown(IAction act)
     {
         var width = Service.Config.CooldownWindowIconSize;
-        var recast = act.RecastTimeOneCharge;
-        var elapsed = act.RecastTimeElapsed;
+        var recast = act.RecastTimeOneChargeRaw;
+        var elapsed = act.RecastTimeElapsedRaw;
         var shouldSkip = recast < 3 && act is IBaseAction a && !a.IsRealGCD;
 
         ImGui.BeginGroup();

@@ -206,6 +206,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float DistanceForMoving = 1.2f;
     public float MaxPing = 0.3f;
 
+    public bool ShowTooltips = true;
+
     public bool AutoLoadCustomRotations = false;
 
     public void Save()

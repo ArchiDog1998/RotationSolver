@@ -1,4 +1,3 @@
-using Dalamud.Interface.Animation;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
@@ -9,7 +8,7 @@ public abstract class AST_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Mind;
 
-    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.AST };
+    public sealed override Job[] Jobs => new [] { Job.AST };
 
     static ASTGauge JobGauge => Svc.Gauges.Get<ASTGauge>();
 

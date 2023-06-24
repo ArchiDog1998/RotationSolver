@@ -31,25 +31,29 @@ public abstract class SMN_Base : CustomRotation
 
     protected static bool InGaruda => JobGauge.IsGarudaAttuned;
 
-    private static float SummonTimerRemaining => JobGauge.SummonTimerRemaining / 1000f;
-    protected static bool SummonTimeEndAfter(float time) => EndAfter(SummonTimerRemaining, time);
+    private static float SummonTimerRemainingRaw => JobGauge.SummonTimerRemaining / 1000f;
+    protected static float SummonTimerRemaining => SummonTimerRemainingRaw - DataCenter.WeaponRemain;
+
+    protected static bool SummonTimeEndAfter(float time) => SummonTimerRemaining <= time;
 
     protected static bool SummonTimeEndAfterGCD(uint gcdCount = 0, float offset = 0)
-        => EndAfterGCD(SummonTimerRemaining, gcdCount, offset);
+        => SummonTimeEndAfter(GCDTime(gcdCount, offset));
 
-    private static float AttunmentTimerRemaining => JobGauge.AttunmentTimerRemaining / 1000f;
-    protected static bool AttunmentTimeEndAfter(float time) => EndAfter(AttunmentTimerRemaining, time);
+    private static float AttunmentTimerRemainingRaw => JobGauge.AttunmentTimerRemaining / 1000f;
+    protected static float AttunmentTimerRemaining => AttunmentTimerRemainingRaw - DataCenter.WeaponRemain;
 
-    protected static bool AttunmentTimeEndAfterGCD(uint gctCount = 0, float offset = 0)
-        => EndAfterGCD(AttunmentTimerRemaining, gctCount, offset);
+    protected static bool AttunmentTimeEndAfter(float time) => AttunmentTimerRemaining <= time;
+
+    protected static bool AttunmentTimeEndAfterGCD(uint gcdCount = 0, float offset = 0)
+        => AttunmentTimeEndAfter(GCDTime(gcdCount, offset));
 
     private static bool HasSummon => DataCenter.HasPet && SummonTimeEndAfterGCD();
     #endregion
 
     public override void DisplayStatus()
     {
-        ImGui.Text("AttunmentTime: " + AttunmentTimerRemaining.ToString());
-        ImGui.Text("SummonTime: " + SummonTimerRemaining.ToString());
+        ImGui.Text("AttunmentTime: " + AttunmentTimerRemainingRaw.ToString());
+        ImGui.Text("SummonTime: " + SummonTimerRemainingRaw.ToString());
         base.DisplayStatus();
     }
 

@@ -19,11 +19,13 @@ public abstract class SGE_Base : CustomRotation
 
     protected static byte Addersting => JobGauge.Addersting;
 
-    protected static float AddersgallTimer => JobGauge.AddersgallTimer / 1000f;
-    protected static bool AddersgallEndAfter(float time) => EndAfter(AddersgallTimer, time);
+    static float AddersgallTimerRaw => JobGauge.AddersgallTimer / 1000f;
+    protected static float AddersgallTimer => AddersgallTimerRaw - DataCenter.WeaponRemain;
+
+    protected static bool AddersgallEndAfter(float time) => AddersgallTimer <= time;
 
     protected static bool AddersgallEndAfterGCD(uint gctCount = 0, float offset = 0)
-        => EndAfterGCD(AddersgallTimer, gctCount, offset);
+        => AddersgallEndAfter(GCDTime(gctCount, offset));
     #endregion
 
     #region Attack

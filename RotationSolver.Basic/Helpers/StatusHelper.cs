@@ -57,13 +57,7 @@ public static class StatusHelper
     /// <param name="statusIDs"></param>
     /// <returns></returns>
     public static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, float offset = 0, bool isFromSelf = true, params StatusID[] statusIDs)
-    {
-        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return false;
-        var remain = obj.StatusTime(isFromSelf, statusIDs);
-        //as infinite
-        if (remain < 0 && obj.HasStatus(isFromSelf, statusIDs)) return false;
-        return CooldownHelper.RecastAfterGCD(remain, gcdCount, offset);
-    }
+        => WillStatusEnd(obj, DataCenter.GCDTime(gcdCount, offset), isFromSelf, statusIDs);
 
 
     /// <summary>
@@ -78,7 +72,8 @@ public static class StatusHelper
     {
         if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return false;
         var remain = obj.StatusTime(isFromSelf, statusIDs);
-        return CooldownHelper.RecastAfter(remain, time);
+        if (remain < 0 && obj.HasStatus(isFromSelf, statusIDs)) return false;
+        return remain <= time;
     }
 
     /// <summary>
@@ -94,7 +89,7 @@ public static class StatusHelper
         if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return float.MaxValue;
         var times = obj.StatusTimes(isFromSelf, statusIDs);
         if (times == null || !times.Any()) return 0;
-        return times.Min();
+        return Math.Max(0, times.Min() - DataCenter.WeaponRemain);
     }
 
     private static IEnumerable<float> StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)

@@ -35,7 +35,7 @@ public partial class BaseAction
                         && ChoiceTarget != TargetFilter.FindTargetForMoving
                         && DataCenter.LastAction == (ActionID)AdjustedID) return false;
 
-                    if (!WillHaveOneCharge(DataCenter.ActionRemain, false)) return false;
+                    if (!HasOneCharge && RecastTimeRemainOneChargeRaw > DataCenter.ActionRemain) return false;
                 }
             }
 
@@ -113,7 +113,7 @@ public partial class BaseAction
         if (ActionCheck != null && !ActionCheck(target, mustUse)) return false;
 
         Target = target;
-        if(!option.HasFlag(CanUseOption.IgnoreTarget)) _targetId = target.ObjectId;
+        if (!option.HasFlag(CanUseOption.IgnoreTarget)) _targetId = target.ObjectId;
         return true;
     }
 

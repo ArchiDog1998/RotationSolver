@@ -34,7 +34,7 @@ internal partial class Strings
         = "Start the addon in Auto mode (auto-targeting) when out of combat or when combat starts, otherwise switch the target according to the set condition.";
 
     public string ConfigWindow_HelpItem_AttackManual { get; set; }
-        = "Start the addon in manual mode. You need to choose the target manually. This will bypass any  Hostile target filtering conditions that you have set up and will start attacking immediately once something is targeted.";
+        = "Start the addon in manual mode. You need to choose the target manually. This will bypass any  engage settings that you have set up and will start attacking immediately once something is targeted.";
 
     public string ConfigWindow_HelpItem_AttackCancel { get; set; }
         = "Stop the addon. Always remember to turn it off when not in use!";
@@ -131,6 +131,7 @@ internal partial class Strings
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or has TenChiJin or PhantomFlurry status.";
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
+    public string ConfigWindow_Param_ShowTooltips { get; set; } = "Show tooltips";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
 
     public string ConfigWindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
@@ -215,7 +216,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string ConfigWindow_Param_Target { get; set; } = "Target";
-    public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Hostile target filtering condition";
+    public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
     public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets can attack";
     public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Targets have a target or all targets can attack";
     public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Targets have a target";

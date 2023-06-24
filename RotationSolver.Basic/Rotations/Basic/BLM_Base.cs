@@ -8,7 +8,7 @@ public abstract partial class BLM_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Intelligence;
 
-    public sealed override Job[] Jobs => new Job[] { ECommons.ExcelServices.Job.BLM, ECommons.ExcelServices.Job.THM };
+    public sealed override Job[] Jobs => new Job[] { Job.BLM, Job.THM };
 
     #region Job Gauge
     static BLMGauge JobGauge => Svc.Gauges.Get<BLMGauge>();
@@ -31,29 +31,23 @@ public abstract partial class BLM_Base : CustomRotation
 
     protected static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? PolyglotStacks == 2 : PolyglotStacks == 1;
 
-    static float EnochianTime => JobGauge.EnochianTimer / 1000f;
+    static float EnochianTimeRaw => JobGauge.EnochianTimer / 1000f;
 
-    protected static bool EnchinaEndAfter(float time)
-    {
-        return EndAfter(EnochianTime, time);
-    }
+    protected static float EnochianTime => EnochianTimeRaw - DataCenter.WeaponRemain;
 
-    protected static bool EnchinaEndAfterGCD(uint gctCount = 0, float offset = 0)
-    {
-        return EndAfterGCD(EnochianTime, gctCount, offset);
-    }
+    protected static bool EnchinaEndAfter(float time) => EnochianTime <= time;
 
-    static float ElementTime => JobGauge.ElementTimeRemaining / 1000f;
+    protected static bool EnchinaEndAfterGCD(uint gcdCount = 0, float offset = 0)
+        => EnchinaEndAfter(GCDTime(gcdCount, offset));
 
-    protected static bool ElementTimeEndAfter(float time)
-    {
-        return EndAfter(ElementTime, time);
-    }
+    static float ElementTimeRaw => JobGauge.ElementTimeRemaining / 1000f;
+    protected static float ElementTime => ElementTimeRaw - DataCenter.WeaponRemain;
+
+    protected static bool ElementTimeEndAfter(float time) => ElementTime <= time;
 
     protected static bool ElementTimeEndAfterGCD(uint gctCount = 0, float offset = 0)
-    {
-        return EndAfterGCD(ElementTime, gctCount, offset);
-    }
+        => ElementTimeEndAfter(GCDTime(gctCount, offset));
+
 
     #endregion
     protected static bool HasFire => Player.HasStatus(true, StatusID.Firestarter);
@@ -200,7 +194,7 @@ public abstract partial class BLM_Base : CustomRotation
 
     public static IBaseAction Transpose { get; } = new BaseAction(ActionID.Transpose) 
     { 
-        ActionCheck = (b, m) => DataCenter.ActionRemain.IsLessThan(ElementTime) 
+        ActionCheck = (b, m) => DataCenter.ActionRemain <= ElementTimeRaw,
     };
 
     public static IBaseAction UmbralSoul { get; } = new BaseAction(ActionID.UmbralSoul) 

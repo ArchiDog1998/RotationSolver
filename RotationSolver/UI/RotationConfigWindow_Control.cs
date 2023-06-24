@@ -68,7 +68,7 @@ internal partial class RotationConfigWindow
 
             if (Service.Config.ShowControlWindow)
             {
-                DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs + "##Control",
+                DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove + "##Control",
                     ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
 
                 if (Service.Config.IsControlWindowLock)
