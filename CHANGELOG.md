@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.0.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.10.2...v3.0.0) (2023-06-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* removed the CooldownHelper! Changed the logic of cd.
+
+### Features
+
+* an option for showing tooltips. ([78ba938](https://github.com/ArchiDog1998/RotationSolver/commit/78ba938a7ddf9f9a90dfc46c2e7eccf1193c7715))
+
+
+### Bug Fixes
+
+* action charging checking. ([02eceda](https://github.com/ArchiDog1998/RotationSolver/commit/02eceda2da36fc8c3df97a593f63235a0a3fdce9))
+* add directory existence check for auto rotation library loading. ([4f7aa82](https://github.com/ArchiDog1998/RotationSolver/commit/4f7aa829a2db633fc18a45f1ab16d7e96cb98daa))
+* removed the CooldownHelper! Changed the logic of cd. ([e16e9e7](https://github.com/ArchiDog1998/RotationSolver/commit/e16e9e7945d29253097c64d3a61c8819ad5dd051))
+
 ## [2.10.2](https://github.com/ArchiDog1998/RotationSolver/compare/v2.10.1...v2.10.2) (2023-06-20)
 
 
