@@ -61,7 +61,7 @@ public partial class BaseAction : IBaseAction
     public uint ID => _action.RowId;
     public uint AdjustedID => (uint)Service.GetAdjustedActionId((ActionID)ID);
 
-    public uint IconID => _action.Icon;
+    public uint IconID => ID == (uint)ActionID.Sprint ? 104u : _action.Icon;
 
     private byte CoolDownGroup { get; }
 

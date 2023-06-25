@@ -1,6 +1,7 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Localization;
+using RotationSolver.Updaters;
 
 namespace RotationSolver.Commands;
 
@@ -27,6 +28,7 @@ public static partial class RSCommands
         {
             Service.Config.TargetingIndex += 1;
             Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count;
+            ActionUpdater._cancelTime = DateTime.MinValue;
         }
 
         if (Service.Config.ToggleManual 

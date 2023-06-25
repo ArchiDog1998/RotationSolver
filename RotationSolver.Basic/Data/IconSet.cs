@@ -42,11 +42,18 @@ public static class IconSet
     public static TextureWrap GetTexture(this IAction action, bool isAdjust = true)
     {
         uint iconId = 0;
-        if (action != null && !_actionIcons.TryGetValue(isAdjust ? action.AdjustedID : action.ID, out iconId))
+        if (action != null )
         {
-            iconId = action is IBaseAction ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon
-                : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(action.AdjustedID).Icon;
-            _actionIcons[action.AdjustedID] = iconId;
+            var adjust = action.AdjustedID;
+            var id = isAdjust ? adjust : action.ID;
+
+            if (!_actionIcons.TryGetValue(id, out iconId))
+            {
+                iconId = id == action.ID ? action.IconID : action is IBaseAction ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon
+    : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(action.AdjustedID).Icon;
+
+                _actionIcons[action.AdjustedID] = iconId;
+            }
         }
         return GetTexture(iconId);
     }

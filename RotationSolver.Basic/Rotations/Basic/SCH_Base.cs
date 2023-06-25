@@ -167,7 +167,7 @@ public abstract class SCH_Base : CustomRotation
 
     protected override bool SpeedAbility(out IAction act)
     {
-        if(Expedient.CanUse(out act, CanUseOption.MustUse)) return true;
+        if(InCombat && Expedient.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.SpeedAbility(out act);
     }
 }
