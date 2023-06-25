@@ -164,4 +164,10 @@ public abstract class SCH_Base : CustomRotation
     protected static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(493);
     protected static IBaseTrait EnhancedDeploymentTactics    { get; } = new BaseTrait(494);
     #endregion
+
+    protected override bool SpeedAbility(out IAction act)
+    {
+        if(Expedient.CanUse(out act, CanUseOption.MustUse)) return true;
+        return base.SpeedAbility(out act);
+    }
 }

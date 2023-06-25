@@ -10,19 +10,16 @@ public class RotationDescAttribute : Attribute
     {
         DescType.BurstActions => 62583,
 
-        DescType.HealAreaGCD => 62582,
-        DescType.HealAreaAbility => 62582,
-        DescType.HealSingleGCD => 62582,
-        DescType.HealSingleAbility => 62582,
+        DescType.HealAreaGCD or DescType.HealAreaAbility or 
+        DescType.HealSingleGCD or DescType.HealSingleAbility => 62582,
 
-        DescType.DefenseAreaGCD => 62581,
-        DescType.DefenseAreaAbility => 62581,
-        DescType.DefenseSingleGCD => 62581,
-        DescType.DefenseSingleAbility => 62581,
+        DescType.DefenseAreaGCD or DescType.DefenseAreaAbility or 
+        DescType.DefenseSingleGCD or DescType.DefenseSingleAbility => 62581,
 
-        DescType.MoveForwardGCD => 104,
-        DescType.MoveForwardAbility => 104,
+        DescType.MoveForwardGCD or DescType.MoveForwardAbility or
         DescType.MoveBackAbility => 104,
+
+        DescType.SpeedAbility => 844,
 
         _ => 62144,
     };
@@ -41,6 +38,7 @@ public class RotationDescAttribute : Attribute
                 DescType.DefenseSingleGCD or DescType.DefenseSingleAbility => command == SpecialCommandType.DefenseSingle,
                 DescType.MoveForwardGCD or DescType.MoveForwardAbility => command == SpecialCommandType.MoveForward,
                 DescType.MoveBackAbility => command == SpecialCommandType.MoveBack,
+                DescType.SpeedAbility => command == SpecialCommandType.Speed,
                 _ => false,
             };
         }

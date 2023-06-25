@@ -141,6 +141,7 @@ internal static class EnumTranslations
         SpecialCommandType.AntiKnockback => LocalizationManager.RightLang.SpecialCommandType_AntiKnockback,
         SpecialCommandType.Burst => LocalizationManager.RightLang.SpecialCommandType_Burst,
         SpecialCommandType.EndSpecial => LocalizationManager.RightLang.SpecialCommandType_EndSpecial,
+        SpecialCommandType.Speed => LocalizationManager.RightLang.SpecialCommandType_Speed,
         _ => string.Empty,
     };
 
@@ -165,6 +166,7 @@ internal static class EnumTranslations
         SpecialCommandType.AntiKnockback => LocalizationManager.RightLang.ConfigWindow_HelpItem_AntiKnockback,
         SpecialCommandType.Burst => LocalizationManager.RightLang.ConfigWindow_HelpItem_Burst,
         SpecialCommandType.EndSpecial => LocalizationManager.RightLang.ConfigWindow_HelpItem_EndSpecial,
+        SpecialCommandType.Speed => LocalizationManager.RightLang.ConfigWindow_HelpItem_Speed,
         _ => string.Empty,
     };
 

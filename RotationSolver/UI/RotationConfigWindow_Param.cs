@@ -336,6 +336,9 @@ internal partial class RotationConfigWindow
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerBySwift,
                 SettingsCommand.RaisePlayerBySwift);
 
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoSpeedOutOfCombat,
+                SettingsCommand.AutoSpeedOutOfCombat);
+
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseGroundBeneficialAbility,
                 SettingsCommand.UseGroundBeneficialAbility);
 

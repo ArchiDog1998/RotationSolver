@@ -20,4 +20,6 @@ public enum DescType : byte
     MoveForwardGCD,
     MoveForwardAbility,
     MoveBackAbility,
+
+    SpeedAbility,
 }

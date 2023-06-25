@@ -1,3 +1,5 @@
+using RotationSolver.Basic.Configuration;
+
 namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
@@ -33,6 +35,7 @@ public abstract partial class CustomRotation
         }
 
         if (GeneralHealAbility(specialType, out act)) return true;
+        if(specialType == SpecialCommandType.Speed && SpeedAbility(out act)) return true;
 
         if (AutoDefense(role, helpDefenseAOE, helpDefenseSingle, out act)) return true;
 
@@ -54,8 +57,8 @@ public abstract partial class CustomRotation
         if (GeneralAbility(out act)) return true;
 
         //Run!
-        if (!InCombat && IsMoving && role == JobRole.RangedPhysical
-            && Peloton.CanUse(out act, CanUseOption.MustUse | CanUseOption.IgnoreClippingCheck)) return true;
+        if (IsMoving && NotInCombatDelay && PluginConfiguration.GetValue(SettingsCommand.AutoSpeedOutOfCombat) 
+            && SpeedAbility(out act)) return true;
 
         return false;
     }
@@ -322,6 +325,14 @@ public abstract partial class CustomRotation
     protected virtual bool DefenseAreaAbility(out IAction act)
     {
         act = null; return false;
+    }
+
+    [RotationDesc(DescType.SpeedAbility)]
+    protected virtual bool SpeedAbility(out IAction act)
+    {
+        if (Sprint.CanUse(out act, CanUseOption.MustUse)) return true;
+        if (Peloton.CanUse(out act, CanUseOption.MustUse)) return true;
+        return false;
     }
 
     protected virtual bool GeneralAbility(out IAction act)

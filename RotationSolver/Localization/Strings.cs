@@ -68,6 +68,8 @@ internal partial class Strings
 
     public string ConfigWindow_HelpItem_MoveBack { get; set; }
         = "Open a window to move back.";
+    public string ConfigWindow_HelpItem_Speed { get; set; }
+        = "Open a window to speed up.";
 
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
         = "To end this special duration before the set time.";
@@ -180,6 +182,7 @@ internal partial class Strings
     public string ConfigWindow_Param_AutoUseTrueNorth { get; set; } = "Auto TrueNorth (Melee)";
     public string ConfigWindow_Param_RaisePlayerBySwift { get; set; } = "Raise player by swift";
     public string ConfigWindow_Param_UseGroundBeneficialAbility { get; set; } = "Use beneficial ground-targeted actions";
+    public string ConfigWindow_Param_AutoSpeedOutOfCombat { get; set; } = "Use speed actions when out of combat.";
     public string ConfigWindow_Param_RaisePlayerByCasting { get; set; } = "Raise player by casting when swift is in cooldown";
     public string ConfigWindow_Param_UseHealWhenNotAHealer { get; set; } = "Use heal when not-healer";
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
@@ -365,6 +368,7 @@ internal partial class Strings
     public string SpecialCommandType_AntiKnockback { get; set; } = "Anti-Knockback";
     public string SpecialCommandType_Burst { get; set; } = "Burst";
     public string SpecialCommandType_EndSpecial { get; set; } = "End Special";
+    public string SpecialCommandType_Speed { get; set; } = "Speed";
     public string SpecialCommandType_Smart { get; set; } = "Auto Target ";
     public string SpecialCommandType_Manual { get; set; } = "Manual Target";
     public string SpecialCommandType_Cancel { get; set; } = "Cancel";

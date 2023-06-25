@@ -1407,5 +1407,7 @@ public enum ActionID : uint
     TrueNorth = 7546,
 
     Peloton = 7557,
+
+    Sprint = 3,
     #endregion
 }
