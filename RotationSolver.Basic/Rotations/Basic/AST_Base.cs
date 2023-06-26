@@ -100,12 +100,7 @@ public abstract class AST_Base : CustomRotation
 
     public static IBaseAction Astrodyne { get; } = new BaseAction(ActionID.Astrodyne)
     {
-        ActionCheck = (b, m) =>
-        {
-            if (Seals.Length != 3) return false;
-            if (Seals.Contains(SealType.NONE)) return false;
-            return true;
-        },
+        ActionCheck = (b, m) => !Seals.Contains(SealType.NONE),
     };
 
     public static IBaseAction Divination { get; } = new BaseAction(ActionID.Divination, ActionOption.Buff);
@@ -121,7 +116,6 @@ public abstract class AST_Base : CustomRotation
         ActionCheck = (b, m) => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)) 
         && !Astrodyne.ActionCheck(b, m),
     };
-
 
     public static IBaseAction MinorArcana { get; } = new BaseAction(ActionID.MinorArcana)
     {
@@ -225,5 +219,12 @@ public abstract class AST_Base : CustomRotation
             CardType.SPEAR or CardType.SPIRE => SealType.CELESTIAL,
             _ => SealType.NONE,
         };
+    }
+
+    public override void DisplayStatus()
+    {
+        ImGui.Text($"Card: {DrawnCard} : {GetCardSeal(DrawnCard)}");
+        ImGui.Text(string.Join(", ", Seals.Select(i => i.ToString())));
+        ImGui.Text($"Redraw: {Redraw.ActionCheck(null, false)}");
     }
 }
