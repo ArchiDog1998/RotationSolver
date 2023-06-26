@@ -191,8 +191,8 @@ internal static class PainterManager
     }
 
     internal static XIVPainter.XIVPainter _painter;
-    static PositionalDrawing _positional = new ();
-    static DrawingHighlightHotbar _highLight = new ();
+    static PositionalDrawing _positional;
+    static DrawingHighlightHotbar _highLight;
 
     public static HashSet<uint> ActionIds => _highLight.ActionIds;
 
@@ -205,6 +205,9 @@ internal static class PainterManager
     public static void Init()
     {
         _painter = XIVPainter.XIVPainter.Create(Svc.PluginInterface, "RotationSolverOverlay");
+
+        _positional = new();
+        _highLight = new();
 
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
