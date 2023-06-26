@@ -199,16 +199,21 @@ internal partial class Strings
 
     public string ConfigWindow_Param_BeneficialAreaOnTarget { get; set; } = "Use Beneficial Area abilities on target.";
 
-    public string ConfigWindow_Param_HealthDifference { get; set; } = "Set the HP standard deviation threshold for using AOE heal (ability & spell)";
-    public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "Set the HP threshold for using AOE healing ability";
-    public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "Set the HP threshold for using AOE healing spell";
-    public string ConfigWindow_Param_HealingOfTimeSubtractArea { get; set; } = "Set the HP threshold reduce with hot effect(AOE)";
-    public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "Set the HP threshold for using single healing ability";
-    public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "Set the HP threshold for using single healing spell";
+    public string ConfigWindow_Param_HealthDifference { get; set; } = "HP ratio for standard deviation for using AOE heal.";
+    public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP ratio for AOE healing OGCDs";
 
-    public string ConfigWindow_Param_HealthHealerRatio { get; set; } = "Heal healer first if its HP threshold is lower than this.";
+    public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "HP ratio for AOE healing GCDs";
 
-    public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP threshold is lower than this.";
+    public string ConfigWindow_Param_Normal { get; set; } = "Normal";
+    public string ConfigWindow_Param_Hot { get; set; } = "Hot";
+
+    public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "HP ratio for ST healing OGCDs";
+
+    public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "HP ratio for ST healing GCDs";
+
+    public string ConfigWindow_Param_HealthHealerRatio { get; set; } = "Heal healer first if its HP ratio is lower than this.";
+
+    public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP ratio is lower than this.";
 
     public string ConfigWindow_Param_DistanceForMoving { get; set; } = "If the distance between Melee or Tank to target is less than this, using moving ability as attack ability.";
 

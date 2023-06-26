@@ -356,9 +356,8 @@ internal static partial class TargetUpdater
     {
         var job = (Job)player.ClassJob.Id;
 
-        var hotSubSingle = job.GetHealingOfTimeSubtractSingle();
-        var singleAbility = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealSingleAbility(), hotSubSingle);
-        var singleSpell = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealSingleSpell(), hotSubSingle);
+        var singleAbility = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot());
+        var singleSpell = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot());
         DataCenter.CanHealSingleAbility = singleAbility > 0;
         DataCenter.CanHealSingleSpell = singleSpell > 0;
         DataCenter.CanHealAreaAbility = singleAbility > 2;
@@ -367,13 +366,13 @@ internal static partial class TargetUpdater
         if (DataCenter.PartyMembers.Count() > 2)
         {
             //TODO:少了所有罩子类技能
-            var ratio = GetHealingOfTimeRatio(player, StatusHelper.AreaHots) * job.GetHealingOfTimeSubtractArea();
+            var ratio = GetHealingOfTimeRatio(player, StatusHelper.AreaHots);
 
             if (!DataCenter.CanHealAreaAbility)
-                DataCenter.CanHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < ConfigurationHelper.GetHealAreaAbility(job) - ratio;
+                DataCenter.CanHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaAbility(), job.GetHealthAreaAbilityHot(), ratio);
 
             if (!DataCenter.CanHealAreaSpell)
-                DataCenter.CanHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < ConfigurationHelper.GetHealAreaSpell(job) - ratio;
+                DataCenter.CanHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaSpell(), job.GetHealthAreaSpellHot(), ratio);
         }
 
         //Delay
@@ -400,15 +399,20 @@ internal static partial class TargetUpdater
         return Math.Min(1, buffTime / buffWholeTime);
     }
 
-    static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float hotSubSingle) => DataCenter.PartyMembers.Count(p =>
+    static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float healSingleHot) => DataCenter.PartyMembers.Count(p =>
     {
         var ratio = GetHealingOfTimeRatio(p, hotStatus);
 
         var h = p.GetHealthRatio();
         if (h == 0 || !p.NeedHealing()) return false;
 
-        return h < healSingle - hotSubSingle * ratio;
+        return h < Lerp(healSingle, healSingle, ratio);
     });
+
+    static float Lerp(float a, float b, float ratio)
+    {
+        return a + (b - a) * ratio;
+    }
 
     #endregion
 

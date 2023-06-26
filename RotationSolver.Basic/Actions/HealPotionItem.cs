@@ -32,8 +32,7 @@ public class HealPotionItem : BaseItem
         item = null;
         if (!Player.Available) return false;
         var job = (Job)Player.Object.ClassJob.Id;
-        if (Player.Object.GetHealthRatio() > job.GetHealSingleAbility() -
-            job.GetHealingOfTimeSubtractSingle()) return false;
+        if (Player.Object.GetHealthRatio() > job.GetHealthSingleAbilityHot()) return false;
         if (Player.Object.MaxHp - Player.Object.CurrentHp < MaxHealHp) return false;
         return base.CanUse(out item);
     }
