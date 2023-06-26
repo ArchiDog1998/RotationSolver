@@ -194,7 +194,7 @@ internal class SocialUpdater
 
 #if DEBUG
 #else
-            Svc.Targets.SetTarget(c);
+            Svc.Targets.Target = c;
             Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
             var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
@@ -222,7 +222,7 @@ internal class SocialUpdater
             UIModule.PlaySound(20, 0, 0, 0);
 
             await Task.Delay(new Random().Next(800, 1200));
-            Svc.Targets.SetTarget(null);
+            Svc.Targets.Target = null;
             await Task.Delay(new Random().Next(800, 1200));
         }
     }

@@ -145,7 +145,7 @@ internal partial class RotationConfigWindow
             ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Normal);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Hot);
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_HOT);
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();

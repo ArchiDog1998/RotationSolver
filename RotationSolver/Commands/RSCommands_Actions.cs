@@ -77,7 +77,7 @@ namespace RotationSolver.Commands
                         || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
                         && (act.Target?.IsNPCEnemy() ?? false))
                     {
-                        Svc.Targets.SetTarget(act.Target);
+                        Svc.Targets.Target = act.Target;
                     }
                 }
 

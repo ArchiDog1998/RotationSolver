@@ -22,7 +22,7 @@ public unsafe class MacroItem
         if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
 
         _lastTarget = Svc.Targets.Target;
-        Svc.Targets.SetTarget(Target);
+        Svc.Targets.Target = Target;
         RaptureShellModule.Instance->ExecuteMacro(Macro);
 
         IsRunning = true;
@@ -33,7 +33,7 @@ public unsafe class MacroItem
     {
         if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
 
-        Svc.Targets.SetTarget(_lastTarget);
+        Svc.Targets.Target = _lastTarget;
 
         IsRunning = false;
         return true;

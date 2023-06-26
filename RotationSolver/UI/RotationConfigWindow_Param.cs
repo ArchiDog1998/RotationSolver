@@ -405,7 +405,7 @@ internal partial class RotationConfigWindow
             ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Normal);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Hot);
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_HOT);
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
@@ -465,6 +465,12 @@ internal partial class RotationConfigWindow
 
             ImGui.EndTable();
         }
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
+            ref Service.Config.HealthHealerRatio, Service.Default.HealthHealerRatio, speed);
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
+            ref Service.Config.HealthTankRatio, Service.Default.HealthTankRatio, speed);
     }
 
     private void DrawParamTarget()

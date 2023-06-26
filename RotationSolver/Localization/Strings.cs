@@ -199,28 +199,27 @@ internal partial class Strings
 
     public string ConfigWindow_Param_BeneficialAreaOnTarget { get; set; } = "Use Beneficial Area abilities on target.";
 
-    public string ConfigWindow_Param_HealthDifference { get; set; } = "HP ratio for standard deviation for using AOE heal.";
-    public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP ratio for AOE healing OGCDs";
+    public string ConfigWindow_Param_HealthDifference { get; set; } = "HP%% for standard deviation for using AOE heal.";
+    public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP%% for AOE healing OGCDs";
 
-    public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "HP ratio for AOE healing GCDs";
+    public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "HP%% for AOE healing GCDs";
 
-    public string ConfigWindow_Param_Normal { get; set; } = "Normal";
-    public string ConfigWindow_Param_Hot { get; set; } = "Hot";
+    public string ConfigWindow_Param_Normal { get; set; } = "Normal Targets";
+    public string ConfigWindow_Param_HOT { get; set; } = "Targets with HOT";
 
-    public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "HP ratio for ST healing OGCDs";
+    public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "HP%% for ST healing OGCDs";
 
-    public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "HP ratio for ST healing GCDs";
+    public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "HP%% for ST healing GCDs";
 
-    public string ConfigWindow_Param_HealthHealerRatio { get; set; } = "Heal healer first if its HP ratio is lower than this.";
+    public string ConfigWindow_Param_HealthHealerRatio { get; set; } = "Heal healer first if its HP%% is lower than this.";
 
-    public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP ratio is lower than this.";
+    public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP%% is lower than this.";
 
     public string ConfigWindow_Param_DistanceForMoving { get; set; } = "If the distance between Melee or Tank to target is less than this, using moving ability as attack ability.";
 
-    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "Healing the members with GCD if there is nothing to do in combat and their min HP ratio is lower than this.";
+    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "Healing the members with GCD if there is nothing to do in combat and their min HP%% is lower than this.";
 
-    public string ConfigWindow_Param_HealingOfTimeSubtractSingle { get; set; } = "Set the HP threshold reduce with hot effect(single)";
-    public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP threshold for tank to use invincibility";
+    public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invincibility";
 
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string ConfigWindow_Param_Target { get; set; } = "Target";
