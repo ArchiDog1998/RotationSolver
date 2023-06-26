@@ -153,8 +153,14 @@ internal class ControlWindow : Window
 
         ImGui.SameLine();
 
+
         DrawCommandAction(rotation?.AntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
+
+        ImGui.SameLine();
+
+        DrawCommandAction(rotation?.ActionSpeedAbility,
+            SpecialCommandType.Speed, ImGuiColors.DalamudWhite2);
 
         ImGui.Spacing();
 

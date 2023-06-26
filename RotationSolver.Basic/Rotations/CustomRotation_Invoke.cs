@@ -125,6 +125,7 @@ public abstract partial class CustomRotation
         }
 
         ActionMoveBackAbility = MoveBackAbility(out act) ? act : null;
+        ActionSpeedAbility = SpeedAbility(out act) ? act : null;
 
         BaseAction.OtherOption = CanUseOption.None;
     }
