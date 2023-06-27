@@ -39,6 +39,10 @@ internal static class ImGuiHelper
         Action<T> showToolTip = null, Action<Action<T>> additionalHeader = null,
         Action otherThing = null) where T : class, ITexture
     {
+        var t = texture.GetTexture();
+
+        if (t == null) return;
+
         showToolTip ??= text =>
         {
             ShowTooltip(text.Description);
@@ -47,8 +51,6 @@ internal static class ImGuiHelper
         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(3f, 3f));
 
         ImGui.Columns(2, texture.Name, false);
-
-        var t = texture.GetTexture();
 
         ImGui.SetColumnWidth(0, t.Width + 5);
 

@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
+using ECommons.Configuration;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
@@ -10,6 +11,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
+using RotationSolver.UI;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -18,6 +20,7 @@ namespace RotationSolver.Updaters;
 internal class SocialUpdater
 {
     public static bool InPvp { get; private set; }
+    public static bool InHouse { get; private set; }
 
     private static readonly List<string> _macroToAuthor = new()
     {
@@ -34,10 +37,12 @@ internal class SocialUpdater
     static bool _canSaying = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
 
+    public static bool IsHouseArea(TerritoryType territory)
+        => territory.Bg.RawString.Contains("/hou/");
+
     public static string GetDutyName(TerritoryType territory)
     {
         return territory.ContentFinderCondition?.Value?.Name?.RawString ?? "High-end Duty";
-        //return territory.PlaceName?.Value?.Name.ToString() ?? "High-end Duty";
     }
 
     static bool CanSocial
@@ -63,6 +68,7 @@ internal class SocialUpdater
         Svc.DutyState.DutyWiped += DutyState_DutyWiped;
         Svc.DutyState.DutyCompleted += DutyState_DutyCompleted;
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
+        ClientState_TerritoryChanged(null, Svc.ClientState.TerritoryType);
 
         HighEndDuties = Service.GetSheet<TerritoryType>()
             .Where(t => t?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
@@ -89,6 +95,8 @@ internal class SocialUpdater
             _canSaying = true;
         }
         InPvp = territory.IsPvpZone;
+        InHouse = IsHouseArea(territory);
+        //if (PainterManager._painter != null) PainterManager._painter.Enable = !InHouse;
         DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);
         DataCenter.InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
 

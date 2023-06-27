@@ -211,6 +211,7 @@ internal static class PainterManager
 
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
+        _painter.Enable = Service.Config.UseOverlayWindow;
         HighlightColor = Service.Config.TeachingModeColor;
 
         var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2);

@@ -26,8 +26,11 @@ internal static class MajorUpdater
 #endif
 
     static bool _showed;
+
+    //static int count = 0;
     private static void FrameworkUpdate(Framework framework)
     {
+        //if (count++ > 10) return;
         RotationSolverPlugin.UpdateDisplayWindow();
         if (!IsValid)
         {
@@ -138,7 +141,6 @@ internal static class MajorUpdater
 
             RotationUpdater.UpdateRotation();
             
-
             ActionSequencerUpdater.UpdateActionSequencerAction();
             ActionUpdater.UpdateNextAction();
 
