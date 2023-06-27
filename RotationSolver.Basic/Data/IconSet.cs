@@ -1,7 +1,5 @@
-﻿using ECommons.DalamudServices;
-using ECommons.ImGuiMethods;
+﻿using ECommons.ImGuiMethods;
 using ImGuiScene;
-using System.Net;
 
 namespace RotationSolver.Basic.Data;
 

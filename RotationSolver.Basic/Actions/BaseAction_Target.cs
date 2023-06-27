@@ -2,6 +2,7 @@
 using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
@@ -469,16 +470,16 @@ public partial class BaseAction
             0, true, TargetStatus);
     }
 
-    public unsafe bool CanUseTo(BattleChara tar)
+    public unsafe bool CanUseTo(GameObject tar)
     {
         if (tar == null || !Player.Available) return false;
 
-        var tarAddress = tar.GetAddress();
+        var tarAddress = tar.Struct();
 
         if (!ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
         var point = Player.Object.Position + Vector3.UnitY * Player.GameObject->Height;
-        var tarPt = tar.Position + Vector3.UnitY * tar.GetAddress()->Height;
+        var tarPt = tar.Position + Vector3.UnitY * tar.Struct()->Height;
         var direction = tarPt - point;
 
         int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };

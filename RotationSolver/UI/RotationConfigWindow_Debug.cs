@@ -1,7 +1,7 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -100,7 +100,7 @@ internal partial class RotationConfigWindow
     {
         if(Svc.Targets.Target != null)
         {
-            ImGui.Text("Height: " + Svc.Targets.Target.GetAddress()->Height.ToString());
+            ImGui.Text("Height: " + Svc.Targets.Target.Struct()->Height.ToString());
             ImGui.Text("Kind: " + Svc.Targets.Target.GetObjectKind().ToString());
             ImGui.Text("SubKind: " + Svc.Targets.Target.GetBattleNPCSubKind().ToString());
             var owner = Svc.Objects.SearchById(Svc.Targets.Target.OwnerId);
@@ -121,7 +121,7 @@ internal partial class RotationConfigWindow
             ImGui.Text("InView: " + Svc.GameGui.WorldToScreen(b.Position, out _).ToString());
             ImGui.Text("Name Id: " + b.NameId.ToString());
             ImGui.Text("Data Id: " + b.DataId.ToString());
-            ImGui.Text("Targetable: " + b.GetAddress()->TargetableStatus.ToString());
+            ImGui.Text("Targetable: " + b.Struct()->Character.GameObject.TargetableStatus.ToString());
 
             var npc = b.GetObjectNPC();
             if(npc != null)
