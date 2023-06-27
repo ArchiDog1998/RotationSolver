@@ -191,8 +191,8 @@ internal static class PainterManager
     }
 
     internal static XIVPainter.XIVPainter _painter;
-    static PositionalDrawing _positional = new ();
-    static DrawingHighlightHotbar _highLight = new ();
+    static PositionalDrawing _positional;
+    static DrawingHighlightHotbar _highLight;
 
     public static HashSet<uint> ActionIds => _highLight.ActionIds;
 
@@ -206,8 +206,12 @@ internal static class PainterManager
     {
         _painter = XIVPainter.XIVPainter.Create(Svc.PluginInterface, "RotationSolverOverlay");
 
+        _positional = new();
+        _highLight = new();
+
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
+        _painter.Enable = Service.Config.UseOverlayWindow;
         HighlightColor = Service.Config.TeachingModeColor;
 
         var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2);

@@ -1,4 +1,5 @@
-﻿using RotationSolver.Commands;
+﻿using ECommons.ExcelServices;
+using RotationSolver.Commands;
 using RotationSolver.Localization;
 
 namespace RotationSolver.UI;
@@ -336,6 +337,9 @@ internal partial class RotationConfigWindow
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerBySwift,
                 SettingsCommand.RaisePlayerBySwift);
 
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoSpeedOutOfCombat,
+                SettingsCommand.AutoSpeedOutOfCombat);
+
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseGroundBeneficialAbility,
                 SettingsCommand.UseGroundBeneficialAbility);
 
@@ -384,20 +388,83 @@ internal partial class RotationConfigWindow
             ref Service.Config.MeleeRangeOffset, Service.Default.MeleeRangeOffset, 5 * speed, max: 5);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthDifference,
-             ref Service.Config.HealthDifference, Service.Default.HealthDifference, 
-             speed * 2, 0, 0.5f);
+             ref Service.Config.HealthDifference, Service.Default.HealthDifference,
+        speed * 2, 0, 0.5f);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility,
-            ref Service.Config.HealthAreaAbility, Service.Default.HealthAreaAbility, speed);
+        if (ImGui.BeginTable("Healing things", 3, ImGuiTableFlags.Borders
+            | ImGuiTableFlags.Resizable
+            | ImGuiTableFlags.SizingStretchProp))
+        {
+            ImGui.TableSetupScrollFreeze(0, 1);
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell,
-            ref Service.Config.HealthAreaSpell, Service.Default.HealthAreaSpell, speed);
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("");
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility,
-            ref Service.Config.HealthSingleAbility, Service.Default.HealthSingleAbility, speed);
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Normal);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell,
-            ref Service.Config.HealthSingleSpell, Service.Default.HealthSingleSpell, speed);
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_HOT);
+
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility);
+
+            ImGui.TableNextColumn();
+
+            DrawFloatNumber("##" + nameof(Service.Config.HealthAreaAbility),
+                ref Service.Config.HealthAreaAbility, Service.Default.HealthAreaAbility, speed);
+
+            ImGui.TableNextColumn();
+
+            DrawFloatNumber("##" + nameof(Service.Config.HealthAreaAbilityHot),
+                ref Service.Config.HealthAreaAbilityHot, Service.Default.HealthAreaAbilityHot, speed);
+
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell);
+
+            ImGui.TableNextColumn();
+
+            DrawFloatNumber("##" + nameof(Service.Config.HealthAreaSpell),
+                ref Service.Config.HealthAreaSpell, Service.Default.HealthAreaSpell, speed);
+
+            ImGui.TableNextColumn();
+
+            DrawFloatNumber("##" + nameof(Service.Config.HealthAreaSpellHot),
+                ref Service.Config.HealthAreaSpellHot, Service.Default.HealthAreaSpellHot, speed);
+
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility);
+
+            ImGui.TableNextColumn();
+
+            DrawFloatNumber("##" + nameof(Service.Config.HealthSingleAbility),
+                ref Service.Config.HealthSingleAbility, Service.Default.HealthSingleAbility, speed);
+
+            ImGui.TableNextColumn();
+
+            DrawFloatNumber("##" + nameof(Service.Config.HealthSingleAbilityHot),
+                ref Service.Config.HealthSingleAbilityHot, Service.Default.HealthSingleAbilityHot, speed);
+
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell);
+
+            ImGui.TableNextColumn();
+
+            DrawFloatNumber("##" + nameof(Service.Config.HealthSingleSpell),
+                ref Service.Config.HealthSingleSpell, Service.Default.HealthSingleSpell, speed);
+
+           ImGui.TableNextColumn();
+
+            DrawFloatNumber("##" + nameof(Service.Config.HealthSingleSpellHot),
+                ref Service.Config.HealthSingleSpellHot, Service.Default.HealthSingleSpellHot, speed);
+
+            ImGui.EndTable();
+        }
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
             ref Service.Config.HealthHealerRatio, Service.Default.HealthHealerRatio, speed);

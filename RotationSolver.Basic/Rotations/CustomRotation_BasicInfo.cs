@@ -62,6 +62,7 @@ public abstract partial class CustomRotation : ICustomRotation
     public IAction ActionMoveForwardAbility { get; private set; }
 
     public IAction ActionMoveBackAbility { get; private set; }
+    public IAction ActionSpeedAbility { get; private set; }
 
     public IAction EsunaStanceNorthGCD { get; private set; }
 

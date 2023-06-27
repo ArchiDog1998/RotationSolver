@@ -95,14 +95,24 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealWhenNothingTodoBelow = 0.8f;
     public float TargetIconSize = 0.6f;
 
-    public Dictionary<Job, float> HealingOfTimeSubtractSingles { get; set; } = new Dictionary<Job, float>();
 
-    public Dictionary<Job, float> HealingOfTimeSubtractAreas { get; set; } = new Dictionary<Job, float>();
+    public Dictionary<Job, float> HealthAreaAbilitiesHot { get; set; } = new Dictionary<Job, float>();
+    public float HealthAreaAbilityHot = 0.55f;
+
+    public Dictionary<Job, float> HealthAreaSpellsHot { get; set; } = new Dictionary<Job, float>();
+    public float HealthAreaSpellHot = 0.55f;
+
     public Dictionary<Job, float> HealthAreaAbilities { get; set; } = new Dictionary<Job, float>();
     public float HealthAreaAbility = 0.75f;
 
     public Dictionary<Job, float> HealthAreaSpells { get; set; } = new Dictionary<Job, float>();
     public float HealthAreaSpell = 0.65f;
+
+    public Dictionary<Job, float> HealthSingleAbilitiesHot { get; set; } = new Dictionary<Job, float>();
+    public float HealthSingleAbilityHot = 0.6f;
+
+    public Dictionary<Job, float> HealthSingleSpellsHot { get; set; } = new Dictionary<Job, float>();
+    public float HealthSingleSpellHot = 0.45f;
 
     public Dictionary<Job, float> HealthSingleAbilities { get; set; } = new Dictionary<Job, float>();
     public float HealthSingleAbility = 0.7f;

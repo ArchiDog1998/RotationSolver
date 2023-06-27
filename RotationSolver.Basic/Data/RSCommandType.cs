@@ -13,6 +13,7 @@ public enum SpecialCommandType : byte
     MoveBack,
     AntiKnockback,
     Burst,
+    Speed,
 
     None,
 }
@@ -49,6 +50,7 @@ public enum SettingsCommand : byte
     PreventActions,
     PreventActionsDuty,
     AutoLoadCustomRotations,
+    AutoSpeedOutOfCombat,
 }
 
 public static class SettingsCommandExtension
@@ -67,6 +69,7 @@ public static class SettingsCommandExtension
         SettingsCommand.UseAOEWhenManual => false,
         SettingsCommand.PreventActions => false,
         SettingsCommand.PreventActionsDuty => false,
+        SettingsCommand.AutoSpeedOutOfCombat => true,
         _ => false,
     };
 }

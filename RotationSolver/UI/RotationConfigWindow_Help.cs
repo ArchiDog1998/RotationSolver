@@ -72,6 +72,8 @@ internal partial class RotationConfigWindow
 
             SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
+            SpecialCommandType.Speed.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+
             SpecialCommandType.EsunaStanceNorth.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
             SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);

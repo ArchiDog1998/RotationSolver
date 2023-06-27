@@ -137,11 +137,13 @@ public abstract partial class CustomRotation
         StatusProvide = new StatusID[] { StatusID.TrueNorth, StatusID.RightEye },
     };
 
-    public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Buff)
+    public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Friendly)
     {
         ActionCheck = (b, m) => NotInCombatDelay && PartyMembers.GetObjectInRadius(20)
             .Any(p => p.WillStatusEnd(3, false, StatusID.Peloton) && !p.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.InCombat)),
     };
+
+    public static IBaseAction Sprint { get; } = new BaseAction(ActionID.Sprint, ActionOption.Friendly);
 
     private protected virtual IBaseAction Raise => null;
     private protected virtual IBaseAction TankStance => null;

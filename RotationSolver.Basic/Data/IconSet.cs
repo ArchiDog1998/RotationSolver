@@ -1,7 +1,5 @@
-﻿using ECommons.DalamudServices;
-using ECommons.ImGuiMethods;
+﻿using ECommons.ImGuiMethods;
 using ImGuiScene;
-using System.Net;
 
 namespace RotationSolver.Basic.Data;
 
@@ -23,125 +21,33 @@ public enum IconType : byte
 
 public static class IconSet
 {
-    //public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
+    public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
 
-    //public static TextureWrap GetTexture(uint id)
-    //    => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out var texture) ? texture :
-    //    ThreadLoadImageHandler.TryGetIconTextureWrap(0 , false, out texture) ? texture : null;
-    //public static TextureWrap GetTexture(string path)
-    //    => ThreadLoadImageHandler.TryGetTextureWrap(path, out var texture) ? texture : null;
-
-    static readonly Dictionary<uint, TextureWrap> _texturesIds = new();
-    static readonly HashSet<uint> _loadingTextureID = new();
-
-    static readonly SortedDictionary<string, TextureWrap> _texturesPath = new();
-    static readonly HashSet<string> _loadingTexturePath = new();
+    public static TextureWrap GetTexture(uint id)
+        => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out var texture) ? texture :
+        ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture) ? texture : null;
+    public static TextureWrap GetTexture(string path)
+        => ThreadLoadImageHandler.TryGetTextureWrap(path, out var texture) ? texture : null;
 
     static readonly Dictionary<uint, uint> _actionIcons = new();
 
     public static TextureWrap GetTexture(this IAction action, bool isAdjust = true)
     {
         uint iconId = 0;
-        if (action != null && !_actionIcons.TryGetValue(isAdjust ? action.AdjustedID : action.ID, out iconId))
+        if (action != null )
         {
-            iconId = action is IBaseAction ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon
-                : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(action.AdjustedID).Icon;
-            _actionIcons[action.AdjustedID] = iconId;
+            var adjust = action.AdjustedID;
+            var id = isAdjust ? adjust : action.ID;
+
+            if (!_actionIcons.TryGetValue(id, out iconId))
+            {
+                iconId = id == action.ID ? action.IconID : action is IBaseAction ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon
+    : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(action.AdjustedID).Icon;
+
+                _actionIcons[action.AdjustedID] = iconId;
+            }
         }
         return GetTexture(iconId);
-    }
-
-    public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
-
-    public static TextureWrap GetTexture(uint id)
-    {
-        if (!_texturesIds.TryGetValue(id, out var texture))
-        {
-            if (!_loadingTextureID.Contains(id))
-            {
-                _loadingTextureID.Add(id);
-                Task.Run(() =>
-                {
-                    texture = Svc.Data.GetImGuiTextureIcon(id);
-                    _texturesIds[id] = texture;
-                });
-            }
-
-            if (!_texturesIds.TryGetValue(0, out texture))
-            {
-                texture = Svc.Data.GetImGuiTextureIcon(0);
-                _texturesIds[0] = texture;
-            }
-            return texture;
-        }
-
-        return texture;
-    }
-
-    public static TextureWrap GetTexture(string path)
-    {
-        if (!_texturesPath.TryGetValue(path, out var t))
-        {
-            if (!_loadingTexturePath.Contains(path))
-            {
-                _loadingTexturePath.Add(path);
-
-                try
-                {
-                    Task.Run(async () =>
-                    {
-                        if (path.StartsWith("https:"))
-                        {
-                            var bytes = await LoadBytes(path);
-                            _texturesPath[path] = TryLoadImage(bytes);
-                        }
-                        else if (path.StartsWith("ui/"))
-                        {
-                            _texturesPath[path] = Svc.Data.GetImGuiTexture(path);
-                        }
-                    });
-                }
-                finally { }
-            }
-            return null;
-        }
-        return t;
-    }
-
-    private static async Task<byte[]> LoadBytes(string url)
-    {
-        var data = await new HttpClient().GetAsync(url);
-        if (data.StatusCode == HttpStatusCode.NotFound)
-            return null;
-
-        data.EnsureSuccessStatusCode();
-        return await data.Content.ReadAsByteArrayAsync();
-    }
-
-    private static TextureWrap TryLoadImage(byte[] bytes)
-    {
-        if (bytes == null)
-            return null;
-
-        try
-        {
-            return Svc.PluginInterface.UiBuilder.LoadImage(bytes);
-        }
-        catch
-        {
-            return null;
-        }
-    }
-    public static void Dispose()
-    {
-        foreach (var item in _texturesIds.Values)
-        {
-            item?.Dispose();
-        }
-        foreach (var item in _texturesPath.Values)
-        {
-            item?.Dispose();
-        }
     }
 
     private static readonly Dictionary<IconType, uint[]> _icons = new()

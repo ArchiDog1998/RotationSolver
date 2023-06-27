@@ -1,6 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
+using ECommons.GameFunctions;
 using ECommons.GameHelpers;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Lumina.Excel.GeneratedSheets;
 
@@ -26,9 +26,6 @@ public static class ObjectHelper
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
     }
 
-    public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* GetAddress(this GameObject obj)
-        => (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)obj.Address;
-
     public static unsafe bool IsOthersPlayers(this GameObject obj)
     {
         //SpecialType but no NamePlateIcon
@@ -41,10 +38,9 @@ public static class ObjectHelper
 
     public static unsafe bool IsNPCEnemy(this GameObject obj)
         => obj != null && obj.GetObjectKind() == ObjectKind.BattleNpc
-        && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.GetAddress());
+        && obj.IsHostile();
 
-
-    public static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.GetAddress()->ObjectKind;
+    public static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.Struct()->ObjectKind;
 
     public static bool IsTopPriorityHostile(this GameObject obj)
     {
@@ -67,15 +63,13 @@ public static class ObjectHelper
         return false;
     }
 
-    public static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.GetAddress()->NamePlateIconId;
-    public static unsafe void SetNamePlateIcon(this GameObject obj, uint id) => obj.GetAddress()->NamePlateIconId = id;
-    public static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.GetAddress()->EventId.Type;
+    public static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.Struct()->NamePlateIconId;
+    public static unsafe void SetNamePlateIcon(this GameObject obj, uint id) => obj.Struct()->NamePlateIconId = id;
+    public static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.Struct()->EventId.Type;
 
-    public static unsafe BattleNpcSubKind GetBattleNPCSubKind(this GameObject obj) => (BattleNpcSubKind)obj.GetAddress()->SubKind;
+    public static unsafe BattleNpcSubKind GetBattleNPCSubKind(this GameObject obj) => (BattleNpcSubKind)obj.Struct()->SubKind;
 
-    public static unsafe uint FateId(this GameObject obj) => obj.GetAddress()->FateId;
-
-    public static unsafe bool IsTargetable(this GameObject obj) => obj.GetAddress()->GetIsTargetable();
+    public static unsafe uint FateId(this GameObject obj) => obj.Struct()->FateId;
 
     static readonly Dictionary<uint, bool> _effectRangeCheck = new();
     public static bool CanInterrupt(this BattleChara b)

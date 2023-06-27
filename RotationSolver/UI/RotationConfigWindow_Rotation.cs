@@ -131,35 +131,96 @@ internal partial class RotationConfigWindow
 
     private static void DrawHealerSettings(Job job)
     {
-        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility,
-            () => ConfigurationHelper.GetHealAreaAbility(job),
-            (value) => Service.Config.HealthAreaAbilities[job] = value,
-            Service.Config.HealthAreaAbility);
+        if (ImGui.BeginTable(job.ToString(), 3, ImGuiTableFlags.Borders
+            | ImGuiTableFlags.Resizable
+            | ImGuiTableFlags.SizingStretchProp))
+        {
+            ImGui.TableSetupScrollFreeze(0, 1);
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell,
-            () => ConfigurationHelper.GetHealAreaSpell(job),
-            (value) => Service.Config.HealthAreaSpells[job] = value,
-            Service.Config.HealthAreaSpell);
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("");
 
-        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealingOfTimeSubtractArea,
-            () => ConfigurationHelper.GetHealingOfTimeSubtractArea(job),
-            (value) => Service.Config.HealingOfTimeSubtractAreas[job] = value,
-            ConfigurationHelper.HealingOfTimeSubtractAreasDefault);
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Normal);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility,
-            () => ConfigurationHelper.GetHealSingleAbility(job),
-            (value) => Service.Config.HealthSingleAbilities[job] = value,
-            Service.Config.HealthSingleAbility);
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_HOT);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell,
-            () => ConfigurationHelper.GetHealSingleSpell(job),
-            (value) => Service.Config.HealthSingleSpells[job] = value,
-            Service.Config.HealthSingleSpell);
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility);
 
-        DrawDragFloat(job, LocalizationManager.RightLang.ConfigWindow_Param_HealingOfTimeSubtractSingle,
-            () => ConfigurationHelper.GetHealingOfTimeSubtractSingle(job),
-            (value) => Service.Config.HealingOfTimeSubtractSingles[job] = value,
-            ConfigurationHelper.HealingOfTimeSubtractSinglesDefault);
+            ImGui.TableNextColumn();
+
+            DrawDragFloat(job, nameof(Service.Config.HealthAreaAbilities),
+                () => ConfigurationHelper.GetHealthAreaAbility(job),
+                (value) => Service.Config.HealthAreaAbilities[job] = value,
+                Service.Config.HealthAreaAbility);
+
+            ImGui.TableNextColumn();
+
+            DrawDragFloat(job, nameof(Service.Config.HealthAreaAbilitiesHot),
+                () => ConfigurationHelper.GetHealthAreaAbilityHot(job),
+                (value) => Service.Config.HealthAreaAbilitiesHot[job] = value,
+                Service.Config.HealthAreaAbilityHot);
+
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell);
+
+            ImGui.TableNextColumn();
+
+            DrawDragFloat(job, nameof(Service.Config.HealthAreaSpells),
+                () => ConfigurationHelper.GetHealthAreaSpell(job),
+                (value) => Service.Config.HealthAreaSpells[job] = value,
+                Service.Config.HealthAreaSpell);
+
+            ImGui.TableNextColumn();
+
+            DrawDragFloat(job, nameof(Service.Config.HealthAreaSpellsHot),
+                () => ConfigurationHelper.GetHealthAreaSpellHot(job),
+                (value) => Service.Config.HealthAreaSpellsHot[job] = value,
+                Service.Config.HealthAreaSpellHot);
+
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility);
+
+            ImGui.TableNextColumn();
+
+            DrawDragFloat(job, nameof(Service.Config.HealthSingleAbilities),
+                () => ConfigurationHelper.GetHealthSingleAbility(job),
+                (value) => Service.Config.HealthSingleAbilities[job] = value,
+                Service.Config.HealthSingleAbility);
+
+            ImGui.TableNextColumn();
+
+            DrawDragFloat(job, nameof(Service.Config.HealthSingleAbilitiesHot),
+                () => ConfigurationHelper.GetHealthSingleAbilityHot(job),
+                (value) => Service.Config.HealthSingleAbilitiesHot[job] = value,
+                Service.Config.HealthSingleAbilityHot);
+
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell);
+
+            ImGui.TableNextColumn();
+
+            DrawDragFloat(job, nameof(Service.Config.HealthSingleSpells),
+                () => ConfigurationHelper.GetHealthSingleSpell(job),
+                (value) => Service.Config.HealthSingleSpells[job] = value,
+                Service.Config.HealthSingleSpell);
+
+            ImGui.TableNextColumn();
+
+            DrawDragFloat(job, nameof(Service.Config.HealthSingleSpellsHot),
+                () => ConfigurationHelper.GetHealthSingleSpellHot(job),
+                (value) => Service.Config.HealthSingleSpellsHot[job] = value,
+                Service.Config.HealthSingleSpellHot);
+
+            ImGui.EndTable();
+        }
     }
 
     private static void DrawDragFloat(Job job, string desc, Func<float> getValue, Action<float> setValue, float @default)
@@ -168,7 +229,7 @@ internal partial class RotationConfigWindow
 
         var value = getValue();
         var last = value;
-        DrawFloatNumber($"{desc}##{job}{desc}", ref value, @default, speed: 0.005f, description: desc);
+        DrawFloatNumber($"##{job}{desc}", ref value, @default, speed: 0.005f, description: desc);
         if(last != value)
         {
             setValue(value);

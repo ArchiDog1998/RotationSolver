@@ -35,6 +35,7 @@ public interface ICustomRotation : ITexture
     IAction ActionMoveForwardGCD { get; }
     IAction ActionMoveForwardAbility { get; }
     IAction ActionMoveBackAbility { get; }
+    IAction ActionSpeedAbility { get; }
     IAction EsunaStanceNorthGCD { get; }
     IAction EsunaStanceNorthAbility { get; }
     IAction RaiseShirkGCD { get; }

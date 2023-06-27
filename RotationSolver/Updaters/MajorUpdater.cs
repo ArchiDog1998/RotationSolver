@@ -26,8 +26,11 @@ internal static class MajorUpdater
 #endif
 
     static bool _showed;
+
+    //static int count = 0;
     private static void FrameworkUpdate(Framework framework)
     {
+        //if (count++ > 10) return;
         RotationSolverPlugin.UpdateDisplayWindow();
         if (!IsValid)
         {
@@ -71,7 +74,9 @@ internal static class MajorUpdater
             PainterManager.ActionIds.Clear();
             if (Service.Config.TeachingMode && ActionUpdater.NextAction!= null)
             {
-                PainterManager.ActionIds.Add(ActionUpdater.NextAction.AdjustedID);
+                //Sprint action id is 3 however the id in hot bar is 4.
+                var id = ActionUpdater.NextAction.AdjustedID;
+                PainterManager.ActionIds.Add(id == (uint)ActionID.Sprint ? 4 : id);
             }
             ActionUpdater.UpdateActionInfo();
 
@@ -136,7 +141,6 @@ internal static class MajorUpdater
 
             RotationUpdater.UpdateRotation();
             
-
             ActionSequencerUpdater.UpdateActionSequencerAction();
             ActionUpdater.UpdateNextAction();
 
