@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.0.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.0...v3.0.1) (2023-06-27)
+
+
+### Bug Fixes
+
+* add speed ability. ([ec31f83](https://github.com/ArchiDog1998/RotationSolver/commit/ec31f83457d2ff05245cb0c5ec031310dcd5f470))
+* changed heal ratio display. ([c7764be](https://github.com/ArchiDog1998/RotationSolver/commit/c7764bef610c1e46eb1c89c2acddff317de936a4))
+* construct element later than init. ([7a39853](https://github.com/ArchiDog1998/RotationSolver/commit/7a398536de6e50f344e33534a464947488a771a7))
+* fixed AST api. ([50a502f](https://github.com/ArchiDog1998/RotationSolver/commit/50a502f8c1b15269ddf376e83279f49ea0ca5202))
+* fixed description. ([3e5fcdb](https://github.com/ArchiDog1998/RotationSolver/commit/3e5fcdb3c8e313ddd821335f889643aedc1366f0))
+* fixed icon. ([f0256a1](https://github.com/ArchiDog1998/RotationSolver/commit/f0256a1c41c06754147815094ae2a9c8fa1fea53))
+* icons back. ([94030db](https://github.com/ArchiDog1998/RotationSolver/commit/94030dbcf9fd109b8d6b861b44ae5dbde4e21484))
+* match ECommons. ([098903e](https://github.com/ArchiDog1998/RotationSolver/commit/098903e54c266b1d1370544ff8d356f04c6888fc))
+* null bug. ([bde469e](https://github.com/ArchiDog1998/RotationSolver/commit/bde469e68f37664a764a249217cfef94f93d5e5d))
+
 ## [3.0.0](https://github.com/ArchiDog1998/RotationSolver/compare/v2.10.2...v3.0.0) (2023-06-24)
 
 
