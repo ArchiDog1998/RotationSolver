@@ -191,8 +191,8 @@ internal static class PainterManager
     }
 
     internal static XIVPainter.XIVPainter _painter;
-    static PositionalDrawing _positional;
-    static DrawingHighlightHotbar _highLight;
+    static PositionalDrawing _positional = new();
+    static DrawingHighlightHotbar _highLight = new();
 
     public static HashSet<uint> ActionIds => _highLight.ActionIds;
 

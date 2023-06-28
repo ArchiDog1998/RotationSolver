@@ -156,8 +156,6 @@ internal static class MajorUpdater
         _work = false;
     }
 
-
-
     public static void Dispose()
     {
         Svc.Framework.Update -= FrameworkUpdate;

@@ -48,6 +48,8 @@ public enum ActionID : uint
 
     Macrocosmos = 25874,
 
+    Microcosmos = 25875,
+
     Astrodyne = 25870,
 
     Divination = 16552,

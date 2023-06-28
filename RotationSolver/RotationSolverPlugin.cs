@@ -6,6 +6,7 @@ using Dalamud.Plugin;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
@@ -33,9 +34,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector, Module.ObjectFunctions);
+        ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out _);
 
         //Init!
-        //ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out _);
         Clipper.InflatePaths(new PathsD(new PathD[] { Clipper.MakePath(new double[] {0, 0, 1, 1 }) }), 0, JoinType.Round, EndType.Joined);
         try
         {
@@ -62,8 +63,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw += windowSystem.Draw;
 
-        MajorUpdater.Enable();
         PainterManager.Init();
+        MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();
         _dis.Add(new MovingController());

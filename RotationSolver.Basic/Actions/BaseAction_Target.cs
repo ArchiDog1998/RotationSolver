@@ -274,7 +274,7 @@ public partial class BaseAction
         if (Service.Config.ChooseAttackMark)
         {
             var b = MarkingHelper.GetAttackMarkChara(DataCenter.HostileTargets);
-            if (b != null && GetMostObjects(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), Service.Config.CanAttackMarkAOE ?  aoeCount : int.MaxValue).Any())
+            if (b != null && ChoiceTarget(GetMostObjects(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), Service.Config.CanAttackMarkAOE ?  aoeCount : int.MaxValue), mustUse) != null)
             {
                 target = b;
                 return true;

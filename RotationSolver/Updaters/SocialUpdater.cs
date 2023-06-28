@@ -39,7 +39,7 @@ internal class SocialUpdater
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
 
     public static bool IsHouseArea(TerritoryType territory)
-        => territory.Bg.RawString.Contains("/hou/");
+        => territory?.Bg.RawString.Contains("/hou/") ?? false;
 
     public static string GetDutyName(TerritoryType territory)
     {
@@ -95,7 +95,7 @@ internal class SocialUpdater
         {
             _canSaying = true;
         }
-        InPvp = territory.IsPvpZone;
+        InPvp = territory?.IsPvpZone ?? false;
         InHouse = IsHouseArea(territory);
         //if (PainterManager._painter != null) PainterManager._painter.Enable = !InHouse;
         DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);

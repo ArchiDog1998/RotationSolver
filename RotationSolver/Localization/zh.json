@@ -147,7 +147,7 @@
   "ConfigWindow_Param_HealthHealerRatio": "Heal healer first if its HP%% is lower than this.",
   "ConfigWindow_Param_HealthTankRatio": "Heal tank first if its HP%% is lower than this.",
   "ConfigWindow_Param_DistanceForMoving": "如果近战或坦克与目标之间的距离小于此，则考虑使用突进技能作为攻击能力。",
-  "ConfigWindow_Param_HealWhenNothingTodoBelow": "Healing the members with GCD if there is nothing to do in combat and their min HP%% is lower than this.",
+  "ConfigWindow_Param_HealWhenNothingTodoBelow": "Healing the members with GCD if there is nothing to do in combat and their min HP% is lower than this.",
   "ConfigWindow_Param_HealthForDyingTank": "Set the HP%% for tank to use invincibility",
   "ConfigWindow_Param_MeleeRangeOffset": "近战职业使用远程技能的距离最小值",
   "ConfigWindow_Param_Target": "目标",
