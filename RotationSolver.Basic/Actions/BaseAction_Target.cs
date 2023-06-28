@@ -146,7 +146,7 @@ public partial class BaseAction
         }
     }
 
-    private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
+    public bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
         if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
 
