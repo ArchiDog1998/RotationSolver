@@ -54,7 +54,7 @@ public abstract class WHM_Base : CustomRotation
 
     public static IBaseAction Benediction { get; } = new BaseAction(ActionID.Benediction, ActionOption.Heal);
 
-    public static IBaseAction Asylum { get; } = new BaseAction(ActionID.Asylum, ActionOption.Heal);
+    public static IBaseAction Asylum { get; } = new BaseAction(ActionID.Asylum, ActionOption.Friendly);
 
     public static IBaseAction AfflatusSolace { get; } = new BaseAction(ActionID.AfflatusSolace, ActionOption.Heal)
     {
