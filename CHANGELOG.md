@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.1...v3.0.2) (2023-06-28)
+
+
+### Bug Fixes
+
+* changed the loading order of Painter and Updater. ([e0733b4](https://github.com/ArchiDog1998/RotationSolver/commit/e0733b4013b1543298df509203bc334e3c961555))
+* fixed house checking bug. ([bff9361](https://github.com/ArchiDog1998/RotationSolver/commit/bff9361c16d46264d423e0cd8437cd49dad7af8e))
+* fixed mark target system. ([b1c0134](https://github.com/ArchiDog1998/RotationSolver/commit/b1c0134f146ab6fb3fdde8ef13e5dba5beb98c6c))
+
 ## [3.0.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.0...v3.0.1) (2023-06-27)
 
 
