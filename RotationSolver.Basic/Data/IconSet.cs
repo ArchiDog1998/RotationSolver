@@ -36,15 +36,15 @@ public static class IconSet
         uint iconId = 0;
         if (action != null )
         {
-            var adjust = action.AdjustedID;
-            var id = isAdjust ? adjust : action.ID;
+            var id = isAdjust ? action.AdjustedID : action.ID;
 
             if (!_actionIcons.TryGetValue(id, out iconId))
             {
-                iconId = id == action.ID ? action.IconID : action is IBaseAction ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(action.AdjustedID).Icon
-    : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(action.AdjustedID).Icon;
+                iconId = id == action.ID ? action.IconID : action is IBaseAction 
+                    ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
+                    : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(id).Icon;
 
-                _actionIcons[action.AdjustedID] = iconId;
+                _actionIcons[id] = iconId;
             }
         }
         return GetTexture(iconId);
