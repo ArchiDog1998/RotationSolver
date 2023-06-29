@@ -26,6 +26,7 @@ internal static class MajorUpdater
 #endif
 
     static bool _showed;
+    static Exception _threadException;
 
     //static int count = 0;
     private static void FrameworkUpdate(Framework framework)
@@ -89,7 +90,11 @@ internal static class MajorUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Error(ex, "Main Thread Exception");
+            if(_threadException != ex)
+            {
+                _threadException = ex;
+                PluginLog.Error(ex, "Main Thread Exception");
+            }
         }
 
         if (Service.Config.UseWorkTask)
@@ -118,6 +123,7 @@ internal static class MajorUpdater
     }
 
     static bool _work;
+    static Exception _innerException;
     private static void UpdateWork()
     {
         if (!IsValid)
@@ -150,7 +156,11 @@ internal static class MajorUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Error(ex, "Inner Worker Exception");
+            if(_innerException != ex)
+            {
+                _innerException = ex;
+                PluginLog.Error(ex, "Inner Worker Exception");
+            }
         }
 
         _work = false;
