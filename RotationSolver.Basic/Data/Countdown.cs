@@ -13,12 +13,14 @@ public unsafe struct Countdown
 
     public static unsafe Countdown* Instance => (Countdown*)Framework.Instance()->GetUiModule()->GetAgentModule()->GetAgentByInternalId(AgentId.CountDownSettingDialog);
 
+    static RandomDelay _delay = new RandomDelay(()=>(Service.Config.CountdownDelayMin, Service.Config.CountdownDelayMax));
+
     public static float TimeRemaining
     {
         get
         {
             var inst = Instance;
-            return inst->Active != 0 ? inst->Timer : 0;
+            return _delay.Delay(inst->Active != 0) ? inst->Timer : 0;
         }
     }
 }

@@ -134,8 +134,8 @@ public class PluginConfiguration : IPluginConfiguration
     public float WeaponDelayMin = 0;
     public float WeaponDelayMax = 0;
 
-    public float DeathDelayMin = 0.5f;
-    public float DeathDelayMax = 1;
+    public float DeathDelayMin = 1;
+    public float DeathDelayMax = 1.5f;
 
     public float WeakenDelayMin = 0.5f;
     public float WeakenDelayMax = 1;
@@ -145,6 +145,7 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float HealDelayMin = 0;
     public float HealDelayMax = 0;
+
     public float StopCastingDelayMin = 0.5f;
     public float StopCastingDelayMax = 1;
 
@@ -156,6 +157,9 @@ public class PluginConfiguration : IPluginConfiguration
 
     public float ClickingDelayMin = 0.1f;
     public float ClickingDelayMax = 0.15f;
+
+    public float CountdownDelayMin = 0.5f;
+    public float CountdownDelayMax = 1;
 
     public bool UseWorkTask = true;
 
