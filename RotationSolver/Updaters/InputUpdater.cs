@@ -39,7 +39,6 @@ internal static class InputUpdater
             RecordingDoAction = false;
         }
 
-        
         foreach (var key in Svc.KeyState.GetValidVirtualKeys())
         {
             if (key is VirtualKey.CONTROL) continue;
