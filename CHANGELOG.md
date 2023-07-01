@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.0.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.2...v3.0.3) (2023-07-01)
+
+
+### Bug Fixes
+
+* add a auto download. ([41c059f](https://github.com/ArchiDog1998/RotationSolver/commit/41c059ffafeb4cf73536e508f4e6a5500f4afa49))
+* add delay for count down. ([9d6e228](https://github.com/ArchiDog1998/RotationSolver/commit/9d6e228dbae2c9bc9f35b24d53bdd030723b0854))
+* api for stopmoving. ([57ea0f3](https://github.com/ArchiDog1998/RotationSolver/commit/57ea0f3b659d81d2c23261bd8d1fc0ceea8bc3ab))
+* changed alliance check to action check. ([04923a3](https://github.com/ArchiDog1998/RotationSolver/commit/04923a399e7c2231377250a9616bb35209e559e5))
+* fix for moving check. ([da82cda](https://github.com/ArchiDog1998/RotationSolver/commit/da82cda9e518baf0db02ce56c61bdb18c665a38b))
+* iconSet changed. ([dc39880](https://github.com/ArchiDog1998/RotationSolver/commit/dc39880901448a71ca4bf1e74ce0bdbf48ad0624))
+* less bug report in dalamud log. ([da6faec](https://github.com/ArchiDog1998/RotationSolver/commit/da6faec79b16877353daeee3b49243d6268163f9))
+* try to fix smn Carbuncle. ([5855b8d](https://github.com/ArchiDog1998/RotationSolver/commit/5855b8dac53530a3dc3d560d4a06bbf6b38fb88f))
+
 ## [3.0.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.1...v3.0.2) (2023-06-28)
 
 
