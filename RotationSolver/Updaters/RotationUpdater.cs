@@ -80,18 +80,13 @@ internal static class RotationUpdater
         {
             if (Directory.Exists(dir))
             {
-                var dlls = Directory.GetFiles(dir, "*.dll");
-                foreach (var dll in dlls)
+                foreach (var dll in Directory.GetFiles(dir, "*.dll"))
                 {
                     var assembly = LoadOne(dll);
 
                     if (assembly != null)
                     {
                         assemblies.Add(assembly);
-                    }
-                    else
-                    {
-                        return;
                     }
                 }
             }
@@ -136,7 +131,6 @@ internal static class RotationUpdater
             var sortedCustomRotationGroups = customRotationGroups.OrderBy(crg => crg.JobId).ToArray();
             CustomRotationsDict[jobRole] = sortedCustomRotationGroups;
         }
-
     }
 
     private static CustomRotationGroup[] LoadCustomRotationGroup(List<Assembly> assemblies)
@@ -274,11 +268,10 @@ internal static class RotationUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Log(ex, "Failed to load " + filePath);
+            PluginLog.Warning(ex, "Failed to load " + filePath);
         }
         return null;
     }
-
 
     // This method watches for changes in local rotation files by checking the
     // last modified time of the files in the directories specified in the configuration.
@@ -344,7 +337,7 @@ internal static class RotationUpdater
         }
         catch (Exception ex) 
         {
-            PluginLog.LogError(ex, $"Failed to load the rotation: {t.Name}");
+            PluginLog.Error(ex, $"Failed to load the rotation: {t.Name}");
             return null; 
         }
     }

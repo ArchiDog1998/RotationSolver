@@ -20,8 +20,6 @@ namespace RotationSolver.Helpers
             _directory = directoryInfo;
         }
 
-
-
         static RotationLoadContext()
         {
             var assemblies = new Assembly[]
@@ -70,13 +68,18 @@ namespace RotationSolver.Helpers
             var pdbPath = Path.ChangeExtension(filePath, ".pdb");
             if (!File.Exists(pdbPath))
             {
-                PluginLog.Information($"Failed to load {pdbPath}");
+                PluginLog.Information($"Failed to find {pdbPath}");
                 return LoadFromStream(file);
             }
             using var pdbFile = File.Open(pdbPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var assembly = LoadFromStream(file, pdbFile);
-
-            return assembly;
+            try
+            {
+                return LoadFromStream(file, pdbFile);
+            }
+            catch
+            {
+                return LoadFromStream(file);
+            }
         }
 
     }
