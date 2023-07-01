@@ -334,7 +334,7 @@ public static class TargetFilter
     /// <param name="radius"></param>
     /// <returns></returns>
     public static IEnumerable<T> GetObjectInRadius<T>(this IEnumerable<T> objects, float radius) where T : GameObject
-        => objects.Where(o => o.DistanceToPlayer() <= radius)
+        => objects.Where(o => o.DistanceToPlayer() <= radius);
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
         => DataCenter.TargetingType switch

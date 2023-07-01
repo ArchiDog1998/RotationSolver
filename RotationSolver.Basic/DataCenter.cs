@@ -119,7 +119,8 @@ public static class DataCenter
     }
 
     public static bool IsMoving { get; internal set; }
-    public static float StopMovingRaw { get; internal set; }
+
+    internal static float StopMovingRaw { get; set; }
 
     public static unsafe ushort FateId
     {
