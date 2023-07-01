@@ -7,7 +7,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 public abstract class SMN_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Intelligence;
-    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.SMN, ECommons.ExcelServices.Job.ACN };
+    public sealed override Job[] Jobs => new [] { Job.SMN, Job.ACN };
     protected override bool CanHealSingleSpell => false;
     protected static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.DeathFlare;
 
@@ -54,7 +54,7 @@ public abstract class SMN_Base : CustomRotation
     {
         ImGui.Text("AttunmentTime: " + AttunmentTimerRemainingRaw.ToString());
         ImGui.Text("SummonTime: " + SummonTimerRemainingRaw.ToString());
-        base.DisplayStatus();
+        ImGui.Text("Pet: " + DataCenter.HasPet.ToString());
     }
 
     #region Summon
@@ -77,7 +77,7 @@ public abstract class SMN_Base : CustomRotation
 
     public static IBaseAction SummonCarbuncle { get; } = new BaseAction(ActionID.SummonCarbuncle)
     {
-        ActionCheck = (b, m) => !DataCenter.HasPet,
+        ActionCheck = (b, m) => !DataCenter.HasPet && AttunmentTimerRemainingRaw == 0 && SummonTimerRemainingRaw == 0,
     };
     #endregion
 

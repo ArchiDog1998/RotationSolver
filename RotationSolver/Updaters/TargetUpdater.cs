@@ -233,7 +233,7 @@ internal static partial class TargetUpdater
     private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
     {
         DataCenter.PartyMembers = GetPartyMembers(allTargets);
-        DataCenter.AllianceMembers = allTargets.OfType<PlayerCharacter>();
+        DataCenter.AllianceMembers = allTargets.Where(ObjectHelper.IsAlliance);
 
         var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.ObjectId);
         DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);

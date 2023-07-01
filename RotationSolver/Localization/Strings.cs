@@ -21,7 +21,7 @@ internal partial class Strings
     public string ConfigWindow_ParamItem { get; set; } = "Param";
     public string ConfigWindow_ListItem { get; set; } = "List";
     public string ConfigWindow_EventItem { get; set; } = "Event";
-    public string ConfigWindow_ActionItem { get; set; } = "Action";
+    public string ConfigWindow_ActionItem { get; set; } = "Action Rules";
     public string ConfigWindow_ControlItem { get; set; } = "Control";
     public string ConfigWindow_HelpItem { get; set; } = "Help";
     public string ConfigWindow_ActionItem_Description { get; set; }
@@ -125,6 +125,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
+    public string ConfigWindow_Param_CountdownDelay { get; set; } = "Set the range of random delay for count down in the party.";
     public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
 
     public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for the interval of clicking actions.";

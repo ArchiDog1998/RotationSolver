@@ -98,6 +98,10 @@ internal partial class RotationConfigWindow
             ref Service.Config.HealDelayMin, ref Service.Config.HealDelayMax, 
             Service.Default.HealDelayMin, Service.Default.HealDelayMax);
 
+        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_CountdownDelay,
+            ref Service.Config.CountdownDelayMin, ref Service.Config.CountdownDelayMax,
+            Service.Default.CountdownDelayMin, Service.Default.CountdownDelayMax);
+
         DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_NotInCombatDelay, 
             ref Service.Config.NotInCombatDelayMin, ref Service.Config.NotInCombatDelayMax,
             Service.Default.NotInCombatDelayMin, Service.Default.NotInCombatDelayMax);

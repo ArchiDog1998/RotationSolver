@@ -1,6 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Logging;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Lumina.Excel.GeneratedSheets;
 
@@ -38,7 +41,15 @@ public static class ObjectHelper
 
     public static unsafe bool IsNPCEnemy(this GameObject obj)
         => obj != null && obj.GetObjectKind() == ObjectKind.BattleNpc
-        && obj.IsHostile();
+        && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.Struct());
+
+    //public static unsafe bool IsNPCEnemy(this GameObject obj)
+    //    => obj != null && obj.GetObjectKind() == ObjectKind.BattleNpc
+    //    && obj.IsHostile();
+
+    public static unsafe bool IsAlliance(this GameObject obj)
+        => obj != null && (obj is PlayerCharacter
+        || ActionManager.CanUseActionOnTarget((uint)ActionID.Cure, obj.Struct()));
 
     public static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.Struct()->ObjectKind;
 

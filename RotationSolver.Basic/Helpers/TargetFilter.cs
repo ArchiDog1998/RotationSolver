@@ -203,7 +203,6 @@ public static class TargetFilter
         if (deathParty.Any())
         {
             //确认一下死了的T有哪些。
-
             var deathT = deathParty.GetJobCategory(JobRole.Tank);
             int TCount = DataCenter.PartyTanks.Count();
 
@@ -250,28 +249,17 @@ public static class TargetFilter
 
             if (!item.IsTargetable()) return false;
 
-            //如果已经有复活的Buff了，那就算了。
             if (item.HasStatus(false, StatusID.Raise)) return false;
 
-            //如果濒死了，那给我TMD冷静冷静！等着另一个奶大发慈悲吧。
             if (!Service.Config.RaiseBrinkOfDeath && item.HasStatus(false, StatusID.BrinkOfDeath)) return false;
 
-            //如果有人在对着他咏唱，那就算了。
             if (DataCenter.AllianceMembers.Any(c => c.CastTargetObjectId == item.ObjectId)) return false;
 
             return true;
         });
 
     public static IEnumerable<BattleChara> GetJobCategory(this IEnumerable<BattleChara> objects, params JobRole[] roles)
-    {
-        return roles.SelectMany(role =>
-        {
-            return objects.Where(obj =>
-            {
-                return obj.IsJobCategory(role);
-            });
-        });
-    }
+        => roles.SelectMany(role => objects.Where(obj => obj.IsJobCategory(role)));
 
     public static bool IsJobCategory(this BattleChara obj, JobRole role)
     {
@@ -346,13 +334,10 @@ public static class TargetFilter
     /// <param name="radius"></param>
     /// <returns></returns>
     public static IEnumerable<T> GetObjectInRadius<T>(this IEnumerable<T> objects, float radius) where T : GameObject
-    {
-        return objects.Where(o => o.DistanceToPlayer() <= radius);
-    }
+        => objects.Where(o => o.DistanceToPlayer() <= radius);
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
-    {
-        return DataCenter.TargetingType switch
+        => DataCenter.TargetingType switch
         {
             TargetingType.Small => charas.OrderBy(p => p.HitboxRadius),
             TargetingType.HighHP => charas.OrderByDescending(p => p.CurrentHp),
@@ -361,5 +346,4 @@ public static class TargetFilter
             TargetingType.LowMaxHP => charas.OrderBy(p => p.MaxHp),
             _ => charas.OrderByDescending(p => p.HitboxRadius),
         };
-    }
 }
