@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.3...v3.0.4) (2023-07-01)
+
+
+### Bug Fixes
+
+* safe loading rotations. ([0cd704f](https://github.com/ArchiDog1998/RotationSolver/commit/0cd704f072d743a6f43d6f3e4d1e82d106cce408))
+
 ## [3.0.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.2...v3.0.3) (2023-07-01)
 
 
