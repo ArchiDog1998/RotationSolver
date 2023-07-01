@@ -118,7 +118,8 @@ public static class DataCenter
         }
     }
 
-    public unsafe static bool IsMoving => AgentMap.Instance()->IsPlayerMoving > 0;
+    public static bool IsMoving { get; internal set; }
+    public static float StopMovingRaw { get; internal set; }
 
     public static unsafe ushort FateId
     {

@@ -4,6 +4,7 @@ using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.UI;
@@ -12,7 +13,6 @@ namespace RotationSolver.Updaters;
 
 internal static class ActionUpdater
 {
-    static DateTime _startCombatTime = DateTime.MinValue;
     internal static DateTime _cancelTime = DateTime.MinValue;
 
     static  RandomDelay _GCDDelay = new(() => (Service.Config.WeaponDelayMin, Service.Config.WeaponDelayMax));
@@ -98,18 +98,52 @@ internal static class ActionUpdater
     internal unsafe static void UpdateActionInfo()
     {
         UpdateWeaponTime();
-        UpdateTimeInfo();
+        UpdateCombatTime();
+        UpdateBluSlots();
+        UpdateMPTimer();
+    }
+    private unsafe static void UpdateBluSlots()
+    {
+        for (int i = 0; i < DataCenter.BluSlots.Length; i++)
+        {
+            DataCenter.BluSlots[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
+        }
     }
 
-    private unsafe static void UpdateTimeInfo()
+    static DateTime _stopMovingTime = DateTime.MinValue;
+    private unsafe static void UpdateMoving()
+    {
+        var last = DataCenter.IsMoving;
+        DataCenter.IsMoving = AgentMap.Instance()->IsPlayerMoving > 0;
+        if (last && !DataCenter.IsMoving)
+        {
+            _stopMovingTime = DateTime.Now;
+        }
+        else if (DataCenter.IsMoving)
+        {
+            _stopMovingTime = DateTime.MinValue;
+        }
+
+        if (_stopMovingTime == DateTime.MinValue)
+        {
+            DataCenter.StopMovingRaw = 0;
+        }
+        else
+        {
+            DataCenter.StopMovingRaw = (float)(DateTime.Now - _stopMovingTime).TotalSeconds;
+        }
+    }
+
+    static DateTime _startCombatTime = DateTime.MinValue;
+    private static void UpdateCombatTime()
     {
         var last = DataCenter.InCombat;
         DataCenter.InCombat = Svc.Condition[ConditionFlag.InCombat];
-        if(!last && DataCenter.InCombat)
+        if (!last && DataCenter.InCombat)
         {
             _startCombatTime = DateTime.Now;
         }
-        else if(last && !DataCenter.InCombat)
+        else if (last && !DataCenter.InCombat)
         {
             _startCombatTime = DateTime.MinValue;
             if (Service.Config.AutoOffAfterCombat > 0)
@@ -117,6 +151,7 @@ internal static class ActionUpdater
                 _cancelTime = DateTime.Now.AddSeconds(Service.Config.AutoOffAfterCombat);
             }
         }
+
         if (_startCombatTime == DateTime.MinValue)
         {
             DataCenter.CombatTimeRaw = 0;
@@ -125,12 +160,6 @@ internal static class ActionUpdater
         {
             DataCenter.CombatTimeRaw = (float)(DateTime.Now - _startCombatTime).TotalSeconds;
         }
-
-        for (int i = 0; i < DataCenter.BluSlots.Length; i++)
-        {
-            DataCenter.BluSlots[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
-        }
-        UpdateMPTimer();
     }
 
     private static unsafe void UpdateWeaponTime()

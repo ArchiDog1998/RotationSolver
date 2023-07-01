@@ -21,7 +21,7 @@ namespace RotationSolver.Updaters;
 internal class SocialUpdater
 {
     public static bool InPvp { get; private set; }
-    public static bool InHouse { get; private set; }
+    //public static bool InHouse { get; private set; }
 
     private static readonly List<string> _macroToAuthor = new()
     {
@@ -38,8 +38,8 @@ internal class SocialUpdater
     static bool _canSaying = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
 
-    public static bool IsHouseArea(TerritoryType territory)
-        => territory?.Bg.RawString.Contains("/hou/") ?? false;
+    //public static bool IsHouseArea(TerritoryType territory)
+    //    => territory?.Bg.RawString.Contains("/hou/") ?? false;
 
     public static string GetDutyName(TerritoryType territory)
     {
@@ -96,7 +96,7 @@ internal class SocialUpdater
             _canSaying = true;
         }
         InPvp = territory?.IsPvpZone ?? false;
-        InHouse = IsHouseArea(territory);
+        //InHouse = IsHouseArea(territory);
         //if (PainterManager._painter != null) PainterManager._painter.Enable = !InHouse;
         DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);
         DataCenter.InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
@@ -134,7 +134,6 @@ internal class SocialUpdater
                           new TextPayload("Rotation Solver"),
                           UIForegroundPayload.UIForegroundOff,
                           RawPayload.LinkTerminator,
-
                           new TextPayload(": " + message)),
             Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
             });

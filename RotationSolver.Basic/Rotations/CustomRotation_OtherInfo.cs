@@ -221,6 +221,13 @@ public abstract partial class CustomRotation
         => IActionHelper.IsLastAction(ids);
 
     /// <summary>
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
+    /// </summary>
+    /// <param name="GCD"></param>
+    /// <returns></returns>
+    protected static bool CombatElapsedLessGCD(int GCD) => CombatElapsedLess(GCD * DataCenter.WeaponTotal);
+
+    /// <summary>
     /// Whether the battle lasted less than <paramref name="time"/> seconds
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
@@ -230,15 +237,24 @@ public abstract partial class CustomRotation
 
     protected static float CombatTime => InCombat ? DataCenter.CombatTimeRaw + DataCenter.WeaponRemain : 0;
 
-    protected static float GCDTime(uint gcdCount = 0, float offset = 0)
-        => DataCenter.GCDTime(gcdCount, offset);
-
     /// <summary>
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     /// <param name="GCD"></param>
     /// <returns></returns>
-    protected static bool CombatElapsedLessGCD(int GCD) => CombatElapsedLess(GCD * DataCenter.WeaponTotal);
+    protected static bool StopMovingElapsedLessGCD(int GCD) => StopMovingElapsedLess(GCD * DataCenter.WeaponTotal);
+
+    /// <summary>
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
+    /// </summary>
+    /// <param name="time">time in second.</param>
+    /// <returns></returns>
+    protected static bool StopMovingElapsedLess(float time) => StopMovingTime <= time;
+
+    protected static float StopMovingTime => IsMoving ? 0 : DataCenter.StopMovingRaw + DataCenter.WeaponRemain;
+
+    protected static float GCDTime(uint gcdCount = 0, float offset = 0)
+        => DataCenter.GCDTime(gcdCount, offset);
 
     public MethodInfo[] AllLast => GetType().GetStaticBoolMethodInfo(m =>
     {
