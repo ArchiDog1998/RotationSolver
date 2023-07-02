@@ -227,7 +227,6 @@
   "ActionSequencer_ActionSequencerDescription": "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.",
   "ActionSequencer_ForceConditionSet": "Conditions When Automatic Use of Action is Forced",
   "ActionSequencer_DisableConditionSet": "Conditions When Automatic Use of Action is Disabled",
-  "ActionSequencer_ConditionsRequired": "Conditions Required",
   "ActionSequencer_Can": "Can",
   "ActionSequencer_Cannot": "Cannot",
   "ActionSequencer_Is": "Is",

@@ -290,7 +290,7 @@ public partial class BaseAction
     {
         target = b;
         if (!CanUseTo(b)) return false;
-        if (!TargetFilterFuncEot(new BattleChara[] { b }, mustUse).Any()) return false;
+        if (ChoiceTarget(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), mustUse) == null) return false;
 
         if (_action.CastType == 1)
         {
