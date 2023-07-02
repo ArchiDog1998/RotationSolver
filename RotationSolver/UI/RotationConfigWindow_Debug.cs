@@ -51,7 +51,6 @@ internal partial class RotationConfigWindow
         ImGui.Text("Moving: " + DataCenter.IsMoving.ToString());
         ImGui.Text("Stop Moving: " + DataCenter.StopMovingRaw.ToString());
 
-
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
         ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
         ImGui.Text("TimeToNext: " + DataCenter.NextAbilityToNextGCD.ToString());

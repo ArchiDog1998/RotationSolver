@@ -316,7 +316,10 @@ internal partial class Strings
     public string ActionSequencer_MustUseDesc { get; set; } = "Skip AOE and Buff.";
     public string ActionSequencer_Empty { get; set; } = "UseUp";
     public string ActionSequencer_EmptyDesc { get; set; } = "UseUp or Skip Combo";
-    public string ActionSequencer_ActionSequencerDescription { get; set; } = "Add some condition to automatic use this action.";
+    public string ActionSequencer_ActionSequencerDescription { get; set; } = "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.";
+
+    public string ActionSequencer_ForceConditionSet { get; set; } = "Conditions When Automatic Use of Action is Forced";
+    public string ActionSequencer_DisableConditionSet { get; set; } = "Conditions When Automatic Use of Action is Disabled";
     public string ActionSequencer_Can { get; set; } = "Can";
     public string ActionSequencer_Cannot { get; set; } = "Cannot";
     public string ActionSequencer_Is { get; set; } = "Is";

@@ -1,4 +1,5 @@
-﻿using RotationSolver.ActionSequencer;
+﻿using Dalamud.Interface.Colors;
+using RotationSolver.ActionSequencer;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
@@ -61,22 +62,25 @@ internal partial class RotationConfigWindow
         var set = ActionSequencerUpdater.RightSet;
         if (set == null) return;
 
-        ConditionSet conditionSet;
-        if (ActionSequencerUpdater.IsDisableCondition)
+        ImGui.SameLine();
+        ImGui.TextColored(ImGuiColors.DalamudYellow, ActiveAction.Name);
+
+        if (ImGui.CollapsingHeader(LocalizationManager.RightLang.ActionSequencer_ForceConditionSet))
         {
-            if (!set.DiableConditions.TryGetValue(ActiveAction.ID, out conditionSet))
-            {
-                conditionSet = set.DiableConditions[ActiveAction.ID] = new ConditionSet();
-            }
-        }
-        else
-        {
-            if (!set.Conditions.TryGetValue(ActiveAction.ID, out conditionSet))
+            if (!set.Conditions.TryGetValue(ActiveAction.ID, out var conditionSet))
             {
                 conditionSet = set.Conditions[ActiveAction.ID] = new ConditionSet();
             }
+            conditionSet?.Draw(rotation, ActiveAction.IsActionSequencer);
         }
 
-        conditionSet?.Draw(rotation, ActionSequencerUpdater.IsDisableCondition || ActiveAction.IsActionSequencer);
+        if (ImGui.CollapsingHeader(LocalizationManager.RightLang.ActionSequencer_DisableConditionSet))
+        {
+            if (!set.DiableConditions.TryGetValue(ActiveAction.ID, out var disableConditionSet))
+            {
+                disableConditionSet = set.DiableConditions[ActiveAction.ID] = new ConditionSet();
+            }
+            disableConditionSet?.Draw(rotation, true);
+        }
     }
 }

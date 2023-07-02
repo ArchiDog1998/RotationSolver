@@ -26,7 +26,7 @@ internal class ConditionSet : ICondition
             ImGui.SameLine();
             ImGui.SetNextItemWidth(65);
             int isAnd = IsAnd ? 1 : 0;
-            if (ImGui.Combo("##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
+            if (ImGui.Combo($"##Rule" + GetHashCode().ToString(), ref isAnd, new string[]
             {
                 "OR", "AND",
             }, 2))
