@@ -162,11 +162,18 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawIcon()
     {
-        var ptr = AgentMap.Instance();
+        var ptr = (IntPtr)AgentMap.Instance();
         for (var i = 23064; i < 23079; i++)
         {
-            var value = *(byte*)(ptr + i);
-            ImGui.Text($"{i}: {value}");
+            try
+            {
+                var value = *(byte*)(ptr + i);
+                ImGui.Text($"{i}: {value}");
+            }
+            catch
+            {
+
+            }
         }
     }
 
