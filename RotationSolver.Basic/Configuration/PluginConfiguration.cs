@@ -89,6 +89,7 @@ public class PluginConfiguration : IPluginConfiguration
     public bool UseHealWhenNotAHealer = true;
     public float HealthDifference = 0.25f;
     public float MeleeRangeOffset = 1;
+    public bool ActionTargetFriendly = false;
     public bool TargetFriendly = false;
     public float MinLastAbilityAdvanced = 0.1f;
 

@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
@@ -73,14 +74,13 @@ namespace RotationSolver.Commands
                     //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (((Svc.Targets.Target?.IsNPCEnemy() ?? true)
+                    if (act.Target != null && (Service.Config.TargetFriendly || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
                         || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
-                        && (act.Target?.IsNPCEnemy() ?? false))
+                        && act.Target.IsNPCEnemy()))
                     {
                         Svc.Targets.Target = act.Target;
                     }
                 }
-
             }
         }
 

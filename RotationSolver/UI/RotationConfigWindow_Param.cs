@@ -517,13 +517,16 @@ internal partial class RotationConfigWindow
             ref Service.Config.MoveAreaActionFarthest, Service.Default.MoveAreaActionFarthest,
             LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthestDesc);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFriendly,
-            ref Service.Config.TargetFriendly, Service.Default.TargetFriendly);
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ActionTargetFriendly,
+            ref Service.Config.ActionTargetFriendly, Service.Default.ActionTargetFriendly);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseAll,
             ref Service.Config.RaiseAll, Service.Default.RaiseAll);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseBrinkOfDeath,
             ref Service.Config.RaiseBrinkOfDeath, Service.Default.RaiseBrinkOfDeath);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFriendly,
+            ref Service.Config.TargetFriendly, Service.Default.TargetFriendly);
     }
 }

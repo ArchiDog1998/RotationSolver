@@ -210,7 +210,7 @@ public partial class BaseAction
 
         var availableCharas = DataCenter.PartyMembers.Where(player => player.CurrentHp != 0);
 
-        if (Service.Config.TargetFriendly ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
+        if (Service.Config.ActionTargetFriendly ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
         {
             availableCharas = availableCharas.Union(DataCenter.AllianceMembers);
         }
