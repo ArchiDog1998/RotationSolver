@@ -617,4 +617,6 @@ internal partial class Strings
     public string HighEndWarning { get; set; } = "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!";
     public string HighEndBan { get; set; } = "{0} can not be used in High-end Duty!";
     public string TextToTalkWarning { get; set; } = "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!";
+
+    public string WhiteListDownloadingFailed { get; set; } = "Failed to load white List. Click to retry.";
 }

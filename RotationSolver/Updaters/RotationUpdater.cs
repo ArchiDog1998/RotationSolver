@@ -28,7 +28,6 @@ internal static class RotationUpdater
     public static async Task GetAllCustomRotationsAsync(DownloadOption option)
     {
         if (_isLoading) return;
-
         _isLoading = true;
 
         try
