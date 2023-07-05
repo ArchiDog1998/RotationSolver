@@ -169,7 +169,8 @@
   "ConfigWindow_Param_MoveTowardsScreen": "移动技能优先以屏幕中心的对象为目标",
   "ConfigWindow_Param_MoveTowardsScreenDesc": "移动技能优先以屏幕中心的对象为目标，否则以角色面向为优先方向",
   "ConfigWindow_Param_RaiseAll": "复活所有人 (包括路人)",
-  "ConfigWindow_Param_TargetFriendly": "治疗（增益）类技能可以瞄准所有人(包括路人)",
+  "ConfigWindow_Param_ActionTargetFriendly": "Target all for friendly actions (include passerby)",
+  "ConfigWindow_Param_TargetFriendly": "Auto switch target for alliance.",
   "ConfigWindow_Param_RaiseBrinkOfDeath": "复活带有濒死（大黑头）的目标",
   "ConfigWindow_Param_MoveAreaActionFarthest": "使用移动类能力技移动到最远处",
   "ConfigWindow_Param_MoveAreaActionFarthestDesc": "移动到人物面向最远的位置。",
@@ -425,5 +426,6 @@
   },
   "HighEndWarning": "当在{0} 时, 请单独绑定减伤/护盾的冷却时间, 以防RS在关键时刻失效!",
   "HighEndBan": "{0} 循环不可以用于高难战斗！",
-  "TextToTalkWarning": "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!"
+  "TextToTalkWarning": "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!",
+  "WhiteListDownloadingFailed": "Failed to load white List. Click to retry."
 }
