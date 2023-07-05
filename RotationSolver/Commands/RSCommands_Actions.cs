@@ -74,7 +74,7 @@ namespace RotationSolver.Commands
                     //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (act.Target != null && (Service.Config.TargetFriendly || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
+                    if (act.Target != null && (Service.Config.TargetFriendly && DataCenter.StateType != StateCommandType.Manual || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
                         || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
                         && act.Target.IsNPCEnemy()))
                     {
