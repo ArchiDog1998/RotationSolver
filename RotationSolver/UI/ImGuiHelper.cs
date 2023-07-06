@@ -3,7 +3,6 @@ using Dalamud.Interface.Components;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;

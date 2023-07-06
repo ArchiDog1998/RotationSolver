@@ -148,21 +148,27 @@ public abstract partial class CustomRotation
     private protected virtual IBaseAction Raise => null;
     private protected virtual IBaseAction TankStance => null;
 
-    public virtual IBaseAction[] AllBaseActions => GetBaseActions(GetType()).ToArray();
+    IBaseAction[] _allBaseActions;
+    public virtual IBaseAction[] AllBaseActions => _allBaseActions ??= GetBaseActions(GetType()).ToArray();
 
-    public IAction[] AllActions => Array.Empty<IAction>().Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
+    IAction[] _allActions;
+    public IAction[] AllActions => _allActions ??= Array.Empty<IAction>().Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
 
-    public PropertyInfo[] AllBools => GetType().GetStaticProperties<bool>();
+    PropertyInfo[] _allBools;
+    public PropertyInfo[] AllBools => _allBools ??= GetType().GetStaticProperties<bool>();
 
-    public PropertyInfo[] AllBytes => GetType().GetStaticProperties<byte>();
+    PropertyInfo[] _allBytes;
+    public PropertyInfo[] AllBytes => _allBytes ??= GetType().GetStaticProperties<byte>();
 
-    public MethodInfo[] AllTimes => GetType().GetStaticBoolMethodInfo(m =>
+    MethodInfo[] _allTimes;
+    public MethodInfo[] AllTimes => _allTimes ??= GetType().GetStaticBoolMethodInfo(m =>
     {
         var types = m.GetParameters();
         return types.Length == 1 && types[0].ParameterType == typeof(float);
     });
 
-    public MethodInfo[] AllGCDs => GetType().GetStaticBoolMethodInfo(m =>
+    MethodInfo[] _allGCDs;
+    public MethodInfo[] AllGCDs => _allGCDs ??= GetType().GetStaticBoolMethodInfo(m =>
     {
         var types = m.GetParameters();
         return types.Length == 2 && types[0].ParameterType == typeof(uint) && types[1].ParameterType == typeof(uint);
