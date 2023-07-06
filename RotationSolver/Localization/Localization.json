@@ -178,7 +178,7 @@
   "ConfigWindow_Param_HostileDesc": "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.",
   "ConfigWindow_Param_AddOne": "Add One",
   "ConfigWindow_Param_HostileCondition": "Hostile target selection condition",
-  "ConfigWindow_Param_ResetToDefault": "Press left ctrl and press left mouse button to reset this value",
+  "ConfigWindow_Param_ResetToDefault": "click to reset this value",
   "ConfigWindow_Action_ShowOnCDWindow": "Show on CD window",
   "ConfigWindow_Control_OnlyShowWithHostileOrInDuty": "Only shown if there are enemies in or in duty",
   "ConfigWindow_Control_ShowNextActionWindow": "Show Next Action Window",

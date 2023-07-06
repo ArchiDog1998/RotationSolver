@@ -125,18 +125,34 @@ internal static class ImGuiHelper
         return result;
     }
 
+    static string _undoName;
+    static DateTime _lastTime;
     public static void UndoValue<T>(string name, ref T value, T @default, Action otherThing = null)
     {
         ImGui.SameLine();
+        Spacing();
+        
+        bool isLast = name == _undoName && DateTime.Now - _lastTime < TimeSpan.FromSeconds(2);
 
-        if (IconButton(FontAwesomeIcon.Undo, $"#{name}: Undo",
+        if (isLast) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
+        if (IconButton(isLast ? FontAwesomeIcon.Check : FontAwesomeIcon.Undo, $"#{name}: Undo",
             LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault)
-            && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
+            && DateTime.Now - _lastTime > TimeSpan.FromSeconds(0.5))
         {
-            otherThing?.Invoke();
-            value = @default;
-            Service.Config.Save();
+            if (isLast)
+            {
+                otherThing?.Invoke();
+                value = @default;
+                Service.Config.Save();
+            }
+            else
+            {
+                _lastTime = DateTime.Now;
+                _undoName = name;
+            }
         }
+        if (isLast) ImGui.PopStyleColor();
+
     }
 
     public static void UndoValue<T>(string name, ref T value1, T default1, ref T value2, T default2, Action otherThing = null)
