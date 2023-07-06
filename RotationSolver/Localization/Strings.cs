@@ -253,7 +253,9 @@ internal partial class Strings
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_AddOne { get; set; } = "Add One";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
-    public string ConfigWindow_Param_ResetToDefault { get; set; } = "click to reset this value";
+    public string ConfigWindow_Param_ResetToDefault { get; set; } = "Click to reset this value.";
+    public string ConfigWindow_Param_ResetToDefaultWait { get; set; } = "Please wait for a second.";
+    public string ConfigWindow_Param_ResetToDefaultSure { get; set; } = "Are you sure to reset this value?";
 
     public string ConfigWindow_Action_ShowOnCDWindow { get; set; } = "Show on CD window";
 
@@ -621,5 +623,5 @@ internal partial class Strings
 
     public string WhiteListDownloadingFailed { get; set; } = "Failed to load white List. Click to retry.";
 
-    public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action!";
+    public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action ({0})!";
 }
