@@ -1,5 +1,4 @@
-﻿using ECommons.ExcelServices;
-using RotationSolver.Commands;
+﻿using RotationSolver.Commands;
 using RotationSolver.Localization;
 
 namespace RotationSolver.UI;
@@ -68,7 +67,6 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToggleManual,
             ref Service.Config.ToggleManual, Service.Default.ToggleManual);
-
     }
 
     private void DrawParamDelay()

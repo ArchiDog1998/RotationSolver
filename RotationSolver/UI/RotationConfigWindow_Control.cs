@@ -105,10 +105,12 @@ internal partial class RotationConfigWindow
             otherthing?.Invoke();
             Service.Config.Save();
         }
-        if (ImGuiHelper.HoveredStringReset(description) && value != @default)
+
+        ImGuiHelper.HoveredString(description);
+
+        if (value != @default)
         {
-            value = @default;
-            Service.Config.Save();
+            ImGuiHelper.UndoValue(name, ref value, @default);
         }
     }
 }

@@ -252,7 +252,7 @@ internal partial class Strings
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_AddOne { get; set; } = "Add One";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
-    public string ConfigWindow_Param_ResetToDefault { get; set; } = "Press left ctrl + shift and press right mouse button to reset this value";
+    public string ConfigWindow_Param_ResetToDefault { get; set; } = "Press left ctrl and press left mouse button to reset this value";
 
     public string ConfigWindow_Action_ShowOnCDWindow { get; set; } = "Show on CD window";
 

@@ -9,8 +9,6 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.ComponentModel;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RotationSolver.UI;
 
@@ -127,20 +125,49 @@ internal static class ImGuiHelper
         return result;
     }
 
-    public static Vector2 IconButtonSize(FontAwesomeIcon icon, string name)
+    public static void UndoValue<T>(string name, ref T value, T @default, Action otherThing = null)
     {
-        ImGui.PushFont(UiBuilder.IconFont);
-        var result = ImGui.CalcTextSize($"{icon.ToIconString()}##{name}");
-        ImGui.PopFont();
-        return result;
+        ImGui.SameLine();
+
+        if (IconButton(FontAwesomeIcon.Undo, $"#{name}: Undo",
+            LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault)
+            && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
+        {
+            otherThing?.Invoke();
+            value = @default;
+            Service.Config.Save();
+        }
     }
+
+    public static void UndoValue<T>(string name, ref T value1, T default1, ref T value2, T default2, Action otherThing = null)
+    {
+        ImGui.SameLine();
+
+        if (IconButton(FontAwesomeIcon.Undo, $"#{name}: Undo",
+            LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault)
+            && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
+        {
+            otherThing?.Invoke();
+            value1 = default1;
+            value2 = default2;
+            Service.Config.Save();
+        }
+    }
+
+    //public static Vector2 IconButtonSize(FontAwesomeIcon icon, string name)
+    //{
+    //    ImGui.PushFont(UiBuilder.IconFont);
+    //    var result = ImGui.CalcTextSize($"{icon.ToIconString()}##{name}");
+    //    ImGui.PopFont();
+    //    return result;
+    //}
 
 
     public static void HoveredString(string text, Action selected = null)
     {
         if (ImGui.IsItemHovered())
         {
-            ImGuiHelper.ShowTooltip(text);
+            ShowTooltip(text);
 
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
             {
@@ -155,21 +182,21 @@ internal static class ImGuiHelper
         if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
     }
 
-    public static bool HoveredStringReset(string text)
-    {
-        if (ImGui.IsItemHovered())
-        {
-            text = string.IsNullOrEmpty(text)? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault
-            : text + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault;
+    //public static bool HoveredStringReset(string text)
+    //{
+    //    if (ImGui.IsItemHovered())
+    //    {
+    //        text = string.IsNullOrEmpty(text)? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault
+    //        : text + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault;
 
-            ImGuiHelper.ShowTooltip(text);
+    //        ShowTooltip(text);
 
-            return ImGui.IsMouseDown(ImGuiMouseButton.Right)
-            && ImGui.IsKeyPressed(ImGuiKey.LeftShift)
-            && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl);
-        }
-        return false;
-    }
+    //        return ImGui.IsMouseDown(ImGuiMouseButton.Right)
+    //        && ImGui.IsKeyPressed(ImGuiKey.LeftShift)
+    //        && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl);
+    //    }
+    //    return false;
+    //}
 
     internal unsafe static bool DrawEditorList<T>(List<T> items, Action<T> draw)
     {
