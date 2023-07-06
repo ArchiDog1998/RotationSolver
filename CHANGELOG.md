@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.0.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.4...v3.0.5) (2023-07-06)
+
+
+### Bug Fixes
+
+* action mistakes? ([6b27aa6](https://github.com/ArchiDog1998/RotationSolver/commit/6b27aa68707ea15f1dec94cbbc8b85007ecba851))
+* action sequencer ui changed. ([38ea7d2](https://github.com/ArchiDog1998/RotationSolver/commit/38ea7d27708ead48ca417d641da34017462697de))
+* add downloading failed warning. ([87cb90e](https://github.com/ArchiDog1998/RotationSolver/commit/87cb90ec8ac5da8f6f4728113bbd25017c128b58))
+* add target friendly. ([eff495d](https://github.com/ArchiDog1998/RotationSolver/commit/eff495d67f29c4dc8398cfe736ccf5da1ade8021))
+* carbuncle delay. ([52bd225](https://github.com/ArchiDog1998/RotationSolver/commit/52bd22512395cb5de9c7a548937a279fed5c3fbc))
+* changed mistake showing. ([8950151](https://github.com/ArchiDog1998/RotationSolver/commit/895015127f0d4f4977021f5e6b6f1011b22e1370))
+* changed the auto target when friendly. ([7b4e78a](https://github.com/ArchiDog1998/RotationSolver/commit/7b4e78ac412eda99cf5d5f394fb4c4a8e311006a))
+* changed the way to reset value. ([3a27f99](https://github.com/ArchiDog1998/RotationSolver/commit/3a27f99630536426b44c9efa0c7a55561a6f2eb7))
+* fixed mistake ui. ([b0fe466](https://github.com/ArchiDog1998/RotationSolver/commit/b0fe4662c817206367ff6cd561639193d8fe3471))
+* fixed moving target. ([2d1378d](https://github.com/ArchiDog1998/RotationSolver/commit/2d1378dd9db478ec3b36d7323d44518c57a8971c))
+* fixed reset. ([2757d76](https://github.com/ArchiDog1998/RotationSolver/commit/2757d7625895b25e7ef67ee7ac4888927784e79d))
+* set default target to player. ([16b0044](https://github.com/ArchiDog1998/RotationSolver/commit/16b0044e86bdd47918e8248de97e80901ac143b7))
+
 ## [3.0.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.3...v3.0.4) (2023-07-01)
 
 
