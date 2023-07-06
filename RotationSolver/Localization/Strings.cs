@@ -130,6 +130,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for the interval of clicking actions.";
     public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
+    public string ConfigWindow_Param_ClickMistake { get; set; } = "How likely is it that RS will click the wrong action.";
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or has TenChiJin or PhantomFlurry status.";
@@ -242,7 +243,9 @@ internal partial class Strings
     public string ConfigWindow_Param_MoveTowardsScreen { get; set; } = "Using movement actions towards the object in the center of the screen";
     public string ConfigWindow_Param_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
     public string ConfigWindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
-    public string ConfigWindow_Param_TargetFriendly { get; set; } = "Target all for friendly actions(include passerby)";
+    public string ConfigWindow_Param_ActionTargetFriendly { get; set; } = "Target all for friendly actions (include passerby)";
+    public string ConfigWindow_Param_TargetFriendly { get; set; } = "Auto switch target for alliance.";
+
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
     public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
@@ -250,7 +253,7 @@ internal partial class Strings
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_AddOne { get; set; } = "Add One";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
-    public string ConfigWindow_Param_ResetToDefault { get; set; } = "Press left ctrl + shift and press right mouse button to reset this value";
+    public string ConfigWindow_Param_ResetToDefault { get; set; } = "click to reset this value";
 
     public string ConfigWindow_Action_ShowOnCDWindow { get; set; } = "Show on CD window";
 
@@ -316,7 +319,10 @@ internal partial class Strings
     public string ActionSequencer_MustUseDesc { get; set; } = "Skip AOE and Buff.";
     public string ActionSequencer_Empty { get; set; } = "UseUp";
     public string ActionSequencer_EmptyDesc { get; set; } = "UseUp or Skip Combo";
-    public string ActionSequencer_ActionSequencerDescription { get; set; } = "Add some condition to automatic use this action.";
+    public string ActionSequencer_ActionSequencerDescription { get; set; } = "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.";
+
+    public string ActionSequencer_ForceConditionSet { get; set; } = "Conditions When Automatic Use of Action is Forced";
+    public string ActionSequencer_DisableConditionSet { get; set; } = "Conditions When Automatic Use of Action is Disabled";
     public string ActionSequencer_Can { get; set; } = "Can";
     public string ActionSequencer_Cannot { get; set; } = "Cannot";
     public string ActionSequencer_Is { get; set; } = "Is";
@@ -612,4 +618,8 @@ internal partial class Strings
     public string HighEndWarning { get; set; } = "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!";
     public string HighEndBan { get; set; } = "{0} can not be used in High-end Duty!";
     public string TextToTalkWarning { get; set; } = "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!";
+
+    public string WhiteListDownloadingFailed { get; set; } = "Failed to load white List. Click to retry.";
+
+    public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action!";
 }

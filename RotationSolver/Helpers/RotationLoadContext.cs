@@ -81,6 +81,5 @@ namespace RotationSolver.Helpers
                 return LoadFromStream(file);
             }
         }
-
     }
 }

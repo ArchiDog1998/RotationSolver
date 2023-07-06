@@ -19,23 +19,40 @@ internal static class ActionUpdater
 
     internal static IAction NextAction { get; set; }
     internal static IBaseAction NextGCDAction { get; set; }
+    internal static IAction WrongAction { get; set; }
+    static Random _wrongRandom = new();
 
     internal static void UpdateNextAction()
     {
         PlayerCharacter localPlayer = Player.Object;
-        if (localPlayer == null) return;
+        var customRotation = RotationUpdater.RightNowRotation;
 
         try
         {
-            var customRotation = RotationUpdater.RightNowRotation;
-
-            if (customRotation?.TryInvoke(out var newAction, out var gcdAction) ?? false)
+            if (localPlayer != null && customRotation != null
+                && customRotation.TryInvoke(out var newAction, out var gcdAction))
             {
+                if (Service.Config.MistakeRatio > 0)
+                {
+                    var actions = customRotation.AllActions.Where(a =>
+                    {
+                        if (a.ID == newAction?.ID) return false;
+                        if (a is IBaseAction action)
+                        {
+                            return !action.IsFriendly
+                            && action.ChoiceTarget != TargetFilter.FindTargetForMoving
+                            && action.CanUse(out _, CanUseOption.MustUseEmpty | CanUseOption.IgnoreClippingCheck);
+                        }
+                        return false;
+                    });
+                    WrongAction = actions.ElementAt(_wrongRandom.Next(actions.Count()));
+                }
+
                 NextAction = newAction;
 
                 if (gcdAction is IBaseAction GcdAction)
                 {
-                    if(NextGCDAction != GcdAction)
+                    if (NextGCDAction != GcdAction)
                     {
                         NextGCDAction = GcdAction;
 
@@ -50,7 +67,7 @@ internal static class ActionUpdater
                             PainterManager.ClearPositional();
                         }
 
-                        if (GcdAction.EnemyPositional != EnemyPositional.None 
+                        if (GcdAction.EnemyPositional != EnemyPositional.None
                             && GcdAction.Target.HasPositional()
                             && !localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
                         {
@@ -61,17 +78,12 @@ internal static class ActionUpdater
                                 if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
                                 if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional,
                                     new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                                {
-                                    IconId = GcdAction.IconID,
-                                });
+                                    {
+                                        IconId = GcdAction.IconID,
+                                    });
                             }
                         }
                     }
-                }
-                else
-                {
-                    NextGCDAction = null;
-                    PainterManager.ClearPositional();
                 }
                 return;
             }
@@ -81,7 +93,7 @@ internal static class ActionUpdater
             PluginLog.Error(ex, "Failed to update next action.");
         }
 
-        NextAction = NextGCDAction = null;
+        WrongAction = NextAction = NextGCDAction = null;
         PainterManager.ClearPositional();
     }
 

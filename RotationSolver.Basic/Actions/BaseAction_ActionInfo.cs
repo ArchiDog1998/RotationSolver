@@ -52,6 +52,7 @@ public partial class BaseAction
 
         var player = Player.Object;
         if (player == null) return false;
+        Target = player;
 
         if (!option.HasFlag(CanUseOption.SkipDisable) && !IsEnabled) return false;
 

@@ -1,9 +1,11 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.UI;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.Commands
@@ -38,14 +40,7 @@ namespace RotationSolver.Commands
 
         public static void DoAction()
         {
-            //Do Action
-            var nextAction = ActionUpdater.NextAction;
-            if (nextAction == null) return;
-
-#if DEBUG
-            //if (nextAction is BaseAction acti)
-            //    Svc.Chat.Print($"Will Do {acti}");
-#endif
+            //High End bye.
             if (DataCenter.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
                 if ((_loop %= 5) == 0)
@@ -55,6 +50,22 @@ namespace RotationSolver.Commands
                 _loop++;
                 return;
             }
+
+            var wrong = new Random().NextDouble() < Service.Config.MistakeRatio && ActionUpdater.WrongAction != null;
+            var nextAction = wrong ? ActionUpdater.WrongAction : ActionUpdater.NextAction;
+            if (nextAction == null) return;
+
+            if (wrong)
+            {
+                Svc.Toasts.ShowError(LocalizationManager.RightLang.ClickingMistakeMessage);
+                ControlWindow.Wrong = nextAction;
+                ControlWindow.DidTime = DateTime.Now;
+            }
+
+#if DEBUG
+            //if (nextAction is BaseAction acti)
+            //    Svc.Chat.Print($"Will Do {acti}");
+#endif
 
             if (Service.Config.KeyBoardNoise)
             {
@@ -73,14 +84,13 @@ namespace RotationSolver.Commands
                     //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (((Svc.Targets.Target?.IsNPCEnemy() ?? true)
+                    if (act.Target != null && (Service.Config.TargetFriendly && DataCenter.StateType != StateCommandType.Manual || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
                         || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
-                        && (act.Target?.IsNPCEnemy() ?? false))
+                        && act.Target.IsNPCEnemy()))
                     {
                         Svc.Targets.Target = act.Target;
                     }
                 }
-
             }
         }
 

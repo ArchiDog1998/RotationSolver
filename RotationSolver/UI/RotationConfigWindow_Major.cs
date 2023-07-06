@@ -1,5 +1,6 @@
 using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
+using Newtonsoft.Json.Linq;
 using RotationSolver.Localization;
 
 namespace RotationSolver.UI;
@@ -91,13 +92,16 @@ internal partial class RotationConfigWindow : Window
             otherThing?.Invoke();
             Service.Config.Save();
         }
-        if (ImGuiHelper.HoveredStringReset(description) && value != @default)
+
+        ImGuiHelper.HoveredString(description);
+
+        if(value != @default)
         {
-            otherThing?.Invoke();
-            value = @default;
-            Service.Config.Save();
+            ImGuiHelper.UndoValue(name, ref value, @default, otherThing);
         }
     }
+
+
 
     private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float defaultMin, float defaultMax, float speed = 0.01f, float min = 0, float max = 3, string description = "")
     {
@@ -106,11 +110,12 @@ internal partial class RotationConfigWindow : Window
         {
             Service.Config.Save();
         }
-        if (ImGuiHelper.HoveredStringReset(description) && (minValue != defaultMin || maxValue != defaultMax))
+
+        ImGuiHelper.HoveredString(description);
+
+        if (minValue != defaultMin || maxValue != defaultMax)
         {
-            minValue = defaultMin;
-            maxValue = defaultMax;
-            Service.Config.Save();
+            ImGuiHelper.UndoValue(name, ref minValue, defaultMin, ref maxValue, defaultMax);
         }
     }
 
@@ -121,11 +126,12 @@ internal partial class RotationConfigWindow : Window
         {
             Service.Config.Save();
         }
-        if (ImGuiHelper.HoveredStringReset(description) && (minValue != defaultMin || maxValue != defaultMax))
+
+        ImGuiHelper.HoveredString(description);
+
+        if (minValue != defaultMin || maxValue != defaultMax)
         {
-            minValue = defaultMin;
-            maxValue = defaultMax;
-            Service.Config.Save();
+            ImGuiHelper.UndoValue(name, ref minValue, defaultMin, ref maxValue, defaultMax);
         }
     }
 
@@ -137,11 +143,12 @@ internal partial class RotationConfigWindow : Window
             Service.Config.Save();
             otherThing?.Invoke();
         }
-        if (ImGuiHelper.HoveredStringReset(description) && value != @default)
+
+        ImGuiHelper.HoveredString(description);
+
+        if (value != @default)
         {
-            value = @default;
-            Service.Config.Save();
-            otherThing?.Invoke();
+            ImGuiHelper.UndoValue(name, ref value, @default, otherThing);
         }
     }
 
@@ -153,11 +160,12 @@ internal partial class RotationConfigWindow : Window
             Service.Config.Save();
             otherThing?.Invoke();
         }
-        if (ImGuiHelper.HoveredStringReset(description) && value != @default)
+
+        ImGuiHelper.HoveredString(description);
+
+        if (value != @default)
         {
-            value = @default;
-            Service.Config.Save();
-            otherThing?.Invoke();
+            ImGuiHelper.UndoValue(name, ref value, @default, otherThing);
         }
     }
 
@@ -168,10 +176,12 @@ internal partial class RotationConfigWindow : Window
         {
             Service.Config.Save();
         }
-        if (ImGuiHelper.HoveredStringReset(description) && value != @default)
+
+        ImGuiHelper.HoveredString(description);
+
+        if (value != @default)
         {
-            value = @default;
-            Service.Config.Save();
+            ImGuiHelper.UndoValue(name, ref value, @default);
         }
     }
 

@@ -31,7 +31,7 @@ public partial class BaseAction
 
     public Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget
     {
-        private get
+        get
         {
             if (_choiceTarget != null) return _choiceTarget;
             return IsFriendly ? TargetFilter.DefaultChooseFriend : TargetFilter.DefaultFindHostile;
@@ -210,7 +210,7 @@ public partial class BaseAction
 
         var availableCharas = DataCenter.PartyMembers.Where(player => player.CurrentHp != 0);
 
-        if (Service.Config.TargetFriendly ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
+        if (Service.Config.ActionTargetFriendly ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
         {
             availableCharas = availableCharas.Union(DataCenter.AllianceMembers);
         }
@@ -290,7 +290,7 @@ public partial class BaseAction
     {
         target = b;
         if (!CanUseTo(b)) return false;
-        if (!TargetFilterFuncEot(new BattleChara[] { b }, mustUse).Any()) return false;
+        if (ChoiceTarget(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), mustUse) == null) return false;
 
         if (_action.CastType == 1)
         {

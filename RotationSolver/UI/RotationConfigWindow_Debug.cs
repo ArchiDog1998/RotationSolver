@@ -2,6 +2,7 @@
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
@@ -50,7 +51,6 @@ internal partial class RotationConfigWindow
         }
         ImGui.Text("Moving: " + DataCenter.IsMoving.ToString());
         ImGui.Text("Stop Moving: " + DataCenter.StopMovingRaw.ToString());
-
 
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
         ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
@@ -162,25 +162,19 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawIcon()
     {
-        //var pointer = (AddonActionCross*) Service.GetAddon<AddonActionCross>();
-        //if (pointer != null) 
-        //{
-        //    ImGui.Text($"LTRT: {pointer->ExpandedHoldControlsLTRT}");
-        //    ImGui.Text($"RTLT: {pointer->ExpandedHoldControlsRTLT}");
-        //}
-        //var pointer2 = (AddonActionDoubleCrossBase*)Service.GetAddon<AddonActionDoubleCrossBase>();
-        //if (pointer2 != null)
-        //{
-        //    ImGui.Text($"ShowDPadSlots: {pointer2->ShowDPadSlots}");
-        //    ImGui.Text($"BarTarget: {pointer2->BarTarget}");
-        //    ImGui.Text($"UseLeftSide: {pointer2->UseLeftSide}");
-        //    ImGui.Text($"MergedPositioning: {pointer2->MergedPositioning}");
-        //}
+        var ptr = (IntPtr)AgentMap.Instance();
+        for (var i = 23064; i < 23079; i++)
+        {
+            try
+            {
+                var value = *(byte*)(ptr + i);
+                ImGui.Text($"{i}: {value}");
+            }
+            catch
+            {
 
-        var a = new  int[]{ 0,1,3,4, 6, 6, 7};
-        var index = Array.BinarySearch<int>(a, -1);
-        if (index < 0) index = - 1 - index;
-        ImGui.Text(index.ToString());
+            }
+        }
     }
 
     private static void DrawAction(ActionID id, string type)

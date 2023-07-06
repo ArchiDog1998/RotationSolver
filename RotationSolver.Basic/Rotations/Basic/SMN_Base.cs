@@ -75,9 +75,10 @@ public abstract class SMN_Base : CustomRotation
         ActionCheck = (b, m) => HasSummon && IsGarudaReady,
     };
 
+    static RandomDelay _carbuncleDelay = new RandomDelay(() => (2, 2));
     public static IBaseAction SummonCarbuncle { get; } = new BaseAction(ActionID.SummonCarbuncle)
     {
-        ActionCheck = (b, m) => !DataCenter.HasPet && AttunmentTimerRemainingRaw == 0 && SummonTimerRemainingRaw == 0,
+        ActionCheck = (b, m) => _carbuncleDelay.Delay(!DataCenter.HasPet && AttunmentTimerRemainingRaw == 0 && SummonTimerRemainingRaw == 0),
     };
     #endregion
 

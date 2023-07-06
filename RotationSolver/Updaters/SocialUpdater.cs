@@ -123,29 +123,7 @@ internal class SocialUpdater
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
         if (HighEndDuties.Any(t => t.RowId == territory.RowId))
         {
-            var message = string.Format(LocalizationManager.RightLang.HighEndWarning, GetDutyName(territory));
-            
-            Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
-            {
-                Message = new SeString(
-                          new IconPayload(BitmapFontIcon.DPS),
-                          RotationSolverPlugin.LinkPayload,
-                          new UIForegroundPayload(31),
-                          new TextPayload("Rotation Solver"),
-                          UIForegroundPayload.UIForegroundOff,
-                          RawPayload.LinkTerminator,
-                          new TextPayload(": " + message)),
-            Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
-            });
-
-            Task.Run(async() =>
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    await Task.Delay(3000);
-                    Svc.Toasts.ShowError(message);
-                }
-            });
+            string.Format(LocalizationManager.RightLang.HighEndWarning, GetDutyName(territory)).ShowWarning();
         }
     }
 
@@ -214,7 +192,7 @@ internal class SocialUpdater
                           new TextPayload($"({nameDesc}) is one of the authors of "),
 
                           new IconPayload(BitmapFontIcon.DPS),
-                          RotationSolverPlugin.LinkPayload,
+                          RotationSolverPlugin.OpenLinkPayload,
                           new UIForegroundPayload(31),
                           new TextPayload("Rotation Solver"),
                           UIForegroundPayload.UIForegroundOff,

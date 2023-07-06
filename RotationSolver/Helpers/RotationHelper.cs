@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Logging;
 using RotationSolver.Data;
+using RotationSolver.Localization;
 using System.Diagnostics;
 
 namespace RotationSolver.Helpers;
@@ -25,7 +26,9 @@ internal static class RotationHelper
         }
         catch (Exception ex)
         {
-            PluginLog.Log(ex, "Failed to load white List.");
+            var failed = LocalizationManager.RightLang.WhiteListDownloadingFailed;
+            failed.ShowWarning(1, RotationSolverPlugin.DownloadLinkPayload);
+            PluginLog.Log(ex, failed);
         }
     }
 
