@@ -133,11 +133,12 @@ internal static class ImGuiHelper
         Spacing();
         
         bool isLast = name == _undoName && DateTime.Now - _lastTime < TimeSpan.FromSeconds(2);
+        bool isTime = DateTime.Now - _lastTime > TimeSpan.FromSeconds(0.5);
 
-        if (isLast) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
+        if (isLast) ImGui.PushStyleColor(ImGuiCol.Text, isTime ? ImGuiColors.HealerGreen : ImGuiColors.DPSRed);
         if (IconButton(isLast ? FontAwesomeIcon.Check : FontAwesomeIcon.Undo, $"#{name}: Undo",
             LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault)
-            && DateTime.Now - _lastTime > TimeSpan.FromSeconds(0.5))
+            && isTime)
         {
             if (isLast)
             {

@@ -1,4 +1,5 @@
 ﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Style;
 using Dalamud.Interface.Windowing;
 using ECommons.DalamudServices;
 using ImGuiScene;
@@ -184,11 +185,14 @@ internal class ControlWindow : Window
         ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
         ImGui.EndGroup();
 
-        ImGui.SameLine();
 
-        ImGui.Text("    Mistake:");
-        ImGui.SameLine();
-        DrawIAction(DateTime.Now - DidTime < TimeSpan.FromSeconds(5) ? Wrong : null, Service.Config.ControlWindow0GCDSize, 1);
+        if(Service.Config.MistakeRatio > 0)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(ImGuiColors.DPSRed, "    | Mistake | \n    | Mistake | ");
+            ImGui.SameLine();
+            DrawIAction(DateTime.Now - DidTime < TimeSpan.FromSeconds(5) ? Wrong : null, Service.Config.ControlWindowGCDSize, 1);
+        }
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)

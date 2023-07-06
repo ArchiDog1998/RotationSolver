@@ -27,14 +27,16 @@ internal static class ActionUpdater
         PlayerCharacter localPlayer = Player.Object;
         var customRotation = RotationUpdater.RightNowRotation;
 
-        if (localPlayer != null && customRotation != null)
+        try
         {
-            try
+            if (localPlayer != null && customRotation != null
+                && customRotation.TryInvoke(out var newAction, out var gcdAction))
             {
-                if(Service.Config.MistakeRatio > 0)
+                if (Service.Config.MistakeRatio > 0)
                 {
                     var actions = customRotation.AllActions.Where(a =>
                     {
+                        if (a.ID == newAction?.ID) return false;
                         if (a is IBaseAction action)
                         {
                             return !action.IsFriendly
@@ -46,55 +48,52 @@ internal static class ActionUpdater
                     WrongAction = actions.ElementAt(_wrongRandom.Next(actions.Count()));
                 }
 
-                if (customRotation.TryInvoke(out var newAction, out var gcdAction))
+                NextAction = newAction;
+
+                if (gcdAction is IBaseAction GcdAction)
                 {
-                    NextAction = newAction;
-
-                    if (gcdAction is IBaseAction GcdAction)
+                    if (NextGCDAction != GcdAction)
                     {
-                        if (NextGCDAction != GcdAction)
+                        NextGCDAction = GcdAction;
+
+                        var rightJobAndTarget = (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && GcdAction.Target.IsNPCEnemy();
+
+                        if (rightJobAndTarget && GcdAction.IsSingleTarget)
                         {
-                            NextGCDAction = GcdAction;
+                            PainterManager.UpdatePositional(GcdAction.EnemyPositional, GcdAction.Target);
+                        }
+                        else
+                        {
+                            PainterManager.ClearPositional();
+                        }
 
-                            var rightJobAndTarget = (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && GcdAction.Target.IsNPCEnemy();
+                        if (GcdAction.EnemyPositional != EnemyPositional.None
+                            && GcdAction.Target.HasPositional()
+                            && !localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
+                        {
 
-                            if (rightJobAndTarget && GcdAction.IsSingleTarget)
+                            if (CheckAction())
                             {
-                                PainterManager.UpdatePositional(GcdAction.EnemyPositional, GcdAction.Target);
-                            }
-                            else
-                            {
-                                PainterManager.ClearPositional();
-                            }
-
-                            if (GcdAction.EnemyPositional != EnemyPositional.None
-                                && GcdAction.Target.HasPositional()
-                                && !localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
-                            {
-
-                                if (CheckAction())
-                                {
-                                    string positional = GcdAction.EnemyPositional.ToName();
-                                    if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
-                                    if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional,
-                                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                                        {
-                                            IconId = GcdAction.IconID,
-                                        });
-                                }
+                                string positional = GcdAction.EnemyPositional.ToName();
+                                if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
+                                if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional,
+                                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                                    {
+                                        IconId = GcdAction.IconID,
+                                    });
                             }
                         }
                     }
-                    return;
                 }
-            }
-            catch (Exception ex)
-            {
-                PluginLog.Error(ex, "Failed to update next action.");
+                return;
             }
         }
+        catch (Exception ex)
+        {
+            PluginLog.Error(ex, "Failed to update next action.");
+        }
 
-        NextAction = NextGCDAction = null;
+        WrongAction = NextAction = NextGCDAction = null;
         PainterManager.ClearPositional();
     }
 
