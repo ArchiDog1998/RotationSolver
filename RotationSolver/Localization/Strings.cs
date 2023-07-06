@@ -244,7 +244,7 @@ internal partial class Strings
     public string ConfigWindow_Param_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
     public string ConfigWindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
     public string ConfigWindow_Param_ActionTargetFriendly { get; set; } = "Target all for friendly actions (include passerby)";
-    public string ConfigWindow_Param_TargetFriendly { get; set; } = "Auto switch target for alliance.";
+    public string ConfigWindow_Param_TargetFriendly { get; set; } = "Target allies for friendly actions.";
 
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
