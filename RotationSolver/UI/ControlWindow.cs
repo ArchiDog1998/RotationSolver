@@ -6,7 +6,6 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RotationSolver.UI;
 
@@ -17,6 +16,9 @@ internal class ControlWindow : Window
                             | ImGuiWindowFlags.NoTitleBar
                             | ImGuiWindowFlags.NoNav
                             | ImGuiWindowFlags.NoScrollWithMouse;
+
+    public static IAction Wrong { get; set; }
+    public static DateTime DidTime { get; set; }
 
     public ControlWindow()
         : base(nameof(ControlWindow), BaseFlags)
@@ -181,6 +183,12 @@ internal class ControlWindow : Window
 
         ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
         ImGui.EndGroup();
+
+        ImGui.SameLine();
+
+        ImGui.Text("    Mistake:");
+        ImGui.SameLine();
+        DrawIAction(DateTime.Now - DidTime < TimeSpan.FromSeconds(5) ? Wrong : null, Service.Config.ControlWindow0GCDSize, 1);
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)

@@ -5,6 +5,7 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.UI;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.Commands
@@ -56,11 +57,9 @@ namespace RotationSolver.Commands
 
             if (wrong)
             {
-                Svc.Toasts.ShowQuest(" " + LocalizationManager.RightLang.ClickingMistakeMessage,
-                new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                {
-                    IconId = nextAction.IconID,
-                });
+                Svc.Toasts.ShowError(LocalizationManager.RightLang.ClickingMistakeMessage);
+                ControlWindow.Wrong = nextAction;
+                ControlWindow.DidTime = DateTime.Now;
             }
 
 #if DEBUG
