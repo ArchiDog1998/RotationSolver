@@ -130,6 +130,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for the interval of clicking actions.";
     public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
+    public string ConfigWindow_Param_ClickMistake { get; set; } = "How likely is it that RS will click the wrong action.";
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or has TenChiJin or PhantomFlurry status.";
@@ -619,4 +620,6 @@ internal partial class Strings
     public string TextToTalkWarning { get; set; } = "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!";
 
     public string WhiteListDownloadingFailed { get; set; } = "Failed to load white List. Click to retry.";
+
+    public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action!";
 }

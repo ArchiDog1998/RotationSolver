@@ -115,6 +115,8 @@ internal partial class RotationConfigWindow
                 ref Service.Config.StopCastingDelayMin, ref Service.Config.StopCastingDelayMax, 
                 Service.Default.StopCastingDelayMin, Service.Default.StopCastingDelayMax);
         }
+
+        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ClickMistake, ref Service.Config.MistakeRatio, Service.Default.MistakeRatio);
     }
 
     private void DrawParamAdvanced()

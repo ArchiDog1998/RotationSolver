@@ -96,7 +96,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float HealWhenNothingTodoBelow = 0.8f;
     public float TargetIconSize = 0.6f;
 
-
+    public float MistakeRatio = 0;
     public Dictionary<Job, float> HealthAreaAbilitiesHot { get; set; } = new Dictionary<Job, float>();
     public float HealthAreaAbilityHot = 0.55f;
 

@@ -31,7 +31,7 @@ public partial class BaseAction
 
     public Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget
     {
-        private get
+        get
         {
             if (_choiceTarget != null) return _choiceTarget;
             return IsFriendly ? TargetFilter.DefaultChooseFriend : TargetFilter.DefaultFindHostile;

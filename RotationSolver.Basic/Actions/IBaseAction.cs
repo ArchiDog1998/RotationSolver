@@ -40,6 +40,11 @@
         Func<BattleChara, bool, bool> ActionCheck { get; }
 
         /// <summary>
+        /// The way to choice the target.
+        /// </summary>
+        Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget { get; }
+
+        /// <summary>
         /// Is a GCD action.
         /// </summary>
         bool IsRealGCD { get; }

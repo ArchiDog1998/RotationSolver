@@ -19,66 +19,79 @@ internal static class ActionUpdater
 
     internal static IAction NextAction { get; set; }
     internal static IBaseAction NextGCDAction { get; set; }
+    internal static IAction WrongAction { get; set; }
+    static Random _wrongRandom = new();
 
     internal static void UpdateNextAction()
     {
         PlayerCharacter localPlayer = Player.Object;
-        if (localPlayer == null) return;
+        var customRotation = RotationUpdater.RightNowRotation;
 
-        try
+        if (localPlayer != null && customRotation != null)
         {
-            var customRotation = RotationUpdater.RightNowRotation;
-
-            if (customRotation?.TryInvoke(out var newAction, out var gcdAction) ?? false)
+            try
             {
-                NextAction = newAction;
-
-                if (gcdAction is IBaseAction GcdAction)
+                if(Service.Config.MistakeRatio > 0)
                 {
-                    if(NextGCDAction != GcdAction)
+                    var actions = customRotation.AllActions.Where(a =>
                     {
-                        NextGCDAction = GcdAction;
-
-                        var rightJobAndTarget = (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && GcdAction.Target.IsNPCEnemy();
-
-                        if (rightJobAndTarget && GcdAction.IsSingleTarget)
+                        if (a is IBaseAction action)
                         {
-                            PainterManager.UpdatePositional(GcdAction.EnemyPositional, GcdAction.Target);
+                            return !action.IsFriendly
+                            && action.ChoiceTarget != TargetFilter.FindTargetForMoving
+                            && action.CanUse(out _, CanUseOption.MustUseEmpty | CanUseOption.IgnoreClippingCheck);
                         }
-                        else
-                        {
-                            PainterManager.ClearPositional();
-                        }
+                        return false;
+                    });
+                    WrongAction = actions.ElementAt(_wrongRandom.Next(actions.Count()));
+                }
 
-                        if (GcdAction.EnemyPositional != EnemyPositional.None 
-                            && GcdAction.Target.HasPositional()
-                            && !localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
-                        {
+                if (customRotation.TryInvoke(out var newAction, out var gcdAction))
+                {
+                    NextAction = newAction;
 
-                            if (CheckAction())
+                    if (gcdAction is IBaseAction GcdAction)
+                    {
+                        if (NextGCDAction != GcdAction)
+                        {
+                            NextGCDAction = GcdAction;
+
+                            var rightJobAndTarget = (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && GcdAction.Target.IsNPCEnemy();
+
+                            if (rightJobAndTarget && GcdAction.IsSingleTarget)
                             {
-                                string positional = GcdAction.EnemyPositional.ToName();
-                                if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
-                                if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional,
-                                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                                PainterManager.UpdatePositional(GcdAction.EnemyPositional, GcdAction.Target);
+                            }
+                            else
+                            {
+                                PainterManager.ClearPositional();
+                            }
+
+                            if (GcdAction.EnemyPositional != EnemyPositional.None
+                                && GcdAction.Target.HasPositional()
+                                && !localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
+                            {
+
+                                if (CheckAction())
                                 {
-                                    IconId = GcdAction.IconID,
-                                });
+                                    string positional = GcdAction.EnemyPositional.ToName();
+                                    if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
+                                    if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional,
+                                        new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                                        {
+                                            IconId = GcdAction.IconID,
+                                        });
+                                }
                             }
                         }
                     }
+                    return;
                 }
-                else
-                {
-                    NextGCDAction = null;
-                    PainterManager.ClearPositional();
-                }
-                return;
             }
-        }
-        catch (Exception ex)
-        {
-            PluginLog.Error(ex, "Failed to update next action.");
+            catch (Exception ex)
+            {
+                PluginLog.Error(ex, "Failed to update next action.");
+            }
         }
 
         NextAction = NextGCDAction = null;

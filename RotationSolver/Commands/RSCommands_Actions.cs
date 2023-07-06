@@ -39,14 +39,7 @@ namespace RotationSolver.Commands
 
         public static void DoAction()
         {
-            //Do Action
-            var nextAction = ActionUpdater.NextAction;
-            if (nextAction == null) return;
-
-#if DEBUG
-            //if (nextAction is BaseAction acti)
-            //    Svc.Chat.Print($"Will Do {acti}");
-#endif
+            //High End bye.
             if (DataCenter.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
             {
                 if ((_loop %= 5) == 0)
@@ -56,6 +49,24 @@ namespace RotationSolver.Commands
                 _loop++;
                 return;
             }
+
+            var wrong = new Random().NextDouble() < Service.Config.MistakeRatio && ActionUpdater.WrongAction != null;
+            var nextAction = wrong ? ActionUpdater.WrongAction : ActionUpdater.NextAction;
+            if (nextAction == null) return;
+
+            if (wrong)
+            {
+                Svc.Toasts.ShowQuest(" " + LocalizationManager.RightLang.ClickingMistakeMessage,
+                new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                {
+                    IconId = nextAction.IconID,
+                });
+            }
+
+#if DEBUG
+            //if (nextAction is BaseAction acti)
+            //    Svc.Chat.Print($"Will Do {acti}");
+#endif
 
             if (Service.Config.KeyBoardNoise)
             {

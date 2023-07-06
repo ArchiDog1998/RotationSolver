@@ -97,20 +97,20 @@ internal static class MajorUpdater
             }
         }
 
-        if (Service.Config.UseWorkTask)
+        try
         {
-            try
+            if (Service.Config.UseWorkTask)
             {
                 Task.Run(UpdateWork);
             }
-            catch (Exception ex)
+            else
             {
-                PluginLog.Error(ex, "Worker Exception");
+                UpdateWork();
             }
         }
-        else
+        catch (Exception ex)
         {
-            UpdateWork();
+            PluginLog.Error(ex, "Worker Exception");
         }
     }
 
