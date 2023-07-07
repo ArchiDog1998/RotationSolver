@@ -76,6 +76,7 @@
   "ConfigWindow_Param_NotInCombatDelay": "Set the range of random delay for Not In Combat in second.",
   "ConfigWindow_Param_ClickingDelay": "Set the range of random delay for the interval of clicking actions.",
   "ConfigWindow_Param_StopCastingDelay": "Set the range of random delay for stopping casting when target is no need to cast in second.",
+  "ConfigWindow_Param_ClickMistake": "How likely is it that RS will click the wrong action.",
   "ConfigWindow_Param_Display": "Display",
   "ConfigWindow_Param_Advanced": "Advanced",
   "ConfigWindow_Param_PoslockCasting": "Lock the movement when casting or has TenChiJin or PhantomFlurry status.",
@@ -177,7 +178,9 @@
   "ConfigWindow_Param_HostileDesc": "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.",
   "ConfigWindow_Param_AddOne": "Add One",
   "ConfigWindow_Param_HostileCondition": "Hostile target selection condition",
-  "ConfigWindow_Param_ResetToDefault": "Press left ctrl + shift and press right mouse button to reset this value",
+  "ConfigWindow_Param_ResetToDefault": "Click to reset this value.",
+  "ConfigWindow_Param_ResetToDefaultWait": "Please wait for a second.",
+  "ConfigWindow_Param_ResetToDefaultSure": "Are you sure to reset this value?",
   "ConfigWindow_Action_ShowOnCDWindow": "Show on CD window",
   "ConfigWindow_Control_OnlyShowWithHostileOrInDuty": "Only shown if there are enemies in or in duty",
   "ConfigWindow_Control_ShowNextActionWindow": "Show Next Action Window",
@@ -427,5 +430,6 @@
   "HighEndWarning": "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!",
   "HighEndBan": "{0} can not be used in High-end Duty!",
   "TextToTalkWarning": "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!",
-  "WhiteListDownloadingFailed": "Failed to load white List. Click to retry."
+  "WhiteListDownloadingFailed": "Failed to load white List. Click to retry.",
+  "ClickingMistakeMessage": "OOOps! RS clicked the wrong action ({0})!"
 }
