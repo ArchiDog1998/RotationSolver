@@ -76,6 +76,7 @@
   "ConfigWindow_Param_NotInCombatDelay": "设置脱战的随机延迟范围，以秒为单位。",
   "ConfigWindow_Param_ClickingDelay": "设置循环点击技能图标的随机延迟范围。",
   "ConfigWindow_Param_StopCastingDelay": "设置当目标不需要被读条时，停止读条的随机延迟范围，以秒为单位。",
+  "ConfigWindow_Param_ClickMistake": "How likely is it that RS will click the wrong action.",
   "ConfigWindow_Param_Display": "显示",
   "ConfigWindow_Param_Advanced": "高级",
   "ConfigWindow_Param_PoslockCasting": "当读条、释放天地人或鬼宿脚时时禁止移动",
@@ -177,7 +178,9 @@
   "ConfigWindow_Param_HostileDesc": "你可以设定敌对的选择，以便于在战斗中灵活切换选择敌对的逻辑。",
   "ConfigWindow_Param_AddOne": "添加一个新的逻辑",
   "ConfigWindow_Param_HostileCondition": "敌对目标选中条件",
-  "ConfigWindow_Param_ResetToDefault": "同时按下左Ctrl+Shift和鼠标右键以将其重设为默认值",
+  "ConfigWindow_Param_ResetToDefault": "Click to reset this value.",
+  "ConfigWindow_Param_ResetToDefaultWait": "Please wait for a second.",
+  "ConfigWindow_Param_ResetToDefaultSure": "Are you sure to reset this value?",
   "ConfigWindow_Action_ShowOnCDWindow": "显示在冷却窗口中",
   "ConfigWindow_Control_OnlyShowWithHostileOrInDuty": "只在周围有敌人或者处于任务中时才显示",
   "ConfigWindow_Control_ShowNextActionWindow": "显示下一个动作窗口",
@@ -427,5 +430,6 @@
   "HighEndWarning": "当在{0} 时, 请单独绑定减伤/护盾的冷却时间, 以防RS在关键时刻失效!",
   "HighEndBan": "{0} 循环不可以用于高难战斗！",
   "TextToTalkWarning": "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!",
-  "WhiteListDownloadingFailed": "Failed to load white List. Click to retry."
+  "WhiteListDownloadingFailed": "Failed to load white List. Click to retry.",
+  "ClickingMistakeMessage": "OOOps! RS clicked the wrong action ({0})!"
 }
