@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.5...v3.0.6) (2023-07-07)
+
+
+### Bug Fixes
+
+* changed description about TargetFriendly. ([461283f](https://github.com/ArchiDog1998/RotationSolver/commit/461283f8723103a6076f94a9a1cc1137e1709fcd))
+* Speed up the reflection. ([7a0c3e6](https://github.com/ArchiDog1998/RotationSolver/commit/7a0c3e69a7833a1a688c133c1e220584ab5c46c7))
+* wrong actions message. ([731694e](https://github.com/ArchiDog1998/RotationSolver/commit/731694e3811a81de8d7540644bafe9649314cd8d))
+
 ## [3.0.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.4...v3.0.5) (2023-07-06)
 
 
