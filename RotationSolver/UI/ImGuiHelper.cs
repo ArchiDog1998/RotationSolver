@@ -129,40 +129,17 @@ internal static class ImGuiHelper
     static DateTime _lastTime;
     public static void UndoValue<T>(string name, ref T value, T @default, Action otherThing = null)
     {
-        ImGui.SameLine();
-        Spacing();
-        
-        bool isLast = name == _undoName && DateTime.Now - _lastTime < TimeSpan.FromSeconds(2);
-        bool isTime = DateTime.Now - _lastTime > TimeSpan.FromSeconds(0.5);
-
-        if (isLast) ImGui.PushStyleColor(ImGuiCol.Text, isTime ? ImGuiColors.HealerGreen : ImGuiColors.DPSRed);
-        if (IconButton(isLast ? FontAwesomeIcon.Check : FontAwesomeIcon.Undo, $"#{name}: Undo",
-            LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault)
-            && isTime)
+        if (UndoValue(name))
         {
-            if (isLast)
-            {
-                otherThing?.Invoke();
-                value = @default;
-                Service.Config.Save();
-            }
-            else
-            {
-                _lastTime = DateTime.Now;
-                _undoName = name;
-            }
+            otherThing?.Invoke();
+            value = @default;
+            Service.Config.Save();
         }
-        if (isLast) ImGui.PopStyleColor();
-
     }
 
     public static void UndoValue<T>(string name, ref T value1, T default1, ref T value2, T default2, Action otherThing = null)
     {
-        ImGui.SameLine();
-
-        if (IconButton(FontAwesomeIcon.Undo, $"#{name}: Undo",
-            LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault)
-            && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl))
+        if (UndoValue(name))
         {
             otherThing?.Invoke();
             value1 = default1;
@@ -171,14 +148,37 @@ internal static class ImGuiHelper
         }
     }
 
-    //public static Vector2 IconButtonSize(FontAwesomeIcon icon, string name)
-    //{
-    //    ImGui.PushFont(UiBuilder.IconFont);
-    //    var result = ImGui.CalcTextSize($"{icon.ToIconString()}##{name}");
-    //    ImGui.PopFont();
-    //    return result;
-    //}
+    static bool UndoValue(string name)
+    {
+        ImGui.SameLine();
+        Spacing();
 
+        bool isLast = name == _undoName && DateTime.Now - _lastTime < TimeSpan.FromSeconds(2);
+        bool isTime = DateTime.Now - _lastTime > TimeSpan.FromSeconds(0.5);
+
+        bool result = false;
+
+        if (isLast) ImGui.PushStyleColor(ImGuiCol.Text, isTime ? ImGuiColors.HealerGreen : ImGuiColors.DPSRed);
+        if (IconButton(isLast ? FontAwesomeIcon.Check : FontAwesomeIcon.Undo, $"#{name}: Undo",
+            !isTime ? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefaultWait :
+            isLast ? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefaultSure
+            : LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault)
+            && isTime)
+        {
+            if (isLast)
+            {
+                result = true;
+                _lastTime = DateTime.MinValue;
+            }
+            else
+            {
+                _lastTime = DateTime.Now;
+                _undoName = name;
+            }
+        }
+        if (isLast) ImGui.PopStyleColor();
+        return result;
+    }
 
     public static void HoveredString(string text, Action selected = null)
     {

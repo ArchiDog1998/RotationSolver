@@ -244,7 +244,7 @@ internal partial class Strings
     public string ConfigWindow_Param_MoveTowardsScreenDesc { get; set; } = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.";
     public string ConfigWindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
     public string ConfigWindow_Param_ActionTargetFriendly { get; set; } = "Target all for friendly actions (include passerby)";
-    public string ConfigWindow_Param_TargetFriendly { get; set; } = "Auto switch target for alliance.";
+    public string ConfigWindow_Param_TargetFriendly { get; set; } = "Target allies for friendly actions.";
 
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
@@ -253,7 +253,9 @@ internal partial class Strings
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_AddOne { get; set; } = "Add One";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
-    public string ConfigWindow_Param_ResetToDefault { get; set; } = "click to reset this value";
+    public string ConfigWindow_Param_ResetToDefault { get; set; } = "Click to reset this value.";
+    public string ConfigWindow_Param_ResetToDefaultWait { get; set; } = "Please wait for a second.";
+    public string ConfigWindow_Param_ResetToDefaultSure { get; set; } = "Are you sure to reset this value?";
 
     public string ConfigWindow_Action_ShowOnCDWindow { get; set; } = "Show on CD window";
 
@@ -621,5 +623,5 @@ internal partial class Strings
 
     public string WhiteListDownloadingFailed { get; set; } = "Failed to load white List. Click to retry.";
 
-    public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action!";
+    public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action ({0})!";
 }

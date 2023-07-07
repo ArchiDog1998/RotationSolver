@@ -171,14 +171,16 @@
   "ConfigWindow_Param_MoveTowardsScreenDesc": "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.",
   "ConfigWindow_Param_RaiseAll": "Raise all (include passerby)",
   "ConfigWindow_Param_ActionTargetFriendly": "Target all for friendly actions (include passerby)",
-  "ConfigWindow_Param_TargetFriendly": "Auto switch target for alliance.",
+  "ConfigWindow_Param_TargetFriendly": "Target allies for friendly actions.",
   "ConfigWindow_Param_RaiseBrinkOfDeath": "Raise player even has Brink of Death",
   "ConfigWindow_Param_MoveAreaActionFarthest": "Moving Area Ability to farthest",
   "ConfigWindow_Param_MoveAreaActionFarthestDesc": "Move to the furthest position from character's face direction.",
   "ConfigWindow_Param_HostileDesc": "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.",
   "ConfigWindow_Param_AddOne": "Add One",
   "ConfigWindow_Param_HostileCondition": "Hostile target selection condition",
-  "ConfigWindow_Param_ResetToDefault": "click to reset this value",
+  "ConfigWindow_Param_ResetToDefault": "Click to reset this value.",
+  "ConfigWindow_Param_ResetToDefaultWait": "Please wait for a second.",
+  "ConfigWindow_Param_ResetToDefaultSure": "Are you sure to reset this value?",
   "ConfigWindow_Action_ShowOnCDWindow": "Show on CD window",
   "ConfigWindow_Control_OnlyShowWithHostileOrInDuty": "Only shown if there are enemies in or in duty",
   "ConfigWindow_Control_ShowNextActionWindow": "Show Next Action Window",
@@ -429,5 +431,5 @@
   "HighEndBan": "{0} can not be used in High-end Duty!",
   "TextToTalkWarning": "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!",
   "WhiteListDownloadingFailed": "Failed to load white List. Click to retry.",
-  "ClickingMistakeMessage": "OOOps! RS clicked the wrong action!"
+  "ClickingMistakeMessage": "OOOps! RS clicked the wrong action ({0})!"
 }

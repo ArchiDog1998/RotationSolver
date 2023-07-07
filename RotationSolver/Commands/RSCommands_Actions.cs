@@ -57,7 +57,7 @@ namespace RotationSolver.Commands
 
             if (wrong)
             {
-                Svc.Toasts.ShowError(LocalizationManager.RightLang.ClickingMistakeMessage);
+                Svc.Toasts.ShowError(string.Format(LocalizationManager.RightLang.ClickingMistakeMessage, nextAction));
                 ControlWindow.Wrong = nextAction;
                 ControlWindow.DidTime = DateTime.Now;
             }
