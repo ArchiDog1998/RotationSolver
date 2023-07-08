@@ -87,7 +87,7 @@ internal class ControlWindow : Window
         ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.ToName());
 
         RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
-            ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
+            ref Service.Config.IsControlWindowLock);
         ImGui.EndGroup();
 
         ImGui.SameLine();

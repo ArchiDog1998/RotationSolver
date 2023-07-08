@@ -87,6 +87,16 @@ internal partial class RotationConfigWindow : Window
 
     internal static void DrawCheckBox(string name, ref bool value, bool @default, string description = "", Action otherThing = null)
     {
+        DrawCheckBox(name, ref value, description, otherThing);
+
+        if (value != @default)
+        {
+            ImGuiHelper.UndoValue(name, ref value, @default, otherThing);
+        }
+    }
+
+    internal static void DrawCheckBox(string name, ref bool value, string description = "", Action otherThing = null)
+    {
         if (ImGui.Checkbox(name, ref value))
         {
             otherThing?.Invoke();
@@ -94,14 +104,7 @@ internal partial class RotationConfigWindow : Window
         }
 
         ImGuiHelper.HoveredString(description);
-
-        if(value != @default)
-        {
-            ImGuiHelper.UndoValue(name, ref value, @default, otherThing);
-        }
     }
-
-
 
     private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float defaultMin, float defaultMax, float speed = 0.01f, float min = 0, float max = 3, string description = "")
     {
