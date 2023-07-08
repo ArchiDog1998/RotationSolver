@@ -499,4 +499,6 @@ public enum StatusID : ushort
     TheBlackestNight = 1178,
 
     LivingDead = WillDead,
+
+    Overheated = 2688,
 }
