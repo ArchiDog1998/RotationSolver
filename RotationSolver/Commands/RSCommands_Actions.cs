@@ -12,11 +12,11 @@ namespace RotationSolver.Commands
 {
     public static partial class RSCommands
     {
-        static DateTime _fastClickStopwatch = DateTime.MinValue;
+        static DateTime _lastClickTime = DateTime.MinValue;
         static byte _loop = 0;
         static StateCommandType _lastState;
 
-        internal static unsafe bool DoAnAction(bool isGCD)
+        internal static unsafe bool CanDoAnAction(bool isGCD)
         {
             if (_lastState == StateCommandType.Cancel 
                 || DataCenter.StateType == StateCommandType.Cancel)
@@ -29,16 +29,16 @@ namespace RotationSolver.Commands
             if (!Player.Available) return false;
 
             //Do not click the button in random time.
-            if (DateTime.Now - _fastClickStopwatch < TimeSpan.FromMilliseconds(new Random().Next(
+            if (DateTime.Now - _lastClickTime < TimeSpan.FromMilliseconds(new Random().Next(
                 (int)(Service.Config.ClickingDelayMin * 1000), (int)(Service.Config.ClickingDelayMax * 1000)))) return  false;
-            _fastClickStopwatch = DateTime.Now;
+            _lastClickTime = DateTime.Now;
 
             if (!isGCD && ActionUpdater.NextAction is IBaseAction act1 && act1.IsRealGCD) return false;
 
-            DoAction();
             return true;
         }
-
+        internal static DateTime _lastUsedTime = DateTime.MinValue;
+        internal static uint _lastActionID;
         public static void DoAction()
         {
             //High End bye.
@@ -75,6 +75,9 @@ namespace RotationSolver.Commands
 
             if (nextAction.Use())
             {
+                _lastActionID = nextAction.AdjustedID;
+                _lastUsedTime = DateTime.Now;
+
                 if (nextAction is BaseAction act)
                 {
                     if (Service.Config.KeyBoardNoise)

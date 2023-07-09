@@ -101,7 +101,6 @@ internal partial class RotationConfigWindow : Window
         DrawCheckBox(name, ref value, description, otherThing);
     }
 
-
     internal static void DrawCheckBox(string name, ref bool value, bool @default, string description = "", Action otherThing = null)
     {
         DrawCheckBox(name, ref value, description, otherThing);

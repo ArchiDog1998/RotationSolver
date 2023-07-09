@@ -220,7 +220,7 @@ internal static class ActionUpdater
         _lastMP = player.CurrentMp;
     }
 
-    internal unsafe static bool DoAction()
+    internal unsafe static bool CanDoAction()
     {
         if (Svc.Condition[ConditionFlag.OccupiedInQuestEvent]
             || Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
@@ -245,7 +245,7 @@ internal static class ActionUpdater
         var canUseGCD = DataCenter.WeaponRemain <= ahead;
         if (_GCDDelay.Delay(canUseGCD))
         {
-            return RSCommands.DoAnAction(true);
+            return RSCommands.CanDoAnAction(true);
         }
         if (canUseGCD) return false;
 
@@ -267,11 +267,11 @@ internal static class ActionUpdater
             if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + ahead +
                 Math.Max(DataCenter.Ping, Service.Config.MinLastAbilityAdvanced)) return false;
 
-            return RSCommands.DoAnAction(false);
+            return RSCommands.CanDoAnAction(false);
         }
         else if (timeToNext < ahead)
         {
-            return RSCommands.DoAnAction(false);
+            return RSCommands.CanDoAnAction(false);
         }
 
         return false;

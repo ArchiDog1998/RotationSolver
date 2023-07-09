@@ -3,6 +3,7 @@ using Dalamud.Utility.Signatures;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
 
@@ -24,7 +25,7 @@ internal class MovingUpdater
         SignatureHelper.Initialise(this);
     }
 
-    internal unsafe static void UpdateCanMove(bool nextAction)
+    internal unsafe static void UpdateCanMove(bool doNextAction)
     {
         bool canMove = !Svc.Condition[ConditionFlag.OccupiedInEvent]
             && !Svc.Condition[ConditionFlag.Casting];
@@ -54,7 +55,9 @@ internal class MovingUpdater
         }
 
         //Action
-        var action = nextAction ? (ActionID)(ActionUpdater.NextAction?.AdjustedID ?? 0) : 0;
+        var action = DateTime.Now - RSCommands._lastUsedTime < TimeSpan.FromMilliseconds(100)
+            ? (ActionID)RSCommands._lastActionID
+            : doNextAction ? (ActionID)(ActionUpdater.NextAction?.AdjustedID ?? 0) : 0;
         var specialActions = ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)action) > 0
             || actionList.Any(id => Service.GetAdjustedActionId(id) == action);
 

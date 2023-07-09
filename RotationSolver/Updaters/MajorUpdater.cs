@@ -27,7 +27,6 @@ internal static class MajorUpdater
 
     static bool _showed;
     static Exception _threadException;
-
     //static int count = 0;
     private static void FrameworkUpdate(Framework framework)
     {
@@ -81,14 +80,17 @@ internal static class MajorUpdater
             }
             ActionUpdater.UpdateActionInfo();
 
-            var nextAction = false;
+            var canDoAction = false;
             if (!ShouldPreventActions)
             {
-                nextAction = ActionUpdater.DoAction();
+                canDoAction = ActionUpdater.CanDoAction();
             }
 
-            MovingUpdater.UpdateCanMove(nextAction);
-
+            MovingUpdater.UpdateCanMove(canDoAction);
+            if (canDoAction)
+            {
+                RSCommands.DoAction();
+            }
 
             MacroUpdater.UpdateMacro();
         }
