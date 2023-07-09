@@ -245,8 +245,7 @@ internal static class ActionUpdater
         var canUseGCD = DataCenter.WeaponRemain <= ahead;
         if (_GCDDelay.Delay(canUseGCD))
         {
-            RSCommands.DoAnAction(true);
-            return true;
+            return RSCommands.DoAnAction(true);
         }
         if (canUseGCD) return false;
 
@@ -268,13 +267,11 @@ internal static class ActionUpdater
             if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + ahead +
                 Math.Max(DataCenter.Ping, Service.Config.MinLastAbilityAdvanced)) return false;
 
-            RSCommands.DoAnAction(false);
-            return true;
+            return RSCommands.DoAnAction(false);
         }
         else if (timeToNext < ahead)
         {
-            RSCommands.DoAnAction(false);
-            return true;
+            return RSCommands.DoAnAction(false);
         }
 
         return false;

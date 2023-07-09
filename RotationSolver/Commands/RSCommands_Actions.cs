@@ -16,26 +16,27 @@ namespace RotationSolver.Commands
         static byte _loop = 0;
         static StateCommandType _lastState;
 
-        internal static unsafe void DoAnAction(bool isGCD)
+        internal static unsafe bool DoAnAction(bool isGCD)
         {
             if (_lastState == StateCommandType.Cancel 
                 || DataCenter.StateType == StateCommandType.Cancel)
             {
                 _lastState = DataCenter.StateType;
-                return;
+                return false;
             }
             _lastState = DataCenter.StateType;
 
-            if (!Player.Available) return;
+            if (!Player.Available) return false;
 
             //Do not click the button in random time.
             if (DateTime.Now - _fastClickStopwatch < TimeSpan.FromMilliseconds(new Random().Next(
-                (int)(Service.Config.ClickingDelayMin * 1000), (int)(Service.Config.ClickingDelayMax * 1000)))) return;
+                (int)(Service.Config.ClickingDelayMin * 1000), (int)(Service.Config.ClickingDelayMax * 1000)))) return  false;
             _fastClickStopwatch = DateTime.Now;
 
-            if (!isGCD && ActionUpdater.NextAction is IBaseAction act1 && act1.IsRealGCD) return;
+            if (!isGCD && ActionUpdater.NextAction is IBaseAction act1 && act1.IsRealGCD) return false;
 
             DoAction();
+            return true;
         }
 
         public static void DoAction()
@@ -133,6 +134,8 @@ namespace RotationSolver.Commands
                 ActionUpdater._cancelTime = DateTime.MinValue;
             }
 
+            var target = DataCenter.AllHostileTargets.FirstOrDefault(t => t.TargetObjectId == Player.Object.ObjectId);
+
             if (Svc.Condition[ConditionFlag.LoggingOut])
             {
                 CancelState();
@@ -161,11 +164,16 @@ namespace RotationSolver.Commands
                 CancelState();
             }
             //Auto manual on being attacked by someone.
-            else if (Service.Config.StartOnAttackedBySomeone && DataCenter.AllHostileTargets.Any(t => t.TargetObjectId == Player.Object.ObjectId))
+            else if (Service.Config.StartOnAttackedBySomeone && target != null
+                && !target.IsDummy())
             {
                 if(DataCenter.StateType == StateCommandType.Cancel)
                 {
                     DoStateCommandType(StateCommandType.Manual);
+                }
+                if(Svc.Targets.Target?.TargetObjectId != Player.Object.ObjectId) 
+                {
+                    Svc.Targets.Target = target;
                 }
             }
             //Auto start at count Down.
