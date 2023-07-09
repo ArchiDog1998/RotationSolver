@@ -171,7 +171,8 @@ namespace RotationSolver.Commands
                 {
                     DoStateCommandType(StateCommandType.Manual);
                 }
-                if(Svc.Targets.Target?.TargetObjectId != Player.Object.ObjectId) 
+                if(DataCenter.StateType == StateCommandType.Manual
+                    && !( Svc.Targets.Target is BattleChara b && b.CurrentHp > 0))
                 {
                     Svc.Targets.Target = target;
                 }
