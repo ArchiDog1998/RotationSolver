@@ -220,7 +220,7 @@ internal static class ActionUpdater
         _lastMP = player.CurrentMp;
     }
 
-    internal unsafe static void DoAction()
+    internal unsafe static bool DoAction()
     {
         if (Svc.Condition[ConditionFlag.OccupiedInQuestEvent]
             || Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
@@ -236,39 +236,47 @@ internal static class ActionUpdater
             || Svc.Condition[ConditionFlag.InFlight]
             ||  ActionManager.Instance()->ActionQueued && NextAction != null
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
-            || Player.Object.CurrentHp == 0) return;
+            || Player.Object.CurrentHp == 0) return false;
 
         var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
         var ahead = Math.Min(maxAhead, Service.Config.ActionAhead);
 
         //GCD
         var canUseGCD = DataCenter.WeaponRemain <= ahead;
-        if (_GCDDelay.Delay(canUseGCD)) RSCommands.DoAnAction(true);
-        if (canUseGCD) return;
+        if (_GCDDelay.Delay(canUseGCD))
+        {
+            RSCommands.DoAnAction(true);
+            return true;
+        }
+        if (canUseGCD) return false;
 
         var nextAction = NextAction;
-        if (nextAction == null) return;
+        if (nextAction == null) return false;
 
         var timeToNext = DataCenter.ActionRemain;
 
         //No time to use 0gcd
         if (timeToNext + nextAction.AnimationLockTime
-            > DataCenter.WeaponRemain) return;
+            > DataCenter.WeaponRemain) return false;
 
         //Skip when casting
-        if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return;
+        if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return false;
 
         //The last one.
         if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock > DataCenter.WeaponRemain)
         {
             if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + ahead +
-                Math.Max(DataCenter.Ping, Service.Config.MinLastAbilityAdvanced)) return;
+                Math.Max(DataCenter.Ping, Service.Config.MinLastAbilityAdvanced)) return false;
 
             RSCommands.DoAnAction(false);
+            return true;
         }
         else if (timeToNext < ahead)
         {
             RSCommands.DoAnAction(false);
+            return true;
         }
+
+        return false;
     }
 }

@@ -81,10 +81,14 @@ internal static class MajorUpdater
             }
             ActionUpdater.UpdateActionInfo();
 
+            var nextAction = false;
             if (!ShouldPreventActions)
             {
-                ActionUpdater.DoAction();
+                nextAction = ActionUpdater.DoAction();
             }
+
+            MovingUpdater.UpdateCanMove(nextAction);
+
 
             MacroUpdater.UpdateMacro();
         }
@@ -116,10 +120,11 @@ internal static class MajorUpdater
 
     public static void Enable()
     {
-        Svc.Framework.Update += FrameworkUpdate;
         ActionSequencerUpdater.Enable(Svc.PluginInterface.ConfigDirectory.FullName + "\\Conditions");
-
         SocialUpdater.Enable();
+        new MovingUpdater();
+
+        Svc.Framework.Update += FrameworkUpdate;
     }
 
     static bool _work;
@@ -137,7 +142,6 @@ internal static class MajorUpdater
 
         try
         {
-            PreviewUpdater.UpdateCastBarState();
             TargetUpdater.UpdateTarget();
             
             if (Service.Config.AutoLoadCustomRotations)

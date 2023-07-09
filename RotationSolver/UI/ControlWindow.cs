@@ -472,7 +472,7 @@ internal class ControlWindow : Window
         return result;
     }
 
-    static (Vector2, Vector2) DrawIAction(nint handle, float width, float percent)
+    internal static (Vector2, Vector2) DrawIAction(nint handle, float width, float percent)
     {
         var cursor = ImGui.GetCursorPos();
         ImGui.BeginGroup();

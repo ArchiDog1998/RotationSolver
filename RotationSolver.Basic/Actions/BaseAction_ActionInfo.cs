@@ -103,8 +103,9 @@ public partial class BaseAction
             }
         }
 
-        if (!option.HasFlag(CanUseOption.IgnoreCastCheck) && CastTime > 0 && DataCenter.IsMoving &&
-            !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
+        if (DataCenter.NoPoslock && DataCenter.IsMoving
+            && !option.HasFlag(CanUseOption.IgnoreCastCheck) && CastTime > 0 
+            && !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
 
         if (IsGeneralGCD && IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)
             && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;

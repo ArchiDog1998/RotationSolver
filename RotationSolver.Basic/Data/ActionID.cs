@@ -138,7 +138,7 @@ public enum ActionID : uint
     #region BlueMage
     WaterCannon = 11385,
 
-    FlameThrower = 11402,
+    FlameThrower = 7418,
 
     AquaBreath = 11390,
 

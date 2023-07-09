@@ -16,7 +16,7 @@ internal partial class RotationConfigWindow
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Delay, DrawParamDelay);
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Display, DrawParamDisplay);
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Action, DrawParamAction);
-            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Conditon, DrawParamCondition);
+            DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Condition, DrawParamCondition);
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Target, DrawParamTarget);
             DrawParamTabItem(LocalizationManager.RightLang.ConfigWindow_Param_Advanced, DrawParamAdvanced);
 
@@ -61,6 +61,9 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
             ref Service.Config.StartOnCountdown, Service.Default.StartOnCountdown);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnAttackedBySomeone,
+            ref Service.Config.StartOnAttackedBySomeone, Service.Default.StartOnAttackedBySomeone);
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
             ref Service.Config.UseWorkTask, Service.Default.UseWorkTask);
@@ -119,6 +122,7 @@ internal partial class RotationConfigWindow
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ClickMistake, ref Service.Config.MistakeRatio, Service.Default.MistakeRatio);
     }
 
+
     private void DrawParamAdvanced()
     {
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayOutStateChanged,
@@ -134,13 +138,31 @@ internal partial class RotationConfigWindow
 
         if (Service.Config.PoslockCasting)
         {
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
+            ImGui.Indent();
 
             DrawCombo(LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
                 ref Service.Config.PoslockModifier, EnumTranslations.ToName,
                 ConfigurationHelper.Keys,
                 LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription);
+
+            DrawIconCheckBox(ActionID.PassageOfArms, ref Service.Config.PosPassageOfArms, Service.Default.PosPassageOfArms);
+
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            DrawIconCheckBox(ActionID.TenChiJin, ref Service.Config.PosTenChiJin, Service.Default.PosTenChiJin);
+
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            DrawIconCheckBox(ActionID.FlameThrower, ref Service.Config.PosFlameThrower, Service.Default.PosFlameThrower);
+
+            ImGui.SameLine();
+            ImGuiHelper.Spacing();
+
+            DrawIconCheckBox(ActionID.Improvisation, ref Service.Config.PosImprovisation, Service.Default.PosImprovisation);
+
+            ImGui.Unindent();
         }
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,

@@ -1,19 +1,26 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
 namespace RotationSolver.Basic;
 
-public static class DataCenter
+internal static class DataCenter
 {
+    internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
+            || !Service.Config.PoslockCasting
+            //Key cancel.
+            || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.PoslockModifier]]
+            //Gamepad cancel.
+            || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) >= 0.5f;
+
     internal static DateTime EffectTime { private get; set; } = DateTime.Now;
     internal static DateTime EffectEndTime { private get; set; } = DateTime.Now;
 

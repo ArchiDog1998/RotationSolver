@@ -2,6 +2,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Localization;
+using System.Xml.Linq;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow : Window
@@ -84,6 +85,27 @@ internal partial class RotationConfigWindow : Window
         ImGuiHelper.Spacing();
         ImGuiHelper.DisplayCommandHelp(OtherCommandType.Settings, command.ToString());
     }
+
+    internal static void DrawIconCheckBox(ActionID actionID, ref bool value, bool @default, string description = "", Action otherThing = null)
+    {
+        var name = $"##{actionID}";
+        description = actionID.ToString() + "\n" + description;
+
+        ControlWindow.DrawIAction(IconSet.GetTexture(actionID).ImGuiHandle, 40, 1);
+
+        ImGuiHelper.HoveredString(description);
+
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+
+        DrawCheckBox(name, ref value, description, otherThing);
+
+        if (value != @default)
+        {
+            ImGuiHelper.UndoValue(name, ref value, @default, otherThing);
+        }
+    }
+
 
     internal static void DrawCheckBox(string name, ref bool value, bool @default, string description = "", Action otherThing = null)
     {

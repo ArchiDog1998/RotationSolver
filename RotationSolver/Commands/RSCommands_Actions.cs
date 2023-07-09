@@ -160,6 +160,14 @@ namespace RotationSolver.Commands
                 _lastCountdownTime = 0;
                 CancelState();
             }
+            //Auto manual on being attacked by someone.
+            else if (Service.Config.StartOnAttackedBySomeone && DataCenter.AllHostileTargets.Any(t => t.TargetObjectId == Player.Object.ObjectId))
+            {
+                if(DataCenter.StateType == StateCommandType.Cancel)
+                {
+                    DoStateCommandType(StateCommandType.Manual);
+                }
+            }
             //Auto start at count Down.
             else if (Service.Config.StartOnCountdown && Service.CountDownTime > 0)
             {

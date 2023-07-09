@@ -133,7 +133,7 @@ internal partial class Strings
     public string ConfigWindow_Param_ClickMistake { get; set; } = "How likely is it that RS will click the wrong action.";
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
-    public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or has TenChiJin or PhantomFlurry status.";
+    public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or some actions.";
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Use stopping casting when target is dead.";
     public string ConfigWindow_Param_ShowTooltips { get; set; } = "Show tooltips";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
@@ -190,8 +190,10 @@ internal partial class Strings
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
     public string ConfigWindow_Param_UseTinctures { get; set; } = "Use Tinctures";
     public string ConfigWindow_Param_UseHealPotions { get; set; } = "Use Heal Potions";
-    public string ConfigWindow_Param_Conditon { get; set; } = "Condition";
+    public string ConfigWindow_Param_Condition { get; set; } = "Condition";
     public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto turn smart on countdown";
+
+    public string ConfigWindow_Param_StartOnAttackedBySomeone { get; set; } = "Auto turn manual on being attacked by someone.";
     public string ConfigWindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
     public string ConfigWindow_Param_InterruptibleMoreCheck { get; set; } = "Interrupt the action with action type check.";
 

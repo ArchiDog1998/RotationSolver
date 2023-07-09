@@ -501,4 +501,8 @@ public enum StatusID : ushort
     LivingDead = WillDead,
 
     Overheated = 2688,
+
+    Flamethrower = 1205,
+
+    PassageOfArms = 1175,
 }

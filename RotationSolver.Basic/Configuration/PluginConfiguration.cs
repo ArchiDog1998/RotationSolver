@@ -51,8 +51,13 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowInfoOnToast = true;
     public bool RaiseAll = false;
     public bool CastingDisplay = true;
-    public bool PoslockCasting = false;
+    public bool PoslockCasting = true;
     public int PoslockModifier = 0;
+    public bool PosPassageOfArms = false;
+    public bool PosTenChiJin = false;
+    public bool PosFlameThrower = false;
+    public bool PosImprovisation = false;
+
     public bool RaisePlayerByCasting = true;
     public bool RaiseBrinkOfDeath = true;
     public int LessMPNoRaise = 0;
@@ -85,6 +90,7 @@ public class PluginConfiguration : IPluginConfiguration
     public float KeyBoardNoiseTimeMax = 0.2f;
     public bool MoveAreaActionFarthest = true;
     public bool StartOnCountdown = true;
+    public bool StartOnAttackedBySomeone = false;
     public bool NoNewHostiles = false;
     public bool UseHealWhenNotAHealer = true;
     public float HealthDifference = 0.25f;
