@@ -15,11 +15,12 @@ namespace RotationSolver.Basic;
 internal static class DataCenter
 {
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
-            || !Service.Config.PoslockCasting
-            //Key cancel.
-            || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.PoslockModifier]]
-            //Gamepad cancel.
-            || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) >= 0.5f;
+        || StateType == StateCommandType.Cancel
+        || !Service.Config.PoslockCasting
+        //Key cancel.
+        || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.PoslockModifier]]
+        //Gamepad cancel.
+        || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) >= 0.5f;
 
     internal static DateTime EffectTime { private get; set; } = DateTime.Now;
     internal static DateTime EffectEndTime { private get; set; } = DateTime.Now;

@@ -145,22 +145,22 @@ internal partial class RotationConfigWindow
                 ConfigurationHelper.Keys,
                 LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription);
 
-            DrawIconCheckBox(ActionID.PassageOfArms, ref Service.Config.PosPassageOfArms, Service.Default.PosPassageOfArms);
+            DrawIconCheckBox(ActionID.PassageOfArms, ref Service.Config.PosPassageOfArms);
 
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            DrawIconCheckBox(ActionID.TenChiJin, ref Service.Config.PosTenChiJin, Service.Default.PosTenChiJin);
+            DrawIconCheckBox(ActionID.TenChiJin, ref Service.Config.PosTenChiJin);
 
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            DrawIconCheckBox(ActionID.FlameThrower, ref Service.Config.PosFlameThrower, Service.Default.PosFlameThrower);
+            DrawIconCheckBox(ActionID.FlameThrower, ref Service.Config.PosFlameThrower);
 
             ImGui.SameLine();
             ImGuiHelper.Spacing();
 
-            DrawIconCheckBox(ActionID.Improvisation, ref Service.Config.PosImprovisation, Service.Default.PosImprovisation);
+            DrawIconCheckBox(ActionID.Improvisation, ref Service.Config.PosImprovisation);
 
             ImGui.Unindent();
         }

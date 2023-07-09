@@ -86,12 +86,12 @@ internal partial class RotationConfigWindow : Window
         ImGuiHelper.DisplayCommandHelp(OtherCommandType.Settings, command.ToString());
     }
 
-    internal static void DrawIconCheckBox(ActionID actionID, ref bool value, bool @default, string description = "", Action otherThing = null)
+    internal static void DrawIconCheckBox(ActionID actionID, ref bool value, string description = "", Action otherThing = null)
     {
         var name = $"##{actionID}";
         description = actionID.ToString() + "\n" + description;
 
-        ControlWindow.DrawIAction(IconSet.GetTexture(actionID).ImGuiHandle, 40, 1);
+        ControlWindow.DrawIAction(IconSet.GetTexture(actionID).ImGuiHandle, 40, value ? 1 : - 1);
 
         ImGuiHelper.HoveredString(description);
 
@@ -99,11 +99,6 @@ internal partial class RotationConfigWindow : Window
         ImGuiHelper.Spacing();
 
         DrawCheckBox(name, ref value, description, otherThing);
-
-        if (value != @default)
-        {
-            ImGuiHelper.UndoValue(name, ref value, @default, otherThing);
-        }
     }
 
 
