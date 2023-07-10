@@ -193,7 +193,7 @@ internal partial class Strings
     public string ConfigWindow_Param_Condition { get; set; } = "Condition";
     public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto turn smart on countdown";
 
-    public string ConfigWindow_Param_StartOnAttackedBySomeone { get; set; } = "Auto turn manual on being attacked by someone.";
+    public string ConfigWindow_Param_StartOnAttackedBySomeone { get; set; } = "Automatically turn on manual mode and target enemy when being attacked";
     public string ConfigWindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
     public string ConfigWindow_Param_InterruptibleMoreCheck { get; set; } = "Interrupt the action with action type check.";
 
