@@ -51,10 +51,10 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowInfoOnToast = true;
     public bool RaiseAll = false;
     public bool CastingDisplay = true;
-    public bool PoslockCasting = true;
+    public bool PoslockCasting = false;
     public int PoslockModifier = 0;
     public bool PosPassageOfArms = false;
-    public bool PosTenChiJin = false;
+    public bool PosTenChiJin = true;
     public bool PosFlameThrower = false;
     public bool PosImprovisation = false;
 
