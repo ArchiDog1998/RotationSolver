@@ -66,7 +66,7 @@ internal static class PreviewUpdater
             UIState.Instance()->Hotbar.CancelCast();
         }
 
-        var nowMove = MovingUpdater.CanMove && Service.Config.CastingDisplay;
+        var nowMove = Service.CanMove && Service.Config.CastingDisplay;
         if (nowMove == _showCanMove) return;
         _showCanMove = nowMove;
 

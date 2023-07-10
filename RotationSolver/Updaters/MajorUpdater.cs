@@ -124,7 +124,6 @@ internal static class MajorUpdater
     {
         ActionSequencerUpdater.Enable(Svc.PluginInterface.ConfigDirectory.FullName + "\\Conditions");
         SocialUpdater.Enable();
-        new MovingUpdater();
 
         Svc.Framework.Update += FrameworkUpdate;
     }

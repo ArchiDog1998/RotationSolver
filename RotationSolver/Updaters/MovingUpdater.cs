@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Utility.Signatures;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -7,24 +6,8 @@ using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
 
-internal class MovingUpdater
+internal static class MovingUpdater
 {
-    // From https://github.com/PunishXIV/Orbwalker/blame/master/Orbwalker/Memory.cs#L85-L87
-    [Signature("F3 0F 10 05 ?? ?? ?? ?? 0F 2E C6 0F 8A", ScanType = ScanType.StaticAddress, Fallibility = Fallibility.Infallible)]
-    static IntPtr forceDisableMovementPtr;
-    private static unsafe ref int ForceDisableMovement => ref *(int*)(forceDisableMovementPtr + 4);
-
-    internal static unsafe bool CanMove
-    {
-        get => ForceDisableMovement == 0;
-        set => ForceDisableMovement = value || DataCenter.NoPoslock ? 0 : 1;
-    }
-
-    public MovingUpdater()
-    {
-        SignatureHelper.Initialise(this);
-    }
-
     internal unsafe static void UpdateCanMove(bool doNextAction)
     {
         bool canMove = !Svc.Condition[ConditionFlag.OccupiedInEvent]
@@ -64,6 +47,6 @@ internal class MovingUpdater
         //Status
         var specialStatus = Player.Object.HasStatus(true, statusList.ToArray());
 
-        CanMove = !specialStatus && !specialActions && canMove;
+        Service.CanMove = !specialStatus && !specialActions && canMove;
     }
 }
