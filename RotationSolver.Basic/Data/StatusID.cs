@@ -499,4 +499,10 @@ public enum StatusID : ushort
     TheBlackestNight = 1178,
 
     LivingDead = WillDead,
+
+    Overheated = 2688,
+
+    Flamethrower = 1205,
+
+    PassageOfArms = 1175,
 }

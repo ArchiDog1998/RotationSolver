@@ -50,37 +50,23 @@ internal static class PreviewUpdater
         }
     }
 
-    static bool _canMove;
-    static bool _isTarNoNeedCast;
     static RandomDelay _tarStopCastDelay = new(() =>
     (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
-    internal static void UpdateCastBarState()
-    {
-        var tardead = Service.Config.UseStopCasting && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
-            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0);
-        _isTarNoNeedCast = _tarStopCastDelay.Delay(tardead);
-
-        bool canMove = !Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInEvent]
-            && !Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.Casting];
-
-        //For lock
-        var specialStatus = Player.Object.HasStatus(true, StatusID.PhantomFlurry, StatusID.TenChiJin);
-
-        _canMove = !specialStatus && canMove;
-        MovingController.IsMoving = _canMove;
-    }
-
     static bool _showCanMove;
     static readonly ByteColor _redColor = new() { A = 255, R = 120, G = 0, B = 60 };
     static readonly ByteColor _greenColor = new() { A = 255, R = 60, G = 120, B = 30 };
     private static unsafe void UpdateCastBar()
     {
-        if (_isTarNoNeedCast)
+        var tardead = Service.Config.UseStopCasting && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
+            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0);
+
+
+        if (_tarStopCastDelay.Delay(tardead))
         {
             UIState.Instance()->Hotbar.CancelCast();
         }
 
-        var nowMove = _canMove && Service.Config.CastingDisplay;
+        var nowMove = Service.CanMove && Service.Config.CastingDisplay;
         if (nowMove == _showCanMove) return;
         _showCanMove = nowMove;
 

@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Game.ClientState.Keys;
+using ECommons.Gamepad;
 
 namespace RotationSolver.Basic.Data;
 
@@ -11,9 +12,9 @@ public static class RecordExtension
     public static string ToStr(this ButtonRecord record)
     {
         string result = "";
-        if (record.L2) result += "LT + ";
-        if (record.R2) result += "RT + ";
-        return result + record.Button.ToString();
+        if (record.L2) result += GamePad.ControllerButtons[GamepadButtons.L2] + " + ";
+        if (record.R2) result += GamePad.ControllerButtons[GamepadButtons.R2] + " + ";
+        return result + GamePad.ControllerButtons[record.Button];
     }
 
     public static string ToStr(this KeyRecord record)

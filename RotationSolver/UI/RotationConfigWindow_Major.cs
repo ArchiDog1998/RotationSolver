@@ -2,6 +2,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Localization;
+using System.Xml.Linq;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow : Window
@@ -85,7 +86,32 @@ internal partial class RotationConfigWindow : Window
         ImGuiHelper.DisplayCommandHelp(OtherCommandType.Settings, command.ToString());
     }
 
+    internal static void DrawIconCheckBox(ActionID actionID, ref bool value, string description = "", Action otherThing = null)
+    {
+        var name = $"##{actionID}";
+        description = actionID.ToString() + "\n" + description;
+
+        ControlWindow.DrawIAction(IconSet.GetTexture(actionID).ImGuiHandle, 40, value ? 1 : - 1);
+
+        ImGuiHelper.HoveredString(description);
+
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+
+        DrawCheckBox(name, ref value, description, otherThing);
+    }
+
     internal static void DrawCheckBox(string name, ref bool value, bool @default, string description = "", Action otherThing = null)
+    {
+        DrawCheckBox(name, ref value, description, otherThing);
+
+        if (value != @default)
+        {
+            ImGuiHelper.UndoValue(name, ref value, @default, otherThing);
+        }
+    }
+
+    internal static void DrawCheckBox(string name, ref bool value, string description = "", Action otherThing = null)
     {
         if (ImGui.Checkbox(name, ref value))
         {
@@ -94,14 +120,7 @@ internal partial class RotationConfigWindow : Window
         }
 
         ImGuiHelper.HoveredString(description);
-
-        if(value != @default)
-        {
-            ImGuiHelper.UndoValue(name, ref value, @default, otherThing);
-        }
     }
-
-
 
     private static void DrawRangedFloat(string name, ref float minValue, ref float maxValue, float defaultMin, float defaultMax, float speed = 0.01f, float min = 0, float max = 3, string description = "")
     {

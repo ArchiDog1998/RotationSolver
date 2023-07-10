@@ -41,6 +41,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         //Init!
         Clipper.InflatePaths(new PathsD(new PathD[] { Clipper.MakePath(new double[] {0, 0, 1, 1 }) }), 0, JoinType.Round, EndType.Joined);
+
+        new Service();
         try
         {
             Service.Config = JsonConvert.DeserializeObject<PluginConfiguration>(
@@ -70,7 +72,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();
-        _dis.Add(new MovingController());
         _dis.Add(new LocalizationManager());
 #if DEBUG
         LocalizationManager.ExportLocalization();

@@ -48,6 +48,9 @@ internal static class EnumTranslations
         VirtualKey.SHIFT => "SHIFT",
         VirtualKey.CONTROL => "CTRL",
         VirtualKey.MENU => "ALT",
+        VirtualKey.LBUTTON => "Left Mouse",
+        VirtualKey.MBUTTON => "Middle Mouse",
+        VirtualKey.RBUTTON => "Right Mouse",
         _ => k.ToString(),
     };
 

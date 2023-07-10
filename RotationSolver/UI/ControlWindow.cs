@@ -87,7 +87,7 @@ internal class ControlWindow : Window
         ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.ToName());
 
         RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
-            ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
+            ref Service.Config.IsControlWindowLock);
         ImGui.EndGroup();
 
         ImGui.SameLine();
@@ -472,7 +472,7 @@ internal class ControlWindow : Window
         return result;
     }
 
-    static (Vector2, Vector2) DrawIAction(nint handle, float width, float percent)
+    internal static (Vector2, Vector2) DrawIAction(nint handle, float width, float percent)
     {
         var cursor = ImGui.GetCursorPos();
         ImGui.BeginGroup();

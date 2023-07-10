@@ -50,6 +50,21 @@ public static class IconSet
         return GetTexture(iconId);
     }
 
+    public static TextureWrap GetTexture(this ActionID actionID, bool isAction = true)
+    {
+        var id = (uint)actionID;
+
+        if (!_actionIcons.TryGetValue(id, out var iconId))
+        {
+            iconId = isAction
+                ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
+                : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(id).Icon;
+
+            _actionIcons[id] = iconId;
+        }
+        return GetTexture(iconId);
+    }
+
     private static readonly Dictionary<IconType, uint[]> _icons = new()
     {
         { IconType.Gold, new uint[40]

@@ -27,7 +27,6 @@ internal static class MajorUpdater
 
     static bool _showed;
     static Exception _threadException;
-
     //static int count = 0;
     private static void FrameworkUpdate(Framework framework)
     {
@@ -81,9 +80,16 @@ internal static class MajorUpdater
             }
             ActionUpdater.UpdateActionInfo();
 
+            var canDoAction = false;
             if (!ShouldPreventActions)
             {
-                ActionUpdater.DoAction();
+                canDoAction = ActionUpdater.CanDoAction();
+            }
+
+            MovingUpdater.UpdateCanMove(canDoAction);
+            if (canDoAction)
+            {
+                RSCommands.DoAction();
             }
 
             MacroUpdater.UpdateMacro();
@@ -116,10 +122,10 @@ internal static class MajorUpdater
 
     public static void Enable()
     {
-        Svc.Framework.Update += FrameworkUpdate;
         ActionSequencerUpdater.Enable(Svc.PluginInterface.ConfigDirectory.FullName + "\\Conditions");
-
         SocialUpdater.Enable();
+
+        Svc.Framework.Update += FrameworkUpdate;
     }
 
     static bool _work;
@@ -137,7 +143,6 @@ internal static class MajorUpdater
 
         try
         {
-            PreviewUpdater.UpdateCastBarState();
             TargetUpdater.UpdateTarget();
             
             if (Service.Config.AutoLoadCustomRotations)
