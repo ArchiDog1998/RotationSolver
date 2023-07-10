@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.0.7](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.6...v3.0.7) (2023-07-10)
+
+
+### Bug Fixes
+
+* add button control for movement lock. ([7ce40ee](https://github.com/ArchiDog1998/RotationSolver/commit/7ce40ee2861cbbe1ad0b3c9ae0cff13d89362628))
+* add Overheated StatusId. ([f716c38](https://github.com/ArchiDog1998/RotationSolver/commit/f716c38ceca553f97a868e8d22841a216c76b23b))
+* changed movement lock ui. ([757377f](https://github.com/ArchiDog1998/RotationSolver/commit/757377f28cf9c6e81f237fc369edda0fa2feeebd))
+* fixed `No Move` button in Control window. ([9e210f6](https://github.com/ArchiDog1998/RotationSolver/commit/9e210f68f1cb576cd2d1ab786773ac134c1374ec))
+* fixed auto change target. ([68ccaf0](https://github.com/ArchiDog1998/RotationSolver/commit/68ccaf0a0d8dd74f3169b0495d31dc48141c3f98))
+* fixed controlwindow tooltip about gamepad. ([7b42b45](https://github.com/ArchiDog1998/RotationSolver/commit/7b42b45f68a1e27e9c669af16e63a4255a026a3e))
+* fixed movement Lock. ([03cb213](https://github.com/ArchiDog1998/RotationSolver/commit/03cb21316cba3f1e449a03f9d1451238cb939eaf))
+* fixed moving feature. ([ba2eb3f](https://github.com/ArchiDog1998/RotationSolver/commit/ba2eb3febc4cd366b37ff84fc43398da1c0d5956))
+* make poslock only in combat. ([8123770](https://github.com/ArchiDog1998/RotationSolver/commit/81237705e17ff2a5252bc4e6dd7986ffd2b61faa))
+* posLock. add auto target. ([9b1a62e](https://github.com/ArchiDog1998/RotationSolver/commit/9b1a62edc3be44ea78226ad4e42297d39a055409))
+
 ## [3.0.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.5...v3.0.6) (2023-07-07)
 
 
