@@ -134,7 +134,7 @@
   "ConfigWindow_Param_UseHealPotions": "Use Heal Potions",
   "ConfigWindow_Param_Condition": "Condition",
   "ConfigWindow_Param_StartOnCountdown": "Auto turn smart on countdown",
-  "ConfigWindow_Param_StartOnAttackedBySomeone": "Auto turn manual on being attacked by someone.",
+  "ConfigWindow_Param_StartOnAttackedBySomeone": "Automatically turn on manual mode and target enemy when being attacked",
   "ConfigWindow_Param_EsunaAll": "Esuna All Statuses.",
   "ConfigWindow_Param_InterruptibleMoreCheck": "Interrupt the action with action type check.",
   "ConfigWindow_Param_HealOutOfCombat": "Heal party members outside of combat.",
