@@ -134,7 +134,7 @@
   "ConfigWindow_Param_UseHealPotions": "使用恢复药",
   "ConfigWindow_Param_Condition": "条件",
   "ConfigWindow_Param_StartOnCountdown": "在倒计时时自动开启智能模式",
-  "ConfigWindow_Param_StartOnAttackedBySomeone": "当被攻击时自动对攻击源使用手动选择目标模式。",
+  "ConfigWindow_Param_StartOnAttackedBySomeone": "Automatically turn on manual mode and target enemy when being attacked",
   "ConfigWindow_Param_EsunaAll": "康复所有状态",
   "ConfigWindow_Param_InterruptibleMoreCheck": "使用动作类型检查来中断动作",
   "ConfigWindow_Param_HealOutOfCombat": "在战斗之外治疗小队队员",
