@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.8](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.7...v3.0.8) (2023-07-11)
+
+
+### Bug Fixes
+
+* fixed the access to service. ([f95c3a6](https://github.com/ArchiDog1998/RotationSolver/commit/f95c3a6319a20bfa0c3009e0b7432e67a591b851))
+* fixed translations. ([820e415](https://github.com/ArchiDog1998/RotationSolver/commit/820e415b2cf52196903ff5e66ce346d3ff01381e))
+
 ## [3.0.7](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.6...v3.0.7) (2023-07-10)
 
 
