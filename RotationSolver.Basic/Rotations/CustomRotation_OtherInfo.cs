@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -266,4 +267,17 @@ public abstract partial class CustomRotation
 
     protected static int NumberOfHostilesIn(float range)
     => DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= range);
+
+    #region Service
+    protected static float CountDownAhead => Service.Config.CountDownAhead;
+    protected float HealthAreaAbility => Jobs.FirstOrDefault().GetHealthAreaAbility();
+    protected float HealthAreaSpell => Jobs.FirstOrDefault().GetHealthAreaSpell();
+    protected float HealthAreaAbilityHot => Jobs.FirstOrDefault().GetHealthAreaAbilityHot();
+    protected float HealthAreaSpellHot => Jobs.FirstOrDefault().GetHealthAreaSpellHot();
+    protected float HealthSingleAbility => Jobs.FirstOrDefault().GetHealthSingleAbility();
+    protected float HealthSingleSpell => Jobs.FirstOrDefault().GetHealthSingleSpell();
+    protected float HealthSingleAbilityHot => Jobs.FirstOrDefault().GetHealthSingleAbilityHot();
+    protected float HealthSingleSpellHot => Jobs.FirstOrDefault().GetHealthSingleSpellHot();
+    protected float HealthForDyingTanksDefault => Jobs.FirstOrDefault().GetHealthForDyingTank();
+    #endregion
 }

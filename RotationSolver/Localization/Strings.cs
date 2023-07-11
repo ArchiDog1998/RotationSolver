@@ -176,8 +176,8 @@ internal partial class Strings
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
     public string ConfigWindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
     public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AOE action when this action may attack the mobs that not is a hostile target.";
-    public string ConfigWindow_Param_UseDefenceAbility { get; set; } = "Use defense abilities";
-    public string ConfigWindow_Param_UseDefenceAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";
+    public string ConfigWindow_Param_UseDefenseAbility { get; set; } = "Use defense abilities";
+    public string ConfigWindow_Param_UseDefenseAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";
     public string ConfigWindow_Param_AutoShield { get; set; } = "Auto tank stance";
     public string ConfigWindow_Param_AutoProvokeForTank { get; set; } = "Auto Provoke (Tank)";
     public string ConfigWindow_Param_AutoProvokeForTankDesc { get; set; } = "When a hostile is hitting the non-Tank member of party, it will automatically use the Provoke.";
@@ -332,7 +332,7 @@ internal partial class Strings
     public string ActionSequencer_Is { get; set; } = "Is";
     public string ActionSequencer_Isnot { get; set; } = "Isnot";
     public string ActionSequencer_Have { get; set; } = "Have";
-    public string ActionSequencer_Havenot { get; set; } = "Havenot";
+    public string ActionSequencer_HaveNot { get; set; } = "Have not";
     public string ActionSequencer_TimeOffset { get; set; } = "Time Offset";
     public string ActionSequencer_Charges { get; set; } = "Charges";
     public string ActionSequencer_ConditionSet { get; set; } = "ConditionSet";
