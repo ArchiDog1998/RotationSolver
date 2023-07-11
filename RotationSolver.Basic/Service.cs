@@ -1,21 +1,13 @@
-﻿using Dalamud;
-using Dalamud.Game;
-using Dalamud.Game.DutyState;
-using Dalamud.Game.Gui.Dtr;
-using Dalamud.Hooking;
-using Dalamud.IoC;
-using Dalamud.Utility.Signatures;
+﻿using Dalamud.Utility.Signatures;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.Attributes;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiScene;
 using Lumina.Excel;
 using RotationSolver.Basic.Configuration;
-using System.Runtime.InteropServices;
 
 namespace RotationSolver.Basic;
 
-internal class Service
+public class Service
 {
     public const string Command = "/rotation";
 
