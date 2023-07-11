@@ -346,9 +346,9 @@ internal partial class RotationConfigWindow
         {
             ImGui.Indent();
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseDefenceAbility,
+            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseDefenseAbility,
                 SettingsCommand.UseDefenseAbility,
-                LocalizationManager.RightLang.ConfigWindow_Param_UseDefenceAbilityDesc);
+                LocalizationManager.RightLang.ConfigWindow_Param_UseDefenseAbilityDesc);
 
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoShield,
                 SettingsCommand.AutoTankStance);

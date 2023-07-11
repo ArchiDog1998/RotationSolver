@@ -3,7 +3,7 @@ using ECommons.ExcelServices;
 
 namespace RotationSolver.Basic.Helpers;
 
-public static class ConfigurationHelper
+internal static class ConfigurationHelper
 {
     public static readonly SortedList<ActionID, EnemyPositional> ActionPositional = new()
     {
@@ -56,7 +56,6 @@ public static class ConfigurationHelper
 
     public static float GetHealthSingleSpellHot(this Job job)
     => Service.Config.HealthSingleSpellsHot.TryGetValue(job, out var value) ? value : Service.Config.HealthSingleSpellHot;
-
 
     public static float GetHealthForDyingTank(this Job job)
         => Service.Config.HealthForDyingTanks.TryGetValue(job, out var value) ? value : HealthForDyingTanksDefault;

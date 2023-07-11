@@ -166,7 +166,7 @@ internal class TargetCondition : ICondition
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_Have,
-                    LocalizationManager.RightLang.ActionSequencer_Havenot,
+                    LocalizationManager.RightLang.ActionSequencer_HaveNot,
                 };
                 break;
             case TargetConditionType.IsDying:

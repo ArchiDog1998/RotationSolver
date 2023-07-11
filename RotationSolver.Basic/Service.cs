@@ -7,7 +7,7 @@ using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic;
 
-public class Service
+internal class Service
 {
     public const string Command = "/rotation";
 
