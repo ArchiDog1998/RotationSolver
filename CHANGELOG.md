@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.10](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.9...v3.0.10) (2023-07-12)
+
+
+### Bug Fixes
+
+* add a new try saying for TTT. ([4f23d32](https://github.com/ArchiDog1998/RotationSolver/commit/4f23d321ec0aaf8c35add39acea5c8bde1b15142))
+* changed the way to control DisableMovement. ([27324a3](https://github.com/ArchiDog1998/RotationSolver/commit/27324a31dbf97844f7e44de5f941c54cfbd2fa9f))
+
 ## [3.0.9](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.8...v3.0.9) (2023-07-11)
 
 
