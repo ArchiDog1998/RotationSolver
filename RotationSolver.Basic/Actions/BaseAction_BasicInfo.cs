@@ -5,6 +5,9 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Basic.Actions;
 
+/// <summary>
+/// The action things around <see cref="Action"/>.
+/// </summary>
 public partial class BaseAction : IBaseAction
 {
     internal static CanUseOption OtherOption { get; set; } = CanUseOption.None;
@@ -12,21 +15,64 @@ public partial class BaseAction : IBaseAction
     readonly Action _action;
     readonly ActionOption _option;
 
+    /// <summary>
+    /// Is a friendly action.
+    /// </summary>
     public bool IsFriendly => _option.HasFlag(ActionOption.Friendly);
+
+    /// <summary>
+    /// Is effect of time.
+    /// </summary>
     public bool IsEot => _option.HasFlag(ActionOption.Eot);
+
+    /// <summary>
+    /// Should end special window after used it.
+    /// </summary>
     public bool ShouldEndSpecial => _option.HasFlag(ActionOption.EndSpecial);
+
+    /// <summary>
+    /// Can be used in the Action Sequencer.
+    /// </summary>
     public bool IsActionSequencer => _option.HasFlag(ActionOption.ActionSequencer) && IsFriendly;
+
+    /// <summary>
+    /// Has a normal gcd action.
+    /// </summary>
     public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);
+
+    /// <summary>
+    /// Is a real gcd action, that makes gcd work.
+    /// </summary>
     public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
 
+    /// <summary>
+    /// How many gcd left to add the dot.
+    /// </summary>
     public Func<uint> GetDotGcdCount { private get; init; }
 
+    /// <summary>
+    /// Get enough level for using this action.
+    /// </summary>
     public bool EnoughLevel => Player.Level >= Level;
+
+    /// <summary>
+    /// The level of this action.
+    /// </summary>
     public byte Level => _action.ClassJobLevel;
+
+    /// <summary>
+    /// The name of this action.
+    /// </summary>
     public string Name => _action.Name;
 
+    /// <summary>
+    /// Description about this action.
+    /// </summary>
     public string Description => string.Empty;
 
+    /// <summary>
+    /// Is Enabled.
+    /// </summary>
     public bool IsEnabled
     {
         get => !Service.Config.DisabledActions.Contains(ID);
@@ -43,6 +89,9 @@ public partial class BaseAction : IBaseAction
         }
     }
 
+    /// <summary>
+    /// Is in the cd window.
+    /// </summary>
     public bool IsInCooldown
     {
         get => !Service.Config.NotInCoolDownActions.Contains(ID);
@@ -58,15 +107,32 @@ public partial class BaseAction : IBaseAction
             }
         }
     }
+
+    /// <summary>
+    /// Action ID.
+    /// </summary>
     public uint ID => _action.RowId;
+
+    /// <summary>
+    /// Adjusted action Id.
+    /// </summary>
     public uint AdjustedID => (uint)Service.GetAdjustedActionId((ActionID)ID);
 
+    /// <summary>
+    /// Icon Id.
+    /// </summary>
     public uint IconID => ID == (uint)ActionID.Sprint ? 104u : _action.Icon;
 
     private byte CoolDownGroup { get; }
 
+    /// <summary>
+    /// Casting time.
+    /// </summary>
     public unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
 
+    /// <summary>
+    /// Action Posotional.
+    /// </summary>
     public virtual EnemyPositional EnemyPositional
     {
         get
@@ -79,6 +145,9 @@ public partial class BaseAction : IBaseAction
         }
     }
 
+    /// <summary>
+    /// Mp it needs.
+    /// </summary>
     public virtual unsafe uint MPNeed
     {
         get
@@ -89,10 +158,21 @@ public partial class BaseAction : IBaseAction
         }
     }
 
+    /// <summary>
+    /// Sort for CD window.
+    /// </summary>
     public uint SortKey => CoolDownGroup;
 
+    /// <summary>
+    /// Animation Lock Time.
+    /// </summary>
     public float AnimationLockTime => OtherConfiguration.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 0.6f;
 
+    /// <summary>
+    /// General Constructer.
+    /// </summary>
+    /// <param name="actionID"></param>
+    /// <param name="option"></param>
     public BaseAction(ActionID actionID, ActionOption option = ActionOption.None)
     {
         _action = Service.GetSheet<Action>().GetRow((uint)actionID);
@@ -105,5 +185,9 @@ public partial class BaseAction : IBaseAction
         CoolDownGroup = _action.GetCoolDownGroup();
     }
 
+    /// <summary>
+    /// To string.
+    /// </summary>
+    /// <returns>string.</returns>
     public override string ToString() => Name;
 }

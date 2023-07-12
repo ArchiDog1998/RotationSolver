@@ -7,7 +7,7 @@ using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic;
 
-internal class Service
+internal class Service : IDisposable
 {
     public const string Command = "/rotation";
 
@@ -15,10 +15,26 @@ internal class Service
     [Signature("F3 0F 10 05 ?? ?? ?? ?? 0F 2E C6 0F 8A", ScanType = ScanType.StaticAddress, Fallibility = Fallibility.Infallible)]
     static IntPtr forceDisableMovementPtr;
     private static unsafe ref int ForceDisableMovement => ref *(int*)(forceDisableMovementPtr + 4);
+
+    static bool _canMove = true;
     internal static unsafe bool CanMove
     {
         get => ForceDisableMovement == 0;
-        set => ForceDisableMovement = value || DataCenter.NoPoslock ? 0 : 1;
+        set
+        {
+            var realCanMove = value || DataCenter.NoPoslock;
+            if (_canMove == realCanMove) return;
+            _canMove = realCanMove;
+
+            if (!realCanMove)
+            {
+                ForceDisableMovement++;
+            }
+            else if(ForceDisableMovement > 0)
+            {
+                ForceDisableMovement--;
+            }
+        }
     }
 
     public static float CountDownTime => Countdown.TimeRemaining;
@@ -47,4 +63,12 @@ internal class Service
     }
 
     public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => Svc.Data.GetExcelSheet<T>();
+
+    public void Dispose()
+    {
+        if (!_canMove && ForceDisableMovement > 0)
+        {
+            ForceDisableMovement--;
+        }
+    }
 }

@@ -5,6 +5,9 @@
 /// </summary>
 public enum ActionID : uint
 {
+    /// <summary>
+    /// No Actions.
+    /// </summary>
     None = 0,
 
     #region Astrologian
