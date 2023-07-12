@@ -1,4 +1,6 @@
-﻿using Dalamud.Logging;
+﻿using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
+using Dalamud.Logging;
 using Dalamud.Plugin;
 using ECommons.DalamudServices;
 using ECommons.Reflection;
@@ -13,6 +15,7 @@ internal static class SpeechHelper
     static object _manager = null;
     static MethodInfo _stop = null;
     static bool _showed = false;
+
     internal static void Speak(string text)
     {
         if(_textToTalk == null)
@@ -33,11 +36,18 @@ internal static class SpeechHelper
         try
         {
             _stop?.Invoke(_manager, Array.Empty<object>());
-            _say?.Invoke(_textToTalk, new object[] { null, text, 1 });
+            try
+            {
+                _say?.Invoke(_textToTalk, new object[] { null, text, 1 });
+            }
+            catch
+            {
+                _say?.Invoke(_textToTalk, new object[] { null, new SeString(new TextPayload("Rotation Solver")) , text, 1 });
+            }
         }
         catch (Exception ex)
         {
-            PluginLog.Warning(ex, "something wrong with TTT");
+            PluginLog.Warning(ex, "Something wrong with TTT.");
         }
     }
 }
