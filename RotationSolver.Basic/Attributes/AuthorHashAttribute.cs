@@ -7,7 +7,15 @@
 [AttributeUsage(AttributeTargets.Assembly)]
 public class AuthorHashAttribute : Attribute
 {
+    /// <summary>
+    /// The hash of your character.
+    /// </summary>
     public string Hash { get; }
+
+    /// <summary>
+    /// Constructer
+    /// </summary>
+    /// <param name="hash"><see cref="Hash"/></param>
     public AuthorHashAttribute(string hash)
     {
         Hash = hash;

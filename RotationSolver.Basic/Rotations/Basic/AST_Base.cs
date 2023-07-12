@@ -4,6 +4,9 @@ using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
+/// <summary>
+/// Astrologian
+/// </summary>
 public abstract class AST_Base : CustomRotation
 {
     public override MedicineType MedicineType => MedicineType.Mind;

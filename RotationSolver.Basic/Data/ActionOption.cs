@@ -1,8 +1,14 @@
 ﻿namespace RotationSolver.Basic.Data;
 
+/// <summary>
+/// The type of action.
+/// </summary>
 [Flags]
 public enum ActionOption : byte
 {
+    /// <summary>
+    /// The normal one.
+    /// </summary>
     None = 0,
 
     /// <summary>

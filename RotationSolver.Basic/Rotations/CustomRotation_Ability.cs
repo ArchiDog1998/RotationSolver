@@ -270,6 +270,12 @@ public abstract partial class CustomRotation
     }
 
 
+    /// <summary>
+    /// It got the highest prioriy among abilities. 
+    /// </summary>
+    /// <param name="nextGCD">The next gcd action.</param>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
     protected virtual bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         if (nextGCD is BaseAction action)
@@ -291,41 +297,78 @@ public abstract partial class CustomRotation
         return false;
     }
 
+    /// <summary>
+    /// The ability that makes character moving forward.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.MoveForwardAbility)]
     protected virtual bool MoveForwardAbility(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// The ability that makes character moving Back.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.MoveBackAbility)]
     protected virtual bool MoveBackAbility(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// The ability that heals single character.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.HealSingleAbility)]
     protected virtual bool HealSingleAbility(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// The ability that heals area.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.HealAreaAbility)]
     protected virtual bool HealAreaAbility(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// The ability that defenses single character.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.DefenseSingleAbility)]
     protected virtual bool DefenseSingleAbility(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// The ability that defense area.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
+
     [RotationDesc(DescType.DefenseAreaAbility)]
     protected virtual bool DefenseAreaAbility(out IAction act)
     {
         act = null; return false;
     }
+
+    /// <summary>
+    /// The ability that speeds your chacacter up.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
 
     [RotationDesc(DescType.SpeedAbility)]
     protected virtual bool SpeedAbility(out IAction act)
@@ -335,10 +378,21 @@ public abstract partial class CustomRotation
         return false;
     }
 
+    /// <summary>
+    /// The ability that can be done anywhere.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
+
     protected virtual bool GeneralAbility(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// The ability that attackes some enemy.
+    /// </summary>
+    /// <param name="act">Result action.</param>
+    /// <returns>Can we use it.</returns>
     protected abstract bool AttackAbility(out IAction act);
 }
