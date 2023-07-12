@@ -7,7 +7,7 @@ using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic;
 
-internal class Service
+internal class Service : IDisposable
 {
     public const string Command = "/rotation";
 
@@ -63,4 +63,12 @@ internal class Service
     }
 
     public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => Svc.Data.GetExcelSheet<T>();
+
+    public void Dispose()
+    {
+        if (!_canMove && ForceDisableMovement > 0)
+        {
+            ForceDisableMovement--;
+        }
+    }
 }
