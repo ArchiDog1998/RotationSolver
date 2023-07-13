@@ -1,4 +1,4 @@
-using Dalamud.Configuration;
+﻿using Dalamud.Configuration;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 
