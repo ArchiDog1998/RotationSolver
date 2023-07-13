@@ -1,32 +1,68 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
-using System;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
+/// <summary>
+/// The base class of RPR.
+/// </summary>
 public abstract class RPR_Base : CustomRotation
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public override MedicineType MedicineType => MedicineType.Strength;
-    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.RPR };
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed override Job[] Jobs => new [] { Job.RPR };
+
+    /// <summary>
+    /// 
+    /// </summary>
     [Obsolete("Please Use HasEnshrouded Instead")]
     protected static bool Enshrouded => HasEnshrouded;
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static bool HasEnshrouded => Player.HasStatus(true, StatusID.Enshrouded);
+
+    /// <summary>
+    /// 
+    /// </summary>
 
     [Obsolete("Please Use HasSoulReaver Instead")]
     protected static bool SoulReaver => HasSoulReaver;
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static bool HasSoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
 
     #region JobGauge
     static RPRGauge JobGauge => Svc.Gauges.Get<RPRGauge>();
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte Soul => JobGauge.Soul;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte Shroud => JobGauge.Shroud;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte LemureShroud => JobGauge.LemureShroud;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte VoidShroud => JobGauge.VoidShroud;
     #endregion
 
@@ -55,12 +91,18 @@ public abstract class RPR_Base : CustomRotation
         ActionCheck = Slice.ActionCheck,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction ShadowOfDeath { get; } = new BaseAction(ActionID.ShadowOfDeath, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = (b, m) => !HasSoulReaver,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction SoulSlice { get; } = new BaseAction(ActionID.SoulSlice)
     {
         ActionCheck = (b, m) => Slice.ActionCheck(b, m) && Soul <= 50,
@@ -84,6 +126,9 @@ public abstract class RPR_Base : CustomRotation
         ActionCheck = Slice.ActionCheck,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction WhorlOfDeath { get; } = new BaseAction(ActionID.WhorlOfDeath, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
@@ -91,6 +136,9 @@ public abstract class RPR_Base : CustomRotation
         AOECount = 2,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction SoulScythe { get; } = new BaseAction(ActionID.SoulScythe)
     {
         ActionCheck = SoulSlice.ActionCheck,
@@ -98,16 +146,25 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     #region Soul Reaver
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Gibbet { get; } = new BaseAction(ActionID.Gibbet)
     {
         StatusNeed = new[] { StatusID.SoulReaver }
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Gallows { get; } = new BaseAction(ActionID.Gallows)
     {
         StatusNeed = new[] { StatusID.SoulReaver }
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Guillotine { get; } = new BaseAction(ActionID.Guillotine)
     {
         StatusNeed = new[] { StatusID.SoulReaver }
@@ -115,18 +172,27 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     #region Soul
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction BloodStalk { get; } = new BaseAction(ActionID.BloodStalk)
     {
         StatusProvide = new[] { StatusID.SoulReaver },
         ActionCheck = (b, m) => Slice.ActionCheck(b, m) && Soul >= 50
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction GrimSwathe { get; } = new BaseAction(ActionID.GrimSwathe)
     {
         StatusProvide = new[] { StatusID.SoulReaver },
         ActionCheck = BloodStalk.ActionCheck,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Gluttony { get; } = new BaseAction(ActionID.Gluttony)
     {
         StatusProvide = new[] { StatusID.SoulReaver },
@@ -135,11 +201,17 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     #region Burst
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction ArcaneCircle { get; } = new BaseAction(ActionID.ArcaneCircle, ActionOption.Buff)
     {
         StatusProvide = new[] { StatusID.CircleOfSacrifice, StatusID.BloodSownCircle }
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction PlentifulHarvest { get; } = new BaseAction(ActionID.PlentifulHarvest)
     {
         StatusNeed = new[] { StatusID.ImmortalSacrifice },
@@ -148,40 +220,61 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     #region Shroud
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Enshroud { get; } = new BaseAction(ActionID.Enshroud)
     {
         StatusProvide = new[] { StatusID.Enshrouded },
         ActionCheck = (b, m) => Shroud >= 50 && Slice.ActionCheck(b, m)
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Communio { get; } = new BaseAction(ActionID.Communio)
     {
         StatusNeed = new[] { StatusID.Enshrouded },
         ActionCheck = (b, m) => LemureShroud == 1
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction LemuresSlice { get; } = new BaseAction(ActionID.LemuresSlice)
     {
         StatusNeed = new[] { StatusID.Enshrouded },
         ActionCheck = (b, m) => VoidShroud >= 2,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction LemuresScythe { get; } = new BaseAction(ActionID.LemuresScythe)
     {
         StatusNeed = new[] { StatusID.Enshrouded },
         ActionCheck = LemuresSlice.ActionCheck,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction VoidReaping { get; } = new BaseAction(ActionID.VoidReaping)
     {
         StatusNeed = new[] { StatusID.Enshrouded },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction CrossReaping { get; } = new BaseAction(ActionID.CrossReaping)
     {
         StatusNeed = new[] { StatusID.Enshrouded },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction GrimReaping { get; } = new BaseAction(ActionID.GrimReaping)
     {
         StatusNeed = new[] { StatusID.Enshrouded },
@@ -189,51 +282,113 @@ public abstract class RPR_Base : CustomRotation
     #endregion
 
     #region Others
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Harpe { get; } = new BaseAction(ActionID.Harpe)
     {
         ActionCheck = (b, m) => !HasSoulReaver && !IsLastAction(IActionHelper.MovingActions),
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HellsIngress { get; } = new BaseAction(ActionID.HellsIngress)
     {
         StatusProvide = new[] { StatusID.EnhancedHarpe },
         ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HellsEgress { get; } = new BaseAction(ActionID.HellsEgress)
     {
         StatusProvide = HellsIngress.StatusProvide,
         ActionCheck = HellsIngress.ActionCheck
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction SoulSow { get; } = new BaseAction(ActionID.SoulSow)
     {
         StatusProvide = new[] { StatusID.SoulSow },
         ActionCheck = (b, m) => !InCombat,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HarvestMoon { get; } = new BaseAction(ActionID.HarvestMoon)
     {
         StatusNeed = new[] { StatusID.SoulSow },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction ArcaneCrest { get; } = new BaseAction(ActionID.ArcaneCrest, ActionOption.Defense);
     #endregion
 
     #region Traits
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait SoulGauge { get; } = new BaseTrait(379);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait DeathScytheMastery    { get; } = new BaseTrait(380);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedAvatar    { get; } = new BaseTrait(381);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait Hellsgate    { get; } = new BaseTrait(382);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait TemperedSoul    { get; } = new BaseTrait(383);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait ShroudGauge    { get; } = new BaseTrait(384);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedArcaneCrest    { get; } = new BaseTrait(385);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedShroud    { get; } = new BaseTrait(386);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedArcaneCircle    { get; } = new BaseTrait(387);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait DeathScytheMastery2    { get; } = new BaseTrait(523);
     #endregion
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(ActionID.HellsIngress)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -241,6 +396,11 @@ public abstract class RPR_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
@@ -248,6 +408,11 @@ public abstract class RPR_Base : CustomRotation
         return base.DefenseAreaAbility(out act);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(ActionID.ArcaneCrest)]
     protected override bool DefenseSingleAbility(out IAction act)
     {

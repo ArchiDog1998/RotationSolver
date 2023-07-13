@@ -3,20 +3,43 @@ using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
+
+/// <summary>
+/// The base class of Dancer.
+/// </summary>
 public abstract class DNC_Base : CustomRotation
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public override MedicineType MedicineType => MedicineType.Dexterity;
-    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.DNC };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed override Job[] Jobs => new [] {Job.DNC };
 
     #region Job Gauge
     static DNCGauge JobGauge => Svc.Gauges.Get<DNCGauge>();
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static bool IsDancing => JobGauge.IsDancing;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte Esprit => JobGauge.Esprit;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte Feathers => JobGauge.Feathers;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte CompletedSteps => JobGauge.CompletedSteps;
     #endregion
 
@@ -53,6 +76,9 @@ public abstract class DNC_Base : CustomRotation
         StatusNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction FanDance { get; } = new BaseAction(ActionID.FanDance)
     {
         ActionCheck = (b, m) => Feathers > 0,
@@ -94,6 +120,9 @@ public abstract class DNC_Base : CustomRotation
         StatusNeed = FountainFall.StatusNeed,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction FanDance2 { get; } = new BaseAction(ActionID.FanDance2)
     {
         ActionCheck = (b, m) => Feathers > 0,
@@ -101,26 +130,41 @@ public abstract class DNC_Base : CustomRotation
         StatusProvide = new[] { StatusID.ThreefoldFanDance },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction FanDance3 { get; } = new BaseAction(ActionID.FanDance3)
     {
         StatusNeed = FanDance2.StatusProvide,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction FanDance4 { get; } = new BaseAction(ActionID.FanDance4)
     {
         StatusNeed = new[] { StatusID.FourfoldFanDance },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction SaberDance { get; } = new BaseAction(ActionID.SaberDance)
     {
         ActionCheck = (b, m) => Esprit >= 50,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction StarFallDance { get; } = new BaseAction(ActionID.StarFallDance)
     {
         StatusNeed = new[] { StatusID.FlourishingStarfall },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Tillana { get; } = new BaseAction(ActionID.Tillana)
     {
         StatusNeed = new[] { StatusID.FlourishingFinish },
@@ -128,8 +172,14 @@ public abstract class DNC_Base : CustomRotation
     #endregion
 
     #region Support
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction EnAvant { get; } = new BaseAction(ActionID.EnAvant, ActionOption.Friendly | ActionOption.EndSpecial);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction ShieldSamba { get; } = new BaseAction(ActionID.ShieldSamba, ActionOption.Defense)
     {
         ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour,
@@ -138,10 +188,19 @@ public abstract class DNC_Base : CustomRotation
             StatusID.ShieldSamba),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction CuringWaltz { get; } = new BaseAction(ActionID.CuringWaltz, ActionOption.Heal);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Improvisation { get; } = new BaseAction(ActionID.Improvisation, ActionOption.Heal);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction ClosedPosition { get; } = new BaseAction(ActionID.ClosedPosition, ActionOption.Buff)
     {
         ChoiceTarget = (Targets, mustUse) =>
@@ -156,8 +215,14 @@ public abstract class DNC_Base : CustomRotation
         },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Flourish { get; } = new BaseAction(ActionID.Flourish)
     {
         StatusNeed = new[] { StatusID.StandardFinish },
@@ -171,6 +236,9 @@ public abstract class DNC_Base : CustomRotation
     #endregion
 
     #region Step
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction StandardStep { get; } = new BaseAction(ActionID.StandardStep)
     {
         StatusProvide = new[]
@@ -180,6 +248,9 @@ public abstract class DNC_Base : CustomRotation
         },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction TechnicalStep { get; } = new BaseAction(ActionID.TechnicalStep)
     {
         StatusNeed = new[]
@@ -189,12 +260,18 @@ public abstract class DNC_Base : CustomRotation
         StatusProvide = StandardStep.StatusProvide,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseAction StandardFinish { get; } = new BaseAction(ActionID.StandardFinish)
     {
         StatusNeed = new[] { StatusID.StandardStep },
         ActionCheck = (b, m) => IsDancing && CompletedSteps == 2,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseAction TechnicalFinish { get; } = new BaseAction(ActionID.TechnicalFinish)
     {
         StatusNeed = new[] { StatusID.TechnicalStep },
@@ -221,6 +298,11 @@ public abstract class DNC_Base : CustomRotation
         ActionCheck = (b, m) => (ActionID)JobGauge.NextStep == ActionID.Pirouette,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     protected static bool ExecuteStepGCD(out IAction act)
     {
         act = null;
@@ -237,19 +319,68 @@ public abstract class DNC_Base : CustomRotation
     #endregion
 
     #region Traits
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(251);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait FourfoldFantasy { get; } = new BaseTrait(252);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(253);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedEnAvant    { get; } = new BaseTrait(254);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EspritTrait { get; } = new BaseTrait(255);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedEnAvant2    { get; } = new BaseTrait(256);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedTechnicalFinish    { get; } = new BaseTrait(453);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedEsprit    { get; } = new BaseTrait(454);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedFlourish    { get; } = new BaseTrait(455);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedShieldSamba    { get; } = new BaseTrait(456);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedDevilment    { get; } = new BaseTrait(457);
 
     #endregion
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(ActionID.EnAvant)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -257,6 +388,11 @@ public abstract class DNC_Base : CustomRotation
         return false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(ActionID.CuringWaltz, ActionID.Improvisation)]
     protected sealed override bool HealAreaAbility(out IAction act)
     {
@@ -265,6 +401,11 @@ public abstract class DNC_Base : CustomRotation
         return false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(ActionID.ShieldSamba)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {

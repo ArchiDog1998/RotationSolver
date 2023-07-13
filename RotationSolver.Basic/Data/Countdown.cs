@@ -4,17 +4,37 @@ using System.Runtime.InteropServices;
 
 namespace RotationSolver.Basic.Data;
 
+/// <summary>
+/// The struct about countdown.
+/// </summary>
 [StructLayout(LayoutKind.Explicit)]
 public unsafe struct Countdown
 {
+    /// <summary>
+    /// Timer.
+    /// </summary>
     [FieldOffset(0x28)] public float Timer;
+
+    /// <summary>
+    /// Is this action active.
+    /// </summary>
     [FieldOffset(0x38)] public byte Active;
+
+    /// <summary>
+    /// Init.
+    /// </summary>
     [FieldOffset(0x3C)] public uint Initiator;
 
+    /// <summary>
+    /// The instance about this struct.
+    /// </summary>
     public static unsafe Countdown* Instance => (Countdown*)Framework.Instance()->GetUiModule()->GetAgentModule()->GetAgentByInternalId(AgentId.CountDownSettingDialog);
 
     static RandomDelay _delay = new RandomDelay(()=>(Service.Config.CountdownDelayMin, Service.Config.CountdownDelayMax));
 
+    /// <summary>
+    /// TimeRemaining.
+    /// </summary>
     public static float TimeRemaining
     {
         get

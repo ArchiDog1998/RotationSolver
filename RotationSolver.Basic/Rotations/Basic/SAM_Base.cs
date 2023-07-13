@@ -4,47 +4,105 @@ using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
+/// <summary>
+/// The base class of SAM.
+/// </summary>
 public abstract class SAM_Base : CustomRotation
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public override MedicineType MedicineType => MedicineType.Strength;
-    public sealed override Job[] Jobs => new [] { ECommons.ExcelServices.Job.SAM };
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed override Job[] Jobs => new [] { Job.SAM };
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static bool HasMoon => Player.HasStatus(true, StatusID.Fugetsu);
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static bool HasFlower => Player.HasStatus(true, StatusID.Fuka);
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static bool IsMoonTimeLessThanFlower
         => Player.StatusTime(true, StatusID.Fugetsu) < Player.StatusTime(true, StatusID.Fuka);
 
     #region JobGauge
     static SAMGauge JobGauge => Svc.Gauges.Get<SAMGauge>();
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static bool HasSetsu => JobGauge.HasSetsu;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static bool HasGetsu => JobGauge.HasGetsu;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static bool HasKa => JobGauge.HasKa;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte Kenki => JobGauge.Kenki;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte MeditationStacks => JobGauge.MeditationStacks;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
     #endregion
 
     #region Attack Single
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Hakaze { get; } = new BaseAction(ActionID.Hakaze);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Jinpu { get; } = new BaseAction(ActionID.Jinpu);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Gekko { get; } = new BaseAction(ActionID.Gekko);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Shifu { get; } = new BaseAction(ActionID.Shifu);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Kasha { get; } = new BaseAction(ActionID.Kasha);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Yukikaze { get; } = new BaseAction(ActionID.Yukikaze);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Shoha { get; } = new BaseAction(ActionID.Shoha)
     {
         ActionCheck = (b, m) => MeditationStacks == 3
@@ -52,10 +110,19 @@ public abstract class SAM_Base : CustomRotation
     #endregion
 
     #region Attack Area
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Fuga { get; } = new BaseAction(ActionID.Fuga);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Fuko { get; } = new BaseAction(ActionID.Fuko);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Mangetsu { get; } = new BaseAction(ActionID.Mangetsu)
     {
         ComboIds = new[]
@@ -64,6 +131,9 @@ public abstract class SAM_Base : CustomRotation
         }
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Oka { get; } = new BaseAction(ActionID.Oka)
     {
         ComboIds = new[]
@@ -72,17 +142,26 @@ public abstract class SAM_Base : CustomRotation
         }
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Shoha2 { get; } = new BaseAction(ActionID.Shoha2)
     {
         ActionCheck = (b, m) => MeditationStacks == 3
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction OgiNamikiri { get; } = new BaseAction(ActionID.OgiNamikiri)
     {
         StatusNeed = new[] { StatusID.OgiNamikiriReady },
         ActionCheck = (b, m) => !IsMoving
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction KaeshiNamikiri { get; } = new BaseAction(ActionID.KaeshiNamikiri)
     {
         ActionCheck = (b, m) => JobGauge.Kaeshi == Kaeshi.NAMIKIRI
@@ -90,28 +169,47 @@ public abstract class SAM_Base : CustomRotation
     #endregion
 
     #region Sen
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Higanbana { get; } = new BaseAction(ActionID.Higanbana, ActionOption.Dot)
     {
         ActionCheck = (b, m) => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction TenkaGoken { get; } = new BaseAction(ActionID.TenkaGoken)
     {
         ActionCheck = (b, m) => !IsMoving && SenCount == 2,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction MidareSetsugekka { get; } = new BaseAction(ActionID.MidareSetsugekka)
     {
         ActionCheck = (b, m) => !IsMoving && SenCount == 3,
     };
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction TsubameGaeshi { get; } = new BaseAction(ActionID.TsubameGaeshi);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction KaeshiGoken { get; } = new BaseAction(ActionID.KaeshiGoken)
     {
         ActionCheck = (b, m) => JobGauge.Kaeshi == Kaeshi.GOKEN
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction KaeshiSetsugekka { get; } = new BaseAction(ActionID.KaeshiSetsugekka)
     {
         ActionCheck = (b, m) => JobGauge.Kaeshi == Kaeshi.SETSUGEKKA
@@ -119,24 +217,39 @@ public abstract class SAM_Base : CustomRotation
     #endregion
 
     #region Range
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction ThirdEye { get; } = new BaseAction(ActionID.ThirdEye, ActionOption.Defense);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Enpi { get; } = new BaseAction(ActionID.Enpi)
     {
         FilterForHostiles = TargetFilter.MeleeRangeTargetFilter,
         ActionCheck = (b, m) => !IsLastAction(IActionHelper.MovingActions),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction MeikyoShisui { get; } = new BaseAction(ActionID.MeikyoShisui)
     {
         StatusProvide = new[] { StatusID.MeikyoShisui },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Hagakure { get; } = new BaseAction(ActionID.Hagakure)
     {
         ActionCheck = (b, m) => SenCount > 0
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Ikishoten { get; } = new BaseAction(ActionID.Ikishoten)
     {
         StatusProvide = new[] { StatusID.OgiNamikiriReady },
@@ -145,32 +258,50 @@ public abstract class SAM_Base : CustomRotation
     #endregion
 
     #region Kenki
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HissatsuShinten { get; } = new BaseAction(ActionID.HissatsuShinten)
     {
         ActionCheck = (b, m) => Kenki >= 25
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HissatsuGyoten { get; } = new BaseAction(ActionID.HissatsuGyoten)
     {
         ActionCheck = (b, m) => Kenki >= 10 && !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2),
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HissatsuYaten { get; } = new BaseAction(ActionID.HissatsuYaten)
     {
         ActionCheck = HissatsuGyoten.ActionCheck
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HissatsuKyuten { get; } = new BaseAction(ActionID.HissatsuKyuten)
     {
         ActionCheck = (b, m) => Kenki >= 25
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HissatsuGuren { get; } = new BaseAction(ActionID.HissatsuGuren)
     {
         ActionCheck = HissatsuKyuten.ActionCheck,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HissatsuSenei { get; } = new BaseAction(ActionID.HissatsuSenei)
     {
         ActionCheck = HissatsuKyuten.ActionCheck,
@@ -178,18 +309,62 @@ public abstract class SAM_Base : CustomRotation
     #endregion
 
     #region Traits
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait KenkiMastery2 { get; } = new BaseTrait(208);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait KenkiMastery { get; } = new BaseTrait(215);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedIaijutsu { get; } = new BaseTrait(277);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedFugetsuAndFuka { get; } = new BaseTrait(278);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedTsubameGaeshi { get; } = new BaseTrait(442);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedMeikyoShisui    { get; } = new BaseTrait(443);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait EnhancedIkishoten    { get; } = new BaseTrait(514);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait FugaMastery    { get; } = new BaseTrait(519);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait WayOfTheSamurai    { get; } = new BaseTrait(520);
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static IBaseTrait WayOfTheSamurai2    { get; } = new BaseTrait(521);
     #endregion
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(ActionID.HissatsuGyoten)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -197,6 +372,11 @@ public abstract class SAM_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
@@ -204,6 +384,11 @@ public abstract class SAM_Base : CustomRotation
         return base.DefenseAreaAbility(out act);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(ActionID.ThirdEye)]
     protected override bool DefenseSingleAbility(out IAction act)
     {

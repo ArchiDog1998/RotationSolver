@@ -7,16 +7,32 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
+    /// <summary>
+    /// The range of the action.
+    /// </summary>
     public float Range => ActionManager.GetActionRange(ID);
+
+    /// <summary>
+    /// The effect range of the action.
+    /// </summary>
     public float EffectRange => (ActionID)ID == ActionID.LiturgyOfTheBell ? 20 : _action?.EffectRange ?? 0;
     internal ActionID[] ComboIdsNot { private get; init; } = null;
 
     internal ActionID[] ComboIds { private get; init; } = null;
 
+    /// <summary>
+    /// Status that this action provides.
+    /// </summary>
     public StatusID[] StatusProvide { get; init; } = null;
 
+    /// <summary>
+    /// Status that this action needs.
+    /// </summary>
     public virtual StatusID[] StatusNeed { get; init; } = null;
 
+    /// <summary>
+    /// Some check that this action needs.
+    /// </summary>
     public Func<BattleChara, bool, bool> ActionCheck { get; init; } = null;
 
     private bool WillCooldown
@@ -43,6 +59,13 @@ public partial class BaseAction
         }
     }
 
+    /// <summary>
+    /// Can this action be used.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <param name="option"></param>
+    /// <param name="gcdCountForAbility"></param>
+    /// <returns></returns>
     public unsafe virtual bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
     {
         option |= OtherOption;
@@ -145,6 +168,10 @@ public partial class BaseAction
         return true;
     }
 
+    /// <summary>
+    /// Use this action.
+    /// </summary>
+    /// <returns></returns>
     public unsafe bool Use()
     {
         var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = Position.X, Y = Position.Y, Z = Position.Z };

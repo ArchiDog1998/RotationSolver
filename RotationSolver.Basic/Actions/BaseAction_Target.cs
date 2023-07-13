@@ -11,24 +11,42 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
+    /// <summary>
+    /// If it is aoe. How many targets this action needs.
+    /// </summary>
     public byte AOECount { private get; init; } = 3;
 
+    /// <summary>
+    /// Is this action's target dead?
+    /// </summary>
     public bool IsTargetDying => Target?.IsDying() ?? false;
 
+    /// <summary>
+    /// Is this action's target is a boss?
+    /// </summary>
     public bool IsTargetBoss => Target?.IsBoss() ?? false;
 
+    /// <summary>
+    /// Is this action single target?
+    /// </summary>
     public bool IsSingleTarget => _action.CastType == 1;
 
     /// <summary>
     /// The action's target.
     /// </summary>
     public BattleChara Target { get; private set; } = Player.Object;
-
+    
+    /// <summary>
+    /// The position
+    /// </summary>
     public Vector3 Position { get; private set; } = default;
     private uint _targetId = Player.Object?.ObjectId ?? 0;
 
     private Func<IEnumerable<BattleChara>, bool, BattleChara> _choiceTarget = null;
 
+    /// <summary>
+    /// How to choose the target.
+    /// </summary>
     public Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget
     {
         get
@@ -39,8 +57,14 @@ public partial class BaseAction
         init => _choiceTarget = value;
     }
 
+    /// <summary>
+    /// Filter for the targets.
+    /// </summary>
     public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; init; } = null;
 
+    /// <summary>
+    /// What status this action could put to the target.
+    /// </summary>
     public StatusID[] TargetStatus { get; init; } = null;
 
     internal static bool TankDefenseSelf(BattleChara chara, bool mustUse)
@@ -397,7 +421,7 @@ public partial class BaseAction
 
     const double _alpha = Math.PI / 3;
 
-    public bool CanGetTarget(BattleChara target, BattleChara subTarget)
+    internal bool CanGetTarget(BattleChara target, BattleChara subTarget)
     {
         if (target == null) return false;
         if (IsSingleTarget) return false;
@@ -470,7 +494,7 @@ public partial class BaseAction
             0, true, TargetStatus);
     }
 
-    public unsafe bool CanUseTo(GameObject tar)
+    internal unsafe bool CanUseTo(GameObject tar)
     {
         if (tar == null || !Player.Available) return false;
 
