@@ -131,7 +131,7 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction DivineBenison { get; } = new BaseAction(ActionID.DivineBenison, ActionOption.Heal)
+    public static IBaseAction DivineBenison { get; } = new BaseAction(ActionID.DivineBenison, ActionOption.Defense)
     {
         StatusProvide = new StatusID[] { StatusID.DivineBenison },
         ChoiceTarget = TargetFilter.FindAttackedTarget,
@@ -148,7 +148,10 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Aquaveil { get; } = new BaseAction(ActionID.Aquaveil, ActionOption.Heal);
+    public static IBaseAction Aquaveil { get; } = new BaseAction(ActionID.Aquaveil, ActionOption.Defense)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
     
     /// <summary>
     /// 
