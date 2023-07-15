@@ -27,10 +27,9 @@ internal static class MajorUpdater
 
     static bool _showed;
     static Exception _threadException;
-    //static int count = 0;
     private static void FrameworkUpdate(Framework framework)
     {
-        //if (count++ > 10) return;
+        PainterManager.ActionIds.Clear();
         RotationSolverPlugin.UpdateDisplayWindow();
         if (!IsValid)
         {
@@ -71,7 +70,6 @@ internal static class MajorUpdater
         {
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
-            PainterManager.ActionIds.Clear();
             if (Service.Config.TeachingMode && ActionUpdater.NextAction!= null)
             {
                 //Sprint action id is 3 however the id in hot bar is 4.

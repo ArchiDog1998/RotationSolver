@@ -57,9 +57,9 @@ internal static class PreviewUpdater
     static readonly ByteColor _greenColor = new() { A = 255, R = 60, G = 120, B = 30 };
     private static unsafe void UpdateCastBar()
     {
-        var tardead = Service.Config.UseStopCasting && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
-            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0);
-
+        var tardead = Service.Config.UseStopCasting 
+            && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
+            && b.IsNPCEnemy() && b.CurrentHp == 0;
 
         if (_tarStopCastDelay.Delay(tardead))
         {

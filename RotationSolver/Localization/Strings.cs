@@ -134,7 +134,7 @@ internal partial class Strings
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or some actions.";
-    public string ConfigWindow_Param_UseStopCasting { get; set; } = "Stops casting when target is dead.";
+    public string ConfigWindow_Param_UseStopCasting { get; set; } = "Stops casting when hostile target is dead.";
     public string ConfigWindow_Param_ShowTooltips { get; set; } = "Show tooltips";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
 
