@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using ECommons.GameFunctions;
 using RotationSolver.Commands;
 using RotationSolver.UI;
 
@@ -27,7 +28,7 @@ internal static class MajorUpdater
 
     static bool _showed;
     static Exception _threadException;
-    private static void FrameworkUpdate(Framework framework)
+    private unsafe static void FrameworkUpdate(Framework framework)
     {
         PainterManager.ActionIds.Clear();
         RotationSolverPlugin.UpdateDisplayWindow();

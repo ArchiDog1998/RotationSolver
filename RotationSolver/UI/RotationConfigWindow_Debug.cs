@@ -97,12 +97,6 @@ internal partial class RotationConfigWindow
             {
                 ImGui.Text("Owner: " + owner.Name.ToString());
             }
-            if( Svc.Targets.Target is Character c)
-            {
-                var s = c.Struct();
-                ImGui.Text($"Character Mode: {s->Mode}.");
-                ImGui.Text($"Character Status: {s->StatusFlags}, {s->StatusFlags2}, {s->StatusFlags3}, {s->StatusFlags4}.");
-            }
         }
         if (Svc.Targets.Target is BattleChara b)
         {

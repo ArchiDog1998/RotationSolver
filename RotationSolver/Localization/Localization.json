@@ -80,7 +80,7 @@
   "ConfigWindow_Param_Display": "Display",
   "ConfigWindow_Param_Advanced": "Advanced",
   "ConfigWindow_Param_PoslockCasting": "Lock the movement when casting or some actions.",
-  "ConfigWindow_Param_UseStopCasting": "Stops casting when target is dead.",
+  "ConfigWindow_Param_UseStopCasting": "Stops casting when hostile target is dead.",
   "ConfigWindow_Param_ShowTooltips": "Show tooltips",
   "ConfigWindow_Param_InDebug": "Debug Mode",
   "ConfigWindow_Param_ShowHealthRatio": "Show the health ratio for the check of Boss, Dying, Dot.",

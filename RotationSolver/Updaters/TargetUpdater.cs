@@ -14,12 +14,15 @@ namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {
-    internal static void UpdateTarget()
+    internal unsafe static void UpdateTarget()
     {
         DataCenter.AllTargets = Svc.Objects.GetObjectInRadius(30);
-        var battles = DataCenter.AllTargets.OfType<BattleChara>();
+        var battles = DataCenter.AllTargets.OfType<BattleChara>(); 
         UpdateHostileTargets(battles);
-        UpdateFriends(battles);
+        UpdateFriends(battles
+            .Where(b => b.Character()->CharacterData.OnlineStatus != 15 //Removed the one watching cutscene.
+            && b.IsTargetable() //Removed the one can't target.
+            ));
         UpdateNamePlate(Svc.Objects.OfType<BattleChara>());
     }
 
