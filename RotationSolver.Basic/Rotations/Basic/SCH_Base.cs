@@ -111,7 +111,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Protraction { get; } = new BaseAction(ActionID.Protraction, ActionOption.Heal);
+    public static IBaseAction Protraction { get; } = new BaseAction(ActionID.Protraction, ActionOption.Defense);
     #endregion
 
     #region Attack
