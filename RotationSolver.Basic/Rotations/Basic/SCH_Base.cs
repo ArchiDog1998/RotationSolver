@@ -111,7 +111,10 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Protraction { get; } = new BaseAction(ActionID.Protraction, ActionOption.Defense);
+    public static IBaseAction Protraction { get; } = new BaseAction(ActionID.Protraction, ActionOption.Defense)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+    };
     #endregion
 
     #region Attack
