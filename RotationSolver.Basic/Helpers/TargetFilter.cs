@@ -6,6 +6,9 @@ using System.Data;
 
 namespace RotationSolver.Basic.Helpers;
 
+/// <summary>
+/// The filter for target.
+/// </summary>
 public static class TargetFilter
 {
     #region Find one target

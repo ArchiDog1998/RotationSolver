@@ -49,7 +49,6 @@ internal static class PreviewUpdater
 
     static RandomDelay _tarStopCastDelay = new(() =>
     (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
-    static bool _showCanMove;
     private static unsafe void UpdateCancelCast()
     {
         var tarDead = Service.Config.UseStopCasting 

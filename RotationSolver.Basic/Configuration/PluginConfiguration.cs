@@ -3,6 +3,7 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 
 namespace RotationSolver.Basic.Configuration;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 [Serializable]
 public class PluginConfiguration : IPluginConfiguration
@@ -235,3 +236,4 @@ public class PluginConfiguration : IPluginConfiguration
         Svc.PluginInterface.SavePluginConfig(this);
     }
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
