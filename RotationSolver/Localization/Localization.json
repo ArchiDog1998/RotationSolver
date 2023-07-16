@@ -89,7 +89,6 @@
   "ConfigWindow_Param_HealthRatioDot": "If target's current health ratio is higher than this, regard it can be dot.",
   "ConfigWindow_Param_PoslockModifier": "Set the modifier key to unlock the movement temporary",
   "ConfigWindow_Param_PoslockDescription": "LT is for gamepad player",
-  "ConfigWindow_Param_CastingDisplay": "Enhance cast bar with casting status",
   "ConfigWindow_Param_TeachingMode": "Teaching mode",
   "ConfigWindow_Param_TeachingModeColor": "Prompt box color of teaching mode",
   "ConfigWindow_Param_MovingTargetColor": "Prompt box color of moving target",

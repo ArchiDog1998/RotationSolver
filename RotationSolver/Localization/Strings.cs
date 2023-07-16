@@ -146,7 +146,6 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthRatioDot { get; set; } = "If target's current health ratio is higher than this, regard it can be dot.";
     public string ConfigWindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
-    public string ConfigWindow_Param_CastingDisplay { get; set; } = "Enhance cast bar with casting status";
     public string ConfigWindow_Param_TeachingMode { get; set; } = "Teaching mode";
     public string ConfigWindow_Param_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
     public string ConfigWindow_Param_MovingTargetColor { get; set; } = "Prompt box color of moving target";

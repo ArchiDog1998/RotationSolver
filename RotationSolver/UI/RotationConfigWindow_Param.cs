@@ -294,9 +294,6 @@ internal partial class RotationConfigWindow
 
         ImGui.Spacing();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_CastingDisplay,
-            ref Service.Config.CastingDisplay, Service.Default.CastingDisplay);
-
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToastPositional,
             ref Service.Config.ToastPositional, Service.Default.ToastPositional);
     }
