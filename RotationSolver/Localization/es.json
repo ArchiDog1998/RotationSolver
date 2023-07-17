@@ -114,6 +114,7 @@
   "ConfigWindow_Param_UseAOEAction": "Use AOE actions",
   "ConfigWindow_Param_UseAOEWhenManual": "Use AOE actions in manual mode",
   "ConfigWindow_Param_AutoBurst": "Automatic burst",
+  "ConfigWindow_Param_AutoHeal": "Automatic Heal",
   "ConfigWindow_Param_UseAbility": "Auto-use abilities",
   "ConfigWindow_Param_NoNewHostiles": "Don't attack new mobs by aoe",
   "ConfigWindow_Params_NoNewHostilesDesc": "Never use any AOE action when this action may attack the mobs that not is a hostile target.",
