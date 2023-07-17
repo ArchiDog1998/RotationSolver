@@ -4,6 +4,7 @@ using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Configuration;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public class InputConfiguration
 {
     public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
@@ -39,16 +40,16 @@ public class InputConfiguration
 public class OtherConfiguration
 {
     public static InputConfiguration InputConfig = new();
-    public static SortedSet<uint> HostileCastingArea = new();
-    public static SortedSet<uint> HostileCastingTank = new();
+    public static HashSet<uint> HostileCastingArea = new();
+    public static HashSet<uint> HostileCastingTank = new();
 
     public static SortedList<uint, float> AnimationLockTime = new();
 
     public static Dictionary<uint, string[]> NoHostileNames = new();
 
-    public static SortedSet<uint> DangerousStatus = new();
+    public static HashSet<uint> DangerousStatus = new();
 
-    public static SortedSet<uint> InvincibleStatus = new();
+    public static HashSet<uint> InvincibleStatus = new();
 
     public static void Init()
     {
@@ -170,3 +171,4 @@ public class OtherConfiguration
         }
     }
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

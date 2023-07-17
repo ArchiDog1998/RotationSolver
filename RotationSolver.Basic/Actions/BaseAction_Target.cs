@@ -172,7 +172,7 @@ public partial class BaseAction
 
     private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
-        if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
+        if (!Service.Config.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
 
         if (Service.Config.BeneficialAreaOnTarget && Svc.Targets.Target != null)
         {
@@ -330,8 +330,8 @@ public partial class BaseAction
             return true;
         }
 
-        if (Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction) 
-            && Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEWhenManual) || mustUse)
+        if (Service.Config.GetValue(SettingsCommand.UseAOEAction) 
+            && Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) || mustUse)
         {
             if (GetMostObjects(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), aoeCount).Contains(b))
             {
@@ -355,7 +355,7 @@ public partial class BaseAction
             //not use when aoe.
             if (DataCenter.StateType == StateCommandType.Manual)
             {
-                if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;
+                if (!Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;
             }
 
             var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), EffectRange);
@@ -520,7 +520,7 @@ public partial class BaseAction
     {
         get
         {
-            if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction)) return true;
+            if (!Service.Config.GetValue(SettingsCommand.UseAOEAction)) return true;
 
             return Service.Config.ChooseAttackMark
                 && !Service.Config.CanAttackMarkAOE

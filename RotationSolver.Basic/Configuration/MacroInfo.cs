@@ -1,7 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 
 namespace RotationSolver.Basic.Configuration;
-
+#pragma warning disable CS1591 // Missing XML comment for publicly visible
 public class MacroInfo
 {
     public int MacroIndex;
@@ -24,3 +24,4 @@ public class MacroInfo
         return true;
     }
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible

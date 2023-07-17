@@ -25,8 +25,8 @@ public class PluginConfiguration : IPluginConfiguration
 
     [JsonProperty]
     private Dictionary<SettingsCommand, bool> SettingsBools { get; set; } = new Dictionary<SettingsCommand, bool>();
-    public static bool GetValue(SettingsCommand command) => Service.Config.SettingsBools.TryGetValue(command, out var value) ? value : command.GetDefault();
-    public static void SetValue(SettingsCommand command, bool value) => Service.Config.SettingsBools[command] = value;
+    public bool GetValue(SettingsCommand command) => SettingsBools.TryGetValue(command, out var value) ? value : command.GetDefault();
+    public void SetValue(SettingsCommand command, bool value) => SettingsBools[command] = value;
 
     public int AddDotGCDCount = 2;
 

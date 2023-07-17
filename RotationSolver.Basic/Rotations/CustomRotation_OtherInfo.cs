@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.Basic.Rotations;
@@ -120,17 +121,17 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Is in burst right now? Usually it used with team support actions.
     /// </summary>
-    protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoBurst);
+    protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(SettingsCommand.AutoBurst);
 
-    bool CanUseHealAction => ClassJob.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer;
+    bool _canUseHealAction => (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer) && Service.Config.GetValue(SettingsCommand.AutoHeal);
 
-    protected virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && CanUseHealAction;
+    protected virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && _canUseHealAction;
 
-    protected virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && CanUseHealAction;
+    protected virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && _canUseHealAction;
 
-    protected virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && CanUseHealAction;
+    protected virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && _canUseHealAction;
 
-    protected virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && CanUseHealAction;
+    protected virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && _canUseHealAction;
 
     protected static SpecialCommandType SpecialType => DataCenter.SpecialType;
     protected static StateCommandType StateType => DataCenter.StateType;

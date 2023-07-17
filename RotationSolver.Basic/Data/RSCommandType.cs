@@ -38,6 +38,7 @@ public enum OtherCommandType : byte
 public enum SettingsCommand : byte
 {
     AutoBurst,
+    AutoHeal,
     UseAbility,
     UseDefenseAbility,
     AutoTankStance,
@@ -58,6 +59,7 @@ public static class SettingsCommandExtension
     public static bool GetDefault(this SettingsCommand command) => command switch
     {
         SettingsCommand.AutoBurst => true,
+        SettingsCommand.AutoHeal => true,
         SettingsCommand.UseAbility => true,
         SettingsCommand.UseDefenseAbility => true,
         SettingsCommand.AutoTankStance => true,

@@ -16,8 +16,8 @@ internal static class MajorUpdater
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
         && Player.Available && !SocialUpdater.InPvp;
 
-    public static bool ShouldPreventActions => Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
-            && (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActionsDuty)
+    public static bool ShouldPreventActions => Service.Config.GetValue(SettingsCommand.PreventActions)
+            && (Service.Config.GetValue(SettingsCommand.PreventActionsDuty)
             && Svc.Condition[ConditionFlag.BoundByDuty]
             && !Svc.DutyState.IsDutyStarted
             || !DataCenter.HasHostilesInMaxRange);

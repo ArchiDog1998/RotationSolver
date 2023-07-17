@@ -39,11 +39,11 @@ namespace RotationSolver.Commands
                 return;
             }
 
-            Basic.Configuration.PluginConfiguration.SetValue(type, !Basic.Configuration.PluginConfiguration.GetValue(type));
+            Service.Config.SetValue(type, !Service.Config.GetValue(type));
 
             //Say out.
             Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
-                type.ToString(), Basic.Configuration.PluginConfiguration.GetValue(type)));
+                type.ToString(), Service.Config.GetValue(type)));
         }
 
         private static void ToggleActionCommand(string str)

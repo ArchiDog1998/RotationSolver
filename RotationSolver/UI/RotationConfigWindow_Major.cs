@@ -74,10 +74,10 @@ internal partial class RotationConfigWindow : Window
 
     internal static void DrawCheckBox(string name, SettingsCommand command, string description = "", Action otherThing = null)
     {
-        var value = Basic.Configuration.PluginConfiguration.GetValue(command);
+        var value = Service.Config.GetValue(command);
         DrawCheckBox(name, ref value, command.GetDefault(), description, () =>
         {
-            Basic.Configuration.PluginConfiguration.SetValue(command, value);
+            Service.Config.SetValue(command, value);
             otherThing?.Invoke();
         });
 

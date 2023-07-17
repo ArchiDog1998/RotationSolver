@@ -172,6 +172,8 @@ internal partial class Strings
 
     public string ConfigWindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string ConfigWindow_Param_AutoBurst { get; set; } = "Automatic burst";
+
+    public string ConfigWindow_Param_AutoHeal { get; set; } = "Automatic Heal";
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
     public string ConfigWindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
     public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AOE action when this action may attack the mobs that not is a hostile target.";
