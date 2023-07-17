@@ -141,7 +141,7 @@ internal partial class RotationConfigWindow
             ImGui.Indent();
 
             DrawCombo(LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
-                ref Service.Config.PoslockModifier, EnumTranslations.ToName,
+                ref Service.Config.PoslockModifier, Service.Default.PoslockModifier, EnumTranslations.ToName,
                 ConfigurationHelper.Keys,
                 LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription);
 

@@ -138,11 +138,12 @@ internal partial class RotationConfigWindow : Window
         }
     }
 
-    private static void DrawRangedInt(string name, ref int minValue, ref int maxValue, int defaultMin, int defaultMax, float speed = 0.01f, int min = 0, int max = 3, string description = "")
+    private static void DrawRangedInt(string name, ref int minValue, ref int maxValue, int defaultMin, int defaultMax, float speed = 0.01f, int min = 0, int max = 3, string description = "", Action otherThing = null)
     {
         ImGui.SetNextItemWidth(100);
         if (ImGui.DragIntRange2(name, ref minValue, ref maxValue, speed, min, max))
         {
+            otherThing?.Invoke();
             Service.Config.Save();
         }
 
@@ -150,17 +151,17 @@ internal partial class RotationConfigWindow : Window
 
         if (minValue != defaultMin || maxValue != defaultMax)
         {
-            ImGuiHelper.UndoValue(name, ref minValue, defaultMin, ref maxValue, defaultMax);
+            ImGuiHelper.UndoValue(name, ref minValue, defaultMin, ref maxValue, defaultMax, otherThing);
         }
     }
 
-    private static void DrawFloatNumber(string name, ref float value, float @default, float speed = 0.002f, float min = 0, float max = 1, string description = "", Action otherThing = null)
+    public static void DrawFloatNumber(string name, ref float value, float @default, float speed = 0.002f, float min = 0, float max = 1, string description = "", Action otherThing = null)
     {
         ImGui.SetNextItemWidth(100);
         if (ImGui.DragFloat(name, ref value, speed, min, max))
         {
-            Service.Config.Save();
             otherThing?.Invoke();
+            Service.Config.Save();
         }
 
         ImGuiHelper.HoveredString(description);
@@ -171,7 +172,7 @@ internal partial class RotationConfigWindow : Window
         }
     }
 
-    private static void DrawIntNumber(string name, ref int value, int @default, float speed = 0.2f, int min = 0, int max = 1, string description = "", Action otherThing = null)
+    public static void DrawIntNumber(string name, ref int value, int @default, float speed = 0.2f, int min = 0, int max = 1, string description = "", Action otherThing = null)
     {
         ImGui.SetNextItemWidth(100);
         if (ImGui.DragInt(name, ref value, speed, min, max))
@@ -204,7 +205,7 @@ internal partial class RotationConfigWindow : Window
         }
     }
 
-    private static void DrawCombo<T>(string name, ref int value, Func<T, string> toString, T[] choices = null, string description = "") where T : struct, Enum
+    public static void DrawCombo<T>(string name, ref int value, int @default, Func<T, string> toString, T[] choices = null, string description = "") where T : struct, Enum
     {
         choices ??= Enum.GetValues<T>();
 
@@ -222,6 +223,11 @@ internal partial class RotationConfigWindow : Window
             ImGui.EndCombo();
         }
         ImGuiHelper.HoveredString(description);
+
+        if (value != @default)
+        {
+            ImGuiHelper.UndoValue(name, ref value, @default);
+        }
     }
 
     private static void DrawInputText(string name, ref string value, uint maxLength, string description = "")
