@@ -134,7 +134,7 @@ internal partial class Strings
     public string ConfigWindow_Param_Display { get; set; } = "Display";
     public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or some actions.";
-    public string ConfigWindow_Param_UseStopCasting { get; set; } = "Stops casting when target is dead.";
+    public string ConfigWindow_Param_UseStopCasting { get; set; } = "Stops casting when hostile target is dead.";
     public string ConfigWindow_Param_ShowTooltips { get; set; } = "Show tooltips";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
 
@@ -146,7 +146,6 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthRatioDot { get; set; } = "If target's current health ratio is higher than this, regard it can be dot.";
     public string ConfigWindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
-    public string ConfigWindow_Param_CastingDisplay { get; set; } = "Enhance cast bar with casting status";
     public string ConfigWindow_Param_TeachingMode { get; set; } = "Teaching mode";
     public string ConfigWindow_Param_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
     public string ConfigWindow_Param_MovingTargetColor { get; set; } = "Prompt box color of moving target";
@@ -173,6 +172,8 @@ internal partial class Strings
 
     public string ConfigWindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
     public string ConfigWindow_Param_AutoBurst { get; set; } = "Automatic burst";
+
+    public string ConfigWindow_Param_AutoHeal { get; set; } = "Automatic Heal";
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
     public string ConfigWindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
     public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AOE action when this action may attack the mobs that not is a hostile target.";

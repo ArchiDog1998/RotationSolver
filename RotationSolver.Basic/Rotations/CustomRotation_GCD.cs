@@ -85,7 +85,7 @@ public abstract partial class CustomRotation
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
             }
-            else if (Configuration.PluginConfiguration.GetValue(SettingsCommand.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown 
+            else if (Service.Config.GetValue(SettingsCommand.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown 
                 && DataCenter.NextAbilityToNextGCD > DataCenter.MinAnimationLock + DataCenter.Ping)
             {
                 return DataCenter.SetAutoStatus(AutoStatus.Raise, true);

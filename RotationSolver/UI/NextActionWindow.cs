@@ -19,17 +19,17 @@ internal class NextActionWindow : InfoWindow
         ControlWindow.DrawIAction(ActionUpdater.NextAction, width, 1);
 
         var strs = new List<string>(3);
-        if(PluginConfiguration.GetValue(SettingsCommand.UseAOEAction)
+        if(Service.Config.GetValue(SettingsCommand.UseAOEAction)
             && (DataCenter.StateType != StateCommandType.Manual
-            || PluginConfiguration.GetValue(SettingsCommand.UseAOEWhenManual)))
+            || Service.Config.GetValue(SettingsCommand.UseAOEWhenManual)))
         {
             strs.Add("AOE");
         }
-        if (PluginConfiguration.GetValue(SettingsCommand.PreventActions))
+        if (Service.Config.GetValue(SettingsCommand.PreventActions))
         {
             strs.Add("Prevent");
         }
-        if (PluginConfiguration.GetValue(SettingsCommand.AutoBurst))
+        if (Service.Config.GetValue(SettingsCommand.AutoBurst))
         {
             strs.Add("Burst");
         }

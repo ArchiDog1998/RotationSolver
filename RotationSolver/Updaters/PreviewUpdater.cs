@@ -1,15 +1,12 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.Gui.Dtr;
+﻿using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Client.Graphics;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
@@ -19,7 +16,7 @@ internal static class PreviewUpdater
     internal static void UpdatePreview()
     {
         UpdateEntry();
-        UpdateCastBar();
+        UpdateCancelCast();
     }
 
     static DtrBarEntry _dtrEntry;
@@ -52,35 +49,16 @@ internal static class PreviewUpdater
 
     static RandomDelay _tarStopCastDelay = new(() =>
     (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
-    static bool _showCanMove;
-    static readonly ByteColor _redColor = new() { A = 255, R = 120, G = 0, B = 60 };
-    static readonly ByteColor _greenColor = new() { A = 255, R = 60, G = 120, B = 30 };
-    private static unsafe void UpdateCastBar()
+    private static unsafe void UpdateCancelCast()
     {
-        var tardead = Service.Config.UseStopCasting && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
-            && (b is PlayerCharacter ? b.HasStatus(false, StatusID.Raise) : b.CurrentHp == 0);
+        var tarDead = Service.Config.UseStopCasting 
+            && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
+            && b.IsNPCEnemy() && b.CurrentHp == 0;
 
-
-        if (_tarStopCastDelay.Delay(tardead))
+        if (_tarStopCastDelay.Delay(tarDead))
         {
             UIState.Instance()->Hotbar.CancelCast();
         }
-
-        var nowMove = Service.CanMove && Service.Config.CastingDisplay;
-        if (nowMove == _showCanMove) return;
-        _showCanMove = nowMove;
-
-        ByteColor c = _showCanMove ? _greenColor : _redColor;
-
-        var castBars = Service.GetAddons<AddonCastBar>();
-        if (!castBars.Any()) return;
-        var castBar = castBars.FirstOrDefault();
-
-        AtkResNode* progressBar = ((AtkUnitBase*)castBar)->UldManager.NodeList[5];
-
-        progressBar->AddRed = c.R;
-        progressBar->AddGreen = c.G;
-        progressBar->AddBlue = c.B;
     }
 
 

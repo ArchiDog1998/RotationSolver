@@ -1,8 +1,9 @@
-using Dalamud.Configuration;
+﻿using Dalamud.Configuration;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 
 namespace RotationSolver.Basic.Configuration;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 [Serializable]
 public class PluginConfiguration : IPluginConfiguration
@@ -24,8 +25,8 @@ public class PluginConfiguration : IPluginConfiguration
 
     [JsonProperty]
     private Dictionary<SettingsCommand, bool> SettingsBools { get; set; } = new Dictionary<SettingsCommand, bool>();
-    public static bool GetValue(SettingsCommand command) => Service.Config.SettingsBools.TryGetValue(command, out var value) ? value : command.GetDefault();
-    public static void SetValue(SettingsCommand command, bool value) => Service.Config.SettingsBools[command] = value;
+    public bool GetValue(SettingsCommand command) => SettingsBools.TryGetValue(command, out var value) ? value : command.GetDefault();
+    public void SetValue(SettingsCommand command, bool value) => SettingsBools[command] = value;
 
     public int AddDotGCDCount = 2;
 
@@ -50,7 +51,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool HealOutOfCombat = false;
     public bool ShowInfoOnToast = true;
     public bool RaiseAll = false;
-    public bool CastingDisplay = true;
     public bool PoslockCasting = false;
     public int PoslockModifier = 0;
     public bool PosPassageOfArms = false;
@@ -236,3 +236,4 @@ public class PluginConfiguration : IPluginConfiguration
         Svc.PluginInterface.SavePluginConfig(this);
     }
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

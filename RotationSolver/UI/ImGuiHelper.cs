@@ -3,12 +3,15 @@ using Dalamud.Interface.Components;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.Havok;
+using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace RotationSolver.UI;
 
@@ -148,7 +151,7 @@ internal static class ImGuiHelper
         }
     }
 
-    static bool UndoValue(string name)
+    private static bool UndoValue(string name)
     {
         ImGui.SameLine();
         Spacing();
@@ -549,20 +552,20 @@ internal static class ImGuiHelper
             ImGui.SameLine();
             ImGui.Text(rotation.GameVersion);
 
-            if (rotation.Configs.Any())
-            {
-                ImGui.SameLine();
-                Spacing();
-                if (IconButton(FontAwesomeIcon.Undo, $"#{rotation.GetHashCode()}Undo",
-                    LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault))
-                {
-                    if (Service.Config.RotationsConfigurations.TryGetValue(rotation.ClassJob.RowId, out var jobDict)
-                        && jobDict.ContainsKey(rotation.GetType().FullName))
-                    {
-                        jobDict.Remove(rotation.GetType().FullName);
-                    }
-                }
-            }
+            //if (rotation.Configs.Any())
+            //{
+            //    ImGui.SameLine();
+            //    Spacing();
+            //    if (IconButton(FontAwesomeIcon.Undo, $"#{rotation.GetHashCode()}Undo",
+            //        LocalizationManager.RightLang.ConfigWindow_Rotation_ResetToDefault))
+            //    {
+            //        if (Service.Config.RotationsConfigurations.TryGetValue(rotation.ClassJob.RowId, out var jobDict)
+            //            && jobDict.ContainsKey(rotation.GetType().FullName))
+            //        {
+            //            jobDict.Remove(rotation.GetType().FullName);
+            //        }
+            //    }
+            //}
 
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
             if(link != null)
@@ -783,7 +786,8 @@ internal static class ImGuiHelper
     {
         var val = set.GetCombo(config.Name);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(config.Items[val]).X + 50);
-        if (ImGui.BeginCombo($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", config.Items[val]))
+        var name = $"{config.DisplayName}##{config.GetHashCode()}_{config.Name}";
+        if (ImGui.BeginCombo(name, config.Items[val]))
         {
             for (int comboIndex = 0; comboIndex < config.Items.Length; comboIndex++)
             {
@@ -807,6 +811,12 @@ internal static class ImGuiHelper
         }
         HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_KeyName + ": " + config.Name);
 
+        var @default = int.TryParse(config.DefaultValue, out var f) ? f : 0;
+        if (val != @default)
+        {
+            UndoValue(name, ref val, @default);
+        }
+
         if (canAddButton)
         {
             ImGui.SameLine();
@@ -818,14 +828,12 @@ internal static class ImGuiHelper
     static void Draw(this RotationConfigBoolean config, IRotationConfigSet set, bool canAddButton)
     {
         bool val = set.GetBool(config.Name);
-        if (ImGui.Checkbox($"{config.DisplayName}##{config.GetHashCode()}_{config.DisplayName}", ref val))
+
+        RotationConfigWindow.DrawCheckBox($"{config.DisplayName}##{config.GetHashCode()}_{config.DisplayName}", ref val, bool.TryParse(config.DefaultValue, out var f) ? f : false, LocalizationManager.RightLang.ConfigWindow_Rotation_KeyName + ": " + config.Name, () =>
         {
             set.SetValue(config.Name, val.ToString());
-            Service.Config.Save();
-        }
-        HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_KeyName + ": " + config.Name);
+        });
 
-        //显示可以设置的案件
         if (canAddButton)
         {
             ImGui.SameLine();
@@ -837,12 +845,10 @@ internal static class ImGuiHelper
     static void Draw(this RotationConfigFloat config, IRotationConfigSet set, bool canAddButton)
     {
         float val = set.GetFloat(config.Name);
-        ImGui.SetNextItemWidth(100);
-        if (ImGui.DragFloat($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", ref val, config.Speed, config.Min, config.Max))
+        RotationConfigWindow.DrawFloatNumber($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", ref val, float.TryParse(config.DefaultValue, out var f) ? f : 0, config.Speed, config.Min, config.Max, otherThing: () =>
         {
             set.SetValue(config.Name, val.ToString());
-            Service.Config.Save();
-        }
+        });
     }
 
     static void Draw(this RotationConfigString config, IRotationConfigSet set, bool canAddButton)
@@ -858,12 +864,10 @@ internal static class ImGuiHelper
     static void Draw(this RotationConfigInt config, IRotationConfigSet set, bool canAddButton)
     {
         int val = set.GetInt(config.Name);
-        ImGui.SetNextItemWidth(100);
-        if (ImGui.DragInt($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", ref val, config.Speed, config.Min, config.Max))
+        RotationConfigWindow.DrawIntNumber($"{config.DisplayName}##{config.GetHashCode()}_{config.Name}", ref val, int.TryParse(config.DefaultValue, out var f) ? f : 0, config.Speed, config.Min, config.Max, otherThing: () =>
         {
             set.SetValue(config.Name, val.ToString());
-            Service.Config.Save();
-        }
+        });
     }
     #endregion
 

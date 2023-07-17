@@ -136,7 +136,7 @@
         /// If target has these statuses from player self, this aciton will not used.
         /// </summary>
         StatusID[] TargetStatus { get; }
-        public Vector3 Position { get; }
+        Vector3 Position { get; }
         BattleChara Target { get; }
 
         /// <summary>

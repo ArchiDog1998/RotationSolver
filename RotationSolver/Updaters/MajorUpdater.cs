@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using ECommons.GameFunctions;
 using RotationSolver.Commands;
 using RotationSolver.UI;
 
@@ -15,8 +16,8 @@ internal static class MajorUpdater
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
         && Player.Available && !SocialUpdater.InPvp;
 
-    public static bool ShouldPreventActions => Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions)
-            && (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActionsDuty)
+    public static bool ShouldPreventActions => Service.Config.GetValue(SettingsCommand.PreventActions)
+            && (Service.Config.GetValue(SettingsCommand.PreventActionsDuty)
             && Svc.Condition[ConditionFlag.BoundByDuty]
             && !Svc.DutyState.IsDutyStarted
             || !DataCenter.HasHostilesInMaxRange);
@@ -27,10 +28,9 @@ internal static class MajorUpdater
 
     static bool _showed;
     static Exception _threadException;
-    //static int count = 0;
-    private static void FrameworkUpdate(Framework framework)
+    private unsafe static void FrameworkUpdate(Framework framework)
     {
-        //if (count++ > 10) return;
+        PainterManager.ActionIds.Clear();
         RotationSolverPlugin.UpdateDisplayWindow();
         if (!IsValid)
         {
@@ -71,7 +71,6 @@ internal static class MajorUpdater
         {
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
-            PainterManager.ActionIds.Clear();
             if (Service.Config.TeachingMode && ActionUpdater.NextAction!= null)
             {
                 //Sprint action id is 3 however the id in hot bar is 4.

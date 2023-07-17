@@ -141,7 +141,7 @@ internal partial class RotationConfigWindow
             ImGui.Indent();
 
             DrawCombo(LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
-                ref Service.Config.PoslockModifier, EnumTranslations.ToName,
+                ref Service.Config.PoslockModifier, Service.Default.PoslockModifier, EnumTranslations.ToName,
                 ConfigurationHelper.Keys,
                 LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription);
 
@@ -294,9 +294,6 @@ internal partial class RotationConfigWindow
 
         ImGui.Spacing();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_CastingDisplay,
-            ref Service.Config.CastingDisplay, Service.Default.CastingDisplay);
-
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToastPositional,
             ref Service.Config.ToastPositional, Service.Default.ToastPositional);
     }
@@ -306,7 +303,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
              SettingsCommand.UseAOEAction);
 
-        if(Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction))
+        if(Service.Config.GetValue(SettingsCommand.UseAOEAction))
         {
             ImGui.Indent();
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEWhenManual,
@@ -321,7 +318,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfOutOfCombat,
             SettingsCommand.PreventActions);
 
-        if (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.PreventActions))
+        if (Service.Config.GetValue(SettingsCommand.PreventActions))
         {
             ImGui.Indent();
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfDutyRing,
@@ -333,6 +330,8 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst, SettingsCommand.AutoBurst);
 
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoHeal, SettingsCommand.AutoHeal);
+
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseTinctures,
             ref Service.Config.UseTinctures, Service.Default.UseTinctures);
 
@@ -342,7 +341,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAbility,
             SettingsCommand.UseAbility);
 
-        if (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAbility))
+        if (Service.Config.GetValue(SettingsCommand.UseAbility))
         {
             ImGui.Indent();
 
@@ -401,7 +400,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
             ref Service.Config.OnlyHotOnTanks, Service.Default.OnlyHotOnTanks);
 
-        if (Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseGroundBeneficialAbility))
+        if (Service.Config.GetValue(SettingsCommand.UseGroundBeneficialAbility))
         {
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
                 ref Service.Config.BeneficialAreaOnTarget, Service.Default.BeneficialAreaOnTarget);
@@ -507,7 +506,7 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
             ref Service.Config.ChooseAttackMark, Service.Default.ChooseAttackMark);
 
-        if (Service.Config.ChooseAttackMark && Basic.Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAOEAction))
+        if (Service.Config.ChooseAttackMark && Service.Config.GetValue(SettingsCommand.UseAOEAction))
         {
             ImGui.Indent();
 

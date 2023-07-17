@@ -1,4 +1,4 @@
-using RotationSolver.Basic.Configuration;
+﻿using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -12,7 +12,7 @@ public abstract partial class CustomRotation
 
         if(act is IBaseItem i &&  i.CanUse(out _)) return true;
 
-        if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseAbility) 
+        if (!Service.Config.GetValue(SettingsCommand.UseAbility) 
             || Player.TotalCastTime > 0)
         {
             act = null;
@@ -57,7 +57,7 @@ public abstract partial class CustomRotation
         if (GeneralAbility(out act)) return true;
 
         //Run!
-        if (IsMoving && NotInCombatDelay && PluginConfiguration.GetValue(SettingsCommand.AutoSpeedOutOfCombat) 
+        if (IsMoving && NotInCombatDelay && Service.Config.GetValue(SettingsCommand.AutoSpeedOutOfCombat) 
             && SpeedAbility(out act)) return true;
 
         return false;
@@ -106,7 +106,7 @@ public abstract partial class CustomRotation
                 break;
         }
 
-        if (DataCenter.SetAutoStatus(AutoStatus.TankStance, Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoTankStance)
+        if (DataCenter.SetAutoStatus(AutoStatus.TankStance, Service.Config.GetValue(SettingsCommand.AutoTankStance)
             && !DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
             && !HasTankStance && TankStance.CanUse(out act, CanUseOption.IgnoreClippingCheck)))
         {
@@ -185,7 +185,7 @@ public abstract partial class CustomRotation
 
         //Auto Provoke
         if (DataCenter.SetAutoStatus(AutoStatus.Provoke, role == JobRole.Tank
-            && (Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoProvokeForTank) || DataCenter.AllianceTanks.Count() < 2)
+            && (Service.Config.GetValue(SettingsCommand.AutoProvokeForTank) || DataCenter.AllianceTanks.Count() < 2)
             && TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count()))
         {
             if (!HasTankStance && TankStance.CanUse(out act)) return true;
@@ -193,7 +193,7 @@ public abstract partial class CustomRotation
         }
 
         //No using defense abilities.
-        if (!Configuration.PluginConfiguration.GetValue(SettingsCommand.UseDefenseAbility)) return false;
+        if (!Service.Config.GetValue(SettingsCommand.UseDefenseAbility)) return false;
 
         if (helpDefenseAOE)
         {
@@ -283,7 +283,7 @@ public abstract partial class CustomRotation
             if (ClassJob.GetJobRole() is JobRole.Healer or JobRole.RangedMagical &&
             action.CastTime >= 5 && Swiftcast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
 
-            if (Configuration.PluginConfiguration.GetValue(SettingsCommand.AutoUseTrueNorth)
+            if (Service.Config.GetValue(SettingsCommand.AutoUseTrueNorth)
                 && action.EnemyPositional != EnemyPositional.None && action.Target != null)
             {
                 if (action.EnemyPositional != action.Target.FindEnemyPositional() && action.Target.HasPositional())
