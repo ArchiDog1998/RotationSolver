@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.11](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.10...v3.0.11) (2023-07-17)
+
+
+### Bug Fixes
+
+* add an option for auto heal. ([bc4a603](https://github.com/ArchiDog1998/RotationSolver/commit/bc4a60385a1c1dc520a22197e9c2d3b2b0ea8547))
+* add more reset value. ([a7938dc](https://github.com/ArchiDog1998/RotationSolver/commit/a7938dcd3177b2bf44162543628b1a14cb801bf6))
+* changed encoding to utf-8. ([f2e16c4](https://github.com/ArchiDog1998/RotationSolver/commit/f2e16c463a7115ae87d6a6f35a98fd7a6aec9d67))
+* removed the casting bar color changing feature. ([1989db2](https://github.com/ArchiDog1998/RotationSolver/commit/1989db2d1b9e5f49608a512ffea22de861957e51))
+* removed the one watching cutscene. ([9d5cec0](https://github.com/ArchiDog1998/RotationSolver/commit/9d5cec0e3bcbb7e999ea90ab284c5d0175e99149))
+* stop casting only effects on hostile targets. ([c488244](https://github.com/ArchiDog1998/RotationSolver/commit/c48824427a00448096b66bf55c1630dccd8903c1))
+* whm Aquaveil as defense. ([f0086b5](https://github.com/ArchiDog1998/RotationSolver/commit/f0086b55df4db51f5d0fe353baed6be01325a11e))
+
 ## [3.0.10](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.9...v3.0.10) (2023-07-12)
 
 
