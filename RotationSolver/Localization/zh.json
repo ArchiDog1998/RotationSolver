@@ -114,6 +114,7 @@
   "ConfigWindow_Param_UseAOEAction": "使用AOE技能",
   "ConfigWindow_Param_UseAOEWhenManual": "在手动选择模式的时候使用AOE技能",
   "ConfigWindow_Param_AutoBurst": "自动爆发",
+  "ConfigWindow_Param_AutoHeal": "Automatic Heal",
   "ConfigWindow_Param_UseAbility": "自动使用能力技",
   "ConfigWindow_Param_NoNewHostiles": "不对新出现的敌对目标使用AOE技能",
   "ConfigWindow_Params_NoNewHostilesDesc": "当这个动作可能攻击到没有进入战斗的敌对目标时，不使用AOE技能。",
