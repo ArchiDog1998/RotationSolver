@@ -114,6 +114,7 @@
   "ConfigWindow_Param_UseAOEAction": "Use AOE actions",
   "ConfigWindow_Param_UseAOEWhenManual": "Use AOE actions in manual mode",
   "ConfigWindow_Param_AutoBurst": "Automatischer Burst",
+  "ConfigWindow_Param_AutoHeal": "Automatic Heal",
   "ConfigWindow_Param_UseAbility": "Fähigkeiten automatisch nutzen",
   "ConfigWindow_Param_NoNewHostiles": "Neue Gegner nicht mit aoe angreifen",
   "ConfigWindow_Params_NoNewHostilesDesc": "Benutze niemals eine AOE-Aktion, wenn diese Aktion diejenigen Monster angreifen kann, die kein feindseliges Ziel ist.",
