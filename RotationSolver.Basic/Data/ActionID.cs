@@ -854,6 +854,106 @@ public enum ActionID : uint
     /// 
     /// </summary>
     PhantomFlurry2 = 23289,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GoblinPunch = 34563,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    RightRound = 34564,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Schiltron = 34565,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Rehydration = 34566,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    BreathOfMagic = 34567,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    WildRage = 34568,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PeatPelt = 34569,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    DeepClean = 34570,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    RubyDynamics = 34571,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    DivinationRune = 34572,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    DimensionalShift = 34573,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    ConvictionMarcato = 34574,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    ForceField = 34575,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    WingedReprobation = 34576,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LaserEye = 34577,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    CandyCane = 34578,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    MortalFlame = 34579,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    SeaShanty = 34580,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Apokalypsis = 34581,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    BeingMortal = 34582,
     #endregion
 
     #region Bard

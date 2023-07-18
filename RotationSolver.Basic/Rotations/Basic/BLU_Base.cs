@@ -301,7 +301,10 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FeatherRain { get; } = new BLUAction(ActionID.FeatherRain, BLUActionType.Magical);
+    public static IBLUAction FeatherRain { get; } = new BLUAction(ActionID.FeatherRain, BLUActionType.Magical)
+    {
+        AOECount = 1,
+    };
 
     /// <summary>
     /// 
@@ -441,6 +444,22 @@ public abstract class BLU_Base : CustomRotation
     {
         ActionCheck = (b, m) => Player.HasStatus(true, StatusID.PhantomFlurry)
     };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction PeatPelt { get; } = new BLUAction(ActionID.PeatPelt, BLUActionType.Magical);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction MortalFlame { get; } = new BLUAction(ActionID.MortalFlame, BLUActionType.Magical);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction SeaShanty { get; } = new BLUAction(ActionID.SeaShanty, BLUActionType.Magical);
+
     #endregion
 
     #region Physical Single
@@ -479,6 +498,12 @@ public abstract class BLU_Base : CustomRotation
     {
         ActionCheck = (b, m) => b.GetHealthRatio() < 0.2f,
     };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction GoblinPunch { get; } = new BLUAction(ActionID.GoblinPunch, BLUActionType.Physical);
+
     #endregion
 
     #region Physical Area
@@ -521,6 +546,31 @@ public abstract class BLU_Base : CustomRotation
     /// 
     /// </summary>
     public static IBLUAction BothEnds { get; } = new BLUAction(ActionID.BothEnds, BLUActionType.Physical);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction RightRound { get; } = new BLUAction(ActionID.RightRound, BLUActionType.Physical);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction WildRage { get; } = new BLUAction(ActionID.WildRage, BLUActionType.Physical);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction DeepClean { get; } = new BLUAction(ActionID.DeepClean, BLUActionType.Physical);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction RubyDynamics { get; } = new BLUAction(ActionID.RubyDynamics, BLUActionType.Physical);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction WingedReprobation { get; } = new BLUAction(ActionID.WingedReprobation, BLUActionType.Physical);
     #endregion
 
     #region Other Single
@@ -553,6 +603,11 @@ public abstract class BLU_Base : CustomRotation
     /// 
     /// </summary>
     public static IBLUAction CondensedLibra { get; } = new BLUAction(ActionID.CondensedLibra, BLUActionType.None);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction Schiltron { get; } = new BLUAction(ActionID.Schiltron, BLUActionType.None);
     #endregion
 
     #region Other Area
@@ -623,6 +678,46 @@ public abstract class BLU_Base : CustomRotation
     /// 
     /// </summary>
     public static IBLUAction PhantomFlurry { get; } = new BLUAction(ActionID.PhantomFlurry, BLUActionType.None);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction BreathOfMagic { get; } = new BLUAction(ActionID.BreathOfMagic, BLUActionType.None);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction DivinationRune { get; } = new BLUAction(ActionID.DivinationRune, BLUActionType.None);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction DimensionalShift { get; } = new BLUAction(ActionID.DimensionalShift, BLUActionType.None);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction ConvictionMarcato { get; } = new BLUAction(ActionID.ConvictionMarcato, BLUActionType.None);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction LaserEye { get; } = new BLUAction(ActionID.LaserEye, BLUActionType.None);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction CandyCane { get; } = new BLUAction(ActionID.CandyCane, BLUActionType.None);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction Apokalypsis { get; } = new BLUAction(ActionID.Apokalypsis, BLUActionType.None);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction BeingMortal { get; } = new BLUAction(ActionID.BeingMortal, BLUActionType.None);
     #endregion
 
     #region Defense
@@ -742,6 +837,11 @@ public abstract class BLU_Base : CustomRotation
     /// 
     /// </summary>
     public static IBLUAction ColdFog { get; } = new BLUAction(ActionID.ColdFog, BLUActionType.Magical, ActionOption.Buff);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction ForceField { get; } = new BLUAction(ActionID.ForceField, BLUActionType.Magical, ActionOption.Buff);
     #endregion
 
     #region Heal
@@ -777,6 +877,11 @@ public abstract class BLU_Base : CustomRotation
     /// 
     /// </summary>
     public static IBLUAction AngelsSnack { get; } = new BLUAction(ActionID.AngelsSnack, BLUActionType.None, ActionOption.Heal);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBLUAction Rehydration { get; } = new BLUAction(ActionID.Rehydration, BLUActionType.None, ActionOption.Heal);
     #endregion
 
     #region Others

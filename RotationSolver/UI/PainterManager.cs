@@ -93,7 +93,10 @@ internal static class PainterManager
             {
                 IsFill = false,
             };
-            _targetImage = new Drawing3DImage(null, default, 0);
+            _targetImage = new Drawing3DImage(null, default, 0)
+            {
+                MustInViewRange = true,
+            };
         }
 
         const float targetRadius = 0.15f;
