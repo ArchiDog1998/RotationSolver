@@ -127,7 +127,20 @@ public abstract class BLU_Base : CustomRotation
             StatusID.Magitek,
         };
 
-        readonly BLUActionType _type;
+        /// <summary>
+        /// The Aspect.
+        /// </summary>
+        public Aspect Aspect => (Aspect)_action.Aspect;
+
+        /// <summary>
+        /// Description about the action.
+        /// </summary>
+        public override string Description => $"Type: {Type}\nAspect: {Aspect}";
+
+        /// <summary>
+        /// The Type
+        /// </summary>
+        public BLUActionType Type { get; init; }
 
         /// <summary>
         /// 
@@ -136,14 +149,14 @@ public abstract class BLU_Base : CustomRotation
         {
             get
             {
-                if (_type == BLUActionType.None) return true;
-                if (AttackType == BLUAttackType.Physical && _type == BLUActionType.Magical) return false;
-                if (AttackType == BLUAttackType.Magical && _type == BLUActionType.Physical) return false;
+                if (Type == BLUActionType.None) return true;
+                if (AttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
+                if (AttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
 
                 try
                 {
-                    if (Target.HasStatus(false, NoPhysic) && _type == BLUActionType.Physical) return false;
-                    if (Target.HasStatus(false, NoMagic) && _type == BLUActionType.Magical) return false;
+                    if (Target.HasStatus(false, NoPhysic) && Type == BLUActionType.Physical) return false;
+                    if (Target.HasStatus(false, NoMagic) && Type == BLUActionType.Magical) return false;
                 }
                 catch(Exception ex)
                 {
@@ -158,10 +171,11 @@ public abstract class BLU_Base : CustomRotation
         /// </summary>
         public unsafe bool OnSlot => DataCenter.BluSlots.Any(i => AdjustedID == Service.GetAdjustedActionId(i));
 
-        internal BLUAction(ActionID actionID, BLUActionType type, ActionOption option = ActionOption.None)
+        internal BLUAction(ActionID actionID, ActionOption option = ActionOption.None)
             : base(actionID, option)
         {
-            _type = type;
+            var attackType = _action.AttackType.Value?.RowId ?? 0;
+            Type = attackType != 5 ? BLUActionType.Physical : Aspect == Aspect.None ? BLUActionType.None : BLUActionType.Magical;
             ActionCheck = (t, m) => OnSlot && RightType;
         }
 
@@ -185,12 +199,12 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction WaterCannon { get; } = new BLUAction(ActionID.WaterCannon, BLUActionType.Magical);
+    public static IBLUAction WaterCannon { get; } = new BLUAction(ActionID.WaterCannon);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction SongOfTorment { get; } = new BLUAction(ActionID.SongOfTorment, BLUActionType.Magical, ActionOption.Dot)
+    public static IBLUAction SongOfTorment { get; } = new BLUAction(ActionID.SongOfTorment, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.Bleeding }
     };
@@ -198,7 +212,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction BloodDrain { get; } = new BLUAction(ActionID.BloodDrain, BLUActionType.Magical)
+    public static IBLUAction BloodDrain { get; } = new BLUAction(ActionID.BloodDrain)
     {
         ActionCheck = (b, m) => Player.CurrentMp <= 9500,
     };
@@ -206,37 +220,37 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction SonicBoom { get; } = new BLUAction(ActionID.SonicBoom, BLUActionType.Magical);
+    public static IBLUAction SonicBoom { get; } = new BLUAction(ActionID.SonicBoom);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction PerpetualRay { get; } = new BLUAction(ActionID.PerpetualRay, BLUActionType.Magical);
+    public static IBLUAction PerpetualRay { get; } = new BLUAction(ActionID.PerpetualRay);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Reflux { get; } = new BLUAction(ActionID.Reflux, BLUActionType.Magical);
+    public static IBLUAction Reflux { get; } = new BLUAction(ActionID.Reflux);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Devour { get; } = new BLUAction(ActionID.Devour, BLUActionType.Magical, ActionOption.Heal);
+    public static IBLUAction Devour { get; } = new BLUAction(ActionID.Devour, ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction TheRoseOfDestruction { get; } = new BLUAction(ActionID.TheRoseOfDestruction, BLUActionType.Magical);
+    public static IBLUAction TheRoseOfDestruction { get; } = new BLUAction(ActionID.TheRoseOfDestruction);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MatraMagic { get; } = new BLUAction(ActionID.MatraMagic, BLUActionType.Magical);
+    public static IBLUAction MatraMagic { get; } = new BLUAction(ActionID.MatraMagic);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction WhiteDeath { get; } = new BLUAction(ActionID.WhiteDeath, BLUActionType.Magical)
+    public static IBLUAction WhiteDeath { get; } = new BLUAction(ActionID.WhiteDeath)
     {
         ActionCheck = (b, m) => Player.HasStatus(true, StatusID.TouchOfFrost)
     };
@@ -246,62 +260,62 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FlameThrower { get; } = new BLUAction(ActionID.FlameThrower, BLUActionType.Magical);
+    public static IBLUAction FlameThrower { get; } = new BLUAction(ActionID.FlameThrower);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction AquaBreath { get; } = new BLUAction(ActionID.AquaBreath, BLUActionType.Magical, ActionOption.Dot);
+    public static IBLUAction AquaBreath { get; } = new BLUAction(ActionID.AquaBreath, ActionOption.Dot);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction HighVoltage { get; } = new BLUAction(ActionID.HighVoltage, BLUActionType.Magical);
+    public static IBLUAction HighVoltage { get; } = new BLUAction(ActionID.HighVoltage);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Glower { get; } = new BLUAction(ActionID.Glower, BLUActionType.Magical);
+    public static IBLUAction Glower { get; } = new BLUAction(ActionID.Glower);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction PlainCracker { get; } = new BLUAction(ActionID.PlainCracker, BLUActionType.Magical);
+    public static IBLUAction PlainCracker { get; } = new BLUAction(ActionID.PlainCracker);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction TheLook { get; } = new BLUAction(ActionID.TheLook, BLUActionType.Magical);
+    public static IBLUAction TheLook { get; } = new BLUAction(ActionID.TheLook);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction TheRamVoice { get; } = new BLUAction(ActionID.TheRamVoice, BLUActionType.Magical);
+    public static IBLUAction TheRamVoice { get; } = new BLUAction(ActionID.TheRamVoice);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction TheDragonVoice { get; } = new BLUAction(ActionID.TheDragonVoice, BLUActionType.Magical);
+    public static IBLUAction TheDragonVoice { get; } = new BLUAction(ActionID.TheDragonVoice);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction InkJet { get; } = new BLUAction(ActionID.InkJet, BLUActionType.Magical);
+    public static IBLUAction InkJet { get; } = new BLUAction(ActionID.InkJet);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FireAngon { get; } = new BLUAction(ActionID.FireAngon, BLUActionType.Magical);
+    public static IBLUAction FireAngon { get; } = new BLUAction(ActionID.FireAngon);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MindBlast { get; } = new BLUAction(ActionID.MindBlast, BLUActionType.Magical);
+    public static IBLUAction MindBlast { get; } = new BLUAction(ActionID.MindBlast);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FeatherRain { get; } = new BLUAction(ActionID.FeatherRain, BLUActionType.Magical)
+    public static IBLUAction FeatherRain { get; } = new BLUAction(ActionID.FeatherRain)
     {
         AOECount = 1,
     };
@@ -309,72 +323,72 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Eruption { get; } = new BLUAction(ActionID.Eruption, BLUActionType.Magical);
+    public static IBLUAction Eruption { get; } = new BLUAction(ActionID.Eruption);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MountainBuster { get; } = new BLUAction(ActionID.MountainBusterBLU, BLUActionType.Magical);
+    public static IBLUAction MountainBuster { get; } = new BLUAction(ActionID.MountainBusterBLU);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction ShockStrike { get; } = new BLUAction(ActionID.ShockStrike, BLUActionType.Magical);
+    public static IBLUAction ShockStrike { get; } = new BLUAction(ActionID.ShockStrike);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction GlassDance { get; } = new BLUAction(ActionID.GlassDance, BLUActionType.Magical);
+    public static IBLUAction GlassDance { get; } = new BLUAction(ActionID.GlassDance);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction AlpineDraft { get; } = new BLUAction(ActionID.AlpineDraft, BLUActionType.Magical);
+    public static IBLUAction AlpineDraft { get; } = new BLUAction(ActionID.AlpineDraft);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction ProteanWave { get; } = new BLUAction(ActionID.ProteanWave, BLUActionType.Magical);
+    public static IBLUAction ProteanWave { get; } = new BLUAction(ActionID.ProteanWave);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Northerlies { get; } = new BLUAction(ActionID.Northerlies, BLUActionType.Magical);
+    public static IBLUAction Northerlies { get; } = new BLUAction(ActionID.Northerlies);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Electrogenesis { get; } = new BLUAction(ActionID.Electrogenesis, BLUActionType.Magical);
+    public static IBLUAction Electrogenesis { get; } = new BLUAction(ActionID.Electrogenesis);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MagicHammer { get; } = new BLUAction(ActionID.MagicHammer, BLUActionType.Magical, ActionOption.Defense);
+    public static IBLUAction MagicHammer { get; } = new BLUAction(ActionID.MagicHammer, ActionOption.Defense);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction WhiteKnightsTour { get; } = new BLUAction(ActionID.WhiteKnightsTour, BLUActionType.Magical);
+    public static IBLUAction WhiteKnightsTour { get; } = new BLUAction(ActionID.WhiteKnightsTour);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction BlackKnightsTour { get; } = new BLUAction(ActionID.BlackKnightsTour, BLUActionType.Magical);
+    public static IBLUAction BlackKnightsTour { get; } = new BLUAction(ActionID.BlackKnightsTour);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Surpanakha { get; } = new BLUAction(ActionID.Surpanakha, BLUActionType.Magical);
+    public static IBLUAction Surpanakha { get; } = new BLUAction(ActionID.Surpanakha);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Quasar { get; } = new BLUAction(ActionID.Quasar, BLUActionType.Magical);
+    public static IBLUAction Quasar { get; } = new BLUAction(ActionID.Quasar);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Tingle { get; } = new BLUAction(ActionID.Tingle, BLUActionType.Magical)
+    public static IBLUAction Tingle { get; } = new BLUAction(ActionID.Tingle)
     {
         StatusProvide = new StatusID[] { StatusID.Tingling },
     };
@@ -382,57 +396,57 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Tatamigaeshi { get; } = new BLUAction(ActionID.Tatamigaeshi, BLUActionType.Magical);
+    public static IBLUAction Tatamigaeshi { get; } = new BLUAction(ActionID.Tatamigaeshi);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction SaintlyBeam { get; } = new BLUAction(ActionID.SaintlyBeam, BLUActionType.Magical);
+    public static IBLUAction SaintlyBeam { get; } = new BLUAction(ActionID.SaintlyBeam);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FeculentFlood { get; } = new BLUAction(ActionID.FeculentFlood, BLUActionType.Magical);
+    public static IBLUAction FeculentFlood { get; } = new BLUAction(ActionID.FeculentFlood);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Blaze { get; } = new BLUAction(ActionID.Blaze, BLUActionType.Magical);
+    public static IBLUAction Blaze { get; } = new BLUAction(ActionID.Blaze);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MustardBomb { get; } = new BLUAction(ActionID.MustardBomb, BLUActionType.Magical);
+    public static IBLUAction MustardBomb { get; } = new BLUAction(ActionID.MustardBomb);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction AetherialSpark { get; } = new BLUAction(ActionID.AetherialSpark, BLUActionType.Magical, ActionOption.Dot);
+    public static IBLUAction AetherialSpark { get; } = new BLUAction(ActionID.AetherialSpark, ActionOption.Dot);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction HydroPull { get; } = new BLUAction(ActionID.HydroPull, BLUActionType.Magical);
+    public static IBLUAction HydroPull { get; } = new BLUAction(ActionID.HydroPull);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MaledictionOfWater { get; } = new BLUAction(ActionID.MaledictionOfWater, BLUActionType.Magical);
+    public static IBLUAction MaledictionOfWater { get; } = new BLUAction(ActionID.MaledictionOfWater);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction ChocoMeteor { get; } = new BLUAction(ActionID.ChocoMeteor, BLUActionType.Magical);
+    public static IBLUAction ChocoMeteor { get; } = new BLUAction(ActionID.ChocoMeteor);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction NightBloom { get; } = new BLUAction(ActionID.NightBloom, BLUActionType.Magical);
+    public static IBLUAction NightBloom { get; } = new BLUAction(ActionID.NightBloom);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction DivineCataract { get; } = new BLUAction(ActionID.DivineCataract, BLUActionType.Magical)
+    public static IBLUAction DivineCataract { get; } = new BLUAction(ActionID.DivineCataract)
     {
         ActionCheck = (b, m) => Player.HasStatus(true, StatusID.AuspiciousTrance)
     };
@@ -440,7 +454,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction PhantomFlurry2 { get; } = new BLUAction(ActionID.PhantomFlurry2, BLUActionType.Magical)
+    public static IBLUAction PhantomFlurry2 { get; } = new BLUAction(ActionID.PhantomFlurry2)
     {
         ActionCheck = (b, m) => Player.HasStatus(true, StatusID.PhantomFlurry)
     };
@@ -448,17 +462,17 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction PeatPelt { get; } = new BLUAction(ActionID.PeatPelt, BLUActionType.Magical);
+    public static IBLUAction PeatPelt { get; } = new BLUAction(ActionID.PeatPelt);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MortalFlame { get; } = new BLUAction(ActionID.MortalFlame, BLUActionType.Magical);
+    public static IBLUAction MortalFlame { get; } = new BLUAction(ActionID.MortalFlame);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction SeaShanty { get; } = new BLUAction(ActionID.SeaShanty, BLUActionType.Magical);
+    public static IBLUAction SeaShanty { get; } = new BLUAction(ActionID.SeaShanty);
 
     #endregion
 
@@ -466,7 +480,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FinalSting { get; } = new BLUAction(ActionID.FinalSting, BLUActionType.Physical)
+    public static IBLUAction FinalSting { get; } = new BLUAction(ActionID.FinalSting)
     {
         ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.BrushWithDeath),
     };
@@ -474,27 +488,27 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction SharpenedKnife { get; } = new BLUAction(ActionID.SharpenedKnife, BLUActionType.Physical);
+    public static IBLUAction SharpenedKnife { get; } = new BLUAction(ActionID.SharpenedKnife);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FlyingSardine { get; } = new BLUAction(ActionID.FlyingSardine, BLUActionType.Physical);
+    public static IBLUAction FlyingSardine { get; } = new BLUAction(ActionID.FlyingSardine);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction AbyssalTransfixion { get; } = new BLUAction(ActionID.AbyssalTransfixion, BLUActionType.Physical);
+    public static IBLUAction AbyssalTransfixion { get; } = new BLUAction(ActionID.AbyssalTransfixion);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction TripleTrident { get; } = new BLUAction(ActionID.TripleTrident, BLUActionType.Physical);
+    public static IBLUAction TripleTrident { get; } = new BLUAction(ActionID.TripleTrident);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction RevengeBlast { get; } = new BLUAction(ActionID.RevengeBlast, BLUActionType.Physical)
+    public static IBLUAction RevengeBlast { get; } = new BLUAction(ActionID.RevengeBlast)
     {
         ActionCheck = (b, m) => b.GetHealthRatio() < 0.2f,
     };
@@ -502,7 +516,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction GoblinPunch { get; } = new BLUAction(ActionID.GoblinPunch, BLUActionType.Physical);
+    public static IBLUAction GoblinPunch { get; } = new BLUAction(ActionID.GoblinPunch);
 
     #endregion
 
@@ -510,126 +524,126 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FlyingFrenzy { get; } = new BLUAction(ActionID.FlyingFrenzy, BLUActionType.Physical);
+    public static IBLUAction FlyingFrenzy { get; } = new BLUAction(ActionID.FlyingFrenzy);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction DrillCannons { get; } = new BLUAction(ActionID.DrillCannons, BLUActionType.Physical);
+    public static IBLUAction DrillCannons { get; } = new BLUAction(ActionID.DrillCannons);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Weight4Tonze { get; } = new BLUAction(ActionID.Weight4Tonze, BLUActionType.Physical);
+    public static IBLUAction Weight4Tonze { get; } = new BLUAction(ActionID.Weight4Tonze);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Needles1000 { get; } = new BLUAction(ActionID.Needles1000, BLUActionType.Physical);
+    public static IBLUAction Needles1000 { get; } = new BLUAction(ActionID.Needles1000);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Kaltstrahl { get; } = new BLUAction(ActionID.Kaltstrahl, BLUActionType.Physical);
+    public static IBLUAction Kaltstrahl { get; } = new BLUAction(ActionID.Kaltstrahl);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction JKick { get; } = new BLUAction(ActionID.JKick, BLUActionType.Physical);
+    public static IBLUAction JKick { get; } = new BLUAction(ActionID.JKick);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction PeripheralSynthesis { get; } = new BLUAction(ActionID.PeripheralSynthesis, BLUActionType.Physical);
+    public static IBLUAction PeripheralSynthesis { get; } = new BLUAction(ActionID.PeripheralSynthesis);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction BothEnds { get; } = new BLUAction(ActionID.BothEnds, BLUActionType.Physical);
+    public static IBLUAction BothEnds { get; } = new BLUAction(ActionID.BothEnds);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction RightRound { get; } = new BLUAction(ActionID.RightRound, BLUActionType.Physical);
+    public static IBLUAction RightRound { get; } = new BLUAction(ActionID.RightRound);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction WildRage { get; } = new BLUAction(ActionID.WildRage, BLUActionType.Physical);
+    public static IBLUAction WildRage { get; } = new BLUAction(ActionID.WildRage);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction DeepClean { get; } = new BLUAction(ActionID.DeepClean, BLUActionType.Physical);
+    public static IBLUAction DeepClean { get; } = new BLUAction(ActionID.DeepClean);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction RubyDynamics { get; } = new BLUAction(ActionID.RubyDynamics, BLUActionType.Physical);
+    public static IBLUAction RubyDynamics { get; } = new BLUAction(ActionID.RubyDynamics);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction WingedReprobation { get; } = new BLUAction(ActionID.WingedReprobation, BLUActionType.Physical);
+    public static IBLUAction WingedReprobation { get; } = new BLUAction(ActionID.WingedReprobation);
     #endregion
 
     #region Other Single
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction StickyTongue { get; } = new BLUAction(ActionID.StickyTongue, BLUActionType.None);
+    public static IBLUAction StickyTongue { get; } = new BLUAction(ActionID.StickyTongue);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Missile { get; } = new BLUAction(ActionID.Missile, BLUActionType.None);
+    public static IBLUAction Missile { get; } = new BLUAction(ActionID.Missile);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction TailScrew { get; } = new BLUAction(ActionID.TailScrew, BLUActionType.None);
+    public static IBLUAction TailScrew { get; } = new BLUAction(ActionID.TailScrew);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Doom { get; } = new BLUAction(ActionID.Doom, BLUActionType.None);
+    public static IBLUAction Doom { get; } = new BLUAction(ActionID.Doom);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction EerieSoundwave { get; } = new BLUAction(ActionID.EerieSoundwave, BLUActionType.None);
+    public static IBLUAction EerieSoundwave { get; } = new BLUAction(ActionID.EerieSoundwave);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction CondensedLibra { get; } = new BLUAction(ActionID.CondensedLibra, BLUActionType.None);
+    public static IBLUAction CondensedLibra { get; } = new BLUAction(ActionID.CondensedLibra);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Schiltron { get; } = new BLUAction(ActionID.Schiltron, BLUActionType.None);
+    public static IBLUAction Schiltron { get; } = new BLUAction(ActionID.Schiltron);
     #endregion
 
     #region Other Area
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Level5Petrify { get; } = new BLUAction(ActionID.Level5Petrify, BLUActionType.None);
+    public static IBLUAction Level5Petrify { get; } = new BLUAction(ActionID.Level5Petrify);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction AcornBomb { get; } = new BLUAction(ActionID.AcornBomb, BLUActionType.None);
+    public static IBLUAction AcornBomb { get; } = new BLUAction(ActionID.AcornBomb);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction BombToss { get; } = new BLUAction(ActionID.BombToss, BLUActionType.None);
+    public static IBLUAction BombToss { get; } = new BLUAction(ActionID.BombToss);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction SelfDestruct { get; } = new BLUAction(ActionID.SelfDestruct, BLUActionType.None)
+    public static IBLUAction SelfDestruct { get; } = new BLUAction(ActionID.SelfDestruct)
     {
         ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.BrushWithDeath),
     };
@@ -637,104 +651,104 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Faze { get; } = new BLUAction(ActionID.Faze, BLUActionType.None);
+    public static IBLUAction Faze { get; } = new BLUAction(ActionID.Faze);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Snort { get; } = new BLUAction(ActionID.Snort, BLUActionType.None);
+    public static IBLUAction Snort { get; } = new BLUAction(ActionID.Snort);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction BadBreath { get; } = new BLUAction(ActionID.BadBreath, BLUActionType.None, ActionOption.Defense);
+    public static IBLUAction BadBreath { get; } = new BLUAction(ActionID.BadBreath, ActionOption.Defense);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Chirp { get; } = new BLUAction(ActionID.Chirp, BLUActionType.None);
+    public static IBLUAction Chirp { get; } = new BLUAction(ActionID.Chirp);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FrogLegs { get; } = new BLUAction(ActionID.FrogLegs, BLUActionType.None);
+    public static IBLUAction FrogLegs { get; } = new BLUAction(ActionID.FrogLegs);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Level5Death { get; } = new BLUAction(ActionID.Level5Death, BLUActionType.None);
+    public static IBLUAction Level5Death { get; } = new BLUAction(ActionID.Level5Death);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Launcher { get; } = new BLUAction(ActionID.Launcher, BLUActionType.None);
+    public static IBLUAction Launcher { get; } = new BLUAction(ActionID.Launcher);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction UltraVibration { get; } = new BLUAction(ActionID.UltraVibration, BLUActionType.None);
+    public static IBLUAction UltraVibration { get; } = new BLUAction(ActionID.UltraVibration);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction PhantomFlurry { get; } = new BLUAction(ActionID.PhantomFlurry, BLUActionType.None);
+    public static IBLUAction PhantomFlurry { get; } = new BLUAction(ActionID.PhantomFlurry);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction BreathOfMagic { get; } = new BLUAction(ActionID.BreathOfMagic, BLUActionType.None);
+    public static IBLUAction BreathOfMagic { get; } = new BLUAction(ActionID.BreathOfMagic);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction DivinationRune { get; } = new BLUAction(ActionID.DivinationRune, BLUActionType.None);
+    public static IBLUAction DivinationRune { get; } = new BLUAction(ActionID.DivinationRune);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction DimensionalShift { get; } = new BLUAction(ActionID.DimensionalShift, BLUActionType.None);
+    public static IBLUAction DimensionalShift { get; } = new BLUAction(ActionID.DimensionalShift);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction ConvictionMarcato { get; } = new BLUAction(ActionID.ConvictionMarcato, BLUActionType.None);
+    public static IBLUAction ConvictionMarcato { get; } = new BLUAction(ActionID.ConvictionMarcato);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction LaserEye { get; } = new BLUAction(ActionID.LaserEye, BLUActionType.None);
+    public static IBLUAction LaserEye { get; } = new BLUAction(ActionID.LaserEye);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction CandyCane { get; } = new BLUAction(ActionID.CandyCane, BLUActionType.None);
+    public static IBLUAction CandyCane { get; } = new BLUAction(ActionID.CandyCane);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Apokalypsis { get; } = new BLUAction(ActionID.Apokalypsis, BLUActionType.None);
+    public static IBLUAction Apokalypsis { get; } = new BLUAction(ActionID.Apokalypsis);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction BeingMortal { get; } = new BLUAction(ActionID.BeingMortal, BLUActionType.None);
+    public static IBLUAction BeingMortal { get; } = new BLUAction(ActionID.BeingMortal);
     #endregion
 
     #region Defense
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction IceSpikes { get; } = new BLUAction(ActionID.IceSpikes, BLUActionType.None, ActionOption.Defense);
+    public static IBLUAction IceSpikes { get; } = new BLUAction(ActionID.IceSpikes, ActionOption.Defense);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction VeilOfTheWhorl { get; } = new BLUAction(ActionID.VeilOfTheWhorl, BLUActionType.None, ActionOption.Defense);
+    public static IBLUAction VeilOfTheWhorl { get; } = new BLUAction(ActionID.VeilOfTheWhorl, ActionOption.Defense);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Diamondback { get; } = new BLUAction(ActionID.Diamondback, BLUActionType.None, ActionOption.Defense)
+    public static IBLUAction Diamondback { get; } = new BLUAction(ActionID.Diamondback, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -743,7 +757,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Gobskin { get; } = new BLUAction(ActionID.Gobskin, BLUActionType.None, ActionOption.Defense)
+    public static IBLUAction Gobskin { get; } = new BLUAction(ActionID.Gobskin, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -752,7 +766,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Cactguard { get; } = new BLUAction(ActionID.CactGuard, BLUActionType.None, ActionOption.Defense)
+    public static IBLUAction Cactguard { get; } = new BLUAction(ActionID.CactGuard, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -761,7 +775,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction ChelonianGate { get; } = new BLUAction(ActionID.ChelonianGate, BLUActionType.None, ActionOption.Defense)
+    public static IBLUAction ChelonianGate { get; } = new BLUAction(ActionID.ChelonianGate, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -770,7 +784,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction DragonForce { get; } = new BLUAction(ActionID.DragonForce, BLUActionType.None, ActionOption.Defense)
+    public static IBLUAction DragonForce { get; } = new BLUAction(ActionID.DragonForce, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -781,12 +795,12 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction ToadOil { get; } = new BLUAction(ActionID.ToadOil, BLUActionType.None, ActionOption.Buff);
+    public static IBLUAction ToadOil { get; } = new BLUAction(ActionID.ToadOil, ActionOption.Buff);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Bristle { get; } = new BLUAction(ActionID.Bristle, BLUActionType.Magical, ActionOption.Buff)
+    public static IBLUAction Bristle { get; } = new BLUAction(ActionID.Bristle, ActionOption.Buff)
     {
         StatusProvide = new StatusID[] { StatusID.Boost, StatusID.Harmonized },
     };
@@ -794,12 +808,12 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction OffGuard { get; } = new BLUAction(ActionID.OffGuard, BLUActionType.None, ActionOption.Buff);
+    public static IBLUAction OffGuard { get; } = new BLUAction(ActionID.OffGuard, ActionOption.Buff);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MightyGuard { get; } = new BLUAction(ActionID.MightyGuard, BLUActionType.None, ActionOption.Buff)
+    public static IBLUAction MightyGuard { get; } = new BLUAction(ActionID.MightyGuard, ActionOption.Buff)
     {
         StatusProvide = new StatusID[]
         {
@@ -810,7 +824,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MoonFlute { get; } = new BLUAction(ActionID.MoonFlute, BLUActionType.None, ActionOption.Buff)
+    public static IBLUAction MoonFlute { get; } = new BLUAction(ActionID.MoonFlute, ActionOption.Buff)
     {
         StatusProvide = new StatusID[] { StatusID.WaxingNocturne },
     };
@@ -818,17 +832,17 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction PeculiarLight { get; } = new BLUAction(ActionID.PeculiarLight, BLUActionType.Magical, ActionOption.Buff);
+    public static IBLUAction PeculiarLight { get; } = new BLUAction(ActionID.PeculiarLight, ActionOption.Buff);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Avail { get; } = new BLUAction(ActionID.Avail, BLUActionType.Magical, ActionOption.Buff);
+    public static IBLUAction Avail { get; } = new BLUAction(ActionID.Avail, ActionOption.Buff);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Whistle { get; } = new BLUAction(ActionID.Whistle, BLUActionType.Physical, ActionOption.Buff)
+    public static IBLUAction Whistle { get; } = new BLUAction(ActionID.Whistle, ActionOption.Buff)
     {
         StatusProvide = new StatusID[] { StatusID.Boost, StatusID.Harmonized },
     };
@@ -836,19 +850,19 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction ColdFog { get; } = new BLUAction(ActionID.ColdFog, BLUActionType.Magical, ActionOption.Buff);
+    public static IBLUAction ColdFog { get; } = new BLUAction(ActionID.ColdFog, ActionOption.Buff);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction ForceField { get; } = new BLUAction(ActionID.ForceField, BLUActionType.Magical, ActionOption.Buff);
+    public static IBLUAction ForceField { get; } = new BLUAction(ActionID.ForceField, ActionOption.Buff);
     #endregion
 
     #region Heal
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction WhiteWind { get; } = new BLUAction(ActionID.WhiteWind, BLUActionType.None, ActionOption.Heal)
+    public static IBLUAction WhiteWind { get; } = new BLUAction(ActionID.WhiteWind, ActionOption.Heal)
     {
         ActionCheck = (b, m) => Player.GetHealthRatio() is > 0.3f and < 0.5f,
     };
@@ -856,50 +870,50 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Stotram { get; } = new BLUAction(ActionID.Stotram, BLUActionType.Magical, ActionOption.Heal);
+    public static IBLUAction Stotram { get; } = new BLUAction(ActionID.Stotram, ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction PomCure { get; } = new BLUAction(ActionID.PomCure, BLUActionType.None, ActionOption.Heal);
+    public static IBLUAction PomCure { get; } = new BLUAction(ActionID.PomCure, ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction AngelWhisper { get; } = new BLUAction(ActionID.AngelWhisper, BLUActionType.None, ActionOption.Heal);
+    public static IBLUAction AngelWhisper { get; } = new BLUAction(ActionID.AngelWhisper, ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Exuviation { get; } = new BLUAction(ActionID.Exuviation, BLUActionType.None, ActionOption.Heal);
+    public static IBLUAction Exuviation { get; } = new BLUAction(ActionID.Exuviation, ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction AngelsSnack { get; } = new BLUAction(ActionID.AngelsSnack, BLUActionType.None, ActionOption.Heal);
+    public static IBLUAction AngelsSnack { get; } = new BLUAction(ActionID.AngelsSnack, ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Rehydration { get; } = new BLUAction(ActionID.Rehydration, BLUActionType.None, ActionOption.Heal);
+    public static IBLUAction Rehydration { get; } = new BLUAction(ActionID.Rehydration, ActionOption.Heal);
     #endregion
 
     #region Others
     /// <summary>
     /// 
     /// </summary>
-    private static IBLUAction Loom { get; } = new BLUAction(ActionID.Loom, BLUActionType.None, ActionOption.EndSpecial);
+    private static IBLUAction Loom { get; } = new BLUAction(ActionID.Loom, ActionOption.EndSpecial);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction BasicInstinct { get; } = new BLUAction(ActionID.BasicInstinct, BLUActionType.None)
+    public static IBLUAction BasicInstinct { get; } = new BLUAction(ActionID.BasicInstinct)
     {
         StatusProvide = new StatusID[] { StatusID.BasicInstinct },
         ActionCheck = (b, m) =>  Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56] && DataCenter.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1,
     };
 
-    static IBLUAction AethericMimicry { get; } = new BLUAction(ActionID.AethericMimicry, BLUActionType.None, ActionOption.Friendly)
+    static IBLUAction AethericMimicry { get; } = new BLUAction(ActionID.AethericMimicry, ActionOption.Friendly)
     {
         ChoiceTarget = (charas, mustUse) =>
         {

@@ -654,7 +654,10 @@ internal static class ImGuiHelper
     private unsafe static void Display(this IBaseAction action, bool IsActive) => action.DrawEnableTexture(IsActive, () =>
     {
         RotationConfigWindow.ActiveAction = action;
-    }, otherThing: () =>
+    }, showToolTip: a => 
+    {
+        if(!string.IsNullOrEmpty(a.Description)) ImGui.SetTooltip(a.Description);
+    },otherThing: () =>
     {
         var enable = action.IsInCooldown;
         if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Action_ShowOnCDWindow}##{action.Name}InCooldown", ref enable))
@@ -703,8 +706,12 @@ internal static class ImGuiHelper
         }
     });
 
-    public unsafe static void Display(this IBaseItem item, bool IsActive) => item.DrawEnableTexture(IsActive,
-        () => RotationConfigWindow.ActiveAction = item, otherThing: () =>
+    public unsafe static void Display(this IBaseItem item, bool IsActive)
+        => item.DrawEnableTexture(IsActive, () => RotationConfigWindow.ActiveAction = item,
+    showToolTip: a =>
+    {
+        if (!string.IsNullOrEmpty(a.Description)) ImGui.SetTooltip(a.Description);
+    }, otherThing: () =>
     {
         if (Service.Config.ShowCooldownWindow)
         {

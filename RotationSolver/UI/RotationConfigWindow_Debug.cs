@@ -163,13 +163,13 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawIcon()
     {
-        if(ImGui.BeginTable("BLUAction", 3, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingFixedFit))
+        if(ImGui.BeginTable("BLUAction", 4, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingFixedFit))
         {
             foreach (var item in Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>())
             {
                 if (item == null) continue;
-                if (item.ClassJob.Row != 36) continue;
-                if (item.RowId <= 30000) continue;
+                if (item.ClassJob?.Row != 36) continue;
+                //if (item.RowId <= 20000) continue;
 
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
@@ -178,15 +178,45 @@ internal partial class RotationConfigWindow
 
                 ImGui.TableNextColumn();
 
-                var tex = IconSet.GetTexture(item.Icon);
-                if (tex != null)
+                try
                 {
-                    ImGui.Image(tex.ImGuiHandle, Vector2.One * 32);
+                    var tex = IconSet.GetTexture(item.Icon);
+                    if (tex != null)
+                    {
+                        ImGui.Image(tex.ImGuiHandle, Vector2.One * 32);
+                    }
+                }
+                catch
+                {
+
                 }
                 ImGui.TableNextColumn();
 
-                var desc = Svc.Data.GetExcelSheet<ActionTransient>().GetRow(item.RowId).Description.ToString();
-                if (!string.IsNullOrEmpty(desc)) ImGui.TextWrapped(desc);
+                try
+                {
+                    ImGui.Text($"{(Aspect)item.Aspect}");
+                    ImGui.SameLine();
+                    var desc = item.AttackType?.Value?.Name?.ToString();
+                    if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
+                }
+                catch
+                {
+
+                }
+                ImGui.TableNextColumn();
+
+                //ImGui.TableNextColumn();
+
+                //try
+                //{
+                //    var desc = Svc.Data.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description?.ToString();
+                //    //ImGui.Text((!string.IsNullOrEmpty(desc)).ToString());
+                //    //if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
+                //}
+                //catch
+                //{
+
+                //}
             }
             ImGui.EndTable();
         }

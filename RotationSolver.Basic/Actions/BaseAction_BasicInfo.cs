@@ -12,7 +12,10 @@ public partial class BaseAction : IBaseAction
 {
     internal static CanUseOption OtherOption { get; set; } = CanUseOption.None;
 
-    readonly Action _action;
+    /// <summary>
+    /// The action itself.
+    /// </summary>
+    protected readonly Action _action;
     readonly ActionOption _option;
 
     /// <summary>
@@ -68,7 +71,7 @@ public partial class BaseAction : IBaseAction
     /// <summary>
     /// Description about this action.
     /// </summary>
-    public string Description => string.Empty;
+    public virtual string Description => string.Empty;
 
     /// <summary>
     /// Is Enabled.
