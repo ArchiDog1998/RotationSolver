@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.12](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.11...v3.0.12) (2023-07-18)
+
+
+### Bug Fixes
+
+* add BLU actions! ([0223fbf](https://github.com/ArchiDog1998/RotationSolver/commit/0223fbf6303518b88b3eb1d3f9db32c2c7921686))
+* add BLU Aspect. ([b1a4a41](https://github.com/ArchiDog1998/RotationSolver/commit/b1a4a41d20e90913b6ed4caebea6c3406e5e074b))
+
 ## [3.0.11](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.10...v3.0.11) (2023-07-17)
 
 
