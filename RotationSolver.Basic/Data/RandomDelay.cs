@@ -1,5 +1,8 @@
 ﻿namespace RotationSolver.Basic.Data;
 
+/// <summary>
+/// Random delay the bool.
+/// </summary>
 public struct RandomDelay
 {
     DateTime _startDelayTime = DateTime.Now;
@@ -7,11 +10,21 @@ public struct RandomDelay
     readonly Func<(float min, float max)> _getRange;
     readonly Random _ran = new(DateTime.Now.Millisecond);
     bool _lastValue = false;
+
+    /// <summary>
+    /// Constructer.
+    /// </summary>
+    /// <param name="getRange"></param>
     public RandomDelay(Func<(float min, float max)> getRange)
     {
         _getRange = getRange;
     }
 
+    /// <summary>
+    /// Delay the bool.
+    /// </summary>
+    /// <param name="originData"></param>
+    /// <returns></returns>
     public bool Delay(bool originData)
     {
         if (_getRange == null) return false;

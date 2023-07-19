@@ -3,34 +3,109 @@ using ImGuiScene;
 
 namespace RotationSolver.Basic.Data;
 
+/// <summary>
+/// The type of the icon
+/// </summary>
 public enum IconType : byte
 {
+    /// <summary>
+    /// 
+    /// </summary>
     Gold,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Framed,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Glowing,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Grey,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Black,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Yellow,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Orange,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Red,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Purple,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Blue,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Green,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Role,
 }
 
+/// <summary>
+/// The class to find the icon.
+/// </summary>
 public static class IconSet
 {
+    /// <summary>
+    /// Get Texture form texture.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
     public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
 
+    /// <summary>
+    /// Get Texture from id.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public static TextureWrap GetTexture(uint id)
         => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out var texture) ? texture :
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture) ? texture : null;
+
+    /// <summary>
+    /// Get Texture from path.
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
     public static TextureWrap GetTexture(string path)
         => ThreadLoadImageHandler.TryGetTextureWrap(path, out var texture) ? texture : null;
 
     static readonly Dictionary<uint, uint> _actionIcons = new();
 
+    /// <summary>
+    /// Get Texture from action.
+    /// </summary>
+    /// <param name="action"></param>
+    /// <param name="isAdjust"></param>
+    /// <returns></returns>
     public static TextureWrap GetTexture(this IAction action, bool isAdjust = true)
     {
         uint iconId = 0;
@@ -50,6 +125,12 @@ public static class IconSet
         return GetTexture(iconId);
     }
 
+    /// <summary>
+    /// Get texture from action Id.
+    /// </summary>
+    /// <param name="actionID"></param>
+    /// <param name="isAction"></param>
+    /// <returns></returns>
     public static TextureWrap GetTexture(this ActionID actionID, bool isAction = true)
     {
         var id = (uint)actionID;
@@ -178,10 +259,15 @@ public static class IconSet
 
     };
 
-    public static uint GetJobIcon(ICustomRotation combo)
+    /// <summary>
+    /// Get job Icon from rotation.
+    /// </summary>
+    /// <param name="rotation"></param>
+    /// <returns></returns>
+    public static uint GetJobIcon(ICustomRotation rotation)
     {
         IconType type = IconType.Gold;
-        switch (combo.ClassJob.GetJobRole())
+        switch (rotation.ClassJob.GetJobRole())
         {
             case JobRole.Tank:
                 type = IconType.Blue;
@@ -195,9 +281,15 @@ public static class IconSet
                 type = IconType.Green;
                 break;
         }
-        return GetJobIcon(combo, type);
+        return GetJobIcon(rotation, type);
     }
 
+    /// <summary>
+    /// Get Job Icon from specific type.
+    /// </summary>
+    /// <param name="combo"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public static uint GetJobIcon(ICustomRotation combo, IconType type)
     {
         return _icons[type][(uint)combo.Jobs[0] - 1];

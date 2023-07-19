@@ -184,7 +184,7 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
-    WillDead = 810,
+    LivingDead = 810,
 
     /// <summary>
     /// 
@@ -1306,11 +1306,6 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     TheBlackestNight = 1178,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    LivingDead = WillDead,
 
     /// <summary>
     /// 

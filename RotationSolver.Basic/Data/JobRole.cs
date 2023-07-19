@@ -2,21 +2,67 @@
 
 namespace RotationSolver.Basic.Data;
 
+/// <summary>
+/// The role of jobs.
+/// </summary>
 public enum JobRole : byte
 {
+    /// <summary>
+    /// 
+    /// </summary>
     None = 0,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Tank = 1,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Melee = 2,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Ranged = 3,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Healer = 4,
+
+    /// <summary>
+    /// 
+    /// </summary>
     RangedPhysical = 5,
+
+    /// <summary>
+    /// 
+    /// </summary>
     RangedMagical = 6,
+
+    /// <summary>
+    /// 
+    /// </summary>
     DiscipleOfTheLand = 7,
+
+    /// <summary>
+    /// 
+    /// </summary>
     DiscipleOfTheHand = 8,
 }
 
+/// <summary>
+/// The extension of the job.
+/// </summary>
 public static class JobRoleExtension
 {
+    /// <summary>
+    /// Get job role from class.
+    /// </summary>
+    /// <param name="job"></param>
+    /// <returns></returns>
     public static JobRole GetJobRole(this ClassJob job)
     {
         var role = (JobRole)job.Role;

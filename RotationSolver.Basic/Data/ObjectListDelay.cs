@@ -2,6 +2,10 @@
 
 namespace RotationSolver.Basic.Data;
 
+/// <summary>
+/// A class to delay the object list checking.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class ObjectListDelay<T> : IEnumerable<T> where T : GameObject
 {
     IEnumerable<T> _list = Array.Empty<T>();
@@ -9,11 +13,19 @@ public class ObjectListDelay<T> : IEnumerable<T> where T : GameObject
     SortedList<uint, DateTime> _revealTime = new();
     readonly Random _ran = new(DateTime.Now.Millisecond);
 
+    /// <summary>
+    /// Constructer.
+    /// </summary>
+    /// <param name="getRange"></param>
     public ObjectListDelay(Func<(float min, float max)> getRange)
     {
         _getRange = getRange;
     }
 
+    /// <summary>
+    /// The delayed list.
+    /// </summary>
+    /// <param name="originData"></param>
     public void Delay(IEnumerable<T> originData)
     {
         var outList = new List<T>(originData.Count());
@@ -40,6 +52,10 @@ public class ObjectListDelay<T> : IEnumerable<T> where T : GameObject
         _revealTime = revealTime;
     }
 
+    /// <summary>
+    /// Enumerator.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator<T> GetEnumerator() => _list.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => _list.GetEnumerator();
 }

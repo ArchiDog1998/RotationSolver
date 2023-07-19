@@ -133,7 +133,7 @@ public static class TargetFilter
     }
 
     /// <summary>
-    /// 发现被攻击的目标
+    /// Find the one being attacked.
     /// </summary>
     /// <param name="charas"></param>
     /// <param name="mustUse"></param>
@@ -165,7 +165,7 @@ public static class TargetFilter
         => ProvokeTarget(MeleeRangeTargetFilter(inputCharas));
 
     /// <summary>
-    /// 挑衅目标
+    /// The target about to be provoked.
     /// </summary>
     /// <param name="inputCharas"></param>
     /// <param name="needDistance"></param>
@@ -196,7 +196,7 @@ public static class TargetFilter
     }
 
     /// <summary>
-    /// 获得死亡的角色
+    /// Get the deadth members.
     /// </summary>
     /// <param name="deathAll"></param>
     /// <param name="deathParty"></param>
@@ -205,36 +205,28 @@ public static class TargetFilter
     {
         if (deathParty.Any())
         {
-            //确认一下死了的T有哪些。
             var deathT = deathParty.GetJobCategory(JobRole.Tank);
             int TCount = DataCenter.PartyTanks.Count();
 
-            //如果全死了，赶紧复活啊。
             if (TCount > 0 && deathT.Count() == TCount)
             {
                 return deathT.FirstOrDefault();
             }
 
-            //确认一下死了的H有哪些。
             var deathH = deathParty.GetJobCategory(JobRole.Healer);
 
-            //如果H死了，就先救他。
             if (deathH.Any()) return deathH.FirstOrDefault();
 
-            //如果T死了，就再救他。
             if (deathT.Any()) return deathT.FirstOrDefault();
 
-            //T和H都还活着，那就随便救一个。
             return deathParty.FirstOrDefault();
         }
 
         if (deathAll.Any())
         {
-            //确认一下死了的H有哪些。
             var deathAllH = deathAll.GetJobCategory(JobRole.Healer);
             if (deathAllH.Any()) return deathAllH.FirstOrDefault();
 
-            //确认一下死了的T有哪些。
             var deathAllT = deathAll.GetJobCategory(JobRole.Tank);
             if (deathAllT.Any()) return deathAllT.FirstOrDefault();
 
@@ -244,6 +236,11 @@ public static class TargetFilter
         return null;
     }
 
+    /// <summary>
+    /// Get the deadth ones in the list.
+    /// </summary>
+    /// <param name="charas"></param>
+    /// <returns></returns>
     public unsafe static IEnumerable<BattleChara> GetDeath(this IEnumerable<BattleChara> charas) => charas.Where(item =>
         {
             if (item == null) return false;
@@ -261,9 +258,21 @@ public static class TargetFilter
             return true;
         });
 
+    /// <summary>
+    /// Get the specific roles members.
+    /// </summary>
+    /// <param name="objects"></param>
+    /// <param name="roles"></param>
+    /// <returns></returns>
     public static IEnumerable<BattleChara> GetJobCategory(this IEnumerable<BattleChara> objects, params JobRole[] roles)
         => roles.SelectMany(role => objects.Where(obj => obj.IsJobCategory(role)));
 
+    /// <summary>
+    /// Is the target the role.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="role"></param>
+    /// <returns></returns>
     public static bool IsJobCategory(this BattleChara obj, JobRole role)
     {
         SortedSet<byte> validJobs = new(Service.GetSheet<ClassJob>()
@@ -330,7 +339,7 @@ public static class TargetFilter
     #endregion
 
     /// <summary>
-    /// 获得范围<paramref name="radius"/>内对象<paramref name="objects"/>
+    /// Get the <paramref name="objects"/> in <paramref name="radius"/>.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="objects"></param>
