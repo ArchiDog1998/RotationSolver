@@ -166,9 +166,9 @@ internal static class ImGuiHelper
             !isTime ? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefaultWait :
             isLast ? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefaultSure
             : LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault)
-            && isTime)
+            )
         {
-            if (isLast)
+            if (isLast && isTime)
             {
                 result = true;
                 _lastTime = DateTime.MinValue;
