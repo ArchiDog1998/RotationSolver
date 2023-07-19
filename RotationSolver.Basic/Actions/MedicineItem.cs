@@ -1,10 +1,28 @@
 ﻿namespace RotationSolver.Basic.Actions;
 
+/// <summary>
+/// The type of the medicine
+/// </summary>
 public enum MedicineType : byte
 {
+    /// <summary>
+    /// 
+    /// </summary>
     Strength,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Dexterity,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Intelligence,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Mind,
 }
 

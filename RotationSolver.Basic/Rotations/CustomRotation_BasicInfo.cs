@@ -1,12 +1,16 @@
-﻿using Dalamud.Logging;
-using ECommons.ExcelServices;
+﻿using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Rotations;
 
+/// <summary>
+/// The custom rotations.
+/// </summary>
 [RotationDesc(DescType.BurstActions)]
 public abstract partial class CustomRotation : ICustomRotation
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
     public abstract Job[] Jobs { get; }
 
     public abstract string GameVersion { get; }
@@ -87,17 +91,25 @@ public abstract partial class CustomRotation : ICustomRotation
         return new RotationConfigSet(Jobs[0], GetType().FullName);
     }
 
+    public override string ToString() => RotationName;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
     /// <summary>
     /// Update your customized field.
     /// </summary>
     protected virtual void UpdateInfo() { }
 
+    /// <summary>
+    /// Some extra display things.
+    /// </summary>
     public virtual void DisplayStatus()
     {
         ImGui.TextWrapped($"If you want to Display some extra information on this panel. Please override {nameof(DisplayStatus)} method!");
     }
 
+    /// <summary>
+    /// The things on territory changed.
+    /// </summary>
     public virtual void OnTerritoryChanged() { }
 
-    public override string ToString() => RotationName;
 }

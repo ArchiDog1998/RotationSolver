@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
 
-public class RotationConfigFloat : RotationConfigBase
+internal class RotationConfigFloat : RotationConfigBase
 {
     public float Min, Max, Speed;
 

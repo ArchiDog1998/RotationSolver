@@ -4,7 +4,7 @@ using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Actions;
 
-public class HealPotionItem : BaseItem
+internal class HealPotionItem : BaseItem
 {
     readonly float _percent;
     readonly uint _maxHp;

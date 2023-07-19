@@ -2,7 +2,7 @@
 
 namespace RotationSolver.Basic.Helpers;
 
-public class MarkingHelper
+internal class MarkingHelper
 {
     private unsafe static long GetMarker(uint index) => MarkingController.Instance()->MarkerArray[index];
 

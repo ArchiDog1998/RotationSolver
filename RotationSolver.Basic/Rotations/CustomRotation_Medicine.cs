@@ -5,30 +5,80 @@ namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
 {
     #region Tincture
+    /// <summary>
+    /// The type of medicine.
+    /// </summary>
     public abstract MedicineType MedicineType { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfStrength6 { get; }
         = new MedicineItem(36109, MedicineType.Strength, 196625);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfDexterity6 { get; }
         = new MedicineItem(36110, MedicineType.Dexterity);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfIntelligence6 { get; }
         = new MedicineItem(36112, MedicineType.Intelligence);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfMind6 { get; }
         = new MedicineItem(36113, MedicineType.Mind);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfStrength7 { get; }
         = new MedicineItem(37840, MedicineType.Strength);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfDexterity7 { get; }
         = new MedicineItem(37841, MedicineType.Dexterity);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfIntelligence7 { get; }
         = new MedicineItem(37843, MedicineType.Intelligence);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfMind7 { get; }
         = new MedicineItem(37844, MedicineType.Mind);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfStrength8 { get; }
     = new MedicineItem(39727, MedicineType.Strength);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfDexterity8 { get; }
         = new MedicineItem(39728, MedicineType.Dexterity);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfIntelligence8 { get; }
         = new MedicineItem(39730, MedicineType.Intelligence);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem TinctureOfMind8 { get; }
         = new MedicineItem(39731, MedicineType.Mind);
 
@@ -61,6 +111,12 @@ public abstract partial class CustomRotation
         if (TinctureOfMind6.CanUse(out act)) return true;
         return false;
     }
+
+    /// <summary>
+    /// Use the burst medicines.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     protected bool UseBurstMedicine(out IAction act)
     {
         act = null;
@@ -78,10 +134,13 @@ public abstract partial class CustomRotation
     }
     #endregion
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseItem EchoDrops { get; } = new BaseItem(4566);
 
     #region Heal Potion
-    public static HealPotionItem[] Potions { get; } = Service.GetSheet<Item>()
+    internal static HealPotionItem[] Potions { get; } = Service.GetSheet<Item>()
         .Where(i => i.FilterGroup == 8 && i.ItemSearchCategory.Row == 43)
         .Select(i => new HealPotionItem(i)).ToArray();
 

@@ -94,40 +94,75 @@ public abstract partial class CustomRotation
         return DataCenter.SetAutoStatus(AutoStatus.Raise, false);
     }
 
+    /// <summary>
+    /// The emergency gcd with highest priority.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     protected virtual bool EmergencyGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// Moving forward GCD.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(DescType.MoveForwardGCD)]
     protected virtual bool MoveForwardGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// Heal single GCD.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(DescType.HealSingleGCD)]
     protected virtual bool HealSingleGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// Heal area GCD.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(DescType.HealAreaGCD)]
     protected virtual bool HealAreaGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// Defense single gcd.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(DescType.DefenseSingleGCD)]
     protected virtual bool DefenseSingleGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// Defense area gcd.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     [RotationDesc(DescType.DefenseAreaGCD)]
     protected virtual bool DefenseAreaGCD(out IAction act)
     {
         act = null; return false;
     }
 
+    /// <summary>
+    /// General GCD.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     protected abstract bool GeneralGCD(out IAction act);
 }

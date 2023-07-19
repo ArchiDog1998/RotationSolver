@@ -5,7 +5,9 @@ namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
 {
     Exception _lastException;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public bool TryInvoke(out IAction newAction, out IAction gcdAction)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         newAction = gcdAction = null;
         if (!IsEnabled)
@@ -177,5 +179,10 @@ public abstract partial class CustomRotation
         }
     }
 
+    /// <summary>
+    /// The action in countdown.
+    /// </summary>
+    /// <param name="remainTime"></param>
+    /// <returns></returns>
     protected virtual IAction CountDownAction(float remainTime) => null;
 }

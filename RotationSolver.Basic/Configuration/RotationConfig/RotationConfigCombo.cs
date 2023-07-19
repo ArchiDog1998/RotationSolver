@@ -2,7 +2,7 @@
 
 namespace RotationSolver.Basic.Configuration.RotationConfig;
 
-public class RotationConfigCombo : RotationConfigBase
+internal class RotationConfigCombo : RotationConfigBase
 {
     public string[] Items { get; set; }
     public RotationConfigCombo(string name, int value, string displayName, string[] items) : base(name, value.ToString(), displayName)
