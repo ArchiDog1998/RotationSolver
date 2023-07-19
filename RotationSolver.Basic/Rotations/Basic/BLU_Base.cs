@@ -158,7 +158,7 @@ public abstract class BLU_Base : CustomRotation
                     if (Target.HasStatus(false, NoPhysic) && Type == BLUActionType.Physical) return false;
                     if (Target.HasStatus(false, NoMagic) && Type == BLUActionType.Magical) return false;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     PluginLog.Warning(ex, "Failed for checking target status.");
                 }
@@ -323,7 +323,10 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Eruption { get; } = new BLUAction(ActionID.Eruption);
+    public static IBLUAction Eruption { get; } = new BLUAction(ActionID.Eruption)
+    {
+        AOECount = 1,
+    };
 
     /// <summary>
     /// 
@@ -1044,7 +1047,7 @@ public abstract class BLU_Base : CustomRotation
     {
         return base.CreateConfiguration()
             .SetCombo("BlueId", 2, "Role", "Tank", "Healer", "DPS")
-            .SetCombo("AttackType", 2, "Type", "Magic", "Physic", "Both");
+            .SetCombo("AttackType", 2, "Type", "Both", "Magic", "Physic");
     }
 
     /// <summary>

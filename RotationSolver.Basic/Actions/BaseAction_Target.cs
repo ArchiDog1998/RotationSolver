@@ -500,7 +500,7 @@ public partial class BaseAction
 
         var tarAddress = tar.Struct();
 
-        if (!ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
+        if (!_action.TargetArea && !ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
         var point = Player.Object.Position + Vector3.UnitY * Player.GameObject->Height;
         var tarPt = tar.Position + Vector3.UnitY * tar.Struct()->Height;
