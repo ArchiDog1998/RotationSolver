@@ -35,6 +35,8 @@ public partial class BaseAction
     /// The action's target.
     /// </summary>
     public BattleChara Target { get; private set; } = Player.Object;
+
+    internal bool IsTargetArea => _action.TargetArea;
     
     /// <summary>
     /// The position
@@ -94,7 +96,7 @@ public partial class BaseAction
             target = player;
             return true;
         }
-        else if (_action.TargetArea)
+        else if (IsTargetArea)
         {
             target = player;
             return TargetArea(range, mustUse, aoeCount, player);
@@ -500,7 +502,7 @@ public partial class BaseAction
 
         var tarAddress = tar.Struct();
 
-        if (!_action.TargetArea && !ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
+        if (!IsTargetArea && !ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
         var point = Player.Object.Position + Vector3.UnitY * Player.GameObject->Height;
         var tarPt = tar.Position + Vector3.UnitY * tar.Struct()->Height;

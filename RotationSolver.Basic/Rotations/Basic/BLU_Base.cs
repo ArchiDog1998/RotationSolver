@@ -2,6 +2,7 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
+using static System.Net.WebRequestMethods;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -22,7 +23,7 @@ public interface IBLUAction : IBaseAction
 }
 
 /// <summary>
-/// The base class about blu.
+/// The base class about <see href="https://na.finalfantasyxiv.com/jobguide/bluemage/">Blue Mage</see>.
 /// </summary>
 public abstract class BLU_Base : CustomRotation
 {
@@ -197,7 +198,7 @@ public abstract class BLU_Base : CustomRotation
 
     #region Magical Single
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/Water_Cannon"/>
     /// </summary>
     public static IBLUAction WaterCannon { get; } = new BLUAction(ActionID.WaterCannon);
 
@@ -258,37 +259,37 @@ public abstract class BLU_Base : CustomRotation
 
     #region Magical Area
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/Flame_Thrower"/>
     /// </summary>
     public static IBLUAction FlameThrower { get; } = new BLUAction(ActionID.FlameThrower);
 
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/Aqua_Breath"/>
     /// </summary>
     public static IBLUAction AquaBreath { get; } = new BLUAction(ActionID.AquaBreath, ActionOption.Dot);
 
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/High_Voltage"/>
     /// </summary>
     public static IBLUAction HighVoltage { get; } = new BLUAction(ActionID.HighVoltage);
 
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/Glower"/>
     /// </summary>
     public static IBLUAction Glower { get; } = new BLUAction(ActionID.Glower);
 
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/Plaincracker"/>
     /// </summary>
     public static IBLUAction PlainCracker { get; } = new BLUAction(ActionID.PlainCracker);
 
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/The_Look"/>
     /// </summary>
     public static IBLUAction TheLook { get; } = new BLUAction(ActionID.TheLook);
 
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/The_Ram%27s_Voice"/>
     /// </summary>
     public static IBLUAction TheRamVoice { get; } = new BLUAction(ActionID.TheRamVoice);
 
@@ -525,12 +526,12 @@ public abstract class BLU_Base : CustomRotation
 
     #region Physical Area
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/Flying_Frenzy"/>
     /// </summary>
     public static IBLUAction FlyingFrenzy { get; } = new BLUAction(ActionID.FlyingFrenzy);
 
     /// <summary>
-    /// 
+    /// <see href="https://ffxiv.consolegameswiki.com/wiki/Drill_Cannons"/>
     /// </summary>
     public static IBLUAction DrillCannons { get; } = new BLUAction(ActionID.DrillCannons);
 

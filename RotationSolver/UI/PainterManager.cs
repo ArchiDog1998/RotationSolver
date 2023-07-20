@@ -116,14 +116,14 @@ internal static class PainterManager
 
             if(Service.Config.TargetIconSize > 0)
             {
-                _targetImage.Position = act.Target.Position;
+                _targetImage.Position = act.IsTargetArea ? act.Position : act.Target.Position;
                 _targetImage.SetTexture(act.GetTexture(true), Service.Config.TargetIconSize);
                 subItems.Add(_targetImage);
             }
             else
             {
                 _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
-                _target.Center = act.Target.Position;
+                _target.Center = act.IsTargetArea ? act.Position : act.Target.Position;
                 _target.Radius = targetRadius * ratio;
                 subItems.Add(_target);
             }

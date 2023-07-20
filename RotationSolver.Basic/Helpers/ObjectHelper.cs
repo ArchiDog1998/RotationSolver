@@ -78,21 +78,24 @@ public static class ObjectHelper
 
     internal static bool IsTopPriorityHostile(this GameObject obj)
     {
+        var fateId = DataCenter.FateId;
+        //Fate
+        if (fateId != 0 &&  obj.FateId() == fateId) return true;
+
         var icon = obj.GetNamePlateIcon();
-        //Hunting log and weapon.
-        if (icon
+
+        if(icon
             is 60092 //Hunting
             or 60096 //Weapon
-            or 71204 //Main Quest
+            or 71244 //Leve
+            ) return true;
+        //Hunting log and weapon.
+        if (icon
+            is 71204 //Main Quest
             or 71144 //Major Quest
             or 71224 //Other Quest
-            or 71244 //Leve
             or 71344 //Major Quest
-            ) return true;
-        if (icon == 0) return false;
-        var type = obj.GetEventType();
-
-        if (type is EventHandlerType.Quest) return true;
+           ||  obj.GetEventType() is EventHandlerType.Quest) return true;
 
         return false;
     }
