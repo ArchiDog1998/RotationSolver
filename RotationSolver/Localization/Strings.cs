@@ -248,6 +248,9 @@ internal partial class Strings
     public string ConfigWindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
     public string ConfigWindow_Param_ActionTargetFriendly { get; set; } = "Target all for friendly actions (include passerby)";
     public string ConfigWindow_Param_TargetFriendly { get; set; } = "Target allies for friendly actions.";
+    public string ConfigWindow_Param_TargetFatePriority { get; set; } = "Target Fate priority";
+    public string ConfigWindow_Param_TargetHuntingRelicLevePriority { get; set; } = "Target Hunt/Relic/Leve priority.";
+    public string ConfigWindow_Param_TargetQuestPriority { get; set; } = "Target quest priority.";
 
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";

@@ -549,5 +549,14 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFriendly,
             ref Service.Config.TargetFriendly, Service.Default.TargetFriendly);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFatePriority,
+            ref Service.Config.TargetFatePriority, Service.Default.TargetFatePriority);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
+            ref Service.Config.TargetHuntingRelicLevePriority, Service.Default.TargetHuntingRelicLevePriority);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
+            ref Service.Config.TargetQuestPriority, Service.Default.TargetQuestPriority);
     }
 }

@@ -80,22 +80,25 @@ public static class ObjectHelper
     {
         var fateId = DataCenter.FateId;
         //Fate
-        if (fateId != 0 &&  obj.FateId() == fateId) return true;
+        if (Service.Config.TargetFatePriority &&  fateId != 0 &&  obj.FateId() == fateId) return true;
 
         var icon = obj.GetNamePlateIcon();
 
-        if(icon
+        //Hunting log and weapon.
+
+        if (Service.Config.TargetHuntingRelicLevePriority && icon
             is 60092 //Hunting
             or 60096 //Weapon
             or 71244 //Leve
             ) return true;
-        //Hunting log and weapon.
-        if (icon
+
+
+        if (Service.Config.TargetQuestPriority && (icon
             is 71204 //Main Quest
             or 71144 //Major Quest
             or 71224 //Other Quest
             or 71344 //Major Quest
-           ||  obj.GetEventType() is EventHandlerType.Quest) return true;
+           ||  obj.GetEventType() is EventHandlerType.Quest)) return true;
 
         return false;
     }
@@ -105,7 +108,7 @@ public static class ObjectHelper
     internal static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.Struct()->EventId.Type;
 
     /// <summary>
-    /// The subkind of the target.
+    /// The sub kind of the target.
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>

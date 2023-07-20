@@ -231,6 +231,10 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool AutoLoadCustomRotations = false;
 
+    public bool TargetFatePriority = true;
+    public bool TargetHuntingRelicLevePriority = true;
+    public bool TargetQuestPriority = true;
+
     public void Save()
     {
         Svc.PluginInterface.SavePluginConfig(this);
