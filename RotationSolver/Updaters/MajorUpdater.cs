@@ -175,5 +175,6 @@ internal static class MajorUpdater
         PreviewUpdater.Dispose();
         ActionSequencerUpdater.SaveFiles();
         SocialUpdater.Disable();
+        ActionUpdater.Dispose();
     }
 }

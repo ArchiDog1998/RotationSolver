@@ -22,6 +22,11 @@ internal static class ActionUpdater
     internal static IAction WrongAction { get; set; }
     static Random _wrongRandom = new();
 
+    internal static void Dispose()
+    {
+        SetAction(0);
+    }
+
     internal static void UpdateNextAction()
     {
         PlayerCharacter localPlayer = Player.Object;
@@ -66,10 +71,10 @@ internal static class ActionUpdater
         }
 
         WrongAction = NextAction = NextGCDAction = null;
-        PainterManager.ClearPositional();
     }
 
     private static void SetAction(uint id) => Svc.PluginInterface.GetOrCreateData("Avarice.ActionOverride", () => new List<uint>() { id })[0] = id;
+
     internal unsafe static void UpdateActionInfo()
     {
         SetAction(NextGCDAction?.AdjustedID ?? 0);

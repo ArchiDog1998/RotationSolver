@@ -78,7 +78,6 @@ public partial class BaseAction
         Target = player;
 
         if (!option.HasFlag(CanUseOption.SkipDisable) && !IsEnabled) return false;
-
         
         if (DataCenter.DisabledAction != null && DataCenter.DisabledAction.Contains(ID)) return false;
 
