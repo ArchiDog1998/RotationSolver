@@ -3,7 +3,6 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using ECommons.GameFunctions;
 using RotationSolver.Commands;
 using RotationSolver.UI;
 

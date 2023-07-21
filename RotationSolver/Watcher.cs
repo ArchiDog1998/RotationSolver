@@ -9,6 +9,7 @@ using ECommons.GameHelpers;
 using ECommons.Hooks;
 using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using System.Text.RegularExpressions;
@@ -64,11 +65,27 @@ public static class Watcher
             .Sum(e => (float)e.value / Player.Object.MaxHp);
 
         DataCenter.AddDamageRec(damageRatio);
+
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
 
-        if(set.Header.ActionType == ActionType.Spell && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
+
+        foreach (var effect in set.TargetEffects)
         {
-            var type = set.Action.GetActionType();
+            if (effect.TargetID != Player.Object.ObjectId) continue;
+            if(effect.GetSpecificTypeEffect(ActionEffectType.Knockback, out var entry))
+            {
+                var knock = Svc.Data.GetExcelSheet<Knockback>()?.GetRow(entry.value);
+                if(knock != null)
+                {
+                    DataCenter.KnockbackFinished = DateTime.Now + TimeSpan.FromSeconds(knock.Distance / (float)knock.Speed);
+                }
+                break;
+            }
+        }
+
+        if (set.Header.ActionType == ActionType.Spell && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
+        {
+            var type = set.Action.GetActionCate();
 
             if(type is ActionCate.Spell or ActionCate.WeaponSkill or ActionCate.Ability)
             {

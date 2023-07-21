@@ -360,7 +360,7 @@ internal static class DataCenter
         var id = (ActionID)act.RowId;
 
         //Record
-        switch (act.GetActionType())
+        switch (act.GetActionCate())
         {
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
@@ -412,5 +412,7 @@ internal static class DataCenter
         }
         _damages.Enqueue(new DamageRec(DateTime.Now, damageRatio));
     }
+
+    internal static DateTime KnockbackFinished { get; set; } = DateTime.MinValue;
     #endregion
 }

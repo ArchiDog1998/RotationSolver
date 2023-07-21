@@ -126,7 +126,7 @@ public partial class BaseAction
             }
         }
 
-        if (DataCenter.NoPoslock && DataCenter.IsMoving
+        if (DataCenter.NoPoslock && DataCenter.IsMoving && DateTime.Now > DataCenter.KnockbackFinished
             && !option.HasFlag(CanUseOption.IgnoreCastCheck) && CastTime > 0 
             && !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
 

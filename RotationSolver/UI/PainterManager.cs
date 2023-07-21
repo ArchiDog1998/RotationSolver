@@ -33,7 +33,7 @@ internal static class PainterManager
 
             SubItems = new IDrawing3D[] { _noneCir, _flankCir, _rearCir };
         }
-
+        void SetAction(uint id) => Svc.PluginInterface.GetOrCreateData("Avarice.ActionOverride", () => new List<uint>() { id });
         public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
         {
             if (Target == null || !Target.IsNPCEnemy())
