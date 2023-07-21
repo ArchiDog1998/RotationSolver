@@ -45,9 +45,6 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool ShowInfoOnDtr = true;
 
-    public bool SayPositional = true;
-
-    public bool ToastPositional = true;
     public bool HealOutOfCombat = false;
     public bool ShowInfoOnToast = true;
     public bool RaiseAll = false;

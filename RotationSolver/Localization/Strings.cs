@@ -155,8 +155,6 @@ internal partial class Strings
     public string ConfigWindow_Param_SampleLength { get; set; } = "The sample length of the line.";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
-    public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
-    public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
     public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
@@ -448,13 +446,6 @@ internal partial class Strings
 
     #endregion
 
-    #region EnemyLocation
-    public string EnemyLocation_None { get; set; } = "None";
-    public string EnemyLocation_Rear { get; set; } = "Rear";
-    public string EnemyLocation_Flank { get; set; } = "Flank";
-    public string EnemyLocation_Front { get; set; } = "Front";
-
-    #endregion
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
     {
         #region Rotation

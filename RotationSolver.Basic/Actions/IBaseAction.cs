@@ -32,11 +32,6 @@ public interface IBaseAction : IAction
     internal bool IsEot { get; }
 
     /// <summary>
-    /// Posotional of this action.
-    /// </summary>
-    EnemyPositional EnemyPositional { get; }
-
-    /// <summary>
     /// If player has these statuses from player self, this action will not used.
     /// </summary>
     StatusID[] StatusProvide { get; }
