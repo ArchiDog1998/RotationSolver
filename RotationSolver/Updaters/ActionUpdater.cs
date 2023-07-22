@@ -22,9 +22,10 @@ internal static class ActionUpdater
     internal static IAction WrongAction { get; set; }
     static Random _wrongRandom = new();
 
-    internal static void Dispose()
+    internal static void ClearNextAction()
     {
         SetAction(0);
+        WrongAction = NextAction = NextGCDAction = null;
     }
 
     internal static void UpdateNextAction()

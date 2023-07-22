@@ -34,6 +34,7 @@ internal static class MajorUpdater
         if (!IsValid)
         {
             TargetUpdater.ClearTarget();
+            ActionUpdater.ClearNextAction();
             return;
         }
         if ((int)Svc.ClientState.ClientLanguage == 4 && !_showed)
@@ -175,6 +176,6 @@ internal static class MajorUpdater
         PreviewUpdater.Dispose();
         ActionSequencerUpdater.SaveFiles();
         SocialUpdater.Disable();
-        ActionUpdater.Dispose();
+        ActionUpdater.ClearNextAction();
     }
 }
