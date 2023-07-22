@@ -6,8 +6,6 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Commands;
-using RotationSolver.Localization;
-using RotationSolver.UI;
 
 namespace RotationSolver.Updaters;
 
