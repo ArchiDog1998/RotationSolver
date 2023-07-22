@@ -174,11 +174,6 @@ namespace RotationSolver.Commands
                 {
                     DoStateCommandType(StateCommandType.Manual);
                 }
-                if(DataCenter.StateType == StateCommandType.Manual
-                    && !( Svc.Targets.Target is BattleChara b && b.CurrentHp > 0))
-                {
-                    Svc.Targets.Target = target;
-                }
             }
             //Auto start at count Down.
             else if (Service.Config.StartOnCountdown && Service.CountDownTime > 0)
