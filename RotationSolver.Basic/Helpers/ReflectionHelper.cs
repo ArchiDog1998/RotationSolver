@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Basic.Helpers;
 
-public static class ReflectionHelper
+internal static class ReflectionHelper
 {
     internal static PropertyInfo[] GetStaticProperties<T>(this Type type)
     {
@@ -20,7 +20,7 @@ public static class ReflectionHelper
         return type.GetAllMethodInfo().Where(m => checks(m) && m.ReturnType == typeof(bool) && m.IsStatic).ToArray();
     }
 
-    public static IEnumerable<MethodInfo> GetAllMethodInfo(this Type type)
+    internal static IEnumerable<MethodInfo> GetAllMethodInfo(this Type type)
     {
         if (type == null) return Array.Empty<MethodInfo>();
 
@@ -31,7 +31,7 @@ public static class ReflectionHelper
         return methods.Union(type.BaseType.GetAllMethodInfo());
     }
 
-    public static PropertyInfo GetPropertyInfo(this Type type, string name)
+    internal static PropertyInfo GetPropertyInfo(this Type type, string name)
     {
         if (type == null) return null;
 
@@ -44,7 +44,7 @@ public static class ReflectionHelper
         return type.BaseType.GetPropertyInfo(name);
     }
 
-    public static MethodInfo GetMethodInfo(this Type type, string name)
+    internal static MethodInfo GetMethodInfo(this Type type, string name)
     {
         if (type == null) return null;
 

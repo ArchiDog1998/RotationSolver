@@ -1,12 +1,27 @@
 ﻿namespace RotationSolver.Basic.Attributes;
 
+/// <summary>
+/// The description about the rotation.
+/// </summary>
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 public class RotationDescAttribute : Attribute
 {
+    /// <summary>
+    /// Description.
+    /// </summary>
     public string Description { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// Description type.
+    /// </summary>
     public DescType Type { get; private set; } = DescType.None;
+
+    /// <summary>
+    /// What actions this linked.
+    /// </summary>
     public IEnumerable<ActionID> Actions { get; private set; } = Enumerable.Empty<ActionID>();
-    public uint IconID => Type switch
+
+    internal uint IconID => Type switch
     {
         DescType.BurstActions => 62583,
 
@@ -24,7 +39,7 @@ public class RotationDescAttribute : Attribute
         _ => 62144,
     };
 
-    public bool IsOnCommand
+    internal bool IsOnCommand
     {
         get
         {
@@ -48,11 +63,21 @@ public class RotationDescAttribute : Attribute
     {
         Type = descType;
     }
+
+    /// <summary>
+    /// Constructer
+    /// </summary>
+    /// <param name="actions"></param>
     public RotationDescAttribute(params ActionID[] actions)
         : this(string.Empty, actions)
     {
     }
 
+    /// <summary>
+    /// Constructer
+    /// </summary>
+    /// <param name="desc"></param>
+    /// <param name="actions"></param>
     public RotationDescAttribute(string desc, params ActionID[] actions)
     {
         Description = desc;
@@ -64,14 +89,14 @@ public class RotationDescAttribute : Attribute
 
     }
 
-    public static IEnumerable<RotationDescAttribute[]> Merge(IEnumerable<RotationDescAttribute> rotationDescAttributes)
+    internal static IEnumerable<RotationDescAttribute[]> Merge(IEnumerable<RotationDescAttribute> rotationDescAttributes)
         => from r in rotationDescAttributes
            where r is not null
            group r by r.Type into gr
            orderby gr.Key
            select gr.ToArray();
 
-    public static RotationDescAttribute MergeToOne(IEnumerable<RotationDescAttribute> rotationDescAttributes)
+    internal static RotationDescAttribute MergeToOne(IEnumerable<RotationDescAttribute> rotationDescAttributes)
     {
         var result = new RotationDescAttribute();
         foreach (var attr in rotationDescAttributes)

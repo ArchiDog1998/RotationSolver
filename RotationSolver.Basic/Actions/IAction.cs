@@ -1,12 +1,33 @@
 ﻿namespace RotationSolver.Basic.Actions;
 
+/// <summary>
+/// The action.
+/// </summary>
 public interface IAction : ITexture, IEnouthLevel
 {
+    /// <summary>
+    /// ID of this action.
+    /// </summary>
     uint ID { get; }
+
+    /// <summary>
+    /// The adjusted Id of this action.
+    /// </summary>
     uint AdjustedID { get; }
 
+    /// <summary>
+    /// The animation lock time of this action.
+    /// </summary>
     float AnimationLockTime { get; }
+
+    /// <summary>
+    /// The key of sorting this action.
+    /// </summary>
     uint SortKey { get; }
+
+    /// <summary>
+    /// Can be used in Action sequencer.
+    /// </summary>
     bool IsActionSequencer { get; }
 
     /// <summary>
@@ -26,7 +47,14 @@ public interface IAction : ITexture, IEnouthLevel
     /// </summary>
     bool IsCoolingDown { get; }
 
+    /// <summary>
+    /// Is in the cd window.
+    /// </summary>
     bool IsInCooldown { get; set; }
 
+    /// <summary>
+    /// How to use.
+    /// </summary>
+    /// <returns></returns>
     bool Use();
 }

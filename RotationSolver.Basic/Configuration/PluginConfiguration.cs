@@ -45,9 +45,6 @@ public class PluginConfiguration : IPluginConfiguration
 
     public bool ShowInfoOnDtr = true;
 
-    public bool SayPositional = true;
-
-    public bool ToastPositional = true;
     public bool HealOutOfCombat = false;
     public bool ShowInfoOnToast = true;
     public bool RaiseAll = false;
@@ -230,6 +227,10 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowTooltips = true;
 
     public bool AutoLoadCustomRotations = false;
+
+    public bool TargetFatePriority = true;
+    public bool TargetHuntingRelicLevePriority = true;
+    public bool TargetQuestPriority = true;
 
     public void Save()
     {

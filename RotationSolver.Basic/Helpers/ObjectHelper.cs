@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Logging;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -9,6 +8,9 @@ using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Helpers;
 
+/// <summary>
+/// Get the information from object.
+/// </summary>
 public static class ObjectHelper
 {
     static readonly EventHandlerType[] _eventType = new EventHandlerType[]
@@ -17,18 +19,28 @@ public static class ObjectHelper
         EventHandlerType.Quest,
     };
 
-    public static BNpcBase GetObjectNPC(this GameObject obj)
+    internal static BNpcBase GetObjectNPC(this GameObject obj)
     {
         if (obj == null) return null;
         return Service.GetSheet<BNpcBase>().GetRow(obj.DataId);
     }
 
+    /// <summary>
+    /// Is the target have positional.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static bool HasPositional(this GameObject obj)
     {
         if (obj == null) return false;
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
     }
 
+    /// <summary>
+    /// Is this target belongs to other players.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static unsafe bool IsOthersPlayers(this GameObject obj)
     {
         //SpecialType but no NamePlateIcon
@@ -39,51 +51,73 @@ public static class ObjectHelper
         return false;
     }
 
+    /// <summary>
+    /// Is this target a npc enemy.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static unsafe bool IsNPCEnemy(this GameObject obj)
         => obj != null && obj.GetObjectKind() == ObjectKind.BattleNpc
         && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.Struct());
 
-    //public static unsafe bool IsNPCEnemy(this GameObject obj)
-    //    => obj != null && obj.GetObjectKind() == ObjectKind.BattleNpc
-    //    && obj.IsHostile();
-
+    /// <summary>
+    /// Is alliance (can be heal.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static unsafe bool IsAlliance(this GameObject obj)
         => obj != null && (obj is PlayerCharacter
         || ActionManager.CanUseActionOnTarget((uint)ActionID.Cure, obj.Struct()));
 
+    /// <summary>
+    /// Get the object kind.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static unsafe ObjectKind GetObjectKind(this GameObject obj) => (ObjectKind)obj.Struct()->ObjectKind;
 
-    public static bool IsTopPriorityHostile(this GameObject obj)
+    internal static bool IsTopPriorityHostile(this GameObject obj)
     {
+        var fateId = DataCenter.FateId;
+        //Fate
+        if (Service.Config.TargetFatePriority &&  fateId != 0 &&  obj.FateId() == fateId) return true;
+
         var icon = obj.GetNamePlateIcon();
+
         //Hunting log and weapon.
-        if (icon
+
+        if (Service.Config.TargetHuntingRelicLevePriority && icon
             is 60092 //Hunting
             or 60096 //Weapon
-            or 71204 //Main Quest
+            or 71244 //Leve
+            ) return true;
+
+
+        if (Service.Config.TargetQuestPriority && (icon
+            is 71204 //Main Quest
             or 71144 //Major Quest
             or 71224 //Other Quest
-            or 71244 //Leve
             or 71344 //Major Quest
-            ) return true;
-        if (icon == 0) return false;
-        var type = obj.GetEventType();
-
-        if (type is EventHandlerType.Quest) return true;
+           ||  obj.GetEventType() is EventHandlerType.Quest)) return true;
 
         return false;
     }
 
-    public static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.Struct()->NamePlateIconId;
-    public static unsafe void SetNamePlateIcon(this GameObject obj, uint id) => obj.Struct()->NamePlateIconId = id;
-    public static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.Struct()->EventId.Type;
+    internal static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.Struct()->NamePlateIconId;
+    internal static unsafe void SetNamePlateIcon(this GameObject obj, uint id) => obj.Struct()->NamePlateIconId = id;
+    internal static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.Struct()->EventId.Type;
 
+    /// <summary>
+    /// The sub kind of the target.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static unsafe BattleNpcSubKind GetBattleNPCSubKind(this GameObject obj) => (BattleNpcSubKind)obj.Struct()->SubKind;
 
-    public static unsafe uint FateId(this GameObject obj) => obj.Struct()->FateId;
+    internal static unsafe uint FateId(this GameObject obj) => obj.Struct()->FateId;
 
     static readonly Dictionary<uint, bool> _effectRangeCheck = new();
-    public static bool CanInterrupt(this BattleChara b)
+    internal static bool CanInterrupt(this BattleChara b)
     {
         var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2;
 
@@ -100,7 +134,13 @@ public static class ObjectHelper
         return _effectRangeCheck[id] = true;
     }
 
+    /// <summary>
+    /// Is object a dummy.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
+
     /// <summary>
     /// Is character a boss? Max HP exceeds a certain amount.
     /// </summary>
@@ -138,6 +178,11 @@ public static class ObjectHelper
         return (float)b.CurrentHp / b.MaxHp;
     }
 
+    /// <summary>
+    /// Can use dot on the target.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <returns></returns>
     public static bool CanDot(this BattleChara b)
     {
         if (b == null) return false;
@@ -145,7 +190,7 @@ public static class ObjectHelper
         return b.CurrentHp >= GetHealthFromMulty(Service.Config.HealthRatioDot);
     }
 
-    public static EnemyPositional FindEnemyPositional(this GameObject enemy)
+    internal static EnemyPositional FindEnemyPositional(this GameObject enemy)
     {
         Vector3 pPosition = enemy.Position;
         float rotation = enemy.Rotation;
@@ -161,7 +206,7 @@ public static class ObjectHelper
         return EnemyPositional.Flank;
     }
 
-    public static uint GetHealthFromMulty(float mult)
+    internal static uint GetHealthFromMulty(float mult)
     {
         if (!Player.Available) return 0;
 

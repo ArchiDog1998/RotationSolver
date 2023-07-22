@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace RotationSolver.Basic.Configuration.RotationConfig;
 
-public class RotationConfigSet : IRotationConfigSet
+internal class RotationConfigSet : IRotationConfigSet
 {
     readonly Job _job;
     readonly string _rotationName;

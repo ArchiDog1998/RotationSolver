@@ -289,6 +289,7 @@ public abstract class MNK_Base : CustomRotation
     };
 
     [RotationDesc(ActionID.Thunderclap)]
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
         if (Thunderclap.CanUse(out act)) return true;
@@ -315,4 +316,6 @@ public abstract class MNK_Base : CustomRotation
         if (RiddleOfEarth.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         return base.DefenseSingleAbility(out act);
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
 }

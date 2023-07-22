@@ -155,8 +155,6 @@ internal partial class Strings
     public string ConfigWindow_Param_SampleLength { get; set; } = "The sample length of the line.";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
-    public string ConfigWindow_Param_ToastPositional { get; set; } = "Hint positional anticipation by Toast";
-    public string ConfigWindow_Param_SayPositional { get; set; } = "Hint positional anticipation by shouting";
     public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
     public string ConfigWindow_Param_DrawMeleeRange { get; set; } = "Draw the range of melee on the screen";
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
@@ -248,6 +246,9 @@ internal partial class Strings
     public string ConfigWindow_Param_RaiseAll { get; set; } = "Raise all (include passerby)";
     public string ConfigWindow_Param_ActionTargetFriendly { get; set; } = "Target all for friendly actions (include passerby)";
     public string ConfigWindow_Param_TargetFriendly { get; set; } = "Target allies for friendly actions.";
+    public string ConfigWindow_Param_TargetFatePriority { get; set; } = "Target Fate priority";
+    public string ConfigWindow_Param_TargetHuntingRelicLevePriority { get; set; } = "Target Hunt/Relic/Leve priority.";
+    public string ConfigWindow_Param_TargetQuestPriority { get; set; } = "Target quest priority.";
 
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
@@ -445,13 +446,6 @@ internal partial class Strings
 
     #endregion
 
-    #region EnemyLocation
-    public string EnemyLocation_None { get; set; } = "None";
-    public string EnemyLocation_Rear { get; set; } = "Rear";
-    public string EnemyLocation_Flank { get; set; } = "Flank";
-    public string EnemyLocation_Front { get; set; } = "Front";
-
-    #endregion
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
     {
         #region Rotation

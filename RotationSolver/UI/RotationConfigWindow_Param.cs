@@ -128,9 +128,6 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayOutStateChanged,
             ref Service.Config.SayOutStateChanged, Service.Default.SayOutStateChanged);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayPositional,
-            ref Service.Config.SayPositional, Service.Default.SayPositional);
-
         ImGui.Separator();
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PoslockCasting,
@@ -293,9 +290,6 @@ internal partial class RotationConfigWindow
             ref Service.Config.NamePlateIconId, Service.Default.NamePlateIconId, 5, 0, 150000, otherThing: RSCommands.UpdateStateNamePlate);
 
         ImGui.Spacing();
-
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToastPositional,
-            ref Service.Config.ToastPositional, Service.Default.ToastPositional);
     }
 
     private void DrawParamAction()
@@ -549,5 +543,14 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFriendly,
             ref Service.Config.TargetFriendly, Service.Default.TargetFriendly);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFatePriority,
+            ref Service.Config.TargetFatePriority, Service.Default.TargetFatePriority);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
+            ref Service.Config.TargetHuntingRelicLevePriority, Service.Default.TargetHuntingRelicLevePriority);
+
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
+            ref Service.Config.TargetQuestPriority, Service.Default.TargetQuestPriority);
     }
 }

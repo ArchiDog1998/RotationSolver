@@ -1,11 +1,11 @@
-﻿using Dalamud.Logging;
-using System.IO;
+﻿namespace RotationSolver.Basic.Helpers;
 
-namespace RotationSolver.Basic.Helpers;
-
+/// <summary>
+/// Helper about actions.
+/// </summary>
 public static class IActionHelper
 {
-    public static ActionID[] MovingActions { get; } = new ActionID[]
+    internal static ActionID[] MovingActions { get; } = new ActionID[]
     {
         ActionID.EnAvant,
         ActionID.Plunge,
@@ -49,9 +49,22 @@ public static class IActionHelper
         return IsActionID(DataCenter.LastAction, ids);
     }
 
+    /// <summary>
+    /// Is this action is the same to any one of this.
+    /// </summary>
+    /// <param name="action"></param>
+    /// <param name="isAdjust"></param>
+    /// <param name="actions"></param>
+    /// <returns></returns>
     public static bool IsTheSameTo(this IAction action, bool isAdjust, params IAction[] actions)
         => action.IsTheSameTo(GetIDFromActions(isAdjust, actions));
 
+    /// <summary>
+    /// Is this action is the same to any one of this.
+    /// </summary>
+    /// <param name="action"></param>
+    /// <param name="actions"></param>
+    /// <returns></returns>
     public static bool IsTheSameTo(this IAction action, params ActionID[] actions)
     {
         if (action == null) return false;

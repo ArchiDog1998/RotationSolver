@@ -2,7 +2,7 @@
 
 namespace RotationSolver.Basic.Configuration.RotationConfig;
 
-public abstract class RotationConfigBase : IRotationConfig
+internal abstract class RotationConfigBase : IRotationConfig
 {
     public string Name { get; }
     public string DefaultValue { get; }

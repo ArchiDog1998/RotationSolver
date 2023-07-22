@@ -14,11 +14,17 @@ public abstract partial class CustomRotation
         internal bool InRole(JobRole role) => _roles.Contains(role);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, new JobRole[] { JobRole.RangedMagical }, ActionOption.Defense)
     {
         ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.SwiftCast, new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, ActionOption.Buff)
     {
         StatusProvide = new StatusID[]
@@ -29,6 +35,9 @@ public abstract partial class CustomRotation
         }
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Esuna { get; } = new RoleAction(ActionID.Esuna, new JobRole[] { JobRole.Healer }, ActionOption.Heal)
     {
         ChoiceTarget = (tars, mustUse) =>
@@ -45,24 +54,42 @@ public abstract partial class CustomRotation
         },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Rescue { get; } = new RoleAction(ActionID.Rescue, new JobRole[] { JobRole.Healer }, ActionOption.Heal);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Repose { get; } = new RoleAction(ActionID.Repose, new JobRole[] { JobRole.Healer });
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction LucidDreaming { get; } = new RoleAction(ActionID.LucidDreaming,
         new JobRole[] { JobRole.Healer, JobRole.RangedMagical }, ActionOption.Buff)
     {
         ActionCheck = (b, m) => Player.CurrentMp < 6000 && InCombat,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,
         new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, ActionOption.Heal)
     {
         ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.HealthSingleAbility && InCombat,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction ArmsLength { get; } = new RoleAction(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical }, ActionOption.Defense | ActionOption.EndSpecial);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Rampart { get; } = new RoleAction(ActionID.Rampart, new JobRole[] { JobRole.Tank }, ActionOption.Defense)
     {
         StatusProvide = new StatusID[]
@@ -80,33 +107,54 @@ public abstract partial class CustomRotation
         ActionCheck = BaseAction.TankDefenseSelf,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, new JobRole[] { JobRole.Tank }, ActionOption.ActionSequencer)
     {
         FilterForHostiles = b => TargetFilter.ProvokeTarget(b),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, ActionOption.ActionSequencer);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Shirk { get; } = new RoleAction(ActionID.Shirk, new JobRole[] { JobRole.Tank }, ActionOption.Friendly | ActionOption.ActionSequencer)
     {
         ChoiceTarget = (friends, mustUse) => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Bloodbath { get; } = new RoleAction(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, ActionOption.Heal)
     {
         ActionCheck = (t, m) => SecondWind.ActionCheck(t, m) && HasHostilesInRange,
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Feint { get; } = new RoleAction(ActionID.Feint, new JobRole[] { JobRole.Melee }, ActionOption.Defense)
     {
         ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Feint),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Interject { get; } = new RoleAction(ActionID.Interject, new JobRole[] { JobRole.Tank })
     {
         FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction LowBlow { get; } = new RoleAction(ActionID.LowBlow, new JobRole[] { JobRole.Tank })
     {
         FilterForHostiles = bs => bs.Where(b =>
@@ -118,37 +166,57 @@ public abstract partial class CustomRotation
         }),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction LegSweep { get; } = new RoleAction(ActionID.LegSweep, new JobRole[] { JobRole.Melee })
     {
         FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction HeadGraze { get; } = new RoleAction(ActionID.HeadGraze, new JobRole[] { JobRole.RangedPhysical })
     {
         FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction SureCast { get; } = new RoleAction(ActionID.SureCast,
         new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, ActionOption.Heal);
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction TrueNorth { get; } = new RoleAction(ActionID.TrueNorth,
         new JobRole[] { JobRole.Melee }, ActionOption.Heal)
     {
         StatusProvide = new StatusID[] { StatusID.TrueNorth, StatusID.RightEye },
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Friendly)
     {
         ActionCheck = (b, m) => NotInCombatDelay && PartyMembers.GetObjectInRadius(20)
             .Any(p => p.WillStatusEnd(3, false, StatusID.Peloton) && !p.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.InCombat)),
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction Sprint { get; } = new BaseAction(ActionID.Sprint, ActionOption.Friendly);
 
     private protected virtual IBaseAction Raise => null;
     private protected virtual IBaseAction TankStance => null;
 
     IBaseAction[] _allBaseActions;
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public virtual IBaseAction[] AllBaseActions => _allBaseActions ??= GetBaseActions(GetType()).ToArray();
 
     IAction[] _allActions;
@@ -173,6 +241,7 @@ public abstract partial class CustomRotation
         var types = m.GetParameters();
         return types.Length == 2 && types[0].ParameterType == typeof(uint) && types[1].ParameterType == typeof(uint);
     });
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     private IEnumerable<IBaseAction> GetBaseActions(Type type)
     {

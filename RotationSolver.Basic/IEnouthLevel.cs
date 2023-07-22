@@ -1,5 +1,8 @@
 ﻿namespace RotationSolver.Basic;
 
+/// <summary>
+/// The interface about Enough Level.
+/// </summary>
 public interface IEnouthLevel
 {
     /// <summary>

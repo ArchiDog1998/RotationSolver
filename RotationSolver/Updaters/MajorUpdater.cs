@@ -3,7 +3,6 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using ECommons.GameFunctions;
 using RotationSolver.Commands;
 using RotationSolver.UI;
 
@@ -35,6 +34,7 @@ internal static class MajorUpdater
         if (!IsValid)
         {
             TargetUpdater.ClearTarget();
+            ActionUpdater.ClearNextAction();
             return;
         }
         if ((int)Svc.ClientState.ClientLanguage == 4 && !_showed)
@@ -176,5 +176,6 @@ internal static class MajorUpdater
         PreviewUpdater.Dispose();
         ActionSequencerUpdater.SaveFiles();
         SocialUpdater.Disable();
+        ActionUpdater.ClearNextAction();
     }
 }

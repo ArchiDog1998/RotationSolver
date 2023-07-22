@@ -134,9 +134,9 @@ public partial class BaseAction : IBaseAction
     public unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
 
     /// <summary>
-    /// Action Posotional.
+    /// Action Positional.
     /// </summary>
-    public virtual EnemyPositional EnemyPositional
+    public EnemyPositional EnemyPositional
     {
         get
         {

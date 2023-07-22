@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Statuses;
-using Dalamud.Logging;
 using ECommons.Automation;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
@@ -7,13 +6,22 @@ using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Helpers;
 
+/// <summary>
+/// The helper for the status.
+/// </summary>
 public static class StatusHelper
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static StatusID[] AreaHots { get; } = new StatusID[]
     {
         StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2
     };
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static StatusID[] SingleHots { get; } = new StatusID[]
     {
         StatusID.AspectedBenefic, StatusID.Regen1, StatusID.Regen2, StatusID.Regen3
@@ -26,7 +34,7 @@ public static class StatusHelper
 
     internal static StatusID[] NoNeedHealingStatus { get; } = new StatusID[]
     {
-        StatusID.Holmgang, StatusID.WillDead, StatusID.LivingDead
+        StatusID.Holmgang, StatusID.LivingDead, //StatusID.WalkingDead,
     };
 
     internal record Burst2MinsInfo(StatusID Status, bool IsOnHostile, byte Level, params Job[] Jobs);
@@ -45,6 +53,11 @@ public static class StatusHelper
         new Burst2MinsInfo(StatusID.Mug, true, NIN_Base.Mug.Level, Job.NIN, Job.ROG),
     };
 
+    /// <summary>
+    /// Check whether the target needs to be healing.
+    /// </summary>
+    /// <param name="p"></param>
+    /// <returns></returns>
     public static bool NeedHealing(this BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
     /// <summary>
@@ -97,6 +110,13 @@ public static class StatusHelper
         return obj.GetStatus(isFromSelf, statusIDs).Select(status => status.RemainingTime == 0 ? float.MaxValue : status.RemainingTime);
     }
 
+    /// <summary>
+    /// Get the stack of the status.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="isFromSelf"></param>
+    /// <param name="statusIDs"></param>
+    /// <returns></returns>
     public static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return byte.MaxValue;
@@ -123,6 +143,10 @@ public static class StatusHelper
         return obj.GetStatus(isFromSelf, statusIDs).Any();
     }
 
+    /// <summary>
+    /// Take the status Off.
+    /// </summary>
+    /// <param name="status"></param>
     public static void StatusOff(StatusID status)
     {
         if (!Player.Object?.HasStatus(false, status) ?? true) return;
@@ -149,12 +173,22 @@ public static class StatusHelper
                                               || status.SourceObject?.OwnerId == Player.Object.ObjectId);
     }
 
+    /// <summary>
+    /// Is status Invincibel.
+    /// </summary>
+    /// <param name="status"></param>
+    /// <returns></returns>
     public static bool IsInvincible(this Status status)
     {
         if (status.GameData.Icon == 15024) return true;
         return OtherConfiguration.InvincibleStatus.Any(id => (uint)id == status.StatusId);
     }
 
+    /// <summary>
+    /// Is status needs to be dispel immediately.
+    /// </summary>
+    /// <param name="status"></param>
+    /// <returns></returns>
     public static bool IsDangerous(this Status status)
     {
         if (!status.CanDispel()) return false;
@@ -162,6 +196,11 @@ public static class StatusHelper
         return OtherConfiguration.DangerousStatus.Any(id => id == status.StatusId);
     }
 
+    /// <summary>
+    /// Can the status be dispel.
+    /// </summary>
+    /// <param name="status"></param>
+    /// <returns></returns>
     public static bool CanDispel(this Status status)
     {
         return status.GameData.CanDispel && status.RemainingTime > 1 + DataCenter.WeaponRemain;

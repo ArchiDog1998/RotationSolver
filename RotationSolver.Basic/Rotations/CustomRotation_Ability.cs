@@ -271,7 +271,7 @@ public abstract partial class CustomRotation
 
 
     /// <summary>
-    /// It got the highest prioriy among abilities. 
+    /// It got the highest priority among abilities. 
     /// </summary>
     /// <param name="nextGCD">The next gcd action.</param>
     /// <param name="act">Result action.</param>

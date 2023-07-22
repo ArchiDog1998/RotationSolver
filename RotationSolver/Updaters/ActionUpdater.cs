@@ -6,8 +6,6 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Commands;
-using RotationSolver.Localization;
-using RotationSolver.UI;
 
 namespace RotationSolver.Updaters;
 
@@ -21,6 +19,12 @@ internal static class ActionUpdater
     internal static IBaseAction NextGCDAction { get; set; }
     internal static IAction WrongAction { get; set; }
     static Random _wrongRandom = new();
+
+    internal static void ClearNextAction()
+    {
+        SetAction(0);
+        WrongAction = NextAction = NextGCDAction = null;
+    }
 
     internal static void UpdateNextAction()
     {
@@ -55,34 +59,6 @@ internal static class ActionUpdater
                     if (NextGCDAction != GcdAction)
                     {
                         NextGCDAction = GcdAction;
-
-                        var rightJobAndTarget = (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && GcdAction.Target.IsNPCEnemy();
-
-                        if (rightJobAndTarget && GcdAction.IsSingleTarget)
-                        {
-                            PainterManager.UpdatePositional(GcdAction.EnemyPositional, GcdAction.Target);
-                        }
-                        else
-                        {
-                            PainterManager.ClearPositional();
-                        }
-
-                        if (GcdAction.EnemyPositional != EnemyPositional.None
-                            && GcdAction.Target.HasPositional()
-                            && !localPlayer.HasStatus(true, CustomRotation.TrueNorth.StatusProvide))
-                        {
-
-                            if (CheckAction())
-                            {
-                                string positional = GcdAction.EnemyPositional.ToName();
-                                if (Service.Config.SayPositional) SpeechHelper.Speak(positional);
-                                if (Service.Config.ToastPositional) Svc.Toasts.ShowQuest(" " + positional,
-                                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                                    {
-                                        IconId = GcdAction.IconID,
-                                    });
-                            }
-                        }
                     }
                 }
                 return;
@@ -94,21 +70,13 @@ internal static class ActionUpdater
         }
 
         WrongAction = NextAction = NextGCDAction = null;
-        PainterManager.ClearPositional();
     }
 
-    static DateTime lastTime;
-    static bool CheckAction()
-    {
-        if (DateTime.Now - lastTime > new TimeSpan(0, 0, 3) && DataCenter.StateType != StateCommandType.Cancel)
-        {
-            lastTime = DateTime.Now;
-            return true;
-        }
-        else return false;
-    }
+    private static void SetAction(uint id) => Svc.PluginInterface.GetOrCreateData("Avarice.ActionOverride", () => new List<uint>() { id })[0] = id;
+
     internal unsafe static void UpdateActionInfo()
     {
+        SetAction(NextGCDAction?.AdjustedID ?? 0);
         UpdateWeaponTime();
         UpdateCombatTime();
         UpdateBluSlots();

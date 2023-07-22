@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
 
-public class RotationConfigBoolean : RotationConfigBase
+internal class RotationConfigBoolean : RotationConfigBase
 {
     public RotationConfigBoolean(string name, bool value, string displayName) : base(name, value.ToString(), displayName)
     {

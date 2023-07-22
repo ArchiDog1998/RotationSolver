@@ -2,8 +2,6 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
-using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Helpers;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -42,6 +40,10 @@ public abstract partial class CustomRotation
 
     static RandomDelay _notInCombatDelay = new(() =>
         (Service.Config.NotInCombatDelayMin, Service.Config.NotInCombatDelayMax));
+
+    /// <summary>
+    /// Is out of combat.
+    /// </summary>
     protected static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
 
     /// <summary>
@@ -57,16 +59,49 @@ public abstract partial class CustomRotation
     #endregion
 
     #region Friends
-
+    /// <summary>
+    /// Has the comapnion now.
+    /// </summary>
     protected static bool HasCompanion => DataCenter.HasCompanion;
+
+    /// <summary>
+    /// Party member.
+    /// </summary>
     protected static IEnumerable<BattleChara> PartyMembers => DataCenter.PartyMembers;
+
+    /// <summary>
+    /// Party tanks.
+    /// </summary>
     protected static IEnumerable<BattleChara> PartyTanks => DataCenter.PartyTanks;
+
+    /// <summary>
+    /// Party healers.
+    /// </summary>
     protected static IEnumerable<BattleChara> PartyHealers => DataCenter.PartyHealers;
+
+    /// <summary>
+    /// Alliance members.
+    /// </summary>
     protected static IEnumerable<BattleChara> AllianceMembers => DataCenter.AllianceMembers;
+
+    /// <summary>
+    /// Alliance Tanks.
+    /// </summary>
     protected static IEnumerable<BattleChara> AllianceTanks => DataCenter.AllianceTanks;
+
+    /// <summary>
+    /// Weaken People
+    /// </summary>
     protected static IEnumerable<BattleChara> WeakenPeople => DataCenter.WeakenPeople;
+
+    /// <summary>
+    /// The people is dying.
+    /// </summary>
     protected static IEnumerable<BattleChara> DyingPeople => DataCenter.DyingPeople;
 
+    /// <summary>
+    /// The ratio of members that in burst 2min.
+    /// </summary>
     protected static float RatioOfMembersIn2minsBurst => DataCenter.RatioOfMembersIn2minsBurst;
 
 
@@ -75,8 +110,19 @@ public abstract partial class CustomRotation
     /// </summary>
     protected static bool IsFullParty => PartyMembers.Count() is 8;
 
+    /// <summary>
+    /// party members HP.
+    /// </summary>
     protected static IEnumerable<float> PartyMembersHP => DataCenter.PartyMembersHP;
+
+    /// <summary>
+    /// Min HP in party members.
+    /// </summary>
     protected static float PartyMembersMinHP => DataCenter.PartyMembersMinHP;
+
+    /// <summary>
+    /// Average HP in party members.
+    /// </summary>
     protected static float PartyMembersAverHP => DataCenter.PartyMembersAverHP;
     #endregion
 
@@ -112,6 +158,9 @@ public abstract partial class CustomRotation
     /// </summary>
     protected static int NumberOfHostilesInMaxRange => DataCenter.NumberOfHostilesInMaxRange;
 
+    /// <summary>
+    /// All hostile Targets.
+    /// </summary>
     protected static IEnumerable<BattleChara> HostileTargets => DataCenter.HostileTargets;
 
     #endregion
@@ -125,34 +174,87 @@ public abstract partial class CustomRotation
 
     bool _canUseHealAction => (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer) && Service.Config.GetValue(SettingsCommand.AutoHeal);
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && _canUseHealAction;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && _canUseHealAction;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && _canUseHealAction;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && _canUseHealAction;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static SpecialCommandType SpecialType => DataCenter.SpecialType;
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static StateCommandType StateType => DataCenter.StateType;
     #endregion
 
     #region GCD
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static float WeaponRemain => DataCenter.WeaponRemain;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static float WeaponTotal => DataCenter.WeaponTotal;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static float WeaponElapsed => DataCenter.WeaponElapsed;
     #endregion
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static ClientLanguage Language => Svc.ClientState.ClientLanguage;
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected static TerritoryContentType TerritoryContentType => DataCenter.TerritoryContentType;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static float Ping => DataCenter.Ping;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public static uint AdjustId(uint id) => Service.GetAdjustedActionId(id);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public static ActionID AdjustId(ActionID id) => Service.GetAdjustedActionId(id);
 
     /// <summary>
@@ -237,6 +339,9 @@ public abstract partial class CustomRotation
     /// <returns></returns>
     protected static bool CombatElapsedLess(float time) => CombatTime <= time;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected static float CombatTime => InCombat ? DataCenter.CombatTimeRaw + DataCenter.WeaponRemain : 0;
 
     /// <summary>
@@ -253,11 +358,23 @@ public abstract partial class CustomRotation
     /// <returns></returns>
     protected static bool StopMovingElapsedLess(float time) => StopMovingTime <= time;
 
+    /// <summary>
+    /// The time of stoping moving.
+    /// </summary>
     protected static float StopMovingTime => IsMoving ? 0 : DataCenter.StopMovingRaw + DataCenter.WeaponRemain;
 
+    /// <summary>
+    /// Time from GCD.
+    /// </summary>
+    /// <param name="gcdCount"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     protected static float GCDTime(uint gcdCount = 0, float offset = 0)
         => DataCenter.GCDTime(gcdCount, offset);
 
+    /// <summary>
+    /// All last actions.
+    /// </summary>
     public MethodInfo[] AllLast => GetType().GetStaticBoolMethodInfo(m =>
     {
         var types = m.GetParameters();
@@ -266,19 +383,63 @@ public abstract partial class CustomRotation
             && types[1].ParameterType == typeof(IAction[]);
     });
 
+    /// <summary>
+    /// The number of hostils in range.
+    /// </summary>
+    /// <param name="range"></param>
+    /// <returns></returns>
     protected static int NumberOfHostilesIn(float range)
     => DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= range);
 
     #region Service
+    /// <summary>
+    /// The countDond ahead.
+    /// </summary>
     protected static float CountDownAhead => Service.Config.CountDownAhead;
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected float HealthAreaAbility => Jobs.FirstOrDefault().GetHealthAreaAbility();
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected float HealthAreaSpell => Jobs.FirstOrDefault().GetHealthAreaSpell();
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected float HealthAreaAbilityHot => Jobs.FirstOrDefault().GetHealthAreaAbilityHot();
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected float HealthAreaSpellHot => Jobs.FirstOrDefault().GetHealthAreaSpellHot();
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected float HealthSingleAbility => Jobs.FirstOrDefault().GetHealthSingleAbility();
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected float HealthSingleSpell => Jobs.FirstOrDefault().GetHealthSingleSpell();
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected float HealthSingleAbilityHot => Jobs.FirstOrDefault().GetHealthSingleAbilityHot();
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected float HealthSingleSpellHot => Jobs.FirstOrDefault().GetHealthSingleSpellHot();
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected float HealthForDyingTanksDefault => Jobs.FirstOrDefault().GetHealthForDyingTank();
     #endregion
 }
