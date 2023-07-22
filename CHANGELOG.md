@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.0.13](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.12...v3.0.13) (2023-07-22)
+
+
+### Bug Fixes
+
+* add knockback check. ([8a1b69c](https://github.com/ArchiDog1998/RotationSolver/commit/8a1b69cec831e59cddb021fa97f6f702132522e1))
+* add option for target priority. ([0dda775](https://github.com/ArchiDog1998/RotationSolver/commit/0dda77575cc565856956c66245f2eba70e7d6c11))
+* add reset gcd action in target. ([9638433](https://github.com/ArchiDog1998/RotationSolver/commit/96384332ec848e019f033d0fa3b2d629b78fc1fb))
+* changed the drawing of target area. ([7ceaa37](https://github.com/ArchiDog1998/RotationSolver/commit/7ceaa3763aa7b60b9bb9397468abe88b1d3d34f6))
+* clean code. ([69dd6ea](https://github.com/ArchiDog1998/RotationSolver/commit/69dd6ea4e1bed2b62f22945bfda65dab77c597b8))
+* fixed target area checking. ([2fe3a43](https://github.com/ArchiDog1998/RotationSolver/commit/2fe3a43dbaa9997ad60c327c58f6ce7490753109))
+* make reset more safe. ([bd39943](https://github.com/ArchiDog1998/RotationSolver/commit/bd39943be6a432345972c1fde26178474a509427))
+* removed auto target on `AutoStartattack` feature. ([2f24cd0](https://github.com/ArchiDog1998/RotationSolver/commit/2f24cd088eceecad16fa61d27688a749353e348b))
+* removed the positional feedback and add the link to avarice 2.0.3.2 ([9fef719](https://github.com/ArchiDog1998/RotationSolver/commit/9fef719ef644280eefb5f2c1d2571993745eb38e))
+
 ## [3.0.12](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.11...v3.0.12) (2023-07-18)
 
 
