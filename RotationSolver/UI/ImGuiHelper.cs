@@ -2,6 +2,7 @@
 using Dalamud.Interface.Components;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
+using F23.StringSimilarity;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.Havok;
 using Newtonsoft.Json.Linq;
@@ -377,7 +378,8 @@ internal static class ImGuiHelper
         if (!string.IsNullOrWhiteSpace(searchTxt))
         {
             var src = searchTxt;
-            actions = actions.OrderBy(a => !getName(a).Contains(src)).ToArray();
+            var l = new Levenshtein();
+            actions = actions.OrderBy(a => l.Distance(getName(a), src)).ToArray();
         }
 
         if (ImGui.BeginChild($"##ActionsCandidateList", new Vector2(200, 400), true))
@@ -400,7 +402,7 @@ internal static class ImGuiHelper
                 if (getDesc != null && ImGui.IsItemHovered())
                 {
                     var desc = getDesc(item);
-                    ImGuiHelper.ShowTooltip(desc);
+                    ShowTooltip(desc);
                 }
             }
             ImGui.EndChild();
