@@ -7,10 +7,13 @@ public abstract partial class CustomRotation
     private bool Ability(IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
     {
         act = DataCenter.CommandNextAction;
-        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,  
-            CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return true;
 
-        if(act is IBaseItem i &&  i.CanUse(out _)) return true;
+        BaseAction.SkipDisable = true;
+        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,  
+            CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
+        BaseAction.SkipDisable = false;
+
+        if (act is IBaseItem i &&  i.CanUse(out _)) return true;
 
         if (!Service.Config.GetValue(SettingsCommand.UseAbility) 
             || Player.TotalCastTime > 0)

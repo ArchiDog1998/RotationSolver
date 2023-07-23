@@ -59,6 +59,8 @@ public partial class BaseAction
         }
     }
 
+    internal static bool SkipDisable { get; set; } = false;
+
     /// <summary>
     /// Can this action be used.
     /// </summary>
@@ -77,7 +79,7 @@ public partial class BaseAction
         if (player == null) return false;
         Target = player;
 
-        if (!option.HasFlag(CanUseOption.SkipDisable) && !IsEnabled) return false;
+        if (!SkipDisable && !IsEnabled) return false;
         
         if (DataCenter.DisabledAction != null && DataCenter.DisabledAction.Contains(ID)) return false;
 

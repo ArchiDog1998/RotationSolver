@@ -25,19 +25,14 @@ public enum CanUseOption : byte
     EmptyOrSkipCombo = 1 << 1,
 
     /// <summary>
-    /// Skip the disable for emergency use. Please always set this to false.
-    /// </summary>
-    SkipDisable = 1 << 2,
-
-    /// <summary>
     /// Ignore the target data.
     /// </summary>
-    IgnoreTarget = 1 << 3,
+    IgnoreTarget = 1 << 2,
 
     /// <summary>
     /// Ignore the check of casting an action while moving.
     /// </summary>
-    IgnoreCastCheck = 1 << 4,
+    IgnoreCastCheck = 1 << 3,
 
     /// <summary>
     /// The combination of <see cref="MustUse"/> and <see cref="EmptyOrSkipCombo"/>
@@ -47,10 +42,10 @@ public enum CanUseOption : byte
     /// <summary>
     /// On the last ability in one GCD.
     /// </summary>
-    OnLastAbility = 1 << 5,
+    OnLastAbility = 1 << 4,
 
     /// <summary>
     /// Ignore clipping check for 0GCDs.
     /// </summary>
-    IgnoreClippingCheck = 1 << 6,
+    IgnoreClippingCheck = 1 << 5,
 }

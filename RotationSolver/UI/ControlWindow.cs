@@ -456,7 +456,9 @@ internal class ControlWindow : Window
                 bool canDoIt = false;
                 if(action is IBaseAction act)
                 {
-                    canDoIt = act.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | CanUseOption.SkipDisable | CanUseOption.IgnoreClippingCheck);
+                    BaseAction.SkipDisable = true;
+                    canDoIt = act.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | CanUseOption.IgnoreClippingCheck);
+                    BaseAction.SkipDisable = false;
                 }
                 else if (action is IBaseItem item)
                 {
