@@ -414,5 +414,6 @@ internal static class DataCenter
     }
 
     internal static DateTime KnockbackFinished { get; set; } = DateTime.MinValue;
+    internal static DateTime KnockbackStart { get; set; } = DateTime.MinValue;
     #endregion
 }

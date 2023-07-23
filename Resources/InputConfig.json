@@ -1,12 +1,5 @@
 {
-  "KeyState": {
-    "Cancel": {
-      "Key": 82,
-      "Control": false,
-      "Alt": false,
-      "Shift": false
-    }
-  },
+  "KeyState": {},
   "KeySpecial": {
     "EsunaStanceNorth": {
       "Key": 191,
@@ -24,11 +17,6 @@
     },
     "Manual": {
       "Button": 16,
-      "L2": false,
-      "R2": true
-    },
-    "Cancel": {
-      "Button": 32,
       "L2": false,
       "R2": true
     }
