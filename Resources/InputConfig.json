@@ -19,6 +19,11 @@
       "Button": 16,
       "L2": false,
       "R2": true
+    },
+    "Cancel": {
+      "Button": 32,
+      "L2": false,
+      "R2": true
     }
   },
   "ButtonSpecial": {
