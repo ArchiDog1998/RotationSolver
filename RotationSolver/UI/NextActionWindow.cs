@@ -20,7 +20,7 @@ internal class NextActionWindow : InfoWindow
 
         var strs = new List<string>(3);
         if(Service.Config.GetValue(SettingsCommand.UseAOEAction)
-            && (DataCenter.StateType != StateCommandType.Manual
+            && (!DataCenter.IsManual
             || Service.Config.GetValue(SettingsCommand.UseAOEWhenManual)))
         {
             strs.Add("AOE");

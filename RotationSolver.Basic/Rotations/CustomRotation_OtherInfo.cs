@@ -202,7 +202,18 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static StateCommandType StateType => DataCenter.StateType;
+    [Obsolete("Please use State or IsManual instead!", true)]
+    protected static StateCommandType StateType => StateCommandType.None;
+
+    /// <summary>
+    /// True for On, false for off.
+    /// </summary>
+    protected static bool State => DataCenter.State;
+
+    /// <summary>
+    /// Ture for Manual Target, false for Auto Target.
+    /// </summary>
+    protected static bool IsManual => DataCenter.IsManual;
     #endregion
 
     #region GCD

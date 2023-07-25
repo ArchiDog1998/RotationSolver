@@ -193,7 +193,9 @@ internal static class DataCenter
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
     public static SpecialCommandType SpecialType =>
          SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
-    public static StateCommandType StateType { get; set; } = StateCommandType.Cancel;
+    public static bool State { get; set; } = false;
+    
+    public static bool IsManual { get; set; } = false;
 
     public static void SetSpecialType(SpecialCommandType specialType)
     {

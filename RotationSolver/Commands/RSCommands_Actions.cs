@@ -13,17 +13,16 @@ namespace RotationSolver.Commands
     public static partial class RSCommands
     {
         static DateTime _lastClickTime = DateTime.MinValue;
-        static StateCommandType _lastState;
+        static bool _lastState;
 
         internal static unsafe bool CanDoAnAction(bool isGCD)
         {
-            if (_lastState == StateCommandType.Cancel 
-                || DataCenter.StateType == StateCommandType.Cancel)
+            if (!_lastState || !DataCenter.State)
             {
-                _lastState = DataCenter.StateType;
+                _lastState = DataCenter.State;
                 return false;
             }
-            _lastState = DataCenter.StateType;
+            _lastState = DataCenter.State;
 
             if (!Player.Available) return false;
 
@@ -76,7 +75,7 @@ namespace RotationSolver.Commands
                     //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (act.Target != null && (Service.Config.TargetFriendly && DataCenter.StateType != StateCommandType.Manual || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
+                    if (act.Target != null && (Service.Config.TargetFriendly && !DataCenter.IsManual || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
                         || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
                         && act.Target.IsNPCEnemy()))
                     {
@@ -113,14 +112,14 @@ namespace RotationSolver.Commands
         internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
         private static void CancelState()
         {
-            if (DataCenter.StateType != StateCommandType.Cancel) DoStateCommandType(StateCommandType.Cancel);
+            if (DataCenter.State) DoStateCommandType(StateCommandType.Cancel);
         }
 
         static float _lastCountdownTime = 0;
         internal static void UpdateRotationState()
         {
             if(ActionUpdater._cancelTime != DateTime.MinValue && 
-                (DataCenter.StateType == StateCommandType.Cancel || DataCenter.InCombat))
+                (!DataCenter.State || DataCenter.InCombat))
             {
                 ActionUpdater._cancelTime = DateTime.MinValue;
             }
@@ -158,7 +157,7 @@ namespace RotationSolver.Commands
             else if (Service.Config.StartOnAttackedBySomeone && target != null
                 && !target.IsDummy())
             {
-                if(DataCenter.StateType == StateCommandType.Cancel)
+                if(!DataCenter.State)
                 {
                     DoStateCommandType(StateCommandType.Manual);
                 }
@@ -167,7 +166,7 @@ namespace RotationSolver.Commands
             else if (Service.Config.StartOnCountdown && Service.CountDownTime > 0)
             {
                 _lastCountdownTime = Service.CountDownTime;
-                if (DataCenter.StateType == StateCommandType.Cancel)
+                if (!DataCenter.State)
                 {
                     DoStateCommandType(StateCommandType.Auto);
                 }
