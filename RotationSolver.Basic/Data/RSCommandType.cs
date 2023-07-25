@@ -202,6 +202,11 @@ public enum SettingsCommand : byte
     /// 
     /// </summary>
     AutoSpeedOutOfCombat,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    TargetAllForFriendly,
 }
 
 /// <summary>
@@ -230,6 +235,7 @@ public static class SettingsCommandExtension
         SettingsCommand.PreventActions => false,
         SettingsCommand.PreventActionsDuty => false,
         SettingsCommand.AutoSpeedOutOfCombat => true,
+        SettingsCommand.TargetAllForFriendly => false,
         _ => false,
     };
 }
