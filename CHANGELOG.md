@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.1.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.13...v3.1.0) (2023-07-25)
+
+
+### Features
+
+* removed the restriction of action sequencer. ([c19dd60](https://github.com/ArchiDog1998/RotationSolver/commit/c19dd6016658d34294397b0d3e3727ded9452c10))
+* removed the white list. ([3a7bdd6](https://github.com/ArchiDog1998/RotationSolver/commit/3a7bdd6d0ff502d6e369437e42612d93de918bcd))
+
+
+### Bug Fixes
+
+* change `SkipDisable` to internal. ([28aba55](https://github.com/ArchiDog1998/RotationSolver/commit/28aba557d276735987e159d5b8a445872119514f))
+* fixed nextaction macro. ([2b1e750](https://github.com/ArchiDog1998/RotationSolver/commit/2b1e7500f9fbe2b05c6d1a70c76d997748dbc774))
+* fixed string match. ([8939b24](https://github.com/ArchiDog1998/RotationSolver/commit/8939b247a6d0983b61b48404dad4dc5c55a334b5))
+* fixed the input thread issue. ([a4b6289](https://github.com/ArchiDog1998/RotationSolver/commit/a4b6289ac2065dc7dfbd592265ad26f9f0d0a716))
+* fixed the knockback casting. ([b69f6df](https://github.com/ArchiDog1998/RotationSolver/commit/b69f6df46e6182273bca8392e9fe486e837383d1))
+* macro available for `TargetAllForFriendly` ([cc532b7](https://github.com/ArchiDog1998/RotationSolver/commit/cc532b7e3b7c98e4bef8480af872d415c4898442))
+* split the stateType to state and isManual. ([2acf4fc](https://github.com/ArchiDog1998/RotationSolver/commit/2acf4fcf7a488c6a414583e5153678e00a5b8ebe))
+
 ## [3.0.13](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.12...v3.0.13) (2023-07-22)
 
 
