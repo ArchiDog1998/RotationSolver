@@ -34,11 +34,6 @@ public partial class BaseAction : IBaseAction
     public bool ShouldEndSpecial => _option.HasFlag(ActionOption.EndSpecial);
 
     /// <summary>
-    /// Can be used in the Action Sequencer.
-    /// </summary>
-    public bool IsActionSequencer => _option.HasFlag(ActionOption.ActionSequencer) && IsFriendly;
-
-    /// <summary>
     /// Has a normal gcd action.
     /// </summary>
     public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);

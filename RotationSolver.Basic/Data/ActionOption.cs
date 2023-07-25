@@ -27,19 +27,14 @@ public enum ActionOption : byte
     EndSpecial = 1 << 2,
 
     /// <summary>
-    /// should I put it to the Action Sequencer (Doesn't affect dps much)
-    /// </summary>
-    ActionSequencer = 1 << 3,
-
-    /// <summary>
     /// Is a GCD action.
     /// </summary>
-    GeneralGCD = 1 << 4,
+    GeneralGCD = 1 << 3,
 
     /// <summary>
     /// Is a simple gcd action, without other cooldown.
     /// </summary>
-    RealGCD = 1 << 5,
+    RealGCD = 1 << 4,
 
     /// <summary>
     /// Dot action
@@ -54,7 +49,7 @@ public enum ActionOption : byte
     /// <summary>
     /// Heal action
     /// </summary>
-    Heal = Friendly | ActionSequencer,
+    Heal = Friendly,
 
     /// <summary>
     /// Defense action (you need to change the targeting strategy.

@@ -80,7 +80,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction ShieldBash { get; } = new BaseAction(ActionID.ShieldBash, ActionOption.ActionSequencer)
+    public static IBaseAction ShieldBash { get; } = new BaseAction(ActionID.ShieldBash)
     {
         FilterForHostiles = LowBlow.FilterForHostiles,
         ActionCheck = (b, m) => LowBlow.IsCoolingDown,
