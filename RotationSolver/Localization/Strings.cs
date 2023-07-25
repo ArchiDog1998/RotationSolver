@@ -36,6 +36,8 @@ internal partial class Strings
     public string ConfigWindow_HelpItem_AttackManual { get; set; }
         = "Start the addon in manual mode. You need to choose the target manually. This will bypass any  engage settings that you have set up and will start attacking immediately once something is targeted.";
 
+    public string ConfigWindow_HelpItem_NextAction { get; set; } = "Do the next action";
+
     public string ConfigWindow_HelpItem_AttackCancel { get; set; }
         = "Stop the addon. Always remember to turn it off when not in use!";
 

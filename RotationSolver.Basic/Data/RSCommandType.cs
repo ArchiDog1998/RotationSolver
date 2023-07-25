@@ -121,6 +121,11 @@ public enum OtherCommandType : byte
     /// 
     /// </summary>
     ToggleActions,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    NextAction,
 }
 
 /// <summary>

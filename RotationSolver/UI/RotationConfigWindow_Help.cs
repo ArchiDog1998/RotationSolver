@@ -56,6 +56,8 @@ internal partial class RotationConfigWindow
 
             StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
+            OtherCommandType.NextAction.DisplayCommandHelp(getHelp: i => LocalizationManager.RightLang.ConfigWindow_HelpItem_NextAction);
+
             ImGui.Separator();
 
             SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);

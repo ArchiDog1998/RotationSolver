@@ -28,6 +28,10 @@ namespace RotationSolver.Commands
                 case OtherCommandType.Settings:
                     DoSettingCommand(str);
                     break;
+
+                case OtherCommandType.NextAction:
+                    DoAction();
+                    break;
             }
         }
 

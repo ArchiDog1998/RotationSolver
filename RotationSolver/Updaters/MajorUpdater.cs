@@ -92,8 +92,6 @@ internal static class MajorUpdater
             }
 
             MacroUpdater.UpdateMacro();
-
-            InputUpdater.UpdateCommand();
         }
         catch (Exception ex)
         {
@@ -157,6 +155,8 @@ internal static class MajorUpdater
             ActionUpdater.UpdateNextAction();
 
             RSCommands.UpdateRotationState();
+
+            InputUpdater.UpdateCommand();
         }
         catch (Exception ex)
         {
