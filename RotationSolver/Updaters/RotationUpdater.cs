@@ -424,7 +424,6 @@ internal static class RotationUpdater
         var has = Service.Config.RotationChoices.TryGetValue((uint)group.JobId, out var name);
        
         var rotation = group.Rotations.FirstOrDefault(r => r.GetType().FullName == name);
-        rotation ??= group.Rotations.FirstOrDefault(r => r.IsAllowed(out _));
         rotation ??= group.Rotations.FirstOrDefault();
 
         if (!has && rotation != null)

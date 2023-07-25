@@ -31,7 +31,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public string Name => "Rotation Solver";
 
     public static DalamudLinkPayload OpenLinkPayload { get; private set; }
-    public static DalamudLinkPayload DownloadLinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector, Module.ObjectFunctions);
@@ -76,22 +75,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #endif
         ChangeUITranslation();
 
-        OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
-        {
-            if (id == 0) OpenConfigWindow();
-        });
-        DownloadLinkPayload = pluginInterface.AddChatLinkHandler(1, (id, str) =>
-        {
-            if (id == 1) Task.Run(async () =>
-            {
-                await RotationHelper.LoadListAsync();
-            });
-        });
-
         Task.Run(async () =>
         {
             await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
-            await RotationHelper.LoadListAsync();
         });
     }
 

@@ -294,8 +294,6 @@ internal partial class RotationConfigWindow
                 ImGui.TableNextRow();
 
                 var assembly = grp.Key;
-                var isAllowed = assembly.IsAllowed();
-                if (!isAllowed) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudViolet);
 
                 var info = assembly.GetInfo();
                 ImGui.TableNextColumn();
@@ -402,8 +400,6 @@ internal partial class RotationConfigWindow
                     }
                 }
                 ImGui.PopStyleColor(3);
-
-                if (!isAllowed) ImGui.PopStyleColor();
             }
             ImGui.EndTable();
         }

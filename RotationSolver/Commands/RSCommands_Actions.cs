@@ -41,17 +41,6 @@ namespace RotationSolver.Commands
         internal static uint _lastActionID;
         public static void DoAction()
         {
-            //High End bye.
-            if (DataCenter.InHighEndDuty && !RotationUpdater.RightNowRotation.IsAllowed(out var str))
-            {
-                if ((_loop %= 5) == 0)
-                {
-                    Svc.Toasts.ShowError(string.Format(LocalizationManager.RightLang.HighEndBan, str));
-                }
-                _loop++;
-                return;
-            }
-
             var wrong = new Random().NextDouble() < Service.Config.MistakeRatio && ActionUpdater.WrongAction != null;
             var nextAction = wrong ? ActionUpdater.WrongAction : ActionUpdater.NextAction;
             if (nextAction == null) return;

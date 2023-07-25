@@ -535,14 +535,6 @@ internal static class ImGuiHelper
                 HoveredString(string.Format(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation, 
                     rotation.GetType().Assembly.GetInfo().Author));
             }
-            else if (!rotation.IsAllowed(out _))
-            {
-                var showStr = string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_HighEndWarning, rotation)
-                + string.Join("", SocialUpdater.HighEndDuties.Select(SocialUpdater.GetDutyName)
-                .Where(s => !string.IsNullOrEmpty(s)).Select(t => "\n - " + t));
-
-                HoveredString(showStr);
-            }
             else if (rotation.IsBeta())
             {
                 HoveredString(LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation);
