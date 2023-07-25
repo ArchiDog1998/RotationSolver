@@ -660,14 +660,11 @@ internal static class ImGuiHelper
             Service.Config.Save();
         }
 
-        if (action.IsActionSequencer)
-        {
-            ImGui.SameLine();
-            Spacing();
+        ImGui.SameLine();
+        Spacing();
 
-            OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
-           type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, action, 5), false);
-        }
+        OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
+       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, action, 5), false);
 
         if (Service.Config.InDebug)
         {

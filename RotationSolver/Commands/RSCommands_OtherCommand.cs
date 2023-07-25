@@ -75,8 +75,6 @@ namespace RotationSolver.Commands
                 var actName = strs[0];
                 foreach (var iAct in RotationUpdater.RightRotationActions)
                 {
-                    if (iAct is IBaseAction act && !act.IsActionSequencer) continue;
-
                     if (actName == iAct.Name)
                     {
                         DataCenter.AddCommandAction(iAct, time);

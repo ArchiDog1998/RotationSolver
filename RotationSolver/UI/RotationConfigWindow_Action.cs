@@ -71,7 +71,7 @@ internal partial class RotationConfigWindow
             {
                 conditionSet = set.Conditions[ActiveAction.ID] = new ConditionSet();
             }
-            conditionSet?.Draw(rotation, ActiveAction.IsActionSequencer);
+            conditionSet?.Draw(rotation);
         }
 
         if (ImGui.CollapsingHeader(LocalizationManager.RightLang.ActionSequencer_DisableConditionSet))
@@ -80,7 +80,7 @@ internal partial class RotationConfigWindow
             {
                 disableConditionSet = set.DiableConditions[ActiveAction.ID] = new ConditionSet();
             }
-            disableConditionSet?.Draw(rotation, true);
+            disableConditionSet?.Draw(rotation);
         }
     }
 }

@@ -26,11 +26,6 @@ public interface IAction : ITexture, IEnouthLevel
     uint SortKey { get; }
 
     /// <summary>
-    /// Can be used in Action sequencer.
-    /// </summary>
-    bool IsActionSequencer { get; }
-
-    /// <summary>
     /// Please don't use it.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]

@@ -13,7 +13,6 @@ namespace RotationSolver.Commands
     public static partial class RSCommands
     {
         static DateTime _lastClickTime = DateTime.MinValue;
-        static byte _loop = 0;
         static StateCommandType _lastState;
 
         internal static unsafe bool CanDoAnAction(bool isGCD)

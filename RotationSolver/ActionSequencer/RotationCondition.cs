@@ -31,10 +31,8 @@ internal class RotationCondition : ICondition
         ConditionHelper.CheckMemberInfo(rotation, MethodName, ref _method);
     }
 
-    public bool IsTrue(ICustomRotation rotation, bool isActionSequencer)
+    public bool IsTrue(ICustomRotation rotation)
     {
-        if (!isActionSequencer) return false;
-
         if (!Player.Available) return false;
         UpdateInfo(rotation);
 
@@ -116,18 +114,12 @@ internal class RotationCondition : ICondition
     public float Height => ICondition.DefaultHeight;
 
     string searchTxt = string.Empty;
-    public void Draw(ICustomRotation rotation, bool isActionSequencer)
+    public void Draw(ICustomRotation rotation)
     {
         UpdateInfo(rotation);
 
-        ImGuiHelper.DrawCondition(IsTrue(rotation, isActionSequencer));
+        ImGuiHelper.DrawCondition(IsTrue(rotation));
         ImGui.SameLine();
-
-        if (!isActionSequencer)
-        {
-            ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.ActionSequencer_NotAllowed);
-            return;
-        }
 
         ConditionHelper.DrawByteEnum($"##Category{GetHashCode()}", ref ComboConditionType, EnumTranslations.ToName);
 

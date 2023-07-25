@@ -33,7 +33,7 @@ internal class TargetCondition : ICondition
 
     public string CastingActionName = string.Empty;
 
-    public bool IsTrue(ICustomRotation combo, bool isActionSequencer)
+    public bool IsTrue(ICustomRotation combo)
     {
         if (!Player.Available) return false;
 
@@ -112,7 +112,7 @@ internal class TargetCondition : ICondition
     public float Height => ICondition.DefaultHeight;
 
     string searchTxt = string.Empty;
-    public void Draw(ICustomRotation combo, bool isActionSequencer)
+    public void Draw(ICustomRotation combo)
     {
         ConditionHelper.CheckBaseAction(combo, ID, ref _action);
 
@@ -121,7 +121,7 @@ internal class TargetCondition : ICondition
             Status = AllStatus.FirstOrDefault(a => a.ID == StatusId);
         }
 
-        ImGuiHelper.DrawCondition(IsTrue(combo, isActionSequencer));
+        ImGuiHelper.DrawCondition(IsTrue(combo));
         ImGui.SameLine();
 
         var name = _action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, _action.Name)

@@ -345,7 +345,6 @@ internal partial class Strings
     public string ActionSequencer_Player { get; set; } = "Player";
     public string ActionSequencer_StatusSelf { get; set; } = "StatusSelf";
     public string ActionSequencer_StatusSelfDesc { get; set; } = "StatusSelf";
-    public string ActionSequencer_NotAllowed { get; set; } = "This condition can't be used with this action.";
     #endregion
 
     #region Actions
