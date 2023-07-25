@@ -36,6 +36,8 @@ internal partial class Strings
     public string ConfigWindow_HelpItem_AttackManual { get; set; }
         = "Start the addon in manual mode. You need to choose the target manually. This will bypass any  engage settings that you have set up and will start attacking immediately once something is targeted.";
 
+    public string ConfigWindow_HelpItem_NextAction { get; set; } = "Do the next action";
+
     public string ConfigWindow_HelpItem_AttackCancel { get; set; }
         = "Stop the addon. Always remember to turn it off when not in use!";
 
@@ -74,7 +76,6 @@ internal partial class Strings
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
         = "To end this special duration before the set time.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
-    public string ConfigWindow_Helper_HighEndWarning { get; set; } = "This <{0}> rotation is not allowed to be used in High-end Duty!";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game Version";
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
@@ -90,7 +91,7 @@ internal partial class Strings
     public string ConfigWindow_Events_ShareMacro { get; set; } = "Is Shared";
     public string ConfigWindow_Events_RemoveEvent { get; set; } = "Delete Event";
     public string ConfigWindow_Events_DutyStart { get; set; } = "Duty Start: ";
-    public string ConfigWindow_Events_DutyEnd{ get; set; } = "Duty End: ";
+    public string ConfigWindow_Events_DutyEnd { get; set; } = "Duty End: ";
     public string ConfigWindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
 
     public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display Top Overlay";
@@ -346,7 +347,6 @@ internal partial class Strings
     public string ActionSequencer_Player { get; set; } = "Player";
     public string ActionSequencer_StatusSelf { get; set; } = "StatusSelf";
     public string ActionSequencer_StatusSelfDesc { get; set; } = "StatusSelf";
-    public string ActionSequencer_NotAllowed { get; set; } = "This condition can't be used with this action.";
     #endregion
 
     #region Actions
@@ -615,10 +615,7 @@ internal partial class Strings
     };
 
     public string HighEndWarning { get; set; } = "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!";
-    public string HighEndBan { get; set; } = "{0} can not be used in High-end Duty!";
     public string TextToTalkWarning { get; set; } = "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!";
-
-    public string WhiteListDownloadingFailed { get; set; } = "Failed to load white List. Click to retry.";
 
     public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action ({0})!";
 }

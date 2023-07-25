@@ -236,7 +236,7 @@ public partial class BaseAction
 
         var availableCharas = DataCenter.PartyMembers.Where(player => player.CurrentHp != 0);
 
-        if (Service.Config.ActionTargetFriendly ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
+        if (Service.Config.GetValue(SettingsCommand.TargetAllForFriendly) ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
         {
             availableCharas = availableCharas.Union(DataCenter.AllianceMembers);
         }
@@ -280,7 +280,7 @@ public partial class BaseAction
     #region Target Hostile
     private bool TargetHostile(float range, bool mustUse, int aoeCount, out BattleChara target)
     {
-        if (DataCenter.StateType == StateCommandType.Manual)
+        if (DataCenter.IsManual)
         {
             if (Svc.Targets.Target is BattleChara b && b.IsNPCEnemy() && b.DistanceToPlayer() <= range)
             {
@@ -355,7 +355,7 @@ public partial class BaseAction
             }
 
             //not use when aoe.
-            if (DataCenter.StateType == StateCommandType.Manual)
+            if (DataCenter.IsManual)
             {
                 if (!Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;
             }

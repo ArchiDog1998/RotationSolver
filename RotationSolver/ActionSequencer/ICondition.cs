@@ -3,7 +3,7 @@
 internal interface ICondition
 {
     const float DefaultHeight = 33;
-    bool IsTrue(ICustomRotation rotation, bool isActionSequencer);
-    void Draw(ICustomRotation rotation, bool isActionSequencer);
+    bool IsTrue(ICustomRotation rotation);
+    void Draw(ICustomRotation rotation);
     float Height { get; }
 }

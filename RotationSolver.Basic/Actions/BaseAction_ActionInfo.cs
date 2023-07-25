@@ -59,6 +59,8 @@ public partial class BaseAction
         }
     }
 
+    internal static bool SkipDisable { get; set; } = false;
+
     /// <summary>
     /// Can this action be used.
     /// </summary>
@@ -77,7 +79,7 @@ public partial class BaseAction
         if (player == null) return false;
         Target = player;
 
-        if (!option.HasFlag(CanUseOption.SkipDisable) && !IsEnabled) return false;
+        if (!SkipDisable && !IsEnabled) return false;
         
         if (DataCenter.DisabledAction != null && DataCenter.DisabledAction.Contains(ID)) return false;
 
@@ -125,9 +127,14 @@ public partial class BaseAction
             }
         }
 
-        if (DataCenter.NoPoslock && DataCenter.IsMoving && DateTime.Now > DataCenter.KnockbackFinished
-            && !option.HasFlag(CanUseOption.IgnoreCastCheck) && CastTime > 0 
-            && !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)) return false;
+        //Need casting.
+        if (CastTime > 0 && !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide))
+        {
+            //Is knocking back.
+            if (DateTime.Now > DataCenter.KnockbackStart && DateTime.Now < DataCenter.KnockbackFinished) return false;
+
+            if (DataCenter.NoPoslock && DataCenter.IsMoving && !option.HasFlag(CanUseOption.IgnoreCastCheck)) return false;
+        }
 
         if (IsGeneralGCD && IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)
             && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;

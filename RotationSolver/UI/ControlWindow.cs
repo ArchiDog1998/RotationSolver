@@ -322,7 +322,17 @@ internal class ControlWindow : Window
 
         ImGui.EndGroup();
 
-        if (DataCenter.StateType == command)
+        bool isMatch = false;
+        switch (command)
+        {
+            case StateCommandType.Auto when DataCenter.State && !DataCenter.IsManual:
+            case StateCommandType.Manual when DataCenter.State && DataCenter.IsManual:
+            case StateCommandType.Cancel when !DataCenter.State:
+                isMatch = true; 
+                break;
+        }
+
+        if (isMatch)
         {
             var size = ImGui.GetItemRectSize();
             var winPos = ImGui.GetWindowPos();
@@ -451,12 +461,14 @@ internal class ControlWindow : Window
         var result = DrawIAction(texture.ImGuiHandle, width, action == null ? -1 : percent);
         if (action != null) ImGuiHelper.HoveredString(action.Name, () =>
         {
-            if (DataCenter.StateType == StateCommandType.Cancel)
+            if (!DataCenter.State)
             {
                 bool canDoIt = false;
                 if(action is IBaseAction act)
                 {
-                    canDoIt = act.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | CanUseOption.SkipDisable | CanUseOption.IgnoreClippingCheck);
+                    BaseAction.SkipDisable = true;
+                    canDoIt = act.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | CanUseOption.IgnoreClippingCheck);
+                    BaseAction.SkipDisable = false;
                 }
                 else if (action is IBaseItem item)
                 {

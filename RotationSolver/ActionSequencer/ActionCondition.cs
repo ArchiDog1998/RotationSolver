@@ -18,9 +18,8 @@ internal class ActionCondition : ICondition
     public int Param2;
     public float Time;
 
-    public bool IsTrue(ICustomRotation combo, bool isActionSequencer)
+    public bool IsTrue(ICustomRotation combo)
     {
-        if (!isActionSequencer) return false;
         if (!ConditionHelper.CheckBaseAction(combo, ID, ref _action)) return false;
 
         var result = false;
@@ -77,18 +76,12 @@ internal class ActionCondition : ICondition
 
     string searchTxt = string.Empty;
 
-    public void Draw(ICustomRotation combo, bool isActionSequencer)
+    public void Draw(ICustomRotation combo)
     {
         ConditionHelper.CheckBaseAction(combo, ID, ref _action);
 
-        ImGuiHelper.DrawCondition(IsTrue(combo, isActionSequencer));
+        ImGuiHelper.DrawCondition(IsTrue(combo));
         ImGui.SameLine();
-
-        if (!isActionSequencer)
-        {
-            ImGui.TextColored(ImGuiColors.DPSRed, LocalizationManager.RightLang.ActionSequencer_NotAllowed);
-            return;
-        }
 
         var name = _action?.Name ?? string.Empty;
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));

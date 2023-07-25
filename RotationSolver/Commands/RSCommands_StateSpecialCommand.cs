@@ -23,7 +23,7 @@ public static partial class RSCommands
 
     private static unsafe void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(EnumTranslations.ToSayout, role =>
     {
-        if (DataCenter.StateType == StateCommandType.Auto
+        if (DataCenter.State && !DataCenter.IsManual
             && stateType == StateCommandType.Auto)
         {
             Service.Config.TargetingIndex += 1;
@@ -32,13 +32,28 @@ public static partial class RSCommands
         }
 
         if (Service.Config.ToggleManual 
-            && DataCenter.StateType == StateCommandType.Manual
+            && DataCenter.State && DataCenter.IsManual
             && stateType == StateCommandType.Manual)
         {
             stateType = StateCommandType.Cancel;
         }
 
-        DataCenter.StateType = stateType;
+        switch (stateType)
+        {
+            case StateCommandType.Cancel:
+                DataCenter.State = false;
+                break;
+
+            case StateCommandType.Auto:
+                DataCenter.IsManual = false;
+                DataCenter.State = true;
+                break;
+
+            case StateCommandType.Manual:
+                DataCenter.IsManual = true;
+                DataCenter.State = true;
+                break;
+        }
 
         UpdateStateNamePlate();
 
@@ -52,7 +67,7 @@ public static partial class RSCommands
         if (!Player.Available) return;
 
         Player.Object.SetNamePlateIcon(
-            DataCenter.StateType == StateCommandType.Cancel ? 0u : (uint)Service.Config.NamePlateIconId);
+            !DataCenter.State ? 0u : (uint)Service.Config.NamePlateIconId);
     }
 
     private static void DoSpecialCommandType(SpecialCommandType specialType, bool sayout = true) => DoOneCommandType(sayout ? EnumTranslations.ToSayout : (s, r) => string.Empty, role =>

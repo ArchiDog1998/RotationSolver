@@ -5,15 +5,15 @@ namespace RotationSolver.ActionSequencer;
 
 internal class ConditionSet : ICondition
 {
-    public bool IsTrue(ICustomRotation combo, bool isActionSequencer) => Conditions.Count != 0 && (IsAnd ? Conditions.All(c => c.IsTrue(combo, isActionSequencer))
-                                : Conditions.Any(c => c.IsTrue(combo, isActionSequencer)));
+    public bool IsTrue(ICustomRotation combo) => Conditions.Count != 0 && (IsAnd ? Conditions.All(c => c.IsTrue(combo))
+                                : Conditions.Any(c => c.IsTrue(combo)));
     public List<ICondition> Conditions { get; set; } = new List<ICondition>();
     public bool IsAnd { get; set; }
 
     [JsonIgnore]
     public float Height => Conditions.Sum(c => c is ConditionSet ? c.Height + 10 : c.Height) + ICondition.DefaultHeight + 12;
 
-    public void Draw(ICustomRotation combo, bool isActionSequencer)
+    public void Draw(ICustomRotation combo)
     {
         if (ImGui.BeginChild("ConditionSet" + GetHashCode().ToString(), new Vector2(-1f, Height), true))
         {
@@ -21,7 +21,7 @@ internal class ConditionSet : ICondition
 
             ImGui.SameLine();
 
-            ImGuiHelper.DrawCondition(IsTrue(combo, isActionSequencer));
+            ImGuiHelper.DrawCondition(IsTrue(combo));
 
             ImGui.SameLine();
             ImGui.SetNextItemWidth(65);
@@ -37,7 +37,7 @@ internal class ConditionSet : ICondition
             ImGui.Separator();
 
             var relay = Conditions;
-            if (ImGuiHelper.DrawEditorList(relay, i => i.Draw(combo, isActionSequencer)))
+            if (ImGuiHelper.DrawEditorList(relay, i => i.Draw(combo)))
             {
                 Conditions = relay;
             }

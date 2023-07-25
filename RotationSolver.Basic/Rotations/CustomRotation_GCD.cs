@@ -5,7 +5,10 @@ public abstract partial class CustomRotation
     private IAction GCD(bool helpDefenseAOE, bool helpDefenseSingle)
     {
         IAction act = DataCenter.CommandNextAction;
-        if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, CanUseOption.MustUse | CanUseOption.SkipDisable | CanUseOption.EmptyOrSkipCombo)) return act;
+
+        BaseAction.SkipDisable = true;
+        if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return act;
+        BaseAction.SkipDisable = false;
 
         if (EmergencyGCD(out act)) return act;
 
