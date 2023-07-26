@@ -4,6 +4,3 @@
 [submodule "XIVPainter"]
 	path = XIVPainter
 	url = https://github.com/ArchiDog1998/XIVPainter
-[submodule "OtterGui"]
-	path = OtterGui
-	url = https://github.com/Ottermandias/OtterGui
