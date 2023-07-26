@@ -165,6 +165,7 @@ internal partial class Strings
     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Saying the state changes out";
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
+    public string ConfigWindow_Param_ShowToastsAboutDoAction { get; set; } = "Display do action feedback on toast";
     public string ConfigWindow_Param_NamePlateIconId { get; set; } = "Player's name plate icon id when state is on. Recommend 61435, 61437";
     public string ConfigWindow_Param_Action { get; set; } = "Action";
     public string ConfigWindow_Param_UseAOEAction { get; set; } = "Use AOE actions";

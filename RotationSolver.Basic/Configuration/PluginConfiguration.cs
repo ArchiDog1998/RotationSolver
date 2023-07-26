@@ -231,6 +231,8 @@ public class PluginConfiguration : IPluginConfiguration
     public bool TargetHuntingRelicLevePriority = true;
     public bool TargetQuestPriority = true;
 
+    public bool ShowToastsAboutDoAction = true;
+
     public void Save()
     {
         Svc.PluginInterface.SavePluginConfig(this);

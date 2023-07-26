@@ -23,6 +23,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     private readonly WindowSystem windowSystem;
 
     static RotationConfigWindow _comboConfigWindow;
+    static RotationConfigWindowNew _rotationConfigWindow;
     static ControlWindow _controlWindow;
     static NextActionWindow _nextActionWindow;
     static CooldownWindow _cooldownWindow;
@@ -52,12 +53,14 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         }
 
         _comboConfigWindow = new();
+        _rotationConfigWindow = new();
         _controlWindow = new();
         _nextActionWindow = new();
         _cooldownWindow = new();
 
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(_comboConfigWindow);
+        windowSystem.AddWindow(_rotationConfigWindow);
         windowSystem.AddWindow(_controlWindow);
         windowSystem.AddWindow(_nextActionWindow);
         windowSystem.AddWindow(_cooldownWindow);
@@ -119,6 +122,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void OpenConfigWindow()
     {
         _comboConfigWindow.Toggle();
+    }
+
+    internal static void ToggleConfigWindow()
+    {
+        _rotationConfigWindow.Toggle();
     }
 
     static RandomDelay validDelay = new(() => (0.2f, 0.2f));

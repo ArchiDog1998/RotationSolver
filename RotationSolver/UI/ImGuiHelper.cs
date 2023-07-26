@@ -4,39 +4,17 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using F23.StringSimilarity;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.Havok;
-using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.Updaters;
 using System.ComponentModel;
-using System.Xml.Linq;
 
 namespace RotationSolver.UI;
 
 internal static class ImGuiHelper
 {
-    const ImGuiWindowFlags TOOLTIP_FLAG =
-      ImGuiWindowFlags.Tooltip |
-      ImGuiWindowFlags.NoMove |
-      ImGuiWindowFlags.NoSavedSettings |
-      ImGuiWindowFlags.NoBringToFrontOnFocus |
-      ImGuiWindowFlags.NoDecoration |
-      ImGuiWindowFlags.NoInputs |
-      ImGuiWindowFlags.AlwaysAutoResize;
 
-    public static void DrawTooltip(Action act, string id)
-    {
-        if (act == null) return;
-        ImGui.SetWindowPos(id, ImGui.GetIO().MousePos);
-        if (ImGui.Begin(id, TOOLTIP_FLAG))
-        {
-            act();
-            ImGui.End();
-        }
-    }
     public static void DrawEnableTexture<T>(this T texture, bool isSelected, Action selected,
         Action<T> showToolTip = null, Action<Action<T>> additionalHeader = null,
         Action otherThing = null) where T : class, ITexture
@@ -197,11 +175,11 @@ internal static class ImGuiHelper
         }
     }
 
-    public static void ShowTooltip(string text)
-    {
-        if (!Service.Config.ShowTooltips) return;
-        if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
-    }
+    public static void ShowTooltip(string text) => ImguiTooltips.ShowTooltip(text);
+    //{
+    //    if (!Service.Config.ShowTooltips) return;
+    //    if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
+    //}
 
     //public static bool HoveredStringReset(string text)
     //{
@@ -453,8 +431,7 @@ internal static class ImGuiHelper
         => rotation.DrawEnableTexture(canAddButton, null,
         text =>
         {
-            ImGui.SetNextWindowSizeConstraints(new Vector2(0, 0), new Vector2(1000, 1500));
-            DrawTooltip(() =>
+            ImguiTooltips.ShowTooltip(() =>
             {
                 var t = IconSet.GetTexture(IconSet.GetJobIcon(rotation, IconType.Framed));
                 ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
@@ -493,7 +470,7 @@ internal static class ImGuiHelper
                     }
                     ImGui.Text(ex.StackTrace);
                 }
-            }, "Popup" + text.GetHashCode().ToString());
+            });
         },
         showToolTip =>
         {
@@ -610,7 +587,7 @@ internal static class ImGuiHelper
                     }
                     if (ImGui.IsItemHovered() && (hasTexture || !string.IsNullOrEmpty( texture.Description)))
                     {
-                        DrawTooltip(() =>
+                        ImguiTooltips.ShowTooltip(() =>
                         {
                             if(hasTexture)
                             {
@@ -624,7 +601,7 @@ internal static class ImGuiHelper
                                 ImGui.Text(texture.Description);
                             }
 
-                        }, "PictureDescription" + texture.GetHashCode().ToString());
+                        });
                     }
                 }
             }

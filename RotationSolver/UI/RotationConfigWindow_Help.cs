@@ -6,7 +6,14 @@ internal partial class RotationConfigWindow
 {
     private static void DrawHelpTab()
     {
-        if(ImGuiHelper.IconButton(FontAwesomeIcon.Code, "Github"))
+        if(ImGui.Button("New Config Window (Test)"))
+        {
+            RotationSolverPlugin.ToggleConfigWindow();
+        }
+
+        ImGui.SameLine();
+
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Code, "Github"))
         {
             Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
         }

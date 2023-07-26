@@ -83,11 +83,14 @@ namespace RotationSolver.Commands
                     {
                         DataCenter.AddCommandAction(iAct, time);
 
-                        Svc.Toasts.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
-                            new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                            {
-                                IconId = iAct.IconID,
-                            });
+                        if (Service.Config.ShowToastsAboutDoAction)
+                        {
+                            Svc.Toasts.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
+                                new Dalamud.Game.Gui.Toast.QuestToastOptions()
+                                {
+                                    IconId = iAct.IconID,
+                                });
+                        }
 
                         return;
                     }
