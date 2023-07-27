@@ -2,7 +2,6 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
-using static System.Net.WebRequestMethods;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
