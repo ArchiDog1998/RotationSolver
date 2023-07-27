@@ -17,6 +17,7 @@
   "ConfigWindow_HelpItem_Description": "In this window, you can see all Rotation Solver built-in commands for combat. ",
   "ConfigWindow_HelpItem_AttackAuto": "Start the addon in Auto mode (auto-targeting) when out of combat or when combat starts, otherwise switch the target according to the set condition.",
   "ConfigWindow_HelpItem_AttackManual": "Start the addon in manual mode. You need to choose the target manually. This will bypass any  engage settings that you have set up and will start attacking immediately once something is targeted.",
+  "ConfigWindow_HelpItem_NextAction": "Do the next action",
   "ConfigWindow_HelpItem_AttackCancel": "Stop the addon. Always remember to turn it off when not in use!",
   "ConfigWindow_HelpItem_HealArea": "Open a window to use AoE heal.",
   "ConfigWindow_HelpItem_HealSingle": "Open a window to use single heal.",
@@ -31,7 +32,6 @@
   "ConfigWindow_HelpItem_Speed": "Open a window to speed up.",
   "ConfigWindow_HelpItem_EndSpecial": "To end this special duration before the set time.",
   "ConfigWindow_Helper_SwitchRotation": "Click to switch authors",
-  "ConfigWindow_Helper_HighEndWarning": "This <{0}> rotation is not allowed to be used in High-end Duty!",
   "ConfigWindow_Helper_GameVersion": "Game Version",
   "ConfigWindow_Helper_OpenSource": "Open the source code URL",
   "ConfigWindow_Helper_RunCommand": "Click to execute the command",
@@ -107,6 +107,7 @@
   "ConfigWindow_Param_SayOutStateChanged": "Saying the state changes out",
   "ConfigWindow_Param_ShowInfoOnDtr": "Display plugin state on server info",
   "ConfigWindow_Param_ShowInfoOnToast": "Display plugin state on toast",
+  "ConfigWindow_Param_ShowToastsAboutDoAction": "Display do action feedback on toast",
   "ConfigWindow_Param_NamePlateIconId": "Player's name plate icon id when state is on. Recommend 61435, 61437",
   "ConfigWindow_Param_Action": "Action",
   "ConfigWindow_Param_UseAOEAction": "Use AOE actions",
@@ -250,7 +251,6 @@
   "ActionSequencer_Player": "Player",
   "ActionSequencer_StatusSelf": "StatusSelf",
   "ActionSequencer_StatusSelfDesc": "StatusSelf",
-  "ActionSequencer_NotAllowed": "This condition can't be used with this action.",
   "Action_Friendly": "Support",
   "Action_Ability": "0GCD",
   "Action_Attack": "Attack",
@@ -426,8 +426,6 @@
     "Chakra": "Chakra"
   },
   "HighEndWarning": "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!",
-  "HighEndBan": "{0} can not be used in High-end Duty!",
   "TextToTalkWarning": "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!",
-  "WhiteListDownloadingFailed": "Failed to load white List. Click to retry.",
   "ClickingMistakeMessage": "OOOps! RS clicked the wrong action ({0})!"
 }
