@@ -17,6 +17,7 @@
   "ConfigWindow_HelpItem_Description": "在这个窗口，你可以看到所有插件内置的战斗指令。 ",
   "ConfigWindow_HelpItem_AttackAuto": "Start the addon in Auto mode (auto-targeting) when out of combat or when combat starts, otherwise switch the target according to the set condition.",
   "ConfigWindow_HelpItem_AttackManual": "以手动目标模式启动插件。您需要手动选择目标。 这将绕过您设置的任何触发设置，并且一旦选中目标将立即开始攻击。",
+  "ConfigWindow_HelpItem_NextAction": "Do the next action",
   "ConfigWindow_HelpItem_AttackCancel": "停止插件，不用时一定要记得关闭。",
   "ConfigWindow_HelpItem_HealArea": "开启一个自动使用群体治疗的窗口期。",
   "ConfigWindow_HelpItem_HealSingle": "开启一个自动使用单体治疗的窗口期。",
@@ -31,7 +32,6 @@
   "ConfigWindow_HelpItem_Speed": "开启一个自动使用疾跑的窗口期。",
   "ConfigWindow_HelpItem_EndSpecial": "在设定时间之前结束特殊窗口期。",
   "ConfigWindow_Helper_SwitchRotation": "点击以切换作者",
-  "ConfigWindow_Helper_HighEndWarning": "当前循环 <{0}> 不允许在高难战斗中使用!",
   "ConfigWindow_Helper_GameVersion": "游戏版本",
   "ConfigWindow_Helper_OpenSource": "打开源码网址",
   "ConfigWindow_Helper_RunCommand": "单击左键以执行命令",
@@ -107,6 +107,7 @@
   "ConfigWindow_Param_SayOutStateChanged": "语音说出插件状态改变",
   "ConfigWindow_Param_ShowInfoOnDtr": "在服务器信息上显示插件状态",
   "ConfigWindow_Param_ShowInfoOnToast": "在弹窗上显示插件状态",
+  "ConfigWindow_Param_ShowToastsAboutDoAction": "Display do action feedback on toast",
   "ConfigWindow_Param_NamePlateIconId": "当插件启用时玩家头顶显示的图标ID. 推荐使用 61435, 61437",
   "ConfigWindow_Param_Action": "技能",
   "ConfigWindow_Param_UseAOEAction": "使用AOE技能",
@@ -250,7 +251,6 @@
   "ActionSequencer_Player": "玩家",
   "ActionSequencer_StatusSelf": "该状态是否是自己赋予的",
   "ActionSequencer_StatusSelfDesc": "该状态是否是自己赋予的",
-  "ActionSequencer_NotAllowed": "这个条件在当前动作中不可用",
   "Action_Friendly": "支援技能",
   "Action_Ability": "能力技",
   "Action_Attack": "攻击技能",
@@ -426,8 +426,6 @@
     "Chakra": "斗气数量"
   },
   "HighEndWarning": "当在{0} 时, 请单独绑定减伤/护盾的冷却时间, 以防RS在关键时刻失效!",
-  "HighEndBan": "{0} 循环不可以用于高难战斗！",
   "TextToTalkWarning": "您没有安装 TextToTalk，请安装它让RS为您说些什么！",
-  "WhiteListDownloadingFailed": "加载白名单失败，请点击重试。",
   "ClickingMistakeMessage": "哎呀！RS点击了错误的操作 ({0}) ！"
 }
