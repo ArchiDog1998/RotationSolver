@@ -10,7 +10,6 @@ using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
@@ -77,6 +76,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         LocalizationManager.ExportLocalization();
 #endif
         ChangeUITranslation();
+
+        OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
+        {
+            if (id == 0) OpenConfigWindow();
+        });
 
         Task.Run(async () =>
         {
