@@ -67,9 +67,6 @@ public class RotationConfigWindowNew : Window
 
     private void DrawHeader(float wholeWidth)
     {
-        var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)Player.Object.ClassJob.Id))?.Rotations ?? Array.Empty<ICustomRotation>();
-        var rotation = RotationUpdater.RightNowRotation;
-
         var size = MathF.Max(_scale * MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
         var logo = IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png");
@@ -88,71 +85,76 @@ public class RotationConfigWindowNew : Window
             ImGui.Spacing();
         }
 
-        var iconSize = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH));
-        var comboSize = ImGui.CalcTextSize(rotation.RotationName).X + _scale * 30;
-        size = comboSize + iconSize + ImGui.GetStyle().ItemSpacing.X;
-
-        DrawItemMiddle(() =>
+        var rotation = RotationUpdater.RightNowRotation;
+        if (rotation != null)
         {
-            var rotationIcon = rotation.GetTexture();
-            if (rotationIcon != null && SilenceImageButton(rotationIcon.ImGuiHandle,
-                Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
+            var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? Array.Empty<ICustomRotation>();
+
+            var iconSize = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH));
+            var comboSize = ImGui.CalcTextSize(rotation.RotationName).X + _scale * 30;
+            size = comboSize + iconSize + ImGui.GetStyle().ItemSpacing.X;
+
+            DrawItemMiddle(() =>
             {
-                _activeTab = RotationConfigWindowTab.Rotation;
-            }
-            var desc = rotation.Name + $" ({rotation.RotationName})";
-            if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;
-            ImguiTooltips.HoveredTooltip(desc);
-
-            if (wholeWidth > _scale * JOB_ICON_WIDTH)
-            {
-                ImGui.SameLine();
-
-                ImGui.BeginGroup();
-                ImGui.SetNextItemWidth(comboSize);
-                ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
-                var isStartCombo = ImGui.BeginCombo("##RotationName:" + rotation.Name, rotation.RotationName);
-                ImGui.PopStyleColor();
-
-                if (isStartCombo)
+                var rotationIcon = rotation.GetTexture();
+                if (rotationIcon != null && SilenceImageButton(rotationIcon.ImGuiHandle,
+                    Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
                 {
-                    foreach (var r in rotations)
-                    {
-                        ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
-                        if (ImGui.Selectable(r.RotationName))
-                        {
-                            Service.Config.RotationChoices[rotation.ClassJob.RowId] = r.GetType().FullName;
-                            Service.Config.Save();
-                        }
-                        ImguiTooltips.HoveredTooltip(r.Description);
-                        ImGui.PopStyleColor();
-                    }
-                    ImGui.EndCombo();
+                    _activeTab = RotationConfigWindowTab.Rotation;
                 }
+                var desc = rotation.Name + $" ({rotation.RotationName})";
+                if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;
+                ImguiTooltips.HoveredTooltip(desc);
 
-                var warning = !rotation.IsValid ? string.Format(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation,
-                        rotation.GetType().Assembly.GetInfo().Author)
-                : rotation.IsBeta() ? LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation : string.Empty;
-
-                warning = string.IsNullOrEmpty(warning) ? LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation
-                    : warning + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation;
-                ImguiTooltips.HoveredTooltip(warning);
-
-                var slash = "  - ";
-                ImGui.TextDisabled(slash);
-                ImGui.SameLine();
-
-                var gameVersion = LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ": ";
-                if(ImGui.CalcTextSize(slash + gameVersion + rotation.GameVersion).X + ImGui.GetCursorPosX() - ImGui.GetStyle().ItemSpacing.X < wholeWidth)
+                if (wholeWidth > _scale * JOB_ICON_WIDTH)
                 {
-                    ImGui.TextDisabled(gameVersion);
                     ImGui.SameLine();
-                }
-                ImGui.Text(rotation.GameVersion);
-                ImGui.EndGroup();
-            }
-        }, wholeWidth, size);
 
+                    ImGui.BeginGroup();
+                    ImGui.SetNextItemWidth(comboSize);
+                    ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
+                    var isStartCombo = ImGui.BeginCombo("##RotationName:" + rotation.Name, rotation.RotationName);
+                    ImGui.PopStyleColor();
+
+                    if (isStartCombo)
+                    {
+                        foreach (var r in rotations)
+                        {
+                            ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
+                            if (ImGui.Selectable(r.RotationName))
+                            {
+                                Service.Config.RotationChoices[rotation.ClassJob.RowId] = r.GetType().FullName;
+                                Service.Config.Save();
+                            }
+                            ImguiTooltips.HoveredTooltip(r.Description);
+                            ImGui.PopStyleColor();
+                        }
+                        ImGui.EndCombo();
+                    }
+
+                    var warning = !rotation.IsValid ? string.Format(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation,
+                            rotation.GetType().Assembly.GetInfo().Author)
+                    : rotation.IsBeta() ? LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation : string.Empty;
+
+                    warning = string.IsNullOrEmpty(warning) ? LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation
+                        : warning + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation;
+                    ImguiTooltips.HoveredTooltip(warning);
+
+                    var slash = "  - ";
+                    ImGui.TextDisabled(slash);
+                    ImGui.SameLine();
+
+                    var gameVersion = LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ": ";
+                    if (ImGui.CalcTextSize(slash + gameVersion + rotation.GameVersion).X + ImGui.GetCursorPosX() - ImGui.GetStyle().ItemSpacing.X < wholeWidth)
+                    {
+                        ImGui.TextDisabled(gameVersion);
+                        ImGui.SameLine();
+                    }
+                    ImGui.Text(rotation.GameVersion);
+                    ImGui.EndGroup();
+                }
+            }, wholeWidth, size);
+        }
     }
 
     private unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected)
@@ -183,7 +185,9 @@ public class RotationConfigWindowNew : Window
 
     private void DrawBody()
     {
-        if (ImGui.BeginChild("Rotation Solver Body"))
+        var margin = 8 * _scale;
+        ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * margin);
+        if (ImGui.BeginChild("Rotation Solver Body", Vector2.One * -margin))
         {
             switch (_activeTab)
             {
@@ -197,6 +201,7 @@ public class RotationConfigWindowNew : Window
             }
             ImGui.EndChild();
         }
+        //ImGui.PopStyleVar();
     }
 
     private void DrawAbout()
