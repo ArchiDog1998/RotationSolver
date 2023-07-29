@@ -14,7 +14,7 @@ public class RotationConfigWindowNew : Window
 
     private RotationConfigWindowTab _activeTab;
 
-    private const float MIN_COLUMN_WIDTH = 30;
+    private const float MIN_COLUMN_WIDTH = 24;
     private const float JOB_ICON_WIDTH = 50;
 
     public RotationConfigWindowNew()
@@ -55,9 +55,27 @@ public class RotationConfigWindowNew : Window
             {
                 if (item.GetAttribute<TabSkipAttribute>() != null) continue;
 
-                if(ImGui.Selectable(item.ToString(), _activeTab == item, ImGuiSelectableFlags.None, new Vector2(0, 20)))
+                var icon = IconSet.GetTexture(item.GetAttribute<TabIconAttribute>()?.Icon ?? 0);
+
+                if(icon != null && wholeWidth <= JOB_ICON_WIDTH * _scale)
                 {
-                    _activeTab = item;
+                    var size = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH)) * 0.6f;
+                    DrawItemMiddle(() =>
+                    {
+                        if (SilenceImageButton(icon.ImGuiHandle, Vector2.One * size, _activeTab == item))
+                        {
+                            _activeTab = item;
+                        }
+                    }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), size);
+
+                    ImguiTooltips.HoveredTooltip(item.ToString());
+                }
+                else
+                {
+                    if (ImGui.Selectable(item.ToString(), _activeTab == item, ImGuiSelectableFlags.None, new Vector2(0, 20)))
+                    {
+                        _activeTab = item;
+                    }
                 }
             }
             ImGui.PopStyleVar();
@@ -67,7 +85,7 @@ public class RotationConfigWindowNew : Window
 
     private void DrawHeader(float wholeWidth)
     {
-        var size = MathF.Max(_scale * MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
+        var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
         var logo = IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png");
 
@@ -92,7 +110,12 @@ public class RotationConfigWindowNew : Window
 
             var iconSize = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH));
             var comboSize = ImGui.CalcTextSize(rotation.RotationName).X + _scale * 30;
-            size = comboSize + iconSize + ImGui.GetStyle().ItemSpacing.X;
+
+            const string slash = " - ";
+            var gameVersionSize = ImGui.CalcTextSize(slash + rotation.GameVersion).X + ImGui.GetStyle().ItemSpacing.X;
+            var gameVersion = LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ": ";
+            var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rotation.GameVersion).X + iconSize + ImGui.GetStyle().ItemSpacing.X * 3 < wholeWidth;
+            if(drawCenter) gameVersionSize += ImGui.CalcTextSize(gameVersion).X + ImGui.GetStyle().ItemSpacing.X;
 
             DrawItemMiddle(() =>
             {
@@ -140,12 +163,10 @@ public class RotationConfigWindowNew : Window
                         : warning + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation;
                     ImguiTooltips.HoveredTooltip(warning);
 
-                    var slash = "  - ";
                     ImGui.TextDisabled(slash);
                     ImGui.SameLine();
 
-                    var gameVersion = LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ": ";
-                    if (ImGui.CalcTextSize(slash + gameVersion + rotation.GameVersion).X + ImGui.GetCursorPosX() - ImGui.GetStyle().ItemSpacing.X < wholeWidth)
+                    if (drawCenter)
                     {
                         ImGui.TextDisabled(gameVersion);
                         ImGui.SameLine();
@@ -153,7 +174,7 @@ public class RotationConfigWindowNew : Window
                     ImGui.Text(rotation.GameVersion);
                     ImGui.EndGroup();
                 }
-            }, wholeWidth, size);
+            }, wholeWidth, Math.Max(comboSize, gameVersionSize) + iconSize + ImGui.GetStyle().ItemSpacing.X);
         }
     }
 

@@ -347,12 +347,16 @@ public partial class BaseAction
 
     private bool TargetSelf(bool mustUse, int aoeCount)
     {
-        if (EffectRange > 0 && !IsFriendly)
+        if (EffectRange <= 0) return true;
+
+        if (IsFriendly)
         {
-            if (NoAOE)
-            {
-                return false;
-            }
+            var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.PartyMembers, mustUse), EffectRange);
+            if (tars.Count() < aoeCount) return false;
+        }
+        else
+        {
+            if (NoAOE) return false;
 
             //not use when aoe.
             if (DataCenter.IsManual)
@@ -366,6 +370,7 @@ public partial class BaseAction
             if (Service.Config.NoNewHostiles && TargetFilter.GetObjectInRadius(DataCenter.AllHostileTargets, EffectRange)
                 .Any(t => t.TargetObject == null)) return false;
         }
+
         return true;
     }
 
