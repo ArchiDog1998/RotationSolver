@@ -151,7 +151,7 @@ internal class SocialUpdater
 #if DEBUG
             Svc.Chat.Print("Macro now.");
 #endif
-            Service.Config.DutyStart.AddMacro();
+            //Service.Config.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
             SayHelloToAuthor();
         }

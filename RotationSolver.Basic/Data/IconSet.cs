@@ -75,6 +75,18 @@ public enum IconType : byte
 public static class IconSet
 {
     /// <summary>
+    /// Drat Texture.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="size"></param>
+    public static void DrawTexture(this ITexture text, Vector2 size)
+    {
+        var texture = text.GetTexture();
+        if (texture == null) return;
+        ImGui.Image(texture.ImGuiHandle, size);
+    }
+
+    /// <summary>
     /// Get Texture form texture.
     /// </summary>
     /// <param name="text"></param>
