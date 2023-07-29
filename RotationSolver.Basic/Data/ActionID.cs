@@ -177,21 +177,6 @@ public enum ActionID : uint
     Spire = 4406,
     #endregion
 
-
-    #region VariantActions
-    
-    VariantRaise = 29731,
-
-    VariantCure = 29729,
-
-    VariantSpiritDart = 29732,
-
-    VariantRampart = 29733
-    
-    #endregion
-
-  
-
     #region BlackMage
     /// <summary>
     /// 
@@ -3575,5 +3560,27 @@ public enum ActionID : uint
     /// 
     /// </summary>
     Sprint = 3,
+    #endregion
+
+    #region VariantActions
+    /// <summary>
+    /// 
+    /// </summary>
+    VariantRaise = 29731,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    VariantCure = 29729,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    VariantSpiritDart = 29732,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    VariantRampart = 29733,
     #endregion
 }

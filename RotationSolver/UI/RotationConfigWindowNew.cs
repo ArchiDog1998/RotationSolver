@@ -49,6 +49,7 @@ public class RotationConfigWindowNew : Window
         var size = MathF.Max(_scale * MathF.Min(wholeWidth, _scale * 150), 100);
 
         var logo = IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png");
+        logo = IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/assets/HowAndWhenToClick.svg");
 
 
         if (logo != null)

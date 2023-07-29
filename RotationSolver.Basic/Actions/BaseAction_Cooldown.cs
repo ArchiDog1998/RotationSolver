@@ -58,7 +58,7 @@ public partial class BaseAction
 
     unsafe RecastDetail* CoolDownDetail => ActionManager.Instance()->GetRecastGroupDetail(CoolDownGroup - 1);
 
-    private unsafe float RecastTime => CoolDownDetail->Total;
+    private unsafe float RecastTime => CoolDownDetail == null ? 0 : CoolDownDetail->Total;
 
     /// <summary>
     /// 
@@ -69,12 +69,12 @@ public partial class BaseAction
     /// 
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public unsafe float RecastTimeElapsedRaw => CoolDownDetail->Elapsed;
+    public unsafe float RecastTimeElapsedRaw => CoolDownDetail == null ? 0 : CoolDownDetail->Elapsed;
 
     /// <summary>
     /// 
     /// </summary>
-    public unsafe bool IsCoolingDown => CoolDownDetail->IsActive != 0;
+    public unsafe bool IsCoolingDown => CoolDownDetail == null ? false : CoolDownDetail->IsActive != 0;
 
     private float RecastTimeRemain => RecastTime - RecastTimeElapsedRaw;
 
