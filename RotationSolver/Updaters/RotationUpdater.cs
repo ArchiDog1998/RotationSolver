@@ -362,6 +362,15 @@ internal static class RotationUpdater
                 {
                     string result;
 
+                    if (act.IsDutyAction)
+                    {
+#if DEBUG
+                        return "Duty Action";
+#else
+                        return act.IsDutyActionOnSlot ? "Duty Action" : string.Empty;
+#endif
+                    }
+
                     if (act.IsRealGCD)
                     {
                         result = "GCD";
@@ -396,7 +405,7 @@ internal static class RotationUpdater
                 }
                 return string.Empty;
 
-            }).OrderBy(g => g.Key);
+            }).Where(g => !string.IsNullOrEmpty(g.Key)).OrderBy(g => g.Key);
 
     public static void UpdateRotation()
     {

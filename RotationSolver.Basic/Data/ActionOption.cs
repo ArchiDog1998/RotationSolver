@@ -37,6 +37,11 @@ public enum ActionOption : byte
     RealGCD = 1 << 4,
 
     /// <summary>
+    /// The duty action
+    /// </summary>
+    DutyAction = 1 << 5,
+
+    /// <summary>
     /// Dot action
     /// </summary>
     Dot = Eot,

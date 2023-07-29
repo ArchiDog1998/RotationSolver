@@ -164,8 +164,6 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawIcon()
     {
-        ImGui.Text(ActionManager.GetDutyActionId(0).ToString());
-        ImGui.Text(ActionManager.GetDutyActionId(1).ToString());
         //if(ImGui.BeginTable("BLUAction", 4, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingFixedFit))
         //{
         //    foreach (var item in Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>())

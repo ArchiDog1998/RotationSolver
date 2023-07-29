@@ -45,6 +45,16 @@ public partial class BaseAction : IBaseAction
     public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
 
     /// <summary>
+    /// Is this action a duty action.
+    /// </summary>
+    public bool IsDutyAction => _option.HasFlag(ActionOption.DutyAction);
+
+    /// <summary>
+    /// Is this duty action on the slot.
+    /// </summary>
+    public bool IsDutyActionOnSlot => ActionManager.GetDutyActionId(0) == AdjustedID || ActionManager.GetDutyActionId(1) == AdjustedID;
+
+    /// <summary>
     /// How many gcd left to add the dot.
     /// </summary>
     public Func<uint> GetDotGcdCount { private get; init; }

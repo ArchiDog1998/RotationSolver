@@ -68,6 +68,16 @@ public interface IBaseAction : IAction
     Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; }
 
     /// <summary>
+    /// Is this action a duty action.
+    /// </summary>
+    bool IsDutyAction { get; }
+
+    /// <summary>
+    /// Is this duty action on the slot.
+    /// </summary>
+    bool IsDutyActionOnSlot { get; }
+
+    /// <summary>
     /// Can I use this action at this time. It will check a lot of things.
     /// Level, Enabled, Action Status, MP, Player Status, Coll down, Combo, Moving (for casting), Charges, Target, etc.
     /// </summary>
