@@ -399,6 +399,7 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="range"></param>
     /// <returns></returns>
+    [Obsolete]
     protected static int NumberOfHostilesIn(float range)
     => DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= range);
 

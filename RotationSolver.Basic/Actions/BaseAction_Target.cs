@@ -82,9 +82,9 @@ public partial class BaseAction
             && DataCenter.PartyMembersAverHP > tankHealth + 0.01f;
     }
 
-    private bool FindTarget(bool mustUse, out BattleChara target)
+    private bool FindTarget(bool mustUse, byte aoeCount, out BattleChara target)
     {
-        int aoeCount = mustUse ? 1 : AOECount;
+        aoeCount = Math.Max(aoeCount, mustUse ? (byte)1 : AOECount);
 
         Position = Player.Object.Position;
         var player = Player.Object;
