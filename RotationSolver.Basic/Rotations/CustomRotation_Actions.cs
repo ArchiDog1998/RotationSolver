@@ -43,7 +43,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction VariantSpiritDart {
     get;
-    } = new BaseAction(ActionID.VariantSpiritDart, new JobRole[] {
+    } = new RoleAction(ActionID.VariantSpiritDart, new JobRole[] {
     JobRole.Healer,
     JobRole.Tank
     },
