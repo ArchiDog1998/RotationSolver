@@ -234,14 +234,8 @@ public abstract partial class CustomRotation
     private bool MovingAbility(SpecialCommandType specialType, out IAction act)
     {
         act = null;
-        if (specialType == SpecialCommandType.MoveForward && MoveForwardAbility(out act))
-        {
-            if (act is BaseAction b && (b.Target == Player || ObjectHelper.DistanceToPlayer(b.Target) > 5)) return true;
-        }
-        else if (specialType == SpecialCommandType.MoveBack)
-        {
-            if (MoveBackAbility(out act)) return true;
-        }
+        if (specialType == SpecialCommandType.MoveForward && MoveForwardAbility(out act)) return true;
+        else if (specialType == SpecialCommandType.MoveBack && MoveBackAbility(out act)) return true;
         return false;
     }
 

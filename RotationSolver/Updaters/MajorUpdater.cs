@@ -35,6 +35,8 @@ internal static class MajorUpdater
         {
             TargetUpdater.ClearTarget();
             ActionUpdater.ClearNextAction();
+            CustomRotation.MoveTarget = null;
+
             return;
         }
         if ((int)Svc.ClientState.ClientLanguage == 4 && !_showed)
@@ -44,7 +46,6 @@ internal static class MajorUpdater
             Svc.Toasts.ShowError(warning);
             Svc.Chat.PrintError(warning);
         }
-
 
 #if DEBUG
         //Get changed condition.

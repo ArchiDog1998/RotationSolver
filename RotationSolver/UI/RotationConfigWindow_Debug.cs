@@ -1,6 +1,7 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
@@ -163,63 +164,64 @@ internal partial class RotationConfigWindow
 
     private unsafe void DrawIcon()
     {
-        if(ImGui.BeginTable("BLUAction", 4, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingFixedFit))
-        {
-            foreach (var item in Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>())
-            {
-                if (item == null) continue;
-                if (item.ClassJob?.Row != 36) continue;
-                //if (item.RowId <= 20000) continue;
+        //ImGui.Text( ActionManager.Instance()->GetActionStatus(ActionType.Spell, 29733).ToString());
+        //if(ImGui.BeginTable("BLUAction", 4, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingFixedFit))
+        //{
+        //    foreach (var item in Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>())
+        //    {
+        //        if (item == null) continue;
+        //        if (item.ClassJob?.Row != 36) continue;
+        //        //if (item.RowId <= 20000) continue;
 
-                ImGui.TableNextRow();
-                ImGui.TableNextColumn();
+        //        ImGui.TableNextRow();
+        //        ImGui.TableNextColumn();
 
-                ImGui.Text($"{item.Name}");
+        //        ImGui.Text($"{item.Name}");
 
-                ImGui.TableNextColumn();
+        //        ImGui.TableNextColumn();
 
-                try
-                {
-                    var tex = IconSet.GetTexture(item.Icon);
-                    if (tex != null)
-                    {
-                        ImGui.Image(tex.ImGuiHandle, Vector2.One * 32);
-                    }
-                }
-                catch
-                {
+        //        try
+        //        {
+        //            var tex = IconSet.GetTexture(item.Icon);
+        //            if (tex != null)
+        //            {
+        //                ImGui.Image(tex.ImGuiHandle, Vector2.One * 32);
+        //            }
+        //        }
+        //        catch
+        //        {
 
-                }
-                ImGui.TableNextColumn();
+        //        }
+        //        ImGui.TableNextColumn();
 
-                try
-                {
-                    ImGui.Text($"{(Aspect)item.Aspect}");
-                    ImGui.SameLine();
-                    var desc = item.AttackType?.Value?.Name?.ToString();
-                    if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
-                }
-                catch
-                {
+        //        try
+        //        {
+        //            ImGui.Text($"{(Aspect)item.Aspect}");
+        //            ImGui.SameLine();
+        //            var desc = item.AttackType?.Value?.Name?.ToString();
+        //            if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
+        //        }
+        //        catch
+        //        {
 
-                }
-                ImGui.TableNextColumn();
+        //        }
+        //        ImGui.TableNextColumn();
 
-                //ImGui.TableNextColumn();
+        //        //ImGui.TableNextColumn();
 
-                //try
-                //{
-                //    var desc = Svc.Data.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description?.ToString();
-                //    //ImGui.Text((!string.IsNullOrEmpty(desc)).ToString());
-                //    //if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
-                //}
-                //catch
-                //{
+        //        //try
+        //        //{
+        //        //    var desc = Svc.Data.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description?.ToString();
+        //        //    //ImGui.Text((!string.IsNullOrEmpty(desc)).ToString());
+        //        //    //if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
+        //        //}
+        //        //catch
+        //        //{
 
-                //}
-            }
-            ImGui.EndTable();
-        }
+        //        //}
+        //    }
+        //    ImGui.EndTable();
+        //}
 
     }
 

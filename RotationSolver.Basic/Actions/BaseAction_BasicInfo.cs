@@ -16,6 +16,7 @@ public partial class BaseAction : IBaseAction
     /// The action itself.
     /// </summary>
     protected readonly Action _action;
+
     readonly ActionOption _option;
 
     /// <summary>
