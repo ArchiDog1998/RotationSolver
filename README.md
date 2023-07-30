@@ -23,12 +23,6 @@ Then, it will highlight the best action on the hot bar, or help you to click on 
 
 It is designed for `general combat`, not for savage or ultimate. Use it carefully.
 
-## Concept
-
-I have to admit, I'm not a good RPG player. But I enjoy the experience of FFXIV. So I want to design a plugin that can improve my gaming experience without affecting other players' gaming experience. So there goes to `Rotation Solver`. 
-
-I have to admit, it does have an automatic component, which might not be good for some players. But it can NOT affect any other player's game experience. pvp is absolutely NOT allowed in this plugin.
-
 ## Compatibility
 
 literally, `Rotation Solver` helps you to choose the target and then click the action. So any plugin that changes these will affect its decision. 
