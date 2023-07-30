@@ -48,7 +48,9 @@ public class RotationConfigWindowNew : Window
 
             DrawHeader(wholeWidth);
 
+            ImGui.Spacing();
             ImGui.Separator();
+            ImGui.Spacing();
 
             ImGui.PushStyleVar(ImGuiStyleVar.SelectableTextAlign, new Vector2(0.5f, 0.5f));
             foreach (var item in Enum.GetValues<RotationConfigWindowTab>())

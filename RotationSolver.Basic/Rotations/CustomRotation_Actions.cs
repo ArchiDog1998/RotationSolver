@@ -209,7 +209,10 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Sprint { get; } = new BaseAction(ActionID.Sprint, ActionOption.Friendly);
+    public static IBaseAction Sprint { get; } = new BaseAction(ActionID.Sprint, ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] {StatusID.DualCast},
+    };
 
     private protected virtual IBaseAction Raise => null;
     private protected virtual IBaseAction TankStance => null;

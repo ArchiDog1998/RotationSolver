@@ -364,11 +364,7 @@ internal static class RotationUpdater
 
                     if (act.IsDutyAction)
                     {
-#if DEBUG
-                        return "Duty Action";
-#else
                         return act.IsDutyActionOnSlot ? "Duty Action" : string.Empty;
-#endif
                     }
 
                     if (act.IsRealGCD)
