@@ -32,7 +32,7 @@
   "ConfigWindow_HelpItem_Speed": "开启一个自动使用疾跑的窗口期。",
   "ConfigWindow_HelpItem_EndSpecial": "在设定时间之前结束特殊窗口期。",
   "ConfigWindow_Helper_SwitchRotation": "点击以切换作者",
-  "ConfigWindow_Helper_GameVersion": "游戏版本",
+  "ConfigWindow_Helper_GameVersion": "Game",
   "ConfigWindow_Helper_OpenSource": "打开源码网址",
   "ConfigWindow_Helper_RunCommand": "单击左键以执行命令",
   "ConfigWindow_Helper_CopyCommand": "单击右键以复制这条命令",
