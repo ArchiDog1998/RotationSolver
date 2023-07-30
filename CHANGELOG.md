@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.1.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.0...v3.1.1) (2023-07-30)
+
+
+### Bug Fixes
+
+* add aoeCount to CanUse method. ([16eebc5](https://github.com/ArchiDog1998/RotationSolver/commit/16eebc57d2fc88844dfac502415595c1547d56cf))
+* add config for show toast about do ation. add an test window. ([38de866](https://github.com/ArchiDog1998/RotationSolver/commit/38de866e22b41a9444dad89b8a819fe75b990f41))
+* add duty action. ([47d35f6](https://github.com/ArchiDog1998/RotationSolver/commit/47d35f6f824901f7c0ea4bf73ea98e67a120b667))
+* add friend target self aoe count checking. ([9a13c43](https://github.com/ArchiDog1998/RotationSolver/commit/9a13c43aa7268512a068e6c7cb5ddffc76f7ab7a))
+* add kirbo rotation! ([4f10e3e](https://github.com/ArchiDog1998/RotationSolver/commit/4f10e3e533d8644236e6920ea5a2b6c8b98ffdd3))
+* fix the move target drwaing bug. ([1d0a965](https://github.com/ArchiDog1998/RotationSolver/commit/1d0a965f29a9c9d87fcf703e8a13c945d9f01d68))
+* fixed dnc moving drawing. ([608480c](https://github.com/ArchiDog1998/RotationSolver/commit/608480c0b26df4c36d6e0228f82b3140ca89459c))
+* fixed icon. ([9e8564f](https://github.com/ArchiDog1998/RotationSolver/commit/9e8564fe2e30352d4f19c7e79f563b9acbab2c26))
+* fixed input to main. ([7d7f758](https://github.com/ArchiDog1998/RotationSolver/commit/7d7f75824c243f165731b35bb259294685a5f273))
+* fixed move ability can't be used issue. ([7a93be0](https://github.com/ArchiDog1998/RotationSolver/commit/7a93be0fa689b4c23a01235f4348c7bc7eb4be7b))
+* fixed social update. ([80f2af4](https://github.com/ArchiDog1998/RotationSolver/commit/80f2af4ebb77fbe9495f53b32633e19c5ad3ba45))
+* fixed the case of no gcd. ([4fa7f26](https://github.com/ArchiDog1998/RotationSolver/commit/4fa7f2686e9e7958e6af09720e839b363cdffe6e))
+* remove ottergui. ([a6305b4](https://github.com/ArchiDog1998/RotationSolver/commit/a6305b429f739235090b7f6f96ffc98211fd6575))
+* simplify code. ([926381c](https://github.com/ArchiDog1998/RotationSolver/commit/926381c7844d8fc2459d4da8b5345d21e3660a8e))
+* ui new ui header. ([6958894](https://github.com/ArchiDog1998/RotationSolver/commit/6958894c63cd57bde260c9b69da4ec3efcb9a03a))
+
 ## [3.1.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.0.13...v3.1.0) (2023-07-25)
 
 
