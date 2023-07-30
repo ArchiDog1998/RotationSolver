@@ -32,7 +32,7 @@
   "ConfigWindow_HelpItem_Speed": "Open a window to speed up.",
   "ConfigWindow_HelpItem_EndSpecial": "To end this special duration before the set time.",
   "ConfigWindow_Helper_SwitchRotation": "Clic para cambiar autores",
-  "ConfigWindow_Helper_GameVersion": "Versión del Juego",
+  "ConfigWindow_Helper_GameVersion": "Game",
   "ConfigWindow_Helper_OpenSource": "Abrir la URL del código fuente",
   "ConfigWindow_Helper_RunCommand": "Haga clic para ejecutar el comando",
   "ConfigWindow_Helper_CopyCommand": "Right-click to copy the command",
