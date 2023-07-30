@@ -68,14 +68,25 @@ public interface IBaseAction : IAction
     Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; }
 
     /// <summary>
+    /// Is this action a duty action.
+    /// </summary>
+    bool IsDutyAction { get; }
+
+    /// <summary>
+    /// Is this duty action on the slot.
+    /// </summary>
+    bool IsDutyActionOnSlot { get; }
+
+    /// <summary>
     /// Can I use this action at this time. It will check a lot of things.
     /// Level, Enabled, Action Status, MP, Player Status, Coll down, Combo, Moving (for casting), Charges, Target, etc.
     /// </summary>
     /// <param name="act"></param>
     /// <param name="option">Options about using this method.</param>
+    /// <param name="aoeCount">How many targets do you want this skill to affect</param>
     /// <param name="gcdCountForAbility">The count of gcd for ability to delay. Only used in BLM right now</param>
     /// <returns>Should I use.</returns>
-    bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0);
+    bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0);
 
     #region CoolDown
     /// <summary>

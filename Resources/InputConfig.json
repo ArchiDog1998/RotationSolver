@@ -51,8 +51,8 @@
       "R2": false
     },
     "DefenseSingle": {
-      "Button": 128,
-      "L2": true,
+      "Button": 256,
+      "L2": false,
       "R2": false
     },
     "HealArea": {
@@ -76,5 +76,9 @@
       "R2": false
     }
   },
-  "ButtonDoAction": null
+  "ButtonDoAction": {
+    "Button": 1,
+    "L2": false,
+    "R2": true
+  }
 }

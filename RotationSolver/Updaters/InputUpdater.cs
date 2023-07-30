@@ -130,7 +130,7 @@ internal static class InputUpdater
         }
         else if(OtherConfiguration.InputConfig.KeyDoAction == key)
         {
-            Svc.Commands.ProcessCommand(OtherCommandType.NextAction.GetCommandStr());
+            RSCommands.DoAction();
         }
     }
 

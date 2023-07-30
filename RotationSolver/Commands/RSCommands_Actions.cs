@@ -109,7 +109,10 @@ namespace RotationSolver.Commands
             started = false;
         }
 
-        internal static void ResetSpecial() => DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
+        internal static void ResetSpecial()
+        {
+            DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
+        }
         private static void CancelState()
         {
             if (DataCenter.State) DoStateCommandType(StateCommandType.Cancel);

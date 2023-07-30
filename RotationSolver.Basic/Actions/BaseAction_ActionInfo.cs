@@ -66,9 +66,10 @@ public partial class BaseAction
     /// </summary>
     /// <param name="act"></param>
     /// <param name="option"></param>
+    /// <param name="aoeCount"></param>
     /// <param name="gcdCountForAbility"></param>
     /// <returns></returns>
-    public unsafe virtual bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
+    public unsafe virtual bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)
     {
         option |= OtherOption;
 
@@ -139,7 +140,7 @@ public partial class BaseAction
         if (IsGeneralGCD && IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)
             && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;
 
-        if (!FindTarget(mustUse, out var target) || target == null) return false;
+        if (!FindTarget(mustUse, aoeCount, out var target) || target == null) return false;
 
         if (ActionCheck != null && !ActionCheck(target, mustUse)) return false;
 

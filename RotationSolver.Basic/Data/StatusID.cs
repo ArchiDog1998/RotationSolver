@@ -13,6 +13,11 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
+    VariantSpiritDart = 3359,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Thunder = 161,
 
     /// <summary>

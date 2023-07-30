@@ -16,6 +16,7 @@ public partial class BaseAction : IBaseAction
     /// The action itself.
     /// </summary>
     protected readonly Action _action;
+
     readonly ActionOption _option;
 
     /// <summary>
@@ -34,11 +35,6 @@ public partial class BaseAction : IBaseAction
     public bool ShouldEndSpecial => _option.HasFlag(ActionOption.EndSpecial);
 
     /// <summary>
-    /// Can be used in the Action Sequencer.
-    /// </summary>
-    public bool IsActionSequencer => _option.HasFlag(ActionOption.ActionSequencer) && IsFriendly;
-
-    /// <summary>
     /// Has a normal gcd action.
     /// </summary>
     public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);
@@ -47,6 +43,16 @@ public partial class BaseAction : IBaseAction
     /// Is a real gcd action, that makes gcd work.
     /// </summary>
     public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
+
+    /// <summary>
+    /// Is this action a duty action.
+    /// </summary>
+    public bool IsDutyAction => _option.HasFlag(ActionOption.DutyAction);
+
+    /// <summary>
+    /// Is this duty action on the slot.
+    /// </summary>
+    public bool IsDutyActionOnSlot => ActionManager.GetDutyActionId(0) == AdjustedID || ActionManager.GetDutyActionId(1) == AdjustedID;
 
     /// <summary>
     /// How many gcd left to add the dot.

@@ -35,6 +35,8 @@ internal static class MajorUpdater
         {
             TargetUpdater.ClearTarget();
             ActionUpdater.ClearNextAction();
+            CustomRotation.MoveTarget = null;
+
             return;
         }
         if ((int)Svc.ClientState.ClientLanguage == 4 && !_showed)
@@ -44,7 +46,6 @@ internal static class MajorUpdater
             Svc.Toasts.ShowError(warning);
             Svc.Chat.PrintError(warning);
         }
-
 
 #if DEBUG
         //Get changed condition.
@@ -92,6 +93,8 @@ internal static class MajorUpdater
             }
 
             MacroUpdater.UpdateMacro();
+
+            InputUpdater.UpdateCommand();
         }
         catch (Exception ex)
         {
@@ -155,8 +158,6 @@ internal static class MajorUpdater
             ActionUpdater.UpdateNextAction();
 
             RSCommands.UpdateRotationState();
-
-            InputUpdater.UpdateCommand();
         }
         catch (Exception ex)
         {

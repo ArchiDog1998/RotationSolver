@@ -2,7 +2,6 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
-using static System.Net.WebRequestMethods;
 
 namespace RotationSolver.Basic.Rotations.Basic;
 
@@ -187,7 +186,7 @@ public abstract class BLU_Base : CustomRotation
         /// <param name="option"></param>
         /// <param name="gcdCountForAbility"></param>
         /// <returns></returns>
-        public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte gcdCountForAbility = 0)
+        public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)
         {
             act = null;
 

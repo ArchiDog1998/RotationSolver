@@ -171,6 +171,7 @@ internal class SocialUpdater
             })
             .Where(p => !string.IsNullOrEmpty(p.nameDesc));
 
+
         foreach (var (c, nameDesc) in authors)
         {
             while (!c.IsTargetable() && !DataCenter.InCombat)
@@ -183,7 +184,9 @@ internal class SocialUpdater
             Svc.Targets.Target = c;
             Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
-            var message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
+            Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            {
+                Message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
 
                           new UIForegroundPayload(31),
                           new PlayerPayload(c.Name.TextValue, c.HomeWorld.Id),
@@ -198,11 +201,7 @@ internal class SocialUpdater
                           UIForegroundPayload.UIForegroundOff,
                           RawPayload.LinkTerminator,
 
-                          new TextPayload(". So say hello to him/her!"));
-
-            Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
-            {
-                Message = message,
+                          new TextPayload(". So say hello to him/her!")),
                 Type = Dalamud.Game.Text.XivChatType.Notice,
             });
             UIModule.PlaySound(20, 0, 0, 0);

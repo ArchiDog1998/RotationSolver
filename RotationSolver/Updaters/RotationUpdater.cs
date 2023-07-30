@@ -14,7 +14,7 @@ internal static class RotationUpdater
     internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
 
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
-    static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
+    internal static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
 
     public static ICustomRotation RightNowRotation { get; private set; }
     public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
@@ -362,6 +362,11 @@ internal static class RotationUpdater
                 {
                     string result;
 
+                    if (act.IsDutyAction)
+                    {
+                        return act.IsDutyActionOnSlot ? "Duty Action" : string.Empty;
+                    }
+
                     if (act.IsRealGCD)
                     {
                         result = "GCD";
@@ -396,7 +401,7 @@ internal static class RotationUpdater
                 }
                 return string.Empty;
 
-            }).OrderBy(g => g.Key);
+            }).Where(g => !string.IsNullOrEmpty(g.Key)).OrderBy(g => g.Key);
 
     public static void UpdateRotation()
     {

@@ -110,7 +110,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, new JobRole[] { JobRole.Tank }, ActionOption.ActionSequencer)
+    public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, new JobRole[] { JobRole.Tank })
     {
         FilterForHostiles = b => TargetFilter.ProvokeTarget(b),
     };
@@ -118,12 +118,12 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank }, ActionOption.ActionSequencer);
+    public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank });
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Shirk { get; } = new RoleAction(ActionID.Shirk, new JobRole[] { JobRole.Tank }, ActionOption.Friendly | ActionOption.ActionSequencer)
+    public static IBaseAction Shirk { get; } = new RoleAction(ActionID.Shirk, new JobRole[] { JobRole.Tank }, ActionOption.Friendly)
     {
         ChoiceTarget = (friends, mustUse) => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
     };
@@ -209,10 +209,42 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Sprint { get; } = new BaseAction(ActionID.Sprint, ActionOption.Friendly);
+    public static IBaseAction Sprint { get; } = new BaseAction(ActionID.Sprint, ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] {StatusID.DualCast},
+    };
 
     private protected virtual IBaseAction Raise => null;
     private protected virtual IBaseAction TankStance => null;
+
+    #region Duty Action
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction VariantRaise { get; } = new RoleAction(ActionID.VariantRaise,
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.Ranged }, ActionOption.Friendly | ActionOption.DutyAction);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction VariantCure { get; } = new RoleAction(ActionID.VariantCure,
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.Ranged }, ActionOption.Heal | ActionOption.DutyAction);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction VariantSpiritDart { get; } = new RoleAction(ActionID.VariantSpiritDart,
+        new JobRole[] { JobRole.Healer, JobRole.Tank }, ActionOption.Dot | ActionOption.DutyAction)
+    {
+        TargetStatus = new StatusID[] { StatusID.VariantSpiritDart },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction VariantRampart { get; } = new RoleAction(ActionID.VariantRampart,
+        new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.Ranged }, ActionOption.Buff | ActionOption.DutyAction);
+    #endregion
 
     IBaseAction[] _allBaseActions;
 

@@ -286,6 +286,9 @@ internal partial class RotationConfigWindow
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnToast,
             ref Service.Config.ShowInfoOnToast, Service.Default.ShowInfoOnToast);
 
+        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowToastsAboutDoAction,
+            ref Service.Config.ShowToastsAboutDoAction, Service.Default.ShowToastsAboutDoAction);
+
         DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_NamePlateIconId,
             ref Service.Config.NamePlateIconId, Service.Default.NamePlateIconId, 5, 0, 150000, otherThing: RSCommands.UpdateStateNamePlate);
 

@@ -1,8 +1,6 @@
 using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
-using Newtonsoft.Json.Linq;
 using RotationSolver.Localization;
-using System.Xml.Linq;
 
 namespace RotationSolver.UI;
 internal partial class RotationConfigWindow : Window

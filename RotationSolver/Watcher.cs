@@ -79,9 +79,6 @@ public static class Watcher
                 {
                     DataCenter.KnockbackStart = DateTime.Now;
                     DataCenter.KnockbackFinished = DateTime.Now + TimeSpan.FromSeconds(knock.Distance / (float)knock.Speed);
-#if DEBUG
-                    Svc.Chat.Print($"Knock back: {DataCenter.KnockbackStart} - {DataCenter.KnockbackFinished}");
-#endif
                 }
                 break;
             }

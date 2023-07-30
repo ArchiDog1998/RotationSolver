@@ -103,7 +103,15 @@ public abstract partial class CustomRotation
         {
             if(a.Target == null || a.Target == Player)
             {
-                MoveTarget = a.Position == a.Target.Position ? null : a.Position;
+                if((ActionID)a.ID == ActionID.EnAvant)
+                {
+                    var dir =  new Vector3(MathF.Sin(Player.Rotation), 0, MathF.Cos(Player.Rotation));
+                    MoveTarget = Player.Position + dir * 10;
+                }
+                else
+                {
+                    MoveTarget = a.Position == a.Target.Position ? null : a.Position;
+                }
             }
             else
             {
