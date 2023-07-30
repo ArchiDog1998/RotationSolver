@@ -21,7 +21,24 @@ public class RotationConfigWindowNew : Window
 
     private string _searchText = string.Empty;
 
-    public RotationConfigWindowNew()
+    [Flags]
+    public enum CompatibleType : byte
+    {
+        Mistake = 1 << 0,
+        Mislead = 1 << 1,
+        Crash = 1 << 2,
+    }
+
+    private static readonly (string name, string icon, string link, string features, CompatibleType type)[] _incompatiblePlugins = new[]
+    {
+        ("XIV Combo", "https://raw.githubusercontent.com/daemitus/XIVComboPlugin/master/res/icon.png", "https://github.com/daemitus/XIVComboPlugin", string.Empty, CompatibleType.Mislead),
+        ("XIV Sloth Combo", "https://raw.githubusercontent.com/Nik-Potokar/XIVSlothCombo/main/res/plugin/xivslothcombo.png", "https://github.com/Nik-Potokar/XIVSlothCombo", string.Empty, CompatibleType.Mislead | CompatibleType.Mistake),
+        ("Redirect", "https://raw.githubusercontent.com/cairthenn/Redirect/main/Redirect/icon.png", "https://github.com/cairthenn/Redirect", string.Empty, CompatibleType.Mistake),
+        ("ReAction", string.Empty, "https://github.com/UnknownX7/ReAction", string.Empty, CompatibleType.Mistake),
+        ("Simple Tweaks", "https://raw.githubusercontent.com/Caraxi/SimpleTweaksPlugin/main/images/icon.png",  "https://github.com/Caraxi/SimpleTweaksPlugin/blob/main/Tweaks/TreasureHuntTargets.cs", "Block Targeting Treasure Hunt Enemies", CompatibleType.Crash),
+    };
+
+public RotationConfigWindowNew()
     : base(nameof(RotationConfigWindowNew), ImGuiWindowFlags.NoScrollbar, false)
     {
         SizeCondition = ImGuiCond.FirstUseEver;
@@ -140,7 +157,7 @@ public class RotationConfigWindowNew : Window
     {
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
-        var logo = IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png");
+        var logo = IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png");
 
         if (logo != null)
         {
@@ -244,6 +261,17 @@ public class RotationConfigWindowNew : Window
         return result;
     }
 
+    private unsafe static bool NoPaddingNoColorImageButton(IntPtr handle, Vector2 size)
+    {
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0);
+        ImGui.PushStyleColor(ImGuiCol.Button, 0);
+        var result = NoPaddingImageButton(handle, size);
+        ImGui.PopStyleColor(3);
+
+        return result;
+    }
+
     private static bool NoPaddingImageButton(IntPtr handle, Vector2 size)
     {
         var padding = ImGui.GetStyle().FramePadding;
@@ -268,11 +296,7 @@ public class RotationConfigWindowNew : Window
         var result = false;
         DrawItemMiddle(() =>
         {
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0);
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0);
-            ImGui.PushStyleColor(ImGuiCol.Button, 0);
-            result = NoPaddingImageButton(texture.ImGuiHandle, size);
-            ImGui.PopStyleColor(3);
+            result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size);
         }, wholeWidth, size.X);
         return result;
     }
@@ -351,6 +375,78 @@ public class RotationConfigWindowNew : Window
 
         { () => LocalizationManager.RightLang.ConfigWindow_About_Compatibility, () =>
         {
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Description);
+
+            ImGui.Spacing();
+
+            var iconSize = 40 * _scale;
+
+            if (ImGui.BeginTable("Incompatible plugin", 4, ImGuiTableFlags.Borders 
+            | ImGuiTableFlags.Resizable
+            | ImGuiTableFlags.SizingStretchProp))
+            {
+                ImGui.TableSetupScrollFreeze(0, 1);
+                ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader("Name");
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader("Icon/Link");
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader("Features");
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader("Type");
+
+                foreach (var item in _incompatiblePlugins)
+                {
+                    ImGui.TableNextRow();
+                    ImGui.TableNextColumn();
+
+                    ImGui.Text(item.name);
+
+                    ImGui.TableNextColumn();
+
+                    var icon = item.icon;
+                    if(string.IsNullOrEmpty(icon)) icon = "https://raw.githubusercontent.com/goatcorp/DalamudAssets/master/UIRes/defaultIcon.png";
+
+                    var texture = IconSet.GetTexture(icon);
+
+                    if(texture != null)
+                    {
+                        if(NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * iconSize))
+                        {
+                            Util.OpenLink(item.link);
+                        }
+                    }
+
+                    ImGui.TableNextColumn();
+                    ImGui.TextWrapped(item.features);
+
+                    ImGui.TableNextColumn();
+
+                    if (item.type.HasFlag(CompatibleType.Mistake))
+                    {
+                        ImGui.TextColored(ImGuiColors.DalamudYellow, CompatibleType.Mistake.ToString());
+                        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Mistake);
+                    }
+                    if (item.type.HasFlag(CompatibleType.Mislead))
+                    {
+                        ImGui.TextColored(ImGuiColors.DalamudOrange, CompatibleType.Mislead.ToString());
+                        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Mislead);
+                    }
+                    if (item.type.HasFlag(CompatibleType.Crash))
+                    {
+                        ImGui.TextColored(ImGuiColors.DalamudRed, CompatibleType.Crash.ToString());
+                        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Crash);
+                    }
+                }
+
+                ImGui.EndTable();
+            }
+
         } },
 
         { () => LocalizationManager.RightLang.ConfigWindow_About_Links, () =>

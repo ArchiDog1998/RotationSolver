@@ -7,6 +7,8 @@ internal class CollapsingHeaderGroup
     private Dictionary<Func<string>, Action> _headers = new Dictionary<Func<string>, Action>();
     private int _openedIndex = -1;
 
+    public float HeaderSize { get; set; } = 24;
+
     public CollapsingHeaderGroup()
     {
         
@@ -49,7 +51,7 @@ internal class CollapsingHeaderGroup
             {
                 ImGui.Separator();
                 var selected = index == _openedIndex;
-                ImGui.PushFont(ImGuiHelper.GetFont(24));
+                ImGui.PushFont(ImGuiHelper.GetFont(HeaderSize));
                 var changed = ImGui.Selectable(name, selected);
                 ImGui.PopFont();
                 if (ImGui.IsItemHovered())
@@ -64,12 +66,12 @@ internal class CollapsingHeaderGroup
                 {
                     header.Value();
                 }
+                ImGui.Spacing();
             }
             catch (Exception ex)
             {
                 PluginLog.Warning(ex, "Something wrong with header drawing.");
             }
-
         }
     }
 }

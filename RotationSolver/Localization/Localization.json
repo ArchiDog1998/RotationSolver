@@ -433,5 +433,9 @@
   "ConfigWindow_About_Warning": "It is designed for GENERAL COMBAT, not for savage or ultimate. Use it carefully.",
   "ConfigWindow_About_Macros": "Macros",
   "ConfigWindow_About_Links": "Links",
-  "ConfigWindow_About_Compatibility": "Compatibility"
+  "ConfigWindow_About_Compatibility": "Compatibility",
+  "ConfigWindow_About_Compatibility_Description": "literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:",
+  "ConfigWindow_About_Compatibility_Mistake": "Can't properly execute the behavior that RS is going to do.",
+  "ConfigWindow_About_Compatibility_Mislead": "Misleading RS to make the right decision.",
+  "ConfigWindow_About_Compatibility_Crash": "Cause the game to crash"
 }

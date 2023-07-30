@@ -629,5 +629,11 @@ internal partial class Strings
     public string ConfigWindow_About_Macros { get; set; } = "Macros";
     public string ConfigWindow_About_Links { get; set; } = "Links";
     public string ConfigWindow_About_Compatibility { get; set; } = "Compatibility";
+    public string ConfigWindow_About_Compatibility_Description { get; set; } = "literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:";
+
+    public string ConfigWindow_About_Compatibility_Mistake { get; set; } = "Can't properly execute the behavior that RS is going to do.";
+    public string ConfigWindow_About_Compatibility_Mislead { get; set; } = "Misleading RS to make the right decision.";
+    public string ConfigWindow_About_Compatibility_Crash { get; set; } = "Cause the game to crash.";
+
 
 }
