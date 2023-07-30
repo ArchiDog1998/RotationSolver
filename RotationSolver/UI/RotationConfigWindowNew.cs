@@ -356,7 +356,7 @@ public class RotationConfigWindowNew : Window
         { () => LocalizationManager.RightLang.ConfigWindow_About_Links, () =>
         {
             var width = ImGui.GetWindowWidth();
-            if(TextureButton(IconSet.GetTexture("https://streak-stats.demolab.com?user=ArchiDog1998&type=png"), width))
+            if(TextureButton(IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Repository.png"), width))
             {
                 Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
             }
