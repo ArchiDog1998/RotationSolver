@@ -102,7 +102,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static BLUAttackType AttackType { get; set; } = BLUAttackType.Both;
+    protected static BLUAttackType BluAttackType { get; set; } = BLUAttackType.Both;
 
     /// <summary>
     /// 
@@ -128,11 +128,6 @@ public abstract class BLU_Base : CustomRotation
         };
 
         /// <summary>
-        /// The Aspect.
-        /// </summary>
-        public Aspect Aspect => (Aspect)_action.Aspect;
-
-        /// <summary>
         /// Description about the action.
         /// </summary>
         public override string Description => $"Type: {Type}\nAspect: {Aspect}";
@@ -150,8 +145,8 @@ public abstract class BLU_Base : CustomRotation
             get
             {
                 if (Type == BLUActionType.None) return true;
-                if (AttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
-                if (AttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
+                if (BluAttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
+                if (BluAttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
 
                 try
                 {
@@ -184,6 +179,7 @@ public abstract class BLU_Base : CustomRotation
         /// </summary>
         /// <param name="act"></param>
         /// <param name="option"></param>
+        /// <param name="aoeCount"></param>
         /// <param name="gcdCountForAbility"></param>
         /// <returns></returns>
         public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)
@@ -1056,7 +1052,7 @@ public abstract class BLU_Base : CustomRotation
     protected override void UpdateInfo()
     {
         BlueId = (BLUID)Configs.GetCombo("BlueId");
-        AttackType = (BLUAttackType)Configs.GetCombo("AttackType");
+        BluAttackType = (BLUAttackType)Configs.GetCombo("AttackType");
         base.UpdateInfo();
     }
 

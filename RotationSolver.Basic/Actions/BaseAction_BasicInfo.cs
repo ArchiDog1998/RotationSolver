@@ -70,6 +70,16 @@ public partial class BaseAction : IBaseAction
     public byte Level => _action.ClassJobLevel;
 
     /// <summary>
+    /// Attack Type
+    /// </summary>
+    public AttackType AttackType => (AttackType)(_action.AttackType.Value?.RowId ?? byte.MaxValue);
+
+    /// <summary>
+    /// The Aspect.
+    /// </summary>
+    public Aspect Aspect => (Aspect)_action.Aspect;
+
+    /// <summary>
     /// The name of this action.
     /// </summary>
     public string Name => _action.Name;

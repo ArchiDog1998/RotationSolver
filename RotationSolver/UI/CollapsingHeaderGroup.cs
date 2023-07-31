@@ -64,7 +64,9 @@ internal class CollapsingHeaderGroup
                 }
                 if (selected)
                 {
+                    ImGui.Indent();
                     header.Value();
+                    ImGui.Unindent();
                 }
                 ImGui.Spacing();
             }

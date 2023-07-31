@@ -653,6 +653,8 @@ internal static class ImGuiHelper
                 ImGui.Text("Cast Time: " + action.CastTime.ToString());
                 ImGui.Text("MP: " + action.MPNeed.ToString());
 #endif
+                ImGui.Text("AttackType: " + action.AttackType.ToString());
+                ImGui.Text("Aspect: " + action.Aspect.ToString());
                 ImGui.Text("Has One:" + action.HasOneCharge.ToString());
                 ImGui.Text("Recast One: " + action.RecastTimeOneChargeRaw.ToString());
                 ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsedRaw.ToString());

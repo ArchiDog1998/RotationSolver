@@ -3,6 +3,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
+using ECommons.ImGuiMethods;
 using ImGuiScene;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -24,17 +25,17 @@ public class RotationConfigWindowNew : Window
     [Flags]
     public enum CompatibleType : byte
     {
-        Mistake = 1 << 0,
-        Mislead = 1 << 1,
+        Skill_Usage = 1 << 0,
+        Skill_Selection = 1 << 1,
         Crash = 1 << 2,
     }
 
     private static readonly (string name, string icon, string link, string features, CompatibleType type)[] _incompatiblePlugins = new[]
     {
-        ("XIV Combo", "https://raw.githubusercontent.com/daemitus/XIVComboPlugin/master/res/icon.png", "https://github.com/daemitus/XIVComboPlugin", string.Empty, CompatibleType.Mislead),
-        ("XIV Sloth Combo", "https://raw.githubusercontent.com/Nik-Potokar/XIVSlothCombo/main/res/plugin/xivslothcombo.png", "https://github.com/Nik-Potokar/XIVSlothCombo", string.Empty, CompatibleType.Mislead | CompatibleType.Mistake),
-        ("Redirect", "https://raw.githubusercontent.com/cairthenn/Redirect/main/Redirect/icon.png", "https://github.com/cairthenn/Redirect", string.Empty, CompatibleType.Mistake),
-        ("ReAction", string.Empty, "https://github.com/UnknownX7/ReAction", string.Empty, CompatibleType.Mistake),
+        ("XIV Combo", "https://raw.githubusercontent.com/daemitus/XIVComboPlugin/master/res/icon.png", "https://github.com/daemitus/XIVComboPlugin", string.Empty, CompatibleType.Skill_Selection),
+        ("XIV Sloth Combo", "https://raw.githubusercontent.com/Nik-Potokar/XIVSlothCombo/main/res/plugin/xivslothcombo.png", "https://github.com/Nik-Potokar/XIVSlothCombo", string.Empty, CompatibleType.Skill_Selection | CompatibleType.Skill_Usage),
+        ("Redirect", "https://raw.githubusercontent.com/cairthenn/Redirect/main/Redirect/icon.png", "https://github.com/cairthenn/Redirect", string.Empty, CompatibleType.Skill_Usage),
+        ("ReAction", string.Empty, "https://github.com/UnknownX7/ReAction", string.Empty, CompatibleType.Skill_Usage),
         ("Simple Tweaks", "https://raw.githubusercontent.com/Caraxi/SimpleTweaksPlugin/main/images/icon.png",  "https://github.com/Caraxi/SimpleTweaksPlugin/blob/main/Tweaks/TreasureHuntTargets.cs", "Block Targeting Treasure Hunt Enemies", CompatibleType.Crash),
     };
 
@@ -427,32 +428,31 @@ public RotationConfigWindowNew()
 
                     ImGui.TableNextColumn();
 
-                    if (item.type.HasFlag(CompatibleType.Mistake))
+                    if (item.type.HasFlag(CompatibleType.Skill_Usage))
                     {
-                        ImGui.TextColored(ImGuiColors.DalamudYellow, CompatibleType.Mistake.ToString());
+                        ImGui.TextColored(ImGuiColors.DalamudYellow, CompatibleType.Skill_Usage.ToString().Replace('_', ' '));
                         ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Mistake);
                     }
-                    if (item.type.HasFlag(CompatibleType.Mislead))
+                    if (item.type.HasFlag(CompatibleType.Skill_Selection))
                     {
-                        ImGui.TextColored(ImGuiColors.DalamudOrange, CompatibleType.Mislead.ToString());
+                        ImGui.TextColored(ImGuiColors.DalamudOrange, CompatibleType.Skill_Selection.ToString().Replace('_', ' '));
                         ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Mislead);
                     }
                     if (item.type.HasFlag(CompatibleType.Crash))
                     {
-                        ImGui.TextColored(ImGuiColors.DalamudRed, CompatibleType.Crash.ToString());
+                        ImGui.TextColored(ImGuiColors.DalamudRed, CompatibleType.Crash.ToString().Replace('_', ' '));
                         ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Crash);
                     }
                 }
-
                 ImGui.EndTable();
             }
-
         } },
 
         { () => LocalizationManager.RightLang.ConfigWindow_About_Links, () =>
         {
             var width = ImGui.GetWindowWidth();
-            if(TextureButton(IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Repository.png"), width))
+
+            if(TextureButton(IconSet.GetTexture("https://github-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark"), width))
             {
                 Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
             }
@@ -471,7 +471,9 @@ public RotationConfigWindowNew()
     private static void DrawAbout()
     {
         ImGui.PushFont(ImGuiHelper.GetFont(18));
+        ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
+        ImGui.PopStyleColor();
         ImGui.PopFont();
         ImGui.Spacing();
 
