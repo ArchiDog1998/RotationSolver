@@ -183,18 +183,7 @@ internal static class RotationUpdater
         bool hasDownload = false;
         using (var client = new HttpClient())
         {
-            IEnumerable<string> libs = Service.Config.OtherLibs;
-            try
-            {
-                var bts = await client.GetByteArrayAsync("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/downloadList.json");
-                libs = libs.Union(JsonConvert.DeserializeObject<string[]>(Encoding.Default.GetString(bts)));
-            }
-            catch (Exception ex)
-            {
-                PluginLog.Log(ex, "Failed to load downloading List.");
-            }
-
-            foreach (var url in libs)
+            foreach (var url in Service.Config.OtherLibs.Union(DownloadHelper.LinkLibraries ?? Array.Empty<string>()))
             {
                 hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
                 var pdbUrl = Path.ChangeExtension(url, ".pdb");

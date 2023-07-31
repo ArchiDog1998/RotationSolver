@@ -10,6 +10,7 @@ using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
@@ -84,6 +85,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         Task.Run(async () =>
         {
+            await DownloadHelper.DownloadAsync();
             await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
         });
     }

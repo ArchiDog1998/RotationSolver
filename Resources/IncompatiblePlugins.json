@@ -1,0 +1,44 @@
+[
+  {
+    "Name": "XIV Combo",
+    "Icon": "https://raw.githubusercontent.com/daemitus/XIVComboPlugin/master/res/icon.png",
+    "Url": "https://github.com/daemitus/XIVComboPlugin",
+    "Features": "",
+    "Type": 2
+  },
+  {
+    "Name": "XIV Sloth Combo",
+    "Icon": "https://raw.githubusercontent.com/Nik-Potokar/XIVSlothCombo/main/res/plugin/xivslothcombo.png",
+    "Url": "https://github.com/Nik-Potokar/XIVSlothCombo",
+    "Features": "",
+    "Type": 3
+  },
+  {
+    "Name": "BossMod",
+    "Icon": "https://raw.githubusercontent.com/awgil/ffxiv_bossmod/master/Data/icon.png",
+    "Url": "https://github.com/awgil/ffxiv_bossmod",
+    "Features": "Auto Rotation",
+    "Type": 3
+  },
+  {
+    "Name": "Redirect",
+    "Icon": "https://raw.githubusercontent.com/cairthenn/Redirect/main/Redirect/icon.png",
+    "Url": "https://github.com/cairthenn/Redirect",
+    "Features": "",
+    "Type": 1
+  },
+  {
+    "Name": "ReAction",
+    "Icon": "",
+    "Url": "https://github.com/UnknownX7/ReAction",
+    "Features": "",
+    "Type": 1
+  },
+  {
+    "Name": "Simple Tweaks",
+    "Icon": "https://raw.githubusercontent.com/Caraxi/SimpleTweaksPlugin/main/images/icon.png",
+    "Url": "https://github.com/Caraxi/SimpleTweaksPlugin/blob/main/Tweaks/TreasureHuntTargets.cs",
+    "Features": "Block Targeting Treasure Hunt Enemies",
+    "Type": 4
+  }
+]

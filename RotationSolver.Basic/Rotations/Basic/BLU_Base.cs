@@ -169,8 +169,7 @@ public abstract class BLU_Base : CustomRotation
         internal BLUAction(ActionID actionID, ActionOption option = ActionOption.None)
             : base(actionID, option)
         {
-            var attackType = _action.AttackType.Value?.RowId ?? 0;
-            Type = attackType != 5 ? BLUActionType.Physical : Aspect == Aspect.None ? BLUActionType.None : BLUActionType.Magical;
+            Type = AttackType != AttackType.Magic ? BLUActionType.Physical : Aspect == Aspect.None ? BLUActionType.None : BLUActionType.Magical;
             ActionCheck = (t, m) => OnSlot && RightType;
         }
 
