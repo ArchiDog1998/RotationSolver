@@ -71,6 +71,8 @@ internal static class EnumTranslations
         DescType.DefenseSingleAbility => LocalizationManager.RightLang.DescType_DefenseSingleAbility,
         DescType.DefenseAreaAbility => LocalizationManager.RightLang.DescType_DefenseAreaAbility,
 
+        DescType.SpeedAbility => LocalizationManager.RightLang.DescType_SpeedAbility,
+
         _ => string.Empty,
     };
 

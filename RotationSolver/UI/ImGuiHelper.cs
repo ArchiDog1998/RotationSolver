@@ -429,22 +429,22 @@ internal static class ImGuiHelper
 
     public unsafe static void Display(this ICustomRotation rotation, ICustomRotation[] rotations, bool canAddButton)
         => rotation.DrawEnableTexture(canAddButton, null,
-        text =>
+        rotation =>
         {
             ImguiTooltips.ShowTooltip(() =>
             {
                 var t = IconSet.GetTexture(IconSet.GetJobIcon(rotation, IconType.Framed));
                 ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
 
-                if (!string.IsNullOrEmpty(text.Description))
+                if (!string.IsNullOrEmpty(rotation.Description))
                 {
                     ImGui.SameLine();
                     ImGui.Text("  ");
                     ImGui.SameLine();
-                    ImGui.Text(text.Description);
+                    ImGui.Text(rotation.Description);
                 }
 
-                var type = text.GetType();
+                var type = rotation.GetType();
 
                 var attrs = new List<RotationDescAttribute> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
 
@@ -457,7 +457,7 @@ internal static class ImGuiHelper
                 {
                     foreach (var a in RotationDescAttribute.Merge(attrs))
                     {
-                        RotationDescAttribute.MergeToOne(a)?.Display(text);
+                        RotationDescAttribute.MergeToOne(a)?.Display(rotation);
                     }
                 }
                 catch (Exception ex)
@@ -892,8 +892,9 @@ internal static class ImGuiHelper
                 ImGui.Text(" ");
                 ImGui.SameLine();
             }
+            ControlWindow.DrawIAction(item.GetTexture().ImGuiHandle, 24, 1);
+            ImGuiHelper.HoveredString(item.Name);
 
-            ImGui.Image(item.GetTexture().ImGuiHandle, PIC_SIZE);
             notStart = true;
         }
         ImGui.Unindent(ATTR_INDENT);

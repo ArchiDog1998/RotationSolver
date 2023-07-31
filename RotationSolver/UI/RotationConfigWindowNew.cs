@@ -42,6 +42,12 @@ public class RotationConfigWindowNew : Window
         base.PostDraw();
     }
 
+    public override void OnClose()
+    {
+        Service.Config.Save();
+        base.OnClose();
+    }
+
     public override void Draw()
     {
         if(ImGui.BeginTable("Rotation Config Table", 2, ImGuiTableFlags.Resizable))
@@ -84,14 +90,10 @@ public class RotationConfigWindowNew : Window
                 if(icon != null && wholeWidth <= JOB_ICON_WIDTH * _scale)
                 {
                     var size = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH)) * 0.6f;
-                    DrawItemMiddle(() =>
+                    if(TextureButton(icon, wholeWidth, size))
                     {
-                        if (SilenceImageButton(icon.ImGuiHandle, Vector2.One * size, _activeTab == item))
-                        {
-                            _activeTab = item;
-                        }
-                    }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), size);
-
+                        _activeTab = item;
+                    }
                     ImguiTooltips.HoveredTooltip(item.ToString());
                 }
                 else
@@ -137,6 +139,7 @@ public class RotationConfigWindowNew : Window
         }
     }
 
+    private TextureWrap _jobIcon;
     private void DrawHeader(float wholeWidth)
     {
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
@@ -172,52 +175,34 @@ public class RotationConfigWindowNew : Window
             var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rotation.GameVersion).X + iconSize + ImGui.GetStyle().ItemSpacing.X * 3 < wholeWidth;
             if(drawCenter) gameVersionSize += ImGui.CalcTextSize(gameVersion).X + ImGui.GetStyle().ItemSpacing.X;
 
-            DrawItemMiddle(() =>
-            {
-                var rotationIcon = rotation.GetTexture();
-                if (rotationIcon != null && SilenceImageButton(rotationIcon.ImGuiHandle,
-                    Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
-                {
-                    _activeTab = RotationConfigWindowTab.Rotation;
-                }
-                var desc = rotation.Name + $" ({rotation.RotationName})";
-                if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;
-                ImguiTooltips.HoveredTooltip(desc);
+            var horizonalWholeWidth = Math.Max(comboSize, gameVersionSize) + iconSize + ImGui.GetStyle().ItemSpacing.X;
 
-                if (wholeWidth > _scale * JOB_ICON_WIDTH)
+            if(horizonalWholeWidth > wholeWidth)
+            {
+                DrawItemMiddle(() =>
                 {
+                    DrawRotationIcon(rotation, iconSize);
+                }, wholeWidth, iconSize);
+
+                if(_scale * JOB_ICON_WIDTH < wholeWidth)
+                {
+                    DrawItemMiddle(() =>
+                    {
+                        DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
+                    }, wholeWidth, comboSize);
+                }
+            }
+            else
+            {
+                DrawItemMiddle(() =>
+                {
+                    DrawRotationIcon(rotation, iconSize);
+
                     ImGui.SameLine();
 
                     ImGui.BeginGroup();
-                    ImGui.SetNextItemWidth(comboSize);
-                    ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
-                    var isStartCombo = ImGui.BeginCombo("##RotationName:" + rotation.Name, rotation.RotationName);
-                    ImGui.PopStyleColor();
 
-                    if (isStartCombo)
-                    {
-                        foreach (var r in rotations)
-                        {
-                            ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
-                            if (ImGui.Selectable(r.RotationName))
-                            {
-                                Service.Config.RotationChoices[rotation.ClassJob.RowId] = r.GetType().FullName;
-                                Service.Config.Save();
-                            }
-                            ImguiTooltips.HoveredTooltip(r.Description);
-                            ImGui.PopStyleColor();
-                        }
-                        ImGui.EndCombo();
-                    }
-
-                    var warning = !rotation.IsValid ? string.Format(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation,
-                            rotation.GetType().Assembly.GetInfo().Author)
-                    : rotation.IsBeta() ? LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation : string.Empty;
-
-                    warning = string.IsNullOrEmpty(warning) ? LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation
-                        : warning + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation;
-                    ImguiTooltips.HoveredTooltip(warning);
-
+                    DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
                     ImGui.TextDisabled(slash);
                     ImGui.SameLine();
 
@@ -228,61 +213,57 @@ public class RotationConfigWindowNew : Window
                     }
                     ImGui.Text(rotation.GameVersion);
                     ImGui.EndGroup();
+                }, wholeWidth, horizonalWholeWidth);
+            }
+
+        }
+    }
+
+    private void DrawRotationIcon(ICustomRotation rotation, float iconSize)
+    {
+        _jobIcon = rotation.GetTexture();
+        if (_jobIcon != null && SilenceImageButton(_jobIcon.ImGuiHandle,
+            Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
+        {
+            _activeTab = RotationConfigWindowTab.Rotation;
+        }
+        var desc = rotation.Name + $" ({rotation.RotationName})";
+        if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;
+        ImguiTooltips.HoveredTooltip(desc);
+
+    }
+
+    private static void DrawRotationCombo(float comboSize, ICustomRotation[] rotations, ICustomRotation rotation, string gameVersion)
+    {
+        ImGui.SetNextItemWidth(comboSize);
+        ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
+        var isStartCombo = ImGui.BeginCombo("##RotationName:" + rotation.Name, rotation.RotationName);
+        ImGui.PopStyleColor();
+
+        if (isStartCombo)
+        {
+            foreach (var r in rotations)
+            {
+                ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
+                if (ImGui.Selectable(r.RotationName))
+                {
+                    Service.Config.RotationChoices[rotation.ClassJob.RowId] = r.GetType().FullName;
+                    Service.Config.Save();
                 }
-            }, wholeWidth, Math.Max(comboSize, gameVersionSize) + iconSize + ImGui.GetStyle().ItemSpacing.X);
-        }
-    }
-
-    private unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected)
-    {
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive,ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderActive)));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderHovered)));
-        ImGui.PushStyleColor(ImGuiCol.Button,  selected ? ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.Header)) : 0);
-
-        var result = NoPaddingImageButton(handle, size);
-        ImGui.PopStyleColor(3);
-
-        return result;
-    }
-
-    private unsafe static bool NoPaddingNoColorImageButton(IntPtr handle, Vector2 size)
-    {
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0);
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0);
-        ImGui.PushStyleColor(ImGuiCol.Button, 0);
-        var result = NoPaddingImageButton(handle, size);
-        ImGui.PopStyleColor(3);
-
-        return result;
-    }
-
-    private static bool NoPaddingImageButton(IntPtr handle, Vector2 size)
-    {
-        var padding = ImGui.GetStyle().FramePadding;
-        ImGui.GetStyle().FramePadding = Vector2.Zero;
-
-        var result = ImGui.ImageButton(handle, size);
-        if (ImGui.IsItemHovered())
-        {
-            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+                ImguiTooltips.HoveredTooltip(r.Description);
+                ImGui.PopStyleColor();
+            }
+            ImGui.EndCombo();
         }
 
-        ImGui.GetStyle().FramePadding = padding;
-        return result;
-    }
+        var warning = gameVersion + rotation.GameVersion;
+        if (!rotation.IsValid) warning += "\n" + string.Format(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation,
+                rotation.GetType().Assembly.GetInfo().Author);
 
-    private static bool TextureButton(TextureWrap texture, float wholeWidth)
-    {
-        if (texture == null) return false;
+        if (rotation.IsBeta()) warning += "\n" + LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation;
 
-        var size = new Vector2(texture.Width, texture.Height) * MathF.Min(1, wholeWidth / texture.Width);
-
-        var result = false;
-        DrawItemMiddle(() =>
-        {
-            result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size);
-        }, wholeWidth, size.X);
-        return result;
+        warning += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation;
+        ImguiTooltips.HoveredTooltip(warning);
     }
 
     private static void DrawItemMiddle(Action drawAction, float wholeWidth, float width, bool leftAlign = true)
@@ -308,6 +289,42 @@ public class RotationConfigWindowNew : Window
 
                 case RotationConfigWindowTab.Rotation:
                     DrawRotation();
+                    break;
+
+                case RotationConfigWindowTab.Actions:
+                    DrawActions();
+                    break;
+
+                case RotationConfigWindowTab.Rotations:
+                    DrawRotations();
+                    break;
+
+                case RotationConfigWindowTab.IDs:
+                    DrawIDs();
+                    break;
+
+                case RotationConfigWindowTab.Basic:
+                    DrawBasic();
+                    break;
+
+                case RotationConfigWindowTab.UI:
+                    DrawUI();
+                    break;
+
+                case RotationConfigWindowTab.Auto:
+                    DrawAuto();
+                    break;
+
+                case RotationConfigWindowTab.Target:
+                    DrawTarget();
+                    break;
+
+                case RotationConfigWindowTab.Extra:
+                    DrawExtra();
+                    break;
+
+                case RotationConfigWindowTab.Debug:
+                    DrawDebug();
                     break;
             }
             ImGui.EndChild();
@@ -435,17 +452,17 @@ public class RotationConfigWindowNew : Window
         {
             var width = ImGui.GetWindowWidth();
 
-            if(TextureButton(IconSet.GetTexture("https://github-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark"), width))
+            if(TextureButton(IconSet.GetTexture("https://github-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark"), width, width))
             {
                 Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
             }
 
-            if(TextureButton(IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2"), width))
+            if(TextureButton(IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2"), width, width))
             {
                 Util.OpenLink("https://discord.gg/4fECHunam9");
             }
 
-            if(TextureButton(IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png"), width))
+            if(TextureButton(IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png"), width, width))
             {
                 Util.OpenLink("https://crowdin.com/project/rotationsolver");
             }
@@ -471,12 +488,276 @@ public class RotationConfigWindowNew : Window
         _aboutHeaders.Draw();
     }
 
+    private const float DESC_SIZE = 24;
     private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
+    {
+        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Description, () =>
+        {
+            var rotation = RotationUpdater.RightNowRotation;
+            if (rotation == null) return;
+
+            var type = rotation.GetType();
+
+            var attrs = new List<RotationDescAttribute> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
+
+            foreach (var m in type.GetAllMethodInfo())
+            {
+                attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));
+            }
+
+            try
+            {
+                if(ImGui.BeginTable("Rotation Description", 2, ImGuiTableFlags.Borders
+                    | ImGuiTableFlags.Resizable
+                    | ImGuiTableFlags.SizingStretchProp))
+                {
+                    foreach (var a in RotationDescAttribute.Merge(attrs))
+                    {
+                        var attr = RotationDescAttribute.MergeToOne(a);
+                        if(attr == null) continue;
+
+                        var allActions = attr.Actions.Select(i => rotation.AllBaseActions
+                        .FirstOrDefault(a => a.ID == (uint)i))
+                        .Where(i => i != null);
+
+                        bool hasDesc = !string.IsNullOrEmpty(attr.Description);
+
+                        if (!hasDesc && !allActions.Any()) continue;
+
+                        ImGui.TableNextRow();
+                        ImGui.TableNextColumn();
+
+                        ImGui.Image(IconSet.GetTexture(attr.IconID).ImGuiHandle, Vector2.One * DESC_SIZE * _scale);
+
+                        ImGui.SameLine();
+                        var isOnCommand = attr.IsOnCommand;
+                        if (isOnCommand) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+                        ImGui.Text(" " + attr.Type.ToName());
+                        if (isOnCommand) ImGui.PopStyleColor();
+
+                        ImGui.TableNextColumn();
+
+                        if (hasDesc)
+                        {
+                            ImGui.Text(attr.Description);
+                        }
+
+                        bool notStart = false;
+                        foreach (var item in allActions)
+                        {
+                            if (item == null) continue;
+
+                            if (notStart)
+                            {
+                                ImGui.SameLine();
+                                ImGui.Text(" ");
+                                ImGui.SameLine();
+                            }
+                            ControlWindow.DrawIAction(item.GetTexture().ImGuiHandle, DESC_SIZE * _scale, 1);
+                            ImguiTooltips.HoveredTooltip(item.Name);
+                            notStart = true;
+                        }
+                    }
+                    ImGui.EndTable();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var e = ex;
+                while(e != null)
+                {
+                    ImGui.Text(e.Message);
+                    e = e.InnerException;
+                }
+                ImGui.Text(ex.StackTrace);
+            }
+        } },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Configuration, () =>
+        {
+
+        } },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Information, () =>
+        {
+
+        } },
+    });
+    private static void DrawRotation()
+    {
+        var rotation = RotationUpdater.RightNowRotation;
+        if (rotation == null) return;
+
+        ImGui.PushFont(ImGuiHelper.GetFont(15));
+        ImGui.TextWrapped(rotation.Description);
+        ImGui.PopFont();
+
+        var width = ImGui.GetWindowWidth();
+        var type = rotation.GetType();
+        var info = type.Assembly.GetInfo();
+
+        if (!string.IsNullOrEmpty(info.DonateLink))
+        {
+            if (TextureButton(IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png"), width, 250 * _scale))
+            {
+                Util.OpenLink(info.DonateLink);
+            }
+        }
+
+        //var link = type.GetCustomAttribute<SourceCodeAttribute>();
+        //if (link != null)
+        //{
+        //    if (TextureButton(IconSet.GetTexture("https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png"), width, 200 * _scale))
+        //    {
+        //        Util.OpenLink(link.Url);
+        //    }
+        //}
+
+        _rotationHeader.Draw();
+    }
+
+    private static readonly CollapsingHeaderGroup _actionsHeader = new(new()
     {
 
     });
-    private void DrawRotation()
+    private static void DrawActions()
     {
-        _rotationHeader.Draw();
+        ImGui.Text("Actions");
+        _actionsHeader?.Draw();
     }
+
+    private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
+    {
+
+    });
+    private static void DrawRotations()
+    {
+        ImGui.Text("Rotations");
+        _rotationsHeader?.Draw();
+    }
+
+    private static readonly CollapsingHeaderGroup _idsHeader = new(new()
+    {
+
+    });
+    private static void DrawIDs()
+    {
+        ImGui.Text("IDs");
+        _idsHeader?.Draw();
+    }
+
+    private static readonly CollapsingHeaderGroup _basicHeader = new(new()
+    {
+
+    });
+    private static void DrawBasic()
+    {
+        ImGui.Text("Basic");
+        _basicHeader?.Draw();
+    }
+
+    private static readonly CollapsingHeaderGroup _uiHeader = new(new()
+    {
+
+    });
+    private static void DrawUI()
+    {
+        ImGui.Text("UI");
+        _uiHeader?.Draw();
+    }
+
+    private static readonly CollapsingHeaderGroup _autoHeader = new(new()
+    {
+
+    });
+    private static void DrawAuto()
+    {
+        ImGui.Text("Auto");
+        _autoHeader?.Draw();
+    }
+
+    private static readonly CollapsingHeaderGroup _targetHeader = new(new()
+    {
+
+    });
+    private static void DrawTarget()
+    {
+        ImGui.Text("Target");
+        _targetHeader?.Draw();
+    }
+
+    private static readonly CollapsingHeaderGroup _extraHeader = new(new()
+    {
+
+    });
+    private static void DrawExtra()
+    {
+        ImGui.Text("Extra");
+        _extraHeader?.Draw();
+    }
+
+    private static readonly CollapsingHeaderGroup _debugHeader = new(new()
+    {
+
+    });
+    private static void DrawDebug()
+    {
+        ImGui.Text("Debug");
+        _debugHeader?.Draw();
+    }
+
+    #region Image
+    private unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected)
+    {
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderActive)));
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderHovered)));
+        ImGui.PushStyleColor(ImGuiCol.Button, selected ? ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.Header)) : 0);
+
+        var result = NoPaddingImageButton(handle, size);
+        ImGui.PopStyleColor(3);
+
+        return result;
+    }
+
+    private unsafe static bool NoPaddingNoColorImageButton(IntPtr handle, Vector2 size)
+    {
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0);
+        ImGui.PushStyleColor(ImGuiCol.Button, 0);
+        var result = NoPaddingImageButton(handle, size);
+        ImGui.PopStyleColor(3);
+
+        return result;
+    }
+
+    private static bool NoPaddingImageButton(IntPtr handle, Vector2 size)
+    {
+        var padding = ImGui.GetStyle().FramePadding;
+        ImGui.GetStyle().FramePadding = Vector2.Zero;
+
+        var result = ImGui.ImageButton(handle, size);
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+        }
+
+        ImGui.GetStyle().FramePadding = padding;
+        return result;
+    }
+
+    private static bool TextureButton(TextureWrap texture, float wholeWidth, float maxWidth)
+    {
+        if (texture == null) return false;
+
+        var size = new Vector2(texture.Width, texture.Height) * MathF.Min(1, MathF.Min(maxWidth, wholeWidth) / texture.Width);
+
+        var result = false;
+        DrawItemMiddle(() =>
+        {
+            result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size);
+        }, wholeWidth, size.X);
+        return result;
+    }
+    #endregion
 }

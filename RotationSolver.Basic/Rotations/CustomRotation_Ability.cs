@@ -362,12 +362,13 @@ public abstract partial class CustomRotation
     }
 
     /// <summary>
-    /// The ability that speeds your chacacter up.
+    /// The ability that speeds your character up.
     /// </summary>
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
 
     [RotationDesc(DescType.SpeedAbility)]
+    [RotationDesc(ActionID.Sprint)]
     protected virtual bool SpeedAbility(out IAction act)
     {
         if (Sprint.CanUse(out act, CanUseOption.MustUse)) return true;

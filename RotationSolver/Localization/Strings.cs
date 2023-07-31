@@ -81,7 +81,7 @@ internal partial class Strings
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy the command";
     public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
-    public string ConfigWindow_Rotation_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
+    public string ConfigWindow_Rotation_Description_Old { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
 
     public string ConfigWindow_Rotation_KeyName { get; set; } = "The key name is";
     public string ConfigWindow_Events_AddEvent { get; set; } = "AddEvents";
@@ -431,6 +431,7 @@ internal partial class Strings
     public string DescType_DefenseSingleAbility { get; set; } = "Single Defense Ability";
     public string DescType_MoveForwardAbility { get; set; } = "Move Forward Ability";
     public string DescType_MoveBackAbility { get; set; } = "Move Back Ability";
+    public string DescType_SpeedAbility { get; set; } = "Speed Ability";
 
     #endregion
 
@@ -635,5 +636,7 @@ internal partial class Strings
     public string ConfigWindow_About_Compatibility_Mislead { get; set; } = "Misleading RS to make the right decision.";
     public string ConfigWindow_About_Compatibility_Crash { get; set; } = "Cause the game to crash.";
 
-
+    public string ConfigWindow_Rotation_Description { get; set; } = "Description";
+    public string ConfigWindow_Rotation_Configuration { get; set; } = "Configuration";
+    public string ConfigWindow_Rotation_Information { get; set; } = "Information";
 }

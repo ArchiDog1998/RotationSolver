@@ -21,31 +21,14 @@ internal static class RotationHelper
 
         var name = assembly.GetName().Name;
         var location = assembly.Location;
-        var version = assembly.GetName().Version?.ToString();
-        var description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description;
         var company = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
-        var product = assembly.GetCustomAttribute<AssemblyProductAttribute>()?.Product;
-        var trademark = assembly.GetCustomAttribute<AssemblyTrademarkAttribute>()?.Trademark;
 
-        var assemblyInfo = new AssemblyInfo(name, version, location, description, company, product, trademark);
+        var assemblyInfo = new AssemblyInfo(name, company, location, string.Empty);
 
         _assemblyInfos[assembly] = assemblyInfo;
 
         return assemblyInfo;
     }
-
-    //public static Assembly GetTypeAssembly(this ICustomRotation rotation)
-    //{
-    //    try
-    //    {
-    //        return rotation.GetType().Assembly;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        PluginLog.LogError($"Failed to get assembly for rotation {rotation.GetType().Name}: {ex}");
-    //        return null;
-    //    }
-    //}
 
     public static Vector4 GetColor(this ICustomRotation rotation)
     {
@@ -82,9 +65,6 @@ internal static class RotationHelper
             assemblyName,
             author,
             filePath,
-            attr?.SupportLink,
-            attr?.HelpLink,
-            attr?.ChangeLog,
             attr?.Donate);
 
         var existingAssembly = GetAssemblyFromPath(filePath);
