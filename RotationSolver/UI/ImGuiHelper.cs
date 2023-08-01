@@ -631,7 +631,7 @@ internal static class ImGuiHelper
     },otherThing: () =>
     {
         var enable = action.IsInCooldown;
-        if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Action_ShowOnCDWindow}##{action.Name}InCooldown", ref enable))
+        if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_ShowOnCDWindow}##{action.Name}InCooldown", ref enable))
         {
             action.IsInCooldown = enable;
             Service.Config.Save();
@@ -641,7 +641,7 @@ internal static class ImGuiHelper
         Spacing();
 
         OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
-       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, action, 5), false);
+       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Actions_InsertCommand, action, 5), false);
 
         if (Service.Config.InDebug)
         {
@@ -686,7 +686,7 @@ internal static class ImGuiHelper
         if (Service.Config.ShowCooldownWindow)
         {
             var enable = item.IsInCooldown;
-            if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Action_ShowOnCDWindow}##{item.Name}InCooldown", ref enable))
+            if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_ShowOnCDWindow}##{item.Name}InCooldown", ref enable))
             {
                 item.IsInCooldown = enable;
                 Service.Config.Save();
@@ -697,7 +697,7 @@ internal static class ImGuiHelper
         }
 
         OtherCommandType.DoActions.DisplayCommandHelp($"{item}-{5}",
-       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, item, 5), false);
+       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Actions_InsertCommand, item, 5), false);
 
 
         if (Service.Config.InDebug)

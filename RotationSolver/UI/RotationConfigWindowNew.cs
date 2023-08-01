@@ -5,10 +5,14 @@ using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ImGuiScene;
+using RotationSolver.ActionSequencer;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
+using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
 
 namespace RotationSolver.UI;
 
@@ -93,10 +97,12 @@ public class RotationConfigWindowNew : Window
                     var size = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH)) * 0.6f;
                     DrawItemMiddle(() =>
                     {
+                        var cursor = ImGui.GetCursorPos();
                         if (SilenceImageButton(icon.ImGuiHandle, Vector2.One * size, _activeTab == item))
                         {
                             _activeTab = item;
                         }
+                        DrawActionOverlay(cursor, size, _activeTab == item ? 1 : -1);
                     }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), size); ImguiTooltips.HoveredTooltip(item.ToString());
                 }
                 else
@@ -284,6 +290,9 @@ public class RotationConfigWindowNew : Window
         ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * margin);
         if (ImGui.BeginChild("Rotation Solver Body", Vector2.One * -margin))
         {
+            //Search box
+
+
             switch (_activeTab)
             {
                 case RotationConfigWindowTab.About:
@@ -695,15 +704,131 @@ public class RotationConfigWindowNew : Window
     }
     #endregion
 
-    private static readonly CollapsingHeaderGroup _actionsHeader = new(new()
-    {
-
-    });
+    #region Actions
     private static void DrawActions()
     {
-        ImGui.Text("Actions");
-        _actionsHeader?.Draw();
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_Description);
+
+        if (ImGui.BeginTable("Rotation Solver Actions", 2, ImGuiTableFlags.Borders
+            | ImGuiTableFlags.Resizable))
+        {
+            ImGui.TableSetupColumn("Action Column", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 2);
+            ImGui.TableNextColumn();
+
+            if (_actionsList != null && ImGui.BeginChild("Rotation Solver Action List"))
+            {
+                _actionsList.ClearCollapsingHeader();
+
+                if (RotationUpdater.RightNowRotation != null)
+                {
+                    var size = 30 * _scale;
+                    var count = (int)MathF.Floor(ImGui.GetWindowWidth() / size);
+                    foreach (var pair in RotationUpdater.AllGroupedActions)
+                    {
+                        _actionsList.AddCollapsingHeader(() => pair.Key, () =>
+                        {
+                            var index = 0;
+                            foreach (var item in pair.OrderBy(t => t.ID))
+                            {
+                                var icon = item.GetTexture();
+                                if (icon == null) continue;
+
+                                if (index++ % count != 0)
+                                {
+                                    ImGui.SameLine();
+                                }
+
+                                var active = _activeAction == item;
+                                var cursor = ImGui.GetCursorPos();
+                                if (SilenceImageButton(icon.ImGuiHandle, Vector2.One * size, active))
+                                {
+                                    _activeAction = item;
+                                }
+                                ImguiTooltips.ShowTooltip(item.Name);
+                                DrawActionOverlay(cursor, size, active ? 1 : -1);
+                            }
+                        });
+                    }
+                }
+
+                _actionsList.Draw();
+                ImGui.EndChild();
+            }
+
+            ImGui.TableNextColumn();
+
+            if (_sequencerList != null && _activeAction != null && ImGui.BeginChild("Rotation Solver Sequencer List"))
+            {
+                var enable = _activeAction.IsEnabled;
+                if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_Enable}##{_activeAction.Name}Enabled", ref enable))
+                {
+                    _activeAction.IsEnabled = enable;
+                }
+
+                OtherCommandType.ToggleActions.DisplayCommandHelp(_activeAction.ToString());
+
+                enable = _activeAction.IsInCooldown;
+                if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_ShowOnCDWindow}##{_activeAction.Name}InCooldown", ref enable))
+                {
+                    _activeAction.IsInCooldown = enable;
+                }
+
+                OtherCommandType.DoActions.DisplayCommandHelp($"{_activeAction}-{5}",
+                    type => string.Format(LocalizationManager.RightLang.ConfigWindow_Actions_InsertCommand, _activeAction, 5), false);
+
+                _sequencerList.Draw();
+                ImGui.EndChild();
+            }
+
+            ImGui.EndTable();
+        }
     }
+
+    private static IAction _activeAction;
+
+    private static readonly CollapsingHeaderGroup _actionsList = new()
+    {
+         HeaderSize = 18,
+    };
+
+    private static readonly CollapsingHeaderGroup _sequencerList = new(new()
+    {
+        { () => LocalizationManager.RightLang.ConfigWindow_Actions_ForcedConditionSet, () =>
+        {
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_ForcedConditionSet_Description);
+
+            var rotation = RotationUpdater.RightNowRotation;
+            var set = ActionSequencerUpdater.RightSet;
+            if (set == null || _activeAction == null || rotation == null) return;
+
+            if (!set.Conditions.TryGetValue(_activeAction.ID, out var conditionSet))
+            {
+                conditionSet = set.Conditions[_activeAction.ID] = new ConditionSet();
+            }
+            conditionSet?.Draw(rotation);
+        } },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Actions_DisabledConditionSet, () =>
+        {
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_DisabledConditionSet_Description);
+
+            var rotation = RotationUpdater.RightNowRotation;
+            var set = ActionSequencerUpdater.RightSet;
+            if (set == null || _activeAction == null || rotation == null) return;
+
+            if (!set.DiabledConditions.TryGetValue(_activeAction.ID, out var disableConditionSet))
+            {
+                disableConditionSet = set.DiabledConditions[_activeAction.ID] = new ConditionSet();
+            }
+            disableConditionSet?.Draw(rotation);
+        } },
+    })
+    {
+        HeaderSize = 18,
+    };
+
+
+    #endregion
 
     private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
     {
@@ -836,6 +961,85 @@ public class RotationConfigWindowNew : Window
             result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size);
         }, wholeWidth, size.X);
         return result;
+    }
+
+    private static void DrawActionOverlay(Vector2 cursor, float width, float percent)
+    {
+        var pixPerUnit = width / 82;
+
+        if (percent < 0)
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
+
+            if (cover != null)
+            {
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
+
+                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                var start = new Vector2((96f * 0 + 4f) / cover.Width, (96f * 2) / cover.Height);
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    start, start + step);
+            }
+        }
+        else if (percent < 1)
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_recast_hr1.tex");
+
+            if (cover != null)
+            {
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
+
+                var P = (int)(percent * 81);
+
+
+                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                var start = new Vector2(P % 9 * step.X, P / 9 * step.Y);
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    start, start + step);
+            }
+        }
+        else
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
+
+            if (cover != null)
+            {
+
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    new Vector2(4f / cover.Width, 0f / cover.Height),
+                    new Vector2(92f / cover.Width, 96f / cover.Height));
+            }
+        }
+
+        if (percent > 1)
+        {
+            var cover = IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex");
+
+            if (cover != null)
+            {
+                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
+
+                var P = (int)(percent % 1 * 81);
+
+                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                var start = new Vector2((P % 9 + 9) * step.X, P / 9 * step.Y);
+
+                //Out Size is 88, 96
+                //Inner Size is 82, 82
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                    start, start + step);
+            }
+        }
     }
     #endregion
 }

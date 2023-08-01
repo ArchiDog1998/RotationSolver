@@ -80,7 +80,6 @@ internal partial class Strings
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy the command";
-    public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
     public string ConfigWindow_Rotation_Description_Old { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
 
     public string ConfigWindow_Rotation_KeyName { get; set; } = "The key name is";
@@ -263,8 +262,6 @@ internal partial class Strings
     public string ConfigWindow_Param_ResetToDefaultWait { get; set; } = "Please wait for a second.";
     public string ConfigWindow_Param_ResetToDefaultSure { get; set; } = "Are you sure to reset this value?";
 
-    public string ConfigWindow_Action_ShowOnCDWindow { get; set; } = "Show on CD window";
-
     public string ConfigWindow_Control_OnlyShowWithHostileOrInDuty { get; set; } = "Only shown if there are enemies in or in duty";
     public string ConfigWindow_Control_ShowNextActionWindow { get; set; } = "Show Next Action Window";
 
@@ -327,10 +324,7 @@ internal partial class Strings
     public string ActionSequencer_MustUseDesc { get; set; } = "Skip AOE and Buff.";
     public string ActionSequencer_Empty { get; set; } = "UseUp";
     public string ActionSequencer_EmptyDesc { get; set; } = "UseUp or Skip Combo";
-    public string ActionSequencer_ActionSequencerDescription { get; set; } = "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.";
 
-    public string ActionSequencer_ForceConditionSet { get; set; } = "Conditions When Automatic Use of Action is Forced";
-    public string ActionSequencer_DisableConditionSet { get; set; } = "Conditions When Automatic Use of Action is Disabled";
     public string ActionSequencer_Can { get; set; } = "Can";
     public string ActionSequencer_Cannot { get; set; } = "Cannot";
     public string ActionSequencer_Is { get; set; } = "Is";
@@ -639,4 +633,17 @@ internal partial class Strings
     public string ConfigWindow_Rotation_Description { get; set; } = "Description";
     public string ConfigWindow_Rotation_Configuration { get; set; } = "Configuration";
     public string ConfigWindow_Rotation_Information { get; set; } = "Information";
+
+    public string ConfigWindow_Actions_Description { get; set; } = "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.";
+
+    public string ConfigWindow_Actions_ForcedConditionSet { get; set; } = "Forced Condition";
+    public string ConfigWindow_Actions_ForcedConditionSet_Description { get; set; } = "Conditions when automatic use of action is forced.";
+    public string ConfigWindow_Actions_DisabledConditionSet { get; set; } = "Disabled Condition";
+    public string ConfigWindow_Actions_DisabledConditionSet_Description { get; set; } = "Conditions when automatic use of action is disabled.";
+    public string ConfigWindow_Actions_Enable { get; set; } = "Enable";
+
+    public string ConfigWindow_Actions_ShowOnCDWindow { get; set; } = "Show on CD window";
+
+    public string ConfigWindow_Actions_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
+
 }

@@ -9,7 +9,7 @@ internal class MajorConditionSet
     /// </summary>
     public Dictionary<uint, ConditionSet> Conditions { get; } = new Dictionary<uint, ConditionSet>();
 
-    public Dictionary<uint, ConditionSet> DiableConditions { get; } = new Dictionary<uint, ConditionSet>();
+    public Dictionary<uint, ConditionSet> DiabledConditions { get; } = new Dictionary<uint, ConditionSet>();
 
     public string Name;
 
