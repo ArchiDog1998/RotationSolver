@@ -472,7 +472,7 @@ internal class ControlWindow : Window
                 }
                 else if (action is IBaseItem item)
                 {
-                    canDoIt = item.CanUse(out _);
+                    canDoIt = item.CanUse(out _, true);
                 }
                 if(canDoIt) action.Use();
             }

@@ -706,7 +706,7 @@ internal static class ImGuiHelper
             ImGui.Text("Status HQ: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID + 1000000).ToString());
             var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, item.ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, item.ID);
             ImGui.Text("remain: " + remain.ToString());
-            ImGui.Text("CanUse: " + item.CanUse(out _).ToString());
+            ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
 
             if(item is HealPotionItem healPotionItem)
             {

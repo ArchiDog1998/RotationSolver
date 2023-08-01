@@ -13,7 +13,7 @@ public abstract partial class CustomRotation
             CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
         BaseAction.SkipDisable = false;
 
-        if (act is IBaseItem i &&  i.CanUse(out _)) return true;
+        if (act is IBaseItem i && i.CanUse(out _, true)) return true;
 
         if (!Service.Config.GetValue(SettingsCommand.UseAbility) 
             || Player.TotalCastTime > 0)

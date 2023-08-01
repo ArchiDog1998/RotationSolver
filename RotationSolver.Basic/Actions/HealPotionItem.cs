@@ -27,13 +27,13 @@ internal class HealPotionItem : BaseItem
         _maxHp = data[1];
     }
 
-    public override bool CanUse(out IAction item)
+    public override bool CanUse(out IAction item, bool clippingCheck)
     {
         item = null;
         if (!Player.Available) return false;
         var job = (Job)Player.Object.ClassJob.Id;
         if (Player.Object.GetHealthRatio() > job.GetHealthSingleAbilityHot()) return false;
         if (Player.Object.MaxHp - Player.Object.CurrentHp < MaxHealHp) return false;
-        return base.CanUse(out item);
+        return base.CanUse(out item, clippingCheck);
     }
 }
