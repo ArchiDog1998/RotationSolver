@@ -28,9 +28,18 @@ public class LinkDescriptionAttribute : Attribute
     /// </summary>
     /// <param name="path"></param>
     /// <param name="description"></param>
+    [Obsolete]
     public LinkDescriptionAttribute(string path, string description = "")
     {
         Path = path;
         Description = description;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public LinkDescriptionAttribute()
+    {
+        
     }
 }

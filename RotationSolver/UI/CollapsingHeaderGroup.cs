@@ -49,6 +49,7 @@ internal class CollapsingHeaderGroup
 
             try
             {
+                ImGui.Spacing();
                 ImGui.Separator();
                 var selected = index == _openedIndex;
                 ImGui.PushFont(ImGuiHelper.GetFont(HeaderSize));
@@ -64,11 +65,8 @@ internal class CollapsingHeaderGroup
                 }
                 if (selected)
                 {
-                    ImGui.Indent();
                     header.Value();
-                    ImGui.Unindent();
                 }
-                ImGui.Spacing();
             }
             catch (Exception ex)
             {
