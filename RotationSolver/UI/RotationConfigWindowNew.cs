@@ -516,13 +516,26 @@ public class RotationConfigWindowNew : Window
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
-        ImGui.PushFont(ImGuiHelper.GetFont(15));
-        ImGui.TextWrapped(rotation.Description);
-        ImGui.PopFont();
+        var desc = rotation.Description;
+        if (!string.IsNullOrEmpty(desc))
+        {
+            ImGui.PushFont(ImGuiHelper.GetFont(15));
+            ImGui.TextWrapped(desc);
+            ImGui.PopFont();
+        }
 
         var wholeWidth = ImGui.GetWindowWidth();
         var type = rotation.GetType();
         var info = type.Assembly.GetInfo();
+
+        if (!string.IsNullOrEmpty(rotation.WhyNotValid))
+        {
+            var author = info.Author;
+            if (string.IsNullOrEmpty(author)) author = "Author";
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DPSRed);
+            ImGui.TextWrapped(string.Format(rotation.WhyNotValid, author));
+            ImGui.PopStyleColor();
+        }
 
         if (!string.IsNullOrEmpty(info.DonateLink))
         {
@@ -665,43 +678,22 @@ public class RotationConfigWindowNew : Window
         var assembly = rotation.GetType().Assembly;
         var info = assembly.GetInfo();
 
-        if (info != null && ImGui.BeginTable("AssemblyTable", 5, ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY
-    | ImGuiTableFlags.Resizable
-    | ImGuiTableFlags.SizingStretchProp))
+        if (info != null )
         {
-            ImGui.TableSetupScrollFreeze(0, 1);
-            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Name");
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Version");
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Author");
-
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
+            ImGui.Text("Assembly Name: ");
+            ImGui.SameLine();
             if (ImGui.Button(info.Name))
             {
                 Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
             }
-
-            ImGui.TableNextColumn();
-
+            
             var version = assembly.GetName().Version;
             if (version != null)
             {
-                ImGui.Text(version.ToString());
+                ImGui.Text("Assembly Version: " + version.ToString());
             }
 
-            ImGui.TableNextColumn();
-
-            ImGui.Text(info.Author);
-
-            ImGui.EndTable();
+            ImGui.Text("Assembly Author: " + info.Author);
         }
     }
     #endregion

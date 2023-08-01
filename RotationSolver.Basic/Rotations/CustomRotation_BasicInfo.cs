@@ -79,6 +79,7 @@ public abstract partial class CustomRotation : ICustomRotation
     public IAction AntiKnockbackAbility { get; private set; }
 
     public bool IsValid { get; private set; } = true;   
+    public string WhyNotValid { get; private set; } = string.Empty;
 
     private protected CustomRotation()
     {

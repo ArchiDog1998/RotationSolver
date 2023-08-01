@@ -14,6 +14,11 @@ public interface ICustomRotation : ITexture
     bool IsValid { get; }
 
     /// <summary>
+    /// Why this rotation is not valid.
+    /// </summary>
+    string WhyNotValid { get;}
+
+    /// <summary>
     /// The class job about this rotation.
     /// </summary>
     ClassJob ClassJob { get; }

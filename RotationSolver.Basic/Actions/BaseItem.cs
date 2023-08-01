@@ -158,7 +158,7 @@ public class BaseItem : IBaseItem
     /// <param name="item"></param>
     /// <param name="clippingCheck"></param>
     /// <returns></returns>
-    public virtual unsafe bool CanUse(out IAction item, bool clippingCheck)
+    public virtual unsafe bool CanUse(out IAction item, bool clippingCheck = true)
     {
         item = this;
         if (_item == null) return false;

@@ -4,7 +4,6 @@ namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
-    Exception _lastException;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public bool TryInvoke(out IAction newAction, out IAction gcdAction)
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
@@ -24,11 +23,14 @@ public abstract partial class CustomRotation
         }
         catch (Exception ex)
         {
-            if(_lastException?.GetType() != ex.GetType())
+            WhyNotValid = $"Failed to invoke the next action,please contact to \"{{0}}\".";
+
+            while(ex != null)
             {
-                PluginLog.Error(ex, $"Failed to invoke the next action in \"{GetType().FullName}\",\nplease contact to the author with your logs in /xllog.");
+                if (!string.IsNullOrEmpty(ex.Message)) WhyNotValid += "\n" + ex.Message;
+                if (!string.IsNullOrEmpty(ex.StackTrace)) WhyNotValid += "\n" + ex.StackTrace;
+                ex = ex.InnerException;
             }
-            _lastException = ex;
             IsValid = false;
         }
 

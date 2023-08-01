@@ -9,7 +9,12 @@ public class AssemblyLinkAttribute : Attribute
     /// <summary>
     /// A link for donate.
     /// </summary>
-    public string Donate { get; }
+    public string Donate { get; set; }
+
+    /// <summary>
+    /// A link for changelog.
+    /// </summary>
+    public string ChangeLog { get; set; }
 
     /// <summary>
     /// Constructer.
@@ -23,6 +28,7 @@ public class AssemblyLinkAttribute : Attribute
         string changeLog = null, string donate = null)
     {
         Donate = donate;
+        ChangeLog = changeLog;
     }
 
     /// <summary>

@@ -9,14 +9,23 @@ public class SourceCodeAttribute : Attribute
     /// <summary>
     /// The link to the source code.
     /// </summary>
-    public string Url { get; }
+    public string Url { get; set; }
 
     /// <summary>
     /// Constructer.
     /// </summary>
     /// <param name="url"></param>
+    [Obsolete]
     public SourceCodeAttribute(string url)
     {
         Url = url;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public SourceCodeAttribute()
+    {
+        
     }
 }
