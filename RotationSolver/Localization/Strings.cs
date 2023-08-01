@@ -640,8 +640,6 @@ internal partial class Strings
     public string ConfigWindow_Actions_ForcedConditionSet_Description { get; set; } = "Conditions when automatic use of action is forced.";
     public string ConfigWindow_Actions_DisabledConditionSet { get; set; } = "Disabled Condition";
     public string ConfigWindow_Actions_DisabledConditionSet_Description { get; set; } = "Conditions when automatic use of action is disabled.";
-    public string ConfigWindow_Actions_Enable { get; set; } = "Enable";
-
     public string ConfigWindow_Actions_ShowOnCDWindow { get; set; } = "Show on CD window";
 
     public string ConfigWindow_Actions_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";

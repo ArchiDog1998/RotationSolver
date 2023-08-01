@@ -464,13 +464,13 @@ public partial class BaseAction
 
     private IEnumerable<BattleChara> TargetFilterFuncEot(IEnumerable<BattleChara> tars, bool mustUse)
     {
-        if(AttackType == AttackType.Magic)
+        if (AttackType == AttackType.Magic)
         {
-            tars = tars.Where(t => t.HasStatus(false, StatusID.MagicResistance));
+            tars = tars.Where(t => !t.HasStatus(false, StatusID.MagicResistance));
         }
-        else if(Range >= 20)
+        else if (Range >= 20)
         {
-            tars = tars.Where(t => t.HasStatus(false, StatusID.RangedResistance, StatusID.EnergyField));
+            tars = tars.Where(t => !t.HasStatus(false, StatusID.RangedResistance, StatusID.EnergyField));
         }
 
         if (FilterForHostiles != null)

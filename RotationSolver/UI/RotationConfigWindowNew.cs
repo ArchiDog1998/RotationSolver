@@ -11,8 +11,10 @@ using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.Diagnostics;
 using System.Drawing;
+using System.Reflection.Metadata;
 using System.Windows.Forms;
 using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureMacroModule.Macro;
 
 namespace RotationSolver.UI;
 
@@ -102,7 +104,7 @@ public class RotationConfigWindowNew : Window
                         {
                             _activeTab = item;
                         }
-                        DrawActionOverlay(cursor, size, _activeTab == item ? 1 : -1);
+                        DrawActionOverlay(cursor, size, _activeTab == item ? 1 : 0);
                     }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), size); ImguiTooltips.HoveredTooltip(item.ToString());
                 }
                 else
@@ -709,8 +711,7 @@ public class RotationConfigWindowNew : Window
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_Description);
 
-        if (ImGui.BeginTable("Rotation Solver Actions", 2, ImGuiTableFlags.Borders
-            | ImGuiTableFlags.Resizable))
+        if (ImGui.BeginTable("Rotation Solver Actions", 2, ImGuiTableFlags.Resizable))
         {
             ImGui.TableSetupColumn("Action Column", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 2);
             ImGui.TableNextColumn();
@@ -722,7 +723,7 @@ public class RotationConfigWindowNew : Window
                 if (RotationUpdater.RightNowRotation != null)
                 {
                     var size = 30 * _scale;
-                    var count = (int)MathF.Floor(ImGui.GetWindowWidth() / size);
+                    var count = (int)MathF.Floor(ImGui.GetWindowWidth() / (size + ImGui.GetStyle().ItemSpacing.X));
                     foreach (var pair in RotationUpdater.AllGroupedActions)
                     {
                         _actionsList.AddCollapsingHeader(() => pair.Key, () =>
@@ -740,12 +741,21 @@ public class RotationConfigWindowNew : Window
 
                                 var active = _activeAction == item;
                                 var cursor = ImGui.GetCursorPos();
-                                if (SilenceImageButton(icon.ImGuiHandle, Vector2.One * size, active))
+                                ImGui.BeginGroup();
+                                if (SilenceImageButton(icon.ImGuiHandle, Vector2.One * size, active, item.Name))
                                 {
                                     _activeAction = item;
                                 }
-                                ImguiTooltips.ShowTooltip(item.Name);
-                                DrawActionOverlay(cursor, size, active ? 1 : -1);
+                                ImguiTooltips.HoveredTooltip(item.Name);
+                                DrawActionOverlay(cursor, size, active ? 1 : 0);
+
+                                var texture = IconSet.GetTexture("https://raw.githubusercontent.com/goatcorp/DalamudAssets/master/UIRes/installedIcon.png");
+                                if(texture != null && item.IsEnabled)
+                                {
+                                    ImGui.SetCursorPos(cursor);
+                                    ImGui.Image(texture.ImGuiHandle, Vector2.One * size);
+                                }
+                                ImGui.EndGroup();
                             }
                         });
                     }
@@ -760,7 +770,7 @@ public class RotationConfigWindowNew : Window
             if (_sequencerList != null && _activeAction != null && ImGui.BeginChild("Rotation Solver Sequencer List"))
             {
                 var enable = _activeAction.IsEnabled;
-                if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_Enable}##{_activeAction.Name}Enabled", ref enable))
+                if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
                 {
                     _activeAction.IsEnabled = enable;
                 }
@@ -911,35 +921,37 @@ public class RotationConfigWindowNew : Window
     }
 
     #region Image
-    private unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected)
+    private unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected, string id = "")
     {
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderActive)));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderHovered)));
         ImGui.PushStyleColor(ImGuiCol.Button, selected ? ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.Header)) : 0);
 
-        var result = NoPaddingImageButton(handle, size);
+        var result = NoPaddingImageButton(handle, size, id);
         ImGui.PopStyleColor(3);
 
         return result;
     }
 
-    private unsafe static bool NoPaddingNoColorImageButton(IntPtr handle, Vector2 size)
+    private unsafe static bool NoPaddingNoColorImageButton(IntPtr handle, Vector2 size, string id = "")
     {
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0);
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0);
         ImGui.PushStyleColor(ImGuiCol.Button, 0);
-        var result = NoPaddingImageButton(handle, size);
+        var result = NoPaddingImageButton(handle, size, id);
         ImGui.PopStyleColor(3);
 
         return result;
     }
 
-    private static bool NoPaddingImageButton(IntPtr handle, Vector2 size)
+    private static bool NoPaddingImageButton(IntPtr handle, Vector2 size, string id = "")
     {
         var padding = ImGui.GetStyle().FramePadding;
         ImGui.GetStyle().FramePadding = Vector2.Zero;
 
+        ImGui.PushID(id);
         var result = ImGui.ImageButton(handle, size);
+        ImGui.PopID();
         if (ImGui.IsItemHovered())
         {
             ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
@@ -949,7 +961,7 @@ public class RotationConfigWindowNew : Window
         return result;
     }
 
-    private static bool TextureButton(TextureWrap texture, float wholeWidth, float maxWidth)
+    private static bool TextureButton(TextureWrap texture, float wholeWidth, float maxWidth, string id = "")
     {
         if (texture == null) return false;
 
@@ -958,7 +970,7 @@ public class RotationConfigWindowNew : Window
         var result = false;
         DrawItemMiddle(() =>
         {
-            result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size);
+            result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size, id);
         }, wholeWidth, size.X);
         return result;
     }
