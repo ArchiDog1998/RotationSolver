@@ -1,6 +1,6 @@
 [submodule "ECommons"]
 	path = ECommons
-	url = https://github.com/NightmareXIV/ECommons.git
+	url = https://github.com/ArchiDog1998/ECommons
 [submodule "XIVPainter"]
 	path = XIVPainter
 	url = https://github.com/ArchiDog1998/XIVPainter
