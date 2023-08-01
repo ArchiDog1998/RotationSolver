@@ -491,7 +491,10 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FlyingSardine { get; } = new BLUAction(ActionID.FlyingSardine);
+    public static IBLUAction FlyingSardine { get; } = new BLUAction(ActionID.FlyingSardine)
+    {
+        FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
+    };
 
     /// <summary>
     /// 
