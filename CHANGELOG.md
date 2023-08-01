@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.1.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.1...v3.1.2) (2023-08-01)
+
+
+### Bug Fixes
+
+* actions panel in game. ([376e4d8](https://github.com/ArchiDog1998/RotationSolver/commit/376e4d843107ee24ea7b3c73eb54d5082eddf389))
+* add clipping check for medicine. ([98446bc](https://github.com/ArchiDog1998/RotationSolver/commit/98446bc02ec88195fcd88d9bf7115a1095dafcd2))
+* add link about incompatible plugins. ([7422723](https://github.com/ArchiDog1998/RotationSolver/commit/74227230d0a6246605a4a4170a2e5c2bc7b12af4))
+* add resistance check. ([4396020](https://github.com/ArchiDog1998/RotationSolver/commit/4396020dee9920c87485a5ec70c7cde82d884442))
+* almost finished the `About` tab. ([fc1cf06](https://github.com/ArchiDog1998/RotationSolver/commit/fc1cf06ffa5bb333ee4c4f8c628b42c2a9dbc99f))
+* changed some ui. ([a75f140](https://github.com/ArchiDog1998/RotationSolver/commit/a75f1406d1292a31628f43018561fb1129cfe1d5))
+* changed some ui. ([3955323](https://github.com/ArchiDog1998/RotationSolver/commit/39553234534b3336037aff9b06901bdad0b75c7e))
+* finished new ui actions tab. ([11b5259](https://github.com/ArchiDog1998/RotationSolver/commit/11b5259d404e6f5579314cf892b678226cb76692))
+* finished the rotations description. ([6bebf95](https://github.com/ArchiDog1998/RotationSolver/commit/6bebf952550b6c3f5d83a4228df2b354563000da))
+* fixed link png. ([749a855](https://github.com/ArchiDog1998/RotationSolver/commit/749a855ae81a3f75cacc1c45ce1e686d4b4c3820))
+
 ## [3.1.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.0...v3.1.1) (2023-07-30)
 
 
