@@ -10,14 +10,23 @@ public class AuthorHashAttribute : Attribute
     /// <summary>
     /// The hash of your character.
     /// </summary>
-    public string Hash { get; }
+    public string Hash { get; set; }
 
     /// <summary>
     /// Constructer
     /// </summary>
     /// <param name="hash"><see cref="Hash"/></param>
+    [Obsolete]
     public AuthorHashAttribute(string hash)
     {
         Hash = hash;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public AuthorHashAttribute()
+    {
+        
     }
 }

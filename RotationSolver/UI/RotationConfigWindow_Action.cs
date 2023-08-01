@@ -49,7 +49,7 @@ internal partial class RotationConfigWindow
 
     private static void DrawActionSequencerCondition()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.ActionSequencer_ActionSequencerDescription);
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_Description);
 
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
@@ -65,7 +65,7 @@ internal partial class RotationConfigWindow
         ImGui.SameLine();
         ImGui.TextColored(ImGuiColors.DalamudYellow, ActiveAction.Name);
 
-        if (ImGui.CollapsingHeader(LocalizationManager.RightLang.ActionSequencer_ForceConditionSet))
+        if (ImGui.CollapsingHeader(LocalizationManager.RightLang.ConfigWindow_Actions_ForcedConditionSet))
         {
             if (!set.Conditions.TryGetValue(ActiveAction.ID, out var conditionSet))
             {
@@ -74,11 +74,11 @@ internal partial class RotationConfigWindow
             conditionSet?.Draw(rotation);
         }
 
-        if (ImGui.CollapsingHeader(LocalizationManager.RightLang.ActionSequencer_DisableConditionSet))
+        if (ImGui.CollapsingHeader(LocalizationManager.RightLang.ConfigWindow_Actions_DisabledConditionSet))
         {
-            if (!set.DiableConditions.TryGetValue(ActiveAction.ID, out var disableConditionSet))
+            if (!set.DiabledConditions.TryGetValue(ActiveAction.ID, out var disableConditionSet))
             {
-                disableConditionSet = set.DiableConditions[ActiveAction.ID] = new ConditionSet();
+                disableConditionSet = set.DiabledConditions[ActiveAction.ID] = new ConditionSet();
             }
             disableConditionSet?.Draw(rotation);
         }

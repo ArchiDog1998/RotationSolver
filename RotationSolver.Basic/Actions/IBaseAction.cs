@@ -6,6 +6,16 @@
 public interface IBaseAction : IAction
 {
     /// <summary>
+    /// Attack Type
+    /// </summary>
+    AttackType AttackType { get; }
+
+    /// <summary>
+    /// Aspect
+    /// </summary>
+    Aspect Aspect { get; }
+
+    /// <summary>
     /// MP for casting.
     /// </summary>
     uint MPNeed { get; }

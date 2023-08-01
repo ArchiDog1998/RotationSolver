@@ -13,7 +13,7 @@ public abstract partial class CustomRotation
             CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
         BaseAction.SkipDisable = false;
 
-        if (act is IBaseItem i &&  i.CanUse(out _)) return true;
+        if (act is IBaseItem i && i.CanUse(out _, true)) return true;
 
         if (!Service.Config.GetValue(SettingsCommand.UseAbility) 
             || Player.TotalCastTime > 0)
@@ -362,12 +362,13 @@ public abstract partial class CustomRotation
     }
 
     /// <summary>
-    /// The ability that speeds your chacacter up.
+    /// The ability that speeds your character up.
     /// </summary>
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
 
     [RotationDesc(DescType.SpeedAbility)]
+    [RotationDesc(ActionID.Sprint)]
     protected virtual bool SpeedAbility(out IAction act)
     {
         if (Sprint.CanUse(out act, CanUseOption.MustUse)) return true;

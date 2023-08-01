@@ -156,8 +156,9 @@ public class BaseItem : IBaseItem
     /// Can Use this item.
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="clippingCheck"></param>
     /// <returns></returns>
-    public virtual unsafe bool CanUse(out IAction item)
+    public virtual unsafe bool CanUse(out IAction item, bool clippingCheck = true)
     {
         item = this;
         if (_item == null) return false;
@@ -174,7 +175,7 @@ public class BaseItem : IBaseItem
         {
             if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping) return false;
 
-            if (remain > DataCenter.ActionRemain) return false;
+            if (clippingCheck && remain > DataCenter.ActionRemain) return false;
         }
 
         if (ItemCheck != null && !ItemCheck()) return false;

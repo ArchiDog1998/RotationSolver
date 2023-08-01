@@ -9,6 +9,7 @@ public interface IBaseItem : IAction
     /// The item can be used.
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="clippingCheck"></param>
     /// <returns></returns>
-    bool CanUse(out IAction item);
+    bool CanUse(out IAction item, bool clippingCheck = true);
 }

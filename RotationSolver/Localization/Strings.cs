@@ -80,8 +80,7 @@ internal partial class Strings
     public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy the command";
-    public string ConfigWindow_Helper_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
-    public string ConfigWindow_Rotation_Description { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
+    public string ConfigWindow_Rotation_Description_Old { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
 
     public string ConfigWindow_Rotation_KeyName { get; set; } = "The key name is";
     public string ConfigWindow_Events_AddEvent { get; set; } = "AddEvents";
@@ -263,8 +262,6 @@ internal partial class Strings
     public string ConfigWindow_Param_ResetToDefaultWait { get; set; } = "Please wait for a second.";
     public string ConfigWindow_Param_ResetToDefaultSure { get; set; } = "Are you sure to reset this value?";
 
-    public string ConfigWindow_Action_ShowOnCDWindow { get; set; } = "Show on CD window";
-
     public string ConfigWindow_Control_OnlyShowWithHostileOrInDuty { get; set; } = "Only shown if there are enemies in or in duty";
     public string ConfigWindow_Control_ShowNextActionWindow { get; set; } = "Show Next Action Window";
 
@@ -327,10 +324,7 @@ internal partial class Strings
     public string ActionSequencer_MustUseDesc { get; set; } = "Skip AOE and Buff.";
     public string ActionSequencer_Empty { get; set; } = "UseUp";
     public string ActionSequencer_EmptyDesc { get; set; } = "UseUp or Skip Combo";
-    public string ActionSequencer_ActionSequencerDescription { get; set; } = "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.";
 
-    public string ActionSequencer_ForceConditionSet { get; set; } = "Conditions When Automatic Use of Action is Forced";
-    public string ActionSequencer_DisableConditionSet { get; set; } = "Conditions When Automatic Use of Action is Disabled";
     public string ActionSequencer_Can { get; set; } = "Can";
     public string ActionSequencer_Cannot { get; set; } = "Cannot";
     public string ActionSequencer_Is { get; set; } = "Is";
@@ -431,6 +425,7 @@ internal partial class Strings
     public string DescType_DefenseSingleAbility { get; set; } = "Single Defense Ability";
     public string DescType_MoveForwardAbility { get; set; } = "Move Forward Ability";
     public string DescType_MoveBackAbility { get; set; } = "Move Back Ability";
+    public string DescType_SpeedAbility { get; set; } = "Speed Ability";
 
     #endregion
 
@@ -619,4 +614,34 @@ internal partial class Strings
     public string TextToTalkWarning { get; set; } = "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!";
 
     public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action ({0})!";
+
+
+    public string ConfigWindow_About_Punchline { get; set; } = "Analyses PvE combat information every frame and finds the best action.";
+    public string ConfigWindow_About_Description { get; set; } = "This means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.\n\nThen, it will highlight the best action on the hot bar, or help you to click on it.";
+
+    public string ConfigWindow_About_Warning { get; set; } = "It is designed for GENERAL COMBAT, not for savage or ultimate. Use it carefully.";
+
+    public string ConfigWindow_About_Macros { get; set; } = "Macros";
+    public string ConfigWindow_About_Links { get; set; } = "Links";
+    public string ConfigWindow_About_Compatibility { get; set; } = "Compatibility";
+    public string ConfigWindow_About_Compatibility_Description { get; set; } = "literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:";
+
+    public string ConfigWindow_About_Compatibility_Mistake { get; set; } = "Can't properly execute the behavior that RS is going to do.";
+    public string ConfigWindow_About_Compatibility_Mislead { get; set; } = "Misleading RS to make the right decision.";
+    public string ConfigWindow_About_Compatibility_Crash { get; set; } = "Cause the game to crash.";
+
+    public string ConfigWindow_Rotation_Description { get; set; } = "Description";
+    public string ConfigWindow_Rotation_Configuration { get; set; } = "Configuration";
+    public string ConfigWindow_Rotation_Information { get; set; } = "Information";
+
+    public string ConfigWindow_Actions_Description { get; set; } = "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.";
+
+    public string ConfigWindow_Actions_ForcedConditionSet { get; set; } = "Forced Condition";
+    public string ConfigWindow_Actions_ForcedConditionSet_Description { get; set; } = "Conditions when automatic use of action is forced.";
+    public string ConfigWindow_Actions_DisabledConditionSet { get; set; } = "Disabled Condition";
+    public string ConfigWindow_Actions_DisabledConditionSet_Description { get; set; } = "Conditions when automatic use of action is disabled.";
+    public string ConfigWindow_Actions_ShowOnCDWindow { get; set; } = "Show on CD window";
+
+    public string ConfigWindow_Actions_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
+
 }

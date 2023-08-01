@@ -7,38 +7,35 @@
 public class AssemblyLinkAttribute : Attribute
 {
     /// <summary>
-    /// The support link
-    /// </summary>
-    public string SupportLink { get; }
-
-    /// <summary>
-    /// Wiki link.
-    /// </summary>
-    public string HelpLink { get; }
-
-    /// <summary>
-    /// A link to change log.
-    /// </summary>
-    public string ChangeLog { get; }
-
-    /// <summary>
     /// A link for donate.
     /// </summary>
-    public string Donate { get; }
+    public string Donate { get; set; }
+
+    /// <summary>
+    /// A link for changelog.
+    /// </summary>
+    public string ChangeLog { get; set; }
 
     /// <summary>
     /// Constructer.
     /// </summary>
-    /// <param name="supportLink"><see cref="SupportLink"/></param>
-    /// <param name="helpLink"><see cref="HelpLink"/></param>
-    /// <param name="changeLog"><see cref="ChangeLog"/></param>
+    /// <param name="supportLink"></param>
+    /// <param name="helpLink"></param>
+    /// <param name="changeLog"></param>
     /// <param name="donate"><see cref="Donate"/></param>
+    [Obsolete()]
     public AssemblyLinkAttribute(string supportLink = null, string helpLink = null,
         string changeLog = null, string donate = null)
     {
-        SupportLink = supportLink;
-        HelpLink = helpLink;
-        ChangeLog = changeLog;
         Donate = donate;
+        ChangeLog = changeLog;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public AssemblyLinkAttribute()
+    {
+        
     }
 }

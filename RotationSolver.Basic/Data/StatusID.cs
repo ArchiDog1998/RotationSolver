@@ -1326,4 +1326,19 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     PassageOfArms = 1175,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    RangedResistance = 941,
+
+    /// <summary>
+    /// Invulnerable to ranged attacks.
+    /// </summary>
+    EnergyField = 584,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    MagicResistance = 942,
 }

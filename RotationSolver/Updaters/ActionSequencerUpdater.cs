@@ -25,7 +25,7 @@ internal class ActionSequencerUpdater
         var set = RightSet;
         if (set == null) return;
 
-        DataCenter.DisabledAction = new HashSet<uint>(set.DiableConditions.Where(pair => pair.Value.IsTrue(customRotation))
+        DataCenter.DisabledAction = new HashSet<uint>(set.DiabledConditions.Where(pair => pair.Value.IsTrue(customRotation))
              .Select(pair => pair.Key));
 
         bool find = false;

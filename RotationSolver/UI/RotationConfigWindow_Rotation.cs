@@ -14,7 +14,7 @@ internal partial class RotationConfigWindow
 {
     private static void DrawRotationTab()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Rotation_Description);
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Rotation_Description_Old);
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
@@ -330,57 +330,6 @@ internal partial class RotationConfigWindow
                 }
 
                 ImGui.TableNextColumn();
-
-                if (!string.IsNullOrEmpty(info.SupportLink))
-                {
-                    if (ImGuiHelper.IconButton(FontAwesomeIcon.HandPaper, $"Support{grp.Key.GetHashCode()}"))
-                    {
-                        try
-                        {
-                            Util.OpenLink(info.SupportLink);
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                }
-
-                ImGui.SameLine();
-
-                if (!string.IsNullOrEmpty(info.HelpLink))
-                {
-                    if (ImGuiHelper.IconButton(FontAwesomeIcon.Book, $"Help{grp.Key.GetHashCode()}"))
-                    {
-                        try
-                        {
-                            Util.OpenLink(info.HelpLink);
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                }
-
-                ImGui.SameLine();
-                
-                if (!string.IsNullOrEmpty(info.ChangeLog))
-                {
-                    if (ImGuiHelper.IconButton(FontAwesomeIcon.History, $"ChangeLog{grp.Key.GetHashCode()}"))
-                    {
-                        try
-                        {
-                            Util.OpenLink(info.ChangeLog);
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                }
-
-                ImGui.SameLine();
 
                 ImGui.PushStyleColor(ImGuiCol.Button, 0xFF5E5BFF);
                 ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD5E5BFF);

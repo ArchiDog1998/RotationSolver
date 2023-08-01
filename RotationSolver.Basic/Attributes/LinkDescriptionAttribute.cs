@@ -16,21 +16,30 @@ public class LinkDescriptionAttribute : Attribute
     /// <summary>
     /// Description.
     /// </summary>
-    public string Description { get; private set; }
+    public string Description { get; set; }
 
     /// <summary>
     /// Url.
     /// </summary>
-    public string Path { get; }
+    public string Path { get; set; }
 
     /// <summary>
     /// Constructer.
     /// </summary>
     /// <param name="path"></param>
     /// <param name="description"></param>
+    [Obsolete]
     public LinkDescriptionAttribute(string path, string description = "")
     {
         Path = path;
         Description = description;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public LinkDescriptionAttribute()
+    {
+        
     }
 }

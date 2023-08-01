@@ -82,33 +82,33 @@ public abstract partial class CustomRotation
     public static IBaseItem TinctureOfMind8 { get; }
         = new MedicineItem(39731, MedicineType.Mind);
 
-    static bool UseStrength(out IAction act)
+    static bool UseStrength(out IAction act, bool clippingCheck)
     {
-        if (TinctureOfStrength8.CanUse(out act)) return true;
-        if (TinctureOfStrength7.CanUse(out act)) return true;
-        if (TinctureOfStrength6.CanUse(out act)) return true;
+        if (TinctureOfStrength8.CanUse(out act, clippingCheck)) return true;
+        if (TinctureOfStrength7.CanUse(out act, clippingCheck)) return true;
+        if (TinctureOfStrength6.CanUse(out act, clippingCheck)) return true;
         return false;
     }
 
-    static bool UseDexterity(out IAction act)
+    static bool UseDexterity(out IAction act, bool clippingCheck)
     {
-        if (TinctureOfDexterity8.CanUse(out act)) return true;
-        if (TinctureOfDexterity7.CanUse(out act)) return true;
-        if (TinctureOfDexterity6.CanUse(out act)) return true;
+        if (TinctureOfDexterity8.CanUse(out act, clippingCheck)) return true;
+        if (TinctureOfDexterity7.CanUse(out act, clippingCheck)) return true;
+        if (TinctureOfDexterity6.CanUse(out act, clippingCheck)) return true;
         return false;
     }
-    static bool UseIntelligence(out IAction act)
+    static bool UseIntelligence(out IAction act, bool clippingCheck)
     {
-        if (TinctureOfIntelligence8.CanUse(out act)) return true;
-        if (TinctureOfIntelligence7.CanUse(out act)) return true;
-        if (TinctureOfIntelligence6.CanUse(out act)) return true;
+        if (TinctureOfIntelligence8.CanUse(out act, clippingCheck)) return true;
+        if (TinctureOfIntelligence7.CanUse(out act, clippingCheck)) return true;
+        if (TinctureOfIntelligence6.CanUse(out act, clippingCheck)) return true;
         return false;
     }
-    static bool UseMind(out IAction act)
+    static bool UseMind(out IAction act, bool clippingCheck)
     {
-        if (TinctureOfMind8.CanUse(out act)) return true;
-        if (TinctureOfMind7.CanUse(out act)) return true;
-        if (TinctureOfMind6.CanUse(out act)) return true;
+        if (TinctureOfMind8.CanUse(out act, clippingCheck)) return true;
+        if (TinctureOfMind7.CanUse(out act, clippingCheck)) return true;
+        if (TinctureOfMind6.CanUse(out act, clippingCheck)) return true;
         return false;
     }
 
@@ -116,8 +116,9 @@ public abstract partial class CustomRotation
     /// Use the burst medicines.
     /// </summary>
     /// <param name="act"></param>
+    /// <param name="clippingCheck"></param>
     /// <returns></returns>
-    protected bool UseBurstMedicine(out IAction act)
+    protected bool UseBurstMedicine(out IAction act, bool clippingCheck = true)
     {
         act = null;
 
@@ -125,10 +126,10 @@ public abstract partial class CustomRotation
 
         return MedicineType switch
         {
-            MedicineType.Strength => UseStrength(out act),
-            MedicineType.Dexterity => UseDexterity(out act),
-            MedicineType.Intelligence => UseIntelligence(out act),
-            MedicineType.Mind => UseMind(out act),
+            MedicineType.Strength => UseStrength(out act, clippingCheck),
+            MedicineType.Dexterity => UseDexterity(out act, clippingCheck),
+            MedicineType.Intelligence => UseIntelligence(out act, clippingCheck),
+            MedicineType.Mind => UseMind(out act, clippingCheck),
             _ => false,
         };
     }
@@ -147,7 +148,7 @@ public abstract partial class CustomRotation
     private bool UseHealPotion(out IAction act)
     {
         var acts = from a in Potions
-                   where a.CanUse(out _)
+                   where a.CanUse(out _, true)
                    orderby a.MaxHealHp
                    select a;
 

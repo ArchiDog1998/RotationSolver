@@ -171,6 +171,7 @@ public abstract partial class BLM_Base : CustomRotation
         /// </summary>
         /// <param name="act"></param>
         /// <param name="option"></param>
+        /// <param name="aoeCount"></param>
         /// <param name="gcdCountForAbility"></param>
         /// <returns></returns>
         public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)

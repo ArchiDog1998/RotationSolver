@@ -429,22 +429,22 @@ internal static class ImGuiHelper
 
     public unsafe static void Display(this ICustomRotation rotation, ICustomRotation[] rotations, bool canAddButton)
         => rotation.DrawEnableTexture(canAddButton, null,
-        text =>
+        rotation =>
         {
             ImguiTooltips.ShowTooltip(() =>
             {
                 var t = IconSet.GetTexture(IconSet.GetJobIcon(rotation, IconType.Framed));
                 ImGui.Image(t.ImGuiHandle, new Vector2(t.Width, t.Height));
 
-                if (!string.IsNullOrEmpty(text.Description))
+                if (!string.IsNullOrEmpty(rotation.Description))
                 {
                     ImGui.SameLine();
                     ImGui.Text("  ");
                     ImGui.SameLine();
-                    ImGui.Text(text.Description);
+                    ImGui.Text(rotation.Description);
                 }
 
-                var type = text.GetType();
+                var type = rotation.GetType();
 
                 var attrs = new List<RotationDescAttribute> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
 
@@ -457,7 +457,7 @@ internal static class ImGuiHelper
                 {
                     foreach (var a in RotationDescAttribute.Merge(attrs))
                     {
-                        RotationDescAttribute.MergeToOne(a)?.Display(text);
+                        RotationDescAttribute.MergeToOne(a)?.Display(rotation);
                     }
                 }
                 catch (Exception ex)
@@ -631,7 +631,7 @@ internal static class ImGuiHelper
     },otherThing: () =>
     {
         var enable = action.IsInCooldown;
-        if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Action_ShowOnCDWindow}##{action.Name}InCooldown", ref enable))
+        if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_ShowOnCDWindow}##{action.Name}InCooldown", ref enable))
         {
             action.IsInCooldown = enable;
             Service.Config.Save();
@@ -641,7 +641,7 @@ internal static class ImGuiHelper
         Spacing();
 
         OtherCommandType.DoActions.DisplayCommandHelp($"{action}-{5}",
-       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, action, 5), false);
+       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Actions_InsertCommand, action, 5), false);
 
         if (Service.Config.InDebug)
         {
@@ -653,6 +653,8 @@ internal static class ImGuiHelper
                 ImGui.Text("Cast Time: " + action.CastTime.ToString());
                 ImGui.Text("MP: " + action.MPNeed.ToString());
 #endif
+                ImGui.Text("AttackType: " + action.AttackType.ToString());
+                ImGui.Text("Aspect: " + action.Aspect.ToString());
                 ImGui.Text("Has One:" + action.HasOneCharge.ToString());
                 ImGui.Text("Recast One: " + action.RecastTimeOneChargeRaw.ToString());
                 ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsedRaw.ToString());
@@ -684,7 +686,7 @@ internal static class ImGuiHelper
         if (Service.Config.ShowCooldownWindow)
         {
             var enable = item.IsInCooldown;
-            if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Action_ShowOnCDWindow}##{item.Name}InCooldown", ref enable))
+            if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_ShowOnCDWindow}##{item.Name}InCooldown", ref enable))
             {
                 item.IsInCooldown = enable;
                 Service.Config.Save();
@@ -695,7 +697,7 @@ internal static class ImGuiHelper
         }
 
         OtherCommandType.DoActions.DisplayCommandHelp($"{item}-{5}",
-       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Helper_InsertCommand, item, 5), false);
+       type => string.Format(LocalizationManager.RightLang.ConfigWindow_Actions_InsertCommand, item, 5), false);
 
 
         if (Service.Config.InDebug)
@@ -704,7 +706,7 @@ internal static class ImGuiHelper
             ImGui.Text("Status HQ: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID + 1000000).ToString());
             var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, item.ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, item.ID);
             ImGui.Text("remain: " + remain.ToString());
-            ImGui.Text("CanUse: " + item.CanUse(out _).ToString());
+            ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
 
             if(item is HealPotionItem healPotionItem)
             {
@@ -890,8 +892,9 @@ internal static class ImGuiHelper
                 ImGui.Text(" ");
                 ImGui.SameLine();
             }
+            ControlWindow.DrawIAction(item.GetTexture().ImGuiHandle, 24, 1);
+            ImGuiHelper.HoveredString(item.Name);
 
-            ImGui.Image(item.GetTexture().ImGuiHandle, PIC_SIZE);
             notStart = true;
         }
         ImGui.Unindent(ATTR_INDENT);
