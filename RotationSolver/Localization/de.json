@@ -37,7 +37,7 @@
   "ConfigWindow_Helper_RunCommand": "Click to execute the command",
   "ConfigWindow_Helper_CopyCommand": "Right-click to copy the command",
   "ConfigWindow_Helper_InsertCommand": "Insert \"{0}\" first in {1}s",
-  "ConfigWindow_Rotation_Description": "You can enable the function for each job you want and configure the setting about how to use actions.",
+  "ConfigWindow_Rotation_Description_Old": "You can enable the function for each job you want and configure the setting about how to use actions.",
   "ConfigWindow_Rotation_KeyName": "The key name is",
   "ConfigWindow_Events_AddEvent": "AddEvents",
   "ConfigWindow_Events_Description": "In this window, you can set what macro will be trigger after using an action.",
@@ -310,6 +310,7 @@
   "DescType_DefenseSingleAbility": "Single Defense Ability",
   "DescType_MoveForwardAbility": "Move Forward Ability",
   "DescType_MoveBackAbility": "Move Back Ability",
+  "DescType_SpeedAbility": "Speed Ability",
   "JobRole_None": "Gathering&Production",
   "JobRole_Tank": "Tank",
   "JobRole_Melee": "Nahkämpfer",
@@ -437,5 +438,8 @@
   "ConfigWindow_About_Compatibility_Description": "literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:",
   "ConfigWindow_About_Compatibility_Mistake": "Can't properly execute the behavior that RS is going to do.",
   "ConfigWindow_About_Compatibility_Mislead": "Misleading RS to make the right decision.",
-  "ConfigWindow_About_Compatibility_Crash": "Cause the game to crash"
+  "ConfigWindow_About_Compatibility_Crash": "Cause the game to crash.",
+  "ConfigWindow_Rotation_Description": "Description",
+  "ConfigWindow_Rotation_Configuration": "Configuration",
+  "ConfigWindow_Rotation_Information": "Information"
 }
