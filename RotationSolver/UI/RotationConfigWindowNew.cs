@@ -10,6 +10,7 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace RotationSolver.UI;
 
@@ -75,12 +76,42 @@ public class RotationConfigWindowNew : Window
 
             ImGui.Spacing();
             ImGui.Separator();
-            ImGui.Spacing();
+            ImGui.Spacing(); 
 
-            if(wholeWidth > JOB_ICON_WIDTH * _scale)
+            var iconSize = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH)) * 0.6f;
+
+            if (wholeWidth > JOB_ICON_WIDTH * _scale)
             {
                 ImGui.SetNextItemWidth(wholeWidth);
                 ImGui.InputTextWithHint("##Rotation Solver Search Box", "Searching is not available", ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll);
+            }
+            else
+            {
+                var icon = IconSet.GetTexture(46);
+                if(icon != null)
+                {
+                    DrawItemMiddle(() =>
+                    {
+                        if (ImGui.BeginPopup("Searching Popup"))
+                        {
+                            ImGui.InputTextWithHint("##Rotation Solver Search Box", "Searching is not available", ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll);
+                            if(ImGui.IsKeyDown(ImGuiKey.Enter))
+                            {
+                                ImGui.CloseCurrentPopup();
+                            }
+                            ImGui.EndPopup();
+                        }
+
+                        var cursor = ImGui.GetCursorPos();
+                        if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize))
+                        {
+                            ImGui.OpenPopup("Searching Popup");
+                        }
+                        DrawActionOverlay(cursor, iconSize, -1);
+                        ImguiTooltips.HoveredTooltip("Search");
+
+                    }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
+                }
             }
 
             foreach (var item in Enum.GetValues<RotationConfigWindowTab>())
@@ -91,16 +122,16 @@ public class RotationConfigWindowNew : Window
 
                 if(icon != null && wholeWidth <= JOB_ICON_WIDTH * _scale)
                 {
-                    var size = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH)) * 0.6f;
                     DrawItemMiddle(() =>
                     {
                         var cursor = ImGui.GetCursorPos();
-                        if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size))
+                        if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize))
                         {
                             _activeTab = item;
                         }
-                        DrawActionOverlay(cursor, size, _activeTab == item ? 1 : 0);
-                    }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), size); ImguiTooltips.HoveredTooltip(item.ToString());
+                        DrawActionOverlay(cursor, iconSize, _activeTab == item ? 1 : 0);
+                    }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
+                    ImguiTooltips.HoveredTooltip(item.ToString());
                 }
                 else
                 {
