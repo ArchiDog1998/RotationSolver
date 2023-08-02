@@ -10,11 +10,6 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using System.Diagnostics;
-using System.Drawing;
-using System.Reflection.Metadata;
-using System.Windows.Forms;
-using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
-using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureMacroModule.Macro;
 
 namespace RotationSolver.UI;
 
@@ -100,7 +95,7 @@ public class RotationConfigWindowNew : Window
                     DrawItemMiddle(() =>
                     {
                         var cursor = ImGui.GetCursorPos();
-                        if (SilenceImageButton(icon.ImGuiHandle, Vector2.One * size, _activeTab == item))
+                        if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size))
                         {
                             _activeTab = item;
                         }
@@ -241,7 +236,6 @@ public class RotationConfigWindowNew : Window
         var desc = rotation.Name + $" ({rotation.RotationName})";
         if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;
         ImguiTooltips.HoveredTooltip(desc);
-
     }
 
     private static void DrawRotationCombo(float comboSize, ICustomRotation[] rotations, ICustomRotation rotation, string gameVersion)
@@ -731,15 +725,14 @@ public class RotationConfigWindowNew : Window
                                     ImGui.SameLine();
                                 }
 
-                                var active = _activeAction == item;
                                 var cursor = ImGui.GetCursorPos();
                                 ImGui.BeginGroup();
-                                if (SilenceImageButton(icon.ImGuiHandle, Vector2.One * size, active, item.Name))
+                                if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, item.Name))
                                 {
                                     _activeAction = item;
                                 }
                                 ImguiTooltips.HoveredTooltip(item.Name);
-                                DrawActionOverlay(cursor, size, active ? 1 : 0);
+                                DrawActionOverlay(cursor, size, _activeAction == item ? 1 : 0);
 
                                 var texture = IconSet.GetTexture("https://raw.githubusercontent.com/goatcorp/DalamudAssets/master/UIRes/installedIcon.png");
                                 if(texture != null && item.IsEnabled)
@@ -767,6 +760,7 @@ public class RotationConfigWindowNew : Window
                     _activeAction.IsEnabled = enable;
                 }
 
+                ImGui.SameLine();
                 OtherCommandType.ToggleActions.DisplayCommandHelp(_activeAction.ToString());
 
                 enable = _activeAction.IsInCooldown;
@@ -775,6 +769,7 @@ public class RotationConfigWindowNew : Window
                     _activeAction.IsInCooldown = enable;
                 }
 
+                ImGui.SameLine();
                 OtherCommandType.DoActions.DisplayCommandHelp($"{_activeAction}-{5}",
                     type => string.Format(LocalizationManager.RightLang.ConfigWindow_Actions_InsertCommand, _activeAction, 5), false);
 

@@ -266,8 +266,6 @@ internal partial class Strings
     public string ConfigWindow_Control_ShowNextActionWindow { get; set; } = "Show Next Action Window";
 
     public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
-    public string ConfigWindow_Control_UseKeyboardCommand { get; set; } = "Use Keyboard Command";
-    public string ConfigWindow_Control_UseGamepadCommand { get; set; } = "Use GamePad Command";
     public string ConfigWindow_Control_ShowCooldownWindow { get; set; } = "Show Cooldown Window";
     public string ConfigWindow_Control_IsInfoWindowNoInputs { get; set; } = "No Inputs";
     public string ConfigWindow_Control_IsInfoWindowNoMove { get; set; } = "No Move";
@@ -284,7 +282,6 @@ internal partial class Strings
     public string ConfigWindow_Control_CooldownWindowIconSize { get; set; } = "Cooldown icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
     public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and middle click to clear the key setting.";
-    public string ConfigWindow_Control_NeedToEnable { get; set; } = " (Need to enable)";
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
 

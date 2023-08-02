@@ -10,14 +10,6 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
         {
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseGamepadCommand,
-            ref Service.Config.UseGamepadCommand, Service.Default.UseGamepadCommand);
-
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseKeyboardCommand,
-                ref Service.Config.UseKeyboardCommand, Service.Default.UseKeyboardCommand);
-
-            ImGui.Separator();
-
             if (Service.Config.ShowNextActionWindow || Service.Config.ShowCooldownWindow || Service.Config.ShowControlWindow)
             {
                 DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_OnlyShowWithHostileOrInDuty,

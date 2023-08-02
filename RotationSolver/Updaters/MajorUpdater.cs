@@ -93,8 +93,6 @@ internal static class MajorUpdater
             }
 
             MacroUpdater.UpdateMacro();
-
-            InputUpdater.UpdateCommand();
         }
         catch (Exception ex)
         {

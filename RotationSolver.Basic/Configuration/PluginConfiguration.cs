@@ -202,8 +202,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool ShowNextActionWindow = true;
     public bool IsInfoWindowNoInputs = false;
     public bool IsInfoWindowNoMove = false;
-    public bool UseKeyboardCommand = false;
-    public bool UseGamepadCommand = false;
     public bool ShowItemsCooldown = false;
     public bool ShowGCDCooldown = false;
     public bool UseOriginalCooldown = true;
