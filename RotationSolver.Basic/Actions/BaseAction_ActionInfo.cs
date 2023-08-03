@@ -181,10 +181,11 @@ public partial class BaseAction
     /// <returns></returns>
     public unsafe bool Use()
     {
-        var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = Position.X, Y = Position.Y, Z = Position.Z };
-
-        if (_action.TargetArea)
+        var adjustId = AdjustedID;
+        if (_action.TargetArea && adjustId == ID)
         {
+            var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = Position.X, Y = Position.Y, Z = Position.Z };
+
             return ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Player.Object.ObjectId, &loc);
         }
         else if(Svc.Objects.SearchById(_targetId) == null)
@@ -193,7 +194,7 @@ public partial class BaseAction
         }
         else
         {
-            return ActionManager.Instance()->UseAction(ActionType.Spell, AdjustedID, _targetId);
+            return ActionManager.Instance()->UseAction(ActionType.Spell, adjustId, _targetId);
         }
     }
 }
