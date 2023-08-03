@@ -74,7 +74,6 @@ public class PluginConfiguration : IPluginConfiguration
     public Vector4 MovingTargetColor = new(0f, 1f, 0.8f, 0.6f);
     public Vector4 TargetColor = new(1f, 0.2f, 0f, 0.8f);
     public Vector4 SubTargetColor = new(1f, 0.9f, 0f, 0.8f);
-    public bool DrawMeleeRange = false;
     public bool UseOverlayWindow = true;
 
     public float DrawingHeight = 3;
@@ -173,8 +172,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool BeneficialAreaOnTarget = false;
 
     public float CountDownAhead = 0.6f;
-
-    public int NamePlateIconId = 0; // 61435, 61437
 
     public int MoveTargetAngle = 24;
     public float HealthRatioBoss = 1.85f;

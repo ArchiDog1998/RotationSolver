@@ -89,7 +89,6 @@ internal class SocialUpdater
     {
         DataCenter.ResetAllLastActions();
 
-        RSCommands.UpdateStateNamePlate();
         var territory = Service.GetSheet<TerritoryType>().GetRow(e);
         if (territory?.ContentFinderCondition?.Value?.RowId != 0)
         {
