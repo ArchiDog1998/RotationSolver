@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.1.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.2...v3.1.3) (2023-08-07)
+
+
+### Bug Fixes
+
+* add check box in new UI. ([a38744f](https://github.com/ArchiDog1998/RotationSolver/commit/a38744fcba6c11701bde55d8b018e5853615b885))
+* add new config settings. ([32dcafc](https://github.com/ArchiDog1998/RotationSolver/commit/32dcafc9e45d1e92dc54cdeb3b36b6c04edb1450))
+* add variant actions. ([4780975](https://github.com/ArchiDog1998/RotationSolver/commit/4780975070864c3e8f3b312c39bf807c295c4ac0))
+* all friendly aoe actions can be used solo. ([4b07392](https://github.com/ArchiDog1998/RotationSolver/commit/4b073926f84a0c9e407234b68f001d0d6de9f77e))
+* move target changed, action using changed. ([fbcd58a](https://github.com/ArchiDog1998/RotationSolver/commit/fbcd58a48fd4327d25064d2a4bc80f74c0442128))
+* remove key binding feature. ([21f53d4](https://github.com/ArchiDog1998/RotationSolver/commit/21f53d4fd77d09934545b9f9f21547ac77de8d62))
+* removed he record of gcd animation lock time. ([a932dcc](https://github.com/ArchiDog1998/RotationSolver/commit/a932dcc03bd3572fcf2b08ff141279989a22a575))
+* rotation condition comparation. ([c266442](https://github.com/ArchiDog1998/RotationSolver/commit/c26644239e289b449352181ecce682dabf095bd7))
+* searching box ui. ([66c134f](https://github.com/ArchiDog1998/RotationSolver/commit/66c134f2609686ea2020d19fa8099122e8f80a3d))
+
 ## [3.1.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.1...v3.1.2) (2023-08-01)
 
 
