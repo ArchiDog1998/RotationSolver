@@ -14,10 +14,14 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     public override string Description => _config.ToDescription();
 
+    public override Action DrawTooltip => _config.ToAction();
+
+    public override string Command => _config.ToCommand();
+
     public CheckBoxSearchPlugin(PluginConfigBool config, params ISearchable[] children)
+        :base(children)
     {
         _config = config;
-        Children = children;
     }
 
     protected override bool GetValue(Job job)
@@ -29,13 +33,25 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
     {
         Service.ConfigNew.SetValue(_config, value);
     }
+
+    public override void ResetToDefault()
+    {
+        Service.ConfigNew.SetValue(_config, Service.ConfigNew.GetDefault(_config));
+    }
 }
 
 internal abstract class CheckBoxSearch : Searchable
 {
-    public abstract string ID { get; }
-
     public ISearchable[] Children { get; protected set; }
+
+    public CheckBoxSearch(params ISearchable[] children)
+    {
+        Children = children;
+        foreach (var child in Children)
+        {
+            child.Parent = this;
+        }
+    }
 
     protected abstract bool GetValue(Job job);
     protected abstract void SetValue(Job job, bool value);
@@ -47,7 +63,7 @@ internal abstract class CheckBoxSearch : Searchable
         {
             SetValue(job, enable);
         }
-        if(ImGui.IsItemHovered()) ShowTooltip();
+        if (ImGui.IsItemHovered()) ShowTooltip();
 
         var name = $"{Name}##Config_{ID}";
         if (enable)

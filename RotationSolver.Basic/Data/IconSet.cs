@@ -75,40 +75,40 @@ public enum IconType : byte
 public static class IconSet
 {
     /// <summary>
-    /// Drat Texture.
-    /// </summary>
-    /// <param name="text"></param>
-    /// <param name="size"></param>
-    public static void DrawTexture(this ITexture text, Vector2 size)
-    {
-        var texture = text.GetTexture();
-        if (texture == null) return;
-        ImGui.Image(texture.ImGuiHandle, size);
-    }
-
-    /// <summary>
     /// Get Texture form texture.
     /// </summary>
     /// <param name="text"></param>
     /// <returns></returns>
+    [Obsolete]
     public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
+    public static void GetTexture(this ITexture text, out TextureWrap texture) => GetTexture(text?.IconID ?? 0, out texture);
 
     /// <summary>
     /// Get Texture from id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
+    [Obsolete]
+
     public static TextureWrap GetTexture(uint id)
         => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out var texture) ? texture :
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture) ? texture : null;
+
+    public static bool GetTexture(uint id, out TextureWrap texture)
+        => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out texture)
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture);
 
     /// <summary>
     /// Get Texture from path.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
+    [Obsolete]
     public static TextureWrap GetTexture(string path)
-        => ThreadLoadImageHandler.TryGetTextureWrap(path, out var texture) ? texture : null;
+        => GetTexture(path, out var texture) ? texture : null;
+
+    public static bool GetTexture(string path, out TextureWrap texture)
+        => ThreadLoadImageHandler.TryGetTextureWrap(path, out texture);
 
     static readonly Dictionary<uint, uint> _actionIcons = new();
 

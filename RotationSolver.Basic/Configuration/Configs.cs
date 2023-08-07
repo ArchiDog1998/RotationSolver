@@ -34,6 +34,27 @@ namespace RotationSolver.Basic.Configuration;
     public Vector4 GetValue(PluginConfigVector4 config)
         => GlobalConfig.Vectors.GetValue(config);
 
+    public string GetDefault(Job job, JobConfigString config)
+        => GetJobConfig(job).Strings.GetDefault(config);
+
+    public int GetDefault(Job job, JobConfigInt config)
+        => GetJobConfig(job).Ints.GetDefault(config);
+
+    public float GetDefault(Job job, JobConfigFloat config)
+        => GetJobConfig(job).Floats.GetDefault(config);
+
+    public int GetDefault(PluginConfigInt config)
+        => GlobalConfig.Ints.GetDefault(config);
+
+    public bool GetDefault(PluginConfigBool config)
+        => GlobalConfig.Bools.GetDefault(config);
+
+    public float GetDefault(PluginConfigFloat config)
+        => GlobalConfig.Floats.GetDefault(config);
+
+    public Vector4 GetDefault(PluginConfigVector4 config)
+        => GlobalConfig.Vectors.GetDefault(config);
+
     public void SetValue(Job job, JobConfigString config, string value)
         => GetJobConfig(job).Strings.SetValue(config, value);
 

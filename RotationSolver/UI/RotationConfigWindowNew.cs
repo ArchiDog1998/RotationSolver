@@ -181,7 +181,7 @@ public class RotationConfigWindowNew : Window
     {
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
-        var logo = IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png");
+        var logo = IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png") ?? IconSet.GetTexture(0);
 
         if (logo != null)
         {
@@ -545,7 +545,7 @@ public class RotationConfigWindowNew : Window
         if (!string.IsNullOrEmpty(desc))
         {
             ImGui.PushFont(ImGuiHelper.GetFont(15));
-            ImGui.TextWrapped(desc);
+            ImGuiEx.TextWrappedCopy(desc);
             ImGui.PopFont();
         }
 
@@ -765,11 +765,14 @@ public class RotationConfigWindowNew : Window
                                 ImguiTooltips.HoveredTooltip(item.Name);
                                 DrawActionOverlay(cursor, size, _activeAction == item ? 1 : 0);
 
-                                var texture = IconSet.GetTexture("https://raw.githubusercontent.com/goatcorp/DalamudAssets/master/UIRes/installedIcon.png");
-                                if(texture != null && item.IsEnabled)
+                                var texture = IconSet.GetTexture("ui/uld/readycheck_hr1.tex");
+                                if(texture != null)
                                 {
-                                    ImGui.SetCursorPos(cursor);
-                                    ImGui.Image(texture.ImGuiHandle, Vector2.One * size);
+                                    var offset = new Vector2(1 / 12f, 1 / 6f);
+                                    ImGui.SetCursorPos(cursor + new Vector2(0.6f, 0.7f) * size);
+                                    ImGui.Image(texture.ImGuiHandle, Vector2.One * size * 0.5f, 
+                                        new Vector2(item.IsEnabled ? 0 : 0.5f, 0) + offset,
+                                        new Vector2(item.IsEnabled ? 0.5f : 1, 1) - offset);
                                 }
                                 ImGui.EndGroup();
                             }

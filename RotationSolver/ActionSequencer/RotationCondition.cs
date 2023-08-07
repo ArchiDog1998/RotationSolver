@@ -55,9 +55,9 @@ internal class RotationCondition : ICondition
                         case 0:
                             return by > Param1;
                         case 1:
-                            return by == Param1;
-                        case 2:
                             return by < Param1;
+                        case 2:
+                            return by == Param1;
                     }
                 }
                 return false;

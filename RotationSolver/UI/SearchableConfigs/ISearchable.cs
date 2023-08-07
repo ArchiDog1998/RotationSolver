@@ -2,8 +2,10 @@
 
 namespace RotationSolver.UI.SearchableSettings;
 
-public interface ISearchable
+internal interface ISearchable
 {
+    CheckBoxSearch Parent { get; set; }
+
     string SearchingKey { get; }
 
     void Draw(Job job);
