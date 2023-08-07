@@ -193,6 +193,7 @@ public abstract partial class CustomRotation
         {
             if (!HasTankStance && TankStance.CanUse(out act)) return true;
             if (Provoke.CanUse(out act, CanUseOption.MustUse)) return true;
+            if (VariantUltimatum.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
         //No using defense abilities.
@@ -388,9 +389,14 @@ public abstract partial class CustomRotation
     }
 
     /// <summary>
-    /// The ability that attackes some enemy.
+    /// The ability that attacks some enemy.
     /// </summary>
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
-    protected abstract bool AttackAbility(out IAction act);
+    protected virtual bool AttackAbility(out IAction act)
+    {
+        if (VariantSpiritDart.CanUse(out act)) return true;
+        if (VariantRampart.CanUse(out act)) return true;
+        return false;
+    }
 }
