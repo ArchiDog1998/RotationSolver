@@ -5,20 +5,8 @@ using ECommons.DalamudServices;
 namespace RotationSolver.Basic.Configuration;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-public class InputConfiguration
-{
-    public Dictionary<StateCommandType, KeyRecord> KeyState { get; set; } = new Dictionary<StateCommandType, KeyRecord>();
-    public Dictionary<SpecialCommandType, KeyRecord> KeySpecial { get; set; } = new Dictionary<SpecialCommandType, KeyRecord>();
-    public KeyRecord KeyDoAction { get; set; } = null;
-    public Dictionary<StateCommandType, ButtonRecord> ButtonState { get; set; } = new Dictionary<StateCommandType, ButtonRecord>();
-    public Dictionary<SpecialCommandType, ButtonRecord> ButtonSpecial { get; set; } = new Dictionary<SpecialCommandType, ButtonRecord>();
-
-    public ButtonRecord ButtonDoAction { get; set; } = null;
-}
-
 public class OtherConfiguration
 {
-    public static InputConfiguration InputConfig = new();
     public static HashSet<uint> HostileCastingArea = new();
     public static HashSet<uint> HostileCastingTank = new();
 
@@ -49,7 +37,6 @@ public class OtherConfiguration
 
         Task.Run(() => InitOne(ref HostileCastingTank, nameof(HostileCastingTank)));
 
-        Task.Run(() => InitOne(ref InputConfig, nameof(InputConfig)));
     }
 
     public static void Save()
@@ -60,12 +47,6 @@ public class OtherConfiguration
         SaveAnimationLockTime();
         SaveHostileCastingArea();
         SaveHostileCastingTank();
-        SaveInputConfig();
-    }
-
-    public static void SaveInputConfig()
-    {
-        Task.Run(() => Save(InputConfig, nameof(InputConfig)));
     }
 
     public static void SaveHostileCastingArea()

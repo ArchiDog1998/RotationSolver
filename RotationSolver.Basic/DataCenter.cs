@@ -15,7 +15,6 @@ namespace RotationSolver.Basic;
 internal static class DataCenter
 {
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
-        || !InCombat
         || !Service.Config.PoslockCasting
         //Key cancel.
         || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.PoslockModifier]]

@@ -3566,12 +3566,17 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
-    VariantRaise = 29731,
+    VariantCure = 29729,
 
     /// <summary>
     /// 
     /// </summary>
-    VariantCure = 29729,
+    VariantUltimatum = 29730,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    VariantRaise = 29731,
 
     /// <summary>
     /// 
@@ -3582,5 +3587,10 @@ public enum ActionID : uint
     /// 
     /// </summary>
     VariantRampart = 29733,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    VariantRaise2 = 29734,
     #endregion
 }

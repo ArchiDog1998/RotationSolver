@@ -344,34 +344,14 @@ internal class ControlWindow : Window
     static string GetHelp(SpecialCommandType command)
     {
         var help = command.ToHelp() + "\n ";
-        if (OtherConfiguration.InputConfig.ButtonSpecial.TryGetValue(command, out var button))
-        {
-            help += "\n" + button.ToStr();
-            if (!Service.Config.UseGamepadCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
 
-        }
-        if (OtherConfiguration.InputConfig.KeySpecial.TryGetValue(command, out var key))
-        {
-            help += "\n" + key.ToStr();
-            if (!Service.Config.UseKeyboardCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
-        }
         return help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
     }
 
     static string GetHelp(StateCommandType command)
     {
         var help = command.ToHelp() + "\n ";
-        if (OtherConfiguration.InputConfig.ButtonState.TryGetValue(command, out var button))
-        {
-            help += "\n" + button.ToStr();
-            if (!Service.Config.UseGamepadCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
-        }
-        if (OtherConfiguration.InputConfig.KeyState.TryGetValue(command, out var key))
-        {
-            help += "\n" + key.ToStr();
-            if (!Service.Config.UseKeyboardCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
 
-        }
         return help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
     }
 
@@ -387,31 +367,6 @@ internal class ControlWindow : Window
         if (ImGui.IsItemHovered())
         {
             ImGuiHelper.ShowTooltip(help);
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right) && InputUpdater.RecordingSpecialType == SpecialCommandType.None)
-            {
-                InputUpdater.RecordingTime = DateTime.Now;
-                InputUpdater.RecordingSpecialType = command;
-                Svc.Toasts.ShowQuest($"Recording: {command}",
-                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                    {
-                        IconId = 101,
-                    });
-            }
-
-            if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
-            {
-                OtherConfiguration.InputConfig.KeySpecial.Remove(command);
-                OtherConfiguration.InputConfig.ButtonSpecial.Remove(command);
-                OtherConfiguration.SaveInputConfig();
-
-                Svc.Toasts.ShowQuest($"Clear Recording: {command}",
-                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                    {
-                        IconId = 101,
-                        PlaySound = true,
-                        DisplayCheckmark = true,
-                    });
-            }
         }
     }
 
@@ -426,31 +381,6 @@ internal class ControlWindow : Window
         if (ImGui.IsItemHovered())
         {
             ImGuiHelper.ShowTooltip(help);
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right)&& InputUpdater.RecordingStateType == StateCommandType.None)
-            {
-                InputUpdater.RecordingTime = DateTime.Now;
-                InputUpdater.RecordingStateType = command;
-                Svc.Toasts.ShowQuest($"Recording: {command}",
-                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                    {
-                        IconId = 101,
-                    });
-            }
-
-            if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
-            {
-                OtherConfiguration.InputConfig.KeyState.Remove(command);
-                OtherConfiguration.InputConfig.ButtonState.Remove(command);
-                OtherConfiguration.SaveInputConfig();
-
-                Svc.Toasts.ShowQuest($"Clear Recording: {command}",
-                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                    {
-                        IconId = 101,
-                        PlaySound = true,
-                        DisplayCheckmark = true,
-                    });
-            }
         }
     }
 
@@ -590,47 +520,9 @@ internal class ControlWindow : Window
         DrawIAction(next, ability, -1);
         if (ImGui.IsItemHovered())
         {
-            var help = string.Empty;
-            if (OtherConfiguration.InputConfig.ButtonDoAction != null)
-            {
-                help += "\n" + OtherConfiguration.InputConfig.ButtonDoAction.ToStr();
-                if (!Service.Config.UseGamepadCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
-
-            }
-            if (OtherConfiguration.InputConfig.KeyDoAction != null)
-            {
-                help += "\n" + OtherConfiguration.InputConfig.KeyDoAction.ToStr();
-                if (!Service.Config.UseKeyboardCommand) help += LocalizationManager.RightLang.ConfigWindow_Control_NeedToEnable;
-            }
-            help += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
+            var help = LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
 
             ImGuiHelper.ShowTooltip(help);
-
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right) && !InputUpdater.RecordingDoAction)
-            {
-                InputUpdater.RecordingTime = DateTime.Now;
-                InputUpdater.RecordingDoAction = true;
-                Svc.Toasts.ShowQuest($"Recording: Do Action",
-                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                    {
-                        IconId = 101,
-                    });
-            }
-
-            if (ImGui.IsKeyPressed(ImGuiKey.LeftCtrl) && ImGui.IsMouseDown(ImGuiMouseButton.Middle))
-            {
-                OtherConfiguration.InputConfig.KeyDoAction = null;
-                OtherConfiguration.InputConfig.ButtonDoAction = null;
-                OtherConfiguration.SaveInputConfig();
-
-                Svc.Toasts.ShowQuest($"Clear Recording: Do Action",
-                    new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                    {
-                        IconId = 101,
-                        PlaySound = true,
-                        DisplayCheckmark = true,
-                    });
-            }
         }
     }
 }

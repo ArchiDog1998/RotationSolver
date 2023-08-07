@@ -55,20 +55,10 @@ public static partial class RSCommands
                 break;
         }
 
-        UpdateStateNamePlate();
-
         _stateString = stateType.ToStateString(role);
         UpdateToast();
         return stateType;
     });
-
-    public static unsafe void UpdateStateNamePlate()
-    {
-        if (!Player.Available) return;
-
-        Player.Object.SetNamePlateIcon(
-            !DataCenter.State ? 0u : (uint)Service.Config.NamePlateIconId);
-    }
 
     private static void DoSpecialCommandType(SpecialCommandType specialType, bool sayout = true) => DoOneCommandType(sayout ? EnumTranslations.ToSayout : (s, r) => string.Empty, role =>
     {

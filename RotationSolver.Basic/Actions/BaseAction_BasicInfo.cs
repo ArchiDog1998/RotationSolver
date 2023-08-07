@@ -203,7 +203,7 @@ public partial class BaseAction : IBaseAction
 
         CoolDownGroup = _action.GetCoolDownGroup();
 
-        if (IsFriendly) AOECount = 2;
+        if (IsFriendly) AOECount = 1;
     }
 
     /// <summary>

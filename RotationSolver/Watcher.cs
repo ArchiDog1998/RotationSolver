@@ -114,7 +114,7 @@ public static class Watcher
         if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
         var id = set.Action.RowId;
-        if(set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id))
+        if(!set.Action.IsRealGCD() && (set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id)))
         {
             OtherConfiguration.AnimationLockTime[id] = set.Header.AnimationLockTime;
         }

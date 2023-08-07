@@ -59,18 +59,13 @@ public abstract partial class CustomRotation
     private bool RaiseSpell(SpecialCommandType specialType, out IAction act, bool mustUse)
     {
         act = null;
-        if (Raise == null || Player.CurrentMp <= Service.Config.LessMPNoRaise)
-        {
-            return DataCenter.SetAutoStatus(AutoStatus.Raise, false);
-        }
-
         if (specialType == SpecialCommandType.RaiseShirk && DataCenter.DeathPeopleAll.Any())
         {
-            if (Raise.CanUse(out act)) return true;
+            if (RaiseAction(out act)) return true;
         }
 
         if ((Service.Config.RaiseAll ? DataCenter.DeathPeopleAll.Any() : DataCenter.DeathPeopleParty.Any())
-            && Raise.CanUse(out act, CanUseOption.IgnoreCastCheck))
+            && RaiseAction(out act, CanUseOption.IgnoreCastCheck))
         {
             if (HasSwift)
             {
@@ -78,13 +73,14 @@ public abstract partial class CustomRotation
             }
             else if (mustUse)
             {
+                var action = act;
                 if(Swiftcast.CanUse(out act))
                 {
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
                 else if(!IsMoving)
                 {
-                    act = Raise;
+                    act = action;
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
             }
@@ -95,6 +91,14 @@ public abstract partial class CustomRotation
             }
         }
         return DataCenter.SetAutoStatus(AutoStatus.Raise, false);
+    }
+
+    private bool RaiseAction(out IAction act, CanUseOption option = CanUseOption.None)
+    {
+        if (VariantRaise.CanUse(out act, option)) return true;
+        if (Player.CurrentMp > Service.Config.LessMPNoRaise && (Raise?.CanUse(out act, option) ?? false)) return true;
+
+        return false;
     }
 
     /// <summary>
@@ -126,7 +130,8 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.HealSingleGCD)]
     protected virtual bool HealSingleGCD(out IAction act)
     {
-        act = null; return false;
+        if (VariantCure.CanUse(out act)) return true;
+        return false;
     }
 
     /// <summary>

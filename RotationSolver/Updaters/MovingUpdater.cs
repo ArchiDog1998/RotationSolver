@@ -10,43 +10,62 @@ internal static class MovingUpdater
 {
     internal unsafe static void UpdateCanMove(bool doNextAction)
     {
-        bool canMove = !Svc.Condition[ConditionFlag.OccupiedInEvent]
-            && !Svc.Condition[ConditionFlag.Casting];
-
-        var statusList = new List<StatusID>(4);
-        var actionList = new List<ActionID>(4);
-
-        if (Service.Config.PosFlameThrower)
+        //Special state.
+        if (Svc.Condition[ConditionFlag.OccupiedInEvent])
         {
-            statusList.Add(StatusID.Flamethrower);
-            actionList.Add(ActionID.FlameThrower);
+            Service.CanMove = true;
         }
-        if (Service.Config.PosTenChiJin)
+        //Casting the action in list.
+        else if (Svc.Condition[ConditionFlag.Casting] && Player.Available && Enum.IsDefined((ActionID)Player.Object.CastActionId)) 
         {
-            statusList.Add(StatusID.TenChiJin);
-            actionList.Add(ActionID.TenChiJin);
+            Service.CanMove = false;
         }
-        if (Service.Config.PosPassageOfArms)
+        //Not in combat.
+        else if (!DataCenter.InCombat)
         {
-            statusList.Add(StatusID.PassageOfArms);
-            actionList.Add(ActionID.PassageOfArms);
+            Service.CanMove = true;
         }
-        if (Service.Config.PosImprovisation)
+        //Special actions.
+        else
         {
-            statusList.Add(StatusID.Improvisation);
-            actionList.Add(ActionID.Improvisation);
+            var canMove = !Svc.Condition[ConditionFlag.Casting];
+
+            var statusList = new List<StatusID>(4);
+            var actionList = new List<ActionID>(4);
+
+            if (Service.Config.PosFlameThrower)
+            {
+                statusList.Add(StatusID.Flamethrower);
+                actionList.Add(ActionID.FlameThrower);
+            }
+            if (Service.Config.PosTenChiJin)
+            {
+                statusList.Add(StatusID.TenChiJin);
+                actionList.Add(ActionID.TenChiJin);
+            }
+            if (Service.Config.PosPassageOfArms)
+            {
+                statusList.Add(StatusID.PassageOfArms);
+                actionList.Add(ActionID.PassageOfArms);
+            }
+            if (Service.Config.PosImprovisation)
+            {
+                statusList.Add(StatusID.Improvisation);
+                actionList.Add(ActionID.Improvisation);
+            }
+
+            //Action
+            var action = DateTime.Now - RSCommands._lastUsedTime < TimeSpan.FromMilliseconds(100)
+                ? (ActionID)RSCommands._lastActionID
+                : doNextAction ? (ActionID)(ActionUpdater.NextAction?.AdjustedID ?? 0) : 0;
+
+            var specialActions = ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)action) > 0
+                || actionList.Any(id => Service.GetAdjustedActionId(id) == action);
+
+            //Status
+            var specialStatus = Player.Object.HasStatus(true, statusList.ToArray());
+
+            Service.CanMove = !specialStatus && !specialActions && canMove;
         }
-
-        //Action
-        var action = DateTime.Now - RSCommands._lastUsedTime < TimeSpan.FromMilliseconds(100)
-            ? (ActionID)RSCommands._lastActionID
-            : doNextAction ? (ActionID)(ActionUpdater.NextAction?.AdjustedID ?? 0) : 0;
-        var specialActions = ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)action) > 0
-            || actionList.Any(id => Service.GetAdjustedActionId(id) == action);
-
-        //Status
-        var specialStatus = Player.Object.HasStatus(true, statusList.ToArray());
-
-        Service.CanMove = !specialStatus && !specialActions && canMove;
     }
 }

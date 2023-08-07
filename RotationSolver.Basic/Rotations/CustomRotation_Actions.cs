@@ -227,6 +227,11 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
+    public static IBaseAction VariantUltimatum { get; } = new BaseAction(ActionID.VariantUltimatum, ActionOption.DutyAction);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction VariantCure { get; } = new RoleAction(ActionID.VariantCure,
         new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.Ranged }, ActionOption.Heal | ActionOption.DutyAction);
 

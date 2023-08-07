@@ -247,9 +247,6 @@ internal partial class RotationConfigWindow
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawPositional,
                 ref Service.Config.DrawPositional, Service.Default.DrawPositional);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeRange,
-                ref Service.Config.DrawMeleeRange, Service.Default.DrawMeleeRange);
-
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeOffset,
                 ref Service.Config.DrawMeleeOffset, Service.Default.DrawMeleeOffset);
 
@@ -288,9 +285,6 @@ internal partial class RotationConfigWindow
 
         DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowToastsAboutDoAction,
             ref Service.Config.ShowToastsAboutDoAction, Service.Default.ShowToastsAboutDoAction);
-
-        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_NamePlateIconId,
-            ref Service.Config.NamePlateIconId, Service.Default.NamePlateIconId, 5, 0, 150000, otherThing: RSCommands.UpdateStateNamePlate);
 
         ImGui.Spacing();
     }
