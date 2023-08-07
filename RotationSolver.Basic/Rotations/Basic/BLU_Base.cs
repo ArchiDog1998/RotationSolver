@@ -914,7 +914,7 @@ public abstract class BLU_Base : CustomRotation
         ActionCheck = (b, m) =>  Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56] && DataCenter.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1,
     };
 
-    static IBLUAction AethericMimicry { get; } = new BLUAction(ActionID.AethericMimicry, ActionOption.Friendly)
+    static IBaseAction AethericMimicry { get; } = new BaseAction(ActionID.AethericMimicry, ActionOption.Friendly)
     {
         ChoiceTarget = (charas, mustUse) =>
         {
@@ -1035,7 +1035,7 @@ public abstract class BLU_Base : CustomRotation
     /// All base actions.
     /// </summary>
     public override IBaseAction[] AllBaseActions => base.AllBaseActions
-        .Where(a => a is IBLUAction b && b.OnSlot).ToArray();
+        .Where(a => a is not IBLUAction b || b.OnSlot).ToArray();
 
     /// <summary>
     /// Configurations.
@@ -1088,5 +1088,11 @@ public abstract class BLU_Base : CustomRotation
 
         if (WhiteWind.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.HealAreaGCD(out act);
+    }
+
+    public override void DisplayStatus()
+    {
+        ImGui.TextWrapped(BlueId.ToString());
+        base.DisplayStatus();
     }
 }
