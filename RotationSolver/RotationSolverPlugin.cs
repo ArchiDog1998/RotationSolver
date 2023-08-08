@@ -36,6 +36,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     {
         ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector, Module.ObjectFunctions);
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out _);
+        IconSet.InIt();
 
         //Init!
         Clipper.InflatePaths(new PathsD(new PathD[] { Clipper.MakePath(new double[] {0, 0, 1, 1 }) }), 0, JoinType.Round, EndType.Joined);
