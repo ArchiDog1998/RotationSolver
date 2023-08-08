@@ -52,7 +52,7 @@ public partial class BaseAction : IBaseAction
     /// <summary>
     /// Is this duty action on the slot.
     /// </summary>
-    public bool IsDutyActionOnSlot => ActionManager.GetDutyActionId(0) == AdjustedID || ActionManager.GetDutyActionId(1) == AdjustedID;
+    public bool IsDutyActionOnSlot => DataCenter.BluSlots.Contains(AdjustedID);
 
     /// <summary>
     /// How many gcd left to add the dot.

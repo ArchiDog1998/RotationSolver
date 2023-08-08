@@ -81,6 +81,7 @@ public partial class BaseAction
         Target = player;
 
         if (!SkipDisable && !IsEnabled) return false;
+        if (IsDutyAction && !IsDutyActionOnSlot) return false;
         
         if (DataCenter.DisabledAction != null && DataCenter.DisabledAction.Contains(ID)) return false;
 
