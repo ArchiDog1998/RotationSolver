@@ -79,15 +79,19 @@ internal static class ActionUpdater
         SetAction(NextGCDAction?.AdjustedID ?? 0);
         UpdateWeaponTime();
         UpdateCombatTime();
-        UpdateBluSlots();
+        UpdateSlots();
         UpdateMoving();
         UpdateMPTimer();
     }
-    private unsafe static void UpdateBluSlots()
+    private unsafe static void UpdateSlots()
     {
         for (int i = 0; i < DataCenter.BluSlots.Length; i++)
         {
             DataCenter.BluSlots[i] = ActionManager.Instance()->GetActiveBlueMageActionInSlot(i);
+        }
+        for (ushort i = 0; i < DataCenter.DutyActions.Length; i++)
+        {
+            DataCenter.DutyActions[i] = ActionManager.GetDutyActionId(i);
         }
     }
 

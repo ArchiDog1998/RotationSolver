@@ -1,5 +1,7 @@
 ﻿using ECommons.ImGuiMethods;
 using ImGuiScene;
+using Svg;
+using System.Drawing.Imaging;
 
 namespace RotationSolver.Basic.Data;
 
@@ -74,6 +76,24 @@ public enum IconType : byte
 /// </summary>
 public static class IconSet
 {
+    /// <summary>
+    /// Init for svg rendering.
+    /// </summary>
+    public static void InIt()
+    {
+        ThreadLoadImageHandler.AddConversionToBitmap(SvgToPng);
+    }
+
+    private static byte[] SvgToPng(byte[] data)
+    {
+        using var stream = new MemoryStream(data);
+        using var outStream = new MemoryStream();
+        var svgDocument = SvgDocument.Open<SvgDocument>(stream);
+        using var bitmap = svgDocument.Draw();
+        bitmap.Save(outStream, ImageFormat.Png);
+        return outStream.ToArray();
+    }
+
     /// <summary>
     /// Get Texture form texture.
     /// </summary>

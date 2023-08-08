@@ -183,6 +183,7 @@ internal static class DataCenter
     public static float CastingTotal { get; internal set; }
     #endregion
     public static uint[] BluSlots { get; internal set; } = new uint[24];
+    public static uint[] DutyActions { get; internal set; } = new uint[2];
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
     private static double SpecialTimeElapsed => (DateTime.Now - _specialStateStartTime).TotalSeconds;

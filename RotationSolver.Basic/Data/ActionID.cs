@@ -3592,5 +3592,20 @@ public enum ActionID : uint
     /// 
     /// </summary>
     VariantRaise2 = 29734,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    VariantCure2 = 33862,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    VariantSpiritDart2 = 33863,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    VariantRampart2 = 33864,
     #endregion
 }

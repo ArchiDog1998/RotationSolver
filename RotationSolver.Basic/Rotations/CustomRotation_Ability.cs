@@ -396,7 +396,9 @@ public abstract partial class CustomRotation
     protected virtual bool AttackAbility(out IAction act)
     {
         if (VariantSpiritDart.CanUse(out act)) return true;
+        if (VariantSpiritDart2.CanUse(out act)) return true;
         if (VariantRampart.CanUse(out act)) return true;
+        if (VariantRampart2.CanUse(out act)) return true;
         return false;
     }
 }
