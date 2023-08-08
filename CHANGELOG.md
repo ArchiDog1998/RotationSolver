@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.1.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.3...v3.1.4) (2023-08-08)
+
+
+### Bug Fixes
+
+* add duty action on slot check. ([793df6b](https://github.com/ArchiDog1998/RotationSolver/commit/793df6b00d44c88b4704b1fc6e3d561f5cc4d900))
+* add more variant actions. ([fc9f02f](https://github.com/ArchiDog1998/RotationSolver/commit/fc9f02f6f67053d481d7d354d21906829c18708e))
+* allowed svg rendering. ([65bb318](https://github.com/ArchiDog1998/RotationSolver/commit/65bb318ccc4f2363d2dfa69de910ca6d8ab0dcee))
+* blu mimicry. ([46a49c9](https://github.com/ArchiDog1998/RotationSolver/commit/46a49c9af1f6f2c5e6f927f482f0e00d0b077ba3))
+
 ## [3.1.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.2...v3.1.3) (2023-08-07)
 
 
