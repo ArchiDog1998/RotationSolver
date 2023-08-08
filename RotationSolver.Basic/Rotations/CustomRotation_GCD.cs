@@ -131,6 +131,7 @@ public abstract partial class CustomRotation
     protected virtual bool HealSingleGCD(out IAction act)
     {
         if (VariantCure.CanUse(out act)) return true;
+        if (VariantCure2.CanUse(out act)) return true;
         return false;
     }
 

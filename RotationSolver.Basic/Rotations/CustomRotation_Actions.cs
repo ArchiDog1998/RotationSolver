@@ -238,6 +238,12 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
+    public static IBaseAction VariantCure2 { get; } = new RoleAction(ActionID.VariantCure2,
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.Ranged }, ActionOption.Heal | ActionOption.DutyAction);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction VariantSpiritDart { get; } = new RoleAction(ActionID.VariantSpiritDart,
         new JobRole[] { JobRole.Healer, JobRole.Tank }, ActionOption.Dot | ActionOption.DutyAction)
     {
@@ -247,7 +253,22 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
+    public static IBaseAction VariantSpiritDart2 { get; } = new RoleAction(ActionID.VariantSpiritDart2,
+        new JobRole[] { JobRole.Healer, JobRole.Tank }, ActionOption.Dot | ActionOption.DutyAction)
+    {
+        TargetStatus = new StatusID[] { StatusID.VariantSpiritDart },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static IBaseAction VariantRampart { get; } = new RoleAction(ActionID.VariantRampart,
+        new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.Ranged }, ActionOption.Buff | ActionOption.DutyAction);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction VariantRampart2 { get; } = new RoleAction(ActionID.VariantRampart2,
         new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.Ranged }, ActionOption.Buff | ActionOption.DutyAction);
     #endregion
 
