@@ -122,7 +122,7 @@ public abstract partial class CustomRotation
     {
         act = null;
 
-        if (!(Target?.IsDummy() ?? false) && !DataCenter.InHighEndDuty) return false;
+        if (!(Target?.IsDummy() ?? false) && !DataCenter.IsInHighEndDuty) return false;
 
         return MedicineType switch
         {

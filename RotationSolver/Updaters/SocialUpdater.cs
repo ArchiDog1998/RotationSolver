@@ -3,16 +3,12 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
-using ECommons.Automation;
-using ECommons.Configuration;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Commands;
 using RotationSolver.Localization;
-using RotationSolver.UI;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -21,7 +17,6 @@ namespace RotationSolver.Updaters;
 internal class SocialUpdater
 {
     public static bool InPvp { get; private set; }
-    //public static bool InHouse { get; private set; }
 
     private static readonly List<string> _macroToAuthor = new()
     {
@@ -37,9 +32,6 @@ internal class SocialUpdater
 
     static bool _canSaying = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
-
-    //public static bool IsHouseArea(TerritoryType territory)
-    //    => territory?.Bg.RawString.Contains("/hou/") ?? false;
 
     public static string GetDutyName(TerritoryType territory)
     {
@@ -95,14 +87,9 @@ internal class SocialUpdater
             _canSaying = true;
         }
         InPvp = territory?.IsPvpZone ?? false;
-        //InHouse = IsHouseArea(territory);
-        //if (PainterManager._painter != null) PainterManager._painter.Enable = !InHouse;
-        DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);
-        DataCenter.InHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
 
-#if DEBUG
-        //PluginLog.Information($"Territory: {e}");
-#endif
+        DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);
+        DataCenter.IsInHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
 
         try
         {

@@ -36,7 +36,7 @@ internal static class DataCenter
         }
         return false;
     }
-    public static bool InHighEndDuty { get; set; } = false;
+    public static bool IsInHighEndDuty { get; set; } = false;
     public static TerritoryContentType TerritoryContentType { get; set; } = TerritoryContentType.None;
 
     public static AutoStatus AutoStatus { get; private set; } = AutoStatus.None;

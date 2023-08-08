@@ -465,7 +465,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MortalFlame { get; } = new BLUAction(ActionID.MortalFlame);
+    public static IBLUAction MortalFlame { get; } = new BLUAction(ActionID.MortalFlame, ActionOption.Dot);
 
     /// <summary>
     /// 

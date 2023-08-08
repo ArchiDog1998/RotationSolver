@@ -245,6 +245,11 @@ public abstract partial class CustomRotation
     protected static TerritoryContentType TerritoryContentType => DataCenter.TerritoryContentType;
 
     /// <summary>
+    /// Is player in high-end duty.
+    /// </summary>
+    protected static bool IsInHighEndDuty => DataCenter.IsInHighEndDuty;
+
+    /// <summary>
     /// 
     /// </summary>
     protected static float Ping => DataCenter.Ping;
