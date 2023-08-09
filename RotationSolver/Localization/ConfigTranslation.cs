@@ -4,11 +4,6 @@ namespace RotationSolver.Localization;
 
 internal static class ConfigTranslation
 {
-    public static string ToName(this JobConfigString config) => config switch
-    {
-        _ => string.Empty,
-    };
-
     public static string ToName(this JobConfigInt config) => config switch
     {
         _ => string.Empty,
@@ -31,15 +26,12 @@ internal static class ConfigTranslation
 
     public static string ToName(this PluginConfigFloat config) => config switch
     {
+        PluginConfigFloat.ActionAhead => LocalizationManager.RightLang.ConfigWindow_Param_ActionAhead,
+        PluginConfigFloat.MinLastAbilityAdvanced => LocalizationManager.RightLang.ConfigWindow_Param_MinLastAbilityAdvanced,
         _ => string.Empty,
     };
 
     public static string ToName(this PluginConfigVector4 config) => config switch
-    {
-        _ => string.Empty,
-    };
-
-    public static string ToDescription(this JobConfigString config) => config switch
     {
         _ => string.Empty,
     };
@@ -74,11 +66,6 @@ internal static class ConfigTranslation
         _ => string.Empty,
     };
 
-    public static string ToCommand(this JobConfigString config) => config switch
-    {
-        _ => string.Empty,
-    };
-
     public static string ToCommand(this JobConfigInt config) => config switch
     {
         _ => string.Empty,
@@ -107,11 +94,6 @@ internal static class ConfigTranslation
     public static string ToCommand(this PluginConfigVector4 config) => config switch
     {
         _ => string.Empty,
-    };
-
-    public static Action ToAction(this JobConfigString config) => config switch
-    {
-        _ => null,
     };
 
     public static Action ToAction(this JobConfigInt config) => config switch

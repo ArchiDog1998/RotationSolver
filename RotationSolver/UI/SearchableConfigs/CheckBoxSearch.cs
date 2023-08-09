@@ -56,7 +56,7 @@ internal abstract class CheckBoxSearch : Searchable
     protected abstract bool GetValue(Job job);
     protected abstract void SetValue(Job job, bool value);
 
-    public override void Draw(Job job)
+    protected override void DrawMain(Job job)
     {
         var enable = GetValue(job);
         if (ImGui.Checkbox($"##{ID}", ref enable))
@@ -66,6 +66,7 @@ internal abstract class CheckBoxSearch : Searchable
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 
         var name = $"{Name}##Config_{ID}";
+        ImGui.SameLine();
         if (enable)
         {
             var x = ImGui.GetCursorPosX();
@@ -89,7 +90,7 @@ internal abstract class CheckBoxSearch : Searchable
             ImGui.PushStyleColor(ImGuiCol.HeaderHovered, 0x0);
             ImGui.PushStyleColor(ImGuiCol.HeaderActive, 0x0);
             ImGui.TreeNodeEx(name, ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen);
-            if (ImGui.IsItemHovered()) ShowTooltip(job);
+            if (ImGui.IsItemHovered()) ShowTooltip(job, false);
 
             ImGui.PopStyleColor(2);
         }

@@ -1,5 +1,9 @@
-﻿using ECommons.ImGuiMethods;
+﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using ECommons.ImGuiMethods;
 using ImGuiScene;
+using Lumina.Data.Parsing;
+using Lumina.Excel.GeneratedSheets;
 using Svg;
 using System.Drawing.Imaging;
 
@@ -101,7 +105,7 @@ public static class IconSet
     /// <returns></returns>
     [Obsolete]
     public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
-    public static void GetTexture(this ITexture text, out TextureWrap texture) => GetTexture(text?.IconID ?? 0, out texture);
+    public static bool GetTexture(this ITexture text, out TextureWrap texture) => GetTexture(text?.IconID ?? 0, out texture);
 
     /// <summary>
     /// Get Texture from id.
@@ -325,5 +329,55 @@ public static class IconSet
     public static uint GetJobIcon(ICustomRotation combo, IconType type)
     {
         return _icons[type][(uint)combo.Jobs[0] - 1];
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="job"></param>
+    /// <returns></returns>
+    public static uint GetJobIcon(Job job)
+    {
+        return GetJobIcon(job, Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.GetJobRole() ?? JobRole.None);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="job"></param>
+    /// <param name="role"></param>
+    /// <returns></returns>
+    public static uint GetJobIcon(Job job, JobRole role)
+    {
+        IconType type = IconType.Gold;
+
+        switch (role)
+        {
+            case JobRole.Tank:
+                type = IconType.Blue;
+                break;
+            case JobRole.RangedPhysical:
+            case JobRole.RangedMagical:
+            case JobRole.Melee:
+                type = IconType.Red;
+                break;
+            case JobRole.Healer:
+                type = IconType.Green;
+                break;
+        }
+
+        return GetJobIcon(job, type);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="job"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static uint GetJobIcon(Job job, IconType type)
+    {
+        if (job == Job.ADV) return 62143;
+        return _icons[type][(uint)job - 1];
     }
 }

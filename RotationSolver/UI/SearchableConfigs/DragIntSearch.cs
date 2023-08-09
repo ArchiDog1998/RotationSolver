@@ -18,9 +18,16 @@ internal class DragIntSearchJob : DragIntSearch
 
     public override string Command => _config.ToCommand();
 
-    public DragIntSearchJob(JobConfigInt config)
+    public DragIntSearchJob(JobConfigInt config, int min, int max, float speed)
+        :base (min, max, speed)
     {
         _config = config;
+    }
+
+    protected override void DrawMain(Job job)
+    {
+        base.DrawMain(job);
+        DrawJobIcon();
     }
 
     public override void ResetToDefault(Job job)
@@ -53,7 +60,8 @@ internal class DragIntSearchPlugin : DragIntSearch
 
     public override string Command => _config.ToCommand();
 
-    public DragIntSearchPlugin(PluginConfigInt config)
+    public DragIntSearchPlugin(PluginConfigInt config, int min, int max, float speed)
+        :base(min, max, speed)
     {
         _config = config;
     }
@@ -79,9 +87,14 @@ internal abstract class DragIntSearch : Searchable
     public int Min { get; }
     public int Max { get; }
     public float Speed { get; }
+    public DragIntSearch(int min, int max, float speed)
+    {
+        Min = min; Max = max;
+        Speed = speed;
+    }
     protected abstract int GetValue(Job job);
     protected abstract void SetValue(Job job, int value);
-    public override void Draw(Job job)
+    protected override void DrawMain(Job job)
     {
         var value = GetValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);

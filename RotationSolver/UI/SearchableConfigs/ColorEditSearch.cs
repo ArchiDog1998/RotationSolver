@@ -43,7 +43,7 @@ internal abstract class ColorEditSearch : Searchable
 {
     protected abstract Vector4 GetValue(Job job);
     protected abstract void SetValue(Job job, Vector4 value);
-    public override void Draw(Job job)
+    protected override void DrawMain(Job job)
     {
         var value = GetValue(job);
         if(ImGui.ColorEdit4($"{Name}##Config_{ID}", ref value))

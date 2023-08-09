@@ -17,10 +17,17 @@ internal class DragFloatRangeSearchJob : DragFloatRangeSearch
 
     public override string Command => _configMin.ToCommand();
 
-    public DragFloatRangeSearchJob(JobConfigFloat configMin, JobConfigFloat configMax)
+    public DragFloatRangeSearchJob(JobConfigFloat configMin, JobConfigFloat configMax, float min, float max, float speed)
+        : base (min, max, speed)
     {
         _configMin = configMin;
         _configMax = configMax;
+    }
+
+    protected override void DrawMain(Job job)
+    {
+        base.DrawMain(job);
+        DrawJobIcon();
     }
 
     public override void ResetToDefault(Job job)
@@ -64,7 +71,8 @@ internal class DragFloatRangeSearchPlugin : DragFloatRangeSearch
 
     public override string Command => _configMin.ToCommand();
 
-    public DragFloatRangeSearchPlugin(PluginConfigFloat configMin, PluginConfigFloat configMax)
+    public DragFloatRangeSearchPlugin(PluginConfigFloat configMin, PluginConfigFloat configMax, float min, float max, float speed)
+        : base(min, max, speed)
     {
         _configMin = configMin;
         _configMax = configMax;
@@ -99,14 +107,21 @@ internal class DragFloatRangeSearchPlugin : DragFloatRangeSearch
 
 internal abstract class DragFloatRangeSearch : Searchable
 {
-    public float Min { get; }
-    public float Max { get; }
-    public float Speed { get; }
+    public float Min { get; init; }
+    public float Max { get; init; }
+    public float Speed { get; init; }
+
+    public DragFloatRangeSearch(float min, float max, float speed)
+    {
+        Min = min; Max = max;
+        Speed = speed;
+    }
+
     protected abstract float GetMinValue(Job job);
     protected abstract void SetMinValue(Job job, float value);
     protected abstract float GetMaxValue(Job job);
     protected abstract void SetMaxValue(Job job, float value);
-    public override void Draw(Job job)
+    protected override void DrawMain(Job job)
     {
         var minValue = GetMinValue(job);
         var maxValue = GetMaxValue(job);

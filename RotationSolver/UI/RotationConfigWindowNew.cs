@@ -4,26 +4,28 @@ using Dalamud.Utility;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using F23.StringSimilarity;
 using ImGuiScene;
 using RotationSolver.ActionSequencer;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.UI.SearchableConfigs;
+using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
-using System.Drawing;
 
 namespace RotationSolver.UI;
 
 public class RotationConfigWindowNew : Window
 {
     private static float _scale => ImGuiHelpers.GlobalScale;
+    internal static Job Job => RotationUpdater.RightNowRotation?.Jobs[0] ?? Job.ADV;
 
     private RotationConfigWindowTab _activeTab;
 
     private const float MIN_COLUMN_WIDTH = 24;
     private const float JOB_ICON_WIDTH = 50;
-
-    private string _searchText = string.Empty;
 
     public RotationConfigWindowNew()
         : base(nameof(RotationConfigWindowNew), ImGuiWindowFlags.NoScrollbar, false)
@@ -83,19 +85,18 @@ public class RotationConfigWindowNew : Window
             if (wholeWidth > JOB_ICON_WIDTH * _scale)
             {
                 ImGui.SetNextItemWidth(wholeWidth);
-                ImGui.InputTextWithHint("##Rotation Solver Search Box", "Searching is not available", ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll);
+                SearchingBox();
             }
             else
             {
-                var icon = IconSet.GetTexture(46);
-                if(icon != null)
+                if(IconSet.GetTexture(46, out var icon))
                 {
                     DrawItemMiddle(() =>
                     {
                         if (ImGui.BeginPopup("Searching Popup"))
                         {
-                            ImGui.InputTextWithHint("##Rotation Solver Search Box", "Searching is not available", ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll);
-                            if(ImGui.IsKeyDown(ImGuiKey.Enter))
+                            SearchingBox();
+                            if (ImGui.IsKeyDown(ImGuiKey.Enter))
                             {
                                 ImGui.CloseCurrentPopup();
                             }
@@ -118,9 +119,7 @@ public class RotationConfigWindowNew : Window
             {
                 if (item.GetAttribute<TabSkipAttribute>() != null) continue;
 
-                var icon = IconSet.GetTexture(item.GetAttribute<TabIconAttribute>()?.Icon ?? 0);
-
-                if(icon != null && wholeWidth <= JOB_ICON_WIDTH * _scale)
+                if(IconSet.GetTexture(item.GetAttribute<TabIconAttribute>()?.Icon ?? 0, out var icon) && wholeWidth <= JOB_ICON_WIDTH * _scale)
                 {
                     DrawItemMiddle(() =>
                     {
@@ -146,11 +145,9 @@ public class RotationConfigWindowNew : Window
                 }
             }
 
-            var texture = wholeWidth <= 60 * _scale
-                ? IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_s_logo_nolabel.png")
-                : IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_bg_tag_dark.png");
-
-            if (texture != null)
+            if (wholeWidth <= 60 * _scale 
+                ? IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_s_logo_nolabel.png", out var texture)
+                : IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_bg_tag_dark.png", out texture))
             {
                 var width = Math.Min(150 * _scale, Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, texture.Width)));
                 var size = new Vector2(width, width * texture.Height / texture.Width);
@@ -176,14 +173,51 @@ public class RotationConfigWindowNew : Window
         }
     }
 
-    private TextureWrap _jobIcon;
+    private string _searchText = string.Empty;
+    private ISearchable[] _searchResults = Array.Empty<ISearchable>();
+    private void SearchingBox()
+    {
+        if(ImGui.InputTextWithHint("##Rotation Solver Search Box", "Searching is not available", ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))
+        {
+            if(!string.IsNullOrEmpty(_searchText)) 
+            {
+                const int MAX_RESULT_LENGTH = 20;
+
+                _searchResults = new ISearchable[MAX_RESULT_LENGTH];
+                var l = new Levenshtein();
+
+                var enumerator = GetType().GetRuntimeFields()
+                    .Where(f => f.FieldType == typeof(ISearchable[]) && f.IsInitOnly)
+                    .SelectMany(f => (ISearchable[])f.GetValue(this))
+                    .OrderBy(i => l.Distance(i.SearchingKey, _searchText))
+                    .Select(GetParent).GetEnumerator();
+
+                int index = 0;
+                while (enumerator.MoveNext() && index < MAX_RESULT_LENGTH)
+                {
+                    _searchResults[index++] = enumerator.Current;
+                }
+            }
+            else
+            {
+                _searchResults = Array.Empty<ISearchable>();
+            }
+        }
+    }
+
+    private static ISearchable GetParent(ISearchable searchable)
+    {
+        return searchable;
+        if(searchable == null) return null;
+        if (searchable.Parent == null) return searchable;
+        return GetParent(searchable.Parent);
+    }
+
     private void DrawHeader(float wholeWidth)
     {
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
-        var logo = IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png") ?? IconSet.GetTexture(0);
-
-        if (logo != null)
+        if (IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png", out var logo) || IconSet.GetTexture(0, out logo))
         {
             DrawItemMiddle(() =>
             {
@@ -258,8 +292,7 @@ public class RotationConfigWindowNew : Window
 
     private void DrawRotationIcon(ICustomRotation rotation, float iconSize)
     {
-        _jobIcon = rotation.GetTexture();
-        if (_jobIcon != null && SilenceImageButton(_jobIcon.ImGuiHandle,
+        if (rotation.GetTexture(out var jobIcon) && SilenceImageButton(jobIcon.ImGuiHandle,
             Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
         {
             _activeTab = RotationConfigWindowTab.Rotation;
@@ -318,54 +351,63 @@ public class RotationConfigWindowNew : Window
         if (ImGui.BeginChild("Rotation Solver Body", Vector2.One * -margin))
         {
             //Search box
-
-
-            switch (_activeTab)
+            if (_searchResults != null && _searchResults.Any())
             {
-                case RotationConfigWindowTab.About:
-                    DrawAbout();
-                    break;
-
-                case RotationConfigWindowTab.Rotation:
-                    DrawRotation();
-                    break;
-
-                case RotationConfigWindowTab.Actions:
-                    DrawActions();
-                    break;
-
-                case RotationConfigWindowTab.Rotations:
-                    DrawRotations();
-                    break;
-
-                case RotationConfigWindowTab.IDs:
-                    DrawIDs();
-                    break;
-
-                case RotationConfigWindowTab.Basic:
-                    DrawBasic();
-                    break;
-
-                case RotationConfigWindowTab.UI:
-                    DrawUI();
-                    break;
-
-                case RotationConfigWindowTab.Auto:
-                    DrawAuto();
-                    break;
-
-                case RotationConfigWindowTab.Target:
-                    DrawTarget();
-                    break;
-
-                case RotationConfigWindowTab.Extra:
-                    DrawExtra();
-                    break;
-
-                case RotationConfigWindowTab.Debug:
-                    DrawDebug();
-                    break;
+                foreach (var searchable in _searchResults)
+                {
+                    searchable?.Draw(Job);
+                }
             }
+            else
+            {
+                switch (_activeTab)
+                {
+                    case RotationConfigWindowTab.About:
+                        DrawAbout();
+                        break;
+
+                    case RotationConfigWindowTab.Rotation:
+                        DrawRotation();
+                        break;
+
+                    case RotationConfigWindowTab.Actions:
+                        DrawActions();
+                        break;
+
+                    case RotationConfigWindowTab.Rotations:
+                        DrawRotations();
+                        break;
+
+                    case RotationConfigWindowTab.IDs:
+                        DrawIDs();
+                        break;
+
+                    case RotationConfigWindowTab.Basic:
+                        DrawBasic();
+                        break;
+
+                    case RotationConfigWindowTab.UI:
+                        DrawUI();
+                        break;
+
+                    case RotationConfigWindowTab.Auto:
+                        DrawAuto();
+                        break;
+
+                    case RotationConfigWindowTab.Target:
+                        DrawTarget();
+                        break;
+
+                    case RotationConfigWindowTab.Extra:
+                        DrawExtra();
+                        break;
+
+                    case RotationConfigWindowTab.Debug:
+                        DrawDebug();
+                        break;
+                }
+            }
+
             ImGui.EndChild();
         }
     }
@@ -478,9 +520,7 @@ public class RotationConfigWindowNew : Window
                 var icon = item.Icon;
                 if (string.IsNullOrEmpty(icon)) icon = "https://raw.githubusercontent.com/goatcorp/DalamudAssets/master/UIRes/defaultIcon.png";
 
-                var texture = IconSet.GetTexture(icon);
-
-                if (texture != null)
+                if (IconSet.GetTexture(icon, out var texture))
                 {
                     if (NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * iconSize))
                     {
@@ -518,17 +558,17 @@ public class RotationConfigWindowNew : Window
     {
         var width = ImGui.GetWindowWidth();
 
-        if (TextureButton(IconSet.GetTexture("https://github-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark"), width, width))
+        if (IconSet.GetTexture("https://github-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && TextureButton(icon, width, width))
         {
             Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
         }
 
-        if (TextureButton(IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2"), width, width))
+        if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out icon) && TextureButton(icon, width, width))
         {
             Util.OpenLink("https://discord.gg/4fECHunam9");
         }
 
-        if (TextureButton(IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png"), width, width))
+        if (IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out icon) && TextureButton(icon, width, width))
         {
             Util.OpenLink("https://crowdin.com/project/rotationsolver");
         }
@@ -564,7 +604,7 @@ public class RotationConfigWindowNew : Window
 
         if (!string.IsNullOrEmpty(info.DonateLink))
         {
-            if (TextureButton(IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png"), wholeWidth, 250 * _scale))
+            if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && TextureButton(icon, wholeWidth, 250 * _scale))
             {
                 Util.OpenLink(info.DonateLink);
             }
@@ -618,7 +658,7 @@ public class RotationConfigWindowNew : Window
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
 
-                ImGui.Image(IconSet.GetTexture(attr.IconID).ImGuiHandle, Vector2.One * DESC_SIZE * _scale);
+                if(IconSet.GetTexture(attr.IconID, out var image)) ImGui.Image(image.ImGuiHandle, Vector2.One * DESC_SIZE * _scale);
 
                 ImGui.SameLine();
                 var isOnCommand = attr.IsOnCommand;
@@ -694,7 +734,7 @@ public class RotationConfigWindowNew : Window
 
         if (link != null)
         {
-            if (TextureButton(IconSet.GetTexture("https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png"), wholeWidth, 200 * _scale))
+            if (IconSet.GetTexture("https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png", out var icon) && TextureButton(icon, wholeWidth, 200 * _scale))
             {
                 Util.OpenLink(link.Url);
             }
@@ -765,8 +805,7 @@ public class RotationConfigWindowNew : Window
                                 ImguiTooltips.HoveredTooltip(item.Name);
                                 DrawActionOverlay(cursor, size, _activeAction == item ? 1 : 0);
 
-                                var texture = IconSet.GetTexture("ui/uld/readycheck_hr1.tex");
-                                if(texture != null)
+                                if(IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
                                 {
                                     var offset = new Vector2(1 / 12f, 1 / 6f);
                                     ImGui.SetCursorPos(cursor + new Vector2(0.6f, 0.7f) * size);
@@ -857,8 +896,6 @@ public class RotationConfigWindowNew : Window
     {
         HeaderSize = 18,
     };
-
-
     #endregion
 
     private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
@@ -881,54 +918,66 @@ public class RotationConfigWindowNew : Window
         _idsHeader?.Draw();
     }
 
-    private static readonly CollapsingHeaderGroup _basicHeader = new(new()
-    {
 
-    });
+    private static readonly ISearchable[] _basicSearchable = new ISearchable[]
+    {
+        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MinLastAbilityAdvanced, 0, 0.4f, 0.002f),
+    };
     private static void DrawBasic()
     {
-        ImGui.Text("Basic");
-        _basicHeader?.Draw();
+        foreach (var searchable in _basicSearchable)
+        {
+            searchable?.Draw(Job);
+        }
     }
 
-    private static readonly CollapsingHeaderGroup _uiHeader = new(new()
+    private static readonly ISearchable[] _uiSearchable = new ISearchable[]
     {
-
-    });
+        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
+    };
     private static void DrawUI()
     {
-        ImGui.Text("UI");
-        _uiHeader?.Draw();
+        foreach (var searchable in _uiSearchable)
+        {
+            searchable?.Draw(Job);
+        }
     }
 
-    private static readonly CollapsingHeaderGroup _autoHeader = new(new()
+    private static readonly ISearchable[] _autoSearchable = new ISearchable[]
     {
-
-    });
+        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
+    };
     private static void DrawAuto()
     {
-        ImGui.Text("Auto");
-        _autoHeader?.Draw();
+        foreach (var searchable in _autoSearchable)
+        {
+            searchable?.Draw(Job);
+        }
     }
 
-    private static readonly CollapsingHeaderGroup _targetHeader = new(new()
+    private static readonly ISearchable[] _targetSearchable = new ISearchable[]
     {
-
-    });
+        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
+    };
     private static void DrawTarget()
     {
-        ImGui.Text("Target");
-        _targetHeader?.Draw();
+        foreach (var searchable in _targetSearchable)
+        {
+            searchable?.Draw(Job);
+        }
     }
 
-    private static readonly CollapsingHeaderGroup _extraHeader = new(new()
+    private static readonly ISearchable[] _extraSearchable = new ISearchable[]
     {
-
-    });
+        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
+    };
     private static void DrawExtra()
     {
-        ImGui.Text("Extra");
-        _extraHeader?.Draw();
+        foreach (var searchable in _extraSearchable)
+        {
+            searchable?.Draw(Job);
+        }
     }
 
     private static readonly CollapsingHeaderGroup _debugHeader = new(new()
@@ -1002,9 +1051,7 @@ public class RotationConfigWindowNew : Window
 
         if (percent < 0)
         {
-            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
-
-            if (cover != null)
+            if (IconSet.GetTexture("ui/uld/icona_frame_hr1.tex", out var cover))
             {
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
 
@@ -1019,9 +1066,7 @@ public class RotationConfigWindowNew : Window
         }
         else if (percent < 1)
         {
-            var cover = IconSet.GetTexture("ui/uld/icona_recast_hr1.tex");
-
-            if (cover != null)
+            if (IconSet.GetTexture("ui/uld/icona_recast_hr1.tex", out var cover))
             {
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
 
@@ -1039,9 +1084,7 @@ public class RotationConfigWindowNew : Window
         }
         else
         {
-            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
-
-            if (cover != null)
+            if (IconSet.GetTexture("ui/uld/icona_frame_hr1.tex", out var cover))
             {
 
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
@@ -1056,9 +1099,7 @@ public class RotationConfigWindowNew : Window
 
         if (percent > 1)
         {
-            var cover = IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex");
-
-            if (cover != null)
+            if (IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex", out var cover))
             {
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
 

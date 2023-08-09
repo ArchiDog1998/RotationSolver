@@ -1,4 +1,5 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Game.ClientState.Keys;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
 using RotationSolver.UI.SearchableSettings;
@@ -17,52 +18,67 @@ internal abstract class Searchable : ISearchable
     public abstract string Command { get; }
     public abstract Action DrawTooltip { get; }
     public abstract string ID { get; }
+    private string Popup_Key => "Rotation Solver RightClicking: " + ID;
 
-    public abstract void Draw(Job job);
-
-    public abstract void ResetToDefault(Job job);
-
-
-    private const string Popup_Key = "Rotation Solver RightClicking Menu";
-    protected void ShowTooltip(Job job)
+    public void Draw(Job job)
     {
-        ImguiTooltips.ShowTooltip(() =>
+        DrawMain(job);
+
+        if (ImGui.BeginPopup(Popup_Key))
         {
-            var showDesc = !string.IsNullOrEmpty(Description);
-            if (showDesc)
+            if(ImGui.BeginTable(Popup_Key, 2, ImGuiTableFlags.BordersOuter))
             {
-                ImGui.TextWrapped(Description);
-            }
-            if(showDesc && DrawTooltip != null)
-            {
-                ImGui.Separator();
-            }
-            DrawTooltip?.Invoke();
-        });
+                DrawHotKeys("Reset to Default Value.", () => ResetToDefault(job), "Backspace");
 
-        ImGui.SetNextWindowSizeConstraints(new Vector2(150, 0) * ImGuiHelpers.GlobalScale, Vector2.Zero);
-        if(ImGui.BeginPopup(Popup_Key))
-        {
-            DrawHotKeys("Reset to Default Value.", () => ResetToDefault(job), ImGuiKey.Backspace);
+                if (!string.IsNullOrEmpty(Command))
+                {
+                    DrawHotKeys($"Execute \"{Command}\"", ExecuteCommand, "Alt");
 
-            if (!string.IsNullOrEmpty(Command))
-            {
-                DrawHotKeys(Command, ExecuteCommand, ImGuiKey.LeftAlt, ImGuiKey.C);
-
-                DrawHotKeys("Copy Command Data", CopyCommand, ImGuiKey.LeftCtrl, ImGuiKey.C);
+                    DrawHotKeys($"Copy \"{Command}\"", CopyCommand, "Ctrl");
+                }
+                ImGui.EndTable();
             }
 
             ImGui.EndPopup();
         }
+    }
+
+    protected abstract void DrawMain(Job job);
+
+    public abstract void ResetToDefault(Job job);
+
+    protected void ShowTooltip(Job job, bool showHand = true)
+    {
+        var showDesc = !string.IsNullOrEmpty(Description);
+        if (showDesc || DrawTooltip != null)
+        {
+            ImguiTooltips.ShowTooltip(() =>
+            {
+                if (showDesc)
+                {
+                    ImGui.TextWrapped(Description);
+                }
+                if (showDesc && DrawTooltip != null)
+                {
+                    ImGui.Separator();
+                }
+                DrawTooltip?.Invoke();
+            });
+        }
+
+        if(showHand) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
 
         if (ImGui.IsMouseClicked(ImGuiMouseButton.Right)) 
         {
-            ImGui.OpenPopup(Popup_Key);
+            if(!ImGui.IsPopupOpen(Popup_Key))
+            {
+                ImGui.OpenPopup(Popup_Key);
+            }
         }
 
-        ExecuteHotKeys(() => ResetToDefault(job), ImGuiKey.Backspace);
-        ExecuteHotKeys(ExecuteCommand, ImGuiKey.LeftAlt, ImGuiKey.C);
-        ExecuteHotKeys(CopyCommand, ImGuiKey.LeftCtrl, ImGuiKey.C);
+        ExecuteHotKeys(() => ResetToDefault(job), VirtualKey.BACK);
+        ExecuteHotKeys(ExecuteCommand, VirtualKey.MENU);
+        ExecuteHotKeys(CopyCommand, VirtualKey.CONTROL);
     }
 
     private void ExecuteCommand()
@@ -76,25 +92,42 @@ internal abstract class Searchable : ISearchable
         Notify.Success($"\"{Command}\" copied to clipboard.");
     }
 
-    private static void DrawHotKeys(string name, Action action, params ImGuiKey[] keys)
+    private static void DrawHotKeys(string name, Action action, params string[] keys)
     {
         if (action == null) return;
 
+        ImGui.TableNextRow();
+        ImGui.TableNextColumn();
         if (ImGui.Selectable(name))
         {
             action();
             ImGui.CloseCurrentPopup();
         }
 
-        ImGui.SameLine();
-        var str = string.Join(' ', keys);
-        ImGui.SetCursorPosY(ImGui.GetWindowSize().Y - ImGui.CalcTextSize(str).Y);
-        ImGui.TextDisabled(str);
+        ImGui.TableNextColumn();
+        ImGui.TextDisabled(string.Join(' ', keys));
     }
 
-    private static void ExecuteHotKeys(Action action, params ImGuiKey[] keys)
+    private static readonly SortedList<string, bool> _lastChecked = new();
+    private static void ExecuteHotKeys(Action action, params VirtualKey[] keys)
     {
         if (action == null) return;
-        if(keys.All(ImGui.IsKeyDown)) action();
+        var name = string.Join(' ', keys);
+
+        if (!_lastChecked.TryGetValue(name, out var last)) last = false;
+        var now = keys.All(k => Svc.KeyState[k]);
+        _lastChecked[name] = now;
+
+        if (!last && now) action();
+    }
+
+    protected static void DrawJobIcon()
+    {
+        ImGui.SameLine();
+
+        if (IconSet.GetTexture(IconSet.GetJobIcon(RotationConfigWindowNew.Job), out var texture))
+        {
+            ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
+        }
     }
 }
