@@ -1,5 +1,6 @@
 ﻿using F23.StringSimilarity;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 
@@ -46,12 +47,11 @@ public partial class RotationConfigWindowNew
         return GetParent(searchable.Parent);
     }
 
-
-
     private static readonly ISearchable[] _basicSearchable = new ISearchable[]
     {
         new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
         new DragFloatSearchPlugin(PluginConfigFloat.MinLastAbilityAdvanced, 0, 0.4f, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.CountDownAhead, 0.5f, 0.7f, 0.002f),
     };
     private static void DrawBasic()
     {
@@ -63,7 +63,6 @@ public partial class RotationConfigWindowNew
 
     private static readonly ISearchable[] _uiSearchable = new ISearchable[]
     {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
     };
     private static void DrawUI()
     {
@@ -75,7 +74,6 @@ public partial class RotationConfigWindowNew
 
     private static readonly ISearchable[] _autoSearchable = new ISearchable[]
     {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
     };
     private static void DrawAuto()
     {
@@ -87,7 +85,6 @@ public partial class RotationConfigWindowNew
 
     private static readonly ISearchable[] _targetSearchable = new ISearchable[]
     {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
     };
     private static void DrawTarget()
     {
@@ -99,7 +96,6 @@ public partial class RotationConfigWindowNew
 
     private static readonly ISearchable[] _extraSearchable = new ISearchable[]
     {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
     };
     private static void DrawExtra()
     {

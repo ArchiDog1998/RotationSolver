@@ -33,8 +33,8 @@ internal partial class RotationConfigWindow
         //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MinLastAbilityAdvanced,
         //    ref Service.Config.MinLastAbilityAdvanced, Service.Default.MinLastAbilityAdvanced, max: 0.4f);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
-            ref Service.Config.CountDownAhead, Service.Default.CountDownAhead, min: 0.5f, max: 0.7f);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
+        //    ref Service.Config.CountDownAhead, Service.Default.CountDownAhead, min: 0.5f, max: 0.7f);
 
         DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_SpecialDuration,
             ref Service.Config.SpecialDuration, Service.Default.SpecialDuration, speed: 0.02f, min: 1, max: 20);
