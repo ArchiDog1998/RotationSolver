@@ -7,6 +7,8 @@ namespace RotationSolver.UI.SearchableConfigs;
 
 internal abstract class Searchable : ISearchable
 {
+    protected const float DRAG_WIDTH = 150;
+    protected static float Scale => ImGuiHelpers.GlobalScale;
     public CheckBoxSearch Parent { get; set; }
 
     public string SearchingKey => Name + " : " + Description;
@@ -18,11 +20,11 @@ internal abstract class Searchable : ISearchable
 
     public abstract void Draw(Job job);
 
-    public abstract void ResetToDefault();
+    public abstract void ResetToDefault(Job job);
 
 
     private const string Popup_Key = "Rotation Solver RightClicking Menu";
-    protected void ShowTooltip()
+    protected void ShowTooltip(Job job)
     {
         ImguiTooltips.ShowTooltip(() =>
         {
@@ -41,7 +43,7 @@ internal abstract class Searchable : ISearchable
         ImGui.SetNextWindowSizeConstraints(new Vector2(150, 0) * ImGuiHelpers.GlobalScale, Vector2.Zero);
         if(ImGui.BeginPopup(Popup_Key))
         {
-            DrawHotKeys("Reset to Default Value.", ResetToDefault, ImGuiKey.Backspace);
+            DrawHotKeys("Reset to Default Value.", () => ResetToDefault(job), ImGuiKey.Backspace);
 
             if (!string.IsNullOrEmpty(Command))
             {
@@ -58,7 +60,7 @@ internal abstract class Searchable : ISearchable
             ImGui.OpenPopup(Popup_Key);
         }
 
-        ExecuteHotKeys(ResetToDefault, ImGuiKey.Backspace);
+        ExecuteHotKeys(() => ResetToDefault(job), ImGuiKey.Backspace);
         ExecuteHotKeys(ExecuteCommand, ImGuiKey.LeftAlt, ImGuiKey.C);
         ExecuteHotKeys(CopyCommand, ImGuiKey.LeftCtrl, ImGuiKey.C);
     }

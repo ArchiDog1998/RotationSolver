@@ -154,7 +154,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
-        _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;
+        _nextActionWindow.IsOpen = Service.Config.ShowNextActionWindow;
         _cooldownWindow.IsOpen = isValid && Service.Config.ShowCooldownWindow;
     }
 }

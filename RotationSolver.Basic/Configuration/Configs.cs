@@ -2,19 +2,16 @@
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
-using ECommons.GameHelpers;
 
 namespace RotationSolver.Basic.Configuration;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 [Serializable] public class PluginConfig : IPluginConfiguration
 {
-    public Dictionary<Job, JobConfig> JobsConfig { get; private set; } = new();
+    [JsonProperty]
+    private Dictionary<Job, JobConfig> _jobsConfig = new();
     public GlobalConfig GlobalConfig { get; private set; } = new();
     public int Version { get; set; } = 7;
-
-    public string GetValue(Job job, JobConfigString config)
-        => GetJobConfig(job).Strings.GetValue(config);
 
     public int GetValue(Job job, JobConfigInt config)
         => GetJobConfig(job).Ints.GetValue(config);
@@ -34,9 +31,6 @@ namespace RotationSolver.Basic.Configuration;
     public Vector4 GetValue(PluginConfigVector4 config)
         => GlobalConfig.Vectors.GetValue(config);
 
-    public string GetDefault(Job job, JobConfigString config)
-        => GetJobConfig(job).Strings.GetDefault(config);
-
     public int GetDefault(Job job, JobConfigInt config)
         => GetJobConfig(job).Ints.GetDefault(config);
 
@@ -54,9 +48,6 @@ namespace RotationSolver.Basic.Configuration;
 
     public Vector4 GetDefault(PluginConfigVector4 config)
         => GlobalConfig.Vectors.GetDefault(config);
-
-    public void SetValue(Job job, JobConfigString config, string value)
-        => GetJobConfig(job).Strings.SetValue(config, value);
 
     public void SetValue(Job job, JobConfigInt config, int value)
         => GetJobConfig(job).Ints.SetValue(config, value);
@@ -78,8 +69,8 @@ namespace RotationSolver.Basic.Configuration;
 
     public JobConfig GetJobConfig(Job job)
     {
-        if (JobsConfig.TryGetValue(job, out var config)) return config;
-        return JobsConfig[job] = new JobConfig();
+        if (_jobsConfig.TryGetValue(job, out var config)) return config;
+        return _jobsConfig[job] = new JobConfig();
     }
 
     public void Save()
@@ -89,16 +80,11 @@ namespace RotationSolver.Basic.Configuration;
 #region Job Config
 [Serializable] public class JobConfig
 {
-    public DictionConfig<JobConfigString, string> Strings { get; private set; } = new();
+    public string RotationChoice { get; set; }
     public DictionConfig<JobConfigFloat, float> Floats { get; private set; } = new();
 
     public DictionConfig<JobConfigInt, int> Ints { get; private set; } = new();
     public Dictionary<string, Dictionary<string, string>> RotationsConfigurations { get; private set; } = new ();
-}
-
-public enum JobConfigString : byte
-{
-    [Default("")]RotationChoice,
 }
 
 public enum JobConfigInt : byte
@@ -166,7 +152,6 @@ public enum PluginConfigInt : byte
 
     [Obsolete]
     [Default(15)] CooldownActionOneLine,
-
 }
 
 public enum PluginConfigBool : byte

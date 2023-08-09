@@ -1,9 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Hooking;
-using Dalamud.Interface.Colors;
 using Dalamud.Logging;
 using Dalamud.Plugin.Ipc;
-using Dalamud.Utility.Signatures;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.Hooks;
@@ -11,7 +8,6 @@ using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Localization;
 using System.Text.RegularExpressions;
 
 namespace RotationSolver;

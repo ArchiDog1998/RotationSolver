@@ -34,7 +34,7 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
         Service.ConfigNew.SetValue(_config, value);
     }
 
-    public override void ResetToDefault()
+    public override void ResetToDefault(Job job)
     {
         Service.ConfigNew.SetValue(_config, Service.ConfigNew.GetDefault(_config));
     }
@@ -63,14 +63,14 @@ internal abstract class CheckBoxSearch : Searchable
         {
             SetValue(job, enable);
         }
-        if (ImGui.IsItemHovered()) ShowTooltip();
+        if (ImGui.IsItemHovered()) ShowTooltip(job);
 
         var name = $"{Name}##Config_{ID}";
         if (enable)
         {
             var x = ImGui.GetCursorPosX();
             var drawBody = ImGui.TreeNode(name) && Children != null && Children.Length > 0;
-            if (ImGui.IsItemHovered()) ShowTooltip();
+            if (ImGui.IsItemHovered()) ShowTooltip(job);
 
             if (drawBody)
             {
@@ -89,7 +89,7 @@ internal abstract class CheckBoxSearch : Searchable
             ImGui.PushStyleColor(ImGuiCol.HeaderHovered, 0x0);
             ImGui.PushStyleColor(ImGuiCol.HeaderActive, 0x0);
             ImGui.TreeNodeEx(name, ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen);
-            if (ImGui.IsItemHovered()) ShowTooltip();
+            if (ImGui.IsItemHovered()) ShowTooltip(job);
 
             ImGui.PopStyleColor(2);
         }
