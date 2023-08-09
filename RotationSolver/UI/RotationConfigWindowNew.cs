@@ -17,7 +17,7 @@ using System.Diagnostics;
 
 namespace RotationSolver.UI;
 
-public class RotationConfigWindowNew : Window
+public partial class RotationConfigWindowNew : Window
 {
     private static float _scale => ImGuiHelpers.GlobalScale;
     internal static Job Job => RotationUpdater.RightNowRotation?.Jobs[0] ?? Job.ADV;
@@ -171,46 +171,6 @@ public class RotationConfigWindowNew : Window
 
             ImGui.EndChild();
         }
-    }
-
-    private string _searchText = string.Empty;
-    private ISearchable[] _searchResults = Array.Empty<ISearchable>();
-    private void SearchingBox()
-    {
-        if(ImGui.InputTextWithHint("##Rotation Solver Search Box", "Searching is not available", ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))
-        {
-            if(!string.IsNullOrEmpty(_searchText)) 
-            {
-                const int MAX_RESULT_LENGTH = 20;
-
-                _searchResults = new ISearchable[MAX_RESULT_LENGTH];
-                var l = new Levenshtein();
-
-                var enumerator = GetType().GetRuntimeFields()
-                    .Where(f => f.FieldType == typeof(ISearchable[]) && f.IsInitOnly)
-                    .SelectMany(f => (ISearchable[])f.GetValue(this))
-                    .OrderBy(i => l.Distance(i.SearchingKey, _searchText))
-                    .Select(GetParent).GetEnumerator();
-
-                int index = 0;
-                while (enumerator.MoveNext() && index < MAX_RESULT_LENGTH)
-                {
-                    _searchResults[index++] = enumerator.Current;
-                }
-            }
-            else
-            {
-                _searchResults = Array.Empty<ISearchable>();
-            }
-        }
-    }
-
-    private static ISearchable GetParent(ISearchable searchable)
-    {
-        return searchable;
-        if(searchable == null) return null;
-        if (searchable.Parent == null) return searchable;
-        return GetParent(searchable.Parent);
     }
 
     private void DrawHeader(float wholeWidth)
@@ -916,68 +876,6 @@ public class RotationConfigWindowNew : Window
     {
         ImGui.Text("IDs");
         _idsHeader?.Draw();
-    }
-
-
-    private static readonly ISearchable[] _basicSearchable = new ISearchable[]
-    {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
-        new DragFloatSearchPlugin(PluginConfigFloat.MinLastAbilityAdvanced, 0, 0.4f, 0.002f),
-    };
-    private static void DrawBasic()
-    {
-        foreach (var searchable in _basicSearchable)
-        {
-            searchable?.Draw(Job);
-        }
-    }
-
-    private static readonly ISearchable[] _uiSearchable = new ISearchable[]
-    {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
-    };
-    private static void DrawUI()
-    {
-        foreach (var searchable in _uiSearchable)
-        {
-            searchable?.Draw(Job);
-        }
-    }
-
-    private static readonly ISearchable[] _autoSearchable = new ISearchable[]
-    {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
-    };
-    private static void DrawAuto()
-    {
-        foreach (var searchable in _autoSearchable)
-        {
-            searchable?.Draw(Job);
-        }
-    }
-
-    private static readonly ISearchable[] _targetSearchable = new ISearchable[]
-    {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
-    };
-    private static void DrawTarget()
-    {
-        foreach (var searchable in _targetSearchable)
-        {
-            searchable?.Draw(Job);
-        }
-    }
-
-    private static readonly ISearchable[] _extraSearchable = new ISearchable[]
-    {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
-    };
-    private static void DrawExtra()
-    {
-        foreach (var searchable in _extraSearchable)
-        {
-            searchable?.Draw(Job);
-        }
     }
 
     private static readonly CollapsingHeaderGroup _debugHeader = new(new()
