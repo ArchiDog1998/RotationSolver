@@ -14,7 +14,7 @@ internal class DragIntRangeSearchJob : DragIntRangeSearch
 
     public override string Description => _configMin.ToDescription();
 
-    public override Action DrawTooltip => _configMin.ToAction();
+    public override LinkDescription[] Tooltips => _configMin.ToAction();
 
     public override string Command => _configMin.ToCommand();
 
@@ -69,7 +69,7 @@ internal class DragIntRangeSearchPlugin : DragIntRangeSearch
 
     public override string Description => _configMin.ToDescription();
 
-    public override Action DrawTooltip => _configMin.ToAction();
+    public override LinkDescription[] Tooltips => _configMin.ToAction();
 
     public override string Command => _configMin.ToCommand();
 

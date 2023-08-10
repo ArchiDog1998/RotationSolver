@@ -656,21 +656,26 @@ public partial class RotationConfigWindowNew : Window
 
         foreach (var link in links)
         {
-            var hasTexture = link.Texture != null;
+            DrawLinkDescription(link.LinkDescription, wholeWidth);
+        }
+    }
 
-            if(hasTexture && TextureButton(link.Texture, wholeWidth, wholeWidth))
+    internal static void DrawLinkDescription(LinkDescription link, float wholeWidth)
+    {
+        var hasTexture = IconSet.GetTexture(link.Path, out var texture);
+
+        if (hasTexture && TextureButton(texture, wholeWidth, wholeWidth))
+        {
+            Util.OpenLink(link.Path);
+        }
+
+        ImGui.TextWrapped(link.Description);
+
+        if (!hasTexture && !string.IsNullOrEmpty(link.Path))
+        {
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Question, link.Description))
             {
                 Util.OpenLink(link.Path);
-            }
-
-            ImGui.TextWrapped(link.Description);
-
-            if (!hasTexture && !string.IsNullOrEmpty(link.Path))
-            {
-                if(ImGuiEx.IconButton(FontAwesomeIcon.Question, link.Description))
-                {
-                    Util.OpenLink(link.Path);
-                }
             }
         }
     }

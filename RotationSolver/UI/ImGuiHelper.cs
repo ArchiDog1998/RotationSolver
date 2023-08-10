@@ -572,37 +572,37 @@ internal static class ImGuiHelper
                         isFirst = false;
                         Spacing();
                     }
-                    var hasTexture = texture.Texture != null;
+                    //var hasTexture = texture.Texture != null;
 
-                    if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.Question,
-                        "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
-                    {
-                        try
-                        {
-                            Util.OpenLink(texture.Path);
-                        }
-                        catch
-                        {
-                        }
-                    }
-                    if (ImGui.IsItemHovered() && (hasTexture || !string.IsNullOrEmpty( texture.Description)))
-                    {
-                        ImguiTooltips.ShowTooltip(() =>
-                        {
-                            if(hasTexture)
-                            {
-                                var ratio = Math.Min(1, Math.Min(display.X / texture.Texture.Width, display.Y / texture.Texture.Height));
-                                var size = new Vector2(texture.Texture.Width * ratio,
-                                    texture.Texture.Height * ratio);
-                                ImGui.Image(texture.Texture.ImGuiHandle, size);
-                            }
-                            if (!string.IsNullOrEmpty(texture.Description))
-                            {
-                                ImGui.Text(texture.Description);
-                            }
+                    //if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.Question,
+                    //    "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
+                    //{
+                    //    try
+                    //    {
+                    //        Util.OpenLink(texture.Path);
+                    //    }
+                    //    catch
+                    //    {
+                    //    }
+                    //}
+                    //if (ImGui.IsItemHovered() && (hasTexture || !string.IsNullOrEmpty( texture.Description)))
+                    //{
+                    //    ImguiTooltips.ShowTooltip(() =>
+                    //    {
+                    //        if(hasTexture)
+                    //        {
+                    //            var ratio = Math.Min(1, Math.Min(display.X / texture.Texture.Width, display.Y / texture.Texture.Height));
+                    //            var size = new Vector2(texture.Texture.Width * ratio,
+                    //                texture.Texture.Height * ratio);
+                    //            ImGui.Image(texture.Texture.ImGuiHandle, size);
+                    //        }
+                    //        if (!string.IsNullOrEmpty(texture.Description))
+                    //        {
+                    //            ImGui.Text(texture.Description);
+                    //        }
 
-                        });
-                    }
+                    //    });
+                    //}
                 }
             }
         }, () =>

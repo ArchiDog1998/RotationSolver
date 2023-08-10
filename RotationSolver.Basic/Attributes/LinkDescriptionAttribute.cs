@@ -1,4 +1,7 @@
-﻿using ImGuiScene;
+﻿using Dalamud.Utility;
+using ECommons.ImGuiMethods;
+using ImGuiScene;
+using static System.Windows.Forms.LinkLabel;
 
 namespace RotationSolver.Basic.Attributes;
 
@@ -9,37 +12,33 @@ namespace RotationSolver.Basic.Attributes;
 public class LinkDescriptionAttribute : Attribute
 {
     /// <summary>
-    /// Image from url.
+    /// The description.
     /// </summary>
-    public TextureWrap Texture => IconSet.GetTexture(Path);
-
-    /// <summary>
-    /// Description.
-    /// </summary>
-    public string Description { get; set; }
-
-    /// <summary>
-    /// Url.
-    /// </summary>
-    public string Path { get; set; }
+    public LinkDescription LinkDescription { get; set; }
 
     /// <summary>
     /// Constructer.
     /// </summary>
     /// <param name="path"></param>
     /// <param name="description"></param>
-    [Obsolete]
     public LinkDescriptionAttribute(string path, string description = "")
     {
-        Path = path;
-        Description = description;
+        LinkDescription = new() { Path = path, Description = description };
     }
+}
+
+/// <summary>
+/// Link description itself.
+/// </summary>
+public class LinkDescription
+{
+    /// <summary>
+    /// Description.
+    /// </summary>
+    public string Description { get; init; }
 
     /// <summary>
-    /// 
+    /// Url.
     /// </summary>
-    public LinkDescriptionAttribute()
-    {
-        
-    }
+    public string Path { get; init; }
 }

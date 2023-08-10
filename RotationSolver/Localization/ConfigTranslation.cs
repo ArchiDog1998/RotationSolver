@@ -97,32 +97,32 @@ internal static class ConfigTranslation
         _ => string.Empty,
     };
 
-    public static Action ToAction(this JobConfigInt config) => config switch
+    public static LinkDescription[] ToAction(this JobConfigInt config) => config switch
     {
         _ => null,
     };
 
-    public static Action ToAction(this JobConfigFloat config) => config switch
+    public static LinkDescription[] ToAction(this JobConfigFloat config) => config switch
     {
         _ => null,
     };
 
-    public static Action ToAction(this PluginConfigInt config) => config switch
+    public static LinkDescription[] ToAction(this PluginConfigInt config) => config switch
     {
         _ => null,
     };
 
-    public static Action ToAction(this PluginConfigBool config) => config switch
+    public static LinkDescription[] ToAction(this PluginConfigBool config) => config switch
     {
         _ => null,
     };
 
-    public static Action ToAction(this PluginConfigFloat config) => config switch
+    public static LinkDescription[] ToAction(this PluginConfigFloat config) => config switch
     {
         _ => null,
     };
 
-    public static Action ToAction(this PluginConfigVector4 config) => config switch
+    public static LinkDescription[] ToAction(this PluginConfigVector4 config) => config switch
     {
         _ => null,
     };

@@ -16,7 +16,7 @@ internal abstract class Searchable : ISearchable
     public abstract string Name { get; }
     public abstract string Description { get; }
     public abstract string Command { get; }
-    public abstract Action DrawTooltip { get; }
+    public abstract LinkDescription[] Tooltips { get; }
     public abstract string ID { get; }
     private string Popup_Key => "Rotation Solver RightClicking: " + ID;
 
@@ -50,7 +50,7 @@ internal abstract class Searchable : ISearchable
     protected void ShowTooltip(Job job, bool showHand = true)
     {
         var showDesc = !string.IsNullOrEmpty(Description);
-        if (showDesc || DrawTooltip != null)
+        if (showDesc || Tooltips != null)
         {
             ImguiTooltips.ShowTooltip(() =>
             {
@@ -58,11 +58,16 @@ internal abstract class Searchable : ISearchable
                 {
                     ImGui.TextWrapped(Description);
                 }
-                if (showDesc && DrawTooltip != null)
+                if (showDesc && Tooltips != null && Tooltips.Length > 0)
                 {
                     ImGui.Separator();
                 }
-                DrawTooltip?.Invoke();
+                var wholeWidth = ImGui.GetWindowWidth();
+
+                foreach (var tooltip in Tooltips)
+                {
+                    RotationConfigWindowNew.DrawLinkDescription(tooltip, wholeWidth);
+                }
             });
         }
 

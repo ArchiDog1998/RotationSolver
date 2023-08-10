@@ -14,7 +14,7 @@ internal class ColorEditSearchPlugin : ColorEditSearch
 
     public override string Description => _config.ToDescription();
 
-    public override Action DrawTooltip => _config.ToAction();
+    public override LinkDescription[] Tooltips => _config.ToAction();
 
     public override string Command => _config.ToCommand();
 

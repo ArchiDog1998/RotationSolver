@@ -14,7 +14,7 @@ internal class DragFloatSearchJob : DragFloatSearch
 
     public override string Description => _config.ToDescription();
 
-    public override Action DrawTooltip => _config.ToAction();
+    public override LinkDescription[] Tooltips => _config.ToAction();
 
     public override string Command => _config.ToCommand();
 
@@ -57,7 +57,7 @@ internal class DragFloatSearchPlugin : DragFloatSearch
 
     public override string Description => _config.ToDescription();
 
-    public override Action DrawTooltip => _config.ToAction();
+    public override LinkDescription[] Tooltips => _config.ToAction();
 
     public override string Command => _config.ToCommand();
 
