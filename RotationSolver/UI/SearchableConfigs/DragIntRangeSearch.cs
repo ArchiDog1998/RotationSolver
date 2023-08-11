@@ -16,8 +16,6 @@ internal class DragIntRangeSearchJob : DragIntRangeSearch
 
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
-    public override string Command => _configMin.ToCommand();
-
     public DragIntRangeSearchJob(JobConfigInt configMin, JobConfigInt configMax, int min, int max, float speed)
         :base (min, max, speed)
     {
@@ -71,8 +69,6 @@ internal class DragIntRangeSearchPlugin : DragIntRangeSearch
 
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
-    public override string Command => _configMin.ToCommand();
-
     public DragIntRangeSearchPlugin(PluginConfigInt configMin, PluginConfigInt configMax, int min, int max, float speed)
         : base(min, max, speed)
     {
@@ -112,6 +108,8 @@ internal abstract class DragIntRangeSearch : Searchable
     public int Min { get; init; }
     public int Max { get; init; }
     public float Speed { get; init; }
+
+    public sealed override string Command => "";
 
     public DragIntRangeSearch(int min, int max, float speed)
     {

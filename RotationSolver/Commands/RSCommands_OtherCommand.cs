@@ -42,16 +42,35 @@ namespace RotationSolver.Commands
             var value = str.Split(' ').LastOrDefault();
             if(TryGetOneEnum<PluginConfigBool>(str, out var b))
             {
-                Service.ConfigNew.SetValue(b, !Service.ConfigNew.GetValue(b));
+                var v = !Service.ConfigNew.GetValue(b);
+                Service.ConfigNew.SetValue(b, v);
+                value = v.ToString();
             }
-            if (TryGetOneEnum<PluginConfigFloat>(str, out var f))
+            else if (TryGetOneEnum<PluginConfigFloat>(str, out var f) && float.TryParse(value, out var f1))
             {
-                //Service.ConfigNew.SetValue(boolean, !Service.ConfigNew.GetValue(boolean));
+                Service.ConfigNew.SetValue(f, f1);
+            }
+            else if (TryGetOneEnum<PluginConfigInt>(str, out var i) && int.TryParse(value, out var i1))
+            {
+                Service.ConfigNew.SetValue(i, i1);
+            }
+            else if (TryGetOneEnum<JobConfigFloat>(str, out var f2) && float.TryParse(value, out f1))
+            {
+                Service.ConfigNew.SetValue(job, f2, f1);
+            }
+            else if (TryGetOneEnum<JobConfigInt>(str, out var i2) && int.TryParse(value, out i1))
+            {
+                Service.ConfigNew.SetValue(job, i2, i1);
+            }
+            else
+            {
+                Svc.Chat.PrintError(LocalizationManager.RightLang.Commands_CannotFindConfig);
+                return;
             }
 
-            ////Say out.
-            //Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
-            //    type.ToString(), Service.Config.GetValue(type)));
+            //Say out.
+            Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
+                str, value));
         }
 
         private static void ToggleActionCommand(string str)
@@ -118,7 +137,7 @@ namespace RotationSolver.Commands
                     return;
                 }
             }
-            Svc.Chat.Print(LocalizationManager.RightLang.Commands_CannotFindRotationConfig);
+            Svc.Chat.PrintError(LocalizationManager.RightLang.Commands_CannotFindRotationConfig);
         }
     }
 }

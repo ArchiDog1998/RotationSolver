@@ -8,6 +8,8 @@ internal partial class Strings
     public string Commands_ChangeRotationConfig { get; set; } = "Modify {0} to {1}";
     public string Commands_CannotFindRotationConfig { get; set; } = "Failed to find the config in this rotation, please check it.";
 
+    public string Commands_CannotFindConfig { get; set; } = "Failed to find the config, please check it.";
+
     public string Commands_InsertAction { get; set; } = "Will use it within {0}s";
 
     public string Commands_InsertActionFailure { get; set; } = "Can not find the action, please check the action name.";

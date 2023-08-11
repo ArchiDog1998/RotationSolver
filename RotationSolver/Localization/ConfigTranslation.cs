@@ -1,4 +1,5 @@
-﻿using RotationSolver.Basic.Configuration;
+﻿using ECommons.Configuration;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Localization;
 
@@ -67,30 +68,13 @@ internal static class ConfigTranslation
         _ => string.Empty,
     };
 
-    public static string ToCommand(this JobConfigInt config) => config switch
-    {
-        _ => string.Empty,
-    };
-
-    public static string ToCommand(this JobConfigFloat config) => config switch
-    {
-        _ => string.Empty,
-    };
-
-    public static string ToCommand(this PluginConfigInt config) => config switch
-    {
-        _ => string.Empty,
-    };
-
-    public static string ToCommand(this PluginConfigBool config) => config switch
-    {
-        _ => string.Empty,
-    };
-
-    public static string ToCommand(this PluginConfigFloat config) => config switch
-    {
-        _ => string.Empty,
-    };
+    public static string ToCommand(this JobConfigInt config) => ToCommandStr(config);
+    public static string ToCommand(this JobConfigFloat config) => ToCommandStr(config);
+    public static string ToCommand(this PluginConfigInt config) => ToCommandStr(config);
+    public static string ToCommand(this PluginConfigBool config) => ToCommandStr(config);
+    public static string ToCommand(this PluginConfigFloat config)  => ToCommandStr(config);
+    private static string ToCommandStr(object obj)
+        => Service.Command + " " + OtherCommandType.Settings.ToString() + " " + obj.ToString();
 
     public static LinkDescription[] ToAction(this JobConfigInt config) => config switch
     {
