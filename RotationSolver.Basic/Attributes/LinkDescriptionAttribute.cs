@@ -1,9 +1,4 @@
-﻿using Dalamud.Utility;
-using ECommons.ImGuiMethods;
-using ImGuiScene;
-using static System.Windows.Forms.LinkLabel;
-
-namespace RotationSolver.Basic.Attributes;
+﻿namespace RotationSolver.Basic.Attributes;
 
 /// <summary>
 /// The link to a image or web about your rotation.
@@ -30,7 +25,7 @@ public class LinkDescriptionAttribute : Attribute
 /// <summary>
 /// Link description itself.
 /// </summary>
-public class LinkDescription
+public struct LinkDescription
 {
     /// <summary>
     /// Description.

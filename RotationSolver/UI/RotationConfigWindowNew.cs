@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
@@ -12,6 +13,7 @@ using RotationSolver.Localization;
 using RotationSolver.TextureItems;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -172,28 +174,47 @@ public partial class RotationConfigWindowNew : Window
         }
     }
 
+    private const int FRAME_COUNT = 180;
+    private static readonly SortedList<string, TextureWrap> _textureWrapList = new (FRAME_COUNT);
+    private static bool GetLocalImage(string name, out TextureWrap texture)
+    {
+        var url = $"RotationSolver.Logos.{name}.png";
+        if (_textureWrapList.TryGetValue(name, out texture)) return true;
+
+        using var stream = typeof(RotationConfigWindowNew).Assembly.GetManifestResourceStream(url);
+        if (stream == null) return false;
+
+        using var memory = new MemoryStream();
+        stream.CopyTo(memory);
+        texture = Svc.PluginInterface.UiBuilder.LoadImage(memory.ToArray());
+        if(texture == null) return false;
+        _textureWrapList[url] = texture;
+        return true;
+    }
+
     private void DrawHeader(float wholeWidth)
     {
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
-        int realFrame = 180;
+        int realFrame = FRAME_COUNT;
         if (Service.ConfigNew.GetValue(Basic.Configuration.PluginConfigBool.DrawIconAnimation))
         {
-            var frame = Environment.TickCount / 100; //10fps
-            realFrame = frame % 60 * 3; // convert to 30 fps.
-            if (realFrame == 0) realFrame = 180;
+            var frame = Environment.TickCount / 34; //30
+            realFrame = frame % FRAME_COUNT;
+            if (realFrame == 0) realFrame = FRAME_COUNT;
         }
-
-        if (IconSet.GetTexture($"https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logos/{realFrame: D4}.png", out var logo) 
-            || IconSet.GetTexture(0, out logo))
+        if (GetLocalImage(realFrame.ToString("0000"), out var logo) && IconSet.GetTexture(0, out var overlay))
         {
             DrawItemMiddle(() =>
             {
-                if (SilenceImageButton(logo.ImGuiHandle, Vector2.One * size,
+                var cursor = ImGui.GetCursorPos();
+                if (SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
                     _activeTab == RotationConfigWindowTab.About))
                 {
                     _activeTab = RotationConfigWindowTab.About;
                 }
+                ImGui.SetCursorPos(cursor);
+                ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
                 ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
             }, wholeWidth, size);
 
@@ -254,7 +275,6 @@ public partial class RotationConfigWindowNew : Window
                     ImGui.EndGroup();
                 }, wholeWidth, horizonalWholeWidth);
             }
-
         }
     }
 
@@ -668,11 +688,11 @@ public partial class RotationConfigWindowNew : Window
 
         foreach (var link in links)
         {
-            DrawLinkDescription(link.LinkDescription, wholeWidth);
+            DrawLinkDescription(link.LinkDescription, wholeWidth, true);
         }
     }
 
-    internal static void DrawLinkDescription(LinkDescription link, float wholeWidth)
+    internal static void DrawLinkDescription(LinkDescription link, float wholeWidth, bool drawQuestion)
     {
         var hasTexture = IconSet.GetTexture(link.Path, out var texture);
 
@@ -683,7 +703,7 @@ public partial class RotationConfigWindowNew : Window
 
         ImGui.TextWrapped(link.Description);
 
-        if (!hasTexture && !string.IsNullOrEmpty(link.Path))
+        if (drawQuestion && !hasTexture && !string.IsNullOrEmpty(link.Path))
         {
             if (ImGuiEx.IconButton(FontAwesomeIcon.Question, link.Description))
             {

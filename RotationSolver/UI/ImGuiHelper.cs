@@ -539,7 +539,7 @@ internal static class ImGuiHelper
             //}
 
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
-            if(link != null)
+            if (link != null)
             {
                 ImGui.SameLine();
                 Spacing();
@@ -558,53 +558,53 @@ internal static class ImGuiHelper
 
             HoveredString(LocalizationManager.RightLang.ConfigWindow_Helper_OpenSource);
 
-            var attrs = rotation.GetType().GetCustomAttributes<LinkDescriptionAttribute>();
-            if (attrs.Any())
-            {
-                var display = ImGui.GetIO().DisplaySize * 0.7f;
+            //var attrs = rotation.GetType().GetCustomAttributes<LinkDescriptionAttribute>();
+            //if (attrs.Any())
+            //{
+            //    var display = ImGui.GetIO().DisplaySize * 0.7f;
 
-                bool isFirst = true;
-                foreach (var texture in attrs)
-                {
-                    ImGui.SameLine();
-                    if(isFirst)
-                    {
-                        isFirst = false;
-                        Spacing();
-                    }
-                    //var hasTexture = texture.Texture != null;
+            //    bool isFirst = true;
+            //    foreach (var texture in attrs)
+            //    {
+            //        ImGui.SameLine();
+            //        if(isFirst)
+            //        {
+            //            isFirst = false;
+            //            Spacing();
+            //        }
+            //        //var hasTexture = texture.Texture != null;
 
-                    //if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.Question,
-                    //    "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
-                    //{
-                    //    try
-                    //    {
-                    //        Util.OpenLink(texture.Path);
-                    //    }
-                    //    catch
-                    //    {
-                    //    }
-                    //}
-                    //if (ImGui.IsItemHovered() && (hasTexture || !string.IsNullOrEmpty( texture.Description)))
-                    //{
-                    //    ImguiTooltips.ShowTooltip(() =>
-                    //    {
-                    //        if(hasTexture)
-                    //        {
-                    //            var ratio = Math.Min(1, Math.Min(display.X / texture.Texture.Width, display.Y / texture.Texture.Height));
-                    //            var size = new Vector2(texture.Texture.Width * ratio,
-                    //                texture.Texture.Height * ratio);
-                    //            ImGui.Image(texture.Texture.ImGuiHandle, size);
-                    //        }
-                    //        if (!string.IsNullOrEmpty(texture.Description))
-                    //        {
-                    //            ImGui.Text(texture.Description);
-                    //        }
+            //        //if (IconButton(hasTexture ? FontAwesomeIcon.Image : FontAwesomeIcon.Question,
+            //        //    "Button" + rotation.GetHashCode().ToString() + texture.GetHashCode().ToString()))
+            //        //{
+            //        //    try
+            //        //    {
+            //        //        Util.OpenLink(texture.Path);
+            //        //    }
+            //        //    catch
+            //        //    {
+            //        //    }
+            //        //}
+            //        //if (ImGui.IsItemHovered() && (hasTexture || !string.IsNullOrEmpty( texture.Description)))
+            //        //{
+            //        //    ImguiTooltips.ShowTooltip(() =>
+            //        //    {
+            //        //        if(hasTexture)
+            //        //        {
+            //        //            var ratio = Math.Min(1, Math.Min(display.X / texture.Texture.Width, display.Y / texture.Texture.Height));
+            //        //            var size = new Vector2(texture.Texture.Width * ratio,
+            //        //                texture.Texture.Height * ratio);
+            //        //            ImGui.Image(texture.Texture.ImGuiHandle, size);
+            //        //        }
+            //        //        if (!string.IsNullOrEmpty(texture.Description))
+            //        //        {
+            //        //            ImGui.Text(texture.Description);
+            //        //        }
 
-                    //    });
-                    //}
-                }
-            }
+            //        //    });
+            //        //}
+            //    }
+            //}
         }, () =>
         {
             RotationConfigWindow.DrawRotationRole(rotation, canAddButton);

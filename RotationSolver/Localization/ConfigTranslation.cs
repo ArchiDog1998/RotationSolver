@@ -98,6 +98,17 @@ internal static class ConfigTranslation
 
     public static LinkDescription[] ToAction(this PluginConfigFloat config) => config switch
     {
+        PluginConfigFloat.ActionAhead => new LinkDescription[]
+        {
+            new LinkDescription()
+            {
+                Path = "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/HowAndWhenToClick.svg",
+                Description = "This plugin helps you to use the right action during the combat. Here is a guide about the different options.",
+            },
+        },
+        //PluginConfigFloat.MinLastAbilityAdvanced => new LinkDescription[]
+        //{
+        //},
         _ => null,
     };
 

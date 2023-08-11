@@ -69,7 +69,7 @@ internal abstract class Searchable : ISearchable
 
                 foreach (var tooltip in Tooltips)
                 {
-                    RotationConfigWindowNew.DrawLinkDescription(tooltip, wholeWidth);
+                    RotationConfigWindowNew.DrawLinkDescription(tooltip, wholeWidth, false);
                 }
             });
         }

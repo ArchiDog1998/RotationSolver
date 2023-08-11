@@ -141,20 +141,21 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void UpdateDisplayWindow()
     {
         var isValid = validDelay.Delay(MajorUpdater.IsValid
-        && (!Service.Config.OnlyShowWithHostileOrInDuty
-                || Svc.Condition[ConditionFlag.BoundByDuty]
-                || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
             && RotationUpdater.RightNowRotation != null
             && !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
             && !Svc.Condition[ConditionFlag.Occupied38] //Treasure hunt.
-            && !Svc.Condition[ConditionFlag.BetweenAreas]
-            && !Svc.Condition[ConditionFlag.BetweenAreas51]
             && !Svc.Condition[ConditionFlag.WaitingForDuty]
             && (!Svc.Condition[ConditionFlag.UsingParasol] || Player.Object.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.WeaponOut))
             && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
+        _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;
+
+        isValid &= !Service.Config.OnlyShowWithHostileOrInDuty
+                || Svc.Condition[ConditionFlag.BoundByDuty]
+                || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25);
+
         _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
-        _nextActionWindow.IsOpen = Service.Config.ShowNextActionWindow;
         _cooldownWindow.IsOpen = isValid && Service.Config.ShowCooldownWindow;
+
     }
 }
