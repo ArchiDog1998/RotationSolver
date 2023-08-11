@@ -5,11 +5,14 @@ using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ImGuiScene;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.ActionSequencer;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using RotationSolver.TextureItems;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
 
@@ -300,7 +303,7 @@ public partial class RotationConfigWindowNew : Window
         ImguiTooltips.HoveredTooltip(warning);
     }
 
-    private static void DrawItemMiddle(Action drawAction, float wholeWidth, float width, bool leftAlign = true)
+    private static void DrawItemMiddle(System.Action drawAction, float wholeWidth, float width, bool leftAlign = true)
     {
         if (drawAction == null) return;
         var distance = (wholeWidth - width) / 2;
@@ -881,15 +884,73 @@ public partial class RotationConfigWindowNew : Window
         _rotationsHeader?.Draw();
     }
 
+    #region Ids
+    private static uint _territoryId = 0;
+    private static TerritoryTypeTexture[] _allTerritories = null;
+    internal static TerritoryTypeTexture[] AllTerritories
+    {
+        get
+        {
+            _allTerritories ??= Service.GetSheet<TerritoryType>()
+                    .Where(t => t != null
+                        && t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId != 0)
+                    .OrderBy(t => t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId)
+                    .Select(t => new TerritoryTypeTexture(t))
+                    .ToArray();
+            return _allTerritories;
+        }
+    }
+
+    private static StatusTexture[] _allDispelStatus = null;
+    internal static StatusTexture[] AllDispelStatus
+    {
+        get
+        {
+            _allDispelStatus ??= Service.GetSheet<Status>()
+                    .Where(s => s.CanDispel)
+                    .Select(s => new StatusTexture(s))
+                    .ToArray();
+            return _allDispelStatus;
+        }
+    }
+
+    private static StatusTexture[] _allInvStatus = null;
+    internal static StatusTexture[] AllInvStatus
+    {
+        get
+        {
+            _allInvStatus ??= Service.GetSheet<Status>()
+                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff && s.HitEffect.Row == 16 && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
+                        && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
+                    .Select(s => new StatusTexture(s))
+                    .ToArray();
+            return _allInvStatus;
+        }
+    }
+
+    private static ActionTexture[] _allActions = null;
+    internal static ActionTexture[] AllActions
+    {
+        get
+        {
+            _allActions ??= Service.GetSheet<GAction>()
+                    .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction
+                    && a.ClassJob.Value == null && a.Cast100ms > 0)
+                    .Select(a => new ActionTexture(a))
+                    .ToArray();
+            return _allActions;
+        }
+    }
     private static readonly CollapsingHeaderGroup _idsHeader = new(new()
     {
 
     });
     private static void DrawIDs()
     {
-        ImGui.Text("IDs");
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_Description); 
         _idsHeader?.Draw();
     }
+    #endregion
 
     private static readonly CollapsingHeaderGroup _debugHeader = new(new()
     {

@@ -1,13 +1,10 @@
 ﻿using Dalamud.Utility;
-using Lumina.Data.Parsing;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Data;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.TextureItems;
 using RotationSolver.Updaters;
-using System.Xml.Linq;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
