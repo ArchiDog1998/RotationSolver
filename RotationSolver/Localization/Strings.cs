@@ -628,6 +628,7 @@ internal partial class Strings
     public string ConfigWindow_About_Compatibility_Crash { get; set; } = "Cause the game to crash.";
 
     public string ConfigWindow_Rotation_Description { get; set; } = "Description";
+    public string ConfigWindow_Rotation_Status { get; set; } = "Status";
     public string ConfigWindow_Rotation_Configuration { get; set; } = "Configuration";
     public string ConfigWindow_Rotation_Information { get; set; } = "Information";
 

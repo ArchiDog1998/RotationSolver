@@ -600,12 +600,14 @@ public partial class RotationConfigWindowNew : Window
 
         _rotationHeader.Draw();
     }
-
+   
     private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
     {
-        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Description, DrawRotationDescription},
+        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Description, DrawRotationDescription },
 
-        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Configuration, DrawRotationConfiguration},
+        { GetRotationStatusHead ,  DrawRotationStatus },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Configuration, DrawRotationConfiguration },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Information, DrawRotationInformation },
     });
@@ -710,6 +712,18 @@ public partial class RotationConfigWindowNew : Window
                 Util.OpenLink(link.Path);
             }
         }
+    }
+
+    private static string GetRotationStatusHead()
+    {
+        var rotation = RotationUpdater.RightNowRotation;
+        if (rotation == null || !rotation.ShowStatus) return string.Empty;
+        return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
+    }
+
+    private static void DrawRotationStatus()
+    {
+        RotationUpdater.RightNowRotation?.DisplayStatus();
     }
 
     private static void DrawRotationConfiguration()

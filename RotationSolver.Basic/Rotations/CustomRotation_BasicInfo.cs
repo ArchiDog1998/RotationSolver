@@ -66,6 +66,7 @@ public abstract partial class CustomRotation : ICustomRotation
     public IAction ActionMoveForwardAbility { get; private set; }
 
     public IAction ActionMoveBackAbility { get; private set; }
+
     public IAction ActionSpeedAbility { get; private set; }
 
     public IAction EsunaStanceNorthGCD { get; private set; }
@@ -81,6 +82,7 @@ public abstract partial class CustomRotation : ICustomRotation
     public bool IsValid { get; private set; } = true;   
     public string WhyNotValid { get; private set; } = string.Empty;
 
+    public virtual bool ShowStatus => false;
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this);
