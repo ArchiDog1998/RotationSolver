@@ -2,6 +2,8 @@
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
+using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
+using System.Drawing;
 
 namespace RotationSolver.UI.SearchableSettings;
 
@@ -44,6 +46,8 @@ internal abstract class CheckBoxSearch : Searchable
 {
     public ISearchable[] Children { get; protected set; }
 
+    public ActionID Action { get; init; } = ActionID.None;
+
     public CheckBoxSearch(params ISearchable[] children)
     {
         Children = children;
@@ -69,6 +73,21 @@ internal abstract class CheckBoxSearch : Searchable
         ImGui.SameLine();
         if(Children == null || Children.Length == 0)
         {
+            if (Action != ActionID.None && IconSet.GetTexture(Action, out var texture))
+            {
+                ImGui.BeginGroup();
+                var cursor = ImGui.GetCursorPos();
+                var size = ImGuiHelpers.GlobalScale * 32;
+                if (RotationConfigWindowNew.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size))
+                {
+                    SetValue(job, !enable);
+                }
+                if (ImGui.IsItemHovered()) ShowTooltip(job);
+                RotationConfigWindowNew.DrawActionOverlay(cursor, size, enable ? 1 : 0);
+                ImGui.EndGroup();
+
+                ImGui.SameLine();
+            }
             ImGui.Text(name);
             if (ImGui.IsItemHovered()) ShowTooltip(job);
         }

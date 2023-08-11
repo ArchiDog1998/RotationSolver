@@ -142,6 +142,7 @@ public static class IconSet
     /// <param name="action"></param>
     /// <param name="isAdjust"></param>
     /// <returns></returns>
+    [Obsolete]
     public static TextureWrap GetTexture(this IAction action, bool isAdjust = true)
     {
         uint iconId = 0;
@@ -161,12 +162,32 @@ public static class IconSet
         return GetTexture(iconId);
     }
 
+    public static bool GetTexture(this IAction action, out TextureWrap texture, bool isAdjust = true)
+    {
+        uint iconId = 0;
+        if (action != null)
+        {
+            var id = isAdjust ? action.AdjustedID : action.ID;
+
+            if (!_actionIcons.TryGetValue(id, out iconId))
+            {
+                iconId = id == action.ID ? action.IconID : action is IBaseAction
+                    ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
+                    : Service.GetSheet<Item>().GetRow(id).Icon;
+
+                _actionIcons[id] = iconId;
+            }
+        }
+        return GetTexture(iconId, out texture);
+    }
+
     /// <summary>
     /// Get texture from action Id.
     /// </summary>
     /// <param name="actionID"></param>
     /// <param name="isAction"></param>
     /// <returns></returns>
+    [Obsolete]
     public static TextureWrap GetTexture(this ActionID actionID, bool isAction = true)
     {
         var id = (uint)actionID;
@@ -175,11 +196,26 @@ public static class IconSet
         {
             iconId = isAction
                 ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
-                : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(id).Icon;
+                : Service.GetSheet<Item>().GetRow(id).Icon;
 
             _actionIcons[id] = iconId;
         }
         return GetTexture(iconId);
+    }
+
+    public static bool GetTexture(this ActionID actionID, out TextureWrap texture, bool isAction = true)
+    {
+        var id = (uint)actionID;
+
+        if (!_actionIcons.TryGetValue(id, out var iconId))
+        {
+            iconId = isAction
+                ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
+                : Service.GetSheet<Item>().GetRow(id).Icon;
+
+            _actionIcons[id] = iconId;
+        }
+        return GetTexture(iconId, out texture);
     }
 
     private static readonly Dictionary<IconType, uint[]> _icons = new()

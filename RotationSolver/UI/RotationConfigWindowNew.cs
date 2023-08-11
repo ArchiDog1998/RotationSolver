@@ -173,17 +173,16 @@ public partial class RotationConfigWindowNew : Window
     {
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
-        var url = "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png";
-        if(Service.ConfigNew.GetValue(Basic.Configuration.PluginConfigBool.DrawIconAnimation))
+        int realFrame = 180;
+        if (Service.ConfigNew.GetValue(Basic.Configuration.PluginConfigBool.DrawIconAnimation))
         {
             var frame = Environment.TickCount / 100; //10fps
-            var realFrame = frame % 60 * 3; // convert to 30 fps.
+            realFrame = frame % 60 * 3; // convert to 30 fps.
             if (realFrame == 0) realFrame = 180;
-
-            url = $"https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logos/{realFrame: D4}.png";
         }
 
-        if (IconSet.GetTexture(url, out var logo) || IconSet.GetTexture(0, out logo))
+        if (IconSet.GetTexture($"https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logos/{realFrame: D4}.png", out var logo) 
+            || IconSet.GetTexture(0, out logo))
         {
             DrawItemMiddle(() =>
             {
@@ -650,8 +649,12 @@ public partial class RotationConfigWindowNew : Window
                         ImGui.Text(" ");
                         ImGui.SameLine();
                     }
-                    ControlWindow.DrawIAction(item.GetTexture().ImGuiHandle, DESC_SIZE * _scale, 1);
-                    ImguiTooltips.HoveredTooltip(item.Name);
+
+                    if(item.GetTexture(out var texture))
+                    {
+                        ControlWindow.DrawIAction(texture.ImGuiHandle, DESC_SIZE * _scale, 1);
+                        ImguiTooltips.HoveredTooltip(item.Name);
+                    }
                     notStart = true;
                 }
             }
@@ -759,8 +762,7 @@ public partial class RotationConfigWindowNew : Window
                             var index = 0;
                             foreach (var item in pair.OrderBy(t => t.ID))
                             {
-                                var icon = item.GetTexture();
-                                if (icon == null) continue;
+                                if (!item.GetTexture(out var icon)) continue;
 
                                 if (index++ % count != 0)
                                 {
@@ -900,7 +902,7 @@ public partial class RotationConfigWindowNew : Window
     }
 
     #region Image
-    private unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected, string id = "")
+    internal unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected, string id = "")
     {
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderActive)));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderHovered)));
@@ -912,7 +914,7 @@ public partial class RotationConfigWindowNew : Window
         return result;
     }
 
-    private unsafe static bool NoPaddingNoColorImageButton(IntPtr handle, Vector2 size, string id = "")
+    internal unsafe static bool NoPaddingNoColorImageButton(IntPtr handle, Vector2 size, string id = "")
     {
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0);
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0);
@@ -954,7 +956,7 @@ public partial class RotationConfigWindowNew : Window
         return result;
     }
 
-    private static void DrawActionOverlay(Vector2 cursor, float width, float percent)
+    internal static void DrawActionOverlay(Vector2 cursor, float width, float percent)
     {
         var pixPerUnit = width / 82;
 
