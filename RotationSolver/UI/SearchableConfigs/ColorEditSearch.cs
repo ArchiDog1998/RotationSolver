@@ -16,7 +16,7 @@ internal class ColorEditSearchPlugin : ColorEditSearch
 
     public override LinkDescription[] Tooltips => _config.ToAction();
 
-    public override string Command => _config.ToCommand();
+    public override string Command => "";
 
     public ColorEditSearchPlugin(PluginConfigVector4 config)
     {

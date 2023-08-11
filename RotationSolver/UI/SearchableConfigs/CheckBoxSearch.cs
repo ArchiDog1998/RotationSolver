@@ -67,10 +67,15 @@ internal abstract class CheckBoxSearch : Searchable
 
         var name = $"{Name}##Config_{ID}";
         ImGui.SameLine();
-        if (enable)
+        if(Children == null || Children.Length == 0)
+        {
+            ImGui.Text(name);
+            if (ImGui.IsItemHovered()) ShowTooltip(job);
+        }
+        else if (enable)
         {
             var x = ImGui.GetCursorPosX();
-            var drawBody = ImGui.TreeNode(name) && Children != null && Children.Length > 0;
+            var drawBody = ImGui.TreeNode(name);
             if (ImGui.IsItemHovered()) ShowTooltip(job);
 
             if (drawBody)

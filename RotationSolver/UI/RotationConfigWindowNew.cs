@@ -4,14 +4,10 @@ using Dalamud.Utility;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
-using F23.StringSimilarity;
 using ImGuiScene;
 using RotationSolver.ActionSequencer;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.UI.SearchableConfigs;
-using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
 
@@ -20,7 +16,7 @@ namespace RotationSolver.UI;
 public partial class RotationConfigWindowNew : Window
 {
     private static float _scale => ImGuiHelpers.GlobalScale;
-    internal static Job Job => RotationUpdater.RightNowRotation?.Jobs[0] ?? Job.ADV;
+    private static Job Job => RotationUpdater.Job;
 
     private RotationConfigWindowTab _activeTab;
 
@@ -177,7 +173,17 @@ public partial class RotationConfigWindowNew : Window
     {
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
-        if (IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png", out var logo) || IconSet.GetTexture(0, out logo))
+        var url = "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png";
+        if(Service.ConfigNew.GetValue(Basic.Configuration.PluginConfigBool.DrawIconAnimation))
+        {
+            var frame = Environment.TickCount / 100; //10fps
+            var realFrame = frame % 60 * 3; // convert to 30 fps.
+            if (realFrame == 0) realFrame = 180;
+
+            url = $"https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logos/{realFrame: D4}.png";
+        }
+
+        if (IconSet.GetTexture(url, out var logo) || IconSet.GetTexture(0, out logo))
         {
             DrawItemMiddle(() =>
             {

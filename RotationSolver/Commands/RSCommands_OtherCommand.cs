@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
@@ -37,17 +38,20 @@ namespace RotationSolver.Commands
 
         private static void DoSettingCommand(string str)
         {
-            if (!TryGetOneEnum<SettingsCommand>(str, out var type))
+            var job = RotationUpdater.Job;
+            var value = str.Split(' ').LastOrDefault();
+            if(TryGetOneEnum<PluginConfigBool>(str, out var b))
             {
-                RotationSolverPlugin.OpenConfigWindow();
-                return;
+                Service.ConfigNew.SetValue(b, !Service.ConfigNew.GetValue(b));
+            }
+            if (TryGetOneEnum<PluginConfigFloat>(str, out var f))
+            {
+                //Service.ConfigNew.SetValue(boolean, !Service.ConfigNew.GetValue(boolean));
             }
 
-            Service.Config.SetValue(type, !Service.Config.GetValue(type));
-
-            //Say out.
-            Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
-                type.ToString(), Service.Config.GetValue(type)));
+            ////Say out.
+            //Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
+            //    type.ToString(), Service.Config.GetValue(type)));
         }
 
         private static void ToggleActionCommand(string str)

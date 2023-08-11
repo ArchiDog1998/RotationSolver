@@ -156,6 +156,7 @@ public enum PluginConfigInt : byte
 
 public enum PluginConfigBool : byte
 {
+    [Default(true)] DrawIconAnimation,
     [Default(true)] AutoOffBetweenArea,
     [Default(true)] AutoOffCutScene,
     [Default(true)] AutoOffWhenDead,

@@ -3,6 +3,7 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
 using RotationSolver.UI.SearchableSettings;
+using RotationSolver.Updaters;
 
 namespace RotationSolver.UI.SearchableConfigs;
 
@@ -22,6 +23,8 @@ internal abstract class Searchable : ISearchable
 
     public void Draw(Job job)
     {
+        if (string.IsNullOrEmpty(Name)) return;
+
         DrawMain(job);
 
         if (ImGui.BeginPopup(Popup_Key))
@@ -130,7 +133,7 @@ internal abstract class Searchable : ISearchable
     {
         ImGui.SameLine();
 
-        if (IconSet.GetTexture(IconSet.GetJobIcon(RotationConfigWindowNew.Job), out var texture))
+        if (IconSet.GetTexture(IconSet.GetJobIcon(RotationUpdater.Job), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
         }

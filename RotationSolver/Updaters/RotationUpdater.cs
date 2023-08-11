@@ -16,6 +16,7 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     internal static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
 
+    public static Job Job => RightNowRotation?.Jobs[0] ?? Job.ADV;
     public static ICustomRotation RightNowRotation { get; private set; }
     public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
 

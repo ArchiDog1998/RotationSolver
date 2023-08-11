@@ -92,11 +92,6 @@ internal static class ConfigTranslation
         _ => string.Empty,
     };
 
-    public static string ToCommand(this PluginConfigVector4 config) => config switch
-    {
-        _ => string.Empty,
-    };
-
     public static LinkDescription[] ToAction(this JobConfigInt config) => config switch
     {
         _ => null,
