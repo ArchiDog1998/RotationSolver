@@ -649,4 +649,11 @@ internal partial class Strings
     public string ConfigWindow_Rotations_GitHub { get; set; } = "GitHub";
     public string ConfigWindow_Rotations_Libraries { get; set; } = "Libraries";
     public string ConfigWindow_Rotations_AutoLoadCustomRotations { get; set; } = "Auto load rotations";
+
+    public string ConfigWindow_Rotations_UserName { get; set; } = "User Name";
+    public string ConfigWindow_Rotations_Repository { get; set; } = "Repository";
+
+    public string ConfigWindow_Rotations_FileName { get; set; } = "File Name";
+
+    public string ConfigWindow_Rotations_Library { get; set; } = "The folder contains rotation libs or the download url about rotation lib.";
 }

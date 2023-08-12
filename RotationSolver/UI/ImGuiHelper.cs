@@ -548,7 +548,7 @@ internal static class ImGuiHelper
                 {
                     try
                     {
-                        Util.OpenLink(link.Url);
+                        Util.OpenLink(link.Path);
                     }
                     catch
                     {

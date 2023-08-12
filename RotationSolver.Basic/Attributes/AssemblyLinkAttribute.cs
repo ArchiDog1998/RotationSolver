@@ -27,7 +27,7 @@ public class AssemblyLinkAttribute : Attribute
     /// <param name="helpLink"></param>
     /// <param name="changeLog"></param>
     /// <param name="donate"><see cref="Donate"/></param>
-    [Obsolete("Never use it anymore, it'll be deleted in a month!")]
+    [Obsolete("Never use it anymore, it'll be deleted in a month!", true)]
     public AssemblyLinkAttribute(string supportLink = null, string helpLink = null,
         string changeLog = null, string donate = null)
     {

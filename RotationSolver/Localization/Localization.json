@@ -446,5 +446,9 @@
   "ConfigWindow_Rotations_Loaded": "Loaded",
   "ConfigWindow_Rotations_GitHub": "GitHub",
   "ConfigWindow_Rotations_Libraries": "Libraries",
-  "ConfigWindow_Rotations_AutoLoadCustomRotations": "Auto load rotations"
+  "ConfigWindow_Rotations_AutoLoadCustomRotations": "Auto load rotations",
+  "ConfigWindow_Rotations_UserName": "User Name",
+  "ConfigWindow_Rotations_Repository": "Repository",
+  "ConfigWindow_Rotations_FileName": "File Name",
+  "ConfigWindow_Rotations_Library": "The folder contains rotation libs or the download url about rotation lib."
 }

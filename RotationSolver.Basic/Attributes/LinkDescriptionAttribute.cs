@@ -14,11 +14,11 @@ public class LinkDescriptionAttribute : Attribute
     /// <summary>
     /// Constructer.
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="url"></param>
     /// <param name="description"></param>
-    public LinkDescriptionAttribute(string path, string description = "")
+    public LinkDescriptionAttribute(string url, string description = "")
     {
-        LinkDescription = new() { Path = path, Description = description };
+        LinkDescription = new() { Url = url, Description = description };
     }
 }
 
@@ -35,5 +35,5 @@ public struct LinkDescription
     /// <summary>
     /// Url.
     /// </summary>
-    public string Path { get; init; }
+    public string Url { get; init; }
 }

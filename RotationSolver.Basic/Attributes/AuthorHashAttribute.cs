@@ -16,7 +16,7 @@ public class AuthorHashAttribute : Attribute
     /// Constructer
     /// </summary>
     /// <param name="hash"><see cref="Hash"/></param>
-    [Obsolete]
+    [Obsolete("This method will be deleted in one month.", true)]
     public AuthorHashAttribute(string hash)
     {
         Hash = hash;

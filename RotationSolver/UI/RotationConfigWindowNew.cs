@@ -331,9 +331,10 @@ public partial class RotationConfigWindowNew : Window
         drawAction();
     }
 
+    private static float BodyMargin => 8 * _scale;
     private void DrawBody()
     {
-        var margin = 8 * _scale;
+        var margin = BodyMargin;
         ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * margin);
         if (ImGui.BeginChild("Rotation Solver Body", Vector2.One * -margin))
         {
@@ -695,20 +696,20 @@ public partial class RotationConfigWindowNew : Window
 
     internal static void DrawLinkDescription(LinkDescription link, float wholeWidth, bool drawQuestion)
     {
-        var hasTexture = IconSet.GetTexture(link.Path, out var texture);
+        var hasTexture = IconSet.GetTexture(link.Url, out var texture);
 
         if (hasTexture && TextureButton(texture, wholeWidth, wholeWidth))
         {
-            Util.OpenLink(link.Path);
+            Util.OpenLink(link.Url);
         }
 
         ImGui.TextWrapped(link.Description);
 
-        if (drawQuestion && !hasTexture && !string.IsNullOrEmpty(link.Path))
+        if (drawQuestion && !hasTexture && !string.IsNullOrEmpty(link.Url))
         {
             if (ImGuiEx.IconButton(FontAwesomeIcon.Question, link.Description))
             {
-                Util.OpenLink(link.Path);
+                Util.OpenLink(link.Url);
             }
         }
     }
@@ -738,25 +739,13 @@ public partial class RotationConfigWindowNew : Window
     {
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
-        var wholeWidth = ImGui.GetWindowWidth();
-
-        var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
-
-        if (link != null)
-        {
-            if (IconSet.GetTexture("https://GitHub.GitHubassets.com/images/modules/logos_page/GitHub-Logo.png", out var icon) && TextureButton(icon, wholeWidth, 200 * _scale))
-            {
-                Util.OpenLink(link.Url);
-            }
-        }
 
         var assembly = rotation.GetType().Assembly;
         var info = assembly.GetInfo();
 
-        if (info != null )
+        if (info != null)
         {
-            ImGui.Text("Assembly Name: ");
-            ImGui.SameLine();
+            ImGui.BeginGroup();
             if (ImGui.Button(info.Name))
             {
                 Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
@@ -765,10 +754,20 @@ public partial class RotationConfigWindowNew : Window
             var version = assembly.GetName().Version;
             if (version != null)
             {
-                ImGui.Text("Assembly Version: " + version.ToString());
+                ImGui.Text("v " + version.ToString());
             }
 
-            ImGui.Text("Assembly Author: " + info.Author);
+            ImGui.Text("- " + info.Author);
+            ImGui.EndGroup();
+
+            var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
+            if(link != null)
+            {
+                ImGui.SameLine();
+                var userName = info.GitHubUserName;
+                var repository = info.GitHubRepository;
+                DrawGitHubBadge(userName, repository, $"https://github.com/{userName}/{repository}/blob/{link.Path}");
+            }
         }
     }
     #endregion
@@ -1014,13 +1013,13 @@ public partial class RotationConfigWindowNew : Window
         }
     }
 
-    private static void DrawGitHubBadge(string userName, string repository, string id = "")
+    private static void DrawGitHubBadge(string userName, string repository, string id = "", string link = "")
     {
         if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(repository)
     && IconSet.GetTexture($"https://GitHub-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
-    && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height),id))
+    && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height), id))
         {
-            Util.OpenLink($"https://GitHub.com/{userName}/{repository}");
+            Util.OpenLink(string.IsNullOrEmpty(link) ? $"https://GitHub.com/{userName}/{repository}" : link);
         }
     }
 
@@ -1045,16 +1044,19 @@ public partial class RotationConfigWindowNew : Window
 
             var changed = false;
 
-            ImGui.SetNextItemWidth(120 * _scale);
-            changed |= ImGui.InputText($"##GitHubLib{i}UserName", ref userName, 1024);
+            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X * 3 - BodyMargin;
+            width /= 3;
+
+            ImGui.SetNextItemWidth(width);
+            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}UserName", LocalizationManager.RightLang.ConfigWindow_Rotations_UserName, ref userName, 1024);
             ImGui.SameLine();
 
-            ImGui.SetNextItemWidth(120 * _scale);
-            changed |= ImGui.InputText($"##GitHubLib{i}Repository", ref repository, 1024);
+            ImGui.SetNextItemWidth(width);
+            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}Repository", LocalizationManager.RightLang.ConfigWindow_Rotations_Repository, ref repository, 1024);
             ImGui.SameLine();
 
-            ImGui.SetNextItemWidth(120 * _scale);
-            changed |= ImGui.InputText($"##GitHubLib{i}FileName", ref fileName, 1024);
+            ImGui.SetNextItemWidth(width);
+            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}FileName", LocalizationManager.RightLang.ConfigWindow_Rotations_FileName, ref fileName, 1024);
             ImGui.SameLine();
 
             if(changed)
@@ -1084,10 +1086,13 @@ public partial class RotationConfigWindowNew : Window
 
         ImGui.Spacing();
 
+        var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - BodyMargin;
+
         int removeIndex = -1;
         for (int i = 0; i < Service.ConfigNew.GlobalConfig.OtherLibs.Length; i++)
         {
-            ImGui.InputText($"##Rotation Solver OtherLib{i}", ref Service.ConfigNew.GlobalConfig.OtherLibs[i], 1024);
+            ImGui.SetNextItemWidth(width);
+            ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", LocalizationManager.RightLang.ConfigWindow_Rotations_Library, ref Service.ConfigNew.GlobalConfig.OtherLibs[i], 1024);
             ImGui.SameLine();
 
             if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))

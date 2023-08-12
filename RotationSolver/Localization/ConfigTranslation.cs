@@ -246,7 +246,7 @@ internal static class ConfigTranslation
         {
             new LinkDescription()
             {
-                Path = "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/HowAndWhenToClick.svg",
+                Url = "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/HowAndWhenToClick.svg",
                 Description = "This plugin helps you to use the right action during the combat. Here is a guide about the different options.",
             },
         },
