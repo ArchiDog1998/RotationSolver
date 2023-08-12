@@ -8,12 +8,15 @@ using ECommons.ImGuiMethods;
 using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.ActionSequencer;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.TextureItems;
+using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using System.Drawing;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -157,11 +160,7 @@ public partial class RotationConfigWindowNew : Window
                 DrawItemMiddle(() =>
                 {
                     ImGui.SetCursorPosY(ImGui.GetWindowSize().Y - size.Y);
-                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0);
-                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0);
-                    ImGui.PushStyleColor(ImGuiCol.Button, 0);
-                    result = NoPaddingImageButton(texture.ImGuiHandle, size);
-                    ImGui.PopStyleColor(3);
+                    result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size);
                 }, wholeWidth, size.X);
 
                 if (result)
@@ -417,7 +416,12 @@ public partial class RotationConfigWindowNew : Window
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Warning);
         ImGui.PopStyleColor();
 
-        ImGui.NewLine();
+        var width = ImGui.GetWindowWidth();
+        if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out var icon) && TextureButton(icon, width, width))
+        {
+            Util.OpenLink("https://discord.gg/4fECHunam9");
+        }
+
         _aboutHeaders.Draw();
     }
 
@@ -546,14 +550,9 @@ public partial class RotationConfigWindowNew : Window
     {
         var width = ImGui.GetWindowWidth();
 
-        if (IconSet.GetTexture("https://github-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && TextureButton(icon, width, width))
+        if (IconSet.GetTexture("https://GitHub-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && TextureButton(icon, width, width))
         {
-            Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
-        }
-
-        if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out icon) && TextureButton(icon, width, width))
-        {
-            Util.OpenLink("https://discord.gg/4fECHunam9");
+            Util.OpenLink("https://GitHub.com/ArchiDog1998/RotationSolver");
         }
 
         if (IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out icon) && TextureButton(icon, width, width))
@@ -745,7 +744,7 @@ public partial class RotationConfigWindowNew : Window
 
         if (link != null)
         {
-            if (IconSet.GetTexture("https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png", out var icon) && TextureButton(icon, wholeWidth, 200 * _scale))
+            if (IconSet.GetTexture("https://GitHub.GitHubassets.com/images/modules/logos_page/GitHub-Logo.png", out var icon) && TextureButton(icon, wholeWidth, 200 * _scale))
             {
                 Util.OpenLink(link.Url);
             }
@@ -909,14 +908,199 @@ public partial class RotationConfigWindowNew : Window
     #endregion
 
     #region Rotations
-    private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
-    {
-
-    });
     private static void DrawRotations()
     {
-        ImGui.Text("Rotations");
+        if (ImGui.Button("Download Rotations"))
+        {
+            Task.Run(async () =>
+            {
+                await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
+            });
+        }
+
         _rotationsHeader?.Draw();
+    }
+    private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
+    {
+        {() => LocalizationManager.RightLang.ConfigWindow_Rotations_Settings, DrawRotationsSettings},
+        {() => LocalizationManager.RightLang.ConfigWindow_Rotations_Loaded, DrawRotationsLoaded},
+        {() => LocalizationManager.RightLang.ConfigWindow_Rotations_GitHub, DrawRotationsGitHub},
+        {() => LocalizationManager.RightLang.ConfigWindow_Rotations_Libraries, DrawRotationsLibraries},
+    });
+
+    private static readonly CheckBoxSearchPlugin _updateRotation = new (PluginConfigBool.DownloadRotations,
+        new CheckBoxSearchPlugin(PluginConfigBool.AutoUpdateRotations));
+
+    private static readonly CheckBoxSearchPlugin _autoLoadRotations = new(PluginConfigBool.AutoLoadCustomRotations);
+
+    private static void DrawRotationsSettings()
+    {
+        _updateRotation?.Draw(RotationUpdater.Job);
+        _autoLoadRotations?.Draw(RotationUpdater.Job);
+    }
+
+    private static void DrawRotationsLoaded()
+    {
+        var assemblyGrps = RotationUpdater.CustomRotationsDict
+            .SelectMany(d => d.Value)
+            .SelectMany(g => g.Rotations)
+            .GroupBy(r => r.GetType().Assembly);
+
+
+        if (ImGui.BeginTable("Rotation Solver AssemblyTable", 3, ImGuiTableFlags.Borders
+            | ImGuiTableFlags.Resizable
+            | ImGuiTableFlags.SizingStretchProp))
+        {
+            ImGui.TableSetupScrollFreeze(0, 1);
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Information");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Rotations");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Links");
+
+            foreach (var grp in assemblyGrps)
+            {
+                ImGui.TableNextRow();
+
+                var assembly = grp.Key;
+
+                var info = assembly.GetInfo();
+                ImGui.TableNextColumn();
+
+                if (ImGui.Button(info.Name))
+                {
+                    Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
+                }
+
+                var version = assembly.GetName().Version;
+                if (version != null)
+                {
+                    ImGui.Text("v " + version.ToString());
+                }
+
+                ImGui.Text("- " + info.Author);
+
+                ImGui.TableNextColumn();
+
+                var lastRole = JobRole.None;
+                foreach (var jobs in grp.GroupBy(r => r.IconID))
+                {
+                    var role = jobs.FirstOrDefault().ClassJob.GetJobRole();
+                    if (lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
+                    lastRole = role;
+
+                    if(IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed), out var texture))
+                    ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * _scale);
+
+                    ImGuiHelper.HoveredString(string.Join('\n', jobs));
+                }
+
+                ImGui.TableNextColumn();
+
+                DrawGitHubBadge(info.GitHubUserName, info.GitHubRepository, info.FilePath);
+
+                if (!string.IsNullOrEmpty(info.DonateLink)
+                    && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height/ icon.Width) * MathF.Min(250, icon.Width) * _scale, info.FilePath))
+                {
+                    Util.OpenLink(info.DonateLink);
+                }
+            }
+            ImGui.EndTable();
+        }
+    }
+
+    private static void DrawGitHubBadge(string userName, string repository, string id = "")
+    {
+        if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(repository)
+    && IconSet.GetTexture($"https://GitHub-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
+    && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height),id))
+        {
+            Util.OpenLink($"https://GitHub.com/{userName}/{repository}");
+        }
+    }
+
+    private static void DrawRotationsGitHub()
+    {
+        if (!Service.ConfigNew.GlobalConfig.GitHubLibs.Any(s => string.IsNullOrEmpty(s) || s == "||"))
+        {
+            Service.ConfigNew.GlobalConfig.GitHubLibs = Service.ConfigNew.GlobalConfig.GitHubLibs.Append("||").ToArray();
+        }
+
+        ImGui.Spacing();
+
+        int removeIndex = -1;
+        for (int i = 0; i < Service.ConfigNew.GlobalConfig.GitHubLibs.Length; i++)
+        {
+            var strs = Service.ConfigNew.GlobalConfig.GitHubLibs[i].Split('|');
+            var userName = strs.FirstOrDefault() ?? string.Empty;
+            var repository = strs.Length > 1 ? strs[1] : string.Empty;
+            var fileName = strs.LastOrDefault() ?? string.Empty;
+
+            DrawGitHubBadge(userName, repository, fileName);
+
+            var changed = false;
+
+            ImGui.SetNextItemWidth(120 * _scale);
+            changed |= ImGui.InputText($"##GitHubLib{i}UserName", ref userName, 1024);
+            ImGui.SameLine();
+
+            ImGui.SetNextItemWidth(120 * _scale);
+            changed |= ImGui.InputText($"##GitHubLib{i}Repository", ref repository, 1024);
+            ImGui.SameLine();
+
+            ImGui.SetNextItemWidth(120 * _scale);
+            changed |= ImGui.InputText($"##GitHubLib{i}FileName", ref fileName, 1024);
+            ImGui.SameLine();
+
+            if(changed)
+            {
+                Service.ConfigNew.GlobalConfig.GitHubLibs[i] = $"{userName}|{repository}|{fileName}";
+            }
+
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove GitHubLibs{i}"))
+            {
+                removeIndex = i;
+            }
+        }
+        if (removeIndex > -1)
+        {
+            var list = Service.ConfigNew.GlobalConfig.GitHubLibs.ToList();
+            list.RemoveAt(removeIndex);
+            Service.ConfigNew.GlobalConfig.GitHubLibs = list.ToArray();
+        }
+    }
+
+    private static void DrawRotationsLibraries()
+    {
+        if (!Service.ConfigNew.GlobalConfig.OtherLibs.Any(string.IsNullOrEmpty))
+        {
+            Service.ConfigNew.GlobalConfig.OtherLibs = Service.ConfigNew.GlobalConfig.OtherLibs.Append(string.Empty).ToArray();
+        }
+
+        ImGui.Spacing();
+
+        int removeIndex = -1;
+        for (int i = 0; i < Service.ConfigNew.GlobalConfig.OtherLibs.Length; i++)
+        {
+            ImGui.InputText($"##Rotation Solver OtherLib{i}", ref Service.ConfigNew.GlobalConfig.OtherLibs[i], 1024);
+            ImGui.SameLine();
+
+            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
+            {
+                removeIndex = i;
+            }
+        }
+        if (removeIndex > -1)
+        {
+            var list = Service.ConfigNew.GlobalConfig.OtherLibs.ToList();
+            list.RemoveAt(removeIndex);
+            Service.ConfigNew.GlobalConfig.OtherLibs = list.ToArray();
+        }
     }
     #endregion 
 

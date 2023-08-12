@@ -21,7 +21,7 @@ internal static class RotationHelper
         var location = assembly.Location;
         var company = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
 
-        var assemblyInfo = new AssemblyInfo(name, company, location, string.Empty, string.Empty, company, name, DateTime.Now);
+        var assemblyInfo = new AssemblyInfo(name, company, location, string.Empty, company, name, DateTime.Now);
 
         _assemblyInfos[assembly] = assemblyInfo;
 
@@ -59,15 +59,13 @@ internal static class RotationHelper
         var author = GetAuthor(filePath, assemblyName);
 
         var link = assembly.GetCustomAttribute<AssemblyLinkAttribute>();
-        var github = assembly.GetCustomAttribute<AssemblyGithubAttribute>();
         var assemblyInfo = new AssemblyInfo(
             assemblyName,
             author,
             filePath,
             link?.Donate,
-            link?.ChangeLog,
-            github?.UserName,
-            github?.Repository,
+            link?.UserName,
+            link?.Repository,
             DateTime.Now);
 
         var existingAssembly = GetAssemblyFromPath(filePath);

@@ -5,6 +5,7 @@ using ImGuiScene;
 using Lumina.Data.Parsing;
 using Lumina.Excel.GeneratedSheets;
 using Svg;
+using System.Collections.Generic;
 using System.Drawing.Imaging;
 
 namespace RotationSolver.Basic.Data;
@@ -131,8 +132,34 @@ public static class IconSet
     public static TextureWrap GetTexture(string path)
         => GetTexture(path, out var texture) ? texture : null;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="texture"></param>
+    /// <returns></returns>
     public static bool GetTexture(string path, out TextureWrap texture)
-        => ThreadLoadImageHandler.TryGetTextureWrap(path, out texture);
+        => ThreadLoadImageHandler.TryGetTextureWrap(path, out texture)
+        || (path.StartsWith("http:", StringComparison.OrdinalIgnoreCase) || path.StartsWith("https:", StringComparison.OrdinalIgnoreCase))
+        && GetLocalImage("loading", out texture); // loading pics.
+
+    private static readonly SortedList<string, TextureWrap> _textureWrapList = new();
+
+    private static bool GetLocalImage(string name, out TextureWrap texture)
+    {
+        var url = $"RotationSolver.Basic.Images.{name}.png";
+        if (_textureWrapList.TryGetValue(name, out texture)) return true;
+
+        using var stream = typeof(IconSet).Assembly.GetManifestResourceStream(url);
+        if (stream == null) return false;
+
+        using var memory = new MemoryStream();
+        stream.CopyTo(memory);
+        texture = Svc.PluginInterface.UiBuilder.LoadImage(memory.ToArray());
+        if (texture == null) return false;
+        _textureWrapList[url] = texture;
+        return true;
+    }
 
     static readonly Dictionary<uint, uint> _actionIcons = new();
 

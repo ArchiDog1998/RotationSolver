@@ -2,6 +2,7 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
+using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 
@@ -133,9 +134,10 @@ internal abstract class Searchable : ISearchable
     {
         ImGui.SameLine();
 
-        if (IconSet.GetTexture(IconSet.GetJobIcon(RotationUpdater.Job), out var texture))
+        if (IconSet.GetTexture(IconSet.GetJobIcon(RotationUpdater.Job, IconType.Framed), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
+            ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_Configs_JobConfigTip);
         }
     }
 }

@@ -4,6 +4,7 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
 using System.Drawing;
+using ImGuiScene;
 
 namespace RotationSolver.UI.SearchableSettings;
 
@@ -62,61 +63,69 @@ internal abstract class CheckBoxSearch : Searchable
 
     protected override void DrawMain(Job job)
     {
+        var hasChild = Children != null && Children.Length > 0;
+        TextureWrap texture = null;
+        var hasIcon = Action != ActionID.None && IconSet.GetTexture(Action, out texture);
+
         var enable = GetValue(job);
-        if (ImGui.Checkbox($"##{ID}", ref enable))
+        if (ImGui.Checkbox(!hasChild && !hasIcon ? $"{Name}##{ID}" : $"##{ID}", ref enable))
         {
             SetValue(job, enable);
         }
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 
+        if (!hasChild && !hasIcon) return;
+
         var name = $"{Name}##Config_{ID}";
-        ImGui.SameLine();
-        if(Children == null || Children.Length == 0)
+        if(hasIcon)
         {
-            if (Action != ActionID.None && IconSet.GetTexture(Action, out var texture))
+            ImGui.SameLine();
+
+            ImGui.BeginGroup();
+            var cursor = ImGui.GetCursorPos();
+            var size = ImGuiHelpers.GlobalScale * 32;
+            if (RotationConfigWindowNew.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size))
             {
-                ImGui.BeginGroup();
-                var cursor = ImGui.GetCursorPos();
-                var size = ImGuiHelpers.GlobalScale * 32;
-                if (RotationConfigWindowNew.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size))
-                {
-                    SetValue(job, !enable);
-                }
+                SetValue(job, !enable);
+            }
+            if (ImGui.IsItemHovered()) ShowTooltip(job);
+            RotationConfigWindowNew.DrawActionOverlay(cursor, size, enable ? 1 : 0);
+            ImGui.EndGroup();
+
+            ImGui.SameLine();
+            if (ImGui.IsItemHovered()) ShowTooltip(job);
+        }
+        else if (hasChild)
+        {
+            ImGui.SameLine();
+
+            if (enable)
+            {
+                var x = ImGui.GetCursorPosX();
+                var drawBody = ImGui.TreeNode(name);
                 if (ImGui.IsItemHovered()) ShowTooltip(job);
-                RotationConfigWindowNew.DrawActionOverlay(cursor, size, enable ? 1 : 0);
-                ImGui.EndGroup();
 
-                ImGui.SameLine();
-            }
-            ImGui.Text(name);
-            if (ImGui.IsItemHovered()) ShowTooltip(job);
-        }
-        else if (enable)
-        {
-            var x = ImGui.GetCursorPosX();
-            var drawBody = ImGui.TreeNode(name);
-            if (ImGui.IsItemHovered()) ShowTooltip(job);
-
-            if (drawBody)
-            {
-                ImGui.SetCursorPosX(x);
-                ImGui.BeginGroup();
-                foreach (var child in Children)
+                if (drawBody)
                 {
-                    child.Draw(job);
+                    ImGui.SetCursorPosX(x);
+                    ImGui.BeginGroup();
+                    foreach (var child in Children)
+                    {
+                        child.Draw(job);
+                    }
+                    ImGui.EndGroup();
+                    ImGui.TreePop();
                 }
-                ImGui.EndGroup();
-                ImGui.TreePop();
             }
-        }
-        else
-        {
-            ImGui.PushStyleColor(ImGuiCol.HeaderHovered, 0x0);
-            ImGui.PushStyleColor(ImGuiCol.HeaderActive, 0x0);
-            ImGui.TreeNodeEx(name, ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen);
-            if (ImGui.IsItemHovered()) ShowTooltip(job, false);
+            else
+            {
+                ImGui.PushStyleColor(ImGuiCol.HeaderHovered, 0x0);
+                ImGui.PushStyleColor(ImGuiCol.HeaderActive, 0x0);
+                ImGui.TreeNodeEx(name, ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen);
+                if (ImGui.IsItemHovered()) ShowTooltip(job, false);
 
-            ImGui.PopStyleColor(2);
+                ImGui.PopStyleColor(2);
+            }
         }
     }
 }

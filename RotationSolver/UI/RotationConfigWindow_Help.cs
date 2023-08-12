@@ -13,9 +13,9 @@ internal partial class RotationConfigWindow
 
         ImGui.SameLine();
 
-        if (ImGuiHelper.IconButton(FontAwesomeIcon.Code, "Github"))
+        if (ImGuiHelper.IconButton(FontAwesomeIcon.Code, "GitHub"))
         {
-            Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver");
+            Util.OpenLink("https://GitHub.com/ArchiDog1998/RotationSolver");
         }
 
         ImGui.SameLine();
@@ -29,14 +29,14 @@ internal partial class RotationConfigWindow
 
         if (ImGuiHelper.IconButton(FontAwesomeIcon.Book, "Wiki"))
         {
-            Util.OpenLink("https://archidog1998.github.io/RotationSolver/");
+            Util.OpenLink("https://archidog1998.GitHub.io/RotationSolver/");
         }
 
         ImGui.SameLine();
 
         if (ImGuiHelper.IconButton(FontAwesomeIcon.History, "ChangeLog"))
         {
-            Util.OpenLink("https://github.com/ArchiDog1998/RotationSolver/blob/release/CHANGELOG.md");
+            Util.OpenLink("https://GitHub.com/ArchiDog1998/RotationSolver/blob/release/CHANGELOG.md");
         }
 
         ImGui.SameLine();

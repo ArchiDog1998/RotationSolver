@@ -230,7 +230,7 @@ internal partial class RotationConfigWindow
 
                 if (ImGuiHelper.IconButton(FontAwesomeIcon.Book, "##OpenWiki"))
                 {
-                    Util.OpenLink("https://archidog1998.github.io/RotationSolver/#/RotationDev/");
+                    Util.OpenLink("https://archidog1998.GitHub.io/RotationSolver/#/RotationDev/");
                 }
 
                 ImGui.SameLine();

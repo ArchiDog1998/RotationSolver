@@ -135,7 +135,7 @@ public enum JobConfigFloat : byte
 
     public string[] OtherLibs = Array.Empty<string>();
 
-    public string[] GithubLibs = Array.Empty<string>();
+    public string[] GitHubLibs = Array.Empty<string>();
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
 
     public MacroInfo DutyStart { get; set; } = new MacroInfo();

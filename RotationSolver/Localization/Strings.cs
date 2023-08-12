@@ -285,8 +285,8 @@ internal partial class Strings
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
 
-    public string ConfigWindow_Rotation_DownloadRotations { get; set; } = "Download Rotations.";
-    public string ConfigWindow_Rotation_AutoUpdateRotations { get; set; } = "Auto Update Rotations.";
+    public string ConfigWindow_Rotation_DownloadRotations { get; set; } = "Auto Download Rotations";
+    public string ConfigWindow_Rotation_AutoUpdateRotations { get; set; } = "Auto Update Rotations";
 
     public string ConfigWindow_Rotation_InvalidRotation { get; set; } = "Invalid Rotation! \nPlease update to the latest version or contact to the {0}!";
     public string ConfigWindow_Rotation_ResetToDefault { get; set; } = "Click to reset the rotation configuration to default!";
@@ -642,4 +642,11 @@ internal partial class Strings
 
     public string ConfigWindow_Actions_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
 
+    public string ConfigWindow_Configs_JobConfigTip { get; set; } = "This config is binding with the job, different job gets different value.";
+
+    public string ConfigWindow_Rotations_Settings { get; set; } = "Settings";
+    public string ConfigWindow_Rotations_Loaded { get; set; } = "Loaded";
+    public string ConfigWindow_Rotations_GitHub { get; set; } = "GitHub";
+    public string ConfigWindow_Rotations_Libraries { get; set; } = "Libraries";
+    public string ConfigWindow_Rotations_AutoLoadCustomRotations { get; set; } = "Auto load rotations";
 }

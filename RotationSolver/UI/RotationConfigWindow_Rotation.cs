@@ -239,118 +239,27 @@ internal partial class RotationConfigWindow
 
     private static void DrawInfos()
     {
-        if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "DownloadRotationsButtonInfo"))
-        {
-            Task.Run(async () =>
-            {
-                await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
-            });
-        }
+        //if (ImGuiHelper.IconButton(FontAwesomeIcon.Download, "DownloadRotationsButtonInfo"))
+        //{
+        //    Task.Run(async () =>
+        //    {
+        //        await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
+        //    });
+        //}
 
-        ImGui.SameLine();
-        ImGuiHelper.Spacing();
+        //ImGui.SameLine();
+        //ImGuiHelper.Spacing();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotations,
-            ref Service.Config.DownloadRotations, Service.Default.DownloadRotations);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotations,
+        //    ref Service.Config.DownloadRotations, Service.Default.DownloadRotations);
 
-        if (Service.Config.DownloadRotations)
-        {
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
+        //if (Service.Config.DownloadRotations)
+        //{
+        //    ImGui.SameLine();
+        //    ImGuiHelper.Spacing();
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Rotation_AutoUpdateRotations,
-                ref Service.Config.AutoUpdateRotations, Service.Default.AutoUpdateRotations);
-        }
-
-        var assemblyGrps = RotationUpdater.CustomRotationsDict
-            .SelectMany(d => d.Value)
-            .SelectMany(g => g.Rotations)
-            .GroupBy(r => r.GetType().Assembly);
-
-        if (ImGui.BeginTable("AssemblyTable", 5, ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY 
-            | ImGuiTableFlags.Resizable
-            | ImGuiTableFlags.SizingStretchProp))
-        {
-            ImGui.TableSetupScrollFreeze(0, 1);
-            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Name");
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Version");
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Author");
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Rotations");
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Links");
-
-            foreach (var grp in assemblyGrps)
-            {
-                ImGui.TableNextRow();
-
-                var assembly = grp.Key;
-
-                var info = assembly.GetInfo();
-                ImGui.TableNextColumn();
-
-                if (ImGui.Button(info.Name))
-                {
-                    Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"" );
-                }
-
-                ImGui.TableNextColumn();
-
-                var version = assembly.GetName().Version;
-                if(version != null)
-                {
-                    ImGui.Text(version.ToString());
-                }
-
-                ImGui.TableNextColumn();
-
-                ImGui.Text(info.Author);
-
-                ImGui.TableNextColumn();
-
-                var lastRole = JobRole.None;
-                foreach (var jobs in grp.GroupBy(r => r.IconID))
-                {
-                    var role = jobs.FirstOrDefault().ClassJob.GetJobRole();
-                    if(lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
-                    lastRole = role;
-
-                    ImGui.Image(IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed)).ImGuiHandle, new Vector2(30, 30));
-
-                    ImGuiHelper.HoveredString(string.Join('\n', jobs));
-                }
-
-                ImGui.TableNextColumn();
-
-                ImGui.PushStyleColor(ImGuiCol.Button, 0xFF5E5BFF);
-                ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD5E5BFF);
-                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA5E5BFF);
-                if (!string.IsNullOrEmpty(info.DonateLink))
-                {
-                    if (ImGuiHelper.IconButton(FontAwesomeIcon.Coffee, $"Donate##{grp.Key.GetHashCode()}"))
-                    {
-                        try
-                        {
-                            Util.OpenLink(info.DonateLink);
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                }
-                ImGui.PopStyleColor(3);
-            }
-            ImGui.EndTable();
-        }
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Rotation_AutoUpdateRotations,
+        //        ref Service.Config.AutoUpdateRotations, Service.Default.AutoUpdateRotations);
+        //}
     }
 }

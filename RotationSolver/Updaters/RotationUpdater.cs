@@ -24,8 +24,12 @@ internal static class RotationUpdater
 
     static bool _isLoading = false;
 
-    // Retrieves custom rotations from local and/or downloads
-    // them from remote server based on DownloadOption
+    /// <summary>
+    /// Retrieves custom rotations from local and/or downloads
+    /// them from remote server based on DownloadOption
+    /// </summary>
+    /// <param name="option"></param>
+    /// <returns></returns>
     public static async Task GetAllCustomRotationsAsync(DownloadOption option)
     {
         if (_isLoading) return;
@@ -192,11 +196,11 @@ internal static class RotationUpdater
         // Code to download rotations from remote server
         bool hasDownload = false;
 
-        var githubLinks = Service.ConfigNew.GlobalConfig.GithubLibs.Union(DownloadHelper.LinkLibraries ?? Array.Empty<string>());
+        var GitHubLinks = Service.ConfigNew.GlobalConfig.GitHubLibs.Union(DownloadHelper.LinkLibraries ?? Array.Empty<string>());
 
         using (var client = new HttpClient())
         {
-            foreach (var url in Service.ConfigNew.GlobalConfig.OtherLibs)
+            foreach (var url in Service.ConfigNew.GlobalConfig.OtherLibs.Union(GitHubLinks.Select(Convert)))
             {
                 hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
                 var pdbUrl = Path.ChangeExtension(url, ".pdb");
@@ -204,6 +208,17 @@ internal static class RotationUpdater
             }
         }
         if (hasDownload) LoadRotationsFromLocal(relayFolder);
+    }
+
+    private static string Convert(string value)
+    {
+        var split = value.Split('|');
+        if (split == null || split.Length < 2) return value;
+        var username = split[0];
+        var repo = split[1];
+        var file = split.Last();
+        if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(repo) || string.IsNullOrEmpty(file)) return value;
+        return $"https://GitHub.com/{username}/{repo}/releases/latest/download/{file}.dll";
     }
 
     private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client, bool mustDownload)
