@@ -66,8 +66,11 @@ internal static class RotationUpdater
         }
     }
 
-    // This method loads custom rotation groups from local directories and assemblies, creates a sorted list of
-    // author hashes, and creates a sorted list of custom rotations grouped by job role.
+    /// <summary>
+    /// This method loads custom rotation groups from local directories and assemblies, creates a sorted list of
+    /// author hashes, and creates a sorted list of custom rotations grouped by job role.
+    /// </summary>
+    /// <param name="relayFolder"></param>
     private static void LoadRotationsFromLocal(string relayFolder)
     {
         var directories = Service.Config.OtherLibs
@@ -175,16 +178,25 @@ internal static class RotationUpdater
         return result.ToArray();
     }
 
-    // Downloads rotation files from a remote server and saves them to a local folder.
-    // The download list is obtained from a JSON file on the remote server.
-    // If mustDownload is set to true, it will always download the files, otherwise it will only download if the file doesn't exist locally.
+
+    /// <summary>
+    /// Downloads rotation files from a remote server and saves them to a local folder.
+    /// The download list is obtained from a JSON file on the remote server.
+    /// If mustDownload is set to true, it will always download the files, otherwise it will only download if the file doesn't exist locally. 
+    /// </summary>
+    /// <param name="relayFolder"></param>
+    /// <param name="mustDownload"></param>
+    /// <returns></returns>
     private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
     {
         // Code to download rotations from remote server
         bool hasDownload = false;
+
+        var githubLinks = Service.ConfigNew.GlobalConfig.GithubLibs.Union(DownloadHelper.LinkLibraries ?? Array.Empty<string>());
+
         using (var client = new HttpClient())
         {
-            foreach (var url in Service.Config.OtherLibs.Union(DownloadHelper.LinkLibraries ?? Array.Empty<string>()))
+            foreach (var url in Service.ConfigNew.GlobalConfig.OtherLibs)
             {
                 hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
                 var pdbUrl = Path.ChangeExtension(url, ".pdb");

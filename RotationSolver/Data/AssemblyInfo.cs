@@ -4,5 +4,9 @@
         string Name,
         string Author, 
         string FilePath, 
-        string DonateLink);
+        string DonateLink,
+        string ChangeLogLink,
+        string GithubUserName,
+        string GithubRepository,
+        DateTime LoadTime);
 }

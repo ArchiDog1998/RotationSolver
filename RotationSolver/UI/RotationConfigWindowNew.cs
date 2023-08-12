@@ -908,6 +908,7 @@ public partial class RotationConfigWindowNew : Window
     };
     #endregion
 
+    #region Rotations
     private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
     {
 
@@ -917,6 +918,7 @@ public partial class RotationConfigWindowNew : Window
         ImGui.Text("Rotations");
         _rotationsHeader?.Draw();
     }
+    #endregion 
 
     #region Ids
     private static uint _territoryId = 0;
