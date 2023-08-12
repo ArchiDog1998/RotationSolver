@@ -46,7 +46,5 @@
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
 	  </None>
-
-	  <EmbeddedResource Include="Images\*.png" />
   </ItemGroup>
 </Project>

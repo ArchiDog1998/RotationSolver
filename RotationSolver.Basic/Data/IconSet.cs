@@ -106,6 +106,13 @@ public static class IconSet
     /// <returns></returns>
     [Obsolete]
     public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="texture"></param>
+    /// <returns></returns>
     public static bool GetTexture(this ITexture text, out TextureWrap texture) => GetTexture(text?.IconID ?? 0, out texture);
 
     /// <summary>
@@ -141,27 +148,9 @@ public static class IconSet
     public static bool GetTexture(string path, out TextureWrap texture)
         => ThreadLoadImageHandler.TryGetTextureWrap(path, out texture)
         || (path.StartsWith("http:", StringComparison.OrdinalIgnoreCase) || path.StartsWith("https:", StringComparison.OrdinalIgnoreCase))
-        && GetLocalImage("loading", out texture); // loading pics.
+        && GetTexture((uint)(62571 + Environment.TickCount / 500 % 3), out texture); // loading pics.
 
-    private static readonly SortedList<string, TextureWrap> _textureWrapList = new();
-
-    private static bool GetLocalImage(string name, out TextureWrap texture)
-    {
-        var url = $"RotationSolver.Basic.Images.{name}.png";
-        if (_textureWrapList.TryGetValue(name, out texture)) return true;
-
-        using var stream = typeof(IconSet).Assembly.GetManifestResourceStream(url);
-        if (stream == null) return false;
-
-        using var memory = new MemoryStream();
-        stream.CopyTo(memory);
-        texture = Svc.PluginInterface.UiBuilder.LoadImage(memory.ToArray());
-        if (texture == null) return false;
-        _textureWrapList[url] = texture;
-        return true;
-    }
-
-    static readonly Dictionary<uint, uint> _actionIcons = new();
+    private static readonly Dictionary<uint, uint> _actionIcons = new();
 
     /// <summary>
     /// Get Texture from action.
