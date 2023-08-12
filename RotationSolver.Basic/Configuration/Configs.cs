@@ -152,6 +152,7 @@ public enum PluginConfigInt : byte
 
     [Obsolete]
     [Default(15)] CooldownActionOneLine,
+    [Default(0)] MoveTargetAngle
 }
 
 public enum PluginConfigBool : byte
@@ -235,78 +236,98 @@ public enum PluginConfigBool : byte
     [Default(true)] TargetHuntingRelicLevePriority,
     [Default(true)] TargetQuestPriority,
     [Default(true)] ShowToastsAboutDoAction,
+
+    [Default(false)] UseAOEAction,
+    [Default(false)] UseAOEWhenManual,
+    [Default(false)] PreventActions,
+    [Default(false)] PreventActionsDuty,
+    [Default(false)] AutoBurst,
+    [Default(false)] AutoHeal,
+    [Default(false)] UseAbility,
+    [Default(false)] UseDefenseAbility,
+    [Default(false)] AutoTankStance,
+    [Default(false)] AutoProvokeForTank,
+    [Default(false)] AutoUseTrueNorth,
+    [Default(false)] RaisePlayerBySwift,
+    [Default(false)] AutoSpeedOutOfCombat,
+    [Default(false)] UseGroundBeneficialAbility,
+    [Default(false)] TargetAllForFriendly,
+    [Default(false)] ShowCooldownWindow
 }
 
 public enum PluginConfigFloat : byte
 {
-    [Default(8)] AutoOffAfterCombat,
-    [Default(3)] DrawingHeight,
+    [Default(8f)] AutoOffAfterCombat,
+    [Default(3f)] DrawingHeight,
     [Default(0.2f)] SampleLength,
     [Default(0.1f)] KeyBoardNoiseTimeMin,
     [Default(0.2f)] KeyBoardNoiseTimeMax,
 
     [Default(0.25f)] HealthDifference,
-    [Default(1)] MeleeRangeOffset,
+    [Default(1f)] MeleeRangeOffset,
     [Default(0.1f)] MinLastAbilityAdvanced,
     [Default(0.8f)] HealWhenNothingTodoBelow,
     [Default(0.6f)] TargetIconSize,
 
-    [Default(0)] MistakeRatio,
+    [Default(0f)] MistakeRatio,
 
     [Default(0.4f)] HealthTankRatio,
     [Default(0.4f)] HealthHealerRatio,
 
-    [Default(3)] SpecialDuration,
+    [Default(3f)] SpecialDuration,
 
     [Default(0.08f)] ActionAhead,
     [Default(0.06f)] ActionAheadForLast0GCD,
 
-    [Default(0)] WeaponDelayMin,
-    [Default(0)] WeaponDelayMax,
+    [Default(0f)] WeaponDelayMin,
+    [Default(0f)] WeaponDelayMax,
 
-    [Default(1)] DeathDelayMin,
+    [Default(1f)] DeathDelayMin,
     [Default(1.5f)] DeathDelayMax,
 
     [Default(0.5f)] WeakenDelayMin,
-    [Default(1)] WeakenDelayMax,
+    [Default(1f)] WeakenDelayMax,
 
-    [Default(0)] HostileDelayMin,
-    [Default(0)] HostileDelayMax,
+    [Default(0f)] HostileDelayMin,
+    [Default(0f)] HostileDelayMax,
 
-    [Default(0)] HealDelayMin,
-    [Default(0)] HealDelayMax,
+    [Default(0f)] HealDelayMin,
+    [Default(0f)] HealDelayMax,
 
     [Default(0.5f)] StopCastingDelayMin,
-    [Default(1)] StopCastingDelayMax,
+    [Default(1f)] StopCastingDelayMax,
 
     [Default(0.5f)] InterruptDelayMin,
-    [Default(1)] InterruptDelayMax,
+    [Default(1f)] InterruptDelayMax,
 
-    [Default(3)] NotInCombatDelayMin,
-    [Default(4)] NotInCombatDelayMax,
+    [Default(3f)] NotInCombatDelayMin,
+    [Default(4f)] NotInCombatDelayMax,
 
     [Default(0.1f)] ClickingDelayMin,
     [Default(0.15f)] ClickingDelayMax,
 
     [Default(0.5f)] CountdownDelayMin,
-    [Default(1)] CountdownDelayMax,
+    [Default(1f)] CountdownDelayMax,
 
     [Default(0.6f)] CountDownAhead,
 
-    [Default(24)] MoveTargetAngle,
+    [Default(24f)] MoveTargetAngle,
     [Default(1.85f)] HealthRatioBoss,
     [Default(0.8f)] HealthRatioDying,
     [Default(1.2f)] HealthRatHealthRatioDotioBoss,
 
-    [Default(16)] CooldownFontSize,
+    [Default(16f)] CooldownFontSize,
 
-    [Default(40)] ControlWindowGCDSize,
-    [Default(30)] ControlWindow0GCDSize,
-    [Default(30)] CooldownWindowIconSize,
+    [Default(40f)] ControlWindowGCDSize,
+    [Default(30f)] ControlWindow0GCDSize,
+    [Default(30f)] CooldownWindowIconSize,
     [Default(1.5f)] ControlWindowNextSizeRatio,
-    [Default(8)] ControlProgressHeight,
+    [Default(8f)] ControlProgressHeight,
     [Default(1.2f)] DistanceForMoving,
     [Default(0.2f)] MaxPing,
+
+    [Default(1.8f)] HealthRatioDot,
+
 }
 
 public enum PluginConfigVector4 : byte
