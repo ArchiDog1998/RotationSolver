@@ -154,6 +154,7 @@ public enum PluginConfigInt : byte
 
     [Obsolete]
     [Default(15)] CooldownActionOneLine,
+    [Default(0)] MoveTargetAngle
 }
 
 public enum PluginConfigBool : byte
@@ -238,6 +239,23 @@ public enum PluginConfigBool : byte
     [Default(true)] TargetHuntingRelicLevePriority,
     [Default(true)] TargetQuestPriority,
     [Default(true)] ShowToastsAboutDoAction,
+
+    [Default(false)] UseAOEAction,
+    [Default(false)] UseAOEWhenManual,
+    [Default(false)] PreventActions,
+    [Default(false)] PreventActionsDuty,
+    [Default(false)] AutoBurst,
+    [Default(false)] AutoHeal,
+    [Default(false)] UseAbility,
+    [Default(false)] UseDefenseAbility,
+    [Default(false)] AutoTankStance,
+    [Default(false)] AutoProvokeForTank,
+    [Default(false)] AutoUseTrueNorth,
+    [Default(false)] RaisePlayerBySwift,
+    [Default(false)] AutoSpeedOutOfCombat,
+    [Default(false)] UseGroundBeneficialAbility,
+    [Default(false)] TargetAllForFriendly,
+    [Default(false)] ShowCooldownWindow
 }
 
 public enum PluginConfigFloat : byte
@@ -310,6 +328,9 @@ public enum PluginConfigFloat : byte
     [Default(8f)] ControlProgressHeight,
     [Default(1.2f)] DistanceForMoving,
     [Default(0.2f)] MaxPing,
+
+    [Default(1.8f)] HealthRatioDot,
+
 }
 
 public enum PluginConfigVector4 : byte

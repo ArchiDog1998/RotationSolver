@@ -10,79 +10,79 @@ internal partial class RotationConfigWindow
 
         if (ImGui.BeginChild("Action List", new Vector2(0f, -1f), true))
         {
-            if (Service.Config.ShowNextActionWindow || Service.Config.ShowCooldownWindow || Service.Config.ShowControlWindow)
-            {
-                DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_OnlyShowWithHostileOrInDuty,
-                    ref Service.Config.OnlyShowWithHostileOrInDuty, Service.Default.OnlyShowWithHostileOrInDuty);
-            }
+            //if (Service.Config.ShowNextActionWindow || Service.Config.ShowCooldownWindow || Service.Config.ShowControlWindow)
+            //{
+            //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_OnlyShowWithHostileOrInDuty,
+            //        ref Service.Config.OnlyShowWithHostileOrInDuty, Service.Default.OnlyShowWithHostileOrInDuty);
+            //}
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowNextActionWindow,
-                ref Service.Config.ShowNextActionWindow, Service.Default.ShowNextActionWindow);
+            //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowNextActionWindow,
+            //    ref Service.Config.ShowNextActionWindow, Service.Default.ShowNextActionWindow);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowCooldownWindow,
-                ref Service.Config.ShowCooldownWindow, Service.Default.ShowCooldownWindow);
+            //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowCooldownWindow,
+            //    ref Service.Config.ShowCooldownWindow, Service.Default.ShowCooldownWindow);
 
-            if (Service.Config.ShowNextActionWindow || Service.Config.ShowCooldownWindow)
-            {
-                DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_InfoWindowBg,
-                    ref Service.Config.InfoWindowBg, Service.Default.InfoWindowBg);
+            //if (Service.Config.ShowNextActionWindow || Service.Config.ShowCooldownWindow)
+            //{
+                //DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_InfoWindowBg,
+                //    ref Service.Config.InfoWindowBg, Service.Default.InfoWindowBg);
 
-                DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs + "##Info",
-                    ref Service.Config.IsInfoWindowNoInputs, Service.Default.IsInfoWindowNoInputs);
+                //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoInputs + "##Info",
+                //    ref Service.Config.IsInfoWindowNoInputs, Service.Default.IsInfoWindowNoInputs);
 
-                DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
-                    ref Service.Config.IsInfoWindowNoMove, Service.Default.IsInfoWindowNoMove);
+                //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
+                    //ref Service.Config.IsInfoWindowNoMove, Service.Default.IsInfoWindowNoMove);
 
-                if (Service.Config.ShowCooldownWindow)
-                {
-                    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowItemsCooldown,
-                        ref Service.Config.ShowItemsCooldown, Service.Default.ShowItemsCooldown);
+                //if (Service.Config.ShowCooldownWindow)
+                //{
+                //    //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowItemsCooldown,
+                    //    ref Service.Config.ShowItemsCooldown, Service.Default.ShowItemsCooldown);
 
-                    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowGCDCooldown,
-                        ref Service.Config.ShowGCDCooldown, Service.Default.ShowGCDCooldown);
+                    //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowGCDCooldown,
+                    //    ref Service.Config.ShowGCDCooldown, Service.Default.ShowGCDCooldown);
 
-                    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseOriginalCooldown,
-                        ref Service.Config.UseOriginalCooldown, Service.Default.UseOriginalCooldown);
+                    //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_UseOriginalCooldown,
+                    //    ref Service.Config.UseOriginalCooldown, Service.Default.UseOriginalCooldown);
 
-                    DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownActionOneLine, ref Service.Config.CooldownActionOneLine, Service.Default.CooldownActionOneLine, min: 1, max: 30);
+                    //DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownActionOneLine, ref Service.Config.CooldownActionOneLine, Service.Default.CooldownActionOneLine, min: 1, max: 30);
 
-                    DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownFontSize, ref Service.Config.CooldownFontSize, Service.Default.CooldownFontSize, speed: 0.1f, min: 9.6f, max: 96);
+                    //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownFontSize, ref Service.Config.CooldownFontSize, Service.Default.CooldownFontSize, speed: 0.1f, min: 9.6f, max: 96);
 
-                    DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownWindowIconSize,
-                        ref Service.Config.CooldownWindowIconSize, Service.Default.CooldownWindowIconSize, speed: 0.2f, max: 80);
-                }
-            }
+                    //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_CooldownWindowIconSize,
+                        //ref Service.Config.CooldownWindowIconSize, Service.Default.CooldownWindowIconSize, speed: 0.2f, max: 80);
+            //    }
+            //}
 
-            ImGui.Separator();
+            //ImGui.Separator();
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
-                ref Service.Config.ShowControlWindow, Service.Default.ShowControlWindow);
+            //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
+            //    ref Service.Config.ShowControlWindow, Service.Default.ShowControlWindow);
 
-            if (Service.Config.ShowControlWindow)
-            {
-                DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove + "##Control",
-                    ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
+            //if (Service.Config.ShowControlWindow)
+            //{
+            //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove + "##Control",
+            //        ref Service.Config.IsControlWindowLock, Service.Default.IsControlWindowLock);
 
-                if (Service.Config.IsControlWindowLock)
-                {
-                    DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
-                        ref Service.Config.ControlWindowLockBg, Service.Default.ControlWindowLockBg);
-                }
-                else
-                {
-                    DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
-                        ref Service.Config.ControlWindowUnlockBg, Service.Default.ControlWindowUnlockBg);
-                }
+            //    if (Service.Config.IsControlWindowLock)
+            //    {
+            //        DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
+            //            ref Service.Config.ControlWindowLockBg, Service.Default.ControlWindowLockBg);
+            //    }
+            //    else
+            //    {
+            //        DrawColor4(LocalizationManager.RightLang.ConfigWindow_Control_BackgroundColor,
+            //            ref Service.Config.ControlWindowUnlockBg, Service.Default.ControlWindowUnlockBg);
+            //    }
 
-                DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowGCDSize,
-                    ref Service.Config.ControlWindowGCDSize, Service.Default.ControlWindowGCDSize, speed: 0.2f, max: 80);
+            //    DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowGCDSize,
+            //        ref Service.Config.ControlWindowGCDSize, Service.Default.ControlWindowGCDSize, speed: 0.2f, max: 80);
 
-                DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindow0GCDSize,
-                    ref Service.Config.ControlWindow0GCDSize, Service.Default.ControlWindow0GCDSize, speed: 0.2f, max: 80);
+            //    DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindow0GCDSize,
+            //        ref Service.Config.ControlWindow0GCDSize, Service.Default.ControlWindow0GCDSize, speed: 0.2f, max: 80);
 
-                DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
-                    ref Service.Config.ControlWindowNextSizeRatio, Service.Default.ControlWindowNextSizeRatio);
-            }
+            //    DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
+            //        ref Service.Config.ControlWindowNextSizeRatio, Service.Default.ControlWindowNextSizeRatio);
+            //}
 
             ImGui.EndChild();
         }
