@@ -36,97 +36,96 @@ internal partial class RotationConfigWindow
         //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
         //    ref Service.Config.CountDownAhead, Service.Default.CountDownAhead, min: 0.5f, max: 0.7f);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_SpecialDuration,
-            ref Service.Config.SpecialDuration, Service.Default.SpecialDuration, speed: 0.02f, min: 1, max: 20);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_SpecialDuration,
+        //    ref Service.Config.SpecialDuration, Service.Default.SpecialDuration, speed: 0.02f, min: 1, max: 20);
 
-        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
-            ref Service.Config.AddDotGCDCount, Service.Default.AddDotGCDCount, min: 0, max: 3);
+        //DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
+        //    ref Service.Config.AddDotGCDCount, Service.Default.AddDotGCDCount, min: 0, max: 3);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MaxPing,
-                ref Service.Config.MaxPing, Service.Default.MaxPing, min: 0.01f, max: 0.5f);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MaxPing,
+        //        ref Service.Config.MaxPing, Service.Default.MaxPing, min: 0.01f, max: 0.5f);
 
         ImGui.Spacing();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffBetweenArea,
-            ref Service.Config.AutoOffBetweenArea, Service.Default.AutoOffBetweenArea);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffBetweenArea,
+        //    ref Service.Config.AutoOffBetweenArea, Service.Default.AutoOffBetweenArea);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffCutScene,
-            ref Service.Config.AutoOffCutScene, Service.Default.AutoOffCutScene);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffCutScene,
+        //    ref Service.Config.AutoOffCutScene, Service.Default.AutoOffCutScene);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffWhenDead,
-            ref Service.Config.AutoOffWhenDead, Service.Default.AutoOffWhenDead);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffWhenDead,
+        //    ref Service.Config.AutoOffWhenDead, Service.Default.AutoOffWhenDead);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombat,
-        ref Service.Config.AutoOffAfterCombat, Service.Default.AutoOffAfterCombat, min: 0, max: 10);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombat,
+        //ref Service.Config.AutoOffAfterCombat, Service.Default.AutoOffAfterCombat, min: 0, max: 10);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
-            ref Service.Config.StartOnCountdown, Service.Default.StartOnCountdown);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
+        //    ref Service.Config.StartOnCountdown, Service.Default.StartOnCountdown);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnAttackedBySomeone,
-            ref Service.Config.StartOnAttackedBySomeone, Service.Default.StartOnAttackedBySomeone);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_StartOnAttackedBySomeone,
+        //    ref Service.Config.StartOnAttackedBySomeone, Service.Default.StartOnAttackedBySomeone);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
-            ref Service.Config.UseWorkTask, Service.Default.UseWorkTask);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
+        //    ref Service.Config.UseWorkTask, Service.Default.UseWorkTask);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToggleManual,
-            ref Service.Config.ToggleManual, Service.Default.ToggleManual);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ToggleManual,
+        //    ref Service.Config.ToggleManual, Service.Default.ToggleManual);
     }
 
     private void DrawParamDelay()
     {
-        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_WeaponDelay,
-            ref Service.Config.WeaponDelayMin, ref Service.Config.WeaponDelayMax,
-             Service.Default.WeaponDelayMin, Service.Default.WeaponDelayMax,
-            speed: 0.002f, max: 1);
+        //DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_WeaponDelay,
+        //    ref Service.Config.WeaponDelayMin, ref Service.Config.WeaponDelayMax,
+        //     Service.Default.WeaponDelayMin, Service.Default.WeaponDelayMax,
+        //    speed: 0.002f, max: 1);
 
-        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_HostileDelay,
-            ref Service.Config.HostileDelayMin, ref Service.Config.HostileDelayMax,
-            Service.Default.HostileDelayMin, Service.Default.HostileDelayMax);
+        //DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_HostileDelay,
+        //    ref Service.Config.HostileDelayMin, ref Service.Config.HostileDelayMax,
+        //    Service.Default.HostileDelayMin, Service.Default.HostileDelayMax);
 
-        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_InterruptDelay,
-            ref Service.Config.InterruptDelayMin, ref Service.Config.InterruptDelayMax,
-             Service.Default.InterruptDelayMin, Service.Default.InterruptDelayMax);
+        //DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_InterruptDelay,
+        //    ref Service.Config.InterruptDelayMin, ref Service.Config.InterruptDelayMax,
+        //     Service.Default.InterruptDelayMin, Service.Default.InterruptDelayMax);
 
-        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_DeathDelay,
-            ref Service.Config.DeathDelayMin, ref Service.Config.DeathDelayMax,
-            Service.Default.DeathDelayMin, Service.Default.DeathDelayMax);
+        //DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_DeathDelay,
+        //    ref Service.Config.DeathDelayMin, ref Service.Config.DeathDelayMax,
+        //    Service.Default.DeathDelayMin, Service.Default.DeathDelayMax);
 
-        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_WeakenDelay, 
-            ref Service.Config.WeakenDelayMin, ref Service.Config.WeakenDelayMax, 
-            Service.Default.WeakenDelayMin, Service.Default.WeakenDelayMax);
+        //DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_WeakenDelay, 
+        //    ref Service.Config.WeakenDelayMin, ref Service.Config.WeakenDelayMax, 
+        //    Service.Default.WeakenDelayMin, Service.Default.WeakenDelayMax);
 
-        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_HealDelay, 
-            ref Service.Config.HealDelayMin, ref Service.Config.HealDelayMax, 
-            Service.Default.HealDelayMin, Service.Default.HealDelayMax);
+        //DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_HealDelay, 
+        //    ref Service.Config.HealDelayMin, ref Service.Config.HealDelayMax, 
+        //    Service.Default.HealDelayMin, Service.Default.HealDelayMax);
 
-        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_CountdownDelay,
-            ref Service.Config.CountdownDelayMin, ref Service.Config.CountdownDelayMax,
-            Service.Default.CountdownDelayMin, Service.Default.CountdownDelayMax);
+        //DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_CountdownDelay,
+        //    ref Service.Config.CountdownDelayMin, ref Service.Config.CountdownDelayMax,
+        //    Service.Default.CountdownDelayMin, Service.Default.CountdownDelayMax);
 
-        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_NotInCombatDelay, 
-            ref Service.Config.NotInCombatDelayMin, ref Service.Config.NotInCombatDelayMax,
-            Service.Default.NotInCombatDelayMin, Service.Default.NotInCombatDelayMax);
+        //DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_NotInCombatDelay, 
+        //    ref Service.Config.NotInCombatDelayMin, ref Service.Config.NotInCombatDelayMax,
+        //    Service.Default.NotInCombatDelayMin, Service.Default.NotInCombatDelayMax);
 
-        DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_ClickingDelay,
-            ref Service.Config.ClickingDelayMin, ref Service.Config.ClickingDelayMax,
-            Service.Default.ClickingDelayMin, Service.Default.ClickingDelayMax
-            ,min : 0.05f, max: 0.25f);
+        //DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_ClickingDelay,
+        //    ref Service.Config.ClickingDelayMin, ref Service.Config.ClickingDelayMax,
+        //    Service.Default.ClickingDelayMin, Service.Default.ClickingDelayMax
+        //    ,min : 0.05f, max: 0.25f);
 
-        if (Service.Config.UseStopCasting)
-        {
-            DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_StopCastingDelay, 
-                ref Service.Config.StopCastingDelayMin, ref Service.Config.StopCastingDelayMax, 
-                Service.Default.StopCastingDelayMin, Service.Default.StopCastingDelayMax);
-        }
+        //if (Service.Config.UseStopCasting)
+        //{
+        //    DrawRangedFloat(LocalizationManager.RightLang.ConfigWindow_Param_StopCastingDelay, 
+        //        ref Service.Config.StopCastingDelayMin, ref Service.Config.StopCastingDelayMax, 
+        //        Service.Default.StopCastingDelayMin, Service.Default.StopCastingDelayMax);
+        //}
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ClickMistake, ref Service.Config.MistakeRatio, Service.Default.MistakeRatio);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_ClickMistake, ref Service.Config.MistakeRatio, Service.Default.MistakeRatio);
     }
-
 
     private void DrawParamAdvanced()
     {
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayOutStateChanged,
-            ref Service.Config.SayOutStateChanged, Service.Default.SayOutStateChanged);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_SayOutStateChanged,
+        //    ref Service.Config.SayOutStateChanged, Service.Default.SayOutStateChanged);
 
         ImGui.Separator();
 
@@ -162,33 +161,34 @@ internal partial class RotationConfigWindow
             ImGui.Unindent();
         }
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,
-            ref Service.Config.UseStopCasting, Service.Default.UseStopCasting);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,
+        //    ref Service.Config.UseStopCasting, Service.Default.UseStopCasting);
 
         ImGui.Separator();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowHealthRatio,
-            ref Service.Config.ShowHealthRatio, Service.Default.ShowHealthRatio);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowHealthRatio,
+        //    ref Service.Config.ShowHealthRatio, Service.Default.ShowHealthRatio);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioBoss,
-            ref Service.Config.HealthRatioBoss, Service.Default.HealthRatioBoss,
-            speed: 0.02f, min: 0, max: 10);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioBoss,
+        //    ref Service.Config.HealthRatioBoss, Service.Default.HealthRatioBoss,
+        //    speed: 0.02f, min: 0, max: 10);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioDying,
-            ref Service.Config.HealthRatioDying, Service.Default.HealthRatioDying,
-            speed: 0.02f, min: 0, max: 10);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioDying,
+        //    ref Service.Config.HealthRatioDying, Service.Default.HealthRatioDying,
+        //    speed: 0.02f, min: 0, max: 10);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioDot,
-            ref Service.Config.HealthRatioDot, Service.Default.HealthRatioDot, 
-            speed: 0.02f, min: 0, max: 10);
+        
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioDot,
+        //    ref Service.Config.HealthRatioDot, Service.Default.HealthRatioDot, 
+        //    speed: 0.02f, min: 0, max: 10);
 
         ImGui.Separator();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowTooltips,
-            ref Service.Config.ShowTooltips, Service.Default.ShowTooltips);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowTooltips,
+        //    ref Service.Config.ShowTooltips, Service.Default.ShowTooltips);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
-            ref Service.Config.InDebug, Service.Default.InDebug);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
+        //    ref Service.Config.InDebug, Service.Default.InDebug);
     }
 
     private void DrawParamDisplay()
@@ -263,149 +263,149 @@ internal partial class RotationConfigWindow
 
         ImGui.Separator();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoise,
-            ref Service.Config.KeyBoardNoise, Service.Default.KeyBoardNoise);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoise,
+        //    ref Service.Config.KeyBoardNoise, Service.Default.KeyBoardNoise);
 
-        if (Service.Config.KeyBoardNoise)
-        {
-            ImGui.Indent();
+        //if (Service.Config.KeyBoardNoise)
+        //{
+        //    ImGui.Indent();
 
-            DrawRangedInt(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
-                ref Service.Config.KeyBoardNoiseMin, ref Service.Config.KeyBoardNoiseMax,
-                Service.Default.KeyBoardNoiseMin, Service.Default.KeyBoardNoiseMax);
+        //    DrawRangedInt(LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
+        //        ref Service.Config.KeyBoardNoiseMin, ref Service.Config.KeyBoardNoiseMax,
+        //        Service.Default.KeyBoardNoiseMin, Service.Default.KeyBoardNoiseMax);
 
-            ImGui.Unindent();
-        }
+        //    ImGui.Unindent();
+        //}
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnDtr,
-            ref Service.Config.ShowInfoOnDtr, Service.Default.ShowInfoOnDtr);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnDtr,
+        //    ref Service.Config.ShowInfoOnDtr, Service.Default.ShowInfoOnDtr);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnToast,
-            ref Service.Config.ShowInfoOnToast, Service.Default.ShowInfoOnToast);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnToast,
+        //    ref Service.Config.ShowInfoOnToast, Service.Default.ShowInfoOnToast);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowToastsAboutDoAction,
-            ref Service.Config.ShowToastsAboutDoAction, Service.Default.ShowToastsAboutDoAction);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ShowToastsAboutDoAction,
+        //    ref Service.Config.ShowToastsAboutDoAction, Service.Default.ShowToastsAboutDoAction);
 
         ImGui.Spacing();
     }
 
     private void DrawParamAction()
     {
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
-             SettingsCommand.UseAOEAction);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
+        //     SettingsCommand.UseAOEAction);
 
-        if(Service.Config.GetValue(SettingsCommand.UseAOEAction))
-        {
-            ImGui.Indent();
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEWhenManual,
-                SettingsCommand.UseAOEWhenManual);
+        //if(Service.Config.GetValue(SettingsCommand.UseAOEAction))
+        //{
+        //    ImGui.Indent();
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAOEWhenManual,
+        //        SettingsCommand.UseAOEWhenManual);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_NoNewHostiles,
-                ref Service.Config.NoNewHostiles, Service.Default.NoNewHostiles,
-                LocalizationManager.RightLang.ConfigWindow_Params_NoNewHostilesDesc);
-            ImGui.Unindent();
-        }
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_NoNewHostiles,
+        //        ref Service.Config.NoNewHostiles, Service.Default.NoNewHostiles,
+        //        LocalizationManager.RightLang.ConfigWindow_Params_NoNewHostilesDesc);
+        //    ImGui.Unindent();
+        //}
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfOutOfCombat,
-            SettingsCommand.PreventActions);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfOutOfCombat,
+        //    SettingsCommand.PreventActions);
 
-        if (Service.Config.GetValue(SettingsCommand.PreventActions))
-        {
-            ImGui.Indent();
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfDutyRing,
-            SettingsCommand.PreventActionsDuty);
-            ImGui.Unindent();
-        }
+        //if (Service.Config.GetValue(SettingsCommand.PreventActions))
+        //{
+        //    ImGui.Indent();
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfDutyRing,
+        //    SettingsCommand.PreventActionsDuty);
+        //    ImGui.Unindent();
+        //}
 
-        ImGui.Separator();
+        //ImGui.Separator();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst, SettingsCommand.AutoBurst);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst, SettingsCommand.AutoBurst);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoHeal, SettingsCommand.AutoHeal);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoHeal, SettingsCommand.AutoHeal);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseTinctures,
-            ref Service.Config.UseTinctures, Service.Default.UseTinctures);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseTinctures,
+        //    ref Service.Config.UseTinctures, Service.Default.UseTinctures);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseHealPotions,
-            ref Service.Config.UseHealPotions, Service.Default.UseHealPotions);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseHealPotions,
+        //    ref Service.Config.UseHealPotions, Service.Default.UseHealPotions);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAbility,
-            SettingsCommand.UseAbility);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseAbility,
+        //    SettingsCommand.UseAbility);
 
-        if (Service.Config.GetValue(SettingsCommand.UseAbility))
-        {
-            ImGui.Indent();
+        //if (Service.Config.GetValue(SettingsCommand.UseAbility))
+        //{
+        //    ImGui.Indent();
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseDefenseAbility,
-                SettingsCommand.UseDefenseAbility,
-                LocalizationManager.RightLang.ConfigWindow_Param_UseDefenseAbilityDesc);
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseDefenseAbility,
+        //        SettingsCommand.UseDefenseAbility,
+        //        LocalizationManager.RightLang.ConfigWindow_Param_UseDefenseAbilityDesc);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoShield,
-                SettingsCommand.AutoTankStance);
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoShield,
+        //        SettingsCommand.AutoTankStance);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoProvokeForTank,
-                SettingsCommand.AutoProvokeForTank,
-                LocalizationManager.RightLang.ConfigWindow_Param_AutoProvokeForTankDesc);
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoProvokeForTank,
+        //        SettingsCommand.AutoProvokeForTank,
+        //        LocalizationManager.RightLang.ConfigWindow_Param_AutoProvokeForTankDesc);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoUseTrueNorth,
-                SettingsCommand.AutoUseTrueNorth);
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoUseTrueNorth,
+        //        SettingsCommand.AutoUseTrueNorth);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerBySwift,
-                SettingsCommand.RaisePlayerBySwift);
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerBySwift,
+        //        SettingsCommand.RaisePlayerBySwift);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoSpeedOutOfCombat,
-                SettingsCommand.AutoSpeedOutOfCombat);
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AutoSpeedOutOfCombat,
+        //        SettingsCommand.AutoSpeedOutOfCombat);
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseGroundBeneficialAbility,
-                SettingsCommand.UseGroundBeneficialAbility);
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseGroundBeneficialAbility,
+        //        SettingsCommand.UseGroundBeneficialAbility);
 
-            ImGui.Unindent();
-        }
+        //    ImGui.Unindent();
+        //}
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerByCasting,
-            ref Service.Config.RaisePlayerByCasting, Service.Default.RaisePlayerByCasting);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerByCasting,
+        //    ref Service.Config.RaisePlayerByCasting, Service.Default.RaisePlayerByCasting);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseHealWhenNotAHealer,
-            ref Service.Config.UseHealWhenNotAHealer, Service.Default.UseHealWhenNotAHealer);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseHealWhenNotAHealer,
+        //    ref Service.Config.UseHealWhenNotAHealer, Service.Default.UseHealWhenNotAHealer);
 
-        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_LessMPNoRaise,
-            ref Service.Config.LessMPNoRaise, Service.Default.LessMPNoRaise, 200, 0, 2000000);
+        //DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_LessMPNoRaise,
+        //    ref Service.Config.LessMPNoRaise, Service.Default.LessMPNoRaise, 200, 0, 2000000);
     }
 
     private void DrawParamCondition()
     {
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InterruptibleMoreCheck,
-            ref Service.Config.InterruptibleMoreCheck, Service.Default.InterruptibleMoreCheck);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_InterruptibleMoreCheck,
+    //        ref Service.Config.InterruptibleMoreCheck, Service.Default.InterruptibleMoreCheck);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_EsunaAll,
-            ref Service.Config.EsunaAll, Service.Default.EsunaAll);
+    //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_EsunaAll,
+    //        ref Service.Config.EsunaAll, Service.Default.EsunaAll);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_HealOutOfCombat,
-            ref Service.Config.HealOutOfCombat, Service.Default.HealOutOfCombat);
+    //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_HealOutOfCombat,
+    //        ref Service.Config.HealOutOfCombat, Service.Default.HealOutOfCombat);
 
         const float speed = 0.005f;
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoBelow,
-    ref Service.Config.HealWhenNothingTodoBelow, Service.Default.HealWhenNothingTodoBelow, speed);
+        //    DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoBelow,
+        //ref Service.Config.HealWhenNothingTodoBelow, Service.Default.HealWhenNothingTodoBelow, speed);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
-            ref Service.Config.OnlyHotOnTanks, Service.Default.OnlyHotOnTanks);
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
+        //        ref Service.Config.OnlyHotOnTanks, Service.Default.OnlyHotOnTanks);
 
-        if (Service.Config.GetValue(SettingsCommand.UseGroundBeneficialAbility))
-        {
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
-                ref Service.Config.BeneficialAreaOnTarget, Service.Default.BeneficialAreaOnTarget);
-        }
+        //if (Service.Config.GetValue(SettingsCommand.UseGroundBeneficialAbility))
+        //{
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
+        //        ref Service.Config.BeneficialAreaOnTarget, Service.Default.BeneficialAreaOnTarget);
+        //}
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_DistanceForMoving,
-            ref Service.Config.DistanceForMoving, Service.Default.DistanceForMoving, speed * 3);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_DistanceForMoving,
+        //    ref Service.Config.DistanceForMoving, Service.Default.DistanceForMoving, speed * 3);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MeleeRangeOffset,
-            ref Service.Config.MeleeRangeOffset, Service.Default.MeleeRangeOffset, 5 * speed, max: 5);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_MeleeRangeOffset,
+        //    ref Service.Config.MeleeRangeOffset, Service.Default.MeleeRangeOffset, 5 * speed, max: 5);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthDifference,
-             ref Service.Config.HealthDifference, Service.Default.HealthDifference,
-        speed * 2, 0, 0.5f);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthDifference,
+        //     ref Service.Config.HealthDifference, Service.Default.HealthDifference,
+        //speed * 2, 0, 0.5f);
 
         if (ImGui.BeginTable("Healing things", 3, ImGuiTableFlags.Borders
             | ImGuiTableFlags.Resizable
@@ -482,72 +482,72 @@ internal partial class RotationConfigWindow
             ImGui.EndTable();
         }
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
-            ref Service.Config.HealthHealerRatio, Service.Default.HealthHealerRatio, speed);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
+        //    ref Service.Config.HealthHealerRatio, Service.Default.HealthHealerRatio, speed);
 
-        DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
-            ref Service.Config.HealthTankRatio, Service.Default.HealthTankRatio, speed);
+        //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
+        //    ref Service.Config.HealthTankRatio, Service.Default.HealthTankRatio, speed);
     }
 
     private void DrawParamTarget()
     {
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
-            ref Service.Config.AddEnemyListToHostile, Service.Default.AddEnemyListToHostile);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
+        //    ref Service.Config.AddEnemyListToHostile, Service.Default.AddEnemyListToHostile);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
-            ref Service.Config.ChooseAttackMark, Service.Default.ChooseAttackMark);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
+        //    ref Service.Config.ChooseAttackMark, Service.Default.ChooseAttackMark);
 
-        if (Service.Config.ChooseAttackMark && Service.Config.GetValue(SettingsCommand.UseAOEAction))
-        {
-            ImGui.Indent();
+        //if (Service.Config.ChooseAttackMark && Service.Config.GetValue(SettingsCommand.UseAOEAction))
+        //{
+        //    ImGui.Indent();
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_CanAttackMarkAOE,
-                ref Service.Config.CanAttackMarkAOE, Service.Default.CanAttackMarkAOE,
-                LocalizationManager.RightLang.ConfigWindow_Param_AttackMarkAOEDesc);
+        //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_CanAttackMarkAOE,
+        //        ref Service.Config.CanAttackMarkAOE, Service.Default.CanAttackMarkAOE,
+        //        LocalizationManager.RightLang.ConfigWindow_Param_AttackMarkAOEDesc);
 
-            ImGui.Unindent();
-        }
+        //    ImGui.Unindent();
+        //}
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_FilterStopMark,
-            ref Service.Config.FilterStopMark, Service.Default.FilterStopMark);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_FilterStopMark,
+        //    ref Service.Config.FilterStopMark, Service.Default.FilterStopMark);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ChangeTargetForFate,
-            ref Service.Config.ChangeTargetForFate, Service.Default.ChangeTargetForFate);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ChangeTargetForFate,
+        //    ref Service.Config.ChangeTargetForFate, Service.Default.ChangeTargetForFate);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_OnlyAttackInView,
-            ref Service.Config.OnlyAttackInView, Service.Default.OnlyAttackInView);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_OnlyAttackInView,
+        //    ref Service.Config.OnlyAttackInView, Service.Default.OnlyAttackInView);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_MoveTowardsScreen,
-            ref Service.Config.MoveTowardsScreenCenter, Service.Default.MoveTowardsScreenCenter,
-            LocalizationManager.RightLang.ConfigWindow_Param_MoveTowardsScreenDesc);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_MoveTowardsScreen,
+        //    ref Service.Config.MoveTowardsScreenCenter, Service.Default.MoveTowardsScreenCenter,
+        //    LocalizationManager.RightLang.ConfigWindow_Param_MoveTowardsScreenDesc);
 
-        DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
-            ref Service.Config.MoveTargetAngle, Service.Default.MoveTargetAngle, 0.02f, 0, 100,
-            LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngleDesc);
+        //DrawIntNumber(LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
+        //    ref Service.Config.MoveTargetAngle, Service.Default.MoveTargetAngle, 0.02f, 0, 100,
+        //    LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngleDesc);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthest,
-            ref Service.Config.MoveAreaActionFarthest, Service.Default.MoveAreaActionFarthest,
-            LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthestDesc);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthest,
+        //    ref Service.Config.MoveAreaActionFarthest, Service.Default.MoveAreaActionFarthest,
+        //    LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthestDesc);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ActionTargetFriendly,
-    SettingsCommand.TargetAllForFriendly);
+    //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_ActionTargetFriendly,
+    //SettingsCommand.TargetAllForFriendly);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseAll,
-            ref Service.Config.RaiseAll, Service.Default.RaiseAll);
+    //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseAll,
+    //        ref Service.Config.RaiseAll, Service.Default.RaiseAll);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseBrinkOfDeath,
-            ref Service.Config.RaiseBrinkOfDeath, Service.Default.RaiseBrinkOfDeath);
+    //    DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_RaiseBrinkOfDeath,
+    //        ref Service.Config.RaiseBrinkOfDeath, Service.Default.RaiseBrinkOfDeath);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFriendly,
-            ref Service.Config.TargetFriendly, Service.Default.TargetFriendly);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFriendly,
+        //    ref Service.Config.TargetFriendly, Service.Default.TargetFriendly);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFatePriority,
-            ref Service.Config.TargetFatePriority, Service.Default.TargetFatePriority);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetFatePriority,
+        //    ref Service.Config.TargetFatePriority, Service.Default.TargetFatePriority);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
-            ref Service.Config.TargetHuntingRelicLevePriority, Service.Default.TargetHuntingRelicLevePriority);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
+        //    ref Service.Config.TargetHuntingRelicLevePriority, Service.Default.TargetHuntingRelicLevePriority);
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
-            ref Service.Config.TargetQuestPriority, Service.Default.TargetQuestPriority);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
+        //    ref Service.Config.TargetQuestPriority, Service.Default.TargetQuestPriority);
     }
 }
