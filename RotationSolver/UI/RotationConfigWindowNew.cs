@@ -6,10 +6,13 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using F23.StringSimilarity;
+using ImGuiNET;
 using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Data;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -18,6 +21,7 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Windows.Forms;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -87,7 +91,7 @@ public partial class RotationConfigWindowNew : Window
 
     private void DrawSideBar()
     {
-        if (BeginChild("Rotation Solver Side bar"))
+        if (BeginChild("Rotation Solver Side bar", -Vector2.One, false, ImGuiWindowFlags.NoScrollbar))
         {
             var wholeWidth = ImGui.GetWindowSize().X;
 
@@ -112,6 +116,7 @@ public partial class RotationConfigWindowNew : Window
                     {
                         if (ImGui.BeginPopup("Searching Popup"))
                         {
+                            ImGui.SetNextItemWidth(200 * _scale);
                             SearchingBox();
                             if (ImGui.IsKeyDown(ImGuiKey.Enter))
                             {
@@ -141,7 +146,7 @@ public partial class RotationConfigWindowNew : Window
                     DrawItemMiddle(() =>
                     {
                         var cursor = ImGui.GetCursorPos();
-                        if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize))
+                        if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize, item.ToString()))
                         {
                             _activeTab = item;
                         }
@@ -172,7 +177,7 @@ public partial class RotationConfigWindowNew : Window
                 var result = false;
                 DrawItemMiddle(() =>
                 {
-                    ImGui.SetCursorPosY(ImGui.GetWindowSize().Y - size.Y);
+                    ImGui.SetCursorPosY(ImGui.GetWindowSize().Y + ImGui.GetScrollY() - size.Y);
                     result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size);
                 }, wholeWidth, size.X);
 
@@ -209,13 +214,13 @@ public partial class RotationConfigWindowNew : Window
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
         int realFrame = FRAME_COUNT;
-        if (Service.ConfigNew.GetValue(Basic.Configuration.PluginConfigBool.DrawIconAnimation))
+        if (Service.ConfigNew.GetValue(PluginConfigBool.DrawIconAnimation))
         {
             var frame = Environment.TickCount / 34; //30
             realFrame = frame % FRAME_COUNT;
             if (realFrame == 0) realFrame = FRAME_COUNT;
         }
-        if (GetLocalImage(realFrame.ToString("0000"), out var logo) && IconSet.GetTexture(0, out var overlay))
+        if (GetLocalImage(realFrame.ToString("0000"), out var logo) && IconSet.GetTexture((uint)0, out var overlay))
         {
             DrawItemMiddle(() =>
             {
@@ -1217,28 +1222,26 @@ public partial class RotationConfigWindowNew : Window
         }
     }
 
-    private static StatusTexture[] _allDispelStatus = null;
-    internal static StatusTexture[] AllDispelStatus
+    private static Status[] _allDispelStatus = null;
+    internal static Status[] AllDispelStatus
     {
         get
         {
             _allDispelStatus ??= Service.GetSheet<Status>()
                     .Where(s => s.CanDispel)
-                    .Select(s => new StatusTexture(s))
                     .ToArray();
             return _allDispelStatus;
         }
     }
 
-    private static StatusTexture[] _allInvStatus = null;
-    internal static StatusTexture[] AllInvStatus
+    private static Status[] _allInvStatus = null;
+    internal static Status[] AllInvStatus
     {
         get
         {
             _allInvStatus ??= Service.GetSheet<Status>()
                     .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff && s.HitEffect.Row == 16 && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
                         && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
-                    .Select(s => new StatusTexture(s))
                     .ToArray();
             return _allInvStatus;
         }
@@ -1283,31 +1286,51 @@ public partial class RotationConfigWindowNew : Window
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
-            DrawInvincibility();
+            DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, AllInvStatus);
 
             ImGui.TableNextColumn();
-            DrawDangerousStatus();
+            DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, AllDispelStatus);
 
             ImGui.EndTable();
         }
     }
 
-    private static void DrawInvincibility()
+    static string _statusSearching = string.Empty;
+
+    private static void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
     {
         uint removeId = 0;
+        uint notLoadId = 10100;
 
+        var popupId = "Rotation Solver Popup" + name;
 
-        if(BeginChild("Rotation Solver InvincibleStatus"))
+        if (BeginChild("Rotation Solver Child" + name))
         {
             var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
-
             var index = 0;
-            foreach (var statusId in OtherConfiguration.InvincibleStatus)
+
+            if (IconSet.GetTexture(16220, out var text))
+            {
+                if (index++ % count != 0)
+                {
+                    ImGui.SameLine();
+                }
+                if (NoPaddingNoColorImageButton(text.ImGuiHandle, new Vector2(24, 32) * _scale))
+                {
+                    if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
+                }
+                ImguiTooltips.HoveredTooltip("Add Status");
+            }
+
+            foreach (var statusId in statuses)
             {
                 void Reset() => removeId = statusId;
 
                 var status = Service.GetSheet<Status>().GetRow(statusId);
+                if (status == null) continue;
+
                 var key = "Status" + statusId;
+
                 if (ImGui.BeginPopup(key))
                 {
                     if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
@@ -1324,7 +1347,7 @@ public partial class RotationConfigWindowNew : Window
                     {
                         ImGui.SameLine();
                     }
-                    NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status");
+                    NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + statusId.ToString());
 
                     if (ImGui.IsItemHovered())
                     {
@@ -1337,20 +1360,52 @@ public partial class RotationConfigWindowNew : Window
                     }
                 }
             }
+
+
+            if (ImGui.BeginPopup(popupId))
+            {
+                ImGui.SetNextItemWidth(200 * _scale);
+                ImGui.InputTextWithHint("##Searching the status", "Status name or id", ref _statusSearching, 128);
+
+                ImGui.Spacing();
+
+                if(ImGui.BeginChild("Rotation Solver Add Status", new Vector2(-1, 400)))
+                {
+                    count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+                    index = 0;
+
+                    foreach (var status in allStatus.OrderBy(s => StringComparer.Distance($"{s.Name}{s.RowId}", _statusSearching)))
+                    {
+                        if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
+                        {
+                            if (index++ % count != 0)
+                            {
+                                ImGui.SameLine();
+                            }
+                            if (NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Adding" + status.RowId.ToString()))
+                            {
+                                statuses.Add(status.RowId);
+                                OtherConfiguration.SaveInvincibleStatus();
+                                ImGui.CloseCurrentPopup();
+                            }
+                            ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
+                        }
+                    }
+                    ImGui.EndChild();
+                }
+
+                ImGui.EndPopup();
+            }
+
             ImGui.EndChild();
         }
 
         if (removeId != 0)
         {
-            OtherConfiguration.InvincibleStatus.Remove(removeId);
+            statuses.Remove(removeId);
             OtherConfiguration.SaveInvincibleStatus();
         }
     }
-    private static void DrawDangerousStatus()
-    {
-
-    }
-
     #endregion
 
     private static readonly CollapsingHeaderGroup _debugHeader = new(new()
@@ -1501,6 +1556,12 @@ public partial class RotationConfigWindowNew : Window
     {
         if (IsFailed()) return false;
         return ImGui.BeginChild(str_id, size);
+    }
+
+    private static bool BeginChild(string str_id, Vector2 size, bool border, ImGuiWindowFlags flags)
+    {
+        if (IsFailed()) return false;
+        return ImGui.BeginChild(str_id, size, border, flags);
     }
 
     private static bool IsFailed()

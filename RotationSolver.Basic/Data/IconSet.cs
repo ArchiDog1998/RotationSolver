@@ -126,9 +126,9 @@ public static class IconSet
         => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out var texture) ? texture :
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture) ? texture : null;
 
-    public static bool GetTexture(uint id, out TextureWrap texture)
+    public static bool GetTexture(uint id, out TextureWrap texture, uint @default = 0)
         => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture);
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, false, out texture);
 
     /// <summary>
     /// Get Texture from path.

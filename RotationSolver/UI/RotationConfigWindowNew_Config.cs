@@ -7,6 +7,8 @@ namespace RotationSolver.UI;
 
 public partial class RotationConfigWindowNew
 {
+    private static readonly Levenshtein StringComparer = new ();
+
     private string _searchText = string.Empty;
     private ISearchable[] _searchResults = Array.Empty<ISearchable>();
     private void SearchingBox()
@@ -18,12 +20,11 @@ public partial class RotationConfigWindowNew
                 const int MAX_RESULT_LENGTH = 20;
 
                 _searchResults = new ISearchable[MAX_RESULT_LENGTH];
-                var l = new Levenshtein();
 
                 var enumerator = GetType().GetRuntimeFields()
                     .Where(f => f.FieldType == typeof(ISearchable[]) && f.IsInitOnly)
                     .SelectMany(f => (ISearchable[])f.GetValue(this))
-                    .OrderBy(i => l.Distance(i.SearchingKey, _searchText))
+                    .OrderBy(i => StringComparer.Distance(i.SearchingKey, _searchText))
                     .Select(GetParent).GetEnumerator();
 
                 int index = 0;
