@@ -450,5 +450,17 @@
   "ConfigWindow_Rotations_UserName": "User Name",
   "ConfigWindow_Rotations_Repository": "Repository",
   "ConfigWindow_Rotations_FileName": "File Name",
-  "ConfigWindow_Rotations_Library": "The folder contains rotation libs or the download url about rotation lib."
+  "ConfigWindow_Rotations_Library": "The folder contains rotation libs or the download url about rotation lib.",
+  "ConfigWindow_List_Statuses": "Statuses",
+  "ConfigWindow_List_Actions": "Actions",
+  "ConfigWindow_List_Territories": "Territories",
+  "ConfigWindow_List_StatusNameOrId": "Status name or id",
+  "ConfigWindow_List_AddStatus": "Add Status",
+  "ConfigWindow_List_Remove": "Remove",
+  "ConfigWindow_List_ActionNameOrId": "Action name or id",
+  "ConfigWindow_List_AddAction": "Add Action",
+  "ConfigWindow_List_TerritoryEverywhere": "Everywhere",
+  "ConfigWindow_List_AddTerritory": "Territory name or id",
+  "ConfigWindow_List_BeneficialLocations": "Beneficial locations",
+  "ConfigWindow_List_NoHostilesName": "The name of object that you don't want to attack"
 }

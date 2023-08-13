@@ -656,4 +656,22 @@ internal partial class Strings
     public string ConfigWindow_Rotations_FileName { get; set; } = "File Name";
 
     public string ConfigWindow_Rotations_Library { get; set; } = "The folder contains rotation libs or the download url about rotation lib.";
+
+    public string ConfigWindow_List_Statuses { get; set; } = "Statuses";
+    public string ConfigWindow_List_Actions { get; set; } = "Actions";
+    public string ConfigWindow_List_Territories { get; set; } = "Territories";
+    public string ConfigWindow_List_StatusNameOrId { get; set; } = "Status name or id";
+    public string ConfigWindow_List_AddStatus { get; set; } = "Add Status";
+    public string ConfigWindow_List_Remove { get; set; } = "Remove";
+
+    public string ConfigWindow_List_ActionNameOrId { get; set; } = "Action name or id";
+    public string ConfigWindow_List_AddAction { get; set; } = "Add Action";
+
+    public string ConfigWindow_List_TerritoryEverywhere { get; set; } = "Everywhere";
+
+    public string ConfigWindow_List_AddTerritory{ get; set; } = "Territory name or id";
+
+    public string ConfigWindow_List_BeneficialLocations { get; set; } = "Beneficial locations";
+    public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of object that you don't want to attack";
+
 }
