@@ -11,7 +11,7 @@ public partial class RotationConfigWindowNew
     private ISearchable[] _searchResults = Array.Empty<ISearchable>();
     private void SearchingBox()
     {
-        if (ImGui.InputTextWithHint("##Rotation Solver Search Box", "Searching is not available", ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))
+        if (ImGui.InputTextWithHint("##Rotation Solver Search Box", "Searching...", ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))
         {
             if (!string.IsNullOrEmpty(_searchText))
             {

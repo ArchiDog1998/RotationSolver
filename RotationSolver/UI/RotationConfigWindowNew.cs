@@ -1,14 +1,13 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
-using Newtonsoft.Json.Linq;
 using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
@@ -19,7 +18,6 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
-using System.Drawing;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -39,6 +37,11 @@ public partial class RotationConfigWindowNew : Window
     {
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
+        SizeConstraints = new WindowSizeConstraints()
+        {
+             MinimumSize = new Vector2(250, 300),
+             MaximumSize = new Vector2(5000, 5000),
+        };
         RespectCloseHotkey = true;
     }
 
@@ -62,22 +65,29 @@ public partial class RotationConfigWindowNew : Window
 
     public override void Draw()
     {
-        if(ImGui.BeginTable("Rotation Config Table", 2, ImGuiTableFlags.Resizable))
+        try
         {
-            ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * _scale);
-            ImGui.TableNextColumn();
-            DrawSideBar();
+            if (ImGui.BeginTable("Rotation Config Table", 2, ImGuiTableFlags.Resizable))
+            {
+                ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * _scale);
+                ImGui.TableNextColumn();
+                DrawSideBar();
 
-            ImGui.TableNextColumn();
-            DrawBody();
+                ImGui.TableNextColumn();
+                DrawBody();
 
-            ImGui.EndTable();
+                ImGui.EndTable();
+            }
+        }
+        catch(Exception ex)
+        {
+            PluginLog.Warning(ex, "Something wrong with new ui");
         }
     }
 
     private void DrawSideBar()
     {
-        if (ImGui.BeginChild("Rotation Solver Side bar", Vector2.Zero))
+        if (BeginChild("Rotation Solver Side bar"))
         {
             var wholeWidth = ImGui.GetWindowSize().X;
 
@@ -336,9 +346,8 @@ public partial class RotationConfigWindowNew : Window
 
     private void DrawBody()
     {
-        var margin = 8 * _scale;
-        ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * margin);
-        if (ImGui.BeginChild("Rotation Solver Body", Vector2.One * -margin))
+        ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * 8 * _scale);
+        if (BeginChild("Rotation Solver Body", -Vector2.One))
         {
             //Search box
             if (_searchResults != null && _searchResults.Any())
@@ -368,8 +377,8 @@ public partial class RotationConfigWindowNew : Window
                         DrawRotations();
                         break;
 
-                    case RotationConfigWindowTab.IDs:
-                        DrawIDs();
+                    case RotationConfigWindowTab.List:
+                        DrawList();
                         break;
 
                     case RotationConfigWindowTab.Basic:
@@ -864,14 +873,14 @@ public partial class RotationConfigWindowNew : Window
             ImGui.TableSetupColumn("Action Column", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 2);
             ImGui.TableNextColumn();
 
-            if (_actionsList != null && ImGui.BeginChild("Rotation Solver Action List"))
+            if (_actionsList != null && BeginChild("Rotation Solver Action List"))
             {
                 _actionsList.ClearCollapsingHeader();
 
                 if (RotationUpdater.RightNowRotation != null)
                 {
                     var size = 30 * _scale;
-                    var count = (int)MathF.Floor(ImGui.GetWindowWidth() / (size + ImGui.GetStyle().ItemSpacing.X));
+                    var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size + ImGui.GetStyle().ItemSpacing.X)));
                     foreach (var pair in RotationUpdater.AllGroupedActions)
                     {
                         _actionsList.AddCollapsingHeader(() => pair.Key, () =>
@@ -915,7 +924,7 @@ public partial class RotationConfigWindowNew : Window
 
             ImGui.TableNextColumn();
 
-            if (_sequencerList != null && _activeAction != null && ImGui.BeginChild("Rotation Solver Sequencer List"))
+            if (_sequencerList != null && _activeAction != null && BeginChild("Rotation Solver Sequencer List"))
             {
                 var enable = _activeAction.IsEnabled;
                 if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
@@ -1248,15 +1257,100 @@ public partial class RotationConfigWindowNew : Window
             return _allActions;
         }
     }
-    private static readonly CollapsingHeaderGroup _idsHeader = new(new()
-    {
 
-    });
-    private static void DrawIDs()
+    private static void DrawList()
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_Description); 
         _idsHeader?.Draw();
     }
+    private static readonly CollapsingHeaderGroup _idsHeader = new(new()
+    {
+        { () => "Status", DrawIDsStatus},
+    });
+    private static void DrawIDsStatus()
+    {
+        if(ImGui.BeginTable("Rotation Solver List Status", 2, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
+        {
+            ImGui.TableSetupScrollFreeze(0, 1);
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_Invincibility);
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatus);
+
+            ImGui.TableNextRow();
+
+            ImGui.TableNextColumn();
+            DrawInvincibility();
+
+            ImGui.TableNextColumn();
+            DrawDangerousStatus();
+
+            ImGui.EndTable();
+        }
+    }
+
+    private static void DrawInvincibility()
+    {
+        uint removeId = 0;
+
+
+        if(BeginChild("Rotation Solver InvincibleStatus"))
+        {
+            var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+
+            var index = 0;
+            foreach (var statusId in OtherConfiguration.InvincibleStatus)
+            {
+                void Reset() => removeId = statusId;
+
+                var status = Service.GetSheet<Status>().GetRow(statusId);
+                var key = "Status" + statusId;
+                if (ImGui.BeginPopup(key))
+                {
+                    if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
+                    {
+                        Searchable.DrawHotKeys("Remove", Reset, "Delete");
+                        ImGui.EndTable();
+                    }
+
+                    ImGui.EndPopup();
+                }
+                if (IconSet.GetTexture(status.Icon, out var texture))
+                {
+                    if (index++ % count != 0)
+                    {
+                        ImGui.SameLine();
+                    }
+                    NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status");
+
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImguiTooltips.ShowTooltip($"{status.Name} ({status.RowId})");
+                        if (ImGui.IsMouseClicked(ImGuiMouseButton.Right) && !ImGui.IsPopupOpen(key))
+                        {
+                            ImGui.OpenPopup(key);
+                        }
+                        Searchable.ExecuteHotKeys(Reset, Dalamud.Game.ClientState.Keys.VirtualKey.DELETE);
+                    }
+                }
+            }
+            ImGui.EndChild();
+        }
+
+        if (removeId != 0)
+        {
+            OtherConfiguration.InvincibleStatus.Remove(removeId);
+            OtherConfiguration.SaveInvincibleStatus();
+        }
+    }
+    private static void DrawDangerousStatus()
+    {
+
+    }
+
     #endregion
 
     private static readonly CollapsingHeaderGroup _debugHeader = new(new()
@@ -1393,6 +1487,34 @@ public partial class RotationConfigWindowNew : Window
                     start, start + step);
             }
         }
+    }
+    #endregion
+
+    #region Child
+    private static bool BeginChild(string str_id)
+    {
+        if (IsFailed()) return false;
+        return ImGui.BeginChild(str_id);
+    }
+
+    private static bool BeginChild(string str_id, Vector2 size)
+    {
+        if (IsFailed()) return false;
+        return ImGui.BeginChild(str_id, size);
+    }
+
+    private static bool IsFailed()
+    {
+        var style = ImGui.GetStyle();
+        var min = style.WindowPadding.X + style.WindowBorderSize;
+        var columnWidth = ImGui.GetColumnWidth();
+        var windowSize = ImGui.GetWindowSize();
+        var cursor = ImGui.GetCursorPos();
+
+        return columnWidth > 0 && columnWidth <= min
+            || windowSize.Y - cursor.Y <= min
+            || windowSize.X - cursor.X <= min;
+
     }
     #endregion
 }

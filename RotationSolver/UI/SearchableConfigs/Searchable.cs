@@ -110,7 +110,7 @@ internal abstract class Searchable : ISearchable
         Notify.Success($"\"{command}\" copied to clipboard.");
     }
 
-    private static void DrawHotKeys(string name, Action action, params string[] keys)
+    public static void DrawHotKeys(string name, Action action, params string[] keys)
     {
         if (action == null) return;
 
@@ -127,7 +127,7 @@ internal abstract class Searchable : ISearchable
     }
 
     private static readonly SortedList<string, bool> _lastChecked = new();
-    private static void ExecuteHotKeys(Action action, params VirtualKey[] keys)
+    public static void ExecuteHotKeys(Action action, params VirtualKey[] keys)
     {
         if (action == null) return;
         var name = string.Join(' ', keys);

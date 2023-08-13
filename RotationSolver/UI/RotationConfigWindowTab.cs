@@ -21,7 +21,7 @@ internal enum RotationConfigWindowTab : byte
 
     [TabIcon(Icon = 4)] Actions,
     [TabIcon(Icon = 47)] Rotations,
-    [TabIcon(Icon = 21)] IDs,
+    [TabIcon(Icon = 21)] List,
     [TabIcon(Icon = 14)] Basic,
     [TabIcon(Icon = 42)] UI,
     [TabIcon(Icon = 29)] Auto,
