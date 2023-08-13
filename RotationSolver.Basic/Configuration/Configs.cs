@@ -50,19 +50,62 @@ namespace RotationSolver.Basic.Configuration;
         => GlobalConfig.Vectors.GetDefault(config);
 
     public void SetValue(Job job, JobConfigInt config, int value)
-        => GetJobConfig(job).Ints.SetValue(config, value);
+    {
+        var attr = config.GetAttribute<DefaultAttribute>();
+        if(attr != null)
+        {
+            var min = attr.Min; var max = attr.Max;
+            if(min != null && max != null)
+            {
+                value = Math.Min(Math.Max(value, (int)min), (int)max);
+            }
+        }
+        GetJobConfig(job).Ints.SetValue(config, value);
+    }
 
     public void SetValue(Job job, JobConfigFloat config, float value)
-        => GetJobConfig(job).Floats.SetValue(config, value);
+    {
+        var attr = config.GetAttribute<DefaultAttribute>();
+        if (attr != null)
+        {
+            var min = attr.Min; var max = attr.Max;
+            if (min != null && max != null)
+            {
+                value = MathF.Min(MathF.Max(value, (float)min), (float)max);
+            }
+        }
+        GetJobConfig(job).Floats.SetValue(config, value);
+    }
 
     public void SetValue(PluginConfigInt config, int value)
-        => GlobalConfig.Ints.SetValue(config, value);
-
+    {
+        var attr = config.GetAttribute<DefaultAttribute>();
+        if (attr != null)
+        {
+            var min = attr.Min; var max = attr.Max;
+            if (min != null && max != null)
+            {
+                value = Math.Min(Math.Max(value, (int)min), (int)max);
+            }
+        }
+        GlobalConfig.Ints.SetValue(config, value);
+    }
     public void SetValue(PluginConfigBool config, bool value)
         => GlobalConfig.Bools.SetValue(config, value);
 
     public void SetValue(PluginConfigFloat config, float value)
-        => GlobalConfig.Floats.SetValue(config, value);
+    {
+        var attr = config.GetAttribute<DefaultAttribute>();
+        if (attr != null)
+        {
+            var min = attr.Min; var max = attr.Max;
+            if (min != null && max != null)
+            {
+                value = MathF.Min(MathF.Max(value, (float)min), (float)max);
+            }
+        }
+        GlobalConfig.Floats.SetValue(config, value);
+    }
 
     public void SetValue(PluginConfigVector4 config, Vector4 value)
         => GlobalConfig.Vectors.SetValue(config, value);
@@ -91,7 +134,7 @@ public enum JobConfigInt : byte
 {
     //TODO : Type binding by jobs.
     [Default(2)] HostileType,
-    [Default(2)] AddDotGCDCount,
+    [Default(2, 0, 3)] AddDotGCDCount,
 }
 
 public enum JobConfigFloat : byte
@@ -146,15 +189,15 @@ public enum PluginConfigInt : byte
 {
     [Default(0)] ActionSequencerIndex,
     [Default(0)] PoslockModifier,
-    [Default(0)] LessMPNoRaise,
-    [Default(2)] KeyBoardNoiseMin,
+    [Default(0, 0, 10000)] LessMPNoRaise,
+    [Default(2, 0, 5)] KeyBoardNoiseMin,
     [Default(3)] KeyBoardNoiseMax,
 
     [Default(0)] TargetingIndex,
 
     [Obsolete]
-    [Default(15)] CooldownActionOneLine,
-    [Default(0)] MoveTargetAngle
+    [Default(15, 1, 30)] CooldownActionOneLine,
+    [Default(0, 0, 100)] MoveTargetAngle
 }
 
 public enum PluginConfigBool : byte
@@ -260,74 +303,74 @@ public enum PluginConfigBool : byte
 
 public enum PluginConfigFloat : byte
 {
-    [Default(8f)] AutoOffAfterCombat,
-    [Default(3f)] DrawingHeight,
-    [Default(0.2f)] SampleLength,
+    [Default(8f, 0f, 10f)] AutoOffAfterCombat,
+    [Default(3f, 0f, 8f)] DrawingHeight,
+    [Default(0.2f, 0.005f, 0.05f)] SampleLength,
     [Default(0.1f)] KeyBoardNoiseTimeMin,
     [Default(0.2f)] KeyBoardNoiseTimeMax,
 
-    [Default(0.25f)] HealthDifference,
-    [Default(1f)] MeleeRangeOffset,
-    [Default(0.1f)] MinLastAbilityAdvanced,
-    [Default(0.8f)] HealWhenNothingTodoBelow,
-    [Default(0.6f)] TargetIconSize,
+    [Default(0.25f, 0f, 0.5f)] HealthDifference,
+    [Default(1f, 0f, 5f)] MeleeRangeOffset,
+    [Default(0.1f, 0f, 0.4f)] MinLastAbilityAdvanced,
+    [Default(0.8f, 0f, 1f)] HealWhenNothingTodoBelow,
+    [Default(0.6f, 0f, 1f)] TargetIconSize,
 
-    [Default(0f)] MistakeRatio,
+    [Default(0f, 0f, 1f)] MistakeRatio,
 
-    [Default(0.4f)] HealthTankRatio,
-    [Default(0.4f)] HealthHealerRatio,
+    [Default(0.4f, 0f, 1f)] HealthTankRatio,
+    [Default(0.4f, 0f, 1f)] HealthHealerRatio,
 
-    [Default(3f)] SpecialDuration,
+    [Default(3f, 1f, 20f)] SpecialDuration,
 
-    [Default(0.08f)] ActionAhead,
+    [Default(0.08f, 0f, 0.5f)] ActionAhead,
     [Default(0.06f)] ActionAheadForLast0GCD,
 
-    [Default(0f)] WeaponDelayMin,
+    [Default(0f, 0f, 1f)] WeaponDelayMin,
     [Default(0f)] WeaponDelayMax,
 
-    [Default(1f)] DeathDelayMin,
+    [Default(1f, 0f, 3f)] DeathDelayMin,
     [Default(1.5f)] DeathDelayMax,
 
-    [Default(0.5f)] WeakenDelayMin,
+    [Default(0.5f, 0f, 3f)] WeakenDelayMin,
     [Default(1f)] WeakenDelayMax,
 
-    [Default(0f)] HostileDelayMin,
+    [Default(0f, 0f, 3f)] HostileDelayMin,
     [Default(0f)] HostileDelayMax,
 
-    [Default(0f)] HealDelayMin,
+    [Default(0f, 0f, 3f)] HealDelayMin,
     [Default(0f)] HealDelayMax,
 
-    [Default(0.5f)] StopCastingDelayMin,
+    [Default(0.5f, 0f, 3f)] StopCastingDelayMin,
     [Default(1f)] StopCastingDelayMax,
 
-    [Default(0.5f)] InterruptDelayMin,
+    [Default(0.5f, 0f, 3f)] InterruptDelayMin,
     [Default(1f)] InterruptDelayMax,
 
-    [Default(3f)] NotInCombatDelayMin,
+    [Default(3f, 0f, 10f)] NotInCombatDelayMin,
     [Default(4f)] NotInCombatDelayMax,
 
-    [Default(0.1f)] ClickingDelayMin,
+    [Default(0.1f, 0.05f, 0.25f)] ClickingDelayMin,
     [Default(0.15f)] ClickingDelayMax,
 
-    [Default(0.5f)] CountdownDelayMin,
+    [Default(0.5f, 0f, 3f)] CountdownDelayMin,
     [Default(1f)] CountdownDelayMax,
 
-    [Default(0.6f)] CountDownAhead,
+    [Default(0.6f, 0.5f, 0.7f)] CountDownAhead,
 
     [Default(24f)] MoveTargetAngle,
-    [Default(1.85f)] HealthRatioBoss,
-    [Default(0.8f)] HealthRatioDying,
-    [Default(1.2f)] HealthRatHealthRatioDotioBoss,
+    [Default(1.85f, 0f, 10f)] HealthRatioBoss,
+    [Default(0.8f, 0f, 10f)] HealthRatioDying,
+    [Default(1.2f, 0f, 10f)] HealthRatHealthRatioDotioBoss,
 
-    [Default(16f)] CooldownFontSize,
+    [Default(16f, 9.6f, 96f)] CooldownFontSize,
 
-    [Default(40f)] ControlWindowGCDSize,
-    [Default(30f)] ControlWindow0GCDSize,
-    [Default(30f)] CooldownWindowIconSize,
-    [Default(1.5f)] ControlWindowNextSizeRatio,
+    [Default(40f, 0f, 80f)] ControlWindowGCDSize,
+    [Default(30f, 0f, 80f)] ControlWindow0GCDSize,
+    [Default(30f, 0f, 80f)] CooldownWindowIconSize,
+    [Default(1.5f, 0f, 10f)] ControlWindowNextSizeRatio,
     [Default(8f)] ControlProgressHeight,
-    [Default(1.2f)] DistanceForMoving,
-    [Default(0.2f)] MaxPing,
+    [Default(1.2f, 0f, 30f)] DistanceForMoving,
+    [Default(0.2f, 0.01f, 0.5f)] MaxPing,
 
     [Default(1.8f)] HealthRatioDot,
 
@@ -348,10 +391,14 @@ public enum PluginConfigVector4 : byte
 [AttributeUsage(AttributeTargets.Field)] public class DefaultAttribute : Attribute
 {
     public object Default { get; set; }
+    public object Min { get; set; }
+    public object Max { get; set; }
 
-    public DefaultAttribute(object @default)
+    public DefaultAttribute(object @default, object min = null, object max = null)
     {
         Default = @default;
+        Min = min;
+        Max = max;
     }
 }
 

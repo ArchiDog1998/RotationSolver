@@ -1,4 +1,5 @@
-﻿using ECommons.ExcelServices;
+﻿using Dalamud.Utility;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 
@@ -20,8 +21,8 @@ internal class DragIntSearchJob : DragIntSearch
 
     protected override bool IsJob => true;
 
-    public DragIntSearchJob(JobConfigInt config, int min, int max, float speed)
-        :base (min, max, speed)
+    public DragIntSearchJob(JobConfigInt config, float speed)
+        :base ((int)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
     {
         _config = config;
     }
@@ -56,8 +57,8 @@ internal class DragIntSearchPlugin : DragIntSearch
 
     public override string Command => _config.ToCommand();
 
-    public DragIntSearchPlugin(PluginConfigInt config, int min, int max, float speed)
-        :base(min, max, speed)
+    public DragIntSearchPlugin(PluginConfigInt config, float speed)
+        :base((int)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
     {
         _config = config;
     }
@@ -96,7 +97,7 @@ internal abstract class DragIntSearch : Searchable
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
         if(ImGui.DragInt($"##Config_{ID}", ref value, Speed, Min, Max))
         {
-            SetValue(job, Math.Min(Math.Max(value, Min), Max));
+            SetValue(job, value);
         }
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 

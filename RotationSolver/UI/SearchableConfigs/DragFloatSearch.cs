@@ -1,4 +1,5 @@
-﻿using ECommons.ExcelServices;
+﻿using Dalamud.Utility;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 
@@ -19,8 +20,8 @@ internal class DragFloatSearchJob : DragFloatSearch
     public override string Command => _config.ToCommand();
     protected override bool IsJob => true;
 
-    public DragFloatSearchJob(JobConfigFloat config, float min, float max, float speed)
-          : base(min, max, speed)
+    public DragFloatSearchJob(JobConfigFloat config, float speed)
+          : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
     {
         _config = config;
     }
@@ -56,8 +57,8 @@ internal class DragFloatSearchPlugin : DragFloatSearch
 
     public override string Command => _config.ToCommand();
 
-    public DragFloatSearchPlugin(PluginConfigFloat config, float min, float max, float speed)
-        :base(min, max, speed)
+    public DragFloatSearchPlugin(PluginConfigFloat config, float speed)
+        :base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
     {
         _config = config;
     }
@@ -98,7 +99,7 @@ internal abstract class DragFloatSearch : Searchable
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
         if (ImGui.DragFloat($"##Config_{ID}", ref value, Speed, Min, Max))
         {
-            SetValue(job, Math.Min(Math.Max(value, Min), Max));
+            SetValue(job, value);
         }
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 

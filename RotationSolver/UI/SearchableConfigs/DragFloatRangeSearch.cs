@@ -1,4 +1,6 @@
-﻿using ECommons.ExcelServices;
+﻿using Dalamud.Utility;
+using ECommons.Configuration;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 
@@ -17,8 +19,8 @@ internal class DragFloatRangeSearchJob : DragFloatRangeSearch
 
     protected override bool IsJob => true;
 
-    public DragFloatRangeSearchJob(JobConfigFloat configMin, JobConfigFloat configMax, float min, float max, float speed)
-        : base (min, max, speed)
+    public DragFloatRangeSearchJob(JobConfigFloat configMin, JobConfigFloat configMax, float speed)
+        : base ((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
     {
         _configMin = configMin;
         _configMax = configMax;
@@ -64,8 +66,8 @@ internal class DragFloatRangeSearchPlugin : DragFloatRangeSearch
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
 
-    public DragFloatRangeSearchPlugin(PluginConfigFloat configMin, PluginConfigFloat configMax, float min, float max, float speed)
-        : base(min, max, speed)
+    public DragFloatRangeSearchPlugin(PluginConfigFloat configMin, PluginConfigFloat configMax, float speed)
+    : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
     {
         _configMin = configMin;
         _configMax = configMax;
@@ -123,8 +125,8 @@ internal abstract class DragFloatRangeSearch : Searchable
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
         if (ImGui.DragFloatRange2($"##Config_{ID}", ref minValue, ref maxValue, Speed, Min, Max))
         {
-            SetMinValue(job, Math.Max(Math.Min(minValue, maxValue), Min));
-            SetMaxValue(job, Math.Min(Math.Max(minValue, maxValue), Max));
+            SetMinValue(job, Math.Min(minValue, maxValue));
+            SetMaxValue(job, Math.Max(minValue, maxValue));
         }
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 

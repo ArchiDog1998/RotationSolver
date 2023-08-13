@@ -1,6 +1,5 @@
 ﻿using F23.StringSimilarity;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 
@@ -51,23 +50,23 @@ public partial class RotationConfigWindowNew
     private static readonly ISearchable[] _basicParamsSearchable = new ISearchable[]
     {
         new CheckBoxSearchPlugin(PluginConfigBool.UseWorkTask),
-        new DragIntSearchJob(JobConfigInt.AddDotGCDCount,0,3,1),
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0, 0.5f, 0.002f),
-        new DragFloatSearchPlugin(PluginConfigFloat.MinLastAbilityAdvanced, 0, 0.4f, 0.002f),
-        new DragFloatSearchPlugin(PluginConfigFloat.CountDownAhead, 0.5f, 0.7f, 0.002f),
-        new DragFloatSearchPlugin(PluginConfigFloat.SpecialDuration, 1.0f, 20.0f, 1f),
-        new DragFloatSearchPlugin(PluginConfigFloat.MaxPing, 0.01f, 0.5f, 0.002f),
-        new DragFloatSearchPlugin(PluginConfigFloat.MistakeRatio, 0, 1, 0.002f),
+        new DragIntSearchJob(JobConfigInt.AddDotGCDCount, 1),
+        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MinLastAbilityAdvanced, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.CountDownAhead, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.SpecialDuration, 1f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MaxPing, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MistakeRatio, 0.002f),
 
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.WeaponDelayMin, PluginConfigFloat.WeaponDelayMax, 0, 1f, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.HostileDelayMin, PluginConfigFloat.HostileDelayMax, 0, 3, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.InterruptDelayMin, PluginConfigFloat.InterruptDelayMax, 0, 3, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.DeathDelayMin, PluginConfigFloat.DeathDelayMax, 0, 3, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.WeakenDelayMin, PluginConfigFloat.WeakenDelayMax, 0, 3, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMin, 0, 3, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.CountdownDelayMin, PluginConfigFloat.CountdownDelayMax, 0, 3, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.NotInCombatDelayMin, PluginConfigFloat.NotInCombatDelayMax, 0, 3, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.ClickingDelayMin, PluginConfigFloat.ClickingDelayMax, 0.05f, 0.25f, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.WeaponDelayMin, PluginConfigFloat.WeaponDelayMax, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.HostileDelayMin, PluginConfigFloat.HostileDelayMax, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.InterruptDelayMin, PluginConfigFloat.InterruptDelayMax, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.DeathDelayMin, PluginConfigFloat.DeathDelayMax, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.WeakenDelayMin, PluginConfigFloat.WeakenDelayMax, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMin, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.CountdownDelayMin, PluginConfigFloat.CountdownDelayMax, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.NotInCombatDelayMin, PluginConfigFloat.NotInCombatDelayMax, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.ClickingDelayMin, PluginConfigFloat.ClickingDelayMax, 0.002f),
     };
 
     // 插件整体控制，如自动开关，模式变换啥的
@@ -83,7 +82,7 @@ public partial class RotationConfigWindowNew
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffBetweenArea),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffCutScene),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffWhenDead),
-        new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombat, 0f, 10f, 1f),     
+        new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombat, 1f),     
     };
 
     private static readonly CollapsingHeaderGroup _baseHeader = new(new()
@@ -128,7 +127,7 @@ public partial class RotationConfigWindowNew
         }),
         new CheckBoxSearchPlugin(PluginConfigBool.KeyBoardNoise, new ISearchable[]
         {
-            new DragIntRangeSearchPlugin(PluginConfigInt.KeyBoardNoiseMin, PluginConfigInt.KeyBoardNoiseMax, 0, 3, 1)
+            new DragIntRangeSearchPlugin(PluginConfigInt.KeyBoardNoiseMin, PluginConfigInt.KeyBoardNoiseMax, 1)
         }),
         new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget, new ISearchable[]
         {
@@ -136,19 +135,19 @@ public partial class RotationConfigWindowNew
         }),
         new CheckBoxSearchPlugin(PluginConfigBool.ShowTarget, new ISearchable[]
         {
-            new DragFloatSearchPlugin(PluginConfigFloat.TargetIconSize,0, 1, 0.002f),
+            new DragFloatSearchPlugin(PluginConfigFloat.TargetIconSize, 0.002f),
             new ColorEditSearchPlugin(PluginConfigVector4.TargetColor),
             new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor),
         }),
         new CheckBoxSearchPlugin(PluginConfigBool.DrawPositional, new ISearchable[]
         {
-            new DragFloatSearchPlugin(PluginConfigFloat.DrawingHeight,0, 8, 0.02f),
-            new DragFloatSearchPlugin(PluginConfigFloat.SampleLength,0.005f, 0.05f, 0.001f),
+            new DragFloatSearchPlugin(PluginConfigFloat.DrawingHeight, 0.02f),
+            new DragFloatSearchPlugin(PluginConfigFloat.SampleLength, 0.001f),
         }),
         new CheckBoxSearchPlugin(PluginConfigBool.DrawMeleeOffset, new ISearchable[]
         {
-            new DragFloatSearchPlugin(PluginConfigFloat.DrawingHeight,0, 8, 0.02f),
-            new DragFloatSearchPlugin(PluginConfigFloat.SampleLength,0.005f, 0.05f, 0.001f),
+            new DragFloatSearchPlugin(PluginConfigFloat.DrawingHeight, 0.02f),
+            new DragFloatSearchPlugin(PluginConfigFloat.SampleLength, 0.001f),
         }),
 
     };
@@ -164,9 +163,9 @@ public partial class RotationConfigWindowNew
             new CheckBoxSearchPlugin(PluginConfigBool.OnlyShowWithHostileOrInDuty),
             new CheckBoxSearchPlugin(PluginConfigBool.IsControlWindowLock),
 
-            new DragFloatSearchPlugin(PluginConfigFloat.ControlWindowNextSizeRatio,0f, 10f, 0.02f),
-            new DragFloatSearchPlugin(PluginConfigFloat.ControlWindowGCDSize,0f, 80f, 0.2f),
-            new DragFloatSearchPlugin(PluginConfigFloat.ControlWindow0GCDSize,0f, 80f, 0.2f),
+            new DragFloatSearchPlugin(PluginConfigFloat.ControlWindowNextSizeRatio, 0.02f),
+            new DragFloatSearchPlugin(PluginConfigFloat.ControlWindowGCDSize, 0.2f),
+            new DragFloatSearchPlugin(PluginConfigFloat.ControlWindow0GCDSize, 0.2f),
 
             new ColorEditSearchPlugin(PluginConfigVector4.ControlWindowUnlockBg),
             new ColorEditSearchPlugin(PluginConfigVector4.ControlWindowLockBg),
@@ -188,9 +187,9 @@ public partial class RotationConfigWindowNew
             new CheckBoxSearchPlugin(PluginConfigBool.ShowGCDCooldown),
             new CheckBoxSearchPlugin(PluginConfigBool.ShowItemsCooldown),
 
-            new DragIntSearchPlugin(PluginConfigInt.CooldownActionOneLine,1, 30, 1),
-            new DragFloatSearchPlugin(PluginConfigFloat.CooldownFontSize,9.6f, 96f, 0.1f),
-            new DragFloatSearchPlugin(PluginConfigFloat.CooldownWindowIconSize,0f, 80f, 0.2f),
+            new DragIntSearchPlugin(PluginConfigInt.CooldownActionOneLine, 1),
+            new DragFloatSearchPlugin(PluginConfigFloat.CooldownFontSize, 0.1f),
+            new DragFloatSearchPlugin(PluginConfigFloat.CooldownWindowIconSize, 0.2f),
 
             new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
         }),
@@ -256,19 +255,19 @@ public partial class RotationConfigWindowNew
         }),
         new CheckBoxSearchPlugin(PluginConfigBool.RaisePlayerByCasting),
         new CheckBoxSearchPlugin(PluginConfigBool.UseHealWhenNotAHealer),
-        new DragIntSearchPlugin(PluginConfigInt.LessMPNoRaise, 0, 10000, 200),
+        new DragIntSearchPlugin(PluginConfigInt.LessMPNoRaise, 200),
 
         new CheckBoxSearchPlugin(PluginConfigBool.InterruptibleMoreCheck),
         new CheckBoxSearchPlugin(PluginConfigBool.EsunaAll),
         new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),
-        new DragFloatSearchPlugin(PluginConfigFloat.HealWhenNothingTodoBelow,0,1,0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.HealWhenNothingTodoBelow, 0.002f),
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyHotOnTanks),
         new CheckBoxSearchPlugin(PluginConfigBool.BeneficialAreaOnTarget),
-        new DragFloatSearchPlugin(PluginConfigFloat.DistanceForMoving,0,30,1f),
-        new DragFloatSearchPlugin(PluginConfigFloat.MeleeRangeOffset,0,5,0.02f),
-        new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference,0,0.5f,0.02f),
-        new DragFloatSearchPlugin(PluginConfigFloat.HealthHealerRatio,0,1,0.02f),
-        new DragFloatSearchPlugin(PluginConfigFloat.HealthTankRatio,0,1,0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.DistanceForMoving, 1f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MeleeRangeOffset, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.HealthHealerRatio, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.HealthTankRatio, 0.02f),
 
     };
 
@@ -316,7 +315,7 @@ public partial class RotationConfigWindowNew
         new CheckBoxSearchPlugin(PluginConfigBool.ChangeTargetForFate),
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInView),
         new CheckBoxSearchPlugin(PluginConfigBool.MoveTowardsScreenCenter),
-        new DragIntSearchPlugin(PluginConfigInt.MoveTargetAngle,0,100,0.02f),
+        new DragIntSearchPlugin(PluginConfigInt.MoveTargetAngle, 0.02f),
         new CheckBoxSearchPlugin(PluginConfigBool.TargetAllForFriendly),
         new CheckBoxSearchPlugin(PluginConfigBool.RaiseAll),
         new CheckBoxSearchPlugin(PluginConfigBool.RaiseBrinkOfDeath),
@@ -343,9 +342,9 @@ public partial class RotationConfigWindowNew
         }),
         new CheckBoxSearchPlugin(PluginConfigBool.ShowHealthRatio, new ISearchable[]
         {
-            new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioBoss, 0, 10, 0.02f),
-            new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioDying, 0, 10, 0.02f),
-            new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioDot, 0, 10, 0.02f),
+            new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioBoss, 0.02f),
+            new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioDying, 0.02f),
+            new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioDot, 0.02f),
 
         }),
         new CheckBoxSearchPlugin(PluginConfigBool.ShowTooltips),
@@ -354,7 +353,7 @@ public partial class RotationConfigWindowNew
         // 死亡停止读条，待定
         new CheckBoxSearchPlugin(PluginConfigBool.UseStopCasting,new ISearchable[] 
         {
-            new DragFloatRangeSearchPlugin(PluginConfigFloat.StopCastingDelayMin, PluginConfigFloat.StopCastingDelayMin, 0, 3, 0.002f) 
+            new DragFloatRangeSearchPlugin(PluginConfigFloat.StopCastingDelayMin, PluginConfigFloat.StopCastingDelayMin, 0.002f) 
         }),
 
     };

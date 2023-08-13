@@ -1,4 +1,6 @@
-﻿using ECommons.ExcelServices;
+﻿using Dalamud.Utility;
+using ECommons.Configuration;
+using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 
@@ -17,8 +19,8 @@ internal class DragIntRangeSearchJob : DragIntRangeSearch
     public override LinkDescription[] Tooltips => _configMin.ToAction();
     protected override bool IsJob => true;
 
-    public DragIntRangeSearchJob(JobConfigInt configMin, JobConfigInt configMax, int min, int max, float speed)
-        :base (min, max, speed)
+    public DragIntRangeSearchJob(JobConfigInt configMin, JobConfigInt configMax, float speed)
+    :base ((int)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
     {
         _configMin = configMin;
         _configMax = configMax;
@@ -64,8 +66,8 @@ internal class DragIntRangeSearchPlugin : DragIntRangeSearch
 
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
-    public DragIntRangeSearchPlugin(PluginConfigInt configMin, PluginConfigInt configMax, int min, int max, float speed)
-        : base(min, max, speed)
+    public DragIntRangeSearchPlugin(PluginConfigInt configMin, PluginConfigInt configMax, float speed)
+        : base((int)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
     {
         _configMin = configMin;
         _configMax = configMax;
@@ -123,8 +125,8 @@ internal abstract class DragIntRangeSearch : Searchable
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
         if (ImGui.DragIntRange2($"##Config_{ID}", ref minValue, ref maxValue, Speed, Min, Max))
         {
-            SetMinValue(job, Math.Max(Math.Min(minValue, maxValue), Min));
-            SetMaxValue(job, Math.Min(Math.Max(minValue, maxValue), Max));
+            SetMinValue(job, Math.Min(minValue, maxValue));
+            SetMaxValue(job, Math.Max(minValue, maxValue));
         }
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 
