@@ -5,14 +5,17 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
+using Newtonsoft.Json.Linq;
 using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.TextureItems;
+using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
@@ -331,10 +334,9 @@ public partial class RotationConfigWindowNew : Window
         drawAction();
     }
 
-    private static float BodyMargin => 8 * _scale;
     private void DrawBody()
     {
-        var margin = BodyMargin;
+        var margin = 8 * _scale;
         ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * margin);
         if (ImGui.BeginChild("Rotation Solver Body", Vector2.One * -margin))
         {
@@ -418,7 +420,7 @@ public partial class RotationConfigWindowNew : Window
         ImGui.PopStyleColor();
 
         var width = ImGui.GetWindowWidth();
-        if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out var icon) && TextureButton(icon, width, width))
+        if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner4", out var icon) && TextureButton(icon, width, width))
         {
             Util.OpenLink("https://discord.gg/4fECHunam9");
         }
@@ -726,13 +728,93 @@ public partial class RotationConfigWindowNew : Window
         RotationUpdater.RightNowRotation?.DisplayStatus();
     }
 
+    private static string ToCommandStr(string str, string extra = "")
+    {
+        var result = Service.Command + " " + OtherCommandType.Rotations.ToString() + " " + str;
+        if (!string.IsNullOrEmpty(extra)) result += " " + extra;
+        return result;
+    }
     private static void DrawRotationConfiguration()
     {
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
-        rotation.Configs.Draw(Player.Available
-                && rotation.Jobs.Contains((Job)Player.Object.ClassJob.Id));
+        var set = rotation.Configs;
+        foreach (var config in set.Configs)
+        {
+            var key = config.Name;
+            var name = $"##{config.GetHashCode()}_{config.Name}";
+            string command = ToCommandStr(config.Name, config.DefaultValue);
+            void Reset() => set.SetValue(config.Name, config.DefaultValue);
+
+            Searchable.PrepareGroup(key, command, Reset);
+
+            if (config is RotationConfigCombo c)
+            {
+                var val = set.GetCombo(c.Name);
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.Items[val]).X + 50 * _scale);
+                var openCombo = ImGui.BeginCombo(name, c.Items[val]);
+                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+                if (openCombo)
+                {
+                    for (int comboIndex = 0; comboIndex < c.Items.Length; comboIndex++)
+                    {
+                        if (ImGui.Selectable(c.Items[comboIndex]))
+                        {
+                            set.SetValue(config.Name, comboIndex.ToString());
+                        }
+                    }
+                    ImGui.EndCombo();
+                }
+            }
+            else if (config is RotationConfigBoolean b)
+            {
+                bool val = set.GetBool(config.Name);
+
+                if (ImGui.Checkbox(name, ref val))
+                {
+                    set.SetValue(config.Name, val.ToString());
+                }
+                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+            }
+            else if (config is RotationConfigFloat f)
+            {
+                float val = set.GetFloat(config.Name);
+                ImGui.SetNextItemWidth(_scale * Searchable.DRAG_WIDTH);
+                if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max))
+                {
+                    set.SetValue(config.Name, val.ToString());
+                }
+                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+            }
+            else if (config is RotationConfigString s)
+            {
+                string val = set.GetString(config.Name);
+
+                ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
+                if (ImGui.InputTextWithHint(name, config.DisplayName, ref val, 128))
+                {
+                    set.SetValue(config.Name, val.ToString());
+                }
+                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+                continue;
+            }
+            else if (config is RotationConfigInt i)
+            {
+                int val = set.GetInt(config.Name);
+                ImGui.SetNextItemWidth(_scale * Searchable.DRAG_WIDTH);
+                if (ImGui.DragInt(name, ref val, i.Speed, i.Min, i.Max))
+                {
+                    set.SetValue(config.Name, val.ToString());
+                }
+                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+            }
+            else continue;
+
+            ImGui.SameLine();
+            ImGui.TextWrapped(config.DisplayName);
+            if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset, false);
+        }
     }
 
     private static void DrawRotationInformation()
@@ -1044,7 +1126,7 @@ public partial class RotationConfigWindowNew : Window
 
             var changed = false;
 
-            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X * 3 - BodyMargin;
+            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X * 3 - 10 * _scale;
             width /= 3;
 
             ImGui.SetNextItemWidth(width);
@@ -1086,7 +1168,7 @@ public partial class RotationConfigWindowNew : Window
 
         ImGui.Spacing();
 
-        var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - BodyMargin;
+        var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * _scale;
 
         int removeIndex = -1;
         for (int i = 0; i < Service.ConfigNew.GlobalConfig.OtherLibs.Length; i++)

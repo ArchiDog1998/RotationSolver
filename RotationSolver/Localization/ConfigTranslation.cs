@@ -212,13 +212,17 @@ internal static class ConfigTranslation
         _ => string.Empty,
     };
 
-    public static string ToCommand(this JobConfigInt config) => ToCommandStr(config);
-    public static string ToCommand(this JobConfigFloat config) => ToCommandStr(config);
-    public static string ToCommand(this PluginConfigInt config) => ToCommandStr(config);
+    public static string ToCommand(this JobConfigInt config) => ToCommandStr(config, "1");
+    public static string ToCommand(this JobConfigFloat config) => ToCommandStr(config, "0");
+    public static string ToCommand(this PluginConfigInt config) => ToCommandStr(config, "1");
     public static string ToCommand(this PluginConfigBool config) => ToCommandStr(config);
-    public static string ToCommand(this PluginConfigFloat config)  => ToCommandStr(config);
-    private static string ToCommandStr(object obj)
-        => Service.Command + " " + OtherCommandType.Settings.ToString() + " " + obj.ToString();
+    public static string ToCommand(this PluginConfigFloat config)  => ToCommandStr(config, "0");
+    private static string ToCommandStr(object obj, string extra = "")
+    {
+        var result = Service.Command + " " + OtherCommandType.Settings.ToString() + " " + obj.ToString();
+        if(!string.IsNullOrEmpty(extra)) result += " " + extra;
+        return result;
+    }
 
     public static LinkDescription[] ToAction(this JobConfigInt config) => config switch
     {

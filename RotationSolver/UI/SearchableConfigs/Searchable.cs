@@ -10,7 +10,7 @@ namespace RotationSolver.UI.SearchableConfigs;
 
 internal abstract class Searchable : ISearchable
 {
-    protected const float DRAG_WIDTH = 150;
+    public const float DRAG_WIDTH = 150;
     protected static float Scale => ImGuiHelpers.GlobalScale;
     public CheckBoxSearch Parent { get; set; }
 
@@ -28,17 +28,22 @@ internal abstract class Searchable : ISearchable
 
         DrawMain(job);
 
-        if (ImGui.BeginPopup(Popup_Key))
+        PrepareGroup(Popup_Key, Command, () => ResetToDefault(job));
+    }
+
+    public static void PrepareGroup(string key, string command, Action reset)
+    {
+        if (ImGui.BeginPopup(key))
         {
-            if(ImGui.BeginTable(Popup_Key, 2, ImGuiTableFlags.BordersOuter))
+            if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
             {
-                DrawHotKeys("Reset to Default Value.", () => ResetToDefault(job), "Backspace");
+                if (reset != null) DrawHotKeys("Reset to Default Value.", reset, "Backspace");
 
-                if (!string.IsNullOrEmpty(Command))
+                if (!string.IsNullOrEmpty(command))
                 {
-                    DrawHotKeys($"Execute \"{Command}\"", ExecuteCommand, "Alt");
+                    DrawHotKeys($"Execute \"{command}\"", () => ExecuteCommand(command), "Alt");
 
-                    DrawHotKeys($"Copy \"{Command}\"", CopyCommand, "Ctrl");
+                    DrawHotKeys($"Copy \"{command}\"", () => CopyCommand(command), "Ctrl");
                 }
                 ImGui.EndTable();
             }
@@ -75,30 +80,34 @@ internal abstract class Searchable : ISearchable
             });
         }
 
-        if(showHand) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+        ReactPopup(Popup_Key, Command, () => ResetToDefault(job));
+    }
 
-        if (ImGui.IsMouseClicked(ImGuiMouseButton.Right)) 
+    public static void ReactPopup(string key, string command, Action reset, bool showHand = true)
+    {
+        if (showHand) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+
+        if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
         {
-            if(!ImGui.IsPopupOpen(Popup_Key))
+            if (!ImGui.IsPopupOpen(key))
             {
-                ImGui.OpenPopup(Popup_Key);
+                ImGui.OpenPopup(key);
             }
         }
-
-        ExecuteHotKeys(() => ResetToDefault(job), VirtualKey.BACK);
-        ExecuteHotKeys(ExecuteCommand, VirtualKey.MENU);
-        ExecuteHotKeys(CopyCommand, VirtualKey.CONTROL);
+        if (reset != null) ExecuteHotKeys(reset, VirtualKey.BACK);
+        ExecuteHotKeys(() => ExecuteCommand(command), VirtualKey.MENU);
+        ExecuteHotKeys(() => CopyCommand(command), VirtualKey.CONTROL);
     }
 
-    private void ExecuteCommand()
+    private static void ExecuteCommand(string command)
     {
-        Svc.Commands.ProcessCommand(Command);
+        Svc.Commands.ProcessCommand(command);
     }
 
-    private void CopyCommand()
+    private static void CopyCommand(string command)
     {
-        ImGui.SetClipboardText(Command);
-        Notify.Success($"\"{Command}\" copied to clipboard.");
+        ImGui.SetClipboardText(command);
+        Notify.Success($"\"{command}\" copied to clipboard.");
     }
 
     private static void DrawHotKeys(string name, Action action, params string[] keys)

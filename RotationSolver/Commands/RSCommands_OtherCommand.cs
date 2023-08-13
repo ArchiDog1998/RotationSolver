@@ -39,28 +39,35 @@ namespace RotationSolver.Commands
         private static void DoSettingCommand(string str)
         {
             var job = RotationUpdater.Job;
-            var value = str.Split(' ').LastOrDefault();
+            var strs = str.Split(' ');
+            var value = strs.LastOrDefault();
             if(TryGetOneEnum<PluginConfigBool>(str, out var b))
             {
                 var v = !Service.ConfigNew.GetValue(b);
                 Service.ConfigNew.SetValue(b, v);
-                value = v.ToString();
+                value = Service.ConfigNew.GetValue(b).ToString();
             }
             else if (TryGetOneEnum<PluginConfigFloat>(str, out var f) && float.TryParse(value, out var f1))
             {
                 Service.ConfigNew.SetValue(f, f1);
+                value = Service.ConfigNew.GetValue(f).ToString();
             }
             else if (TryGetOneEnum<PluginConfigInt>(str, out var i) && int.TryParse(value, out var i1))
             {
                 Service.ConfigNew.SetValue(i, i1);
+                value = Service.ConfigNew.GetValue(i).ToString();
+
             }
             else if (TryGetOneEnum<JobConfigFloat>(str, out var f2) && float.TryParse(value, out f1))
             {
                 Service.ConfigNew.SetValue(job, f2, f1);
+                value = Service.ConfigNew.GetValue(job, f2).ToString();
+
             }
             else if (TryGetOneEnum<JobConfigInt>(str, out var i2) && int.TryParse(value, out i1))
             {
                 Service.ConfigNew.SetValue(job, i2, i1);
+                value = Service.ConfigNew.GetValue(job, i2).ToString();
             }
             else
             {
@@ -70,7 +77,7 @@ namespace RotationSolver.Commands
 
             //Say out.
             Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
-                str, value));
+                strs.FirstOrDefault(), value));
         }
 
         private static void ToggleActionCommand(string str)
