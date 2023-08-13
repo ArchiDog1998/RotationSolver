@@ -108,6 +108,8 @@ internal static class ConfigTranslation
         PluginConfigBool.ShowHealthRatio => LocalizationManager.RightLang.ConfigWindow_Param_ShowHealthRatio,
         PluginConfigBool.ShowTooltips => LocalizationManager.RightLang.ConfigWindow_Param_ShowTooltips,
         PluginConfigBool.InDebug => LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
+        PluginConfigBool.AutoOpenChest => "Auto Open the treasure chest",
+        PluginConfigBool.AutoCloseChestWindow => "Auto close the loot window when auto opened the chest.",
 
         //Rotations
         PluginConfigBool.DownloadRotations => LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotations,
@@ -199,6 +201,8 @@ internal static class ConfigTranslation
         PluginConfigBool.AutoProvokeForTank => LocalizationManager.RightLang.ConfigWindow_Param_AutoProvokeForTankDesc,
         PluginConfigBool.CanAttackMarkAOE => LocalizationManager.RightLang.ConfigWindow_Param_AttackMarkAOEDesc,
         PluginConfigBool.MoveTowardsScreenCenter => LocalizationManager.RightLang.ConfigWindow_Param_MoveTowardsScreenDesc,
+
+        PluginConfigBool.AutoOpenChest => "Because of the feature in pandora, there is an issue the treasure chest cannot be opened in some cases, I find the code from roll for loot. Once Pandora fixed that, this feature will be deleted.",
         _ => string.Empty,
     };
 

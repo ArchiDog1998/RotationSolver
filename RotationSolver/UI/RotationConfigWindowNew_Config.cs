@@ -356,6 +356,10 @@ public partial class RotationConfigWindowNew
             new DragFloatRangeSearchPlugin(PluginConfigFloat.StopCastingDelayMin, PluginConfigFloat.StopCastingDelayMin, 0.002f) 
         }),
 
+        new CheckBoxSearchPlugin(PluginConfigBool.AutoOpenChest, new ISearchable[]
+        {
+            new CheckBoxSearchPlugin(PluginConfigBool.AutoCloseChestWindow),
+        }),
     };
     private static void DrawExtra()
     {

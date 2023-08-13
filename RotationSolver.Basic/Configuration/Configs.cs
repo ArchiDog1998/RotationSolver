@@ -299,6 +299,9 @@ public enum PluginConfigBool : byte
     [Default(true)] UseGroundBeneficialAbility,
     [Default(false)] TargetAllForFriendly,
     [Default(false)] ShowCooldownWindow,
+
+    [Default(true)] AutoOpenChest,
+    [Default(true)] AutoCloseChestWindow,
 }
 
 public enum PluginConfigFloat : byte
