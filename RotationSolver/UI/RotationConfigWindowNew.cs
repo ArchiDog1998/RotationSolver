@@ -754,10 +754,10 @@ public partial class RotationConfigWindowNew : Window
             var version = assembly.GetName().Version;
             if (version != null)
             {
-                ImGui.Text("v " + version.ToString());
+                ImGui.Text(" v " + version.ToString());
             }
 
-            ImGui.Text("- " + info.Author);
+            ImGui.Text(" - " + info.Author);
             ImGui.EndGroup();
 
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
@@ -979,10 +979,10 @@ public partial class RotationConfigWindowNew : Window
                 var version = assembly.GetName().Version;
                 if (version != null)
                 {
-                    ImGui.Text("v " + version.ToString());
+                    ImGui.Text(" v " + version.ToString());
                 }
 
-                ImGui.Text("- " + info.Author);
+                ImGui.Text(" - " + info.Author);
 
                 ImGui.TableNextColumn();
 

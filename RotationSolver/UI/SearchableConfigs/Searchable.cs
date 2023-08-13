@@ -21,7 +21,7 @@ internal abstract class Searchable : ISearchable
     public abstract LinkDescription[] Tooltips { get; }
     public abstract string ID { get; }
     private string Popup_Key => "Rotation Solver RightClicking: " + ID;
-
+    protected virtual bool IsJob => false;
     public void Draw(Job job)
     {
         if (string.IsNullOrEmpty(Name)) return;

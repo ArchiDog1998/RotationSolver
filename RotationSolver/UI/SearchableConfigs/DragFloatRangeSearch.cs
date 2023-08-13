@@ -15,17 +15,13 @@ internal class DragFloatRangeSearchJob : DragFloatRangeSearch
 
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
+    protected override bool IsJob => true;
+
     public DragFloatRangeSearchJob(JobConfigFloat configMin, JobConfigFloat configMax, float min, float max, float speed)
         : base (min, max, speed)
     {
         _configMin = configMin;
         _configMax = configMax;
-    }
-
-    protected override void DrawMain(Job job)
-    {
-        base.DrawMain(job);
-        DrawJobIcon();
     }
 
     public override void ResetToDefault(Job job)
@@ -125,11 +121,16 @@ internal abstract class DragFloatRangeSearch : Searchable
         var minValue = GetMinValue(job);
         var maxValue = GetMaxValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
-        if (ImGui.DragFloatRange2($"{Name}##Config_{ID}", ref minValue, ref maxValue, Speed, Min, Max))
+        if (ImGui.DragFloatRange2($"##Config_{ID}", ref minValue, ref maxValue, Speed, Min, Max))
         {
             SetMinValue(job, Math.Max(Math.Min(minValue, maxValue), Min));
             SetMaxValue(job, Math.Min(Math.Max(minValue, maxValue), Max));
         }
         if (ImGui.IsItemHovered()) ShowTooltip(job);
+
+        if (IsJob) DrawJobIcon();
+        ImGui.SameLine();
+        ImGui.TextWrapped(Name);
+        if (ImGui.IsItemHovered()) ShowTooltip(job, false);
     }
 }

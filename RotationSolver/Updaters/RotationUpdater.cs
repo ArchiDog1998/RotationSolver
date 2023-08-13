@@ -246,7 +246,10 @@ internal static class RotationUpdater
             {
                 if (File.Exists(filePath) && !mustDownload)
                 {
-                    if (new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
+                    var fileInfo = new FileInfo(filePath);
+                    var header = response.Content.Headers;
+                    if (header.LastModified.HasValue && header.LastModified.Value.UtcDateTime < fileInfo.LastWriteTimeUtc
+                        && fileInfo.Length == header.ContentLength)
                     {
                         return false;
                     }

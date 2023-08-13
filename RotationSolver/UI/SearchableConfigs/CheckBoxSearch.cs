@@ -68,19 +68,17 @@ internal abstract class CheckBoxSearch : Searchable
         var hasIcon = Action != ActionID.None && IconSet.GetTexture(Action, out texture);
 
         var enable = GetValue(job);
-        if (ImGui.Checkbox(!hasChild && !hasIcon ? $"{Name}##{ID}" : $"##{ID}", ref enable))
+        if (ImGui.Checkbox($"##{ID}", ref enable))
         {
             SetValue(job, enable);
         }
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 
-        if (!hasChild && !hasIcon) return;
+        ImGui.SameLine();
 
         var name = $"{Name}##Config_{ID}";
         if(hasIcon)
         {
-            ImGui.SameLine();
-
             ImGui.BeginGroup();
             var cursor = ImGui.GetCursorPos();
             var size = ImGuiHelpers.GlobalScale * 32;
@@ -97,8 +95,6 @@ internal abstract class CheckBoxSearch : Searchable
         }
         else if (hasChild)
         {
-            ImGui.SameLine();
-
             if (enable)
             {
                 var x = ImGui.GetCursorPosX();
@@ -126,6 +122,11 @@ internal abstract class CheckBoxSearch : Searchable
 
                 ImGui.PopStyleColor(2);
             }
+        }
+        else
+        {
+            ImGui.TextWrapped(Name);
+            if (ImGui.IsItemHovered()) ShowTooltip(job, false);
         }
     }
 }

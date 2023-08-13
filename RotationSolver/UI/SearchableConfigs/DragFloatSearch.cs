@@ -17,17 +17,12 @@ internal class DragFloatSearchJob : DragFloatSearch
     public override LinkDescription[] Tooltips => _config.ToAction();
 
     public override string Command => _config.ToCommand();
+    protected override bool IsJob => true;
 
     public DragFloatSearchJob(JobConfigFloat config, float min, float max, float speed)
           : base(min, max, speed)
     {
         _config = config;
-    }
-
-    protected override void DrawMain(Job job)
-    {
-        base.DrawMain(job);
-        DrawJobIcon();
     }
 
     public override void ResetToDefault(Job job)
@@ -101,10 +96,16 @@ internal abstract class DragFloatSearch : Searchable
     {
         var value = GetValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
-        if (ImGui.DragFloat($"{Name}##Config_{ID}", ref value, Speed, Min, Max))
+        if (ImGui.DragFloat($"##Config_{ID}", ref value, Speed, Min, Max))
         {
             SetValue(job, Math.Min(Math.Max(value, Min), Max));
         }
         if (ImGui.IsItemHovered()) ShowTooltip(job);
+
+        if (IsJob) DrawJobIcon();
+
+        ImGui.SameLine();
+        ImGui.TextWrapped(Name);
+        if (ImGui.IsItemHovered()) ShowTooltip(job, false);
     }
 }
