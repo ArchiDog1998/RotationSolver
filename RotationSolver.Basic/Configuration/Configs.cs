@@ -228,7 +228,6 @@ public enum PluginConfigBool : byte
     [Default(false)] UseTinctures,
     [Default(false)] UseHealPotions,
 
-    [Default(true)] DrawPositional,
     [Default(true)] DrawMeleeOffset,
 
     [Default(true)] ShowMoveTarget,

@@ -98,7 +98,6 @@
   "ConfigWindow_Param_SampleLength": "The sample length of the line.",
   "ConfigWindow_Param_KeyBoardNoise": "Simulate the effect of pressing",
   "ConfigWindow_Param_KeyBoardNoiseTimes": "Effect times",
-  "ConfigWindow_Param_DrawPositional": "Draw Positional on the screen",
   "ConfigWindow_Param_DrawMeleeOffset": "Draw the offset of melee on the screen",
   "ConfigWindow_Param_ShowMoveTarget": "Show the target of the move action",
   "ConfigWindow_Param_ShowTarget": "Show Target",
@@ -462,5 +461,11 @@
   "ConfigWindow_List_TerritoryEverywhere": "Everywhere",
   "ConfigWindow_List_AddTerritory": "Territory name or id",
   "ConfigWindow_List_BeneficialLocations": "Beneficial locations",
-  "ConfigWindow_List_NoHostilesName": "The name of object that you don't want to attack"
+  "ConfigWindow_List_NoHostilesName": "The name of object that you don't want to attack",
+  "ConfigWindow_Basic_AutoSwitch": "Auto Switch",
+  "ConfigWindow_Basic_Timer": "Timer",
+  "ConfigWindow_UI_Windows": "Windows",
+  "ConfigWindow_UI_Overlay": "Overlay",
+  "ConfigWindow_UI_Information": "Information",
+  "ConfigWindow_Auto_ActionUsage": "Action Usage"
 }

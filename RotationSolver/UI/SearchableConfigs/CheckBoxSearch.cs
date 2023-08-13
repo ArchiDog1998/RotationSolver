@@ -13,7 +13,7 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     public override string Name => _config.ToName();
 
-    public override string Description => Action == ActionID.NoMercy ? _config.ToDescription() : Action.ToString();
+    public override string Description => Action == ActionID.None ? _config.ToDescription() : Action.ToString();
 
     public override LinkDescription[] Tooltips => _config.ToAction();
 
@@ -59,6 +59,22 @@ internal abstract class CheckBoxSearch : Searchable
     protected abstract bool GetValue(Job job);
     protected abstract void SetValue(Job job, bool value);
 
+    protected virtual void DrawChildren(Job job)
+    {
+        var lastIs = false;
+        foreach (var child in Children)
+        {
+            var thisIs = child is CheckBoxSearch c && c.Action != ActionID.None && IconSet.GetTexture(c.Action, out var texture);
+            if (lastIs && thisIs)
+            {
+                ImGui.SameLine();
+            }
+            lastIs = thisIs;
+
+            child.Draw(job);
+        }
+    }
+
     protected override void DrawMain(Job job)
     {
         var hasChild = Children != null && Children.Length > 0;
@@ -101,18 +117,7 @@ internal abstract class CheckBoxSearch : Searchable
                 {
                     ImGui.SetCursorPosX(x);
                     ImGui.BeginGroup();
-                    var lastIs = false;
-                    foreach (var child in Children)
-                    {
-                        var thisIs = child is CheckBoxSearch c && c.Action != ActionID.None && IconSet.GetTexture(c.Action, out texture);
-                        if (lastIs && thisIs)
-                        {
-                            ImGui.SameLine();
-                        }
-                        lastIs = thisIs;
-
-                        child.Draw(job);
-                    }
+                    DrawChildren(job);
                     ImGui.EndGroup();
                     ImGui.TreePop();
                 }

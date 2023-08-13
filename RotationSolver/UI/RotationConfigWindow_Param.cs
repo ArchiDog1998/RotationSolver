@@ -244,9 +244,6 @@ internal partial class RotationConfigWindow
                     ref Service.Config.SubTargetColor, Service.Default.SubTargetColor);
             }
 
-            DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawPositional,
-                ref Service.Config.DrawPositional, Service.Default.DrawPositional);
-
             DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeOffset,
                 ref Service.Config.DrawMeleeOffset, Service.Default.DrawMeleeOffset);
 
@@ -407,80 +404,80 @@ internal partial class RotationConfigWindow
         //     ref Service.Config.HealthDifference, Service.Default.HealthDifference,
         //speed * 2, 0, 0.5f);
 
-        if (ImGui.BeginTable("Healing things", 3, ImGuiTableFlags.Borders
-            | ImGuiTableFlags.Resizable
-            | ImGuiTableFlags.SizingStretchProp))
-        {
-            ImGui.TableSetupScrollFreeze(0, 1);
-            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+        //if (ImGui.BeginTable("Healing things", 3, ImGuiTableFlags.Borders
+        //    | ImGuiTableFlags.Resizable
+        //    | ImGuiTableFlags.SizingStretchProp))
+        //{
+        //    ImGui.TableSetupScrollFreeze(0, 1);
+        //    ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
 
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("");
+        //    ImGui.TableNextColumn();
+        //    ImGui.TableHeader("");
 
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Normal);
+        //    ImGui.TableNextColumn();
+        //    ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Normal);
 
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_HOT);
+        //    ImGui.TableNextColumn();
+        //    ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_HOT);
 
-            ImGui.TableNextRow();
-            ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility);
+        //    ImGui.TableNextRow();
+        //    ImGui.TableNextColumn();
+        //    ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility);
 
-            ImGui.TableNextColumn();
+        //    ImGui.TableNextColumn();
 
-            DrawFloatNumber("##" + nameof(Service.Config.HealthAreaAbility),
-                ref Service.Config.HealthAreaAbility, Service.Default.HealthAreaAbility, speed);
+        //    DrawFloatNumber("##" + nameof(Service.Config.HealthAreaAbility),
+        //        ref Service.Config.HealthAreaAbility, Service.Default.HealthAreaAbility, speed);
 
-            ImGui.TableNextColumn();
+        //    ImGui.TableNextColumn();
 
-            DrawFloatNumber("##" + nameof(Service.Config.HealthAreaAbilityHot),
-                ref Service.Config.HealthAreaAbilityHot, Service.Default.HealthAreaAbilityHot, speed);
+        //    DrawFloatNumber("##" + nameof(Service.Config.HealthAreaAbilityHot),
+        //        ref Service.Config.HealthAreaAbilityHot, Service.Default.HealthAreaAbilityHot, speed);
 
-            ImGui.TableNextRow();
-            ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell);
+        //    ImGui.TableNextRow();
+        //    ImGui.TableNextColumn();
+        //    ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell);
 
-            ImGui.TableNextColumn();
+        //    ImGui.TableNextColumn();
 
-            DrawFloatNumber("##" + nameof(Service.Config.HealthAreaSpell),
-                ref Service.Config.HealthAreaSpell, Service.Default.HealthAreaSpell, speed);
+        //    DrawFloatNumber("##" + nameof(Service.Config.HealthAreaSpell),
+        //        ref Service.Config.HealthAreaSpell, Service.Default.HealthAreaSpell, speed);
 
-            ImGui.TableNextColumn();
+        //    ImGui.TableNextColumn();
 
-            DrawFloatNumber("##" + nameof(Service.Config.HealthAreaSpellHot),
-                ref Service.Config.HealthAreaSpellHot, Service.Default.HealthAreaSpellHot, speed);
+        //    DrawFloatNumber("##" + nameof(Service.Config.HealthAreaSpellHot),
+        //        ref Service.Config.HealthAreaSpellHot, Service.Default.HealthAreaSpellHot, speed);
 
-            ImGui.TableNextRow();
-            ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility);
+        //    ImGui.TableNextRow();
+        //    ImGui.TableNextColumn();
+        //    ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility);
 
-            ImGui.TableNextColumn();
+        //    ImGui.TableNextColumn();
 
-            DrawFloatNumber("##" + nameof(Service.Config.HealthSingleAbility),
-                ref Service.Config.HealthSingleAbility, Service.Default.HealthSingleAbility, speed);
+        //    DrawFloatNumber("##" + nameof(Service.Config.HealthSingleAbility),
+        //        ref Service.Config.HealthSingleAbility, Service.Default.HealthSingleAbility, speed);
 
-            ImGui.TableNextColumn();
+        //    ImGui.TableNextColumn();
 
-            DrawFloatNumber("##" + nameof(Service.Config.HealthSingleAbilityHot),
-                ref Service.Config.HealthSingleAbilityHot, Service.Default.HealthSingleAbilityHot, speed);
+        //    DrawFloatNumber("##" + nameof(Service.Config.HealthSingleAbilityHot),
+        //        ref Service.Config.HealthSingleAbilityHot, Service.Default.HealthSingleAbilityHot, speed);
 
-            ImGui.TableNextRow();
-            ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell);
+        //    ImGui.TableNextRow();
+        //    ImGui.TableNextColumn();
+        //    ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell);
 
-            ImGui.TableNextColumn();
+        //    ImGui.TableNextColumn();
 
-            DrawFloatNumber("##" + nameof(Service.Config.HealthSingleSpell),
-                ref Service.Config.HealthSingleSpell, Service.Default.HealthSingleSpell, speed);
+        //    DrawFloatNumber("##" + nameof(Service.Config.HealthSingleSpell),
+        //        ref Service.Config.HealthSingleSpell, Service.Default.HealthSingleSpell, speed);
 
-           ImGui.TableNextColumn();
+        //   ImGui.TableNextColumn();
 
-            DrawFloatNumber("##" + nameof(Service.Config.HealthSingleSpellHot),
-                ref Service.Config.HealthSingleSpellHot, Service.Default.HealthSingleSpellHot, speed);
+        //    DrawFloatNumber("##" + nameof(Service.Config.HealthSingleSpellHot),
+        //        ref Service.Config.HealthSingleSpellHot, Service.Default.HealthSingleSpellHot, speed);
 
-            ImGui.EndTable();
-        }
+        //    ImGui.EndTable();
+        //}
 
         //DrawFloatNumber(LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
         //    ref Service.Config.HealthHealerRatio, Service.Default.HealthHealerRatio, speed);

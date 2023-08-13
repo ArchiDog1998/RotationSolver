@@ -61,7 +61,6 @@ public class PluginConfiguration : IPluginConfiguration
     public bool AddEnemyListToHostile = true;
     public bool UseTinctures = false;
     public bool UseHealPotions = false;
-    public bool DrawPositional = true;
     public bool DrawMeleeOffset = true;
     public bool ShowMoveTarget = true;
     public bool ShowHealthRatio = false;

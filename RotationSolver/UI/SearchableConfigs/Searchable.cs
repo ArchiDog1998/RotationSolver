@@ -22,8 +22,31 @@ internal abstract class Searchable : ISearchable
     public abstract string ID { get; }
     private string Popup_Key => "Rotation Solver RightClicking: " + ID;
     protected virtual bool IsJob => false;
+
+    /// <summary>
+    /// Only these job roles can get this setting.
+    /// </summary>
+    public JobRole[] JobRoles { get; set; }
+    public Job[] Jobs { get; set; }
+
     public void Draw(Job job)
     {
+        var canDraw = true;
+        if(JobRoles != null)
+        {
+            var role = RotationUpdater.RightNowRotation?.ClassJob?.GetJobRole();
+            if (role.HasValue)
+            {
+                canDraw = JobRoles.Contains(role.Value);
+            }
+        }
+
+        if (Jobs != null)
+        {
+            canDraw |= Jobs.Contains(RotationUpdater.Job);
+        }
+
+        if (!canDraw) return;
         DrawMain(job);
 
         PrepareGroup(Popup_Key, Command, () => ResetToDefault(job));

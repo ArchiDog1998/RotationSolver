@@ -44,7 +44,6 @@ internal static class ConfigTranslation
         PluginConfigBool.TeachingMode => LocalizationManager.RightLang.ConfigWindow_Param_TeachingMode,
         PluginConfigBool.ShowMoveTarget => LocalizationManager.RightLang.ConfigWindow_Param_MovingTargetColor,
         PluginConfigBool.ShowTarget => LocalizationManager.RightLang.ConfigWindow_Param_ShowTarget,
-        PluginConfigBool.DrawPositional => LocalizationManager.RightLang.ConfigWindow_Param_DrawPositional,
         PluginConfigBool.DrawMeleeOffset => LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeOffset,
         PluginConfigBool.KeyBoardNoise => LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoise,
         PluginConfigBool.ShowInfoOnDtr => LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnDtr,

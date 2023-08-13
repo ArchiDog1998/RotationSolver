@@ -157,7 +157,6 @@ internal partial class Strings
     public string ConfigWindow_Param_SampleLength { get; set; } = "The sample length of the line.";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
-    public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
@@ -673,5 +672,13 @@ internal partial class Strings
 
     public string ConfigWindow_List_BeneficialLocations { get; set; } = "Beneficial locations";
     public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of object that you don't want to attack";
+
+    public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
+
+    public string ConfigWindow_Basic_Timer { get; set; } = "Timer";
+    public string ConfigWindow_UI_Windows { get; set; } = "Windows";
+    public string ConfigWindow_UI_Overlay { get; set; } = "Overlay";
+    public string ConfigWindow_UI_Information { get; set; } = "Information";
+    public string ConfigWindow_Auto_ActionUsage { get; set; } = "Action Usage";
 
 }

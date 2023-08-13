@@ -222,7 +222,8 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public static IBaseAction VariantRaise { get; } = new RoleAction(ActionID.VariantRaise,
-        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.Ranged }, ActionOption.Friendly | ActionOption.DutyAction);
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical, },
+        ActionOption.Friendly | ActionOption.DutyAction);
 
     /// <summary>
     /// 
@@ -233,13 +234,14 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public static IBaseAction VariantCure { get; } = new RoleAction(ActionID.VariantCure,
-        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.Ranged }, ActionOption.Heal | ActionOption.DutyAction);
+        new JobRole[] { JobRole.Melee, JobRole.Tank,JobRole.RangedMagical, JobRole.RangedPhysical },
+        ActionOption.Heal | ActionOption.DutyAction);
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction VariantCure2 { get; } = new RoleAction(ActionID.VariantCure2,
-        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.Ranged }, ActionOption.Heal | ActionOption.DutyAction);
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical }, ActionOption.Heal | ActionOption.DutyAction);
 
     /// <summary>
     /// 
@@ -263,13 +265,13 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public static IBaseAction VariantRampart { get; } = new RoleAction(ActionID.VariantRampart,
-        new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.Ranged }, ActionOption.Buff | ActionOption.DutyAction);
+        new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical, }, ActionOption.Buff | ActionOption.DutyAction);
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction VariantRampart2 { get; } = new RoleAction(ActionID.VariantRampart2,
-        new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.Ranged }, ActionOption.Buff | ActionOption.DutyAction);
+        new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical }, ActionOption.Buff | ActionOption.DutyAction);
     #endregion
 
     IBaseAction[] _allBaseActions;

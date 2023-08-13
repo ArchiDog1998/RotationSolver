@@ -46,6 +46,7 @@ internal abstract class ColorEditSearch : Searchable
     protected override void DrawMain(Job job)
     {
         var value = GetValue(job);
+        ImGui.SetNextItemWidth(DRAG_WIDTH * 1.5f * Scale);
         if(ImGui.ColorEdit4($"{Name}##Config_{ID}", ref value))
         {
             SetValue(job, value);
