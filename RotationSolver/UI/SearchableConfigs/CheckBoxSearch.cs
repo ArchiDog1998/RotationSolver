@@ -1,10 +1,8 @@
 ﻿using ECommons.ExcelServices;
+using ImGuiScene;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
-using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
-using System.Drawing;
-using ImGuiScene;
 
 namespace RotationSolver.UI.SearchableSettings;
 
@@ -15,7 +13,7 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     public override string Name => _config.ToName();
 
-    public override string Description => _config.ToDescription();
+    public override string Description => Action == ActionID.NoMercy ? _config.ToDescription() : Action.ToString();
 
     public override LinkDescription[] Tooltips => _config.ToAction();
 
@@ -82,15 +80,13 @@ internal abstract class CheckBoxSearch : Searchable
             ImGui.BeginGroup();
             var cursor = ImGui.GetCursorPos();
             var size = ImGuiHelpers.GlobalScale * 32;
-            if (RotationConfigWindowNew.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size))
+            if (RotationConfigWindowNew.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size, ID))
             {
                 SetValue(job, !enable);
             }
-            if (ImGui.IsItemHovered()) ShowTooltip(job);
             RotationConfigWindowNew.DrawActionOverlay(cursor, size, enable ? 1 : 0);
             ImGui.EndGroup();
 
-            ImGui.SameLine();
             if (ImGui.IsItemHovered()) ShowTooltip(job);
         }
         else if (hasChild)
@@ -105,8 +101,16 @@ internal abstract class CheckBoxSearch : Searchable
                 {
                     ImGui.SetCursorPosX(x);
                     ImGui.BeginGroup();
+                    var lastIs = false;
                     foreach (var child in Children)
                     {
+                        var thisIs = child is CheckBoxSearch c && c.Action != ActionID.None && IconSet.GetTexture(c.Action, out texture);
+                        if (lastIs && thisIs)
+                        {
+                            ImGui.SameLine();
+                        }
+                        lastIs = thisIs;
+
                         child.Draw(job);
                     }
                     ImGui.EndGroup();

@@ -1330,8 +1330,8 @@ public partial class RotationConfigWindowNew : Window
 
             foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
                 .Where(a => a != null)
-                .OrderBy(s => StringComparer.Distance(s.Name, _statusSearching) 
-                + StringComparer.Distance(s.RowId.ToString(), _statusSearching)))
+                .OrderBy(s => Math.Min( StringComparer.Distance(s.Name, _statusSearching) 
+                , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
             {
                 void Reset() => removeId = status.RowId;
 
@@ -1379,8 +1379,8 @@ public partial class RotationConfigWindowNew : Window
                     count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
                     index = 0;
 
-                    foreach (var status in allStatus.OrderBy(s => StringComparer.Distance(s.Name, _statusSearching)
-                    + StringComparer.Distance(s.RowId.ToString(), _statusSearching)))
+                    foreach (var status in allStatus.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _statusSearching)
+                    , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
                     {
                         if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
                         {
@@ -1459,8 +1459,8 @@ public partial class RotationConfigWindowNew : Window
         {
             foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
                 .Where(a => a != null)
-                .OrderBy(s => StringComparer.Distance(s.Name, _actionSearching)
-                + StringComparer.Distance(s.RowId.ToString(), _actionSearching)))
+                .OrderBy(s => Math.Min( StringComparer.Distance(s.Name, _actionSearching)
+                , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
             {
                 void Reset() => removeId = action.RowId;
 
@@ -1498,8 +1498,8 @@ public partial class RotationConfigWindowNew : Window
 
                 if (ImGui.BeginChild("Rotation Solver Add action", new Vector2(-1, 400 * _scale)))
                 {
-                    foreach (var action in AllActions.OrderBy(s => StringComparer.Distance(s.Name, _actionSearching)
-                    + StringComparer.Distance(s.RowId.ToString(), _actionSearching)))
+                    foreach (var action in AllActions.OrderBy(s => Math.Min( StringComparer.Distance(s.Name, _actionSearching)
+                    , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
                     {
                         ImGui.Selectable($"{action.Name} ({action.RowId})");
                         {
@@ -1542,8 +1542,8 @@ public partial class RotationConfigWindowNew : Window
 
             if (ImGui.BeginChild("Rotation Solver Territory Choice", new Vector2(-1, 400 * _scale)))
             {
-                foreach (var territory in AllTerritories.OrderBy(s => StringComparer.Distance(s.Name, _territorySearching)
-                + StringComparer.Distance(s.RowId.ToString(), _territorySearching)))
+                foreach (var territory in AllTerritories.OrderBy(s => Math.Min( StringComparer.Distance(s.Name, _territorySearching)
+                , StringComparer.Distance(s.RowId.ToString(), _territorySearching))))
                 {
                     var icon = territory?.ContentFinderCondition?.Value?.ContentType?.Value?.Icon ?? 0;
                     if (IconSet.GetTexture(icon, out var texture))

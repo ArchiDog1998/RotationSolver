@@ -63,6 +63,12 @@ internal class DragIntSearchPlugin : DragIntSearch
         _config = config;
     }
 
+    public DragIntSearchPlugin(PluginConfigInt config, params string[] names)
+        :base(names)
+    {
+        _config = config;
+    }
+
     public override void ResetToDefault(Job job)
     {
         Service.ConfigNew.SetValue(_config, Service.ConfigNew.GetDefault(_config));
@@ -84,21 +90,39 @@ internal abstract class DragIntSearch : Searchable
     public int Min { get; }
     public int Max { get; }
     public float Speed { get; }
+    public string[] Names { get; }
     public DragIntSearch(int min, int max, float speed)
     {
         Min = min; Max = max;
         Speed = speed;
+    }
+    public DragIntSearch(params string[] names)
+    {
+        Names = names;
     }
     protected abstract int GetValue(Job job);
     protected abstract void SetValue(Job job, int value);
     protected override void DrawMain(Job job)
     {
         var value = GetValue(job);
-        ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
-        if(ImGui.DragInt($"##Config_{ID}", ref value, Speed, Min, Max))
+
+        if(Names != null && Names.Length > 0)
         {
-            SetValue(job, value);
+            ImGui.SetNextItemWidth(Math.Max(ImGui.CalcTextSize(Names[value]).X + 30, DRAG_WIDTH) * Scale);
+            if (ImGui.Combo($"##Config_{ID}", ref value, Names, Names.Length))
+            {
+                SetValue(job, value);
+            }
         }
+        else
+        {
+            ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
+            if (ImGui.DragInt($"##Config_{ID}", ref value, Speed, Min, Max))
+            {
+                SetValue(job, value);
+            }
+        }
+
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 
         if (IsJob) DrawJobIcon();

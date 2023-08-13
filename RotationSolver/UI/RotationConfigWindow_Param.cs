@@ -129,37 +129,37 @@ internal partial class RotationConfigWindow
 
         ImGui.Separator();
 
-        DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PoslockCasting,
-        ref Service.Config.PoslockCasting, Service.Default.PoslockCasting);
+        //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_PoslockCasting,
+        //ref Service.Config.PoslockCasting, Service.Default.PoslockCasting);
 
-        if (Service.Config.PoslockCasting)
-        {
-            ImGui.Indent();
+        //if (Service.Config.PoslockCasting)
+        //{
+        //    ImGui.Indent();
 
-            DrawCombo(LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
-                ref Service.Config.PoslockModifier, Service.Default.PoslockModifier, EnumTranslations.ToName,
-                ConfigurationHelper.Keys,
-                LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription);
+        //    DrawCombo(LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
+        //        ref Service.Config.PoslockModifier, Service.Default.PoslockModifier, EnumTranslations.ToName,
+        //        ConfigurationHelper.Keys,
+        //        LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription);
 
-            DrawIconCheckBox(ActionID.PassageOfArms, ref Service.Config.PosPassageOfArms);
+        //    DrawIconCheckBox(ActionID.PassageOfArms, ref Service.Config.PosPassageOfArms);
 
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
+        //    ImGui.SameLine();
+        //    ImGuiHelper.Spacing();
 
-            DrawIconCheckBox(ActionID.TenChiJin, ref Service.Config.PosTenChiJin);
+        //    DrawIconCheckBox(ActionID.TenChiJin, ref Service.Config.PosTenChiJin);
 
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
+        //    ImGui.SameLine();
+        //    ImGuiHelper.Spacing();
 
-            DrawIconCheckBox(ActionID.FlameThrower, ref Service.Config.PosFlameThrower);
+        //    DrawIconCheckBox(ActionID.FlameThrower, ref Service.Config.PosFlameThrower);
 
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
+        //    ImGui.SameLine();
+        //    ImGuiHelper.Spacing();
 
-            DrawIconCheckBox(ActionID.Improvisation, ref Service.Config.PosImprovisation);
+        //    DrawIconCheckBox(ActionID.Improvisation, ref Service.Config.PosImprovisation);
 
-            ImGui.Unindent();
-        }
+        //    ImGui.Unindent();
+        //}
 
         //DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,
         //    ref Service.Config.UseStopCasting, Service.Default.UseStopCasting);

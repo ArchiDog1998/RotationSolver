@@ -1,5 +1,6 @@
 ﻿using F23.StringSimilarity;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 
@@ -24,7 +25,8 @@ public partial class RotationConfigWindowNew
                 var enumerator = GetType().GetRuntimeFields()
                     .Where(f => f.FieldType == typeof(ISearchable[]) && f.IsInitOnly)
                     .SelectMany(f => (ISearchable[])f.GetValue(this))
-                    .OrderBy(i => StringComparer.Distance(i.SearchingKey, _searchText))
+                    .SelectMany(GetChildren)
+                    .OrderBy(i => i.SearchingKeys.Split(' ').Min(k => StringComparer.Distance(k, _searchText)))
                     .Select(GetParent).GetEnumerator();
 
                 int index = 0;
@@ -38,6 +40,16 @@ public partial class RotationConfigWindowNew
                 _searchResults = Array.Empty<ISearchable>();
             }
         }
+    }
+
+    private static IEnumerable<ISearchable> GetChildren(ISearchable searchable)
+    {
+        var myself = new ISearchable[] { searchable };
+        if (searchable is CheckBoxSearch c && c.Children != null)
+        {
+            return c.Children.SelectMany(GetChildren).Union(myself);
+        } 
+        else return myself;
     }
 
     private static ISearchable GetParent(ISearchable searchable)
@@ -337,10 +349,26 @@ public partial class RotationConfigWindowNew
     private static readonly ISearchable[] _extraSearchable = new ISearchable[]
     {
         new CheckBoxSearchPlugin(PluginConfigBool.SayOutStateChanged),
-        new CheckBoxSearchPlugin(PluginConfigBool.PoslockCasting, new ISearchable[]
-        {
 
+        new CheckBoxSearchPlugin(PluginConfigBool.PoslockCasting,
+        new DragIntSearchPlugin( PluginConfigInt.PoslockModifier, "SHIFT", "CTRL", "ALT", "Left Mouse", "Middle Mouse",  "Right Mouse"),
+        new CheckBoxSearchPlugin(PluginConfigBool.PosPassageOfArms)
+        {
+            Action = ActionID.PassageOfArms
+        },
+        new CheckBoxSearchPlugin(PluginConfigBool.PosTenChiJin)
+        {
+            Action = ActionID.TenChiJin
+        },
+        new CheckBoxSearchPlugin(PluginConfigBool.PosFlameThrower)
+        {
+            Action = ActionID.FlameThrower
+        },
+        new CheckBoxSearchPlugin(PluginConfigBool.PosImprovisation)
+        {
+            Action = ActionID.Improvisation
         }),
+
         new CheckBoxSearchPlugin(PluginConfigBool.ShowHealthRatio, new ISearchable[]
         {
             new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioBoss, 0.02f),
@@ -362,11 +390,74 @@ public partial class RotationConfigWindowNew
             new CheckBoxSearchPlugin(PluginConfigBool.AutoCloseChestWindow),
         }),
     };
+
+    private static readonly CollapsingHeaderGroup _extraHeader = new(new()
+    {
+        { () => "Extra", () =>
+            {
+                foreach (var searchable in _extraSearchable)
+                {
+                    searchable?.Draw(Job);
+                }
+            }
+        },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_EventItem, DrawEventTab },
+    });
+
+    private static void DrawEventTab()
+    {
+        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Events_AddEvent))
+        {
+            Service.Config.Events.Add(new ActionEventInfo());
+            Service.Config.Save();
+        }
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Events_Description);
+
+        ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
+
+        ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Events_DutyStart);
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+        Service.Config.DutyStart.DisplayMacro();
+
+        ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Events_DutyEnd);
+        ImGui.SameLine();
+        ImGuiHelper.Spacing();
+        Service.Config.DutyEnd.DisplayMacro();
+
+        if (ImGui.BeginChild("Events List", new Vector2(0f, -1f), true))
+        {
+            ActionEventInfo remove = null;
+            foreach (var eve in Service.Config.Events)
+            {
+                eve.DisplayEvent();
+
+                ImGui.SameLine();
+                ImGuiHelper.Spacing();
+
+                if (ImGui.Button($"{LocalizationManager.RightLang.ConfigWindow_Events_RemoveEvent}##RemoveEvent{eve.GetHashCode()}"))
+                {
+                    remove = eve;
+                }
+                ImGui.Separator();
+            }
+            if (remove != null)
+            {
+                Service.Config.Events.Remove(remove);
+                Service.Config.Save();
+            }
+
+            ImGui.EndChild();
+        }
+        ImGui.PopStyleVar();
+    }
+
     private static void DrawExtra()
     {
-        foreach (var searchable in _extraSearchable)
-        {
-            searchable?.Draw(Job);
-        }
+        _extraHeader?.Draw();
     }
 }

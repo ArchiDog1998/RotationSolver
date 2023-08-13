@@ -14,7 +14,7 @@ internal abstract class Searchable : ISearchable
     protected static float Scale => ImGuiHelpers.GlobalScale;
     public CheckBoxSearch Parent { get; set; }
 
-    public string SearchingKey => Name + " : " + Description;
+    public string SearchingKeys =>Name + " " + Description;
     public abstract string Name { get; }
     public abstract string Description { get; }
     public abstract string Command { get; }
@@ -24,8 +24,6 @@ internal abstract class Searchable : ISearchable
     protected virtual bool IsJob => false;
     public void Draw(Job job)
     {
-        if (string.IsNullOrEmpty(Name)) return;
-
         DrawMain(job);
 
         PrepareGroup(Popup_Key, Command, () => ResetToDefault(job));

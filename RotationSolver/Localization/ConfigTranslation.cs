@@ -1,5 +1,4 @@
-﻿using ECommons.Configuration;
-using RotationSolver.Basic.Configuration;
+﻿using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Localization;
 
@@ -18,6 +17,9 @@ internal static class ConfigTranslation
 
     public static string ToName(this PluginConfigInt config) => config switch
     {
+        PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
+
+
         // UI
         PluginConfigInt.KeyBoardNoiseMin => LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
         PluginConfigInt.LessMPNoRaise => LocalizationManager.RightLang.ConfigWindow_Param_LessMPNoRaise,
@@ -189,6 +191,8 @@ internal static class ConfigTranslation
 
     public static string ToDescription(this PluginConfigInt config) => config switch
     {
+        PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription,
+
         PluginConfigInt.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthestDesc,
         _ => string.Empty,
     };
