@@ -202,8 +202,8 @@
   "ConfigWindow_Control_ResetButtonOrKeyCommand": "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and middle click to clear the key setting.",
   "ConfigWindow_Control_ClickToUse": "Click to use it!",
   "ConfigWindow_Rotation_BetaRotation": "Beta Rotation!",
-  "ConfigWindow_Rotation_DownloadRotations": "Download Rotations.",
-  "ConfigWindow_Rotation_AutoUpdateRotations": "Auto Update Rotations.",
+  "ConfigWindow_Rotation_DownloadRotations": "Auto Download Rotations",
+  "ConfigWindow_Rotation_AutoUpdateRotations": "Auto Update Rotations",
   "ConfigWindow_Rotation_InvalidRotation": "Invalid Rotation! \nPlease update to the latest version or contact to the {0}!",
   "ConfigWindow_Rotation_ResetToDefault": "Click to reset the rotation configuration to default!",
   "ConfigWindow_List_Description": "In this window, you can set the parameters about some list things.",
@@ -440,5 +440,15 @@
   "ConfigWindow_Actions_DisabledConditionSet": "Disabled Condition",
   "ConfigWindow_Actions_DisabledConditionSet_Description": "Conditions when automatic use of action is disabled.",
   "ConfigWindow_Actions_ShowOnCDWindow": "Show on CD window",
-  "ConfigWindow_Actions_InsertCommand": "Insert \"{0}\" first in {1}s"
+  "ConfigWindow_Actions_InsertCommand": "Insert \"{0}\" first in {1}s",
+  "ConfigWindow_Configs_JobConfigTip": "This config is binding with the job, different job gets different value.",
+  "ConfigWindow_Rotations_Settings": "Settings",
+  "ConfigWindow_Rotations_Loaded": "Loaded",
+  "ConfigWindow_Rotations_GitHub": "GitHub",
+  "ConfigWindow_Rotations_Libraries": "Libraries",
+  "ConfigWindow_Rotations_AutoLoadCustomRotations": "Auto load rotations",
+  "ConfigWindow_Rotations_UserName": "User Name",
+  "ConfigWindow_Rotations_Repository": "Repository",
+  "ConfigWindow_Rotations_FileName": "File Name",
+  "ConfigWindow_Rotations_Library": "The folder contains rotation libs or the download url about rotation lib."
 }
