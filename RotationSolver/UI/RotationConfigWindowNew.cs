@@ -20,6 +20,7 @@ using RotationSolver.TextureItems;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
+using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
@@ -1247,15 +1248,14 @@ public partial class RotationConfigWindowNew : Window
         }
     }
 
-    private static ActionTexture[] _allActions = null;
-    internal static ActionTexture[] AllActions
+    private static GAction[] _allActions = null;
+    internal static GAction[] AllActions
     {
         get
         {
             _allActions ??= Service.GetSheet<GAction>()
                     .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction
                     && a.ClassJob.Value == null && a.Cast100ms > 0)
-                    .Select(a => new ActionTexture(a))
                     .ToArray();
             return _allActions;
         }
@@ -1268,11 +1268,15 @@ public partial class RotationConfigWindowNew : Window
     }
     private static readonly CollapsingHeaderGroup _idsHeader = new(new()
     {
-        { () => "Status", DrawIDsStatus},
+        { () => "Statuses", DrawActionsStatuses},
+        { () => "Actions", DrawListActions},
     });
-    private static void DrawIDsStatus()
+    private static void DrawActionsStatuses()
     {
-        if(ImGui.BeginTable("Rotation Solver List Status", 2, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
+        ImGui.SetNextItemWidth(ImGui.GetWindowWidth() - ImGui.GetStyle().WindowPadding.X * 2);
+        ImGui.InputTextWithHint("##Searching the action", "Status name or id", ref _statusSearching, 128);
+
+        if (ImGui.BeginTable("Rotation Solver List Statuses", 2, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
         {
             ImGui.TableSetupScrollFreeze(0, 1);
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
@@ -1322,14 +1326,14 @@ public partial class RotationConfigWindowNew : Window
                 ImguiTooltips.HoveredTooltip("Add Status");
             }
 
-            foreach (var statusId in statuses)
+            foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
+                .Where(a => a != null)
+                .OrderBy(s => StringComparer.Distance(s.Name, _statusSearching) 
+                + StringComparer.Distance(s.RowId.ToString(), _statusSearching)))
             {
-                void Reset() => removeId = statusId;
+                void Reset() => removeId = status.RowId;
 
-                var status = Service.GetSheet<Status>().GetRow(statusId);
-                if (status == null) continue;
-
-                var key = "Status" + statusId;
+                var key = "Status" + status.RowId;
 
                 if (ImGui.BeginPopup(key))
                 {
@@ -1347,7 +1351,7 @@ public partial class RotationConfigWindowNew : Window
                     {
                         ImGui.SameLine();
                     }
-                    NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + statusId.ToString());
+                    NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + status.RowId.ToString());
 
                     if (ImGui.IsItemHovered())
                     {
@@ -1361,7 +1365,6 @@ public partial class RotationConfigWindowNew : Window
                 }
             }
 
-
             if (ImGui.BeginPopup(popupId))
             {
                 ImGui.SetNextItemWidth(200 * _scale);
@@ -1374,7 +1377,8 @@ public partial class RotationConfigWindowNew : Window
                     count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
                     index = 0;
 
-                    foreach (var status in allStatus.OrderBy(s => StringComparer.Distance($"{s.Name}{s.RowId}", _statusSearching)))
+                    foreach (var status in allStatus.OrderBy(s => StringComparer.Distance(s.Name, _statusSearching)
+                    + StringComparer.Distance(s.RowId.ToString(), _statusSearching)))
                     {
                         if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
                         {
@@ -1385,7 +1389,7 @@ public partial class RotationConfigWindowNew : Window
                             if (NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Adding" + status.RowId.ToString()))
                             {
                                 statuses.Add(status.RowId);
-                                OtherConfiguration.SaveInvincibleStatus();
+                                OtherConfiguration.Save();
                                 ImGui.CloseCurrentPopup();
                             }
                             ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
@@ -1403,7 +1407,119 @@ public partial class RotationConfigWindowNew : Window
         if (removeId != 0)
         {
             statuses.Remove(removeId);
-            OtherConfiguration.SaveInvincibleStatus();
+            OtherConfiguration.Save();
+        }
+    }
+
+    private static void DrawListActions()
+    {
+        ImGui.SetNextItemWidth(ImGui.GetWindowWidth() - ImGui.GetStyle().WindowPadding.X * 2);
+        ImGui.InputTextWithHint("##Searching the action", "Action name or id", ref _actionSearching, 128);
+
+        if (ImGui.BeginTable("Rotation Solver List Actions", 2, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
+        {
+            ImGui.TableSetupScrollFreeze(0, 1);
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingTank);
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingArea);
+
+            ImGui.TableNextRow();
+
+            ImGui.TableNextColumn();
+            DrawActionsList(nameof(OtherConfiguration.HostileCastingTank), OtherConfiguration.HostileCastingTank);
+
+            ImGui.TableNextColumn();
+            DrawActionsList(nameof(OtherConfiguration.HostileCastingArea), OtherConfiguration.HostileCastingArea);
+
+            ImGui.EndTable();
+        }
+    }
+
+    private static string _actionSearching = string.Empty;
+    private static void DrawActionsList(string name, HashSet<uint> actions)
+    {
+        uint removeId = 0;
+
+        var popupId = "Rotation Solver Popup" + name;
+
+        if (ImGui.Button("Add Action"))
+        {
+            if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
+        }
+
+        ImGui.Spacing();
+
+        if (BeginChild("Rotation Solver Child" + name))
+        {
+            foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
+                .Where(a => a != null)
+                .OrderBy(s => StringComparer.Distance(s.Name, _actionSearching)
+                + StringComparer.Distance(s.RowId.ToString(), _actionSearching)))
+            {
+                void Reset() => removeId = action.RowId;
+
+                var key = "Action" + action.RowId;
+
+                if (ImGui.BeginPopup(key))
+                {
+                    if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
+                    {
+                        Searchable.DrawHotKeys("Remove", Reset, "Delete");
+                        ImGui.EndTable();
+                    }
+
+                    ImGui.EndPopup();
+                }
+
+                ImGui.Selectable($"{action.Name} ({action.RowId})");
+                if (ImGui.IsItemHovered())
+                {
+                    if (ImGui.IsMouseClicked(ImGuiMouseButton.Right) && !ImGui.IsPopupOpen(key))
+                    {
+                        ImGui.OpenPopup(key);
+                    }
+                    Searchable.ExecuteHotKeys(Reset, Dalamud.Game.ClientState.Keys.VirtualKey.DELETE);
+                }
+            }
+
+
+            if (ImGui.BeginPopup(popupId))
+            {
+                ImGui.SetNextItemWidth(200 * _scale);
+                ImGui.InputTextWithHint("##Searching the action pop up", "Action name or id", ref _actionSearching, 128);
+
+                ImGui.Spacing();
+
+                if (ImGui.BeginChild("Rotation Solver Add action", new Vector2(-1, 400)))
+                {
+                    foreach (var action in AllActions.OrderBy(s => StringComparer.Distance(s.Name, _actionSearching)
+                    + StringComparer.Distance(s.RowId.ToString(), _actionSearching)))
+                    {
+                        ImGui.Selectable($"{action.Name} ({action.RowId})");
+                        {
+                            actions.Add(action.RowId);
+                            OtherConfiguration.Save();
+                            ImGui.CloseCurrentPopup();
+                        }
+                        ImguiTooltips.HoveredTooltip($"{action.Name} ({action.RowId})");
+                    }
+                    ImGui.EndChild();
+                }
+
+                ImGui.EndPopup();
+            }
+
+            ImGui.EndChild();
+        }
+
+        if (removeId != 0)
+        {
+            actions.Remove(removeId);
+            OtherConfiguration.Save();
         }
     }
     #endregion
