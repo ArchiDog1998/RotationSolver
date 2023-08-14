@@ -8,6 +8,8 @@ internal partial class Strings
     public string Commands_ChangeRotationConfig { get; set; } = "Modify {0} to {1}";
     public string Commands_CannotFindRotationConfig { get; set; } = "Failed to find the config in this rotation, please check it.";
 
+    public string Commands_CannotFindConfig { get; set; } = "Failed to find the config, please check it.";
+
     public string Commands_InsertAction { get; set; } = "Will use it within {0}s";
 
     public string Commands_InsertActionFailure { get; set; } = "Can not find the action, please check the action name.";
@@ -17,18 +19,7 @@ internal partial class Strings
 
     #region ConfigWindow
     public string ConfigWindow_Header { get; set; } = "Rotation Solver Settings v";
-    public string ConfigWindow_RotationItem { get; set; } = "Rotation";
-    public string ConfigWindow_ParamItem { get; set; } = "Param";
-    public string ConfigWindow_ListItem { get; set; } = "List";
     public string ConfigWindow_EventItem { get; set; } = "Event";
-    public string ConfigWindow_ActionItem { get; set; } = "Action Rules";
-    public string ConfigWindow_ControlItem { get; set; } = "Control";
-    public string ConfigWindow_HelpItem { get; set; } = "Help";
-    public string ConfigWindow_ActionItem_Description { get; set; }
-        = "Modify the usage for each action.";
-
-    public string ConfigWindow_HelpItem_Description { get; set; }
-        = "In this window, you can see all Rotation Solver built-in commands for combat. ";
 
     public string ConfigWindow_HelpItem_AttackAuto { get; set; }
         = "Start the addon in Auto mode (auto-targeting) when out of combat or when combat starts, otherwise switch the target according to the set condition.";
@@ -77,12 +68,9 @@ internal partial class Strings
         = "To end this special duration before the set time.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game";
-    public string ConfigWindow_Helper_OpenSource { get; set; } = "Open the source code URL";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy the command";
-    public string ConfigWindow_Rotation_Description_Old { get; set; } = "You can enable the function for each job you want and configure the setting about how to use actions.";
 
-    public string ConfigWindow_Rotation_KeyName { get; set; } = "The key name is";
     public string ConfigWindow_Events_AddEvent { get; set; } = "AddEvents";
     public string ConfigWindow_Events_Description { get; set; } = "In this window, you can set what macro will be trigger after using an action.";
     public string ConfigWindow_Events_ActionName { get; set; } = "Action Name";
@@ -91,11 +79,9 @@ internal partial class Strings
     public string ConfigWindow_Events_RemoveEvent { get; set; } = "Delete Event";
     public string ConfigWindow_Events_DutyStart { get; set; } = "Duty Start: ";
     public string ConfigWindow_Events_DutyEnd { get; set; } = "Duty End: ";
-    public string ConfigWindow_Params_Description { get; set; } = "In this window, you can set the parameters about the using way of actions.";
 
     public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display Top Overlay";
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
-    public string ConfigWindow_Param_Basic { get; set; } = "Basic";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
     public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set min the time advance of using the last 0gcd.";
@@ -115,7 +101,6 @@ internal partial class Strings
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";
-    public string ConfigWindow_Param_Delay { get; set; } = "Delay";
 
     public string ConfigWindow_Param_WeaponDelay { get; set; } = "Set the range of random delay for GCD in second.";
     public string ConfigWindow_Param_DeathDelay { get; set; } = "Set the range of random delay for raising deaths in second.";
@@ -131,8 +116,6 @@ internal partial class Strings
     public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for the interval of clicking actions.";
     public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
     public string ConfigWindow_Param_ClickMistake { get; set; } = "How likely is it that RS will click the wrong action.";
-    public string ConfigWindow_Param_Display { get; set; } = "Display";
-    public string ConfigWindow_Param_Advanced { get; set; } = "Advanced";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or some actions.";
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Stops casting when hostile target is dead.";
     public string ConfigWindow_Param_ShowTooltips { get; set; } = "Show tooltips";
@@ -155,7 +138,6 @@ internal partial class Strings
     public string ConfigWindow_Param_SampleLength { get; set; } = "The sample length of the line.";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
-    public string ConfigWindow_Param_DrawPositional { get; set; } = "Draw Positional on the screen";
     public string ConfigWindow_Param_DrawMeleeOffset { get; set; } = "Draw the offset of melee on the screen";
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
@@ -164,11 +146,10 @@ internal partial class Strings
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin state on server info";
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin state on toast";
     public string ConfigWindow_Param_ShowToastsAboutDoAction { get; set; } = "Display do action feedback on toast";
-    public string ConfigWindow_Param_Action { get; set; } = "Action";
     public string ConfigWindow_Param_UseAOEAction { get; set; } = "Use AOE actions";
 
     public string ConfigWindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
-    public string ConfigWindow_Param_AutoBurst { get; set; } = "Automatic burst";
+    public string ConfigWindow_Param_AutoBurst { get; set; } = "Always try to burst";
 
     public string ConfigWindow_Param_AutoHeal { get; set; } = "Automatic Heal";
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
@@ -177,7 +158,7 @@ internal partial class Strings
     public string ConfigWindow_Param_UseDefenseAbility { get; set; } = "Use defense abilities";
     public string ConfigWindow_Param_UseDefenseAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";
     public string ConfigWindow_Param_AutoShield { get; set; } = "Auto tank stance";
-    public string ConfigWindow_Param_AutoProvokeForTank { get; set; } = "Auto Provoke (Tank)";
+    public string ConfigWindow_Param_AutoProvokeForTank { get; set; } = "Auto Provoke when there are more than one tanks";
     public string ConfigWindow_Param_AutoProvokeForTankDesc { get; set; } = "When a hostile is hitting the non-Tank member of party, it will automatically use the Provoke.";
     public string ConfigWindow_Param_AutoUseTrueNorth { get; set; } = "Auto TrueNorth (Melee)";
     public string ConfigWindow_Param_RaisePlayerBySwift { get; set; } = "Raise player by swift";
@@ -188,7 +169,6 @@ internal partial class Strings
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
     public string ConfigWindow_Param_UseTinctures { get; set; } = "Use Tinctures";
     public string ConfigWindow_Param_UseHealPotions { get; set; } = "Use Heal Potions";
-    public string ConfigWindow_Param_Condition { get; set; } = "Condition";
     public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto turn smart on countdown";
 
     public string ConfigWindow_Param_StartOnAttackedBySomeone { get; set; } = "Automatically turn on manual mode and target enemy when being attacked";
@@ -224,15 +204,13 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invincibility";
 
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
-    public string ConfigWindow_Param_Target { get; set; } = "Target";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
     public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets can attack";
     public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Targets have a target or all targets can attack";
     public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Targets have a target";
-    public string ConfigWindow_Param_NoticeUnexpectedCombat { get; set; } = "NOTICE: You are not turn the auto off between area on. It may start a combat unexpectedly.";
     public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add Enemies list to the hostile target.";
     public string ConfigWindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
-    public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Forced use of AOE";
+    public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Allowed use of AOE to attack more mobs.";
     public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
     public string ConfigWindow_Param_FilterStopMark { get; set; } = "Never attack targets with stop markers";
     public string ConfigWindow_Param_MoveTargetAngle { get; set; } = "The size of the sector angle that can be selected as the moveable target";
@@ -254,11 +232,7 @@ internal partial class Strings
     public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
 
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
-    public string ConfigWindow_Param_AddOne { get; set; } = "Add One";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
-    public string ConfigWindow_Param_ResetToDefault { get; set; } = "Click to reset this value.";
-    public string ConfigWindow_Param_ResetToDefaultWait { get; set; } = "Please wait for a second.";
-    public string ConfigWindow_Param_ResetToDefaultSure { get; set; } = "Are you sure to reset this value?";
 
     public string ConfigWindow_Control_OnlyShowWithHostileOrInDuty { get; set; } = "Only shown if there are enemies in or in duty";
     public string ConfigWindow_Control_ShowNextActionWindow { get; set; } = "Show Next Action Window";
@@ -273,7 +247,8 @@ internal partial class Strings
     public string ConfigWindow_Control_UseOriginalCooldown { get; set; } = "Show Original Cooldown";
     public string ConfigWindow_Control_CooldownActionOneLine { get; set; } = "The count of cooldown actions in one line.";
     public string ConfigWindow_Control_CooldownFontSize { get; set; } = "Change the cooldown font size.";
-    public string ConfigWindow_Control_BackgroundColor { get; set; } = "Control Window's Background";
+    public string ConfigWindow_Control_UnlockBackgroundColor { get; set; } = "Unlocked Control Window's Background";
+    public string ConfigWindow_Control_LockBackgroundColor { get; set; } = "Locked Control Window's Background";
     public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Info Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
@@ -283,11 +258,10 @@ internal partial class Strings
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
 
-    public string ConfigWindow_Rotation_DownloadRotations { get; set; } = "Download Rotations.";
-    public string ConfigWindow_Rotation_AutoUpdateRotations { get; set; } = "Auto Update Rotations.";
+    public string ConfigWindow_Rotation_DownloadRotations { get; set; } = "Auto Download Rotations";
+    public string ConfigWindow_Rotation_AutoUpdateRotations { get; set; } = "Auto Update Rotations";
 
     public string ConfigWindow_Rotation_InvalidRotation { get; set; } = "Invalid Rotation! \nPlease update to the latest version or contact to the {0}!";
-    public string ConfigWindow_Rotation_ResetToDefault { get; set; } = "Click to reset the rotation configuration to default!";
 
     public string ConfigWindow_List_Description { get; set; } = "In this window, you can set the parameters about some list things.";
     public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
@@ -306,7 +280,6 @@ internal partial class Strings
 
     public string ConfigWindow_List_HostileCastingAreaDesc { get; set; } = "If the target is casting the action like this, it'll defense area.";
 
-    public string ConfigWindow_List_Rotations { get; set; } = "Rotations";
     public string ConfigWindow_List_NoHostile { get; set; } = "No Hostile";
     public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add a name of target that never be the hostile for you.";
 
@@ -626,6 +599,7 @@ internal partial class Strings
     public string ConfigWindow_About_Compatibility_Crash { get; set; } = "Cause the game to crash.";
 
     public string ConfigWindow_Rotation_Description { get; set; } = "Description";
+    public string ConfigWindow_Rotation_Status { get; set; } = "Status";
     public string ConfigWindow_Rotation_Configuration { get; set; } = "Configuration";
     public string ConfigWindow_Rotation_Information { get; set; } = "Information";
 
@@ -637,6 +611,51 @@ internal partial class Strings
     public string ConfigWindow_Actions_DisabledConditionSet_Description { get; set; } = "Conditions when automatic use of action is disabled.";
     public string ConfigWindow_Actions_ShowOnCDWindow { get; set; } = "Show on CD window";
 
-    public string ConfigWindow_Actions_InsertCommand { get; set; } = "Insert \"{0}\" first in {1}s";
+    public string ConfigWindow_Configs_JobConfigTip { get; set; } = "This config is binding with the job, different job gets different value.";
 
+    public string ConfigWindow_Rotations_Settings { get; set; } = "Settings";
+    public string ConfigWindow_Rotations_Loaded { get; set; } = "Loaded";
+    public string ConfigWindow_Rotations_GitHub { get; set; } = "GitHub";
+    public string ConfigWindow_Rotations_Libraries { get; set; } = "Libraries";
+    public string ConfigWindow_Rotations_AutoLoadCustomRotations { get; set; } = "Auto load rotations";
+
+    public string ConfigWindow_Rotations_UserName { get; set; } = "User Name";
+    public string ConfigWindow_Rotations_Repository { get; set; } = "Repository";
+
+    public string ConfigWindow_Rotations_FileName { get; set; } = "File Name";
+
+    public string ConfigWindow_Rotations_Library { get; set; } = "The folder contains rotation libs or the download url about rotation lib.";
+
+    public string ConfigWindow_List_Statuses { get; set; } = "Statuses";
+    public string ConfigWindow_List_Actions { get; set; } = "Actions";
+    public string ConfigWindow_List_Territories { get; set; } = "Territories";
+    public string ConfigWindow_List_StatusNameOrId { get; set; } = "Status name or id";
+    public string ConfigWindow_List_AddStatus { get; set; } = "Add Status";
+    public string ConfigWindow_List_Remove { get; set; } = "Remove";
+
+    public string ConfigWindow_List_ActionNameOrId { get; set; } = "Action name or id";
+    public string ConfigWindow_List_AddAction { get; set; } = "Add Action";
+
+    public string ConfigWindow_List_TerritoryEverywhere { get; set; } = "Everywhere";
+
+    public string ConfigWindow_List_AddTerritory{ get; set; } = "Territory name or id";
+
+    public string ConfigWindow_List_BeneficialLocations { get; set; } = "Beneficial locations";
+    public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of object that you don't want to attack";
+
+    public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
+
+    public string ConfigWindow_Basic_Timer { get; set; } = "Timer";
+    public string ConfigWindow_UI_Windows { get; set; } = "Windows";
+    public string ConfigWindow_UI_Overlay { get; set; } = "Overlay";
+    public string ConfigWindow_UI_Information { get; set; } = "Information";
+    public string ConfigWindow_Auto_ActionUsage { get; set; } = "Action Usage";
+    public string ConfigWindow_Auto_ActionUsage_Description { get; set; } = "Which actions Rotation Solver can use.";
+    public string ConfigWindow_Extra_Others { get; set; } = "Others";
+    public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focus on rotation itself. These are side features. If there are some plugins can do that, these feature will be deleted.";
+    public string ConfigWindow_Auto_Description { get; set; } = "Change the strategy or usage of the automatically using actions.";
+    public string ConfigWindow_Auto_ActionCondition { get; set; } = "Action Condition";
+    public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the strategy of Rotation Solver to use these actions.";
+    public string ConfigWindow_Target_Config { get; set; } = "Configuration";
+    public string ConfigWindow_Search_Result { get; set; } = "Searching Result";
 }

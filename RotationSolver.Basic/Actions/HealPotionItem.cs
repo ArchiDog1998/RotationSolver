@@ -18,7 +18,7 @@ internal class HealPotionItem : BaseItem
         }
     }
 
-    protected override bool CanUseThis => Service.Config.UseHealPotions;
+    protected override bool CanUseThis => Service.Config.GetValue(Configuration.PluginConfigBool.UseHealPotions);
 
     public HealPotionItem(Item item, uint a4 = 65535) : base(item, a4)
     {

@@ -2,6 +2,7 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -23,8 +24,12 @@ internal static class RotationUpdater
 
     static bool _isLoading = false;
 
-    // Retrieves custom rotations from local and/or downloads
-    // them from remote server based on DownloadOption
+    /// <summary>
+    /// Retrieves custom rotations from local and/or downloads
+    /// them from remote server based on DownloadOption
+    /// </summary>
+    /// <param name="option"></param>
+    /// <returns></returns>
     public static async Task GetAllCustomRotationsAsync(DownloadOption option)
     {
         if (_isLoading) return;
@@ -40,7 +45,7 @@ internal static class RotationUpdater
                 LoadRotationsFromLocal(relayFolder);
             }
 
-            if (option.HasFlag(DownloadOption.Download) && Service.Config.DownloadRotations)
+            if (option.HasFlag(DownloadOption.Download) && Service.Config.GetValue(PluginConfigBool.DownloadRotations))
                 await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
 
             if (option.HasFlag(DownloadOption.ShowList))
@@ -65,11 +70,14 @@ internal static class RotationUpdater
         }
     }
 
-    // This method loads custom rotation groups from local directories and assemblies, creates a sorted list of
-    // author hashes, and creates a sorted list of custom rotations grouped by job role.
+    /// <summary>
+    /// This method loads custom rotation groups from local directories and assemblies, creates a sorted list of
+    /// author hashes, and creates a sorted list of custom rotations grouped by job role.
+    /// </summary>
+    /// <param name="relayFolder"></param>
     private static void LoadRotationsFromLocal(string relayFolder)
     {
-        var directories = Service.Config.OtherLibs
+        var directories = Service.Config.GlobalConfig.OtherLibs
             .Append(relayFolder)
             .Where(Directory.Exists);
 
@@ -174,16 +182,25 @@ internal static class RotationUpdater
         return result.ToArray();
     }
 
-    // Downloads rotation files from a remote server and saves them to a local folder.
-    // The download list is obtained from a JSON file on the remote server.
-    // If mustDownload is set to true, it will always download the files, otherwise it will only download if the file doesn't exist locally.
+
+    /// <summary>
+    /// Downloads rotation files from a remote server and saves them to a local folder.
+    /// The download list is obtained from a JSON file on the remote server.
+    /// If mustDownload is set to true, it will always download the files, otherwise it will only download if the file doesn't exist locally. 
+    /// </summary>
+    /// <param name="relayFolder"></param>
+    /// <param name="mustDownload"></param>
+    /// <returns></returns>
     private static async Task DownloadRotationsAsync(string relayFolder, bool mustDownload)
     {
         // Code to download rotations from remote server
         bool hasDownload = false;
+
+        var GitHubLinks = Service.Config.GlobalConfig.GitHubLibs.Union(DownloadHelper.LinkLibraries ?? Array.Empty<string>());
+
         using (var client = new HttpClient())
         {
-            foreach (var url in Service.Config.OtherLibs.Union(DownloadHelper.LinkLibraries ?? Array.Empty<string>()))
+            foreach (var url in Service.Config.GlobalConfig.OtherLibs.Union(GitHubLinks.Select(Convert)))
             {
                 hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
                 var pdbUrl = Path.ChangeExtension(url, ".pdb");
@@ -191,6 +208,17 @@ internal static class RotationUpdater
             }
         }
         if (hasDownload) LoadRotationsFromLocal(relayFolder);
+    }
+
+    private static string Convert(string value)
+    {
+        var split = value.Split('|');
+        if (split == null || split.Length < 2) return value;
+        var username = split[0];
+        var repo = split[1];
+        var file = split.Last();
+        if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(repo) || string.IsNullOrEmpty(file)) return value;
+        return $"https://GitHub.com/{username}/{repo}/releases/latest/download/{file}.dll";
     }
 
     private static async Task<bool> DownloadOneUrlAsync(string url, string relayFolder, HttpClient client, bool mustDownload)
@@ -211,14 +239,17 @@ internal static class RotationUpdater
             if (string.IsNullOrEmpty(fileName)) return false;
             //if (Path.GetExtension(fileName) != ".dll") continue;
             var filePath = Path.Combine(relayFolder, fileName);
-            if (!Service.Config.AutoUpdateRotations && File.Exists(filePath)) return false;
+            if (!Service.Config.GetValue(PluginConfigBool.AutoUpdateRotations) && File.Exists(filePath)) return false;
 
             //Download
             using (HttpResponseMessage response = await client.GetAsync(url))
             {
                 if (File.Exists(filePath) && !mustDownload)
                 {
-                    if (new FileInfo(filePath).Length == response.Content.Headers.ContentLength)
+                    var fileInfo = new FileInfo(filePath);
+                    var header = response.Content.Headers;
+                    if (header.LastModified.HasValue && header.LastModified.Value.UtcDateTime < fileInfo.LastWriteTimeUtc
+                        && fileInfo.Length == header.ContentLength)
                     {
                         return false;
                     }
@@ -273,7 +304,7 @@ internal static class RotationUpdater
             return;
         }
 
-        var dirs = Service.Config.OtherLibs;
+        var dirs = Service.Config.GlobalConfig.OtherLibs;
 
         foreach (var dir in dirs)
         {
@@ -407,23 +438,23 @@ internal static class RotationUpdater
             }
             RightNowRotation = rotation;
             RightRotationActions = RightNowRotation.AllActions;
+            DataCenter.Job = RightNowRotation?.Jobs[0] ?? Job.ADV;
             return;
         }
         RightNowRotation = null;
         RightRotationActions = Array.Empty<IAction>();
+        DataCenter.Job = RightNowRotation?.Jobs[0] ?? Job.ADV;
     }
 
     internal static ICustomRotation GetChosenRotation(CustomRotationGroup group)
     {
-        var has = Service.Config.RotationChoices.TryGetValue((uint)group.JobId, out var name);
+        var name = Service.Config.GetJobConfig(group.JobId).RotationChoice;
        
         var rotation = group.Rotations.FirstOrDefault(r => r.GetType().FullName == name);
+        rotation ??= group.Rotations.FirstOrDefault(r => r.GetType().FullName.Contains("Default", StringComparison.OrdinalIgnoreCase));
+
         rotation ??= group.Rotations.FirstOrDefault();
 
-        if (!has && rotation != null)
-        {
-            Service.Config.RotationChoices[(uint)group.JobId] = rotation.GetType().FullName;
-        }
         return rotation;
     }
 }

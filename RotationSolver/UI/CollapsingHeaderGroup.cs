@@ -4,7 +4,7 @@ namespace RotationSolver.UI;
 
 internal class CollapsingHeaderGroup
 {
-    private Dictionary<Func<string>, Action> _headers = new Dictionary<Func<string>, Action>();
+    private readonly Dictionary<Func<string>, Action> _headers = new Dictionary<Func<string>, Action>();
     private int _openedIndex = -1;
 
     public float HeaderSize { get; set; } = 24;

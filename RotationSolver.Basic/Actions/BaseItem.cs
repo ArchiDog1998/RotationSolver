@@ -44,16 +44,16 @@ public class BaseItem : IBaseItem
     /// </summary>
     public bool IsEnabled
     {
-        get => !Service.Config.DisabledItems.Contains(ID);
+        get => !Service.Config.GlobalConfig.DisabledItems.Contains(ID);
         set
         {
             if (value)
             {
-                Service.Config.DisabledItems.Remove(ID);
+                Service.Config.GlobalConfig.DisabledItems.Remove(ID);
             }
             else
             {
-                Service.Config.DisabledItems.Add(ID);
+                Service.Config.GlobalConfig.DisabledItems.Add(ID);
             }
         }
     }
@@ -63,16 +63,16 @@ public class BaseItem : IBaseItem
     /// </summary>
     public bool IsInCooldown
     {
-        get => !Service.Config.NotInCoolDownItems.Contains(ID);
+        get => !Service.Config.GlobalConfig.NotInCoolDownItems.Contains(ID);
         set
         {
             if (value)
             {
-                Service.Config.NotInCoolDownItems.Remove(ID);
+                Service.Config.GlobalConfig.NotInCoolDownItems.Remove(ID);
             }
             else
             {
-                Service.Config.NotInCoolDownItems.Add(ID);
+                Service.Config.GlobalConfig.NotInCoolDownItems.Add(ID);
             }
         }
     }

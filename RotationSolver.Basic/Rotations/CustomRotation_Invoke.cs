@@ -151,7 +151,7 @@ public abstract partial class CustomRotation
             return CountDownAction(countDown);
         }
 
-        var helpDefenseAOE = Service.Config.GetValue(SettingsCommand.UseDefenseAbility) && DataCenter.IsHostileCastingAOE;
+        var helpDefenseAOE = Service.Config.GetValue(Configuration.PluginConfigBool.UseDefenseAbility) && DataCenter.IsHostileCastingAOE;
 
         bool helpDefenseSingle = false;
         if (ClassJob.GetJobRole() == JobRole.Healer || ClassJob.RowId == (uint)ECommons.ExcelServices.Job.PLD)

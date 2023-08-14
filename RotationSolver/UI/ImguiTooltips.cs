@@ -30,12 +30,12 @@ internal static class ImguiTooltips
     public static void ShowTooltip(Action act)
     {
         if (act == null) return;
-        if (!Service.Config.ShowTooltips) return;
+        if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowTooltips)) return;
 
         ImGui.SetNextWindowBgAlpha(1);
         ImGui.PushStyleColor(ImGuiCol.BorderShadow, ImGuiColors.DalamudWhite);
 
-        //ImGui.SetNextWindowSizeConstraints(new Vector2(0, 0), new Vector2(800, 1500));
+        ImGui.SetNextWindowSizeConstraints(new Vector2(150, 0) * ImGuiHelpers.GlobalScale, new Vector2(800, 1500) * ImGuiHelpers.GlobalScale);
         ImGui.SetWindowPos(TOOLTIP_ID, ImGui.GetIO().MousePos);
 
         if (ImGui.Begin(TOOLTIP_ID, TOOLTIP_FLAG))

@@ -5,6 +5,7 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
@@ -13,7 +14,9 @@ internal static class ActionUpdater
 {
     internal static DateTime _cancelTime = DateTime.MinValue;
 
-    static  RandomDelay _GCDDelay = new(() => (Service.Config.WeaponDelayMin, Service.Config.WeaponDelayMax));
+    static  RandomDelay _GCDDelay = new(() =>
+    (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin),
+    Service.Config.GetValue(PluginConfigFloat.WeaponDelayMax)));
 
     internal static IAction NextAction { get; set; }
     internal static IBaseAction NextGCDAction { get; set; }
@@ -36,7 +39,7 @@ internal static class ActionUpdater
             if (localPlayer != null && customRotation != null
                 && customRotation.TryInvoke(out var newAction, out var gcdAction))
             {
-                if (Service.Config.MistakeRatio > 0)
+                if (Service.Config.GetValue(PluginConfigFloat.MistakeRatio) > 0)
                 {
                     var actions = customRotation.AllActions.Where(a =>
                     {
@@ -69,6 +72,7 @@ internal static class ActionUpdater
             PluginLog.Error(ex, "Failed to update next action.");
         }
 
+        CustomRotation.MoveTarget = null;
         WrongAction = NextAction = NextGCDAction = null;
     }
 
@@ -131,9 +135,9 @@ internal static class ActionUpdater
         else if (last && !DataCenter.InCombat)
         {
             _startCombatTime = DateTime.MinValue;
-            if (Service.Config.AutoOffAfterCombat > 0)
+            if (Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombat) > 0)
             {
-                _cancelTime = DateTime.Now.AddSeconds(Service.Config.AutoOffAfterCombat);
+                _cancelTime = DateTime.Now.AddSeconds(Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombat));
             }
         }
 
@@ -211,7 +215,7 @@ internal static class ActionUpdater
             || Player.Object.CurrentHp == 0) return false;
 
         var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
-        var ahead = Math.Min(maxAhead, Service.Config.ActionAhead);
+        var ahead = Math.Min(maxAhead, Service.Config.GetValue(PluginConfigFloat.ActionAhead));
 
         //GCD
         var canUseGCD = DataCenter.WeaponRemain <= ahead;
@@ -237,7 +241,7 @@ internal static class ActionUpdater
         if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock > DataCenter.WeaponRemain)
         {
             if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + ahead +
-                Math.Max(DataCenter.Ping, Service.Config.MinLastAbilityAdvanced)) return false;
+                Math.Max(DataCenter.Ping, Service.Config.GetValue(PluginConfigFloat.MinLastAbilityAdvanced))) return false;
 
             return RSCommands.CanDoAnAction(false);
         }

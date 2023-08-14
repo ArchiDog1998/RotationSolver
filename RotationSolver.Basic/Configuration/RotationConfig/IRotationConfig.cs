@@ -18,6 +18,11 @@ public interface IRotationConfig
     string DisplayName { get; }
 
     /// <summary>
+    /// Default Value for this configuration.
+    /// </summary>
+    string DefaultValue { get; }
+
+    /// <summary>
     /// Get the value of this.
     /// </summary>
     /// <param name="job"></param>

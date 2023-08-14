@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  <PackageIcon>RotationSolverIcon_128.png</PackageIcon>
+	  <PackageIcon>Logo.png</PackageIcon>
 	  <Description>A basic library for rotation development in FFXIV in RotationSolver.</Description>
 	  <PackageId>RotationSolver.Basic</PackageId>
 	  <Title>RotationSolver.Basic</Title>
@@ -37,7 +37,7 @@
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
       </None>
-      <None Include="..\docs\RotationSolverIcon_128.png">
+      <None Include="..\Images\Logo.png">
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
       </None>
@@ -46,6 +46,5 @@
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
 	  </None>
-	  
   </ItemGroup>
 </Project>

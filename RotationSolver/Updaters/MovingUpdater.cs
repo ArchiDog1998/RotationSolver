@@ -33,22 +33,22 @@ internal static class MovingUpdater
             var statusList = new List<StatusID>(4);
             var actionList = new List<ActionID>(4);
 
-            if (Service.Config.PosFlameThrower)
+            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.PosFlameThrower))
             {
                 statusList.Add(StatusID.Flamethrower);
                 actionList.Add(ActionID.FlameThrower);
             }
-            if (Service.Config.PosTenChiJin)
+            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.PosTenChiJin))
             {
                 statusList.Add(StatusID.TenChiJin);
                 actionList.Add(ActionID.TenChiJin);
             }
-            if (Service.Config.PosPassageOfArms)
+            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.PosPassageOfArms))
             {
                 statusList.Add(StatusID.PassageOfArms);
                 actionList.Add(ActionID.PassageOfArms);
             }
-            if (Service.Config.PosImprovisation)
+            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.PosImprovisation))
             {
                 statusList.Add(StatusID.Improvisation);
                 actionList.Add(ActionID.Improvisation);

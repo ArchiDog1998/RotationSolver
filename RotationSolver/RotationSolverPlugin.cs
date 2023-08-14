@@ -2,6 +2,7 @@ using Clipper2Lib;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
 using Dalamud.Plugin;
 using ECommons;
 using ECommons.DalamudServices;
@@ -22,8 +23,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
     private readonly WindowSystem windowSystem;
 
-    static RotationConfigWindow _comboConfigWindow;
-    static RotationConfigWindowNew _rotationConfigWindow;
+    static RotationConfigWindow _rotationConfigWindow;
     static ControlWindow _controlWindow;
     static NextActionWindow _nextActionWindow;
     static CooldownWindow _cooldownWindow;
@@ -44,23 +44,22 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis.Add(new Service());
         try
         {
-            Service.Config = JsonConvert.DeserializeObject<PluginConfiguration>(
+            Service.Config = JsonConvert.DeserializeObject<PluginConfig>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName)) 
-                ?? new PluginConfiguration();
+                ?? PluginConfig.Create();
         }
-        catch
+        catch(Exception ex)
         {
-            Service.Config = new PluginConfiguration();
+            PluginLog.Warning(ex, "Failed to load config");
+            Service.Config = PluginConfig.Create(); ;
         }
 
-        _comboConfigWindow = new();
         _rotationConfigWindow = new();
         _controlWindow = new();
         _nextActionWindow = new();
         _cooldownWindow = new();
 
         windowSystem = new WindowSystem(Name);
-        windowSystem.AddWindow(_comboConfigWindow);
         windowSystem.AddWindow(_rotationConfigWindow);
         windowSystem.AddWindow(_controlWindow);
         windowSystem.AddWindow(_nextActionWindow);
@@ -93,7 +92,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     internal static void ChangeUITranslation()
     {
-        _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
+        _rotationConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
             + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();
 
         RSCommands.Disable();
@@ -119,19 +118,19 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         OtherConfiguration.Save();
 
         ECommonsMain.Dispose();
+
+#if DEBUG
+#else
+        Service.Config.Save();
+#endif
     }
 
     private void OnOpenConfigUi()
     {
-        _comboConfigWindow.IsOpen = true;
+        _rotationConfigWindow.IsOpen = true;
     }
 
     internal static void OpenConfigWindow()
-    {
-        _comboConfigWindow.Toggle();
-    }
-
-    internal static void ToggleConfigWindow()
     {
         _rotationConfigWindow.Toggle();
     }
@@ -141,20 +140,20 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void UpdateDisplayWindow()
     {
         var isValid = validDelay.Delay(MajorUpdater.IsValid
-        && (!Service.Config.OnlyShowWithHostileOrInDuty
-                || Svc.Condition[ConditionFlag.BoundByDuty]
-                || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25))
             && RotationUpdater.RightNowRotation != null
             && !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
             && !Svc.Condition[ConditionFlag.Occupied38] //Treasure hunt.
-            && !Svc.Condition[ConditionFlag.BetweenAreas]
-            && !Svc.Condition[ConditionFlag.BetweenAreas51]
             && !Svc.Condition[ConditionFlag.WaitingForDuty]
             && (!Svc.Condition[ConditionFlag.UsingParasol] || Player.Object.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.WeaponOut))
             && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
-        _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
-        _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;
-        _cooldownWindow.IsOpen = isValid && Service.Config.ShowCooldownWindow;
+        _nextActionWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowNextActionWindow);
+
+        isValid &= !Service.Config.GetValue(PluginConfigBool.OnlyShowWithHostileOrInDuty)
+                || Svc.Condition[ConditionFlag.BoundByDuty]
+                || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25);
+
+        _controlWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowControlWindow);
+        _cooldownWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowCooldownWindow);
     }
 }

@@ -94,16 +94,16 @@ public partial class BaseAction : IBaseAction
     /// </summary>
     public bool IsEnabled
     {
-        get => !Service.Config.DisabledActions.Contains(ID);
+        get => !Service.Config.GlobalConfig.DisabledActions.Contains(ID);
         set
         {
             if (value)
             {
-                Service.Config.DisabledActions.Remove(ID);
+                Service.Config.GlobalConfig.DisabledActions.Remove(ID);
             }
             else
             {
-                Service.Config.DisabledActions.Add(ID);
+                Service.Config.GlobalConfig.DisabledActions.Add(ID);
             }
         }
     }
@@ -113,16 +113,16 @@ public partial class BaseAction : IBaseAction
     /// </summary>
     public bool IsInCooldown
     {
-        get => !Service.Config.NotInCoolDownActions.Contains(ID);
+        get => !Service.Config.GlobalConfig.NotInCoolDownActions.Contains(ID);
         set
         {
             if (value)
             {
-                Service.Config.NotInCoolDownActions.Remove(ID);
+                Service.Config.GlobalConfig.NotInCoolDownActions.Remove(ID);
             }
             else
             {
-                Service.Config.NotInCoolDownActions.Add(ID);
+                Service.Config.GlobalConfig.NotInCoolDownActions.Add(ID);
             }
         }
     }

@@ -34,31 +34,29 @@ internal static class ConfigurationHelper
     public static readonly VirtualKey[] Keys = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU, VirtualKey.LBUTTON, VirtualKey.MBUTTON, VirtualKey.RBUTTON };
 
     public static float GetHealthAreaAbility(this Job job)
-        => Service.Config.HealthAreaAbilities.TryGetValue(job, out var value) ? value : Service.Config.HealthAreaAbility;
+        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthAreaAbility);
 
     public static float GetHealthAreaSpell(this Job job)
-        => Service.Config.HealthAreaSpells.TryGetValue(job, out var value) ? value : Service.Config.HealthAreaSpell;
+        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthAreaSpell);
 
     public static float GetHealthAreaAbilityHot(this Job job)
-        => Service.Config.HealthAreaAbilitiesHot.TryGetValue(job, out var value) ? value : Service.Config.HealthAreaAbilityHot;
+        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthAreaAbilityHot);
 
     public static float GetHealthAreaSpellHot(this Job job)
-    => Service.Config.HealthAreaSpellsHot.TryGetValue(job, out var value) ? value : Service.Config.HealthAreaSpellHot;
+    => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthAreaSpellHot);
 
     public static float GetHealthSingleAbility(this Job job)
-        => Service.Config.HealthSingleAbilities.TryGetValue(job, out var value) ? value : Service.Config.HealthSingleAbility;
+        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthSingleAbility);
 
     public static float GetHealthSingleSpell(this Job job)
-        => Service.Config.HealthSingleSpells.TryGetValue(job, out var value) ? value : Service.Config.HealthSingleSpell;
+        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthSingleSpell);
 
     public static float GetHealthSingleAbilityHot(this Job job)
-    => Service.Config.HealthSingleAbilitiesHot.TryGetValue(job, out var value) ? value : Service.Config.HealthSingleAbilityHot;
+    => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthSingleAbilityHot);
 
     public static float GetHealthSingleSpellHot(this Job job)
-    => Service.Config.HealthSingleSpellsHot.TryGetValue(job, out var value) ? value : Service.Config.HealthSingleSpellHot;
+    => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthSingleSpellHot);
 
     public static float GetHealthForDyingTank(this Job job)
-        => Service.Config.HealthForDyingTanks.TryGetValue(job, out var value) ? value : HealthForDyingTanksDefault;
-
-    public const float HealthForDyingTanksDefault = 0.15f;
+        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthForDyingTanks);
 }

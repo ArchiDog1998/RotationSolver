@@ -23,16 +23,16 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public bool IsEnabled
     {
-        get => !Service.Config.DisabledCombos.Contains(Name);
+        get => !Service.Config.GlobalConfig.DisabledCombos.Contains(Name);
         set
         {
             if (value)
             {
-                Service.Config.DisabledCombos.Remove(Name);
+                Service.Config.GlobalConfig.DisabledCombos.Remove(Name);
             }
             else
             {
-                Service.Config.DisabledCombos.Add(Name);
+                Service.Config.GlobalConfig.DisabledCombos.Add(Name);
             }
         }
     }
@@ -66,6 +66,7 @@ public abstract partial class CustomRotation : ICustomRotation
     public IAction ActionMoveForwardAbility { get; private set; }
 
     public IAction ActionMoveBackAbility { get; private set; }
+
     public IAction ActionSpeedAbility { get; private set; }
 
     public IAction EsunaStanceNorthGCD { get; private set; }
@@ -81,6 +82,7 @@ public abstract partial class CustomRotation : ICustomRotation
     public bool IsValid { get; private set; } = true;   
     public string WhyNotValid { get; private set; } = string.Empty;
 
+    public virtual bool ShowStatus => false;
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this);

@@ -14,22 +14,23 @@ internal class NextActionWindow : InfoWindow
 
     public override void Draw()
     {
-        var width = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
+        var width = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize) 
+            * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
         DrawGcdCooldown(width, false);
         ControlWindow.DrawIAction(ActionUpdater.NextAction, width, 1);
 
         var strs = new List<string>(3);
-        if(Service.Config.GetValue(SettingsCommand.UseAOEAction)
+        if(Service.Config.GetValue(PluginConfigBool.UseAOEAction)
             && (!DataCenter.IsManual
-            || Service.Config.GetValue(SettingsCommand.UseAOEWhenManual)))
+            || Service.Config.GetValue(PluginConfigBool.UseAOEWhenManual)))
         {
             strs.Add("AOE");
         }
-        if (Service.Config.GetValue(SettingsCommand.PreventActions))
+        if (Service.Config.GetValue(PluginConfigBool.PreventActions))
         {
             strs.Add("Prevent");
         }
-        if (Service.Config.GetValue(SettingsCommand.AutoBurst))
+        if (Service.Config.GetValue(PluginConfigBool.AutoBurst))
         {
             strs.Add("Burst");
         }
@@ -55,7 +56,7 @@ internal class NextActionWindow : InfoWindow
         }
 
         var cursor = ImGui.GetCursorPos() + ImGui.GetWindowPos();
-        var height = Service.Config.ControlProgressHeight;
+        var height = Service.Config.GetValue(PluginConfigFloat.ControlProgressHeight);
 
         ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);
 

@@ -6,7 +6,7 @@ internal interface ISearchable
 {
     CheckBoxSearch Parent { get; set; }
 
-    string SearchingKey { get; }
+    string SearchingKeys { get; }
 
-    void Draw(Job job);
+    void Draw(Job job, bool mustDraw = false);
 }

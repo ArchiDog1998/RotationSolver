@@ -18,17 +18,17 @@ internal class CooldownWindow : InfoWindow
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
                 var showItems = pair.OrderBy(a => a.SortKey).Where(a => a.IsInCooldown);
-                if (!Service.Config.ShowGCDCooldown) showItems = showItems.Where(i => !(i is IBaseAction a && a.IsGeneralGCD));
+                if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowGCDCooldown)) showItems = showItems.Where(i => !(i is IBaseAction a && a.IsGeneralGCD));
 
                 if (!showItems.Any()) continue;
-                if (!Service.Config.ShowItemsCooldown && showItems.Any(i => i is IBaseItem)) continue;
+                if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowItemsCooldown) && showItems.Any(i => i is IBaseItem)) continue;
 
                 ImGui.Text(pair.Key);
 
                 uint started = 0;
                 foreach (var item in showItems)
                 {
-                    if (started % Math.Max(1, Service.Config.CooldownActionOneLine) != 0)
+                    if (started % Math.Max(1, Service.Config.GetValue(Basic.Configuration.PluginConfigInt.CooldownActionOneLine)) != 0)
                     {
                         ImGui.SameLine();
                     }
@@ -43,7 +43,7 @@ internal class CooldownWindow : InfoWindow
 
     private static void DrawActionCooldown(IAction act)
     {
-        var width = Service.Config.CooldownWindowIconSize;
+        var width = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.CooldownWindowIconSize);
         var recast = act.RecastTimeOneChargeRaw;
         var elapsed = act.RecastTimeElapsedRaw;
         var shouldSkip = recast < 3 && act is IBaseAction a && !a.IsRealGCD;
@@ -52,7 +52,7 @@ internal class CooldownWindow : InfoWindow
         var winPos = ImGui.GetWindowPos();
 
         var r = -1f;
-        if (Service.Config.UseOriginalCooldown)
+        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOriginalCooldown))
         {
             r = !act.EnoughLevel ? 0: recast == 0 || !act.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
         }
@@ -63,7 +63,7 @@ internal class CooldownWindow : InfoWindow
 
         if (!act.EnoughLevel)
         {
-            if (!Service.Config.UseOriginalCooldown)
+            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOriginalCooldown))
             {
                 ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X, pos.Y) + winPos,
                     new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, progressCol);
@@ -71,7 +71,7 @@ internal class CooldownWindow : InfoWindow
         }
         else if (act.IsCoolingDown && !shouldSkip)
         {
-            if (!Service.Config.UseOriginalCooldown)
+            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOriginalCooldown))
             {
                 var ratio = recast == 0 || !act.EnoughLevel ? 0 : elapsed % recast / recast;
                 var startPos = new Vector2(pos.X + size.X * ratio, pos.Y) + winPos;
@@ -81,7 +81,7 @@ internal class CooldownWindow : InfoWindow
                 ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), black);
             }
 
-            ImGui.PushFont(ImGuiHelper.GetFont(Service.Config.CooldownFontSize));
+            ImGui.PushFont(ImGuiHelper.GetFont(Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.CooldownFontSize)));
             string time = recast == 0  ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;

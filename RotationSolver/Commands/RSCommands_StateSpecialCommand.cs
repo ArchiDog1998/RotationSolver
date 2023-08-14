@@ -13,7 +13,7 @@ public static partial class RSCommands
 
     private static void UpdateToast()
     {
-        if (!Service.Config.ShowInfoOnToast) return;
+        if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowInfoOnToast)) return;
 
         Svc.Toasts.ShowQuest(" " + EntryString, new Dalamud.Game.Gui.Toast.QuestToastOptions()
         {
@@ -26,12 +26,13 @@ public static partial class RSCommands
         if (DataCenter.State && !DataCenter.IsManual
             && stateType == StateCommandType.Auto)
         {
-            Service.Config.TargetingIndex += 1;
-            Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count;
+            var index = Service.Config.GetValue(Basic.Configuration.PluginConfigInt.TargetingIndex) + 1; 
+            index %= Service.Config.GlobalConfig.TargetingTypes.Count;
+            Service.Config.SetValue(Basic.Configuration.PluginConfigInt.TargetingIndex, index);
             ActionUpdater._cancelTime = DateTime.MinValue;
         }
 
-        if (Service.Config.ToggleManual 
+        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ToggleManual)
             && DataCenter.State && DataCenter.IsManual
             && stateType == StateCommandType.Manual)
         {
@@ -77,6 +78,6 @@ public static partial class RSCommands
         T type = doingSomething(role);
 
         //Saying out.
-        if (Service.Config.SayOutStateChanged) SpeechHelper.Speak(sayout(type, role));
+        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayOutStateChanged)) SpeechHelper.Speak(sayout(type, role));
     }
 }

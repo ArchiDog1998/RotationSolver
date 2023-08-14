@@ -79,7 +79,7 @@ internal static partial class TargetUpdater
 
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
-            if (Service.Config.OnlyAttackInView)
+            if (Service.Config.GetValue(PluginConfigBool.OnlyAttackInView))
             {
                 if (!Svc.GameGui.WorldToScreen(b.Position, out _)) return false;
             }
@@ -88,7 +88,6 @@ internal static partial class TargetUpdater
         });
 
         DataCenter.HostileTargets.Delay(GetHostileTargets(DataCenter.AllHostileTargets));
-
         DataCenter.CanInterruptTargets.Delay(DataCenter.HostileTargets.Where(ObjectHelper.CanInterrupt));
 
         DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Player.Object.ObjectId);
@@ -124,7 +123,7 @@ internal static partial class TargetUpdater
 
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
-            if(Svc.ClientState == null) return false;
+            if (Svc.ClientState == null) return false;
 
             IEnumerable<string> names = Array.Empty<string>();
             if(OtherConfiguration.NoHostileNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
@@ -133,11 +132,12 @@ internal static partial class TargetUpdater
             if (OtherConfiguration.NoHostileNames.TryGetValue(0, out var ns2))
                 names = names.Union(ns2);
 
-            if (names.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
+            if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(b.Name.ToString()).Success)) return false;
 
             var tarFateId = b.FateId();
             return tarFateId == 0 || tarFateId == fateId;
         });
+
 
         var hostiles = allAttackableTargets.Where(t =>
         {
@@ -163,7 +163,7 @@ internal static partial class TargetUpdater
 
     private static unsafe uint[] GetEnemies()
     {
-        if (!Service.Config.AddEnemyListToHostile) return Array.Empty<uint>();
+        if (!Service.Config.GetValue(PluginConfigBool.AddEnemyListToHostile)) return Array.Empty<uint>();
 
         var addons = Service.GetAddons<AddonEnemyList>();
 
@@ -351,7 +351,7 @@ internal static partial class TargetUpdater
         return loc == b.Position;
     });
 
-    static (float min, float max) GetHealRange() => (Service.Config.HealDelayMin, Service.Config.HealDelayMax);
+    static (float min, float max) GetHealRange() => (Service.Config.GetValue(PluginConfigFloat.HealDelayMin), Service.Config.GetValue(PluginConfigFloat.HealDelayMax));
 
     static RandomDelay _healDelay1 = new(GetHealRange);
     static RandomDelay _healDelay2 = new(GetHealRange);
@@ -374,10 +374,10 @@ internal static partial class TargetUpdater
             var ratio = GetHealingOfTimeRatio(player, StatusHelper.AreaHots);
 
             if (!DataCenter.CanHealAreaAbility)
-                DataCenter.CanHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaAbility(), job.GetHealthAreaAbilityHot(), ratio);
+                DataCenter.CanHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaAbility(), job.GetHealthAreaAbilityHot(), ratio);
 
             if (!DataCenter.CanHealAreaSpell)
-                DataCenter.CanHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaSpell(), job.GetHealthAreaSpellHot(), ratio);
+                DataCenter.CanHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaSpell(), job.GetHealthAreaSpellHot(), ratio);
         }
 
         //Delay

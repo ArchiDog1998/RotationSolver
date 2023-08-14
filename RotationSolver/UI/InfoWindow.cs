@@ -1,4 +1,5 @@
 ﻿using Dalamud.Interface.Windowing;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.UI;
 
@@ -16,14 +17,14 @@ internal abstract class InfoWindow : Window
 
     public override void PreDraw()
     {
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.InfoWindowBg);
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.GetValue(PluginConfigVector4.InfoWindowBg));
 
         Flags = BaseFlags;
-        if (Service.Config.IsInfoWindowNoInputs)
+        if (Service.Config.GetValue(PluginConfigBool.IsInfoWindowNoInputs))
         {
             Flags |= ImGuiWindowFlags.NoInputs;
         }
-        if (Service.Config.IsInfoWindowNoMove)
+        if (Service.Config.GetValue(PluginConfigBool.IsInfoWindowNoMove))
         {
             Flags |= ImGuiWindowFlags.NoMove;
         }

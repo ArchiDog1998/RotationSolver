@@ -1,4 +1,6 @@
-﻿using RotationSolver.ActionSequencer;
+﻿using ECommons.ImGuiMethods;
+using RotationSolver.ActionSequencer;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.UI;
 using System.Diagnostics;
 
@@ -10,7 +12,7 @@ internal class ActionSequencerUpdater
 
     static IEnumerable<MajorConditionSet> _conditionSet;
     public static MajorConditionSet RightSet => _conditionSet?
-        .ElementAtOrDefault(Service.Config.ActionSequencerIndex);
+        .ElementAtOrDefault(Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex));
 
     public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? Array.Empty<string>();
 
@@ -90,7 +92,7 @@ internal class ActionSequencerUpdater
         _conditionSet = _conditionSet.Where(c => c.Name != name);
     }
 
-    public static void DrawHeader()
+    public static void DrawHeader(float width)
     {
         var set = RightSet;
         bool hasSet = set != null;
@@ -103,17 +105,22 @@ internal class ActionSequencerUpdater
             ImGui.SameLine();
         }
 
+        var index = Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex);
+
         var combos = ConditionSetsName;
-        if (combos != null && combos.Length > Service.Config.ActionSequencerIndex)
+        if (combos != null && combos.Length > index)
         {
-            ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[Service.Config.ActionSequencerIndex]).X + 30);
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[index]).X + width);
         }
         else
         {
-            ImGui.SetNextItemWidth(30);
+            ImGui.SetNextItemWidth(width);
         }
 
-        ImGui.Combo("##MajorConditionCombo", ref Service.Config.ActionSequencerIndex, combos, combos.Length);
+        if(ImGui.Combo("##MajorConditionCombo", ref index, combos, combos.Length))
+        {
+            Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, index);
+        }
 
         if (hasSet)
         {
@@ -128,25 +135,25 @@ internal class ActionSequencerUpdater
 
         ImGui.SameLine();
 
-        if (ImGuiHelper.IconButton(FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
+        if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
         {
             AddNew();
         }
 
         ImGui.SameLine();
-        if (ImGuiHelper.IconButton(FontAwesomeIcon.Folder, "##OpenDefinationFolder"))
+        if (ImGuiEx.IconButton(FontAwesomeIcon.Folder, "##OpenDefinationFolder"))
         {
             Process.Start("explorer.exe", _actionSequencerFolder);
         }
 
         ImGui.SameLine();
-        if (ImGuiHelper.IconButton(FontAwesomeIcon.Save, "##SaveTheConditions"))
+        if (ImGuiEx.IconButton(FontAwesomeIcon.Save, "##SaveTheConditions"))
         {
             SaveFiles();
         }
 
         ImGui.SameLine();
-        if (ImGuiHelper.IconButton(FontAwesomeIcon.FileDownload, "##LoadTheConditions"))
+        if (ImGuiEx.IconButton(FontAwesomeIcon.FileDownload, "##LoadTheConditions"))
         {
             LoadFiles();
         }

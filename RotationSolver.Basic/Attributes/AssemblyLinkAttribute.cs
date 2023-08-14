@@ -12,10 +12,14 @@ public class AssemblyLinkAttribute : Attribute
     public string Donate { get; set; }
 
     /// <summary>
-    /// A link for changelog.
+    /// A link for your user name in GitHub.
     /// </summary>
-    public string ChangeLog { get; set; }
+    public string UserName { get; set; }
 
+    /// <summary>
+    /// A link for the repo in your GitHub.
+    /// </summary>
+    public string Repository { get; set; }
     /// <summary>
     /// Constructer.
     /// </summary>
@@ -23,12 +27,11 @@ public class AssemblyLinkAttribute : Attribute
     /// <param name="helpLink"></param>
     /// <param name="changeLog"></param>
     /// <param name="donate"><see cref="Donate"/></param>
-    [Obsolete()]
+    [Obsolete("Never use it anymore, it'll be deleted in a month!", true)]
     public AssemblyLinkAttribute(string supportLink = null, string helpLink = null,
         string changeLog = null, string donate = null)
     {
         Donate = donate;
-        ChangeLog = changeLog;
     }
 
     /// <summary>

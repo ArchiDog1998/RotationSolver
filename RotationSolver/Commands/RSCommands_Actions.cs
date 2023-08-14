@@ -1,9 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
@@ -28,7 +26,7 @@ namespace RotationSolver.Commands
 
             //Do not click the button in random time.
             if (DateTime.Now - _lastClickTime < TimeSpan.FromMilliseconds(new Random().Next(
-                (int)(Service.Config.ClickingDelayMin * 1000), (int)(Service.Config.ClickingDelayMax * 1000)))) return  false;
+                (int)(Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.ClickingDelayMin) * 1000), (int)(Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.ClickingDelayMax) * 1000)))) return  false;
             _lastClickTime = DateTime.Now;
 
             if (!isGCD && ActionUpdater.NextAction is IBaseAction act1 && act1.IsRealGCD) return false;
@@ -39,7 +37,7 @@ namespace RotationSolver.Commands
         internal static uint _lastActionID;
         public static void DoAction()
         {
-            var wrong = new Random().NextDouble() < Service.Config.MistakeRatio && ActionUpdater.WrongAction != null;
+            var wrong = new Random().NextDouble() < Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.MistakeRatio) && ActionUpdater.WrongAction != null;
             var nextAction = wrong ? ActionUpdater.WrongAction : ActionUpdater.NextAction;
             if (nextAction == null) return;
 
@@ -55,7 +53,7 @@ namespace RotationSolver.Commands
             //    Svc.Chat.Print($"Will Do {acti}");
 #endif
 
-            if (Service.Config.KeyBoardNoise)
+            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.KeyBoardNoise))
             {
                 PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
             }
@@ -67,7 +65,7 @@ namespace RotationSolver.Commands
 
                 if (nextAction is BaseAction act)
                 {
-                    if (Service.Config.KeyBoardNoise)
+                    if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.KeyBoardNoise))
                         Task.Run(() => PulseSimulation(nextAction.AdjustedID));
 
                     if (act.ShouldEndSpecial) ResetSpecial();
@@ -75,7 +73,7 @@ namespace RotationSolver.Commands
                     //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (act.Target != null && (Service.Config.TargetFriendly && !DataCenter.IsManual || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
+                    if (act.Target != null && (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SwitchTargetFriendly) && !DataCenter.IsManual || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
                         || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
                         && act.Target.IsNPCEnemy()))
                     {
@@ -92,12 +90,12 @@ namespace RotationSolver.Commands
             started = true;
             try
             {
-                for (int i = 0; i < new Random().Next(Service.Config.KeyBoardNoiseMin,
-                    Service.Config.KeyBoardNoiseMax); i++)
+                for (int i = 0; i < new Random().Next(Service.Config.GetValue(Basic.Configuration.PluginConfigInt.KeyBoardNoiseMin),
+                    Service.Config.GetValue(Basic.Configuration.PluginConfigInt.KeyBoardNoiseMax)); i++)
                 {
                     PreviewUpdater.PulseActionBar(id);
-                    var time = Service.Config.ClickingDelayMin + 
-                        new Random().NextDouble() * (Service.Config.ClickingDelayMax - Service.Config.ClickingDelayMin);
+                    var time = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.ClickingDelayMin) + 
+                        new Random().NextDouble() * (Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.ClickingDelayMax) - Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.ClickingDelayMin));
                     await Task.Delay((int)(time * 1000));
                 }
             }
@@ -133,18 +131,19 @@ namespace RotationSolver.Commands
             {
                 CancelState();
             }
-            else if (Service.Config.AutoOffWhenDead 
+            else if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.AutoOffWhenDead)
                 && Player.Available
                 && Player.Object.CurrentHp == 0)
             {
                 CancelState();
             }
-            else if (Service.Config.AutoOffCutScene
+            else if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.AutoOffCutScene)
                 && Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent])
             {
                 CancelState();
             }
-            else if (Service.Config.AutoOffBetweenArea && (
+            else if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.AutoOffBetweenArea) 
+                && (
                 Svc.Condition[ConditionFlag.BetweenAreas]
                 || Svc.Condition[ConditionFlag.BetweenAreas51]))
             {
@@ -157,7 +156,8 @@ namespace RotationSolver.Commands
                 CancelState();
             }
             //Auto manual on being attacked by someone.
-            else if (Service.Config.StartOnAttackedBySomeone && target != null
+            else if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.StartOnAttackedBySomeone)
+                && target != null
                 && !target.IsDummy())
             {
                 if(!DataCenter.State)
@@ -166,7 +166,8 @@ namespace RotationSolver.Commands
                 }
             }
             //Auto start at count Down.
-            else if (Service.Config.StartOnCountdown && Service.CountDownTime > 0)
+            else if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.StartOnCountdown)
+                && Service.CountDownTime > 0)
             {
                 _lastCountdownTime = Service.CountDownTime;
                 if (!DataCenter.State)

@@ -1,4 +1,5 @@
 ﻿using ECommons.ExcelServices;
+using ImGuiScene;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
@@ -12,9 +13,9 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     public override string Name => _config.ToName();
 
-    public override string Description => _config.ToDescription();
+    public override string Description => Action == ActionID.None ? _config.ToDescription() : Action.ToString();
 
-    public override Action DrawTooltip => _config.ToAction();
+    public override LinkDescription[] Tooltips => _config.ToAction();
 
     public override string Command => _config.ToCommand();
 
@@ -26,23 +27,25 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     protected override bool GetValue(Job job)
     {
-        return Service.ConfigNew.GetValue(_config);
+        return Service.Config.GetValue(_config);
     }
 
     protected override void SetValue(Job job, bool value)
     {
-        Service.ConfigNew.SetValue(_config, value);
+        Service.Config.SetValue(_config, value);
     }
 
-    public override void ResetToDefault()
+    public override void ResetToDefault(Job job)
     {
-        Service.ConfigNew.SetValue(_config, Service.ConfigNew.GetDefault(_config));
+        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
     }
 }
 
 internal abstract class CheckBoxSearch : Searchable
 {
     public ISearchable[] Children { get; protected set; }
+
+    public ActionID Action { get; init; } = ActionID.None;
 
     public CheckBoxSearch(params ISearchable[] children)
     {
@@ -56,42 +59,83 @@ internal abstract class CheckBoxSearch : Searchable
     protected abstract bool GetValue(Job job);
     protected abstract void SetValue(Job job, bool value);
 
-    public override void Draw(Job job)
+    protected virtual void DrawChildren(Job job)
     {
+        var lastIs = false;
+        foreach (var child in Children)
+        {
+            var thisIs = child is CheckBoxSearch c && c.Action != ActionID.None && IconSet.GetTexture(c.Action, out var texture);
+            if (lastIs && thisIs)
+            {
+                ImGui.SameLine();
+            }
+            lastIs = thisIs;
+
+            child.Draw(job);
+        }
+    }
+
+    protected override void DrawMain(Job job)
+    {
+        var hasChild = Children != null && Children.Length > 0;
+        TextureWrap texture = null;
+        var hasIcon = Action != ActionID.None && IconSet.GetTexture(Action, out texture);
+
         var enable = GetValue(job);
         if (ImGui.Checkbox($"##{ID}", ref enable))
         {
             SetValue(job, enable);
         }
-        if (ImGui.IsItemHovered()) ShowTooltip();
+        if (ImGui.IsItemHovered()) ShowTooltip(job);
+
+        ImGui.SameLine();
 
         var name = $"{Name}##Config_{ID}";
-        if (enable)
+        if(hasIcon)
         {
-            var x = ImGui.GetCursorPosX();
-            var drawBody = ImGui.TreeNode(name) && Children != null && Children.Length > 0;
-            if (ImGui.IsItemHovered()) ShowTooltip();
-
-            if (drawBody)
+            ImGui.BeginGroup();
+            var cursor = ImGui.GetCursorPos();
+            var size = ImGuiHelpers.GlobalScale * 32;
+            if (RotationConfigWindow.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size, ID))
             {
-                ImGui.SetCursorPosX(x);
-                ImGui.BeginGroup();
-                foreach (var child in Children)
+                SetValue(job, !enable);
+            }
+            RotationConfigWindow.DrawActionOverlay(cursor, size, enable ? 1 : 0);
+            ImGui.EndGroup();
+
+            if (ImGui.IsItemHovered()) ShowTooltip(job);
+        }
+        else if (hasChild)
+        {
+            if (enable)
+            {
+                var x = ImGui.GetCursorPosX();
+                var drawBody = ImGui.TreeNode(name);
+                if (ImGui.IsItemHovered()) ShowTooltip(job);
+
+                if (drawBody)
                 {
-                    child.Draw(job);
+                    ImGui.SetCursorPosX(x);
+                    ImGui.BeginGroup();
+                    DrawChildren(job);
+                    ImGui.EndGroup();
+                    ImGui.TreePop();
                 }
-                ImGui.EndGroup();
-                ImGui.TreePop();
+            }
+            else
+            {
+                ImGui.PushStyleColor(ImGuiCol.HeaderHovered, 0x0);
+                ImGui.PushStyleColor(ImGuiCol.HeaderActive, 0x0);
+                ImGui.TreeNodeEx(name, ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen);
+                if (ImGui.IsItemHovered()) ShowTooltip(job, false);
+
+                ImGui.PopStyleColor(2);
             }
         }
         else
         {
-            ImGui.PushStyleColor(ImGuiCol.HeaderHovered, 0x0);
-            ImGui.PushStyleColor(ImGuiCol.HeaderActive, 0x0);
-            ImGui.TreeNodeEx(name, ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen);
-            if (ImGui.IsItemHovered()) ShowTooltip();
-
-            ImGui.PopStyleColor(2);
+            ImGui.TextWrapped(Name);
+            if (ImGui.IsItemHovered()) ShowTooltip(job, false);
         }
     }
 }

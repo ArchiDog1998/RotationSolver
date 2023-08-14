@@ -1,6 +1,4 @@
-﻿using ImGuiScene;
-
-namespace RotationSolver.Basic.Attributes;
+﻿namespace RotationSolver.Basic.Attributes;
 
 /// <summary>
 /// The link to a image or web about your rotation.
@@ -9,37 +7,33 @@ namespace RotationSolver.Basic.Attributes;
 public class LinkDescriptionAttribute : Attribute
 {
     /// <summary>
-    /// Image from url.
+    /// The description.
     /// </summary>
-    public TextureWrap Texture => IconSet.GetTexture(Path);
-
-    /// <summary>
-    /// Description.
-    /// </summary>
-    public string Description { get; set; }
-
-    /// <summary>
-    /// Url.
-    /// </summary>
-    public string Path { get; set; }
+    public LinkDescription LinkDescription { get; set; }
 
     /// <summary>
     /// Constructer.
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="url"></param>
     /// <param name="description"></param>
-    [Obsolete]
-    public LinkDescriptionAttribute(string path, string description = "")
+    public LinkDescriptionAttribute(string url, string description = "")
     {
-        Path = path;
-        Description = description;
+        LinkDescription = new() { Url = url, Description = description };
     }
+}
+
+/// <summary>
+/// Link description itself.
+/// </summary>
+public struct LinkDescription
+{
+    /// <summary>
+    /// Description.
+    /// </summary>
+    public string Description { get; init; }
 
     /// <summary>
-    /// 
+    /// Url.
     /// </summary>
-    public LinkDescriptionAttribute()
-    {
-        
-    }
+    public string Url { get; init; }
 }

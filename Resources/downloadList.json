@@ -1,8 +1,8 @@
 [
-  "https://github.com/ArchiDog1998/FFXIVRotations/releases/latest/download/DefaultRotations.dll",
-  "https://github.com/ArchiDog1998/FFXIVRotations/releases/latest/download/ExtraRotations.dll",
-  "https://github.com/RiotNOR/CustomRotations/releases/download/latest/RiotsRotations.dll",
-  "https://github.com/IncognitoWater/IncognitoWaterRotations/releases/latest/download/IcWaRotations.dll",
-  "https://github.com/BrakusTapus/KirboRotations/releases/latest/download/KirboRotations.dll",
-  "https://github.com/thunderebolt/BoltsRotations/releases/latest/download/BoltsRotations.dll"
+  "ArchiDog1998|FFXIVRotations|DefaultRotations",
+  "ArchiDog1998|FFXIVRotations|ExtraRotations",
+  "RiotNOR|CustomRotations|RiotsRotations",
+  "IncognitoWater|IncognitoWaterRotations|IcWaRotations",
+  "BrakusTapus|KirboRotations|KirboRotations",
+  "thunderebolt|BoltsRotations|BoltsRotations"
 ]

@@ -1,5 +1,5 @@
 
-# [![](docs/RotationSolverIcon_128.png)](https://archidog1998.github.io/RotationSolver/#/) **Rotation Solver**
+# [![](Images/Logo.gif)](https://archidog1998.github.io/RotationSolver/#/) **Rotation Solver**
 
 ![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/RotationSolver/latest/total.svg?style=for-the-badge)
 ![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/RotationSolver/total.svg?style=for-the-badge)

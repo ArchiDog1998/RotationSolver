@@ -1,7 +1,5 @@
 ﻿using Dalamud.Interface.Colors;
-using Dalamud.Logging;
 using RotationSolver.Data;
-using RotationSolver.Localization;
 using System.Diagnostics;
 
 namespace RotationSolver.Helpers;
@@ -23,7 +21,7 @@ internal static class RotationHelper
         var location = assembly.Location;
         var company = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
 
-        var assemblyInfo = new AssemblyInfo(name, company, location, string.Empty);
+        var assemblyInfo = new AssemblyInfo(name, company, location, string.Empty, company, name, DateTime.Now);
 
         _assemblyInfos[assembly] = assemblyInfo;
 
@@ -60,12 +58,15 @@ internal static class RotationHelper
         var assemblyName = assembly.GetName().Name;
         var author = GetAuthor(filePath, assemblyName);
 
-        var attr = assembly.GetCustomAttribute<AssemblyLinkAttribute>();
+        var link = assembly.GetCustomAttribute<AssemblyLinkAttribute>();
         var assemblyInfo = new AssemblyInfo(
             assemblyName,
             author,
             filePath,
-            attr?.Donate);
+            link?.Donate,
+            link?.UserName,
+            link?.Repository,
+            DateTime.Now);
 
         var existingAssembly = GetAssemblyFromPath(filePath);
         if (existingAssembly != null)

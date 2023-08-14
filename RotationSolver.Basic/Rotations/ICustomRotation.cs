@@ -9,6 +9,11 @@ namespace RotationSolver.Basic.Rotations;
 public interface ICustomRotation : ITexture
 {
     /// <summary>
+    /// Whether show the status in the formal page.
+    /// </summary>
+    bool ShowStatus { get; }
+
+    /// <summary>
     /// Is this rotation valid.
     /// </summary>
     bool IsValid { get; }

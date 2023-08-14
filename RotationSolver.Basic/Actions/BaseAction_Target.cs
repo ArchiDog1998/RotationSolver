@@ -6,6 +6,7 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -154,7 +155,7 @@ public partial class BaseAction
 
     private bool TargetAreaMove(float range, bool mustUse)
     {
-        if (Service.Config.MoveAreaActionFarthest)
+        if (Service.Config.GetValue(PluginConfigBool.MoveAreaActionFarthest))
         {
             Vector3 pPosition = Player.Object.Position;
             float rotation = Player.Object.Rotation;
@@ -174,9 +175,9 @@ public partial class BaseAction
 
     private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
-        if (!Service.Config.GetValue(SettingsCommand.UseGroundBeneficialAbility)) return false;
+        if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbility)) return false;
 
-        if (Service.Config.BeneficialAreaOnTarget && Svc.Targets.Target != null)
+        if (Service.Config.GetValue(PluginConfigBool.BeneficialAreaOnTarget) && Svc.Targets.Target != null)
         {
             Position = Svc.Targets.Target.Position;
         }
@@ -236,7 +237,7 @@ public partial class BaseAction
 
         var availableCharas = DataCenter.PartyMembers.Where(player => player.CurrentHp != 0);
 
-        if (Service.Config.GetValue(SettingsCommand.TargetAllForFriendly) ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
+        if (Service.Config.GetValue(PluginConfigBool.TargetAllForFriendly) ? _action.CanTargetFriendly : (ActionID)ID == ActionID.AethericMimicry)
         {
             availableCharas = availableCharas.Union(DataCenter.AllianceMembers);
         }
@@ -256,7 +257,7 @@ public partial class BaseAction
         }
         else
         {
-            if(Service.Config.OnlyHotOnTanks && IsEot)
+            if (Service.Config.GetValue(PluginConfigBool.OnlyHotOnTanks) && IsEot)
             {
                 availableCharas = availableCharas.Where(b => b.IsJobCategory(JobRole.Tank));
             }
@@ -297,10 +298,10 @@ public partial class BaseAction
             return false;
         }
 
-        if (Service.Config.ChooseAttackMark)
+        if (Service.Config.GetValue(PluginConfigBool.ChooseAttackMark))
         {
             var b = MarkingHelper.GetAttackMarkChara(DataCenter.HostileTargets);
-            if (b != null && ChoiceTarget(GetMostObjects(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), Service.Config.CanAttackMarkAOE ?  aoeCount : int.MaxValue), mustUse) != null)
+            if (b != null && ChoiceTarget(GetMostObjects(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), Service.Config.GetValue(PluginConfigBool.CanAttackMarkAOE) ?  aoeCount : int.MaxValue), mustUse) != null)
             {
                 target = b;
                 return true;
@@ -332,8 +333,8 @@ public partial class BaseAction
             return true;
         }
 
-        if (Service.Config.GetValue(SettingsCommand.UseAOEAction) 
-            && Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) || mustUse)
+        if (Service.Config.GetValue(PluginConfigBool.UseAOEAction) 
+            && Service.Config.GetValue(PluginConfigBool.UseAOEWhenManual) || mustUse)
         {
             if (GetMostObjects(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), aoeCount).Contains(b))
             {
@@ -361,13 +362,13 @@ public partial class BaseAction
             //not use when aoe.
             if (DataCenter.IsManual)
             {
-                if (!Service.Config.GetValue(SettingsCommand.UseAOEWhenManual) && !mustUse) return false;
+                if (!Service.Config.GetValue(PluginConfigBool.UseAOEWhenManual) && !mustUse) return false;
             }
 
             var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), EffectRange);
             if (tars.Count() < aoeCount) return false;
             
-            if (Service.Config.NoNewHostiles && TargetFilter.GetObjectInRadius(DataCenter.AllHostileTargets, EffectRange)
+            if (Service.Config.GetValue(PluginConfigBool.NoNewHostiles) && TargetFilter.GetObjectInRadius(DataCenter.AllHostileTargets, EffectRange)
                 .Any(t => t.TargetObject == null)) return false;
         }
 
@@ -418,7 +419,7 @@ public partial class BaseAction
                 count++;
             }
         }
-        if (Service.Config.NoNewHostiles)
+        if (Service.Config.GetValue(PluginConfigBool.NoNewHostiles))
         {
             if (DataCenter.AllHostileTargets.Where(t => t.TargetObject == null)
                 .Any(t => CanGetTarget(target, t))) return 0;
@@ -506,7 +507,7 @@ public partial class BaseAction
 
         if (TargetStatus == null) return true;
 
-        return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Config.AddDotGCDCount, 
+        return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Config.GetValue(DataCenter.Job, JobConfigInt.AddDotGCDCount), 
             0, true, TargetStatus);
     }
 
@@ -537,10 +538,10 @@ public partial class BaseAction
     {
         get
         {
-            if (!Service.Config.GetValue(SettingsCommand.UseAOEAction)) return true;
+            if (!Service.Config.GetValue(PluginConfigBool.UseAOEAction)) return true;
 
-            return Service.Config.ChooseAttackMark
-                && !Service.Config.CanAttackMarkAOE
+            return Service.Config.GetValue(PluginConfigBool.ChooseAttackMark)   
+                && !Service.Config.GetValue(PluginConfigBool.CanAttackMarkAOE)  
                 && MarkingHelper.HaveAttackChara(DataCenter.HostileTargets);
         }
     }

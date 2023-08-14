@@ -1,6 +1,11 @@
-﻿using ECommons.ImGuiMethods;
+﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using ECommons.ImGuiMethods;
 using ImGuiScene;
+using Lumina.Data.Parsing;
+using Lumina.Excel.GeneratedSheets;
 using Svg;
+using System.Collections.Generic;
 using System.Drawing.Imaging;
 
 namespace RotationSolver.Basic.Data;
@@ -95,13 +100,12 @@ public static class IconSet
     }
 
     /// <summary>
-    /// Get Texture form texture.
+    /// 
     /// </summary>
     /// <param name="text"></param>
+    /// <param name="texture"></param>
     /// <returns></returns>
-    [Obsolete]
-    public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
-    public static void GetTexture(this ITexture text, out TextureWrap texture) => GetTexture(text?.IconID ?? 0, out texture);
+    public static bool GetTexture(this ITexture text, out TextureWrap texture) => GetTexture(text?.IconID ?? 0, out texture);
 
     /// <summary>
     /// Get Texture from id.
@@ -114,56 +118,65 @@ public static class IconSet
         => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out var texture) ? texture :
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture) ? texture : null;
 
-    public static bool GetTexture(uint id, out TextureWrap texture)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="texture"></param>
+    /// <param name="default"></param>
+    /// <returns></returns>
+    public static bool GetTexture(uint id, out TextureWrap texture, uint @default = 0)
         => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out texture)
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, false, out texture)
         || ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture);
 
     /// <summary>
-    /// Get Texture from path.
+    /// 
     /// </summary>
     /// <param name="path"></param>
+    /// <param name="texture"></param>
     /// <returns></returns>
-    [Obsolete]
-    public static TextureWrap GetTexture(string path)
-        => GetTexture(path, out var texture) ? texture : null;
-
     public static bool GetTexture(string path, out TextureWrap texture)
-        => ThreadLoadImageHandler.TryGetTextureWrap(path, out texture);
+        => ThreadLoadImageHandler.TryGetTextureWrap(path, out texture)
+        || (path.StartsWith("http:", StringComparison.OrdinalIgnoreCase) || path.StartsWith("https:", StringComparison.OrdinalIgnoreCase))
+        && GetTexture((uint)(62571 + Environment.TickCount / 300 % 3), out texture); // loading pics.
 
-    static readonly Dictionary<uint, uint> _actionIcons = new();
+    private static readonly Dictionary<uint, uint> _actionIcons = new();
 
     /// <summary>
-    /// Get Texture from action.
+    /// 
     /// </summary>
     /// <param name="action"></param>
+    /// <param name="texture"></param>
     /// <param name="isAdjust"></param>
     /// <returns></returns>
-    public static TextureWrap GetTexture(this IAction action, bool isAdjust = true)
+    public static bool GetTexture(this IAction action, out TextureWrap texture, bool isAdjust = true)
     {
         uint iconId = 0;
-        if (action != null )
+        if (action != null)
         {
             var id = isAdjust ? action.AdjustedID : action.ID;
 
             if (!_actionIcons.TryGetValue(id, out iconId))
             {
-                iconId = id == action.ID ? action.IconID : action is IBaseAction 
+                iconId = id == action.ID ? action.IconID : action is IBaseAction
                     ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
-                    : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(id).Icon;
+                    : Service.GetSheet<Item>().GetRow(id).Icon;
 
                 _actionIcons[id] = iconId;
             }
         }
-        return GetTexture(iconId);
+        return GetTexture(iconId, out texture);
     }
 
     /// <summary>
-    /// Get texture from action Id.
+    /// 
     /// </summary>
     /// <param name="actionID"></param>
+    /// <param name="texture"></param>
     /// <param name="isAction"></param>
     /// <returns></returns>
-    public static TextureWrap GetTexture(this ActionID actionID, bool isAction = true)
+    public static bool GetTexture(this ActionID actionID, out TextureWrap texture, bool isAction = true)
     {
         var id = (uint)actionID;
 
@@ -171,11 +184,11 @@ public static class IconSet
         {
             iconId = isAction
                 ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
-                : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(id).Icon;
+                : Service.GetSheet<Item>().GetRow(id).Icon;
 
             _actionIcons[id] = iconId;
         }
-        return GetTexture(iconId);
+        return GetTexture(iconId, out texture);
     }
 
     private static readonly Dictionary<IconType, uint[]> _icons = new()
@@ -325,5 +338,55 @@ public static class IconSet
     public static uint GetJobIcon(ICustomRotation combo, IconType type)
     {
         return _icons[type][(uint)combo.Jobs[0] - 1];
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="job"></param>
+    /// <returns></returns>
+    public static uint GetJobIcon(Job job)
+    {
+        return GetJobIcon(job, Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.GetJobRole() ?? JobRole.None);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="job"></param>
+    /// <param name="role"></param>
+    /// <returns></returns>
+    public static uint GetJobIcon(Job job, JobRole role)
+    {
+        IconType type = IconType.Gold;
+
+        switch (role)
+        {
+            case JobRole.Tank:
+                type = IconType.Blue;
+                break;
+            case JobRole.RangedPhysical:
+            case JobRole.RangedMagical:
+            case JobRole.Melee:
+                type = IconType.Red;
+                break;
+            case JobRole.Healer:
+                type = IconType.Green;
+                break;
+        }
+
+        return GetJobIcon(job, type);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="job"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static uint GetJobIcon(Job job, IconType type)
+    {
+        if (job == Job.ADV) return 62143;
+        return _icons[type][(uint)job - 1];
     }
 }

@@ -1,20 +1,28 @@
 ﻿using Dalamud.Configuration;
+using Dalamud.Logging;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
-using ECommons.GameHelpers;
 
 namespace RotationSolver.Basic.Configuration;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-[Serializable] public class PluginConfig : IPluginConfiguration
+public class PluginConfig : IPluginConfiguration
 {
-    public Dictionary<Job, JobConfig> JobsConfig { get; private set; } = new();
+    public static PluginConfig Create()
+    {
+        var result = new PluginConfig();
+        result.SetValue(Job.WAR, JobConfigInt.HostileType, 0);
+        result.SetValue(Job.DRK, JobConfigInt.HostileType, 0);
+        result.SetValue(Job.PLD, JobConfigInt.HostileType, 0);
+        result.SetValue(Job.GNB, JobConfigInt.HostileType, 0);
+        return result;
+    }
+
+    [JsonProperty]
+    private Dictionary<Job, JobConfig> _jobsConfig = new();
     public GlobalConfig GlobalConfig { get; private set; } = new();
     public int Version { get; set; } = 7;
-
-    public string GetValue(Job job, JobConfigString config)
-        => GetJobConfig(job).Strings.GetValue(config);
 
     public int GetValue(Job job, JobConfigInt config)
         => GetJobConfig(job).Ints.GetValue(config);
@@ -34,9 +42,6 @@ namespace RotationSolver.Basic.Configuration;
     public Vector4 GetValue(PluginConfigVector4 config)
         => GlobalConfig.Vectors.GetValue(config);
 
-    public string GetDefault(Job job, JobConfigString config)
-        => GetJobConfig(job).Strings.GetDefault(config);
-
     public int GetDefault(Job job, JobConfigInt config)
         => GetJobConfig(job).Ints.GetDefault(config);
 
@@ -55,57 +60,96 @@ namespace RotationSolver.Basic.Configuration;
     public Vector4 GetDefault(PluginConfigVector4 config)
         => GlobalConfig.Vectors.GetDefault(config);
 
-    public void SetValue(Job job, JobConfigString config, string value)
-        => GetJobConfig(job).Strings.SetValue(config, value);
-
     public void SetValue(Job job, JobConfigInt config, int value)
-        => GetJobConfig(job).Ints.SetValue(config, value);
+    {
+        var attr = config.GetAttribute<DefaultAttribute>();
+        if (attr != null)
+        {
+            var min = attr.Min; var max = attr.Max;
+            if (min != null && max != null)
+            {
+                value = Math.Min(Math.Max(value, (int)min), (int)max);
+            }
+        }
+        GetJobConfig(job).Ints.SetValue(config, value);
+    }
 
     public void SetValue(Job job, JobConfigFloat config, float value)
-        => GetJobConfig(job).Floats.SetValue(config, value);
+    {
+        var attr = config.GetAttribute<DefaultAttribute>();
+        if (attr != null)
+        {
+            var min = attr.Min; var max = attr.Max;
+            if (min != null && max != null)
+            {
+                value = MathF.Min(MathF.Max(value, (float)min), (float)max);
+            }
+        }
+        GetJobConfig(job).Floats.SetValue(config, value);
+    }
 
     public void SetValue(PluginConfigInt config, int value)
-        => GlobalConfig.Ints.SetValue(config, value);
-
+    {
+        var attr = config.GetAttribute<DefaultAttribute>();
+        if (attr != null)
+        {
+            var min = attr.Min; var max = attr.Max;
+            if (min != null && max != null)
+            {
+                value = Math.Min(Math.Max(value, (int)min), (int)max);
+            }
+        }
+        GlobalConfig.Ints.SetValue(config, value);
+    }
     public void SetValue(PluginConfigBool config, bool value)
         => GlobalConfig.Bools.SetValue(config, value);
 
     public void SetValue(PluginConfigFloat config, float value)
-        => GlobalConfig.Floats.SetValue(config, value);
+    {
+        var attr = config.GetAttribute<DefaultAttribute>();
+        if (attr != null)
+        {
+            var min = attr.Min; var max = attr.Max;
+            if (min != null && max != null)
+            {
+                value = MathF.Min(MathF.Max(value, (float)min), (float)max);
+            }
+        }
+        GlobalConfig.Floats.SetValue(config, value);
+    }
 
     public void SetValue(PluginConfigVector4 config, Vector4 value)
         => GlobalConfig.Vectors.SetValue(config, value);
 
     public JobConfig GetJobConfig(Job job)
     {
-        if (JobsConfig.TryGetValue(job, out var config)) return config;
-        return JobsConfig[job] = new JobConfig();
+        if (_jobsConfig.TryGetValue(job, out var config)) return config;
+        return _jobsConfig[job] = new JobConfig();
     }
 
     public void Save()
-        => Svc.PluginInterface.SavePluginConfig(this);
+    {
+#if DEBUG
+        PluginLog.Information("Saved configurations.");
+#endif
+        Svc.PluginInterface.SavePluginConfig(this);
+    }
 }
 
 #region Job Config
 [Serializable] public class JobConfig
 {
-    public DictionConfig<JobConfigString, string> Strings { get; private set; } = new();
-    public DictionConfig<JobConfigFloat, float> Floats { get; private set; } = new();
+    public string RotationChoice { get; set; }
+    public DictionConfig<JobConfigFloat, float> Floats { get; set; } = new();
 
-    public DictionConfig<JobConfigInt, int> Ints { get; private set; } = new();
-    public Dictionary<string, Dictionary<string, string>> RotationsConfigurations { get; private set; } = new ();
-}
-
-public enum JobConfigString : byte
-{
-    [Default("")]RotationChoice,
+    public DictionConfig<JobConfigInt, int> Ints { get; set; } = new();
+    public Dictionary<string, Dictionary<string, string>> RotationsConfigurations { get; set; } = new ();
 }
 
 public enum JobConfigInt : byte
 {
-    //TODO : Type binding by jobs.
     [Default(2)] HostileType,
-    [Default(2)] AddDotGCDCount,
+    [Default(2, 0, 3)] AddDotGCDCount,
 }
 
 public enum JobConfigFloat : byte
@@ -136,7 +180,7 @@ public enum JobConfigFloat : byte
         { PluginConfigVector4.TargetColor, new (1f, 0.2f, 0f, 0.8f)},
         { PluginConfigVector4.SubTargetColor, new (1f, 0.9f, 0f, 0.8f)},
         { PluginConfigVector4.ControlWindowLockBg, new (0, 0, 0, 0.6f)},
-        { PluginConfigVector4.ControlWindowUnlockBg, new (0, 0, 0, 0.9f)},
+        { PluginConfigVector4.ControlWindowUnlockBg, new (0, 0, 0, 0.75f)},
         { PluginConfigVector4.InfoWindowBg, new (0, 0, 0, 0.4f)},
     });
 
@@ -148,6 +192,8 @@ public enum JobConfigFloat : byte
     public List<ActionEventInfo> Events { get; private set; } = new ();
 
     public string[] OtherLibs = Array.Empty<string>();
+
+    public string[] GitHubLibs = Array.Empty<string>();
     public List<TargetingType> TargetingTypes { get; set; } = new List<TargetingType>();
 
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
@@ -158,19 +204,21 @@ public enum PluginConfigInt : byte
 {
     [Default(0)] ActionSequencerIndex,
     [Default(0)] PoslockModifier,
-    [Default(0)] LessMPNoRaise,
-    [Default(2)] KeyBoardNoiseMin,
+    [Default(0, 0, 10000)] LessMPNoRaise,
+
+    [Default(2, 0, 5)] KeyBoardNoiseMin,
     [Default(3)] KeyBoardNoiseMax,
 
     [Default(0)] TargetingIndex,
 
     [Obsolete]
-    [Default(15)] CooldownActionOneLine,
-
+    [Default(15, 1, 30)] CooldownActionOneLine,
+    [Default(0, 0, 100)] MoveTargetAngle
 }
 
 public enum PluginConfigBool : byte
 {
+    [Default(true)] DrawIconAnimation,
     [Default(true)] AutoOffBetweenArea,
     [Default(true)] AutoOffCutScene,
     [Default(true)] AutoOffWhenDead,
@@ -196,7 +244,6 @@ public enum PluginConfigBool : byte
     [Default(false)] UseTinctures,
     [Default(false)] UseHealPotions,
 
-    [Default(true)] DrawPositional,
     [Default(true)] DrawMeleeOffset,
 
     [Default(true)] ShowMoveTarget,
@@ -216,7 +263,7 @@ public enum PluginConfigBool : byte
     [Default(false)] NoNewHostiles,
 
     [Default(true)] UseHealWhenNotAHealer,
-    [Default(false)] TargetFriendly,
+    [Default(false)] SwitchTargetFriendly,
 
     [Default(true)] InterruptibleMoreCheck,
 
@@ -250,78 +297,103 @@ public enum PluginConfigBool : byte
     [Default(true)] TargetHuntingRelicLevePriority,
     [Default(true)] TargetQuestPriority,
     [Default(true)] ShowToastsAboutDoAction,
+
+    [Default(true)] UseAOEAction,
+    [Default(false)] UseAOEWhenManual,
+    [Default(false)] PreventActions,
+    [Default(false)] PreventActionsDuty,
+    [Default(true)] AutoBurst,
+    [Default(true)] AutoHeal,
+    [Default(true)] UseAbility,
+    [Default(true)] UseDefenseAbility,
+    [Default(true)] AutoTankStance,
+    [Default(true)] AutoProvokeForTank,
+    [Default(true)] AutoUseTrueNorth,
+    [Default(true)] RaisePlayerBySwift,
+    [Default(true)] AutoSpeedOutOfCombat,
+    [Default(true)] UseGroundBeneficialAbility,
+    [Default(false)] TargetAllForFriendly,
+    [Default(false)] ShowCooldownWindow,
+
+    [Default(true)] RecordCastingArea,
+
+    [Default(false)] AutoOpenChest,
+    [Default(true)] AutoCloseChestWindow,
 }
 
 public enum PluginConfigFloat : byte
 {
-    [Default(8)] AutoOffAfterCombat,
-    [Default(3)] DrawingHeight,
-    [Default(0.2f)] SampleLength,
+    [Default(8f, 0f, 10f)] AutoOffAfterCombat,
+    [Default(3f, 0f, 8f)] DrawingHeight,
+    [Default(0.2f, 0.005f, 0.05f)] SampleLength,
     [Default(0.1f)] KeyBoardNoiseTimeMin,
     [Default(0.2f)] KeyBoardNoiseTimeMax,
 
-    [Default(0.25f)] HealthDifference,
-    [Default(1)] MeleeRangeOffset,
-    [Default(0.1f)] MinLastAbilityAdvanced,
-    [Default(0.8f)] HealWhenNothingTodoBelow,
-    [Default(0.6f)] TargetIconSize,
+    [Default(0.25f, 0f, 0.5f)] HealthDifference,
+    [Default(1f, 0f, 5f)] MeleeRangeOffset,
+    [Default(0.1f, 0f, 0.4f)] MinLastAbilityAdvanced,
+    [Default(0.8f, 0f, 1f)] HealWhenNothingTodoBelow,
+    [Default(0.6f, 0f, 1f)] TargetIconSize,
 
-    [Default(0)] MistakeRatio,
+    [Default(0f, 0f, 1f)] MistakeRatio,
 
-    [Default(0.4f)] HealthTankRatio,
-    [Default(0.4f)] HealthHealerRatio,
+    [Default(0.4f, 0f, 1f)] HealthTankRatio,
+    [Default(0.4f, 0f, 1f)] HealthHealerRatio,
 
-    [Default(3)] SpecialDuration,
+    [Default(3f, 1f, 20f)] SpecialDuration,
 
-    [Default(0.08f)] ActionAhead,
+    [Default(0.08f, 0f, 0.5f)] ActionAhead,
     [Default(0.06f)] ActionAheadForLast0GCD,
 
-    [Default(0)] WeaponDelayMin,
-    [Default(0)] WeaponDelayMax,
+    [Default(0f, 0f, 1f)] WeaponDelayMin,
+    [Default(0f)] WeaponDelayMax,
 
-    [Default(1)] DeathDelayMin,
+    [Default(1f, 0f, 3f)] DeathDelayMin,
     [Default(1.5f)] DeathDelayMax,
 
-    [Default(0.5f)] WeakenDelayMin,
-    [Default(1)] WeakenDelayMax,
+    [Default(0.5f, 0f, 3f)] WeakenDelayMin,
+    [Default(1f)] WeakenDelayMax,
 
-    [Default(0)] HostileDelayMin,
-    [Default(0)] HostileDelayMax,
+    [Default(0f, 0f, 3f)] HostileDelayMin,
+    [Default(0f)] HostileDelayMax,
 
-    [Default(0)] HealDelayMin,
-    [Default(0)] HealDelayMax,
+    [Default(0f, 0f, 3f)] HealDelayMin,
+    [Default(0f)] HealDelayMax,
 
-    [Default(0.5f)] StopCastingDelayMin,
-    [Default(1)] StopCastingDelayMax,
+    [Default(0.5f, 0f, 3f)] StopCastingDelayMin,
+    [Default(1f)] StopCastingDelayMax,
 
-    [Default(0.5f)] InterruptDelayMin,
-    [Default(1)] InterruptDelayMax,
+    [Default(0.5f, 0f, 3f)] InterruptDelayMin,
+    [Default(1f)] InterruptDelayMax,
 
-    [Default(3)] NotInCombatDelayMin,
-    [Default(4)] NotInCombatDelayMax,
+    [Default(3f, 0f, 10f)] NotInCombatDelayMin,
+    [Default(4f)] NotInCombatDelayMax,
 
-    [Default(0.1f)] ClickingDelayMin,
+    [Default(0.1f, 0.05f, 0.25f)] ClickingDelayMin,
     [Default(0.15f)] ClickingDelayMax,
 
-    [Default(0.5f)] CountdownDelayMin,
-    [Default(1)] CountdownDelayMax,
+    [Default(0.5f, 0f, 3f)] CountdownDelayMin,
+    [Default(1f)] CountdownDelayMax,
 
-    [Default(0.6f)] CountDownAhead,
+    [Default(0.6f, 0.5f, 0.7f)] CountDownAhead,
 
-    [Default(24)] MoveTargetAngle,
-    [Default(1.85f)] HealthRatioBoss,
-    [Default(0.8f)] HealthRatioDying,
-    [Default(1.2f)] HealthRatHealthRatioDotioBoss,
+    [Default(24f)] MoveTargetAngle,
+    [Default(1.85f, 0f, 10f)] HealthRatioBoss,
+    [Default(0.8f, 0f, 10f)] HealthRatioDying,
+    [Default(1.2f, 0f, 10f)] HealthRatHealthRatioDotioBoss,
 
-    [Default(16)] CooldownFontSize,
+    [Default(16f, 9.6f, 96f)] CooldownFontSize,
 
-    [Default(40)] ControlWindowGCDSize,
-    [Default(30)] ControlWindow0GCDSize,
-    [Default(30)] CooldownWindowIconSize,
-    [Default(1.5f)] ControlWindowNextSizeRatio,
-    [Default(8)] ControlProgressHeight,
-    [Default(1.2f)] DistanceForMoving,
-    [Default(0.2f)] MaxPing,
+    [Default(40f, 0f, 80f)] ControlWindowGCDSize,
+    [Default(30f, 0f, 80f)] ControlWindow0GCDSize,
+    [Default(30f, 0f, 80f)] CooldownWindowIconSize,
+    [Default(1.5f, 0f, 10f)] ControlWindowNextSizeRatio,
+    [Default(8f)] ControlProgressHeight,
+    [Default(1.2f, 0f, 30f)] DistanceForMoving,
+    [Default(0.2f, 0.01f, 0.5f)] MaxPing,
+
+    [Default(1.8f)] HealthRatioDot,
+
 }
 
 public enum PluginConfigVector4 : byte
@@ -339,34 +411,38 @@ public enum PluginConfigVector4 : byte
 [AttributeUsage(AttributeTargets.Field)] public class DefaultAttribute : Attribute
 {
     public object Default { get; set; }
+    public object Min { get; set; }
+    public object Max { get; set; }
 
-    public DefaultAttribute(object @default)
+    public DefaultAttribute(object @default, object min = null, object max = null)
     {
         Default = @default;
+        Min = min;
+        Max = max;
     }
 }
 
-[Serializable] public class DictionConfig<TConfig, Tvalue> where TConfig : struct, Enum
+[Serializable] public class DictionConfig<TConfig, TValue> where TConfig : struct, Enum
 {
     [JsonProperty]
-    private Dictionary<TConfig, Tvalue> configs = new ();
+    private Dictionary<TConfig, TValue> configs = new ();
 
-    private readonly SortedList<TConfig, Tvalue> _defaults;
+    private readonly SortedList<TConfig, TValue> _defaults;
 
-    public DictionConfig(SortedList<TConfig, Tvalue> @default = null)
+    public DictionConfig(SortedList<TConfig, TValue> @default = null)
     {
         _defaults = @default;
     }
 
-    public Tvalue GetValue(TConfig command)
+    public TValue GetValue(TConfig command)
         => configs.TryGetValue(command, out var value) ? value
         : GetDefault(command);
 
-    public Tvalue GetDefault(TConfig command)
+    public TValue GetDefault(TConfig command)
         => _defaults?.TryGetValue(command, out var value) ?? false ? value
-        : (Tvalue)command.GetAttribute<DefaultAttribute>()?.Default ?? default;
+        : (TValue)command.GetAttribute<DefaultAttribute>()?.Default ?? default;
 
-    public void SetValue(TConfig command, Tvalue value)
+    public void SetValue(TConfig command, TValue value)
         => configs[command] = value;
 }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

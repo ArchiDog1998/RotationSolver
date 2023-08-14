@@ -80,20 +80,20 @@ public static class ObjectHelper
     {
         var fateId = DataCenter.FateId;
         //Fate
-        if (Service.Config.TargetFatePriority &&  fateId != 0 &&  obj.FateId() == fateId) return true;
+        if (Service.Config.GetValue(Configuration.PluginConfigBool.TargetFatePriority) &&  fateId != 0 &&  obj.FateId() == fateId) return true;
 
         var icon = obj.GetNamePlateIcon();
 
         //Hunting log and weapon.
 
-        if (Service.Config.TargetHuntingRelicLevePriority && icon
+        if (Service.Config.GetValue(Configuration.PluginConfigBool.TargetHuntingRelicLevePriority) && icon
             is 60092 //Hunting
             or 60096 //Weapon
             or 71244 //Leve
             ) return true;
 
 
-        if (Service.Config.TargetQuestPriority && (icon
+        if (Service.Config.GetValue(Configuration.PluginConfigBool.TargetQuestPriority) && (icon
             is 71204 //Main Quest
             or 71144 //Major Quest
             or 71224 //Other Quest
@@ -122,7 +122,7 @@ public static class ObjectHelper
         var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2;
 
         if (!baseCheck) return false;
-        if (!Service.Config.InterruptibleMoreCheck) return true;
+        if (!Service.Config.GetValue(Configuration.PluginConfigBool.InterruptibleMoreCheck)) return true;
 
         var id = b.CastActionId;
         if (_effectRangeCheck.TryGetValue(id, out var check)) return check;
@@ -149,8 +149,8 @@ public static class ObjectHelper
     public static bool IsBoss(this BattleChara obj)
     {
         if (obj == null) return false;
-        if (obj.IsDummy() && !Service.Config.ShowHealthRatio) return true;
-        return obj.MaxHp >= GetHealthFromMulty(Service.Config.HealthRatioBoss)
+        if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowHealthRatio)) return true;
+        return obj.MaxHp >= GetHealthFromMulty(Service.Config.GetValue(Configuration.PluginConfigFloat.HealthRatioBoss))
             || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
     }
 
@@ -162,8 +162,8 @@ public static class ObjectHelper
     public static bool IsDying(this BattleChara b)
     {
         if (b == null) return false;
-        if (b.IsDummy() && !Service.Config.ShowHealthRatio) return false;
-        return b.CurrentHp <= GetHealthFromMulty(Service.Config.HealthRatioDying) || b.GetHealthRatio() < 0.02f;
+        if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowHealthRatio)) return false;
+        return b.CurrentHp <= GetHealthFromMulty(Service.Config.GetValue(Configuration.PluginConfigFloat.HealthRatioDying)) || b.GetHealthRatio() < 0.02f;
     }
 
     /// <summary>
@@ -186,8 +186,8 @@ public static class ObjectHelper
     public static bool CanDot(this BattleChara b)
     {
         if (b == null) return false;
-        if (b.IsDummy() && !Service.Config.ShowHealthRatio) return true;
-        return b.CurrentHp >= GetHealthFromMulty(Service.Config.HealthRatioDot);
+        if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowHealthRatio)) return true;
+        return b.CurrentHp >= GetHealthFromMulty(Service.Config.GetValue(Configuration.PluginConfigFloat.HealthRatioDot));
     }
 
     internal static EnemyPositional FindEnemyPositional(this GameObject enemy)
