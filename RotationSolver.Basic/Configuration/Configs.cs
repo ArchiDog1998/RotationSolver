@@ -9,41 +9,18 @@ namespace RotationSolver.Basic.Configuration;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public class PluginConfig : IPluginConfiguration
 {
-    [JsonProperty]
-    private Dictionary<Job, JobConfig> _jobsConfig = new()
+    public static PluginConfig Create()
     {
-        {Job.WAR, new JobConfig()
-        {
-            Ints = new DictionConfig<JobConfigInt, int>(new()
-            {
-                {JobConfigInt.HostileType, 0 },
-            })
-        } },
+        var result = new PluginConfig();
+        result.SetValue(Job.WAR, JobConfigInt.HostileType, 0);
+        result.SetValue(Job.DRK, JobConfigInt.HostileType, 0);
+        result.SetValue(Job.PLD, JobConfigInt.HostileType, 0);
+        result.SetValue(Job.GNB, JobConfigInt.HostileType, 0);
+        return result;
+    }
 
-        {Job.PLD, new JobConfig()
-        {
-            Ints = new DictionConfig<JobConfigInt, int>(new()
-            {
-                {JobConfigInt.HostileType, 0 },
-            })
-        } },
-
-        {Job.DRK, new JobConfig()
-        {
-            Ints = new DictionConfig<JobConfigInt, int>(new()
-            {
-                {JobConfigInt.HostileType, 0 },
-            })
-        } },
-
-        {Job.GNB, new JobConfig()
-        {
-            Ints = new DictionConfig<JobConfigInt, int>(new()
-            {
-                {JobConfigInt.HostileType, 0 },
-            })
-        } },
-    };
+    [JsonProperty]
+    private Dictionary<Job, JobConfig> _jobsConfig = new();
     public GlobalConfig GlobalConfig { get; private set; } = new();
     public int Version { get; set; } = 7;
 
@@ -340,7 +317,7 @@ public enum PluginConfigBool : byte
 
     [Default(true)] RecordCastingArea,
 
-    [Default(true)] AutoOpenChest,
+    [Default(false)] AutoOpenChest,
     [Default(true)] AutoCloseChestWindow,
 }
 
@@ -445,27 +422,27 @@ public enum PluginConfigVector4 : byte
     }
 }
 
-[Serializable] public class DictionConfig<TConfig, Tvalue> where TConfig : struct, Enum
+[Serializable] public class DictionConfig<TConfig, TValue> where TConfig : struct, Enum
 {
     [JsonProperty]
-    private Dictionary<TConfig, Tvalue> configs = new ();
+    private Dictionary<TConfig, TValue> configs = new ();
 
-    private readonly SortedList<TConfig, Tvalue> _defaults;
+    private readonly SortedList<TConfig, TValue> _defaults;
 
-    public DictionConfig(SortedList<TConfig, Tvalue> @default = null)
+    public DictionConfig(SortedList<TConfig, TValue> @default = null)
     {
         _defaults = @default;
     }
 
-    public Tvalue GetValue(TConfig command)
+    public TValue GetValue(TConfig command)
         => configs.TryGetValue(command, out var value) ? value
         : GetDefault(command);
 
-    public Tvalue GetDefault(TConfig command)
+    public TValue GetDefault(TConfig command)
         => _defaults?.TryGetValue(command, out var value) ?? false ? value
-        : (Tvalue)command.GetAttribute<DefaultAttribute>()?.Default ?? default;
+        : (TValue)command.GetAttribute<DefaultAttribute>()?.Default ?? default;
 
-    public void SetValue(TConfig command, Tvalue value)
+    public void SetValue(TConfig command, TValue value)
         => configs[command] = value;
 }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

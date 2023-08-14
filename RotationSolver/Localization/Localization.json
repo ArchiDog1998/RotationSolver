@@ -445,8 +445,9 @@
   "ConfigWindow_Auto_ActionUsage_Description": "Which actions Rotation Solver can use.",
   "ConfigWindow_Extra_Others": "Others",
   "ConfigWindow_Extra_Description": "Rotation Solver focus on rotation itself. These are side features. If there are some plugins can do that, these feature will be deleted.",
-  "ConfigWindow_Auto_Description": "Change the strategy or usage of the automatical using actions.",
+  "ConfigWindow_Auto_Description": "Change the strategy or usage of the automatically using actions.",
   "ConfigWindow_Auto_ActionCondition": "Action Condition",
   "ConfigWindow_Auto_ActionCondition_Description": "This will change the strategy of Rotation Solver to use these actions.",
-  "ConfigWindow_Target_Config": "Configuration"
+  "ConfigWindow_Target_Config": "Configuration",
+  "ConfigWindow_Search_Result": "Searching Result"
 }

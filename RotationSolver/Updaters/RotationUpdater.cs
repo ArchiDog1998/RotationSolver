@@ -451,6 +451,8 @@ internal static class RotationUpdater
         var name = Service.Config.GetJobConfig(group.JobId).RotationChoice;
        
         var rotation = group.Rotations.FirstOrDefault(r => r.GetType().FullName == name);
+        rotation ??= group.Rotations.FirstOrDefault(r => r.GetType().FullName.Contains("Default", StringComparison.OrdinalIgnoreCase));
+
         rotation ??= group.Rotations.FirstOrDefault();
 
         return rotation;

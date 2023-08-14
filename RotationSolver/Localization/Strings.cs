@@ -653,8 +653,9 @@ internal partial class Strings
     public string ConfigWindow_Auto_ActionUsage_Description { get; set; } = "Which actions Rotation Solver can use.";
     public string ConfigWindow_Extra_Others { get; set; } = "Others";
     public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focus on rotation itself. These are side features. If there are some plugins can do that, these feature will be deleted.";
-    public string ConfigWindow_Auto_Description { get; set; } = "Change the strategy or usage of the automatical using actions.";
+    public string ConfigWindow_Auto_Description { get; set; } = "Change the strategy or usage of the automatically using actions.";
     public string ConfigWindow_Auto_ActionCondition { get; set; } = "Action Condition";
     public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the strategy of Rotation Solver to use these actions.";
     public string ConfigWindow_Target_Config { get; set; } = "Configuration";
+    public string ConfigWindow_Search_Result { get; set; } = "Searching Result";
 }

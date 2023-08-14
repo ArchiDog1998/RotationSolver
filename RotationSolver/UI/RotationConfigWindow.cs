@@ -355,6 +355,12 @@ public partial class RotationConfigWindow : Window
         ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * 8 * _scale);
         if (BeginChild("Rotation Solver Body", -Vector2.One))
         {
+            ImGui.PushFont(ImGuiHelper.GetFont(18));
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Search_Result);
+            ImGui.PopStyleColor();
+            ImGui.PopFont();
+            ImGui.Spacing();
             if (_searchResults != null && _searchResults.Any())
             {
                 foreach (var searchable in _searchResults)

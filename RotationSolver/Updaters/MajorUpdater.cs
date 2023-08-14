@@ -213,7 +213,7 @@ internal static class MajorUpdater
     static uint _lastChest = 0;
     private unsafe static void OpenChest()
     {
-        if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.AutoOpenChest)) return;
+        if (!Service.Config.GetValue(PluginConfigBool.AutoOpenChest)) return;
         var player = Player.Object;
 
         var treasure = Svc.Objects.FirstOrDefault(o =>
@@ -254,7 +254,7 @@ internal static class MajorUpdater
             PluginLog.Error(ex, "Failed to open the chest!");
         }
 
-        if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.AutoOpenChest)) return;
+        if (!Service.Config.GetValue(PluginConfigBool.AutoCloseChestWindow)) return;
         _closeWindowTime = DateTime.Now.AddSeconds(0.1);
     }
 

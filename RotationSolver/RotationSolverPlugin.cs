@@ -46,12 +46,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             Service.Config = JsonConvert.DeserializeObject<PluginConfig>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName)) 
-                ?? new PluginConfig();
+                ?? PluginConfig.Create();
         }
         catch(Exception ex)
         {
             PluginLog.Warning(ex, "Failed to load config");
-            Service.Config = new PluginConfig();
+            Service.Config = PluginConfig.Create(); ;
         }
 
         _rotationConfigWindow = new();
@@ -119,7 +119,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         ECommonsMain.Dispose();
 
+#if DEBUG
+#else
         Service.Config.Save();
+#endif
     }
 
     private void OnOpenConfigUi()
