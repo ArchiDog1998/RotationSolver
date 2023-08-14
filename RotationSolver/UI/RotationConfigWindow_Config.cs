@@ -33,6 +33,7 @@ public partial class RotationConfigWindow
                 int index = 0;
                 while (enumerator.MoveNext() && index < MAX_RESULT_LENGTH)
                 {
+                    if (_searchResults.Contains(enumerator.Current)) continue;
                     _searchResults[index++] = enumerator.Current;
                 }
             }

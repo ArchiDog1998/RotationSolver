@@ -355,14 +355,15 @@ public partial class RotationConfigWindow : Window
         ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * 8 * _scale);
         if (BeginChild("Rotation Solver Body", -Vector2.One))
         {
-            ImGui.PushFont(ImGuiHelper.GetFont(18));
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Search_Result);
-            ImGui.PopStyleColor();
-            ImGui.PopFont();
-            ImGui.Spacing();
             if (_searchResults != null && _searchResults.Any())
             {
+                ImGui.PushFont(ImGuiHelper.GetFont(18));
+                ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Search_Result);
+                ImGui.PopStyleColor();
+                ImGui.PopFont();
+                ImGui.Spacing();
+
                 foreach (var searchable in _searchResults)
                 {
                     searchable?.Draw(Job, true);
@@ -884,14 +885,14 @@ public partial class RotationConfigWindow : Window
             ImGui.TableSetupColumn("Action Column", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 2);
             ImGui.TableNextColumn();
 
-            if (_actionsList != null && BeginChild("Rotation Solver Action List"))
+            if (_actionsList != null)
             {
                 _actionsList.ClearCollapsingHeader();
 
                 if (RotationUpdater.RightNowRotation != null)
                 {
                     var size = 30 * _scale;
-                    var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size + ImGui.GetStyle().ItemSpacing.X)));
+                    var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (size * 1.1f + ImGui.GetStyle().ItemSpacing.X)));
                     foreach (var pair in RotationUpdater.AllGroupedActions)
                     {
                         _actionsList.AddCollapsingHeader(() => pair.Key, () =>
@@ -934,7 +935,6 @@ public partial class RotationConfigWindow : Window
                 }
 
                 _actionsList.Draw();
-                ImGui.EndChild();
             }
 
             ImGui.TableNextColumn();
@@ -996,7 +996,7 @@ public partial class RotationConfigWindow : Window
 
             ActionSequencerUpdater.DrawHeader(30 * _scale);
 
-            if (_sequencerList != null && _activeAction != null && BeginChild("Rotation Solver Sequencer List"))
+            if (_sequencerList != null && _activeAction != null)
             {
                 var enable = _activeAction.IsEnabled;
                 if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
@@ -1016,7 +1016,6 @@ public partial class RotationConfigWindow : Window
                 }
 
                 _sequencerList.Draw();
-                ImGui.EndChild();
             }
 
             ImGui.EndTable();
