@@ -97,7 +97,7 @@ internal static class ConfigTranslation
         PluginConfigBool.TargetAllForFriendly => LocalizationManager.RightLang.ConfigWindow_Param_ActionTargetFriendly,
         PluginConfigBool.RaiseAll => LocalizationManager.RightLang.ConfigWindow_Param_RaiseAll,
         PluginConfigBool.RaiseBrinkOfDeath => LocalizationManager.RightLang.ConfigWindow_Param_RaiseBrinkOfDeath,
-        PluginConfigBool.TargetFriendly => LocalizationManager.RightLang.ConfigWindow_Param_TargetFriendly,
+        PluginConfigBool.SwitchTargetFriendly => LocalizationManager.RightLang.ConfigWindow_Param_TargetFriendly,
         PluginConfigBool.TargetFatePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetFatePriority,
         PluginConfigBool.TargetHuntingRelicLevePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
         PluginConfigBool.TargetQuestPriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,

@@ -4,8 +4,10 @@ using Dalamud.Logging;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.ActionSequencer;
@@ -351,12 +353,11 @@ public partial class RotationConfigWindowNew : Window
         ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * 8 * _scale);
         if (BeginChild("Rotation Solver Body", -Vector2.One))
         {
-            //Search box
             if (_searchResults != null && _searchResults.Any())
             {
                 foreach (var searchable in _searchResults)
                 {
-                    searchable?.Draw(Job);
+                    searchable?.Draw(Job, true);
                 }
             }
             else
@@ -866,7 +867,7 @@ public partial class RotationConfigWindowNew : Window
     #endregion
 
     #region Actions
-    private static void DrawActions()
+    private static unsafe void DrawActions()
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_Description);
 
@@ -925,6 +926,61 @@ public partial class RotationConfigWindowNew : Window
             }
 
             ImGui.TableNextColumn();
+
+            if (Service.ConfigNew.GetValue(PluginConfigBool.InDebug))
+            {
+                if(_activeAction is IBaseAction action)
+                {
+                    try
+                    {
+#if DEBUG
+                        ImGui.Text("Is Real GCD: " + action.IsRealGCD.ToString());
+                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell, action.AdjustedID).ToString());
+                        ImGui.Text("Cast Time: " + action.CastTime.ToString());
+                        ImGui.Text("MP: " + action.MPNeed.ToString());
+#endif
+                        ImGui.Text("AttackType: " + action.AttackType.ToString());
+                        ImGui.Text("Aspect: " + action.Aspect.ToString());
+                        ImGui.Text("Has One:" + action.HasOneCharge.ToString());
+                        ImGui.Text("Recast One: " + action.RecastTimeOneChargeRaw.ToString());
+                        ImGui.Text("Recast Elapsed: " + action.RecastTimeElapsedRaw.ToString());
+
+                        var option = CanUseOption.IgnoreTarget | CanUseOption.IgnoreClippingCheck;
+                        ImGui.Text($"Can Use: {action.CanUse(out _, option)} ");
+                        ImGui.Text("Must Use:" + action.CanUse(out _, option | CanUseOption.MustUse).ToString());
+                        ImGui.Text("Empty Use:" + action.CanUse(out _, option | CanUseOption.EmptyOrSkipCombo).ToString());
+                        ImGui.Text("Must & Empty Use:" + action.CanUse(out _, option | CanUseOption.MustUseEmpty).ToString());
+                        if (action.Target != null)
+                        {
+                            ImGui.Text("Target Name: " + action.Target.Name);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                else if (_activeAction is IBaseItem item)
+                {
+                    try
+                    {
+                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID).ToString());
+                        ImGui.Text("Status HQ: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID + 1000000).ToString());
+                        var remain = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTime(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID) - FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTimeElapsed(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID);
+                        ImGui.Text("remain: " + remain.ToString());
+                        ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
+
+                        if (item is HealPotionItem healPotionItem)
+                        {
+                            ImGui.Text("MaxHP:" + healPotionItem.MaxHealHp.ToString());
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
 
             if (_sequencerList != null && _activeAction != null && BeginChild("Rotation Solver Sequencer List"))
             {
@@ -1621,24 +1677,229 @@ public partial class RotationConfigWindowNew : Window
     }
     #endregion
 
-    private static readonly CollapsingHeaderGroup _debugHeader = new(new()
-    {
+    #region Debug
 
-    });
-    private static readonly ISearchable[] _debugSearchable = new ISearchable[]
-    {
-        new CheckBoxSearchPlugin(PluginConfigBool.InDebug),
-    };
     private static void DrawDebug()
     {
-        ImGui.Text("Debug");
-
         foreach (var searchable in _debugSearchable)
         {
             searchable?.Draw(Job);
         }
+
+        if (!Player.Available || !Service.ConfigNew.GetValue(PluginConfigBool.InDebug)) return;
+
+        var str = SocialUpdater.EncryptString(Player.Object);
+        ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
+        ImGui.InputText("That is your HASH", ref str, 100);
+
         _debugHeader?.Draw();
     }
+    private static readonly ISearchable[] _debugSearchable = new ISearchable[]
+    {
+        new CheckBoxSearchPlugin(PluginConfigBool.InDebug),
+    };
+
+    private static readonly CollapsingHeaderGroup _debugHeader = new(new()
+    {
+        {() => RotationUpdater.RightNowRotation != null ? "Rotation" : string.Empty, RotationUpdater.RightNowRotation.DisplayStatus},
+        {() =>"Status", DrawStatus },
+        {() =>"Party", DrawParty },
+        {() =>"Target Data", DrawTargetData },
+        {() =>"Next Action", DrawNextAction },
+        {() =>"Last Action", DrawLastAction },
+        {() =>"Icon", DrawIcon },
+        {() =>"Effect",  () =>
+            {
+                ImGui.Text(Watcher.ShowStrSelf);
+                ImGui.Separator();
+                ImGui.Text(Watcher.ShowStrEnemy);
+            } },
+        });
+
+    private static unsafe void DrawStatus()
+    {
+        if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
+        {
+            ImGui.Text("Fate: " + DataCenter.FateId.ToString());
+        }
+        ImGui.Text("Moving: " + DataCenter.IsMoving.ToString());
+        ImGui.Text("Stop Moving: " + DataCenter.StopMovingRaw.ToString());
+
+        ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
+        ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
+        ImGui.Text("TimeToNext: " + DataCenter.NextAbilityToNextGCD.ToString());
+        ImGui.Text("WeaponElapsed: " + DataCenter.WeaponElapsed.ToString());
+        ImGui.Text("AnimationLock: " + DataCenter.ActionRemain.ToString());
+
+        ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
+        ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
+        ImGui.Text("Hostile Near Count Max Range: " + DataCenter.NumberOfHostilesInMaxRange.ToString());
+        ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
+        ImGui.Text("Ping: " + DataCenter.Ping.ToString());
+        ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
+        ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
+        ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
+
+        foreach (var status in Player.Object.StatusList)
+        {
+            var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+            ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
+        }
+    }
+    private static unsafe void DrawParty()
+    {
+        ImGui.Text("Party Burst Ratio: " + DataCenter.RatioOfMembersIn2minsBurst.ToString());
+        ImGui.Text("Party: " + DataCenter.PartyMembers.Count().ToString());
+        ImGui.Text("CanHealSingleAbility: " + DataCenter.CanHealSingleAbility.ToString());
+        ImGui.Text("CanHealSingleSpell: " + DataCenter.CanHealSingleSpell.ToString());
+        ImGui.Text("CanHealAreaAbility: " + DataCenter.CanHealAreaAbility.ToString());
+        ImGui.Text("CanHealAreaSpell: " + DataCenter.CanHealAreaSpell.ToString());
+        ImGui.Text("CanHealAreaSpell: " + DataCenter.CanHealAreaSpell.ToString());
+        ImGui.Text("PartyMembersAverHP: " + DataCenter.PartyMembersAverHP.ToString());
+    }
+
+    private static unsafe void DrawTargetData()
+    {
+        if (Svc.Targets.Target != null)
+        {
+            ImGui.Text("Height: " + Svc.Targets.Target.Struct()->Height.ToString());
+            ImGui.Text("Kind: " + Svc.Targets.Target.GetObjectKind().ToString());
+            ImGui.Text("SubKind: " + Svc.Targets.Target.GetBattleNPCSubKind().ToString());
+            var owner = Svc.Objects.SearchById(Svc.Targets.Target.OwnerId);
+            if (owner != null)
+            {
+                ImGui.Text("Owner: " + owner.Name.ToString());
+            }
+        }
+        if (Svc.Targets.Target is BattleChara b)
+        {
+            ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
+            ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+            ImGui.Text("Has Positional: " + b.HasPositional().ToString());
+            ImGui.Text("Is Dying: " + b.IsDying().ToString());
+            ImGui.Text("EventType: " + b.GetEventType().ToString());
+            ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
+            ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
+            ImGui.Text("InView: " + Svc.GameGui.WorldToScreen(b.Position, out _).ToString());
+            ImGui.Text("Name Id: " + b.NameId.ToString());
+            ImGui.Text("Data Id: " + b.DataId.ToString());
+            ImGui.Text("Targetable: " + b.Struct()->Character.GameObject.TargetableStatus.ToString());
+
+            var npc = b.GetObjectNPC();
+            if (npc != null)
+            {
+                ImGui.Text("Unknown12: " + npc.Unknown12.ToString());
+
+                //ImGui.Text("Unknown15: " + npc.Unknown15.ToString());
+                //ImGui.Text("Unknown18: " + npc.Unknown18.ToString());
+                //ImGui.Text("Unknown19: " + npc.Unknown19.ToString());
+                //ImGui.Text("Unknown20: " + npc.Unknown20.ToString());
+                //ImGui.Text("Unknown21: " + npc.Unknown21.ToString());
+            }
+
+            foreach (var status in b.StatusList)
+            {
+                var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+                ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
+            }
+        }
+
+        ImGui.Text("All: " + DataCenter.AllTargets.Count().ToString());
+        ImGui.Text("Hostile: " + DataCenter.HostileTargets.Count().ToString());
+        foreach (var item in DataCenter.HostileTargets)
+        {
+            ImGui.Text(item.Name.ToString());
+        }
+    }
+
+    private static void DrawNextAction()
+    {
+        ImGui.Text(RotationUpdater.RightNowRotation.RotationName);
+        ImGui.Text(DataCenter.SpecialType.ToString());
+
+        ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
+        ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
+        ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
+        ImGui.Text("Time: " + (DataCenter.CombatTimeRaw + DataCenter.WeaponRemain).ToString());
+
+        ActionUpdater.NextAction?.Display(false);
+    }
+
+    private static void DrawLastAction()
+    {
+        DrawAction(DataCenter.LastAction, nameof(DataCenter.LastAction));
+        DrawAction(DataCenter.LastAbility, nameof(DataCenter.LastAbility));
+        DrawAction(DataCenter.LastGCD, nameof(DataCenter.LastGCD));
+        DrawAction(DataCenter.LastComboAction, nameof(DataCenter.LastComboAction));
+    }
+
+    private static unsafe void DrawIcon()
+    {
+        //if(ImGui.BeginTable("BLUAction", 4, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingFixedFit))
+        //{
+        //    foreach (var item in Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>())
+        //    {
+        //        if (item == null) continue;
+        //        if (item.ClassJob?.Row != 36) continue;
+        //        //if (item.RowId <= 20000) continue;
+
+        //        ImGui.TableNextRow();
+        //        ImGui.TableNextColumn();
+
+        //        ImGui.Text($"{item.Name}");
+
+        //        ImGui.TableNextColumn();
+
+        //        try
+        //        {
+        //            var tex = IconSet.GetTexture(item.Icon);
+        //            if (tex != null)
+        //            {
+        //                ImGui.Image(tex.ImGuiHandle, Vector2.One * 32);
+        //            }
+        //        }
+        //        catch
+        //        {
+
+        //        }
+        //        ImGui.TableNextColumn();
+
+        //        try
+        //        {
+        //            ImGui.Text($"{(Aspect)item.Aspect}");
+        //            ImGui.SameLine();
+        //            var desc = item.AttackType?.Value?.Name?.ToString();
+        //            if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
+        //        }
+        //        catch
+        //        {
+
+        //        }
+        //        ImGui.TableNextColumn();
+
+        //        //ImGui.TableNextColumn();
+
+        //        //try
+        //        //{
+        //        //    var desc = Svc.Data.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description?.ToString();
+        //        //    //ImGui.Text((!string.IsNullOrEmpty(desc)).ToString());
+        //        //    //if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
+        //        //}
+        //        //catch
+        //        //{
+
+        //        //}
+        //    }
+        //    ImGui.EndTable();
+        //}
+
+    }
+
+    private static void DrawAction(ActionID id, string type)
+    {
+        ImGui.Text($"{type}: {id}");
+    }
+    #endregion
 
     #region Image
     internal unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected, string id = "")
@@ -1797,7 +2058,6 @@ public partial class RotationConfigWindowNew : Window
         return columnWidth > 0 && columnWidth <= min
             || windowSize.Y - cursor.Y <= min
             || windowSize.X - cursor.X <= min;
-
     }
     #endregion
 }

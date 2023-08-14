@@ -29,24 +29,28 @@ internal abstract class Searchable : ISearchable
     public JobRole[] JobRoles { get; set; }
     public Job[] Jobs { get; set; }
 
-    public void Draw(Job job)
+    public void Draw(Job job, bool mustDraw = false)
     {
-        var canDraw = true;
-        if(JobRoles != null)
+        if (!mustDraw)
         {
-            var role = RotationUpdater.RightNowRotation?.ClassJob?.GetJobRole();
-            if (role.HasValue)
+            var canDraw = true;
+            if (JobRoles != null)
             {
-                canDraw = JobRoles.Contains(role.Value);
+                var role = RotationUpdater.RightNowRotation?.ClassJob?.GetJobRole();
+                if (role.HasValue)
+                {
+                    canDraw = JobRoles.Contains(role.Value);
+                }
             }
+
+            if (Jobs != null)
+            {
+                canDraw |= Jobs.Contains(RotationUpdater.Job);
+            }
+
+            if (!canDraw) return;
         }
 
-        if (Jobs != null)
-        {
-            canDraw |= Jobs.Contains(RotationUpdater.Job);
-        }
-
-        if (!canDraw) return;
         DrawMain(job);
 
         PrepareGroup(Popup_Key, Command, () => ResetToDefault(job));

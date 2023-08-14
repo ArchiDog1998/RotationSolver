@@ -169,7 +169,7 @@ internal partial class Strings
     public string ConfigWindow_Param_UseAOEAction { get; set; } = "Use AOE actions";
 
     public string ConfigWindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
-    public string ConfigWindow_Param_AutoBurst { get; set; } = "Automatic burst";
+    public string ConfigWindow_Param_AutoBurst { get; set; } = "Always try to burst";
 
     public string ConfigWindow_Param_AutoHeal { get; set; } = "Automatic Heal";
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
@@ -680,5 +680,12 @@ internal partial class Strings
     public string ConfigWindow_UI_Overlay { get; set; } = "Overlay";
     public string ConfigWindow_UI_Information { get; set; } = "Information";
     public string ConfigWindow_Auto_ActionUsage { get; set; } = "Action Usage";
+    public string ConfigWindow_Auto_ActionUsage_Description { get; set; } = "Which actions Rotation Solver can use.";
+    public string ConfigWindow_Extra_Others { get; set; } = "Others";
+    public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focus on rotation itself. These are side features. If there are some plugins can do that, these feature will be deleted.";
+    public string ConfigWindow_Auto_Description { get; set; } = "Change the strategy or usage of the automatical using actions.";
+    public string ConfigWindow_Auto_ActionCondition { get; set; } = "Action Condition";
+    public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the strategy of Rotation Solver to use these actions.";
+    public string ConfigWindow_Target_Config { get; set; } = "Configuration";
 
 }

@@ -247,7 +247,7 @@ public enum PluginConfigBool : byte
     [Default(false)] NoNewHostiles,
 
     [Default(true)] UseHealWhenNotAHealer,
-    [Default(false)] TargetFriendly,
+    [Default(false)] SwitchTargetFriendly,
 
     [Default(true)] InterruptibleMoreCheck,
 
