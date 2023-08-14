@@ -1,5 +1,46 @@
 # Changelog
 
+## [3.2.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.4...v3.2.0) (2023-08-14)
+
+
+### Features
+
+* new UI! ([edb3187](https://github.com/ArchiDog1998/RotationSolver/commit/edb31876e81556457ade99b6debc296b61bdd3a5))
+
+
+### Bug Fixes
+
+* add action id icon. ([6db1b60](https://github.com/ArchiDog1998/RotationSolver/commit/6db1b60bfda31935bf984a93ad2284cc47a2a68f))
+* add actons list. ([1294709](https://github.com/ArchiDog1998/RotationSolver/commit/1294709f612ce81ae08990258548ca4a2f4a58b8))
+* add auto open chest feature. ([fcf27e7](https://github.com/ArchiDog1998/RotationSolver/commit/fcf27e78022f591f6d98d520fe22755f03dddf3c))
+* add is in high-end duty property. ([5b35f8f](https://github.com/ArchiDog1998/RotationSolver/commit/5b35f8ffe395ad1832d4121c5b3addb99f118bb1))
+* add loading animation. ([9c4ed80](https://github.com/ArchiDog1998/RotationSolver/commit/9c4ed807c70b320eaa265daf5e5b35a4a28b10c7))
+* add min/max value. ([58ac6cf](https://github.com/ArchiDog1998/RotationSolver/commit/58ac6cf2690728042b000aa90cbab3cf2fd6ddc1))
+* add more new ui elements. ([db1b934](https://github.com/ArchiDog1998/RotationSolver/commit/db1b93432df8e3a4ce5431ecee4b76c784036d28))
+* add one more config. ([4f23833](https://github.com/ArchiDog1998/RotationSolver/commit/4f23833fc7ad78f59f98f3877ac94d341f9b5ed4))
+* add rotations panel. ([23335ad](https://github.com/ArchiDog1998/RotationSolver/commit/23335addf484ac6f21c7c84d835aba1e2b33cfb3))
+* add search box. ([8355742](https://github.com/ArchiDog1998/RotationSolver/commit/83557429a2aa775631c86dcd44559bc1c2b0f655))
+* add ShowStatus for showing the things in formal page. ([86bdd6b](https://github.com/ArchiDog1998/RotationSolver/commit/86bdd6b48d1b58c9699e113d1effeeab75eb3a6a))
+* add some rotations desc. ([99f6651](https://github.com/ArchiDog1998/RotationSolver/commit/99f66517724c50be0957cade909653a0dc4a17ff))
+* add territory list. ([fdb570b](https://github.com/ArchiDog1998/RotationSolver/commit/fdb570b9a43b9c8d3132cb2869cafe6947328544))
+* add tooltips. ([f4a8f59](https://github.com/ArchiDog1998/RotationSolver/commit/f4a8f5976557b047113bce7c56caf5a6e736fbb9))
+* added status list. ([5780189](https://github.com/ArchiDog1998/RotationSolver/commit/57801899b294378e04d912e7630254a4d547d093))
+* almost done new ui. ([d96c29d](https://github.com/ArchiDog1998/RotationSolver/commit/d96c29de1cd36f029d68eef363a0421b40129155))
+* fixed default config. ([d26ee2e](https://github.com/ArchiDog1998/RotationSolver/commit/d26ee2ec6e7a21764e2c4fea9e2f8a515fdb71e0))
+* fixed default value. ([6bcccf1](https://github.com/ArchiDog1998/RotationSolver/commit/6bcccf17f6d34bdca2645c528ccbc77cf9ca3805))
+* fixed icon. ([4cd7ff5](https://github.com/ArchiDog1998/RotationSolver/commit/4cd7ff5928c545dbded2953ddb48099a1526ff53))
+* fixed macro about settings. ([0331668](https://github.com/ArchiDog1998/RotationSolver/commit/033166854b571a4d3f362b73e0337eafea609a17))
+* fixed moving target clearing. ([35d9f30](https://github.com/ArchiDog1998/RotationSolver/commit/35d9f305be060086a7cf8ab53a387b882b9d09d5))
+* fixed search result. ([f29a52e](https://github.com/ArchiDog1998/RotationSolver/commit/f29a52e4848b2323bbbe8fbb3c4ff7fcbcf06141))
+* fixed some bugs with ui. ([2661da4](https://github.com/ArchiDog1998/RotationSolver/commit/2661da4636d5840204b41b9d597c5c6f5e3f742b))
+* make icon animate. ([d3b3f80](https://github.com/ArchiDog1998/RotationSolver/commit/d3b3f804c60913068a13ef5e90d9c6c15d5fe3e8))
+* organized some configs. ([11af820](https://github.com/ArchiDog1998/RotationSolver/commit/11af820e1ed15d423f839e514f14fef30a5df7b4))
+* safe child ui. ([20d59b4](https://github.com/ArchiDog1998/RotationSolver/commit/20d59b45e98a63a83e02b6249ba1d33953931cf3))
+* seperate files. ([36f8236](https://github.com/ArchiDog1998/RotationSolver/commit/36f8236c2d859d5da2d829a784c63efde27d151a))
+* styled the job configuration. ([b19c496](https://github.com/ArchiDog1998/RotationSolver/commit/b19c49697267e2443f908decf55bcee45de80e4a))
+* update rotation attributes. ([6980efd](https://github.com/ArchiDog1998/RotationSolver/commit/6980efdbb2380a24f9980efb6caa38ca56523500))
+* wrapped options. ([a46957e](https://github.com/ArchiDog1998/RotationSolver/commit/a46957e1031863576edcbf169f6f73cdaf63d8c5))
+
 ## [3.1.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.3...v3.1.4) (2023-08-08)
 
 
