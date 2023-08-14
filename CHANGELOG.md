@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.0...v3.2.1) (2023-08-14)
+
+
+### Bug Fixes
+
+* find back animation lock time. ([09decd9](https://github.com/ArchiDog1998/RotationSolver/commit/09decd9b1cbb306a2d9f2ac915974760ac9b60e1))
+* fixed list actions. ([cd79779](https://github.com/ArchiDog1998/RotationSolver/commit/cd797790c0b761af3a9ed538d9930ec044c16f0e))
+
 ## [3.2.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.1.4...v3.2.0) (2023-08-14)
 
 
