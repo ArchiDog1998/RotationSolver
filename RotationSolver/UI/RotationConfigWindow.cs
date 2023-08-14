@@ -1503,7 +1503,38 @@ public partial class RotationConfigWindow : Window
     {
         uint removeId = 0;
 
-        var popupId = "Rotation Solver Popup" + name;
+        var popupId = "Rotation Solver Action Popup" + name;
+
+        if (ImGui.BeginPopup(popupId))
+        {
+            ImGui.SetNextItemWidth(200 * _scale);
+            ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
+
+            ImGui.Spacing();
+
+            if (ImGui.BeginChild("Rotation Solver Add action", new Vector2(-1, 400 * _scale)))
+            {
+                foreach (var action in AllActions.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _actionSearching)
+                , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
+                {
+                    ImGui.Selectable($"{action.Name} ({action.RowId})");
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImguiTooltips.ShowTooltip($"{action.Name} ({action.RowId})");
+                        if(ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+                        {
+                            actions.Add(action.RowId);
+                            OtherConfiguration.Save();
+                            ImGui.CloseCurrentPopup();
+                        }
+                    }
+                }
+                ImGui.EndChild();
+            }
+
+            ImGui.EndPopup();
+        }
+
 
         if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_List_AddAction + "##" + name))
         {
@@ -1527,33 +1558,6 @@ public partial class RotationConfigWindow : Window
             ImGui.Selectable($"{action.Name} ({action.RowId})");
 
             Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
-        }
-
-
-        if (ImGui.BeginPopup(popupId))
-        {
-            ImGui.SetNextItemWidth(200 * _scale);
-            ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
-
-            ImGui.Spacing();
-
-            if (ImGui.BeginChild("Rotation Solver Add action", new Vector2(-1, 400 * _scale)))
-            {
-                foreach (var action in AllActions.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _actionSearching)
-                , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
-                {
-                    ImGui.Selectable($"{action.Name} ({action.RowId})");
-                    {
-                        actions.Add(action.RowId);
-                        OtherConfiguration.Save();
-                        ImGui.CloseCurrentPopup();
-                    }
-                    ImguiTooltips.HoveredTooltip($"{action.Name} ({action.RowId})");
-                }
-                ImGui.EndChild();
-            }
-
-            ImGui.EndPopup();
         }
 
         if (removeId != 0)
