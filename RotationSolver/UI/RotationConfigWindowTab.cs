@@ -1,4 +1,4 @@
-﻿using static RotationSolver.UI.RotationConfigWindowNew;
+﻿using static RotationSolver.UI.RotationConfigWindow;
 
 namespace RotationSolver.UI;
 

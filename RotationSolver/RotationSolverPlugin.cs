@@ -2,6 +2,7 @@ using Clipper2Lib;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
 using Dalamud.Plugin;
 using ECommons;
 using ECommons.DalamudServices;
@@ -22,7 +23,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
     private readonly WindowSystem windowSystem;
 
-    static RotationConfigWindowNew _rotationConfigWindow;
+    static RotationConfigWindow _rotationConfigWindow;
     static ControlWindow _controlWindow;
     static NextActionWindow _nextActionWindow;
     static CooldownWindow _cooldownWindow;
@@ -47,8 +48,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName)) 
                 ?? new PluginConfig();
         }
-        catch
+        catch(Exception ex)
         {
+            PluginLog.Warning(ex, "Failed to load config");
             Service.Config = new PluginConfig();
         }
 
@@ -91,7 +93,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void ChangeUITranslation()
     {
         _rotationConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
-            + typeof(RotationConfigWindowNew).Assembly.GetName().Version.ToString();
+            + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();
 
         RSCommands.Disable();
         RSCommands.Enable();
@@ -116,6 +118,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         OtherConfiguration.Save();
 
         ECommonsMain.Dispose();
+
+        Service.Config.Save();
     }
 
     private void OnOpenConfigUi()

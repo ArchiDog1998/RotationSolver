@@ -88,7 +88,6 @@ internal static partial class TargetUpdater
         });
 
         DataCenter.HostileTargets.Delay(GetHostileTargets(DataCenter.AllHostileTargets));
-
         DataCenter.CanInterruptTargets.Delay(DataCenter.HostileTargets.Where(ObjectHelper.CanInterrupt));
 
         DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Player.Object.ObjectId);
@@ -124,7 +123,7 @@ internal static partial class TargetUpdater
 
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
-            if(Svc.ClientState == null) return false;
+            if (Svc.ClientState == null) return false;
 
             IEnumerable<string> names = Array.Empty<string>();
             if(OtherConfiguration.NoHostileNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
@@ -133,11 +132,12 @@ internal static partial class TargetUpdater
             if (OtherConfiguration.NoHostileNames.TryGetValue(0, out var ns2))
                 names = names.Union(ns2);
 
-            if (names.Any(n => new Regex(n).Match(b.Name.ToString()).Success)) return false;
+            if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(b.Name.ToString()).Success)) return false;
 
             var tarFateId = b.FateId();
             return tarFateId == 0 || tarFateId == fateId;
         });
+
 
         var hostiles = allAttackableTargets.Where(t =>
         {

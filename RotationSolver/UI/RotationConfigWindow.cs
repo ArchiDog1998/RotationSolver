@@ -19,12 +19,11 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
-using System.Windows.Forms;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
 
-public partial class RotationConfigWindowNew : Window
+public partial class RotationConfigWindow : Window
 {
     private static float _scale => ImGuiHelpers.GlobalScale;
     private static Job Job => DataCenter.Job;
@@ -34,8 +33,8 @@ public partial class RotationConfigWindowNew : Window
     private const float MIN_COLUMN_WIDTH = 24;
     private const float JOB_ICON_WIDTH = 50;
 
-    public RotationConfigWindowNew()
-        : base(nameof(RotationConfigWindowNew), ImGuiWindowFlags.NoScrollbar, false)
+    public RotationConfigWindow()
+        : base("", ImGuiWindowFlags.NoScrollbar, false)
     {
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
@@ -192,14 +191,16 @@ public partial class RotationConfigWindowNew : Window
     }
 
     private const int FRAME_COUNT = 180;
-    private static readonly SortedList<string, TextureWrap> _textureWrapList = new (FRAME_COUNT);
+    private static SortedList<string, TextureWrap> _textureWrapList = new SortedList<string, TextureWrap>(FRAME_COUNT);
     private static bool GetLocalImage(string name, out TextureWrap texture)
     {
         var url = $"RotationSolver.Logos.{name}.png";
         if (_textureWrapList.TryGetValue(name, out texture)) return true;
 
-        using var stream = typeof(RotationConfigWindowNew).Assembly.GetManifestResourceStream(url);
+
+        using var stream = typeof(RotationConfigWindow).Assembly.GetManifestResourceStream(url);
         if (stream == null) return false;
+
 
         using var memory = new MemoryStream();
         stream.CopyTo(memory);
@@ -250,18 +251,18 @@ public partial class RotationConfigWindowNew : Window
             var gameVersionSize = ImGui.CalcTextSize(slash + rotation.GameVersion).X + ImGui.GetStyle().ItemSpacing.X;
             var gameVersion = LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ": ";
             var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rotation.GameVersion).X + iconSize + ImGui.GetStyle().ItemSpacing.X * 3 < wholeWidth;
-            if(drawCenter) gameVersionSize += ImGui.CalcTextSize(gameVersion).X + ImGui.GetStyle().ItemSpacing.X;
+            if (drawCenter) gameVersionSize += ImGui.CalcTextSize(gameVersion).X + ImGui.GetStyle().ItemSpacing.X;
 
             var horizonalWholeWidth = Math.Max(comboSize, gameVersionSize) + iconSize + ImGui.GetStyle().ItemSpacing.X;
 
-            if(horizonalWholeWidth > wholeWidth)
+            if (horizonalWholeWidth > wholeWidth)
             {
                 DrawItemMiddle(() =>
                 {
                     DrawRotationIcon(rotation, iconSize);
                 }, wholeWidth, iconSize);
 
-                if(_scale * JOB_ICON_WIDTH < wholeWidth)
+                if (_scale * JOB_ICON_WIDTH < wholeWidth)
                 {
                     DrawItemMiddle(() =>
                     {
@@ -917,8 +918,8 @@ public partial class RotationConfigWindowNew : Window
                                 }
                                 ImGui.EndGroup();
 
-                                string key = $"Action Macro Usage{item.Name} {item.ID}";
-                                var cmd = ToCommandStr(OtherCommandType.DoActions, $"{_activeAction}-{5}");
+                                string key = $"Action Macro Usage {item.Name} {item.ID}";
+                                var cmd = ToCommandStr(OtherCommandType.DoActions, $"{item}-{5}");
                                 Searchable.DrawHotKeysPopup(key, cmd);
                                 Searchable.ExecuteHotKeysPopup(key, cmd, item.Name, false);
                             }
@@ -1158,7 +1159,8 @@ public partial class RotationConfigWindowNew : Window
                 DrawGitHubBadge(info.GitHubUserName, info.GitHubRepository, info.FilePath);
 
                 if (!string.IsNullOrEmpty(info.DonateLink)
-                    && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height/ icon.Width) * MathF.Min(250, icon.Width) * _scale, info.FilePath))
+                    && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon)
+                    && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height/ icon.Width) * MathF.Min(250, icon.Width) * _scale, info.FilePath))
                 {
                     Util.OpenLink(info.DonateLink);
                 }
@@ -1170,7 +1172,7 @@ public partial class RotationConfigWindowNew : Window
     private static void DrawGitHubBadge(string userName, string repository, string id = "", string link = "")
     {
         if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(repository)
-    && IconSet.GetTexture($"https://GitHub-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
+    && IconSet.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
     && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height), id))
         {
             Util.OpenLink(string.IsNullOrEmpty(link) ? $"https://GitHub.com/{userName}/{repository}" : link);
@@ -1680,7 +1682,6 @@ public partial class RotationConfigWindowNew : Window
 
         if (!Player.Available || !Service.Config.GetValue(PluginConfigBool.InDebug)) return;
 
-
         var str = SocialUpdater.EncryptString(Player.Object);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
         ImGui.InputText("That is your HASH", ref str, 100);
@@ -1694,7 +1695,7 @@ public partial class RotationConfigWindowNew : Window
 
     private static readonly CollapsingHeaderGroup _debugHeader = new(new()
     {
-        {() => RotationUpdater.RightNowRotation != null ? "Rotation" : string.Empty, RotationUpdater.RightNowRotation.DisplayStatus},
+        {() => RotationUpdater.RightNowRotation != null ? "Rotation" : string.Empty, DrawDebugRotationStatus},
         {() =>"Status", DrawStatus },
         {() =>"Party", DrawParty },
         {() =>"Target Data", DrawTargetData },
@@ -1708,6 +1709,11 @@ public partial class RotationConfigWindowNew : Window
                 ImGui.Text(Watcher.ShowStrEnemy);
             } },
         });
+
+    private static void DrawDebugRotationStatus()
+    {
+        RotationUpdater.RightNowRotation?.DisplayStatus();
+    }
 
     private static unsafe void DrawStatus()
     {

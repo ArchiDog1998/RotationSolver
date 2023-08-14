@@ -1,14 +1,13 @@
 ﻿using ECommons.ImGuiMethods;
 using F23.StringSimilarity;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 
 namespace RotationSolver.UI;
 
-public partial class RotationConfigWindowNew
+public partial class RotationConfigWindow
 {
     private static readonly Levenshtein StringComparer = new ();
 
@@ -71,6 +70,13 @@ public partial class RotationConfigWindowNew
     {
         { () =>  LocalizationManager.RightLang.ConfigWindow_Basic_Timer, DrawBasicTimer },
         { () => LocalizationManager.RightLang.ConfigWindow_Basic_AutoSwitch, DrawBasicAutoSwitch },
+        { () => "Others", () =>
+        {
+        foreach (var searchable in _basicParamsSearchable)
+        {
+            searchable?.Draw(Job);
+        }
+        } },
     });
 
 
@@ -108,11 +114,6 @@ public partial class RotationConfigWindowNew
         new DragFloatRangeSearchPlugin(PluginConfigFloat.WeaponDelayMin, PluginConfigFloat.WeaponDelayMax, 0.002f),
 
         new DragFloatRangeSearchPlugin(PluginConfigFloat.ClickingDelayMin, PluginConfigFloat.ClickingDelayMax, 0.002f),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.PreventActions, new ISearchable[]
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.PreventActionsDuty),
-        }),
     };
 
     private static readonly ISearchable[] _basicParamsSearchable = new ISearchable[]
@@ -120,21 +121,16 @@ public partial class RotationConfigWindowNew
         new CheckBoxSearchPlugin(PluginConfigBool.ToggleManual),
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseWorkTask),
-        new DragIntSearchJob(JobConfigInt.AddDotGCDCount, 1),
+
         new DragFloatSearchPlugin(PluginConfigFloat.MistakeRatio, 0.002f),
 
-
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.HostileDelayMin, PluginConfigFloat.HostileDelayMax, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.InterruptDelayMin, PluginConfigFloat.InterruptDelayMax, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.DeathDelayMin, PluginConfigFloat.DeathDelayMax, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.WeakenDelayMin, PluginConfigFloat.WeakenDelayMax, 0.002f),
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMin, 0.002f),
+        new CheckBoxSearchPlugin(PluginConfigBool.PreventActions, new ISearchable[]
+        {
+            new CheckBoxSearchPlugin(PluginConfigBool.PreventActionsDuty),
+        }),
 
         new DragFloatRangeSearchPlugin(PluginConfigFloat.NotInCombatDelayMin, PluginConfigFloat.NotInCombatDelayMax, 0.002f),
-
     };
-
-
 
     private static readonly ISearchable[] _basicSwitchTurnOn = new ISearchable[]
     {
@@ -282,27 +278,58 @@ public partial class RotationConfigWindowNew
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_ActionUsage, () =>
             {
                 ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Auto_ActionUsage_Description);
+                ImGui.Separator();
+
                 foreach (var searchable in _autoActionUsageSearchable)
                 {
                     searchable?.Draw(Job);
                 }
             }
         },
-        { () => LocalizationManager.RightLang.ConfigWindow_Auto_ActionCondition, () =>
-            {
-                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Auto_ActionCondition_Description);
-                foreach (var searchable in _autoActionConditionSearchable)
-                {
-                    searchable?.Draw(Job);
-                }
-            }
-        },
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_ActionCondition, DrawAutoActionCondition },
     });
 
-    private static readonly ISearchable[] _autoActionConditionSearchable = new ISearchable[]
+    private static void DrawAutoActionCondition()
+    {
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Auto_ActionCondition_Description);
+        ImGui.Separator();
+
+        foreach (var searchable in _autoActionConditionSearchable_General)
+        {
+            searchable?.Draw(Job);
+        }
+
+        ImGui.Separator();
+
+        foreach (var searchable in _autoActionConditionSearchable_Heal)
+        {
+            searchable?.Draw(Job);
+        }
+
+        ImGui.Separator();
+
+        foreach (var searchable in _autoActionConditionSearchable_Raise)
+        {
+            searchable?.Draw(Job);
+        }
+
+        ImGui.Separator();
+
+        foreach (var searchable in _autoActionConditionSearchable_Others)
+        {
+            searchable?.Draw(Job);
+        }
+    }
+
+    private static readonly ISearchable[] _autoActionConditionSearchable_General = new ISearchable[]
     {
         new CheckBoxSearchPlugin(PluginConfigBool.AutoBurst),
 
+        new DragIntSearchJob(JobConfigInt.AddDotGCDCount, 0.01f),
+    };
+
+    private static readonly ISearchable[] _autoActionConditionSearchable_Heal = new ISearchable[]
+    {
         new AutoHealCheckBox(
             new CheckBoxSearchPlugin(PluginConfigBool.UseHealWhenNotAHealer)
             {
@@ -323,15 +350,27 @@ public partial class RotationConfigWindowNew
             },
             new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.InterruptibleMoreCheck)
+        new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),
+        new DragFloatSearchPlugin(PluginConfigFloat.HealWhenNothingTodoBelow, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.HealthHealerRatio, 0.02f)
             {
                 JobRoles = new JobRole[]
                 {
-                    JobRole.Tank,
-                    JobRole.Melee,
-                    JobRole.RangedPhysical,
+                    JobRole.Healer,
                 }
             },
+        new DragFloatSearchPlugin(PluginConfigFloat.HealthTankRatio, 0.02f)
+            {
+                JobRoles = new JobRole[]
+                {
+                    JobRole.Healer,
+                }
+            },
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMin, 0.002f),
+    };
+
+    private static readonly ISearchable[] _autoActionConditionSearchable_Raise = new ISearchable[]
+    {
 
         new CheckBoxSearchPlugin(PluginConfigBool.RaisePlayerByCasting)
             {
@@ -362,6 +401,42 @@ public partial class RotationConfigWindowNew
                     ECommons.ExcelServices.Job.RDM,
                 },
             },
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.DeathDelayMin, PluginConfigFloat.DeathDelayMax, 0.002f)
+            {
+                JobRoles = new JobRole[]
+                {
+                    JobRole.Healer,
+                },
+                Jobs = new ECommons.ExcelServices.Job[]
+                {
+                    ECommons.ExcelServices.Job.RDM,
+                },
+            },
+    };
+
+
+    private static readonly ISearchable[] _autoActionConditionSearchable_Others = new ISearchable[]
+    {
+        new CheckBoxSearchPlugin(PluginConfigBool.InterruptibleMoreCheck)
+            {
+                JobRoles = new JobRole[]
+                {
+                    JobRole.Tank,
+                    JobRole.Melee,
+                    JobRole.RangedPhysical,
+                }
+            },
+
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.InterruptDelayMin, PluginConfigFloat.InterruptDelayMax, 0.002f)
+             {
+                JobRoles = new JobRole[]
+                {
+                    JobRole.Tank,
+                    JobRole.Melee,
+                    JobRole.RangedPhysical,
+                }
+            },
+
 
         new CheckBoxSearchPlugin(PluginConfigBool.EsunaAll)
             {
@@ -374,25 +449,26 @@ public partial class RotationConfigWindowNew
                     ECommons.ExcelServices.Job.BRD,
                 },
             },
-
-        new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),
-        new DragFloatSearchPlugin(PluginConfigFloat.HealWhenNothingTodoBelow, 0.002f),
-        new DragFloatSearchPlugin(PluginConfigFloat.HealthHealerRatio, 0.02f)
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.WeakenDelayMin, PluginConfigFloat.WeakenDelayMax, 0.002f)
             {
                 JobRoles = new JobRole[]
                 {
                     JobRole.Healer,
-                }
-            },
-        new DragFloatSearchPlugin(PluginConfigFloat.HealthTankRatio, 0.02f)
-            {
-                JobRoles = new JobRole[]
+                },
+                Jobs = new ECommons.ExcelServices.Job[]
                 {
-                    JobRole.Healer,
-                }
+                    ECommons.ExcelServices.Job.BRD,
+                },
             },
 
-        new DragFloatSearchPlugin(PluginConfigFloat.MeleeRangeOffset, 0.02f),
+
+        new DragFloatSearchPlugin(PluginConfigFloat.MeleeRangeOffset, 0.02f)
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Melee,
+            },
+        },
     };
 
     private static readonly ISearchable[] _autoActionUsageSearchable = new ISearchable[]
@@ -477,19 +553,34 @@ public partial class RotationConfigWindowNew
 
     private static readonly CollapsingHeaderGroup _targetHeader = new(new()
     {
-        { () => LocalizationManager.RightLang.ConfigWindow_Target_Config, () =>
-            {
-                foreach (var searchable in _targetSearchable)
-                {
-                    searchable?.Draw(Job);
-                }
-            }
-        },
-
+        { () => LocalizationManager.RightLang.ConfigWindow_Target_Config, DrawTargetConfig },
         { () => LocalizationManager.RightLang.ConfigWindow_List_Hostile, DrawTargetHostile },
     });
 
-    private static readonly ISearchable[] _targetSearchable = new ISearchable[]
+    private static void DrawTargetConfig()
+    {
+        foreach (var searchable in _targetHostileSearchable)
+        {
+            searchable?.Draw(Job);
+        }
+        ImGui.Separator();
+        foreach (var searchable in _targetHostileSelectSearchable)
+        {
+            searchable?.Draw(Job);
+        } 
+        ImGui.Separator();
+        foreach (var searchable in _targetMovingSearchable)
+        {
+            searchable?.Draw(Job);
+        }
+        ImGui.Separator();
+        foreach (var searchable in _targetOtherSearchable)
+        {
+            searchable?.Draw(Job);
+        }
+    }
+
+    private static readonly ISearchable[] _targetHostileSearchable = new ISearchable[]
     {
         new DragIntSearchJob(JobConfigInt.HostileType,
             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
@@ -497,27 +588,40 @@ public partial class RotationConfigWindowNew
             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3 ),
 
         new CheckBoxSearchPlugin(PluginConfigBool.AddEnemyListToHostile),
+        new CheckBoxSearchPlugin(PluginConfigBool.FilterStopMark),
         new CheckBoxSearchPlugin(PluginConfigBool.ChooseAttackMark, new ISearchable[]
         {
             new CheckBoxSearchPlugin(PluginConfigBool.CanAttackMarkAOE),
         }),
-        new CheckBoxSearchPlugin(PluginConfigBool.FilterStopMark),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ChangeTargetForFate),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.HostileDelayMin, PluginConfigFloat.HostileDelayMax, 0.002f),
+
+
+    };
+
+    private static readonly ISearchable[] _targetHostileSelectSearchable = new ISearchable[]
+    {
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInView),
+        new CheckBoxSearchPlugin(PluginConfigBool.ChangeTargetForFate),
+        new CheckBoxSearchPlugin(PluginConfigBool.TargetFatePriority),
+        new CheckBoxSearchPlugin(PluginConfigBool.TargetHuntingRelicLevePriority),
+        new CheckBoxSearchPlugin(PluginConfigBool.TargetQuestPriority),
+    };
 
+    private static readonly ISearchable[] _targetMovingSearchable = new ISearchable[]
+    {
         new CheckBoxSearchPlugin(PluginConfigBool.MoveTowardsScreenCenter),
         new CheckBoxSearchPlugin(PluginConfigBool.MoveAreaActionFarthest),
         new DragIntSearchPlugin(PluginConfigInt.MoveTargetAngle, 0.02f),
         new DragFloatSearchPlugin(PluginConfigFloat.DistanceForMoving, 1f),
+    };
 
+    private static readonly ISearchable[] _targetOtherSearchable = new ISearchable[]
+    {
         new CheckBoxSearchPlugin(PluginConfigBool.TargetAllForFriendly),
-        new CheckBoxSearchPlugin(PluginConfigBool.TargetFatePriority),
-        new CheckBoxSearchPlugin(PluginConfigBool.TargetHuntingRelicLevePriority),
-        new CheckBoxSearchPlugin(PluginConfigBool.TargetQuestPriority),
-
         new CheckBoxSearchPlugin(PluginConfigBool.SwitchTargetFriendly),
     };
+
 
     private static void DrawTargetHostile()
     {
@@ -527,8 +631,6 @@ public partial class RotationConfigWindowNew
         }
         ImGui.SameLine();
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Param_HostileDesc);
-
-        ImGui.Separator();
 
         for (int i = 0; i < Service.Config.GlobalConfig.TargetingTypes.Count; i++)
         {

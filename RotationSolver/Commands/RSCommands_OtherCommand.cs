@@ -139,6 +139,8 @@ namespace RotationSolver.Commands
             {
                 if (config.DoCommand(configs, str))
                 {
+                    Svc.Chat.Print(config.GetType().FullName);
+                    Svc.Chat.Print(str);
                     Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
                         config.DisplayName, configs.GetDisplayString(config.Name)));
 

@@ -96,11 +96,11 @@ internal abstract class CheckBoxSearch : Searchable
             ImGui.BeginGroup();
             var cursor = ImGui.GetCursorPos();
             var size = ImGuiHelpers.GlobalScale * 32;
-            if (RotationConfigWindowNew.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size, ID))
+            if (RotationConfigWindow.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size, ID))
             {
                 SetValue(job, !enable);
             }
-            RotationConfigWindowNew.DrawActionOverlay(cursor, size, enable ? 1 : 0);
+            RotationConfigWindow.DrawActionOverlay(cursor, size, enable ? 1 : 0);
             ImGui.EndGroup();
 
             if (ImGui.IsItemHovered()) ShowTooltip(job);

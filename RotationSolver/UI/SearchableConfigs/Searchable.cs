@@ -14,7 +14,7 @@ internal abstract class Searchable : ISearchable
     protected static float Scale => ImGuiHelpers.GlobalScale;
     public CheckBoxSearch Parent { get; set; }
 
-    public string SearchingKeys =>Name + " " + Description;
+    public string SearchingKeys => Name + " " + Description;
     public abstract string Name { get; }
     public abstract string Description { get; }
     public abstract string Command { get; }
@@ -56,8 +56,6 @@ internal abstract class Searchable : ISearchable
         PrepareGroup(Popup_Key, Command, () => ResetToDefault(job));
     }
 
-
-
     protected abstract void DrawMain(Job job);
 
     public abstract void ResetToDefault(Job job);
@@ -81,7 +79,7 @@ internal abstract class Searchable : ISearchable
 
                 if(Tooltips != null) foreach (var tooltip in Tooltips)
                 {
-                    RotationConfigWindowNew.DrawLinkDescription(tooltip, wholeWidth, false);
+                    RotationConfigWindow.DrawLinkDescription(tooltip, wholeWidth, false);
                 }
             });
         }

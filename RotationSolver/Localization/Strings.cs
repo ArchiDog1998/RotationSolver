@@ -158,7 +158,7 @@ internal partial class Strings
     public string ConfigWindow_Param_UseDefenseAbility { get; set; } = "Use defense abilities";
     public string ConfigWindow_Param_UseDefenseAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";
     public string ConfigWindow_Param_AutoShield { get; set; } = "Auto tank stance";
-    public string ConfigWindow_Param_AutoProvokeForTank { get; set; } = "Auto Provoke (Tank)";
+    public string ConfigWindow_Param_AutoProvokeForTank { get; set; } = "Auto Provoke when there are more than one tanks";
     public string ConfigWindow_Param_AutoProvokeForTankDesc { get; set; } = "When a hostile is hitting the non-Tank member of party, it will automatically use the Provoke.";
     public string ConfigWindow_Param_AutoUseTrueNorth { get; set; } = "Auto TrueNorth (Melee)";
     public string ConfigWindow_Param_RaisePlayerBySwift { get; set; } = "Raise player by swift";
@@ -210,7 +210,7 @@ internal partial class Strings
     public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Targets have a target";
     public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add Enemies list to the hostile target.";
     public string ConfigWindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
-    public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Forced use of AOE";
+    public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Allowed use of AOE to attack more mobs.";
     public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
     public string ConfigWindow_Param_FilterStopMark { get; set; } = "Never attack targets with stop markers";
     public string ConfigWindow_Param_MoveTargetAngle { get; set; } = "The size of the sector angle that can be selected as the moveable target";

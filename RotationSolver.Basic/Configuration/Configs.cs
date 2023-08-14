@@ -1,4 +1,5 @@
 ﻿using Dalamud.Configuration;
+using Dalamud.Logging;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
@@ -6,10 +7,43 @@ using ECommons.ExcelServices;
 namespace RotationSolver.Basic.Configuration;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-[Serializable] public class PluginConfig : IPluginConfiguration
+public class PluginConfig : IPluginConfiguration
 {
     [JsonProperty]
-    private Dictionary<Job, JobConfig> _jobsConfig = new();
+    private Dictionary<Job, JobConfig> _jobsConfig = new()
+    {
+        {Job.WAR, new JobConfig()
+        {
+            Ints = new DictionConfig<JobConfigInt, int>(new()
+            {
+                {JobConfigInt.HostileType, 0 },
+            })
+        } },
+
+        {Job.PLD, new JobConfig()
+        {
+            Ints = new DictionConfig<JobConfigInt, int>(new()
+            {
+                {JobConfigInt.HostileType, 0 },
+            })
+        } },
+
+        {Job.DRK, new JobConfig()
+        {
+            Ints = new DictionConfig<JobConfigInt, int>(new()
+            {
+                {JobConfigInt.HostileType, 0 },
+            })
+        } },
+
+        {Job.GNB, new JobConfig()
+        {
+            Ints = new DictionConfig<JobConfigInt, int>(new()
+            {
+                {JobConfigInt.HostileType, 0 },
+            })
+        } },
+    };
     public GlobalConfig GlobalConfig { get; private set; } = new();
     public int Version { get; set; } = 7;
 
@@ -52,10 +86,10 @@ namespace RotationSolver.Basic.Configuration;
     public void SetValue(Job job, JobConfigInt config, int value)
     {
         var attr = config.GetAttribute<DefaultAttribute>();
-        if(attr != null)
+        if (attr != null)
         {
             var min = attr.Min; var max = attr.Max;
-            if(min != null && max != null)
+            if (min != null && max != null)
             {
                 value = Math.Min(Math.Max(value, (int)min), (int)max);
             }
@@ -117,22 +151,26 @@ namespace RotationSolver.Basic.Configuration;
     }
 
     public void Save()
-        => Svc.PluginInterface.SavePluginConfig(this);
+    {
+#if DEBUG
+        PluginLog.Information("Saved configurations.");
+#endif
+        Svc.PluginInterface.SavePluginConfig(this);
+    }
 }
 
 #region Job Config
 [Serializable] public class JobConfig
 {
     public string RotationChoice { get; set; }
-    public DictionConfig<JobConfigFloat, float> Floats { get; private set; } = new();
+    public DictionConfig<JobConfigFloat, float> Floats { get; set; } = new();
 
-    public DictionConfig<JobConfigInt, int> Ints { get; private set; } = new();
-    public Dictionary<string, Dictionary<string, string>> RotationsConfigurations { get; private set; } = new ();
+    public DictionConfig<JobConfigInt, int> Ints { get; set; } = new();
+    public Dictionary<string, Dictionary<string, string>> RotationsConfigurations { get; set; } = new ();
 }
 
 public enum JobConfigInt : byte
 {
-    //TODO : Type binding by jobs.
     [Default(2)] HostileType,
     [Default(2, 0, 3)] AddDotGCDCount,
 }
@@ -165,7 +203,7 @@ public enum JobConfigFloat : byte
         { PluginConfigVector4.TargetColor, new (1f, 0.2f, 0f, 0.8f)},
         { PluginConfigVector4.SubTargetColor, new (1f, 0.9f, 0f, 0.8f)},
         { PluginConfigVector4.ControlWindowLockBg, new (0, 0, 0, 0.6f)},
-        { PluginConfigVector4.ControlWindowUnlockBg, new (0, 0, 0, 0.9f)},
+        { PluginConfigVector4.ControlWindowUnlockBg, new (0, 0, 0, 0.75f)},
         { PluginConfigVector4.InfoWindowBg, new (0, 0, 0, 0.4f)},
     });
 

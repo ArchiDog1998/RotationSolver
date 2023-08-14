@@ -100,14 +100,6 @@ public static class IconSet
     }
 
     /// <summary>
-    /// Get Texture form texture.
-    /// </summary>
-    /// <param name="text"></param>
-    /// <returns></returns>
-    [Obsolete]
-    public static TextureWrap GetTexture(this ITexture text) => GetTexture(text?.IconID ?? 0);
-
-    /// <summary>
     /// 
     /// </summary>
     /// <param name="text"></param>
@@ -126,19 +118,17 @@ public static class IconSet
         => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out var texture) ? texture :
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture) ? texture : null;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="texture"></param>
+    /// <param name="default"></param>
+    /// <returns></returns>
     public static bool GetTexture(uint id, out TextureWrap texture, uint @default = 0)
         => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out texture)
         || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, false, out texture)
         || ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture);
-
-    /// <summary>
-    /// Get Texture from path.
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
-    [Obsolete]
-    public static TextureWrap GetTexture(string path)
-        => GetTexture(path, out var texture) ? texture : null;
 
     /// <summary>
     /// 
@@ -154,31 +144,12 @@ public static class IconSet
     private static readonly Dictionary<uint, uint> _actionIcons = new();
 
     /// <summary>
-    /// Get Texture from action.
+    /// 
     /// </summary>
     /// <param name="action"></param>
+    /// <param name="texture"></param>
     /// <param name="isAdjust"></param>
     /// <returns></returns>
-    [Obsolete]
-    public static TextureWrap GetTexture(this IAction action, bool isAdjust = true)
-    {
-        uint iconId = 0;
-        if (action != null )
-        {
-            var id = isAdjust ? action.AdjustedID : action.ID;
-
-            if (!_actionIcons.TryGetValue(id, out iconId))
-            {
-                iconId = id == action.ID ? action.IconID : action is IBaseAction 
-                    ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
-                    : Service.GetSheet<Lumina.Excel.GeneratedSheets.Item>().GetRow(id).Icon;
-
-                _actionIcons[id] = iconId;
-            }
-        }
-        return GetTexture(iconId);
-    }
-
     public static bool GetTexture(this IAction action, out TextureWrap texture, bool isAdjust = true)
     {
         uint iconId = 0;
@@ -199,27 +170,12 @@ public static class IconSet
     }
 
     /// <summary>
-    /// Get texture from action Id.
+    /// 
     /// </summary>
     /// <param name="actionID"></param>
+    /// <param name="texture"></param>
     /// <param name="isAction"></param>
     /// <returns></returns>
-    [Obsolete]
-    public static TextureWrap GetTexture(this ActionID actionID, bool isAction = true)
-    {
-        var id = (uint)actionID;
-
-        if (!_actionIcons.TryGetValue(id, out var iconId))
-        {
-            iconId = isAction
-                ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
-                : Service.GetSheet<Item>().GetRow(id).Icon;
-
-            _actionIcons[id] = iconId;
-        }
-        return GetTexture(iconId);
-    }
-
     public static bool GetTexture(this ActionID actionID, out TextureWrap texture, bool isAction = true)
     {
         var id = (uint)actionID;
