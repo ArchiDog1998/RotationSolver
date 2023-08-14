@@ -355,14 +355,15 @@ public partial class RotationConfigWindow : Window
         ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * 8 * _scale);
         if (BeginChild("Rotation Solver Body", -Vector2.One))
         {
-            ImGui.PushFont(ImGuiHelper.GetFont(18));
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Search_Result);
-            ImGui.PopStyleColor();
-            ImGui.PopFont();
-            ImGui.Spacing();
             if (_searchResults != null && _searchResults.Any())
             {
+                ImGui.PushFont(ImGuiHelper.GetFont(18));
+                ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Search_Result);
+                ImGui.PopStyleColor();
+                ImGui.PopFont();
+                ImGui.Spacing();
+
                 foreach (var searchable in _searchResults)
                 {
                     searchable?.Draw(Job, true);
@@ -884,14 +885,14 @@ public partial class RotationConfigWindow : Window
             ImGui.TableSetupColumn("Action Column", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 2);
             ImGui.TableNextColumn();
 
-            if (_actionsList != null && BeginChild("Rotation Solver Action List"))
+            if (_actionsList != null)
             {
                 _actionsList.ClearCollapsingHeader();
 
                 if (RotationUpdater.RightNowRotation != null)
                 {
                     var size = 30 * _scale;
-                    var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size + ImGui.GetStyle().ItemSpacing.X)));
+                    var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (size * 1.1f + ImGui.GetStyle().ItemSpacing.X)));
                     foreach (var pair in RotationUpdater.AllGroupedActions)
                     {
                         _actionsList.AddCollapsingHeader(() => pair.Key, () =>
@@ -934,7 +935,6 @@ public partial class RotationConfigWindow : Window
                 }
 
                 _actionsList.Draw();
-                ImGui.EndChild();
             }
 
             ImGui.TableNextColumn();
@@ -996,7 +996,7 @@ public partial class RotationConfigWindow : Window
 
             ActionSequencerUpdater.DrawHeader(30 * _scale);
 
-            if (_sequencerList != null && _activeAction != null && BeginChild("Rotation Solver Sequencer List"))
+            if (_sequencerList != null && _activeAction != null)
             {
                 var enable = _activeAction.IsEnabled;
                 if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
@@ -1016,7 +1016,6 @@ public partial class RotationConfigWindow : Window
                 }
 
                 _sequencerList.Draw();
-                ImGui.EndChild();
             }
 
             ImGui.EndTable();
@@ -1504,7 +1503,38 @@ public partial class RotationConfigWindow : Window
     {
         uint removeId = 0;
 
-        var popupId = "Rotation Solver Popup" + name;
+        var popupId = "Rotation Solver Action Popup" + name;
+
+        if (ImGui.BeginPopup(popupId))
+        {
+            ImGui.SetNextItemWidth(200 * _scale);
+            ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
+
+            ImGui.Spacing();
+
+            if (ImGui.BeginChild("Rotation Solver Add action", new Vector2(-1, 400 * _scale)))
+            {
+                foreach (var action in AllActions.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _actionSearching)
+                , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
+                {
+                    ImGui.Selectable($"{action.Name} ({action.RowId})");
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImguiTooltips.ShowTooltip($"{action.Name} ({action.RowId})");
+                        if(ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+                        {
+                            actions.Add(action.RowId);
+                            OtherConfiguration.Save();
+                            ImGui.CloseCurrentPopup();
+                        }
+                    }
+                }
+                ImGui.EndChild();
+            }
+
+            ImGui.EndPopup();
+        }
+
 
         if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_List_AddAction + "##" + name))
         {
@@ -1528,33 +1558,6 @@ public partial class RotationConfigWindow : Window
             ImGui.Selectable($"{action.Name} ({action.RowId})");
 
             Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
-        }
-
-
-        if (ImGui.BeginPopup(popupId))
-        {
-            ImGui.SetNextItemWidth(200 * _scale);
-            ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
-
-            ImGui.Spacing();
-
-            if (ImGui.BeginChild("Rotation Solver Add action", new Vector2(-1, 400 * _scale)))
-            {
-                foreach (var action in AllActions.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _actionSearching)
-                , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
-                {
-                    ImGui.Selectable($"{action.Name} ({action.RowId})");
-                    {
-                        actions.Add(action.RowId);
-                        OtherConfiguration.Save();
-                        ImGui.CloseCurrentPopup();
-                    }
-                    ImguiTooltips.HoveredTooltip($"{action.Name} ({action.RowId})");
-                }
-                ImGui.EndChild();
-            }
-
-            ImGui.EndPopup();
         }
 
         if (removeId != 0)

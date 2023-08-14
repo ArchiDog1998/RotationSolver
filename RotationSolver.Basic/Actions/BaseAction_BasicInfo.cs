@@ -185,7 +185,7 @@ public partial class BaseAction : IBaseAction
     /// <summary>
     /// Animation Lock Time.
     /// </summary>
-    public float AnimationLockTime => OtherConfiguration.AnimationLockTime.TryGetValue(AdjustedID, out var time) ? time : 0.6f;
+    public float AnimationLockTime => OtherConfiguration.AnimationLockTime?.TryGetValue(AdjustedID, out var time) ?? false ? time : 0.6f;
 
     /// <summary>
     /// General Constructer.
