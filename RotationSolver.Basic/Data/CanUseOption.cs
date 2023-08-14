@@ -1,7 +1,7 @@
 ﻿namespace RotationSolver.Basic.Data;
 
 /// <summary>
-/// The options about the method <see cref="IBaseAction.CanUse(out IAction, CanUseOption, byte)"/>.
+/// The options about the method <see cref="IBaseAction.CanUse(out IAction, CanUseOption, byte, byte)"/>.
 /// </summary>
 [Flags]
 public enum CanUseOption : byte
