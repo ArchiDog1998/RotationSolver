@@ -8,6 +8,7 @@ using ECommons.ImGuiMethods;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.UI;
 using System.Runtime.InteropServices;
@@ -21,8 +22,8 @@ internal static class MajorUpdater
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
         && Player.Available && !SocialUpdater.InPvp;
 
-    public static bool ShouldPreventActions => Service.Config.GetValue(SettingsCommand.PreventActions)
-            && (Service.Config.GetValue(SettingsCommand.PreventActionsDuty)
+    public static bool ShouldPreventActions => Service.Config.GetValue(PluginConfigBool.PreventActions)
+            && (Service.Config.GetValue(PluginConfigBool.PreventActionsDuty)
             && Svc.Condition[ConditionFlag.BoundByDuty]
             && !Svc.DutyState.IsDutyStarted
             || !DataCenter.HasHostilesInMaxRange);
@@ -78,7 +79,8 @@ internal static class MajorUpdater
         {
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
-            if (Service.Config.TeachingMode && ActionUpdater.NextAction!= null)
+
+            if (Service.Config.GetValue(PluginConfigBool.TeachingMode) && ActionUpdater.NextAction!= null)
             {
                 //Sprint action id is 3 however the id in hot bar is 4.
                 var id = ActionUpdater.NextAction.AdjustedID;
@@ -114,7 +116,7 @@ internal static class MajorUpdater
 
         try
         {
-            if (Service.Config.UseWorkTask)
+            if (Service.Config.GetValue(PluginConfigBool.UseWorkTask))
             {
                 Task.Run(UpdateWork);
             }
@@ -153,8 +155,8 @@ internal static class MajorUpdater
         try
         {
             TargetUpdater.UpdateTarget();
-            
-            if (Service.Config.AutoLoadCustomRotations)
+
+            if (Service.Config.GetValue(PluginConfigBool.AutoLoadCustomRotations))
             {
                 RotationUpdater.LocalRotationWatcher();
             }
@@ -211,7 +213,7 @@ internal static class MajorUpdater
     static uint _lastChest = 0;
     private unsafe static void OpenChest()
     {
-        if (!Service.ConfigNew.GetValue(Basic.Configuration.PluginConfigBool.AutoOpenChest)) return;
+        if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.AutoOpenChest)) return;
         var player = Player.Object;
 
         var treasure = Svc.Objects.FirstOrDefault(o =>
@@ -252,7 +254,7 @@ internal static class MajorUpdater
             PluginLog.Error(ex, "Failed to open the chest!");
         }
 
-        if (!Service.ConfigNew.GetValue(Basic.Configuration.PluginConfigBool.AutoOpenChest)) return;
+        if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.AutoOpenChest)) return;
         _closeWindowTime = DateTime.Now.AddSeconds(0.1);
     }
 

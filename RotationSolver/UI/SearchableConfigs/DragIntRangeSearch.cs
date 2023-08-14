@@ -28,28 +28,28 @@ internal class DragIntRangeSearchJob : DragIntRangeSearch
 
     public override void ResetToDefault(Job job)
     {
-        Service.ConfigNew.SetValue(job, _configMin, Service.ConfigNew.GetDefault(job, _configMin));
-        Service.ConfigNew.SetValue(job, _configMax, Service.ConfigNew.GetDefault(job, _configMax));
+        Service.Config.SetValue(job, _configMin, Service.Config.GetDefault(job, _configMin));
+        Service.Config.SetValue(job, _configMax, Service.Config.GetDefault(job, _configMax));
     }
 
     protected override int GetMinValue(Job job)
     {
-        return Service.ConfigNew.GetValue(job, _configMin);
+        return Service.Config.GetValue(job, _configMin);
     }
 
     protected override void SetMinValue(Job job, int value)
     {
-        Service.ConfigNew.SetValue(job, _configMin, value);
+        Service.Config.SetValue(job, _configMin, value);
     }
 
     protected override int GetMaxValue(Job job)
     {
-        return Service.ConfigNew.GetValue(job, _configMax);
+        return Service.Config.GetValue(job, _configMax);
     }
 
     protected override void SetMaxValue(Job job, int value)
     {
-        Service.ConfigNew.SetValue(job, _configMax, value);
+        Service.Config.SetValue(job, _configMax, value);
     }
 }
 
@@ -75,28 +75,28 @@ internal class DragIntRangeSearchPlugin : DragIntRangeSearch
 
     public override void ResetToDefault(Job job)
     {
-        Service.ConfigNew.SetValue(_configMin, Service.ConfigNew.GetDefault(_configMin));
-        Service.ConfigNew.SetValue(_configMax, Service.ConfigNew.GetDefault(_configMax));
+        Service.Config.SetValue(_configMin, Service.Config.GetDefault(_configMin));
+        Service.Config.SetValue(_configMax, Service.Config.GetDefault(_configMax));
     }
 
     protected override int GetMinValue(Job job)
     {
-        return Service.ConfigNew.GetValue(_configMin);
+        return Service.Config.GetValue(_configMin);
     }
 
     protected override void SetMinValue(Job job, int value)
     {
-        Service.ConfigNew.SetValue(_configMin, value);
+        Service.Config.SetValue(_configMin, value);
     }
 
     protected override int GetMaxValue(Job job)
     {
-        return Service.ConfigNew.GetValue(_configMax);
+        return Service.Config.GetValue(_configMax);
     }
 
     protected override void SetMaxValue(Job job, int value)
     {
-        Service.ConfigNew.SetValue(_configMax, value);
+        Service.Config.SetValue(_configMax, value);
     }
 }
 

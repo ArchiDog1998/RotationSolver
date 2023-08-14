@@ -16,7 +16,7 @@ internal static class PainterManager
 
         public TargetDrawing()
         {
-            var TColor = ImGui.GetColorU32(Service.Config.TargetColor);
+            var TColor = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.TargetColor));
             _target = new Drawing3DCircularSector(default, 0, TColor, 3)
             {
                 IsFill = false,
@@ -32,7 +32,7 @@ internal static class PainterManager
         {
             SubItems = Array.Empty<IDrawing3D>();
 
-            if (!Service.Config.ShowTarget) return;
+            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowTarget)) return;
 
             if (ActionUpdater.NextAction is not BaseAction act) return;
 
@@ -42,15 +42,15 @@ internal static class PainterManager
             var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
             List<IDrawing3D> subItems = new List<IDrawing3D>();
 
-            if(Service.Config.TargetIconSize > 0)
+            if(Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.TargetIconSize) > 0)
             {
                 _targetImage.Position = act.IsTargetArea ? act.Position : act.Target.Position;
-                _targetImage.SetTexture(act.GetTexture(true), Service.Config.TargetIconSize);
+                if(act.GetTexture(out var texture, true)) _targetImage.SetTexture(texture, Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.TargetIconSize));
                 subItems.Add(_targetImage);
             }
             else
             {
-                _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
+                _target.Color = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.TargetColor));
                 _target.Center = act.IsTargetArea ? act.Position : act.Target.Position;
                 _target.Radius = targetRadius * ratio;
                 subItems.Add(_target);
@@ -58,7 +58,7 @@ internal static class PainterManager
 
             if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Player.Object && !act.IsFriendly)
             {
-                var SColor = ImGui.GetColorU32(Service.Config.SubTargetColor);
+                var SColor = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.SubTargetColor));
 
                 foreach (var t in DataCenter.HostileTargets)
                 {
@@ -100,7 +100,7 @@ internal static class PainterManager
                 ((Drawing3DText)SubItems[i]).Text = string.Empty;
             }
 
-            if (!Service.Config.ShowHealthRatio) return;
+            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowHealthRatio)) return;
 
             var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
 
@@ -138,17 +138,17 @@ internal static class PainterManager
 
         _highLight = new();
 
-        _painter.DrawingHeight = Service.Config.DrawingHeight;
-        _painter.SampleLength = Service.Config.SampleLength;
-        _painter.Enable = Service.Config.UseOverlayWindow;
-        HighlightColor = Service.Config.TeachingModeColor;
+        _painter.DrawingHeight = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.DrawingHeight);
+        _painter.SampleLength = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.SampleLength);
+        _painter.Enable = Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOverlayWindow);
+        HighlightColor = Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.TeachingModeColor);
 
-        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2);
+        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.MeleeRangeOffset), 0, 2);
         annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
 
         annulus.UpdateEveryFrame = () =>
         {
-            if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsNPCEnemy() ?? false) && Service.Config.DrawMeleeOffset
+            if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsNPCEnemy() ?? false) && Service.Config.GetValue(Basic.Configuration.PluginConfigBool.DrawMeleeOffset)
             && ActionUpdater.NextGCDAction == null)
             {
                 annulus.Target = Svc.Targets.Target;
@@ -159,13 +159,13 @@ internal static class PainterManager
             }
         };
 
-        var color = ImGui.GetColorU32(Service.Config.MovingTargetColor);
+        var color = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.MovingTargetColor));
         var movingTarget = new Drawing3DHighlightLine(default, default, 0, color, 3);
         movingTarget.UpdateEveryFrame = () =>
         {
             var tar = CustomRotation.MoveTarget;
 
-            if (!Service.Config.ShowMoveTarget || !Player.Available || !tar.HasValue || Vector3.Distance(tar.Value, Player.Object.Position) < 0.01f)
+            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowMoveTarget) || !Player.Available || !tar.HasValue || Vector3.Distance(tar.Value, Player.Object.Position) < 0.01f)
             {
                 movingTarget.Radius = 0;
                 return;
@@ -173,7 +173,7 @@ internal static class PainterManager
 
             movingTarget.Radius = 0.5f;
 
-            movingTarget.Color = ImGui.GetColorU32(Service.Config.MovingTargetColor);
+            movingTarget.Color = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.MovingTargetColor));
 
             movingTarget.From = Player.Object.Position;
             movingTarget.To = tar.Value;

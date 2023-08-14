@@ -190,6 +190,7 @@ public enum PluginConfigInt : byte
     [Default(0)] ActionSequencerIndex,
     [Default(0)] PoslockModifier,
     [Default(0, 0, 10000)] LessMPNoRaise,
+
     [Default(2, 0, 5)] KeyBoardNoiseMin,
     [Default(3)] KeyBoardNoiseMax,
 
@@ -298,6 +299,8 @@ public enum PluginConfigBool : byte
     [Default(true)] UseGroundBeneficialAbility,
     [Default(false)] TargetAllForFriendly,
     [Default(false)] ShowCooldownWindow,
+
+    [Default(true)] RecordCastingArea,
 
     [Default(true)] AutoOpenChest,
     [Default(true)] AutoCloseChestWindow,

@@ -23,7 +23,8 @@ internal static class PreviewUpdater
     private static void UpdateEntry()
     {
         var showStr = RSCommands.EntryString;
-        if (Service.Config.ShowInfoOnDtr && !string.IsNullOrEmpty(showStr))
+        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowInfoOnDtr)
+            && !string.IsNullOrEmpty(showStr))
         {
             try
             {
@@ -48,10 +49,11 @@ internal static class PreviewUpdater
     }
 
     static RandomDelay _tarStopCastDelay = new(() =>
-    (Service.Config.StopCastingDelayMin, Service.Config.StopCastingDelayMax));
+    (Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.StopCastingDelayMin),
+    Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.StopCastingDelayMax)));
     private static unsafe void UpdateCancelCast()
     {
-        var tarDead = Service.Config.UseStopCasting 
+        var tarDead = Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseStopCasting)
             && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
             && b.IsNPCEnemy() && b.CurrentHp == 0;
 

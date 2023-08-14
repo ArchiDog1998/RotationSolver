@@ -28,17 +28,17 @@ internal class DragFloatSearchJob : DragFloatSearch
 
     public override void ResetToDefault(Job job)
     {
-        Service.ConfigNew.SetValue(job, _config, Service.ConfigNew.GetDefault(job, _config));
+        Service.Config.SetValue(job, _config, Service.Config.GetDefault(job, _config));
     }
 
     protected override float GetValue(Job job)
     {
-        return Service.ConfigNew.GetValue(job, _config);
+        return Service.Config.GetValue(job, _config);
     }
 
     protected override void SetValue(Job job, float value)
     {
-        Service.ConfigNew.SetValue(job, _config, value);
+        Service.Config.SetValue(job, _config, value);
     }
 }
 
@@ -65,17 +65,17 @@ internal class DragFloatSearchPlugin : DragFloatSearch
 
     public override void ResetToDefault(Job job)
     {
-        Service.ConfigNew.SetValue(_config, Service.ConfigNew.GetDefault(_config));
+        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
     }
 
     protected override float GetValue(Job job)
     {
-        return Service.ConfigNew.GetValue(_config);
+        return Service.Config.GetValue(_config);
     }
 
     protected override void SetValue(Job job, float value)
     {
-        Service.ConfigNew.SetValue(_config, value);
+        Service.Config.SetValue(_config, value);
     }
 }
 

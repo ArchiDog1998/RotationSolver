@@ -6,21 +6,6 @@ namespace RotationSolver.Commands;
 
 public static partial class RSCommands
 {
-    internal static TargetingType TargetingType
-    {
-        get
-        {
-            if (Service.Config.TargetingTypes.Count == 0)
-            {
-                Service.Config.TargetingTypes.Add(TargetingType.Big);
-                Service.Config.TargetingTypes.Add(TargetingType.Small);
-                Service.Config.Save();
-            }
-
-            return Service.Config.TargetingTypes[Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count];
-        }
-    }
-
     internal static void Enable()
         => Svc.Commands.AddHandler(Service.Command, new CommandInfo(OnCommand)
         {

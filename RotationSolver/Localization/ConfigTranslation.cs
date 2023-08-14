@@ -7,18 +7,20 @@ internal static class ConfigTranslation
     public static string ToName(this JobConfigInt config) => config switch
     {
         JobConfigInt.AddDotGCDCount => LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
+        JobConfigInt.HostileType => LocalizationManager.RightLang.ConfigWindow_Param_RightNowTargetToHostileType,
         _ => string.Empty,
     };
 
     public static string ToName(this JobConfigFloat config) => config switch
     {
+        JobConfigFloat.HealthForDyingTanks => LocalizationManager.RightLang.ConfigWindow_Param_HealthForDyingTank,
         _ => string.Empty,
     };
 
     public static string ToName(this PluginConfigInt config) => config switch
     {
         PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
-
+        PluginConfigInt.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
 
         // UI
         PluginConfigInt.KeyBoardNoiseMin => LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
@@ -42,7 +44,7 @@ internal static class ConfigTranslation
         // UI
         PluginConfigBool.UseOverlayWindow => LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
         PluginConfigBool.TeachingMode => LocalizationManager.RightLang.ConfigWindow_Param_TeachingMode,
-        PluginConfigBool.ShowMoveTarget => LocalizationManager.RightLang.ConfigWindow_Param_MovingTargetColor,
+        PluginConfigBool.ShowMoveTarget => LocalizationManager.RightLang.ConfigWindow_Param_ShowMoveTarget,
         PluginConfigBool.ShowTarget => LocalizationManager.RightLang.ConfigWindow_Param_ShowTarget,
         PluginConfigBool.DrawMeleeOffset => LocalizationManager.RightLang.ConfigWindow_Param_DrawMeleeOffset,
         PluginConfigBool.KeyBoardNoise => LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoise,
@@ -85,7 +87,7 @@ internal static class ConfigTranslation
         PluginConfigBool.HealOutOfCombat => LocalizationManager.RightLang.ConfigWindow_Param_HealOutOfCombat,
         PluginConfigBool.OnlyHotOnTanks => LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
         PluginConfigBool.BeneficialAreaOnTarget => LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
-
+        PluginConfigBool.RecordCastingArea => "Record AOE actions",
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
         PluginConfigBool.ChooseAttackMark => LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
@@ -94,6 +96,7 @@ internal static class ConfigTranslation
         PluginConfigBool.ChangeTargetForFate => LocalizationManager.RightLang.ConfigWindow_Param_ChangeTargetForFate,
         PluginConfigBool.OnlyAttackInView => LocalizationManager.RightLang.ConfigWindow_Param_OnlyAttackInView,
         PluginConfigBool.MoveTowardsScreenCenter => LocalizationManager.RightLang.ConfigWindow_Param_MoveTowardsScreen,
+        PluginConfigBool.MoveAreaActionFarthest => LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthest,
         PluginConfigBool.TargetAllForFriendly => LocalizationManager.RightLang.ConfigWindow_Param_ActionTargetFriendly,
         PluginConfigBool.RaiseAll => LocalizationManager.RightLang.ConfigWindow_Param_RaiseAll,
         PluginConfigBool.RaiseBrinkOfDeath => LocalizationManager.RightLang.ConfigWindow_Param_RaiseBrinkOfDeath,
@@ -173,8 +176,8 @@ internal static class ConfigTranslation
         PluginConfigVector4.TargetColor => LocalizationManager.RightLang.ConfigWindow_Param_TargetColor,
         PluginConfigVector4.SubTargetColor => LocalizationManager.RightLang.ConfigWindow_Param_SubTargetColor,
         PluginConfigVector4.InfoWindowBg => LocalizationManager.RightLang.ConfigWindow_Control_InfoWindowBg,
-        PluginConfigVector4.ControlWindowLockBg => "锁定时控制面板背景颜色",
-        PluginConfigVector4.ControlWindowUnlockBg => "未锁定时控制面板背景颜色",
+        PluginConfigVector4.ControlWindowLockBg => LocalizationManager.RightLang.ConfigWindow_Control_LockBackgroundColor,
+        PluginConfigVector4.ControlWindowUnlockBg => LocalizationManager.RightLang.ConfigWindow_Control_UnlockBackgroundColor,
         _ => string.Empty,
     };
 
@@ -192,7 +195,7 @@ internal static class ConfigTranslation
     {
         PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription,
 
-        PluginConfigInt.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthestDesc,
+        PluginConfigInt.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngleDesc,
         _ => string.Empty,
     };
 
@@ -204,6 +207,7 @@ internal static class ConfigTranslation
         PluginConfigBool.AutoProvokeForTank => LocalizationManager.RightLang.ConfigWindow_Param_AutoProvokeForTankDesc,
         PluginConfigBool.CanAttackMarkAOE => LocalizationManager.RightLang.ConfigWindow_Param_AttackMarkAOEDesc,
         PluginConfigBool.MoveTowardsScreenCenter => LocalizationManager.RightLang.ConfigWindow_Param_MoveTowardsScreenDesc,
+        PluginConfigBool.MoveAreaActionFarthest => LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthestDesc,
 
         PluginConfigBool.AutoOpenChest => "Because of the feature in pandora, there is an issue the treasure chest cannot be opened in some cases, I find the code from roll for loot. Once Pandora fixed that, this feature will be deleted.",
         _ => string.Empty,

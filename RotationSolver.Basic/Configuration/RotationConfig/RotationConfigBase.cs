@@ -17,7 +17,7 @@ internal abstract class RotationConfigBase : IRotationConfig
 
     public string GetValue(Job job, string rotationName)
     {
-        if (!Service.Config.RotationsConfigurations.TryGetValue((uint)job, out var jobDict)) return DefaultValue;
+        var jobDict = Service.Config.GetJobConfig(job).RotationsConfigurations;
         if (!jobDict.TryGetValue(rotationName, out var configDict)) return DefaultValue;
         if (!configDict.TryGetValue(Name, out var config)) return DefaultValue;
         return config;
@@ -27,10 +27,7 @@ internal abstract class RotationConfigBase : IRotationConfig
 
     public void SetValue(Job job, string rotationName, string value)
     {
-        if (!Service.Config.RotationsConfigurations.TryGetValue((uint)job, out var jobDict))
-        {
-            jobDict = Service.Config.RotationsConfigurations[(uint)job] = new Dictionary<string, Dictionary<string, string>>();
-        }
+        var jobDict = Service.Config.GetJobConfig(job).RotationsConfigurations;
 
         if (!jobDict.TryGetValue(rotationName, out var configDict))
         {

@@ -25,17 +25,17 @@ internal class ColorEditSearchPlugin : ColorEditSearch
 
     public override void ResetToDefault(Job job)
     {
-        Service.ConfigNew.SetValue(_config, Service.ConfigNew.GetDefault(_config));
+        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
     }
 
     protected override Vector4 GetValue(Job job)
     {
-        return Service.ConfigNew.GetValue(_config);
+        return Service.Config.GetValue(_config);
     }
 
     protected override void SetValue(Job job, Vector4 value)
     {
-        Service.ConfigNew.SetValue(_config, value);
+        Service.Config.SetValue(_config, value);
     }
 }
 

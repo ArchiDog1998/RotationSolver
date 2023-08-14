@@ -30,7 +30,9 @@ public unsafe struct Countdown
     /// </summary>
     public static unsafe Countdown* Instance => (Countdown*)Framework.Instance()->GetUiModule()->GetAgentModule()->GetAgentByInternalId(AgentId.CountDownSettingDialog);
 
-    static RandomDelay _delay = new RandomDelay(()=>(Service.Config.CountdownDelayMin, Service.Config.CountdownDelayMax));
+    static RandomDelay _delay = new RandomDelay(
+        ()=>(Service.Config.GetValue(Configuration.PluginConfigFloat.CountdownDelayMin),
+        Service.Config.GetValue(Configuration.PluginConfigFloat.CountdownDelayMax)));
 
     /// <summary>
     /// TimeRemaining.

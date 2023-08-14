@@ -22,7 +22,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
     private readonly WindowSystem windowSystem;
 
-    static RotationConfigWindow _comboConfigWindow;
     static RotationConfigWindowNew _rotationConfigWindow;
     static ControlWindow _controlWindow;
     static NextActionWindow _nextActionWindow;
@@ -44,23 +43,21 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis.Add(new Service());
         try
         {
-            Service.Config = JsonConvert.DeserializeObject<PluginConfiguration>(
+            Service.Config = JsonConvert.DeserializeObject<PluginConfig>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName)) 
-                ?? new PluginConfiguration();
+                ?? new PluginConfig();
         }
         catch
         {
-            Service.Config = new PluginConfiguration();
+            Service.Config = new PluginConfig();
         }
 
-        _comboConfigWindow = new();
         _rotationConfigWindow = new();
         _controlWindow = new();
         _nextActionWindow = new();
         _cooldownWindow = new();
 
         windowSystem = new WindowSystem(Name);
-        windowSystem.AddWindow(_comboConfigWindow);
         windowSystem.AddWindow(_rotationConfigWindow);
         windowSystem.AddWindow(_controlWindow);
         windowSystem.AddWindow(_nextActionWindow);
@@ -93,8 +90,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     internal static void ChangeUITranslation()
     {
-        _comboConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
-            + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();
+        _rotationConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
+            + typeof(RotationConfigWindowNew).Assembly.GetName().Version.ToString();
 
         RSCommands.Disable();
         RSCommands.Enable();
@@ -123,15 +120,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     private void OnOpenConfigUi()
     {
-        _comboConfigWindow.IsOpen = true;
+        _rotationConfigWindow.IsOpen = true;
     }
 
     internal static void OpenConfigWindow()
-    {
-        _comboConfigWindow.Toggle();
-    }
-
-    internal static void ToggleConfigWindow()
     {
         _rotationConfigWindow.Toggle();
     }
@@ -148,14 +140,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             && (!Svc.Condition[ConditionFlag.UsingParasol] || Player.Object.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.WeaponOut))
             && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
-        _nextActionWindow.IsOpen = isValid && Service.Config.ShowNextActionWindow;
+        _nextActionWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowNextActionWindow);
 
-        isValid &= !Service.Config.OnlyShowWithHostileOrInDuty
+        isValid &= !Service.Config.GetValue(PluginConfigBool.OnlyShowWithHostileOrInDuty)
                 || Svc.Condition[ConditionFlag.BoundByDuty]
                 || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25);
 
-        _controlWindow.IsOpen = isValid && Service.Config.ShowControlWindow;
-        _cooldownWindow.IsOpen = isValid && Service.Config.ShowCooldownWindow;
-
+        _controlWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowControlWindow);
+        _cooldownWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowCooldownWindow);
     }
 }

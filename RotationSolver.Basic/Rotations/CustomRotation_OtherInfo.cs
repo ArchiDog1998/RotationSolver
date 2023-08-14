@@ -39,7 +39,8 @@ public abstract partial class CustomRotation
     protected static bool InCombat => DataCenter.InCombat;
 
     static RandomDelay _notInCombatDelay = new(() =>
-        (Service.Config.NotInCombatDelayMin, Service.Config.NotInCombatDelayMax));
+        (Service.Config.GetValue(Configuration.PluginConfigFloat.NotInCombatDelayMin),
+        Service.Config.GetValue(Configuration.PluginConfigFloat.NotInCombatDelayMax)));
 
     /// <summary>
     /// Is out of combat.
@@ -170,9 +171,9 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Is in burst right now? Usually it used with team support actions.
     /// </summary>
-    protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(SettingsCommand.AutoBurst);
+    protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(Configuration.PluginConfigBool.AutoBurst);
 
-    bool _canUseHealAction => (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.UseHealWhenNotAHealer) && Service.Config.GetValue(SettingsCommand.AutoHeal);
+    bool _canUseHealAction => (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer) && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal));
 
     /// <summary>
     /// 
@@ -412,7 +413,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// The countDond ahead.
     /// </summary>
-    protected static float CountDownAhead => Service.Config.CountDownAhead;
+    protected static float CountDownAhead => Service.Config.GetValue(Configuration.PluginConfigFloat.CountDownAhead);
 
     /// <summary>
     /// 

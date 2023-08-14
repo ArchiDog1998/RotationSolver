@@ -19,6 +19,7 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Windows.Forms;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -26,7 +27,7 @@ namespace RotationSolver.UI;
 public partial class RotationConfigWindowNew : Window
 {
     private static float _scale => ImGuiHelpers.GlobalScale;
-    private static Job Job => RotationUpdater.Job;
+    private static Job Job => DataCenter.Job;
 
     private RotationConfigWindowTab _activeTab;
 
@@ -213,7 +214,7 @@ public partial class RotationConfigWindowNew : Window
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
         int realFrame = FRAME_COUNT;
-        if (Service.ConfigNew.GetValue(PluginConfigBool.DrawIconAnimation))
+        if (Service.Config.GetValue(PluginConfigBool.DrawIconAnimation))
         {
             var frame = Environment.TickCount / 34; //30
             realFrame = frame % FRAME_COUNT;
@@ -320,7 +321,7 @@ public partial class RotationConfigWindowNew : Window
                 ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
                 if (ImGui.Selectable(r.RotationName))
                 {
-                    Service.Config.RotationChoices[rotation.ClassJob.RowId] = r.GetType().FullName;
+                    Service.Config.GetJobConfig(Job).RotationChoice = r.GetType().FullName;
                     Service.Config.Save();
                 }
                 ImguiTooltips.HoveredTooltip(r.Description);
@@ -740,9 +741,9 @@ public partial class RotationConfigWindowNew : Window
         RotationUpdater.RightNowRotation?.DisplayStatus();
     }
 
-    private static string ToCommandStr(string str, string extra = "")
+    private static string ToCommandStr(OtherCommandType type, string str, string extra = "")
     {
-        var result = Service.Command + " " + OtherCommandType.Rotations.ToString() + " " + str;
+        var result = Service.Command + " " + type.ToString() + " " + str;
         if (!string.IsNullOrEmpty(extra)) result += " " + extra;
         return result;
     }
@@ -756,7 +757,7 @@ public partial class RotationConfigWindowNew : Window
         {
             var key = config.Name;
             var name = $"##{config.GetHashCode()}_{config.Name}";
-            string command = ToCommandStr(config.Name, config.DefaultValue);
+            string command = ToCommandStr(OtherCommandType.Rotations,config.Name,  config.DefaultValue);
             void Reset() => set.SetValue(config.Name, config.DefaultValue);
 
             Searchable.PrepareGroup(key, command, Reset);
@@ -766,7 +767,7 @@ public partial class RotationConfigWindowNew : Window
                 var val = set.GetCombo(c.Name);
                 ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.Items[val]).X + 50 * _scale);
                 var openCombo = ImGui.BeginCombo(name, c.Items[val]);
-                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+                Searchable.ReactPopup(key, command, Reset);
                 if (openCombo)
                 {
                     for (int comboIndex = 0; comboIndex < c.Items.Length; comboIndex++)
@@ -787,7 +788,7 @@ public partial class RotationConfigWindowNew : Window
                 {
                     set.SetValue(config.Name, val.ToString());
                 }
-                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+                Searchable.ReactPopup(key, command, Reset);
             }
             else if (config is RotationConfigFloat f)
             {
@@ -797,7 +798,7 @@ public partial class RotationConfigWindowNew : Window
                 {
                     set.SetValue(config.Name, val.ToString());
                 }
-                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+                Searchable.ReactPopup(key, command, Reset);
             }
             else if (config is RotationConfigString s)
             {
@@ -808,7 +809,7 @@ public partial class RotationConfigWindowNew : Window
                 {
                     set.SetValue(config.Name, val.ToString());
                 }
-                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+                Searchable.ReactPopup(key, command, Reset);
                 continue;
             }
             else if (config is RotationConfigInt i)
@@ -819,13 +820,13 @@ public partial class RotationConfigWindowNew : Window
                 {
                     set.SetValue(config.Name, val.ToString());
                 }
-                if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset);
+                Searchable.ReactPopup(key, command, Reset);
             }
             else continue;
 
             ImGui.SameLine();
             ImGui.TextWrapped(config.DisplayName);
-            if (ImGui.IsItemHovered()) Searchable.ReactPopup(key, command, Reset, false);
+            Searchable.ReactPopup(key, command, Reset, false);
         }
     }
 
@@ -904,7 +905,6 @@ public partial class RotationConfigWindowNew : Window
                                 {
                                     _activeAction = item;
                                 }
-                                ImguiTooltips.HoveredTooltip(item.Name);
                                 DrawActionOverlay(cursor, size, _activeAction == item ? 1 : 0);
 
                                 if(IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
@@ -916,6 +916,11 @@ public partial class RotationConfigWindowNew : Window
                                         new Vector2(item.IsEnabled ? 0.5f : 1, 1) - offset);
                                 }
                                 ImGui.EndGroup();
+
+                                string key = $"Action Macro Usage{item.Name} {item.ID}";
+                                var cmd = ToCommandStr(OtherCommandType.DoActions, $"{_activeAction}-{5}");
+                                Searchable.DrawHotKeysPopup(key, cmd);
+                                Searchable.ExecuteHotKeysPopup(key, cmd, item.Name, false);
                             }
                         });
                     }
@@ -927,7 +932,7 @@ public partial class RotationConfigWindowNew : Window
 
             ImGui.TableNextColumn();
 
-            if (Service.ConfigNew.GetValue(PluginConfigBool.InDebug))
+            if (Service.Config.GetValue(PluginConfigBool.InDebug))
             {
                 if(_activeAction is IBaseAction action)
                 {
@@ -982,6 +987,8 @@ public partial class RotationConfigWindowNew : Window
                 }
             }
 
+            ActionSequencerUpdater.DrawHeader(30 * _scale);
+
             if (_sequencerList != null && _activeAction != null && BeginChild("Rotation Solver Sequencer List"))
             {
                 var enable = _activeAction.IsEnabled;
@@ -990,18 +997,16 @@ public partial class RotationConfigWindowNew : Window
                     _activeAction.IsEnabled = enable;
                 }
 
-                ImGui.SameLine();
-                OtherCommandType.ToggleActions.DisplayCommandHelp(_activeAction.ToString());
+                const string key = "Action Enable Popup";
+                var cmd = ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString());
+                Searchable.DrawHotKeysPopup(key, cmd);
+                Searchable.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
 
                 enable = _activeAction.IsInCooldown;
                 if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_ShowOnCDWindow}##{_activeAction.Name}InCooldown", ref enable))
                 {
                     _activeAction.IsInCooldown = enable;
                 }
-
-                ImGui.SameLine();
-                OtherCommandType.DoActions.DisplayCommandHelp($"{_activeAction}-{5}",
-                    type => string.Format(LocalizationManager.RightLang.ConfigWindow_Actions_InsertCommand, _activeAction, 5), false);
 
                 _sequencerList.Draw();
                 ImGui.EndChild();
@@ -1083,8 +1088,8 @@ public partial class RotationConfigWindowNew : Window
 
     private static void DrawRotationsSettings()
     {
-        _updateRotation?.Draw(RotationUpdater.Job);
-        _autoLoadRotations?.Draw(RotationUpdater.Job);
+        _updateRotation?.Draw(Job);
+        _autoLoadRotations?.Draw(Job);
     }
 
     private static void DrawRotationsLoaded()
@@ -1174,17 +1179,17 @@ public partial class RotationConfigWindowNew : Window
 
     private static void DrawRotationsGitHub()
     {
-        if (!Service.ConfigNew.GlobalConfig.GitHubLibs.Any(s => string.IsNullOrEmpty(s) || s == "||"))
+        if (!Service.Config.GlobalConfig.GitHubLibs.Any(s => string.IsNullOrEmpty(s) || s == "||"))
         {
-            Service.ConfigNew.GlobalConfig.GitHubLibs = Service.ConfigNew.GlobalConfig.GitHubLibs.Append("||").ToArray();
+            Service.Config.GlobalConfig.GitHubLibs = Service.Config.GlobalConfig.GitHubLibs.Append("||").ToArray();
         }
 
         ImGui.Spacing();
 
         int removeIndex = -1;
-        for (int i = 0; i < Service.ConfigNew.GlobalConfig.GitHubLibs.Length; i++)
+        for (int i = 0; i < Service.Config.GlobalConfig.GitHubLibs.Length; i++)
         {
-            var strs = Service.ConfigNew.GlobalConfig.GitHubLibs[i].Split('|');
+            var strs = Service.Config.GlobalConfig.GitHubLibs[i].Split('|');
             var userName = strs.FirstOrDefault() ?? string.Empty;
             var repository = strs.Length > 1 ? strs[1] : string.Empty;
             var fileName = strs.LastOrDefault() ?? string.Empty;
@@ -1210,7 +1215,7 @@ public partial class RotationConfigWindowNew : Window
 
             if(changed)
             {
-                Service.ConfigNew.GlobalConfig.GitHubLibs[i] = $"{userName}|{repository}|{fileName}";
+                Service.Config.GlobalConfig.GitHubLibs[i] = $"{userName}|{repository}|{fileName}";
             }
 
             if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove GitHubLibs{i}"))
@@ -1220,17 +1225,17 @@ public partial class RotationConfigWindowNew : Window
         }
         if (removeIndex > -1)
         {
-            var list = Service.ConfigNew.GlobalConfig.GitHubLibs.ToList();
+            var list = Service.Config.GlobalConfig.GitHubLibs.ToList();
             list.RemoveAt(removeIndex);
-            Service.ConfigNew.GlobalConfig.GitHubLibs = list.ToArray();
+            Service.Config.GlobalConfig.GitHubLibs = list.ToArray();
         }
     }
 
     private static void DrawRotationsLibraries()
     {
-        if (!Service.ConfigNew.GlobalConfig.OtherLibs.Any(string.IsNullOrEmpty))
+        if (!Service.Config.GlobalConfig.OtherLibs.Any(string.IsNullOrEmpty))
         {
-            Service.ConfigNew.GlobalConfig.OtherLibs = Service.ConfigNew.GlobalConfig.OtherLibs.Append(string.Empty).ToArray();
+            Service.Config.GlobalConfig.OtherLibs = Service.Config.GlobalConfig.OtherLibs.Append(string.Empty).ToArray();
         }
 
         ImGui.Spacing();
@@ -1238,10 +1243,10 @@ public partial class RotationConfigWindowNew : Window
         var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * _scale;
 
         int removeIndex = -1;
-        for (int i = 0; i < Service.ConfigNew.GlobalConfig.OtherLibs.Length; i++)
+        for (int i = 0; i < Service.Config.GlobalConfig.OtherLibs.Length; i++)
         {
             ImGui.SetNextItemWidth(width);
-            ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", LocalizationManager.RightLang.ConfigWindow_Rotations_Library, ref Service.ConfigNew.GlobalConfig.OtherLibs[i], 1024);
+            ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", LocalizationManager.RightLang.ConfigWindow_Rotations_Library, ref Service.Config.GlobalConfig.OtherLibs[i], 1024);
             ImGui.SameLine();
 
             if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
@@ -1251,9 +1256,9 @@ public partial class RotationConfigWindowNew : Window
         }
         if (removeIndex > -1)
         {
-            var list = Service.ConfigNew.GlobalConfig.OtherLibs.ToList();
+            var list = Service.Config.GlobalConfig.OtherLibs.ToList();
             list.RemoveAt(removeIndex);
-            Service.ConfigNew.GlobalConfig.OtherLibs = list.ToArray();
+            Service.Config.GlobalConfig.OtherLibs = list.ToArray();
         }
     }
     #endregion 
@@ -1320,7 +1325,7 @@ public partial class RotationConfigWindowNew : Window
     private static readonly CollapsingHeaderGroup _idsHeader = new(new()
     {
         { () => LocalizationManager.RightLang.ConfigWindow_List_Statuses, DrawActionsStatuses},
-        { () => Service.ConfigNew.GetValue(PluginConfigBool.UseDefenseAbility) ? LocalizationManager.RightLang.ConfigWindow_List_Actions : string.Empty, DrawListActions},
+        { () => Service.Config.GetValue(PluginConfigBool.UseDefenseAbility) ? LocalizationManager.RightLang.ConfigWindow_List_Actions : string.Empty, DrawListActions},
         { () => LocalizationManager.RightLang.ConfigWindow_List_Territories, DrawListTerritories},
     });
     private static void DrawActionsStatuses()
@@ -1342,9 +1347,14 @@ public partial class RotationConfigWindowNew : Window
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
+
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_InvincibilityDesc);
             DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, AllInvStatus);
 
             ImGui.TableNextColumn();
+
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatusDesc);
+
             DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, AllDispelStatus);
 
             ImGui.EndTable();
@@ -1384,16 +1394,8 @@ public partial class RotationConfigWindowNew : Window
 
                 var key = "Status" + status.RowId;
 
-                if (ImGui.BeginPopup(key))
-                {
-                    if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
-                    {
-                        Searchable.DrawHotKeys(LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, "Delete");
-                        ImGui.EndTable();
-                    }
+                Searchable.DrawHotKeysPopup(key, string.Empty,  (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
 
-                    ImGui.EndPopup();
-                }
                 if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
                 {
                     if (index++ % count != 0)
@@ -1402,15 +1404,7 @@ public partial class RotationConfigWindowNew : Window
                     }
                     NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + status.RowId.ToString());
 
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImguiTooltips.ShowTooltip($"{status.Name} ({status.RowId})");
-                        if (ImGui.IsMouseClicked(ImGuiMouseButton.Right) && !ImGui.IsPopupOpen(key))
-                        {
-                            ImGui.OpenPopup(key);
-                        }
-                        Searchable.ExecuteHotKeys(Reset, Dalamud.Game.ClientState.Keys.VirtualKey.DELETE);
-                    }
+                Searchable.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
                 }
             }
 
@@ -1458,6 +1452,10 @@ public partial class RotationConfigWindowNew : Window
         }
     }
 
+    private static readonly ISearchable[] _listSearchable = new ISearchable[]
+    {
+        new CheckBoxSearchPlugin(PluginConfigBool.RecordCastingArea),
+    };
     private static void DrawListActions()
     {
         ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
@@ -1477,9 +1475,16 @@ public partial class RotationConfigWindowNew : Window
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingTankDesc);
             DrawActionsList(nameof(OtherConfiguration.HostileCastingTank), OtherConfiguration.HostileCastingTank);
 
             ImGui.TableNextColumn();
+            foreach (var searchable in _listSearchable)
+            {
+                searchable?.Draw(Job);
+            }
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingAreaDesc);
+
             DrawActionsList(nameof(OtherConfiguration.HostileCastingArea), OtherConfiguration.HostileCastingArea);
 
             ImGui.EndTable();
@@ -1510,26 +1515,11 @@ public partial class RotationConfigWindowNew : Window
 
             var key = "Action" + action.RowId;
 
-            if (ImGui.BeginPopup(key))
-            {
-                if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
-                {
-                    Searchable.DrawHotKeys(LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, "Delete");
-                    ImGui.EndTable();
-                }
-
-                ImGui.EndPopup();
-            }
+            Searchable.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
 
             ImGui.Selectable($"{action.Name} ({action.RowId})");
-            if (ImGui.IsItemHovered())
-            {
-                if (ImGui.IsMouseClicked(ImGuiMouseButton.Right) && !ImGui.IsPopupOpen(key))
-                {
-                    ImGui.OpenPopup(key);
-                }
-                Searchable.ExecuteHotKeys(Reset, Dalamud.Game.ClientState.Keys.VirtualKey.DELETE);
-            }
+
+            Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
         }
 
 
@@ -1632,6 +1622,8 @@ public partial class RotationConfigWindowNew : Window
 
             ImGui.TableNextColumn();
 
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_NoHostileDesc);
+
             var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * _scale;
 
             if(!OtherConfiguration.NoHostileNames.TryGetValue(_territoryId, out var libs))
@@ -1686,7 +1678,8 @@ public partial class RotationConfigWindowNew : Window
             searchable?.Draw(Job);
         }
 
-        if (!Player.Available || !Service.ConfigNew.GetValue(PluginConfigBool.InDebug)) return;
+        if (!Player.Available || !Service.Config.GetValue(PluginConfigBool.InDebug)) return;
+
 
         var str = SocialUpdater.EncryptString(Player.Object);
         ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
@@ -1821,8 +1814,6 @@ public partial class RotationConfigWindowNew : Window
         ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
         ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
         ImGui.Text("Time: " + (DataCenter.CombatTimeRaw + DataCenter.WeaponRemain).ToString());
-
-        ActionUpdater.NextAction?.Display(false);
     }
 
     private static void DrawLastAction()

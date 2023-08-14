@@ -27,17 +27,17 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     protected override bool GetValue(Job job)
     {
-        return Service.ConfigNew.GetValue(_config);
+        return Service.Config.GetValue(_config);
     }
 
     protected override void SetValue(Job job, bool value)
     {
-        Service.ConfigNew.SetValue(_config, value);
+        Service.Config.SetValue(_config, value);
     }
 
     public override void ResetToDefault(Job job)
     {
-        Service.ConfigNew.SetValue(_config, Service.ConfigNew.GetDefault(_config));
+        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
     }
 }
 

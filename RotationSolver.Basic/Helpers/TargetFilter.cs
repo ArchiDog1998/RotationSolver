@@ -13,7 +13,7 @@ public static class TargetFilter
 {
     #region Find one target
     internal static IEnumerable<BattleChara> MeleeRangeTargetFilter(IEnumerable<BattleChara> availableCharas)
-        => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.MeleeRangeOffset);
+        => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.GetValue(Configuration.PluginConfigFloat.MeleeRangeOffset));
 
     internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool mustUse)
     {
@@ -25,11 +25,11 @@ public static class TargetFilter
         var tankTars = availableCharas.GetJobCategory(JobRole.Tank);
 
         var healerTar = tankTars.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
-        if (healerTar != null && healerTar.GetHealthRatio() < Service.Config.HealthHealerRatio)
+        if (healerTar != null && healerTar.GetHealthRatio() < Service.Config.GetValue(Configuration.PluginConfigFloat.HealthHealerRatio))
             return healerTar;
 
         var tankTar = tankTars.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
-        if (tankTar != null && tankTar.GetHealthRatio() < Service.Config.HealthTankRatio)
+        if (tankTar != null && tankTar.GetHealthRatio() < Service.Config.GetValue(Configuration.PluginConfigFloat.HealthTankRatio))
             return tankTar;
 
         var tar = availableCharas.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
@@ -43,7 +43,7 @@ public static class TargetFilter
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
 
-        if (Service.Config.FilterStopMark)
+        if (Service.Config.GetValue(Configuration.PluginConfigBool.FilterStopMark))
         {
             var charas = MarkingHelper.FilterStopCharaes(availableCharas);
             if (charas?.Any() ?? false) availableCharas = charas;
@@ -77,11 +77,11 @@ public static class TargetFilter
         {
             var tar = charas.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
             if (tar == null) return null;
-            if (tar.DistanceToPlayer() < Service.Config.DistanceForMoving) return tar;
+            if (tar.DistanceToPlayer() < Service.Config.GetValue(Configuration.PluginConfigFloat.DistanceForMoving) )return tar;
             return null;
         }
 
-        if (Service.Config.MoveTowardsScreenCenter)
+        if (Service.Config.GetValue(Configuration.PluginConfigBool.MoveTowardsScreenCenter))
         {
             return FindMoveTargetScreenCenter(charas);
         }
@@ -105,7 +105,7 @@ public static class TargetFilter
             Vector3 dir = t.Position - pPosition;
             Vector2 dirVec = new(dir.Z, dir.X);
             double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
-            return angle <= Math.PI * Service.Config.MoveTargetAngle / 360;
+            return angle <= Math.PI * Service.Config.GetValue(Configuration.PluginConfigFloat.MoveTargetAngle) / 360;
         }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 
         return tars.FirstOrDefault();
@@ -126,7 +126,7 @@ public static class TargetFilter
 
             if (dir.Y > 0) return false;
 
-            return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI * Service.Config.MoveTargetAngle / 360);
+            return Math.Abs(dir.X / dir.Y) < Math.Tan(Math.PI * Service.Config.GetValue(Configuration.PluginConfigFloat.MoveTargetAngle) / 360);
         }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 
         return tars.FirstOrDefault();
@@ -251,7 +251,7 @@ public static class TargetFilter
 
             if (item.HasStatus(false, StatusID.Raise)) return false;
 
-            if (!Service.Config.RaiseBrinkOfDeath && item.HasStatus(false, StatusID.BrinkOfDeath)) return false;
+            if (!Service.Config.GetValue(Configuration.PluginConfigBool.RaiseBrinkOfDeath) && item.HasStatus(false, StatusID.BrinkOfDeath)) return false;
 
             if (DataCenter.AllianceMembers.Any(c => c.CastTargetObjectId == item.ObjectId)) return false;
 

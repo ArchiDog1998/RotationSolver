@@ -75,7 +75,7 @@ internal class SocialUpdater
 
         await Task.Delay(new Random().Next(4000, 6000));
 
-        Service.Config.DutyEnd.AddMacro();
+        Service.Config.GlobalConfig.DutyEnd.AddMacro();
     }
 
     static void ClientState_TerritoryChanged(object sender, ushort e)
@@ -138,7 +138,7 @@ internal class SocialUpdater
 #if DEBUG
             Svc.Chat.Print("Macro now.");
 #endif
-            Service.Config.DutyStart.AddMacro();
+            Service.Config.GlobalConfig.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
             SayHelloToAuthor();
         }

@@ -15,9 +15,9 @@ namespace RotationSolver.Basic;
 internal static class DataCenter
 {
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
-        || !Service.Config.PoslockCasting
+        || !Service.Config.GetValue(Configuration.PluginConfigBool.PoslockCasting)
         //Key cancel.
-        || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.PoslockModifier]]
+        || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.GetValue(Configuration.PluginConfigInt.PoslockModifier)]]
         //Gamepad cancel.
         || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) >= 0.5f;
 
@@ -72,6 +72,7 @@ internal static class DataCenter
             return next?.Act;
         }
     }
+    public static Job Job { get; set; }
 
     internal static void AddCommandAction(IAction act, double time)
     {
@@ -89,24 +90,7 @@ internal static class DataCenter
     }
 
     public static TargetHostileType RightNowTargetToHostileType
-    {
-        get
-        {
-            if (!Player.Available) return 0;
-            var id = Player.Object.ClassJob.Id;
-            return GetTargetHostileType(Service.GetSheet<ClassJob>().GetRow(id));
-        }
-    }
-
-    public static TargetHostileType GetTargetHostileType(ClassJob classJob)
-    {
-        if (Service.Config.TargetToHostileTypes.TryGetValue(classJob.RowId, out var type))
-        {
-            return (TargetHostileType)type;
-        }
-
-        return classJob.GetJobRole() == JobRole.Tank ? TargetHostileType.AllTargetsCanAttack : TargetHostileType.TargetsHaveTarget;
-    }
+        => (TargetHostileType)Service.Config.GetValue(Job, Configuration.JobConfigInt.HostileType);
 
     public static unsafe ActionID LastComboAction => (ActionID)ActionManager.Instance()->Combo.Action;
     public static unsafe float ComboTime => ActionManager.Instance()->Combo.Timer;
@@ -114,14 +98,14 @@ internal static class DataCenter
     {
         get
         {
-            if (Service.Config.TargetingTypes.Count == 0)
+            if (Service.Config.GlobalConfig.TargetingTypes.Count == 0)
             {
-                Service.Config.TargetingTypes.Add(TargetingType.Big);
-                Service.Config.TargetingTypes.Add(TargetingType.Small);
+                Service.Config.GlobalConfig.TargetingTypes.Add(TargetingType.Big);
+                Service.Config.GlobalConfig.TargetingTypes.Add(TargetingType.Small);
                 Service.Config.Save();
             }
 
-            return Service.Config.TargetingTypes[Service.Config.TargetingIndex %= Service.Config.TargetingTypes.Count];
+            return Service.Config.GlobalConfig.TargetingTypes[Service.Config.GetValue(Configuration.PluginConfigInt.TargetingIndex) %Service.Config.GlobalConfig.TargetingTypes.Count];
         }
     }
 
@@ -135,7 +119,7 @@ internal static class DataCenter
         {
             try
             {
-                if (Service.Config.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero
+                if (Service.Config.GetValue(Configuration.PluginConfigBool.ChangeTargetForFate) && (IntPtr)FateManager.Instance() != IntPtr.Zero
                     && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
                     && Player.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
                 {
@@ -187,8 +171,8 @@ internal static class DataCenter
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
     private static double SpecialTimeElapsed => (DateTime.Now - _specialStateStartTime).TotalSeconds;
-    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.SpecialDuration - SpecialTimeElapsed :
-        Math.Ceiling((Service.Config.SpecialDuration + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
+    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.GetValue(Configuration.PluginConfigFloat.SpecialDuration) - SpecialTimeElapsed :
+        Math.Ceiling((Service.Config.GetValue(Configuration.PluginConfigFloat.SpecialDuration) + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
 
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
     public static SpecialCommandType SpecialType =>
@@ -216,27 +200,32 @@ internal static class DataCenter
     public static IEnumerable<BattleChara> AllianceMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
 
     public static IEnumerable<BattleChara> AllianceTanks { get; internal set; } = Array.Empty<PlayerCharacter>();
-
+    
     public static ObjectListDelay<BattleChara> DeathPeopleAll { get; } = new(
-    () => (Service.Config.DeathDelayMin, Service.Config.DeathDelayMax));
+    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.DeathDelayMin),
+    Service.Config.GetValue(Configuration.PluginConfigFloat.DeathDelayMax)));
 
     public static ObjectListDelay<BattleChara> DeathPeopleParty { get; } = new(
-        () => (Service.Config.DeathDelayMin, Service.Config.DeathDelayMax));
+    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.DeathDelayMin),
+    Service.Config.GetValue(Configuration.PluginConfigFloat.DeathDelayMax)));
 
     public static ObjectListDelay<BattleChara> WeakenPeople { get; } = new(
-        () => (Service.Config.WeakenDelayMin, Service.Config.WeakenDelayMax));
+    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.WeakenDelayMin),
+    Service.Config.GetValue(Configuration.PluginConfigFloat.WeakenDelayMax)));
 
     public static IEnumerable<BattleChara> DyingPeople { get; internal set; } = Array.Empty<BattleChara>();
 
     public static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
-    () => (Service.Config.HostileDelayMin, Service.Config.HostileDelayMax));
+    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.HostileDelayMin),
+    Service.Config.GetValue(Configuration.PluginConfigFloat.HostileDelayMax)));
 
     public static IEnumerable<BattleChara> AllHostileTargets { get; internal set; } = Array.Empty<BattleChara>();
 
     public static IEnumerable<BattleChara> TarOnMeTargets { get; internal set; } = Array.Empty<BattleChara>();
 
     public static ObjectListDelay<BattleChara> CanInterruptTargets { get; } = new ObjectListDelay<BattleChara>(
-        () => (Service.Config.InterruptDelayMin, Service.Config.InterruptDelayMax));
+    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.InterruptDelayMin),
+    Service.Config.GetValue(Configuration.PluginConfigFloat.InterruptDelayMax)));
 
     public static IEnumerable<GameObject> AllTargets { get; set; }
 
@@ -349,7 +338,7 @@ internal static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Math.Min(Math.Min(RTT, FetchTime), Service.Config.MaxPing);
+    public static float Ping => Math.Min(Math.Min(RTT, FetchTime), Service.Config.GetValue(Configuration.PluginConfigFloat.MaxPing));
     public static float RTT { get; internal set; } = 0.1f;
     public static float FetchTime { get; private set; } = 0.1f;
 

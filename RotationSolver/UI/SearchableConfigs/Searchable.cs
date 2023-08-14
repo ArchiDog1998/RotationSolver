@@ -45,7 +45,7 @@ internal abstract class Searchable : ISearchable
 
             if (Jobs != null)
             {
-                canDraw |= Jobs.Contains(RotationUpdater.Job);
+                canDraw |= Jobs.Contains(DataCenter.Job);
             }
 
             if (!canDraw) return;
@@ -56,26 +56,7 @@ internal abstract class Searchable : ISearchable
         PrepareGroup(Popup_Key, Command, () => ResetToDefault(job));
     }
 
-    public static void PrepareGroup(string key, string command, Action reset)
-    {
-        if (ImGui.BeginPopup(key))
-        {
-            if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
-            {
-                if (reset != null) DrawHotKeys("Reset to Default Value.", reset, "Backspace");
 
-                if (!string.IsNullOrEmpty(command))
-                {
-                    DrawHotKeys($"Execute \"{command}\"", () => ExecuteCommand(command), "Alt");
-
-                    DrawHotKeys($"Copy \"{command}\"", () => CopyCommand(command), "Ctrl");
-                }
-                ImGui.EndTable();
-            }
-
-            ImGui.EndPopup();
-        }
-    }
 
     protected abstract void DrawMain(Job job);
 
@@ -105,11 +86,45 @@ internal abstract class Searchable : ISearchable
             });
         }
 
-        ReactPopup(Popup_Key, Command, () => ResetToDefault(job));
+        ReactPopup(Popup_Key, Command, () => ResetToDefault(job), showHand);
     }
 
+    public static void PrepareGroup(string key, string command, Action reset)
+    {
+        DrawHotKeysPopup(key, command, ("Reset to Default Value.", reset, new string[] { "Backspace" }));
+    }
     public static void ReactPopup(string key, string command, Action reset, bool showHand = true)
     {
+        ExecuteHotKeysPopup(key, command, string.Empty, showHand, (reset, new VirtualKey[] { VirtualKey.BACK }));
+    }
+    public static void DrawHotKeysPopup(string key, string command, params (string name, Action action, string[] keys)[] pairs)
+    {
+        if (ImGui.BeginPopup(key))
+        {
+            if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
+            {
+                foreach (var (name, action, keys) in pairs)
+                {
+                    if (action == null) continue;
+                    DrawHotKeys(name, action, keys);
+                }
+                if (!string.IsNullOrEmpty(command))
+                {
+                    DrawHotKeys($"Execute \"{command}\"", () => ExecuteCommand(command), "Alt");
+
+                    DrawHotKeys($"Copy \"{command}\"", () => CopyCommand(command), "Ctrl");
+                }
+                ImGui.EndTable();
+            }
+
+            ImGui.EndPopup();
+        }
+    }
+    public static void ExecuteHotKeysPopup(string key, string command, string tooltip, bool showHand, params (Action action, VirtualKey[] keys)[] pairs)
+    {
+        if (!ImGui.IsItemHovered()) return;
+        if (!string.IsNullOrEmpty(tooltip)) ImguiTooltips.ShowTooltip(tooltip);
+
         if (showHand) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
 
         if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
@@ -119,9 +134,17 @@ internal abstract class Searchable : ISearchable
                 ImGui.OpenPopup(key);
             }
         }
-        if (reset != null) ExecuteHotKeys(reset, VirtualKey.BACK);
-        ExecuteHotKeys(() => ExecuteCommand(command), VirtualKey.MENU);
-        ExecuteHotKeys(() => CopyCommand(command), VirtualKey.CONTROL);
+
+        foreach (var (action, keys) in pairs)
+        {
+            if (action == null) continue;
+            ExecuteHotKeys(action, keys);
+        }
+        if (!string.IsNullOrEmpty(command))
+        {
+            ExecuteHotKeys(() => ExecuteCommand(command), VirtualKey.MENU);
+            ExecuteHotKeys(() => CopyCommand(command), VirtualKey.CONTROL);
+        }
     }
 
     private static void ExecuteCommand(string command)
@@ -135,7 +158,20 @@ internal abstract class Searchable : ISearchable
         Notify.Success($"\"{command}\" copied to clipboard.");
     }
 
-    public static void DrawHotKeys(string name, Action action, params string[] keys)
+
+    private static void ExecuteHotKeys(Action action, params VirtualKey[] keys)
+    {
+        if (action == null) return;
+        var name = string.Join(' ', keys);
+
+        if (!_lastChecked.TryGetValue(name, out var last)) last = false;
+        var now = keys.All(k => Svc.KeyState[k]);
+        _lastChecked[name] = now;
+
+        if (!last && now) action();
+    }
+
+    private static void DrawHotKeys(string name, Action action, params string[] keys)
     {
         if (action == null) return;
 
@@ -152,23 +188,13 @@ internal abstract class Searchable : ISearchable
     }
 
     private static readonly SortedList<string, bool> _lastChecked = new();
-    public static void ExecuteHotKeys(Action action, params VirtualKey[] keys)
-    {
-        if (action == null) return;
-        var name = string.Join(' ', keys);
 
-        if (!_lastChecked.TryGetValue(name, out var last)) last = false;
-        var now = keys.All(k => Svc.KeyState[k]);
-        _lastChecked[name] = now;
-
-        if (!last && now) action();
-    }
 
     protected static void DrawJobIcon()
     {
         ImGui.SameLine();
 
-        if (IconSet.GetTexture(IconSet.GetJobIcon(RotationUpdater.Job, IconType.Framed), out var texture))
+        if (IconSet.GetTexture(IconSet.GetJobIcon(DataCenter.Job, IconType.Framed), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
             ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_Configs_JobConfigTip);

@@ -23,16 +23,16 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public bool IsEnabled
     {
-        get => !Service.Config.DisabledCombos.Contains(Name);
+        get => !Service.Config.GlobalConfig.DisabledCombos.Contains(Name);
         set
         {
             if (value)
             {
-                Service.Config.DisabledCombos.Remove(Name);
+                Service.Config.GlobalConfig.DisabledCombos.Remove(Name);
             }
             else
             {
-                Service.Config.DisabledCombos.Add(Name);
+                Service.Config.GlobalConfig.DisabledCombos.Add(Name);
             }
         }
     }

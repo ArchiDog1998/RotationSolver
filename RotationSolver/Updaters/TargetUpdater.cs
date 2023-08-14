@@ -79,7 +79,7 @@ internal static partial class TargetUpdater
 
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
-            if (Service.Config.OnlyAttackInView)
+            if (Service.Config.GetValue(PluginConfigBool.OnlyAttackInView))
             {
                 if (!Svc.GameGui.WorldToScreen(b.Position, out _)) return false;
             }
@@ -163,7 +163,7 @@ internal static partial class TargetUpdater
 
     private static unsafe uint[] GetEnemies()
     {
-        if (!Service.Config.AddEnemyListToHostile) return Array.Empty<uint>();
+        if (!Service.Config.GetValue(PluginConfigBool.AddEnemyListToHostile)) return Array.Empty<uint>();
 
         var addons = Service.GetAddons<AddonEnemyList>();
 
@@ -351,7 +351,7 @@ internal static partial class TargetUpdater
         return loc == b.Position;
     });
 
-    static (float min, float max) GetHealRange() => (Service.Config.HealDelayMin, Service.Config.HealDelayMax);
+    static (float min, float max) GetHealRange() => (Service.Config.GetValue(PluginConfigFloat.HealDelayMin), Service.Config.GetValue(PluginConfigFloat.HealDelayMax));
 
     static RandomDelay _healDelay1 = new(GetHealRange);
     static RandomDelay _healDelay2 = new(GetHealRange);
@@ -374,10 +374,10 @@ internal static partial class TargetUpdater
             var ratio = GetHealingOfTimeRatio(player, StatusHelper.AreaHots);
 
             if (!DataCenter.CanHealAreaAbility)
-                DataCenter.CanHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaAbility(), job.GetHealthAreaAbilityHot(), ratio);
+                DataCenter.CanHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaAbility(), job.GetHealthAreaAbilityHot(), ratio);
 
             if (!DataCenter.CanHealAreaSpell)
-                DataCenter.CanHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaSpell(), job.GetHealthAreaSpellHot(), ratio);
+                DataCenter.CanHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(job.GetHealthAreaSpell(), job.GetHealthAreaSpellHot(), ratio);
         }
 
         //Delay

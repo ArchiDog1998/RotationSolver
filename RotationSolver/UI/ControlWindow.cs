@@ -1,5 +1,4 @@
 ﻿using Dalamud.Interface.Colors;
-using Dalamud.Interface.Style;
 using Dalamud.Interface.Windowing;
 using ECommons.DalamudServices;
 using ImGuiScene;
@@ -7,6 +6,7 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Drawing;
 
 namespace RotationSolver.UI;
 
@@ -30,14 +30,15 @@ internal class ControlWindow : Window
 
     public override void PreDraw()
     {
-        Vector4 bgColor = Service.Config.IsControlWindowLock
-            ? Service.Config.ControlWindowLockBg
-            : Service.Config.ControlWindowUnlockBg;
+        
+        Vector4 bgColor = Service.Config.GetValue(PluginConfigBool.IsControlWindowLock)
+            ? Service.Config.GetValue(PluginConfigVector4.ControlWindowLockBg)
+            : Service.Config.GetValue(PluginConfigVector4.ControlWindowUnlockBg);
         ImGui.PushStyleColor(ImGuiCol.WindowBg, bgColor);
 
         Flags = BaseFlags;
 
-        if (Service.Config.IsControlWindowLock)
+        if (Service.Config.GetValue(PluginConfigBool.IsControlWindowLock))
         {
             Flags |= ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
         }
@@ -54,9 +55,12 @@ internal class ControlWindow : Window
 
     public override void Draw()
     {
+        
         ImGui.Columns(3, "Control Bolder", false);
-        var gcd = Service.Config.ControlWindowGCDSize * Service.Config.ControlWindowNextSizeRatio;
-        var ability = Service.Config.ControlWindow0GCDSize * Service.Config.ControlWindowNextSizeRatio;
+        var gcd = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize) 
+            * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
+        var ability = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize)
+            * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
         var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
 
         ImGui.SetColumnWidth(1, 8);
@@ -86,8 +90,11 @@ internal class ControlWindow : Window
 
         ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.ToName());
 
-        RotationConfigWindow.DrawCheckBox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
-            ref Service.Config.IsControlWindowLock);
+        var value = Service.Config.GetValue(PluginConfigBool.IsControlWindowLock);
+        if(ImGui.Checkbox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove, ref value))
+        {
+            Service.Config.SetValue(PluginConfigBool.IsControlWindowLock, value);
+        }
         ImGui.EndGroup();
 
         ImGui.SameLine();
@@ -169,7 +176,8 @@ internal class ControlWindow : Window
 
         ImGui.Text("CMD:");
         ImGui.SameLine();
-        DrawIAction(DataCenter.CommandNextAction, Service.Config.ControlWindow0GCDSize, 1);
+        
+        DrawIAction(DataCenter.CommandNextAction, Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize), 1);
 
         ImGui.SameLine();
 
@@ -185,20 +193,21 @@ internal class ControlWindow : Window
         ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
         ImGui.EndGroup();
 
-
-        if(Service.Config.MistakeRatio > 0)
+        if (Service.Config.GetValue(PluginConfigFloat.MistakeRatio) > 0)
         {
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.DPSRed, "    | Mistake | \n    | Mistake | ");
             ImGui.SameLine();
-            DrawIAction(DateTime.Now - DidTime < TimeSpan.FromSeconds(5) ? Wrong : null, Service.Config.ControlWindowGCDSize, 1);
+
+            DrawIAction(DateTime.Now - DidTime < TimeSpan.FromSeconds(5) ? Wrong : null, 
+                Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize), 1);
         }
     }
 
     static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)
     {
-        var gcdW = Service.Config.ControlWindowGCDSize;
-        var abilityW = Service.Config.ControlWindow0GCDSize;
+        var gcdW = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize);
+        var abilityW = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize);
         var width = gcdW + abilityW + ImGui.GetStyle().ItemSpacing.X + ImGui.GetStyle().ItemInnerSpacing.X * 4;
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
@@ -214,12 +223,10 @@ internal class ControlWindow : Window
 
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
 
-        var texture = IconSet.GetTexture(gcd);
-        if(texture != null)
+        if(IconSet.GetTexture(gcd, out var texture))
         {
             DrawIAction(texture.ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
-            texture = IconSet.GetTexture(ability);
-            if (texture != null)
+            if (IconSet.GetTexture(ability, out texture))
             {
                 ImGui.SameLine();
                 DrawIAction(texture.ImGuiHandle, baseId + nameof(ability), abilityW, command, help);
@@ -253,17 +260,17 @@ internal class ControlWindow : Window
 
     static void DrawCommandAction(IAction ability, SpecialCommandType command, Vector4 color)
     {
-        DrawCommandAction(IconSet.GetTexture(ability), command, color);
+        if (IconSet.GetTexture(ability, out var texture)) DrawCommandAction(texture, command, color);
     }
 
     static void DrawCommandAction(uint iconId, SpecialCommandType command, Vector4 color)
     {
-        DrawCommandAction(IconSet.GetTexture(iconId), command, color);
+        if(IconSet.GetTexture(iconId, out var texture)) DrawCommandAction(texture, command, color);
     }
 
     static void DrawCommandAction(TextureWrap texture, SpecialCommandType command, Vector4 color)
     {
-        var abilityW = Service.Config.ControlWindow0GCDSize;
+        var abilityW = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize);
         var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
@@ -300,7 +307,7 @@ internal class ControlWindow : Window
 
     static void DrawCommandAction(uint iconId, StateCommandType command, Vector4 color)
     {
-        var abilityW = Service.Config.ControlWindow0GCDSize;
+        var abilityW = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize);
         var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
@@ -313,8 +320,7 @@ internal class ControlWindow : Window
         var help = GetHelp(command);
         string baseId = "ImgButton" + command.ToString();
 
-        var texture = IconSet.GetTexture(iconId);
-        if(texture != null)
+        if(IconSet.GetTexture(iconId, out var texture))
         {
             ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
             DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
@@ -386,8 +392,7 @@ internal class ControlWindow : Window
 
     internal static (Vector2, Vector2) DrawIAction(IAction action, float width, float percent, bool isAdjust = true)
     {
-        var texture = IconSet.GetTexture(action, isAdjust);
-        if (texture == null) return (default, default);
+        if (!IconSet.GetTexture(action, out var texture, isAdjust)) return (default, default);
         var result = DrawIAction(texture.ImGuiHandle, width, action == null ? -1 : percent);
         if (action != null) ImGuiHelper.HoveredString(action.Name, () =>
         {
@@ -426,9 +431,7 @@ internal class ControlWindow : Window
 
         if (percent < 0)
         {
-            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
-
-            if (cover != null)
+            if (IconSet.GetTexture("ui/uld/icona_frame_hr1.tex", out var cover))
             {
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
 
@@ -443,9 +446,7 @@ internal class ControlWindow : Window
         }
         else if (percent < 1)
         {
-            var cover = IconSet.GetTexture("ui/uld/icona_recast_hr1.tex");
-
-            if (cover != null)
+            if (IconSet.GetTexture("ui/uld/icona_recast_hr1.tex", out var cover))
             {
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
 
@@ -463,9 +464,7 @@ internal class ControlWindow : Window
         }
         else
         {
-            var cover = IconSet.GetTexture("ui/uld/icona_frame_hr1.tex");
-
-            if (cover != null)
+            if (IconSet.GetTexture("ui/uld/icona_frame_hr1.tex", out var cover))
             {
 
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
@@ -480,9 +479,7 @@ internal class ControlWindow : Window
 
         if (percent > 1)
         {
-            var cover = IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex");
-
-            if (cover != null)
+            if (IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex", out var cover))
             {
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
 

@@ -27,19 +27,24 @@ internal class DragIntSearchJob : DragIntSearch
         _config = config;
     }
 
+    public DragIntSearchJob(JobConfigInt config, params string[] names)
+    : base(names)
+    {
+        _config = config;
+    }
     public override void ResetToDefault(Job job)
     {
-        Service.ConfigNew.SetValue(job, _config, Service.ConfigNew.GetDefault(job, _config));
+        Service.Config.SetValue(job, _config, Service.Config.GetDefault(job, _config));
     }
 
     protected override int GetValue(Job job)
     {
-        return Service.ConfigNew.GetValue(job, _config);
+        return Service.Config.GetValue(job, _config);
     }
 
     protected override void SetValue(Job job, int value)
     {
-        Service.ConfigNew.SetValue(job, _config, value);
+        Service.Config.SetValue(job, _config, value);
     }
 }
 
@@ -71,17 +76,17 @@ internal class DragIntSearchPlugin : DragIntSearch
 
     public override void ResetToDefault(Job job)
     {
-        Service.ConfigNew.SetValue(_config, Service.ConfigNew.GetDefault(_config));
+        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
     }
 
     protected override int GetValue(Job job)
     {
-        return Service.ConfigNew.GetValue(_config);
+        return Service.Config.GetValue(_config);
     }
 
     protected override void SetValue(Job job, int value)
     {
-        Service.ConfigNew.SetValue(_config, value);
+        Service.Config.SetValue(_config, value);
     }
 }
 

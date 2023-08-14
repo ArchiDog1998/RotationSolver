@@ -30,7 +30,7 @@ internal class MedicineItem : BaseItem
 {
     private readonly MedicineType _type;
 
-    protected override bool CanUseThis => Service.Config.UseTinctures;
+    protected override bool CanUseThis => Service.Config.GetValue(Configuration.PluginConfigBool.UseTinctures);
 
     public MedicineItem(uint row, MedicineType type, uint a4 = 65535) : base(row, a4)
     {

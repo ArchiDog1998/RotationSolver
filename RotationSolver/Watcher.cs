@@ -92,7 +92,7 @@ public static class Watcher
                     && (effect.value > 0 || (effect.param0 & 6) == 6))
                     == DataCenter.PartyMembers.Count())
                 {
-                    if (Service.Config.RecordCastingArea)
+                    if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.RecordCastingArea))
                     {
                         OtherConfiguration.HostileCastingArea.Add(set.Action.RowId);
                         OtherConfiguration.SaveHostileCastingArea();
@@ -133,7 +133,7 @@ public static class Watcher
         DataCenter.EffectEndTime = DateTime.Now.AddSeconds(set.Header.AnimationLockTime + 1);
 
         //Macro
-        foreach (var item in Service.Config.Events)
+        foreach (var item in Service.Config.GlobalConfig.Events)
         {
             if (!new Regex(item.Name).Match(action.Name).Success) continue;
             if (item.AddMacro(tar)) break;

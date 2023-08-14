@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations;
+﻿using RotationSolver.Basic.Configuration;
+
+namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
@@ -20,10 +22,10 @@ public abstract partial class CustomRotation
         {
             if (act is IBaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return act;
         }
-
+        
         //General Heal
         if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer)
-            && (DataCenter.InCombat || Service.Config.HealOutOfCombat))
+            && (DataCenter.InCombat || Service.Config.GetValue(PluginConfigBool.HealOutOfCombat)))
         {
             if ((specialType == SpecialCommandType.HealArea || CanHealAreaSpell) && HealAreaGCD(out act)) return act;
             if ((specialType == SpecialCommandType.HealSingle || CanHealSingleSpell) && HealSingleGCD(out act)) return act;
@@ -37,21 +39,20 @@ public abstract partial class CustomRotation
 
         //Esuna
         if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (specialType == SpecialCommandType.EsunaStanceNorth 
-            || !HasHostilesInRange || Service.Config.EsunaAll)
+            || !HasHostilesInRange || Service.Config.GetValue(PluginConfigBool.EsunaAll))
             && DataCenter.WeakenPeople.Any()  || DataCenter.DyingPeople.Any()))
         {
             if (ClassJob.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, CanUseOption.MustUse)) return act;
         }
 
         if (GeneralGCD(out var action)) return action;
-
-        if(DataCenter.PartyMembersMinHP < Service.Config.HealWhenNothingTodoBelow && DataCenter.InCombat)
+        if (DataCenter.PartyMembersMinHP < Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoBelow) && DataCenter.InCombat)
         {
             if (DataCenter.PartyMembersDifferHP < DataCenter.PartyMembersDifferHP && HealAreaGCD(out act)) return act;
             if (HealSingleGCD(out act)) return act;
         }
-
-        if (Service.Config.RaisePlayerByCasting && RaiseSpell(specialType, out act, true)) return act;
+        
+        if (Service.Config.GetValue(PluginConfigBool.RaisePlayerByCasting) && RaiseSpell(specialType, out act, true)) return act;
 
         return null;
     }
@@ -64,7 +65,7 @@ public abstract partial class CustomRotation
             if (RaiseAction(out act)) return true;
         }
 
-        if ((Service.Config.RaiseAll ? DataCenter.DeathPeopleAll.Any() : DataCenter.DeathPeopleParty.Any())
+        if ((Service.Config.GetValue(PluginConfigBool.RaiseAll) ? DataCenter.DeathPeopleAll.Any() : DataCenter.DeathPeopleParty.Any())
             && RaiseAction(out act, CanUseOption.IgnoreCastCheck))
         {
             if (HasSwift)
@@ -84,7 +85,7 @@ public abstract partial class CustomRotation
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
             }
-            else if (Service.Config.GetValue(SettingsCommand.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown 
+            else if (Service.Config.GetValue(PluginConfigBool.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown 
                 && DataCenter.NextAbilityToNextGCD > DataCenter.MinAnimationLock + DataCenter.Ping)
             {
                 return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
@@ -96,7 +97,7 @@ public abstract partial class CustomRotation
     private bool RaiseAction(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (VariantRaise.CanUse(out act, option)) return true;
-        if (Player.CurrentMp > Service.Config.LessMPNoRaise && (Raise?.CanUse(out act, option) ?? false)) return true;
+        if (Player.CurrentMp > Service.Config.GetValue(PluginConfigInt.LessMPNoRaise) && (Raise?.CanUse(out act, option) ?? false)) return true;
 
         return false;
     }
