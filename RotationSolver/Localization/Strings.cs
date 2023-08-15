@@ -664,4 +664,13 @@ internal partial class Strings
 
     public string ConfigWindow_UI_ShowBeneficialPosition { get; set; } = "Show beneficial positions.";
     public string ConfigWindow_UI_BeneficialPositionColor { get; set; } = "The colors of beneficial positions";
+
+    public string ConfigWindow_Tab_Actions { get; set; } = "The actions' conditions about your job.";
+    public string ConfigWindow_Tab_Rotations { get; set; } = "All rotations that RS loaded.";
+    public string ConfigWindow_Tab_List { get; set; } = "Something that has to be a list.";
+    public string ConfigWindow_Tab_Basic { get; set; } = "Basic settings.";
+    public string ConfigWindow_Tab_UI { get; set; } = "Settings about user interface.";
+    public string ConfigWindow_Tab_Auto { get; set; } = "About some general actions' usage and conditions.";
+    public string ConfigWindow_Tab_Target { get; set; } = "The way to find the targets, hostiles or friends.";
+    public string ConfigWindow_Tab_Extra { get; set; } = "Some features shouldn't be included by RS.";
 }

@@ -453,5 +453,13 @@
   "ConfigWindow_Search_Result": "Searching Result",
   "ConfigWindow_UI_DrawIconAnimation": "Show animation about Icon",
   "ConfigWindow_UI_ShowBeneficialPosition": "Show beneficial positions.",
-  "ConfigWindow_UI_BeneficialPositionColor": "The colors of beneficial positions"
+  "ConfigWindow_UI_BeneficialPositionColor": "The colors of beneficial positions",
+  "ConfigWindow_Tab_Actions": "The actions' conditions about your job.",
+  "ConfigWindow_Tab_Rotations": "All rotations that RS loaded.",
+  "ConfigWindow_Tab_List": "Something that has to be a list.",
+  "ConfigWindow_Tab_Basic": "Basic settings.",
+  "ConfigWindow_Tab_UI": "Settings about user interface.",
+  "ConfigWindow_Tab_Auto": "About some general actions' usage and conditions.",
+  "ConfigWindow_Tab_Target": "The way to find the targets, hostiles or friends.",
+  "ConfigWindow_Tab_Extra": "Some features shouldn't be included by RS."
 }

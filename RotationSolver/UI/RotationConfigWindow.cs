@@ -153,7 +153,11 @@ public partial class RotationConfigWindow : Window
                         }
                         DrawActionOverlay(cursor, iconSize, _activeTab == item ? 1 : 0);
                     }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
-                    ImguiTooltips.HoveredTooltip(item.ToString());
+
+                    var desc = item.ToString();
+                    var addition = item.ToDescription();
+                    if (!string.IsNullOrEmpty(addition)) desc += "\n \n" + addition;
+                    ImguiTooltips.HoveredTooltip(desc);
                 }
                 else
                 {
@@ -164,6 +168,8 @@ public partial class RotationConfigWindow : Window
                     if (ImGui.IsItemHovered())
                     {
                         ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+                        var desc = item.ToDescription();
+                        if (!string.IsNullOrEmpty(desc)) ImguiTooltips.ShowTooltip(desc);
                     }
                 }
             }

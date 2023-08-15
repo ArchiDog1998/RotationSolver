@@ -1,9 +1,24 @@
 ﻿using RotationSolver.Basic.Configuration;
+using RotationSolver.UI;
 
 namespace RotationSolver.Localization;
 
 internal static class ConfigTranslation
 {
+    public static string ToDescription(this RotationConfigWindowTab tab) => tab switch
+    {
+         RotationConfigWindowTab.Actions => LocalizationManager.RightLang.ConfigWindow_Tab_Actions,
+         RotationConfigWindowTab.Rotations => LocalizationManager.RightLang.ConfigWindow_Tab_Rotations,
+         RotationConfigWindowTab.List => LocalizationManager.RightLang.ConfigWindow_Tab_List,
+         RotationConfigWindowTab.Basic => LocalizationManager.RightLang.ConfigWindow_Tab_Basic,
+         RotationConfigWindowTab.UI => LocalizationManager.RightLang.ConfigWindow_Tab_UI,
+         RotationConfigWindowTab.Auto => LocalizationManager.RightLang.ConfigWindow_Tab_Auto,
+         RotationConfigWindowTab.Target => LocalizationManager.RightLang.ConfigWindow_Tab_Target,
+         RotationConfigWindowTab.Extra => LocalizationManager.RightLang.ConfigWindow_Tab_Extra,
+        _ => string.Empty,
+    };
+
+
     public static string ToName(this JobConfigInt config) => config switch
     {
         JobConfigInt.AddDotGCDCount => LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
