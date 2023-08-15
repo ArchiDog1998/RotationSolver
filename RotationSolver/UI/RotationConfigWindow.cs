@@ -760,6 +760,13 @@ public partial class RotationConfigWindow : Window
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
+        var enable = rotation.IsEnabled;
+        if(ImGui.Checkbox(rotation.Name, ref  enable))
+        {
+            rotation.IsEnabled = enable;
+        }
+        if (!enable) return;
+
         var set = rotation.Configs;
         foreach (var config in set.Configs)
         {
