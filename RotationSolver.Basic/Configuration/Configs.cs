@@ -319,11 +319,12 @@ public enum PluginConfigBool : byte
 
     [Default(false)] AutoOpenChest,
     [Default(true)] AutoCloseChestWindow,
+    [Default(true)] AutoOffAfterCombat,
 }
 
 public enum PluginConfigFloat : byte
 {
-    [Default(8f, 0f, 10f)] AutoOffAfterCombat,
+    [Default(8f, 0f, 20f)] AutoOffAfterCombatTime,
     [Default(3f, 0f, 8f)] DrawingHeight,
     [Default(0.2f, 0.005f, 0.05f)] SampleLength,
     [Default(0.1f)] KeyBoardNoiseTimeMin,
@@ -374,7 +375,6 @@ public enum PluginConfigFloat : byte
 
     [Default(0.5f, 0f, 3f)] CountdownDelayMin,
     [Default(1f)] CountdownDelayMax,
-
     [Default(0.6f, 0.5f, 0.7f)] CountDownAhead,
 
     [Default(24f)] MoveTargetAngle,
@@ -393,7 +393,6 @@ public enum PluginConfigFloat : byte
     [Default(0.2f, 0.01f, 0.5f)] MaxPing,
 
     [Default(1.8f)] HealthRatioDot,
-
 }
 
 public enum PluginConfigVector4 : byte

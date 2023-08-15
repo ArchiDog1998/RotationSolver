@@ -135,9 +135,9 @@ internal static class ActionUpdater
         else if (last && !DataCenter.InCombat)
         {
             _startCombatTime = DateTime.MinValue;
-            if (Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombat) > 0)
+            if (Service.Config.GetValue(PluginConfigBool.AutoOffAfterCombat))
             {
-                _cancelTime = DateTime.Now.AddSeconds(Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombat));
+                _cancelTime = DateTime.Now.AddSeconds(Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombatTime));
             }
         }
 

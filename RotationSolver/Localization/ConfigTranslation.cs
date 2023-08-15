@@ -119,6 +119,8 @@ internal static class ConfigTranslation
         PluginConfigBool.DownloadRotations => LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotations,
         PluginConfigBool.AutoUpdateRotations => LocalizationManager.RightLang.ConfigWindow_Rotation_AutoUpdateRotations,
         PluginConfigBool.AutoLoadCustomRotations => LocalizationManager.RightLang.ConfigWindow_Rotations_AutoLoadCustomRotations,
+
+        PluginConfigBool.AutoOffAfterCombat => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombat,
         _ => string.Empty,
     };
 
@@ -130,7 +132,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.CountDownAhead => LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
         PluginConfigFloat.SpecialDuration => LocalizationManager.RightLang.ConfigWindow_Param_SpecialDuration,
         PluginConfigFloat.MaxPing => LocalizationManager.RightLang.ConfigWindow_Param_MaxPing,
-        PluginConfigFloat.AutoOffAfterCombat => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombat,
+        PluginConfigFloat.AutoOffAfterCombatTime => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombatTime,
         PluginConfigFloat.WeaponDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_WeaponDelay,
         PluginConfigFloat.HostileDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_HostileDelay,
         PluginConfigFloat.InterruptDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_InterruptDelay,

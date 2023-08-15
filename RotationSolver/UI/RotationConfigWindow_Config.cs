@@ -147,7 +147,8 @@ public partial class RotationConfigWindow
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffBetweenArea),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffCutScene),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffWhenDead),
-        new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombat, 1f),
+        new CheckBoxSearchPlugin(PluginConfigBool.AutoOffAfterCombat,
+            new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombatTime, 1f)),
     };
     #endregion
 

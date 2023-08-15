@@ -1517,11 +1517,11 @@ public partial class RotationConfigWindow : Window
                 foreach (var action in AllActions.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _actionSearching)
                 , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
                 {
-                    ImGui.Selectable($"{action.Name} ({action.RowId})");
+                    var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
                     if (ImGui.IsItemHovered())
                     {
                         ImguiTooltips.ShowTooltip($"{action.Name} ({action.RowId})");
-                        if(ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+                        if(selected)
                         {
                             actions.Add(action.RowId);
                             OtherConfiguration.Save();
