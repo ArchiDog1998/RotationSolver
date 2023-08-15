@@ -180,7 +180,12 @@ internal partial class Strings
 
     public string ConfigWindow_Param_OnlyHotOnTanks { get; set; } = "Use single target healing over time actions only on tanks";
 
-    public string ConfigWindow_Param_BeneficialAreaOnTarget { get; set; } = "Use Beneficial Area abilities on target.";
+    public string ConfigWindow_Param_BeneficialAreaOnLocations { get; set; } = "On Listed Position";
+    public string ConfigWindow_Param_BeneficialAreaOnTarget { get; set; } = "On target";
+
+    public string ConfigWindow_Param_BeneficialAreaOnCalculated { get; set; } = "On the calculated Position";
+
+
 
     public string ConfigWindow_Param_HealthDifference { get; set; } = "HP%% for standard deviation for using AOE heal.";
     public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP%% for AOE healing OGCDs";
@@ -235,7 +240,7 @@ internal partial class Strings
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
 
-    public string ConfigWindow_Control_OnlyShowWithHostileOrInDuty { get; set; } = "Only shown if there are enemies in or in duty";
+    public string ConfigWindow_Control_OnlyShowWithHostileOrInDuty { get; set; } = "Only show these windows if there are enemies in or in duty";
     public string ConfigWindow_Control_ShowNextActionWindow { get; set; } = "Show Next Action Window";
 
     public string ConfigWindow_Control_ShowControlWindow { get; set; } = "Show Control Window";
@@ -637,10 +642,6 @@ internal partial class Strings
     public string ConfigWindow_List_ActionNameOrId { get; set; } = "Action name or id";
     public string ConfigWindow_List_AddAction { get; set; } = "Add Action";
 
-    public string ConfigWindow_List_TerritoryEverywhere { get; set; } = "Everywhere";
-
-    public string ConfigWindow_List_AddTerritory{ get; set; } = "Territory name or id";
-
     public string ConfigWindow_List_BeneficialLocations { get; set; } = "Beneficial locations";
     public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of object that you don't want to attack";
 
@@ -659,4 +660,17 @@ internal partial class Strings
     public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the strategy of Rotation Solver to use these actions.";
     public string ConfigWindow_Target_Config { get; set; } = "Configuration";
     public string ConfigWindow_Search_Result { get; set; } = "Searching Result";
+    public string ConfigWindow_UI_DrawIconAnimation { get; set; } = "Show animation about Icon";
+
+    public string ConfigWindow_UI_ShowBeneficialPosition { get; set; } = "Show beneficial positions.";
+    public string ConfigWindow_UI_BeneficialPositionColor { get; set; } = "The colors of beneficial positions";
+
+    public string ConfigWindow_Tab_Actions { get; set; } = "The actions' conditions about your job.";
+    public string ConfigWindow_Tab_Rotations { get; set; } = "All rotations that RS loaded.";
+    public string ConfigWindow_Tab_List { get; set; } = "Something that has to be a list.";
+    public string ConfigWindow_Tab_Basic { get; set; } = "Basic settings.";
+    public string ConfigWindow_Tab_UI { get; set; } = "Settings about user interface.";
+    public string ConfigWindow_Tab_Auto { get; set; } = "About some general actions' usage and conditions.";
+    public string ConfigWindow_Tab_Target { get; set; } = "The way to find the targets, hostiles or friends.";
+    public string ConfigWindow_Tab_Extra { get; set; } = "Some features shouldn't be included by RS.";
 }

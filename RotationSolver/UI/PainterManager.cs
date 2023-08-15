@@ -1,5 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Element3D;
@@ -9,6 +10,43 @@ namespace RotationSolver.UI;
 
 internal static class PainterManager
 {
+    class BeneficialPositionDrawing : Drawing3DPoly
+    {
+        const float beneficialRadius = 0.6f;
+        public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        {
+            SubItems = Array.Empty<IDrawing3D>();
+
+            if (!Service.Config.GetValue(PluginConfigBool.ShowBeneficialPositions)) return;
+
+            if (Svc.ClientState == null) return;
+            if (!Player.Available) return;
+            
+            if(!OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts)) return;
+
+            var d = DateTime.Now.Millisecond / 1000f;
+            var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
+            List<IDrawing3D> subItems = new List<IDrawing3D>();
+
+            var color = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.BeneficialPositionColor));
+
+            foreach (var p in pts)
+            {
+                if (Vector3.Distance(Player.Object.Position, p) > 80) continue;
+
+                subItems.Add(new Drawing3DCircularSector(p, beneficialRadius * ratio, color, 3)
+                {
+                    IsFill = false,
+                });
+            }
+
+            SubItems = subItems.ToArray();
+
+            base.UpdateOnFrame(painter);
+        }
+
+    }
+
     class TargetDrawing : Drawing3DPoly
     {
         Drawing3DCircularSector _target;
@@ -121,7 +159,7 @@ internal static class PainterManager
         }
     }
 
-    internal static XIVPainter.XIVPainter _painter;
+    static XIVPainter.XIVPainter _painter;
     static DrawingHighlightHotbar _highLight = new();
 
     public static HashSet<uint> ActionIds => _highLight.ActionIds;
@@ -137,12 +175,11 @@ internal static class PainterManager
         _painter = XIVPainter.XIVPainter.Create(Svc.PluginInterface, "RotationSolverOverlay");
 
         _highLight = new();
-
         UpdateSettings();
 
-        HighlightColor = Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.TeachingModeColor);
+        HighlightColor = Service.Config.GetValue(PluginConfigVector4.TeachingModeColor);
 
-        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.MeleeRangeOffset), 0, 2);
+        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.GetValue(PluginConfigFloat.MeleeRangeOffset), 0, 2);
         annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
 
         annulus.UpdateEveryFrame = () =>
@@ -158,7 +195,7 @@ internal static class PainterManager
             }
         };
 
-        var color = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.MovingTargetColor));
+        var color = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.MovingTargetColor));
         var movingTarget = new Drawing3DHighlightLine(default, default, 0, color, 3);
         movingTarget.UpdateEveryFrame = () =>
         {
@@ -178,7 +215,7 @@ internal static class PainterManager
             movingTarget.To = tar.Value;
         };
 
-        _painter.AddDrawings(_highLight, annulus, movingTarget, new TargetDrawing(), new TargetText());
+        _painter.AddDrawings(_highLight, annulus, movingTarget, new TargetDrawing(), new TargetText(), new BeneficialPositionDrawing());
 
 #if DEBUG
         //try
@@ -216,9 +253,9 @@ internal static class PainterManager
 
     public static void UpdateSettings()
     {
-        _painter.DrawingHeight = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.DrawingHeight);
-        _painter.SampleLength = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.SampleLength);
-        _painter.Enable = Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOverlayWindow);
+        _painter.DrawingHeight = Service.Config.GetValue(PluginConfigFloat.DrawingHeight);
+        _painter.SampleLength = Service.Config.GetValue(PluginConfigFloat.SampleLength);
+        _painter.Enable = Service.Config.GetValue(PluginConfigBool.UseOverlayWindow);
     }
 
     public static void Dispose()

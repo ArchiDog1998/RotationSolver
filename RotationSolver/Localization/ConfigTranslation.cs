@@ -1,9 +1,24 @@
 ﻿using RotationSolver.Basic.Configuration;
+using RotationSolver.UI;
 
 namespace RotationSolver.Localization;
 
 internal static class ConfigTranslation
 {
+    public static string ToDescription(this RotationConfigWindowTab tab) => tab switch
+    {
+         RotationConfigWindowTab.Actions => LocalizationManager.RightLang.ConfigWindow_Tab_Actions,
+         RotationConfigWindowTab.Rotations => LocalizationManager.RightLang.ConfigWindow_Tab_Rotations,
+         RotationConfigWindowTab.List => LocalizationManager.RightLang.ConfigWindow_Tab_List,
+         RotationConfigWindowTab.Basic => LocalizationManager.RightLang.ConfigWindow_Tab_Basic,
+         RotationConfigWindowTab.UI => LocalizationManager.RightLang.ConfigWindow_Tab_UI,
+         RotationConfigWindowTab.Auto => LocalizationManager.RightLang.ConfigWindow_Tab_Auto,
+         RotationConfigWindowTab.Target => LocalizationManager.RightLang.ConfigWindow_Tab_Target,
+         RotationConfigWindowTab.Extra => LocalizationManager.RightLang.ConfigWindow_Tab_Extra,
+        _ => string.Empty,
+    };
+
+
     public static string ToName(this JobConfigInt config) => config switch
     {
         JobConfigInt.AddDotGCDCount => LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
@@ -42,6 +57,7 @@ internal static class ConfigTranslation
         PluginConfigBool.UseStopCasting => LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,
 
         // UI
+        PluginConfigBool.DrawIconAnimation => LocalizationManager.RightLang.ConfigWindow_UI_DrawIconAnimation,
         PluginConfigBool.UseOverlayWindow => LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
         PluginConfigBool.TeachingMode => LocalizationManager.RightLang.ConfigWindow_Param_TeachingMode,
         PluginConfigBool.ShowMoveTarget => LocalizationManager.RightLang.ConfigWindow_Param_ShowMoveTarget,
@@ -61,6 +77,7 @@ internal static class ConfigTranslation
         PluginConfigBool.UseOriginalCooldown => LocalizationManager.RightLang.ConfigWindow_Control_UseOriginalCooldown,
         PluginConfigBool.ShowControlWindow => LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
         PluginConfigBool.IsControlWindowLock => LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
+        PluginConfigBool.ShowBeneficialPositions => LocalizationManager.RightLang.ConfigWindow_UI_ShowBeneficialPosition,
 
         // auto
         PluginConfigBool.UseAOEAction => LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
@@ -86,7 +103,6 @@ internal static class ConfigTranslation
         PluginConfigBool.EsunaAll => LocalizationManager.RightLang.ConfigWindow_Param_EsunaAll,
         PluginConfigBool.HealOutOfCombat => LocalizationManager.RightLang.ConfigWindow_Param_HealOutOfCombat,
         PluginConfigBool.OnlyHotOnTanks => LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
-        PluginConfigBool.BeneficialAreaOnTarget => LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
         PluginConfigBool.RecordCastingArea => "Record AOE actions",
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
@@ -180,6 +196,7 @@ internal static class ConfigTranslation
         PluginConfigVector4.InfoWindowBg => LocalizationManager.RightLang.ConfigWindow_Control_InfoWindowBg,
         PluginConfigVector4.ControlWindowLockBg => LocalizationManager.RightLang.ConfigWindow_Control_LockBackgroundColor,
         PluginConfigVector4.ControlWindowUnlockBg => LocalizationManager.RightLang.ConfigWindow_Control_UnlockBackgroundColor,
+        PluginConfigVector4.BeneficialPositionColor => LocalizationManager.RightLang.ConfigWindow_UI_BeneficialPositionColor,
         _ => string.Empty,
     };
 

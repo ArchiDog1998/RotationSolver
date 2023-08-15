@@ -27,8 +27,8 @@ internal class DragIntSearchJob : DragIntSearch
         _config = config;
     }
 
-    public DragIntSearchJob(JobConfigInt config, params string[] names)
-    : base(names)
+    public DragIntSearchJob(JobConfigInt config, Func<string[]> getNames)
+    : base(getNames)
     {
         _config = config;
     }
@@ -68,8 +68,8 @@ internal class DragIntSearchPlugin : DragIntSearch
         _config = config;
     }
 
-    public DragIntSearchPlugin(PluginConfigInt config, params string[] names)
-        :base(names)
+    public DragIntSearchPlugin(PluginConfigInt config, Func<string[]> getNames)
+        :base(getNames)
     {
         _config = config;
     }
@@ -95,15 +95,15 @@ internal abstract class DragIntSearch : Searchable
     public int Min { get; }
     public int Max { get; }
     public float Speed { get; }
-    public string[] Names { get; }
+    public Func<string[]> GetNames { get; }
     public DragIntSearch(int min, int max, float speed)
     {
         Min = min; Max = max;
         Speed = speed;
     }
-    public DragIntSearch(params string[] names)
+    public DragIntSearch(Func<string[]> getNames)
     {
-        Names = names;
+        GetNames = getNames;
     }
     protected abstract int GetValue(Job job);
     protected abstract void SetValue(Job job, int value);
@@ -111,10 +111,10 @@ internal abstract class DragIntSearch : Searchable
     {
         var value = GetValue(job);
 
-        if(Names != null && Names.Length > 0)
+        if(GetNames != null && GetNames() is string[] strs && strs.Length > 0)
         {
-            ImGui.SetNextItemWidth(Math.Max(ImGui.CalcTextSize(Names[value]).X + 30, DRAG_WIDTH) * Scale);
-            if (ImGui.Combo($"##Config_{ID}", ref value, Names, Names.Length))
+            ImGui.SetNextItemWidth(Math.Max(ImGui.CalcTextSize(strs[value]).X + 30, DRAG_WIDTH) * Scale);
+            if (ImGui.Combo($"##Config_{ID}", ref value, strs, strs.Length))
             {
                 SetValue(job, value);
             }

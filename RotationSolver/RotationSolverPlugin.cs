@@ -45,7 +45,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         try
         {
             Service.Config = JsonConvert.DeserializeObject<PluginConfig>(
-                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName)) 
+                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new JsonSerializerSettings()
+                {
+                }) 
                 ?? PluginConfig.Create();
         }
         catch(Exception ex)
@@ -119,10 +121,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         ECommonsMain.Dispose();
 
-#if DEBUG
-#else
         Service.Config.Save();
-#endif
     }
 
     private void OnOpenConfigUi()

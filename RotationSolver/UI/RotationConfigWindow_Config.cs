@@ -216,6 +216,11 @@ public partial class RotationConfigWindow
         new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget, 
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)
         ),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowBeneficialPositions,
+            new ColorEditSearchPlugin(PluginConfigVector4.BeneficialPositionColor)
+        ),
+
         new CheckBoxSearchPlugin(PluginConfigBool.ShowTarget, 
             new DragFloatSearchPlugin(PluginConfigFloat.TargetIconSize, 0.002f),
             new ColorEditSearchPlugin(PluginConfigVector4.TargetColor),
@@ -227,11 +232,11 @@ public partial class RotationConfigWindow
     // Windows
     private static readonly ISearchable[] _uiWindowsSearchable = new ISearchable[]
     {
+        new CheckBoxSearchPlugin(PluginConfigBool.DrawIconAnimation),
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyShowWithHostileOrInDuty),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowControlWindow, new ISearchable[]
         {
-            new CheckBoxSearchPlugin(PluginConfigBool.OnlyShowWithHostileOrInDuty),
             new CheckBoxSearchPlugin(PluginConfigBool.IsControlWindowLock),
 
             new DragFloatSearchPlugin(PluginConfigFloat.ControlWindowNextSizeRatio, 0.02f),
@@ -244,7 +249,6 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowNextActionWindow, new ISearchable[]
         {
-            new CheckBoxSearchPlugin(PluginConfigBool.OnlyShowWithHostileOrInDuty),
             new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
             new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
 
@@ -253,7 +257,6 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowCooldownWindow, new ISearchable[] 
         {
-            new CheckBoxSearchPlugin(PluginConfigBool.OnlyShowWithHostileOrInDuty),
             new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
             new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
             new CheckBoxSearchPlugin(PluginConfigBool.UseOriginalCooldown),
@@ -534,7 +537,10 @@ public partial class RotationConfigWindow
                 }
             },
             new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbility,
-            new CheckBoxSearchPlugin(PluginConfigBool.BeneficialAreaOnTarget))
+            new DragIntSearchPlugin(PluginConfigInt.BeneficialAreaStrategy, () => new string[]{
+                LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnLocations,
+                LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
+                LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnCalculated }))
             {
                 JobRoles = new JobRole[]
                 {
@@ -584,10 +590,10 @@ public partial class RotationConfigWindow
 
     private static readonly ISearchable[] _targetHostileSearchable = new ISearchable[]
     {
-        new DragIntSearchJob(JobConfigInt.HostileType,
+        new DragIntSearchJob(JobConfigInt.HostileType, () => new string []{
             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
-            LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3 ),
+            LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3 }),
 
         new CheckBoxSearchPlugin(PluginConfigBool.AddEnemyListToHostile),
         new CheckBoxSearchPlugin(PluginConfigBool.FilterStopMark),
@@ -703,7 +709,7 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _extraSearchable = new ISearchable[]
     {
         new CheckBoxSearchPlugin(PluginConfigBool.PoslockCasting,
-        new DragIntSearchPlugin( PluginConfigInt.PoslockModifier, "SHIFT", "CTRL", "ALT", "Left Mouse", "Middle Mouse",  "Right Mouse"),
+        new DragIntSearchPlugin( PluginConfigInt.PoslockModifier, () => new string[]{ "SHIFT", "CTRL", "ALT", "Left Mouse", "Middle Mouse",  "Right Mouse" }),
         new CheckBoxSearchPlugin(PluginConfigBool.PosPassageOfArms)
         {
             Action = ActionID.PassageOfArms

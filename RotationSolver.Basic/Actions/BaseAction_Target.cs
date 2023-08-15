@@ -177,11 +177,29 @@ public partial class BaseAction
     {
         if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbility)) return false;
 
-        if (Service.Config.GetValue(PluginConfigBool.BeneficialAreaOnTarget) && Svc.Targets.Target != null)
+        switch (Service.Config.GetValue(PluginConfigInt.BeneficialAreaStrategy))
         {
-            Position = Svc.Targets.Target.Position;
+            case 0: // Find from list
+                if (OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts))
+                {
+                    var closest = pts.MinBy(p => Vector3.Distance(player.Position, p));
+                    if(Vector3.Distance(player.Position, closest) < player.HitboxRadius + EffectRange)
+                    {
+                        Position = closest;
+                        return true;
+                    }
+                }
+                break;
+            case 1: // Target
+                if(Svc.Targets.Target != null && Svc.Targets.Target.DistanceToPlayer() < range)
+                {
+                    Position = Svc.Targets.Target.Position;
+                    return true;
+                }
+                break;
         }
-        else if (Svc.Targets.Target is BattleChara b && b.DistanceToPlayer() < range && 
+
+        if (Svc.Targets.Target is BattleChara b && b.DistanceToPlayer() < range && 
             b.IsBoss() && b.HasPositional() && b.HitboxRadius <= 8)
         {
             Position = b.Position;

@@ -11,7 +11,7 @@ description: |-
   It is designed for `general combat`, not for savage or ultimate. Use it carefully.
 punchline: Analyses PvE combat information every frame and finds the best action.
 repo_url: https://github.com/ArchiDog1998/RotationSolver
-icon_url: https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/docs/RotationSolverIcon_128.png
+icon_url: https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png
 dalamud_api_level: 8
 tags:
   - combat
