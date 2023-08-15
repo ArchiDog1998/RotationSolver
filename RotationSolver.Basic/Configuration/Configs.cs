@@ -184,7 +184,7 @@ public enum JobConfigFloat : byte
         { PluginConfigVector4.InfoWindowBg, new (0, 0, 0, 0.4f)},
     });
 
-    public SortedSet<string> DisabledCombos { get; private set; } = new ();
+    public SortedSet<Job> DisabledJobs { get; private set; } = new ();
     public SortedSet<uint> DisabledActions { get; private set; } = new ();
     public SortedSet<uint> NotInCoolDownActions { get; private set; } = new ();
     public SortedSet<uint> DisabledItems { get; private set; } = new ();

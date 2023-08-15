@@ -32,7 +32,7 @@ internal class ConditionSet : ICondition
             IsAnd = isAnd != 0;
         }
 
-        ImGui.Separator();
+        ImGui.Spacing();
 
         var relay = Conditions;
         if (ImGuiHelper.DrawEditorList(relay, i => i.Draw(combo)))
@@ -42,7 +42,7 @@ internal class ConditionSet : ICondition
 
         ImGui.EndGroup();
 
-        ControlWindow.HighLight(ImGui.GetWindowPos() + start, ImGui.GetItemRectSize());
+        //ControlWindow.HighLight(ImGui.GetWindowPos() + start, ImGui.GetItemRectSize(), 0.5f);
     }
 
     private void AddButton()

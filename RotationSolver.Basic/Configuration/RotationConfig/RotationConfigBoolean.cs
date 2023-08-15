@@ -9,7 +9,17 @@ internal class RotationConfigBoolean : RotationConfigBase
     public override bool DoCommand(IRotationConfigSet set, string str)
     {
         if (!base.DoCommand(set, str)) return false;
-        set.SetValue(Name, (!set.GetBool(Name)).ToString());
+
+        string numStr = str[Name.Length..].Trim();
+
+        if (bool.TryParse(numStr, out _))
+        {
+            set.SetValue(Name, numStr.ToString());
+        }
+        else
+        {
+            set.SetValue(Name, (!set.GetBool(Name)).ToString());
+        }
         return true;
     }
 }

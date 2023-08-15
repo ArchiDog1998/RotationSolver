@@ -69,11 +69,6 @@ internal class ActionCondition : ICondition
         return Condition ? !result : result;
     }
 
-
-
-    [JsonIgnore]
-    public float Height => ICondition.DefaultHeight;
-
     string searchTxt = string.Empty;
 
     public void Draw(ICustomRotation combo)

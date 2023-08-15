@@ -28,8 +28,13 @@ internal static class RotationHelper
         return assemblyInfo;
     }
 
-    public static Vector4 GetColor(this ICustomRotation rotation)
+    public static unsafe Vector4 GetColor(this ICustomRotation rotation)
     {
+        if (!rotation.IsEnabled) 
+        {
+            return *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
+        }
+
         if (!rotation.IsValid)
         {
             return ImGuiColors.DPSRed;
