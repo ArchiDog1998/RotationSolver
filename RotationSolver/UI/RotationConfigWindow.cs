@@ -197,10 +197,8 @@ public partial class RotationConfigWindow : Window
         var url = $"RotationSolver.Logos.{name}.png";
         if (_textureWrapList.TryGetValue(name, out texture)) return true;
 
-
         using var stream = typeof(RotationConfigWindow).Assembly.GetManifestResourceStream(url);
         if (stream == null) return false;
-
 
         using var memory = new MemoryStream();
         stream.CopyTo(memory);
@@ -760,7 +758,17 @@ public partial class RotationConfigWindow : Window
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
+        var enable = rotation.IsEnabled;
+        if(ImGui.Checkbox(rotation.Name, ref  enable))
+        {
+            rotation.IsEnabled = enable;
+        }
+        if (!enable) return;
+
         var set = rotation.Configs;
+
+        if(set.Any()) ImGui.Separator();
+
         foreach (var config in set.Configs)
         {
             var key = config.Name;
@@ -994,9 +1002,8 @@ public partial class RotationConfigWindow : Window
                 }
             }
 
-            ActionSequencerUpdater.DrawHeader(30 * _scale);
 
-            if (_sequencerList != null && _activeAction != null)
+            if (_activeAction != null)
             {
                 var enable = _activeAction.IsEnabled;
                 if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
@@ -1015,6 +1022,12 @@ public partial class RotationConfigWindow : Window
                     _activeAction.IsInCooldown = enable;
                 }
 
+                ImGui.Separator();
+            }
+
+            ActionSequencerUpdater.DrawHeader(30 * _scale);
+            if (_sequencerList != null)
+            {
                 _sequencerList.Draw();
             }
 
@@ -1517,11 +1530,11 @@ public partial class RotationConfigWindow : Window
                 foreach (var action in AllActions.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _actionSearching)
                 , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
                 {
-                    ImGui.Selectable($"{action.Name} ({action.RowId})");
+                    var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
                     if (ImGui.IsItemHovered())
                     {
                         ImguiTooltips.ShowTooltip($"{action.Name} ({action.RowId})");
-                        if(ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+                        if(selected)
                         {
                             actions.Add(action.RowId);
                             OtherConfiguration.Save();

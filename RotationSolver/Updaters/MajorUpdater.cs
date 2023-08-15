@@ -167,6 +167,7 @@ internal static class MajorUpdater
             ActionUpdater.UpdateNextAction();
 
             RSCommands.UpdateRotationState();
+            PainterManager.UpdateSettings();
         }
         catch (Exception ex)
         {
@@ -255,7 +256,7 @@ internal static class MajorUpdater
         }
 
         if (!Service.Config.GetValue(PluginConfigBool.AutoCloseChestWindow)) return;
-        _closeWindowTime = DateTime.Now.AddSeconds(0.1);
+        _closeWindowTime = DateTime.Now.AddSeconds(0.5);
     }
 
     public static void Dispose()

@@ -1,5 +1,6 @@
 ﻿using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
+using System.Linq;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -23,16 +24,16 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public bool IsEnabled
     {
-        get => !Service.Config.GlobalConfig.DisabledCombos.Contains(Name);
+        get => !Service.Config.GlobalConfig.DisabledJobs.Contains(Jobs.FirstOrDefault());
         set
         {
             if (value)
             {
-                Service.Config.GlobalConfig.DisabledCombos.Remove(Name);
+                Service.Config.GlobalConfig.DisabledJobs.Remove(Jobs.FirstOrDefault());
             }
             else
             {
-                Service.Config.GlobalConfig.DisabledCombos.Add(Name);
+                Service.Config.GlobalConfig.DisabledJobs.Add(Jobs.FirstOrDefault());
             }
         }
     }

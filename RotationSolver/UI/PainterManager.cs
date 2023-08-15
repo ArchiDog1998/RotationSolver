@@ -138,9 +138,8 @@ internal static class PainterManager
 
         _highLight = new();
 
-        _painter.DrawingHeight = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.DrawingHeight);
-        _painter.SampleLength = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.SampleLength);
-        _painter.Enable = Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOverlayWindow);
+        UpdateSettings();
+
         HighlightColor = Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.TeachingModeColor);
 
         var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.MeleeRangeOffset), 0, 2);
@@ -213,6 +212,13 @@ internal static class PainterManager
 
         //}
 #endif
+    }
+
+    public static void UpdateSettings()
+    {
+        _painter.DrawingHeight = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.DrawingHeight);
+        _painter.SampleLength = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.SampleLength);
+        _painter.Enable = Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOverlayWindow);
     }
 
     public static void Dispose()
