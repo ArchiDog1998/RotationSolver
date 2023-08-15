@@ -197,6 +197,8 @@ internal static class ConfigTranslation
         PluginConfigVector4.ControlWindowLockBg => LocalizationManager.RightLang.ConfigWindow_Control_LockBackgroundColor,
         PluginConfigVector4.ControlWindowUnlockBg => LocalizationManager.RightLang.ConfigWindow_Control_UnlockBackgroundColor,
         PluginConfigVector4.BeneficialPositionColor => LocalizationManager.RightLang.ConfigWindow_UI_BeneficialPositionColor,
+        PluginConfigVector4.HoveredBeneficialPositionColor => LocalizationManager.RightLang.ConfigWindow_UI_HoveredBeneficialPositionColor,
+        
         _ => string.Empty,
     };
 

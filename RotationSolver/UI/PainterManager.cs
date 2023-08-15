@@ -29,12 +29,13 @@ internal static class PainterManager
             List<IDrawing3D> subItems = new List<IDrawing3D>();
 
             var color = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.BeneficialPositionColor));
+            var hColor = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.HoveredBeneficialPositionColor));
 
             foreach (var p in pts)
             {
                 if (Vector3.Distance(Player.Object.Position, p) > 80) continue;
 
-                subItems.Add(new Drawing3DCircularSector(p, beneficialRadius * ratio, color, 3)
+                subItems.Add(new Drawing3DCircularSector(p, beneficialRadius * ratio, p == RotationConfigWindow.HoveredPosition ? hColor : color, 3)
                 {
                     IsFill = false,
                 });

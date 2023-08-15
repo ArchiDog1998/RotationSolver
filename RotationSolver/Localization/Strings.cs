@@ -642,7 +642,7 @@ internal partial class Strings
     public string ConfigWindow_List_ActionNameOrId { get; set; } = "Action name or id";
     public string ConfigWindow_List_AddAction { get; set; } = "Add Action";
 
-    public string ConfigWindow_List_BeneficialLocations { get; set; } = "Beneficial locations";
+    public string ConfigWindow_List_BeneficialPositions { get; set; } = "Beneficial positions";
     public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of object that you don't want to attack";
 
     public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
@@ -664,6 +664,7 @@ internal partial class Strings
 
     public string ConfigWindow_UI_ShowBeneficialPosition { get; set; } = "Show beneficial positions.";
     public string ConfigWindow_UI_BeneficialPositionColor { get; set; } = "The colors of beneficial positions";
+    public string ConfigWindow_UI_HoveredBeneficialPositionColor { get; set; } = "The colors of the hovered beneficial position";
 
     public string ConfigWindow_Tab_Actions { get; set; } = "The actions' conditions about your job.";
     public string ConfigWindow_Tab_Rotations { get; set; } = "All rotations that RS loaded.";

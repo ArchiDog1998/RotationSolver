@@ -183,6 +183,8 @@ public enum JobConfigFloat : byte
         { PluginConfigVector4.TeachingModeColor, new (0f, 1f, 0.8f, 1f)},
         { PluginConfigVector4.MovingTargetColor, new (0f, 1f, 0.8f, 0.6f)},
         { PluginConfigVector4.BeneficialPositionColor, new (0.5f, 0.9f, 0.1f, 0.7f)},
+        { PluginConfigVector4.HoveredBeneficialPositionColor, new (1f, 0.5f, 0f, 0.8f)},
+
         { PluginConfigVector4.TargetColor, new (1f, 0.2f, 0f, 0.8f)},
         { PluginConfigVector4.SubTargetColor, new (1f, 0.9f, 0f, 0.8f)},
         { PluginConfigVector4.ControlWindowLockBg, new (0, 0, 0, 0.6f)},
@@ -410,6 +412,7 @@ public enum PluginConfigVector4 : byte
     TargetColor,
     SubTargetColor,
     BeneficialPositionColor,
+    HoveredBeneficialPositionColor,
     ControlWindowLockBg,
     ControlWindowUnlockBg,
     InfoWindowBg,

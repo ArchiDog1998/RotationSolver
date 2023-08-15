@@ -7,7 +7,9 @@ using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.ActionSequencer;
@@ -1596,6 +1598,7 @@ public partial class RotationConfigWindow : Window
     }
 
     private static string _territorySearching = string.Empty;
+    public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
     private static void DrawListTerritories()
     {
         if (Svc.ClientState == null) return;
@@ -1638,7 +1641,7 @@ public partial class RotationConfigWindow : Window
             ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_NoHostile);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_BeneficialLocations);
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_BeneficialPositions);
 
             ImGui.TableNextRow();
 
@@ -1689,14 +1692,20 @@ public partial class RotationConfigWindow : Window
                 OtherConfiguration.BeneficialPositions[territoryId] = pts = Array.Empty<Vector3>();
             }
 
-            if (ImGui.Button("Add One territory position") && Player.Available)
-            {
-                OtherConfiguration.BeneficialPositions[territoryId] 
-                    = pts.Append(Player.Object.Position).ToArray();
-                OtherConfiguration.SaveBeneficialPositions();
-            }
+            if (ImGui.Button("Add One territory position") && Player.Available) unsafe
+                {
+                    var point = Player.Object.Position;
+                    int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
 
+                    RaycastHit hit = default;
 
+                    OtherConfiguration.BeneficialPositions[territoryId]
+                    = pts.Append(FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
+                        ->RaycastEx(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point).ToArray();
+                    OtherConfiguration.SaveBeneficialPositions();
+                }
+
+            HoveredPosition = Vector3.Zero;
             removeIndex = -1;
             for (int i = 0; i < pts.Length; i++)
             {
@@ -1707,6 +1716,11 @@ public partial class RotationConfigWindow : Window
                 Searchable.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
 
                 ImGui.Selectable(pts[i].ToString());
+
+                if (ImGui.IsItemHovered())
+                {
+                    HoveredPosition = pts[i];
+                }
 
                 Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
             }
