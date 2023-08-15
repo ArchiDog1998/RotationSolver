@@ -195,15 +195,25 @@ public partial class RotationConfigWindow : Window
     private static bool GetLocalImage(string name, out TextureWrap texture)
     {
         var url = $"RotationSolver.Logos.{name}.png";
-        if (_textureWrapList.TryGetValue(name, out texture)) return true;
+        if (_textureWrapList.TryGetValue(name, out texture)) return texture != null;
 
         using var stream = typeof(RotationConfigWindow).Assembly.GetManifestResourceStream(url);
-        if (stream == null) return false;
+        if (stream == null)
+        {
+            PluginLog.Warning($"Failed to load the pic: {url} when getting the stream from assembly.");
+            _textureWrapList[url] = null;
+            return false;
+        }
 
         using var memory = new MemoryStream();
         stream.CopyTo(memory);
         texture = Svc.PluginInterface.UiBuilder.LoadImage(memory.ToArray());
-        if(texture == null) return false;
+        if(texture == null)
+        {
+            PluginLog.Warning($"Failed to load the pic: {url} when convert bytes to image.");
+            _textureWrapList[url] = null;
+            return false;
+        }
         _textureWrapList[url] = texture;
         return true;
     }
@@ -219,7 +229,7 @@ public partial class RotationConfigWindow : Window
             realFrame = frame % FRAME_COUNT;
             if (realFrame == 0) realFrame = FRAME_COUNT;
         }
-        if (GetLocalImage(realFrame.ToString("0000"), out var logo) && IconSet.GetTexture((uint)0, out var overlay))
+        if (IconSet.GetTexture((uint)0, out var overlay))
         {
             DrawItemMiddle(() =>
             {
@@ -229,9 +239,13 @@ public partial class RotationConfigWindow : Window
                 {
                     _activeTab = RotationConfigWindowTab.About;
                 }
-                ImGui.SetCursorPos(cursor);
-                ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
                 ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
+
+                if (GetLocalImage(realFrame.ToString("D4"), out var logo))
+                {
+                    ImGui.SetCursorPos(cursor);
+                    ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
+                }
             }, wholeWidth, size);
 
             ImGui.Spacing();
