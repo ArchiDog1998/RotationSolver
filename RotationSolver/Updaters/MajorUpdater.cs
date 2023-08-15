@@ -167,6 +167,7 @@ internal static class MajorUpdater
             ActionUpdater.UpdateNextAction();
 
             RSCommands.UpdateRotationState();
+            PainterManager.UpdateSettings();
         }
         catch (Exception ex)
         {
