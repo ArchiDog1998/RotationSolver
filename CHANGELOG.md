@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.2.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.1...v3.2.2) (2023-08-15)
+
+
+### Bug Fixes
+
+* action sequencer changing. ([21023ba](https://github.com/ArchiDog1998/RotationSolver/commit/21023ba7d028c636067ae15c6486c258a314e019))
+* add AutoOff After Combat check box. ([a68c2fe](https://github.com/ArchiDog1998/RotationSolver/commit/a68c2fe57cf7827f9671ffff41c03d67c2b18ba8))
+* add enable rotations checkbox. ([7836621](https://github.com/ArchiDog1998/RotationSolver/commit/783662142c6623ec7f8b0e940776812a7b539f87))
+* config bool respond changing. ([aeac629](https://github.com/ArchiDog1998/RotationSolver/commit/aeac629dd88e81479663be8eada1894d7e16ce3d))
+* translations. ([33313d0](https://github.com/ArchiDog1998/RotationSolver/commit/33313d062fa4b94050eeffa2a149b4fd2f45a122))
+* update printing settings. ([3436d92](https://github.com/ArchiDog1998/RotationSolver/commit/3436d92e24699f346d7ab1723d5f247db818cdb1))
+
 ## [3.2.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.0...v3.2.1) (2023-08-14)
 
 
