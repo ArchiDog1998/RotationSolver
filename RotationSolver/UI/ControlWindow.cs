@@ -251,7 +251,7 @@ internal class ControlWindow : Window
         ImGui.EndGroup();
     }
 
-    static void HighLight(Vector2 pt, Vector2 size, float thickness = 2f)
+    public static void HighLight(Vector2 pt, Vector2 size, float thickness = 2f)
     {
         var offset = ImGui.GetStyle().ItemSpacing / 2;
         ImGui.GetWindowDrawList().AddRect(pt - offset, pt + size + offset,

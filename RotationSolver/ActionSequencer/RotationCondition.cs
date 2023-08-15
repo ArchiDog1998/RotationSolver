@@ -109,10 +109,6 @@ internal class RotationCondition : ICondition
         return false;
     }
 
-
-    [JsonIgnore]
-    public float Height => ICondition.DefaultHeight;
-
     string searchTxt = string.Empty;
     public void Draw(ICustomRotation rotation)
     {
