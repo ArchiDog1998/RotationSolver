@@ -118,7 +118,9 @@
   "ConfigWindow_Param_InterruptibleMoreCheck": "Interrupt the action with action type check.",
   "ConfigWindow_Param_HealOutOfCombat": "Heal party members outside of combat.",
   "ConfigWindow_Param_OnlyHotOnTanks": "Use single target healing over time actions only on tanks",
-  "ConfigWindow_Param_BeneficialAreaOnTarget": "Use Beneficial Area abilities on target.",
+  "ConfigWindow_Param_BeneficialAreaOnLocations": "On Listed Position",
+  "ConfigWindow_Param_BeneficialAreaOnTarget": "On target",
+  "ConfigWindow_Param_BeneficialAreaOnCalculated": "On the calculated Position",
   "ConfigWindow_Param_HealthDifference": "HP%% for standard deviation for using AOE heal.",
   "ConfigWindow_Param_HealthAreaAbility": "HP%% for AOE healing OGCDs",
   "ConfigWindow_Param_HealthAreaSpell": "HP%% for AOE healing GCDs",
@@ -158,7 +160,7 @@
   "ConfigWindow_Param_MoveAreaActionFarthestDesc": "Move to the furthest position from character's face direction.",
   "ConfigWindow_Param_HostileDesc": "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.",
   "ConfigWindow_Param_HostileCondition": "Hostile target selection condition",
-  "ConfigWindow_Control_OnlyShowWithHostileOrInDuty": "Only shown if there are enemies in or in duty",
+  "ConfigWindow_Control_OnlyShowWithHostileOrInDuty": "Only show these windows if there are enemies in or in duty",
   "ConfigWindow_Control_ShowNextActionWindow": "Show Next Action Window",
   "ConfigWindow_Control_ShowControlWindow": "Show Control Window",
   "ConfigWindow_Control_ShowCooldownWindow": "Show Cooldown Window",
@@ -433,8 +435,6 @@
   "ConfigWindow_List_Remove": "Remove",
   "ConfigWindow_List_ActionNameOrId": "Action name or id",
   "ConfigWindow_List_AddAction": "Add Action",
-  "ConfigWindow_List_TerritoryEverywhere": "Everywhere",
-  "ConfigWindow_List_AddTerritory": "Territory name or id",
   "ConfigWindow_List_BeneficialLocations": "Beneficial locations",
   "ConfigWindow_List_NoHostilesName": "The name of object that you don't want to attack",
   "ConfigWindow_Basic_AutoSwitch": "Auto Switch",
@@ -450,5 +450,8 @@
   "ConfigWindow_Auto_ActionCondition": "Action Condition",
   "ConfigWindow_Auto_ActionCondition_Description": "This will change the strategy of Rotation Solver to use these actions.",
   "ConfigWindow_Target_Config": "Configuration",
-  "ConfigWindow_Search_Result": "Searching Result"
+  "ConfigWindow_Search_Result": "Searching Result",
+  "ConfigWindow_UI_DrawIconAnimation": "Show animation about Icon",
+  "ConfigWindow_UI_ShowBeneficialPosition": "Show beneficial positions.",
+  "ConfigWindow_UI_BeneficialPositionColor": "The colors of beneficial positions"
 }

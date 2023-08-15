@@ -18,7 +18,9 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
+using System;
 using System.Diagnostics;
+using System.Drawing;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -222,13 +224,6 @@ public partial class RotationConfigWindow : Window
     {
         var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
 
-        int realFrame = FRAME_COUNT;
-        if (Service.Config.GetValue(PluginConfigBool.DrawIconAnimation))
-        {
-            var frame = Environment.TickCount / 34; //30
-            realFrame = frame % FRAME_COUNT;
-            if (realFrame == 0) realFrame = FRAME_COUNT;
-        }
         if (IconSet.GetTexture((uint)0, out var overlay))
         {
             DrawItemMiddle(() =>
@@ -241,7 +236,9 @@ public partial class RotationConfigWindow : Window
                 }
                 ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
 
-                if (GetLocalImage(realFrame.ToString("D4"), out var logo))
+                if (Service.Config.GetValue(PluginConfigBool.DrawIconAnimation) 
+                    ? GetLocalImage(((Environment.TickCount / 34 % FRAME_COUNT) + 1).ToString("D4"), out var logo)
+                    : IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png", out logo))
                 {
                     ImGui.SetCursorPos(cursor);
                     ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
@@ -1298,7 +1295,6 @@ public partial class RotationConfigWindow : Window
     #endregion 
 
     #region List
-    private static uint _territoryId = 0;
     private static TerritoryType[] _allTerritories = null;
     internal static TerritoryType[] AllTerritories
     {
@@ -1426,7 +1422,7 @@ public partial class RotationConfigWindow : Window
             {
                 void Reset() => removeId = status.RowId;
 
-                var key = "Status" + status.RowId;
+                var key = "Status" + status.RowId.ToString();
 
                 Searchable.DrawHotKeysPopup(key, string.Empty,  (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
 
@@ -1570,7 +1566,6 @@ public partial class RotationConfigWindow : Window
 
         ImGui.Spacing();
 
-
         foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
             .Where(a => a != null)
             .OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _actionSearching)
@@ -1578,7 +1573,7 @@ public partial class RotationConfigWindow : Window
         {
             void Reset() => removeId = action.RowId;
 
-            var key = "Action" + action.RowId;
+            var key = "Action" + action.RowId.ToString();
 
             Searchable.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
 
@@ -1597,52 +1592,35 @@ public partial class RotationConfigWindow : Window
     private static string _territorySearching = string.Empty;
     private static void DrawListTerritories()
     {
-        var popupId = "Rotation Solver Choice about Territories";
+        if (Svc.ClientState == null) return;
 
-        if(ImGui.BeginPopup(popupId))
+        var territoryId = Svc.ClientState.TerritoryType;
+
+        ImGui.PushFont(ImGuiHelper.GetFont(21));
+        ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+        const int iconSize = 32;
+        var territory = Service.GetSheet<TerritoryType>().GetRow(territoryId);
+        if (territory == null) return;
+        var contentFinder = territory?.ContentFinderCondition?.Value;
+        var territoryName = territory?.PlaceName?.Value?.Name ?? string.Empty;
+        if(contentFinder != null && !string.IsNullOrEmpty(contentFinder.Name))
         {
-            if (ImGui.Selectable(LocalizationManager.RightLang.ConfigWindow_List_TerritoryEverywhere))
-            {
-                _territoryId = 0;
-            }
-
-            ImGui.SetNextItemWidth(300 * _scale);
-            ImGui.InputTextWithHint("##Searching the action", LocalizationManager.RightLang.ConfigWindow_List_AddTerritory, ref _territorySearching, 128);
-
-            if (ImGui.BeginChild("Rotation Solver Territory Choice", new Vector2(-1, 400 * _scale)))
-            {
-                foreach (var territory in AllTerritories.OrderBy(s => Math.Min( StringComparer.Distance(s.Name, _territorySearching)
-                , StringComparer.Distance(s.RowId.ToString(), _territorySearching))))
-                {
-                    var icon = territory?.ContentFinderCondition?.Value?.ContentType?.Value?.Icon ?? 0;
-                    if (IconSet.GetTexture(icon, out var texture))
-                    {
-                        if (NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * 28 * _scale, territory.RowId.ToString()))
-                        {
-                            _territoryId = territory.RowId;
-                            ImGui.CloseCurrentPopup();
-                        }
-                        ImGui.SameLine();
-                    }
-
-                    if (ImGui.Selectable($"{territory.PlaceName?.Value?.Name} ({territory.RowId})"))
-                    {
-                        _territoryId = territory.RowId;
-                        ImGui.CloseCurrentPopup();
-                    }
-                }
-
-                ImGui.EndChild();
-            }
-            ImGui.EndPopup();
+            territoryName += $" ({contentFinder.Name})";
         }
-
-        ImGui.PushFont(ImGuiHelper.GetFont(16));
-        ImGui.SetNextItemWidth(ImGui.GetWindowWidth() - ImGui.GetStyle().WindowPadding.X * 2);
-        if(ImGui.Selectable(Service.GetSheet<TerritoryType>().GetRow(_territoryId)?.PlaceName?.Value?.Name.ToString() ?? LocalizationManager.RightLang.ConfigWindow_List_TerritoryEverywhere + "##Territory Choice"))
+        var icon = territory?.ContentFinderCondition?.Value?.ContentType?.Value?.Icon ?? 23;
+        if (icon == 0) icon = 23;
+        var getIcon = IconSet.GetTexture(icon, out var texture);
+        DrawItemMiddle(() =>
         {
-            if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
-        }
+            if (getIcon)
+            {
+                ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * _scale);
+                ImGui.SameLine();
+            }
+            ImGui.Text(territoryName);
+        }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
+
+        ImGui.PopStyleColor();
         ImGui.PopFont();
 
         if (ImGui.BeginTable("Rotation Solver List Territories", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
@@ -1664,15 +1642,15 @@ public partial class RotationConfigWindow : Window
 
             var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * _scale;
 
-            if(!OtherConfiguration.NoHostileNames.TryGetValue(_territoryId, out var libs))
+            if(!OtherConfiguration.NoHostileNames.TryGetValue(territoryId, out var libs))
             {
-                OtherConfiguration.NoHostileNames[_territoryId] = libs = Array.Empty<string>();
+                OtherConfiguration.NoHostileNames[territoryId] = libs = Array.Empty<string>();
             }
 
             //Add one.
             if (!libs.Any(string.IsNullOrEmpty))
             {
-                OtherConfiguration.NoHostileNames[_territoryId] = libs.Append(string.Empty).ToArray();
+                OtherConfiguration.NoHostileNames[territoryId] = libs.Append(string.Empty).ToArray();
             }
 
             int removeIndex = -1;
@@ -1681,7 +1659,7 @@ public partial class RotationConfigWindow : Window
                 ImGui.SetNextItemWidth(width);
                 if(ImGui.InputTextWithHint($"##Rotation Solver Territory Name {i}", LocalizationManager.RightLang.ConfigWindow_List_NoHostilesName, ref libs[i], 1024))
                 {
-                    OtherConfiguration.NoHostileNames[_territoryId] = libs;
+                    OtherConfiguration.NoHostileNames[territoryId] = libs;
                     OtherConfiguration.SaveNoHostileNames();
                 }
                 ImGui.SameLine();
@@ -1695,12 +1673,44 @@ public partial class RotationConfigWindow : Window
             {
                 var list = libs.ToList();
                 list.RemoveAt(removeIndex);
-                OtherConfiguration.NoHostileNames[_territoryId] = list.ToArray();
+                OtherConfiguration.NoHostileNames[territoryId] = list.ToArray();
                 OtherConfiguration.SaveNoHostileNames();
             }
             ImGui.TableNextColumn();
 
-            ImGui.TextColored(ImGuiColors.ParsedBlue, "To be continued..");
+            if (!OtherConfiguration.BeneficialPositions.TryGetValue(territoryId, out var pts))
+            {
+                OtherConfiguration.BeneficialPositions[territoryId] = pts = Array.Empty<Vector3>();
+            }
+
+            if (ImGui.Button("Add One territory position") && Player.Available)
+            {
+                OtherConfiguration.BeneficialPositions[territoryId] 
+                    = pts.Append(Player.Object.Position).ToArray();
+                OtherConfiguration.SaveBeneficialPositions();
+            }
+
+
+            removeIndex = -1;
+            for (int i = 0; i < pts.Length; i++)
+            {
+                void Reset() => removeIndex = i;
+
+                var key = "Beneficial Positions" + i.ToString();
+
+                Searchable.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
+
+                ImGui.Selectable(pts[i].ToString());
+
+                Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+            }
+            if (removeIndex > -1)
+            {
+                var list = pts.ToList();
+                list.RemoveAt(removeIndex);
+                OtherConfiguration.BeneficialPositions[territoryId] = list.ToArray();
+                OtherConfiguration.SaveBeneficialPositions();
+            }
 
             ImGui.EndTable();
         }

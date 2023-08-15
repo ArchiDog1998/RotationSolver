@@ -129,9 +129,6 @@ internal static partial class TargetUpdater
             if(OtherConfiguration.NoHostileNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
                 names = names.Union(ns1);
 
-            if (OtherConfiguration.NoHostileNames.TryGetValue(0, out var ns2))
-                names = names.Union(ns2);
-
             if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(b.Name.ToString()).Success)) return false;
 
             var tarFateId = b.FateId();

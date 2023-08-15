@@ -11,6 +11,7 @@ public class PluginConfig : IPluginConfiguration
 {
     public static PluginConfig Create()
     {
+        PluginLog.Warning("You created a new configuration!");
         var result = new PluginConfig();
         result.SetValue(Job.WAR, JobConfigInt.HostileType, 0);
         result.SetValue(Job.DRK, JobConfigInt.HostileType, 0);
@@ -132,7 +133,11 @@ public class PluginConfig : IPluginConfiguration
 #if DEBUG
         PluginLog.Information("Saved configurations.");
 #endif
-        Svc.PluginInterface.SavePluginConfig(this);
+        File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,
+            JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings()
+            {
+                 TypeNameHandling = TypeNameHandling.None,
+            }));
     }
 }
 
@@ -177,6 +182,7 @@ public enum JobConfigFloat : byte
     {
         { PluginConfigVector4.TeachingModeColor, new (0f, 1f, 0.8f, 1f)},
         { PluginConfigVector4.MovingTargetColor, new (0f, 1f, 0.8f, 0.6f)},
+        { PluginConfigVector4.BeneficialPositionColor, new (0.5f, 0.9f, 0.1f, 0.7f)},
         { PluginConfigVector4.TargetColor, new (1f, 0.2f, 0f, 0.8f)},
         { PluginConfigVector4.SubTargetColor, new (1f, 0.9f, 0f, 0.8f)},
         { PluginConfigVector4.ControlWindowLockBg, new (0, 0, 0, 0.6f)},
@@ -210,6 +216,7 @@ public enum PluginConfigInt : byte
     [Default(3)] KeyBoardNoiseMax,
 
     [Default(0)] TargetingIndex,
+    [Default(0)] BeneficialAreaStrategy,
 
     [Obsolete]
     [Default(15, 1, 30)] CooldownActionOneLine,
@@ -272,7 +279,6 @@ public enum PluginConfigBool : byte
     [Default(false)] EsunaAll,
     [Default(false)] OnlyAttackInView,
     [Default(false)] OnlyHotOnTanks,
-    [Default(false)] BeneficialAreaOnTarget,
 
     [Default(false)] InDebug,
     [Default(true)] AutoUpdateLibs,
@@ -320,6 +326,8 @@ public enum PluginConfigBool : byte
     [Default(false)] AutoOpenChest,
     [Default(true)] AutoCloseChestWindow,
     [Default(true)] AutoOffAfterCombat,
+
+    [Default(true)] ShowBeneficialPositions,
 }
 
 public enum PluginConfigFloat : byte
@@ -401,6 +409,7 @@ public enum PluginConfigVector4 : byte
     MovingTargetColor,
     TargetColor,
     SubTargetColor,
+    BeneficialPositionColor,
     ControlWindowLockBg,
     ControlWindowUnlockBg,
     InfoWindowBg,

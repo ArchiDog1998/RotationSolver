@@ -13,6 +13,7 @@ public class OtherConfiguration
     public static SortedList<uint, float> AnimationLockTime = new();
 
     public static Dictionary<uint, string[]> NoHostileNames = new();
+    public static Dictionary<uint, Vector3[]> BeneficialPositions = new();
 
     public static HashSet<uint> DangerousStatus = new();
 
@@ -37,6 +38,7 @@ public class OtherConfiguration
 
         Task.Run(() => InitOne(ref HostileCastingTank, nameof(HostileCastingTank)));
 
+        Task.Run(() => InitOne(ref BeneficialPositions, nameof(BeneficialPositions)));
     }
 
     public static void Save()
@@ -47,6 +49,12 @@ public class OtherConfiguration
         SaveAnimationLockTime();
         SaveHostileCastingArea();
         SaveHostileCastingTank();
+        SaveBeneficialPositions();
+    }
+
+    public static void SaveBeneficialPositions()
+    {
+        Task.Run(() => Save(BeneficialPositions, nameof(BeneficialPositions)));
     }
 
     public static void SaveHostileCastingArea()
