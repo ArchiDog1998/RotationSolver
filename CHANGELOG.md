@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.2.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.2...v3.2.3) (2023-08-15)
+
+
+### Bug Fixes
+
+* add beneficial positions preset. ([930a42c](https://github.com/ArchiDog1998/RotationSolver/commit/930a42cc76a1cae68e8903c4471bf6f9bf750e6a))
+* changed main sidebar logo. ([d217cf5](https://github.com/ArchiDog1998/RotationSolver/commit/d217cf5a2cb3423995fb4d7605ba1f5ee3592e91))
+* some tooltips about sidebar. ([a12b2c4](https://github.com/ArchiDog1998/RotationSolver/commit/a12b2c4621b5817e584b83b487bcac8c1b3f271f))
+
 ## [3.2.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.1...v3.2.2) (2023-08-15)
 
 
