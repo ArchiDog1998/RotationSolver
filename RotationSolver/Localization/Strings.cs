@@ -111,7 +111,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
 
-    public string ConfigWindow_Param_CountdownDelay { get; set; } = "Set the range of random delay for count down in the party.";
+    public string ConfigWindow_Param_CountdownDelay { get; set; } = "Set the random delay between which auto mode activation on countdown varies.";
     public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
 
     public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for the interval of clicking actions.";
@@ -170,7 +170,7 @@ internal partial class Strings
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
     public string ConfigWindow_Param_UseTinctures { get; set; } = "Use Tinctures";
     public string ConfigWindow_Param_UseHealPotions { get; set; } = "Use Heal Potions";
-    public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto turn smart on countdown";
+    public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto mode activation delay on countdown start";
 
     public string ConfigWindow_Param_StartOnAttackedBySomeone { get; set; } = "Automatically turn on manual mode and target enemy when being attacked";
     public string ConfigWindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
@@ -198,9 +198,9 @@ internal partial class Strings
 
     public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP%% is lower than this.";
 
-    public string ConfigWindow_Param_DistanceForMoving { get; set; } = "If the distance between Melee or Tank to target is less than this, using moving ability as attack ability.";
+    public string ConfigWindow_Param_DistanceForMoving { get; set; } = "Use gapcloser as a damage ability if the distance to your target is less then this.";
 
-    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "Healing the members with GCD if there is nothing to do in combat and their min HP% is lower than this.";
+    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "Healing the members with GCD if there is nothing to do in combat and their min HP%% is lower than this.";
 
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invincibility";
 
