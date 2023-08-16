@@ -346,7 +346,7 @@ public partial class BaseAction
         {
             if (!mustUse)
             {
-                var time = DataCenter.GetDeadTime(b);
+                var time = b.GetDeadTime();
 
                 //No need to dot.
                 if (TargetStatus != null && !float.IsNaN(time) && time < TimeToDie) return false;
@@ -509,7 +509,7 @@ public partial class BaseAction
         var dontHave = tars.Where(CheckStatus);
         var canDot = dontHave.Where(b =>
         {
-            var time = DataCenter.GetDeadTime(b);
+            var time = b.GetDeadTime();
             return float.IsNaN(time) || time >= TimeToDie;
         });
 

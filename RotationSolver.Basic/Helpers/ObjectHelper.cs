@@ -150,7 +150,7 @@ public static class ObjectHelper
     {
         if (obj == null) return false;
         if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetDeadTime)) return true;
-        return DataCenter.GetDeadTime(obj, true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeBoss)
+        return obj.GetDeadTime(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeBoss)
             || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
     }
 
@@ -163,7 +163,43 @@ public static class ObjectHelper
     {
         if (b == null) return false;
         if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetDeadTime)) return false;
-        return DataCenter.GetDeadTime(b) <= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeDying) || b.GetHealthRatio() < 0.02f;
+        return b.GetDeadTime() <= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeDying) || b.GetHealthRatio() < 0.02f;
+    }
+
+    private static readonly TimeSpan CheckSpan = TimeSpan.FromSeconds(2.5);
+
+    /// <summary>
+    /// How many seconds will the target die.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <param name="wholeTime">whole time to die.</param>
+    /// <returns></returns>
+    public static float GetDeadTime(this BattleChara b, bool wholeTime = false)
+    {
+        if (b == null) return float.NaN;
+        var objectId = b.ObjectId;
+
+        DateTime startTime = DateTime.MinValue;
+        float thatTimeRatio = 0;
+        foreach (var (time, hpRatios) in DataCenter.RecordedHP)
+        {
+            if (hpRatios.TryGetValue(objectId, out var ratio) && ratio != 1)
+            {
+                startTime = time;
+                thatTimeRatio = ratio;
+                break;
+            }
+        }
+
+        var timespan = DateTime.Now - startTime;
+        if (startTime == DateTime.MinValue || timespan < CheckSpan) return float.NaN;
+
+        var ratioNow = b.GetHealthRatio();
+
+        var ratioReduce = thatTimeRatio - ratioNow;
+        if (ratioReduce <= 0) return float.NaN;
+
+        return (float)timespan.TotalSeconds / ratioReduce * (wholeTime ? 1 : ratioNow);
     }
 
     /// <summary>

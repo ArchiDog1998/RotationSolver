@@ -148,7 +148,7 @@ internal static class PainterManager
 
                 var item = (Drawing3DText)SubItems[index++];
 
-                item.Text = $"Health Ratio: {DataCenter.GetDeadTime(b):F2}s / {DataCenter.GetDeadTime(b, true):F2}s";
+                item.Text = $"Health Ratio: {b.GetDeadTime():F2}s / {b.GetDeadTime(true):F2}s";
                 item.Color = HealthRatioColor;
                 item.Position = b.Position;
 

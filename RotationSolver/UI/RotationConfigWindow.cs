@@ -230,7 +230,7 @@ public partial class RotationConfigWindow : Window
 
     private void DrawHeader(float wholeWidth)
     {
-        var size = MathF.Max(MathF.Min(wholeWidth, _scale * 120), _scale * MIN_COLUMN_WIDTH);
+        var size = MathF.Max(MathF.Min(wholeWidth, _scale * 128), _scale * MIN_COLUMN_WIDTH);
 
         if (IconSet.GetTexture((uint)0, out var overlay))
         {
@@ -244,8 +244,10 @@ public partial class RotationConfigWindow : Window
                 }
                 ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
 
+                var frame = Environment.TickCount / 34 % FRAME_COUNT;
+                if (frame <= 0) frame += FRAME_COUNT;
                 if (Service.Config.GetValue(PluginConfigBool.DrawIconAnimation) 
-                    ? GetLocalImage(((Environment.TickCount / 34 % FRAME_COUNT) + 1).ToString("D4"), out var logo)
+                    ? GetLocalImage(frame.ToString("D4"), out var logo)
                     : IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png", out logo))
                 {
                     ImGui.SetCursorPos(cursor);

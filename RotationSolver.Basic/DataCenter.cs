@@ -13,41 +13,6 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
-    private static readonly TimeSpan CheckSpan = TimeSpan.FromSeconds(2.5);
-
-    /// <summary>
-    /// How many seconds will the target die.
-    /// </summary>
-    /// <param name="b"></param>
-    /// <param name="wholeTime">whole time to die.</param>
-    /// <returns></returns>
-    internal static float GetDeadTime(BattleChara b, bool wholeTime = false)
-    {
-        if (b == null) return float.NaN;
-        var objectId = b.ObjectId;
-
-        DateTime startTime = DateTime.MinValue;
-        float thatTimeRatio = 0;
-        foreach (var (time, hpRatios) in RecordedHP)
-        {
-            if(hpRatios.TryGetValue(objectId, out var ratio) && ratio != 1)
-            {
-                startTime = time;
-                thatTimeRatio = ratio;
-                break;
-            }
-        }
-
-        var timespan = DateTime.Now - startTime;
-        if(startTime ==  DateTime.MinValue  || timespan < CheckSpan) return float.NaN;
-
-        var ratioNow = b.GetHealthRatio();
-
-        var ratioReduce = thatTimeRatio - ratioNow;
-        if (ratioReduce <= 0) return float.NaN;
-
-        return (float)timespan.TotalSeconds / ratioReduce * (wholeTime ? 1 :  ratioNow);
-    }
     /// <summary>
     /// Only recorded 15s hps.
     /// </summary>
