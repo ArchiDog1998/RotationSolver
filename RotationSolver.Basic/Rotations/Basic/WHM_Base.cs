@@ -175,7 +175,8 @@ public abstract class WHM_Base : CustomRotation
             StatusID.Aero,
             StatusID.Aero2,
             StatusID.Dia,
-        }
+        },
+        TimeToDie = 20,
     };
 
     /// <summary>

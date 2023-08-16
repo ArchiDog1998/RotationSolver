@@ -78,6 +78,7 @@ public abstract class SGE_Base : CustomRotation
              StatusID.EukrasianDosis2,
              StatusID.EukrasianDosis3
         },
+        TimeToDie = 20,
     };
 
     /// <summary>
