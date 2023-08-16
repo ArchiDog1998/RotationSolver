@@ -1,5 +1,4 @@
-﻿using Dalamud.Interface.Colors;
-using ECommons.GameHelpers;
+﻿using ECommons.GameHelpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 
@@ -22,7 +21,7 @@ internal class RotationCondition : ICondition
 
     public int Param1;
     public int Param2;
-    public float Time;
+    public float Param3;
 
     private void UpdateInfo(ICustomRotation rotation)
     {
@@ -62,34 +61,21 @@ internal class RotationCondition : ICondition
                 }
                 return false;
 
-            case ComboConditionType.Time:
-                try
+            case ComboConditionType.Float:
+                if (_prop == null) return false;
+                if (_prop.GetValue(rotation) is float fl)
                 {
-                    if (_method?.Invoke(rotation, new object[] { Time }) is bool bo)
+                    switch (Condition)
                     {
-                        return Condition > 0 ? bo : !bo;
+                        case 0:
+                            return fl > Param3;
+                        case 1:
+                            return fl < Param3;
+                        case 2:
+                            return fl == Param3;
                     }
-                    return false;
                 }
-                catch
-                {
-                    return false;
-                }
-
-
-            case ComboConditionType.TimeGCD:
-                try
-                {
-                    if (_method?.Invoke(rotation, new object[] { (uint)Param1, (uint)Param2 }) is bool boo)
-                    {
-                        return Condition > 0 ? boo : !boo;
-                    }
-                    return false;
-                }
-                catch
-                {
-                    return false;
-                }
+                return false;
 
             case ComboConditionType.Last:
                 try
@@ -157,74 +143,55 @@ internal class RotationCondition : ICondition
                 ImGui.DragInt($"##Value{GetHashCode()}", ref Param1);
 
                 break;
-            case ComboConditionType.Time:
+            case ComboConditionType.Float:
                 ImGui.SameLine();
-                ImGuiHelper.SearchItemsReflection($"##Time{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, rotation.AllTimes, i =>
+                ImGuiHelper.SearchItemsReflection($"##FloatChoice{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllFloats, i =>
                 {
-                    _method = i;
-                    MethodName = i.Name;
+                    _prop = i;
+                    PropertyName = i.Name;
                 });
 
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-                ImGui.Combo($"##Comparation{GetHashCode()}", ref Condition, new string[] { ">", "<=" }, 2);
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
-                ImGui.DragFloat($"s##s{GetHashCode()}", ref Time);
+                ImGui.Combo($"##Comparation{GetHashCode()}", ref Condition, new string[] { ">", "<", "=" }, 3);
+
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(50);
+
+                ImGui.DragFloat($"##Value{GetHashCode()}", ref Param3);
+
                 break;
 
-            case ComboConditionType.TimeGCD:
-                ImGui.SameLine();
-                ImGuiHelper.SearchItemsReflection($"##Time{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, rotation.AllGCDs, i =>
-                {
-                    _method = i;
-                    MethodName = i.Name;
-                });
+            //case ComboConditionType.Last:
+            //    ImGui.SameLine();
+            //    ImGuiHelper.SearchItemsReflection($"##Time{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, rotation.AllLast, i =>
+            //    {
+            //        _method = i;
+            //        MethodName = i.Name;
+            //    });
 
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-                ImGui.Combo($"##Comparation{GetHashCode()}", ref Condition, new string[] { ">", "<=" }, 2);
+            //    ImGui.SameLine();
+            //    ImGui.SetNextItemWidth(80);
+            //    ImGui.Combo($"##IsNot{GetHashCode()}", ref Condition, new string[]
+            //    {
+            //        LocalizationManager.RightLang.ActionSequencer_Is,
+            //        LocalizationManager.RightLang.ActionSequencer_Isnot,
+            //    }, 2);
 
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-                ImGui.DragInt($"GCD##GCD{GetHashCode()}", ref Param1);
+            //    ImGui.SameLine();
+            //    var name = _action?.Name ?? string.Empty;
+            //    ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, rotation.AllBaseActions, i =>
+            //    {
+            //        _action = (BaseAction)i;
+            //        ID = (ActionID)_action.ID;
+            //    });
 
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-                var ability = Param2;
-                ImGui.DragInt($"Ability##Ability{GetHashCode()}", ref Param2);
-                break;
+            //    ImGui.SameLine();
+            //    ImGui.SetNextItemWidth(50);
+            //    ImGui.Combo($"##Adjust{GetHashCode()}", ref Param1, new string[] { "Original", "Adjusted" }, 2);
 
-            case ComboConditionType.Last:
-                ImGui.SameLine();
-                ImGuiHelper.SearchItemsReflection($"##Time{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, rotation.AllLast, i =>
-                {
-                    _method = i;
-                    MethodName = i.Name;
-                });
-
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(80);
-                ImGui.Combo($"##IsNot{GetHashCode()}", ref Condition, new string[]
-                {
-                    LocalizationManager.RightLang.ActionSequencer_Is,
-                    LocalizationManager.RightLang.ActionSequencer_Isnot,
-                }, 2);
-
-                ImGui.SameLine();
-                var name = _action?.Name ?? string.Empty;
-                ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, rotation.AllBaseActions, i =>
-                {
-                    _action = (BaseAction)i;
-                    ID = (ActionID)_action.ID;
-                });
-
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-                ImGui.Combo($"##Adjust{GetHashCode()}", ref Param1, new string[] { "Original", "Adjusted" }, 2);
-
-                break;
+            //    break;
         }
     }
 }
@@ -233,7 +200,6 @@ public enum ComboConditionType : byte
 {
     Bool,
     Byte,
-    Time,
-    TimeGCD,
+    Float,
     Last,
 }

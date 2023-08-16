@@ -326,8 +326,7 @@ internal partial class Strings
     #region ComboConditionType
     public string ComboConditionType_Bool { get; set; } = "Boolean";
     public string ComboConditionType_Byte { get; set; } = "Byte";
-    public string ComboConditionType_Time { get; set; } = "Time";
-    public string ComboConditionType_GCD { get; set; } = "GCD";
+    public string ComboConditionType_Float { get; set; } = "Float";
     public string ComboConditionType_Last { get; set; } = "Last";
     #endregion
 

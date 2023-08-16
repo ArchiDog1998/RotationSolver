@@ -20,9 +20,7 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
-using System;
 using System.Diagnostics;
-using System.Drawing;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -630,6 +628,16 @@ public partial class RotationConfigWindow : Window
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DPSRed);
             ImGui.TextWrapped(string.Format(rotation.WhyNotValid, author));
             ImGui.PopStyleColor();
+        }
+
+        var youtubeLink = rotation.GetType().GetCustomAttribute<YoutubeLinkAttribute>()?.ID;
+
+        if (!string.IsNullOrEmpty(youtubeLink))
+        {
+            if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && TextureButton(icon, wholeWidth, 250 * _scale))
+            {
+                Util.OpenLink("https://youtu.be/" + youtubeLink);
+            }
         }
 
         if (!string.IsNullOrEmpty(info.DonateLink))

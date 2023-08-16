@@ -383,17 +383,6 @@ public abstract partial class CustomRotation
     protected static float GCDTime(uint gcdCount = 0, float offset = 0)
         => DataCenter.GCDTime(gcdCount, offset);
 
-    /// <summary>
-    /// All last actions.
-    /// </summary>
-    public MethodInfo[] AllLast => GetType().GetStaticBoolMethodInfo(m =>
-    {
-        var types = m.GetParameters();
-        return types.Length == 2
-            && types[0].ParameterType == typeof(bool)
-            && types[1].ParameterType == typeof(IAction[]);
-    });
-
     #region Service
     /// <summary>
     /// The countDond ahead.

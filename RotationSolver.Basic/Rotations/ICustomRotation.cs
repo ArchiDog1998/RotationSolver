@@ -76,17 +76,8 @@ public interface ICustomRotation : ITexture
     /// <summary>
     /// All time methods.
     /// </summary>
-    MethodInfo[] AllTimes { get; }
+    PropertyInfo[] AllFloats { get; }
 
-    /// <summary>
-    /// All last actions.
-    /// </summary>
-    MethodInfo[] AllLast { get; }
-
-    /// <summary>
-    /// All gcds.
-    /// </summary>
-    MethodInfo[] AllGCDs { get; }
 
     internal IAction ActionHealAreaGCD { get; }
     internal IAction ActionHealAreaAbility { get; }

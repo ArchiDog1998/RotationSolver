@@ -1,5 +1,4 @@
-﻿using Dalamud.Interface.Colors;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;

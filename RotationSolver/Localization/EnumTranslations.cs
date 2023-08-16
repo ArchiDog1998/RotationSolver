@@ -23,8 +23,7 @@ internal static class EnumTranslations
     {
         ComboConditionType.Bool => LocalizationManager.RightLang.ComboConditionType_Bool,
         ComboConditionType.Byte => LocalizationManager.RightLang.ComboConditionType_Byte,
-        ComboConditionType.Time => LocalizationManager.RightLang.ComboConditionType_Time,
-        ComboConditionType.TimeGCD => LocalizationManager.RightLang.ComboConditionType_GCD,
+        ComboConditionType.Float => LocalizationManager.RightLang.ComboConditionType_Float,
         ComboConditionType.Last => LocalizationManager.RightLang.ComboConditionType_Last,
         _ => string.Empty,
     };

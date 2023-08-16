@@ -32,8 +32,9 @@ internal static partial class TargetUpdater
     {
         var now = DateTime.Now;
         if (now - _lastUpdateDeadTime < _deadTimeSpan) return;
+        _lastUpdateDeadTime = now;
 
-        if(DataCenter.RecordedHP.Count >= DataCenter.HP_RECORD_TIME)
+        if (DataCenter.RecordedHP.Count >= DataCenter.HP_RECORD_TIME)
         {
             DataCenter.RecordedHP.Dequeue();
         }

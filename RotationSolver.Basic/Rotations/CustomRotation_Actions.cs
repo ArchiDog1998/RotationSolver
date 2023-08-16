@@ -288,19 +288,9 @@ public abstract partial class CustomRotation
     PropertyInfo[] _allBytes;
     public PropertyInfo[] AllBytes => _allBytes ??= GetType().GetStaticProperties<byte>();
 
-    MethodInfo[] _allTimes;
-    public MethodInfo[] AllTimes => _allTimes ??= GetType().GetStaticBoolMethodInfo(m =>
-    {
-        var types = m.GetParameters();
-        return types.Length == 1 && types[0].ParameterType == typeof(float);
-    });
+    PropertyInfo[] _allFloats;
+    public PropertyInfo[] AllFloats => _allFloats ??= GetType().GetStaticProperties<float>();
 
-    MethodInfo[] _allGCDs;
-    public MethodInfo[] AllGCDs => _allGCDs ??= GetType().GetStaticBoolMethodInfo(m =>
-    {
-        var types = m.GetParameters();
-        return types.Length == 2 && types[0].ParameterType == typeof(uint) && types[1].ParameterType == typeof(uint);
-    });
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     private IEnumerable<IBaseAction> GetBaseActions(Type type)
