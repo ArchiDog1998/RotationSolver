@@ -10,6 +10,7 @@ using ECommons.ImGuiMethods;
 using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
+using FFXIVClientStructs.Havok;
 using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.ActionSequencer;
@@ -21,6 +22,7 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Drawing;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -185,7 +187,7 @@ public partial class RotationConfigWindow : Window
                 DrawItemMiddle(() =>
                 {
                     ImGui.SetCursorPosY(ImGui.GetWindowSize().Y + ImGui.GetScrollY() - size.Y);
-                    result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size);
+                    result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size, "Donate Plugin");
                 }, wholeWidth, size.X);
 
                 if (result)
@@ -236,7 +238,7 @@ public partial class RotationConfigWindow : Window
             {
                 var cursor = ImGui.GetCursorPos();
                 if (SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
-                    _activeTab == RotationConfigWindowTab.About))
+                    _activeTab == RotationConfigWindowTab.About, "About Icon"))
                 {
                     _activeTab = RotationConfigWindowTab.About;
                 }
@@ -630,19 +632,9 @@ public partial class RotationConfigWindow : Window
             ImGui.PopStyleColor();
         }
 
-        var youtubeLink = rotation.GetType().GetCustomAttribute<YoutubeLinkAttribute>()?.ID;
-
-        if (!string.IsNullOrEmpty(youtubeLink))
-        {
-            if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && TextureButton(icon, wholeWidth, 250 * _scale))
-            {
-                Util.OpenLink("https://youtu.be/" + youtubeLink);
-            }
-        }
-
         if (!string.IsNullOrEmpty(info.DonateLink))
         {
-            if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && TextureButton(icon, wholeWidth, 250 * _scale))
+            if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && TextureButton(icon, wholeWidth, 250 * _scale, "Ko-fi link"))
             {
                 Util.OpenLink(info.DonateLink);
             }
@@ -880,36 +872,56 @@ public partial class RotationConfigWindow : Window
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
+        var youtubeLink = rotation.GetType().GetCustomAttribute<YoutubeLinkAttribute>()?.ID;
+
+        var wholeWidth = ImGui.GetWindowWidth();
+        if (!string.IsNullOrEmpty(youtubeLink))
+        {
+            ImGui.NewLine();
+            if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && TextureButton(icon, wholeWidth, 250 * _scale, "Youtube Link"))
+            {
+                Util.OpenLink("https://youtu.be/" + youtubeLink);
+            }
+        }
+
         var assembly = rotation.GetType().Assembly;
         var info = assembly.GetInfo();
 
         if (info != null)
         {
-            ImGui.BeginGroup();
-            if (ImGui.Button(info.Name))
-            {
-                Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
-            }
-            
-            var version = assembly.GetName().Version;
-            if (version != null)
-            {
-                ImGui.Text(" v " + version.ToString());
-            }
-
-            ImGui.Text(" - " + info.Author);
-            ImGui.EndGroup();
+            ImGui.NewLine();
 
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
-            if(link != null)
+            if (link != null)
             {
-                ImGui.SameLine();
                 var userName = info.GitHubUserName;
                 var repository = info.GitHubRepository;
-                DrawGitHubBadge(userName, repository, $"https://github.com/{userName}/{repository}/blob/{link.Path}");
+                DrawGitHubBadge(userName, repository, $"https://github.com/{userName}/{repository}/blob/{link.Path}", center: true);
             }
+            ImGui.NewLine();
+
+            DrawItemMiddle(() =>
+            {
+                ImGui.BeginGroup();
+                if (ImGui.Button(info.Name))
+                {
+                    Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
+                }
+
+                var version = assembly.GetName().Version;
+                if (version != null)
+                {
+                    ImGui.Text(" v " + version.ToString());
+                }
+                ImGui.Text(" - " + info.Author);
+                ImGui.EndGroup();
+            }, wholeWidth, _groupWidth);
+
+            _groupWidth = ImGui.GetItemRectSize().X;
         }
     }
+
+    private static float _groupWidth = 100;
     #endregion
 
     #region Actions
@@ -1216,11 +1228,12 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private static void DrawGitHubBadge(string userName, string repository, string id = "", string link = "")
+    private static void DrawGitHubBadge(string userName, string repository, string id = "", string link = "", bool center = false)
     {
         if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(repository)
-    && IconSet.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
-    && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height), id))
+            && IconSet.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
+            && (center ? TextureButton(icon, ImGui.GetWindowWidth(), icon.Width, id)
+            : NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height), id)))
         {
             Util.OpenLink(string.IsNullOrEmpty(link) ? $"https://GitHub.com/{userName}/{repository}" : link);
         }

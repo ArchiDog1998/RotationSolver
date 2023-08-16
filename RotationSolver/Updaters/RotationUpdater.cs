@@ -102,20 +102,27 @@ internal static class RotationUpdater
         AuthorHashes = new SortedList<string, string>();
         foreach (var assembly in assemblies)
         {
-            var authorHashAttribute = assembly.GetCustomAttribute<AuthorHashAttribute>();
-            if (authorHashAttribute != null)
+            try
             {
-                var key = authorHashAttribute.Hash;
-                var value = $"{assembly.GetInfo().Author} - {assembly.GetInfo().Name}";
+                var authorHashAttribute = assembly.GetCustomAttribute<AuthorHashAttribute>();
+                if (authorHashAttribute != null)
+                {
+                    var key = authorHashAttribute.Hash;
+                    var value = $"{assembly.GetInfo().Author} - {assembly.GetInfo().Name}";
 
-                if (AuthorHashes.ContainsKey(key))
-                {
-                    AuthorHashes[key] += $", {value}";
+                    if (AuthorHashes.ContainsKey(key))
+                    {
+                        AuthorHashes[key] += $", {value}";
+                    }
+                    else
+                    {
+                        AuthorHashes.Add(key, value);
+                    }
                 }
-                else
-                {
-                    AuthorHashes.Add(key, value);
-                }
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Warning(ex, "Failed to get author's hash");
             }
         }
 
