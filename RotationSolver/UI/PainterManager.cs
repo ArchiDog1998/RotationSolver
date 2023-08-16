@@ -1,4 +1,5 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
@@ -55,7 +56,7 @@ internal static class PainterManager
 
         public TargetDrawing()
         {
-            var TColor = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.TargetColor));
+            var TColor = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.TargetColor));
             _target = new Drawing3DCircularSector(default, 0, TColor, 3)
             {
                 IsFill = false,
@@ -71,7 +72,7 @@ internal static class PainterManager
         {
             SubItems = Array.Empty<IDrawing3D>();
 
-            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowTarget)) return;
+            if (!Service.Config.GetValue(PluginConfigBool.ShowTarget)) return;
 
             if (ActionUpdater.NextAction is not BaseAction act) return;
 
@@ -81,15 +82,15 @@ internal static class PainterManager
             var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
             List<IDrawing3D> subItems = new List<IDrawing3D>();
 
-            if(Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.TargetIconSize) > 0)
+            if(Service.Config.GetValue(PluginConfigFloat.TargetIconSize) > 0)
             {
                 _targetImage.Position = act.IsTargetArea ? act.Position : act.Target.Position;
-                if(act.GetTexture(out var texture, true)) _targetImage.SetTexture(texture, Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.TargetIconSize));
+                if(act.GetTexture(out var texture, true)) _targetImage.SetTexture(texture, Service.Config.GetValue(PluginConfigFloat.TargetIconSize));
                 subItems.Add(_targetImage);
             }
             else
             {
-                _target.Color = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.TargetColor));
+                _target.Color = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.TargetColor));
                 _target.Center = act.IsTargetArea ? act.Position : act.Target.Position;
                 _target.Radius = targetRadius * ratio;
                 subItems.Add(_target);
@@ -97,7 +98,7 @@ internal static class PainterManager
 
             if (DataCenter.HostileTargets.Contains(act.Target) || act.Target == Player.Object && !act.IsFriendly)
             {
-                var SColor = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.SubTargetColor));
+                var SColor = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.SubTargetColor));
 
                 foreach (var t in DataCenter.HostileTargets)
                 {
@@ -142,17 +143,25 @@ internal static class PainterManager
             if (!Service.Config.GetValue(PluginConfigBool.ShowTargetDeadTime)) return;
 
             int index = 0;
-            foreach (GameObject t in DataCenter.AllTargets.OrderBy(ObjectHelper.DistanceToPlayer))
+            foreach (GameObject t in DataCenter.AllHostileTargets.OrderBy(ObjectHelper.DistanceToPlayer))
             {
                 if (t is not BattleChara b) continue;
+                if (t is PlayerCharacter) continue;
 
                 var item = (Drawing3DText)SubItems[index++];
 
-                item.Text = $"Health Ratio: {b.GetDeadTime():F2}s / {b.GetDeadTime(true):F2}s";
-                item.Color = HealthRatioColor;
-                item.Position = b.Position;
+                try
+                {
+                    item.Text = $"DeadTime: {b.GetDeadTime():F2}s / {b.GetDeadTime(true):F2}s";
+                    item.Color = HealthRatioColor;
+                    item.Position = b.Position;
+                }
+                catch
+                {
+                    continue;
+                }
 
-                if(index >= ItemsCount) break;
+                if (index >= ItemsCount) break;
             }
             base.UpdateOnFrame(painter);
         }

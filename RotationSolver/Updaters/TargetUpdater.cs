@@ -27,7 +27,7 @@ internal static partial class TargetUpdater
     }
 
     private static DateTime _lastUpdateDeadTime = DateTime.MinValue;
-    private static readonly TimeSpan _deadTimeSpan = TimeSpan.FromSeconds(0.1);
+    private static readonly TimeSpan _deadTimeSpan = TimeSpan.FromSeconds(0.5);
     private static void UpdateDeadTime(IEnumerable<BattleChara> allTargets)
     {
         var now = DateTime.Now;

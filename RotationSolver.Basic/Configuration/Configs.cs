@@ -388,8 +388,8 @@ public enum PluginConfigFloat : byte
     [Default(0.6f, 0.5f, 0.7f)] CountDownAhead,
 
     [Default(24f)] MoveTargetAngle,
-    [Default(60, 10f, 1800f)] DeadTimeBoss,
-    [Default(10, 0f, 60)] DeadTimeDying,
+    [Default(60f, 10f, 1800f)] DeadTimeBoss,
+    [Default(10f, 0f, 60f)] DeadTimeDying,
 
     [Default(16f, 9.6f, 96f)] CooldownFontSize,
 

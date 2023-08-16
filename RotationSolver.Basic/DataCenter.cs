@@ -16,7 +16,7 @@ internal static class DataCenter
     /// <summary>
     /// Only recorded 15s hps.
     /// </summary>
-    public const int HP_RECORD_TIME = 150;
+    public const int HP_RECORD_TIME = 240;
     internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } = new(HP_RECORD_TIME + 1);
 
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]

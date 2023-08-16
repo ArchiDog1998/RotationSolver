@@ -68,10 +68,9 @@
   "ConfigWindow_Param_UseStopCasting": "Stops casting when hostile target is dead.",
   "ConfigWindow_Param_ShowTooltips": "Show tooltips",
   "ConfigWindow_Param_InDebug": "Debug Mode",
-  "ConfigWindow_Param_ShowHealthRatio": "Show the health ratio for the check of Boss, Dying, Dot.",
-  "ConfigWindow_Param_HealthRatioBoss": "If target's max health ratio is higher than this, regard it as Boss.",
-  "ConfigWindow_Param_HealthRatioDying": "If target's current health ratio is lower than this, regard it is dying.",
-  "ConfigWindow_Param_HealthRatioDot": "If target's current health ratio is higher than this, regard it can be dot.",
+  "ConfigWindow_Param_ShowTargetDeadTime": "Show the targets' dead time.",
+  "ConfigWindow_Param_DeadTimeBoss": "If target's whole dead time is higher than this, regard it as Boss.",
+  "ConfigWindow_Param_DeadTimeDying": "If target's dead time is lower than this, regard it is dying.",
   "ConfigWindow_Param_PoslockModifier": "Set the modifier key to unlock the movement temporary",
   "ConfigWindow_Param_PoslockDescription": "LT is for gamepad player",
   "ConfigWindow_Param_TeachingMode": "Teaching mode",
@@ -462,5 +461,6 @@
   "ConfigWindow_Tab_UI": "Settings about user interface.",
   "ConfigWindow_Tab_Auto": "About some general actions' usage and conditions.",
   "ConfigWindow_Tab_Target": "The way to find the targets, hostiles or friends.",
-  "ConfigWindow_Tab_Extra": "Some features shouldn't be included by RS."
+  "ConfigWindow_Tab_Extra": "Some features shouldn't be included by RS.",
+  "ConfigWindow_List_AddPosition": "Add One territory position"
 }
