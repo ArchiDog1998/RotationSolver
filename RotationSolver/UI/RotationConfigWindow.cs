@@ -1692,7 +1692,7 @@ public partial class RotationConfigWindow : Window
                 OtherConfiguration.BeneficialPositions[territoryId] = pts = Array.Empty<Vector3>();
             }
 
-            if (ImGui.Button("Add One territory position") && Player.Available) unsafe
+            if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_List_AddPosition) && Player.Available) unsafe
                 {
                     var point = Player.Object.Position;
                     int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };

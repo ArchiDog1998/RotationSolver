@@ -674,4 +674,5 @@ internal partial class Strings
     public string ConfigWindow_Tab_Auto { get; set; } = "About some general actions' usage and conditions.";
     public string ConfigWindow_Tab_Target { get; set; } = "The way to find the targets, hostiles or friends.";
     public string ConfigWindow_Tab_Extra { get; set; } = "Some features shouldn't be included by RS.";
+    public string ConfigWindow_List_AddPosition { get; set; } = "Add One territory position";
 }
