@@ -139,9 +139,7 @@ internal static class PainterManager
                 ((Drawing3DText)SubItems[i]).Text = string.Empty;
             }
 
-            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowHealthRatio)) return;
-
-            var calHealth = (double)ObjectHelper.GetHealthFromMulty(1);
+            if (!Service.Config.GetValue(PluginConfigBool.ShowTargetDeadTime)) return;
 
             int index = 0;
             foreach (GameObject t in DataCenter.AllTargets.OrderBy(ObjectHelper.DistanceToPlayer))
@@ -150,7 +148,7 @@ internal static class PainterManager
 
                 var item = (Drawing3DText)SubItems[index++];
 
-                item.Text = $"Health Ratio: {b.CurrentHp / calHealth:F2} / {b.MaxHp / calHealth:F2}";
+                item.Text = $"Health Ratio: {DataCenter.GetDeadTime(b):F2}s / {DataCenter.GetDeadTime(b, true):F2}s";
                 item.Color = HealthRatioColor;
                 item.Position = b.Position;
 

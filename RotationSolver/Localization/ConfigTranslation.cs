@@ -120,12 +120,12 @@ internal static class ConfigTranslation
         PluginConfigBool.TargetFatePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetFatePriority,
         PluginConfigBool.TargetHuntingRelicLevePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
         PluginConfigBool.TargetQuestPriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
+        PluginConfigBool.ShowTargetDeadTime => LocalizationManager.RightLang.ConfigWindow_Param_ShowTargetDeadTime,
 
 
         // extra
         PluginConfigBool.SayOutStateChanged => LocalizationManager.RightLang.ConfigWindow_Param_SayOutStateChanged,
         PluginConfigBool.PoslockCasting => LocalizationManager.RightLang.ConfigWindow_Param_PoslockCasting,
-        PluginConfigBool.ShowHealthRatio => LocalizationManager.RightLang.ConfigWindow_Param_ShowHealthRatio,
         PluginConfigBool.ShowTooltips => LocalizationManager.RightLang.ConfigWindow_Param_ShowTooltips,
         PluginConfigBool.InDebug => LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
         PluginConfigBool.AutoOpenChest => "Auto Open the treasure chest",
@@ -179,10 +179,9 @@ internal static class ConfigTranslation
         PluginConfigFloat.HealthHealerRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
         PluginConfigFloat.HealthTankRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
 
-        // extra
-        PluginConfigFloat.HealthRatioBoss => LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioBoss,
-        PluginConfigFloat.HealthRatioDying => LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioDying,
-        PluginConfigFloat.HealthRatioDot => LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioDot,
+        // target
+        PluginConfigFloat.DeadTimeBoss => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeBoss,
+        PluginConfigFloat.DeadTimeDying => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeDying,
 
         _ => string.Empty,   
     };

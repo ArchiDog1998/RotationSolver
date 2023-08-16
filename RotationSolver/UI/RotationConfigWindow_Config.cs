@@ -222,6 +222,8 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.HoveredBeneficialPositionColor)
         ),
 
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetDeadTime),
+
         new CheckBoxSearchPlugin(PluginConfigBool.ShowTarget, 
             new DragFloatSearchPlugin(PluginConfigFloat.TargetIconSize, 0.002f),
             new ColorEditSearchPlugin(PluginConfigVector4.TargetColor),
@@ -604,12 +606,13 @@ public partial class RotationConfigWindow
         }),
 
         new DragFloatRangeSearchPlugin(PluginConfigFloat.HostileDelayMin, PluginConfigFloat.HostileDelayMax, 0.002f),
-
-
     };
 
     private static readonly ISearchable[] _targetHostileSelectSearchable = new ISearchable[]
     {
+        new DragFloatSearchPlugin(PluginConfigFloat.DeadTimeBoss, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.DeadTimeDying, 0.02f),
+
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInView),
         new CheckBoxSearchPlugin(PluginConfigBool.ChangeTargetForFate),
         new CheckBoxSearchPlugin(PluginConfigBool.TargetFatePriority),
@@ -726,14 +729,6 @@ public partial class RotationConfigWindow
         new CheckBoxSearchPlugin(PluginConfigBool.PosImprovisation)
         {
             Action = ActionID.Improvisation
-        }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowHealthRatio, new ISearchable[]
-        {
-            new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioBoss, 0.02f),
-            new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioDying, 0.02f),
-            new DragFloatSearchPlugin(PluginConfigFloat.HealthRatioDot, 0.02f),
-
         }),
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseStopCasting,new ISearchable[] 

@@ -6,7 +6,6 @@ using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using Lumina.Excel.GeneratedSheets;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
@@ -14,6 +13,47 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
+    private static readonly TimeSpan CheckSpan = TimeSpan.FromSeconds(2.5);
+
+    /// <summary>
+    /// How many seconds will the target die.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <param name="wholeTime">whole time to die.</param>
+    /// <returns></returns>
+    internal static float GetDeadTime(BattleChara b, bool wholeTime = false)
+    {
+        if (b == null) return float.NaN;
+        var objectId = b.ObjectId;
+
+        DateTime startTime = DateTime.MinValue;
+        float thatTimeRatio = 0;
+        foreach (var (time, hpRatios) in RecordedHP)
+        {
+            if(hpRatios.TryGetValue(objectId, out var ratio) && ratio != 1)
+            {
+                startTime = time;
+                thatTimeRatio = ratio;
+                break;
+            }
+        }
+
+        var timespan = DateTime.Now - startTime;
+        if(startTime ==  DateTime.MinValue  || timespan < CheckSpan) return float.NaN;
+
+        var ratioNow = b.GetHealthRatio();
+
+        var ratioReduce = thatTimeRatio - ratioNow;
+        if (ratioReduce <= 0) return float.NaN;
+
+        return (float)timespan.TotalSeconds / ratioReduce * (wholeTime ? 1 :  ratioNow);
+    }
+    /// <summary>
+    /// Only recorded 15s hps.
+    /// </summary>
+    public const int HP_RECORD_TIME = 150;
+    internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } = new(HP_RECORD_TIME + 1);
+
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
         || !Service.Config.GetValue(Configuration.PluginConfigBool.PoslockCasting)
         //Key cancel.

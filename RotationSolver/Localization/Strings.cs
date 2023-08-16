@@ -122,12 +122,11 @@ internal partial class Strings
     public string ConfigWindow_Param_ShowTooltips { get; set; } = "Show tooltips";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
 
-    public string ConfigWindow_Param_ShowHealthRatio { get; set; } = "Show the health ratio for the check of Boss, Dying, Dot.";
+    public string ConfigWindow_Param_ShowTargetDeadTime { get; set; } = "Show the targets' dead time.";
 
-    public string ConfigWindow_Param_HealthRatioBoss { get; set; } = "If target's max health ratio is higher than this, regard it as Boss.";
+    public string ConfigWindow_Param_DeadTimeBoss { get; set; } = "If target's whole dead time is higher than this, regard it as Boss.";
 
-    public string ConfigWindow_Param_HealthRatioDying { get; set; } = "If target's current health ratio is lower than this, regard it is dying.";
-    public string ConfigWindow_Param_HealthRatioDot { get; set; } = "If target's current health ratio is higher than this, regard it can be dot.";
+    public string ConfigWindow_Param_DeadTimeDying { get; set; } = "If target's dead time is lower than this, regard it is dying.";
     public string ConfigWindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
     public string ConfigWindow_Param_TeachingMode { get; set; } = "Teaching mode";

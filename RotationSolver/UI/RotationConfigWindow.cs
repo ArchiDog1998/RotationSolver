@@ -458,7 +458,7 @@ public partial class RotationConfigWindow : Window
         ImGui.PopStyleColor();
 
         var width = ImGui.GetWindowWidth();
-        if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner4", out var icon) && TextureButton(icon, width, width))
+        if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out var icon) && TextureButton(icon, width, width))
         {
             Util.OpenLink("https://discord.gg/4fECHunam9");
         }

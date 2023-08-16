@@ -256,7 +256,7 @@ public enum PluginConfigBool : byte
     [Default(true)] DrawMeleeOffset,
 
     [Default(true)] ShowMoveTarget,
-    [Default(false)] ShowHealthRatio,
+    [Default(false)] ShowTargetDeadTime,
     [Default(true)] ShowTarget,
     [Default(true)] ChooseAttackMark,
     [Default(false)] CanAttackMarkAOE,
@@ -388,9 +388,8 @@ public enum PluginConfigFloat : byte
     [Default(0.6f, 0.5f, 0.7f)] CountDownAhead,
 
     [Default(24f)] MoveTargetAngle,
-    [Default(1.85f, 0f, 10f)] HealthRatioBoss,
-    [Default(0.8f, 0f, 10f)] HealthRatioDying,
-    [Default(1.2f, 0f, 10f)] HealthRatHealthRatioDotioBoss,
+    [Default(60, 10f, 1800f)] DeadTimeBoss,
+    [Default(10, 0f, 60)] DeadTimeDying,
 
     [Default(16f, 9.6f, 96f)] CooldownFontSize,
 
@@ -401,8 +400,6 @@ public enum PluginConfigFloat : byte
     [Default(8f)] ControlProgressHeight,
     [Default(1.2f, 0f, 30f)] DistanceForMoving,
     [Default(0.2f, 0.01f, 0.5f)] MaxPing,
-
-    [Default(1.8f)] HealthRatioDot,
 }
 
 public enum PluginConfigVector4 : byte

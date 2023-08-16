@@ -18,6 +18,11 @@ public partial class BaseAction
     public byte AOECount { private get; init; } = 3;
 
     /// <summary>
+    /// How many time does this ation need the target keep in live.
+    /// </summary>
+    public float TimeToDie { get; init; } = 0;
+
+    /// <summary>
     /// Is this action's target dead?
     /// </summary>
     public bool IsTargetDying => Target?.IsDying() ?? false;
@@ -341,8 +346,10 @@ public partial class BaseAction
         {
             if (!mustUse)
             {
+                var time = DataCenter.GetDeadTime(b);
+
                 //No need to dot.
-                if (TargetStatus != null && !ObjectHelper.CanDot(b)) return false;
+                if (TargetStatus != null && !float.IsNaN(time) && time < TimeToDie) return false;
 
                 //Already has status.
                 if (!CheckStatus(b)) return false;
@@ -500,7 +507,11 @@ public partial class BaseAction
         if (TargetStatus == null || !IsEot) return tars;
 
         var dontHave = tars.Where(CheckStatus);
-        var canDot = dontHave.Where(ObjectHelper.CanDot);
+        var canDot = dontHave.Where(b =>
+        {
+            var time = DataCenter.GetDeadTime(b);
+            return float.IsNaN(time) || time >= TimeToDie;
+        });
 
         if (mustUse)
         {
