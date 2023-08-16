@@ -206,7 +206,7 @@ internal static class ImGuiHelper
 
         if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
         {
-            SearchItems(ref searchTxt, actions, i => i.GetMemberName(), selectAction, getDesc: i => i.GetMemberDescription());
+            SearchItems(ref searchTxt, actions, i => i.GetMemberName(), selectAction);
 
             ImGui.EndCombo();
         }
@@ -217,13 +217,6 @@ internal static class ImGuiHelper
         if (LocalizationManager.RightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
 
         return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? info.Name;
-    }
-
-    private static string GetMemberDescription(this MemberInfo info)
-    {
-        if (LocalizationManager.RightLang.MemberInfoDesc.TryGetValue(info.Name, out var memberDesc)) return memberDesc;
-
-        return info.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty;
     }
 
     internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null, Func<T, string> getDesc = null)

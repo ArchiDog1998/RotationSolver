@@ -22,17 +22,17 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasMoon => Player.HasStatus(true, StatusID.Fugetsu);
+    public static bool HasMoon => Player.HasStatus(true, StatusID.Fugetsu);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasFlower => Player.HasStatus(true, StatusID.Fuka);
+    public static bool HasFlower => Player.HasStatus(true, StatusID.Fuka);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsMoonTimeLessThanFlower
+    public static bool IsMoonTimeLessThanFlower
         => Player.StatusTime(true, StatusID.Fugetsu) < Player.StatusTime(true, StatusID.Fuka);
 
     #region JobGauge
@@ -41,32 +41,32 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasSetsu => JobGauge.HasSetsu;
+    public static bool HasSetsu => JobGauge.HasSetsu;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasGetsu => JobGauge.HasGetsu;
+    public static bool HasGetsu => JobGauge.HasGetsu;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasKa => JobGauge.HasKa;
+    public static bool HasKa => JobGauge.HasKa;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Kenki => JobGauge.Kenki;
+    public static byte Kenki => JobGauge.Kenki;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte MeditationStacks => JobGauge.MeditationStacks;
+    public static byte MeditationStacks => JobGauge.MeditationStacks;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
+    public static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
     #endregion
 
     #region Attack Single

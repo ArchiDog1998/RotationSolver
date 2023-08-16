@@ -25,31 +25,31 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasEukrasia => JobGauge.Eukrasia;
+    public static bool HasEukrasia => JobGauge.Eukrasia;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Addersgall => JobGauge.Addersgall;
+    public static byte Addersgall => JobGauge.Addersgall;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Addersting => JobGauge.Addersting;
+    public static byte Addersting => JobGauge.Addersting;
 
     static float AddersgallTimerRaw => JobGauge.AddersgallTimer / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float AddersgallTimer => AddersgallTimerRaw - DataCenter.WeaponRemain;
+    public static float AddersgallTime => AddersgallTimerRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    protected static bool AddersgallEndAfter(float time) => AddersgallTimer <= time;
+    protected static bool AddersgallEndAfter(float time) => AddersgallTime <= time;
 
     /// <summary>
     /// 

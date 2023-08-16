@@ -36,20 +36,14 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    [Obsolete("Better not use this, use HutonEndAfter instead")]
-    protected static bool InHuton => HutonTimeRaw > 0;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected static byte Ninki => JobGauge.Ninki;
+    public static byte Ninki => JobGauge.Ninki;
 
     static float HutonTimeRaw => JobGauge.HutonTimer / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float HutonTime => HutonTimeRaw - DataCenter.WeaponRemain;
+    public static float HutonTime => HutonTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 

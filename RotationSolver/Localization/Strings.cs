@@ -418,169 +418,194 @@ internal partial class Strings
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
     {
         #region Rotation
-        { "IsMoving", "IsMoving"},
-        { "HaveHostilesInRange", "Have Hostiles InRange"},
-        { "IsFullParty", "Is Full Party"},
-        { "SettingBreak", "Breaking"},
-        { "Level", "Level"},
-        { "InCombat", "In Combat"},
-        { "IsLastGCD", "Just used GCD"},
-        { "IsLastAbility", "Just used Ability"},
-        { "IsLastAction", "Just used Action"},
-        { "IsTargetDying", "Target is dying"},
-        { "IsTargetBoss", "Target is Boss"},
-        { "HaveSwift", "Have Swift"},
-        { "HaveShield", "Have defensive stance"},
+        { nameof(CustomRotation.IsMoving), "Is Moving"},
+        { nameof(CustomRotation.HasSwift), "Has Swift"},
+        { nameof(CustomRotation.HasTankStance), "Has tank stance"},
+        { nameof(CustomRotation.InCombat), "In Combat"},
+        { nameof(CustomRotation.NotInCombatDelay), "Not In Combat Delay"},
+        { nameof(CustomRotation.CurrentMp), "Player's MP"},
+        { nameof(CustomRotation.HasCompanion), "Has companion"},
+        { nameof(CustomRotation.RatioOfMembersIn2minsBurst), "Raito of members that in 2 mins burst."},
+        { nameof(CustomRotation.IsFullParty), "Is Full Party"},
+        { nameof(CustomRotation.PartyMembersMinHP), "Min HP in party members."},
+        { nameof(CustomRotation.PartyMembersAverHP), "Average HP in party members."},
+        { nameof(CustomRotation.IsTargetDying), "Is target going to die"},
+        { nameof(CustomRotation.IsTargetBoss), "Is target a boss"},
+        { nameof(CustomRotation.HasHostilesInRange), "Has hostiles in Range"},
+        { nameof(CustomRotation.NumberOfHostilesInRange), "The number of hostiles in Range"},
+        { nameof(CustomRotation.NumberOfHostilesInMaxRange), "The number of hostiles in max Range"},
+        { nameof(CustomRotation.InBurst), "In burst."},
+
+        { nameof(CustomRotation.CanHealAreaAbility), "Can heal area ability"},
+        { nameof(CustomRotation.CanHealAreaSpell), "Can heal area spell"},
+        { nameof(CustomRotation.CanHealSingleAbility), "Can heal single ability"},
+        { nameof(CustomRotation.CanHealSingleSpell), "Can heal single area"},
+
+        { nameof(CustomRotation.AutoState), "The state of auto. True for on."},
+        { nameof(CustomRotation.IsManual), "The state of manual. True for manual."},
+
+        { nameof(CustomRotation.IsInHighEndDuty), "Is in the high-end duty"},
+        { nameof(CustomRotation.Ping), "Your ping"},
+        { nameof(CustomRotation.NextAbilityToNextGCD), "Time from next ability to next GCD"},
+
+        { nameof(CustomRotation.IsLastGCD), "Just used GCD"},
+        { nameof(CustomRotation.IsLastAbility), "Just used Ability"},
+        { nameof(CustomRotation.IsLastAction), "Just used Action"},
+
+        { nameof(CustomRotation.CombatTime), "Combat time"},
+        { nameof(CustomRotation.StopMovingTime), "Stop moving time"},
+        { nameof(CustomRotation.CountDownAhead), "Count Down ahead"},
+        { nameof(CustomRotation.HealthAreaAbility), "Health of Area Ability"},
+        { nameof(CustomRotation.HealthAreaSpell), "Health of Area spell"},
+        { nameof(CustomRotation.HealthAreaAbilityHot), "Health of Area Ability Hot"},
+        { nameof(CustomRotation.HealthAreaSpellHot), "Health of Area spell Hot"},
+        { nameof(CustomRotation.HealthSingleAbility), "Health of single ability"},
+        { nameof(CustomRotation.HealthSingleSpell), "Health of single spell"},
+        { nameof(CustomRotation.HealthSingleAbilityHot), "Health of single ability Hot"},
+        { nameof(CustomRotation.HealthSingleSpellHot), "Health of single spell Hot"},
+        { nameof(CustomRotation.HealthForDyingTanksDefault), "Health of dying tank"},
+
+        { nameof(CustomRotation.IsValid), "Is this rotation valid"},
+        { nameof(CustomRotation.ShowStatus), "Show the status"},
+
         #endregion
 
         #region AST
-        { "PlayCard", "Play"},
         #endregion
 
         #region BLM
-        { "UmbralIceStacks", "Umbral Ice Stacks"},
-        { "AstralFireStacks", "Astral Fire Stacks"},
-        { "PolyglotStacks", "Polyglot Stacks"},
-        { "UmbralHearts", "Umbral Heart Stacks"},
-        { "IsParadoxActive", "Is Paradox Active ?"},
-        { "InUmbralIce", "In Umbral Ice"},
-        { "InAstralFire", "In Astral Fire"},
-        { "IsEnochianActive", "Is Enochian Active?"},
-        { "EnchinaEndAfter", "Enchina End After (s)"},
-        { "EnchinaEndAfterGCD", "Enchina End After (GCDs)"},
-        { "ElementTimeEndAfter", "Element Time End After (s)"},
-        { "ElementTimeEndAfterGCD", "Element Time End After (GCDs)"},
-        { "HasFire", "Has Firestarter"},
-        { "HasThunder", "Has Thunder"},
-        { "IsPolyglotStacksMaxed", "Whether Polyglot already has the maximum number of charge stacks at the current level"}, //这玩意儿太长了！
+        { nameof(BLM_Base.UmbralIceStacks), "Umbral Ice Stacks" },
+        { nameof(BLM_Base.AstralFireStacks), "Astral Fire Stacks" },
+        { nameof(BLM_Base.PolyglotStacks), "Polyglot Stacks" },
+        { nameof(BLM_Base.UmbralHearts), "Umbral Hearts" },
+        { nameof(BLM_Base.IsParadoxActive), "Is Paradox Active" },
+        { nameof(BLM_Base.InUmbralIce), "In Umbral Ice" },
+        { nameof(BLM_Base.InAstralFire), "In Astral Fire" },
+        { nameof(BLM_Base.IsEnochianActive), "Is Enochian Active" },
+        { nameof(BLM_Base.IsPolyglotStacksMaxed), "IsPolyglot Stacks Maxed" },
+        { nameof(BLM_Base.EnochianTime), "Enochian Time" },
         #endregion
 
         #region BRD
-        { "SoulVoice", "Soul Voice"},
-        { "SongEndAfter", "Song End After (s)"},
-        { "SongEndAfterGCD", "Song End After (GCDs)"},
-        { "Repertoire", "Song Gauge Stacks"},
+        { nameof(BRD_Base.Repertoire), "Repertoire" },
+        { nameof(BRD_Base.SoulVoice), "Soul Voice" },
+        { nameof(BRD_Base.SongTime), "Soul Time" },
         #endregion
 
         #region DNC
-        { "IsDancing", "Is Dancing"},
-        { "Esprit", "Esprit"},
-        { "Feathers", "Feathers"},
-        { "CompletedSteps", "CompletedSteps"},
-        { "FinishStepGCD", "FinishStepGCD"},
-        { "ExcutionStepGCD", "Excution Step GCD"},
+        { nameof(DNC_Base.IsDancing), "Is Dancing"},
+        { nameof(DNC_Base.Esprit), "Esprit"},
+        { nameof(DNC_Base.Feathers), "Feathers"},
+        { nameof(DNC_Base.CompletedSteps), "Completed Steps"},
         #endregion
 
         #region DRG
+        { nameof(DRG_Base.EyeCount), "Eye Count"},
+        { nameof(DRG_Base.FocusCount), "Focus Count"},
+        { nameof(DRG_Base.LOTDTime), "LOTD Time"},
         #endregion
 
         #region DRK
-        { "Blood", "Blood"},
-        { "HasDarkArts", "Has Dark Arts"},
-        { "DarkSideEndAfter", "DarkSideEndAfter"},
-        { "DarkSideEndAfterGCD", "DarkSideEndAfterGCD"},
+        { nameof(DRK_Base.Blood), "Blood"},
+        { nameof(DRK_Base.HasDarkArts), "Has Dark Arts"},
+        { nameof(DRK_Base.DarkSideTime), "Dark Side Time"},
+        { nameof(DRK_Base.ShadowTime), "Shadow Side Time"},
         #endregion
 
         #region GNB
-        { "Ammo", "Ammo"},
-        { "AmmoComboStep", "Ammo Combo Step"},
+        { nameof(GNB_Base.Ammo), "Ammo"},
+        { nameof(GNB_Base.AmmoComboStep), "Ammo Combo Step"},
+        { nameof(GNB_Base.MaxAmmo), "Max Ammo"},
         #endregion    
 
         #region MCH
-        { "IsOverheated", "Is Over heated"},
-        { "Heat", "Heat"},
-        { "Battery", "Battery"},
-        { "OverheatedEndAfter", "Over heated End After (s)"},
-        { "OverheatedEndAfterGCD", "Over heated End After(GCDs)"},
+        { nameof(MCH_Base.IsOverheated), "Is Overheated"},
+        { nameof(MCH_Base.Heat), "Heat"},
+        { nameof(MCH_Base.Battery), "Battery"},
+        { nameof(MCH_Base.OverheatTime), "Overheat Time Remaining"},
         #endregion
 
         #region MNK
-        { "Chakra", "Chakra"},
-        #endregion        
-    };
-
-    public Dictionary<string, string> MemberInfoDesc { get; set; } = new Dictionary<string, string>()
-    {
-        #region Rotation
-        { "IsMoving", "Player Is Moving"},
-        { "HaveHostilesInRange", "Have Hostiles In Range(Melee <3m,Ranged<25m)"},
-        { "IsFullParty", "Is Full Party"},
-        { "SettingBreak", "In break"},
-        { "Level", "Player level"},
-        { "InCombat", "In Combat"},
-        { "IsLastGCD", "Just used GCD"},
-        { "IsLastAbility", "Just used ability"},
-        { "IsLastAction", "Just used Action"},
-        { "IsTargetDying", "Target is Dying"},
-        { "IsTargetBoss", "Target is Boss"},
-        { "HaveSwift", "Have Swift"},
-        { "HaveShield", "Have defensive stance"},
+        { nameof(MNK_Base.Chakra), "Chakra"},
+        { nameof(MNK_Base.HasSolar), "Has Solar"},
+        { nameof(MNK_Base.HasLunar), "Has Lunar"},
         #endregion
 
-        #region AST
-        { "PlayCard", "Play"},
+        #region NIN
+        { nameof(NIN_Base.Ninki), "Ninki"},
+        { nameof(NIN_Base.HutonTime), "Huton Time"},
         #endregion
 
-        #region BLM
-        { "UmbralIceStacks", "Umbral Ice Stacks"},
-        { "AstralFireStacks", "Astral Fire Stacks"},
-        { "PolyglotStacks", "Polyglot Stacks"},
-        { "UmbralHearts", "Umbral Heart Stacks"},
-        { "IsParadoxActive", "Is Paradox Active?"},
-        { "InUmbralIce", "In Umbral Ice"},
-        { "InAstralFire", "In Astral Fire"},
-        { "IsEnochianActive", "Is Enochian Active?"},
-        { "EnchinaEndAfter", "Enchina End After (s)"},
-        { "EnchinaEndAfterGCD", "Enchina End After (GCDs)"},
-        { "ElementTimeEndAfter", "Element remaining time"},
-        { "ElementTimeEndAfterGCD", "Element remaining time"},
-        { "HasFire", "Has Firestarter"},
-        { "HasThunder", "Has Thunder"},
-        { "IsPolyglotStacksMaxed", "Whether Polyglot already has the maximum number of charge stacks at the current level"},
+        #region PLD
+        { nameof(PLD_Base.HasDivineMight), "Has Divine Might"},
+        { nameof(PLD_Base.HasFightOrFlight), "Has Fight Or Flight"},
+        { nameof(PLD_Base.OathGauge), "OathGauge"},
         #endregion
 
-        #region BRD
-        { "SoulVoice", "SoulVoice"},
-        { "SongEndAfter", "Song End After (s)"},
-        { "SongEndAfterGCD", "Song End After (GCDs)"},
-        { "Repertoire", "Song Gauge Stacks"},
+        #region RDM
+        { nameof(RDM_Base.WhiteMana), "White Mana"},
+        { nameof(RDM_Base.BlackMana), "Black Mana"},
+        { nameof(RDM_Base.ManaStacks), "Mana Stacks"},
         #endregion
 
-        #region DNC
-        { "IsDancing", "Is Dancing"},
-        { "Esprit", "Esprit"},
-        { "Feathers", "Feathers"},
-        { "CompletedSteps", "Completed Steps"},
-        { "FinishStepGCD", "Finish Step GCD"},
-        { "ExcutionStepGCD", "Excution Step GCD"},
+        #region RPR
+        { nameof(RPR_Base.HasEnshrouded), "Has Enshrouded"},
+        { nameof(RPR_Base.HasSoulReaver), "Has Soul Reaver"},
+        { nameof(RPR_Base.Soul), "Soul"},
+        { nameof(RPR_Base.Shroud), "Shroud"},
+        { nameof(RPR_Base.LemureShroud), "Lemure Shroud"},
+        { nameof(RPR_Base.VoidShroud), "Void Shroud"},
         #endregion
 
-        #region DRG
+        #region SAM
+        { nameof(SAM_Base.HasMoon), "Has Moon"},
+        { nameof(SAM_Base.HasFlower), "Has Flower"},
+        { nameof(SAM_Base.IsMoonTimeLessThanFlower), "Is MoonTime Less Than Flower"},
+        { nameof(SAM_Base.HasSetsu), "Has Setsu"},
+        { nameof(SAM_Base.HasGetsu), "Has Getsu"},
+        { nameof(SAM_Base.HasKa), "Has Ka"},
+        { nameof(SAM_Base.Kenki), "Kenki"},
+        { nameof(SAM_Base.MeditationStacks), "Meditation Stacks"},
+        { nameof(SAM_Base.SenCount), "Sen Count"},
         #endregion
 
-        #region DRK
-        { "Blood", "Blood"},
-        { "HasDarkArts", "Has Dark Arts"},
-        { "DarkSideEndAfter", "DarkSide End After (s)"},
-        { "DarkSideEndAfterGCD", "DarkSide End After (GCDs)"},
+        #region SCH
+        { nameof(SCH_Base.FairyGauge), "Fairy Gauge"},
+        { nameof(SCH_Base.HasAetherflow), "Has Aetherflow"},
+        { nameof(SCH_Base.SeraphTime), "Seraph Time"},
         #endregion
 
-        #region GNB
-        { "Ammo", "Ammo"},
-        { "AmmoComboStep", "Ammo Combo Step"},
+        #region SGE
+        { nameof(SGE_Base.HasEukrasia), "Has Eukrasia"},
+        { nameof(SGE_Base.Addersgall), "Addersgall"},
+        { nameof(SGE_Base.Addersting), "Addersting"},
+        { nameof(SGE_Base.AddersgallTime), "Addersgall Time"},
         #endregion
 
-        #region MCH
-        { "IsOverheated", "Is Over heated"},
-        { "Heat", "Heat"},
-        { "Battery", "Battery"},
-        { "OverheatedEndAfter", "OverheatedEndAfter"},
-        { "OverheatedEndAfterGCD", "OverheatedEndAfterGCD"},
+        #region SMN
+        { nameof(SMN_Base.InBahamut), "In Bahamut"},
+        { nameof(SMN_Base.InPhoenix), "In Phoenix"},
+        { nameof(SMN_Base.HasAetherflowStacks), "Has Aetherflow Stacks"},
+        { nameof(SMN_Base.Attunement), "Attunement"},
+        { nameof(SMN_Base.IsIfritReady), "Is Ifrit Ready"},
+        { nameof(SMN_Base.IsTitanReady), "Is Titan Ready"},
+        { nameof(SMN_Base.IsGarudaReady), "Is Garuda Ready"},
+        { nameof(SMN_Base.InIfrit), "In Ifrit"},
+        { nameof(SMN_Base.InTitan), "In Titan"},
+        { nameof(SMN_Base.InGaruda), "In Garuda"},
+        { nameof(SMN_Base.SummonTime), "Summon Time"},
+        { nameof(SMN_Base.AttunmentTime), "Attunment Time"},
         #endregion
 
-        #region MNK
-        { "Chakra", "Chakra"},
-        #endregion        
+        #region WAR
+        { nameof(WAR_Base.BeastGauge), "Beast Gauge"},
+        #endregion
+
+        #region WHM
+        { nameof(WHM_Base.Lily), "Lily"},
+        { nameof(WHM_Base.BloodLily), "Blood Lily"},
+        { nameof(WHM_Base.LilyTime), "Lily Time"},
+        #endregion
     };
 
     public string HighEndWarning { get; set; } = "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!";

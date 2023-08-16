@@ -25,22 +25,22 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsDancing => JobGauge.IsDancing;
+    public static bool IsDancing => JobGauge.IsDancing;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Esprit => JobGauge.Esprit;
+    public static byte Esprit => JobGauge.Esprit;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Feathers => JobGauge.Feathers;
+    public static byte Feathers => JobGauge.Feathers;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte CompletedSteps => JobGauge.CompletedSteps;
+    public static byte CompletedSteps => JobGauge.CompletedSteps;
     #endregion
 
     #region Attack Single

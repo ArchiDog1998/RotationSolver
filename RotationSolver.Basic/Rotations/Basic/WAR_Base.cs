@@ -24,7 +24,7 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte BeastGauge => JobGauge.BeastGauge;
+    public static byte BeastGauge => JobGauge.BeastGauge;
 
     #region Attack Single
     /// <summary>

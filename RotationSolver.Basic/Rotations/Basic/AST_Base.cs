@@ -332,6 +332,7 @@ public abstract class AST_Base : CustomRotation
     protected static IBaseTrait EnhancedCelestialIntersection { get; } = new BaseTrait(500);
 
     #endregion
+
     /// <summary>
     /// 
     /// </summary>

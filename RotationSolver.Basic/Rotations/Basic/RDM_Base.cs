@@ -22,7 +22,7 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
+    public override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
     #region Job Gauge
     static RDMGauge JobGauge => Svc.Gauges.Get<RDMGauge>();
@@ -30,17 +30,17 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte WhiteMana => JobGauge.WhiteMana;
+    public static byte WhiteMana => JobGauge.WhiteMana;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte BlackMana => JobGauge.BlackMana;
+    public static byte BlackMana => JobGauge.BlackMana;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte ManaStacks => JobGauge.ManaStacks;
+    public static byte ManaStacks => JobGauge.ManaStacks;
     #endregion
 
     #region Attack Single

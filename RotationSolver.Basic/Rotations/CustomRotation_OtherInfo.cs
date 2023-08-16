@@ -13,30 +13,24 @@ public abstract partial class CustomRotation
     protected static PlayerCharacter Player => ECommons.GameHelpers.Player.Object;
 
     /// <summary>
-    /// The level of the player.
-    /// </summary>
-    [Obsolete("Please use EnoughLevel of action or trait instead.", true)]
-    protected static byte Level => (byte)ECommons.GameHelpers.Player.Level;
-
-    /// <summary>
     /// Does player have swift cast, dual cast or triple cast.
     /// </summary>
-    protected static bool HasSwift => Player?.HasStatus(true, Swiftcast.StatusProvide) ?? false;
+    public static bool HasSwift => Player?.HasStatus(true, Swiftcast.StatusProvide) ?? false;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasTankStance => Player?.HasStatus(true, StatusHelper.TankStanceStatus) ?? false;
+    public static bool HasTankStance => Player?.HasStatus(true, StatusHelper.TankStanceStatus) ?? false;
 
     /// <summary>
     /// Check the player is moving, such as running, walking or jumping.
     /// </summary>
-    protected static bool IsMoving => DataCenter.IsMoving;
+    public static bool IsMoving => DataCenter.IsMoving;
 
     /// <summary>
     /// Is in combat.
     /// </summary>
-    protected static bool InCombat => DataCenter.InCombat;
+    public static bool InCombat => DataCenter.InCombat;
 
     static RandomDelay _notInCombatDelay = new(() =>
         (Service.Config.GetValue(Configuration.PluginConfigFloat.NotInCombatDelayMin),
@@ -45,12 +39,12 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Is out of combat.
     /// </summary>
-    protected static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
+    public static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
 
     /// <summary>
     /// Player's MP.
     /// </summary>
-    protected static uint CurrentMp => DataCenter.CurrentMp;
+    public static uint CurrentMp => DataCenter.CurrentMp;
 
     /// <summary>
     /// Condition.
@@ -63,7 +57,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Has the comapnion now.
     /// </summary>
-    protected static bool HasCompanion => DataCenter.HasCompanion;
+    public static bool HasCompanion => DataCenter.HasCompanion;
 
     /// <summary>
     /// Party member.
@@ -103,13 +97,13 @@ public abstract partial class CustomRotation
     /// <summary>
     /// The ratio of members that in burst 2min.
     /// </summary>
-    protected static float RatioOfMembersIn2minsBurst => DataCenter.RatioOfMembersIn2minsBurst;
+    public static float RatioOfMembersIn2minsBurst => DataCenter.RatioOfMembersIn2minsBurst;
 
 
     /// <summary>
     /// Whether the number of party members is 8.
     /// </summary>
-    protected static bool IsFullParty => PartyMembers.Count() is 8;
+    public static bool IsFullParty => PartyMembers.Count() is 8;
 
     /// <summary>
     /// party members HP.
@@ -119,12 +113,12 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Min HP in party members.
     /// </summary>
-    protected static float PartyMembersMinHP => DataCenter.PartyMembersMinHP;
+    public static float PartyMembersMinHP => DataCenter.PartyMembersMinHP;
 
     /// <summary>
     /// Average HP in party members.
     /// </summary>
-    protected static float PartyMembersAverHP => DataCenter.PartyMembersAverHP;
+    public static float PartyMembersAverHP => DataCenter.PartyMembersAverHP;
     #endregion
 
     #region Target
@@ -136,28 +130,28 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Shortcut for Target.IsDying();
     /// </summary>
-    protected static bool IsTargetDying => Target?.IsDying() ?? false;
+    public static bool IsTargetDying => Target?.IsDying() ?? false;
 
     /// <summary>
     /// Shortcut for Target.IsBoss();
     /// </summary>
-    protected static bool IsTargetBoss => Target?.IsBoss() ?? false;
+    public static bool IsTargetBoss => Target?.IsBoss() ?? false;
 
 
     /// <summary>
     /// Is there any hostile target in range? 25 for ranged jobs and healer, 3 for melee and tank.
     /// </summary>
-    protected static bool HasHostilesInRange => DataCenter.HasHostilesInRange;
+    public static bool HasHostilesInRange => DataCenter.HasHostilesInRange;
 
     /// <summary>
     /// How many hostile targets in range? 25 for ranged jobs and healer, 3 for melee and tank.
     /// </summary>
-    protected static int NumberOfHostilesInRange => DataCenter.NumberOfHostilesInRange;
+    public static int NumberOfHostilesInRange => DataCenter.NumberOfHostilesInRange;
 
     /// <summary>
     /// How many hostile targets in max range (25 yalms) regardless of job
     /// </summary>
-    protected static int NumberOfHostilesInMaxRange => DataCenter.NumberOfHostilesInMaxRange;
+    public static int NumberOfHostilesInMaxRange => DataCenter.NumberOfHostilesInMaxRange;
 
     /// <summary>
     /// All hostile Targets.
@@ -171,29 +165,29 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Is in burst right now? Usually it used with team support actions.
     /// </summary>
-    protected static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(Configuration.PluginConfigBool.AutoBurst);
+    public static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(Configuration.PluginConfigBool.AutoBurst);
 
-    bool _canUseHealAction => (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer) && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal));
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && _canUseHealAction;
+    bool _canUseHealAction => ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer) && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal);
 
     /// <summary>
     /// 
     /// </summary>
-    protected virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && _canUseHealAction;
+    public virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && _canUseHealAction;
 
     /// <summary>
     /// 
     /// </summary>
-    protected virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && _canUseHealAction;
+    public virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && _canUseHealAction;
 
     /// <summary>
     /// 
     /// </summary>
-    protected virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && _canUseHealAction;
+    public virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && _canUseHealAction;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && _canUseHealAction;
 
     /// <summary>
     /// 
@@ -209,12 +203,12 @@ public abstract partial class CustomRotation
     /// <summary>
     /// True for On, false for off.
     /// </summary>
-    protected static bool State => DataCenter.State;
+    public static bool AutoState => DataCenter.State;
 
     /// <summary>
     /// Ture for Manual Target, false for Auto Target.
     /// </summary>
-    protected static bool IsManual => DataCenter.IsManual;
+    public static bool IsManual => DataCenter.IsManual;
     #endregion
 
     #region GCD
@@ -248,17 +242,17 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Is player in high-end duty.
     /// </summary>
-    protected static bool IsInHighEndDuty => DataCenter.IsInHighEndDuty;
+    public static bool IsInHighEndDuty => DataCenter.IsInHighEndDuty;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float Ping => DataCenter.Ping;
+    public static float Ping => DataCenter.Ping;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
+    public static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
 
     /// <summary>
     /// 
@@ -291,7 +285,7 @@ public abstract partial class CustomRotation
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
     /// <returns></returns>
-    protected static bool IsLastGCD(bool isAdjust, params IAction[] actions)
+    public static bool IsLastGCD(bool isAdjust, params IAction[] actions)
         => IActionHelper.IsLastGCD(isAdjust, actions);
 
     /// <summary>
@@ -300,7 +294,7 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="ids">True if any of this is matched.</param>
     /// <returns></returns>
-    protected static bool IsLastGCD(params ActionID[] ids)
+    public static bool IsLastGCD(params ActionID[] ids)
         => IActionHelper.IsLastGCD(ids);
 
     /// <summary>
@@ -310,7 +304,7 @@ public abstract partial class CustomRotation
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
     /// <returns></returns>
-    protected static bool IsLastAbility(bool isAdjust, params IAction[] actions)
+    public static bool IsLastAbility(bool isAdjust, params IAction[] actions)
         => IActionHelper.IsLastAbility(isAdjust, actions);
 
     /// <summary>
@@ -319,7 +313,7 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="ids">True if any of this is matched.</param>
     /// <returns></returns>
-    protected static bool IsLastAbility(params ActionID[] ids)
+    public static bool IsLastAbility(params ActionID[] ids)
         => IActionHelper.IsLastAbility(ids);
 
     /// <summary>
@@ -329,7 +323,7 @@ public abstract partial class CustomRotation
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
     /// <returns></returns>
-    protected static bool IsLastAction(bool isAdjust, params IAction[] actions)
+    public static bool IsLastAction(bool isAdjust, params IAction[] actions)
         => IActionHelper.IsLastAction(isAdjust, actions);
 
     /// <summary>
@@ -338,7 +332,7 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="ids">True if any of this is matched.</param>
     /// <returns></returns>
-    protected static bool IsLastAction(params ActionID[] ids)
+    public static bool IsLastAction(params ActionID[] ids)
         => IActionHelper.IsLastAction(ids);
 
     /// <summary>
@@ -357,9 +351,9 @@ public abstract partial class CustomRotation
     protected static bool CombatElapsedLess(float time) => CombatTime <= time;
 
     /// <summary>
-    /// 
+    /// The combat time.
     /// </summary>
-    protected static float CombatTime => InCombat ? DataCenter.CombatTimeRaw + DataCenter.WeaponRemain : 0;
+    public static float CombatTime => InCombat ? DataCenter.CombatTimeRaw + DataCenter.WeaponRemain : 0;
 
     /// <summary>
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
@@ -378,7 +372,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// The time of stoping moving.
     /// </summary>
-    protected static float StopMovingTime => IsMoving ? 0 : DataCenter.StopMovingRaw + DataCenter.WeaponRemain;
+    public static float StopMovingTime => IsMoving ? 0 : DataCenter.StopMovingRaw + DataCenter.WeaponRemain;
 
     /// <summary>
     /// Time from GCD.
@@ -400,64 +394,55 @@ public abstract partial class CustomRotation
             && types[1].ParameterType == typeof(IAction[]);
     });
 
-    /// <summary>
-    /// The number of hostils in range.
-    /// </summary>
-    /// <param name="range"></param>
-    /// <returns></returns>
-    [Obsolete]
-    protected static int NumberOfHostilesIn(float range)
-    => DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= range);
-
     #region Service
     /// <summary>
     /// The countDond ahead.
     /// </summary>
-    protected static float CountDownAhead => Service.Config.GetValue(Configuration.PluginConfigFloat.CountDownAhead);
+    public static float CountDownAhead => Service.Config.GetValue(Configuration.PluginConfigFloat.CountDownAhead);
 
     /// <summary>
     /// 
     /// </summary>
-    protected float HealthAreaAbility => Jobs.FirstOrDefault().GetHealthAreaAbility();
+    public float HealthAreaAbility => Jobs.FirstOrDefault().GetHealthAreaAbility();
 
     /// <summary>
     /// 
     /// </summary>
-    protected float HealthAreaSpell => Jobs.FirstOrDefault().GetHealthAreaSpell();
+    public float HealthAreaSpell => Jobs.FirstOrDefault().GetHealthAreaSpell();
 
     /// <summary>
     /// 
     /// </summary>
-    protected float HealthAreaAbilityHot => Jobs.FirstOrDefault().GetHealthAreaAbilityHot();
+    public float HealthAreaAbilityHot => Jobs.FirstOrDefault().GetHealthAreaAbilityHot();
 
     /// <summary>
     /// 
     /// </summary>
-    protected float HealthAreaSpellHot => Jobs.FirstOrDefault().GetHealthAreaSpellHot();
+    public float HealthAreaSpellHot => Jobs.FirstOrDefault().GetHealthAreaSpellHot();
 
     /// <summary>
     /// 
     /// </summary>
-    protected float HealthSingleAbility => Jobs.FirstOrDefault().GetHealthSingleAbility();
+    public float HealthSingleAbility => Jobs.FirstOrDefault().GetHealthSingleAbility();
 
     /// <summary>
     /// 
     /// </summary>
-    protected float HealthSingleSpell => Jobs.FirstOrDefault().GetHealthSingleSpell();
+    public float HealthSingleSpell => Jobs.FirstOrDefault().GetHealthSingleSpell();
 
     /// <summary>
     /// 
     /// </summary>
-    protected float HealthSingleAbilityHot => Jobs.FirstOrDefault().GetHealthSingleAbilityHot();
+    public float HealthSingleAbilityHot => Jobs.FirstOrDefault().GetHealthSingleAbilityHot();
 
     /// <summary>
     /// 
     /// </summary>
-    protected float HealthSingleSpellHot => Jobs.FirstOrDefault().GetHealthSingleSpellHot();
+    public float HealthSingleSpellHot => Jobs.FirstOrDefault().GetHealthSingleSpellHot();
 
     /// <summary>
     /// 
     /// </summary>
-    protected float HealthForDyingTanksDefault => Jobs.FirstOrDefault().GetHealthForDyingTank();
+    public float HealthForDyingTanksDefault => Jobs.FirstOrDefault().GetHealthForDyingTank();
     #endregion
 }

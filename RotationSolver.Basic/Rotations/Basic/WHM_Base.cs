@@ -25,26 +25,26 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Lily => JobGauge.Lily;
+    public static byte Lily => JobGauge.Lily;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte BloodLily => JobGauge.BloodLily;
+    public static byte BloodLily => JobGauge.BloodLily;
 
-    static float LilyTimerRaw => JobGauge.LilyTimer / 1000f;
+    static float LilyTimeRaw => JobGauge.LilyTimer / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float LilyTimer => LilyTimerRaw - DataCenter.WeaponRemain;
+    public static float LilyTime => LilyTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    protected static bool LilyAfter(float time) => LilyTimer <= time;
+    protected static bool LilyAfter(float time) => LilyTime <= time;
 
     /// <summary>
     /// 

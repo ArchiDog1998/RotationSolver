@@ -22,25 +22,12 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    [Obsolete("Please Use HasEnshrouded Instead")]
-    protected static bool Enshrouded => HasEnshrouded;
+    public static bool HasEnshrouded => Player.HasStatus(true, StatusID.Enshrouded);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasEnshrouded => Player.HasStatus(true, StatusID.Enshrouded);
-
-    /// <summary>
-    /// 
-    /// </summary>
-
-    [Obsolete("Please Use HasSoulReaver Instead")]
-    protected static bool SoulReaver => HasSoulReaver;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected static bool HasSoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
+    public static bool HasSoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
 
     #region JobGauge
     static RPRGauge JobGauge => Svc.Gauges.Get<RPRGauge>();
@@ -48,22 +35,22 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Soul => JobGauge.Soul;
+    public static byte Soul => JobGauge.Soul;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Shroud => JobGauge.Shroud;
+    public static byte Shroud => JobGauge.Shroud;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte LemureShroud => JobGauge.LemureShroud;
+    public static byte LemureShroud => JobGauge.LemureShroud;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte VoidShroud => JobGauge.VoidShroud;
+    public static byte VoidShroud => JobGauge.VoidShroud;
     #endregion
 
     #region Attack Single

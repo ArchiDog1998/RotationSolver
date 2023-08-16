@@ -19,19 +19,18 @@ public abstract class DRG_Base : CustomRotation
     /// </summary>
     public sealed override Job[] Jobs => new [] { Job.DRG, Job.LNC };
 
-
     #region Job Gauge
     static DRGGauge JobGauge => Svc.Gauges.Get<DRGGauge>();
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte EyeCount => JobGauge.EyeCount;
+    public static byte EyeCount => JobGauge.EyeCount;
 
     /// <summary>
     /// Firstminds Count
     /// </summary>
-    protected static byte FocusCount => JobGauge.FirstmindsFocusCount;
+    public static byte FocusCount => JobGauge.FirstmindsFocusCount;
 
     /// <summary>
     /// 
@@ -41,7 +40,7 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static float LOTDTime => LOTDTimeRaw - DataCenter.WeaponRemain;
+    public static float LOTDTime => LOTDTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 

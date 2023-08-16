@@ -30,17 +30,17 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Chakra => JobGauge.Chakra;
+    public static byte Chakra => JobGauge.Chakra;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasSolar => JobGauge.Nadi.HasFlag(Nadi.SOLAR);
+    public static bool HasSolar => JobGauge.Nadi.HasFlag(Nadi.SOLAR);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasLunar => JobGauge.Nadi.HasFlag(Nadi.LUNAR);
+    public static bool HasLunar => JobGauge.Nadi.HasFlag(Nadi.LUNAR);
     #endregion
 
     #region Attack Single

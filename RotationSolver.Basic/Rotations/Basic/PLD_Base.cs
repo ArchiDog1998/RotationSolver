@@ -22,22 +22,22 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
+    public override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
     /// <summary>
     /// 
     /// </summary>
-    protected override bool CanHealAreaAbility => false;
+    public override bool CanHealAreaAbility => false;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasDivineMight => !Player.WillStatusEndGCD(0, 0, true, StatusID.DivineMight);
+    public static bool HasDivineMight => !Player.WillStatusEndGCD(0, 0, true, StatusID.DivineMight);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasFightOrFlight => !Player.WillStatusEndGCD(0, 0, true, StatusID.FightOrFlight);
+    public static bool HasFightOrFlight => !Player.WillStatusEndGCD(0, 0, true, StatusID.FightOrFlight);
 
     #region Job Gauge
     private static PLDGauge JobGauge => Svc.Gauges.Get<PLDGauge>();
@@ -45,7 +45,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte OathGauge => JobGauge.OathGauge;
+    public static byte OathGauge => JobGauge.OathGauge;
     #endregion
 
     #region Attack Single

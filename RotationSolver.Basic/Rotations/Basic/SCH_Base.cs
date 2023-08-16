@@ -25,17 +25,19 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte FairyGauge => JobGauge.FairyGauge;
+    public static byte FairyGauge => JobGauge.FairyGauge;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasAetherflow => JobGauge.Aetherflow > 0;
+    public static bool HasAetherflow => JobGauge.Aetherflow > 0;
+
+    static float SeraphTimeRaw => JobGauge.SeraphTimer / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasSeraph => JobGauge.SeraphTimer > 0;
+    public static float SeraphTime => SeraphTimeRaw - DataCenter.WeaponRemain;
     #endregion
 
     #region Heal
@@ -105,7 +107,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Consolation { get; } = new BaseAction(ActionID.Consolation, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => HasSeraph,
+        ActionCheck = (b, m) => SeraphTime > 0,
     };
 
     /// <summary>
@@ -189,7 +191,7 @@ public abstract class SCH_Base : CustomRotation
     public static IBaseAction Dissipation { get; } = new BaseAction(ActionID.Dissipation)
     {
         StatusProvide = new[] { StatusID.Dissipation },
-        ActionCheck = (b, m) => !HasAetherflow && !HasSeraph && InCombat && DataCenter.HasPet,
+        ActionCheck = (b, m) => !HasAetherflow && SeraphTime <= 0 && InCombat && DataCenter.HasPet,
     };
 
     /// <summary>
@@ -197,7 +199,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Aetherpact { get; } = new BaseAction(ActionID.Aetherpact, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => JobGauge.FairyGauge >= 10 && DataCenter.HasPet && !HasSeraph
+        ActionCheck = (b, m) => JobGauge.FairyGauge >= 10 && DataCenter.HasPet && SeraphTime <= 0
     };
 
     /// <summary>
@@ -205,7 +207,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction FeyBlessing { get; } = new BaseAction(ActionID.FeyBlessing, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => !HasSeraph && DataCenter.HasPet,
+        ActionCheck = (b, m) => SeraphTime <= 0 && DataCenter.HasPet,
     };
     #endregion
 

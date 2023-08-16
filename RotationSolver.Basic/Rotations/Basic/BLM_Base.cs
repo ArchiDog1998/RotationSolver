@@ -25,54 +25,54 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte UmbralIceStacks => JobGauge.UmbralIceStacks;
+    public static byte UmbralIceStacks => JobGauge.UmbralIceStacks;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte AstralFireStacks => JobGauge.AstralFireStacks;
+    public static byte AstralFireStacks => JobGauge.AstralFireStacks;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte PolyglotStacks => JobGauge.PolyglotStacks;
+    public static byte PolyglotStacks => JobGauge.PolyglotStacks;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte UmbralHearts => JobGauge.UmbralHearts;
+    public static byte UmbralHearts => JobGauge.UmbralHearts;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsParadoxActive => JobGauge.IsParadoxActive;
+    public static bool IsParadoxActive => JobGauge.IsParadoxActive;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool InUmbralIce => JobGauge.InUmbralIce;
+    public static bool InUmbralIce => JobGauge.InUmbralIce;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool InAstralFire => JobGauge.InAstralFire;
+    public static bool InAstralFire => JobGauge.InAstralFire;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsEnochianActive => JobGauge.IsEnochianActive;
+    public static bool IsEnochianActive => JobGauge.IsEnochianActive;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? PolyglotStacks == 2 : PolyglotStacks == 1;
+    public static bool IsPolyglotStacksMaxed => Xenoglossy.EnoughLevel ? PolyglotStacks == 2 : PolyglotStacks == 1;
 
     static float EnochianTimeRaw => JobGauge.EnochianTimer / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float EnochianTime => EnochianTimeRaw - DataCenter.WeaponRemain;
+    public static float EnochianTime => EnochianTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 

@@ -22,12 +22,12 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected override bool CanHealSingleSpell => false;
+    public override bool CanHealSingleSpell => false;
 
     /// <summary>
     /// 
     /// </summary>
-    protected override bool CanHealAreaSpell => false;
+    public override bool CanHealAreaSpell => false;
 
     #region Job Gauge
     static GNBGauge JobGauge => Svc.Gauges.Get<GNBGauge>();
@@ -35,17 +35,17 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Ammo => JobGauge.Ammo;
+    public static byte Ammo => JobGauge.Ammo;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte AmmoComboStep => JobGauge.AmmoComboStep;
+    public static byte AmmoComboStep => JobGauge.AmmoComboStep;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte MaxAmmo => CartridgeCharge2.EnoughLevel ? (byte)3 : (byte)2;
+    public static byte MaxAmmo => CartridgeCharge2.EnoughLevel ? (byte)3 : (byte)2;
     #endregion
 
     #region Attack Single

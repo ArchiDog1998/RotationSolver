@@ -25,31 +25,31 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsOverheated => JobGauge.IsOverheated;
+    public static bool IsOverheated => JobGauge.IsOverheated;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Heat => JobGauge.Heat;
+    public static byte Heat => JobGauge.Heat;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Battery => JobGauge.Battery;
+    public static byte Battery => JobGauge.Battery;
 
     static float OverheatTimeRemainingRaw => JobGauge.OverheatTimeRemaining / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float OverheatTimeRemaining => OverheatTimeRemainingRaw - DataCenter.WeaponRemain;
+    public static float OverheatTime => OverheatTimeRemainingRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    protected static bool OverheatedEndAfter(float time) => OverheatTimeRemaining <= time;
+    protected static bool OverheatedEndAfter(float time) => OverheatTime <= time;
 
     /// <summary>
     /// 

@@ -17,7 +17,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new[] { ECommons.ExcelServices.Job.BRD, ECommons.ExcelServices.Job.ARC };
+    public sealed override Job[] Jobs => new[] { Job.BRD, Job.ARC };
 
     #region Job Gauge
     static BRDGauge JobGauge => Svc.Gauges.Get<BRDGauge>();
@@ -25,7 +25,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Repertoire => JobGauge.Repertoire;
+    public static byte Repertoire => JobGauge.Repertoire;
 
     /// <summary>
     /// 
@@ -40,13 +40,13 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte SoulVoice => JobGauge.SoulVoice;
+    public static byte SoulVoice => JobGauge.SoulVoice;
     static float SongTimeRaw => JobGauge.SongTimer / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float SongTime => SongTimeRaw - DataCenter.WeaponRemain;
+    public static float SongTime => SongTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 

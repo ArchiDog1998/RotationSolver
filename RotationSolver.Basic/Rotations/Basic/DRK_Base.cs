@@ -25,26 +25,26 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Blood => JobGauge.Blood;
+    public static byte Blood => JobGauge.Blood;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasDarkArts => JobGauge.HasDarkArts;
+    public static bool HasDarkArts => JobGauge.HasDarkArts;
 
     static float DarkSideTimeRemainingRaw => JobGauge.DarksideTimeRemaining / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float DarkSideTimeRemaining => DarkSideTimeRemainingRaw - DataCenter.WeaponRemain;
+    public static float DarkSideTime => DarkSideTimeRemainingRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    protected static bool DarkSideEndAfter(float time) => DarkSideTimeRemaining <= time;
+    protected static bool DarkSideEndAfter(float time) => DarkSideTime <= time;
 
     /// <summary>
     /// 
@@ -60,7 +60,7 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static float ShadowTimeRemaining => ShadowTimeRemainingRaw - DataCenter.WeaponRemain;
+    public static float ShadowTime => ShadowTimeRemainingRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
