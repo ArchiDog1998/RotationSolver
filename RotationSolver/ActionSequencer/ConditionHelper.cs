@@ -135,12 +135,12 @@ internal class ConditionHelper
 
                         ImGui.BeginGroup();
                         var cursor = ImGui.GetCursorPos();
-                        if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, group.GetHashCode().ToString()))
+                        if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, group.GetHashCode().ToString()))
                         {
                             action?.Invoke(item);
                             ImGui.CloseCurrentPopup();
                         }
-                        RotationConfigWindow.DrawActionOverlay(cursor, IconSize, 1);
+                        ImGuiHelper.DrawActionOverlay(cursor, IconSize, 1);
                         ImGui.EndGroup();
                     }
                 });

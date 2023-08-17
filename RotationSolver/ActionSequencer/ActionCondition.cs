@@ -83,11 +83,11 @@ internal class ActionCondition : ICondition
         if (_action?.GetTexture(out var icon) ?? false || IconSet.GetTexture(4, out icon))
         {
             var cursor = ImGui.GetCursorPos();
-            if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
+            if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
             {
                 if(!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
             }
-            RotationConfigWindow.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
+            ImGuiHelper.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
             ImguiTooltips.HoveredTooltip(name);
         }
 

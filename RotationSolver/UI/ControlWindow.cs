@@ -316,22 +316,22 @@ internal class ControlWindow : CtrlWindow
     static void DrawIAction(nint handle, string id, float width, SpecialCommandType command, string help)
     {
         var cursor = ImGui.GetCursorPos();
-        if (RotationConfigWindow.NoPaddingNoColorImageButton(handle, Vector2.One * width, id))
+        if (ImGuiHelper.NoPaddingNoColorImageButton(handle, Vector2.One * width, id))
         {
             Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
-        RotationConfigWindow.DrawActionOverlay(cursor, width, IconSet.GetTexture(0u, out var text) && text.ImGuiHandle == handle ? 0 : 1);
+        ImGuiHelper.DrawActionOverlay(cursor, width, IconSet.GetTexture(0u, out var text) && text.ImGuiHandle == handle ? 0 : 1);
         ImguiTooltips.HoveredTooltip(help);
     }
 
     static void DrawIAction(nint handle, string id, float width, StateCommandType command, string help)
     {
         var cursor = ImGui.GetCursorPos();
-        if(RotationConfigWindow.NoPaddingNoColorImageButton(handle, Vector2.One * width, id))
+        if(ImGuiHelper.NoPaddingNoColorImageButton(handle, Vector2.One * width, id))
         {
             Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
-        RotationConfigWindow.DrawActionOverlay(cursor, width, 1);
+        ImGuiHelper.DrawActionOverlay(cursor, width, 1);
         ImguiTooltips.HoveredTooltip(help);
     }
 
@@ -340,7 +340,7 @@ internal class ControlWindow : CtrlWindow
         if (!action.GetTexture(out var texture, isAdjust)) return (default, default);
 
         var cursor = ImGui.GetCursorPos();
-        if (RotationConfigWindow.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * width, action.Name))
+        if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * width, action.Name))
         {
             if (!DataCenter.State)
             {
@@ -363,7 +363,7 @@ internal class ControlWindow : CtrlWindow
             }
         }
         var size = ImGui.GetItemRectSize();
-        RotationConfigWindow.DrawActionOverlay(cursor, width, action == null ? -1 : percent);
+        ImGuiHelper.DrawActionOverlay(cursor, width, action == null ? -1 : percent);
         ImguiTooltips.HoveredTooltip(action.Name);
 
         return (cursor, size);

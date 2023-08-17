@@ -20,8 +20,7 @@ internal class RotationCondition : ICondition
     public int Condition;
 
     public int Param1;
-    public int Param2;
-    public float Param3;
+    public float Param2;
 
     private void UpdateInfo(ICustomRotation rotation)
     {
@@ -68,11 +67,11 @@ internal class RotationCondition : ICondition
                     switch (Condition)
                     {
                         case 0:
-                            return fl > Param3;
+                            return fl > Param2;
                         case 1:
-                            return fl < Param3;
+                            return fl < Param2;
                         case 2:
-                            return fl == Param3;
+                            return fl == Param2;
                     }
                 }
                 return false;
@@ -158,7 +157,7 @@ internal class RotationCondition : ICondition
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
 
-                ImGui.DragFloat($"##Value{GetHashCode()}", ref Param3);
+                ImGui.DragFloat($"##Value{GetHashCode()}", ref Param2);
 
                 break;
 
@@ -194,11 +193,11 @@ internal class RotationCondition : ICondition
                 if (_action?.GetTexture(out var icon) ?? false || IconSet.GetTexture(4, out icon))
                 {
                     var cursor = ImGui.GetCursorPos();
-                    if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
+                    if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
                     {
                         if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
                     }
-                    RotationConfigWindow.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
+                    ImGuiHelper.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
                 }
 
                 ImGui.SameLine();

@@ -146,11 +146,11 @@ internal class TargetCondition : ICondition
             : IconSet.GetTexture(IsTarget ? 16u : 18u, out icon))
         {
             var cursor = ImGui.GetCursorPos();
-            if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
+            if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
             {
                 if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
             }
-            RotationConfigWindow.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
+            ImGuiHelper.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
 
             var description = _action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, _action.Name)
                 : IsTarget
@@ -208,7 +208,7 @@ internal class TargetCondition : ICondition
             if (IconSet.GetTexture(Status?.Icon ?? 16220, out var icon)
                 || IconSet.GetTexture(16220, out icon))
             {
-                if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(ConditionHelper.IconSize * 3 / 4, ConditionHelper.IconSize) * ImGuiHelpers.GlobalScale, GetHashCode().ToString()))
+                if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(ConditionHelper.IconSize * 3 / 4, ConditionHelper.IconSize) * ImGuiHelpers.GlobalScale, GetHashCode().ToString()))
                 {
                     if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
                 }
