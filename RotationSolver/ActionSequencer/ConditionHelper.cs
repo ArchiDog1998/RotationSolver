@@ -70,7 +70,7 @@ public class ConditionHelper
             result = true;
         }
 
-        ImGuiHelper.HoveredString(desc);
+        ImguiTooltips.HoveredTooltip(desc);
 
         return result;
     }

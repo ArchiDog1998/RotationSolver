@@ -1091,13 +1091,9 @@ public partial class RotationConfigWindow : Window
 
             var rotation = RotationUpdater.RightNowRotation;
             var set = ActionSequencerUpdater.RightSet;
-            if (set == null || _activeAction == null || rotation == null) return;
 
-            if (!set.Conditions.TryGetValue(_activeAction.ID, out var conditionSet))
-            {
-                conditionSet = set.Conditions[_activeAction.ID] = new ConditionSet();
-            }
-            conditionSet?.Draw(rotation);
+            if (set == null || _activeAction == null || rotation == null) return;
+            set.DrawCondition(_activeAction.ID, rotation);
         } },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Actions_DisabledConditionSet, () =>
@@ -1106,13 +1102,9 @@ public partial class RotationConfigWindow : Window
 
             var rotation = RotationUpdater.RightNowRotation;
             var set = ActionSequencerUpdater.RightSet;
-            if (set == null || _activeAction == null || rotation == null) return;
 
-            if (!set.DiabledConditions.TryGetValue(_activeAction.ID, out var disableConditionSet))
-            {
-                disableConditionSet = set.DiabledConditions[_activeAction.ID] = new ConditionSet();
-            }
-            disableConditionSet?.Draw(rotation);
+            if (set == null || _activeAction == null || rotation == null) return;
+            set.DrawDisabledCondition(_activeAction.ID, rotation);
         } },
     })
     {
@@ -1210,7 +1202,7 @@ public partial class RotationConfigWindow : Window
                     if(IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed), out var texture, 62574))
                     ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * _scale);
 
-                    ImGuiHelper.HoveredString(string.Join('\n', jobs));
+                    ImguiTooltips.HoveredTooltip(string.Join('\n', jobs));
                 }
 
                 ImGui.TableNextColumn();
@@ -1280,7 +1272,7 @@ public partial class RotationConfigWindow : Window
                 Service.Config.GlobalConfig.GitHubLibs[i] = $"{userName}|{repository}|{fileName}";
             }
 
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove GitHubLibs{i}"))
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove GitHubLibs{i}"))
             {
                 removeIndex = i;
             }
@@ -1311,7 +1303,7 @@ public partial class RotationConfigWindow : Window
             ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", LocalizationManager.RightLang.ConfigWindow_Rotations_Library, ref Service.Config.GlobalConfig.OtherLibs[i], 1024);
             ImGui.SameLine();
 
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
             {
                 removeIndex = i;
             }
@@ -1430,80 +1422,81 @@ public partial class RotationConfigWindow : Window
 
         var popupId = "Rotation Solver Popup" + name;
 
-            var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
-            var index = 0;
+        var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+        var index = 0;
 
-            if (IconSet.GetTexture(16220, out var text))
+        if (IconSet.GetTexture(16220, out var text))
+        {
+            if (index++ % count != 0)
+            {
+                ImGui.SameLine();
+            }
+            if (NoPaddingNoColorImageButton(text.ImGuiHandle, new Vector2(24, 32) * _scale, name))
+            {
+                if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
+            }
+            ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_List_AddStatus);
+        }
+
+        foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
+            .Where(a => a != null)
+            .OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _statusSearching)
+            , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
+        {
+            void Delete() => removeId = status.RowId;
+
+            var key = "Status" + status.RowId.ToString();
+
+            Searchable.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }));
+
+            if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
             {
                 if (index++ % count != 0)
                 {
                     ImGui.SameLine();
                 }
-                if (NoPaddingNoColorImageButton(text.ImGuiHandle, new Vector2(24, 32) * _scale, name))
-                {
-                    if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
-                }
-                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_List_AddStatus);
-            }
+                NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + status.RowId.ToString());
 
-            foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
-                .Where(a => a != null)
-                .OrderBy(s => Math.Min( StringComparer.Distance(s.Name, _statusSearching) 
+                Searchable.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false, 
+                    (Delete, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+            }
+        }
+
+        if (ImGui.BeginPopup(popupId))
+        {
+            ImGui.SetNextItemWidth(200 * _scale);
+            ImGui.InputTextWithHint("##Searching the status", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref _statusSearching, 128);
+
+            ImGui.Spacing();
+
+            if (ImGui.BeginChild("Rotation Solver Add Status", new Vector2(-1, 400 * _scale)))
+            {
+                count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+                index = 0;
+
+                foreach (var status in allStatus.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _statusSearching)
                 , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
-            {
-                void Reset() => removeId = status.RowId;
-
-                var key = "Status" + status.RowId.ToString();
-
-                Searchable.DrawHotKeysPopup(key, string.Empty,  (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
-
-                if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
                 {
-                    if (index++ % count != 0)
+                    if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
                     {
-                        ImGui.SameLine();
-                    }
-                    NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + status.RowId.ToString());
-
-                Searchable.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
-                }
-            }
-
-            if (ImGui.BeginPopup(popupId))
-            {
-                ImGui.SetNextItemWidth(200 * _scale);
-                ImGui.InputTextWithHint("##Searching the status", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref _statusSearching, 128);
-
-                ImGui.Spacing();
-
-                if(ImGui.BeginChild("Rotation Solver Add Status", new Vector2(-1, 400 * _scale)))
-                {
-                    count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
-                    index = 0;
-
-                    foreach (var status in allStatus.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _statusSearching)
-                    , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
-                    {
-                        if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
+                        if (index++ % count != 0)
                         {
-                            if (index++ % count != 0)
-                            {
-                                ImGui.SameLine();
-                            }
-                            if (NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Adding" + status.RowId.ToString()))
-                            {
-                                statuses.Add(status.RowId);
-                                OtherConfiguration.Save();
-                                ImGui.CloseCurrentPopup();
-                            }
-                            ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
+                            ImGui.SameLine();
                         }
+                        if (NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Adding" + status.RowId.ToString()))
+                        {
+                            statuses.Add(status.RowId);
+                            OtherConfiguration.Save();
+                            ImGui.CloseCurrentPopup();
+                        }
+                        ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
                     }
-                    ImGui.EndChild();
                 }
-
-                ImGui.EndPopup();
+                ImGui.EndChild();
             }
+
+            ImGui.EndPopup();
+        }
 
 
         if (removeId != 0)
@@ -1696,7 +1689,7 @@ public partial class RotationConfigWindow : Window
                 }
                 ImGui.SameLine();
 
-                if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Name {i}"))
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Name {i}"))
                 {
                     removeIndex = i;
                 }

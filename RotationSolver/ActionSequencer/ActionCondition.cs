@@ -74,9 +74,6 @@ internal class ActionCondition : ICondition
     {
         ConditionHelper.CheckBaseAction(combo, ID, ref _action);
 
-        ImGuiHelper.DrawCondition(IsTrue(combo));
-        ImGui.SameLine();
-
         var name = _action?.Name ?? string.Empty;
         ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
 

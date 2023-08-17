@@ -1,6 +1,4 @@
-﻿using Dalamud.Interface.Colors;
-using Dalamud.Interface.Components;
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
 using F23.StringSimilarity;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
@@ -11,168 +9,17 @@ namespace RotationSolver.UI;
 
 internal static class ImGuiHelper
 {
-    public static bool IconButton(FontAwesomeIcon icon, string name, string description = null)
-    {
-        ImGui.PushFont(UiBuilder.IconFont);
-        var result = ImGui.Button($"{icon.ToIconString()}##{name}");
-        ImGui.PopFont();
-        HoveredString(description ?? icon switch
-        {
-            FontAwesomeIcon.Coffee => "Donate",
-            FontAwesomeIcon.History => "ChangeLog",
-            FontAwesomeIcon.Book => "Wiki / Help",
-            FontAwesomeIcon.HandPaper => "Support",
-            FontAwesomeIcon.Code => "Source Code",
-            FontAwesomeIcon.ArrowUp => "Move Up",
-            FontAwesomeIcon.ArrowDown => "Move Down",
-            FontAwesomeIcon.Ban => "Delete",
-            FontAwesomeIcon.Plus => "Add",
-            FontAwesomeIcon.Download => "Download",
-            FontAwesomeIcon.FileDownload => "Local load",
-            _ => null,
-        });
-        return result;
-    }
-
-
     public static void HoveredString(string text, Action selected = null)
     {
         if (ImGui.IsItemHovered())
         {
-            ShowTooltip(text);
+            ImguiTooltips.ShowTooltip(text);
 
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
             {
                 selected?.Invoke();
             }
         }
-    }
-
-    public static void ShowTooltip(string text) => ImguiTooltips.ShowTooltip(text);
-    //{
-    //    if (!Service.Config.ShowTooltips) return;
-    //    if (!string.IsNullOrEmpty(text)) ImGui.SetTooltip(text);
-    //}
-
-    //public static bool HoveredStringReset(string text)
-    //{
-    //    if (ImGui.IsItemHovered())
-    //    {
-    //        text = string.IsNullOrEmpty(text)? LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault
-    //        : text + "\n \n" + LocalizationManager.RightLang.ConfigWindow_Param_ResetToDefault;
-
-    //        ShowTooltip(text);
-
-    //        return ImGui.IsMouseDown(ImGuiMouseButton.Right)
-    //        && ImGui.IsKeyPressed(ImGuiKey.LeftShift)
-    //        && ImGui.IsKeyPressed(ImGuiKey.LeftCtrl);
-    //    }
-    //    return false;
-    //}
-
-    internal unsafe static bool DrawEditorList<T>(List<T> items, Action<T> draw)
-    {
-        ImGui.Indent();
-        int moveFrom = -1, moveTo = -1;
-        for (int i = 0; i < items.Count; i++)
-        {
-            var item = items[i];
-
-            ImGuiComponents.IconButton(item.GetHashCode(), FontAwesomeIcon.ArrowsAltV);
-
-            ImGuiDragDropFlags src_flags = 0;
-            src_flags |= ImGuiDragDropFlags.SourceNoDisableHover;     // Keep the source displayed as hovered
-            src_flags |= ImGuiDragDropFlags.SourceNoHoldToOpenOthers; // Because our dragging is local, we disable the feature of opening foreign tree nodes/tabs while dragging
-                                                                      //src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
-            if (ImGui.BeginDragDropSource(src_flags))
-            {
-                ImGui.SetDragDropPayload("List Movement", (IntPtr)(&i), sizeof(int));
-                ImGui.EndDragDropSource();
-            }
-            else if (ImGui.IsItemHovered())
-            {
-                ImGuiHelper.ShowTooltip(LocalizationManager.RightLang.ActionSequencer_DragdropDescription);
-
-                if ((ImGui.IsKeyDown(ImGuiKey.LeftCtrl) || ImGui.IsKeyDown(ImGuiKey.RightCtrl))
-                    && (ImGui.IsKeyDown(ImGuiKey.LeftAlt) || ImGui.IsKeyDown(ImGuiKey.RightAlt))
-                    && ImGui.IsMouseReleased(ImGuiMouseButton.Right))
-                {
-                    moveFrom = i;
-                }
-            }
-
-            if (ImGui.BeginDragDropTarget())
-            {
-                ImGuiDragDropFlags target_flags = 0;
-                target_flags |= ImGuiDragDropFlags.AcceptBeforeDelivery;    // Don't wait until the delivery (release mouse button on a target) to do something
-                                                                            //target_flags |= ImGuiDragDropFlags.AcceptNoDrawDefaultRect; // Don't display the yellow rectangle
-                var ptr = ImGui.AcceptDragDropPayload("List Movement", target_flags);
-
-                {
-                    moveFrom = *(int*)ptr.Data;
-                    moveTo = i;
-                }
-                ImGui.EndDragDropTarget();
-            }
-
-            ImGui.SameLine();
-
-            draw?.Invoke(item);
-        }
-
-        bool result = false;
-        if (moveFrom > -1)
-        {
-            //Move.
-            if (moveTo > -1)
-            {
-                if (moveFrom != moveTo)
-                {
-                    var moveItem = items[moveFrom];
-                    items.RemoveAt(moveFrom);
-
-                    items.Insert(moveTo, moveItem);
-
-                    result = true;
-                }
-            }
-            //Remove.
-            else
-            {
-                items.RemoveAt(moveFrom);
-                result = true;
-            }
-        }
-
-        ImGui.Unindent();
-        return result;
-    }
-
-    internal static void DrawCondition(bool? tag)
-    {
-        if (!tag.HasValue)
-        {
-            ImGui.TextColored(ImGuiColors.DalamudGrey3, "Null");
-        }
-        else if (tag.Value)
-        {
-            ImGui.TextColored(ImGuiColors.HealerGreen, "True");
-        }
-        else
-        {
-            ImGui.TextColored(ImGuiColors.DalamudRed, "False");
-        }
-    }
-
-    internal static void Spacing(byte count = 1)
-    {
-        string s = string.Empty;
-        for (int i = 0; i < count; i++)
-        {
-            s += "    ";
-        }
-        ImGui.Text(s);
-        ImGui.SameLine();
     }
 
     internal static void SetNextWidthWithName(string name)
@@ -252,7 +99,7 @@ internal static class ImGuiHelper
                 if (getDesc != null && ImGui.IsItemHovered())
                 {
                     var desc = getDesc(item);
-                    ShowTooltip(desc);
+                    ImguiTooltips.ShowTooltip(desc);
                 }
             }
             ImGui.EndChild();
@@ -271,7 +118,7 @@ internal static class ImGuiHelper
         }
         if (ImGui.IsItemHovered())
         {
-            ImGuiHelper.ShowTooltip($"{LocalizationManager.RightLang.ConfigWindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager.RightLang.ConfigWindow_Helper_CopyCommand}: {cmdStr}");
+            ImguiTooltips.ShowTooltip($"{LocalizationManager.RightLang.ConfigWindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager.RightLang.ConfigWindow_Helper_CopyCommand}: {cmdStr}");
 
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
             {
@@ -288,7 +135,6 @@ internal static class ImGuiHelper
                 ImGui.SameLine();
                 ImGui.Indent(INDENT_WIDTH);
             }
-            else Spacing();
             ImGui.Text(" → ");
             ImGui.SameLine();
             ImGui.TextWrapped(help);
@@ -309,7 +155,6 @@ internal static class ImGuiHelper
         }
 
         ImGui.SameLine();
-        Spacing();
 
         if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Events_ShareMacro}##ShareMacro{info.GetHashCode()}",
             ref info.IsShared))
@@ -328,11 +173,6 @@ internal static class ImGuiHelper
 
         info.DisplayMacro();
     }
-
-
-    static readonly Vector2 PIC_SIZE = new(24, 24);
-    const float ATTR_INDENT = 170;
-
 
     public unsafe static ImFontPtr GetFont(float size)
     {

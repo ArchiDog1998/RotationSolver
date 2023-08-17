@@ -372,7 +372,7 @@ internal class ControlWindow : Window
         ImGui.PopID();
         if (ImGui.IsItemHovered())
         {
-            ImGuiHelper.ShowTooltip(help);
+            ImguiTooltips.ShowTooltip(help);
         }
     }
 
@@ -386,7 +386,7 @@ internal class ControlWindow : Window
         ImGui.PopID();
         if (ImGui.IsItemHovered())
         {
-            ImGuiHelper.ShowTooltip(help);
+            ImguiTooltips.ShowTooltip(help);
         }
     }
 
@@ -519,7 +519,7 @@ internal class ControlWindow : Window
         {
             var help = LocalizationManager.RightLang.ConfigWindow_Control_ResetButtonOrKeyCommand;
 
-            ImGuiHelper.ShowTooltip(help);
+            ImguiTooltips.ShowTooltip(help);
         }
     }
 }

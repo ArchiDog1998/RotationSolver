@@ -72,7 +72,6 @@ internal static class ActionUpdater
             PluginLog.Error(ex, "Failed to update next action.");
         }
 
-        CustomRotation.MoveTarget = null;
         WrongAction = NextAction = NextGCDAction = null;
     }
 

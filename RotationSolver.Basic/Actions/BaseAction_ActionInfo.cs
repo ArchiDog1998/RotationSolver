@@ -83,7 +83,7 @@ public partial class BaseAction
         if (!SkipDisable && !IsEnabled) return false;
         if (IsDutyAction && !IsDutyActionOnSlot) return false;
         
-        if (DataCenter.DisabledAction != null && DataCenter.DisabledAction.Contains(ID)) return false;
+        if (DataCenter.DisabledActionSequencer != null && DataCenter.DisabledActionSequencer.Contains(ID)) return false;
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
             return false;

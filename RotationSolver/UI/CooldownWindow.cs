@@ -59,7 +59,7 @@ internal class CooldownWindow : InfoWindow
         var pair = ControlWindow.DrawIAction(act, width, r, false);
         var pos = pair.Item1;
         var size = pair.Item2;
-        ImGuiHelper.HoveredString(act.Name + "\n" + LocalizationManager.RightLang.ConfigWindow_Control_ClickToUse);
+        ImguiTooltips.HoveredTooltip(act.Name + "\n" + LocalizationManager.RightLang.ConfigWindow_Control_ClickToUse);
 
         if (!act.EnoughLevel)
         {

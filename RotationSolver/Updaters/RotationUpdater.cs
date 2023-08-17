@@ -448,6 +448,8 @@ internal static class RotationUpdater
             DataCenter.Job = RightNowRotation?.Jobs[0] ?? Job.ADV;
             return;
         }
+
+        CustomRotation.MoveTarget = null;
         RightNowRotation = null;
         RightRotationActions = Array.Empty<IAction>();
         DataCenter.Job = RightNowRotation?.Jobs[0] ?? Job.ADV;

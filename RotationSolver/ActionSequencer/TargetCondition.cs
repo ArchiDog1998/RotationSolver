@@ -118,9 +118,6 @@ internal class TargetCondition : ICondition
             Status = AllStatus.FirstOrDefault(a => a.ID == StatusId);
         }
 
-        ImGuiHelper.DrawCondition(IsTrue(combo));
-        ImGui.SameLine();
-
         var name = _action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, _action.Name)
             : IsTarget
             ? LocalizationManager.RightLang.ActionSequencer_Target
@@ -205,7 +202,7 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-                ImGuiHelper.HoveredString(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
+                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
                 break;
 
             case TargetConditionType.StatusEnd:
@@ -221,7 +218,7 @@ internal class TargetCondition : ICondition
 
                 ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
 
-                ImGuiHelper.HoveredString(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
+                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
 
                 ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref DistanceOrTime);
                 break;
@@ -240,7 +237,7 @@ internal class TargetCondition : ICondition
 
                 ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
 
-                ImGuiHelper.HoveredString(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
+                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
 
                 ConditionHelper.DrawDragInt($"GCD##GCD{GetHashCode()}", ref GCD);
                 ConditionHelper.DrawDragFloat($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{GetHashCode()}", ref DistanceOrTime);

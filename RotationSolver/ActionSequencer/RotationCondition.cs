@@ -100,9 +100,6 @@ internal class RotationCondition : ICondition
     {
         UpdateInfo(rotation);
 
-        ImGuiHelper.DrawCondition(IsTrue(rotation));
-        ImGui.SameLine();
-
         ConditionHelper.DrawByteEnum($"##Category{GetHashCode()}", ref ComboConditionType, EnumTranslations.ToName);
 
         switch (ComboConditionType)
@@ -163,35 +160,48 @@ internal class RotationCondition : ICondition
 
                 break;
 
-            //case ComboConditionType.Last:
-            //    ImGui.SameLine();
-            //    ImGuiHelper.SearchItemsReflection($"##Time{GetHashCode()}", _method?.GetMemberName(), ref searchTxt, rotation.AllLast, i =>
-            //    {
-            //        _method = i;
-            //        MethodName = i.Name;
-            //    });
+            case ComboConditionType.Last:
+                ImGui.SameLine();
 
-            //    ImGui.SameLine();
-            //    ImGui.SetNextItemWidth(80);
-            //    ImGui.Combo($"##IsNot{GetHashCode()}", ref Condition, new string[]
-            //    {
-            //        LocalizationManager.RightLang.ActionSequencer_Is,
-            //        LocalizationManager.RightLang.ActionSequencer_Isnot,
-            //    }, 2);
+                ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(MethodName).X + 30));
+                if (ImGui.BeginCombo($"##Last{GetHashCode()}", MethodName))
+                {
+                    foreach(var methodName in new string[]
+                    {
+                        nameof(CustomRotation.IsLastGCD),
+                        nameof(CustomRotation.IsLastAction),
+                        nameof(CustomRotation.IsLastAbility),
+                    })
+                    {
+                        if (ImGui.Selectable(methodName))
+                        {
+                            MethodName = methodName;
+                        }
+                    }
+                    ImGui.EndCombo();
+                }
 
-            //    ImGui.SameLine();
-            //    var name = _action?.Name ?? string.Empty;
-            //    ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, rotation.AllBaseActions, i =>
-            //    {
-            //        _action = (BaseAction)i;
-            //        ID = (ActionID)_action.ID;
-            //    });
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(80);
+                ImGui.Combo($"##IsNot{GetHashCode()}", ref Condition, new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
+                }, 2);
 
-            //    ImGui.SameLine();
-            //    ImGui.SetNextItemWidth(50);
-            //    ImGui.Combo($"##Adjust{GetHashCode()}", ref Param1, new string[] { "Original", "Adjusted" }, 2);
+                ImGui.SameLine();
+                var name = _action?.Name ?? string.Empty;
+                ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, rotation.AllBaseActions, i =>
+                {
+                    _action = (BaseAction)i;
+                    ID = (ActionID)_action.ID;
+                });
 
-            //    break;
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(50);
+                ImGui.Combo($"##Adjust{GetHashCode()}", ref Param1, new string[] { "Original", "Adjusted" }, 2);
+
+                break;
         }
     }
 }
