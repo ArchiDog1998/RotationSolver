@@ -171,8 +171,10 @@ internal class RotationCondition : ICondition
                         nameof(CustomRotation.IsLastAbility),
                     };
                 var index = Math.Max(0, Array.IndexOf(names, MethodName));
-                ImGuiHelper.SelectableCombo($"##Last{GetHashCode()}", names, ref index);
-                MethodName = names[index];
+                if(ImGuiHelper.SelectableCombo($"##Last{GetHashCode()}", names, ref index))
+                {
+                    MethodName = names[index];
+                }
 
                 ImGui.SameLine();
 

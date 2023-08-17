@@ -105,16 +105,19 @@ internal static class ImGuiHelper
         return font;
     }
 
-    public static unsafe void SelectableCombo(string popUp, string[] items, ref int index)
+    public static unsafe bool SelectableCombo(string popUp, string[] items, ref int index)
     {
         var count = items.Length;
         var name = items[index % count] + "##" + popUp;
+
+        var result = false;
 
         if (SelectableButton(name))
         {
             if(count < 3)
             {
                 index = (index + 1) % count;
+                result = true;
             }
             else
             {
@@ -134,10 +137,13 @@ internal static class ImGuiHelper
                 if (ImGui.Selectable(items[i]))
                 {
                     index = i;
+                    result = true;
                 }
             }
             ImGui.EndPopup();
         }
+
+        return result;
     }
 
     public static unsafe bool SelectableButton(string name)

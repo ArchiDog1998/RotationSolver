@@ -165,6 +165,7 @@
   "ConfigWindow_Control_ShowCooldownWindow": "Show Cooldown Window",
   "ConfigWindow_Control_IsInfoWindowNoInputs": "No Inputs",
   "ConfigWindow_Control_IsInfoWindowNoMove": "No Move",
+  "ConfigWindow_Control_IsInfoWindowMove": "Move",
   "ConfigWindow_Control_ShowItemsCooldown": "Show Items' Cooldown",
   "ConfigWindow_Control_ShowGCDCooldown": "Show GCD' Cooldown",
   "ConfigWindow_Control_UseOriginalCooldown": "Show Original Cooldown",

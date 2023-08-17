@@ -246,6 +246,7 @@ internal partial class Strings
     public string ConfigWindow_Control_ShowCooldownWindow { get; set; } = "Show Cooldown Window";
     public string ConfigWindow_Control_IsInfoWindowNoInputs { get; set; } = "No Inputs";
     public string ConfigWindow_Control_IsInfoWindowNoMove { get; set; } = "No Move";
+    public string ConfigWindow_Control_IsInfoWindowMove { get; set; } = "Move";
 
     public string ConfigWindow_Control_ShowItemsCooldown { get; set; } = "Show Items' Cooldown";
     public string ConfigWindow_Control_ShowGCDCooldown { get; set; } = "Show GCD' Cooldown";

@@ -28,11 +28,13 @@ internal class ConditionSet : ICondition
         ImGui.SameLine();
 
         var index = IsAnd ? 0 : 1;
-        ImGuiHelper.SelectableCombo($"##Rule{GetHashCode()}", new string[]
+        if(ImGuiHelper.SelectableCombo($"##Rule{GetHashCode()}", new string[]
         {
             "&&" , " | | ",
-        }, ref index);
-        IsAnd = index == 0;
+        }, ref index))
+        {
+            IsAnd = index == 0;
+        }
 
         ImGui.Spacing();
 

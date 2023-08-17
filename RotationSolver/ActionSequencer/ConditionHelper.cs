@@ -38,8 +38,10 @@ internal class ConditionHelper
         var index = Array.IndexOf(values, value);
         var names = values.Select(function).ToArray();
 
-        ImGuiHelper.SelectableCombo(name, names, ref index);
-        value = values[index];
+        if(ImGuiHelper.SelectableCombo(name, names, ref index))
+        {
+            value = values[index];
+        }
     }
 
     public static bool DrawDragFloat(string name, ref float value)

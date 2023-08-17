@@ -56,11 +56,16 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.ToName());
 
-        var value = Service.Config.GetValue(PluginConfigBool.IsControlWindowLock);
-        if(ImGui.Checkbox(LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove, ref value))
+        var value = Service.Config.GetValue(PluginConfigBool.IsControlWindowLock) ? 0: 1;
+        if(ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window", new string[]
         {
-            Service.Config.SetValue(PluginConfigBool.IsControlWindowLock, value);
+            LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
+            LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowMove,
+        }, ref value))
+        {
+            Service.Config.SetValue(PluginConfigBool.IsControlWindowLock, value == 0);
         }
+
         ImGui.EndGroup();
 
         ImGui.SameLine();

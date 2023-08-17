@@ -127,8 +127,10 @@ internal class ActionCondition : ICondition
         }
         ImGui.SameLine();
 
-        ImGuiHelper.SelectableCombo($"##Comparation{GetHashCode()}", combos, ref condition);
-        Condition = condition > 0;
+        if(ImGuiHelper.SelectableCombo($"##Comparation{GetHashCode()}", combos, ref condition))
+        {
+            Condition = condition > 0;
+        }
 
 
         switch (ActionConditionType)

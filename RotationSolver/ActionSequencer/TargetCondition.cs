@@ -192,8 +192,10 @@ internal class TargetCondition : ICondition
 
         ImGui.SameLine();
 
-        ImGuiHelper.SelectableCombo($"##Comparation{GetHashCode()}", combos, ref condition);
-        Condition = condition > 0;
+        if(ImGuiHelper.SelectableCombo($"##Comparation{GetHashCode()}", combos, ref condition))
+        {
+            Condition = condition > 0;
+        }
 
         var popupId = "Status Finding Popup" + GetHashCode().ToString();
 
@@ -225,12 +227,14 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 var check = FromSelf ? 1 : 0;
-                ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
+                if(ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_StatusAll,
                     LocalizationManager.RightLang.ActionSequencer_StatusSelf,
-                }, ref check);
-                FromSelf = check != 0;
+                }, ref check))
+                {
+                    FromSelf = check != 0;
+                }
                 break;
 
             case TargetConditionType.StatusEnd:
@@ -240,12 +244,14 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 check = FromSelf ? 1 : 0;
-                ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
+                if(ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_StatusAll,
                     LocalizationManager.RightLang.ActionSequencer_StatusSelf,
-                }, ref check);
-                FromSelf = check != 0;
+                }, ref check))
+                {
+                    FromSelf = check != 0;
+                }
 
                 ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref DistanceOrTime);
                 break;
@@ -258,12 +264,14 @@ internal class TargetCondition : ICondition
                 ImGui.SameLine();
 
                 check = FromSelf ? 1 : 0;
-                ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
+                if(ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_StatusAll,
                     LocalizationManager.RightLang.ActionSequencer_StatusSelf,
-                }, ref check);
-                FromSelf = check != 0;
+                }, ref check))
+                {
+                    FromSelf = check != 0;
+                }
 
                 ConditionHelper.DrawDragInt($"GCD##GCD{GetHashCode()}", ref GCD);
                 ConditionHelper.DrawDragFloat($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{GetHashCode()}", ref DistanceOrTime);
