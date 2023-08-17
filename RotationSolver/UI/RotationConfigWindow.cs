@@ -10,10 +10,8 @@ using ECommons.ImGuiMethods;
 using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
-using FFXIVClientStructs.Havok;
 using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -21,8 +19,8 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
+using System;
 using System.Diagnostics;
-using System.Drawing;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -956,8 +954,8 @@ public partial class RotationConfigWindow : Window
                                     ImGui.SameLine();
                                 }
 
-                                var cursor = ImGui.GetCursorPos();
                                 ImGui.BeginGroup();
+                                var cursor = ImGui.GetCursorPos();
                                 if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, item.Name))
                                 {
                                     _activeAction = item;
@@ -1422,6 +1420,12 @@ public partial class RotationConfigWindow : Window
 
         var popupId = "Rotation Solver Popup" + name;
 
+        StatusPopUp(popupId, allStatus, ref _statusSearching, status =>
+        {
+            statuses.Add(status.RowId);
+            OtherConfiguration.Save();
+        }, notLoadId);
+
         var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
         var index = 0;
 
@@ -1462,20 +1466,30 @@ public partial class RotationConfigWindow : Window
             }
         }
 
+        if (removeId != 0)
+        {
+            statuses.Remove(removeId);
+            OtherConfiguration.Save();
+        }
+    }
+
+    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, System.Action<Status> clicked, uint notLoadId = 10100)
+    {
         if (ImGui.BeginPopup(popupId))
         {
             ImGui.SetNextItemWidth(200 * _scale);
-            ImGui.InputTextWithHint("##Searching the status", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref _statusSearching, 128);
+            ImGui.InputTextWithHint("##Searching the status", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref searching, 128);
 
             ImGui.Spacing();
 
             if (ImGui.BeginChild("Rotation Solver Add Status", new Vector2(-1, 400 * _scale)))
             {
-                count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
-                index = 0;
+                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+                var index = 0;
 
-                foreach (var status in allStatus.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _statusSearching)
-                , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
+                var searchingKey = searching;
+                foreach (var status in allStatus.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, searchingKey)
+                , StringComparer.Distance(s.RowId.ToString(), searchingKey))))
                 {
                     if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
                     {
@@ -1485,8 +1499,7 @@ public partial class RotationConfigWindow : Window
                         }
                         if (NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Adding" + status.RowId.ToString()))
                         {
-                            statuses.Add(status.RowId);
-                            OtherConfiguration.Save();
+                            clicked?.Invoke(status);
                             ImGui.CloseCurrentPopup();
                         }
                         ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
@@ -1498,12 +1511,6 @@ public partial class RotationConfigWindow : Window
             ImGui.EndPopup();
         }
 
-
-        if (removeId != 0)
-        {
-            statuses.Remove(removeId);
-            OtherConfiguration.Save();
-        }
     }
 
     private static readonly ISearchable[] _listSearchable = new ISearchable[]

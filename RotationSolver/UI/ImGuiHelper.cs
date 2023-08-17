@@ -24,7 +24,7 @@ internal static class ImGuiHelper
 
     internal static void SetNextWidthWithName(string name)
     {
-        ImGui.SetNextItemWidth(ImGui.CalcTextSize(name).X + 30);
+        ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X + 30 * ImGuiHelpers.GlobalScale));
     }
 
     internal static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] data, Action<T> selectAction) where T : ITexture

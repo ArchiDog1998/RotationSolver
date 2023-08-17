@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using ECommons.ImGuiMethods;
 using F23.StringSimilarity;
-using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;

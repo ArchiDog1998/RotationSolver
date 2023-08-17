@@ -383,52 +383,55 @@ internal static class RotationUpdater
     }
 
     public static IEnumerable<IGrouping<string, IAction>> AllGroupedActions
-        => RightNowRotation?.AllActions.GroupBy(a =>
-            {
-                if (a is IBaseAction act)
-                {
-                    string result;
+        => GroupActions(RightNowRotation?.AllActions);
 
-                    if (act.IsDutyAction)
-                    {
-                        return act.IsDutyActionOnSlot ? "Duty Action" : string.Empty;
-                    }
+    public static IEnumerable<IGrouping<string, IAction>> GroupActions(IEnumerable<IAction> actions)
+       => actions?.GroupBy(a =>
+       {
+           if (a is IBaseAction act)
+           {
+               string result;
 
-                    if (act.IsRealGCD)
-                    {
-                        result = "GCD";
-                    }
-                    else
-                    {
-                        result = LocalizationManager.RightLang.Action_Ability;
-                    }
+               if (act.IsDutyAction)
+               {
+                   return act.IsDutyActionOnSlot ? "Duty Action" : string.Empty;
+               }
 
-                    if (act.IsFriendly)
-                    {
-                        result += "-" + LocalizationManager.RightLang.Action_Friendly;
-                        if (act.IsEot)
-                        {
-                            result += "-Hot";
-                        }
-                    }
-                    else
-                    {
-                        result += "-" + LocalizationManager.RightLang.Action_Attack;
+               if (act.IsRealGCD)
+               {
+                   result = "GCD";
+               }
+               else
+               {
+                   result = LocalizationManager.RightLang.Action_Ability;
+               }
 
-                        if (act.IsEot)
-                        {
-                            result += "-Dot";
-                        }
-                    }
-                    return result;
-                }
-                else if (a is IBaseItem)
-                {
-                    return "Item";
-                }
-                return string.Empty;
+               if (act.IsFriendly)
+               {
+                   result += "-" + LocalizationManager.RightLang.Action_Friendly;
+                   if (act.IsEot)
+                   {
+                       result += "-Hot";
+                   }
+               }
+               else
+               {
+                   result += "-" + LocalizationManager.RightLang.Action_Attack;
 
-            }).Where(g => !string.IsNullOrEmpty(g.Key)).OrderBy(g => g.Key);
+                   if (act.IsEot)
+                   {
+                       result += "-Dot";
+                   }
+               }
+               return result;
+           }
+           else if (a is IBaseItem)
+           {
+               return "Item";
+           }
+           return string.Empty;
+
+       }).Where(g => !string.IsNullOrEmpty(g.Key)).OrderBy(g => g.Key);
 
     public static void UpdateRotation()
     {

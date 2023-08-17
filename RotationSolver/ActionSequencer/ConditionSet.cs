@@ -5,6 +5,8 @@ using FFXIVClientStructs.Havok;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.UI.SearchableConfigs;
+using System.Drawing;
+using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace RotationSolver.ActionSequencer;
@@ -105,17 +107,24 @@ internal class ConditionSet : ICondition
 
     internal static void DrawCondition(bool? tag)
     {
+        const float size = 32;
+
         if (!tag.HasValue)
         {
-            ImGui.TextColored(ImGuiColors.DalamudGrey3, "Null");
-        }
-        else if (tag.Value)
-        {
-            ImGui.TextColored(ImGuiColors.HealerGreen, "True");
+            if (IconSet.GetTexture("ui/uld/image2.tex", out var texture) || IconSet.GetTexture(0u, out texture))
+            {
+                ImGui.Image(texture.ImGuiHandle, Vector2.One * size * ImGuiHelpers.GlobalScale);
+            }
         }
         else
         {
-            ImGui.TextColored(ImGuiColors.DalamudRed, "False");
+            if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
+            {
+                var offset = new Vector2(1 / 12f, 1 / 6f);
+                ImGui.Image(texture.ImGuiHandle, Vector2.One * size * ImGuiHelpers.GlobalScale,
+                    new Vector2(tag.Value ? 0 : 0.5f, 0) + offset,
+                    new Vector2(tag.Value ? 0.5f : 1, 1) - offset);
+            }
         }
     }
 }
