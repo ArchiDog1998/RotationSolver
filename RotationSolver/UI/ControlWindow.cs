@@ -20,7 +20,7 @@ internal class ControlWindow : CtrlWindow
         SizeCondition = ImGuiCond.FirstUseEver;
     }
 
-    public override void Draw()
+    public override unsafe void Draw()
     {
         ImGui.Columns(3, "Control Bolder", false);
         var gcd = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize) 
@@ -68,6 +68,33 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.EndGroup();
 
+        ImGui.SameLine();
+        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
+        ImGui.NewLine();
+
+        var color = *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
+
+        var isAoe = Service.Config.GetValue(PluginConfigBool.UseAOEAction)
+            && (!DataCenter.IsManual
+            || Service.Config.GetValue(PluginConfigBool.UseAOEWhenManual));
+
+        if (!isAoe) ImGui.PushStyleColor( ImGuiCol.Text, color);
+        if (ImGuiHelper.SelectableButton("AOE"))
+        {
+            Service.Config.SetValue(PluginConfigBool.UseAOEAction, !isAoe);
+            Service.Config.SetValue(PluginConfigBool.UseAOEWhenManual, !isAoe);
+        }
+        if(!isAoe) ImGui.PopStyleColor();
+
+        ImGui.SameLine();
+
+        var isBurst = Service.Config.GetValue(PluginConfigBool.AutoBurst);
+        if (!isBurst) ImGui.PushStyleColor(ImGuiCol.Text, color);
+        if (ImGuiHelper.SelectableButton("Burst"))
+        {
+            Service.Config.SetValue(PluginConfigBool.AutoBurst, !isBurst);
+        }
+        if (!isBurst) ImGui.PopStyleColor();
         ImGui.SameLine();
         columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
         ImGui.NewLine();
