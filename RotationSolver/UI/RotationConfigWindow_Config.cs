@@ -1,4 +1,5 @@
-﻿using ECommons.ImGuiMethods;
+﻿using Dalamud.Game.ClientState.Keys;
+using ECommons.ImGuiMethods;
 using F23.StringSimilarity;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -9,7 +10,7 @@ namespace RotationSolver.UI;
 
 public partial class RotationConfigWindow
 {
-    private static readonly Levenshtein StringComparer = new ();
+    internal static readonly Levenshtein StringComparer = new ();
 
     private string _searchText = string.Empty;
     private ISearchable[] _searchResults = Array.Empty<ISearchable>();
@@ -266,7 +267,6 @@ public partial class RotationConfigWindow
             new CheckBoxSearchPlugin(PluginConfigBool.ShowGCDCooldown),
             new CheckBoxSearchPlugin(PluginConfigBool.ShowItemsCooldown),
 
-            new DragIntSearchPlugin(PluginConfigInt.CooldownActionOneLine, 1),
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownFontSize, 0.1f),
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownWindowIconSize, 0.2f),
 
@@ -624,7 +624,7 @@ public partial class RotationConfigWindow
     {
         new CheckBoxSearchPlugin(PluginConfigBool.MoveTowardsScreenCenter),
         new CheckBoxSearchPlugin(PluginConfigBool.MoveAreaActionFarthest),
-        new DragIntSearchPlugin(PluginConfigInt.MoveTargetAngle, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MoveTargetAngle, 0.02f),
         new DragFloatSearchPlugin(PluginConfigFloat.DistanceForMoving, 1f),
     };
 
@@ -646,46 +646,44 @@ public partial class RotationConfigWindow
 
         for (int i = 0; i < Service.Config.GlobalConfig.TargetingTypes.Count; i++)
         {
-            ImGui.Separator();
+            var targetType = Service.Config.GlobalConfig.TargetingTypes[i];
+
+            void Delete()
+            {
+                Service.Config.GlobalConfig.TargetingTypes.RemoveAt(i);
+            };
+
+            void Up()
+            {
+                Service.Config.GlobalConfig.TargetingTypes.RemoveAt(i);
+                Service.Config.GlobalConfig.TargetingTypes.Insert(Math.Max(0, i - 1), targetType);
+            };
+            void Down()
+            {
+                Service.Config.GlobalConfig.TargetingTypes.RemoveAt(i);
+                Service.Config.GlobalConfig.TargetingTypes.Insert(Math.Min(Service.Config.GlobalConfig.TargetingTypes.Count - 1, i + 1), targetType);
+            }
+
+            var key = $"Targeting Type Pop Up: {i}";
+
+            Searchable.DrawHotKeysPopup(key, string.Empty,
+                (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }),
+                (LocalizationManager.RightLang.ConfigWindow_Actions_MoveUp, Up, new string[] { "↑" }),
+                (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }));
 
             var names = Enum.GetNames(typeof(TargetingType));
             var targingType = (int)Service.Config.GlobalConfig.TargetingTypes[i];
-
-            ImGui.SetNextItemWidth(150);
-
-            if (ImGui.Combo(LocalizationManager.RightLang.ConfigWindow_Param_HostileCondition + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
+            var text = LocalizationManager.RightLang.ConfigWindow_Param_HostileCondition;
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(text).X + 30 * _scale);
+            if (ImGui.Combo(text + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
             {
                 Service.Config.GlobalConfig.TargetingTypes[i] = (TargetingType)targingType;
             }
 
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.ArrowUp, $"##HostileUp{i}"))
-            {
-                if (i > 0)
-                {
-                    var value = Service.Config.GlobalConfig.TargetingTypes[i];
-                    Service.Config.GlobalConfig.TargetingTypes.RemoveAt(i);
-                    Service.Config.GlobalConfig.TargetingTypes.Insert(i - 1, value);
-                }
-            }
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.ArrowDown, $"##HostileDown{i}"))
-            {
-                if (i < Service.Config.GlobalConfig.TargetingTypes.Count - 1)
-                {
-                    var value = Service.Config.GlobalConfig.TargetingTypes[i];
-                    Service.Config.GlobalConfig.TargetingTypes.RemoveAt(i);
-                    Service.Config.GlobalConfig.TargetingTypes.Insert(i + 1, value);
-                }
-            }
-
-            ImGui.SameLine();
-            ImGuiHelper.Spacing();
-
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##HostileDelete{i}"))
-            {
-                Service.Config.GlobalConfig.TargetingTypes.RemoveAt(i);
-            }
+            Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+                (Delete, new VirtualKey[] { VirtualKey.DELETE }),
+                (Up, new VirtualKey[] { VirtualKey.UP }),
+                (Down, new VirtualKey[] { VirtualKey.DOWN }));
         }
     }
     #endregion
@@ -746,21 +744,17 @@ public partial class RotationConfigWindow
         if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Events_AddEvent))
         {
             Service.Config.GlobalConfig.Events.Add(new ActionEventInfo());
-            Service.Config.Save();
         }
         ImGui.SameLine();
-        ImGuiHelper.Spacing();
 
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Events_Description);
 
         ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Events_DutyStart);
         ImGui.SameLine();
-        ImGuiHelper.Spacing();
         Service.Config.GlobalConfig.DutyStart.DisplayMacro();
 
         ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Events_DutyEnd);
         ImGui.SameLine();
-        ImGuiHelper.Spacing();
         Service.Config.GlobalConfig.DutyEnd.DisplayMacro();
 
         ImGui.Separator();
@@ -771,7 +765,6 @@ public partial class RotationConfigWindow
             eve.DisplayEvent();
 
             ImGui.SameLine();
-            ImGuiHelper.Spacing();
 
             if (ImGui.Button($"{LocalizationManager.RightLang.ConfigWindow_Events_RemoveEvent}##RemoveEvent{eve.GetHashCode()}"))
             {
@@ -782,7 +775,6 @@ public partial class RotationConfigWindow
         if (remove != null)
         {
             Service.Config.GlobalConfig.Events.Remove(remove);
-            Service.Config.Save();
         }
     }
     #endregion

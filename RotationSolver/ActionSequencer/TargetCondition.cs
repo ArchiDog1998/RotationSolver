@@ -1,19 +1,19 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Localization;
-using RotationSolver.TextureItems;
 using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
 internal class TargetCondition : ICondition
 {
-    private static StatusTexture[] _allStatus = null;
-    private static StatusTexture[] AllStatus
+    private static Status[] _allStatus = null;
+    private static Status[] AllStatus
     {
         get
         {
-            _allStatus ??= Enum.GetValues<StatusID>().Select(id => new StatusTexture(id)).ToArray();
+            _allStatus ??= Enum.GetValues<StatusID>().Select(id => Service.GetSheet<Status>().GetRow((uint)id)).ToArray();
             return _allStatus;
         }
     }
@@ -23,7 +23,7 @@ internal class TargetCondition : ICondition
 
     public bool Condition;
     public bool FromSelf;
-    private StatusTexture Status { get; set; }
+    private Status Status { get; set; }
     public StatusID StatusId { get; set; }
     public bool IsTarget;
     public TargetConditionType TargetConditionType;
@@ -33,7 +33,7 @@ internal class TargetCondition : ICondition
 
     public string CastingActionName = string.Empty;
 
-    public bool IsTrue(ICustomRotation combo)
+    public bool IsTrue(ICustomRotation rotation)
     {
         if (!Player.Available) return false;
 
@@ -109,25 +109,23 @@ internal class TargetCondition : ICondition
     }
 
     string searchTxt = string.Empty;
-    public void Draw(ICustomRotation combo)
+    private readonly CollapsingHeaderGroup _actionsList = new()
     {
-        ConditionHelper.CheckBaseAction(combo, ID, ref _action);
+        HeaderSize = 12,
+    };
 
-        if (StatusId != StatusID.None && (Status == null || Status.ID != StatusId))
+    public void Draw(ICustomRotation rotation)
+    {
+        ConditionHelper.CheckBaseAction(rotation, ID, ref _action);
+
+        if (StatusId != StatusID.None && (Status == null || Status.RowId != (uint)StatusId))
         {
-            Status = AllStatus.FirstOrDefault(a => a.ID == StatusId);
+            Status = AllStatus.FirstOrDefault(a => a.RowId == (uint) StatusId);
         }
 
-        ImGuiHelper.DrawCondition(IsTrue(combo));
-        ImGui.SameLine();
+        var popUpKey = "Target Condition Pop Up" + GetHashCode().ToString();
 
-        var name = _action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, _action.Name)
-            : IsTarget
-            ? LocalizationManager.RightLang.ActionSequencer_Target
-            : LocalizationManager.RightLang.ActionSequencer_Player;
-
-        ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
-        if (ImGui.BeginCombo($"##ActionChoice{GetHashCode()}", name, ImGuiComboFlags.HeightLargest))
+        ConditionHelper.ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => ID = (ActionID)item.ID, ()=>
         {
             if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Target))
             {
@@ -142,14 +140,23 @@ internal class TargetCondition : ICondition
                 ID = ActionID.None;
                 IsTarget = false;
             }
+        });
 
-            ImGuiHelper.SearchItems(ref searchTxt, combo.AllBaseActions, i =>
+        if (_action != null ? ( _action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon))
+            : IconSet.GetTexture(IsTarget ? 16u : 18u, out icon))
+        {
+            var cursor = ImGui.GetCursorPos();
+            if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
             {
-                _action = (BaseAction)i;
-                ID = (ActionID)_action.ID;
-            });
+                if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
+            }
+            ImGuiHelper.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
 
-            ImGui.EndCombo();
+            var description = _action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, _action.Name)
+                : IsTarget
+                ? LocalizationManager.RightLang.ActionSequencer_Target
+                : LocalizationManager.RightLang.ActionSequencer_Player;
+            ImguiTooltips.HoveredTooltip(description);
         }
 
         ImGui.SameLine();
@@ -162,8 +169,8 @@ internal class TargetCondition : ICondition
             case TargetConditionType.HasStatus:
                 combos = new string[]
                 {
-                    LocalizationManager.RightLang.ActionSequencer_Have,
-                    LocalizationManager.RightLang.ActionSequencer_HaveNot,
+                    LocalizationManager.RightLang.ActionSequencer_Has,
+                    LocalizationManager.RightLang.ActionSequencer_HasNot,
                 };
                 break;
             case TargetConditionType.IsDying:
@@ -184,44 +191,61 @@ internal class TargetCondition : ICondition
         }
 
         ImGui.SameLine();
-        //ImGui.SetNextItemWidth(60);
-        ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
-        if (ImGui.Combo($"##Comparation{GetHashCode()}", ref condition, combos, combos.Length))
+
+        ImGuiHelper.SelectableCombo($"##Comparation{GetHashCode()}", combos, ref condition);
+        Condition = condition > 0;
+
+        var popupId = "Status Finding Popup" + GetHashCode().ToString();
+
+        RotationConfigWindow.StatusPopUp(popupId, AllStatus, ref searchTxt, status =>
         {
-            Condition = condition > 0;
+            Status = status;
+            StatusId = (StatusID)Status.RowId;
+        }, size: ConditionHelper.IconSizeRaw);
+
+        void DrawStatusIcon()
+        {
+            if (IconSet.GetTexture(Status?.Icon ?? 16220, out var icon)
+                || IconSet.GetTexture(16220, out icon))
+            {
+                if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(ConditionHelper.IconSize * 3 / 4, ConditionHelper.IconSize) * ImGuiHelpers.GlobalScale, GetHashCode().ToString()))
+                {
+                    if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
+                }
+                ImguiTooltips.HoveredTooltip(Status?.Name);
+            }
         }
 
         switch (TargetConditionType)
         {
             case TargetConditionType.HasStatus:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(Status?.Name);
-                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", Status?.Name, ref searchTxt, AllStatus, i =>
-                {
-                    Status = i;
-                    StatusId = Status.ID;
-                });
+                DrawStatusIcon();
 
                 ImGui.SameLine();
 
-                ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-                ImGuiHelper.HoveredString(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
+                var check = FromSelf ? 1 : 0;
+                ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check);
+                FromSelf = check != 0;
                 break;
 
             case TargetConditionType.StatusEnd:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(Status?.Name);
-                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", Status?.Name, ref searchTxt, AllStatus, i =>
-                {
-                    Status = i;
-                    StatusId = Status.ID;
-                });
+                DrawStatusIcon();
 
                 ImGui.SameLine();
 
-                ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-
-                ImGuiHelper.HoveredString(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
+                check = FromSelf ? 1 : 0;
+                ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check);
+                FromSelf = check != 0;
 
                 ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref DistanceOrTime);
                 break;
@@ -229,18 +253,17 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.StatusEndGCD:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(Status?.Name);
-                ImGuiHelper.SearchCombo($"##Status{GetHashCode()}", Status?.Name, ref searchTxt, AllStatus, i =>
-                {
-                    Status = i;
-                    StatusId = Status.ID;
-                });
+                DrawStatusIcon();
 
                 ImGui.SameLine();
 
-                ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-
-                ImGuiHelper.HoveredString(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
+                check = FromSelf ? 1 : 0;
+                ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check);
+                FromSelf = check != 0;
 
                 ConditionHelper.DrawDragInt($"GCD##GCD{GetHashCode()}", ref GCD);
                 ConditionHelper.DrawDragFloat($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{GetHashCode()}", ref DistanceOrTime);
@@ -255,17 +278,14 @@ internal class TargetCondition : ICondition
 
             case TargetConditionType.CastingAction:
                 ImGui.SameLine();
-                //ImGui.SetNextItemWidth(Math.Max(150, ImGui.CalcTextSize(CastingActionName).X));
                 ImGuiHelper.SetNextWidthWithName(CastingActionName);
-                ImGui.InputText($"Ability name##CastingActionName{GetHashCode()}", ref CastingActionName, 100);
+                ImGui.InputText($"Ability name##CastingActionName{GetHashCode()}", ref CastingActionName, 128);
                 break;
 
             case TargetConditionType.CastingActionTimeUntil:
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150, ImGui.CalcTextSize(DistanceOrTime.ToString()).X));
-                ImGui.InputFloat($"Seconds##CastingActionTimeUntil{GetHashCode()}", ref DistanceOrTime, .1f);
-                //ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref CastingActionTime);
-
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(DistanceOrTime.ToString()).X));
+                ImGui.InputFloat($"s##CastingActionTimeUntil{GetHashCode()}", ref DistanceOrTime, .1f);
                 break;
         }
     }

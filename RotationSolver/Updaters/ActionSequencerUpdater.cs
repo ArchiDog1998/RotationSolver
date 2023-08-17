@@ -27,7 +27,7 @@ internal class ActionSequencerUpdater
         var set = RightSet;
         if (set == null) return;
 
-        DataCenter.DisabledAction = new HashSet<uint>(set.DiabledConditions.Where(pair => pair.Value.IsTrue(customRotation))
+        DataCenter.DisabledActionSequencer = new HashSet<uint>(set.DiabledConditions.Where(pair => pair.Value.IsTrue(customRotation))
              .Select(pair => pair.Key));
 
         bool find = false;
@@ -125,7 +125,7 @@ internal class ActionSequencerUpdater
         if (hasSet)
         {
             ImGui.SameLine();
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, "##DeleteTimelineConditionSet"))
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, "##DeleteTimelineConditionSet"))
             {
                 Delete(set.Name);
             }

@@ -102,20 +102,27 @@ internal static class RotationUpdater
         AuthorHashes = new SortedList<string, string>();
         foreach (var assembly in assemblies)
         {
-            var authorHashAttribute = assembly.GetCustomAttribute<AuthorHashAttribute>();
-            if (authorHashAttribute != null)
+            try
             {
-                var key = authorHashAttribute.Hash;
-                var value = $"{assembly.GetInfo().Author} - {assembly.GetInfo().Name}";
+                var authorHashAttribute = assembly.GetCustomAttribute<AuthorHashAttribute>();
+                if (authorHashAttribute != null)
+                {
+                    var key = authorHashAttribute.Hash;
+                    var value = $"{assembly.GetInfo().Author} - {assembly.GetInfo().Name}";
 
-                if (AuthorHashes.ContainsKey(key))
-                {
-                    AuthorHashes[key] += $", {value}";
+                    if (AuthorHashes.ContainsKey(key))
+                    {
+                        AuthorHashes[key] += $", {value}";
+                    }
+                    else
+                    {
+                        AuthorHashes.Add(key, value);
+                    }
                 }
-                else
-                {
-                    AuthorHashes.Add(key, value);
-                }
+            }
+            catch (Exception ex)
+            {
+                PluginLog.Warning(ex, "Failed to get author's hash");
             }
         }
 
@@ -376,52 +383,55 @@ internal static class RotationUpdater
     }
 
     public static IEnumerable<IGrouping<string, IAction>> AllGroupedActions
-        => RightNowRotation?.AllActions.GroupBy(a =>
-            {
-                if (a is IBaseAction act)
-                {
-                    string result;
+        => GroupActions(RightNowRotation?.AllActions);
 
-                    if (act.IsDutyAction)
-                    {
-                        return act.IsDutyActionOnSlot ? "Duty Action" : string.Empty;
-                    }
+    public static IEnumerable<IGrouping<string, IAction>> GroupActions(IEnumerable<IAction> actions)
+       => actions?.GroupBy(a =>
+       {
+           if (a is IBaseAction act)
+           {
+               string result;
 
-                    if (act.IsRealGCD)
-                    {
-                        result = "GCD";
-                    }
-                    else
-                    {
-                        result = LocalizationManager.RightLang.Action_Ability;
-                    }
+               if (act.IsDutyAction)
+               {
+                   return act.IsDutyActionOnSlot ? "Duty Action" : string.Empty;
+               }
 
-                    if (act.IsFriendly)
-                    {
-                        result += "-" + LocalizationManager.RightLang.Action_Friendly;
-                        if (act.IsEot)
-                        {
-                            result += "-Hot";
-                        }
-                    }
-                    else
-                    {
-                        result += "-" + LocalizationManager.RightLang.Action_Attack;
+               if (act.IsRealGCD)
+               {
+                   result = "GCD";
+               }
+               else
+               {
+                   result = LocalizationManager.RightLang.Action_Ability;
+               }
 
-                        if (act.IsEot)
-                        {
-                            result += "-Dot";
-                        }
-                    }
-                    return result;
-                }
-                else if (a is IBaseItem)
-                {
-                    return "Item";
-                }
-                return string.Empty;
+               if (act.IsFriendly)
+               {
+                   result += "-" + LocalizationManager.RightLang.Action_Friendly;
+                   if (act.IsEot)
+                   {
+                       result += "-Hot";
+                   }
+               }
+               else
+               {
+                   result += "-" + LocalizationManager.RightLang.Action_Attack;
 
-            }).Where(g => !string.IsNullOrEmpty(g.Key)).OrderBy(g => g.Key);
+                   if (act.IsEot)
+                   {
+                       result += "-Dot";
+                   }
+               }
+               return result;
+           }
+           else if (a is IBaseItem)
+           {
+               return "Item";
+           }
+           return string.Empty;
+
+       }).Where(g => !string.IsNullOrEmpty(g.Key)).OrderBy(g => g.Key);
 
     public static void UpdateRotation()
     {
@@ -441,6 +451,8 @@ internal static class RotationUpdater
             DataCenter.Job = RightNowRotation?.Jobs[0] ?? Job.ADV;
             return;
         }
+
+        CustomRotation.MoveTarget = null;
         RightNowRotation = null;
         RightRotationActions = Array.Empty<IAction>();
         DataCenter.Job = RightNowRotation?.Jobs[0] ?? Job.ADV;

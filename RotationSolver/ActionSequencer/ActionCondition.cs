@@ -1,4 +1,5 @@
-﻿using RotationSolver.Localization;
+﻿using Dalamud.Utility;
+using RotationSolver.Localization;
 using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
@@ -42,10 +43,7 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditionType.CanUse:
-                var option = CanUseOption.IgnoreTarget;
-                if (Param1 > 0) option |= CanUseOption.MustUse;
-                if (Param2 > 0) option |= CanUseOption.EmptyOrSkipCombo;
-                result = _action.CanUse(out _, option);
+                result = _action.CanUse(out _, (CanUseOption)Param1, (byte)Param2);
                 break;
 
             case ActionConditionType.EnoughLevel:
@@ -68,23 +66,30 @@ internal class ActionCondition : ICondition
         return Condition ? !result : result;
     }
 
-    string searchTxt = string.Empty;
-
-    public void Draw(ICustomRotation combo)
+    private readonly CollapsingHeaderGroup _actionsList = new()
     {
-        ConditionHelper.CheckBaseAction(combo, ID, ref _action);
-
-        ImGuiHelper.DrawCondition(IsTrue(combo));
-        ImGui.SameLine();
+        HeaderSize = 12,
+    };
+    public void Draw(ICustomRotation rotation)
+    {
+        ConditionHelper.CheckBaseAction(rotation, ID, ref _action);
 
         var name = _action?.Name ?? string.Empty;
-        ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
 
-        ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, combo.AllBaseActions, i =>
+        var popUpKey = "Action Condition Pop Up" + GetHashCode().ToString();
+
+        ConditionHelper.ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => ID = (ActionID)item.ID);
+
+        if (_action?.GetTexture(out var icon) ?? false || IconSet.GetTexture(4, out icon))
         {
-            _action = (BaseAction)i;
-            ID = (ActionID)_action.ID;
-        });
+            var cursor = ImGui.GetCursorPos();
+            if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
+            {
+                if(!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
+            }
+            ImGuiHelper.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
+            ImguiTooltips.HoveredTooltip(name);
+        }
 
         ImGui.SameLine();
 
@@ -121,11 +126,9 @@ internal class ActionCondition : ICondition
                 break;
         }
         ImGui.SameLine();
-        ImGuiHelper.SetNextWidthWithName(combos[condition]);
-        if (ImGui.Combo($"##Comparation{GetHashCode()}", ref condition, combos, combos.Length))
-        {
-            Condition = condition > 0;
-        }
+
+        ImGuiHelper.SelectableCombo($"##Comparation{GetHashCode()}", combos, ref condition);
+        Condition = condition > 0;
 
 
         switch (ActionConditionType)
@@ -148,9 +151,35 @@ internal class ActionCondition : ICondition
                 break;
 
             case ActionConditionType.CanUse:
+                var popUpId = "Can Use Id" + GetHashCode().ToString();
+                var option = (CanUseOption)Param1;
 
-                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.ActionSequencer_MustUse}##MustUse{GetHashCode()}", ref Param1, LocalizationManager.RightLang.ActionSequencer_MustUseDesc);
-                ConditionHelper.DrawCheckBox($"{LocalizationManager.RightLang.ActionSequencer_Empty}##MustUse{GetHashCode()}", ref Param2, LocalizationManager.RightLang.ActionSequencer_EmptyDesc);
+                if (ImGui.Selectable($"{option}##CanUse{GetHashCode()}"))
+                {
+                    if (!ImGui.IsPopupOpen(popUpId)) ImGui.OpenPopup(popUpId);
+                }
+
+                if (ImGui.BeginPopup(popUpId))
+                {
+                    var showedValues = Enum.GetValues<CanUseOption>().Where(i => i.GetAttribute<JsonIgnoreAttribute>() == null);
+
+                    foreach (var value in showedValues)
+                    {
+                        var b = option.HasFlag(value);
+                        if(ImGui.Checkbox(value.ToString(), ref b))
+                        {
+                            option ^= value;
+                            Param1 = (int)option;
+                        }
+                    }
+
+                    ImGui.EndPopup();
+                }
+
+                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_AOECount}##AOECount{GetHashCode()}", ref Param2))
+                {
+                    Param2 = Math.Max(0, Param2);
+                }
                 break;
 
             case ActionConditionType.CurrentCharges:

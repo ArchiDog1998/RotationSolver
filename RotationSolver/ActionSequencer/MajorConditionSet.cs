@@ -1,4 +1,6 @@
 ﻿using ECommons.DalamudServices;
+using Lumina.Data.Parsing;
+using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
 
 namespace RotationSolver.ActionSequencer;
 
@@ -7,15 +9,37 @@ internal class MajorConditionSet
     /// <summary>
     /// Key for action id.
     /// </summary>
-    public Dictionary<uint, ConditionSet> Conditions { get; } = new Dictionary<uint, ConditionSet>();
+    public Dictionary<uint, ConditionSet> Conditions { get; } = new ();
 
-    public Dictionary<uint, ConditionSet> DiabledConditions { get; } = new Dictionary<uint, ConditionSet>();
+    public Dictionary<uint, ConditionSet> DiabledConditions { get; } = new();
 
     public string Name;
-
-    public MajorConditionSet()
+    public void DrawCondition(uint id, ICustomRotation rotation)
     {
 
+        if (!Conditions.TryGetValue(id, out var conditionSet))
+        {
+            conditionSet = Conditions[id] = new ConditionSet();
+        }
+
+        if (conditionSet == null) return;
+
+        ConditionSet.DrawCondition(conditionSet.IsTrue(rotation));
+        ImGui.SameLine();
+        conditionSet?.Draw(rotation);
+    }
+
+    public void DrawDisabledCondition(uint id, ICustomRotation rotation)
+    {
+        if (!DiabledConditions.TryGetValue(id, out var conditionSet))
+        {
+            conditionSet = DiabledConditions[id] = new ConditionSet();
+        }
+        if (conditionSet == null) return;
+
+        ConditionSet.DrawCondition(conditionSet.IsTrue(rotation));
+        ImGui.SameLine();
+        conditionSet?.Draw(rotation);
     }
 
     public MajorConditionSet(string name)

@@ -12,7 +12,6 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -113,7 +112,7 @@ public partial class RotationConfigWindow : Window
             {
                 if(IconSet.GetTexture(46, out var icon))
                 {
-                    DrawItemMiddle(() =>
+                    ImGuiHelper.DrawItemMiddle(() =>
                     {
                         if (ImGui.BeginPopup("Searching Popup"))
                         {
@@ -127,11 +126,11 @@ public partial class RotationConfigWindow : Window
                         }
 
                         var cursor = ImGui.GetCursorPos();
-                        if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize))
+                        if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize))
                         {
                             ImGui.OpenPopup("Searching Popup");
                         }
-                        DrawActionOverlay(cursor, iconSize, -1);
+                        ImGuiHelper.DrawActionOverlay(cursor, iconSize, -1);
                         ImguiTooltips.HoveredTooltip("Search");
 
                     }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
@@ -144,14 +143,14 @@ public partial class RotationConfigWindow : Window
 
                 if(IconSet.GetTexture(item.GetAttribute<TabIconAttribute>()?.Icon ?? 0, out var icon) && wholeWidth <= JOB_ICON_WIDTH * _scale)
                 {
-                    DrawItemMiddle(() =>
+                    ImGuiHelper.DrawItemMiddle(() =>
                     {
                         var cursor = ImGui.GetCursorPos();
-                        if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize, item.ToString()))
+                        if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize, item.ToString()))
                         {
                             _activeTab = item;
                         }
-                        DrawActionOverlay(cursor, iconSize, _activeTab == item ? 1 : 0);
+                        ImGuiHelper.DrawActionOverlay(cursor, iconSize, _activeTab == item ? 1 : 0);
                     }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
 
                     var desc = item.ToString();
@@ -182,10 +181,10 @@ public partial class RotationConfigWindow : Window
                 var size = new Vector2(width, width * texture.Height / texture.Width);
                 size *= MathF.Max(_scale * MIN_COLUMN_WIDTH / size.Y, 1);
                 var result = false;
-                DrawItemMiddle(() =>
+                ImGuiHelper.DrawItemMiddle(() =>
                 {
                     ImGui.SetCursorPosY(ImGui.GetWindowSize().Y + ImGui.GetScrollY() - size.Y);
-                    result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size);
+                    result = ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, size, "Donate Plugin");
                 }, wholeWidth, size.X);
 
                 if (result)
@@ -232,11 +231,11 @@ public partial class RotationConfigWindow : Window
 
         if (IconSet.GetTexture((uint)0, out var overlay))
         {
-            DrawItemMiddle(() =>
+            ImGuiHelper.DrawItemMiddle(() =>
             {
                 var cursor = ImGui.GetCursorPos();
-                if (SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
-                    _activeTab == RotationConfigWindowTab.About))
+                if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
+                    _activeTab == RotationConfigWindowTab.About, "About Icon"))
                 {
                     _activeTab = RotationConfigWindowTab.About;
                 }
@@ -262,7 +261,7 @@ public partial class RotationConfigWindow : Window
             var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? Array.Empty<ICustomRotation>();
 
             var iconSize = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH));
-            var comboSize = ImGui.CalcTextSize(rotation.RotationName).X + _scale * 30;
+            var comboSize = ImGui.CalcTextSize(rotation.RotationName).X;
 
             const string slash = " - ";
             var gameVersionSize = ImGui.CalcTextSize(slash + rotation.GameVersion).X + ImGui.GetStyle().ItemSpacing.X;
@@ -274,14 +273,14 @@ public partial class RotationConfigWindow : Window
 
             if (horizonalWholeWidth > wholeWidth)
             {
-                DrawItemMiddle(() =>
+                ImGuiHelper.DrawItemMiddle(() =>
                 {
                     DrawRotationIcon(rotation, iconSize);
                 }, wholeWidth, iconSize);
 
                 if (_scale * JOB_ICON_WIDTH < wholeWidth)
                 {
-                    DrawItemMiddle(() =>
+                    ImGuiHelper.DrawItemMiddle(() =>
                     {
                         DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
                     }, wholeWidth, comboSize);
@@ -289,7 +288,7 @@ public partial class RotationConfigWindow : Window
             }
             else
             {
-                DrawItemMiddle(() =>
+                ImGuiHelper.DrawItemMiddle(() =>
                 {
                     DrawRotationIcon(rotation, iconSize);
 
@@ -315,7 +314,7 @@ public partial class RotationConfigWindow : Window
 
     private void DrawRotationIcon(ICustomRotation rotation, float iconSize)
     {
-        if (rotation.GetTexture(out var jobIcon) && SilenceImageButton(jobIcon.ImGuiHandle,
+        if (rotation.GetTexture(out var jobIcon) && ImGuiHelper.SilenceImageButton(jobIcon.ImGuiHandle,
             Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
         {
             _activeTab = RotationConfigWindowTab.Rotation;
@@ -329,10 +328,14 @@ public partial class RotationConfigWindow : Window
     {
         ImGui.SetNextItemWidth(comboSize);
         ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
-        var isStartCombo = ImGui.BeginCombo("##RotationName:" + rotation.Name, rotation.RotationName);
+        const string popUp = "Rotation Solver Select Rotation";
+        if (ImGui.Selectable(rotation.RotationName + "##RotationName:" + rotation.Name))
+        {
+            if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
+        }
         ImGui.PopStyleColor();
 
-        if (isStartCombo)
+        if (ImGui.BeginPopup(popUp))
         {
             foreach (var r in rotations)
             {
@@ -345,7 +348,7 @@ public partial class RotationConfigWindow : Window
                 ImguiTooltips.HoveredTooltip(r.Description);
                 ImGui.PopStyleColor();
             }
-            ImGui.EndCombo();
+            ImGui.EndPopup();
         }
 
         var warning = gameVersion + rotation.GameVersion;
@@ -356,15 +359,6 @@ public partial class RotationConfigWindow : Window
 
         warning += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation;
         ImguiTooltips.HoveredTooltip(warning);
-    }
-
-    private static void DrawItemMiddle(System.Action drawAction, float wholeWidth, float width, bool leftAlign = true)
-    {
-        if (drawAction == null) return;
-        var distance = (wholeWidth - width) / 2;
-        if (leftAlign) distance = MathF.Max(distance, 0);
-        ImGui.SetCursorPosX(distance);
-        drawAction();
     }
 
     private void DrawBody()
@@ -458,7 +452,7 @@ public partial class RotationConfigWindow : Window
         ImGui.PopStyleColor();
 
         var width = ImGui.GetWindowWidth();
-        if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out var icon) && TextureButton(icon, width, width))
+        if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
             Util.OpenLink("https://discord.gg/4fECHunam9");
         }
@@ -555,7 +549,7 @@ public partial class RotationConfigWindow : Window
 
                 if (IconSet.GetTexture(icon, out var texture))
                 {
-                    if (NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * iconSize))
+                    if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * iconSize))
                     {
                         Util.OpenLink(item.Url);
                     }
@@ -591,12 +585,12 @@ public partial class RotationConfigWindow : Window
     {
         var width = ImGui.GetWindowWidth();
 
-        if (IconSet.GetTexture("https://GitHub-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && TextureButton(icon, width, width))
+        if (IconSet.GetTexture("https://GitHub-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
             Util.OpenLink("https://GitHub.com/ArchiDog1998/RotationSolver");
         }
 
-        if (IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out icon) && TextureButton(icon, width, width))
+        if (IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
             Util.OpenLink("https://crowdin.com/project/rotationsolver");
         }
@@ -630,19 +624,9 @@ public partial class RotationConfigWindow : Window
             ImGui.PopStyleColor();
         }
 
-        var youtubeLink = rotation.GetType().GetCustomAttribute<YoutubeLinkAttribute>()?.ID;
-
-        if (!string.IsNullOrEmpty(youtubeLink))
-        {
-            if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && TextureButton(icon, wholeWidth, 250 * _scale))
-            {
-                Util.OpenLink("https://youtu.be/" + youtubeLink);
-            }
-        }
-
         if (!string.IsNullOrEmpty(info.DonateLink))
         {
-            if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && TextureButton(icon, wholeWidth, 250 * _scale))
+            if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * _scale, "Ko-fi link"))
             {
                 Util.OpenLink(info.DonateLink);
             }
@@ -721,13 +705,14 @@ public partial class RotationConfigWindow : Window
                     if (notStart)
                     {
                         ImGui.SameLine();
-                        ImGui.Text(" ");
-                        ImGui.SameLine();
                     }
 
                     if(item.GetTexture(out var texture))
                     {
-                        ControlWindow.DrawIAction(texture.ImGuiHandle, DESC_SIZE * _scale, 1);
+                        var cursor = ImGui.GetCursorPos();
+                        var size = DESC_SIZE * _scale;
+                        ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size);
+                        ImGuiHelper.DrawActionOverlay(cursor, size, 1);
                         ImguiTooltips.HoveredTooltip(item.Name);
                     }
                     notStart = true;
@@ -748,7 +733,7 @@ public partial class RotationConfigWindow : Window
     {
         var hasTexture = IconSet.GetTexture(link.Url, out var texture);
 
-        if (hasTexture && TextureButton(texture, wholeWidth, wholeWidth))
+        if (hasTexture && ImGuiHelper.TextureButton(texture, wholeWidth, wholeWidth))
         {
             Util.OpenLink(link.Url);
         }
@@ -880,36 +865,56 @@ public partial class RotationConfigWindow : Window
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
+        var youtubeLink = rotation.GetType().GetCustomAttribute<YoutubeLinkAttribute>()?.ID;
+
+        var wholeWidth = ImGui.GetWindowWidth();
+        if (!string.IsNullOrEmpty(youtubeLink))
+        {
+            ImGui.NewLine();
+            if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * _scale, "Youtube Link"))
+            {
+                Util.OpenLink("https://youtu.be/" + youtubeLink);
+            }
+        }
+
         var assembly = rotation.GetType().Assembly;
         var info = assembly.GetInfo();
 
         if (info != null)
         {
-            ImGui.BeginGroup();
-            if (ImGui.Button(info.Name))
-            {
-                Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
-            }
-            
-            var version = assembly.GetName().Version;
-            if (version != null)
-            {
-                ImGui.Text(" v " + version.ToString());
-            }
-
-            ImGui.Text(" - " + info.Author);
-            ImGui.EndGroup();
+            ImGui.NewLine();
 
             var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
-            if(link != null)
+            if (link != null)
             {
-                ImGui.SameLine();
                 var userName = info.GitHubUserName;
                 var repository = info.GitHubRepository;
-                DrawGitHubBadge(userName, repository, $"https://github.com/{userName}/{repository}/blob/{link.Path}");
+                DrawGitHubBadge(userName, repository, $"https://github.com/{userName}/{repository}/blob/{link.Path}", center: true);
             }
+            ImGui.NewLine();
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.BeginGroup();
+                if (ImGui.Button(info.Name))
+                {
+                    Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
+                }
+
+                var version = assembly.GetName().Version;
+                if (version != null)
+                {
+                    ImGui.Text(" v " + version.ToString());
+                }
+                ImGui.Text(" - " + info.Author);
+                ImGui.EndGroup();
+            }, wholeWidth, _groupWidth);
+
+            _groupWidth = ImGui.GetItemRectSize().X;
         }
     }
+
+    private static float _groupWidth = 100;
     #endregion
 
     #region Actions
@@ -944,13 +949,13 @@ public partial class RotationConfigWindow : Window
                                     ImGui.SameLine();
                                 }
 
-                                var cursor = ImGui.GetCursorPos();
                                 ImGui.BeginGroup();
-                                if (NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, item.Name))
+                                var cursor = ImGui.GetCursorPos();
+                                if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, item.Name))
                                 {
                                     _activeAction = item;
                                 }
-                                DrawActionOverlay(cursor, size, _activeAction == item ? 1 : 0);
+                                ImGuiHelper.DrawActionOverlay(cursor, size, _activeAction == item ? 1 : 0);
 
                                 if(IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
                                 {
@@ -1079,13 +1084,9 @@ public partial class RotationConfigWindow : Window
 
             var rotation = RotationUpdater.RightNowRotation;
             var set = ActionSequencerUpdater.RightSet;
-            if (set == null || _activeAction == null || rotation == null) return;
 
-            if (!set.Conditions.TryGetValue(_activeAction.ID, out var conditionSet))
-            {
-                conditionSet = set.Conditions[_activeAction.ID] = new ConditionSet();
-            }
-            conditionSet?.Draw(rotation);
+            if (set == null || _activeAction == null || rotation == null) return;
+            set.DrawCondition(_activeAction.ID, rotation);
         } },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Actions_DisabledConditionSet, () =>
@@ -1094,13 +1095,9 @@ public partial class RotationConfigWindow : Window
 
             var rotation = RotationUpdater.RightNowRotation;
             var set = ActionSequencerUpdater.RightSet;
-            if (set == null || _activeAction == null || rotation == null) return;
 
-            if (!set.DiabledConditions.TryGetValue(_activeAction.ID, out var disableConditionSet))
-            {
-                disableConditionSet = set.DiabledConditions[_activeAction.ID] = new ConditionSet();
-            }
-            disableConditionSet?.Draw(rotation);
+            if (set == null || _activeAction == null || rotation == null) return;
+            set.DrawDisabledCondition(_activeAction.ID, rotation);
         } },
     })
     {
@@ -1198,7 +1195,7 @@ public partial class RotationConfigWindow : Window
                     if(IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed), out var texture, 62574))
                     ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * _scale);
 
-                    ImGuiHelper.HoveredString(string.Join('\n', jobs));
+                    ImguiTooltips.HoveredTooltip(string.Join('\n', jobs));
                 }
 
                 ImGui.TableNextColumn();
@@ -1207,7 +1204,7 @@ public partial class RotationConfigWindow : Window
 
                 if (!string.IsNullOrEmpty(info.DonateLink)
                     && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon)
-                    && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height/ icon.Width) * MathF.Min(250, icon.Width) * _scale, info.FilePath))
+                    && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height/ icon.Width) * MathF.Min(250, icon.Width) * _scale, info.FilePath))
                 {
                     Util.OpenLink(info.DonateLink);
                 }
@@ -1216,11 +1213,12 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private static void DrawGitHubBadge(string userName, string repository, string id = "", string link = "")
+    private static void DrawGitHubBadge(string userName, string repository, string id = "", string link = "", bool center = false)
     {
         if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(repository)
-    && IconSet.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
-    && NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height), id))
+            && IconSet.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
+            && (center ? ImGuiHelper.TextureButton(icon, ImGui.GetWindowWidth(), icon.Width, id)
+            : ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height), id)))
         {
             Util.OpenLink(string.IsNullOrEmpty(link) ? $"https://GitHub.com/{userName}/{repository}" : link);
         }
@@ -1267,7 +1265,7 @@ public partial class RotationConfigWindow : Window
                 Service.Config.GlobalConfig.GitHubLibs[i] = $"{userName}|{repository}|{fileName}";
             }
 
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove GitHubLibs{i}"))
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove GitHubLibs{i}"))
             {
                 removeIndex = i;
             }
@@ -1298,7 +1296,7 @@ public partial class RotationConfigWindow : Window
             ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", LocalizationManager.RightLang.ConfigWindow_Rotations_Library, ref Service.Config.GlobalConfig.OtherLibs[i], 1024);
             ImGui.SameLine();
 
-            if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
             {
                 removeIndex = i;
             }
@@ -1417,86 +1415,95 @@ public partial class RotationConfigWindow : Window
 
         var popupId = "Rotation Solver Popup" + name;
 
-            var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
-            var index = 0;
+        StatusPopUp(popupId, allStatus, ref _statusSearching, status =>
+        {
+            statuses.Add(status.RowId);
+            OtherConfiguration.Save();
+        }, notLoadId);
 
-            if (IconSet.GetTexture(16220, out var text))
+        var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+        var index = 0;
+
+        if (IconSet.GetTexture(16220, out var text))
+        {
+            if (index++ % count != 0)
+            {
+                ImGui.SameLine();
+            }
+            if (ImGuiHelper.NoPaddingNoColorImageButton(text.ImGuiHandle, new Vector2(24, 32) * _scale, name))
+            {
+                if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
+            }
+            ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_List_AddStatus);
+        }
+
+        foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
+            .Where(a => a != null)
+            .OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _statusSearching)
+            , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
+        {
+            void Delete() => removeId = status.RowId;
+
+            var key = "Status" + status.RowId.ToString();
+
+            Searchable.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }));
+
+            if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
             {
                 if (index++ % count != 0)
                 {
                     ImGui.SameLine();
                 }
-                if (NoPaddingNoColorImageButton(text.ImGuiHandle, new Vector2(24, 32) * _scale, name))
-                {
-                    if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
-                }
-                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_List_AddStatus);
+                ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + status.RowId.ToString());
+
+                Searchable.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false, 
+                    (Delete, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
             }
-
-            foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
-                .Where(a => a != null)
-                .OrderBy(s => Math.Min( StringComparer.Distance(s.Name, _statusSearching) 
-                , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
-            {
-                void Reset() => removeId = status.RowId;
-
-                var key = "Status" + status.RowId.ToString();
-
-                Searchable.DrawHotKeysPopup(key, string.Empty,  (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
-
-                if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
-                {
-                    if (index++ % count != 0)
-                    {
-                        ImGui.SameLine();
-                    }
-                    NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + status.RowId.ToString());
-
-                Searchable.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
-                }
-            }
-
-            if (ImGui.BeginPopup(popupId))
-            {
-                ImGui.SetNextItemWidth(200 * _scale);
-                ImGui.InputTextWithHint("##Searching the status", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref _statusSearching, 128);
-
-                ImGui.Spacing();
-
-                if(ImGui.BeginChild("Rotation Solver Add Status", new Vector2(-1, 400 * _scale)))
-                {
-                    count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
-                    index = 0;
-
-                    foreach (var status in allStatus.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _statusSearching)
-                    , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
-                    {
-                        if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
-                        {
-                            if (index++ % count != 0)
-                            {
-                                ImGui.SameLine();
-                            }
-                            if (NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Adding" + status.RowId.ToString()))
-                            {
-                                statuses.Add(status.RowId);
-                                OtherConfiguration.Save();
-                                ImGui.CloseCurrentPopup();
-                            }
-                            ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
-                        }
-                    }
-                    ImGui.EndChild();
-                }
-
-                ImGui.EndPopup();
-            }
-
+        }
 
         if (removeId != 0)
         {
             statuses.Remove(removeId);
             OtherConfiguration.Save();
+        }
+    }
+
+    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100, float size = 32)
+    {
+        if (ImGui.BeginPopup(popupId))
+        {
+            ImGui.SetNextItemWidth(200 * _scale);
+            ImGui.InputTextWithHint("##Searching the status", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref searching, 128);
+
+            ImGui.Spacing();
+
+            if (ImGui.BeginChild("Rotation Solver Add Status", new Vector2(-1, 400 * _scale)))
+            {
+                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+                var index = 0;
+
+                var searchingKey = searching;
+                foreach (var status in allStatus.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, searchingKey)
+                , StringComparer.Distance(s.RowId.ToString(), searchingKey))))
+                {
+                    if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
+                    {
+                        if (index++ % count != 0)
+                        {
+                            ImGui.SameLine();
+                        }
+                        if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(size * 3 / 4, size) * _scale, "Adding" + status.RowId.ToString()))
+                        {
+                            clicked?.Invoke(status);
+                            ImGui.CloseCurrentPopup();
+                        }
+                        ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
+                    }
+                }
+                ImGui.EndChild();
+            }
+
+            ImGui.EndPopup();
         }
     }
 
@@ -1629,7 +1636,7 @@ public partial class RotationConfigWindow : Window
         var icon = territory?.ContentFinderCondition?.Value?.ContentType?.Value?.Icon ?? 23;
         if (icon == 0) icon = 23;
         var getIcon = IconSet.GetTexture(icon, out var texture);
-        DrawItemMiddle(() =>
+        ImGuiHelper.DrawItemMiddle(() =>
         {
             if (getIcon)
             {
@@ -1683,7 +1690,7 @@ public partial class RotationConfigWindow : Window
                 }
                 ImGui.SameLine();
 
-                if (ImGuiHelper.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Name {i}"))
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Name {i}"))
                 {
                     removeIndex = i;
                 }
@@ -1974,140 +1981,7 @@ public partial class RotationConfigWindow : Window
     }
     #endregion
 
-    #region Image
-    internal unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected, string id = "")
-    {
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderActive)));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderHovered)));
-        ImGui.PushStyleColor(ImGuiCol.Button, selected ? ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.Header)) : 0);
-
-        var result = NoPaddingImageButton(handle, size, id);
-        ImGui.PopStyleColor(3);
-
-        return result;
-    }
-
-    internal unsafe static bool NoPaddingNoColorImageButton(IntPtr handle, Vector2 size, string id = "")
-    {
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0);
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0);
-        ImGui.PushStyleColor(ImGuiCol.Button, 0);
-        var result = NoPaddingImageButton(handle, size, id);
-        ImGui.PopStyleColor(3);
-
-        return result;
-    }
-
-    private static bool NoPaddingImageButton(IntPtr handle, Vector2 size, string id = "")
-    {
-        var padding = ImGui.GetStyle().FramePadding;
-        ImGui.GetStyle().FramePadding = Vector2.Zero;
-
-        ImGui.PushID(id);
-        var result = ImGui.ImageButton(handle, size);
-        ImGui.PopID();
-        if (ImGui.IsItemHovered())
-        {
-            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-        }
-
-        ImGui.GetStyle().FramePadding = padding;
-        return result;
-    }
-
-    private static bool TextureButton(TextureWrap texture, float wholeWidth, float maxWidth, string id = "")
-    {
-        if (texture == null) return false;
-
-        var size = new Vector2(texture.Width, texture.Height) * MathF.Min(1, MathF.Min(maxWidth, wholeWidth) / texture.Width);
-
-        var result = false;
-        DrawItemMiddle(() =>
-        {
-            result = NoPaddingNoColorImageButton(texture.ImGuiHandle, size, id);
-        }, wholeWidth, size.X);
-        return result;
-    }
-
-    internal static void DrawActionOverlay(Vector2 cursor, float width, float percent)
-    {
-        var pixPerUnit = width / 82;
-
-        if (percent < 0)
-        {
-            if (IconSet.GetTexture("ui/uld/icona_frame_hr1.tex", out var cover))
-            {
-                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
-
-                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
-                var start = new Vector2((96f * 0 + 4f) / cover.Width, (96f * 2) / cover.Height);
-
-                //Out Size is 88, 96
-                //Inner Size is 82, 82
-                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                    start, start + step);
-            }
-        }
-        else if (percent < 1)
-        {
-            if (IconSet.GetTexture("ui/uld/icona_recast_hr1.tex", out var cover))
-            {
-                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
-
-                var P = (int)(percent * 81);
-
-
-                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
-                var start = new Vector2(P % 9 * step.X, P / 9 * step.Y);
-
-                //Out Size is 88, 96
-                //Inner Size is 82, 82
-                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                    start, start + step);
-            }
-        }
-        else
-        {
-            if (IconSet.GetTexture("ui/uld/icona_frame_hr1.tex", out var cover))
-            {
-
-                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
-
-                //Out Size is 88, 96
-                //Inner Size is 82, 82
-                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                    new Vector2(4f / cover.Width, 0f / cover.Height),
-                    new Vector2(92f / cover.Width, 96f / cover.Height));
-            }
-        }
-
-        if (percent > 1)
-        {
-            if (IconSet.GetTexture("ui/uld/icona_recast2_hr1.tex", out var cover))
-            {
-                ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 0));
-
-                var P = (int)(percent % 1 * 81);
-
-                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
-                var start = new Vector2((P % 9 + 9) * step.X, P / 9 * step.Y);
-
-                //Out Size is 88, 96
-                //Inner Size is 82, 82
-                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                    start, start + step);
-            }
-        }
-    }
-    #endregion
-
     #region Child
-    private static bool BeginChild(string str_id)
-    {
-        if (IsFailed()) return false;
-        return ImGui.BeginChild(str_id);
-    }
-
     private static bool BeginChild(string str_id, Vector2 size)
     {
         if (IsFailed()) return false;

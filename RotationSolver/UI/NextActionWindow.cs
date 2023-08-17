@@ -1,15 +1,43 @@
 ﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
 
-internal class NextActionWindow : InfoWindow
+internal class NextActionWindow : Window
 {
+    const ImGuiWindowFlags BaseFlags = ControlWindow.BaseFlags
+    | ImGuiWindowFlags.AlwaysAutoResize
+    | ImGuiWindowFlags.NoResize;
+
     public NextActionWindow()
-        : base(nameof(NextActionWindow))
+        : base(nameof(NextActionWindow), BaseFlags)
     {
+    }
+    public override void PreDraw()
+    {
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.GetValue(PluginConfigVector4.InfoWindowBg));
+
+        Flags = BaseFlags;
+        if (Service.Config.GetValue(PluginConfigBool.IsInfoWindowNoInputs))
+        {
+            Flags |= ImGuiWindowFlags.NoInputs;
+        }
+        if (Service.Config.GetValue(PluginConfigBool.IsInfoWindowNoMove))
+        {
+            Flags |= ImGuiWindowFlags.NoMove;
+        }
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
+        base.PreDraw();
+    }
+
+    public override void PostDraw()
+    {
+        ImGui.PopStyleColor();
+        ImGui.PopStyleVar();
+        base.PostDraw();
     }
 
     public override void Draw()
@@ -18,28 +46,6 @@ internal class NextActionWindow : InfoWindow
             * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
         DrawGcdCooldown(width, false);
         ControlWindow.DrawIAction(ActionUpdater.NextAction, width, 1);
-
-        var strs = new List<string>(3);
-        if(Service.Config.GetValue(PluginConfigBool.UseAOEAction)
-            && (!DataCenter.IsManual
-            || Service.Config.GetValue(PluginConfigBool.UseAOEWhenManual)))
-        {
-            strs.Add("AOE");
-        }
-        if (Service.Config.GetValue(PluginConfigBool.PreventActions))
-        {
-            strs.Add("Prevent");
-        }
-        if (Service.Config.GetValue(PluginConfigBool.AutoBurst))
-        {
-            strs.Add("Burst");
-        }
-        if(strs.Count > 0)
-        {
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudWhite2);
-            ImGui.TextWrapped(string.Join(", ", strs));
-            ImGui.PopStyleColor();
-        }
     }
 
     public static unsafe void DrawGcdCooldown(float width, bool drawTittle)

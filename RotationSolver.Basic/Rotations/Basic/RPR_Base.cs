@@ -85,6 +85,7 @@ public abstract class RPR_Base : CustomRotation
     {
         TargetStatus = new[] { StatusID.DeathsDesign },
         ActionCheck = (b, m) => !HasSoulReaver,
+        TimeToDie = 10,
     };
 
     /// <summary>
