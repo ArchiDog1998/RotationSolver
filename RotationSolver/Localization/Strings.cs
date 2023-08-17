@@ -659,6 +659,7 @@ internal partial class Strings
     public string ConfigWindow_List_Actions { get; set; } = "Actions";
     public string ConfigWindow_List_Territories { get; set; } = "Territories";
     public string ConfigWindow_List_StatusNameOrId { get; set; } = "Status name or id";
+    public string ConfigWindow_Actions_MemberName { get; set; } = "Member Name";
     public string ConfigWindow_List_AddStatus { get; set; } = "Add Status";
     public string ConfigWindow_List_Remove { get; set; } = "Remove";
 

@@ -96,6 +96,11 @@ internal class RotationCondition : ICondition
     }
 
     string searchTxt = string.Empty;
+
+    private readonly CollapsingHeaderGroup _actionsList = new()
+    {
+        HeaderSize = 12,
+    };
     public void Draw(ICustomRotation rotation)
     {
         UpdateInfo(rotation);
@@ -106,7 +111,7 @@ internal class RotationCondition : ICondition
         {
             case ComboConditionType.Bool:
                 ImGui.SameLine();
-                ImGuiHelper.SearchItemsReflection($"##Comparation{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllBools, i =>
+                ConditionHelper.SearchItemsReflection($"##Comparation{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllBools, i =>
                 {
                     _prop = i;
                     PropertyName = i.Name;
@@ -123,7 +128,7 @@ internal class RotationCondition : ICondition
 
             case ComboConditionType.Byte:
                 ImGui.SameLine();
-                ImGuiHelper.SearchItemsReflection($"##ByteChoice{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllBytes, i =>
+                ConditionHelper.SearchItemsReflection($"##ByteChoice{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllBytes, i =>
                 {
                     _prop = i;
                     PropertyName = i.Name;
@@ -142,12 +147,11 @@ internal class RotationCondition : ICondition
                 break;
             case ComboConditionType.Float:
                 ImGui.SameLine();
-                ImGuiHelper.SearchItemsReflection($"##FloatChoice{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllFloats, i =>
+                ConditionHelper.SearchItemsReflection($"##FloatChoice{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllFloats, i =>
                 {
                     _prop = i;
                     PropertyName = i.Name;
                 });
-
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);
@@ -190,12 +194,22 @@ internal class RotationCondition : ICondition
                 }, 2);
 
                 ImGui.SameLine();
+
                 var name = _action?.Name ?? string.Empty;
-                ImGuiHelper.SearchCombo($"##ActionChoice{GetHashCode()}", name, ref searchTxt, rotation.AllBaseActions, i =>
+
+                var popUpKey = "Rotation Condition Pop Up" + GetHashCode().ToString();
+
+                ConditionHelper.ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => ID = (ActionID)item.ID);
+
+                if (_action?.GetTexture(out var icon) ?? false || IconSet.GetTexture(4, out icon))
                 {
-                    _action = (BaseAction)i;
-                    ID = (ActionID)_action.ID;
-                });
+                    var cursor = ImGui.GetCursorPos();
+                    if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
+                    {
+                        if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
+                    }
+                    RotationConfigWindow.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
+                }
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(50);

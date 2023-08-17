@@ -118,8 +118,7 @@ internal class TargetCondition : ICondition
     {
         HeaderSize = 12,
     };
-    private float size => 32 * ImGuiHelpers.GlobalScale;
-    private int count = 15;
+
     public void Draw(ICustomRotation rotation)
     {
         ConditionHelper.CheckBaseAction(rotation, ID, ref _action);
@@ -131,63 +130,17 @@ internal class TargetCondition : ICondition
 
         var popUpKey = "Target Condition Pop Up" + GetHashCode().ToString();
 
-        if (_actionsList != null && ImGui.BeginPopup(popUpKey))
-        {
-            _actionsList.ClearCollapsingHeader();
-
-            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Target))
-            {
-                _action = null;
-                ID = ActionID.None;
-                IsTarget = true;
-            }
-
-            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Player))
-            {
-                _action = null;
-                ID = ActionID.None;
-                IsTarget = false;
-            }
-
-            foreach (var pair in RotationUpdater.GroupActions(rotation.AllBaseActions))
-            {
-                _actionsList.AddCollapsingHeader(() => pair.Key, () =>
-                {
-                    var index = 0;
-                    foreach (var item in pair.OrderBy(t => t.ID))
-                    {
-                        if (!item.GetTexture(out var icon)) continue;
-
-                        if (index++ % count != 0)
-                        {
-                            ImGui.SameLine();
-                        }
-
-                        ImGui.BeginGroup();
-                        var cursor = ImGui.GetCursorPos();
-                        if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, GetHashCode().ToString()))
-                        {
-                            ID = (ActionID)item.ID;
-                            ImGui.CloseCurrentPopup();
-                        }
-                        RotationConfigWindow.DrawActionOverlay(cursor, size, 1);
-                        ImGui.EndGroup();
-                    }
-                });
-            }
-            _actionsList.Draw();
-            ImGui.EndPopup();
-        }
+        ConditionHelper.ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => ID = (ActionID)item.ID);
 
         if (_action != null ? ( _action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon))
             : IconSet.GetTexture(IsTarget ? 16u : 18u, out icon))
         {
             var cursor = ImGui.GetCursorPos();
-            if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, GetHashCode().ToString()))
+            if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, GetHashCode().ToString()))
             {
                 if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
             }
-            RotationConfigWindow.DrawActionOverlay(cursor, size, 1);
+            RotationConfigWindow.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
 
             var description = _action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, _action.Name)
                 : IsTarget

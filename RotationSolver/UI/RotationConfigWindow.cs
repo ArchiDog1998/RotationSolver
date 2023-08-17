@@ -1473,7 +1473,7 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, System.Action<Status> clicked, uint notLoadId = 10100)
+    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100)
     {
         if (ImGui.BeginPopup(popupId))
         {
@@ -1510,7 +1510,6 @@ public partial class RotationConfigWindow : Window
 
             ImGui.EndPopup();
         }
-
     }
 
     private static readonly ISearchable[] _listSearchable = new ISearchable[]

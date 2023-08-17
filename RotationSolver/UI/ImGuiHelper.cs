@@ -1,5 +1,4 @@
 ﻿using ECommons.DalamudServices;
-using F23.StringSimilarity;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
@@ -27,83 +26,13 @@ internal static class ImGuiHelper
         ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X + 30 * ImGuiHelpers.GlobalScale));
     }
 
-    internal static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] data, Action<T> selectAction) where T : ITexture
-    {
-        if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
-        {
-            SearchItems(ref searchTxt, data, selectAction);
-            ImGui.EndCombo();
-        }
-    }
 
-    internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> data, Action<T> selectAction) where T : ITexture
-    {
-        SearchItems(ref searchTxt, data, i => i.Name, selectAction, i =>
-        {
-            if(i.GetTexture(out var texture))
-            {
-                ImGui.Image(texture.ImGuiHandle, new Vector2(24, 24));
-            }
-        }, texture => texture.Description);
-    }
-
-    internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
-    {
-        ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
-
-        if (ImGui.BeginCombo(popId, name, ImGuiComboFlags.HeightLargest))
-        {
-            SearchItems(ref searchTxt, actions, i => i.GetMemberName(), selectAction);
-
-            ImGui.EndCombo();
-        }
-    }
 
     public static string GetMemberName(this MemberInfo info)
     {
         if (LocalizationManager.RightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
 
         return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? info.Name;
-    }
-
-    internal static void SearchItems<T>(ref string searchTxt, IEnumerable<T> actions, Func<T, string> getName, Action<T> selectAction, Action<T> extraDraw = null, Func<T, string> getDesc = null)
-    {
-        ImGui.Text(LocalizationManager.RightLang.ActionSequencer_SearchBar + ": ");
-        ImGui.SetNextItemWidth(200);
-        ImGui.InputText("##SearchBar", ref searchTxt, 16);
-
-        if (!string.IsNullOrWhiteSpace(searchTxt))
-        {
-            var src = searchTxt;
-            var l = new Levenshtein();
-            actions = actions.OrderBy(a => l.Distance(getName(a), src)).ToArray();
-        }
-
-        if (ImGui.BeginChild($"##ActionsCandidateList", new Vector2(200, 400), true))
-        {
-            foreach (var item in actions)
-            {
-                if (extraDraw != null)
-                {
-                    extraDraw(item);
-                    ImGui.SameLine();
-                }
-
-                if (ImGui.Selectable(getName(item)))
-                {
-                    selectAction?.Invoke(item);
-
-                    ImGui.CloseCurrentPopup();
-                }
-
-                if (getDesc != null && ImGui.IsItemHovered())
-                {
-                    var desc = getDesc(item);
-                    ImguiTooltips.ShowTooltip(desc);
-                }
-            }
-            ImGui.EndChild();
-        }
     }
 
     const float INDENT_WIDTH = 180;

@@ -10,7 +10,7 @@ namespace RotationSolver.UI;
 
 public partial class RotationConfigWindow
 {
-    private static readonly Levenshtein StringComparer = new ();
+    internal static readonly Levenshtein StringComparer = new ();
 
     private string _searchText = string.Empty;
     private ISearchable[] _searchResults = Array.Empty<ISearchable>();

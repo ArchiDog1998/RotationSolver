@@ -1,7 +1,7 @@
 ﻿namespace RotationSolver.Basic.Attributes;
 
 /// <summary>
-/// The description about the rotation.
+/// The description about the macro. If it tag at the rotation class, it means Burst. Others means the macro that this method belongs to.
 /// </summary>
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 public class RotationDescAttribute : Attribute
