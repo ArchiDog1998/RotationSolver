@@ -20,7 +20,6 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
-using System.Xml.Linq;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -719,7 +718,10 @@ public partial class RotationConfigWindow : Window
 
                     if(item.GetTexture(out var texture))
                     {
-                        ControlWindow.DrawIAction(texture.ImGuiHandle, DESC_SIZE * _scale, 1);
+                        var cursor = ImGui.GetCursorPos();
+                        var size = DESC_SIZE * _scale;
+                        NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size);
+                        DrawActionOverlay(cursor, size, 1);
                         ImguiTooltips.HoveredTooltip(item.Name);
                     }
                     notStart = true;

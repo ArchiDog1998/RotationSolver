@@ -250,7 +250,6 @@ internal partial class Strings
     public string ConfigWindow_Control_ShowItemsCooldown { get; set; } = "Show Items' Cooldown";
     public string ConfigWindow_Control_ShowGCDCooldown { get; set; } = "Show GCD' Cooldown";
     public string ConfigWindow_Control_UseOriginalCooldown { get; set; } = "Show Original Cooldown";
-    public string ConfigWindow_Control_CooldownActionOneLine { get; set; } = "The count of cooldown actions in one line.";
     public string ConfigWindow_Control_CooldownFontSize { get; set; } = "Change the cooldown font size.";
     public string ConfigWindow_Control_UnlockBackgroundColor { get; set; } = "Unlocked Control Window's Background";
     public string ConfigWindow_Control_LockBackgroundColor { get; set; } = "Locked Control Window's Background";
@@ -259,7 +258,6 @@ internal partial class Strings
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
     public string ConfigWindow_Control_CooldownWindowIconSize { get; set; } = "Cooldown icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
-    public string ConfigWindow_Control_ResetButtonOrKeyCommand { get; set; } = "Right click to reset the gamepad button or key board key.\nHold Left Ctrl and middle click to clear the key setting.";
     public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
 

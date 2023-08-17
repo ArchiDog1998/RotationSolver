@@ -1,9 +1,12 @@
-﻿using RotationSolver.Localization;
+﻿using Dalamud.Interface.Windowing;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Drawing;
 
 namespace RotationSolver.UI;
 
-internal class CooldownWindow : InfoWindow
+internal class CooldownWindow : Window
 {
     public CooldownWindow()
         :base(nameof(CooldownWindow))
@@ -15,25 +18,27 @@ internal class CooldownWindow : InfoWindow
     {
         if (RotationUpdater.RightNowRotation != null)
         {
+            var width = Service.Config.GetValue(PluginConfigFloat.CooldownWindowIconSize);
+            var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (width * (1 + 6 / 82) + ImGui.GetStyle().ItemSpacing.X)));
+
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
                 var showItems = pair.OrderBy(a => a.SortKey).Where(a => a.IsInCooldown);
-                if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowGCDCooldown)) showItems = showItems.Where(i => !(i is IBaseAction a && a.IsGeneralGCD));
+                if (!Service.Config.GetValue(PluginConfigBool.ShowGCDCooldown)) showItems = showItems.Where(i => !(i is IBaseAction a && a.IsGeneralGCD));
 
                 if (!showItems.Any()) continue;
-                if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowItemsCooldown) && showItems.Any(i => i is IBaseItem)) continue;
+                if (!Service.Config.GetValue(PluginConfigBool.ShowItemsCooldown) && showItems.Any(i => i is IBaseItem)) continue;
 
                 ImGui.Text(pair.Key);
 
                 uint started = 0;
                 foreach (var item in showItems)
                 {
-                    if (started % Math.Max(1, Service.Config.GetValue(Basic.Configuration.PluginConfigInt.CooldownActionOneLine)) != 0)
+                    if (started++ % count != 0)
                     {
                         ImGui.SameLine();
                     }
-                    DrawActionCooldown(item);
-                    started++;
+                    DrawActionCooldown(item, width);
                 }
             }
         }
@@ -41,9 +46,8 @@ internal class CooldownWindow : InfoWindow
 
     static readonly uint progressCol = ImGui.ColorConvertFloat4ToU32(new Vector4(0.6f, 0.6f, 0.6f, 0.7f));
 
-    private static void DrawActionCooldown(IAction act)
+    private static void DrawActionCooldown(IAction act, float width)
     {
-        var width = Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.CooldownWindowIconSize);
         var recast = act.RecastTimeOneChargeRaw;
         var elapsed = act.RecastTimeElapsedRaw;
         var shouldSkip = recast < 3 && act is IBaseAction a && !a.IsRealGCD;
@@ -52,7 +56,7 @@ internal class CooldownWindow : InfoWindow
         var winPos = ImGui.GetWindowPos();
 
         var r = -1f;
-        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOriginalCooldown))
+        if (Service.Config.GetValue(PluginConfigBool.UseOriginalCooldown))
         {
             r = !act.EnoughLevel ? 0: recast == 0 || !act.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
         }
@@ -63,7 +67,7 @@ internal class CooldownWindow : InfoWindow
 
         if (!act.EnoughLevel)
         {
-            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOriginalCooldown))
+            if (!Service.Config.GetValue(PluginConfigBool.UseOriginalCooldown))
             {
                 ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X, pos.Y) + winPos,
                     new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, progressCol);
@@ -71,7 +75,7 @@ internal class CooldownWindow : InfoWindow
         }
         else if (act.IsCoolingDown && !shouldSkip)
         {
-            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseOriginalCooldown))
+            if (!Service.Config.GetValue(PluginConfigBool.UseOriginalCooldown))
             {
                 var ratio = recast == 0 || !act.EnoughLevel ? 0 : elapsed % recast / recast;
                 var startPos = new Vector2(pos.X + size.X * ratio, pos.Y) + winPos;
@@ -81,7 +85,7 @@ internal class CooldownWindow : InfoWindow
                 ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), black);
             }
 
-            ImGui.PushFont(ImGuiHelper.GetFont(Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.CooldownFontSize)));
+            ImGui.PushFont(ImGuiHelper.GetFont(Service.Config.GetValue(PluginConfigFloat.CooldownFontSize)));
             string time = recast == 0  ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;

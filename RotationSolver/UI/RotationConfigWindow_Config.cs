@@ -267,7 +267,6 @@ public partial class RotationConfigWindow
             new CheckBoxSearchPlugin(PluginConfigBool.ShowGCDCooldown),
             new CheckBoxSearchPlugin(PluginConfigBool.ShowItemsCooldown),
 
-            new DragIntSearchPlugin(PluginConfigInt.CooldownActionOneLine, 1),
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownFontSize, 0.1f),
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownWindowIconSize, 0.2f),
 
@@ -625,7 +624,7 @@ public partial class RotationConfigWindow
     {
         new CheckBoxSearchPlugin(PluginConfigBool.MoveTowardsScreenCenter),
         new CheckBoxSearchPlugin(PluginConfigBool.MoveAreaActionFarthest),
-        new DragIntSearchPlugin(PluginConfigInt.MoveTargetAngle, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MoveTargetAngle, 0.02f),
         new DragFloatSearchPlugin(PluginConfigFloat.DistanceForMoving, 1f),
     };
 

@@ -8,25 +8,11 @@ namespace RotationSolver.UI;
 
 internal static class ImGuiHelper
 {
-    public static void HoveredString(string text, Action selected = null)
-    {
-        if (ImGui.IsItemHovered())
-        {
-            ImguiTooltips.ShowTooltip(text);
-
-            if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
-            {
-                selected?.Invoke();
-            }
-        }
-    }
 
     internal static void SetNextWidthWithName(string name)
     {
         ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X + 30 * ImGuiHelpers.GlobalScale));
     }
-
-
 
     public static string GetMemberName(this MemberInfo info)
     {

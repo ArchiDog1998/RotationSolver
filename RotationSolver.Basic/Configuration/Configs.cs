@@ -219,10 +219,6 @@ public enum PluginConfigInt : byte
 
     [Default(0)] TargetingIndex,
     [Default(0)] BeneficialAreaStrategy,
-
-    [Obsolete]
-    [Default(15, 1, 30)] CooldownActionOneLine,
-    [Default(0, 0, 100)] MoveTargetAngle
 }
 
 public enum PluginConfigBool : byte
@@ -387,7 +383,7 @@ public enum PluginConfigFloat : byte
     [Default(1f)] CountdownDelayMax,
     [Default(0.6f, 0.5f, 0.7f)] CountDownAhead,
 
-    [Default(24f)] MoveTargetAngle,
+    [Default(24f, 0f, 90f)] MoveTargetAngle,
     [Default(60f, 10f, 1800f)] DeadTimeBoss,
     [Default(10f, 0f, 60f)] DeadTimeDying,
 

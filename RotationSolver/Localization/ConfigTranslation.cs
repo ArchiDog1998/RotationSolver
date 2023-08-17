@@ -35,12 +35,10 @@ internal static class ConfigTranslation
     public static string ToName(this PluginConfigInt config) => config switch
     {
         PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
-        PluginConfigInt.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
 
         // UI
         PluginConfigInt.KeyBoardNoiseMin => LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
         PluginConfigInt.LessMPNoRaise => LocalizationManager.RightLang.ConfigWindow_Param_LessMPNoRaise,
-        PluginConfigInt.CooldownActionOneLine => LocalizationManager.RightLang.ConfigWindow_Control_CooldownActionOneLine,
         _ => string.Empty,
     };
 
@@ -178,6 +176,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.HealthDifference => LocalizationManager.RightLang.ConfigWindow_Param_HealthDifference,
         PluginConfigFloat.HealthHealerRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
         PluginConfigFloat.HealthTankRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
+        PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
 
         // target
         PluginConfigFloat.DeadTimeBoss => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeBoss,
@@ -215,7 +214,6 @@ internal static class ConfigTranslation
     {
         PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription,
 
-        PluginConfigInt.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngleDesc,
         _ => string.Empty,
     };
 
@@ -235,6 +233,8 @@ internal static class ConfigTranslation
 
     public static string ToDescription(this PluginConfigFloat config) => config switch
     {
+        PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngleDesc,
+
         _ => string.Empty,
     };
 
