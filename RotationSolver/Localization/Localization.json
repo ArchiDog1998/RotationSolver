@@ -192,10 +192,11 @@
   "ConfigWindow_List_HostileCastingAreaDesc": "If the target is casting the action like this, it'll defense area.",
   "ConfigWindow_List_NoHostile": "No Hostile",
   "ConfigWindow_List_NoHostileDesc": "Add a name of target that never be the hostile for you.",
+  "ActionSequencer_Load": "Load From folder.",
   "ActionSequencer_Can": "Can",
-  "ActionSequencer_Cannot": "Cannot",
+  "ActionSequencer_Cannot": "Can Not",
   "ActionSequencer_Is": "Is",
-  "ActionSequencer_Isnot": "Isnot",
+  "ActionSequencer_Isnot": "Is Not",
   "ActionSequencer_Has": "Has",
   "ActionSequencer_HasNot": "Has not",
   "ActionSequencer_TimeOffset": "Time Offset",
@@ -478,5 +479,6 @@
   "ConfigWindow_Tab_Extra": "Some features shouldn't be included by RS.",
   "ConfigWindow_List_AddPosition": "Add One territory position",
   "ConfigWindow_Actions_MoveUp": "Move Up",
-  "ConfigWindow_Actions_MoveDown": "Move Down"
+  "ConfigWindow_Actions_MoveDown": "Move Down",
+  "ConfigWindow_NotInJob": "You can't set this setting at your job!\n \nRoles or jobs needed:\n{0}"
 }

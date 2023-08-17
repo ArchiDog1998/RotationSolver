@@ -378,7 +378,7 @@ public partial class RotationConfigWindow : Window
 
                 foreach (var searchable in _searchResults)
                 {
-                    searchable?.Draw(Job, true);
+                    searchable?.Draw(Job);
                 }
             }
             else

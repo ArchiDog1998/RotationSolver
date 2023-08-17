@@ -697,4 +697,5 @@ internal partial class Strings
     public string ConfigWindow_List_AddPosition { get; set; } = "Add One territory position";
     public string ConfigWindow_Actions_MoveUp { get; set; } = "Move Up";
     public string ConfigWindow_Actions_MoveDown { get; set; } = "Move Down";
+    public string ConfigWindow_NotInJob { get; set; } = "You can't set this setting at your job!\n \nRoles or jobs needed:\n{0}";
 }

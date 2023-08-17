@@ -1,7 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
-using ECommons.DalamudServices;
-using ECommons.ExcelServices;
-using ECommons.ImGuiMethods;
+﻿using ECommons.ExcelServices;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
@@ -29,26 +26,44 @@ internal abstract class Searchable : ISearchable
     public JobRole[] JobRoles { get; set; }
     public Job[] Jobs { get; set; }
 
-    public void Draw(Job job, bool mustDraw = false)
+    public unsafe void Draw(Job job)
     {
-        if (!mustDraw)
+        var canDraw = true;
+
+        if (JobRoles != null)
         {
-            var canDraw = true;
-            if (JobRoles != null)
+            var role = RotationUpdater.RightNowRotation?.ClassJob?.GetJobRole();
+            if (role.HasValue)
             {
-                var role = RotationUpdater.RightNowRotation?.ClassJob?.GetJobRole();
-                if (role.HasValue)
-                {
-                    canDraw = JobRoles.Contains(role.Value);
-                }
+                canDraw = JobRoles.Contains(role.Value);
             }
+        }
 
-            if (Jobs != null)
-            {
-                canDraw |= Jobs.Contains(DataCenter.Job);
-            }
+        if (Jobs != null)
+        {
+            canDraw |= Jobs.Contains(DataCenter.Job);
+        }
 
-            if (!canDraw) return;
+        if (!canDraw)
+        {
+            var textColor = *ImGui.GetStyleColorVec4(ImGuiCol.Text);
+
+            ImGui.PushStyleColor(ImGuiCol.Text, *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled));
+
+            var cursor = ImGui.GetCursorPos() + ImGui.GetWindowPos();
+            ImGui.TextWrapped(Name);
+            var size = ImGui.GetItemRectSize();
+            cursor += new Vector2(0, size.Y / 2);
+            ImGui.GetWindowDrawList().AddLine(cursor, cursor + new Vector2(size.X, 0), ImGui.ColorConvertFloat4ToU32(textColor));
+
+            ImGui.PopStyleColor();
+
+            var roleOrJob = string.Join(", ", JobRoles ?? Array.Empty<JobRole>());
+            var jobs = string.Join(", ", Jobs ?? Array.Empty<Job>());
+            if (string.IsNullOrEmpty(roleOrJob)) roleOrJob = jobs;
+            else if (string.IsNullOrEmpty(jobs)) roleOrJob +='\n' + jobs;
+            ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ConfigWindow_NotInJob, roleOrJob));
+            return;
         }
 
         DrawMain(job);
