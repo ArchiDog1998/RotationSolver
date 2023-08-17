@@ -34,15 +34,12 @@ internal class ConditionHelper
 
     public static void DrawByteEnum<T>(string name, ref T value, Func<T, string> function) where T : struct, Enum
     {
-        var type = (int)(byte)(object)value;
-        var names = Enum.GetValues<T>().Select(function).ToArray();
-        //ImGui.SetNextItemWidth(100);
-        ImGui.SetNextItemWidth(Math.Max(80, ImGui.CalcTextSize(name).X + 30));
+        var values = Enum.GetValues<T>();
+        var index = Array.IndexOf(values, value);
+        var names = values.Select(function).ToArray();
 
-        if (ImGui.Combo(name, ref type, names, names.Length))
-        {
-            value = (T)(object)(byte)type;
-        }
+        ImGuiHelper.SelectableCombo(name, names, ref index);
+        value = values[index];
     }
 
     public static bool DrawDragFloat(string name, ref float value)
@@ -151,6 +148,5 @@ internal class ConditionHelper
             group.Draw();
             ImGui.EndPopup();
         }
-
     }
 }

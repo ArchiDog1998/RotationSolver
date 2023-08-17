@@ -26,7 +26,7 @@ internal class ConditionSet : ICondition
 
         ImGui.SameLine();
 
-        if(ImGui.Button((IsAnd ? "&&" : "||") + $"##Rule{GetHashCode()}"))
+        if(ImGui.Selectable((IsAnd ? "&&" : " | | ") + $"##Rule{GetHashCode()}"))
         {
             IsAnd = !IsAnd;
         }

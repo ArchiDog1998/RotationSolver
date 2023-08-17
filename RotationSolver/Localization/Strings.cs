@@ -291,20 +291,15 @@ internal partial class Strings
     #endregion
 
     #region ScriptWindow
-    public string ActionSequencer_DragdropDescription { get; set; } = "Drag&drop to move，Ctrl+Alt+RightClick to delete.";
-    public string ActionSequencer_SearchBar { get; set; } = "Search Bar";
-    public string ActionSequencer_MustUse { get; set; } = "MustUse";
-    public string ActionSequencer_MustUseDesc { get; set; } = "Skip AOE and Buff.";
-    public string ActionSequencer_Empty { get; set; } = "UseUp";
-    public string ActionSequencer_EmptyDesc { get; set; } = "UseUp or Skip Combo";
-
     public string ActionSequencer_Can { get; set; } = "Can";
     public string ActionSequencer_Cannot { get; set; } = "Cannot";
     public string ActionSequencer_Is { get; set; } = "Is";
     public string ActionSequencer_Isnot { get; set; } = "Isnot";
-    public string ActionSequencer_Have { get; set; } = "Have";
-    public string ActionSequencer_HaveNot { get; set; } = "Have not";
+    public string ActionSequencer_Has { get; set; } = "Has";
+    public string ActionSequencer_HasNot { get; set; } = "Has not";
     public string ActionSequencer_TimeOffset { get; set; } = "Time Offset";
+
+    public string ActionSequencer_AOECount { get; set; } = "AOE Count";
     public string ActionSequencer_Charges { get; set; } = "Charges";
     public string ActionSequencer_ConditionSet { get; set; } = "ConditionSet";
     public string ActionSequencer_ActionCondition { get; set; } = "ActionCondition";
@@ -313,8 +308,10 @@ internal partial class Strings
     public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
     public string ActionSequencer_Target { get; set; } = "Target";
     public string ActionSequencer_Player { get; set; } = "Player";
-    public string ActionSequencer_StatusSelf { get; set; } = "StatusSelf";
-    public string ActionSequencer_StatusSelfDesc { get; set; } = "StatusSelf";
+    public string ActionSequencer_Original { get; set; } = "Original";
+    public string ActionSequencer_Adjusted { get; set; } = "Adjusted";
+    public string ActionSequencer_StatusSelf { get; set; } = "From Self";
+    public string ActionSequencer_StatusAll { get; set; } = "From All";
     #endregion
 
     #region Actions
@@ -372,7 +369,7 @@ internal partial class Strings
     #endregion
 
     #region TargetConditionType
-    public string TargetConditionType_HaveStatus { get; set; } = "Have Status";
+    public string TargetConditionType_HasStatus { get; set; } = "Has Status";
     public string TargetConditionType_IsDying { get; set; } = "Is Dying";
     public string TargetConditionType_IsBoss { get; set; } = "Is Boss";
     public string TargetConditionType_Distance { get; set; } = "Distance";

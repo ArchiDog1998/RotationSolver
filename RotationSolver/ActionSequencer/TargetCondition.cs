@@ -1,13 +1,8 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using ECommons.Reflection;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Localization;
-using RotationSolver.TextureItems;
 using RotationSolver.UI;
-using RotationSolver.Updaters;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RotationSolver.ActionSequencer;
 
@@ -174,8 +169,8 @@ internal class TargetCondition : ICondition
             case TargetConditionType.HasStatus:
                 combos = new string[]
                 {
-                    LocalizationManager.RightLang.ActionSequencer_Have,
-                    LocalizationManager.RightLang.ActionSequencer_HaveNot,
+                    LocalizationManager.RightLang.ActionSequencer_Has,
+                    LocalizationManager.RightLang.ActionSequencer_HasNot,
                 };
                 break;
             case TargetConditionType.IsDying:
@@ -197,11 +192,8 @@ internal class TargetCondition : ICondition
 
         ImGui.SameLine();
 
-        ImGuiHelper.SetNextWidthWithName(combos[condition]);
-        if (ImGui.Combo($"##Comparation{GetHashCode()}", ref condition, combos, combos.Length))
-        {
-            Condition = condition > 0;
-        }
+        ImGuiHelper.SelectableCombo($"##Comparation{GetHashCode()}", combos, ref condition);
+        Condition = condition > 0;
 
         var popupId = "Status Finding Popup" + GetHashCode().ToString();
 
@@ -232,8 +224,13 @@ internal class TargetCondition : ICondition
 
                 ImGui.SameLine();
 
-                ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
+                var check = FromSelf ? 1 : 0;
+                ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check);
+                FromSelf = check != 0;
                 break;
 
             case TargetConditionType.StatusEnd:
@@ -242,9 +239,13 @@ internal class TargetCondition : ICondition
 
                 ImGui.SameLine();
 
-                ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-
-                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
+                check = FromSelf ? 1 : 0;
+                ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check);
+                FromSelf = check != 0;
 
                 ConditionHelper.DrawDragFloat($"s##Seconds{GetHashCode()}", ref DistanceOrTime);
                 break;
@@ -256,9 +257,13 @@ internal class TargetCondition : ICondition
 
                 ImGui.SameLine();
 
-                ImGui.Checkbox($"{LocalizationManager.RightLang.ActionSequencer_StatusSelf}##Self{GetHashCode()}", ref FromSelf);
-
-                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_StatusSelfDesc);
+                check = FromSelf ? 1 : 0;
+                ImGuiHelper.SelectableCombo($"From Self {GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check);
+                FromSelf = check != 0;
 
                 ConditionHelper.DrawDragInt($"GCD##GCD{GetHashCode()}", ref GCD);
                 ConditionHelper.DrawDragFloat($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{GetHashCode()}", ref DistanceOrTime);
@@ -274,13 +279,13 @@ internal class TargetCondition : ICondition
             case TargetConditionType.CastingAction:
                 ImGui.SameLine();
                 ImGuiHelper.SetNextWidthWithName(CastingActionName);
-                ImGui.InputText($"Ability name##CastingActionName{GetHashCode()}", ref CastingActionName, 100);
+                ImGui.InputText($"Ability name##CastingActionName{GetHashCode()}", ref CastingActionName, 128);
                 break;
 
             case TargetConditionType.CastingActionTimeUntil:
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(DistanceOrTime.ToString()).X));
-                ImGui.InputFloat($"Seconds##CastingActionTimeUntil{GetHashCode()}", ref DistanceOrTime, .1f);
+                ImGui.InputFloat($"s##CastingActionTimeUntil{GetHashCode()}", ref DistanceOrTime, .1f);
                 break;
         }
     }

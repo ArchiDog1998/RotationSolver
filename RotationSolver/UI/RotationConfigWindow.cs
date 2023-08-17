@@ -20,6 +20,7 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Xml.Linq;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -261,7 +262,7 @@ public partial class RotationConfigWindow : Window
             var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? Array.Empty<ICustomRotation>();
 
             var iconSize = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH));
-            var comboSize = ImGui.CalcTextSize(rotation.RotationName).X + _scale * 30;
+            var comboSize = ImGui.CalcTextSize(rotation.RotationName).X;
 
             const string slash = " - ";
             var gameVersionSize = ImGui.CalcTextSize(slash + rotation.GameVersion).X + ImGui.GetStyle().ItemSpacing.X;
@@ -328,10 +329,14 @@ public partial class RotationConfigWindow : Window
     {
         ImGui.SetNextItemWidth(comboSize);
         ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
-        var isStartCombo = ImGui.BeginCombo("##RotationName:" + rotation.Name, rotation.RotationName);
+        const string popUp = "Rotation Solver Select Rotation";
+        if (ImGui.Selectable(rotation.RotationName + "##RotationName:" + rotation.Name))
+        {
+            if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
+        }
         ImGui.PopStyleColor();
 
-        if (isStartCombo)
+        if (ImGui.BeginPopup(popUp))
         {
             foreach (var r in rotations)
             {
@@ -344,7 +349,7 @@ public partial class RotationConfigWindow : Window
                 ImguiTooltips.HoveredTooltip(r.Description);
                 ImGui.PopStyleColor();
             }
-            ImGui.EndCombo();
+            ImGui.EndPopup();
         }
 
         var warning = gameVersion + rotation.GameVersion;

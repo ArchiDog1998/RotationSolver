@@ -115,4 +115,34 @@ internal static class ImGuiHelper
         font.Scale = size / style.BaseSizePt;
         return font;
     }
+
+    public static void SelectableCombo(string popUp, string[] items, ref int index)
+    {
+        var count = items.Length;
+        var name = items[index % count] + "##" + popUp;
+        ImGui.SetNextItemWidth(ImGui.CalcTextSize(name).X);
+        if (ImGui.Selectable(name))
+        {
+            if(count < 3)
+            {
+                index = (index + 1) % count;
+            }
+            else
+            {
+                if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
+            }
+        }
+
+        if (ImGui.BeginPopup(popUp))
+        {
+            for (int i = 0; i < count; i++)
+            {
+                if (ImGui.Selectable(items[i]))
+                {
+                    index = i;
+                }
+            }
+            ImGui.EndPopup();
+        }
+    }
 }
