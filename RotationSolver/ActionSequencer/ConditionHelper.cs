@@ -76,9 +76,7 @@ internal class ConditionHelper
 
     internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
     {
-        ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X));
-
-        if (ImGui.Selectable(name + "##" + popId))
+        if (ImGuiHelper.SelectableButton(name + "##" + popId))
         {
             if (!ImGui.IsPopupOpen(popId)) ImGui.OpenPopup(popId);
         }

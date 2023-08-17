@@ -1,12 +1,10 @@
-﻿using Dalamud.Interface.Windowing;
-using RotationSolver.Basic.Configuration;
+﻿using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Drawing;
 
 namespace RotationSolver.UI;
 
-internal class CooldownWindow : Window
+internal class CooldownWindow : CtrlWindow
 {
     public CooldownWindow()
         :base(nameof(CooldownWindow))
@@ -63,7 +61,6 @@ internal class CooldownWindow : Window
         var pair = ControlWindow.DrawIAction(act, width, r, false);
         var pos = pair.Item1;
         var size = pair.Item2;
-        ImguiTooltips.HoveredTooltip(act.Name + "\n" + LocalizationManager.RightLang.ConfigWindow_Control_ClickToUse);
 
         if (!act.EnoughLevel)
         {

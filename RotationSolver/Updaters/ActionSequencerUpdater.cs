@@ -1,8 +1,12 @@
-﻿using ECommons.ImGuiMethods;
+﻿using Dalamud.Interface.Colors;
+using ECommons.DalamudServices;
+using ECommons.ImGuiMethods;
 using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Localization;
 using RotationSolver.UI;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace RotationSolver.Updaters;
 
@@ -90,6 +94,7 @@ internal class ActionSequencerUpdater
     private static void Delete(string name)
     {
         _conditionSet = _conditionSet.Where(c => c.Name != name);
+        File.Delete(_actionSequencerFolder + $"\\{name}.json");
     }
 
     public static void DrawHeader(float width)
@@ -105,51 +110,41 @@ internal class ActionSequencerUpdater
             ImGui.SameLine();
         }
 
-        var index = Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex);
-
         var combos = ConditionSetsName;
-        if (combos != null && combos.Length > index)
-        {
-            ImGui.SetNextItemWidth(ImGui.CalcTextSize(combos[index]).X + width);
-        }
-        else
-        {
-            ImGui.SetNextItemWidth(width);
-        }
+        ImGui.SetNextItemWidth(width);
 
-        if(ImGui.Combo("##MajorConditionCombo", ref index, combos, combos.Length))
+        if(ImGui.BeginCombo("##MajorConditionCombo", ""))
         {
-            Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, index);
-        }
-
-        if (hasSet)
-        {
-            ImGui.SameLine();
-            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, "##DeleteTimelineConditionSet"))
+            for (int i = 0; i < combos.Length; i++)
             {
-                Delete(set.Name);
+                void DeleteFile()
+                {
+                    Delete(combos[i]);
+                }
+
+                var key = "Condition Set At " + i.ToString();
+
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, new string[] { "Delete" }));
+
+
+                if (ImGui.Selectable(combos[i]))
+                {
+                    Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, i);
+                }
+
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
+    (DeleteFile, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
             }
 
-            ImGui.SameLine();
-        }
-
-        ImGui.SameLine();
-
-        if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "##AddNewTimelineConditionSet"))
-        {
-            AddNew();
-        }
-
-        ImGui.SameLine();
-        if (ImGuiEx.IconButton(FontAwesomeIcon.Folder, "##OpenDefinationFolder"))
-        {
-            Process.Start("explorer.exe", _actionSequencerFolder);
-        }
-
-        ImGui.SameLine();
-        if (ImGuiEx.IconButton(FontAwesomeIcon.Save, "##SaveTheConditions"))
-        {
-            SaveFiles();
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
+            ImGui.PushFont(UiBuilder.IconFont);
+            if (ImGui.Selectable(FontAwesomeIcon.Plus.ToIconString()))
+            {
+                AddNew();
+            }
+            ImGui.PopFont();
+            ImGui.PopStyleColor();
+            ImGui.EndCombo();
         }
 
         ImGui.SameLine();
@@ -157,5 +152,6 @@ internal class ActionSequencerUpdater
         {
             LoadFiles();
         }
+        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Load);
     }
 }

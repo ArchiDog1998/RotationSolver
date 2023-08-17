@@ -206,7 +206,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "Healing the members with GCD if there is nothing to do in combat and their min HP%% is lower than this.";
 
-    public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invincibility";
+    public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invulnerability";
 
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
@@ -258,7 +258,6 @@ internal partial class Strings
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
     public string ConfigWindow_Control_CooldownWindowIconSize { get; set; } = "Cooldown icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
-    public string ConfigWindow_Control_ClickToUse { get; set; } = "Click to use it!";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
 
     public string ConfigWindow_Rotation_DownloadRotations { get; set; } = "Auto Download Rotations";
@@ -289,10 +288,11 @@ internal partial class Strings
     #endregion
 
     #region ScriptWindow
+    public string ActionSequencer_Load { get; set; } = "Load From folder.";
     public string ActionSequencer_Can { get; set; } = "Can";
-    public string ActionSequencer_Cannot { get; set; } = "Cannot";
+    public string ActionSequencer_Cannot { get; set; } = "Can Not";
     public string ActionSequencer_Is { get; set; } = "Is";
-    public string ActionSequencer_Isnot { get; set; } = "Isnot";
+    public string ActionSequencer_Isnot { get; set; } = "Is Not";
     public string ActionSequencer_Has { get; set; } = "Has";
     public string ActionSequencer_HasNot { get; set; } = "Has not";
     public string ActionSequencer_TimeOffset { get; set; } = "Time Offset";
@@ -616,7 +616,8 @@ internal partial class Strings
     public string ConfigWindow_About_Macros { get; set; } = "Macros";
     public string ConfigWindow_About_Links { get; set; } = "Links";
     public string ConfigWindow_About_Compatibility { get; set; } = "Compatibility";
-    public string ConfigWindow_About_Compatibility_Description { get; set; } = "literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:";
+    public string ConfigWindow_About_Compatibility_Description { get; set; } = "Literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:";
+    public string ConfigWindow_About_Compatibility_Others { get; set; } = "Please don't relogin without closing the game. It may occur crash.";
 
     public string ConfigWindow_About_Compatibility_Mistake { get; set; } = "Can't properly execute the behavior that RS is going to do.";
     public string ConfigWindow_About_Compatibility_Mislead { get; set; } = "Misleading RS to make the right decision.";

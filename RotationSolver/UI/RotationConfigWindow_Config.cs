@@ -666,7 +666,7 @@ public partial class RotationConfigWindow
 
             var key = $"Targeting Type Pop Up: {i}";
 
-            Searchable.DrawHotKeysPopup(key, string.Empty,
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
                 (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }),
                 (LocalizationManager.RightLang.ConfigWindow_Actions_MoveUp, Up, new string[] { "↑" }),
                 (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }));
@@ -680,7 +680,7 @@ public partial class RotationConfigWindow
                 Service.Config.GlobalConfig.TargetingTypes[i] = (TargetingType)targingType;
             }
 
-            Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
                 (Delete, new VirtualKey[] { VirtualKey.DELETE }),
                 (Up, new VirtualKey[] { VirtualKey.UP }),
                 (Down, new VirtualKey[] { VirtualKey.DOWN }));

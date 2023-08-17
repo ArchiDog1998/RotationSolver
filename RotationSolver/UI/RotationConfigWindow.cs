@@ -62,6 +62,7 @@ public partial class RotationConfigWindow : Window
     public override void OnClose()
     {
         Service.Config.Save();
+        ActionSequencerUpdater.SaveFiles();
         base.OnClose();
     }
 
@@ -510,6 +511,8 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawAboutCompatibility()
     {
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Others);
+
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Description);
 
         ImGui.Spacing();
@@ -593,6 +596,11 @@ public partial class RotationConfigWindow : Window
         if (IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
             Util.OpenLink("https://crowdin.com/project/rotationsolver");
+        }
+
+        if (ImGuiEx.IconButton(FontAwesomeIcon.Folder, "##OpenFolder"))
+        {
+            Process.Start("explorer.exe", Svc.PluginInterface.ConfigDirectory.FullName);
         }
     }
     #endregion
@@ -790,14 +798,14 @@ public partial class RotationConfigWindow : Window
             string command = ToCommandStr(OtherCommandType.Rotations,config.Name,  config.DefaultValue);
             void Reset() => set.SetValue(config.Name, config.DefaultValue);
 
-            Searchable.PrepareGroup(key, command, Reset);
+            ImGuiHelper.PrepareGroup(key, command, Reset);
 
             if (config is RotationConfigCombo c)
             {
                 var val = set.GetCombo(c.Name);
                 ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.Items[val]).X + 50 * _scale);
                 var openCombo = ImGui.BeginCombo(name, c.Items[val]);
-                Searchable.ReactPopup(key, command, Reset);
+                ImGuiHelper.ReactPopup(key, command, Reset);
                 if (openCombo)
                 {
                     for (int comboIndex = 0; comboIndex < c.Items.Length; comboIndex++)
@@ -818,7 +826,7 @@ public partial class RotationConfigWindow : Window
                 {
                     set.SetValue(config.Name, val.ToString());
                 }
-                Searchable.ReactPopup(key, command, Reset);
+                ImGuiHelper.ReactPopup(key, command, Reset);
             }
             else if (config is RotationConfigFloat f)
             {
@@ -828,7 +836,7 @@ public partial class RotationConfigWindow : Window
                 {
                     set.SetValue(config.Name, val.ToString());
                 }
-                Searchable.ReactPopup(key, command, Reset);
+                ImGuiHelper.ReactPopup(key, command, Reset);
             }
             else if (config is RotationConfigString s)
             {
@@ -839,7 +847,7 @@ public partial class RotationConfigWindow : Window
                 {
                     set.SetValue(config.Name, val.ToString());
                 }
-                Searchable.ReactPopup(key, command, Reset);
+                ImGuiHelper.ReactPopup(key, command, Reset);
                 continue;
             }
             else if (config is RotationConfigInt i)
@@ -850,13 +858,13 @@ public partial class RotationConfigWindow : Window
                 {
                     set.SetValue(config.Name, val.ToString());
                 }
-                Searchable.ReactPopup(key, command, Reset);
+                ImGuiHelper.ReactPopup(key, command, Reset);
             }
             else continue;
 
             ImGui.SameLine();
             ImGui.TextWrapped(config.DisplayName);
-            Searchable.ReactPopup(key, command, Reset, false);
+            ImGuiHelper.ReactPopup(key, command, Reset, false);
         }
     }
 
@@ -969,8 +977,8 @@ public partial class RotationConfigWindow : Window
 
                                 string key = $"Action Macro Usage {item.Name} {item.ID}";
                                 var cmd = ToCommandStr(OtherCommandType.DoActions, $"{item}-{5}");
-                                Searchable.DrawHotKeysPopup(key, cmd);
-                                Searchable.ExecuteHotKeysPopup(key, cmd, item.Name, false);
+                                ImGuiHelper.DrawHotKeysPopup(key, cmd);
+                                ImGuiHelper.ExecuteHotKeysPopup(key, cmd, item.Name, false);
                             }
                         });
                     }
@@ -1047,8 +1055,8 @@ public partial class RotationConfigWindow : Window
 
                 const string key = "Action Enable Popup";
                 var cmd = ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString());
-                Searchable.DrawHotKeysPopup(key, cmd);
-                Searchable.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
+                ImGuiHelper.DrawHotKeysPopup(key, cmd);
+                ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
 
                 enable = _activeAction.IsInCooldown;
                 if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_ShowOnCDWindow}##{_activeAction.Name}InCooldown", ref enable))
@@ -1446,7 +1454,7 @@ public partial class RotationConfigWindow : Window
 
             var key = "Status" + status.RowId.ToString();
 
-            Searchable.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }));
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }));
 
             if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
             {
@@ -1456,7 +1464,7 @@ public partial class RotationConfigWindow : Window
                 }
                 ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + status.RowId.ToString());
 
-                Searchable.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false, 
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false, 
                     (Delete, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
             }
         }
@@ -1600,11 +1608,11 @@ public partial class RotationConfigWindow : Window
 
             var key = "Action" + action.RowId.ToString();
 
-            Searchable.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
 
             ImGui.Selectable($"{action.Name} ({action.RowId})");
 
-            Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
         }
 
         if (removeId != 0)
@@ -1730,7 +1738,7 @@ public partial class RotationConfigWindow : Window
 
                 var key = "Beneficial Positions" + i.ToString();
 
-                Searchable.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
 
                 ImGui.Selectable(pts[i].ToString());
 
@@ -1739,7 +1747,7 @@ public partial class RotationConfigWindow : Window
                     HoveredPosition = pts[i];
                 }
 
-                Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
             }
             if (removeIndex > -1)
             {

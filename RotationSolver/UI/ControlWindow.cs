@@ -320,7 +320,7 @@ internal class ControlWindow : CtrlWindow
         {
             Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
-        ImGuiHelper.DrawActionOverlay(cursor, width, IconSet.GetTexture(0u, out var text) && text.ImGuiHandle == handle ? 0 : 1);
+        ImGuiHelper.DrawActionOverlay(cursor, width, IconSet.GetTexture(0u, out var text) && text.ImGuiHandle == handle ? -1 : 1);
         ImguiTooltips.HoveredTooltip(help);
     }
 
@@ -340,7 +340,9 @@ internal class ControlWindow : CtrlWindow
         if (!action.GetTexture(out var texture, isAdjust)) return (default, default);
 
         var cursor = ImGui.GetCursorPos();
-        if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * width, action.Name))
+
+        var desc = action?.Name ?? string.Empty;
+        if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * width, desc))
         {
             if (!DataCenter.State)
             {
@@ -364,13 +366,14 @@ internal class ControlWindow : CtrlWindow
         }
         var size = ImGui.GetItemRectSize();
         ImGuiHelper.DrawActionOverlay(cursor, width, action == null ? -1 : percent);
-        ImguiTooltips.HoveredTooltip(action.Name);
+        ImguiTooltips.HoveredTooltip(desc);
 
         return (cursor, size);
     }
 
     static unsafe void DrawNextAction(float gcd, float ability, float width)
     {
+        ImGui.BeginGroup();
         var str = "Next Action";
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
         ImGui.TextColored(ImGuiColors.DalamudYellow, str);
@@ -384,5 +387,6 @@ internal class ControlWindow : CtrlWindow
         ImGui.SameLine();
 
         DrawIAction(next, ability, -1);
+        ImGui.EndGroup();
     }
 }

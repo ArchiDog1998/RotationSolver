@@ -8,6 +8,7 @@ using RotationSolver.UI.SearchableConfigs;
 using System.Drawing;
 using System.Security.Policy;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace RotationSolver.ActionSequencer;
 
@@ -26,10 +27,12 @@ internal class ConditionSet : ICondition
 
         ImGui.SameLine();
 
-        if(ImGui.Selectable((IsAnd ? "&&" : " | | ") + $"##Rule{GetHashCode()}"))
+        var index = IsAnd ? 0 : 1;
+        ImGuiHelper.SelectableCombo($"##Rule{GetHashCode()}", new string[]
         {
-            IsAnd = !IsAnd;
-        }
+            "&&" , " | | ",
+        }, ref index);
+        IsAnd = index == 0;
 
         ImGui.Spacing();
 
@@ -55,14 +58,14 @@ internal class ConditionSet : ICondition
 
             var key = $"Condition Pop Up: {condition.GetHashCode()}";
 
-            Searchable.DrawHotKeysPopup(key, string.Empty,
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
                 (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }),
                 (LocalizationManager.RightLang.ConfigWindow_Actions_MoveUp, Up, new string[] { "↑" }),
                 (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }));
 
             DrawCondition(condition.IsTrue(rotation));
 
-            Searchable.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true, 
+            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true, 
                 (Delete, new VirtualKey[] { VirtualKey.DELETE }),
                 (Up, new VirtualKey[] { VirtualKey.UP }),
                 (Down, new VirtualKey[] { VirtualKey.DOWN }));

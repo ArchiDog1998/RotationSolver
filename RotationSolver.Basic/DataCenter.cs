@@ -325,7 +325,6 @@ internal static class DataCenter
                 var time = recs.Last().ReceiveTime - recs.First().ReceiveTime + TimeSpan.FromMilliseconds(2.5f);
 
                 return damages / (float)time.TotalSeconds;
-
             }
             catch
             {

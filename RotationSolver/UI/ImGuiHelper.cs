@@ -1,4 +1,6 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Game.ClientState.Keys;
+using ECommons.DalamudServices;
+using ECommons.ImGuiMethods;
 using ImGuiScene;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
@@ -103,12 +105,12 @@ internal static class ImGuiHelper
         return font;
     }
 
-    public static void SelectableCombo(string popUp, string[] items, ref int index)
+    public static unsafe void SelectableCombo(string popUp, string[] items, ref int index)
     {
         var count = items.Length;
         var name = items[index % count] + "##" + popUp;
-        ImGui.SetNextItemWidth(ImGui.CalcTextSize(name).X);
-        if (ImGui.Selectable(name))
+
+        if (SelectableButton(name))
         {
             if(count < 3)
             {
@@ -118,6 +120,11 @@ internal static class ImGuiHelper
             {
                 if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
             }
+        }
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
         }
 
         if (ImGui.BeginPopup(popUp))
@@ -131,6 +138,16 @@ internal static class ImGuiHelper
             }
             ImGui.EndPopup();
         }
+    }
+
+    public static unsafe bool SelectableButton(string name)
+    {
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderActive)));
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderHovered)));
+        ImGui.PushStyleColor(ImGuiCol.Button, 0);
+        var result = ImGui.Button(name);
+        ImGui.PopStyleColor(3);
+        return result;
     }
 
     internal static void DrawItemMiddle(Action drawAction, float wholeWidth, float width, bool leftAlign = true)
@@ -271,4 +288,106 @@ internal static class ImGuiHelper
     }
     #endregion
 
+    #region PopUp
+    public static void DrawHotKeysPopup(string key, string command, params (string name, Action action, string[] keys)[] pairs)
+    {
+        if (ImGui.BeginPopup(key))
+        {
+            if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
+            {
+                foreach (var (name, action, keys) in pairs)
+                {
+                    if (action == null) continue;
+                    DrawHotKeys(name, action, keys);
+                }
+                if (!string.IsNullOrEmpty(command))
+                {
+                    DrawHotKeys($"Execute \"{command}\"", () => ExecuteCommand(command), "Alt");
+
+                    DrawHotKeys($"Copy \"{command}\"", () => CopyCommand(command), "Ctrl");
+                }
+                ImGui.EndTable();
+            }
+
+            ImGui.EndPopup();
+        }
+    }
+    public static void PrepareGroup(string key, string command, Action reset)
+    {
+        DrawHotKeysPopup(key, command, ("Reset to Default Value.", reset, new string[] { "Backspace" }));
+    }
+    public static void ReactPopup(string key, string command, Action reset, bool showHand = true)
+    {
+        ExecuteHotKeysPopup(key, command, string.Empty, showHand, (reset, new VirtualKey[] { VirtualKey.BACK }));
+    }
+
+    public static void ExecuteHotKeysPopup(string key, string command, string tooltip, bool showHand, params (Action action, VirtualKey[] keys)[] pairs)
+    {
+        if (!ImGui.IsItemHovered()) return;
+        if (!string.IsNullOrEmpty(tooltip)) ImguiTooltips.ShowTooltip(tooltip);
+
+        if (showHand) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+
+        if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
+        {
+            if (!ImGui.IsPopupOpen(key))
+            {
+                ImGui.OpenPopup(key);
+            }
+        }
+
+        foreach (var (action, keys) in pairs)
+        {
+            if (action == null) continue;
+            ExecuteHotKeys(action, keys);
+        }
+        if (!string.IsNullOrEmpty(command))
+        {
+            ExecuteHotKeys(() => ExecuteCommand(command), VirtualKey.MENU);
+            ExecuteHotKeys(() => CopyCommand(command), VirtualKey.CONTROL);
+        }
+    }
+
+    private static void ExecuteCommand(string command)
+    {
+        Svc.Commands.ProcessCommand(command);
+    }
+
+    private static void CopyCommand(string command)
+    {
+        ImGui.SetClipboardText(command);
+        Notify.Success($"\"{command}\" copied to clipboard.");
+    }
+
+    private static readonly SortedList<string, bool> _lastChecked = new();
+    private static void ExecuteHotKeys(Action action, params VirtualKey[] keys)
+    {
+        if (action == null) return;
+        var name = string.Join(' ', keys);
+
+        if (!_lastChecked.TryGetValue(name, out var last)) last = false;
+        var now = keys.All(k => Svc.KeyState[k]);
+        _lastChecked[name] = now;
+
+        if (!last && now) action();
+    }
+
+    private static void DrawHotKeys(string name, Action action, params string[] keys)
+    {
+        if (action == null) return;
+
+        ImGui.TableNextRow();
+        ImGui.TableNextColumn();
+        if (ImGui.Selectable(name))
+        {
+            action();
+            ImGui.CloseCurrentPopup();
+        }
+
+        ImGui.TableNextColumn();
+        ImGui.TextDisabled(string.Join(' ', keys));
+    }
+
+
+    #endregion
 }
