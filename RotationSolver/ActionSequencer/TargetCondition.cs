@@ -130,7 +130,22 @@ internal class TargetCondition : ICondition
 
         var popUpKey = "Target Condition Pop Up" + GetHashCode().ToString();
 
-        ConditionHelper.ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => ID = (ActionID)item.ID);
+        ConditionHelper.ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => ID = (ActionID)item.ID, ()=>
+        {
+            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Target))
+            {
+                _action = null;
+                ID = ActionID.None;
+                IsTarget = true;
+            }
+
+            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Player))
+            {
+                _action = null;
+                ID = ActionID.None;
+                IsTarget = false;
+            }
+        });
 
         if (_action != null ? ( _action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon))
             : IconSet.GetTexture(IsTarget ? 16u : 18u, out icon))
@@ -194,14 +209,14 @@ internal class TargetCondition : ICondition
         {
             Status = status;
             StatusId = (StatusID)Status.RowId;
-        });
+        }, size: ConditionHelper.IconSizeRaw);
 
         void DrawStatusIcon()
         {
             if (IconSet.GetTexture(Status?.Icon ?? 16220, out var icon)
                 || IconSet.GetTexture(16220, out icon))
             {
-                if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(24, 32) * ImGuiHelpers.GlobalScale, GetHashCode().ToString()))
+                if (RotationConfigWindow.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(ConditionHelper.IconSize * 3 / 4, ConditionHelper.IconSize) * ImGuiHelpers.GlobalScale, GetHashCode().ToString()))
                 {
                     if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
                 }

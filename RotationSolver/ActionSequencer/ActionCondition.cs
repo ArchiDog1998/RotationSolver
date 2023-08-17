@@ -91,6 +91,7 @@ internal class ActionCondition : ICondition
                 if(!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
             }
             RotationConfigWindow.DrawActionOverlay(cursor, ConditionHelper.IconSize, 1);
+            ImguiTooltips.HoveredTooltip(name);
         }
 
         ImGui.SameLine();

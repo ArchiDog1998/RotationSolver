@@ -19,7 +19,6 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
-using System;
 using System.Diagnostics;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
@@ -710,8 +709,6 @@ public partial class RotationConfigWindow : Window
 
                     if (notStart)
                     {
-                        ImGui.SameLine();
-                        ImGui.Text(" ");
                         ImGui.SameLine();
                     }
 
@@ -1473,7 +1470,7 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100)
+    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100, float size = 32)
     {
         if (ImGui.BeginPopup(popupId))
         {
@@ -1484,7 +1481,7 @@ public partial class RotationConfigWindow : Window
 
             if (ImGui.BeginChild("Rotation Solver Add Status", new Vector2(-1, 400 * _scale)))
             {
-                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * _scale + ImGui.GetStyle().ItemSpacing.X)));
                 var index = 0;
 
                 var searchingKey = searching;
@@ -1497,7 +1494,7 @@ public partial class RotationConfigWindow : Window
                         {
                             ImGui.SameLine();
                         }
-                        if (NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Adding" + status.RowId.ToString()))
+                        if (NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(size * 3 / 4, size) * _scale, "Adding" + status.RowId.ToString()))
                         {
                             clicked?.Invoke(status);
                             ImGui.CloseCurrentPopup();
@@ -2110,6 +2107,8 @@ public partial class RotationConfigWindow : Window
                     start, start + step);
             }
         }
+
+        ImGui.SetCursorPosY(cursor.Y);
     }
     #endregion
 

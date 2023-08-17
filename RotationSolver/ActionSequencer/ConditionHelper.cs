@@ -111,12 +111,15 @@ internal class ConditionHelper
         }
     }
 
-    public static float IconSize => 32 * ImGuiHelpers.GlobalScale;
-    private int count = 15;
-    public static void ActionSelectorPopUp(string popUpId, CollapsingHeaderGroup group, ICustomRotation rotation, Action<IAction> action)
+    public static float IconSizeRaw => ImGuiHelpers.GetButtonSize("H").Y;
+    public static float IconSize => IconSizeRaw * ImGuiHelpers.GlobalScale;
+    private const int count = 8;
+    public static void ActionSelectorPopUp(string popUpId, CollapsingHeaderGroup group, ICustomRotation rotation, Action<IAction> action, Action others = null)
     {
         if (group != null && ImGui.BeginPopup(popUpId))
         {
+            others?.Invoke();
+
             group.ClearCollapsingHeader();
 
             foreach (var pair in RotationUpdater.GroupActions(rotation.AllBaseActions))

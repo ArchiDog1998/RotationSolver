@@ -26,14 +26,12 @@ internal class ConditionSet : ICondition
 
         ImGui.SameLine();
 
-        if(ImGui.Button((IsAnd ? "&" : "|") + $"##Rule{GetHashCode()}"))
+        if(ImGui.Button((IsAnd ? "&&" : "||") + $"##Rule{GetHashCode()}"))
         {
             IsAnd = !IsAnd;
         }
 
         ImGui.Spacing();
-
-        ImGui.Indent();
 
         for(int i = 0; i < Conditions.Count; i++)
         {
@@ -52,7 +50,7 @@ internal class ConditionSet : ICondition
             void Down()
             {
                 Conditions.RemoveAt(i);
-                Conditions.Insert(Math.Min(Conditions.Count - 1, i + 1), condition);
+                Conditions.Insert(Math.Min(Conditions.Count, i + 1), condition);
             }
 
             var key = $"Condition Pop Up: {condition.GetHashCode()}";
@@ -74,7 +72,6 @@ internal class ConditionSet : ICondition
             condition.Draw(rotation);
         }
 
-        ImGui.Unindent();
         ImGui.EndGroup();
     }
 
@@ -107,23 +104,22 @@ internal class ConditionSet : ICondition
 
     internal static void DrawCondition(bool? tag)
     {
-        const float size = 32;
+        float size = ConditionHelper.IconSize * (1 + 8 / 82);
 
         if (!tag.HasValue)
         {
             if (IconSet.GetTexture("ui/uld/image2.tex", out var texture) || IconSet.GetTexture(0u, out texture))
             {
-                ImGui.Image(texture.ImGuiHandle, Vector2.One * size * ImGuiHelpers.GlobalScale);
+                ImGui.Image(texture.ImGuiHandle, Vector2.One * size);
             }
         }
         else
         {
             if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
             {
-                var offset = new Vector2(1 / 12f, 1 / 6f);
-                ImGui.Image(texture.ImGuiHandle, Vector2.One * size * ImGuiHelpers.GlobalScale,
-                    new Vector2(tag.Value ? 0 : 0.5f, 0) + offset,
-                    new Vector2(tag.Value ? 0.5f : 1, 1) - offset);
+                ImGui.Image(texture.ImGuiHandle, Vector2.One * size,
+                    new Vector2(tag.Value ? 0 : 0.5f, 0),
+                    new Vector2(tag.Value ? 0.5f : 1, 1));
             }
         }
     }

@@ -25,6 +25,7 @@ internal class MajorConditionSet
         if (conditionSet == null) return;
 
         ConditionSet.DrawCondition(conditionSet.IsTrue(rotation));
+        ImGui.SameLine();
         conditionSet?.Draw(rotation);
     }
 
@@ -37,6 +38,7 @@ internal class MajorConditionSet
         if (conditionSet == null) return;
 
         ConditionSet.DrawCondition(conditionSet.IsTrue(rotation));
+        ImGui.SameLine();
         conditionSet?.Draw(rotation);
     }
 

@@ -448,6 +448,7 @@
   "ConfigWindow_List_Actions": "Actions",
   "ConfigWindow_List_Territories": "Territories",
   "ConfigWindow_List_StatusNameOrId": "Status name or id",
+  "ConfigWindow_Actions_MemberName": "Member Name",
   "ConfigWindow_List_AddStatus": "Add Status",
   "ConfigWindow_List_Remove": "Remove",
   "ConfigWindow_List_ActionNameOrId": "Action name or id",
@@ -480,5 +481,7 @@
   "ConfigWindow_Tab_Auto": "About some general actions' usage and conditions.",
   "ConfigWindow_Tab_Target": "The way to find the targets, hostiles or friends.",
   "ConfigWindow_Tab_Extra": "Some features shouldn't be included by RS.",
-  "ConfigWindow_List_AddPosition": "Add One territory position"
+  "ConfigWindow_List_AddPosition": "Add One territory position",
+  "ConfigWindow_Actions_MoveUp": "Move Up",
+  "ConfigWindow_Actions_MoveDown": "Move Down"
 }
