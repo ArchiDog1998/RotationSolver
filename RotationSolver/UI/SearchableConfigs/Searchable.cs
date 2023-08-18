@@ -63,11 +63,10 @@ internal abstract class Searchable : ISearchable
 
             ImGui.PopStyleColor();
 
-            var roleOrJob = string.Join("\n", JobRoles ?? Array.Empty<JobRole>());
-            var jobs = string.Join("\n", (Jobs ?? Array.Empty<Job>())
-                .Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
-            if (string.IsNullOrEmpty(roleOrJob)) roleOrJob = jobs;
-            else if (!string.IsNullOrEmpty(jobs)) roleOrJob +='\n' + jobs;
+            var jobs = JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? Array.Empty<Job>());
+            var roleOrJob = string.Join("\n",
+                jobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
+
             ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ConfigWindow_NotInJob, roleOrJob));
             return;
         }
