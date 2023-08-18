@@ -1,24 +1,33 @@
 ﻿namespace RotationSolver.ItemTemplates;
 
-[RotationDesc("Burst Description here", ActionID.None /* Some actions you used in burst. */)]
-[LinkDescription("$Your link description here, it is better to link to a png! this attribute can be multiple! $")]
-[SourceCode("$If your rotation is open source, please write the link to this attribute! $")]
+// RotationDesc here is used to display burst actions, indicating that if 'Auto Burst' is not turned on, the actions will not be released
+[RotationDesc(ActionID.None)]
+// Link to the Ratation source code
+[SourceCode(Path = "main/DefaultRotations/Melee/NIN_Default.cs")]
+// The detailed or extended description links of this Ratation, such as loop diagrams, recipe urls, teaching videos, etc.,
+// can be written more than one
+[LinkDescription("https://www.thebalanceffxiv.com/img/jobs/nin/earlymug3.png")]
+[LinkDescription("https://www.thebalanceffxiv.com/img/jobs/nin/nininfographicwindows.png")]
+[LinkDescription("https://docs.google.com/spreadsheets/u/0/d/1BZZrqWMRrugCeiBICEgjCz2vRNXt_lRTxPnSQr24Em0/htmlview#",
+    "Under the “Planner (With sample section)”")]
 
 // Change this base class to your job's base class. It is named like XXX_Base.
 internal class Full_Template : AST_Base
 {
-    //Change this to the game version right now.
-    public override string GameVersion => "6.38";
+    // Change this to the game version right now.
+    public override string GameVersion => "6.48";
 
+    // Change this to your custom Rotation name
     public override string RotationName => "$safeitemname$";
 
+    // Change this to your custom Rotation description
     public override string Description => "Your description about this rotation.";
 
     #region If you want to change the auto healing, please change these bools.
-    protected override bool CanHealAreaSpell => base.CanHealAreaSpell;
-    protected override bool CanHealAreaAbility => base.CanHealAreaAbility;
-    protected override bool CanHealSingleSpell => base.CanHealSingleSpell;
-    protected override bool CanHealSingleAbility => base.CanHealSingleAbility;
+    public override bool CanHealAreaSpell => base.CanHealAreaSpell;
+    public override bool CanHealAreaAbility => base.CanHealAreaAbility;
+    public override bool CanHealSingleSpell => base.CanHealSingleSpell;
+    public override bool CanHealSingleAbility => base.CanHealSingleAbility;
     #endregion
 
     #region GCD actions
@@ -28,6 +37,8 @@ internal class Full_Template : AST_Base
     }
 
     //For some gcds very important, even more than healing, defense, interrupt, etc.
+    [RotationDesc("Optional description for Emergency GCD")]
+    [RotationDesc(ActionID.None)]
     protected override bool EmergencyGCD(out IAction act)
     {
         return base.EmergencyGCD(out act);
@@ -71,21 +82,23 @@ internal class Full_Template : AST_Base
     #endregion
 
     #region 0GCD actions
+    //Some 0gcds that don't need to a hostile target in attack range.
+    protected override bool GeneralAbility(out IAction act)
+    {
+        return base.GeneralAbility(out act);
+    }
+
     protected override bool AttackAbility(out IAction act)
     {
         throw new NotImplementedException();
     }
 
     //For some 0gcds very important, even more than healing, defense, interrupt, etc.
+    [RotationDesc("Optional description for Emergency 0GCD")]
+    [RotationDesc(ActionID.None)]
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         return base.EmergencyAbility(nextGCD, out act);
-    }
-
-    //Some 0gcds that don't need to a hostile target in attack range.
-    protected override bool GeneralAbility(out IAction act)
-    {
-        return base.GeneralAbility(out act);
     }
 
     //Some 0gcds that moving forward. In general, it doesn't need to be override.
@@ -102,6 +115,14 @@ internal class Full_Template : AST_Base
     protected override bool MoveBackAbility(out IAction act)
     {
         return base.MoveBackAbility(out act);
+    }
+
+    //Some 0gcds that speed.For example sprint.
+    [RotationDesc("Optional description for Speed 0GCD")]
+    [RotationDesc(ActionID.None)]
+    protected override bool SpeedAbility(out IAction act)
+    {
+        return base.SpeedAbility(out act);
     }
 
     //Some 0gcds that defense area.
@@ -138,6 +159,9 @@ internal class Full_Template : AST_Base
     #endregion
 
     #region Extra
+    // Modify the type of Medicine, default is the most appropriate Medicine, generally do not need to modify
+    public override MedicineType MedicineType => base.MedicineType;
+
     //For counting down action when pary counting down is active.
     protected override IAction CountDownAction(float remainTime)
     {
@@ -167,5 +191,7 @@ internal class Full_Template : AST_Base
     {
         base.DisplayStatus();
     }
+    // Modify this bool to display your DisplayStatus on the Formal Page.
+    public override bool ShowStatus => base.ShowStatus;
     #endregion
 }
