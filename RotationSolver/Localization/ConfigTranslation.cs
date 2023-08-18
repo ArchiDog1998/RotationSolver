@@ -35,6 +35,7 @@ internal static class ConfigTranslation
     public static string ToName(this PluginConfigInt config) => config switch
     {
         PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
+        PluginConfigInt.BeneficialAreaStrategy => LocalizationManager.RightLang.ConfigWindow_Auto_BeneficialAreaStrategy,
 
         // UI
         PluginConfigInt.KeyBoardNoiseMin => LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
@@ -55,6 +56,8 @@ internal static class ConfigTranslation
         PluginConfigBool.UseStopCasting => LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,
 
         // UI
+        PluginConfigBool.HideWarning => LocalizationManager.RightLang.ConfigWindow_UI_HideWarning,
+
         PluginConfigBool.DrawIconAnimation => LocalizationManager.RightLang.ConfigWindow_UI_DrawIconAnimation,
         PluginConfigBool.UseOverlayWindow => LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
         PluginConfigBool.TeachingMode => LocalizationManager.RightLang.ConfigWindow_Param_TeachingMode,

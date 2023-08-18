@@ -701,5 +701,7 @@ internal partial class Strings
     public string ConfigWindow_NotInJob { get; set; } = "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}";
 
     public string ConfigWindow_Searching { get; set; } = "Searching...";
+    public string ConfigWindow_UI_HideWarning { get; set; } = "Hide Warning";
+    public string ConfigWindow_Auto_BeneficialAreaStrategy { get; set; } = "Beneficial area strategy";
 
 }

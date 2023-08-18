@@ -8,6 +8,8 @@ public static class UIHelper
 {
     public static void ShowWarning(this string message, int times = 3, DalamudLinkPayload link = null)
     {
+        if (Service.Config.GetValue(Configuration.PluginConfigBool.HideWarning)) return;
+
         var seString = link == null
             ? new SeString(
               new IconPayload(BitmapFontIcon.DPS),

@@ -326,6 +326,7 @@ public enum PluginConfigBool : byte
     [Default(true)] AutoOffAfterCombat,
 
     [Default(true)] ShowBeneficialPositions,
+    [Default(false)] HideWarning,
 }
 
 public enum PluginConfigFloat : byte

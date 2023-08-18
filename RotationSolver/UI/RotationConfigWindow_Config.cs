@@ -209,6 +209,8 @@ public partial class RotationConfigWindow
         new CheckBoxSearchPlugin(PluginConfigBool.SayOutStateChanged),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowTooltips),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.HideWarning),
     };
 
     // Overlay
