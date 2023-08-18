@@ -88,8 +88,7 @@ internal class ConditionHelper
             var searchingKey = searchTxt;
 
             var members = actions.Select(m => (m, m.GetMemberName()))
-                .OrderBy(s => s.Item2.Split(' ')
-                .Min(c => RotationConfigWindow.StringComparer.Distance(c, searchingKey)));
+                .OrderByDescending(s => RotationConfigWindow.Similarity(s.Item2, searchingKey));
 
             ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
             ImGui.InputTextWithHint("##Searching the member", LocalizationManager.RightLang.ConfigWindow_Actions_MemberName, ref searchTxt, 128);

@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using ECommons.ImGuiMethods;
-using F23.StringSimilarity;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
@@ -10,13 +9,22 @@ namespace RotationSolver.UI;
 
 public partial class RotationConfigWindow
 {
-    internal static readonly Levenshtein StringComparer = new ();
+    internal static float Similarity(string text, string key)
+    {
+        var chars = text.Split(new char[] { ' ', ',', '、', '.', '。' }, StringSplitOptions.RemoveEmptyEntries);
+
+        var startWithCount = chars.Count(i => i.StartsWith(key, StringComparison.OrdinalIgnoreCase));
+
+        var containCount = chars.Count(i => i.Contains(key, StringComparison.OrdinalIgnoreCase));
+
+        return startWithCount * 3 + containCount;
+    }
 
     private string _searchText = string.Empty;
     private ISearchable[] _searchResults = Array.Empty<ISearchable>();
     private void SearchingBox()
     {
-        if (ImGui.InputTextWithHint("##Rotation Solver Search Box", "Searching...", ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))
+        if (ImGui.InputTextWithHint("##Rotation Solver Search Box", LocalizationManager.RightLang.ConfigWindow_Searching, ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))
         {
             if (!string.IsNullOrEmpty(_searchText))
             {
@@ -28,7 +36,7 @@ public partial class RotationConfigWindow
                     .Where(f => f.FieldType == typeof(ISearchable[]) && f.IsInitOnly)
                     .SelectMany(f => (ISearchable[])f.GetValue(this))
                     .SelectMany(GetChildren)
-                    .OrderBy(i => i.SearchingKeys.Split(' ').Min(k => StringComparer.Distance(k, _searchText)))
+                    .OrderByDescending(i => Similarity(i.SearchingKeys, _searchText))
                     .Select(GetParent).GetEnumerator();
 
                 int index = 0;

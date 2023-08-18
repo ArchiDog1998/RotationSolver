@@ -699,4 +699,7 @@ internal partial class Strings
     public string ConfigWindow_Actions_MoveUp { get; set; } = "Move Up";
     public string ConfigWindow_Actions_MoveDown { get; set; } = "Move Down";
     public string ConfigWindow_NotInJob { get; set; } = "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}";
+
+    public string ConfigWindow_Searching { get; set; } = "Searching...";
+
 }

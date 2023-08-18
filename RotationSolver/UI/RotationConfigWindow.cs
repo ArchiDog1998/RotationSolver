@@ -1447,8 +1447,8 @@ public partial class RotationConfigWindow : Window
 
         foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
             .Where(a => a != null)
-            .OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _statusSearching)
-            , StringComparer.Distance(s.RowId.ToString(), _statusSearching))))
+            .OrderByDescending(s => Math.Min(Similarity(s.Name, _statusSearching)
+            , Similarity(s.RowId.ToString(), _statusSearching))))
         {
             void Delete() => removeId = status.RowId;
 
@@ -1491,8 +1491,8 @@ public partial class RotationConfigWindow : Window
                 var index = 0;
 
                 var searchingKey = searching;
-                foreach (var status in allStatus.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, searchingKey)
-                , StringComparer.Distance(s.RowId.ToString(), searchingKey))))
+                foreach (var status in allStatus.OrderByDescending(s => Math.Min(Similarity(s.Name, searchingKey)
+                , Similarity(s.RowId.ToString(), searchingKey))))
                 {
                     if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
                     {
@@ -1570,8 +1570,8 @@ public partial class RotationConfigWindow : Window
 
             if (ImGui.BeginChild("Rotation Solver Add action", new Vector2(-1, 400 * _scale)))
             {
-                foreach (var action in AllActions.OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _actionSearching)
-                , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
+                foreach (var action in AllActions.OrderByDescending(s => Math.Min(Similarity(s.Name, _actionSearching)
+                , Similarity(s.RowId.ToString(), _actionSearching))))
                 {
                     var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
                     if (ImGui.IsItemHovered())
@@ -1601,8 +1601,8 @@ public partial class RotationConfigWindow : Window
 
         foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
             .Where(a => a != null)
-            .OrderBy(s => Math.Min(StringComparer.Distance(s.Name, _actionSearching)
-            , StringComparer.Distance(s.RowId.ToString(), _actionSearching))))
+            .OrderByDescending(s => Math.Min(Similarity(s.Name, _actionSearching)
+            , Similarity(s.RowId.ToString(), _actionSearching))))
         {
             void Reset() => removeId = action.RowId;
 
