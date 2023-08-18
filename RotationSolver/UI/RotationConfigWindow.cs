@@ -611,6 +611,8 @@ public partial class RotationConfigWindow : Window
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
+        ImGui.Text(rotation.AverageCountOfNonRecommendedMembersUsing.ToString("F2"));
+
         var desc = rotation.Description;
         if (!string.IsNullOrEmpty(desc))
         {

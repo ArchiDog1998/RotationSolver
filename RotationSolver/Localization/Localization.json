@@ -481,5 +481,8 @@
   "ConfigWindow_List_AddPosition": "Add One territory position",
   "ConfigWindow_Actions_MoveUp": "Move Up",
   "ConfigWindow_Actions_MoveDown": "Move Down",
-  "ConfigWindow_NotInJob": "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}"
+  "ConfigWindow_NotInJob": "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}",
+  "ConfigWindow_Searching": "Searching...",
+  "ConfigWindow_UI_HideWarning": "Hide Warning",
+  "ConfigWindow_Auto_BeneficialAreaStrategy": "Beneficial area strategy"
 }

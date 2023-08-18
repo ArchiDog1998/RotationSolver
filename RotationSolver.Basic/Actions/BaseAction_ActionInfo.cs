@@ -71,9 +71,10 @@ public partial class BaseAction
     /// <returns></returns>
     public unsafe virtual bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)
     {
+        act = this;
+
         option |= OtherOption;
 
-        act = this;
         var mustUse = option.HasFlag(CanUseOption.MustUse);
 
         var player = Player.Object;

@@ -382,7 +382,7 @@ public enum PluginConfigFloat : byte
 
     [Default(0.5f, 0f, 3f)] CountdownDelayMin,
     [Default(1f)] CountdownDelayMax,
-    [Default(0.6f, 0.5f, 0.7f)] CountDownAhead,
+    [Default(0.6f, 0f, 0.7f)] CountDownAhead,
 
     [Default(24f, 0f, 90f)] MoveTargetAngle,
     [Default(60f, 10f, 1800f)] DeadTimeBoss,
