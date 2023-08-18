@@ -1,23 +1,30 @@
 ﻿using Dalamud.Game.ClientState.Keys;
-using Dalamud.Interface.Colors;
 using ECommons.ImGuiMethods;
-using FFXIVClientStructs.Havok;
 using RotationSolver.Localization;
 using RotationSolver.UI;
-using RotationSolver.UI.SearchableConfigs;
-using System.Drawing;
-using System.Security.Policy;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace RotationSolver.ActionSequencer;
 
 internal class ConditionSet : ICondition
 {
-    public bool IsTrue(ICustomRotation combo) => Conditions.Count != 0 && (IsAnd ? Conditions.All(c => c.IsTrue(combo))
-                                : Conditions.Any(c => c.IsTrue(combo)));
+    public bool IsTrue(ICustomRotation combo)
+    {
+        if (Conditions.Count == 0) return false;
+        switch (Type)
+        {
+            case LogicalType.And:
+                return Conditions.All(c => c.IsTrue(combo));
+            case LogicalType.Or:
+                return Conditions.Any(c => c.IsTrue(combo));
+            case LogicalType.NotAnd:
+                return !Conditions.All(c => c.IsTrue(combo));
+            case LogicalType.NotOr:
+                return !Conditions.Any(c => c.IsTrue(combo));
+        }
+        return false;
+    }
     public List<ICondition> Conditions { get; set; } = new List<ICondition>();
-    public bool IsAnd { get; set; }
+    public LogicalType Type;
 
     public void Draw(ICustomRotation rotation)
     {
@@ -27,14 +34,14 @@ internal class ConditionSet : ICondition
 
         ImGui.SameLine();
 
-        var index = IsAnd ? 0 : 1;
-        if(ImGuiHelper.SelectableCombo($"##Rule{GetHashCode()}", new string[]
+        ConditionHelper.DrawByteEnum($"##Rule{GetHashCode()}", ref Type, t => t switch
         {
-            "&&" , " | | ",
-        }, ref index))
-        {
-            IsAnd = index == 0;
-        }
+            LogicalType.And => "&&",
+            LogicalType.Or => " | | ",
+            LogicalType.NotAnd => "! &&",
+            LogicalType.NotOr => "!  | | ",
+            _ => string.Empty,
+        });
 
         ImGui.Spacing();
 
@@ -128,4 +135,12 @@ internal class ConditionSet : ICondition
             }
         }
     }
+}
+
+public enum LogicalType: byte
+{
+    And,
+    Or,
+    NotAnd,
+    NotOr,
 }

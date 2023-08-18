@@ -85,24 +85,25 @@ internal class ConditionHelper
 
         if (ImGui.BeginPopup(popId))
         {
-            ImGui.SetNextItemWidth(200 * ImGuiHelpers.GlobalScale);
+            var searchingKey = searchTxt;
+
+            var members = actions.Select(m => (m, m.GetMemberName()))
+                .OrderBy(s => s.Item2.Split(' ')
+                .Min(c => RotationConfigWindow.StringComparer.Distance(c, searchingKey)));
+
+            ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
             ImGui.InputTextWithHint("##Searching the member", LocalizationManager.RightLang.ConfigWindow_Actions_MemberName, ref searchTxt, 128);
 
             ImGui.Spacing();
 
-            if (ImGui.BeginChild("Rotation Solver Find Member", new Vector2(-1, 400 * ImGuiHelpers.GlobalScale)))
-            {
-                var searchingKey = searchTxt;
-                foreach (var member in actions.OrderBy(s => s.GetMemberName().Split(' ').Min(c => RotationConfigWindow.StringComparer.Distance(c, searchingKey))))
+                foreach (var member in members)
                 {
-                    if (ImGui.Selectable(member.GetMemberName()))
+                    if (ImGui.Selectable(member.Item2))
                     {
-                        selectAction?.Invoke(member);
+                        selectAction?.Invoke(member.m);
                         ImGui.CloseCurrentPopup();
                     }
                 }
-                ImGui.EndChild();
-            }
 
             ImGui.EndPopup();
         }

@@ -349,13 +349,7 @@ public partial class RotationConfigWindow
                     JobRole.RangedPhysical,
                 }
             },
-            new DragFloatSearchJob(JobConfigFloat.HealthForDyingTanks, 0.02f)
-            {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Tank,
-                }
-            },
+
             new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
 
         new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),
@@ -469,6 +463,14 @@ public partial class RotationConfigWindow
                 },
             },
 
+        
+        new DragFloatSearchJob(JobConfigFloat.HealthForDyingTanks, 0.02f)
+            {
+                JobRoles = new JobRole[]
+                {
+                    JobRole.Tank,
+                }
+            },
 
         new DragFloatSearchPlugin(PluginConfigFloat.MeleeRangeOffset, 0.02f)
         {

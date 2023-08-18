@@ -214,7 +214,7 @@ internal class TargetCondition : ICondition
                 {
                     if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
                 }
-                ImguiTooltips.HoveredTooltip(Status?.Name);
+                ImguiTooltips.HoveredTooltip(Status?.Name ?? string.Empty);
             }
         }
 

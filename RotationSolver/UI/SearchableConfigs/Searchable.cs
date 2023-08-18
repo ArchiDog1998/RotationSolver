@@ -1,4 +1,6 @@
-﻿using ECommons.ExcelServices;
+﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
@@ -24,6 +26,9 @@ internal abstract class Searchable : ISearchable
     /// Only these job roles can get this setting.
     /// </summary>
     public JobRole[] JobRoles { get; set; }
+    /// <summary>
+    /// Or these jobs.
+    /// </summary>
     public Job[] Jobs { get; set; }
 
     public unsafe void Draw(Job job)
@@ -58,10 +63,11 @@ internal abstract class Searchable : ISearchable
 
             ImGui.PopStyleColor();
 
-            var roleOrJob = string.Join(", ", JobRoles ?? Array.Empty<JobRole>());
-            var jobs = string.Join(", ", Jobs ?? Array.Empty<Job>());
+            var roleOrJob = string.Join("\n", JobRoles ?? Array.Empty<JobRole>());
+            var jobs = string.Join("\n", (Jobs ?? Array.Empty<Job>())
+                .Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
             if (string.IsNullOrEmpty(roleOrJob)) roleOrJob = jobs;
-            else if (string.IsNullOrEmpty(jobs)) roleOrJob +='\n' + jobs;
+            else if (!string.IsNullOrEmpty(jobs)) roleOrJob +='\n' + jobs;
             ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ConfigWindow_NotInJob, roleOrJob));
             return;
         }
