@@ -424,7 +424,11 @@
   "ConfigWindow_Rotation_Description": "Description",
   "ConfigWindow_Rotation_Status": "Status",
   "ConfigWindow_Rotation_Configuration": "Configuration",
+  "ConfigWindow_Rotation_Rating": "Rating",
   "ConfigWindow_Rotation_Information": "Information",
+  "ConfigWindow_Rotation_Rating_Description": "Here are some rating methods to analysis this rotation.",
+  "ConfigWindow_Rotation_Rating_CountOfLastUsing": "This is the count of using last action checking in this rotation. First is average one, second is maximum one. The less the better.\nLast used action is not a part of information from the game, it is recorded by player or author. \nIt can't accurately describe the current state of combat. \nFor example, clipping the gcd, death, take some status that grated by some action off manually, etc.",
+  "ConfigWindow_Rotation_Rating_CountOfCombatTimeUsing": "This is the count of using combat time in this rotation. First is average one, second is maximum one. The less the better.\nCombat time is not a part of information from the game, it is recorded by player or author. \nIt can't accurately describe the current state of combat. \nFor example, engaged by others in the party, different gcd time, etc.",
   "ConfigWindow_Actions_Description": "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.",
   "ConfigWindow_Actions_ForcedConditionSet": "Forced Condition",
   "ConfigWindow_Actions_ForcedConditionSet_Description": "Conditions when automatic use of action is forced.",
@@ -481,5 +485,8 @@
   "ConfigWindow_List_AddPosition": "Add One territory position",
   "ConfigWindow_Actions_MoveUp": "Move Up",
   "ConfigWindow_Actions_MoveDown": "Move Down",
-  "ConfigWindow_NotInJob": "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}"
+  "ConfigWindow_NotInJob": "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}",
+  "ConfigWindow_Searching": "Searching...",
+  "ConfigWindow_UI_HideWarning": "Hide Warning",
+  "ConfigWindow_Auto_BeneficialAreaStrategy": "Beneficial area strategy"
 }
