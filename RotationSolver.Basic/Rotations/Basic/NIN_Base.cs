@@ -355,72 +355,72 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AllFours { get; } = new BaseTrait(90);
+    public static IBaseTrait AllFours { get; } = new BaseTrait(90);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait FleetOfFoot    { get; } = new BaseTrait(93);
+    public static IBaseTrait FleetOfFoot    { get; } = new BaseTrait(93);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Shukiho    { get; } = new BaseTrait(165);
+    public static IBaseTrait Shukiho    { get; } = new BaseTrait(165);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedShukuchi    { get; } = new BaseTrait(166);
+    public static IBaseTrait EnhancedShukuchi    { get; } = new BaseTrait(166);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedMug    { get; } = new BaseTrait(167);
+    public static IBaseTrait EnhancedMug    { get; } = new BaseTrait(167);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedKassatsu    { get; } = new BaseTrait(250);
+    public static IBaseTrait EnhancedKassatsu    { get; } = new BaseTrait(250);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedShukuchi2    { get; } = new BaseTrait(279);
+    public static IBaseTrait EnhancedShukuchi2    { get; } = new BaseTrait(279);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Shukiho2 { get; } = new BaseTrait(280);
+    public static IBaseTrait Shukiho2 { get; } = new BaseTrait(280);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Shukiho3 { get; } = new BaseTrait(439);
+    public static IBaseTrait Shukiho3 { get; } = new BaseTrait(439);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedMeisui { get; } = new BaseTrait(440);
+    public static IBaseTrait EnhancedMeisui { get; } = new BaseTrait(440);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedRaiton { get; } = new BaseTrait(441);
+    public static IBaseTrait EnhancedRaiton { get; } = new BaseTrait(441);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AdeptAssassination { get; } = new BaseTrait(515);
+    public static IBaseTrait AdeptAssassination { get; } = new BaseTrait(515);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MeleeMastery { get; } = new BaseTrait(516);
+    public static IBaseTrait MeleeMastery { get; } = new BaseTrait(516);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MeleeMastery2 { get; } = new BaseTrait(522);
+    public static IBaseTrait MeleeMastery2 { get; } = new BaseTrait(522);
     #endregion
 
     /// <summary>

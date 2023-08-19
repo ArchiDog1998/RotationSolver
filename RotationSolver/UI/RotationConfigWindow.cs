@@ -21,6 +21,8 @@ using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
 using System.Drawing;
+using System.Security.Policy;
+using System.Windows.Forms;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -298,10 +300,7 @@ public partial class RotationConfigWindow : Window
 
                 if (_scale * JOB_ICON_WIDTH < wholeWidth)
                 {
-                    ImGuiHelper.DrawItemMiddle(() =>
-                    {
-                        DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
-                    }, wholeWidth, comboSize);
+                    DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
                 }
             }
             else
@@ -615,10 +614,16 @@ public partial class RotationConfigWindow : Window
             Util.OpenLink("https://crowdin.com/project/rotationsolver");
         }
 
-        if (ImGuiEx.IconButton(FontAwesomeIcon.Folder, "##OpenFolder"))
+        var text = LocalizationManager.RightLang.ConfigWindow_About_OpenConfigFolder;
+        var textWidth = ImGuiHelpers.GetButtonSize(text).X;
+        ImGuiHelper.DrawItemMiddle(() =>
         {
-            Process.Start("explorer.exe", Svc.PluginInterface.ConfigDirectory.FullName);
-        }
+            if (ImGui.Button(text))
+            {
+                Process.Start("explorer.exe", Svc.PluginInterface.ConfigDirectory.FullName);
+            }
+        }, width, textWidth);
+
     }
     #endregion
 
@@ -822,6 +827,8 @@ public partial class RotationConfigWindow : Window
                 }
 
                 bool notStart = false;
+                var size = DESC_SIZE * _scale;
+                var y = ImGui.GetCursorPosY() + size * 4 / 82;
                 foreach (var item in allActions)
                 {
                     if (item == null) continue;
@@ -831,10 +838,10 @@ public partial class RotationConfigWindow : Window
                         ImGui.SameLine();
                     }
 
-                    if(item.GetTexture(out var texture))
+                    if (item.GetTexture(out var texture))
                     {
+                        ImGui.SetCursorPosY(y);
                         var cursor = ImGui.GetCursorPos();
-                        var size = DESC_SIZE * _scale;
                         ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size);
                         ImGuiHelper.DrawActionOverlay(cursor, size, 1);
                         ImguiTooltips.HoveredTooltip(item.Name);

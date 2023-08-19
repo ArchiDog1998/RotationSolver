@@ -1,5 +1,6 @@
 ﻿using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
+using System.Xml.Linq;
 
 namespace RotationSolver.Basic.Traits;
 
@@ -21,11 +22,39 @@ public class BaseTrait : IBaseTrait
     public byte Level => _trait.Level;
 
     /// <summary>
+    /// 
+    /// </summary>
+    public uint IconID { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public string Description => Name;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool IsEnabled { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public uint ID { get; }
+
+    /// <summary>
     /// Create by id.
     /// </summary>
     /// <param name="traitId"></param>
     public BaseTrait(uint traitId)
     {
+        ID = traitId;
         _trait = Service.GetSheet<Trait>().GetRow(traitId);
+        Name = _trait?.Name ?? string.Empty;
+        IconID = (uint)(_trait?.Icon ?? 0);
     }
 }

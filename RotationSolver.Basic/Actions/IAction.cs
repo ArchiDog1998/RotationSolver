@@ -3,7 +3,7 @@
 /// <summary>
 /// The action.
 /// </summary>
-public interface IAction : ITexture, IEnouthLevel
+public interface IAction : ITexture, IEnoughLevel
 {
     /// <summary>
     /// ID of this action.

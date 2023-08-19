@@ -214,72 +214,72 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(117);
+    public static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(117);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(119);
+    public static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(119);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SplitShotMastery    { get; } = new BaseTrait(288);
+    public static IBaseTrait SplitShotMastery    { get; } = new BaseTrait(288);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SlugShotMastery    { get; } = new BaseTrait(289);
+    public static IBaseTrait SlugShotMastery    { get; } = new BaseTrait(289);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait CleanShotMastery    { get; } = new BaseTrait(290);
+    public static IBaseTrait CleanShotMastery    { get; } = new BaseTrait(290);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait HotShotMastery    { get; } = new BaseTrait(291);
+    public static IBaseTrait HotShotMastery    { get; } = new BaseTrait(291);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait ChargedActionMastery    { get; } = new BaseTrait(292);
+    public static IBaseTrait ChargedActionMastery    { get; } = new BaseTrait(292);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedWildfire    { get; } = new BaseTrait(293);
+    public static IBaseTrait EnhancedWildfire    { get; } = new BaseTrait(293);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Promotion    { get; } = new BaseTrait(294);
+    public static IBaseTrait Promotion    { get; } = new BaseTrait(294);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SpreadShotMastery    { get; } = new BaseTrait(449);
+    public static IBaseTrait SpreadShotMastery    { get; } = new BaseTrait(449);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedReassemble    { get; } = new BaseTrait(450);
+    public static IBaseTrait EnhancedReassemble    { get; } = new BaseTrait(450);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait QueensGambit    { get; } = new BaseTrait(451);
+    public static IBaseTrait QueensGambit    { get; } = new BaseTrait(451);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedTactician    { get; } = new BaseTrait(452);
+    public static IBaseTrait EnhancedTactician    { get; } = new BaseTrait(452);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MarksmansMastery    { get; } = new BaseTrait(517);
+    public static IBaseTrait MarksmansMastery    { get; } = new BaseTrait(517);
     #endregion
 
     /// <summary>

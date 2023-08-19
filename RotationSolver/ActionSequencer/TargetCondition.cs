@@ -18,7 +18,7 @@ internal class TargetCondition : ICondition
         }
     }
 
-    private BaseAction _action;
+    private IBaseAction _action;
     public ActionID ID { get; set; } = ActionID.None;
 
     public bool Condition;

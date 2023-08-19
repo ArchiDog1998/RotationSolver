@@ -13,7 +13,7 @@ internal class RotationCondition : ICondition
     MethodInfo _method;
     public string MethodName { get; set; } = string.Empty;
 
-    BaseAction _action;
+    IBaseAction _action;
 
     public ActionID ID { get; set; } = ActionID.None;
 

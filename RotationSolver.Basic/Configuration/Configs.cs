@@ -187,7 +187,7 @@ public enum JobConfigFloat : byte
 
         { PluginConfigVector4.TargetColor, new (1f, 0.2f, 0f, 0.8f)},
         { PluginConfigVector4.SubTargetColor, new (1f, 0.9f, 0f, 0.8f)},
-        { PluginConfigVector4.ControlWindowLockBg, new (0, 0, 0, 0.6f)},
+        { PluginConfigVector4.ControlWindowLockBg, new (0, 0, 0, 0.5f)},
         { PluginConfigVector4.ControlWindowUnlockBg, new (0, 0, 0, 0.75f)},
         { PluginConfigVector4.InfoWindowBg, new (0, 0, 0, 0.4f)},
     });

@@ -264,52 +264,52 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BroilMastery2 { get; } = new BaseTrait(184);
+    public static IBaseTrait BroilMastery2 { get; } = new BaseTrait(184);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BroilMastery { get; } = new BaseTrait(214);
+    public static IBaseTrait BroilMastery { get; } = new BaseTrait(214);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait CorruptionMastery2    { get; } = new BaseTrait(311);
+    public static IBaseTrait CorruptionMastery2    { get; } = new BaseTrait(311);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BroilMastery3 { get; } = new BaseTrait(312);
+    public static IBaseTrait BroilMastery3 { get; } = new BaseTrait(312);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedSacredSoil    { get; } = new BaseTrait(313);
+    public static IBaseTrait EnhancedSacredSoil    { get; } = new BaseTrait(313);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait CorruptionMastery    { get; } = new BaseTrait(324);
+    public static IBaseTrait CorruptionMastery    { get; } = new BaseTrait(324);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BroilMastery4 { get; } = new BaseTrait(491);
+    public static IBaseTrait BroilMastery4 { get; } = new BaseTrait(491);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait ArtOfWarMastery { get; } = new BaseTrait(492);
+    public static IBaseTrait ArtOfWarMastery { get; } = new BaseTrait(492);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(493);
+    public static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(493);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedDeploymentTactics    { get; } = new BaseTrait(494);
+    public static IBaseTrait EnhancedDeploymentTactics    { get; } = new BaseTrait(494);
     #endregion
 
     /// <summary>

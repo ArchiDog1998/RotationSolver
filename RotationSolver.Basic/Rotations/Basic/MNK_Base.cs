@@ -211,77 +211,77 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait DeepMeditation { get; } = new BaseTrait(160);
+    public static IBaseTrait DeepMeditation { get; } = new BaseTrait(160);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait DeepMeditation2 { get; } = new BaseTrait(245);
+    public static IBaseTrait DeepMeditation2 { get; } = new BaseTrait(245);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait GreasedLightning { get; } = new BaseTrait(364);
+    public static IBaseTrait GreasedLightning { get; } = new BaseTrait(364);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedGreasedLightning    { get; } = new BaseTrait(365);
+    public static IBaseTrait EnhancedGreasedLightning    { get; } = new BaseTrait(365);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedGreasedLightning2    { get; } = new BaseTrait(366);
+    public static IBaseTrait EnhancedGreasedLightning2    { get; } = new BaseTrait(366);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedGreasedLightning3    { get; } = new BaseTrait(367);
+    public static IBaseTrait EnhancedGreasedLightning3    { get; } = new BaseTrait(367);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SteelPeakMastery    { get; } = new BaseTrait(428);
+    public static IBaseTrait SteelPeakMastery    { get; } = new BaseTrait(428);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait HowlingFistMastery    { get; } = new BaseTrait(429);
+    public static IBaseTrait HowlingFistMastery    { get; } = new BaseTrait(429);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait ArmOfTheDestroyerMastery    { get; } = new BaseTrait(430);
+    public static IBaseTrait ArmOfTheDestroyerMastery    { get; } = new BaseTrait(430);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedThunderclap    { get; } = new BaseTrait(431);
+    public static IBaseTrait EnhancedThunderclap    { get; } = new BaseTrait(431);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedBrotherhood    { get; } = new BaseTrait(432);
+    public static IBaseTrait EnhancedBrotherhood    { get; } = new BaseTrait(432);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedPerfectBalance    { get; } = new BaseTrait(433);
+    public static IBaseTrait EnhancedPerfectBalance    { get; } = new BaseTrait(433);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait FlintStrikeMastery    { get; } = new BaseTrait(512);
+    public static IBaseTrait FlintStrikeMastery    { get; } = new BaseTrait(512);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait TornadoKickMastery    { get; } = new BaseTrait(513);
+    public static IBaseTrait TornadoKickMastery    { get; } = new BaseTrait(513);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MeleeMastery    { get; } = new BaseTrait(518);
+    public static IBaseTrait MeleeMastery    { get; } = new BaseTrait(518);
     #endregion
 
     /// <summary>

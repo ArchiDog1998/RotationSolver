@@ -313,52 +313,52 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait KenkiMastery2 { get; } = new BaseTrait(208);
+    public static IBaseTrait KenkiMastery2 { get; } = new BaseTrait(208);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait KenkiMastery { get; } = new BaseTrait(215);
+    public static IBaseTrait KenkiMastery { get; } = new BaseTrait(215);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedIaijutsu { get; } = new BaseTrait(277);
+    public static IBaseTrait EnhancedIaijutsu { get; } = new BaseTrait(277);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedFugetsuAndFuka { get; } = new BaseTrait(278);
+    public static IBaseTrait EnhancedFugetsuAndFuka { get; } = new BaseTrait(278);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedTsubameGaeshi { get; } = new BaseTrait(442);
+    public static IBaseTrait EnhancedTsubameGaeshi { get; } = new BaseTrait(442);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedMeikyoShisui    { get; } = new BaseTrait(443);
+    public static IBaseTrait EnhancedMeikyoShisui    { get; } = new BaseTrait(443);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedIkishoten    { get; } = new BaseTrait(514);
+    public static IBaseTrait EnhancedIkishoten    { get; } = new BaseTrait(514);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait FugaMastery    { get; } = new BaseTrait(519);
+    public static IBaseTrait FugaMastery    { get; } = new BaseTrait(519);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait WayOfTheSamurai    { get; } = new BaseTrait(520);
+    public static IBaseTrait WayOfTheSamurai    { get; } = new BaseTrait(520);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait WayOfTheSamurai2    { get; } = new BaseTrait(521);
+    public static IBaseTrait WayOfTheSamurai2    { get; } = new BaseTrait(521);
     #endregion
 
     /// <summary>

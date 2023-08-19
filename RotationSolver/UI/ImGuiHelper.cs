@@ -289,8 +289,6 @@ internal static class ImGuiHelper
                     start, start + step);
             }
         }
-
-        ImGui.SetCursorPosY(cursor.Y);
     }
     #endregion
 

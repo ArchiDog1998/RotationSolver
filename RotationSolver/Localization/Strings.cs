@@ -300,10 +300,11 @@ internal partial class Strings
 
     public string ActionSequencer_AOECount { get; set; } = "AOE Count";
     public string ActionSequencer_Charges { get; set; } = "Charges";
-    public string ActionSequencer_ConditionSet { get; set; } = "ConditionSet";
-    public string ActionSequencer_ActionCondition { get; set; } = "ActionCondition";
-    public string ActionSequencer_TargetCondition { get; set; } = "TargetCondition";
-    public string ActionSequencer_RotationCondition { get; set; } = "RotationCondition";
+    public string ActionSequencer_ConditionSet { get; set; } = "Condition Set";
+    public string ActionSequencer_ActionCondition { get; set; } = "Action Condition";
+    public string ActionSequencer_TargetCondition { get; set; } = "Target Condition";
+    public string ActionSequencer_RotationCondition { get; set; } = "Rotation Condition";
+    public string ActionSequencer_TraitCondition { get; set; } = "Trait Condition";
     public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
     public string ActionSequencer_Target { get; set; } = "Target";
     public string ActionSequencer_Player { get; set; } = "Player";
@@ -357,14 +358,14 @@ internal partial class Strings
 
     #region ActionConditionType
     public string ActionConditionType_Elapsed { get; set; } = "Elapsed";
-    public string ActionConditionType_ElapsedGCD { get; set; } = "ElapsedGCD ";
-    public string ActionConditionType_Remain { get; set; } = "RemainTime";
-    public string ActionConditionType_RemainGCD { get; set; } = "RemainGCD";
-    public string ActionConditionType_ShouldUse { get; set; } = "ShouldUse";
-    public string ActionConditionType_EnoughLevel { get; set; } = "EnoughLevel";
-    public string ActionConditionType_IsCoolDown { get; set; } = "IsCoolDown";
-    public string ActionConditionType_CurrentCharges { get; set; } = "CurrentCharges";
-    public string ActionConditionType_MaxCharges { get; set; } = "MaxCharges";
+    public string ActionConditionType_ElapsedGCD { get; set; } = "ElapsedG CD ";
+    public string ActionConditionType_Remain { get; set; } = "Remain Time";
+    public string ActionConditionType_RemainGCD { get; set; } = "Remain GCD";
+    public string ActionConditionType_ShouldUse { get; set; } = "Can Use";
+    public string ActionConditionType_EnoughLevel { get; set; } = "Enough Level";
+    public string ActionConditionType_IsCoolDown { get; set; } = "Is CoolDown";
+    public string ActionConditionType_CurrentCharges { get; set; } = "Current Charges";
+    public string ActionConditionType_MaxCharges { get; set; } = "Max Charges";
     #endregion
 
     #region TargetConditionType
@@ -707,5 +708,6 @@ internal partial class Strings
     public string ConfigWindow_Searching { get; set; } = "Searching...";
     public string ConfigWindow_UI_HideWarning { get; set; } = "Hide Warning";
     public string ConfigWindow_Auto_BeneficialAreaStrategy { get; set; } = "Beneficial area strategy";
+    public string ConfigWindow_About_OpenConfigFolder { get; set; } = "Open Config Folder";
 
 }

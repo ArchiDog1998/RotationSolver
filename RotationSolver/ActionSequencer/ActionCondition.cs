@@ -6,7 +6,7 @@ namespace RotationSolver.ActionSequencer;
 
 internal class ActionCondition : ICondition
 {
-    private BaseAction _action;
+    private IBaseAction _action;
 
     public ActionID ID { get; set; } = ActionID.None;
 
@@ -18,9 +18,9 @@ internal class ActionCondition : ICondition
     public int Param2;
     public float Time;
 
-    public bool IsTrue(ICustomRotation combo)
+    public bool IsTrue(ICustomRotation rotation)
     {
-        if (!ConditionHelper.CheckBaseAction(combo, ID, ref _action)) return false;
+        if (!ConditionHelper.CheckBaseAction(rotation, ID, ref _action)) return false;
 
         var result = false;
 

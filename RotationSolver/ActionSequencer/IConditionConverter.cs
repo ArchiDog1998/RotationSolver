@@ -22,6 +22,10 @@ internal class IConditionConverter : JsonCreationConverter<ICondition>
         {
             return new RotationCondition();
         }
+        else if (FieldExists(nameof(TraitCondition.TraitID), jObject))
+        {
+            return new TraitCondition();
+        }
         else
         {
             return null;

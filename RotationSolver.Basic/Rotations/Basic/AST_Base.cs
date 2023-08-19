@@ -255,82 +255,82 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend { get; } = new BaseTrait(122);
+    public static IBaseTrait MaimAndMend { get; } = new BaseTrait(122);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedBenefic { get; } = new BaseTrait(124);
+    public static IBaseTrait EnhancedBenefic { get; } = new BaseTrait(124);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(125);
+    public static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(125);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait CombustMastery { get; } = new BaseTrait(186);
+    public static IBaseTrait CombustMastery { get; } = new BaseTrait(186);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaleficMastery { get; } = new BaseTrait(187);
+    public static IBaseTrait MaleficMastery { get; } = new BaseTrait(187);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaleficMastery2 { get; } = new BaseTrait(188);
+    public static IBaseTrait MaleficMastery2 { get; } = new BaseTrait(188);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait HyperLightspeed { get; } = new BaseTrait(189);
+    public static IBaseTrait HyperLightspeed { get; } = new BaseTrait(189);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait CombustMastery2 { get; } = new BaseTrait(314);
+    public static IBaseTrait CombustMastery2 { get; } = new BaseTrait(314);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaleficMastery3 { get; } = new BaseTrait(315);
+    public static IBaseTrait MaleficMastery3 { get; } = new BaseTrait(315);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEssentialDignity { get; } = new BaseTrait(316);
+    public static IBaseTrait EnhancedEssentialDignity { get; } = new BaseTrait(316);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedDraw { get; } = new BaseTrait(495);
+    public static IBaseTrait EnhancedDraw { get; } = new BaseTrait(495);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedDraw2 { get; } = new BaseTrait(496);
+    public static IBaseTrait EnhancedDraw2 { get; } = new BaseTrait(496);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaleficMastery4 { get; } = new BaseTrait(497);
+    public static IBaseTrait MaleficMastery4 { get; } = new BaseTrait(497);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait GravityMastery { get; } = new BaseTrait(498);
+    public static IBaseTrait GravityMastery { get; } = new BaseTrait(498);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedHealingMagic { get; } = new BaseTrait(499);
+    public static IBaseTrait EnhancedHealingMagic { get; } = new BaseTrait(499);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedCelestialIntersection { get; } = new BaseTrait(500);
+    public static IBaseTrait EnhancedCelestialIntersection { get; } = new BaseTrait(500);
 
     #endregion
 

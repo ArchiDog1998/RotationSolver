@@ -385,107 +385,107 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend { get; } = new BaseTrait(29);
+    public static IBaseTrait MaimAndMend { get; } = new BaseTrait(29);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(31);
+    public static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(31);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Firestarter { get; } = new BaseTrait(32);
+    public static IBaseTrait Firestarter { get; } = new BaseTrait(32);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Thundercloud { get; } = new BaseTrait(33);
+    public static IBaseTrait Thundercloud { get; } = new BaseTrait(33);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait ThunderMastery { get; } = new BaseTrait(171);
+    public static IBaseTrait ThunderMastery { get; } = new BaseTrait(171);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait ThunderMastery2 { get; } = new BaseTrait(172);
+    public static IBaseTrait ThunderMastery2 { get; } = new BaseTrait(172);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEnochian {get; } = new BaseTrait(174);
+    public static IBaseTrait EnhancedEnochian {get; } = new BaseTrait(174);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedFreeze {get; } = new BaseTrait(295);
+    public static IBaseTrait EnhancedFreeze {get; } = new BaseTrait(295);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AspectMastery {get; } = new BaseTrait(296);
+    public static IBaseTrait AspectMastery {get; } = new BaseTrait(296);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedPolyglot {get; } = new BaseTrait(297);
+    public static IBaseTrait EnhancedPolyglot {get; } = new BaseTrait(297);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedSharpcast { get; } = new BaseTrait(321);
+    public static IBaseTrait EnhancedSharpcast { get; } = new BaseTrait(321);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEnochian2 { get; } = new BaseTrait(322);
+    public static IBaseTrait EnhancedEnochian2 { get; } = new BaseTrait(322);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AspectMastery2 { get; } = new BaseTrait(458);
+    public static IBaseTrait AspectMastery2 { get; } = new BaseTrait(458);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AspectMastery3 { get; } = new BaseTrait(459);
+    public static IBaseTrait AspectMastery3 { get; } = new BaseTrait(459);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Enochian { get; } = new BaseTrait(460);
+    public static IBaseTrait Enochian { get; } = new BaseTrait(460);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedFoul { get; } = new BaseTrait(461);
+    public static IBaseTrait EnhancedFoul { get; } = new BaseTrait(461);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AspectMastery4 { get; } = new BaseTrait(462);
+    public static IBaseTrait AspectMastery4 { get; } = new BaseTrait(462);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedManafont { get; } = new BaseTrait(463);
+    public static IBaseTrait EnhancedManafont { get; } = new BaseTrait(463);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedSharpcast2    { get; } = new BaseTrait(464);
+    public static IBaseTrait EnhancedSharpcast2    { get; } = new BaseTrait(464);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AspectMastery5 { get; } = new BaseTrait(465);
+    public static IBaseTrait AspectMastery5 { get; } = new BaseTrait(465);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEnochian3 { get; } = new BaseTrait(509);
+    public static IBaseTrait EnhancedEnochian3 { get; } = new BaseTrait(509);
 
     #endregion
     /// <summary>

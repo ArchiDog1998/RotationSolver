@@ -1,5 +1,6 @@
 ﻿using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -82,6 +83,11 @@ public interface ICustomRotation : ITexture
     /// All action including base and item.
     /// </summary>
     IAction[] AllActions { get; }
+
+    /// <summary>
+    /// All traits.
+    /// </summary>
+    IBaseTrait[] AllTraits { get; }
 
     /// <summary>
     /// All bool properties.

@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations;
+﻿using RotationSolver.Basic.Traits;
+
+namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
@@ -282,6 +284,9 @@ public abstract partial class CustomRotation
     IAction[] _allActions;
     public IAction[] AllActions => _allActions ??= Array.Empty<IAction>().Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
 
+    IBaseTrait[] _allTraits;
+    public IBaseTrait[] AllTraits => _allTraits ??= GetIEnoughLevel<IBaseTrait>(GetType()).ToArray();
+
     PropertyInfo[] _allBools;
     public PropertyInfo[] AllBools => _allBools ??= GetType().GetStaticProperties<bool>();
 
@@ -295,25 +300,25 @@ public abstract partial class CustomRotation
 
     private IEnumerable<IBaseAction> GetBaseActions(Type type)
     {
-        return GetIActions(type).OfType<IBaseAction>().Where(a => a is not RoleAction role || role.InRole(ClassJob.GetJobRole()));
+        return GetIEnoughLevel<IBaseAction>(type).Where(a => a is not RoleAction role || role.InRole(ClassJob.GetJobRole()));
     }
 
     private IEnumerable<IBaseItem> GetBaseItems(Type type)
     {
-        return GetIActions(type).OfType<IBaseItem>().Where(a => a is not MedicineItem medicine || medicine.InType(this)).Reverse();
+        return GetIEnoughLevel<IBaseItem>(type).Where(a => a is not MedicineItem medicine || medicine.InType(this)).Reverse();
     }
 
-    private IEnumerable<IAction> GetIActions(Type type)
+    private IEnumerable<T> GetIEnoughLevel<T>(Type type) where T : IEnoughLevel
     {
-        if (type == null) return Array.Empty<IAction>();
+        if (type == null) return Array.Empty<T>();
 
         var acts = from prop in type.GetProperties()
-                   where typeof(IAction).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)
-                   select (IAction)prop.GetValue(this) into act
+                   where typeof(T).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)
+                   select (T)prop.GetValue(this) into act
                    where act != null
-                   orderby act.ID
+                   orderby act.Level
                    select act;
 
-        return acts.Union(GetIActions(type.BaseType));
+        return acts.Union(GetIEnoughLevel<T>(type.BaseType));
     }
 }

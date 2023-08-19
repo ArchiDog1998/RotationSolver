@@ -7,11 +7,11 @@ namespace RotationSolver.ActionSequencer;
 
 internal class ConditionHelper
 {
-    public static bool CheckBaseAction(ICustomRotation rotation, ActionID id, ref BaseAction action)
+    public static bool CheckBaseAction(ICustomRotation rotation, ActionID id, ref IBaseAction action)
     {
         if (id != ActionID.None && (action == null || (ActionID)action.ID != id))
         {
-            action = rotation.AllBaseActions.OfType<BaseAction>().FirstOrDefault(a => (ActionID)a.ID == id);
+            action = rotation.AllBaseActions.FirstOrDefault(a => (ActionID)a.ID == id);
         }
         if (action == null || !Player.Available) return false;
         return true;
@@ -142,6 +142,8 @@ internal class ConditionHelper
                         }
                         ImGuiHelper.DrawActionOverlay(cursor, IconSize, 1);
                         ImGui.EndGroup();
+                        var name = item.Name;
+                        if (!string.IsNullOrEmpty(name)) ImguiTooltips.HoveredTooltip(name);
                     }
                 });
             }

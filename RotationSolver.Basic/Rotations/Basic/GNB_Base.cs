@@ -267,47 +267,47 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait CartridgeCharge { get; } = new BaseTrait(257);
+    public static IBaseTrait CartridgeCharge { get; } = new BaseTrait(257);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedBrutalShell    { get; } = new BaseTrait(258);
+    public static IBaseTrait EnhancedBrutalShell    { get; } = new BaseTrait(258);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait DangerZoneMastery    { get; } = new BaseTrait(259);
+    public static IBaseTrait DangerZoneMastery    { get; } = new BaseTrait(259);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait TankMastery    { get; } = new BaseTrait(320);
+    public static IBaseTrait TankMastery    { get; } = new BaseTrait(320);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait HeartOfStoneMastery    { get; } = new BaseTrait(424);
+    public static IBaseTrait HeartOfStoneMastery    { get; } = new BaseTrait(424);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedAurora    { get; } = new BaseTrait(425);
+    public static IBaseTrait EnhancedAurora    { get; } = new BaseTrait(425);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedContinuation    { get; } = new BaseTrait(426);
+    public static IBaseTrait EnhancedContinuation    { get; } = new BaseTrait(426);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait CartridgeCharge2 { get; } = new BaseTrait(427);
+    public static IBaseTrait CartridgeCharge2 { get; } = new BaseTrait(427);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MeleeMastery { get; } = new BaseTrait(507);
+    public static IBaseTrait MeleeMastery { get; } = new BaseTrait(507);
     #endregion
 
     /// <summary>

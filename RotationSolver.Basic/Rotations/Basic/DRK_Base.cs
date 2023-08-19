@@ -263,47 +263,47 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Blackblood    { get; } = new BaseTrait(158);
+    public static IBaseTrait Blackblood    { get; } = new BaseTrait(158);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedBlackblood    { get; } = new BaseTrait(159);
+    public static IBaseTrait EnhancedBlackblood    { get; } = new BaseTrait(159);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait DarksideMastery    { get; } = new BaseTrait(271);
+    public static IBaseTrait DarksideMastery    { get; } = new BaseTrait(271);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedPlunge    { get; } = new BaseTrait(272);
+    public static IBaseTrait EnhancedPlunge    { get; } = new BaseTrait(272);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait TankMastery    { get; } = new BaseTrait(319);
+    public static IBaseTrait TankMastery    { get; } = new BaseTrait(319);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedUnmend    { get; } = new BaseTrait(422);
+    public static IBaseTrait EnhancedUnmend    { get; } = new BaseTrait(422);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedLivingShadow2    { get; } = new BaseTrait(423);
+    public static IBaseTrait EnhancedLivingShadow2    { get; } = new BaseTrait(423);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MeleeMastery    { get; } = new BaseTrait(506);
+    public static IBaseTrait MeleeMastery    { get; } = new BaseTrait(506);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedLivingShadow { get; } = new BaseTrait(511);
+    public static IBaseTrait EnhancedLivingShadow { get; } = new BaseTrait(511);
 
     #endregion
     /// <summary>
