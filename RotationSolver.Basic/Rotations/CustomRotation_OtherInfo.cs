@@ -265,37 +265,50 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public double AverageCountOfNonRecommendedMembersUsing { get; internal set; } = 0;
+    public double AverageCountOfLastUsing { get; internal set; } = 0;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public int MaxCountOfLastUsing { get; internal set; } = 0;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public double AverageCountOfCombatTimeUsing { get; internal set; } = 0;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public int MaxCountOfCombatTimeUsing { get; internal set; } = 0;
     internal long CountOfTracking { get; set; } = 0;
 
-    internal static float CountingOfNonRecommendedMembersUsing { get; set; } = 0;
+    internal static int CountingOfLastUsing { get; set; } = 0;
+    internal static int CountingOfCombatTimeUsing { get; set; } = 0;
 
-    private const float COMBAT_TIME_WEIGHT = 0.5f;
-
-    private const string USE_LESS_WARNING = "Please use this as less as possible. If you use it too much, your rotation will be marked as not general.";
 
     /// <summary>
     ///  The actions that were used by player successfully. The first one is the latest successfully used one.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
-    [Obsolete(USE_LESS_WARNING)]
     protected static ActionRec[] RecordActions
     {
         get
         {
-            CountingOfNonRecommendedMembersUsing++;
+            CountingOfLastUsing++;
             return DataCenter.RecordActions;
         }
     }
 
     /// <summary>
     /// How much time has passed since the last action was released.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
-    [Obsolete(USE_LESS_WARNING)]
     protected static TimeSpan TimeSinceLastAction
     {
         get
         {
-            CountingOfNonRecommendedMembersUsing++;
+            CountingOfLastUsing++;
             return DataCenter.TimeSinceLastAction;
         }
     }
@@ -307,10 +320,9 @@ public abstract partial class CustomRotation
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
     /// <returns></returns>
-    [Obsolete(USE_LESS_WARNING)]
     public static bool IsLastGCD(bool isAdjust, params IAction[] actions)
     {
-        CountingOfNonRecommendedMembersUsing++;
+        CountingOfLastUsing++;
         return IActionHelper.IsLastGCD(isAdjust, actions);
     }
 
@@ -320,10 +332,9 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="ids">True if any of this is matched.</param>
     /// <returns></returns>
-    [Obsolete(USE_LESS_WARNING)]
     public static bool IsLastGCD(params ActionID[] ids)
     {
-        CountingOfNonRecommendedMembersUsing++;
+        CountingOfLastUsing++;
         return IActionHelper.IsLastGCD(ids);
     }
 
@@ -334,10 +345,9 @@ public abstract partial class CustomRotation
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
     /// <returns></returns>
-    [Obsolete(USE_LESS_WARNING)]
     public static bool IsLastAbility(bool isAdjust, params IAction[] actions)
     {
-        CountingOfNonRecommendedMembersUsing++;
+        CountingOfLastUsing++;
         return IActionHelper.IsLastAbility(isAdjust, actions);
     }
 
@@ -347,10 +357,9 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="ids">True if any of this is matched.</param>
     /// <returns></returns>
-    [Obsolete(USE_LESS_WARNING)]
     public static bool IsLastAbility(params ActionID[] ids)
     {
-        CountingOfNonRecommendedMembersUsing++;
+        CountingOfLastUsing++;
         return IActionHelper.IsLastAbility(ids);
     }
 
@@ -361,10 +370,9 @@ public abstract partial class CustomRotation
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
     /// <returns></returns>
-    [Obsolete(USE_LESS_WARNING)]
     public static bool IsLastAction(bool isAdjust, params IAction[] actions)
     {
-        CountingOfNonRecommendedMembersUsing++;
+        CountingOfLastUsing++;
         return IActionHelper.IsLastAction(isAdjust, actions);
     }
 
@@ -374,10 +382,9 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="ids">True if any of this is matched.</param>
     /// <returns></returns>
-    [Obsolete(USE_LESS_WARNING)]
     public static bool IsLastAction(params ActionID[] ids)
     {
-        CountingOfNonRecommendedMembersUsing++;
+        CountingOfLastUsing++;
         return IActionHelper.IsLastAction(ids);
     }
 
@@ -386,10 +393,9 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="GCD"></param>
     /// <returns></returns>
-    [Obsolete(USE_LESS_WARNING)]
     protected static bool CombatElapsedLessGCD(int GCD)
     {
-        CountingOfNonRecommendedMembersUsing += COMBAT_TIME_WEIGHT;
+        CountingOfCombatTimeUsing ++;
         return CombatElapsedLess(GCD * DataCenter.WeaponTotal);
     }
 
@@ -399,22 +405,21 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="time">time in second.</param>
     /// <returns></returns>
-    [Obsolete(USE_LESS_WARNING)]
     protected static bool CombatElapsedLess(float time)
     {
-        CountingOfNonRecommendedMembersUsing += COMBAT_TIME_WEIGHT;
+        CountingOfCombatTimeUsing++;
         return CombatTime <= time;
     }
 
     /// <summary>
     /// The combat time.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
-    [Obsolete(USE_LESS_WARNING)]
     public static float CombatTime
     {
         get
         {
-            CountingOfNonRecommendedMembersUsing += COMBAT_TIME_WEIGHT;
+            CountingOfCombatTimeUsing++;
             return InCombat ? DataCenter.CombatTimeRaw + DataCenter.WeaponRemain : 0;
         }
     }
@@ -434,7 +439,8 @@ public abstract partial class CustomRotation
     protected static bool StopMovingElapsedLess(float time) => StopMovingTime <= time;
 
     /// <summary>
-    /// The time of stoping moving.
+    /// The time of stopping moving.
+    /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     public static float StopMovingTime => IsMoving ? 0 : DataCenter.StopMovingRaw + DataCenter.WeaponRemain;
 
@@ -449,7 +455,7 @@ public abstract partial class CustomRotation
 
     #region Service
     /// <summary>
-    /// The countDond ahead.
+    /// The count down ahead.
     /// </summary>
     public static float CountDownAhead => Service.Config.GetValue(Configuration.PluginConfigFloat.CountDownAhead);
 

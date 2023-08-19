@@ -223,10 +223,14 @@ internal class ControlWindow : CtrlWindow
 
         if(IconSet.GetTexture(gcd, out var texture))
         {
+            var y = ImGui.GetCursorPosY();
+
             DrawIAction(texture.ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
             if (IconSet.GetTexture(ability, out texture))
             {
                 ImGui.SameLine();
+
+                ImGui.SetCursorPosY(y);
                 DrawIAction(texture.ImGuiHandle, baseId + nameof(ability), abilityW, command, help);
             }
         }
@@ -412,13 +416,17 @@ internal class ControlWindow : CtrlWindow
 
         NextActionWindow.DrawGcdCooldown(width, true);
 
+        var y= ImGui.GetCursorPosY();
+
         DrawIAction(ActionUpdater.NextGCDAction, gcd, 1);
 
         var next = ActionUpdater.NextGCDAction != ActionUpdater.NextAction ? ActionUpdater.NextAction : null;
 
         ImGui.SameLine();
 
-        DrawIAction(next, ability, -1);
+        ImGui.SetCursorPosY(y);
+
+        DrawIAction(next, ability, 1);
         ImGui.EndGroup();
     }
 }

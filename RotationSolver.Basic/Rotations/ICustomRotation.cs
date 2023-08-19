@@ -9,9 +9,24 @@ namespace RotationSolver.Basic.Rotations;
 public interface ICustomRotation : ITexture
 {
     /// <summary>
-    /// The count of not recommend members using.
+    /// The average count of not recommend members using.
     /// </summary>
-    double AverageCountOfNonRecommendedMembersUsing { get; }
+    double AverageCountOfLastUsing { get; }
+
+    /// <summary>
+    /// The max count of not recommend members using.
+    /// </summary>
+    int MaxCountOfLastUsing { get; }
+
+    /// <summary>
+    /// The average count of not recommend members using.
+    /// </summary>
+    double AverageCountOfCombatTimeUsing { get; }
+
+    /// <summary>
+    /// The max count of not recommend members using.
+    /// </summary>
+    int MaxCountOfCombatTimeUsing { get; }
 
     /// <summary>
     /// Whether show the status in the formal page.

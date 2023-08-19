@@ -18,7 +18,11 @@ public static class UIHelper
               new TextPayload("Rotation Solver"),
               UIForegroundPayload.UIForegroundOff,
               RawPayload.LinkTerminator,
-              new TextPayload(": " + message))
+              new TextPayload(": " + message),
+
+              RotationSolverPlugin.HideWarningLinkPayload,
+              new TextPayload("(Hide Warning)"),
+              RawPayload.LinkTerminator)
 
             : new SeString(
               new IconPayload(BitmapFontIcon.DPS),
@@ -29,6 +33,10 @@ public static class UIHelper
               RawPayload.LinkTerminator,
               link,
               new TextPayload(": " + message),
+              RawPayload.LinkTerminator,
+
+              RotationSolverPlugin.HideWarningLinkPayload,
+              new TextPayload("(Hide Warning)"),
               RawPayload.LinkTerminator);
 
         Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()

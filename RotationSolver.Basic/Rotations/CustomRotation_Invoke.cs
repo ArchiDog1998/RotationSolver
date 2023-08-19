@@ -17,13 +17,19 @@ public abstract partial class CustomRotation
             UpdateInfo();
             UpdateActions(ClassJob.GetJobRole());
 
-            CountingOfNonRecommendedMembersUsing = 0;
+            CountingOfLastUsing = CountingOfCombatTimeUsing = 0;
             newAction = Invoke(out gcdAction);
-            if (InCombat || AverageCountOfNonRecommendedMembersUsing == 0)
+            if (InCombat || CountOfTracking == 0)
             {
-                AverageCountOfNonRecommendedMembersUsing =
-                    (AverageCountOfNonRecommendedMembersUsing * CountOfTracking + CountingOfNonRecommendedMembersUsing)
+                AverageCountOfLastUsing =
+                    (AverageCountOfLastUsing * CountOfTracking + CountingOfLastUsing)
                     / ++CountOfTracking;
+                MaxCountOfLastUsing = Math.Max(MaxCountOfLastUsing, CountingOfLastUsing);
+
+                AverageCountOfCombatTimeUsing =
+                    (AverageCountOfCombatTimeUsing * (CountOfTracking -1)+ CountingOfCombatTimeUsing)
+                    / CountOfTracking;
+                MaxCountOfCombatTimeUsing = Math.Max(MaxCountOfCombatTimeUsing, CountingOfCombatTimeUsing);
             }
 
             if (!IsValid) IsValid = true;

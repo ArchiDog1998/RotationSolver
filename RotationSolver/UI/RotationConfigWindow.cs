@@ -20,6 +20,7 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Drawing;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -611,7 +612,8 @@ public partial class RotationConfigWindow : Window
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
-        ImGui.Text(rotation.AverageCountOfNonRecommendedMembersUsing.ToString("F2"));
+        ImGui.Text($"{rotation.AverageCountOfLastUsing:F2} / {rotation.MaxCountOfLastUsing}");
+        ImGui.Text($"{rotation.AverageCountOfCombatTimeUsing:F2} / {rotation.MaxCountOfCombatTimeUsing}");
 
         var desc = rotation.Description;
         if (!string.IsNullOrEmpty(desc))
@@ -643,6 +645,19 @@ public partial class RotationConfigWindow : Window
         }
 
         _rotationHeader.Draw();
+    }
+
+    private static void DrawRating(float value, float max)
+    {
+        value = float.Round(value, 2);
+        var text = value.ToString();
+
+        ImGui.PushFont(ImGuiHelper.GetFont(18));
+        ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+        ImGui.Text(text);
+        var size = ImGui.GetItemRectSize();
+        ImGui.PopStyleColor();
+        ImGui.PopFont();
     }
    
     private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
@@ -1225,13 +1240,58 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawGitHubBadge(string userName, string repository, string id = "", string link = "", bool center = false)
     {
-        if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(repository)
-            && IconSet.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
-            && (center ? ImGuiHelper.TextureButton(icon, ImGui.GetWindowWidth(), icon.Width, id)
+        if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(repository)) return;
+
+        var wholeWidth = ImGui.GetWindowWidth();
+
+        link = string.IsNullOrEmpty(link) ? $"https://GitHub.com/{userName}/{repository}" : link;
+
+        if (IconSet.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
+            && (center ? ImGuiHelper.TextureButton(icon, wholeWidth, icon.Width, id)
             : ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height), id)))
         {
-            Util.OpenLink(string.IsNullOrEmpty(link) ? $"https://GitHub.com/{userName}/{repository}" : link);
+            Util.OpenLink(link);
         }
+
+        var hasDate = IconSet.GetTexture($"https://img.shields.io/github/release-date/{userName}/{repository}?style=for-the-badge", out var releaseDate);
+
+        var hasCount = IconSet.GetTexture($"https://img.shields.io/github/downloads/{userName}/{repository}/latest/total?style=for-the-badge&label=", out var downloadCount);
+
+        var style = ImGui.GetStyle();
+        var spacing = style.ItemSpacing;
+        style.ItemSpacing = Vector2.Zero;
+        if (center)
+        {
+            float width = 0;
+            if (hasDate) width += releaseDate.Width;
+            if (hasCount) width += downloadCount.Width;
+            var ratio = MathF.Min(1, wholeWidth / width);
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                if(hasDate && ImGuiHelper.NoPaddingNoColorImageButton(releaseDate.ImGuiHandle, new Vector2(releaseDate.Width, releaseDate.Height) * ratio, id))
+                {
+                    Util.OpenLink(link);
+                }
+                if(hasDate && hasCount) ImGui.SameLine();
+                if (hasCount && ImGuiHelper.NoPaddingNoColorImageButton(downloadCount.ImGuiHandle, new Vector2(downloadCount.Width, downloadCount.Height) * ratio, id))
+                {
+                    Util.OpenLink(link);
+                }
+            }, wholeWidth, width * ratio);
+        }
+        else
+        {
+            if (hasDate && ImGuiHelper.NoPaddingNoColorImageButton(releaseDate.ImGuiHandle, new Vector2(releaseDate.Width, releaseDate.Height), id))
+            {
+                Util.OpenLink(link);
+            }
+            if (hasDate && hasCount) ImGui.SameLine();
+            if (hasCount && ImGuiHelper.NoPaddingNoColorImageButton(downloadCount.ImGuiHandle, new Vector2(downloadCount.Width, downloadCount.Height), id))
+            {
+                Util.OpenLink(link);
+            }
+        }
+        style.ItemSpacing = spacing;
     }
 
     private static void DrawRotationsGitHub()
@@ -1251,7 +1311,7 @@ public partial class RotationConfigWindow : Window
             var repository = strs.Length > 1 ? strs[1] : string.Empty;
             var fileName = strs.LastOrDefault() ?? string.Empty;
 
-            DrawGitHubBadge(userName, repository, fileName);
+            DrawGitHubBadge(userName, repository, fileName, center:true);
 
             var changed = false;
 
