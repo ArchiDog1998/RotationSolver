@@ -1,6 +1,4 @@
-﻿using Dalamud.Logging;
-
-namespace RotationSolver.Basic.Rotations;
+﻿namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
@@ -18,7 +16,22 @@ public abstract partial class CustomRotation
         {
             UpdateInfo();
             UpdateActions(ClassJob.GetJobRole());
+
+            CountingOfLastUsing = CountingOfCombatTimeUsing = 0;
             newAction = Invoke(out gcdAction);
+            if (InCombat || CountOfTracking == 0)
+            {
+                AverageCountOfLastUsing =
+                    (AverageCountOfLastUsing * CountOfTracking + CountingOfLastUsing)
+                    / ++CountOfTracking;
+                MaxCountOfLastUsing = Math.Max(MaxCountOfLastUsing, CountingOfLastUsing);
+
+                AverageCountOfCombatTimeUsing =
+                    (AverageCountOfCombatTimeUsing * (CountOfTracking -1)+ CountingOfCombatTimeUsing)
+                    / CountOfTracking;
+                MaxCountOfCombatTimeUsing = Math.Max(MaxCountOfCombatTimeUsing, CountingOfCombatTimeUsing);
+            }
+
             if (!IsValid) IsValid = true;
         }
         catch (Exception ex)

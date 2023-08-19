@@ -71,9 +71,10 @@ public partial class BaseAction
     /// <returns></returns>
     public unsafe virtual bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)
     {
+        act = this;
+
         option |= OtherOption;
 
-        act = this;
         var mustUse = option.HasFlag(CanUseOption.MustUse);
 
         var player = Player.Object;
@@ -83,7 +84,7 @@ public partial class BaseAction
         if (!SkipDisable && !IsEnabled) return false;
         if (IsDutyAction && !IsDutyActionOnSlot) return false;
         
-        if (DataCenter.DisabledAction != null && DataCenter.DisabledAction.Contains(ID)) return false;
+        if (DataCenter.DisabledActionSequencer != null && DataCenter.DisabledActionSequencer.Contains(ID)) return false;
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
             return false;

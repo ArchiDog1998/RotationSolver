@@ -26,6 +26,22 @@ internal static partial class TargetUpdater
         UpdateNamePlate(Svc.Objects.OfType<BattleChara>());
     }
 
+    private static DateTime _lastUpdateDeadTime = DateTime.MinValue;
+    private static readonly TimeSpan _deadTimeSpan = TimeSpan.FromSeconds(0.5);
+    private static void UpdateDeadTime(IEnumerable<BattleChara> allTargets)
+    {
+        var now = DateTime.Now;
+        if (now - _lastUpdateDeadTime < _deadTimeSpan) return;
+        _lastUpdateDeadTime = now;
+
+        if (DataCenter.RecordedHP.Count >= DataCenter.HP_RECORD_TIME)
+        {
+            DataCenter.RecordedHP.Dequeue();
+        }
+
+        DataCenter.RecordedHP.Enqueue((now, new SortedList<uint, float>(allTargets.Where(b => b != null && b.CurrentHp != 0).ToDictionary(b => b.ObjectId, b => b.GetHealthRatio()))));
+    }
+
     internal static void ClearTarget()
     {
         var empty = Array.Empty<BattleChara>();
@@ -68,7 +84,7 @@ internal static partial class TargetUpdater
 
     private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
     {
-        DataCenter.AllHostileTargets = allTargets.Where(b =>
+        allTargets = allTargets.Where(b =>
         {
             if (!b.IsNPCEnemy()) return false;
 
@@ -77,17 +93,27 @@ internal static partial class TargetUpdater
 
             if (!b.IsTargetable()) return false;
 
-            if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
+            return true;
+        });
 
+        UpdateDeadTime(allTargets);
+
+        DataCenter.AllHostileTargets = allTargets.Where(b =>
+        {
+            if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
+            return true;
+        });
+
+        DataCenter.HostileTargets.Delay(GetHostileTargets(DataCenter.AllHostileTargets.Where(b =>
+        {
             if (Service.Config.GetValue(PluginConfigBool.OnlyAttackInView))
             {
                 if (!Svc.GameGui.WorldToScreen(b.Position, out _)) return false;
             }
 
             return true;
-        });
+        })));
 
-        DataCenter.HostileTargets.Delay(GetHostileTargets(DataCenter.AllHostileTargets));
         DataCenter.CanInterruptTargets.Delay(DataCenter.HostileTargets.Where(ObjectHelper.CanInterrupt));
 
         DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Player.Object.ObjectId);

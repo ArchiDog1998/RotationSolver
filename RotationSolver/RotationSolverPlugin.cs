@@ -32,6 +32,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public string Name => "Rotation Solver";
 
     public static DalamudLinkPayload OpenLinkPayload { get; private set; }
+    public static DalamudLinkPayload HideWarningLinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector, Module.ObjectFunctions);
@@ -47,6 +48,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             Service.Config = JsonConvert.DeserializeObject<PluginConfig>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new JsonSerializerSettings()
                 {
+                    MissingMemberHandling = MissingMemberHandling.Error,
+                    Error = delegate (object sender, Newtonsoft.Json.Serialization. ErrorEventArgs args)
+                    {
+                        args.ErrorContext.Handled = true;
+                    }
                 }) 
                 ?? PluginConfig.Create();
         }
@@ -84,7 +90,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             if (id == 0) OpenConfigWindow();
         });
-
+        HideWarningLinkPayload = pluginInterface.AddChatLinkHandler(1, (id, str) =>
+        {
+            if (id == 1)
+            {
+                Service.Config.SetValue(PluginConfigBool.HideWarning, true);
+            }
+        });
         Task.Run(async () =>
         {
             await DownloadHelper.DownloadAsync();

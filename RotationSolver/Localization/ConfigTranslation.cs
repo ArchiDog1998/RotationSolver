@@ -35,12 +35,11 @@ internal static class ConfigTranslation
     public static string ToName(this PluginConfigInt config) => config switch
     {
         PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockModifier,
-        PluginConfigInt.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
+        PluginConfigInt.BeneficialAreaStrategy => LocalizationManager.RightLang.ConfigWindow_Auto_BeneficialAreaStrategy,
 
         // UI
         PluginConfigInt.KeyBoardNoiseMin => LocalizationManager.RightLang.ConfigWindow_Param_KeyBoardNoiseTimes,
         PluginConfigInt.LessMPNoRaise => LocalizationManager.RightLang.ConfigWindow_Param_LessMPNoRaise,
-        PluginConfigInt.CooldownActionOneLine => LocalizationManager.RightLang.ConfigWindow_Control_CooldownActionOneLine,
         _ => string.Empty,
     };
 
@@ -57,6 +56,8 @@ internal static class ConfigTranslation
         PluginConfigBool.UseStopCasting => LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,
 
         // UI
+        PluginConfigBool.HideWarning => LocalizationManager.RightLang.ConfigWindow_UI_HideWarning,
+
         PluginConfigBool.DrawIconAnimation => LocalizationManager.RightLang.ConfigWindow_UI_DrawIconAnimation,
         PluginConfigBool.UseOverlayWindow => LocalizationManager.RightLang.ConfigWindow_Param_UseOverlayWindow,
         PluginConfigBool.TeachingMode => LocalizationManager.RightLang.ConfigWindow_Param_TeachingMode,
@@ -120,12 +121,12 @@ internal static class ConfigTranslation
         PluginConfigBool.TargetFatePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetFatePriority,
         PluginConfigBool.TargetHuntingRelicLevePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
         PluginConfigBool.TargetQuestPriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
+        PluginConfigBool.ShowTargetDeadTime => LocalizationManager.RightLang.ConfigWindow_Param_ShowTargetDeadTime,
 
 
         // extra
         PluginConfigBool.SayOutStateChanged => LocalizationManager.RightLang.ConfigWindow_Param_SayOutStateChanged,
         PluginConfigBool.PoslockCasting => LocalizationManager.RightLang.ConfigWindow_Param_PoslockCasting,
-        PluginConfigBool.ShowHealthRatio => LocalizationManager.RightLang.ConfigWindow_Param_ShowHealthRatio,
         PluginConfigBool.ShowTooltips => LocalizationManager.RightLang.ConfigWindow_Param_ShowTooltips,
         PluginConfigBool.InDebug => LocalizationManager.RightLang.ConfigWindow_Param_InDebug,
         PluginConfigBool.AutoOpenChest => "Auto Open the treasure chest",
@@ -178,11 +179,11 @@ internal static class ConfigTranslation
         PluginConfigFloat.HealthDifference => LocalizationManager.RightLang.ConfigWindow_Param_HealthDifference,
         PluginConfigFloat.HealthHealerRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
         PluginConfigFloat.HealthTankRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
+        PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
 
-        // extra
-        PluginConfigFloat.HealthRatioBoss => LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioBoss,
-        PluginConfigFloat.HealthRatioDying => LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioDying,
-        PluginConfigFloat.HealthRatioDot => LocalizationManager.RightLang.ConfigWindow_Param_HealthRatioDot,
+        // target
+        PluginConfigFloat.DeadTimeBoss => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeBoss,
+        PluginConfigFloat.DeadTimeDying => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeDying,
 
         _ => string.Empty,   
     };
@@ -197,6 +198,8 @@ internal static class ConfigTranslation
         PluginConfigVector4.ControlWindowLockBg => LocalizationManager.RightLang.ConfigWindow_Control_LockBackgroundColor,
         PluginConfigVector4.ControlWindowUnlockBg => LocalizationManager.RightLang.ConfigWindow_Control_UnlockBackgroundColor,
         PluginConfigVector4.BeneficialPositionColor => LocalizationManager.RightLang.ConfigWindow_UI_BeneficialPositionColor,
+        PluginConfigVector4.HoveredBeneficialPositionColor => LocalizationManager.RightLang.ConfigWindow_UI_HoveredBeneficialPositionColor,
+        
         _ => string.Empty,
     };
 
@@ -214,7 +217,6 @@ internal static class ConfigTranslation
     {
         PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription,
 
-        PluginConfigInt.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngleDesc,
         _ => string.Empty,
     };
 
@@ -234,6 +236,8 @@ internal static class ConfigTranslation
 
     public static string ToDescription(this PluginConfigFloat config) => config switch
     {
+        PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngleDesc,
+
         _ => string.Empty,
     };
 
@@ -278,11 +282,11 @@ internal static class ConfigTranslation
     {
         PluginConfigFloat.ActionAhead => new LinkDescription[]
         {
-            new LinkDescription()
-            {
-                Url = "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/HowAndWhenToClick.svg",
-                Description = "This plugin helps you to use the right action during the combat. Here is a guide about the different options.",
-            },
+            //new LinkDescription()
+            //{
+            //    Url = "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/HowAndWhenToClick.svg",
+            //    Description = "This plugin helps you to use the right action during the combat. Here is a guide about the different options.",
+            //},
         },
         //PluginConfigFloat.MinLastAbilityAdvanced => new LinkDescription[]
         //{

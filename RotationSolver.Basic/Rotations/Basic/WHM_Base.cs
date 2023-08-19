@@ -25,26 +25,26 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Lily => JobGauge.Lily;
+    public static byte Lily => JobGauge.Lily;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte BloodLily => JobGauge.BloodLily;
+    public static byte BloodLily => JobGauge.BloodLily;
 
-    static float LilyTimerRaw => JobGauge.LilyTimer / 1000f;
+    static float LilyTimeRaw => JobGauge.LilyTimer / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float LilyTimer => LilyTimerRaw - DataCenter.WeaponRemain;
+    public static float LilyTime => LilyTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    protected static bool LilyAfter(float time) => LilyTimer <= time;
+    protected static bool LilyAfter(float time) => LilyTime <= time;
 
     /// <summary>
     /// 
@@ -175,7 +175,8 @@ public abstract class WHM_Base : CustomRotation
             StatusID.Aero,
             StatusID.Aero2,
             StatusID.Dia,
-        }
+        },
+        TimeToDie = 20,
     };
 
     /// <summary>
@@ -226,81 +227,81 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend    { get; } = new BaseTrait(23);
+    public static IBaseTrait MaimAndMend    { get; } = new BaseTrait(23);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Freecure    { get; } = new BaseTrait(25);
+    public static IBaseTrait Freecure    { get; } = new BaseTrait(25);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(26);
+    public static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(26);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait StoneMastery { get; } = new BaseTrait(179);
+    public static IBaseTrait StoneMastery { get; } = new BaseTrait(179);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AeroMastery { get; } = new BaseTrait(180);
+    public static IBaseTrait AeroMastery { get; } = new BaseTrait(180);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait StoneMastery2 { get; } = new BaseTrait(181);
+    public static IBaseTrait StoneMastery2 { get; } = new BaseTrait(181);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait StoneMastery3 { get; } = new BaseTrait(182);
+    public static IBaseTrait StoneMastery3 { get; } = new BaseTrait(182);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SecretOfTheLily { get; } = new BaseTrait(196);
+    public static IBaseTrait SecretOfTheLily { get; } = new BaseTrait(196);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AeroMastery2    { get; } = new BaseTrait(307);
+    public static IBaseTrait AeroMastery2    { get; } = new BaseTrait(307);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait StoneMastery4    { get; } = new BaseTrait(308);
+    public static IBaseTrait StoneMastery4    { get; } = new BaseTrait(308);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait TranscendentAfflatus    { get; } = new BaseTrait(309);
+    public static IBaseTrait TranscendentAfflatus    { get; } = new BaseTrait(309);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedAsylum    { get; } = new BaseTrait(310);
+    public static IBaseTrait EnhancedAsylum    { get; } = new BaseTrait(310);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait GlareMastery    { get; } = new BaseTrait(487);
+    public static IBaseTrait GlareMastery    { get; } = new BaseTrait(487);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait HolyMastery    { get; } = new BaseTrait(488);
+    public static IBaseTrait HolyMastery    { get; } = new BaseTrait(488);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(489);
+    public static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(489);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedDivineBenison    { get; } = new BaseTrait(490);
+    public static IBaseTrait EnhancedDivineBenison    { get; } = new BaseTrait(490);
     #endregion
 }

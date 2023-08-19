@@ -20,25 +20,4 @@ public class AssemblyLinkAttribute : Attribute
     /// A link for the repo in your GitHub.
     /// </summary>
     public string Repository { get; set; }
-    /// <summary>
-    /// Constructer.
-    /// </summary>
-    /// <param name="supportLink"></param>
-    /// <param name="helpLink"></param>
-    /// <param name="changeLog"></param>
-    /// <param name="donate"><see cref="Donate"/></param>
-    [Obsolete("Never use it anymore, it'll be deleted in a month!", true)]
-    public AssemblyLinkAttribute(string supportLink = null, string helpLink = null,
-        string changeLog = null, string donate = null)
-    {
-        Donate = donate;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public AssemblyLinkAttribute()
-    {
-        
-    }
 }

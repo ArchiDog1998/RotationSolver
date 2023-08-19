@@ -1,4 +1,5 @@
-﻿using Lumina.Excel.GeneratedSheets;
+﻿using ECommons.ExcelServices;
+using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Data;
 
@@ -79,5 +80,34 @@ public static class JobRoleExtension
             };
         }
         return role;
+    }
+
+    /// <summary>
+    /// Get Jobs from role.
+    /// </summary>
+    /// <param name="role"></param>
+    /// <returns></returns>
+    public static Job[] ToJobs(this JobRole role)
+    {
+        switch (role)
+        {
+            case JobRole.Tank:
+                return new Job[] { Job.WAR, Job.PLD, Job.DRK, Job.GNB };
+            case JobRole.Healer:
+                return new Job[] {Job.WHM, Job.SCH, Job.AST, Job.SGE };
+            case JobRole.Melee:
+                return new Job[] {Job.MNK, Job.DRG, Job.NIN, Job.SAM, Job.RPR };
+            case JobRole.RangedPhysical:
+                return new Job[] { Job.BRD, Job.MCH, Job.DNC };
+            case JobRole.RangedMagical:
+                return new Job[] { Job.BLM, Job.SMN, Job.RDM, Job.BLU };
+
+            case JobRole.Ranged:
+                var result = new List<Job>(JobRole.RangedPhysical.ToJobs());
+                result.AddRange(JobRole.RangedMagical.ToJobs());
+                return result.ToArray();
+        }
+
+        return Array.Empty<Job>();
     }
 }

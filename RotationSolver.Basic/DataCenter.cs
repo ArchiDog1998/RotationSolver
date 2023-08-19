@@ -6,7 +6,6 @@ using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using Lumina.Excel.GeneratedSheets;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
@@ -14,6 +13,12 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
+    /// <summary>
+    /// Only recorded 15s hps.
+    /// </summary>
+    public const int HP_RECORD_TIME = 240;
+    internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } = new(HP_RECORD_TIME + 1);
+
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
         || !Service.Config.GetValue(Configuration.PluginConfigBool.PoslockCasting)
         //Key cancel.
@@ -52,7 +57,7 @@ internal static class DataCenter
         }
         return keep;
     }
-    public static HashSet<uint> DisabledAction { get; set; } = new HashSet<uint>();
+    public static HashSet<uint> DisabledActionSequencer { get; set; } = new HashSet<uint>();
 
     private static List<NextAct> NextActs = new();
     public static IAction ActionSequencerAction { private get; set; }
@@ -320,7 +325,6 @@ internal static class DataCenter
                 var time = recs.Last().ReceiveTime - recs.First().ReceiveTime + TimeSpan.FromMilliseconds(2.5f);
 
                 return damages / (float)time.TotalSeconds;
-
             }
             catch
             {

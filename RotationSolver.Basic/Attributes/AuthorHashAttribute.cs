@@ -11,22 +11,4 @@ public class AuthorHashAttribute : Attribute
     /// The hash of your character.
     /// </summary>
     public string Hash { get; set; }
-
-    /// <summary>
-    /// Constructer
-    /// </summary>
-    /// <param name="hash"><see cref="Hash"/></param>
-    [Obsolete("This method will be deleted in one month.", true)]
-    public AuthorHashAttribute(string hash)
-    {
-        Hash = hash;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public AuthorHashAttribute()
-    {
-        
-    }
 }

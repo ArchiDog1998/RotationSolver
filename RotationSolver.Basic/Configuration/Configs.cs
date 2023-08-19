@@ -183,9 +183,11 @@ public enum JobConfigFloat : byte
         { PluginConfigVector4.TeachingModeColor, new (0f, 1f, 0.8f, 1f)},
         { PluginConfigVector4.MovingTargetColor, new (0f, 1f, 0.8f, 0.6f)},
         { PluginConfigVector4.BeneficialPositionColor, new (0.5f, 0.9f, 0.1f, 0.7f)},
+        { PluginConfigVector4.HoveredBeneficialPositionColor, new (1f, 0.5f, 0f, 0.8f)},
+
         { PluginConfigVector4.TargetColor, new (1f, 0.2f, 0f, 0.8f)},
         { PluginConfigVector4.SubTargetColor, new (1f, 0.9f, 0f, 0.8f)},
-        { PluginConfigVector4.ControlWindowLockBg, new (0, 0, 0, 0.6f)},
+        { PluginConfigVector4.ControlWindowLockBg, new (0, 0, 0, 0.5f)},
         { PluginConfigVector4.ControlWindowUnlockBg, new (0, 0, 0, 0.75f)},
         { PluginConfigVector4.InfoWindowBg, new (0, 0, 0, 0.4f)},
     });
@@ -217,10 +219,6 @@ public enum PluginConfigInt : byte
 
     [Default(0)] TargetingIndex,
     [Default(0)] BeneficialAreaStrategy,
-
-    [Obsolete]
-    [Default(15, 1, 30)] CooldownActionOneLine,
-    [Default(0, 0, 100)] MoveTargetAngle
 }
 
 public enum PluginConfigBool : byte
@@ -254,7 +252,7 @@ public enum PluginConfigBool : byte
     [Default(true)] DrawMeleeOffset,
 
     [Default(true)] ShowMoveTarget,
-    [Default(false)] ShowHealthRatio,
+    [Default(false)] ShowTargetDeadTime,
     [Default(true)] ShowTarget,
     [Default(true)] ChooseAttackMark,
     [Default(false)] CanAttackMarkAOE,
@@ -328,11 +326,12 @@ public enum PluginConfigBool : byte
     [Default(true)] AutoOffAfterCombat,
 
     [Default(true)] ShowBeneficialPositions,
+    [Default(false)] HideWarning,
 }
 
 public enum PluginConfigFloat : byte
 {
-    [Default(8f, 0f, 20f)] AutoOffAfterCombatTime,
+    [Default(8f, 0f, 60f)] AutoOffAfterCombatTime,
     [Default(3f, 0f, 8f)] DrawingHeight,
     [Default(0.2f, 0.005f, 0.05f)] SampleLength,
     [Default(0.1f)] KeyBoardNoiseTimeMin,
@@ -383,12 +382,11 @@ public enum PluginConfigFloat : byte
 
     [Default(0.5f, 0f, 3f)] CountdownDelayMin,
     [Default(1f)] CountdownDelayMax,
-    [Default(0.6f, 0.5f, 0.7f)] CountDownAhead,
+    [Default(0.6f, 0f, 0.7f)] CountDownAhead,
 
-    [Default(24f)] MoveTargetAngle,
-    [Default(1.85f, 0f, 10f)] HealthRatioBoss,
-    [Default(0.8f, 0f, 10f)] HealthRatioDying,
-    [Default(1.2f, 0f, 10f)] HealthRatHealthRatioDotioBoss,
+    [Default(24f, 0f, 90f)] MoveTargetAngle,
+    [Default(60f, 10f, 1800f)] DeadTimeBoss,
+    [Default(10f, 0f, 60f)] DeadTimeDying,
 
     [Default(16f, 9.6f, 96f)] CooldownFontSize,
 
@@ -399,8 +397,6 @@ public enum PluginConfigFloat : byte
     [Default(8f)] ControlProgressHeight,
     [Default(1.2f, 0f, 30f)] DistanceForMoving,
     [Default(0.2f, 0.01f, 0.5f)] MaxPing,
-
-    [Default(1.8f)] HealthRatioDot,
 }
 
 public enum PluginConfigVector4 : byte
@@ -410,6 +406,7 @@ public enum PluginConfigVector4 : byte
     TargetColor,
     SubTargetColor,
     BeneficialPositionColor,
+    HoveredBeneficialPositionColor,
     ControlWindowLockBg,
     ControlWindowUnlockBg,
     InfoWindowBg,

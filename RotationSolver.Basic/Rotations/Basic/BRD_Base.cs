@@ -17,7 +17,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new[] { ECommons.ExcelServices.Job.BRD, ECommons.ExcelServices.Job.ARC };
+    public sealed override Job[] Jobs => new[] { Job.BRD, Job.ARC };
 
     #region Job Gauge
     static BRDGauge JobGauge => Svc.Gauges.Get<BRDGauge>();
@@ -25,7 +25,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Repertoire => JobGauge.Repertoire;
+    public static byte Repertoire => JobGauge.Repertoire;
 
     /// <summary>
     /// 
@@ -40,13 +40,13 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte SoulVoice => JobGauge.SoulVoice;
+    public static byte SoulVoice => JobGauge.SoulVoice;
     static float SongTimeRaw => JobGauge.SongTimer / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float SongTime => SongTimeRaw - DataCenter.WeaponRemain;
+    public static float SongTime => SongTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
@@ -87,7 +87,8 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction VenomousBite { get; } = new BaseAction(ActionID.VenomousBite, ActionOption.Dot)
     {
-        TargetStatus = new[] { StatusID.VenomousBite, StatusID.CausticBite }
+        TargetStatus = new[] { StatusID.VenomousBite, StatusID.CausticBite },
+        TimeToDie = 30,
     };
 
     /// <summary>
@@ -95,7 +96,8 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction WindBite { get; } = new BaseAction(ActionID.WindBite, ActionOption.Dot)
     {
-        TargetStatus = new[] { StatusID.WindBite, StatusID.StormBite }
+        TargetStatus = new[] { StatusID.WindBite, StatusID.StormBite },
+        TimeToDie = 30,
     };
 
     /// <summary>
@@ -105,6 +107,7 @@ public abstract class BRD_Base : CustomRotation
     {
         TargetStatus = VenomousBite.TargetStatus.Union(WindBite.TargetStatus).ToArray(),
         ActionCheck = (b, m) => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, WindBite.TargetStatus),
+        TimeToDie = 30,
     };
 
     /// <summary>
@@ -238,82 +241,82 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait HeavierShot { get; } = new BaseTrait(17);
+    public static IBaseTrait HeavierShot { get; } = new BaseTrait(17);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(18);
+    public static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(18);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(20);
+    public static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(20);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BiteMastery { get; } = new BaseTrait(168);
+    public static IBaseTrait BiteMastery { get; } = new BaseTrait(168);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEmpyrealArrow    { get; } = new BaseTrait(169);
+    public static IBaseTrait EnhancedEmpyrealArrow    { get; } = new BaseTrait(169);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait StraightShotMastery    { get; } = new BaseTrait(282);
+    public static IBaseTrait StraightShotMastery    { get; } = new BaseTrait(282);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedQuickNock    { get; } = new BaseTrait(283);
+    public static IBaseTrait EnhancedQuickNock    { get; } = new BaseTrait(283);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BiteMastery2 { get; } = new BaseTrait(284);
+    public static IBaseTrait BiteMastery2 { get; } = new BaseTrait(284);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait HeavyShotMastery    { get; } = new BaseTrait(285);
+    public static IBaseTrait HeavyShotMastery    { get; } = new BaseTrait(285);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedArmysPaeon    { get; } = new BaseTrait(286);
+    public static IBaseTrait EnhancedArmysPaeon    { get; } = new BaseTrait(286);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SoulVoiceTraits    { get; } = new BaseTrait(287);
+    public static IBaseTrait SoulVoiceTraits    { get; } = new BaseTrait(287);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait QuickNockMastery    { get; } = new BaseTrait(444);
+    public static IBaseTrait QuickNockMastery    { get; } = new BaseTrait(444);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedBloodletter    { get; } = new BaseTrait(445);
+    public static IBaseTrait EnhancedBloodletter    { get; } = new BaseTrait(445);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedApexArrow    { get; } = new BaseTrait(446);
+    public static IBaseTrait EnhancedApexArrow    { get; } = new BaseTrait(446);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedTroubadour    { get; } = new BaseTrait(447);
+    public static IBaseTrait EnhancedTroubadour    { get; } = new BaseTrait(447);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MinstrelsCoda    { get; } = new BaseTrait(448);
+    public static IBaseTrait MinstrelsCoda    { get; } = new BaseTrait(448);
 
     #endregion
 

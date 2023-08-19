@@ -1,31 +1,25 @@
-# RotationSolver⚔️
+# Development of Rotation.
 
-> Analyses PvE combat information every frame and finds the best action.
+Thank you for joining the circle of rotation developers who have a role called `xxx dev` in [Discord](https://discord.gg/4fECHunam9). 
 
-This means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.
+Actually, all the rotations should be developed by the players who have a certain understanding of the job, not me who doesn't.  I would like you to share your own rotation with the public!
 
-Then, it will highlight the best action on the hot bar, or help you to click on it.
+I'll make it easier and easier to develop a custom rotation.
 
-It is designed for `general combat`, not for savage or ultimate. Use it carefully.
+## Core Concept
 
-## Installation
+Find one 0GCD as the core burst action, and bind it to the `InBurst` property. Make all GCDs or 0GCDs bind to the status or cd of that burst 0GCD to align your rotation.
 
-After installing [Dalamud](https://goatcorp.github.io/), input `/xlplugins` command  in the chat box. Go to`Settings` -> `Experimental` -> `Custom Plugin Repositories`, and add the URL here, check the box and in the end, save it.
+## Responsibility
 
-```
-https://raw.githubusercontent.com/ArchiDog1998/Dalamud_Plugins/main/pluginmaster.json
-```
+- Basic
+  - Maintain your own rotation.
+  - Answer the questions about your own rotation.
+- Advanced
+  - Maintain the action list.
+  - Maintain the id of action or status.
+  - Raise the issue encountered in the development.
 
-![Add Url](assets/image-20230129154207892.png)
+## Forum
 
-Go back to the Installed Plugins. Find the `Rotation Solver` in the `All Plugins` list, and install it.
-
-![Install Plugin](assets/image-20230129155343199.png)
-
-## Quick Start
-
-Open the `Rotation Solver Settings`, Find `Help` Tab, and left click the `/rotation Auto` to start the rotation. Then it is done.
-
-![Start the Rotation](assets/image-20230129160200852.png)
-
-What? Nothing happened? Fine. If your job is not a `Tank` role, Rotation Solver only attacks the mobs that have already been engaged by default. So, you need to right-click the target into `Auto Attack`  mode to make the target engaged in combat with your character.
+This wiki isn't perfect right now. If you have any questions or suggestions, please talk about it on the `#rotation` channel in [Discord](https://discord.gg/4fECHunam9) with a `xxx dev` role.

@@ -25,22 +25,22 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsDancing => JobGauge.IsDancing;
+    public static bool IsDancing => JobGauge.IsDancing;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Esprit => JobGauge.Esprit;
+    public static byte Esprit => JobGauge.Esprit;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Feathers => JobGauge.Feathers;
+    public static byte Feathers => JobGauge.Feathers;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte CompletedSteps => JobGauge.CompletedSteps;
+    public static byte CompletedSteps => JobGauge.CompletedSteps;
     #endregion
 
     #region Attack Single
@@ -322,57 +322,57 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(251);
+    public static IBaseTrait IncreasedActionDamage { get; } = new BaseTrait(251);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait FourfoldFantasy { get; } = new BaseTrait(252);
+    public static IBaseTrait FourfoldFantasy { get; } = new BaseTrait(252);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(253);
+    public static IBaseTrait IncreasedActionDamage2 { get; } = new BaseTrait(253);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEnAvant    { get; } = new BaseTrait(254);
+    public static IBaseTrait EnhancedEnAvant    { get; } = new BaseTrait(254);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EspritTrait { get; } = new BaseTrait(255);
+    public static IBaseTrait EspritTrait { get; } = new BaseTrait(255);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEnAvant2    { get; } = new BaseTrait(256);
+    public static IBaseTrait EnhancedEnAvant2    { get; } = new BaseTrait(256);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedTechnicalFinish    { get; } = new BaseTrait(453);
+    public static IBaseTrait EnhancedTechnicalFinish    { get; } = new BaseTrait(453);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEsprit    { get; } = new BaseTrait(454);
+    public static IBaseTrait EnhancedEsprit    { get; } = new BaseTrait(454);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedFlourish    { get; } = new BaseTrait(455);
+    public static IBaseTrait EnhancedFlourish    { get; } = new BaseTrait(455);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedShieldSamba    { get; } = new BaseTrait(456);
+    public static IBaseTrait EnhancedShieldSamba    { get; } = new BaseTrait(456);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedDevilment    { get; } = new BaseTrait(457);
+    public static IBaseTrait EnhancedDevilment    { get; } = new BaseTrait(457);
 
     #endregion
 

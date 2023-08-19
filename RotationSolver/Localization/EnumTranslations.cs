@@ -8,7 +8,7 @@ internal static class EnumTranslations
 {
     internal static string ToName(this TargetConditionType type) => type switch
     {
-        TargetConditionType.HasStatus => LocalizationManager.RightLang.TargetConditionType_HaveStatus,
+        TargetConditionType.HasStatus => LocalizationManager.RightLang.TargetConditionType_HasStatus,
         TargetConditionType.IsDying => LocalizationManager.RightLang.TargetConditionType_IsDying,
         TargetConditionType.IsBoss => LocalizationManager.RightLang.TargetConditionType_IsBoss,
         TargetConditionType.Distance => LocalizationManager.RightLang.TargetConditionType_Distance,
@@ -23,8 +23,7 @@ internal static class EnumTranslations
     {
         ComboConditionType.Bool => LocalizationManager.RightLang.ComboConditionType_Bool,
         ComboConditionType.Byte => LocalizationManager.RightLang.ComboConditionType_Byte,
-        ComboConditionType.Time => LocalizationManager.RightLang.ComboConditionType_Time,
-        ComboConditionType.TimeGCD => LocalizationManager.RightLang.ComboConditionType_GCD,
+        ComboConditionType.Float => LocalizationManager.RightLang.ComboConditionType_Float,
         ComboConditionType.Last => LocalizationManager.RightLang.ComboConditionType_Last,
         _ => string.Empty,
     };

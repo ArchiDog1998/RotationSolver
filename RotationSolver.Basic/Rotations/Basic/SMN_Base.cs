@@ -22,73 +22,74 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected override bool CanHealSingleSpell => false;
+    public override bool CanHealSingleSpell => false;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.DeathFlare;
+    public static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.DeathFlare;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool InPhoenix => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.Rekindle;
+    public static bool InPhoenix => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.Rekindle;
+
     #region JobGauge
     static SMNGauge JobGauge => Svc.Gauges.Get<SMNGauge>();
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasAetherflowStacks => JobGauge.HasAetherflowStacks;
+    public static bool HasAetherflowStacks => JobGauge.HasAetherflowStacks;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Attunement => JobGauge.Attunement;
+    public static byte Attunement => JobGauge.Attunement;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsIfritReady => JobGauge.IsIfritReady;
+    public static bool IsIfritReady => JobGauge.IsIfritReady;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsTitanReady => JobGauge.IsTitanReady;
+    public static bool IsTitanReady => JobGauge.IsTitanReady;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsGarudaReady => JobGauge.IsGarudaReady;
+    public static bool IsGarudaReady => JobGauge.IsGarudaReady;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool InIfrit => JobGauge.IsIfritAttuned;
+    public static bool InIfrit => JobGauge.IsIfritAttuned;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool InTitan => JobGauge.IsTitanAttuned;
+    public static bool InTitan => JobGauge.IsTitanAttuned;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool InGaruda => JobGauge.IsGarudaAttuned;
+    public static bool InGaruda => JobGauge.IsGarudaAttuned;
 
-    private static float SummonTimerRemainingRaw => JobGauge.SummonTimerRemaining / 1000f;
+    private static float SummonTimeRaw => JobGauge.SummonTimerRemaining / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float SummonTimerRemaining => SummonTimerRemainingRaw - DataCenter.WeaponRemain;
+    public static float SummonTime => SummonTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    protected static bool SummonTimeEndAfter(float time) => SummonTimerRemaining <= time;
+    protected static bool SummonTimeEndAfter(float time) => SummonTime <= time;
 
     /// <summary>
     /// 
@@ -99,19 +100,19 @@ public abstract class SMN_Base : CustomRotation
     protected static bool SummonTimeEndAfterGCD(uint gcdCount = 0, float offset = 0)
         => SummonTimeEndAfter(GCDTime(gcdCount, offset));
 
-    private static float AttunmentTimerRemainingRaw => JobGauge.AttunmentTimerRemaining / 1000f;
+    private static float AttunmentTimeRaw => JobGauge.AttunmentTimerRemaining / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float AttunmentTimerRemaining => AttunmentTimerRemainingRaw - DataCenter.WeaponRemain;
+    public static float AttunmentTime => AttunmentTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="time"></param>
     /// <returns></returns>
-    protected static bool AttunmentTimeEndAfter(float time) => AttunmentTimerRemaining <= time;
+    protected static bool AttunmentTimeEndAfter(float time) => AttunmentTime <= time;
 
     /// <summary>
     /// 
@@ -133,8 +134,8 @@ public abstract class SMN_Base : CustomRotation
     /// </summary>
     public override void DisplayStatus()
     {
-        ImGui.Text("AttunmentTime: " + AttunmentTimerRemainingRaw.ToString());
-        ImGui.Text("SummonTime: " + SummonTimerRemainingRaw.ToString());
+        ImGui.Text("AttunmentTime: " + AttunmentTimeRaw.ToString());
+        ImGui.Text("SummonTime: " + SummonTimeRaw.ToString());
         ImGui.Text("Pet: " + DataCenter.HasPet.ToString());
     }
 
@@ -171,7 +172,7 @@ public abstract class SMN_Base : CustomRotation
     /// </summary>
     public static IBaseAction SummonCarbuncle { get; } = new BaseAction(ActionID.SummonCarbuncle)
     {
-        ActionCheck = (b, m) => _carbuncleDelay.Delay(!DataCenter.HasPet && AttunmentTimerRemainingRaw == 0 && SummonTimerRemainingRaw == 0),
+        ActionCheck = (b, m) => _carbuncleDelay.Delay(!DataCenter.HasPet && AttunmentTimeRaw == 0 && SummonTimeRaw == 0),
     };
     #endregion
 
@@ -353,107 +354,107 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend    { get; } = new BaseTrait(66);
+    public static IBaseTrait MaimAndMend    { get; } = new BaseTrait(66);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(69);
+    public static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(69);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedDreadwyrmTrance    { get; } = new BaseTrait(178);
+    public static IBaseTrait EnhancedDreadwyrmTrance    { get; } = new BaseTrait(178);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RuinMastery    { get; } = new BaseTrait(217);
+    public static IBaseTrait RuinMastery    { get; } = new BaseTrait(217);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedAethercharge    { get; } = new BaseTrait(466);
+    public static IBaseTrait EnhancedAethercharge    { get; } = new BaseTrait(466);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedAethercharge2    { get; } = new BaseTrait(467);
+    public static IBaseTrait EnhancedAethercharge2    { get; } = new BaseTrait(467);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RubySummoningMastery    { get; } = new BaseTrait(468);
+    public static IBaseTrait RubySummoningMastery    { get; } = new BaseTrait(468);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait TopazSummoningMastery    { get; } = new BaseTrait(469);
+    public static IBaseTrait TopazSummoningMastery    { get; } = new BaseTrait(469);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EmeraldSummoningMastery    { get; } = new BaseTrait(470);
+    public static IBaseTrait EmeraldSummoningMastery    { get; } = new BaseTrait(470);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Enkindle    { get; } = new BaseTrait(471);
+    public static IBaseTrait Enkindle    { get; } = new BaseTrait(471);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RuinMastery2    { get; } = new BaseTrait(473);
+    public static IBaseTrait RuinMastery2    { get; } = new BaseTrait(473);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait AetherchargeMastery    { get; } = new BaseTrait(474);
+    public static IBaseTrait AetherchargeMastery    { get; } = new BaseTrait(474);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEnergySiphon    { get; } = new BaseTrait(475);
+    public static IBaseTrait EnhancedEnergySiphon    { get; } = new BaseTrait(475);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RuinMastery3    { get; } = new BaseTrait(476);
+    public static IBaseTrait RuinMastery3    { get; } = new BaseTrait(476);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait OutburstMastery    { get; } = new BaseTrait(477);
+    public static IBaseTrait OutburstMastery    { get; } = new BaseTrait(477);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait OutburstMastery2    { get; } = new BaseTrait(478);
+    public static IBaseTrait OutburstMastery2    { get; } = new BaseTrait(478);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RuinMastery4    { get; } = new BaseTrait(479);
+    public static IBaseTrait RuinMastery4    { get; } = new BaseTrait(479);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedRadiantAegis    { get; } = new BaseTrait(480);
+    public static IBaseTrait EnhancedRadiantAegis    { get; } = new BaseTrait(480);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Enkindle2    { get; } = new BaseTrait(481);
+    public static IBaseTrait Enkindle2    { get; } = new BaseTrait(481);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedSummonBahamut    { get; } = new BaseTrait(502);
+    public static IBaseTrait EnhancedSummonBahamut    { get; } = new BaseTrait(502);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait ElementalMastery    { get; } = new BaseTrait(503);
+    public static IBaseTrait ElementalMastery    { get; } = new BaseTrait(503);
     #endregion
 
     /// <summary>

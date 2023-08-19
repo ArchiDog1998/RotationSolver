@@ -139,7 +139,7 @@ public static class IconSet
     public static bool GetTexture(string path, out TextureWrap texture)
         => ThreadLoadImageHandler.TryGetTextureWrap(path, out texture)
         || (path.StartsWith("http:", StringComparison.OrdinalIgnoreCase) || path.StartsWith("https:", StringComparison.OrdinalIgnoreCase))
-        && GetTexture((uint)(62571 + Environment.TickCount / 300 % 3), out texture); // loading pics.
+        && GetTexture("ui/uld/image2.tex", out texture); // loading pics.
 
     private static readonly Dictionary<uint, uint> _actionIcons = new();
 

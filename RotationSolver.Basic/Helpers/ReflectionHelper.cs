@@ -15,11 +15,6 @@ internal static class ReflectionHelper
         return props.Union(type.BaseType.GetStaticProperties<T>()).ToArray();
     }
 
-    internal static MethodInfo[] GetStaticBoolMethodInfo(this Type type, Func<MethodInfo, bool> checks)
-    {
-        return type.GetAllMethodInfo().Where(m => checks(m) && m.ReturnType == typeof(bool) && m.IsStatic).ToArray();
-    }
-
     internal static IEnumerable<MethodInfo> GetAllMethodInfo(this Type type)
     {
         if (type == null) return Array.Empty<MethodInfo>();

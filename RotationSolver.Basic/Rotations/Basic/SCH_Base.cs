@@ -25,17 +25,19 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte FairyGauge => JobGauge.FairyGauge;
+    public static byte FairyGauge => JobGauge.FairyGauge;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasAetherflow => JobGauge.Aetherflow > 0;
+    public static bool HasAetherflow => JobGauge.Aetherflow > 0;
+
+    static float SeraphTimeRaw => JobGauge.SeraphTimer / 1000f;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasSeraph => JobGauge.SeraphTimer > 0;
+    public static float SeraphTime => SeraphTimeRaw - DataCenter.WeaponRemain;
     #endregion
 
     #region Heal
@@ -105,7 +107,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Consolation { get; } = new BaseAction(ActionID.Consolation, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => HasSeraph,
+        ActionCheck = (b, m) => SeraphTime > 0,
     };
 
     /// <summary>
@@ -124,6 +126,7 @@ public abstract class SCH_Base : CustomRotation
     public static IBaseAction Bio { get; } = new BaseAction(ActionID.Bio, ActionOption.Dot)
     {
         TargetStatus = new StatusID[] { StatusID.Bio, StatusID.Bio2, StatusID.Biolysis },
+        TimeToDie = 20,
     };
 
     /// <summary>
@@ -189,7 +192,7 @@ public abstract class SCH_Base : CustomRotation
     public static IBaseAction Dissipation { get; } = new BaseAction(ActionID.Dissipation)
     {
         StatusProvide = new[] { StatusID.Dissipation },
-        ActionCheck = (b, m) => !HasAetherflow && !HasSeraph && InCombat && DataCenter.HasPet,
+        ActionCheck = (b, m) => !HasAetherflow && SeraphTime <= 0 && InCombat && DataCenter.HasPet,
     };
 
     /// <summary>
@@ -197,7 +200,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Aetherpact { get; } = new BaseAction(ActionID.Aetherpact, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => JobGauge.FairyGauge >= 10 && DataCenter.HasPet && !HasSeraph
+        ActionCheck = (b, m) => JobGauge.FairyGauge >= 10 && DataCenter.HasPet && SeraphTime <= 0
     };
 
     /// <summary>
@@ -205,7 +208,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction FeyBlessing { get; } = new BaseAction(ActionID.FeyBlessing, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => !HasSeraph && DataCenter.HasPet,
+        ActionCheck = (b, m) => SeraphTime <= 0 && DataCenter.HasPet,
     };
     #endregion
 
@@ -261,52 +264,52 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BroilMastery2 { get; } = new BaseTrait(184);
+    public static IBaseTrait BroilMastery2 { get; } = new BaseTrait(184);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BroilMastery { get; } = new BaseTrait(214);
+    public static IBaseTrait BroilMastery { get; } = new BaseTrait(214);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait CorruptionMastery2    { get; } = new BaseTrait(311);
+    public static IBaseTrait CorruptionMastery2    { get; } = new BaseTrait(311);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BroilMastery3 { get; } = new BaseTrait(312);
+    public static IBaseTrait BroilMastery3 { get; } = new BaseTrait(312);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedSacredSoil    { get; } = new BaseTrait(313);
+    public static IBaseTrait EnhancedSacredSoil    { get; } = new BaseTrait(313);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait CorruptionMastery    { get; } = new BaseTrait(324);
+    public static IBaseTrait CorruptionMastery    { get; } = new BaseTrait(324);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BroilMastery4 { get; } = new BaseTrait(491);
+    public static IBaseTrait BroilMastery4 { get; } = new BaseTrait(491);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait ArtOfWarMastery { get; } = new BaseTrait(492);
+    public static IBaseTrait ArtOfWarMastery { get; } = new BaseTrait(492);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(493);
+    public static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(493);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedDeploymentTactics    { get; } = new BaseTrait(494);
+    public static IBaseTrait EnhancedDeploymentTactics    { get; } = new BaseTrait(494);
     #endregion
 
     /// <summary>

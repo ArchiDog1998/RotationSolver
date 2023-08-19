@@ -1,5 +1,6 @@
 ﻿using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -8,6 +9,26 @@ namespace RotationSolver.Basic.Rotations;
 /// </summary>
 public interface ICustomRotation : ITexture
 {
+    /// <summary>
+    /// The average count of not recommend members using.
+    /// </summary>
+    double AverageCountOfLastUsing { get; }
+
+    /// <summary>
+    /// The max count of not recommend members using.
+    /// </summary>
+    int MaxCountOfLastUsing { get; }
+
+    /// <summary>
+    /// The average count of not recommend members using.
+    /// </summary>
+    double AverageCountOfCombatTimeUsing { get; }
+
+    /// <summary>
+    /// The max count of not recommend members using.
+    /// </summary>
+    int MaxCountOfCombatTimeUsing { get; }
+
     /// <summary>
     /// Whether show the status in the formal page.
     /// </summary>
@@ -64,6 +85,11 @@ public interface ICustomRotation : ITexture
     IAction[] AllActions { get; }
 
     /// <summary>
+    /// All traits.
+    /// </summary>
+    IBaseTrait[] AllTraits { get; }
+
+    /// <summary>
     /// All bool properties.
     /// </summary>
     PropertyInfo[] AllBools { get; }
@@ -76,17 +102,8 @@ public interface ICustomRotation : ITexture
     /// <summary>
     /// All time methods.
     /// </summary>
-    MethodInfo[] AllTimes { get; }
+    PropertyInfo[] AllFloats { get; }
 
-    /// <summary>
-    /// All last actions.
-    /// </summary>
-    MethodInfo[] AllLast { get; }
-
-    /// <summary>
-    /// All gcds.
-    /// </summary>
-    MethodInfo[] AllGCDs { get; }
 
     internal IAction ActionHealAreaGCD { get; }
     internal IAction ActionHealAreaAbility { get; }

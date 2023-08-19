@@ -951,32 +951,32 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Learning { get; } = new BaseTrait(219);
+    public static IBaseTrait Learning { get; } = new BaseTrait(219);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend { get; } = new BaseTrait(220);
+    public static IBaseTrait MaimAndMend { get; } = new BaseTrait(220);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(221);
+    public static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(221);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend3 { get; } = new BaseTrait(222);
+    public static IBaseTrait MaimAndMend3 { get; } = new BaseTrait(222);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend4 { get; } = new BaseTrait(223);
+    public static IBaseTrait MaimAndMend4 { get; } = new BaseTrait(223);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend5 { get; } = new BaseTrait(224);
+    public static IBaseTrait MaimAndMend5 { get; } = new BaseTrait(224);
     #endregion
 
     /// <summary>

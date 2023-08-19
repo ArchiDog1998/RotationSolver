@@ -84,6 +84,7 @@ public abstract partial class CustomRotation : ICustomRotation
     public string WhyNotValid { get; private set; } = string.Empty;
 
     public virtual bool ShowStatus => false;
+
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this);

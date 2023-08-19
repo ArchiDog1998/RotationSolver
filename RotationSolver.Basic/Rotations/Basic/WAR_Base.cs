@@ -24,7 +24,7 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte BeastGauge => JobGauge.BeastGauge;
+    public static byte BeastGauge => JobGauge.BeastGauge;
 
     #region Attack Single
     /// <summary>
@@ -205,77 +205,77 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedInfuriate { get; } = new BaseTrait(157);
+    public static IBaseTrait EnhancedInfuriate { get; } = new BaseTrait(157);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BerserkMastery { get; } = new BaseTrait(218);
+    public static IBaseTrait BerserkMastery { get; } = new BaseTrait(218);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait TheBeastWithin    { get; } = new BaseTrait(249);
+    public static IBaseTrait TheBeastWithin    { get; } = new BaseTrait(249);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait InnerBeastMastery    { get; } = new BaseTrait(265);
+    public static IBaseTrait InnerBeastMastery    { get; } = new BaseTrait(265);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SteelCycloneMastery    { get; } = new BaseTrait(266);
+    public static IBaseTrait SteelCycloneMastery    { get; } = new BaseTrait(266);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait NascentChaos    { get; } = new BaseTrait(267);
+    public static IBaseTrait NascentChaos    { get; } = new BaseTrait(267);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MasteringTheBeast    { get; } = new BaseTrait(268);
+    public static IBaseTrait MasteringTheBeast    { get; } = new BaseTrait(268);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedThrillOfBattle    { get; } = new BaseTrait(269);
+    public static IBaseTrait EnhancedThrillOfBattle    { get; } = new BaseTrait(269);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait TankMastery    { get; } = new BaseTrait(318);
+    public static IBaseTrait TankMastery    { get; } = new BaseTrait(318);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedShakeItOff    { get; } = new BaseTrait(417);
+    public static IBaseTrait EnhancedShakeItOff    { get; } = new BaseTrait(417);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RawIntuitionMastery    { get; } = new BaseTrait(418);
+    public static IBaseTrait RawIntuitionMastery    { get; } = new BaseTrait(418);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedNascentFlash    { get; } = new BaseTrait(419);
+    public static IBaseTrait EnhancedNascentFlash    { get; } = new BaseTrait(419);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedEquilibrium    { get; } = new BaseTrait(420);
+    public static IBaseTrait EnhancedEquilibrium    { get; } = new BaseTrait(420);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedOnslaught    { get; } = new BaseTrait(421);
+    public static IBaseTrait EnhancedOnslaught    { get; } = new BaseTrait(421);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MeleeMastery    { get; } = new BaseTrait(505);
+    public static IBaseTrait MeleeMastery    { get; } = new BaseTrait(505);
     #endregion
 
     /// <summary>

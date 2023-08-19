@@ -19,19 +19,18 @@ public abstract class DRG_Base : CustomRotation
     /// </summary>
     public sealed override Job[] Jobs => new [] { Job.DRG, Job.LNC };
 
-
     #region Job Gauge
     static DRGGauge JobGauge => Svc.Gauges.Get<DRGGauge>();
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte EyeCount => JobGauge.EyeCount;
+    public static byte EyeCount => JobGauge.EyeCount;
 
     /// <summary>
     /// Firstminds Count
     /// </summary>
-    protected static byte FocusCount => JobGauge.FirstmindsFocusCount;
+    public static byte FocusCount => JobGauge.FirstmindsFocusCount;
 
     /// <summary>
     /// 
@@ -41,7 +40,7 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static float LOTDTime => LOTDTimeRaw - DataCenter.WeaponRemain;
+    public static float LOTDTime => LOTDTimeRaw - DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
@@ -248,57 +247,57 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait LanceMastery { get; } = new BaseTrait(162);
+    public static IBaseTrait LanceMastery { get; } = new BaseTrait(162);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait LifeOfTheDragon { get; } = new BaseTrait(163);
+    public static IBaseTrait LifeOfTheDragon { get; } = new BaseTrait(163);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait LanceMastery2 { get; } = new BaseTrait(247);
+    public static IBaseTrait LanceMastery2 { get; } = new BaseTrait(247);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait JumpMastery { get; } = new BaseTrait(275);
+    public static IBaseTrait JumpMastery { get; } = new BaseTrait(275);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait LifeOfTheDragonMastery { get; } = new BaseTrait(276);
+    public static IBaseTrait LifeOfTheDragonMastery { get; } = new BaseTrait(276);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait BloodOfTheDragon { get; } = new BaseTrait(434);
+    public static IBaseTrait BloodOfTheDragon { get; } = new BaseTrait(434);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedCoerthanTorment    { get; } = new BaseTrait(435);
+    public static IBaseTrait EnhancedCoerthanTorment    { get; } = new BaseTrait(435);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedSpineshatterDive    { get; } = new BaseTrait(436);
+    public static IBaseTrait EnhancedSpineshatterDive    { get; } = new BaseTrait(436);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait LanceMastery3 { get; } = new BaseTrait(437);
+    public static IBaseTrait LanceMastery3 { get; } = new BaseTrait(437);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedLifeSurge    { get; } = new BaseTrait(438);
+    public static IBaseTrait EnhancedLifeSurge    { get; } = new BaseTrait(438);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait LanceMastery4    { get; } = new BaseTrait(508);
+    public static IBaseTrait LanceMastery4    { get; } = new BaseTrait(508);
 
     #endregion
     /// <summary>

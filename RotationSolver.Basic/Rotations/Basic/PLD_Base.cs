@@ -22,22 +22,22 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
+    public override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
     /// <summary>
     /// 
     /// </summary>
-    protected override bool CanHealAreaAbility => false;
+    public override bool CanHealAreaAbility => false;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasDivineMight => !Player.WillStatusEndGCD(0, 0, true, StatusID.DivineMight);
+    public static bool HasDivineMight => !Player.WillStatusEndGCD(0, 0, true, StatusID.DivineMight);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasFightOrFlight => !Player.WillStatusEndGCD(0, 0, true, StatusID.FightOrFlight);
+    public static bool HasFightOrFlight => !Player.WillStatusEndGCD(0, 0, true, StatusID.FightOrFlight);
 
     #region Job Gauge
     private static PLDGauge JobGauge => Svc.Gauges.Get<PLDGauge>();
@@ -45,7 +45,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte OathGauge => JobGauge.OathGauge;
+    public static byte OathGauge => JobGauge.OathGauge;
     #endregion
 
     #region Attack Single
@@ -237,77 +237,77 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait DivineMagicMastery    { get; } = new BaseTrait(207);
+    public static IBaseTrait DivineMagicMastery    { get; } = new BaseTrait(207);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait OathMastery    { get; } = new BaseTrait(209);
+    public static IBaseTrait OathMastery    { get; } = new BaseTrait(209);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Chivalry    { get; } = new BaseTrait(246);
+    public static IBaseTrait Chivalry    { get; } = new BaseTrait(246);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RageOfHaloneMastery    { get; } = new BaseTrait(260);
+    public static IBaseTrait RageOfHaloneMastery    { get; } = new BaseTrait(260);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedProminence    { get; } = new BaseTrait(261);
+    public static IBaseTrait EnhancedProminence    { get; } = new BaseTrait(261);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedSheltron    { get; } = new BaseTrait(262);
+    public static IBaseTrait EnhancedSheltron    { get; } = new BaseTrait(262);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedRequiescat    { get; } = new BaseTrait(263);
+    public static IBaseTrait EnhancedRequiescat    { get; } = new BaseTrait(263);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SwordOath    { get; } = new BaseTrait(264);
+    public static IBaseTrait SwordOath    { get; } = new BaseTrait(264);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait TankMastery    { get; } = new BaseTrait(317);
+    public static IBaseTrait TankMastery    { get; } = new BaseTrait(317);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SheltronMastery    { get; } = new BaseTrait(412);
+    public static IBaseTrait SheltronMastery    { get; } = new BaseTrait(412);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedIntervention    { get; } = new BaseTrait(413);
+    public static IBaseTrait EnhancedIntervention    { get; } = new BaseTrait(413);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait DivineMagicMastery2    { get; } = new BaseTrait(414);
+    public static IBaseTrait DivineMagicMastery2    { get; } = new BaseTrait(414);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait SpiritsWithinMastery    { get; } = new BaseTrait(415);
+    public static IBaseTrait SpiritsWithinMastery    { get; } = new BaseTrait(415);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedDivineVeil    { get; } = new BaseTrait(416);
+    public static IBaseTrait EnhancedDivineVeil    { get; } = new BaseTrait(416);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MeleeMastery    { get; } = new BaseTrait(504);
+    public static IBaseTrait MeleeMastery    { get; } = new BaseTrait(504);
     #endregion
 
     /// <summary>

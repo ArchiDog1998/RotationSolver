@@ -35,11 +35,6 @@ public enum CanUseOption : byte
     IgnoreCastCheck = 1 << 3,
 
     /// <summary>
-    /// The combination of <see cref="MustUse"/> and <see cref="EmptyOrSkipCombo"/>
-    /// </summary>
-    MustUseEmpty = MustUse | EmptyOrSkipCombo,
-
-    /// <summary>
     /// On the last ability in one GCD.
     /// </summary>
     OnLastAbility = 1 << 4,
@@ -48,4 +43,10 @@ public enum CanUseOption : byte
     /// Ignore clipping check for 0GCDs.
     /// </summary>
     IgnoreClippingCheck = 1 << 5,
+
+    /// <summary>
+    /// The combination of <see cref="MustUse"/> and <see cref="EmptyOrSkipCombo"/>
+    /// </summary>
+    [JsonIgnore]
+    MustUseEmpty = MustUse | EmptyOrSkipCombo,
 }

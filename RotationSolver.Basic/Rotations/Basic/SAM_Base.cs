@@ -22,17 +22,17 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasMoon => Player.HasStatus(true, StatusID.Fugetsu);
+    public static bool HasMoon => Player.HasStatus(true, StatusID.Fugetsu);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasFlower => Player.HasStatus(true, StatusID.Fuka);
+    public static bool HasFlower => Player.HasStatus(true, StatusID.Fuka);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool IsMoonTimeLessThanFlower
+    public static bool IsMoonTimeLessThanFlower
         => Player.StatusTime(true, StatusID.Fugetsu) < Player.StatusTime(true, StatusID.Fuka);
 
     #region JobGauge
@@ -41,32 +41,32 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasSetsu => JobGauge.HasSetsu;
+    public static bool HasSetsu => JobGauge.HasSetsu;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasGetsu => JobGauge.HasGetsu;
+    public static bool HasGetsu => JobGauge.HasGetsu;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasKa => JobGauge.HasKa;
+    public static bool HasKa => JobGauge.HasKa;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte Kenki => JobGauge.Kenki;
+    public static byte Kenki => JobGauge.Kenki;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte MeditationStacks => JobGauge.MeditationStacks;
+    public static byte MeditationStacks => JobGauge.MeditationStacks;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
+    public static byte SenCount => (byte)((HasGetsu ? 1 : 0) + (HasSetsu ? 1 : 0) + (HasKa ? 1 : 0));
     #endregion
 
     #region Attack Single
@@ -176,6 +176,7 @@ public abstract class SAM_Base : CustomRotation
     {
         ActionCheck = (b, m) => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
+        TimeToDie = 40,
     };
 
     /// <summary>
@@ -312,52 +313,52 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait KenkiMastery2 { get; } = new BaseTrait(208);
+    public static IBaseTrait KenkiMastery2 { get; } = new BaseTrait(208);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait KenkiMastery { get; } = new BaseTrait(215);
+    public static IBaseTrait KenkiMastery { get; } = new BaseTrait(215);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedIaijutsu { get; } = new BaseTrait(277);
+    public static IBaseTrait EnhancedIaijutsu { get; } = new BaseTrait(277);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedFugetsuAndFuka { get; } = new BaseTrait(278);
+    public static IBaseTrait EnhancedFugetsuAndFuka { get; } = new BaseTrait(278);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedTsubameGaeshi { get; } = new BaseTrait(442);
+    public static IBaseTrait EnhancedTsubameGaeshi { get; } = new BaseTrait(442);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedMeikyoShisui    { get; } = new BaseTrait(443);
+    public static IBaseTrait EnhancedMeikyoShisui    { get; } = new BaseTrait(443);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedIkishoten    { get; } = new BaseTrait(514);
+    public static IBaseTrait EnhancedIkishoten    { get; } = new BaseTrait(514);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait FugaMastery    { get; } = new BaseTrait(519);
+    public static IBaseTrait FugaMastery    { get; } = new BaseTrait(519);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait WayOfTheSamurai    { get; } = new BaseTrait(520);
+    public static IBaseTrait WayOfTheSamurai    { get; } = new BaseTrait(520);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait WayOfTheSamurai2    { get; } = new BaseTrait(521);
+    public static IBaseTrait WayOfTheSamurai2    { get; } = new BaseTrait(521);
     #endregion
 
     /// <summary>

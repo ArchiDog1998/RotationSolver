@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RotationSolver.Basic" Version="2.7.0" />
+    <PackageReference Include="RotationSolver.Basic" Version="3.2.3.2" />
   </ItemGroup>
 
 	<ItemGroup>
@@ -56,7 +56,7 @@
 	  <Folder Include="Healer\" />
 	  <Folder Include="Magical\" />
 	  <Folder Include="Melee\" />
-	  <Folder Include="Tank\" />
 	  <Folder Include="Ranged\" />
+	  <Folder Include="Tank\" />
 	</ItemGroup>
 </Project>

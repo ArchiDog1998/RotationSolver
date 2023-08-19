@@ -3,7 +3,7 @@
 /// <summary>
 /// The interface about Enough Level.
 /// </summary>
-public interface IEnouthLevel
+public interface IEnoughLevel
 {
     /// <summary>
     /// Player's level is enough for this action's usage.

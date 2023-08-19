@@ -149,8 +149,8 @@ public static class ObjectHelper
     public static bool IsBoss(this BattleChara obj)
     {
         if (obj == null) return false;
-        if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowHealthRatio)) return true;
-        return obj.MaxHp >= GetHealthFromMulty(Service.Config.GetValue(Configuration.PluginConfigFloat.HealthRatioBoss))
+        if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetDeadTime)) return true;
+        return obj.GetDeadTime(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeBoss)
             || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
     }
 
@@ -162,8 +162,44 @@ public static class ObjectHelper
     public static bool IsDying(this BattleChara b)
     {
         if (b == null) return false;
-        if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowHealthRatio)) return false;
-        return b.CurrentHp <= GetHealthFromMulty(Service.Config.GetValue(Configuration.PluginConfigFloat.HealthRatioDying)) || b.GetHealthRatio() < 0.02f;
+        if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetDeadTime)) return false;
+        return b.GetDeadTime() <= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeDying) || b.GetHealthRatio() < 0.02f;
+    }
+
+    private static readonly TimeSpan CheckSpan = TimeSpan.FromSeconds(2.5);
+
+    /// <summary>
+    /// How many seconds will the target die.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <param name="wholeTime">whole time to die.</param>
+    /// <returns></returns>
+    public static float GetDeadTime(this BattleChara b, bool wholeTime = false)
+    {
+        if (b == null) return float.NaN;
+        var objectId = b.ObjectId;
+
+        DateTime startTime = DateTime.MinValue;
+        float thatTimeRatio = 0;
+        foreach (var (time, hpRatios) in DataCenter.RecordedHP)
+        {
+            if (hpRatios.TryGetValue(objectId, out var ratio) && ratio != 1)
+            {
+                startTime = time;
+                thatTimeRatio = ratio;
+                break;
+            }
+        }
+
+        var timespan = DateTime.Now - startTime;
+        if (startTime == DateTime.MinValue || timespan < CheckSpan) return float.NaN;
+
+        var ratioNow = b.GetHealthRatio();
+
+        var ratioReduce = thatTimeRatio - ratioNow;
+        if (ratioReduce <= 0) return float.NaN;
+
+        return (float)timespan.TotalSeconds / ratioReduce * (wholeTime ? 1 : ratioNow);
     }
 
     /// <summary>
@@ -174,20 +210,8 @@ public static class ObjectHelper
     public static float GetHealthRatio(this BattleChara b)
     {
         if (b == null) return 0;
-        if(DataCenter.RefinedHP.TryGetValue(b.ObjectId, out var hp)) return hp;
+        if (DataCenter.RefinedHP.TryGetValue(b.ObjectId, out var hp)) return hp;
         return (float)b.CurrentHp / b.MaxHp;
-    }
-
-    /// <summary>
-    /// Can use dot on the target.
-    /// </summary>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static bool CanDot(this BattleChara b)
-    {
-        if (b == null) return false;
-        if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowHealthRatio)) return true;
-        return b.CurrentHp >= GetHealthFromMulty(Service.Config.GetValue(Configuration.PluginConfigFloat.HealthRatioDot));
     }
 
     internal static EnemyPositional FindEnemyPositional(this GameObject enemy)
@@ -206,31 +230,31 @@ public static class ObjectHelper
         return EnemyPositional.Flank;
     }
 
-    internal static uint GetHealthFromMulty(float mult)
-    {
-        if (!Player.Available) return 0;
+    //internal static uint GetHealthFromMulty(float mult)
+    //{
+    //    if (!Player.Available) return 0;
 
-        var role = Service.GetSheet<ClassJob>().GetRow(
-                Player.Object.ClassJob.Id).GetJobRole();
-        float multi = mult * role switch
-        {
-            JobRole.Tank => 1,
-            JobRole.Healer => 1.6f,
-            _ => 1.5f,
-        };
+    //    var role = Service.GetSheet<ClassJob>().GetRow(
+    //            Player.Object.ClassJob.Id).GetJobRole();
+    //    float multi = mult * role switch
+    //    {
+    //        JobRole.Tank => 1,
+    //        JobRole.Healer => 1.6f,
+    //        _ => 1.5f,
+    //    };
 
-        var partyCount = DataCenter.PartyMembers.Count();
-        if (partyCount > 4)
-        {
-            multi *= 6.4f;
-        }
-        else if (partyCount > 1)
-        {
-            multi *= 3.5f;
-        }
+    //    var partyCount = DataCenter.PartyMembers.Count();
+    //    if (partyCount > 4)
+    //    {
+    //        multi *= 6.4f;
+    //    }
+    //    else if (partyCount > 1)
+    //    {
+    //        multi *= 3.5f;
+    //    }
 
-        return (uint)(multi * Player.Object.MaxHp);
-    }
+    //    return (uint)(multi * Player.Object.MaxHp);
+    //}
 
     /// <summary>
     /// The distance from <paramref name="obj"/> to the player

@@ -53,7 +53,7 @@ internal class CollapsingHeaderGroup
                 ImGui.Separator();
                 var selected = index == _openedIndex;
                 ImGui.PushFont(ImGuiHelper.GetFont(HeaderSize));
-                var changed = ImGui.Selectable(name, selected);
+                var changed = ImGui.Selectable(name, selected, ImGuiSelectableFlags.DontClosePopups);
                 ImGui.PopFont();
                 if (ImGui.IsItemHovered())
                 {

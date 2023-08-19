@@ -22,7 +22,7 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
+    public override bool CanHealSingleSpell => DataCenter.PartyMembers.Count() == 1 && base.CanHealSingleSpell;
 
     #region Job Gauge
     static RDMGauge JobGauge => Svc.Gauges.Get<RDMGauge>();
@@ -30,17 +30,17 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static byte WhiteMana => JobGauge.WhiteMana;
+    public static byte WhiteMana => JobGauge.WhiteMana;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte BlackMana => JobGauge.BlackMana;
+    public static byte BlackMana => JobGauge.BlackMana;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static byte ManaStacks => JobGauge.ManaStacks;
+    public static byte ManaStacks => JobGauge.ManaStacks;
     #endregion
 
     #region Attack Single
@@ -240,67 +240,67 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedJolt { get; } = new BaseTrait(195);
+    public static IBaseTrait EnhancedJolt { get; } = new BaseTrait(195);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend    { get; } = new BaseTrait(200);
+    public static IBaseTrait MaimAndMend    { get; } = new BaseTrait(200);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(201);
+    public static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(201);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait Dualcast    { get; } = new BaseTrait(216);
+    public static IBaseTrait Dualcast    { get; } = new BaseTrait(216);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait ScatterMastery    { get; } = new BaseTrait(303);
+    public static IBaseTrait ScatterMastery    { get; } = new BaseTrait(303);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedDisplacement    { get; } = new BaseTrait(304);
+    public static IBaseTrait EnhancedDisplacement    { get; } = new BaseTrait(304);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedManafication    { get; } = new BaseTrait(305);
+    public static IBaseTrait EnhancedManafication    { get; } = new BaseTrait(305);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RedMagicMastery    { get; } = new BaseTrait(306);
+    public static IBaseTrait RedMagicMastery    { get; } = new BaseTrait(306);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait ManaStack    { get; } = new BaseTrait(482);
+    public static IBaseTrait ManaStack    { get; } = new BaseTrait(482);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RedMagicMastery2    { get; } = new BaseTrait(483);
+    public static IBaseTrait RedMagicMastery2    { get; } = new BaseTrait(483);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait RedMagicMastery3    { get; } = new BaseTrait(484);
+    public static IBaseTrait RedMagicMastery3    { get; } = new BaseTrait(484);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedAcceleration    { get; } = new BaseTrait(485);
+    public static IBaseTrait EnhancedAcceleration    { get; } = new BaseTrait(485);
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseTrait EnhancedManafication2    { get; } = new BaseTrait(486);
+    public static IBaseTrait EnhancedManafication2    { get; } = new BaseTrait(486);
     #endregion
 
     /// <summary>
