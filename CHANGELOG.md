@@ -1,5 +1,43 @@
 # Changelog
 
+## [3.2.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.3...v3.2.4) (2023-08-19)
+
+
+### Bug Fixes
+
+* action sequencer ui update. ([07fc813](https://github.com/ArchiDog1998/RotationSolver/commit/07fc813181bccf35b828cbd511899da98080b3d1))
+* action sequencer ui. ([33e9a31](https://github.com/ArchiDog1998/RotationSolver/commit/33e9a31754a84ae394571508d775436a074f61b5))
+* add a rank system for rotations. ([c08f456](https://github.com/ArchiDog1998/RotationSolver/commit/c08f4563714b456517dc4842e4833d9daf3a679e))
+* add a rating panel for rotation. ([341dfc4](https://github.com/ArchiDog1998/RotationSolver/commit/341dfc436ffc9ad5921b8a6f46a408c6b390b574))
+* add deadtime for rotation checking. ([05f1413](https://github.com/ArchiDog1998/RotationSolver/commit/05f1413881bbb7b60d5eb3d80b785248e2eedf08))
+* add hide warning option. ([81ab082](https://github.com/ArchiDog1998/RotationSolver/commit/81ab082efa57f5a8106e8dd7dca5b1651e0e8759))
+* add hover colors. ([c949dc0](https://github.com/ArchiDog1998/RotationSolver/commit/c949dc0bf7ce2d2a476fdb4b1c68b26327b5f44f))
+* add not and and not or for condition set. ([386355a](https://github.com/ArchiDog1998/RotationSolver/commit/386355a19f95f58bc17e8c1df33ff57649de6237))
+* add release date and download count. ([c5a5f36](https://github.com/ArchiDog1998/RotationSolver/commit/c5a5f36c393502e1614511b3d148e91f7d2f9045))
+* add some status showing on control window. ([e3123a1](https://github.com/ArchiDog1998/RotationSolver/commit/e3123a16772675aa6be0afe8f249835da2cdbc75))
+* add the dot action time. ([78b6641](https://github.com/ArchiDog1998/RotationSolver/commit/78b664132a5e57b98845b465fd631bcf4446ac62))
+* add traits. ([2058198](https://github.com/ArchiDog1998/RotationSolver/commit/2058198c77d6da7406f67c2890cc916ba2f59e74))
+* add youtube link. ([6b38e27](https://github.com/ArchiDog1998/RotationSolver/commit/6b38e27c2dada04c22d713f4d2b33d7ea976eb5a))
+* align the icons. ([0ca796e](https://github.com/ArchiDog1998/RotationSolver/commit/0ca796e2fb273c667dab705cc96827ac93e815a6))
+* binding error. ([fb1e7b2](https://github.com/ArchiDog1998/RotationSolver/commit/fb1e7b23793f7615132502ddd4375ffd853fcc40))
+* change the location of some methods. ([468ca1c](https://github.com/ArchiDog1998/RotationSolver/commit/468ca1c9470347c77b300c51ff736e385f769dc4))
+* changed action sequencer name. ([fed66eb](https://github.com/ArchiDog1998/RotationSolver/commit/fed66eb28c359adb25d56e2f42de8e4fa5c6a262))
+* changed icons. ([fcaf387](https://github.com/ArchiDog1998/RotationSolver/commit/fcaf387f7a953e75ba751499aa5ebdf656b78dec))
+* changed no move button. ([1e28b35](https://github.com/ArchiDog1998/RotationSolver/commit/1e28b3558d1a3e06888c4821156c52029570ccd0))
+* changed searching strategy. ([cd6a61a](https://github.com/ArchiDog1998/RotationSolver/commit/cd6a61a04869a81a80ffeb0a4b7a1ced58f9d193))
+* click the sidebar will quit from searching result. ([a7ec210](https://github.com/ArchiDog1998/RotationSolver/commit/a7ec210499bd7e4aa0806495e92ff95bf5e3d0bd))
+* ctrl window and cd window. ([1a7717a](https://github.com/ArchiDog1998/RotationSolver/commit/1a7717a5fd6b7e2bdfc7bc0e2a5337a3e26e9488))
+* default value changing. ([e323ffa](https://github.com/ArchiDog1998/RotationSolver/commit/e323ffaea0ca847e2ac223a797717f3387cde559))
+* drawing about Action Condition and Target Condition. ([aebb871](https://github.com/ArchiDog1998/RotationSolver/commit/aebb871fcb8adcc5596b79dd62125c2dc2bf2f5e))
+* fixed for major ui. ([9735526](https://github.com/ArchiDog1998/RotationSolver/commit/9735526488230055c318f2b311150b8653718f41))
+* fixed layout. ([8d007d1](https://github.com/ArchiDog1998/RotationSolver/commit/8d007d13021e63f445661f0e9fb042a9cd2dc22d))
+* fixed the case that no beneficial area positions. ([f58f73d](https://github.com/ArchiDog1998/RotationSolver/commit/f58f73dc098e5125f970415841a159ea6b976fbf))
+* scary don't crash! Come on, Dalamud! ([883da6f](https://github.com/ArchiDog1998/RotationSolver/commit/883da6f2a8fd3d47e22b57683ae557ba11ae571d))
+* show all options but disabled the ones that can't set. ([4cf5f81](https://github.com/ArchiDog1998/RotationSolver/commit/4cf5f81e90a2392166dd662fb2ea4f3f82a8dca6))
+* show jobs instead of roles. ([df08550](https://github.com/ArchiDog1998/RotationSolver/commit/df08550276816fbeb4df9f6f23af77089c42ac76))
+* skip error when reading. maybe. ([7cb567e](https://github.com/ArchiDog1998/RotationSolver/commit/7cb567e0313b1a4602610f01fda8516ce279e6f0))
+* ui thing. ([ceac4df](https://github.com/ArchiDog1998/RotationSolver/commit/ceac4df86b5643f2ef387c2b194368df1e3d0244))
+
 ## [3.2.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.2...v3.2.3) (2023-08-15)
 
 
