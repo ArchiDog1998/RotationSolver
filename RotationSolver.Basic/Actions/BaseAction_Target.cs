@@ -185,7 +185,8 @@ public partial class BaseAction
         switch (Service.Config.GetValue(PluginConfigInt.BeneficialAreaStrategy))
         {
             case 0: // Find from list
-                if (OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts))
+                if (OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts) 
+                    && pts != null && pts.Length > 0)
                 {
                     var closest = pts.MinBy(p => Vector3.Distance(player.Position, p));
                     if(Vector3.Distance(player.Position, closest) < player.HitboxRadius + EffectRange)

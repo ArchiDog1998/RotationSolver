@@ -75,17 +75,33 @@ public partial class RotationConfigWindow : Window
             {
                 ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * _scale);
                 ImGui.TableNextColumn();
-                DrawSideBar();
+
+                try
+                {
+                    DrawSideBar();
+                }
+                catch (Exception ex)
+                {
+                    PluginLog.Warning(ex, "Something wrong with sideBar");
+                }
 
                 ImGui.TableNextColumn();
-                DrawBody();
+
+                try
+                {
+                    DrawBody();
+                }
+                catch (Exception ex)
+                {
+                    PluginLog.Warning(ex, "Something wrong with body");
+                }
 
                 ImGui.EndTable();
             }
         }
         catch(Exception ex)
         {
-            PluginLog.Warning(ex, "Something wrong with new ui");
+            PluginLog.Warning(ex, "Something wrong with config window.");
         }
     }
 
