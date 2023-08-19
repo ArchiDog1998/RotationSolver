@@ -169,6 +169,7 @@ public partial class RotationConfigWindow : Window
                         if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize, item.ToString()))
                         {
                             _activeTab = item;
+                            _searchResults = Array.Empty<ISearchable>();
                         }
                         ImGuiHelper.DrawActionOverlay(cursor, iconSize, _activeTab == item ? 1 : 0);
                     }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
@@ -183,6 +184,7 @@ public partial class RotationConfigWindow : Window
                     if (ImGui.Selectable(item.ToString(), _activeTab == item, ImGuiSelectableFlags.None, new Vector2(0, 20)))
                     {
                         _activeTab = item;
+                        _searchResults = Array.Empty<ISearchable>();
                     }
                     if (ImGui.IsItemHovered())
                     {
@@ -258,6 +260,7 @@ public partial class RotationConfigWindow : Window
                     _activeTab == RotationConfigWindowTab.About, "About Icon"))
                 {
                     _activeTab = RotationConfigWindowTab.About;
+                    _searchResults = Array.Empty<ISearchable>();
                 }
                 ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
 
@@ -335,6 +338,7 @@ public partial class RotationConfigWindow : Window
             Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
         {
             _activeTab = RotationConfigWindowTab.Rotation;
+            _searchResults = Array.Empty<ISearchable>();
         }
         var desc = rotation.Name + $" ({rotation.RotationName})";
         if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;

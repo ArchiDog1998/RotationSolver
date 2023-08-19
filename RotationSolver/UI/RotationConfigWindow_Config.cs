@@ -12,10 +12,11 @@ public partial class RotationConfigWindow
     internal static float Similarity(string text, string key)
     {
         var chars = text.Split(new char[] { ' ', ',', '、', '.', '。' }, StringSplitOptions.RemoveEmptyEntries);
+        var keys = key.Split(new char[] { ' ', ',', '、', '.', '。' }, StringSplitOptions.RemoveEmptyEntries);
 
-        var startWithCount = chars.Count(i => i.StartsWith(key, StringComparison.OrdinalIgnoreCase));
+        var startWithCount = chars.Count(i => keys.Any(k => i.StartsWith(k, StringComparison.OrdinalIgnoreCase)));
 
-        var containCount = chars.Count(i => i.Contains(key, StringComparison.OrdinalIgnoreCase));
+        var containCount = chars.Count(i => keys.Any(k => i.Contains(k, StringComparison.OrdinalIgnoreCase)));
 
         return startWithCount * 3 + containCount;
     }
