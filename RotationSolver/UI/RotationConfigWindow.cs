@@ -73,7 +73,24 @@ public partial class RotationConfigWindow : Window
     {
         try
         {
-            if (ImGui.BeginTable("Rotation Config Table", 2, ImGuiTableFlags.Resizable))
+            var leftTop = ImGui.GetWindowPos() + ImGui.GetCursorPos();
+            var rightDown = leftTop + ImGui.GetWindowSize();
+            var screenSize = ImGuiHelpers.MainViewport.Size;
+            if (leftTop.X <= 0 || leftTop.Y <= 0 || rightDown.X >= screenSize.X || rightDown.Y >= screenSize.Y)
+            {
+                var str = string.Empty;
+                for (int i = 0; i < 150; i++)
+                {
+                    str += "Move away! Don't crash! ";
+                }
+
+                ImGui.PushFont(ImGuiHelper.GetFont(24));
+                ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+                ImGui.TextWrapped(str);
+                ImGui.PopStyleColor();
+                ImGui.PopFont();
+            }
+            else if (ImGui.BeginTable("Rotation Config Table", 2, ImGuiTableFlags.Resizable))
             {
                 ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * _scale);
                 ImGui.TableNextColumn();
@@ -1412,6 +1429,17 @@ public partial class RotationConfigWindow : Window
         }
 
         ImGui.Spacing();
+
+        foreach (var gitHubLink in DownloadHelper.LinkLibraries ?? Array.Empty<string>())
+        {
+            var strs = gitHubLink.Split('|');
+            var userName = strs.FirstOrDefault() ?? string.Empty;
+            var repository = strs.Length > 1 ? strs[1] : string.Empty;
+            var fileName = strs.LastOrDefault() ?? string.Empty;
+
+            DrawGitHubBadge(userName, repository, fileName, center: true);
+            ImGui.Spacing();
+        }
 
         int removeIndex = -1;
         for (int i = 0; i < Service.Config.GlobalConfig.GitHubLibs.Length; i++)
