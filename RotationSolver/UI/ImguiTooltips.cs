@@ -35,7 +35,7 @@ internal static class ImguiTooltips
         ImGui.SetNextWindowBgAlpha(1);
         ImGui.PushStyleColor(ImGuiCol.BorderShadow, ImGuiColors.DalamudWhite);
 
-        ImGui.SetNextWindowSizeConstraints(new Vector2(150, 0) * ImGuiHelpers.GlobalScale, new Vector2(800, 1500) * ImGuiHelpers.GlobalScale);
+        ImGui.SetNextWindowSizeConstraints(new Vector2(150, 0) * ImGuiHelpers.GlobalScale, new Vector2(1200, 1500) * ImGuiHelpers.GlobalScale);
         ImGui.SetWindowPos(TOOLTIP_ID, ImGui.GetIO().MousePos);
 
         if (ImGui.Begin(TOOLTIP_ID, TOOLTIP_FLAG))

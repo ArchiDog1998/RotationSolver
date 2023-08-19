@@ -612,9 +612,6 @@ public partial class RotationConfigWindow : Window
         var rotation = RotationUpdater.RightNowRotation;
         if (rotation == null) return;
 
-        ImGui.Text($"{rotation.AverageCountOfLastUsing:F2} / {rotation.MaxCountOfLastUsing}");
-        ImGui.Text($"{rotation.AverageCountOfCombatTimeUsing:F2} / {rotation.MaxCountOfCombatTimeUsing}");
-
         var desc = rotation.Description;
         if (!string.IsNullOrEmpty(desc))
         {
@@ -647,29 +644,115 @@ public partial class RotationConfigWindow : Window
         _rotationHeader.Draw();
     }
 
-    private static void DrawRating(float value, float max)
+    private static readonly uint[] RatingColors = new uint[]
     {
-        value = float.Round(value, 2);
-        var text = value.ToString();
+        ImGui.ColorConvertFloat4ToU32(ImGuiColors.TankBlue),
+        ImGui.ColorConvertFloat4ToU32(ImGuiColors.HealerGreen),
+        ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow),
+        ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudOrange),
+        ImGui.ColorConvertFloat4ToU32(ImGuiColors.DPSRed),
+    };
+    private static uint ChangeAlpha(uint color)
+    {
+        var c = ImGui.ColorConvertU32ToFloat4(color);
+        c.W = 0.5f;
+        return ImGui.ColorConvertFloat4ToU32(c);
+    }
 
-        ImGui.PushFont(ImGuiHelper.GetFont(18));
-        ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-        ImGui.Text(text);
+    private static bool DrawRating(float value1, int value2, float max)
+    {
+        var ratio1 = value1 / max;
+        var ratio2 = value2 / max;
+        var count = RatingColors.Length;
+
+        var start = ImGui.GetCursorPos() + ImGui.GetWindowPos();
+
+        var spacing = ImGui.GetStyle().ItemSpacing;
+        ImGui.GetStyle().ItemSpacing = Vector2.Zero;
+
+        ImGui.PushFont(ImGuiHelper.GetFont(16));
+        ImGui.PushStyleColor(ImGuiCol.Text, RatingColors[(int)(ratio1 * count)]);
+        ImGui.Text($"{value1:F2}");
         var size = ImGui.GetItemRectSize();
         ImGui.PopStyleColor();
+
+        ImGui.SameLine();
+        ImGui.Text("/");
+        size.X += ImGui.GetItemRectSize().X;
+
+        ImGui.SameLine();
+        ImGui.PushStyleColor(ImGuiCol.Text, RatingColors[(int)(ratio2 * count)]);
+        ImGui.Text($"{value2}  ");
+        size.X += ImGui.GetItemRectSize().X;
+        ImGui.PopStyleColor();
+
         ImGui.PopFont();
+        ImGui.GetStyle().ItemSpacing = spacing;
+
+        var radius = size.Y * 0.2f;
+        var wholeWidth = ImGui.GetWindowSize().X - size.X- 2 * radius;
+        var step = new Vector2(wholeWidth / count, size.Y);
+        var shift = new Vector2(0, size.Y * 0.2f);
+
+        var result = ImGuiHelper.IsInRect(start, new Vector2(ImGui.GetWindowSize().X, size.Y));
+        if (wholeWidth <= 0) return result;
+
+        var veryStart = start += new Vector2(size.X, 0);
+
+        for (var i = 0; i < count; i++ )
+        {
+            var isStart = i == 0;
+            var isLast = i == count - 1;
+            var stepThis = step;
+            if(isStart || isLast)
+            {
+                stepThis = step + new Vector2(radius, 0);
+            }
+
+            ImGui.GetWindowDrawList().AddRectFilled(start + shift, start + stepThis - shift, ChangeAlpha(RatingColors[i]), radius,
+               isStart ? ImDrawFlags.RoundCornersLeft : isLast ? ImDrawFlags.RoundCornersRight : ImDrawFlags.RoundCornersNone);
+            start += new Vector2(stepThis.X, 0);
+        }
+
+        ImGui.GetWindowDrawList().AddRect(veryStart + shift, start + new Vector2(0, size.Y) - shift, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudWhite2), radius);
+
+        var linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio1, 0);
+        ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y -  2 * shift.Y), uint.MaxValue, 3);
+
+        linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio2, 0);
+        ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - 2 * shift.Y), uint.MaxValue, 3);
+
+        return result;
     }
    
     private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
     {
         { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Description, DrawRotationDescription },
 
-        { GetRotationStatusHead ,  DrawRotationStatus },
+        { GetRotationStatusHead,  DrawRotationStatus },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Configuration, DrawRotationConfiguration },
+        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Rating, DrawRotationRating },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Information, DrawRotationInformation },
     });
+
+    private static void DrawRotationRating()
+    {
+        var rotation = RotationUpdater.RightNowRotation;
+        if (rotation == null) return;
+
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Rotation_Rating_Description);
+
+        if (DrawRating((float)rotation.AverageCountOfLastUsing, rotation.MaxCountOfLastUsing, 10))
+        {
+            ImguiTooltips.ShowTooltip(LocalizationManager.RightLang.ConfigWindow_Rotation_Rating_CountOfLastUsing);
+        }
+        if (DrawRating((float)rotation.AverageCountOfCombatTimeUsing, rotation.MaxCountOfCombatTimeUsing, 20))
+        {
+            ImguiTooltips.ShowTooltip(LocalizationManager.RightLang.ConfigWindow_Rotation_Rating_CountOfCombatTimeUsing);
+        }
+    }
 
     private const float DESC_SIZE = 24;
     private static void DrawRotationDescription()

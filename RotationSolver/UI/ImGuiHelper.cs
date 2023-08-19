@@ -396,4 +396,11 @@ internal static class ImGuiHelper
 
 
     #endregion
+
+    public static bool IsInRect(Vector2 leftTop, Vector2 size)
+    {
+        var pos = ImGui.GetMousePos() - leftTop;
+        if (pos.X <= 0 || pos.Y <= 0 || pos.X >= size.X || pos.Y >= size.Y) return false;
+        return true;
+    }
 }
