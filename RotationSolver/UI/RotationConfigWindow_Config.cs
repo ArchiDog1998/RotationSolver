@@ -743,7 +743,7 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseStopCasting,new ISearchable[] 
         {
-            new DragFloatRangeSearchPlugin(PluginConfigFloat.StopCastingDelayMin, PluginConfigFloat.StopCastingDelayMin, 0.002f) 
+            new DragFloatRangeSearchPlugin(PluginConfigFloat.StopCastingDelayMin, PluginConfigFloat.StopCastingDelayMax, 0.002f) 
         }),
 
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOpenChest, new ISearchable[]
