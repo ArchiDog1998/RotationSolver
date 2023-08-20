@@ -19,6 +19,8 @@ public class OtherConfiguration
 
     public static HashSet<uint> InvincibleStatus = new();
 
+    public static RotationSolverRecord RotationSolverRecord = new ();
+
     public static void Init()
     {
         if (!Directory.Exists(Svc.PluginInterface.ConfigDirectory.FullName))
@@ -39,6 +41,8 @@ public class OtherConfiguration
         Task.Run(() => InitOne(ref HostileCastingTank, nameof(HostileCastingTank)));
 
         Task.Run(() => InitOne(ref BeneficialPositions, nameof(BeneficialPositions)));
+
+        Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
     }
 
     public static void Save()
@@ -50,6 +54,12 @@ public class OtherConfiguration
         SaveHostileCastingArea();
         SaveHostileCastingTank();
         SaveBeneficialPositions();
+        SaveRotationSolverRecord();
+    }
+
+    public static void SaveRotationSolverRecord()
+    {
+        Task.Run(() => Save(RotationSolverRecord, nameof(RotationSolverRecord)));
     }
 
     public static void SaveBeneficialPositions()
@@ -104,10 +114,13 @@ public class OtherConfiguration
     private static void SavePath<T>(T value, string path)
     {
         File.WriteAllTextAsync(path,
-        JsonConvert.SerializeObject(value, Formatting.Indented));
+        JsonConvert.SerializeObject(value, Formatting.Indented, new JsonSerializerSettings()
+        {
+            TypeNameHandling = TypeNameHandling.None,
+        }));
     }
 
-    private static void InitOne<T>(ref T value, string name)
+    private static void InitOne<T>(ref T value, string name, bool download = true)
     {
         var path = GetFilePath(name);
         if (File.Exists(path))
@@ -121,7 +134,7 @@ public class OtherConfiguration
                 PluginLog.Warning(ex, $"Failed to load {name}.");
             }
         }
-        else
+        else if(download)
         {
             try
             {
@@ -129,12 +142,23 @@ public class OtherConfiguration
                 var str = client.GetStringAsync($"https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/{name}.json").Result;
 
                 File.WriteAllText(path, str);
-                value = JsonConvert.DeserializeObject<T>(str);
+                value = JsonConvert.DeserializeObject<T>(str, new JsonSerializerSettings()
+                {
+                    MissingMemberHandling = MissingMemberHandling.Error,
+                    Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
+                    {
+                        args.ErrorContext.Handled = true;
+                    }
+                });
             }
             catch
             {
                 SavePath(value, path);
             }
+        }
+        else
+        {
+            SavePath(value, path);
         }
     }
 }

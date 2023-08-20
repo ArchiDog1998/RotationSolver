@@ -495,6 +495,29 @@ public partial class RotationConfigWindow : Window
             Util.OpenLink("https://discord.gg/4fECHunam9");
         }
 
+        var clickingCount = OtherConfiguration.RotationSolverRecord.ClickingCount;
+        if (clickingCount > 0)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.2f, 0.6f, 0.95f, 1));
+            var countStr = string.Format(LocalizationManager.RightLang.ConfigWindow_About_ClickingCount,
+                clickingCount);
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextWrapped(countStr);
+            }, width, ImGui.CalcTextSize(countStr).X);
+
+            if (clickingCount >= 100_000)
+            {
+                countStr = LocalizationManager.RightLang.ConfigWindow_About_ClickingTooMuch;
+                ImGuiHelper.DrawItemMiddle(() =>
+                {
+                    ImGui.TextWrapped(countStr);
+                }, width, ImGui.CalcTextSize(countStr).X);
+            }
+            ImGui.PopStyleColor();
+        }
+
+
         _aboutHeaders.Draw();
     }
 
