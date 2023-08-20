@@ -285,7 +285,7 @@ public partial class RotationConfigWindow : Window
                 if (frame <= 0) frame += FRAME_COUNT;
                 if (Service.Config.GetValue(PluginConfigBool.DrawIconAnimation) 
                     ? GetLocalImage(frame.ToString("D4"), out var logo)
-                    : IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png", out logo))
+                    : IconSet.GetTexture($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/Logo.png", out logo))
                 {
                     ImGui.SetCursorPos(cursor);
                     ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
@@ -650,7 +650,7 @@ public partial class RotationConfigWindow : Window
 
         if (IconSet.GetTexture("https://GitHub-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
-            Util.OpenLink("https://GitHub.com/ArchiDog1998/RotationSolver");
+            Util.OpenLink($"https://GitHub.com/{Service.USERNAME}/{Service.REPO}");
         }
 
         if (IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out icon) && ImGuiHelper.TextureButton(icon, width, width))
@@ -938,7 +938,7 @@ public partial class RotationConfigWindow : Window
 
     private static string ToCommandStr(OtherCommandType type, string str, string extra = "")
     {
-        var result = Service.Command + " " + type.ToString() + " " + str;
+        var result = Service.COMMAND + " " + type.ToString() + " " + str;
         if (!string.IsNullOrEmpty(extra)) result += " " + extra;
         return result;
     }

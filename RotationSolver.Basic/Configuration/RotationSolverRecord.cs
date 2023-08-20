@@ -8,5 +8,5 @@ public class RotationSolverRecord
     /// <summary>
     /// How many times have rs clicked for you
     /// </summary>
-    public ulong ClickingCount { get; set; } = 0;
+    public uint ClickingCount { get; set; } = 0;
 }

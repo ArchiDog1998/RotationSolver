@@ -9,7 +9,7 @@ namespace RotationSolver.Basic;
 
 internal class Service : IDisposable
 {
-    public const string Command = "/rotation";
+    public const string COMMAND = "/rotation", USERNAME = "ArchiDog1998", REPO = "RotationSolver";
 
     // From https://GitHub.com/PunishXIV/Orbwalker/blame/master/Orbwalker/Memory.cs#L85-L87
     [Signature("F3 0F 10 05 ?? ?? ?? ?? 0F 2E C6 0F 8A", ScanType = ScanType.StaticAddress, Fallibility = Fallibility.Infallible)]
@@ -39,10 +39,6 @@ internal class Service : IDisposable
 
     public static float CountDownTime => Countdown.TimeRemaining;
     public static PluginConfig Config { get; set; } = new PluginConfig();
-
-    //public static PluginConfiguration Config { get; set; }
-    //public static PluginConfiguration Default { get; } = new PluginConfiguration();
-
 
     public Service()
     {

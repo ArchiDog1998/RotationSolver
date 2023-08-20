@@ -253,7 +253,7 @@ internal static class ConfigTranslation
     public static string ToCommand(this PluginConfigFloat config)  => ToCommandStr(config, "0");
     private static string ToCommandStr(object obj, string extra = "")
     {
-        var result = Service.Command + " " + OtherCommandType.Settings.ToString() + " " + obj.ToString();
+        var result = Service.COMMAND + " " + OtherCommandType.Settings.ToString() + " " + obj.ToString();
         if(!string.IsNullOrEmpty(extra)) result += " " + extra;
         return result;
     }
@@ -284,7 +284,7 @@ internal static class ConfigTranslation
         {
             //new LinkDescription()
             //{
-            //    Url = "https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/HowAndWhenToClick.svg",
+            //    Url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/HowAndWhenToClick.svg",
             //    Description = "This plugin helps you to use the right action during the combat. Here is a guide about the different options.",
             //},
         },

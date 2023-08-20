@@ -11,8 +11,8 @@ public static class DownloadHelper
 
     public static async Task DownloadAsync()
     {
-        LinkLibraries = await DownloadOneAsync<string[]>("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/downloadList.json");
-        IncompatiblePlugins = await DownloadOneAsync<IncompatiblePlugin[]>("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Resources/IncompatiblePlugins.json");
+        LinkLibraries = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/downloadList.json");
+        IncompatiblePlugins = await DownloadOneAsync<IncompatiblePlugin[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/IncompatiblePlugins.json");
     }
 
     private static async Task<T> DownloadOneAsync<T>(string url)

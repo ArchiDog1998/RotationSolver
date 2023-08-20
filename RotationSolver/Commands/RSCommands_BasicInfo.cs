@@ -7,13 +7,13 @@ namespace RotationSolver.Commands;
 public static partial class RSCommands
 {
     internal static void Enable()
-        => Svc.Commands.AddHandler(Service.Command, new CommandInfo(OnCommand)
+        => Svc.Commands.AddHandler(Service.COMMAND, new CommandInfo(OnCommand)
         {
             HelpMessage = LocalizationManager.RightLang.Commands_Rotation,
             ShowInHelp = true,
         });
 
-    internal static void Disable() => Svc.Commands.RemoveHandler(Service.Command);
+    internal static void Disable() => Svc.Commands.RemoveHandler(Service.COMMAND);
 
     private static void OnCommand(string command, string arguments)
     {
@@ -57,7 +57,7 @@ public static partial class RSCommands
     internal static string GetCommandStr<T>(this T command, string extraCommand = "")
         where T : struct, Enum
     {
-        var cmdStr = Service.Command + " " + command.ToString();
+        var cmdStr = Service.COMMAND + " " + command.ToString();
         if (!string.IsNullOrEmpty(extraCommand))
         {
             cmdStr += " " + extraCommand;
