@@ -697,7 +697,7 @@ public partial class RotationConfigWindow : Window
     private static uint ChangeAlpha(uint color)
     {
         var c = ImGui.ColorConvertU32ToFloat4(color);
-        c.W = 0.5f;
+        c.W = 0.55f;
         return ImGui.ColorConvertFloat4ToU32(c);
     }
 
@@ -1439,6 +1439,7 @@ public partial class RotationConfigWindow : Window
 
             DrawGitHubBadge(userName, repository, fileName, center: true);
             ImGui.Spacing();
+            ImGui.Separator();
         }
 
         int removeIndex = -1;

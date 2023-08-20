@@ -66,11 +66,12 @@ internal class DragFloatRangeSearchPlugin : DragFloatRangeSearch
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
 
-    public DragFloatRangeSearchPlugin(PluginConfigFloat configMin, PluginConfigFloat configMax, float speed)
+    public DragFloatRangeSearchPlugin(PluginConfigFloat configMin, PluginConfigFloat configMax, float speed, uint color = 0)
     : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
     {
         _configMin = configMin;
         _configMax = configMax;
+        Color = color;
     }
 
     public override void ResetToDefault(Job job)
@@ -132,7 +133,9 @@ internal abstract class DragFloatRangeSearch : Searchable
 
         if (IsJob) DrawJobIcon();
         ImGui.SameLine();
+        if (Color != 0) ImGui.PushStyleColor(ImGuiCol.Text, Color);
         ImGui.TextWrapped(Name);
+        if (Color != 0) ImGui.PopStyleColor();
         if (ImGui.IsItemHovered()) ShowTooltip(job, false);
     }
 }

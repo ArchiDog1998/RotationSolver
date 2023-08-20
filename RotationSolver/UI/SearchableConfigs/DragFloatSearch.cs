@@ -57,10 +57,11 @@ internal class DragFloatSearchPlugin : DragFloatSearch
 
     public override string Command => _config.ToCommand();
 
-    public DragFloatSearchPlugin(PluginConfigFloat config, float speed)
+    public DragFloatSearchPlugin(PluginConfigFloat config, float speed, uint color = 0)
         :base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
     {
         _config = config;
+        Color = color;
     }
 
     public override void ResetToDefault(Job job)
@@ -106,7 +107,11 @@ internal abstract class DragFloatSearch : Searchable
         if (IsJob) DrawJobIcon();
 
         ImGui.SameLine();
+
+        if (Color != 0) ImGui.PushStyleColor(ImGuiCol.Text, Color);
         ImGui.TextWrapped(Name);
+        if (Color != 0) ImGui.PopStyleColor();
+
         if (ImGui.IsItemHovered()) ShowTooltip(job, false);
     }
 }

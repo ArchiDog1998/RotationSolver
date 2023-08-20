@@ -709,5 +709,10 @@ internal partial class Strings
     public string ConfigWindow_UI_HideWarning { get; set; } = "Hide Warning";
     public string ConfigWindow_Auto_BeneficialAreaStrategy { get; set; } = "Beneficial area strategy";
     public string ConfigWindow_About_OpenConfigFolder { get; set; } = "Open Config Folder";
-
+    public string ConfigWindow_Basic_AnimationLockTime { get; set; } = "The Animation lock time from individual actions. Here is 0.6s for example.";
+    public string ConfigWindow_Basic_Ping { get; set; } = "The ping time.\nIn RS, it means the time from sending the action request to receiving the using success message from the server.";
+    public string ConfigWindow_Basic_IdealClickingTime { get; set; } = "The ideal click time.";
+    public string ConfigWindow_Basic_RealClickingTime { get; set; } = "The real click time.";
+    public string ConfigWindow_Basic_ClickingDuration { get; set; } = "The clicking duration, RS will try to click at this duration.";
+    public string ConfigWindow_Basic_WeaponDelay { get; set; } = "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.";
 }

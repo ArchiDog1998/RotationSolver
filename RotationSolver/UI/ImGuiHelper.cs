@@ -235,8 +235,8 @@ internal static class ImGuiHelper
 
                 //Out Size is 88, 96
                 //Inner Size is 82, 82
-                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                    start, start + step);
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 94),
+                    start, start + new Vector2(88f / cover.Width, 94f / cover.Height));
             }
         }
         else if (percent < 1)
@@ -253,8 +253,8 @@ internal static class ImGuiHelper
 
                 //Out Size is 88, 96
                 //Inner Size is 82, 82
-                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                    start, start + step);
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 94),
+                    start, start + new Vector2(88f / cover.Width, 94f / cover.Height));
             }
         }
         else
@@ -266,9 +266,9 @@ internal static class ImGuiHelper
 
                 //Out Size is 88, 96
                 //Inner Size is 82, 82
-                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 94),
                     new Vector2(4f / cover.Width, 0f / cover.Height),
-                    new Vector2(92f / cover.Width, 96f / cover.Height));
+                    new Vector2(92f / cover.Width, 94f / cover.Height));
             }
         }
 
@@ -285,8 +285,8 @@ internal static class ImGuiHelper
 
                 //Out Size is 88, 96
                 //Inner Size is 82, 82
-                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 96),
-                    start, start + step);
+                ImGui.Image(cover.ImGuiHandle, new Vector2(pixPerUnit * 88, pixPerUnit * 94),
+                    start, start + new Vector2(88f / cover.Width, 94f / cover.Height));
             }
         }
     }
