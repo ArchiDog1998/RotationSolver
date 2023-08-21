@@ -234,7 +234,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
-    public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
+    public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position for targeting are movement actions.";
 
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";

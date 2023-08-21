@@ -5,6 +5,7 @@ using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using RotationSolver.Basic.Configuration;
 
@@ -163,9 +164,21 @@ public partial class BaseAction
         if (Service.Config.GetValue(PluginConfigBool.MoveAreaActionFarthest))
         {
             Vector3 pPosition = Player.Object.Position;
-            float rotation = Player.Object.Rotation;
-            Position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
-                pPosition.Z + (float)Math.Cos(rotation) * range);
+            if (Service.Config.GetValue(PluginConfigBool.MoveTowardsScreenCenter)) unsafe
+                {
+                    var camera = CameraManager.Instance()->CurrentCamera;
+                    var tar = camera->LookAtVector - camera->Object.Position;
+                    tar.Y = 0;
+                    tar = tar / ((Vector3)tar).Length() * range;
+                    Position = new Vector3(pPosition.X + tar.X, pPosition.Y,
+                    pPosition.Z + tar.Z);
+                }
+            else
+            {
+                float rotation = Player.Object.Rotation;
+                Position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
+                    pPosition.Z + (float)Math.Cos(rotation) * range);
+            }
             return true;
         }
         else
