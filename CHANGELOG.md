@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.2.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.4...v3.2.5) (2023-08-21)
+
+
+### Bug Fixes
+
+* add a counter for using actions. ([67f6741](https://github.com/ArchiDog1998/RotationSolver/commit/67f6741ed267f8b2a15d1b0878f0c8c8ee1b51c5))
+* add a global username and repo name. ([89c875a](https://github.com/ArchiDog1998/RotationSolver/commit/89c875a8b0889a7c05af3fbff5d0f62c247986a9))
+* add an image to illustrate the timer. ([872997c](https://github.com/ArchiDog1998/RotationSolver/commit/872997c2bb76e07a48a9b82339a02ed496d34011))
+* fixed the searching issue. ([a7e8788](https://github.com/ArchiDog1998/RotationSolver/commit/a7e878803e67ce70a6d8dd8895dc2c7291b7ec63))
+
 ## [3.2.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.3...v3.2.4) (2023-08-19)
 
 
