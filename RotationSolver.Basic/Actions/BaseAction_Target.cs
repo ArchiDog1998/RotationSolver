@@ -169,7 +169,9 @@ public partial class BaseAction
                     var camera = CameraManager.Instance()->CurrentCamera;
                     var tar = camera->LookAtVector - camera->Object.Position;
                     tar.Y = 0;
-                    tar = tar / ((Vector3)tar).Length() * range;
+                    var length = ((Vector3)tar).Length();
+                    if (length == 0) return false;
+                    tar = tar / length * range;
                     Position = new Vector3(pPosition.X + tar.X, pPosition.Y,
                     pPosition.Z + tar.Z);
                 }
@@ -202,7 +204,11 @@ public partial class BaseAction
                     && pts != null && pts.Length > 0)
                 {
                     var closest = pts.MinBy(p => Vector3.Distance(player.Position, p));
-                    if(Vector3.Distance(player.Position, closest) < player.HitboxRadius + EffectRange)
+                    var rotation = new Random().NextDouble() * Math.Tau;
+                    var radius = new Random().NextDouble() * 1;
+                    closest.X += (float)(Math.Sin(rotation) * radius);
+                    closest.Z += (float)(Math.Cos(rotation) * radius);
+                    if (Vector3.Distance(player.Position, closest) < player.HitboxRadius + EffectRange)
                     {
                         Position = closest;
                         return true;

@@ -350,7 +350,7 @@ internal partial class Strings
     public string SpecialCommandType_Burst { get; set; } = "Burst";
     public string SpecialCommandType_EndSpecial { get; set; } = "End Special";
     public string SpecialCommandType_Speed { get; set; } = "Speed";
-    public string SpecialCommandType_Smart { get; set; } = "Auto Target ";
+    public string SpecialCommandType_Smart { get; set; } = "Auto Target";
     public string SpecialCommandType_Manual { get; set; } = "Manual Target";
     public string SpecialCommandType_Cancel { get; set; } = "Cancel";
     public string SpecialCommandType_Off { get; set; } = "Off";
@@ -358,7 +358,7 @@ internal partial class Strings
 
     #region ActionConditionType
     public string ActionConditionType_Elapsed { get; set; } = "Elapsed";
-    public string ActionConditionType_ElapsedGCD { get; set; } = "ElapsedG CD ";
+    public string ActionConditionType_ElapsedGCD { get; set; } = "Elapsed GCD";
     public string ActionConditionType_Remain { get; set; } = "Remain Time";
     public string ActionConditionType_RemainGCD { get; set; } = "Remain GCD";
     public string ActionConditionType_ShouldUse { get; set; } = "Can Use";
