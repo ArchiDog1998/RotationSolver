@@ -496,5 +496,7 @@
   "ConfigWindow_Basic_IdealClickingTime": "The ideal click time.",
   "ConfigWindow_Basic_RealClickingTime": "The real click time.",
   "ConfigWindow_Basic_ClickingDuration": "The clicking duration, RS will try to click at this duration.",
-  "ConfigWindow_Basic_WeaponDelay": "This is the clipping time.\nGCD is over. However, RS forgets to click the next action."
+  "ConfigWindow_Basic_WeaponDelay": "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.",
+  "ConfigWindow_About_ClickingCount": "Rotation Solver helped you by clicking actions {0:N0} times.",
+  "ConfigWindow_About_ClickingTooMuch": "Well, you must be a lazy player!"
 }
