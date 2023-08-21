@@ -490,5 +490,13 @@
   "ConfigWindow_Searching": "Searching...",
   "ConfigWindow_UI_HideWarning": "Hide Warning",
   "ConfigWindow_Auto_BeneficialAreaStrategy": "Beneficial area strategy",
-  "ConfigWindow_About_OpenConfigFolder": "Open Config Folder"
+  "ConfigWindow_About_OpenConfigFolder": "Open Config Folder",
+  "ConfigWindow_Basic_AnimationLockTime": "The Animation lock time from individual actions. Here is 0.6s for example.",
+  "ConfigWindow_Basic_Ping": "The ping time.\nIn RS, it means the time from sending the action request to receiving the using success message from the server.",
+  "ConfigWindow_Basic_IdealClickingTime": "The ideal click time.",
+  "ConfigWindow_Basic_RealClickingTime": "The real click time.",
+  "ConfigWindow_Basic_ClickingDuration": "The clicking duration, RS will try to click at this duration.",
+  "ConfigWindow_Basic_WeaponDelay": "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.",
+  "ConfigWindow_About_ClickingCount": "Rotation Solver helped you by clicking actions {0:N0} times.",
+  "ConfigWindow_About_ClickingTooMuch": "Well, you must be a lazy player!"
 }

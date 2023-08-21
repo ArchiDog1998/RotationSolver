@@ -285,7 +285,7 @@ public partial class RotationConfigWindow : Window
                 if (frame <= 0) frame += FRAME_COUNT;
                 if (Service.Config.GetValue(PluginConfigBool.DrawIconAnimation) 
                     ? GetLocalImage(frame.ToString("D4"), out var logo)
-                    : IconSet.GetTexture("https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png", out logo))
+                    : IconSet.GetTexture($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/Logo.png", out logo))
                 {
                     ImGui.SetCursorPos(cursor);
                     ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
@@ -495,6 +495,29 @@ public partial class RotationConfigWindow : Window
             Util.OpenLink("https://discord.gg/4fECHunam9");
         }
 
+        var clickingCount = OtherConfiguration.RotationSolverRecord.ClickingCount;
+        if (clickingCount > 0)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.2f, 0.6f, 0.95f, 1));
+            var countStr = string.Format(LocalizationManager.RightLang.ConfigWindow_About_ClickingCount,
+                clickingCount);
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextWrapped(countStr);
+            }, width, ImGui.CalcTextSize(countStr).X);
+
+            if (clickingCount >= 100_000)
+            {
+                countStr = LocalizationManager.RightLang.ConfigWindow_About_ClickingTooMuch;
+                ImGuiHelper.DrawItemMiddle(() =>
+                {
+                    ImGui.TextWrapped(countStr);
+                }, width, ImGui.CalcTextSize(countStr).X);
+            }
+            ImGui.PopStyleColor();
+        }
+
+
         _aboutHeaders.Draw();
     }
 
@@ -627,7 +650,7 @@ public partial class RotationConfigWindow : Window
 
         if (IconSet.GetTexture("https://GitHub-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
-            Util.OpenLink("https://GitHub.com/ArchiDog1998/RotationSolver");
+            Util.OpenLink($"https://GitHub.com/{Service.USERNAME}/{Service.REPO}");
         }
 
         if (IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out icon) && ImGuiHelper.TextureButton(icon, width, width))
@@ -697,7 +720,7 @@ public partial class RotationConfigWindow : Window
     private static uint ChangeAlpha(uint color)
     {
         var c = ImGui.ColorConvertU32ToFloat4(color);
-        c.W = 0.5f;
+        c.W = 0.55f;
         return ImGui.ColorConvertFloat4ToU32(c);
     }
 
@@ -915,7 +938,7 @@ public partial class RotationConfigWindow : Window
 
     private static string ToCommandStr(OtherCommandType type, string str, string extra = "")
     {
-        var result = Service.Command + " " + type.ToString() + " " + str;
+        var result = Service.COMMAND + " " + type.ToString() + " " + str;
         if (!string.IsNullOrEmpty(extra)) result += " " + extra;
         return result;
     }
@@ -1439,6 +1462,7 @@ public partial class RotationConfigWindow : Window
 
             DrawGitHubBadge(userName, repository, fileName, center: true);
             ImGui.Spacing();
+            ImGui.Separator();
         }
 
         int removeIndex = -1;
@@ -1647,8 +1671,7 @@ public partial class RotationConfigWindow : Window
 
         foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
             .Where(a => a != null)
-            .OrderByDescending(s => Math.Min(Similarity(s.Name, _statusSearching)
-            , Similarity(s.RowId.ToString(), _statusSearching))))
+            .OrderByDescending(s => Similarity(s.Name + " " + s.RowId.ToString(), _statusSearching)))
         {
             void Delete() => removeId = status.RowId;
 
@@ -1691,8 +1714,7 @@ public partial class RotationConfigWindow : Window
                 var index = 0;
 
                 var searchingKey = searching;
-                foreach (var status in allStatus.OrderByDescending(s => Math.Min(Similarity(s.Name, searchingKey)
-                , Similarity(s.RowId.ToString(), searchingKey))))
+                foreach (var status in allStatus.OrderByDescending(s => Similarity(s.Name + " " + s.RowId.ToString(), searchingKey)))
                 {
                     if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
                     {
@@ -1770,8 +1792,7 @@ public partial class RotationConfigWindow : Window
 
             if (ImGui.BeginChild("Rotation Solver Add action", new Vector2(-1, 400 * _scale)))
             {
-                foreach (var action in AllActions.OrderByDescending(s => Math.Min(Similarity(s.Name, _actionSearching)
-                , Similarity(s.RowId.ToString(), _actionSearching))))
+                foreach (var action in AllActions.OrderByDescending(s =>Similarity(s.Name  + " " + s.RowId.ToString(), _actionSearching)))
                 {
                     var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
                     if (ImGui.IsItemHovered())
@@ -1801,8 +1822,7 @@ public partial class RotationConfigWindow : Window
 
         foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
             .Where(a => a != null)
-            .OrderByDescending(s => Math.Min(Similarity(s.Name, _actionSearching)
-            , Similarity(s.RowId.ToString(), _actionSearching))))
+            .OrderByDescending(s => Similarity(s.Name + " " + s.RowId.ToString(), _actionSearching)))
         {
             void Reset() => removeId = action.RowId;
 

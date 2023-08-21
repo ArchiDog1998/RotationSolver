@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Interface.Colors;
 using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -90,10 +91,160 @@ public partial class RotationConfigWindow
         } },
     });
 
+    private static readonly uint PING_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedGreen);
+    private static readonly uint LOCK_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedBlue);
+    private static readonly uint WEAPON_DELAY_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedGold);
+    private static readonly uint IDEAL_CLICK_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0f, 0f, 1f));
+    private static readonly uint CLICK_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedPink);
+    private static readonly uint ADVANCE_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow);
+    private static readonly uint ADVANCE_ABILITY_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedOrange);
+    const float gcdSize = 50, ogcdSize = 40, pingHeight = 12, spacingHeight = 8;
 
+    private static void AddPingLockTime(ImDrawListPtr drawList, Vector2 lineStart, float sizePerTime, float ping, float animationLockTime, float advanceTime, uint color, float clickTime)
+    {
+        var size = new Vector2(ping * sizePerTime, pingHeight);
+        drawList.AddRectFilled(lineStart, lineStart + size, ChangeAlpha(PING_COLOR));
+        if (ImGuiHelper.IsInRect(lineStart, size))
+        {
+            ImguiTooltips.ShowTooltip(LocalizationManager.RightLang.ConfigWindow_Basic_Ping);
+        }
+
+        var rectStart = lineStart + new Vector2(ping * sizePerTime, 0);
+        size = new Vector2(animationLockTime * sizePerTime, pingHeight);
+        drawList.AddRectFilled(rectStart, rectStart + size, ChangeAlpha(LOCK_TIME_COLOR));
+        if (ImGuiHelper.IsInRect(rectStart, size))
+        {
+            ImguiTooltips.ShowTooltip(LocalizationManager.RightLang.ConfigWindow_Basic_AnimationLockTime);
+        }
+
+        drawList.AddLine(lineStart - new Vector2(0, spacingHeight), lineStart + new Vector2(0, pingHeight * 2 + spacingHeight / 2), IDEAL_CLICK_TIME_COLOR, 1.5f);
+
+        rectStart = lineStart + new Vector2(-advanceTime * sizePerTime, pingHeight);
+        size = new Vector2(advanceTime * sizePerTime, pingHeight);
+        drawList.AddRectFilled(rectStart, rectStart + size, ChangeAlpha(color));
+        if (ImGuiHelper.IsInRect(rectStart, size))
+        {
+            ImguiTooltips.ShowTooltip(() =>
+            {
+                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Basic_ClickingDuration);
+
+                ImGui.Separator();
+
+                ImGui.TextColored(ImGui.ColorConvertU32ToFloat4( IDEAL_CLICK_TIME_COLOR),
+                    LocalizationManager.RightLang.ConfigWindow_Basic_IdealClickingTime);
+
+                ImGui.TextColored(ImGui.ColorConvertU32ToFloat4(CLICK_TIME_COLOR),
+                    LocalizationManager.RightLang.ConfigWindow_Basic_RealClickingTime);
+            });
+        }
+
+        float time = 0;
+        while (time < advanceTime)
+        {
+            var start = lineStart + new Vector2((time - advanceTime) * sizePerTime, 0);
+            drawList.AddLine(start + new Vector2(0, pingHeight), start + new Vector2(0, pingHeight * 2 + spacingHeight), CLICK_TIME_COLOR, 2.5f);
+
+            time += clickTime;
+        }
+    }
     private static void DrawBasicTimer()
     {
+        var gcdTime = DataCenter.WeaponTotal;
+        if (gcdTime == 0) gcdTime = 2.5f;
+        var wholeWidth = ImGui.GetWindowWidth();
+        var ping = DataCenter.Ping;
+
+        ImGui.PushFont(ImGuiHelper.GetFont(14));
+        ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+        var infoText = $"GCD: {gcdTime:F2}s Ping: {ping:F2}s";
+        var infoSize = ImGui.CalcTextSize(infoText);
+
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            ImGui.Text(infoText);
+        }, wholeWidth, infoSize.X);
+        ImGui.PopStyleColor();
+        ImGui.PopFont();
+
+        var actionAhead = Service.Config.GetValue(PluginConfigFloat.ActionAhead);
+        var minAbilityAhead = Service.Config.GetValue(PluginConfigFloat.MinLastAbilityAdvanced);
+        var animationLockTime = DataCenter.MinAnimationLock;
+        var weaponDelay = (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin) + Service.Config.GetValue(PluginConfigFloat.WeaponDelayMax))/2;
+        var clickingDelay = (Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin) + Service.Config.GetValue(PluginConfigFloat.ClickingDelayMax))/2;
+
+        var drawList = ImGui.GetWindowDrawList();
+        ImGui.Spacing();
+        var startCursorPt = ImGui.GetCursorPos();
+        var windowsPos = ImGui.GetWindowPos();
+
+        var sizePerTime = (wholeWidth - gcdSize) / (gcdTime + weaponDelay + actionAhead);
+
+        var lineStart = windowsPos + startCursorPt + new Vector2(sizePerTime * actionAhead, gcdSize + spacingHeight);
+        ImGuiHelper.DrawActionOverlay(startCursorPt + new Vector2(sizePerTime * actionAhead, 0), gcdSize, 0);
+        ImGuiHelper.DrawActionOverlay(startCursorPt + new Vector2(wholeWidth - gcdSize, 0), gcdSize, 0);
+
+        AddPingLockTime(drawList, lineStart, sizePerTime, ping, animationLockTime, actionAhead, ADVANCE_TIME_COLOR, clickingDelay);
+        var start = lineStart + new Vector2(gcdTime * sizePerTime, 0);
+        var rectSize = new Vector2(weaponDelay * sizePerTime, pingHeight);
+        drawList.AddRectFilled(start, start + rectSize, WEAPON_DELAY_COLOR);
+        drawList.AddRect(start, start + rectSize, uint.MaxValue, 0, ImDrawFlags.Closed, 2);
+        if (ImGuiHelper.IsInRect(start, rectSize))
+        {
+            ImguiTooltips.ShowTooltip(LocalizationManager.RightLang.ConfigWindow_Basic_WeaponDelay);
+        }
+        drawList.AddLine(lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, -spacingHeight), lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, 
+            pingHeight * 2 + spacingHeight), IDEAL_CLICK_TIME_COLOR, 2);
+
+        ImGui.PushFont(ImGuiHelper.GetFont(20));
+        const string gcdText = "GCD";
+        var size = ImGui.CalcTextSize(gcdText);
+        ImGui.SetCursorPos(startCursorPt + new Vector2(sizePerTime * actionAhead + (gcdSize - size.X) / 2, (gcdSize - size.Y) / 2));
+        ImGui.Text(gcdText);
+        ImGui.SetCursorPos(startCursorPt + new Vector2(wholeWidth - gcdSize + (gcdSize - size.X) / 2, (gcdSize - size.Y) / 2));
+        ImGui.Text(gcdText);
+        ImGui.PopFont();
+
+        ImGui.PushFont(ImGuiHelper.GetFont(14));
+        const string ogcdText = "Off-\nGCD";
+        size = ImGui.CalcTextSize(ogcdText);
+        ImGui.PopFont();
+
+        var timeStep = ping + animationLockTime;
+        var time = timeStep;
+        while (time < gcdTime - timeStep)
+        {
+            var isLast = time + 2 * timeStep > gcdTime;
+            if (isLast)
+            {
+                time = gcdTime - timeStep;
+            }
+
+            ImGuiHelper.DrawActionOverlay(startCursorPt + new Vector2(sizePerTime * (actionAhead + time), 0), ogcdSize, 0);
+            ImGui.SetCursorPos(startCursorPt + new Vector2(sizePerTime * (actionAhead + time) + (ogcdSize - size.X) / 2, (ogcdSize - size.Y) / 2));
+
+            ImGui.PushFont(ImGuiHelper.GetFont(14));
+            ImGui.Text(ogcdText);
+            ImGui.PopFont();
+
+            var ogcdStart = lineStart + new Vector2(time * sizePerTime, 0);
+            AddPingLockTime(drawList, ogcdStart, sizePerTime, ping, animationLockTime,
+                isLast ? MathF.Max(minAbilityAhead, actionAhead) : actionAhead, isLast ? ADVANCE_ABILITY_TIME_COLOR : ADVANCE_TIME_COLOR, clickingDelay);
+
+            time += timeStep;
+        }
+
+        ImGui.SetCursorPosY(startCursorPt.Y + gcdSize + pingHeight * 2 + 2 * spacingHeight + ImGui.GetStyle().ItemSpacing.Y);
+
+        ImGui.Spacing();
+
         foreach (var searchable in _basicTimer)
+        {
+            searchable?.Draw(Job);
+        }
+
+        ImGui.Separator();
+
+        foreach (var searchable in _basicTimerOthers)
         {
             searchable?.Draw(Job);
         }
@@ -118,13 +269,15 @@ public partial class RotationConfigWindow
     {
         new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0.002f),
         new DragFloatSearchPlugin(PluginConfigFloat.MinLastAbilityAdvanced, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MaxPing, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.WeaponDelayMin, PluginConfigFloat.WeaponDelayMax, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.ClickingDelayMin, PluginConfigFloat.ClickingDelayMax, 0.002f),
+    };
+
+    private static readonly ISearchable[] _basicTimerOthers = new ISearchable[]
+    {
         new DragFloatSearchPlugin(PluginConfigFloat.SpecialDuration, 1f),
         new DragFloatSearchPlugin(PluginConfigFloat.CountDownAhead, 0.002f),
-        new DragFloatSearchPlugin(PluginConfigFloat.MaxPing, 0.002f),
-
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.WeaponDelayMin, PluginConfigFloat.WeaponDelayMax, 0.002f),
-
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.ClickingDelayMin, PluginConfigFloat.ClickingDelayMax, 0.002f),
     };
 
     private static readonly ISearchable[] _basicParamsSearchable = new ISearchable[]

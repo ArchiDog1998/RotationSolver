@@ -22,6 +22,8 @@ internal abstract class Searchable : ISearchable
     private string Popup_Key => "Rotation Solver RightClicking: " + ID;
     protected virtual bool IsJob => false;
 
+    public uint Color { get; set; } = 0;
+
     /// <summary>
     /// Only these job roles can get this setting.
     /// </summary>
@@ -83,7 +85,7 @@ internal abstract class Searchable : ISearchable
     protected void ShowTooltip(Job job, bool showHand = true)
     {
         var showDesc = !string.IsNullOrEmpty(Description);
-        if (showDesc || Tooltips != null)
+        if (showDesc || Tooltips != null && Tooltips.Length > 0)
         {
             ImguiTooltips.ShowTooltip(() =>
             {
@@ -106,9 +108,6 @@ internal abstract class Searchable : ISearchable
 
         ImGuiHelper.ReactPopup(Popup_Key, Command, () => ResetToDefault(job), showHand);
     }
-
-
-
 
     protected static void DrawJobIcon()
     {
