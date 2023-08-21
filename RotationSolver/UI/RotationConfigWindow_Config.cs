@@ -1,12 +1,10 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using ECommons.ImGuiMethods;
-using ImGuiNET;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
-using System.Net.NetworkInformation;
 
 namespace RotationSolver.UI;
 
