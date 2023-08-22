@@ -84,7 +84,10 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Dyskrasia { get; } = new BaseAction(ActionID.Dyskrasia);
+    public static IBaseAction Dyskrasia { get; } = new BaseAction(ActionID.Dyskrasia) 
+    { 
+        AOECount = 2 
+    };
 
     /// <summary>
     /// 

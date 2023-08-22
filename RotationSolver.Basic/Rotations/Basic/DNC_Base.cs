@@ -101,6 +101,7 @@ public abstract class DNC_Base : CustomRotation
     public static IBaseAction BladeShower { get; } = new BaseAction(ActionID.BladeShower)
     {
         StatusProvide = Fountain.StatusProvide,
+        AOECount = 2,
     };
 
     /// <summary>
@@ -109,6 +110,7 @@ public abstract class DNC_Base : CustomRotation
     public static IBaseAction RisingWindmill { get; } = new BaseAction(ActionID.RisingWindmill)
     {
         StatusNeed = ReverseCascade.StatusNeed,
+        AOECount = 2,
     };
 
     /// <summary>
@@ -218,7 +220,10 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment);
+    public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment) 
+    { 
+        ActionCheck = (b, m) => IsLongerThan(10)
+    };
 
     /// <summary>
     /// 
@@ -258,6 +263,7 @@ public abstract class DNC_Base : CustomRotation
             StatusID.StandardFinish,
         },
         StatusProvide = StandardStep.StatusProvide,
+        ActionCheck = (b, m) => IsLongerThan(20),
     };
 
     /// <summary>

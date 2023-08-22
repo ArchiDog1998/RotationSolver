@@ -5,6 +5,7 @@ using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using RotationSolver.Basic.Configuration;
 
@@ -77,7 +78,7 @@ public partial class BaseAction
 
     internal static bool TankDefenseSelf(BattleChara chara, bool mustUse)
     {
-        return DataCenter.TarOnMeTargets.Any() | mustUse;
+        return (DataCenter.TarOnMeTargets.Any() || mustUse) && DataCenter.AverageDeadTime > 8;
     }
     internal static bool TankBreakOtherCheck(Job id)
     {
@@ -163,9 +164,23 @@ public partial class BaseAction
         if (Service.Config.GetValue(PluginConfigBool.MoveAreaActionFarthest))
         {
             Vector3 pPosition = Player.Object.Position;
-            float rotation = Player.Object.Rotation;
-            Position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
-                pPosition.Z + (float)Math.Cos(rotation) * range);
+            if (Service.Config.GetValue(PluginConfigBool.MoveTowardsScreenCenter)) unsafe
+                {
+                    var camera = CameraManager.Instance()->CurrentCamera;
+                    var tar = camera->LookAtVector - camera->Object.Position;
+                    tar.Y = 0;
+                    var length = ((Vector3)tar).Length();
+                    if (length == 0) return false;
+                    tar = tar / length * range;
+                    Position = new Vector3(pPosition.X + tar.X, pPosition.Y,
+                    pPosition.Z + tar.Z);
+                }
+            else
+            {
+                float rotation = Player.Object.Rotation;
+                Position = new Vector3(pPosition.X + (float)Math.Sin(rotation) * range, pPosition.Y,
+                    pPosition.Z + (float)Math.Cos(rotation) * range);
+            }
             return true;
         }
         else
@@ -189,7 +204,11 @@ public partial class BaseAction
                     && pts != null && pts.Length > 0)
                 {
                     var closest = pts.MinBy(p => Vector3.Distance(player.Position, p));
-                    if(Vector3.Distance(player.Position, closest) < player.HitboxRadius + EffectRange)
+                    var rotation = new Random().NextDouble() * Math.Tau;
+                    var radius = new Random().NextDouble() * 1;
+                    closest.X += (float)(Math.Sin(rotation) * radius);
+                    closest.Z += (float)(Math.Cos(rotation) * radius);
+                    if (Vector3.Distance(player.Position, closest) < player.HitboxRadius + EffectRange)
                     {
                         Position = closest;
                         return true;

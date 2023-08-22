@@ -202,9 +202,9 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PresenseOfMind { get; } = new BaseAction(ActionID.PresenseOfMind, ActionOption.Buff)
+    public static IBaseAction PresenceOfMind { get; } = new BaseAction(ActionID.PresenceOfMind, ActionOption.Buff)
     {
-        ActionCheck = (b, m) => !IsMoving
+        ActionCheck = (b, m) => !IsMoving && IsLongerThan(10),
     };
 
     /// <summary>

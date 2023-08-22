@@ -76,7 +76,8 @@ public partial class RotationConfigWindow : Window
             var leftTop = ImGui.GetWindowPos() + ImGui.GetCursorPos();
             var rightDown = leftTop + ImGui.GetWindowSize();
             var screenSize = ImGuiHelpers.MainViewport.Size;
-            if (leftTop.X <= 0 || leftTop.Y <= 0 || rightDown.X >= screenSize.X || rightDown.Y >= screenSize.Y)
+            if ((leftTop.X <= 0 || leftTop.Y <= 0 || rightDown.X >= screenSize.X || rightDown.Y >= screenSize.Y)
+                && !ImGui.GetIO().ConfigFlags.HasFlag(ImGuiConfigFlags.ViewportsEnable))
             {
                 var str = string.Empty;
                 for (int i = 0; i < 150; i++)

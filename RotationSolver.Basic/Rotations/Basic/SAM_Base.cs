@@ -238,6 +238,7 @@ public abstract class SAM_Base : CustomRotation
     public static IBaseAction MeikyoShisui { get; } = new BaseAction(ActionID.MeikyoShisui)
     {
         StatusProvide = new[] { StatusID.MeikyoShisui },
+        ActionCheck = (b, m) => IsLongerThan(8),
     };
 
     /// <summary>

@@ -227,8 +227,6 @@ public enum PluginConfigBool : byte
     [Default(true)] AutoOffBetweenArea,
     [Default(true)] AutoOffCutScene,
     [Default(true)] AutoOffWhenDead,
-    [Default(false)] PreventActionsIfOutOfCombat,
-    [Default(false)] PreventActionsIfDutyRing,
     [Default(true)] ChangeTargetForFate,
     [Default(true)] MoveTowardsScreenCenter,
     [Default(true)] SayOutStateChanged,
@@ -257,6 +255,7 @@ public enum PluginConfigBool : byte
     [Default(true)] ChooseAttackMark,
     [Default(false)] CanAttackMarkAOE,
     [Default(true)] FilterStopMark,
+    [Default(true)] ShowHostiles,
 
     [Default(true)] TeachingMode,
     [Default(true)] UseOverlayWindow,
@@ -304,8 +303,6 @@ public enum PluginConfigBool : byte
 
     [Default(true)] UseAOEAction,
     [Default(false)] UseAOEWhenManual,
-    [Default(false)] PreventActions,
-    [Default(false)] PreventActionsDuty,
     [Default(true)] AutoBurst,
     [Default(true)] AutoHeal,
     [Default(true)] UseAbility,
@@ -397,6 +394,10 @@ public enum PluginConfigFloat : byte
     [Default(8f)] ControlProgressHeight,
     [Default(1.2f, 0f, 30f)] DistanceForMoving,
     [Default(0.2f, 0.01f, 0.5f)] MaxPing,
+
+    [Default(8f, 0f, 30f)] AutoHealDeadTime,
+    [Default(2f, 0f, 10f)] HostileIconHeight,
+    [Default(1f, 0.1f, 10f)] HostileIconSize,
 }
 
 public enum PluginConfigVector4 : byte

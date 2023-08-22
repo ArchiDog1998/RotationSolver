@@ -79,13 +79,12 @@ internal static class ConfigTranslation
         PluginConfigBool.ShowControlWindow => LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
         PluginConfigBool.IsControlWindowLock => LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
         PluginConfigBool.ShowBeneficialPositions => LocalizationManager.RightLang.ConfigWindow_UI_ShowBeneficialPosition,
+        PluginConfigBool.ShowHostiles => LocalizationManager.RightLang.ConfigWindow_UI_ShowHostiles,
 
         // auto
         PluginConfigBool.UseAOEAction => LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
         PluginConfigBool.UseAOEWhenManual => LocalizationManager.RightLang.ConfigWindow_Param_UseAOEWhenManual,
         PluginConfigBool.NoNewHostiles => LocalizationManager.RightLang.ConfigWindow_Param_NoNewHostiles,
-        PluginConfigBool.PreventActions => LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfOutOfCombat,
-        PluginConfigBool.PreventActionsDuty => LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfDutyRing,
         PluginConfigBool.AutoBurst => LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst,
         PluginConfigBool.AutoHeal => LocalizationManager.RightLang.ConfigWindow_Param_AutoHeal,
         PluginConfigBool.UseTinctures => LocalizationManager.RightLang.ConfigWindow_Param_UseTinctures,
@@ -171,6 +170,8 @@ internal static class ConfigTranslation
         PluginConfigFloat.ControlWindowGCDSize => LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowGCDSize,
         PluginConfigFloat.ControlWindow0GCDSize => LocalizationManager.RightLang.ConfigWindow_Control_ControlWindow0GCDSize,
         PluginConfigFloat.ControlWindowNextSizeRatio => LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
+        PluginConfigFloat.HostileIconHeight => LocalizationManager.RightLang.ConfigWindow_UI_HostileIconHeight,
+        PluginConfigFloat.HostileIconSize => LocalizationManager.RightLang.ConfigWindow_UI_HostileIconSize,
 
         // auto
         PluginConfigFloat.HealWhenNothingTodoBelow => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoBelow,
@@ -180,6 +181,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.HealthHealerRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
         PluginConfigFloat.HealthTankRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
         PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
+        PluginConfigFloat.AutoHealDeadTime => LocalizationManager.RightLang.ConfigWindow_Auto_AutoHealDeadTime,
 
         // target
         PluginConfigFloat.DeadTimeBoss => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeBoss,

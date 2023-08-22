@@ -150,7 +150,10 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction ArtOfWar { get; } = new BaseAction(ActionID.ArtOfWar);//裂阵法 25866
+    public static IBaseAction ArtOfWar { get; } = new BaseAction(ActionID.ArtOfWar) 
+    {
+        AOECount = 2 
+    };
     #endregion
 
     #region Seraph
@@ -231,7 +234,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction ChainStratagem { get; } = new BaseAction(ActionID.ChainStratagem)
     {
-        ActionCheck = (b, m) => InCombat && IsTargetBoss
+        ActionCheck = (b, m) => InCombat && IsTargetBoss && IsLongerThan(10),
     };
 
     /// <summary>

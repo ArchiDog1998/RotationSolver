@@ -252,7 +252,10 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction NoMercy { get; } = new BaseAction(ActionID.NoMercy);
+    public static IBaseAction NoMercy { get; } = new BaseAction(ActionID.NoMercy) 
+    { 
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 

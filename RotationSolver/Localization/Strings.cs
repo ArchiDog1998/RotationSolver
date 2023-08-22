@@ -97,8 +97,6 @@ internal partial class Strings
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cut scene.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
-    public string ConfigWindow_Param_PreventActionsIfOutOfCombat { get; set; } = "Prevent Actions if no hostiles in range.";
-    public string ConfigWindow_Param_PreventActionsIfDutyRing { get; set; } = "Also prevent if in duty until duty start.";
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";
@@ -219,7 +217,7 @@ internal partial class Strings
     public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
     public string ConfigWindow_Param_FilterStopMark { get; set; } = "Never attack targets with stop markers";
     public string ConfigWindow_Param_MoveTargetAngle { get; set; } = "The size of the sector angle that can be selected as the moveable target";
-    public string ConfigWindow_Param_MoveTargetAngleDesc { get; set; } = "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are movable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.";
+    public string ConfigWindow_Param_MoveTargetAngleDesc { get; set; } = "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are moveable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.";
     public string ConfigWindow_Param_ChangeTargetForFate { get; set; } = "Select only Fate targets in Fate";
     public string ConfigWindow_Param_OnlyAttackInView { get; set; } = "Only attack the target in view.";
 
@@ -234,7 +232,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
-    public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position from character's face direction.";
+    public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position for targeting are movement actions.";
 
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
@@ -350,7 +348,7 @@ internal partial class Strings
     public string SpecialCommandType_Burst { get; set; } = "Burst";
     public string SpecialCommandType_EndSpecial { get; set; } = "End Special";
     public string SpecialCommandType_Speed { get; set; } = "Speed";
-    public string SpecialCommandType_Smart { get; set; } = "Auto Target ";
+    public string SpecialCommandType_Smart { get; set; } = "Auto Target";
     public string SpecialCommandType_Manual { get; set; } = "Manual Target";
     public string SpecialCommandType_Cancel { get; set; } = "Cancel";
     public string SpecialCommandType_Off { get; set; } = "Off";
@@ -358,7 +356,7 @@ internal partial class Strings
 
     #region ActionConditionType
     public string ActionConditionType_Elapsed { get; set; } = "Elapsed";
-    public string ActionConditionType_ElapsedGCD { get; set; } = "ElapsedG CD ";
+    public string ActionConditionType_ElapsedGCD { get; set; } = "Elapsed GCD";
     public string ActionConditionType_Remain { get; set; } = "Remain Time";
     public string ActionConditionType_RemainGCD { get; set; } = "Remain GCD";
     public string ActionConditionType_ShouldUse { get; set; } = "Can Use";
@@ -374,6 +372,7 @@ internal partial class Strings
     public string TargetConditionType_IsBoss { get; set; } = "Is Boss";
     public string TargetConditionType_Distance { get; set; } = "Distance";
     public string TargetConditionType_StatusEnd { get; set; } = "Status End";
+    public string TargetConditionType_DeadTime { get; set; } = "Dead Time";
     public string TargetConditionType_StatusEndGCD { get; set; } = "Status End GCD";
     public string TargetConditionType_CastingAction { get; set; } = "Casting Action";
     public string TargetConditionType_CastingActionTimeUntil { get; set; } = "Casting Action Time Until";
@@ -395,19 +394,6 @@ internal partial class Strings
     public string DescType_MoveForwardAbility { get; set; } = "Move Forward Ability";
     public string DescType_MoveBackAbility { get; set; } = "Move Back Ability";
     public string DescType_SpeedAbility { get; set; } = "Speed Ability";
-
-    #endregion
-
-    #region JobRole
-    public string JobRole_None { get; set; } = "Gathering&Production";
-    public string JobRole_Tank { get; set; } = "Tank";
-    public string JobRole_Melee { get; set; } = "Melee";
-    public string JobRole_Ranged { get; set; } = "Ranged";
-    public string JobRole_Healer { get; set; } = "Healer";
-    public string JobRole_RangedPhysical { get; set; } = "Ranged";
-    public string JobRole_RangedMagical { get; set; } = "Magical";
-    public string JobRole_DiscipleOfTheLand { get; set; } = "Disciple of the Land";
-    public string JobRole_DiscipleOfTheHand { get; set; } = "Disciple of the Hand";
 
     #endregion
 
@@ -463,6 +449,7 @@ internal partial class Strings
 
         { nameof(CustomRotation.IsValid), "Is this rotation valid"},
         { nameof(CustomRotation.ShowStatus), "Show the status"},
+        { nameof(CustomRotation.AverageDeadTime), "Average dead time"},
 
         #endregion
 
@@ -717,4 +704,8 @@ internal partial class Strings
     public string ConfigWindow_Basic_WeaponDelay { get; set; } = "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.";
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
     public string ConfigWindow_About_ClickingTooMuch { get; set; } = "Well, you must be a lazy player!";
+    public string ConfigWindow_Auto_AutoHealDeadTime { get; set; } = "Auto heal before combat end several seconds.";
+    public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile targets";
+    public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Icon height from position";
+    public string ConfigWindow_UI_HostileIconSize { get; set; } = "Icon size";
 }

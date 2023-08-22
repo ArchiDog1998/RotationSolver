@@ -134,20 +134,23 @@ public abstract class WAR_Base : CustomRotation
     public static IBaseAction Infuriate { get; } = new BaseAction(ActionID.Infuriate)
     {
         StatusProvide = new[] { StatusID.NascentChaos },
-        ActionCheck = (b, m) => HasHostilesInRange && JobGauge.BeastGauge <= 50 && InCombat,
+        ActionCheck = (b, m) => HasHostilesInRange && JobGauge.BeastGauge <= 50 && InCombat && IsLongerThan(5),
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction InnerRelease { get; } = new BaseAction(ActionID.InnerRelease);
+    public static IBaseAction InnerRelease { get; } = new BaseAction(ActionID.InnerRelease)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction Berserk { get; } = new BaseAction(ActionID.Berserk)
     {
-        ActionCheck = (b, m) => HasHostilesInRange && !InnerRelease.IsCoolingDown,
+        ActionCheck = (b, m) => HasHostilesInRange && !InnerRelease.IsCoolingDown && IsLongerThan(10),
     };
     #endregion
 
@@ -278,23 +281,13 @@ public abstract class WAR_Base : CustomRotation
     public static IBaseTrait MeleeMastery    { get; } = new BaseTrait(505);
     #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="nextGCD"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
     [RotationDesc(ActionID.Onslaught)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -302,15 +295,12 @@ public abstract class WAR_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
     [RotationDesc(ActionID.PrimalRend)]
     protected sealed override bool MoveForwardGCD(out IAction act)
     {
         if (PrimalRend.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.MoveForwardGCD(out act);
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
 }

@@ -230,32 +230,6 @@ public static class ObjectHelper
         return EnemyPositional.Flank;
     }
 
-    //internal static uint GetHealthFromMulty(float mult)
-    //{
-    //    if (!Player.Available) return 0;
-
-    //    var role = Service.GetSheet<ClassJob>().GetRow(
-    //            Player.Object.ClassJob.Id).GetJobRole();
-    //    float multi = mult * role switch
-    //    {
-    //        JobRole.Tank => 1,
-    //        JobRole.Healer => 1.6f,
-    //        _ => 1.5f,
-    //    };
-
-    //    var partyCount = DataCenter.PartyMembers.Count();
-    //    if (partyCount > 4)
-    //    {
-    //        multi *= 6.4f;
-    //    }
-    //    else if (partyCount > 1)
-    //    {
-    //        multi *= 3.5f;
-    //    }
-
-    //    return (uint)(multi * Player.Object.MaxHp);
-    //}
-
     /// <summary>
     /// The distance from <paramref name="obj"/> to the player
     /// </summary>

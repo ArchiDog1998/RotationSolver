@@ -60,7 +60,10 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Gravity { get; } = new BaseAction(ActionID.Gravity);
+    public static IBaseAction Gravity { get; } = new BaseAction(ActionID.Gravity)
+    {
+        AOECount = 2,
+    };
     #endregion
 
     #region Heal Single
@@ -167,25 +170,34 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Lightspeed { get; } = new BaseAction(ActionID.Lightspeed);
+    public static IBaseAction Lightspeed { get; } = new BaseAction(ActionID.Lightspeed)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction NeutralSect { get; } = new BaseAction(ActionID.NeutralSect, ActionOption.Heal);
+    public static IBaseAction NeutralSect { get; } = new BaseAction(ActionID.NeutralSect, ActionOption.Heal) 
+    {
+        ActionCheck = (b, m) => IsLongerThan(15),
+    };
     
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction Astrodyne { get; } = new BaseAction(ActionID.Astrodyne)
     {
-        ActionCheck = (b, m) => !Seals.Contains(SealType.NONE),
+        ActionCheck = (b, m) => !Seals.Contains(SealType.NONE) && IsLongerThan(10),
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Divination { get; } = new BaseAction(ActionID.Divination, ActionOption.Buff);
+    public static IBaseAction Divination { get; } = new BaseAction(ActionID.Divination, ActionOption.Buff)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 

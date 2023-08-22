@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
@@ -40,6 +41,37 @@ internal static class PainterManager
                 {
                     IsFill = false,
                 });
+            }
+
+            SubItems = subItems.ToArray();
+
+            base.UpdateOnFrame(painter);
+        }
+
+    }
+
+    class TargetsDrawing : Drawing3DPoly
+    {
+        public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        {
+            SubItems = Array.Empty<IDrawing3D>();
+
+            if (!Service.Config.GetValue(PluginConfigBool.ShowHostiles)) return;
+
+            List<IDrawing3D> subItems = new List<IDrawing3D>();
+
+            if(IconSet.GetTexture(61510, out var hostileIcon))
+            {
+                foreach (var hostile in DataCenter.HostileTargets)
+                {
+                    subItems.Add(new Drawing3DImage(hostileIcon, hostile.Position + new Vector3(0, 
+                        Service.Config.GetValue(PluginConfigFloat.HostileIconHeight), 0), 
+                        Service.Config.GetValue(PluginConfigFloat.HostileIconSize))
+                    {
+                        DrawWithHeight = false,
+                        MustInViewRange = true,
+                    });
+                }
             }
 
             SubItems = subItems.ToArray();
@@ -223,7 +255,7 @@ internal static class PainterManager
             movingTarget.To = tar.Value;
         };
 
-        _painter.AddDrawings(_highLight, annulus, movingTarget, new TargetDrawing(), new TargetText(), new BeneficialPositionDrawing());
+        _painter.AddDrawings(_highLight, annulus, movingTarget, new TargetDrawing(), new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing());
 
 #if DEBUG
         //try

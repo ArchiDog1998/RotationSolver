@@ -22,12 +22,6 @@ internal static class MajorUpdater
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
         && Player.Available && !SocialUpdater.InPvp;
 
-    public static bool ShouldPreventActions => Service.Config.GetValue(PluginConfigBool.PreventActions)
-            && (Service.Config.GetValue(PluginConfigBool.PreventActionsDuty)
-            && Svc.Condition[ConditionFlag.BoundByDuty]
-            && !Svc.DutyState.IsDutyStarted
-            || !DataCenter.HasHostilesInMaxRange);
-
 #if DEBUG
     private static readonly Dictionary<int, bool> _values = new();
 #endif
@@ -88,12 +82,7 @@ internal static class MajorUpdater
             }
             ActionUpdater.UpdateActionInfo();
 
-            var canDoAction = false;
-            if (!ShouldPreventActions)
-            {
-                canDoAction = ActionUpdater.CanDoAction();
-            }
-
+            var canDoAction =  ActionUpdater.CanDoAction();
             MovingUpdater.UpdateCanMove(canDoAction);
             if (canDoAction)
             {

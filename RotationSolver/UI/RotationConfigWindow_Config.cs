@@ -288,11 +288,6 @@ public partial class RotationConfigWindow
 
         new DragFloatSearchPlugin(PluginConfigFloat.MistakeRatio, 0.002f),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.PreventActions, new ISearchable[]
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.PreventActionsDuty),
-        }),
-
         new DragFloatRangeSearchPlugin(PluginConfigFloat.NotInCombatDelayMin, PluginConfigFloat.NotInCombatDelayMax, 0.002f),
     };
 
@@ -378,8 +373,21 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.TeachingModeColor)
         ),
 
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTarget,
+            new DragFloatSearchPlugin(PluginConfigFloat.TargetIconSize, 0.002f),
+            new ColorEditSearchPlugin(PluginConfigVector4.TargetColor),
+            new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor)
+        ),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetDeadTime),
+
         new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget, 
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)
+        ),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowHostiles,
+            new DragFloatSearchPlugin(PluginConfigFloat.HostileIconHeight, 0.002f),
+            new DragFloatSearchPlugin(PluginConfigFloat.HostileIconSize, 0.002f)
         ),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowBeneficialPositions,
@@ -387,13 +395,6 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.HoveredBeneficialPositionColor)
         ),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetDeadTime),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowTarget, 
-            new DragFloatSearchPlugin(PluginConfigFloat.TargetIconSize, 0.002f),
-            new ColorEditSearchPlugin(PluginConfigVector4.TargetColor),
-            new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor)
-        ),
         new CheckBoxSearchPlugin(PluginConfigBool.DrawMeleeOffset)),
     };
 
@@ -514,6 +515,7 @@ public partial class RotationConfigWindow
                 }
             },
 
+            new DragFloatSearchPlugin(PluginConfigFloat.AutoHealDeadTime, 0.02f),
             new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
 
         new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),

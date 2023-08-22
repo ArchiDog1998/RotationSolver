@@ -337,6 +337,7 @@ public abstract partial class BLM_Base : CustomRotation
     public static IBaseAction LeyLines { get; } = new BaseAction(ActionID.LeyLines, ActionOption.Buff | ActionOption.EndSpecial)
     {
         StatusProvide = new[] { StatusID.LeyLines, },
+        ActionCheck = (b, m) => IsLongerThan(15),
     };
 
     /// <summary>

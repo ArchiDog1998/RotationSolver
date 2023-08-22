@@ -175,7 +175,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction Mug { get; } = new BaseAction(ActionID.Mug)
     {
-        ActionCheck = (b, m) => JobGauge.Ninki <= 60,
+        ActionCheck = (b, m) => JobGauge.Ninki <= 60 && IsLongerThan(10),
     };
 
     /// <summary>
@@ -184,6 +184,7 @@ public abstract class NIN_Base : CustomRotation
     public static IBaseAction TrickAttack { get; } = new BaseAction(ActionID.TrickAttack)
     {
         StatusNeed = new StatusID[] { StatusID.Suiton, StatusID.Hidden },
+        ActionCheck = (b, m) =>IsLongerThan(10),
     };
 
     /// <summary>
@@ -288,7 +289,10 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static INinAction Katon { get; } = new NinAction(ActionID.Katon, Chi, Ten);
+    public static INinAction Katon { get; } = new NinAction(ActionID.Katon, Chi, Ten)
+    {
+        AOECount = 2,
+    };
 
     /// <summary>
     /// 

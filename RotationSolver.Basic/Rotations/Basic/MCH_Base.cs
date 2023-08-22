@@ -116,7 +116,10 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 1
     /// </summary>
-    public static IBaseAction SpreadShot { get; } = new BaseAction(ActionID.SpreadShot);
+    public static IBaseAction SpreadShot { get; } = new BaseAction(ActionID.SpreadShot)
+    {
+        AOECount = 2,
+    };
 
     /// <summary>
     /// 2
@@ -124,6 +127,7 @@ public abstract class MCH_Base : CustomRotation
     public static IBaseAction AutoCrossbow { get; } = new BaseAction(ActionID.AutoCrossbow)
     {
         ActionCheck = HeatBlast.ActionCheck,
+        AOECount = 2,
     };
 
     /// <summary>
@@ -168,13 +172,17 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Hypercharge { get; } = new BaseAction(ActionID.Hypercharge)
     {
-        ActionCheck = (b, m) => !JobGauge.IsOverheated && JobGauge.Heat >= 50,
+        ActionCheck = (b, m) => !JobGauge.IsOverheated && JobGauge.Heat >= 50 
+        && IsLongerThan(8),
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Wildfire { get; } = new BaseAction(ActionID.Wildfire);
+    public static IBaseAction Wildfire { get; } = new BaseAction(ActionID.Wildfire)
+    {
+        ActionCheck = (b, m) => IsLongerThan(8),
+    };
 
     /// <summary>
     /// 
@@ -184,7 +192,10 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction QueenOverdrive { get; } = new BaseAction(ActionID.QueenOverdrive);
+    public static IBaseAction QueenOverdrive { get; } = new BaseAction(ActionID.QueenOverdrive)
+    {
+        ActionCheck = (b, m) => IsLongerThan(8),
+    };
     
     /// <summary>
     /// 
