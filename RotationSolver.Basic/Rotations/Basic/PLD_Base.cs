@@ -161,12 +161,18 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Requiescat { get; } = new BaseAction(ActionID.Requiescat, ActionOption.Buff);
+    public static IBaseAction Requiescat { get; } = new BaseAction(ActionID.Requiescat, ActionOption.Buff)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, ActionOption.Buff);
+    public static IBaseAction FightOrFlight { get; } = new BaseAction(ActionID.FightOrFlight, ActionOption.Buff)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 

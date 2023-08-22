@@ -180,6 +180,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.HealthHealerRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
         PluginConfigFloat.HealthTankRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
         PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
+        PluginConfigFloat.AutoHealDeadTime => LocalizationManager.RightLang.ConfigWindow_Auto_AutoHealDeadTime,
 
         // target
         PluginConfigFloat.DeadTimeBoss => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeBoss,

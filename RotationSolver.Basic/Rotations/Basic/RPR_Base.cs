@@ -194,7 +194,8 @@ public abstract class RPR_Base : CustomRotation
     /// </summary>
     public static IBaseAction ArcaneCircle { get; } = new BaseAction(ActionID.ArcaneCircle, ActionOption.Buff)
     {
-        StatusProvide = new[] { StatusID.CircleOfSacrifice, StatusID.BloodSownCircle }
+        StatusProvide = new[] { StatusID.CircleOfSacrifice, StatusID.BloodSownCircle },
+        ActionCheck = (b, m) => IsLongerThan(10),
     };
 
     /// <summary>

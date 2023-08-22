@@ -397,6 +397,8 @@ public enum PluginConfigFloat : byte
     [Default(8f)] ControlProgressHeight,
     [Default(1.2f, 0f, 30f)] DistanceForMoving,
     [Default(0.2f, 0.01f, 0.5f)] MaxPing,
+
+    [Default(8f, 0f, 30f)] AutoHealDeadTime,
 }
 
 public enum PluginConfigVector4 : byte

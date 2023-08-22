@@ -290,7 +290,7 @@ public abstract class SMN_Base : CustomRotation
     public static IBaseAction SearingLight { get; } = new BaseAction(ActionID.SearingLight, ActionOption.Buff)
     {
         StatusProvide = new[] { StatusID.SearingLight },
-        ActionCheck = (b, m) => InCombat,
+        ActionCheck = (b, m) => InCombat && IsLongerThan(15),
     };
 
     /// <summary>

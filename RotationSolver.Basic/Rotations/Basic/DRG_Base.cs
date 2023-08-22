@@ -219,7 +219,10 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge);
+    public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge) 
+    { 
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 
@@ -235,12 +238,16 @@ public abstract class DRG_Base : CustomRotation
 
             return Targets.GetJobCategory(JobRole.Melee, JobRole.RangedMagical, JobRole.RangedPhysical, JobRole.Tank).FirstOrDefault();
         },
+        ActionCheck = (b, m) => IsLongerThan(10),
     };
     
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, ActionOption.Buff);
+    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, ActionOption.Buff) 
+    { 
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
     #endregion
 
     #region Traits

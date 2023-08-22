@@ -160,7 +160,10 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Mantra { get; } = new BaseAction(ActionID.Mantra, ActionOption.Heal);
+    public static IBaseAction Mantra { get; } = new BaseAction(ActionID.Mantra, ActionOption.Heal) 
+    { 
+        ActionCheck = (b, m) => IsLongerThan(10), 
+    };
 
     /// <summary>
     /// 
@@ -173,14 +176,17 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction RiddleOfWind { get; } = new BaseAction(ActionID.RiddleOfWind);
+    public static IBaseAction RiddleOfWind { get; } = new BaseAction(ActionID.RiddleOfWind)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction PerfectBalance { get; } = new BaseAction(ActionID.PerfectBalance)
     {
-        ActionCheck = (b, m) => InCombat,
+        ActionCheck = (b, m) => InCombat && IsLongerThan(5),
     };
 
     /// <summary>
@@ -199,12 +205,18 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Brotherhood { get; } = new BaseAction(ActionID.Brotherhood, ActionOption.Buff);
+    public static IBaseAction Brotherhood { get; } = new BaseAction(ActionID.Brotherhood, ActionOption.Buff) 
+    {
+        ActionCheck = (b, m) => IsLongerThan(10)
+    };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction RiddleOfFire { get; } = new BaseAction(ActionID.RiddleOfFire);
+    public static IBaseAction RiddleOfFire { get; } = new BaseAction(ActionID.RiddleOfFire)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10)
+    };
     #endregion
 
     #region Traits
@@ -292,8 +304,8 @@ public abstract class MNK_Base : CustomRotation
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 
-    [RotationDesc(ActionID.Thunderclap)]
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    [RotationDesc(ActionID.Thunderclap)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
         if (Thunderclap.CanUse(out act)) return true;

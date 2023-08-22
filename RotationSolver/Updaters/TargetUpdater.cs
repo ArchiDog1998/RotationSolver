@@ -114,6 +114,9 @@ internal static partial class TargetUpdater
             return true;
         })));
 
+        var deadTimes = DataCenter.HostileTargets.Select(b => b.GetDeadTime()).Where(v => !float.IsNaN(v));
+        DataCenter.AverageDeadTime = deadTimes.Any() ? deadTimes.Average() : float.MaxValue;
+
         DataCenter.CanInterruptTargets.Delay(DataCenter.HostileTargets.Where(ObjectHelper.CanInterrupt));
 
         DataCenter.TarOnMeTargets = DataCenter.HostileTargets.Where(tar => tar.TargetObjectId == Player.Object.ObjectId);

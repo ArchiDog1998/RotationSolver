@@ -234,7 +234,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction ChainStratagem { get; } = new BaseAction(ActionID.ChainStratagem)
     {
-        ActionCheck = (b, m) => InCombat && IsTargetBoss
+        ActionCheck = (b, m) => InCombat && IsTargetBoss && IsLongerThan(10),
     };
 
     /// <summary>

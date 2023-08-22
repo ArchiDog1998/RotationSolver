@@ -224,14 +224,17 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Embolden { get; } = new BaseAction(ActionID.Embolden, ActionOption.Buff);
+    public static IBaseAction Embolden { get; } = new BaseAction(ActionID.Embolden, ActionOption.Buff)
+    { 
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction Manafication { get; } = new BaseAction(ActionID.Manafication)
     {
-        ActionCheck = (b, m) => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0,
+        ActionCheck = (b, m) => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0 && IsLongerThan(10),
         ComboIdsNot = new[] { ActionID.Riposte, ActionID.Zwerchhau, ActionID.Scorch, ActionID.Verflare, ActionID.Verholy },
     };
     #endregion

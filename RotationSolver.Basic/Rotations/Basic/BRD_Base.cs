@@ -182,14 +182,18 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BattleVoice { get; } = new BaseAction(ActionID.BattleVoice, ActionOption.Buff);
+    public static IBaseAction BattleVoice { get; } = new BaseAction(ActionID.BattleVoice, ActionOption.Buff)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction RadiantFinale { get; } = new BaseAction(ActionID.RadiantFinale, ActionOption.Buff)
     {
-        ActionCheck = (b, m) => JobGauge.Coda.Any(s => s != Song.NONE),
+        ActionCheck = (b, m) => JobGauge.Coda.Any(s => s != Song.NONE)
+        && IsLongerThan(10),
     };
 
     /// <summary>
@@ -200,7 +204,10 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction RagingStrikes { get; } = new BaseAction(ActionID.RagingStrikes);
+    public static IBaseAction RagingStrikes { get; } = new BaseAction(ActionID.RagingStrikes)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 

@@ -220,7 +220,10 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment);
+    public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment) 
+    { 
+        ActionCheck = (b, m) => IsLongerThan(10)
+    };
 
     /// <summary>
     /// 
@@ -260,6 +263,7 @@ public abstract class DNC_Base : CustomRotation
             StatusID.StandardFinish,
         },
         StatusProvide = StandardStep.StatusProvide,
+        ActionCheck = (b, m) => IsLongerThan(20),
     };
 
     /// <summary>

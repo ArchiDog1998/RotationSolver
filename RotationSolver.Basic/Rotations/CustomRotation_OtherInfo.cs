@@ -158,6 +158,21 @@ public abstract partial class CustomRotation
     /// </summary>
     protected static IEnumerable<BattleChara> HostileTargets => DataCenter.HostileTargets;
 
+    /// <summary>
+    /// Average dead time of hostiles.
+    /// </summary>
+    public static float AverageDeadTime => DataCenter.AverageDeadTime;
+
+    /// <summary>
+    /// Is the <see cref="AverageDeadTime"/> larger than <paramref name="time"/>.
+    /// </summary>
+    /// <param name="time">Time</param>
+    /// <returns>Is Longer.</returns>
+    public static bool IsLongerThan(float time)
+    {
+        if (IsInHighEndDuty) return true;
+        return AverageDeadTime > time;
+    }
     #endregion
 
     #region Command
@@ -167,7 +182,11 @@ public abstract partial class CustomRotation
     /// </summary>
     public static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(Configuration.PluginConfigBool.AutoBurst);
 
-    bool _canUseHealAction => ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer) && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal);
+    bool _canUseHealAction => 
+        //Job
+        (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer)) 
+        && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal)
+        && IsLongerThan(Service.Config.GetValue(Configuration.PluginConfigFloat.AutoHealDeadTime));
 
     /// <summary>
     /// 

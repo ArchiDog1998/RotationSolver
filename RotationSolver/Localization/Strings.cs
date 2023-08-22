@@ -463,6 +463,7 @@ internal partial class Strings
 
         { nameof(CustomRotation.IsValid), "Is this rotation valid"},
         { nameof(CustomRotation.ShowStatus), "Show the status"},
+        { nameof(CustomRotation.AverageDeadTime), "Average dead time"},
 
         #endregion
 
@@ -717,4 +718,5 @@ internal partial class Strings
     public string ConfigWindow_Basic_WeaponDelay { get; set; } = "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.";
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
     public string ConfigWindow_About_ClickingTooMuch { get; set; } = "Well, you must be a lazy player!";
+    public string ConfigWindow_Auto_AutoHealDeadTime { get; set; } = "Auto heal before combat end several seconds.";
 }

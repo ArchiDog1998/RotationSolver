@@ -257,12 +257,19 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BloodWeapon { get; } = new BaseAction(ActionID.BloodWeapon);
+    public static IBaseAction BloodWeapon { get; } = new BaseAction(ActionID.BloodWeapon) 
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Delirium { get; } = new BaseAction(ActionID.Delirium);
+    public static IBaseAction Delirium { get; } = new BaseAction(ActionID.Delirium)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
+    };
+
     #endregion
 
     #region Traits
