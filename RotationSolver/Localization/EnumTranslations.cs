@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using RotationSolver.ActionSequencer;
-using RotationSolver.Commands;
 
 namespace RotationSolver.Localization;
 
@@ -16,6 +15,7 @@ internal static class EnumTranslations
         TargetConditionType.StatusEndGCD => LocalizationManager.RightLang.TargetConditionType_StatusEndGCD,
         TargetConditionType.CastingAction => LocalizationManager.RightLang.TargetConditionType_CastingAction,
         TargetConditionType.CastingActionTimeUntil => LocalizationManager.RightLang.TargetConditionType_CastingActionTimeUntil,
+        TargetConditionType.DeadTime => LocalizationManager.RightLang.TargetConditionType_DeadTime,
         _ => string.Empty,
     };
 
@@ -42,17 +42,6 @@ internal static class EnumTranslations
         _ => string.Empty,
     };
 
-    public static string ToName(this VirtualKey k) => k switch
-    {
-        VirtualKey.SHIFT => "SHIFT",
-        VirtualKey.CONTROL => "CTRL",
-        VirtualKey.MENU => "ALT",
-        VirtualKey.LBUTTON => "Left Mouse",
-        VirtualKey.MBUTTON => "Middle Mouse",
-        VirtualKey.RBUTTON => "Right Mouse",
-        _ => k.ToString(),
-    };
-
     public static string ToName(this DescType type) => type switch
     {
         DescType.BurstActions => LocalizationManager.RightLang.DescType_BurstActions,
@@ -72,20 +61,6 @@ internal static class EnumTranslations
 
         DescType.SpeedAbility => LocalizationManager.RightLang.DescType_SpeedAbility,
 
-        _ => string.Empty,
-    };
-
-    public static string ToName(this JobRole role) => role switch
-    {
-        JobRole.None => LocalizationManager.RightLang.JobRole_None,
-        JobRole.Tank => LocalizationManager.RightLang.JobRole_Tank,
-        JobRole.Melee => LocalizationManager.RightLang.JobRole_Melee,
-        JobRole.Ranged => LocalizationManager.RightLang.JobRole_Ranged,
-        JobRole.Healer => LocalizationManager.RightLang.JobRole_Healer,
-        JobRole.RangedPhysical => LocalizationManager.RightLang.JobRole_RangedPhysical,
-        JobRole.RangedMagical => LocalizationManager.RightLang.JobRole_RangedMagical,
-        JobRole.DiscipleOfTheLand => LocalizationManager.RightLang.JobRole_DiscipleOfTheLand,
-        JobRole.DiscipleOfTheHand => LocalizationManager.RightLang.JobRole_DiscipleOfTheHand,
         _ => string.Empty,
     };
 

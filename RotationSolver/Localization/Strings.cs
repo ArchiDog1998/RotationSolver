@@ -372,6 +372,7 @@ internal partial class Strings
     public string TargetConditionType_IsBoss { get; set; } = "Is Boss";
     public string TargetConditionType_Distance { get; set; } = "Distance";
     public string TargetConditionType_StatusEnd { get; set; } = "Status End";
+    public string TargetConditionType_DeadTime { get; set; } = "Dead Time";
     public string TargetConditionType_StatusEndGCD { get; set; } = "Status End GCD";
     public string TargetConditionType_CastingAction { get; set; } = "Casting Action";
     public string TargetConditionType_CastingActionTimeUntil { get; set; } = "Casting Action Time Until";
@@ -393,19 +394,6 @@ internal partial class Strings
     public string DescType_MoveForwardAbility { get; set; } = "Move Forward Ability";
     public string DescType_MoveBackAbility { get; set; } = "Move Back Ability";
     public string DescType_SpeedAbility { get; set; } = "Speed Ability";
-
-    #endregion
-
-    #region JobRole
-    public string JobRole_None { get; set; } = "Gathering&Production";
-    public string JobRole_Tank { get; set; } = "Tank";
-    public string JobRole_Melee { get; set; } = "Melee";
-    public string JobRole_Ranged { get; set; } = "Ranged";
-    public string JobRole_Healer { get; set; } = "Healer";
-    public string JobRole_RangedPhysical { get; set; } = "Ranged";
-    public string JobRole_RangedMagical { get; set; } = "Magical";
-    public string JobRole_DiscipleOfTheLand { get; set; } = "Disciple of the Land";
-    public string JobRole_DiscipleOfTheHand { get; set; } = "Disciple of the Hand";
 
     #endregion
 

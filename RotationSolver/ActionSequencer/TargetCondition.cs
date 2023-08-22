@@ -80,6 +80,10 @@ internal class TargetCondition : ICondition
                 result = !tar.WillStatusEndGCD((uint)GCD, DistanceOrTime, FromSelf, StatusId);
                 break;
 
+            case TargetConditionType.DeadTime:
+                result = tar.GetDeadTime() > DistanceOrTime;
+                break;
+
             case TargetConditionType.CastingAction:
                 if (string.IsNullOrEmpty(CastingActionName) || tar.CastActionId == 0)
                 {
@@ -186,6 +190,7 @@ internal class TargetCondition : ICondition
             case TargetConditionType.CastingActionTimeUntil:
             case TargetConditionType.Distance:
             case TargetConditionType.StatusEnd:
+            case TargetConditionType.DeadTime:
                 combos = new string[] { ">", "<=" };
                 break;
         }
@@ -308,5 +313,6 @@ public enum TargetConditionType : byte
     StatusEnd,
     StatusEndGCD,
     CastingAction,
-    CastingActionTimeUntil
+    CastingActionTimeUntil,
+    DeadTime,
 }
