@@ -372,8 +372,8 @@ public abstract partial class CustomRotation
     [RotationDesc(ActionID.Sprint)]
     protected virtual bool SpeedAbility(out IAction act)
     {
-        if (Sprint.CanUse(out act, CanUseOption.MustUse)) return true;
         if (Peloton.CanUse(out act, CanUseOption.MustUse)) return true;
+        if (Sprint.CanUse(out act, CanUseOption.MustUse)) return true;
         return false;
     }
 

@@ -1,4 +1,5 @@
-﻿using RotationSolver.Basic.Traits;
+﻿using ECommons.GameFunctions;
+using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -202,10 +203,10 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Friendly)
+    public static unsafe IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Friendly)
     {
         ActionCheck = (b, m) => NotInCombatDelay && PartyMembers.GetObjectInRadius(20)
-            .Any(p => p.WillStatusEnd(3, false, StatusID.Peloton) && !p.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.InCombat)),
+            .Any(p => p.WillStatusEnd(3, false, StatusID.Peloton) && !p.Struct()->Character.InCombat),
     };
 
     /// <summary>

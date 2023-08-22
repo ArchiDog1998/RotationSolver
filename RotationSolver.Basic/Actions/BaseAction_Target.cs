@@ -78,7 +78,7 @@ public partial class BaseAction
 
     internal static bool TankDefenseSelf(BattleChara chara, bool mustUse)
     {
-        return DataCenter.TarOnMeTargets.Any() | mustUse;
+        return (DataCenter.TarOnMeTargets.Any() || mustUse) && DataCenter.AverageDeadTime > 8;
     }
     internal static bool TankBreakOtherCheck(Job id)
     {
