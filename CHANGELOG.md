@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.2.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.5...v3.2.6) (2023-08-22)
+
+
+### Bug Fixes
+
+* add a random place for Beneficial Area ([89e001f](https://github.com/ArchiDog1998/RotationSolver/commit/89e001f82b4d30bfff91969b8293aca61776202d))
+* add dead time for some buff actions. ([18013ce](https://github.com/ArchiDog1998/RotationSolver/commit/18013cee2a8dd731268092aa4e57172bb5b226b6))
+* add hostile drawing. ([a0d023f](https://github.com/ArchiDog1998/RotationSolver/commit/a0d023f7c5e461fdcd05df7e3ba3fba348a92458))
+* add target dead time for action sequencer. ([50c1514](https://github.com/ArchiDog1998/RotationSolver/commit/50c151469b31051f78f989d4f815c644d0b86dbd))
+* aoeCount ([89cb700](https://github.com/ArchiDog1998/RotationSolver/commit/89cb70081f78b727a51b48285d162cb663777781))
+* changed target area movement. ([ba1c311](https://github.com/ArchiDog1998/RotationSolver/commit/ba1c31124786f19e19316e68df2cbab06a14b514))
+* fixed multi-monitor bugs. ([8f1b91b](https://github.com/ArchiDog1998/RotationSolver/commit/8f1b91bd3073ac2b05aee4aa3e543f68cd8003e4))
+* removed prevent actions. ([e9cc997](https://github.com/ArchiDog1998/RotationSolver/commit/e9cc997c7f1855c0b1e8d8c82892d680bfac6a90))
+
 ## [3.2.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.4...v3.2.5) (2023-08-21)
 
 
