@@ -115,7 +115,7 @@ internal static partial class TargetUpdater
         })));
 
         var deadTimes = DataCenter.HostileTargets.Select(b => b.GetDeadTime()).Where(v => !float.IsNaN(v));
-        DataCenter.AverageDeadTime = deadTimes.Any() ? deadTimes.Average() : float.MaxValue;
+        DataCenter.AverageDeadTime = deadTimes.Any() ? deadTimes.Average() : 0;
 
         DataCenter.CanInterruptTargets.Delay(DataCenter.HostileTargets.Where(ObjectHelper.CanInterrupt));
 

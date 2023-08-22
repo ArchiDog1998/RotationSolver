@@ -255,6 +255,7 @@ public enum PluginConfigBool : byte
     [Default(true)] ChooseAttackMark,
     [Default(false)] CanAttackMarkAOE,
     [Default(true)] FilterStopMark,
+    [Default(true)] ShowHostiles,
 
     [Default(true)] TeachingMode,
     [Default(true)] UseOverlayWindow,
@@ -395,6 +396,8 @@ public enum PluginConfigFloat : byte
     [Default(0.2f, 0.01f, 0.5f)] MaxPing,
 
     [Default(8f, 0f, 30f)] AutoHealDeadTime,
+    [Default(2f, 0f, 10f)] HostileIconHeight,
+    [Default(1f, 0.1f, 10f)] HostileIconSize,
 }
 
 public enum PluginConfigVector4 : byte

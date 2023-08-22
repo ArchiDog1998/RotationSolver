@@ -373,8 +373,21 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.TeachingModeColor)
         ),
 
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTarget,
+            new DragFloatSearchPlugin(PluginConfigFloat.TargetIconSize, 0.002f),
+            new ColorEditSearchPlugin(PluginConfigVector4.TargetColor),
+            new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor)
+        ),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetDeadTime),
+
         new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget, 
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)
+        ),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowHostiles,
+            new DragFloatSearchPlugin(PluginConfigFloat.HostileIconHeight, 0.002f),
+            new DragFloatSearchPlugin(PluginConfigFloat.HostileIconSize, 0.002f)
         ),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowBeneficialPositions,
@@ -382,13 +395,6 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.HoveredBeneficialPositionColor)
         ),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetDeadTime),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowTarget, 
-            new DragFloatSearchPlugin(PluginConfigFloat.TargetIconSize, 0.002f),
-            new ColorEditSearchPlugin(PluginConfigVector4.TargetColor),
-            new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor)
-        ),
         new CheckBoxSearchPlugin(PluginConfigBool.DrawMeleeOffset)),
     };
 

@@ -79,6 +79,7 @@ internal static class ConfigTranslation
         PluginConfigBool.ShowControlWindow => LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
         PluginConfigBool.IsControlWindowLock => LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
         PluginConfigBool.ShowBeneficialPositions => LocalizationManager.RightLang.ConfigWindow_UI_ShowBeneficialPosition,
+        PluginConfigBool.ShowHostiles => LocalizationManager.RightLang.ConfigWindow_UI_ShowHostiles,
 
         // auto
         PluginConfigBool.UseAOEAction => LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
@@ -169,6 +170,8 @@ internal static class ConfigTranslation
         PluginConfigFloat.ControlWindowGCDSize => LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowGCDSize,
         PluginConfigFloat.ControlWindow0GCDSize => LocalizationManager.RightLang.ConfigWindow_Control_ControlWindow0GCDSize,
         PluginConfigFloat.ControlWindowNextSizeRatio => LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
+        PluginConfigFloat.HostileIconHeight => LocalizationManager.RightLang.ConfigWindow_UI_HostileIconHeight,
+        PluginConfigFloat.HostileIconSize => LocalizationManager.RightLang.ConfigWindow_UI_HostileIconSize,
 
         // auto
         PluginConfigFloat.HealWhenNothingTodoBelow => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoBelow,
