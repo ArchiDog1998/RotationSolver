@@ -60,7 +60,10 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Gravity { get; } = new BaseAction(ActionID.Gravity);
+    public static IBaseAction Gravity { get; } = new BaseAction(ActionID.Gravity)
+    {
+        AOECount = 2,
+    };
     #endregion
 
     #region Heal Single

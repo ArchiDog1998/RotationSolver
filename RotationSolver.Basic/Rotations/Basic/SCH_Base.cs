@@ -150,7 +150,10 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction ArtOfWar { get; } = new BaseAction(ActionID.ArtOfWar);//裂阵法 25866
+    public static IBaseAction ArtOfWar { get; } = new BaseAction(ActionID.ArtOfWar) 
+    {
+        AOECount = 2 
+    };
     #endregion
 
     #region Seraph

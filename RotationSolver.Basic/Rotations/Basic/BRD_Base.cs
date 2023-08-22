@@ -140,7 +140,8 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction QuickNock { get; } = new BaseAction(ActionID.QuickNock)
     {
-        StatusProvide = new[] { StatusID.ShadowBiteReady }
+        StatusProvide = new[] { StatusID.ShadowBiteReady },
+        AOECount = 2,
     };
 
     /// <summary>
@@ -148,7 +149,8 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction ShadowBite { get; } = new BaseAction(ActionID.ShadowBite)
     {
-        StatusNeed = new[] { StatusID.ShadowBiteReady }
+        StatusNeed = new[] { StatusID.ShadowBiteReady },
+        AOECount = 2,
     };
 
     /// <summary>
