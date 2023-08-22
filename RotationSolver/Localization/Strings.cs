@@ -97,8 +97,6 @@ internal partial class Strings
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cut scene.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
-    public string ConfigWindow_Param_PreventActionsIfOutOfCombat { get; set; } = "Prevent Actions if no hostiles in range.";
-    public string ConfigWindow_Param_PreventActionsIfDutyRing { get; set; } = "Also prevent if in duty until duty start.";
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";

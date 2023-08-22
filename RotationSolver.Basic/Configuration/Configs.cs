@@ -227,8 +227,6 @@ public enum PluginConfigBool : byte
     [Default(true)] AutoOffBetweenArea,
     [Default(true)] AutoOffCutScene,
     [Default(true)] AutoOffWhenDead,
-    [Default(false)] PreventActionsIfOutOfCombat,
-    [Default(false)] PreventActionsIfDutyRing,
     [Default(true)] ChangeTargetForFate,
     [Default(true)] MoveTowardsScreenCenter,
     [Default(true)] SayOutStateChanged,
@@ -304,8 +302,6 @@ public enum PluginConfigBool : byte
 
     [Default(true)] UseAOEAction,
     [Default(false)] UseAOEWhenManual,
-    [Default(false)] PreventActions,
-    [Default(false)] PreventActionsDuty,
     [Default(true)] AutoBurst,
     [Default(true)] AutoHeal,
     [Default(true)] UseAbility,

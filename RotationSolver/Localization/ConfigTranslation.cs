@@ -84,8 +84,6 @@ internal static class ConfigTranslation
         PluginConfigBool.UseAOEAction => LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
         PluginConfigBool.UseAOEWhenManual => LocalizationManager.RightLang.ConfigWindow_Param_UseAOEWhenManual,
         PluginConfigBool.NoNewHostiles => LocalizationManager.RightLang.ConfigWindow_Param_NoNewHostiles,
-        PluginConfigBool.PreventActions => LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfOutOfCombat,
-        PluginConfigBool.PreventActionsDuty => LocalizationManager.RightLang.ConfigWindow_Param_PreventActionsIfDutyRing,
         PluginConfigBool.AutoBurst => LocalizationManager.RightLang.ConfigWindow_Param_AutoBurst,
         PluginConfigBool.AutoHeal => LocalizationManager.RightLang.ConfigWindow_Param_AutoHeal,
         PluginConfigBool.UseTinctures => LocalizationManager.RightLang.ConfigWindow_Param_UseTinctures,

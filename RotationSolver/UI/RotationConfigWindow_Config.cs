@@ -288,11 +288,6 @@ public partial class RotationConfigWindow
 
         new DragFloatSearchPlugin(PluginConfigFloat.MistakeRatio, 0.002f),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.PreventActions, new ISearchable[]
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.PreventActionsDuty),
-        }),
-
         new DragFloatRangeSearchPlugin(PluginConfigFloat.NotInCombatDelayMin, PluginConfigFloat.NotInCombatDelayMax, 0.002f),
     };
 
