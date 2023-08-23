@@ -1049,7 +1049,7 @@ public partial class RotationConfigWindow : Window
             ImGui.NewLine();
             if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * _scale, "Youtube Link"))
             {
-                Util.OpenLink("https://youtu.be/" + youtubeLink);
+                Util.OpenLink("https://www.youtube.com/watch?v=" + youtubeLink);
             }
         }
 

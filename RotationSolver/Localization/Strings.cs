@@ -177,6 +177,7 @@ internal partial class Strings
     public string ConfigWindow_Param_OnlyHotOnTanks { get; set; } = "Use single target healing over time actions only on tanks";
 
     public string ConfigWindow_Param_BeneficialAreaOnLocations { get; set; } = "On Listed Position";
+    public string ConfigWindow_Param_BeneficialAreaOnlyOnLocations { get; set; } = "Only On Listed Position";
     public string ConfigWindow_Param_BeneficialAreaOnTarget { get; set; } = "On target";
 
     public string ConfigWindow_Param_BeneficialAreaOnCalculated { get; set; } = "On the calculated Position";
@@ -711,4 +712,5 @@ internal partial class Strings
     public string ConfigWindow_UI_StateIconHeight { get; set; } = "State Icon height from position";
     public string ConfigWindow_UI_StateIconSize { get; set; } = "State Icon size";
     public string ConfigWindow_UI_ShowStateIcon { get; set; } = "Show State Icon";
+    public string ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving { get; set; } = "Use beneficial area action when moving.";
 }

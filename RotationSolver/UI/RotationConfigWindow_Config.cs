@@ -715,8 +715,10 @@ public partial class RotationConfigWindow
             new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbility,
             new DragIntSearchPlugin(PluginConfigInt.BeneficialAreaStrategy, () => new string[]{
                 LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnLocations,
+                LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnlyOnLocations,
                 LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
-                LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnCalculated }))
+                LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnCalculated }),
+             new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving))
             {
                 JobRoles = new JobRole[]
                 {

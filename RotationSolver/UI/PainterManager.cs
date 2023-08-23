@@ -258,6 +258,7 @@ internal static class PainterManager
         _stateImage = new Drawing3DImage(null, default, 0)
         {
             MustInViewRange = true,
+            DrawWithHeight = false,
             UpdateEveryFrame = () =>
             {
                 if (!Player.Available) return;

@@ -19,7 +19,7 @@ public partial class BaseAction
     public byte AOECount { private get; init; } = 3;
 
     /// <summary>
-    /// How many time does this ation need the target keep in live.
+    /// How many time does this action need the target keep in live.
     /// </summary>
     public float TimeToDie { get; init; } = 0;
 
@@ -196,10 +196,14 @@ public partial class BaseAction
     private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
         if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbility)) return false;
+        if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving) && DataCenter.IsMoving) return false;
 
-        switch (Service.Config.GetValue(PluginConfigInt.BeneficialAreaStrategy))
+        var strategy = Service.Config.GetValue(PluginConfigInt.BeneficialAreaStrategy);
+        switch (strategy)
         {
             case 0: // Find from list
+            case 1: // Only the list
+
                 if (OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts) 
                     && pts != null && pts.Length > 0)
                 {
@@ -214,8 +218,10 @@ public partial class BaseAction
                         return true;
                     }
                 }
+
+                if (strategy == 1) return false;
                 break;
-            case 1: // Target
+            case 2: // Target
                 if(Svc.Targets.Target != null && Svc.Targets.Target.DistanceToPlayer() < range)
                 {
                     Position = Svc.Targets.Target.Position;

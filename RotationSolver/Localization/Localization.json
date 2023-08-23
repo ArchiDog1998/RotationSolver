@@ -494,5 +494,6 @@
   "ConfigWindow_UI_HostileIconHeight": "Hostile Icon height from position",
   "ConfigWindow_UI_HostileIconSize": "Hostile Icon size",
   "ConfigWindow_UI_StateIconHeight": "State Icon height from position",
-  "ConfigWindow_UI_StateIconSize": "State Icon size"
+  "ConfigWindow_UI_StateIconSize": "State Icon size",
+  "ConfigWindow_UI_ShowStateIcon": "Show State Icon"
 }

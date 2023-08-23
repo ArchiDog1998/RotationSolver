@@ -390,7 +390,7 @@ public abstract class DNC_Base : CustomRotation
     [RotationDesc(ActionID.EnAvant)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (EnAvant.CanUse(out act, CanUseOption.MustUseEmpty)) return true;
+        if (EnAvant.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         return false;
     }
 

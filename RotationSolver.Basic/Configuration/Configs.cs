@@ -313,6 +313,7 @@ public enum PluginConfigBool : byte
     [Default(true)] RaisePlayerBySwift,
     [Default(true)] AutoSpeedOutOfCombat,
     [Default(true)] UseGroundBeneficialAbility,
+    [Default(false)] UseGroundBeneficialAbilityWhenMoving,
     [Default(false)] TargetAllForFriendly,
     [Default(false)] ShowCooldownWindow,
 
@@ -399,7 +400,7 @@ public enum PluginConfigFloat : byte
     [Default(2f, 0f, 10f)] HostileIconHeight,
     [Default(1f, 0.1f, 10f)] HostileIconSize,
 
-    [Default(1f, 0f, 2.5f)] StateIconHeight,
+    [Default(0.5f, 0f, 2.5f)] StateIconHeight,
     [Default(1f, 0.7f, 10f)] StateIconSize,
 }
 

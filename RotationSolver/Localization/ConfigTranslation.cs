@@ -97,6 +97,7 @@ internal static class ConfigTranslation
         PluginConfigBool.RaisePlayerBySwift => LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerBySwift,
         PluginConfigBool.AutoSpeedOutOfCombat => LocalizationManager.RightLang.ConfigWindow_Param_AutoSpeedOutOfCombat,
         PluginConfigBool.UseGroundBeneficialAbility => LocalizationManager.RightLang.ConfigWindow_Param_UseGroundBeneficialAbility,
+        PluginConfigBool.UseGroundBeneficialAbilityWhenMoving => LocalizationManager.RightLang.ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving,
         PluginConfigBool.RaisePlayerByCasting => LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerByCasting,
         PluginConfigBool.UseHealWhenNotAHealer => LocalizationManager.RightLang.ConfigWindow_Param_UseHealWhenNotAHealer,
         PluginConfigBool.InterruptibleMoreCheck => LocalizationManager.RightLang.ConfigWindow_Param_InterruptibleMoreCheck,
