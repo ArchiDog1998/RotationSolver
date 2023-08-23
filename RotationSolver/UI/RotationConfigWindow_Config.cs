@@ -302,11 +302,10 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _basicSwitchTurnOff = new ISearchable[]
     {
         // Turn off
+        new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombatTime, 1f),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffBetweenArea),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffCutScene),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffWhenDead),
-        new CheckBoxSearchPlugin(PluginConfigBool.AutoOffAfterCombat,
-            new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombatTime, 1f)),
     };
     #endregion
 

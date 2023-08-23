@@ -320,7 +320,6 @@ public enum PluginConfigBool : byte
 
     [Default(false)] AutoOpenChest,
     [Default(true)] AutoCloseChestWindow,
-    [Default(true)] AutoOffAfterCombat,
 
     [Default(true)] ShowBeneficialPositions,
     [Default(false)] HideWarning,
