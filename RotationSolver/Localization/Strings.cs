@@ -710,4 +710,5 @@ internal partial class Strings
 
     public string ConfigWindow_UI_StateIconHeight { get; set; } = "State Icon height from position";
     public string ConfigWindow_UI_StateIconSize { get; set; } = "State Icon size";
+    public string ConfigWindow_UI_ShowStateIcon { get; set; } = "Show State Icon";
 }

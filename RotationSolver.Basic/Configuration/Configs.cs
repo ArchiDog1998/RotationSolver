@@ -255,7 +255,7 @@ public enum PluginConfigBool : byte
     [Default(true)] ChooseAttackMark,
     [Default(false)] CanAttackMarkAOE,
     [Default(true)] FilterStopMark,
-    [Default(true)] ShowHostiles,
+    [Default(true)] ShowHostilesIcons,
 
     [Default(true)] TeachingMode,
     [Default(true)] UseOverlayWindow,
@@ -321,6 +321,7 @@ public enum PluginConfigBool : byte
     [Default(false)] AutoOpenChest,
     [Default(true)] AutoCloseChestWindow,
 
+    [Default(true)] ShowStateIcon,
     [Default(true)] ShowBeneficialPositions,
     [Default(false)] HideWarning,
 }

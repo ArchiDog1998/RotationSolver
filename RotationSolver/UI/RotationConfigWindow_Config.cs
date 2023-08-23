@@ -384,10 +384,14 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)
         ),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowHostiles,
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowHostilesIcons,
             new DragFloatSearchPlugin(PluginConfigFloat.HostileIconHeight, 0.002f),
             new DragFloatSearchPlugin(PluginConfigFloat.HostileIconSize, 0.002f)
         ),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowStateIcon,
+            new DragFloatSearchPlugin(PluginConfigFloat.StateIconHeight, 0.002f),
+            new DragFloatSearchPlugin(PluginConfigFloat.StateIconSize, 0.002f)),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowBeneficialPositions,
             new ColorEditSearchPlugin(PluginConfigVector4.BeneficialPositionColor),
@@ -396,8 +400,7 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.DrawMeleeOffset)),
 
-        new DragFloatSearchPlugin(PluginConfigFloat.StateIconHeight, 0.002f),
-        new DragFloatSearchPlugin(PluginConfigFloat.StateIconSize, 0.002f),
+
     };
 
     // Windows

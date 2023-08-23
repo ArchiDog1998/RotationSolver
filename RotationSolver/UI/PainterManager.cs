@@ -56,7 +56,7 @@ internal static class PainterManager
         {
             SubItems = Array.Empty<IDrawing3D>();
 
-            if (!Service.Config.GetValue(PluginConfigBool.ShowHostiles)) return;
+            if (!Service.Config.GetValue(PluginConfigBool.ShowHostilesIcons)) return;
 
             List<IDrawing3D> subItems = new List<IDrawing3D>();
 
@@ -200,7 +200,6 @@ internal static class PainterManager
     }
 
     static XIVPainter.XIVPainter _painter;
-    static XIVPainter.XIVPainter _forcePainter;
     static DrawingHighlightHotbar _highLight = new();
     static Drawing3DImage _stateImage;
     public static HashSet<uint> ActionIds => _highLight.ActionIds;
@@ -212,43 +211,6 @@ internal static class PainterManager
     }
 
     public static void Init()
-    {
-        InitPainter();
-        InitForcePainter();
-    }
-
-    private static void InitForcePainter()
-    {
-        _forcePainter = XIVPainter.XIVPainter.Create(Svc.PluginInterface, "RotationSolverForceOverlay");
-        _forcePainter.DrawingHeight = 0;
-
-        _stateImage = new Drawing3DImage(null, default, 0)
-        {
-            MustInViewRange = true,
-            UpdateEveryFrame = () =>
-            {
-                if (!Player.Available) return;
-                _stateImage.Position = Player.Object.Position + new Vector3(0,
-                            Service.Config.GetValue(PluginConfigFloat.StateIconHeight), 0);
-
-                if (DataCenter.State)
-                {
-                    if(IconSet.GetTexture(61516, out var texture))
-                    {
-                        _stateImage.SetTexture(texture, Service.Config.GetValue(PluginConfigFloat.StateIconSize));
-                    }
-                }
-                else
-                {
-                    _stateImage.SetTexture(null, 0);
-                }
-            },
-        };
-
-        _forcePainter.AddDrawings(_stateImage);
-    }
-
-    private static void InitPainter()
     {
         _painter = XIVPainter.XIVPainter.Create(Svc.PluginInterface, "RotationSolverOverlay");
 
@@ -293,7 +255,30 @@ internal static class PainterManager
             movingTarget.To = tar.Value;
         };
 
-        _painter.AddDrawings(_highLight, annulus, movingTarget, new TargetDrawing(), new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing());
+        _stateImage = new Drawing3DImage(null, default, 0)
+        {
+            MustInViewRange = true,
+            UpdateEveryFrame = () =>
+            {
+                if (!Player.Available) return;
+                _stateImage.Position = Player.Object.Position + new Vector3(0,
+                            Service.Config.GetValue(PluginConfigFloat.StateIconHeight), 0);
+
+                if (DataCenter.State && Service.Config.GetValue(PluginConfigBool.ShowStateIcon))
+                {
+                    if (IconSet.GetTexture(61516, out var texture))
+                    {
+                        _stateImage.SetTexture(texture, Service.Config.GetValue(PluginConfigFloat.StateIconSize));
+                    }
+                }
+                else
+                {
+                    _stateImage.SetTexture(null, 0);
+                }
+            },
+        };
+
+        _painter.AddDrawings(_highLight, _stateImage, annulus, movingTarget, new TargetDrawing(), new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing());
     }
 
     public static void UpdateSettings()

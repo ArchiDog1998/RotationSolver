@@ -79,7 +79,7 @@ internal static class ConfigTranslation
         PluginConfigBool.ShowControlWindow => LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
         PluginConfigBool.IsControlWindowLock => LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
         PluginConfigBool.ShowBeneficialPositions => LocalizationManager.RightLang.ConfigWindow_UI_ShowBeneficialPosition,
-        PluginConfigBool.ShowHostiles => LocalizationManager.RightLang.ConfigWindow_UI_ShowHostiles,
+        PluginConfigBool.ShowHostilesIcons => LocalizationManager.RightLang.ConfigWindow_UI_ShowHostiles,
 
         // auto
         PluginConfigBool.UseAOEAction => LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
@@ -121,6 +121,7 @@ internal static class ConfigTranslation
         PluginConfigBool.TargetHuntingRelicLevePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
         PluginConfigBool.TargetQuestPriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
         PluginConfigBool.ShowTargetDeadTime => LocalizationManager.RightLang.ConfigWindow_Param_ShowTargetDeadTime,
+        PluginConfigBool.ShowStateIcon => LocalizationManager.RightLang.ConfigWindow_UI_ShowStateIcon,
 
 
         // extra
