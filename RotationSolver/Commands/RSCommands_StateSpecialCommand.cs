@@ -29,7 +29,6 @@ public static partial class RSCommands
             var index = Service.Config.GetValue(Basic.Configuration.PluginConfigInt.TargetingIndex) + 1; 
             index %= Service.Config.GlobalConfig.TargetingTypes.Count;
             Service.Config.SetValue(Basic.Configuration.PluginConfigInt.TargetingIndex, index);
-            ActionUpdater._cancelTime = DateTime.MinValue;
         }
 
         if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ToggleManual)
@@ -48,11 +47,13 @@ public static partial class RSCommands
             case StateCommandType.Auto:
                 DataCenter.IsManual = false;
                 DataCenter.State = true;
+                ActionUpdater.AutoCancelTime = DateTime.MinValue;
                 break;
 
             case StateCommandType.Manual:
                 DataCenter.IsManual = true;
                 DataCenter.State = true;
+                ActionUpdater.AutoCancelTime = DateTime.MinValue;
                 break;
         }
 

@@ -122,10 +122,10 @@ namespace RotationSolver.Commands
         static float _lastCountdownTime = 0;
         internal static void UpdateRotationState()
         {
-            if(ActionUpdater._cancelTime != DateTime.MinValue && 
+            if(ActionUpdater.AutoCancelTime != DateTime.MinValue && 
                 (!DataCenter.State || DataCenter.InCombat))
             {
-                ActionUpdater._cancelTime = DateTime.MinValue;
+                ActionUpdater.AutoCancelTime = DateTime.MinValue;
             }
 
             var target = DataCenter.AllHostileTargets.FirstOrDefault(t => t.TargetObjectId == Player.Object.ObjectId);
@@ -179,11 +179,11 @@ namespace RotationSolver.Commands
                 }
             }
             //Cancel when after combat.
-            else if (ActionUpdater._cancelTime != DateTime.MinValue
-                && DateTime.Now > ActionUpdater._cancelTime)
+            else if (ActionUpdater.AutoCancelTime != DateTime.MinValue
+                && DateTime.Now > ActionUpdater.AutoCancelTime)
             {
                 CancelState();
-                ActionUpdater._cancelTime = DateTime.MinValue;
+                ActionUpdater.AutoCancelTime = DateTime.MinValue;
             }
         }
     }

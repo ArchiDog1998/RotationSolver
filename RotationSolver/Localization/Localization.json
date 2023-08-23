@@ -44,8 +44,7 @@
   "ConfigWindow_Param_SpecialDuration": "Set the duration of special windows set by commands",
   "ConfigWindow_Param_AddDotGCDCount": "Set GCD advance of DOT refresh",
   "ConfigWindow_Param_MaxPing": "Set the Max Ping that RS can get.",
-  "ConfigWindow_Param_AutoOffAfterCombat": "Auto turn off when combat is over more than several seconds.",
-  "ConfigWindow_Param_AutoOffAfterCombatTime": "seconds.",
+  "ConfigWindow_Param_AutoOffAfterCombatTime": "Auto turn off when combat is over more than several seconds.",
   "ConfigWindow_Param_AutoOffBetweenArea": "Auto turn off when player is between area.",
   "ConfigWindow_Param_AutoOffCutScene": "Auto turn off during cut scene.",
   "ConfigWindow_Param_AutoOffWhenDead": "Auto turn off when dead.",
@@ -492,6 +491,8 @@
   "ConfigWindow_About_ClickingTooMuch": "Well, you must be a lazy player!",
   "ConfigWindow_Auto_AutoHealDeadTime": "Auto heal before combat end several seconds.",
   "ConfigWindow_UI_ShowHostiles": "Show the hostile targets",
-  "ConfigWindow_UI_HostileIconHeight": "Icon height from position",
-  "ConfigWindow_UI_HostileIconSize": "Icon size"
+  "ConfigWindow_UI_HostileIconHeight": "Hostile Icon height from position",
+  "ConfigWindow_UI_HostileIconSize": "Hostile Icon size",
+  "ConfigWindow_UI_StateIconHeight": "State Icon height from position",
+  "ConfigWindow_UI_StateIconSize": "State Icon size"
 }
