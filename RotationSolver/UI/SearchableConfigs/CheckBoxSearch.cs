@@ -90,7 +90,7 @@ internal abstract class CheckBoxSearch : Searchable
 
         ImGui.SameLine();
 
-        var name = $"{Name}##Config_{ID}";
+        var name = $"{Name}##Config_{ID}{GetHashCode()}";
         if(hasIcon)
         {
             ImGui.BeginGroup();
