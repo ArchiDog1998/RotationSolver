@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Statuses;
+using Dalamud.Logging;
 using ECommons.Automation;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
@@ -96,13 +97,19 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    internal static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return float.MaxValue;
-        var times = obj.StatusTimes(isFromSelf, statusIDs);
-        if (times == null || !times.Any()) return 0;
-        return Math.Max(0, times.Min() - DataCenter.WeaponRemain);
+        try
+        {
+            if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return float.MaxValue;
+            var times = obj.StatusTimes(isFromSelf, statusIDs);
+            if (times == null || !times.Any()) return 0;
+            return Math.Max(0, times.Min() - DataCenter.WeaponRemain);
+        }
+        catch
+        { 
+            return 0;
+        }
     }
 
     private static IEnumerable<float> StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
