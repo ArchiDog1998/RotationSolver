@@ -172,6 +172,8 @@ internal static class ConfigTranslation
         PluginConfigFloat.ControlWindowNextSizeRatio => LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
         PluginConfigFloat.HostileIconHeight => LocalizationManager.RightLang.ConfigWindow_UI_HostileIconHeight,
         PluginConfigFloat.HostileIconSize => LocalizationManager.RightLang.ConfigWindow_UI_HostileIconSize,
+        PluginConfigFloat.StateIconHeight => LocalizationManager.RightLang.ConfigWindow_UI_StateIconHeight,
+        PluginConfigFloat.StateIconSize => LocalizationManager.RightLang.ConfigWindow_UI_StateIconSize,
 
         // auto
         PluginConfigFloat.HealWhenNothingTodoBelow => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoBelow,

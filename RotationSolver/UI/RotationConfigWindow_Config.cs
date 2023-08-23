@@ -396,6 +396,9 @@ public partial class RotationConfigWindow
         ),
 
         new CheckBoxSearchPlugin(PluginConfigBool.DrawMeleeOffset)),
+
+        new DragFloatSearchPlugin(PluginConfigFloat.StateIconHeight, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.StateIconSize, 0.002f),
     };
 
     // Windows

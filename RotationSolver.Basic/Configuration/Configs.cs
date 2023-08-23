@@ -398,6 +398,9 @@ public enum PluginConfigFloat : byte
     [Default(8f, 0f, 30f)] AutoHealDeadTime,
     [Default(2f, 0f, 10f)] HostileIconHeight,
     [Default(1f, 0.1f, 10f)] HostileIconSize,
+
+    [Default(1f, 0f, 2.5f)] StateIconHeight,
+    [Default(1f, 0.5f, 10f)] StateIconSize,
 }
 
 public enum PluginConfigVector4 : byte

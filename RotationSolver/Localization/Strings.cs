@@ -706,6 +706,9 @@ internal partial class Strings
     public string ConfigWindow_About_ClickingTooMuch { get; set; } = "Well, you must be a lazy player!";
     public string ConfigWindow_Auto_AutoHealDeadTime { get; set; } = "Auto heal before combat end several seconds.";
     public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile targets";
-    public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Icon height from position";
-    public string ConfigWindow_UI_HostileIconSize { get; set; } = "Icon size";
+    public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Hostile Icon height from position";
+    public string ConfigWindow_UI_HostileIconSize { get; set; } = "Hostile Icon size";
+
+    public string ConfigWindow_UI_StateIconHeight { get; set; } = "State Icon height from position";
+    public string ConfigWindow_UI_StateIconSize { get; set; } = "State Icon size";
 }
