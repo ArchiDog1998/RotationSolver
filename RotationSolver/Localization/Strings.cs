@@ -91,9 +91,9 @@ internal partial class Strings
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string ConfigWindow_Param_MaxPing { get; set; } = "Set the Max Ping that RS can get.";
     public string ConfigWindow_Param_AutoOffAfterCombatTime { get; set; } = "Auto turn off when combat is over more than several seconds.";
-    public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is between area.";
+    public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is moving between areas.";
 
-    public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cut scene.";
+    public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cutscenes.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
 
@@ -101,29 +101,29 @@ internal partial class Strings
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";
 
     public string ConfigWindow_Param_WeaponDelay { get; set; } = "Set the range of random delay for GCD in second.";
-    public string ConfigWindow_Param_DeathDelay { get; set; } = "Set the range of random delay for raising deaths in second.";
-    public string ConfigWindow_Param_HostileDelay { get; set; } = "Set the range of random delay for finding hostile targets in second.";
-    public string ConfigWindow_Param_InterruptDelay { get; set; } = "Set the range of random delay for interrupting hostile targets in second.";
-    public string ConfigWindow_Param_WeakenDelay { get; set; } = "Set the range of random delay for esuna weakens in second.";
+    public string ConfigWindow_Param_DeathDelay { get; set; } = "Set the range of random delay for using revival abilities in seconds.";
+    public string ConfigWindow_Param_HostileDelay { get; set; } = "Set the range of random delay for targetting hostile targets in seconds.";
+    public string ConfigWindow_Param_InterruptDelay { get; set; } = "Set the range of random delay for interrupting hostile targets in seconds.";
+    public string ConfigWindow_Param_WeakenDelay { get; set; } = "Set the range of random delay for clensing dispellable debuffs in seconds.";
 
-    public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in second.";
+    public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in seconds.";
 
     public string ConfigWindow_Param_CountdownDelay { get; set; } = "Set the random delay between which auto mode activation on countdown varies.";
-    public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in second.";
+    public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in seconds.";
 
     public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for the interval of clicking actions.";
-    public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when target is no need to cast in second.";
+    public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when the target is dead or immune to damage in seconds.";
     public string ConfigWindow_Param_ClickMistake { get; set; } = "How likely is it that RS will click the wrong action.";
-    public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or some actions.";
-    public string ConfigWindow_Param_UseStopCasting { get; set; } = "Stops casting when hostile target is dead.";
+    public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or when doing some actions.";
+    public string ConfigWindow_Param_UseStopCasting { get; set; } = "Stops casting when the target is dead.";
     public string ConfigWindow_Param_ShowTooltips { get; set; } = "Show tooltips";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
 
-    public string ConfigWindow_Param_ShowTargetDeadTime { get; set; } = "Show the targets' dead time.";
+    public string ConfigWindow_Param_ShowTargetDeadTime { get; set; } = "Show the target's time until death.";
 
-    public string ConfigWindow_Param_DeadTimeBoss { get; set; } = "If target's whole dead time is higher than this, regard it as Boss.";
+    public string ConfigWindow_Param_DeadTimeBoss { get; set; } = "If target's time until death is higher than this, regard it as Boss.";
 
-    public string ConfigWindow_Param_DeadTimeDying { get; set; } = "If target's dead time is lower than this, regard it is dying.";
+    public string ConfigWindow_Param_DeadTimeDying { get; set; } = "If target's time until death is lower than this, regard it is dying.";
     public string ConfigWindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
     public string ConfigWindow_Param_TeachingMode { get; set; } = "Teaching mode";
@@ -146,30 +146,30 @@ internal partial class Strings
     public string ConfigWindow_Param_UseAOEAction { get; set; } = "Use AOE actions";
 
     public string ConfigWindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
-    public string ConfigWindow_Param_AutoBurst { get; set; } = "Always try to burst";
+    public string ConfigWindow_Param_AutoBurst { get; set; } = "Automatically trigger dps burst phase";
 
     public string ConfigWindow_Param_AutoHeal { get; set; } = "Automatic Heal";
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
     public string ConfigWindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
-    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AOE action when this action may attack the mobs that not is a hostile target.";
+    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AOE action when this action may attack the mobs that are not hostile targets.";
     public string ConfigWindow_Param_UseDefenseAbility { get; set; } = "Use defense abilities";
-    public string ConfigWindow_Param_UseDefenseAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids./nPlan the heal and defense by yourself.???";
+    public string ConfigWindow_Param_UseDefenseAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids or you can plan the heal and defense ability usage by yourself.";
     public string ConfigWindow_Param_AutoShield { get; set; } = "Auto tank stance";
     public string ConfigWindow_Param_AutoProvokeForTank { get; set; } = "Auto Provoke when there are more than one tanks";
     public string ConfigWindow_Param_AutoProvokeForTankDesc { get; set; } = "When a hostile is hitting the non-Tank member of party, it will automatically use the Provoke.";
     public string ConfigWindow_Param_AutoUseTrueNorth { get; set; } = "Auto TrueNorth (Melee)";
-    public string ConfigWindow_Param_RaisePlayerBySwift { get; set; } = "Raise player by swift";
+    public string ConfigWindow_Param_RaisePlayerBySwift { get; set; } = "Raise player by using swiftcast if avaliable";
     public string ConfigWindow_Param_UseGroundBeneficialAbility { get; set; } = "Use beneficial ground-targeted actions";
     public string ConfigWindow_Param_AutoSpeedOutOfCombat { get; set; } = "Use speed actions when out of combat.";
     public string ConfigWindow_Param_RaisePlayerByCasting { get; set; } = "Raise player by casting when swift is in cooldown";
-    public string ConfigWindow_Param_UseHealWhenNotAHealer { get; set; } = "Use heal when not-healer";
+    public string ConfigWindow_Param_UseHealWhenNotAHealer { get; set; } = "Use heal when playing a non-healer role";
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
     public string ConfigWindow_Param_UseTinctures { get; set; } = "Use Tinctures";
     public string ConfigWindow_Param_UseHealPotions { get; set; } = "Use Heal Potions";
     public string ConfigWindow_Param_StartOnCountdown { get; set; } = "Auto mode activation delay on countdown start";
 
     public string ConfigWindow_Param_StartOnAttackedBySomeone { get; set; } = "Automatically turn on manual mode and target enemy when being attacked";
-    public string ConfigWindow_Param_EsunaAll { get; set; } = "Esuna All Statuses.";
+    public string ConfigWindow_Param_EsunaAll { get; set; } = "Clense all dispellable debuffs.";
     public string ConfigWindow_Param_InterruptibleMoreCheck { get; set; } = "Interrupt the action with action type check.";
 
     public string ConfigWindow_Param_HealOutOfCombat { get; set; } = "Heal party members outside of combat.";
@@ -207,10 +207,10 @@ internal partial class Strings
 
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
-    public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets can attack";
+    public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets that you can attack and are in range for any abilities";
     public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Targets have a target or all targets can attack";
-    public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Targets have a target";
-    public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add Enemies list to the hostile target.";
+    public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Targets that already have a target or are hostile towards the player/player party";
+    public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add Enemies list to the hostile targets.";
     public string ConfigWindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
     public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Allowed use of AOE to attack more mobs.";
     public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
@@ -229,8 +229,8 @@ internal partial class Strings
     public string ConfigWindow_Param_TargetHuntingRelicLevePriority { get; set; } = "Target Hunt/Relic/Leve priority.";
     public string ConfigWindow_Param_TargetQuestPriority { get; set; } = "Target quest priority.";
 
-    public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise player even has Brink of Death";
-    public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest";
+    public string ConfigWindow_Param_RaiseBrinkOfDeath { get; set; } = "Raise players that even have Brink of Death debuff";
+    public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Moving Area Ability to farthest possible location";
     public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position for targeting are movement actions.";
 
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
@@ -267,21 +267,21 @@ internal partial class Strings
     public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
 
     public string ConfigWindow_List_Invincibility { get; set; } = "Invincibility";
-    public string ConfigWindow_List_InvincibilityDesc { get; set; } = "If target get one of this status, it'll never attack it.";
+    public string ConfigWindow_List_InvincibilityDesc { get; set; } = "If target get one of this statuses, never attack it.";
     public string ConfigWindow_List_DangerousStatus { get; set; } = "Dangerous Status";
 
-    public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "If one of your party member get this status, Esuna immediately.";
+    public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "Esuna immediately if one of your party members get these statuses";
 
     public string ConfigWindow_List_HostileCastingTank { get; set; } = "Tank Buster";
 
-    public string ConfigWindow_List_HostileCastingTankDesc { get; set; } = "If the target is casting the action like this, it'll reduction.";
+    public string ConfigWindow_List_HostileCastingTankDesc { get; set; } = "Use tank personal damage mitigation abilities if the target is casting any of these actions";
 
     public string ConfigWindow_List_HostileCastingArea { get; set; } = "AOE";
 
-    public string ConfigWindow_List_HostileCastingAreaDesc { get; set; } = "If the target is casting the action like this, it'll defense area.";
+    public string ConfigWindow_List_HostileCastingAreaDesc { get; set; } = "Use AOE damage mitigation abilities if the target is casting any of these actions";
 
     public string ConfigWindow_List_NoHostile { get; set; } = "No Hostile";
-    public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add a name of target that never be the hostile for you.";
+    public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add names of targets that will never be attacked.";
 
     #endregion
 
@@ -347,7 +347,7 @@ internal partial class Strings
     public string SpecialCommandType_Burst { get; set; } = "Burst";
     public string SpecialCommandType_EndSpecial { get; set; } = "End Special";
     public string SpecialCommandType_Speed { get; set; } = "Speed";
-    public string SpecialCommandType_Smart { get; set; } = "Auto Target";
+    public string SpecialCommandType_Smart { get; set; } = "Auto Target ";
     public string SpecialCommandType_Manual { get; set; } = "Manual Target";
     public string SpecialCommandType_Cancel { get; set; } = "Cancel";
     public string SpecialCommandType_Off { get; set; } = "Off";
@@ -666,13 +666,13 @@ internal partial class Strings
     public string ConfigWindow_Auto_ActionUsage { get; set; } = "Action Usage";
     public string ConfigWindow_Auto_ActionUsage_Description { get; set; } = "Which actions Rotation Solver can use.";
     public string ConfigWindow_Extra_Others { get; set; } = "Others";
-    public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focus on rotation itself. These are side features. If there are some plugins can do that, these feature will be deleted.";
+    public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focuses on rotation itself. These are side features. If there are some plugins can do that, these feature will be deleted.";
     public string ConfigWindow_Auto_Description { get; set; } = "Change the strategy or usage of the automatically using actions.";
     public string ConfigWindow_Auto_ActionCondition { get; set; } = "Action Condition";
     public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the strategy of Rotation Solver to use these actions.";
     public string ConfigWindow_Target_Config { get; set; } = "Configuration";
     public string ConfigWindow_Search_Result { get; set; } = "Searching Result";
-    public string ConfigWindow_UI_DrawIconAnimation { get; set; } = "Show animation about Icon";
+    public string ConfigWindow_UI_DrawIconAnimation { get; set; } = "Show RS logo animation";
 
     public string ConfigWindow_UI_ShowBeneficialPosition { get; set; } = "Show beneficial positions.";
     public string ConfigWindow_UI_BeneficialPositionColor { get; set; } = "The colors of beneficial positions";
