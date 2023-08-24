@@ -22,7 +22,7 @@ internal static class DataCenter
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
         || !Service.Config.GetValue(Configuration.PluginConfigBool.PoslockCasting)
         //Key cancel.
-        || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.GetValue(Configuration.PluginConfigInt.PoslockModifier)]]
+        || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.GetValue(Configuration.PluginConfigInt.PoslockModifier) % ConfigurationHelper.Keys.Length]]
         //Gamepad cancel.
         || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) >= 0.5f;
 

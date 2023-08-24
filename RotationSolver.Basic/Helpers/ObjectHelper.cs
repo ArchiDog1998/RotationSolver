@@ -177,7 +177,7 @@ public static class ObjectHelper
     public static float GetDeadTime(this BattleChara b, bool wholeTime = false)
     {
         if (b == null) return float.NaN;
-        if (b.IsDummy()) return 999f;
+        if (b.IsDummy()) return 999.99f;
 
         var objectId = b.ObjectId;
 

@@ -886,7 +886,7 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _extraSearchable = new ISearchable[]
     {
         new CheckBoxSearchPlugin(PluginConfigBool.PoslockCasting,
-        new DragIntSearchPlugin( PluginConfigInt.PoslockModifier, () => new string[]{ "SHIFT", "CTRL", "ALT", "Left Mouse", "Middle Mouse",  "Right Mouse" }),
+        new DragIntSearchPlugin(PluginConfigInt.PoslockModifier, () => new string[]{ "CTRL", "SHIFT", "ALT" }),
         new CheckBoxSearchPlugin(PluginConfigBool.PosPassageOfArms)
         {
             Action = ActionID.PassageOfArms

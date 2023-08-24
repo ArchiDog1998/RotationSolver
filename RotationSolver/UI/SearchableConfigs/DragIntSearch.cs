@@ -113,7 +113,7 @@ internal abstract class DragIntSearch : Searchable
 
         if(GetNames != null && GetNames() is string[] strs && strs.Length > 0)
         {
-            ImGui.SetNextItemWidth(Math.Max(ImGui.CalcTextSize(strs[value]).X + 30, DRAG_WIDTH) * Scale);
+            ImGui.SetNextItemWidth(Math.Max(ImGui.CalcTextSize(strs[value % strs.Length]).X + 30, DRAG_WIDTH) * Scale);
             if (ImGui.Combo($"##Config_{ID}{GetHashCode()}", ref value, strs, strs.Length))
             {
                 SetValue(job, value);

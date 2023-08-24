@@ -115,6 +115,7 @@
   "ConfigWindow_Param_HealOutOfCombat": "Heal party members outside of combat.",
   "ConfigWindow_Param_OnlyHotOnTanks": "Use single target healing over time actions only on tanks",
   "ConfigWindow_Param_BeneficialAreaOnLocations": "On Listed Position",
+  "ConfigWindow_Param_BeneficialAreaOnlyOnLocations": "Only On Listed Position",
   "ConfigWindow_Param_BeneficialAreaOnTarget": "On target",
   "ConfigWindow_Param_BeneficialAreaOnCalculated": "On the calculated Position",
   "ConfigWindow_Param_HealthDifference": "HP%% for standard deviation for using AOE heal.",
@@ -495,5 +496,6 @@
   "ConfigWindow_UI_HostileIconSize": "Hostile Icon size",
   "ConfigWindow_UI_StateIconHeight": "State Icon height from position",
   "ConfigWindow_UI_StateIconSize": "State Icon size",
-  "ConfigWindow_UI_ShowStateIcon": "Show State Icon"
+  "ConfigWindow_UI_ShowStateIcon": "Show State Icon",
+  "ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving": "Use beneficial area action when moving."
 }
