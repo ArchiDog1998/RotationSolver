@@ -20,9 +20,6 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
-using System.Drawing;
-using System.Security.Policy;
-using System.Windows.Forms;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -1049,7 +1046,7 @@ public partial class RotationConfigWindow : Window
             ImGui.NewLine();
             if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * _scale, "Youtube Link"))
             {
-                Util.OpenLink("https://youtu.be/" + youtubeLink);
+                Util.OpenLink("https://www.youtube.com/watch?v=" + youtubeLink);
             }
         }
 
@@ -2144,64 +2141,12 @@ public partial class RotationConfigWindow : Window
 
     private static unsafe void DrawIcon()
     {
-        //if(ImGui.BeginTable("BLUAction", 4, ImGuiTableFlags.Borders | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingFixedFit))
-        //{
-        //    foreach (var item in Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>())
-        //    {
-        //        if (item == null) continue;
-        //        if (item.ClassJob?.Row != 36) continue;
-        //        //if (item.RowId <= 20000) continue;
+        if (Player.Available)
+        {
+            ImGui.Text(Player.GameObject->Height.ToString());  
+        }
 
-        //        ImGui.TableNextRow();
-        //        ImGui.TableNextColumn();
-
-        //        ImGui.Text($"{item.Name}");
-
-        //        ImGui.TableNextColumn();
-
-        //        try
-        //        {
-        //            var tex = IconSet.GetTexture(item.Icon);
-        //            if (tex != null)
-        //            {
-        //                ImGui.Image(tex.ImGuiHandle, Vector2.One * 32);
-        //            }
-        //        }
-        //        catch
-        //        {
-
-        //        }
-        //        ImGui.TableNextColumn();
-
-        //        try
-        //        {
-        //            ImGui.Text($"{(Aspect)item.Aspect}");
-        //            ImGui.SameLine();
-        //            var desc = item.AttackType?.Value?.Name?.ToString();
-        //            if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
-        //        }
-        //        catch
-        //        {
-
-        //        }
-        //        ImGui.TableNextColumn();
-
-        //        //ImGui.TableNextColumn();
-
-        //        //try
-        //        //{
-        //        //    var desc = Svc.Data.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description?.ToString();
-        //        //    //ImGui.Text((!string.IsNullOrEmpty(desc)).ToString());
-        //        //    //if (!string.IsNullOrEmpty(desc)) ImGui.Text(desc);
-        //        //}
-        //        //catch
-        //        //{
-
-        //        //}
-        //    }
-        //    ImGui.EndTable();
-        //}
-
+        ImGui.Text(DataCenter.TerritoryContentType.ToString());
     }
 
     private static void DrawAction(ActionID id, string type)

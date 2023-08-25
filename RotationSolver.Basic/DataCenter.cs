@@ -22,16 +22,19 @@ internal static class DataCenter
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
         || !Service.Config.GetValue(Configuration.PluginConfigBool.PoslockCasting)
         //Key cancel.
-        || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.GetValue(Configuration.PluginConfigInt.PoslockModifier)]]
+        || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.GetValue(Configuration.PluginConfigInt.PoslockModifier) % ConfigurationHelper.Keys.Length]]
         //Gamepad cancel.
         || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) >= 0.5f;
 
     internal static DateTime EffectTime { private get; set; } = DateTime.Now;
     internal static DateTime EffectEndTime { private get; set; } = DateTime.Now;
 
+    internal const int ATTACKED_TARGETS_COUNT = 48;
+    internal static Queue<(ulong id, DateTime time)> AttackedTargets { get; } = new (ATTACKED_TARGETS_COUNT);
+
     internal static bool InEffectTime => DateTime.Now >= EffectTime && DateTime.Now <= EffectEndTime;
     internal static Dictionary<ulong, uint> HealHP { get; set; } = new Dictionary<ulong, uint>();
-    internal static Dictionary<ulong, uint> ApplyStatus { private get; set; } = new Dictionary<ulong, uint>();
+    internal static Dictionary<ulong, uint> ApplyStatus { get; set; } = new Dictionary<ulong, uint>();
     internal static uint MPGain { get; set; }
     internal static bool HasApplyStatus(uint id, StatusID[] ids)
     {
@@ -239,6 +242,7 @@ internal static class DataCenter
     public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;
     public static int NumberOfHostilesInRange { get; internal set; }
     public static int NumberOfHostilesInMaxRange { get; internal set; }
+    public static bool MobsTime { get; internal set; }
     public static float AverageDeadTime { get; internal set; }
 
     public static bool IsHostileCastingAOE { get; internal set; }

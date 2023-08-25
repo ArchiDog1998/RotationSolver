@@ -124,7 +124,7 @@ internal abstract class DragFloatRangeSearch : Searchable
         var minValue = GetMinValue(job);
         var maxValue = GetMaxValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
-        if (ImGui.DragFloatRange2($"##Config_{ID}", ref minValue, ref maxValue, Speed, Min, Max))
+        if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max))
         {
             SetMinValue(job, Math.Min(minValue, maxValue));
             SetMaxValue(job, Math.Max(minValue, maxValue));

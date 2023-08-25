@@ -98,7 +98,7 @@ internal abstract class DragFloatSearch : Searchable
     {
         var value = GetValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
-        if (ImGui.DragFloat($"##Config_{ID}", ref value, Speed, Min, Max))
+        if (ImGui.DragFloat($"##Config_{ID}{GetHashCode()}", ref value, Speed, Min, Max))
         {
             SetValue(job, value);
         }

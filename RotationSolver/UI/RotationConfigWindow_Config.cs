@@ -302,11 +302,10 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _basicSwitchTurnOff = new ISearchable[]
     {
         // Turn off
+        new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombatTime, 1f),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffBetweenArea),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffCutScene),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffWhenDead),
-        new CheckBoxSearchPlugin(PluginConfigBool.AutoOffAfterCombat,
-            new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombatTime, 1f)),
     };
     #endregion
 
@@ -385,10 +384,14 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)
         ),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowHostiles,
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowHostilesIcons,
             new DragFloatSearchPlugin(PluginConfigFloat.HostileIconHeight, 0.002f),
             new DragFloatSearchPlugin(PluginConfigFloat.HostileIconSize, 0.002f)
         ),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowStateIcon,
+            new DragFloatSearchPlugin(PluginConfigFloat.StateIconHeight, 0.002f),
+            new DragFloatSearchPlugin(PluginConfigFloat.StateIconSize, 0.002f)),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowBeneficialPositions,
             new ColorEditSearchPlugin(PluginConfigVector4.BeneficialPositionColor),
@@ -396,6 +399,8 @@ public partial class RotationConfigWindow
         ),
 
         new CheckBoxSearchPlugin(PluginConfigBool.DrawMeleeOffset)),
+
+
     };
 
     // Windows
@@ -676,7 +681,14 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseAbility, new ISearchable[]
         {
-            new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility),
+            new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility,
+                new DragIntSearchPlugin(PluginConfigInt.AutoDefenseNumber, 0.05f)
+                {
+                    JobRoles = new JobRole[]
+                    {
+                        JobRole.Tank,
+                    }
+                }),
 
             new CheckBoxSearchPlugin(PluginConfigBool.AutoTankStance)
             {
@@ -710,8 +722,10 @@ public partial class RotationConfigWindow
             new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbility,
             new DragIntSearchPlugin(PluginConfigInt.BeneficialAreaStrategy, () => new string[]{
                 LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnLocations,
+                LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnlyOnLocations,
                 LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
-                LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnCalculated }))
+                LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnCalculated }),
+             new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving))
             {
                 JobRoles = new JobRole[]
                 {
@@ -879,7 +893,7 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _extraSearchable = new ISearchable[]
     {
         new CheckBoxSearchPlugin(PluginConfigBool.PoslockCasting,
-        new DragIntSearchPlugin( PluginConfigInt.PoslockModifier, () => new string[]{ "SHIFT", "CTRL", "ALT", "Left Mouse", "Middle Mouse",  "Right Mouse" }),
+        new DragIntSearchPlugin(PluginConfigInt.PoslockModifier, () => new string[]{ "CTRL", "SHIFT", "ALT" }),
         new CheckBoxSearchPlugin(PluginConfigBool.PosPassageOfArms)
         {
             Action = ActionID.PassageOfArms

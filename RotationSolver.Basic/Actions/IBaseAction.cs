@@ -94,7 +94,7 @@ public interface IBaseAction : IAction
     /// <param name="act"></param>
     /// <param name="option">Options about using this method.</param>
     /// <param name="aoeCount">How many targets do you want this skill to affect</param>
-    /// <param name="gcdCountForAbility">The count of gcd for ability to delay. Only used in BLM right now</param>
+    /// <param name="gcdCountForAbility">The count of gcd for ability to delay. Make it use it earlier when max stack.</param>
     /// <returns>Should I use.</returns>
     bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0);
 

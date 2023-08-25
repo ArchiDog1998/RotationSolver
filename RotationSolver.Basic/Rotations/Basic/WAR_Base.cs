@@ -89,12 +89,18 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 1
     /// </summary>
-    public static IBaseAction Overpower { get; } = new BaseAction(ActionID.Overpower);
+    public static IBaseAction Overpower { get; } = new BaseAction(ActionID.Overpower)
+    {
+        AOECount = 2,
+    };
 
     /// <summary>
     /// 2
     /// </summary>
-    public static IBaseAction MythrilTempest { get; } = new BaseAction(ActionID.MythrilTempest);
+    public static IBaseAction MythrilTempest { get; } = new BaseAction(ActionID.MythrilTempest)
+    {
+        AOECount = 2,
+    };
 
     /// <summary>
     /// 
@@ -102,6 +108,7 @@ public abstract class WAR_Base : CustomRotation
     public static IBaseAction SteelCyclone { get; } = new BaseAction(ActionID.SteelCyclone)
     {
         ActionCheck = InnerBeast.ActionCheck,
+        AOECount = 2,
     };
 
     /// <summary>

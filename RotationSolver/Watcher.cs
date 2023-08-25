@@ -128,9 +128,26 @@ public static class Watcher
 
         DataCenter.HealHP = set.GetSpecificTypeEffect(ActionEffectType.Heal);
         DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
+        foreach ( var effect in set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectSource))
+        {
+            DataCenter.ApplyStatus.Add(effect.Key, effect.Value);
+        }
         DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Player.Object.ObjectId).Sum(i => i.Value);
         DataCenter.EffectTime = DateTime.Now;
         DataCenter.EffectEndTime = DateTime.Now.AddSeconds(set.Header.AnimationLockTime + 1);
+
+        foreach (var effect in set.TargetEffects)
+        {
+            if (!effect.GetSpecificTypeEffect(ActionEffectType.Damage, out _)) continue;
+
+            if (DataCenter.AttackedTargets.Any(i => i.id == effect.TargetID)) continue;
+
+            if(DataCenter.AttackedTargets.Count >= DataCenter.ATTACKED_TARGETS_COUNT)
+            {
+                DataCenter.AttackedTargets.Dequeue();
+            }
+            DataCenter.AttackedTargets.Enqueue((effect.TargetID, DateTime.Now));
+        }
 
         //Macro
         foreach (var item in Service.Config.GlobalConfig.Events)

@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RotationSolver.Basic" Version="3.2.3.2" />
+    <PackageReference Include="RotationSolver.Basic" Version="3.2.6" />
   </ItemGroup>
 
 	<ItemGroup>

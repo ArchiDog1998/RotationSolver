@@ -76,7 +76,8 @@ namespace RotationSolver.Commands
                     //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
 #endif
                     //Change Target
-                    if (act.Target != null && (Service.Config.GetValue(PluginConfigBool.SwitchTargetFriendly) && !DataCenter.IsManual || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
+                    if (act.Target != null && act.Target != Player.Object && !DataCenter.IsManual
+                        && (Service.Config.GetValue(PluginConfigBool.SwitchTargetFriendly) || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
                         || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
                         && act.Target.IsNPCEnemy()))
                     {
@@ -122,10 +123,10 @@ namespace RotationSolver.Commands
         static float _lastCountdownTime = 0;
         internal static void UpdateRotationState()
         {
-            if(ActionUpdater._cancelTime != DateTime.MinValue && 
+            if(ActionUpdater.AutoCancelTime != DateTime.MinValue && 
                 (!DataCenter.State || DataCenter.InCombat))
             {
-                ActionUpdater._cancelTime = DateTime.MinValue;
+                ActionUpdater.AutoCancelTime = DateTime.MinValue;
             }
 
             var target = DataCenter.AllHostileTargets.FirstOrDefault(t => t.TargetObjectId == Player.Object.ObjectId);
@@ -179,11 +180,11 @@ namespace RotationSolver.Commands
                 }
             }
             //Cancel when after combat.
-            else if (ActionUpdater._cancelTime != DateTime.MinValue
-                && DateTime.Now > ActionUpdater._cancelTime)
+            else if (ActionUpdater.AutoCancelTime != DateTime.MinValue
+                && DateTime.Now > ActionUpdater.AutoCancelTime)
             {
                 CancelState();
-                ActionUpdater._cancelTime = DateTime.MinValue;
+                ActionUpdater.AutoCancelTime = DateTime.MinValue;
             }
         }
     }

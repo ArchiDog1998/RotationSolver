@@ -31,7 +31,7 @@ internal static class ConfigurationHelper
         573, //没学会 ?
     };
 
-    public static readonly VirtualKey[] Keys = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU, VirtualKey.LBUTTON, VirtualKey.MBUTTON, VirtualKey.RBUTTON };
+    public static readonly VirtualKey[] Keys = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
 
     public static float GetHealthAreaAbility(this Job job)
         => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthAreaAbility);

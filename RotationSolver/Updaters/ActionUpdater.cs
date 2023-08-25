@@ -12,7 +12,7 @@ namespace RotationSolver.Updaters;
 
 internal static class ActionUpdater
 {
-    internal static DateTime _cancelTime = DateTime.MinValue;
+    internal static DateTime AutoCancelTime { get; set; } = DateTime.MinValue;
 
     static  RandomDelay _GCDDelay = new(() =>
     (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin),
@@ -134,10 +134,8 @@ internal static class ActionUpdater
         else if (last && !DataCenter.InCombat)
         {
             _startCombatTime = DateTime.MinValue;
-            if (Service.Config.GetValue(PluginConfigBool.AutoOffAfterCombat))
-            {
-                _cancelTime = DateTime.Now.AddSeconds(Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombatTime));
-            }
+
+            AutoCancelTime = DateTime.Now.AddSeconds(Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombatTime));
         }
 
         if (_startCombatTime == DateTime.MinValue)

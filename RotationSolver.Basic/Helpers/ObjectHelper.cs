@@ -4,6 +4,7 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
+using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Helpers;
@@ -177,6 +178,8 @@ public static class ObjectHelper
     public static float GetDeadTime(this BattleChara b, bool wholeTime = false)
     {
         if (b == null) return float.NaN;
+        if (b.IsDummy()) return 999.99f;
+
         var objectId = b.ObjectId;
 
         DateTime startTime = DateTime.MinValue;
@@ -200,6 +203,42 @@ public static class ObjectHelper
         if (ratioReduce <= 0) return float.NaN;
 
         return (float)timespan.TotalSeconds / ratioReduce * (wholeTime ? 1 : ratioNow);
+    }
+
+    /// <summary>
+    /// Whether the target is attacked.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static bool IsAttacked(this BattleChara b)
+    {
+        foreach (var item in DataCenter.AttackedTargets)
+        {
+            if(item.id == b.ObjectId)
+            {
+                return DateTime.Now - item.time > TimeSpan.FromSeconds(1);
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Can the player see the object.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static unsafe bool CanSee(this GameObject b)
+    {
+        var point = Player.Object.Position + Vector3.UnitY * Player.GameObject->Height;
+        var tarPt = b.Position + Vector3.UnitY * b.Struct()->Height;
+        var direction = tarPt - point;
+
+        int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
+
+        RaycastHit hit = default;
+
+        return !FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
+            ->RaycastEx(&hit, point, direction, direction.Length(), 1, unknown);
     }
 
     /// <summary>

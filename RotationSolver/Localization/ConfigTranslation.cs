@@ -79,7 +79,7 @@ internal static class ConfigTranslation
         PluginConfigBool.ShowControlWindow => LocalizationManager.RightLang.ConfigWindow_Control_ShowControlWindow,
         PluginConfigBool.IsControlWindowLock => LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
         PluginConfigBool.ShowBeneficialPositions => LocalizationManager.RightLang.ConfigWindow_UI_ShowBeneficialPosition,
-        PluginConfigBool.ShowHostiles => LocalizationManager.RightLang.ConfigWindow_UI_ShowHostiles,
+        PluginConfigBool.ShowHostilesIcons => LocalizationManager.RightLang.ConfigWindow_UI_ShowHostiles,
 
         // auto
         PluginConfigBool.UseAOEAction => LocalizationManager.RightLang.ConfigWindow_Param_UseAOEAction,
@@ -97,6 +97,7 @@ internal static class ConfigTranslation
         PluginConfigBool.RaisePlayerBySwift => LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerBySwift,
         PluginConfigBool.AutoSpeedOutOfCombat => LocalizationManager.RightLang.ConfigWindow_Param_AutoSpeedOutOfCombat,
         PluginConfigBool.UseGroundBeneficialAbility => LocalizationManager.RightLang.ConfigWindow_Param_UseGroundBeneficialAbility,
+        PluginConfigBool.UseGroundBeneficialAbilityWhenMoving => LocalizationManager.RightLang.ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving,
         PluginConfigBool.RaisePlayerByCasting => LocalizationManager.RightLang.ConfigWindow_Param_RaisePlayerByCasting,
         PluginConfigBool.UseHealWhenNotAHealer => LocalizationManager.RightLang.ConfigWindow_Param_UseHealWhenNotAHealer,
         PluginConfigBool.InterruptibleMoreCheck => LocalizationManager.RightLang.ConfigWindow_Param_InterruptibleMoreCheck,
@@ -121,6 +122,7 @@ internal static class ConfigTranslation
         PluginConfigBool.TargetHuntingRelicLevePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
         PluginConfigBool.TargetQuestPriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
         PluginConfigBool.ShowTargetDeadTime => LocalizationManager.RightLang.ConfigWindow_Param_ShowTargetDeadTime,
+        PluginConfigBool.ShowStateIcon => LocalizationManager.RightLang.ConfigWindow_UI_ShowStateIcon,
 
 
         // extra
@@ -136,7 +138,6 @@ internal static class ConfigTranslation
         PluginConfigBool.AutoUpdateRotations => LocalizationManager.RightLang.ConfigWindow_Rotation_AutoUpdateRotations,
         PluginConfigBool.AutoLoadCustomRotations => LocalizationManager.RightLang.ConfigWindow_Rotations_AutoLoadCustomRotations,
 
-        PluginConfigBool.AutoOffAfterCombat => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombat,
         _ => string.Empty,
     };
 
@@ -172,6 +173,8 @@ internal static class ConfigTranslation
         PluginConfigFloat.ControlWindowNextSizeRatio => LocalizationManager.RightLang.ConfigWindow_Control_ControlWindowNextSizeRatio,
         PluginConfigFloat.HostileIconHeight => LocalizationManager.RightLang.ConfigWindow_UI_HostileIconHeight,
         PluginConfigFloat.HostileIconSize => LocalizationManager.RightLang.ConfigWindow_UI_HostileIconSize,
+        PluginConfigFloat.StateIconHeight => LocalizationManager.RightLang.ConfigWindow_UI_StateIconHeight,
+        PluginConfigFloat.StateIconSize => LocalizationManager.RightLang.ConfigWindow_UI_StateIconSize,
 
         // auto
         PluginConfigFloat.HealWhenNothingTodoBelow => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoBelow,
@@ -218,6 +221,7 @@ internal static class ConfigTranslation
     public static string ToDescription(this PluginConfigInt config) => config switch
     {
         PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription,
+        PluginConfigInt.AutoDefenseNumber => LocalizationManager.RightLang.ConfigWindow_Auto_AutoDefenseNumber,
 
         _ => string.Empty,
     };

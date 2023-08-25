@@ -219,6 +219,7 @@ public enum PluginConfigInt : byte
 
     [Default(0)] TargetingIndex,
     [Default(0)] BeneficialAreaStrategy,
+    [Default(2, 1, 8)] AutoDefenseNumber,
 }
 
 public enum PluginConfigBool : byte
@@ -255,7 +256,7 @@ public enum PluginConfigBool : byte
     [Default(true)] ChooseAttackMark,
     [Default(false)] CanAttackMarkAOE,
     [Default(true)] FilterStopMark,
-    [Default(true)] ShowHostiles,
+    [Default(true)] ShowHostilesIcons,
 
     [Default(true)] TeachingMode,
     [Default(true)] UseOverlayWindow,
@@ -313,6 +314,7 @@ public enum PluginConfigBool : byte
     [Default(true)] RaisePlayerBySwift,
     [Default(true)] AutoSpeedOutOfCombat,
     [Default(true)] UseGroundBeneficialAbility,
+    [Default(false)] UseGroundBeneficialAbilityWhenMoving,
     [Default(false)] TargetAllForFriendly,
     [Default(false)] ShowCooldownWindow,
 
@@ -320,8 +322,8 @@ public enum PluginConfigBool : byte
 
     [Default(false)] AutoOpenChest,
     [Default(true)] AutoCloseChestWindow,
-    [Default(true)] AutoOffAfterCombat,
 
+    [Default(true)] ShowStateIcon,
     [Default(true)] ShowBeneficialPositions,
     [Default(false)] HideWarning,
 }
@@ -396,8 +398,11 @@ public enum PluginConfigFloat : byte
     [Default(0.2f, 0.01f, 0.5f)] MaxPing,
 
     [Default(8f, 0f, 30f)] AutoHealDeadTime,
-    [Default(2f, 0f, 10f)] HostileIconHeight,
+    [Default(0.5f, 0f, 10f)] HostileIconHeight,
     [Default(1f, 0.1f, 10f)] HostileIconSize,
+
+    [Default(1f, 0f, 3f)] StateIconHeight,
+    [Default(1f, 0.7f, 10f)] StateIconSize,
 }
 
 public enum PluginConfigVector4 : byte

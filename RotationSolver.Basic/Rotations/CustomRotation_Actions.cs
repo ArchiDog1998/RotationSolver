@@ -15,6 +15,12 @@ public abstract partial class CustomRotation
         }
 
         internal bool InRole(JobRole role) => _roles.Contains(role);
+
+        public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)
+        {
+            return base.CanUse(out act, option, aoeCount, gcdCountForAbility) 
+                && Player != null && InRole(Player.ClassJob.GameData.GetJobRole());
+        }
     }
 
     /// <summary>

@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -173,6 +174,11 @@ public abstract partial class CustomRotation
         if (IsInHighEndDuty) return true;
         return AverageDeadTime > time;
     }
+
+    /// <summary>
+    /// Now, it is attacking the mobs!
+    /// </summary>
+    public static bool MobsTime => DataCenter.MobsTime;
     #endregion
 
     #region Command

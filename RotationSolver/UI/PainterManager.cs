@@ -52,11 +52,11 @@ internal static class PainterManager
 
     class TargetsDrawing : Drawing3DPoly
     {
-        public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        public override unsafe void UpdateOnFrame(XIVPainter.XIVPainter painter)
         {
             SubItems = Array.Empty<IDrawing3D>();
 
-            if (!Service.Config.GetValue(PluginConfigBool.ShowHostiles)) return;
+            if (!Service.Config.GetValue(PluginConfigBool.ShowHostilesIcons)) return;
 
             List<IDrawing3D> subItems = new List<IDrawing3D>();
 
@@ -201,7 +201,7 @@ internal static class PainterManager
 
     static XIVPainter.XIVPainter _painter;
     static DrawingHighlightHotbar _highLight = new();
-
+    static Drawing3DImage _stateImage;
     public static HashSet<uint> ActionIds => _highLight.ActionIds;
 
     public static Vector4 HighlightColor
@@ -224,7 +224,7 @@ internal static class PainterManager
 
         annulus.UpdateEveryFrame = () =>
         {
-            if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsNPCEnemy() ?? false) && Service.Config.GetValue(Basic.Configuration.PluginConfigBool.DrawMeleeOffset)
+            if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsNPCEnemy() ?? false) && Service.Config.GetValue(PluginConfigBool.DrawMeleeOffset)
             && ActionUpdater.NextGCDAction == null)
             {
                 annulus.Target = Svc.Targets.Target;
@@ -241,7 +241,7 @@ internal static class PainterManager
         {
             var tar = CustomRotation.MoveTarget;
 
-            if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowMoveTarget) || !Player.Available || !tar.HasValue || Vector3.Distance(tar.Value, Player.Object.Position) < 0.01f)
+            if (!Service.Config.GetValue(PluginConfigBool.ShowMoveTarget) || !Player.Available || !tar.HasValue || Vector3.Distance(tar.Value, Player.Object.Position) < 0.01f)
             {
                 movingTarget.Radius = 0;
                 return;
@@ -249,46 +249,41 @@ internal static class PainterManager
 
             movingTarget.Radius = 0.5f;
 
-            movingTarget.Color = ImGui.GetColorU32(Service.Config.GetValue(Basic.Configuration.PluginConfigVector4.MovingTargetColor));
+            movingTarget.Color = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.MovingTargetColor));
 
             movingTarget.From = Player.Object.Position;
             movingTarget.To = tar.Value;
         };
 
-        _painter.AddDrawings(_highLight, annulus, movingTarget, new TargetDrawing(), new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing());
+        _stateImage = new Drawing3DImage(null, default, 0)
+        {
+            MustInViewRange = true,
+            DrawWithHeight = false,
+            UpdateEveryFrame = () =>
+            {
+                if (!Player.Available) return;
 
-#if DEBUG
-        //try
-        //{
-        //    var deadTime = DateTime.Now.AddSeconds(10);
-        //    var r = new Random();
-        //    var col = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.15f));
-        //    var colIn = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.2f, 0.5f));
-        //    _painter.AddDrawings(
-        //        new Drawing3DAnnulus(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 3, 5, col, 2)
-        //        {
-        //            DeadTime = deadTime,
-        //            InsideColor = colIn,
-        //            PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
-        //        },
+                unsafe
+                {
+                    _stateImage.Position = Player.Object.Position + new Vector3(0,
+                                Service.Config.GetValue(PluginConfigFloat.StateIconHeight), 0);
+                }
 
-        //        new Drawing3DCircularSector(Player.Object.Position + new Vector3((float)r.NextDouble() * 3, 0, (float)r.NextDouble() * 3), 3, col, 2)
-        //        {
-        //            DeadTime = deadTime,
-        //            InsideColor = colIn,
-        //            PolylineType = XIVPainter.Enum.PolylineType.ShouldGoOut,
-        //        }
-        //        );
+                if (DataCenter.State && Service.Config.GetValue(PluginConfigBool.ShowStateIcon))
+                {
+                    if (IconSet.GetTexture(61516, out var texture))
+                    {
+                        _stateImage.SetTexture(texture, Service.Config.GetValue(PluginConfigFloat.StateIconSize));
+                    }
+                }
+                else
+                {
+                    _stateImage.SetTexture(null, 0);
+                }
+            },
+        };
 
-        //    _painter.AddDrawings(new DrawingHighlightHotbar(new(0f, 1f, 0.8f, 1f), 7411));
-
-        //    _painter.AddDrawings(new Drawing3DCircularSectorO(Player.Object, 5, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 0.5f, 0.4f, 0.15f)), 5));
-        //}
-        //catch
-        //{
-
-        //}
-#endif
+        _painter.AddDrawings(_highLight, _stateImage, annulus, movingTarget, new TargetDrawing(), new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing());
     }
 
     public static void UpdateSettings()
