@@ -52,7 +52,7 @@ internal static class PainterManager
 
     class TargetsDrawing : Drawing3DPoly
     {
-        public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        public override unsafe void UpdateOnFrame(XIVPainter.XIVPainter painter)
         {
             SubItems = Array.Empty<IDrawing3D>();
 
@@ -65,7 +65,7 @@ internal static class PainterManager
                 foreach (var hostile in DataCenter.HostileTargets)
                 {
                     subItems.Add(new Drawing3DImage(hostileIcon, hostile.Position + new Vector3(0, 
-                        Service.Config.GetValue(PluginConfigFloat.HostileIconHeight), 0), 
+                        Service.Config.GetValue(PluginConfigFloat.HostileIconHeight) * hostile.Struct()->Character.GameObject.Height, 0), 
                         Service.Config.GetValue(PluginConfigFloat.HostileIconSize))
                     {
                         DrawWithHeight = false,
@@ -262,8 +262,12 @@ internal static class PainterManager
             UpdateEveryFrame = () =>
             {
                 if (!Player.Available) return;
-                _stateImage.Position = Player.Object.Position + new Vector3(0,
-                            Service.Config.GetValue(PluginConfigFloat.StateIconHeight), 0);
+
+                unsafe
+                {
+                    _stateImage.Position = Player.Object.Position + new Vector3(0,
+                                Service.Config.GetValue(PluginConfigFloat.StateIconHeight) * Player.Object.GameObject()->Height, 0);
+                }
 
                 if (DataCenter.State && Service.Config.GetValue(PluginConfigBool.ShowStateIcon))
                 {

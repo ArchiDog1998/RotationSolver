@@ -2141,10 +2141,12 @@ public partial class RotationConfigWindow : Window
 
     private static unsafe void DrawIcon()
     {
-        foreach (var item in Svc.KeyState.GetValidVirtualKeys())
+        if (Player.Available)
         {
-            ImGui.Text(item.ToString());
+            ImGui.Text(Player.GameObject->Height.ToString());  
         }
+
+        ImGui.Text(DataCenter.TerritoryContentType.ToString());
     }
 
     private static void DrawAction(ActionID id, string type)

@@ -84,12 +84,14 @@ internal static partial class TargetUpdater
 
     private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
     {
+        var deadHP = DataCenter.PartyMembers.Count() > 1 ? 0 : 1;
+
         allTargets = allTargets.Where(b =>
         {
             if (!b.IsNPCEnemy()) return false;
 
             //Dead.
-            if (b.CurrentHp == 0) return false;
+            if (b.CurrentHp <= deadHP) return false;
 
             if (!b.IsTargetable()) return false;
 

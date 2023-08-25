@@ -398,10 +398,10 @@ public enum PluginConfigFloat : byte
     [Default(0.2f, 0.01f, 0.5f)] MaxPing,
 
     [Default(8f, 0f, 30f)] AutoHealDeadTime,
-    [Default(2f, 0f, 10f)] HostileIconHeight,
+    [Default(0.5f, 0f, 2f)] HostileIconHeight,
     [Default(1f, 0.1f, 10f)] HostileIconSize,
 
-    [Default(0.5f, 0f, 2.5f)] StateIconHeight,
+    [Default(0.5f, 0f, 2f)] StateIconHeight,
     [Default(1f, 0.7f, 10f)] StateIconSize,
 }
 
