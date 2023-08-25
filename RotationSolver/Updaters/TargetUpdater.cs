@@ -110,7 +110,6 @@ internal static partial class TargetUpdater
             {
                 if (!Svc.GameGui.WorldToScreen(b.Position, out _)) return false;
             }
-
             return true;
         })));
 
@@ -124,6 +123,9 @@ internal static partial class TargetUpdater
         DataCenter.NumberOfHostilesInRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
 
         DataCenter.NumberOfHostilesInMaxRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= 25);
+
+        DataCenter.MobsTime = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
+            >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber);
 
         if (DataCenter.HostileTargets.Count() == 1)
         {

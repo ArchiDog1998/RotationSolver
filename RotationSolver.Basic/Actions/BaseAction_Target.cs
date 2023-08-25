@@ -575,18 +575,7 @@ public partial class BaseAction
         if (!IsTargetArea && (ActionID)ID != ActionID.AethericMimicry
             && !ActionManager.CanUseActionOnTarget(AdjustedID, tarAddress)) return false;
 
-        var point = Player.Object.Position + Vector3.UnitY * Player.GameObject->Height;
-        var tarPt = tar.Position + Vector3.UnitY * tar.Struct()->Height;
-        var direction = tarPt - point;
-
-        int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
-
-        RaycastHit hit = default;
-
-        if( FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
-            ->RaycastEx(&hit, point, direction, direction.Length(), 1, unknown)) return false;
-
-        return true;
+        return tar.CanSee();
     }
 
     private static bool NoAOE

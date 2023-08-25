@@ -451,6 +451,7 @@ internal partial class Strings
         { nameof(CustomRotation.ShowStatus), "Show the status"},
         { nameof(CustomRotation.AverageDeadTime), "Average dead time"},
 
+        { nameof(CustomRotation.MobsTime), "Mobs Time"},
         #endregion
 
         #region AST
