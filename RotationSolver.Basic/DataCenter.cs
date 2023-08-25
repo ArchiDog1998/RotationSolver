@@ -31,7 +31,7 @@ internal static class DataCenter
 
     internal static bool InEffectTime => DateTime.Now >= EffectTime && DateTime.Now <= EffectEndTime;
     internal static Dictionary<ulong, uint> HealHP { get; set; } = new Dictionary<ulong, uint>();
-    internal static Dictionary<ulong, uint> ApplyStatus { private get; set; } = new Dictionary<ulong, uint>();
+    internal static Dictionary<ulong, uint> ApplyStatus { get; set; } = new Dictionary<ulong, uint>();
     internal static uint MPGain { get; set; }
     internal static bool HasApplyStatus(uint id, StatusID[] ids)
     {

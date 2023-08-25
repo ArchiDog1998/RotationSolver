@@ -6,9 +6,9 @@ namespace RotationSolver.ActionSequencer;
 
 internal class RotationCondition : ICondition
 {
-    public ComboConditionType ComboConditionType;
+    public ComboConditionType ComboConditionType = ComboConditionType.Float;
     PropertyInfo _prop;
-    public string PropertyName { get; set; } = string.Empty;
+    public string PropertyName { get; set; } = nameof(CustomRotation.CombatTime);
 
     MethodInfo _method;
     public string MethodName { get; set; } = string.Empty;
