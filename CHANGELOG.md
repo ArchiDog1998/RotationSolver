@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.2.7](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.6...v3.2.7) (2023-08-25)
+
+
+### Bug Fixes
+
+* add default value for rotation condition. ([9ccae01](https://github.com/ArchiDog1998/RotationSolver/commit/9ccae0156ccecafe2402872d2dbbca2de054739e))
+* add mobs time. ([b2f15dd](https://github.com/ArchiDog1998/RotationSolver/commit/b2f15dd0685e1b25f8cd8b0b323593e795dde7ee))
+* add state icon. ([f5cb4e6](https://github.com/ArchiDog1998/RotationSolver/commit/f5cb4e6f4f095c3c2437b1e26efb00cf8e6b7a93))
+* add using ground beneficial only moving option. ([58a1039](https://github.com/ArchiDog1998/RotationSolver/commit/58a10396575e6046baab9c1b9d48d57aff0d7c88))
+* allowed one option used multiple times. ([2d30001](https://github.com/ArchiDog1998/RotationSolver/commit/2d300018bd2ff2c442baf34135d619f09d919063))
+* auto off when combat over fix. ([a432ba4](https://github.com/ArchiDog1998/RotationSolver/commit/a432ba4f985e7a48db84323f3546ecd4dd73eb85))
+* defense single for tank changing. ([fbc972a](https://github.com/ArchiDog1998/RotationSolver/commit/fbc972a9279b722bf80a63150e6bca3d96ebbdc4))
+* for the case some targets dead when HP is 1. ([18db483](https://github.com/ArchiDog1998/RotationSolver/commit/18db4834e14cbf8a3879fe3cb110d1748df2e098))
+* must use auto off when after combat. ([20cbdf5](https://github.com/ArchiDog1998/RotationSolver/commit/20cbdf5fb8cbca8063cb38fa5bec74d52270192f))
+* removed mouse movement lock. ([68df11e](https://github.com/ArchiDog1998/RotationSolver/commit/68df11e1c4e400f1116871c1e351691836295071))
+* role actions check. ([dadc9a2](https://github.com/ArchiDog1998/RotationSolver/commit/dadc9a2b35a0305799f00ef43d4691c985114b46))
+* state icon. ([1a921a2](https://github.com/ArchiDog1998/RotationSolver/commit/1a921a2c31c3022dac4141cb2620edec57f22967))
+* updated template. ([7ef8cc1](https://github.com/ArchiDog1998/RotationSolver/commit/7ef8cc1c63d6a96d2f9b338d06fa7c0335ad0af3))
+
 ## [3.2.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.5...v3.2.6) (2023-08-22)
 
 
