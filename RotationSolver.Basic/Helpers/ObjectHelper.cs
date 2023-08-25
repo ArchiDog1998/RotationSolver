@@ -216,7 +216,7 @@ public static class ObjectHelper
         {
             if(item.id == b.ObjectId)
             {
-                return DateTime.Now - item.time > TimeSpan.FromSeconds(2);
+                return DateTime.Now - item.time > TimeSpan.FromSeconds(1);
             }
         }
         return false;

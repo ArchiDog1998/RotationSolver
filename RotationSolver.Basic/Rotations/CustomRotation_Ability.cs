@@ -222,8 +222,8 @@ public abstract partial class CustomRotation
             if (tarOnMeCount >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber) 
                 && movingHere && attacked)
             {
-                if (ArmsLength.CanUse(out act)) return true;
                 if (DefenseSingleAbility(out act)) return true;
+                if (ArmsLength.CanUse(out act)) return true;
             }
 
             //Big damage casting action.

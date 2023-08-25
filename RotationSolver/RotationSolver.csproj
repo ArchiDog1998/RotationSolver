@@ -15,7 +15,6 @@
 		<ProjectReference Include="..\XIVPainter\XIVPainter\XIVPainter.csproj" />
 		<EmbeddedResource Include="Localization\*.json" Exclude="Localization\Localization.json" />
 		<EmbeddedResource Include="Logos\*.png" />
-		<None Remove="UI\RotationConfigWindowNew.cs~RF19e4c47a.TMP" />
 		
 		<Using Include="Dalamud.Game.ClientState.Objects.Types" />
 
