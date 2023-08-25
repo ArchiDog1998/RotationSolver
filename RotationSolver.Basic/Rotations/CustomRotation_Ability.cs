@@ -211,10 +211,16 @@ public abstract partial class CustomRotation
         //Defense himself.
         if (role == JobRole.Tank && HasTankStance)
         {
-            var tarOnMeCount = DataCenter.TarOnMeTargets.Count(t => t.DistanceToPlayer() <= 3);
+            var movingHere = (float)NumberOfHostilesInRange / NumberOfHostilesInMaxRange > 0.3f;
+
+            var tarOnMe = DataCenter.TarOnMeTargets.Where(t => t.DistanceToPlayer() <= 3);
+            var tarOnMeCount = tarOnMe.Count();
+            var attackedCount = tarOnMe.Count(ObjectHelper.IsAttacked);
+            var attacked = (float)attackedCount / tarOnMeCount > 0.7f;
 
             //A lot targets are targeting on me.
-            if (tarOnMeCount > 1 && !IsMoving)
+            if (tarOnMeCount >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber) 
+                && movingHere && attacked)
             {
                 if (ArmsLength.CanUse(out act)) return true;
                 if (DefenseSingleAbility(out act)) return true;

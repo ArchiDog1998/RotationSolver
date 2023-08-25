@@ -681,7 +681,14 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseAbility, new ISearchable[]
         {
-            new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility),
+            new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility,
+                new DragIntSearchPlugin(PluginConfigInt.AutoDefenseNumber, 0.05f)
+                {
+                    JobRoles = new JobRole[]
+                    {
+                        JobRole.Tank,
+                    }
+                }),
 
             new CheckBoxSearchPlugin(PluginConfigBool.AutoTankStance)
             {

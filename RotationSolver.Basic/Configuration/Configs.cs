@@ -219,6 +219,7 @@ public enum PluginConfigInt : byte
 
     [Default(0)] TargetingIndex,
     [Default(0)] BeneficialAreaStrategy,
+    [Default(2, 1, 8)] AutoDefenseNumber,
 }
 
 public enum PluginConfigBool : byte

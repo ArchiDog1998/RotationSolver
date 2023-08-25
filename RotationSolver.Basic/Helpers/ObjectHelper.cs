@@ -205,6 +205,23 @@ public static class ObjectHelper
     }
 
     /// <summary>
+    /// Whether the target is attacked.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static bool IsAttacked(this BattleChara b)
+    {
+        foreach (var item in DataCenter.AttackedTargets)
+        {
+            if(item.id == b.ObjectId)
+            {
+                return DateTime.Now - item.time > TimeSpan.FromSeconds(2);
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
     /// Get the <paramref name="b"/>'s current HP percentage.
     /// </summary>
     /// <param name="b"></param>

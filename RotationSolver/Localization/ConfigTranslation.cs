@@ -221,6 +221,7 @@ internal static class ConfigTranslation
     public static string ToDescription(this PluginConfigInt config) => config switch
     {
         PluginConfigInt.PoslockModifier => LocalizationManager.RightLang.ConfigWindow_Param_PoslockDescription,
+        PluginConfigInt.AutoDefenseNumber => LocalizationManager.RightLang.ConfigWindow_Auto_AutoDefenseNumber,
 
         _ => string.Empty,
     };

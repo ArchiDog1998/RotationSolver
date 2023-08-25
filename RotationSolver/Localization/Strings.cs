@@ -713,4 +713,6 @@ internal partial class Strings
     public string ConfigWindow_UI_StateIconSize { get; set; } = "State Icon size";
     public string ConfigWindow_UI_ShowStateIcon { get; set; } = "Show State Icon";
     public string ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving { get; set; } = "Use beneficial area action when moving.";
+    public string ConfigWindow_Auto_AutoDefenseNumber { get; set; } = "The count of hostiles who target on me. If it's larger than this, defense single.";
+
 }

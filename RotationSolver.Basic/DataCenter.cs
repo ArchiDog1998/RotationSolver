@@ -29,6 +29,9 @@ internal static class DataCenter
     internal static DateTime EffectTime { private get; set; } = DateTime.Now;
     internal static DateTime EffectEndTime { private get; set; } = DateTime.Now;
 
+    internal const int ATTACKED_TARGETS_COUNT = 48;
+    internal static Queue<(ulong id, DateTime time)> AttackedTargets { get; } = new (ATTACKED_TARGETS_COUNT);
+
     internal static bool InEffectTime => DateTime.Now >= EffectTime && DateTime.Now <= EffectEndTime;
     internal static Dictionary<ulong, uint> HealHP { get; set; } = new Dictionary<ulong, uint>();
     internal static Dictionary<ulong, uint> ApplyStatus { get; set; } = new Dictionary<ulong, uint>();
