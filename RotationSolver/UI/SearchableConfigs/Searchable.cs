@@ -73,8 +73,6 @@ internal abstract class Searchable : ISearchable
                 wholeWidth -= size.X;
             }
 
-
-
             var jobs = JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? Array.Empty<Job>());
             var roleOrJob = string.Join("\n",
                 jobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
