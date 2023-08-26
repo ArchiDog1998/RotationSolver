@@ -90,9 +90,9 @@ internal partial class Strings
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string ConfigWindow_Param_MaxPing { get; set; } = "Set the Max Ping that RS can get.";
-    public string ConfigWindow_Param_AutoOffAfterCombatTime { get; set; } = "Auto turn off when combat is over more than several seconds.";
     public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is moving between areas.";
-
+    public string ConfigWindow_Param_AutoOffAfterCombat { get; set; } = "Auto turn off when combat is over more than several seconds.";
+    public string ConfigWindow_Param_AutoOffAfterCombatTime { get; set; } = "seconds.";
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cutscenes.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";

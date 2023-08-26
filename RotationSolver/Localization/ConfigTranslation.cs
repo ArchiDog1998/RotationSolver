@@ -137,6 +137,7 @@ internal static class ConfigTranslation
         PluginConfigBool.DownloadRotations => LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotations,
         PluginConfigBool.AutoUpdateRotations => LocalizationManager.RightLang.ConfigWindow_Rotation_AutoUpdateRotations,
         PluginConfigBool.AutoLoadCustomRotations => LocalizationManager.RightLang.ConfigWindow_Rotations_AutoLoadCustomRotations,
+        PluginConfigBool.AutoOffAfterCombat => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombat,
 
         _ => string.Empty,
     };
