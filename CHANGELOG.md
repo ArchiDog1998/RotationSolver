@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.8](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.7...v3.2.8) (2023-08-26)
+
+
+### Bug Fixes
+
+* increase the up limit about `AutoOffAfterCombatTime`. Find back the option about that. ([43ebc37](https://github.com/ArchiDog1998/RotationSolver/commit/43ebc37fda2c6a27b73d1691295a5e0ad7d2aa95))
+
 ## [3.2.7](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.6...v3.2.7) (2023-08-25)
 
 
