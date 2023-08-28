@@ -168,7 +168,7 @@ public abstract partial class CustomRotation
     {
         FilterForHostiles = bs => bs.Where(b =>
         {
-            if (b.IsBoss() || IsMoving || b.CastActionId == 0) return false;
+            if (b.IsBoss() || IsMovingOrJumping || b.CastActionId == 0) return false;
 
             if (!b.IsCastInterruptible || Interject.IsCoolingDown) return true;
             return false;

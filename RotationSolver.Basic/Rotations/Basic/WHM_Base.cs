@@ -204,7 +204,7 @@ public abstract class WHM_Base : CustomRotation
     /// </summary>
     public static IBaseAction PresenceOfMind { get; } = new BaseAction(ActionID.PresenceOfMind, ActionOption.Buff)
     {
-        ActionCheck = (b, m) => !IsMoving && IsLongerThan(10),
+        ActionCheck = (b, m) => !IsMovingOrJumping && IsLongerThan(10),
     };
 
     /// <summary>

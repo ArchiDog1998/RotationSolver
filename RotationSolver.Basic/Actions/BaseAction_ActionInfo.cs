@@ -132,7 +132,7 @@ public partial class BaseAction
             //Is knocking back.
             if (DateTime.Now > DataCenter.KnockbackStart && DateTime.Now < DataCenter.KnockbackFinished) return false;
 
-            if (DataCenter.NoPoslock && DataCenter.IsMoving && !option.HasFlag(CanUseOption.IgnoreCastCheck)) return false;
+            if (DataCenter.NoPoslock && DataCenter.IsMovingOrJumping && !option.HasFlag(CanUseOption.IgnoreCastCheck)) return false;
         }
 
         if (IsGeneralGCD && IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)

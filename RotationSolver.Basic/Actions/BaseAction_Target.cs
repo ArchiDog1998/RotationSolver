@@ -196,7 +196,7 @@ public partial class BaseAction
     private bool TargetAreaFriend(float range, bool mustUse, PlayerCharacter player)
     {
         if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbility)) return false;
-        if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving) && DataCenter.IsMoving) return false;
+        if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving) && DataCenter.IsMovingOrJumping) return false;
 
         var strategy = Service.Config.GetValue(PluginConfigInt.BeneficialAreaStrategy);
         switch (strategy)
