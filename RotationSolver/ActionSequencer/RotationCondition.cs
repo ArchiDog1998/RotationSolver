@@ -4,7 +4,7 @@ using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
-internal class RotationCondition : ICondition
+internal class RotationCondition : BaseCondition
 {
     public ComboConditionType ComboConditionType = ComboConditionType.Float;
     PropertyInfo _prop;
@@ -29,7 +29,7 @@ internal class RotationCondition : ICondition
         ConditionHelper.CheckMemberInfo(rotation, MethodName, ref _method);
     }
 
-    public bool IsTrue(ICustomRotation rotation)
+    public override bool IsTrueInside(ICustomRotation rotation)
     {
         if (!Player.Available) return false;
         UpdateInfo(rotation);
@@ -100,7 +100,7 @@ internal class RotationCondition : ICondition
     {
         HeaderSize = 12,
     };
-    public void Draw(ICustomRotation rotation)
+    public override void DrawInside(ICustomRotation rotation)
     {
         UpdateInfo(rotation);
 

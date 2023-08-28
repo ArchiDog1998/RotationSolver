@@ -5,28 +5,28 @@ using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
-internal class ConditionSet : ICondition
+internal class ConditionSet : BaseCondition
 {
-    public bool IsTrue(ICustomRotation combo)
+    public override bool IsTrueInside(ICustomRotation rotation)
     {
         if (Conditions.Count == 0) return false;
         switch (Type)
         {
             case LogicalType.And:
-                return Conditions.All(c => c.IsTrue(combo));
+                return Conditions.All(c => c.IsTrue(rotation));
             case LogicalType.Or:
-                return Conditions.Any(c => c.IsTrue(combo));
+                return Conditions.Any(c => c.IsTrue(rotation));
             case LogicalType.NotAnd:
-                return !Conditions.All(c => c.IsTrue(combo));
+                return !Conditions.All(c => c.IsTrue(rotation));
             case LogicalType.NotOr:
-                return !Conditions.Any(c => c.IsTrue(combo));
+                return !Conditions.Any(c => c.IsTrue(rotation));
         }
         return false;
     }
     public List<ICondition> Conditions { get; set; } = new List<ICondition>();
     public LogicalType Type;
 
-    public void Draw(ICustomRotation rotation)
+    public override void DrawInside(ICustomRotation rotation)
     {
         ImGui.BeginGroup();
 

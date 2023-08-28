@@ -6,7 +6,7 @@ using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
-internal class TargetCondition : ICondition
+internal class TargetCondition : BaseCondition
 {
     private static Status[] _allStatus = null;
     private static Status[] AllStatus
@@ -33,7 +33,7 @@ internal class TargetCondition : ICondition
 
     public string CastingActionName = string.Empty;
 
-    public bool IsTrue(ICustomRotation rotation)
+    public override bool IsTrueInside(ICustomRotation rotation)
     {
         if (!Player.Available) return false;
 
@@ -122,7 +122,7 @@ internal class TargetCondition : ICondition
         HeaderSize = 12,
     };
 
-    public void Draw(ICustomRotation rotation)
+    public override void DrawInside(ICustomRotation rotation)
     {
         ConditionHelper.CheckBaseAction(rotation, ID, ref _action);
 

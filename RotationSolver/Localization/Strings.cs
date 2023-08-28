@@ -286,7 +286,7 @@ internal partial class Strings
 
     #endregion
 
-    #region ScriptWindow
+    #region Action Sequencer
     public string ActionSequencer_Load { get; set; } = "Load From folder.";
     public string ActionSequencer_Can { get; set; } = "Can";
     public string ActionSequencer_Cannot { get; set; } = "Can Not";
@@ -310,6 +310,7 @@ internal partial class Strings
     public string ActionSequencer_Adjusted { get; set; } = "Adjusted";
     public string ActionSequencer_StatusSelf { get; set; } = "From Self";
     public string ActionSequencer_StatusAll { get; set; } = "From All";
+    public string ActionSequencer_Delay_Description { get; set; } = "How many seconds do you want to delay its turning to true.";
     #endregion
 
     #region Actions

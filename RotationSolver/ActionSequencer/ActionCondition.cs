@@ -4,7 +4,7 @@ using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
-internal class ActionCondition : ICondition
+internal class ActionCondition : BaseCondition
 {
     private IBaseAction _action;
 
@@ -18,7 +18,7 @@ internal class ActionCondition : ICondition
     public int Param2;
     public float Time;
 
-    public bool IsTrue(ICustomRotation rotation)
+    public override bool IsTrueInside(ICustomRotation rotation)
     {
         if (!ConditionHelper.CheckBaseAction(rotation, ID, ref _action)) return false;
 
@@ -70,7 +70,8 @@ internal class ActionCondition : ICondition
     {
         HeaderSize = 12,
     };
-    public void Draw(ICustomRotation rotation)
+
+    public override void DrawInside(ICustomRotation rotation)
     {
         ConditionHelper.CheckBaseAction(rotation, ID, ref _action);
 
@@ -193,6 +194,7 @@ internal class ActionCondition : ICondition
                 break;
         }
     }
+
 }
 
 public enum ActionConditionType : byte
