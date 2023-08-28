@@ -242,6 +242,8 @@ internal static class DataCenter
     public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;
     public static int NumberOfHostilesInRange { get; internal set; }
     public static int NumberOfHostilesInMaxRange { get; internal set; }
+    public static int NumberOfAllHostilesInRange { get; internal set; }
+    public static int NumberOfAllHostilesInMaxRange { get; internal set; }
     public static bool MobsTime { get; internal set; }
     public static float AverageDeadTime { get; internal set; }
 

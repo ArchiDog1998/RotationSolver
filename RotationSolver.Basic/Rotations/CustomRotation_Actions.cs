@@ -298,7 +298,7 @@ public abstract partial class CustomRotation
     public PropertyInfo[] AllBools => _allBools ??= GetType().GetStaticProperties<bool>();
 
     PropertyInfo[] _allBytes;
-    public PropertyInfo[] AllBytes => _allBytes ??= GetType().GetStaticProperties<byte>();
+    public PropertyInfo[] AllBytesOrInt => _allBytes ??= GetType().GetStaticProperties<byte>().Union(GetType().GetStaticProperties<byte>()).ToArray();
 
     PropertyInfo[] _allFloats;
     public PropertyInfo[] AllFloats => _allFloats ??= GetType().GetStaticProperties<float>();

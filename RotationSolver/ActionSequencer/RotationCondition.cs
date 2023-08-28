@@ -44,9 +44,11 @@ internal class RotationCondition : BaseCondition
                 }
                 return false;
 
-            case ComboConditionType.Byte:
+            case ComboConditionType.Integer:
                 if (_prop == null) return false;
-                if (_prop.GetValue(rotation) is byte by)
+
+                var value = _prop.GetValue(rotation);
+                if (value is byte by)
                 {
                     switch (Condition)
                     {
@@ -56,6 +58,18 @@ internal class RotationCondition : BaseCondition
                             return by < Param1;
                         case 2:
                             return by == Param1;
+                    }
+                }
+                else if (value is int i)
+                {
+                    switch (Condition)
+                    {
+                        case 0:
+                            return i > Param1;
+                        case 1:
+                            return i < Param1;
+                        case 2:
+                            return i == Param1;
                     }
                 }
                 return false;
@@ -125,9 +139,9 @@ internal class RotationCondition : BaseCondition
 
                 break;
 
-            case ComboConditionType.Byte:
+            case ComboConditionType.Integer:
                 ImGui.SameLine();
-                ConditionHelper.SearchItemsReflection($"##ByteChoice{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllBytes, i =>
+                ConditionHelper.SearchItemsReflection($"##ByteChoice{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllBytesOrInt, i =>
                 {
                     _prop = i;
                     PropertyName = i.Name;
@@ -216,7 +230,7 @@ internal class RotationCondition : BaseCondition
 public enum ComboConditionType : byte
 {
     Bool,
-    Byte,
+    Integer,
     Float,
     Last,
 }

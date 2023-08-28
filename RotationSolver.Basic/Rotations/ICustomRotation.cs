@@ -97,7 +97,7 @@ public interface ICustomRotation : ITexture
     /// <summary>
     /// All byte properties.
     /// </summary>
-    PropertyInfo[] AllBytes { get; }
+    PropertyInfo[] AllBytesOrInt { get; }
 
     /// <summary>
     /// All time methods.

@@ -371,6 +371,7 @@ internal partial class Strings
     public string TargetConditionType_HasStatus { get; set; } = "Has Status";
     public string TargetConditionType_IsDying { get; set; } = "Is Dying";
     public string TargetConditionType_IsBoss { get; set; } = "Is Boss";
+    public string TargetConditionType_InCombat { get; set; } = "In Combat";
     public string TargetConditionType_Distance { get; set; } = "Distance";
     public string TargetConditionType_StatusEnd { get; set; } = "Status End";
     public string TargetConditionType_DeadTime { get; set; } = "Dead Time";
@@ -417,6 +418,8 @@ internal partial class Strings
         { nameof(CustomRotation.HasHostilesInRange), "Has hostiles in Range"},
         { nameof(CustomRotation.NumberOfHostilesInRange), "The number of hostiles in Range"},
         { nameof(CustomRotation.NumberOfHostilesInMaxRange), "The number of hostiles in max Range"},
+        { nameof(CustomRotation.NumberOfAllHostilesInRange), "The number of all hostiles in Range"},
+        { nameof(CustomRotation.NumberOfAllHostilesInMaxRange), "The number of all hostiles in max Range"},
         { nameof(CustomRotation.InBurst), "In burst."},
 
         { nameof(CustomRotation.CanHealAreaAbility), "Can heal area ability"},

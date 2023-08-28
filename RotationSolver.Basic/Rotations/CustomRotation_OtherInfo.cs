@@ -2,7 +2,6 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
-using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -158,6 +157,21 @@ public abstract partial class CustomRotation
     /// All hostile Targets.
     /// </summary>
     protected static IEnumerable<BattleChara> HostileTargets => DataCenter.HostileTargets;
+
+    /// <summary>
+    /// How many hostile targets in range? 25 for ranged jobs and healer, 3 for melee and tank. This is all can attack.
+    /// </summary>
+    public static int NumberOfAllHostilesInRange => DataCenter.NumberOfAllHostilesInRange;
+
+    /// <summary>
+    /// How many hostile targets in max range (25 yalms) regardless of job. This is all can attack.
+    /// </summary>
+    public static int NumberOfAllHostilesInMaxRange => DataCenter.NumberOfAllHostilesInMaxRange;
+
+    /// <summary>
+    /// All hostile Targets. This is all can attack.
+    /// </summary>
+    protected static IEnumerable<BattleChara> AllHostileTargets => DataCenter.AllHostileTargets;
 
     /// <summary>
     /// Average dead time of hostiles.
