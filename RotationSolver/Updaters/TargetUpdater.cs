@@ -7,6 +7,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using System.Configuration;
 using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -111,6 +112,16 @@ internal static partial class TargetUpdater
             if (Service.Config.GetValue(PluginConfigBool.OnlyAttackInView))
             {
                 if (!Svc.GameGui.WorldToScreen(b.Position, out _)) return false;
+            }
+            if(Service.Config.GetValue(PluginConfigBool.OnlyAttackInSight))
+            {
+                Vector3 dir = b.Position - Player.Object.Position;
+                Vector2 dirVec = new(dir.Z, dir.X);
+                double angle = Player.Object.GetFaceVector().AngleTo(dirVec);
+                if (angle > Math.PI * Service.Config.GetValue(PluginConfigFloat.AngleOfSight) / 360)
+                {
+                    return false;
+                }
             }
             return true;
         })));

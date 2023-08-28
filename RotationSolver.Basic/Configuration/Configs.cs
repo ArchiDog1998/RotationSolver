@@ -276,6 +276,7 @@ public enum PluginConfigBool : byte
     [Default(false)] UseStopCasting,
     [Default(false)] EsunaAll,
     [Default(false)] OnlyAttackInView,
+    [Default(false)] OnlyAttackInSight,
     [Default(false)] OnlyHotOnTanks,
 
     [Default(false)] InDebug,
@@ -336,6 +337,8 @@ public enum PluginConfigFloat : byte
     [Default(0.2f, 0.005f, 0.05f)] SampleLength,
     [Default(0.1f)] KeyBoardNoiseTimeMin,
     [Default(0.2f)] KeyBoardNoiseTimeMax,
+    [Default(45f, 0f, 90f)] AngleOfSight,
+
 
     [Default(0.25f, 0f, 0.5f)] HealthDifference,
     [Default(1f, 0f, 5f)] MeleeRangeOffset,

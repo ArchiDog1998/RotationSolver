@@ -797,6 +797,9 @@ public partial class RotationConfigWindow
         new DragFloatSearchPlugin(PluginConfigFloat.DeadTimeDying, 0.02f),
 
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInView),
+        new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInSight,
+            new DragFloatSearchPlugin(PluginConfigFloat.AngleOfSight, 0.02f)),
+
         new CheckBoxSearchPlugin(PluginConfigBool.ChangeTargetForFate),
         new CheckBoxSearchPlugin(PluginConfigBool.TargetFatePriority),
         new CheckBoxSearchPlugin(PluginConfigBool.TargetHuntingRelicLevePriority),

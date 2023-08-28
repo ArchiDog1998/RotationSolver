@@ -123,6 +123,7 @@ internal static class ConfigTranslation
         PluginConfigBool.TargetQuestPriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
         PluginConfigBool.ShowTargetDeadTime => LocalizationManager.RightLang.ConfigWindow_Param_ShowTargetDeadTime,
         PluginConfigBool.ShowStateIcon => LocalizationManager.RightLang.ConfigWindow_UI_ShowStateIcon,
+        PluginConfigBool.OnlyAttackInSight => LocalizationManager.RightLang.ConfigWindow_Target_OnlyAttackInSight,
 
 
         // extra
@@ -190,6 +191,7 @@ internal static class ConfigTranslation
         // target
         PluginConfigFloat.DeadTimeBoss => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeBoss,
         PluginConfigFloat.DeadTimeDying => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeDying,
+        PluginConfigFloat.AngleOfSight => LocalizationManager.RightLang.ConfigWindow_Target_AngleOfSight,
 
         _ => string.Empty,   
     };

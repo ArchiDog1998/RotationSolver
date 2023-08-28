@@ -720,4 +720,7 @@ internal partial class Strings
     public string ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving { get; set; } = "Use beneficial area action when moving.";
     public string ConfigWindow_Auto_AutoDefenseNumber { get; set; } = "The count of hostiles who target on me. If it's larger than this, defense single.";
 
+    public string ConfigWindow_Target_OnlyAttackInSight { get; set; } = "Only attack the targets in sight";
+    public string ConfigWindow_Target_AngleOfSight { get; set; } = "The angle of your sight";
+
 }

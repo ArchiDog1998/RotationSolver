@@ -2065,6 +2065,8 @@ public partial class RotationConfigWindow : Window
         ImGui.Text("CanHealAreaSpell: " + DataCenter.CanHealAreaSpell.ToString());
         ImGui.Text("PartyMembersAverHP: " + DataCenter.PartyMembersAverHP.ToString());
 
+        ImGui.Text($"Your combat state: {DataCenter.InCombat}");
+        ImGui.Text($"Your character combat: {Player.Object.InCombat()}");
         foreach (var p in Svc.Party)
         {
             if (p.GameObject is not BattleChara b) continue;
