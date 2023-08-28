@@ -172,7 +172,7 @@ internal static class PainterManager
                 ((Drawing3DText)SubItems[i]).Text = string.Empty;
             }
 
-            if (!Service.Config.GetValue(PluginConfigBool.ShowTargetDeadTime)) return;
+            if (!Service.Config.GetValue(PluginConfigBool.ShowTargetTimeToKill)) return;
 
             int index = 0;
             foreach (GameObject t in DataCenter.AllHostileTargets.OrderBy(ObjectHelper.DistanceToPlayer))
@@ -184,7 +184,7 @@ internal static class PainterManager
 
                 try
                 {
-                    item.Text = $"DeadTime: {b.GetDeadTime():F2}s / {b.GetDeadTime(true):F2}s";
+                    item.Text = $"TTK: {b.GetTimeToKill():F2}s / {b.GetTimeToKill(true):F2}s";
                     item.Color = HealthRatioColor;
                     item.Position = b.Position;
                 }

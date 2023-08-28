@@ -379,7 +379,7 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor)
         ),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetDeadTime),
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetTimeToKill),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget, 
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)
@@ -521,7 +521,7 @@ public partial class RotationConfigWindow
                 }
             },
 
-            new DragFloatSearchPlugin(PluginConfigFloat.AutoHealDeadTime, 0.02f),
+            new DragFloatSearchPlugin(PluginConfigFloat.AutoHealTimeToKill, 0.02f),
             new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
 
         new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),
@@ -793,12 +793,12 @@ public partial class RotationConfigWindow
 
     private static readonly ISearchable[] _targetHostileSelectSearchable = new ISearchable[]
     {
-        new DragFloatSearchPlugin(PluginConfigFloat.DeadTimeBoss, 0.02f),
-        new DragFloatSearchPlugin(PluginConfigFloat.DeadTimeDying, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.BossTimeToKill, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.DyingTimeToKill, 0.02f),
 
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInView),
-        new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInSight,
-            new DragFloatSearchPlugin(PluginConfigFloat.AngleOfSight, 0.02f)),
+        new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInVisionCone,
+            new DragFloatSearchPlugin(PluginConfigFloat.AngleOfVisionCone, 0.02f)),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ChangeTargetForFate),
         new CheckBoxSearchPlugin(PluginConfigBool.TargetFatePriority),

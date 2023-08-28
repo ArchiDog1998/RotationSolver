@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -150,8 +151,8 @@ public static class ObjectHelper
     public static bool IsBoss(this BattleChara obj)
     {
         if (obj == null) return false;
-        if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetDeadTime)) return true;
-        return obj.GetDeadTime(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeBoss)
+        if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return true;
+        return obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)
             || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
     }
 
@@ -163,8 +164,8 @@ public static class ObjectHelper
     public static bool IsDying(this BattleChara b)
     {
         if (b == null) return false;
-        if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetDeadTime)) return false;
-        return b.GetDeadTime() <= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeDying) || b.GetHealthRatio() < 0.02f;
+        if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return false;
+        return b.GetTimeToKill() <= Service.Config.GetValue(Configuration.PluginConfigFloat.DyingTimeToKill) || b.GetHealthRatio() < 0.02f;
     }
 
     /// <summary>
@@ -185,7 +186,7 @@ public static class ObjectHelper
     /// <param name="b"></param>
     /// <param name="wholeTime">whole time to die.</param>
     /// <returns></returns>
-    public static float GetDeadTime(this BattleChara b, bool wholeTime = false)
+    public static float GetTimeToKill(this BattleChara b, bool wholeTime = false)
     {
         if (b == null) return float.NaN;
         if (b.IsDummy()) return 999.99f;

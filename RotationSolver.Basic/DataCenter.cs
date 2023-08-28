@@ -245,7 +245,7 @@ internal static class DataCenter
     public static int NumberOfAllHostilesInRange { get; internal set; }
     public static int NumberOfAllHostilesInMaxRange { get; internal set; }
     public static bool MobsTime { get; internal set; }
-    public static float AverageDeadTime { get; internal set; }
+    public static float AverageTimeToKill { get; internal set; }
 
     public static bool IsHostileCastingAOE { get; internal set; }
 

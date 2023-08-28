@@ -121,9 +121,9 @@ internal static class ConfigTranslation
         PluginConfigBool.TargetFatePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetFatePriority,
         PluginConfigBool.TargetHuntingRelicLevePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
         PluginConfigBool.TargetQuestPriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
-        PluginConfigBool.ShowTargetDeadTime => LocalizationManager.RightLang.ConfigWindow_Param_ShowTargetDeadTime,
+        PluginConfigBool.ShowTargetTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_ShowTargetTimeToKill,
         PluginConfigBool.ShowStateIcon => LocalizationManager.RightLang.ConfigWindow_UI_ShowStateIcon,
-        PluginConfigBool.OnlyAttackInSight => LocalizationManager.RightLang.ConfigWindow_Target_OnlyAttackInSight,
+        PluginConfigBool.OnlyAttackInVisionCone => LocalizationManager.RightLang.ConfigWindow_Target_OnlyAttackInVisionCone,
 
 
         // extra
@@ -186,12 +186,12 @@ internal static class ConfigTranslation
         PluginConfigFloat.HealthHealerRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
         PluginConfigFloat.HealthTankRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
         PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
-        PluginConfigFloat.AutoHealDeadTime => LocalizationManager.RightLang.ConfigWindow_Auto_AutoHealDeadTime,
+        PluginConfigFloat.AutoHealTimeToKill => LocalizationManager.RightLang.ConfigWindow_Auto_AutoHealTimeToKill,
 
         // target
-        PluginConfigFloat.DeadTimeBoss => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeBoss,
-        PluginConfigFloat.DeadTimeDying => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeDying,
-        PluginConfigFloat.AngleOfSight => LocalizationManager.RightLang.ConfigWindow_Target_AngleOfSight,
+        PluginConfigFloat.BossTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_BossTimeToKill,
+        PluginConfigFloat.DyingTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_DyingTimeToKill,
+        PluginConfigFloat.AngleOfVisionCone => LocalizationManager.RightLang.ConfigWindow_Target_VisionCone,
 
         _ => string.Empty,   
     };
