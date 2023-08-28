@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.2.9](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.8...v3.2.9) (2023-08-28)
+
+
+### Bug Fixes
+
+* add `InCombat` property for every object. ([b2c34bd](https://github.com/ArchiDog1998/RotationSolver/commit/b2c34bd09ce7d7e1daa680e7d2db1abcc37ac4d8))
+* add delay for all conditions in action sequencer. ([e1009e9](https://github.com/ArchiDog1998/RotationSolver/commit/e1009e9343314764a5f008a8d4a60b12ba56ebf4))
+* add integer value into the action sequencer. ([4654e4c](https://github.com/ArchiDog1998/RotationSolver/commit/4654e4cbfbb621a14ae459fd74c00bf359f4b36e))
+* add some ids. ([9f03e7c](https://github.com/ArchiDog1998/RotationSolver/commit/9f03e7c14334e186d310e672bb4ca5954a26ada6))
+* add the angle of sight. ([6713df5](https://github.com/ArchiDog1998/RotationSolver/commit/6713df57a26c628bad8788c6832efb2b0ba56206))
+* is moving or jumping. ([3dc7156](https://github.com/ArchiDog1998/RotationSolver/commit/3dc715649ef41670f7c6d27bc5a3183a72c7d98a))
+* name from deadtime to ttk. ([31e7b40](https://github.com/ArchiDog1998/RotationSolver/commit/31e7b4016d25c930e8c1aa027e0291bce66b3c00))
+* removed the double use restriction of ability. ([941ae29](https://github.com/ArchiDog1998/RotationSolver/commit/941ae299a5d7591c8eeeb7e225e06845dca14134))
+* scribe line fixed. ([13290d3](https://github.com/ArchiDog1998/RotationSolver/commit/13290d3869076e619e14c15a9695905d79b435f7))
+
 ## [3.2.8](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.7...v3.2.8) (2023-08-26)
 
 
