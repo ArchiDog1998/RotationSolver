@@ -166,13 +166,13 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction LowBlow { get; } = new RoleAction(ActionID.LowBlow, new JobRole[] { JobRole.Tank })
     {
-        FilterForHostiles = bs => bs.Where(b =>
+        FilterForHostiles = bs => bs.Where((Func<BattleChara, bool>)(b =>
         {
-            if (b.IsBoss() || IsMoving || b.CastActionId == 0) return false;
+            if (b.IsBoss() || CustomRotation.IsMoving || b.CastActionId == 0) return false;
 
             if (!b.IsCastInterruptible || Interject.IsCoolingDown) return true;
             return false;
-        }),
+        })),
     };
 
     /// <summary>
@@ -209,10 +209,15 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static unsafe IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Friendly)
+    public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Friendly)
     {
-        ActionCheck = (b, m) => NotInCombatDelay && PartyMembers.GetObjectInRadius(20)
-            .Any(p => p.WillStatusEnd(3, false, StatusID.Peloton) && !p.Struct()->Character.InCombat),
+        ActionCheck = (b, m) =>
+        {
+            if (!NotInCombatDelay) return false;
+            var players = PartyMembers.GetObjectInRadius(20);
+            if (players.Any(ObjectHelper.InCombat)) return false;
+            return players.Any(p => p.WillStatusEnd(3, false, StatusID.Peloton));
+        },
     };
 
     /// <summary>
@@ -298,7 +303,7 @@ public abstract partial class CustomRotation
     public PropertyInfo[] AllBools => _allBools ??= GetType().GetStaticProperties<bool>();
 
     PropertyInfo[] _allBytes;
-    public PropertyInfo[] AllBytes => _allBytes ??= GetType().GetStaticProperties<byte>();
+    public PropertyInfo[] AllBytesOrInt => _allBytes ??= GetType().GetStaticProperties<byte>().Union(GetType().GetStaticProperties<byte>()).ToArray();
 
     PropertyInfo[] _allFloats;
     public PropertyInfo[] AllFloats => _allFloats ??= GetType().GetStaticProperties<float>();

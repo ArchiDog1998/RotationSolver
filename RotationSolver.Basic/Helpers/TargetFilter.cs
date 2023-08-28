@@ -95,8 +95,7 @@ public static class TargetFilter
     private static T FindMoveTargetFaceDirection<T>(IEnumerable<T> charas) where T : GameObject
     {
         Vector3 pPosition = Player.Object.Position;
-        float rotation = Player.Object.Rotation;
-        Vector2 faceVec = new((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+        Vector2 faceVec = Player.Object.GetFaceVector();
 
         var tars = charas.Where(t =>
         {
@@ -104,7 +103,7 @@ public static class TargetFilter
 
             Vector3 dir = t.Position - pPosition;
             Vector2 dirVec = new(dir.Z, dir.X);
-            double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
+            double angle = faceVec.AngleTo(dirVec);
             return angle <= Math.PI * Service.Config.GetValue(Configuration.PluginConfigFloat.MoveTargetAngle) / 360;
         }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 

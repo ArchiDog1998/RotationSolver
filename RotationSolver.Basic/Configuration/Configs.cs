@@ -251,7 +251,7 @@ public enum PluginConfigBool : byte
     [Default(true)] DrawMeleeOffset,
 
     [Default(true)] ShowMoveTarget,
-    [Default(false)] ShowTargetDeadTime,
+    [Default(false)] ShowTargetTimeToKill,
     [Default(true)] ShowTarget,
     [Default(true)] ChooseAttackMark,
     [Default(false)] CanAttackMarkAOE,
@@ -276,6 +276,7 @@ public enum PluginConfigBool : byte
     [Default(false)] UseStopCasting,
     [Default(false)] EsunaAll,
     [Default(false)] OnlyAttackInView,
+    [Default(false)] OnlyAttackInVisionCone,
     [Default(false)] OnlyHotOnTanks,
 
     [Default(false)] InDebug,
@@ -336,6 +337,8 @@ public enum PluginConfigFloat : byte
     [Default(0.2f, 0.005f, 0.05f)] SampleLength,
     [Default(0.1f)] KeyBoardNoiseTimeMin,
     [Default(0.2f)] KeyBoardNoiseTimeMax,
+    [Default(45f, 0f, 90f)] AngleOfVisionCone,
+
 
     [Default(0.25f, 0f, 0.5f)] HealthDifference,
     [Default(1f, 0f, 5f)] MeleeRangeOffset,
@@ -385,8 +388,8 @@ public enum PluginConfigFloat : byte
     [Default(0.6f, 0f, 0.7f)] CountDownAhead,
 
     [Default(24f, 0f, 90f)] MoveTargetAngle,
-    [Default(60f, 10f, 1800f)] DeadTimeBoss,
-    [Default(10f, 0f, 60f)] DeadTimeDying,
+    [Default(60f, 10f, 1800f)] BossTimeToKill,
+    [Default(10f, 0f, 60f)] DyingTimeToKill,
 
     [Default(16f, 9.6f, 96f)] CooldownFontSize,
 
@@ -398,12 +401,12 @@ public enum PluginConfigFloat : byte
     [Default(1.2f, 0f, 30f)] DistanceForMoving,
     [Default(0.2f, 0.01f, 0.5f)] MaxPing,
 
-    [Default(8f, 0f, 30f)] AutoHealDeadTime,
+    [Default(8f, 0f, 30f)] AutoHealTimeToKill,
     [Default(0.5f, 0f, 10f)] HostileIconHeight,
     [Default(1f, 0.1f, 10f)] HostileIconSize,
 
     [Default(1f, 0f, 3f)] StateIconHeight,
-    [Default(1f, 0.7f, 10f)] StateIconSize,
+    [Default(1f, 0.2f, 10f)] StateIconSize,
 }
 
 public enum PluginConfigVector4 : byte

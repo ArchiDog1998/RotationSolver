@@ -2,7 +2,6 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
-using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -160,19 +159,34 @@ public abstract partial class CustomRotation
     protected static IEnumerable<BattleChara> HostileTargets => DataCenter.HostileTargets;
 
     /// <summary>
-    /// Average dead time of hostiles.
+    /// How many hostile targets in range? 25 for ranged jobs and healer, 3 for melee and tank. This is all can attack.
     /// </summary>
-    public static float AverageDeadTime => DataCenter.AverageDeadTime;
+    public static int NumberOfAllHostilesInRange => DataCenter.NumberOfAllHostilesInRange;
 
     /// <summary>
-    /// Is the <see cref="AverageDeadTime"/> larger than <paramref name="time"/>.
+    /// How many hostile targets in max range (25 yalms) regardless of job. This is all can attack.
+    /// </summary>
+    public static int NumberOfAllHostilesInMaxRange => DataCenter.NumberOfAllHostilesInMaxRange;
+
+    /// <summary>
+    /// All hostile Targets. This is all can attack.
+    /// </summary>
+    protected static IEnumerable<BattleChara> AllHostileTargets => DataCenter.AllHostileTargets;
+
+    /// <summary>
+    /// Average dead time of hostiles.
+    /// </summary>
+    public static float AverageTimeToKill => DataCenter.AverageTimeToKill;
+
+    /// <summary>
+    /// Is the <see cref="AverageTimeToKill"/> larger than <paramref name="time"/>.
     /// </summary>
     /// <param name="time">Time</param>
     /// <returns>Is Longer.</returns>
     public static bool IsLongerThan(float time)
     {
         if (IsInHighEndDuty) return true;
-        return AverageDeadTime > time;
+        return AverageTimeToKill > time;
     }
 
     /// <summary>
@@ -192,7 +206,7 @@ public abstract partial class CustomRotation
         //Job
         (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer)) 
         && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal)
-        && IsLongerThan(Service.Config.GetValue(Configuration.PluginConfigFloat.AutoHealDeadTime));
+        && IsLongerThan(Service.Config.GetValue(Configuration.PluginConfigFloat.AutoHealTimeToKill));
 
     /// <summary>
     /// 

@@ -7,6 +7,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using System.Configuration;
 using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -26,13 +27,13 @@ internal static partial class TargetUpdater
         UpdateNamePlate(Svc.Objects.OfType<BattleChara>());
     }
 
-    private static DateTime _lastUpdateDeadTime = DateTime.MinValue;
-    private static readonly TimeSpan _deadTimeSpan = TimeSpan.FromSeconds(0.5);
-    private static void UpdateDeadTime(IEnumerable<BattleChara> allTargets)
+    private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;
+    private static readonly TimeSpan _timeToKillSpan = TimeSpan.FromSeconds(0.5);
+    private static void UpdateTimeToKill(IEnumerable<BattleChara> allTargets)
     {
         var now = DateTime.Now;
-        if (now - _lastUpdateDeadTime < _deadTimeSpan) return;
-        _lastUpdateDeadTime = now;
+        if (now - _lastUpdateTimeToKill < _timeToKillSpan) return;
+        _lastUpdateTimeToKill = now;
 
         if (DataCenter.RecordedHP.Count >= DataCenter.HP_RECORD_TIME)
         {
@@ -98,7 +99,7 @@ internal static partial class TargetUpdater
             return true;
         });
 
-        UpdateDeadTime(allTargets);
+        UpdateTimeToKill(allTargets);
 
         DataCenter.AllHostileTargets = allTargets.Where(b =>
         {
@@ -112,11 +113,21 @@ internal static partial class TargetUpdater
             {
                 if (!Svc.GameGui.WorldToScreen(b.Position, out _)) return false;
             }
+            if(Service.Config.GetValue(PluginConfigBool.OnlyAttackInVisionCone))
+            {
+                Vector3 dir = b.Position - Player.Object.Position;
+                Vector2 dirVec = new(dir.Z, dir.X);
+                double angle = Player.Object.GetFaceVector().AngleTo(dirVec);
+                if (angle > Math.PI * Service.Config.GetValue(PluginConfigFloat.AngleOfVisionCone) / 360)
+                {
+                    return false;
+                }
+            }
             return true;
         })));
 
-        var deadTimes = DataCenter.HostileTargets.Select(b => b.GetDeadTime()).Where(v => !float.IsNaN(v));
-        DataCenter.AverageDeadTime = deadTimes.Any() ? deadTimes.Average() : 0;
+        var timesToKill = DataCenter.HostileTargets.Select(b => b.GetTimeToKill()).Where(v => !float.IsNaN(v));
+        DataCenter.AverageTimeToKill = timesToKill.Any() ? timesToKill.Average() : 0;
 
         DataCenter.CanInterruptTargets.Delay(DataCenter.HostileTargets.Where(ObjectHelper.CanInterrupt));
 
@@ -125,6 +136,10 @@ internal static partial class TargetUpdater
         DataCenter.NumberOfHostilesInRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
 
         DataCenter.NumberOfHostilesInMaxRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= 25);
+
+        DataCenter.NumberOfAllHostilesInRange = DataCenter.AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
+
+        DataCenter.NumberOfAllHostilesInMaxRange = DataCenter.AllHostileTargets.Count(o => o.DistanceToPlayer() <= 25);
 
         DataCenter.MobsTime = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
             >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber);

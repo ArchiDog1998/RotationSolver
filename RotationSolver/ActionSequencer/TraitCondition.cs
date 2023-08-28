@@ -1,18 +1,17 @@
 ﻿using ECommons.GameHelpers;
-using Lumina.Data.Parsing;
 using RotationSolver.Basic.Traits;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
-internal class TraitCondition : ICondition
+internal class TraitCondition : BaseCondition
 {
     public uint TraitID { get; set; } = 0;
     private IBaseTrait _trait;
     public bool Condition { get; set; }
 
-    public bool IsTrue(ICustomRotation rotation)
+    public override bool IsTrueInside(ICustomRotation rotation)
     {
         CheckBaseTrait(rotation);
         if (_trait == null || !Player.Available) return false;
@@ -22,7 +21,7 @@ internal class TraitCondition : ICondition
     }
 
     private const int count = 8;
-    public void Draw(ICustomRotation rotation)
+    public override void DrawInside(ICustomRotation rotation)
     {
         CheckBaseTrait(rotation);
 

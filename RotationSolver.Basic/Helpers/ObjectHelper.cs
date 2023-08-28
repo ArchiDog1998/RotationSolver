@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -150,8 +151,8 @@ public static class ObjectHelper
     public static bool IsBoss(this BattleChara obj)
     {
         if (obj == null) return false;
-        if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetDeadTime)) return true;
-        return obj.GetDeadTime(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeBoss)
+        if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return true;
+        return obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)
             || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
     }
 
@@ -163,8 +164,18 @@ public static class ObjectHelper
     public static bool IsDying(this BattleChara b)
     {
         if (b == null) return false;
-        if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetDeadTime)) return false;
-        return b.GetDeadTime() <= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeDying) || b.GetHealthRatio() < 0.02f;
+        if (b.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return false;
+        return b.GetTimeToKill() <= Service.Config.GetValue(Configuration.PluginConfigFloat.DyingTimeToKill) || b.GetHealthRatio() < 0.02f;
+    }
+
+    /// <summary>
+    /// Whether the character is in combat.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static unsafe bool InCombat(this BattleChara obj)
+    {
+        return obj.Struct()->Character.InCombat;
     }
 
     private static readonly TimeSpan CheckSpan = TimeSpan.FromSeconds(2.5);
@@ -175,7 +186,7 @@ public static class ObjectHelper
     /// <param name="b"></param>
     /// <param name="wholeTime">whole time to die.</param>
     /// <returns></returns>
-    public static float GetDeadTime(this BattleChara b, bool wholeTime = false)
+    public static float GetTimeToKill(this BattleChara b, bool wholeTime = false)
     {
         if (b == null) return float.NaN;
         if (b.IsDummy()) return 999.99f;
@@ -256,17 +267,38 @@ public static class ObjectHelper
     internal static EnemyPositional FindEnemyPositional(this GameObject enemy)
     {
         Vector3 pPosition = enemy.Position;
-        float rotation = enemy.Rotation;
-        Vector2 faceVec = new((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+        Vector2 faceVec = enemy.GetFaceVector();
 
         Vector3 dir = Player.Object.Position - pPosition;
         Vector2 dirVec = new(dir.Z, dir.X);
 
-        double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
+        double angle = faceVec.AngleTo(dirVec);
 
         if (angle < Math.PI / 4) return EnemyPositional.Front;
         else if (angle > Math.PI * 3 / 4) return EnemyPositional.Rear;
         return EnemyPositional.Flank;
+    }
+
+    /// <summary>
+    /// Get the face vector
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static Vector2 GetFaceVector(this GameObject obj)
+    {
+        float rotation = obj.Rotation;
+        return new((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+    }
+
+    /// <summary>
+    /// Get two vector's angle
+    /// </summary>
+    /// <param name="vec1"></param>
+    /// <param name="vec2"></param>
+    /// <returns></returns>
+    public static double AngleTo(this Vector2 vec1,  Vector2 vec2)
+    {
+        return Math.Acos(Vector2.Dot(vec1, vec2) / vec1.Length() / vec2.Length());
     }
 
     /// <summary>

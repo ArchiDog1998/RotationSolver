@@ -57,13 +57,21 @@ internal abstract class Searchable : ISearchable
 
             ImGui.PushStyleColor(ImGuiCol.Text, *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled));
 
-            var cursor = ImGui.GetCursorPos() + ImGui.GetWindowPos();
+            var cursor = ImGui.GetCursorPos() + ImGui.GetWindowPos() - new Vector2(ImGui.GetScrollX(), ImGui.GetScrollY());
             ImGui.TextWrapped(Name);
-            var size = ImGui.GetItemRectSize();
-            cursor += new Vector2(0, size.Y / 2);
-            ImGui.GetWindowDrawList().AddLine(cursor, cursor + new Vector2(size.X, 0), ImGui.ColorConvertFloat4ToU32(textColor));
-
             ImGui.PopStyleColor();
+
+            var step = ImGui.CalcTextSize(Name);
+            var size = ImGui.GetItemRectSize();
+            var height = step.Y / 2;
+            var wholeWidth = step.X;
+            while (height < size.Y)
+            {
+                var pt = cursor + new Vector2(0, height);
+                ImGui.GetWindowDrawList().AddLine(pt, pt + new Vector2(Math.Min(wholeWidth, size.X), 0), ImGui.ColorConvertFloat4ToU32(textColor));
+                height += step.Y;
+                wholeWidth -= size.X;
+            }
 
             var jobs = JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? Array.Empty<Job>());
             var roleOrJob = string.Join("\n",

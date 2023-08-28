@@ -6,7 +6,7 @@ using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
-internal class TargetCondition : ICondition
+internal class TargetCondition : BaseCondition
 {
     private static Status[] _allStatus = null;
     private static Status[] AllStatus
@@ -33,7 +33,7 @@ internal class TargetCondition : ICondition
 
     public string CastingActionName = string.Empty;
 
-    public bool IsTrue(ICustomRotation rotation)
+    public override bool IsTrueInside(ICustomRotation rotation)
     {
         if (!Player.Available) return false;
 
@@ -68,6 +68,10 @@ internal class TargetCondition : ICondition
                 result = tar.IsDying();
                 break;
 
+            case TargetConditionType.InCombat:
+                result = tar.InCombat();
+                break;
+
             case TargetConditionType.Distance:
                 result = tar.DistanceToPlayer() > DistanceOrTime;
                 break;
@@ -80,8 +84,8 @@ internal class TargetCondition : ICondition
                 result = !tar.WillStatusEndGCD((uint)GCD, DistanceOrTime, FromSelf, StatusId);
                 break;
 
-            case TargetConditionType.DeadTime:
-                result = tar.GetDeadTime() > DistanceOrTime;
+            case TargetConditionType.TimeToKill:
+                result = tar.GetTimeToKill() > DistanceOrTime;
                 break;
 
             case TargetConditionType.CastingAction:
@@ -118,7 +122,7 @@ internal class TargetCondition : ICondition
         HeaderSize = 12,
     };
 
-    public void Draw(ICustomRotation rotation)
+    public override void DrawInside(ICustomRotation rotation)
     {
         ConditionHelper.CheckBaseAction(rotation, ID, ref _action);
 
@@ -179,6 +183,7 @@ internal class TargetCondition : ICondition
                 break;
             case TargetConditionType.IsDying:
             case TargetConditionType.IsBoss:
+            case TargetConditionType.InCombat:
             case TargetConditionType.CastingAction:
                 combos = new string[]
                 {
@@ -190,7 +195,7 @@ internal class TargetCondition : ICondition
             case TargetConditionType.CastingActionTimeUntil:
             case TargetConditionType.Distance:
             case TargetConditionType.StatusEnd:
-            case TargetConditionType.DeadTime:
+            case TargetConditionType.TimeToKill:
                 combos = new string[] { ">", "<=" };
                 break;
         }
@@ -309,10 +314,11 @@ public enum TargetConditionType : byte
     HasStatus,
     IsDying,
     IsBoss,
+    InCombat,
     Distance,
     StatusEnd,
     StatusEndGCD,
     CastingAction,
     CastingActionTimeUntil,
-    DeadTime,
+    TimeToKill,
 }

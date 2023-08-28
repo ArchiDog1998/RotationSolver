@@ -10,19 +10,20 @@ internal static class EnumTranslations
         TargetConditionType.HasStatus => LocalizationManager.RightLang.TargetConditionType_HasStatus,
         TargetConditionType.IsDying => LocalizationManager.RightLang.TargetConditionType_IsDying,
         TargetConditionType.IsBoss => LocalizationManager.RightLang.TargetConditionType_IsBoss,
+        TargetConditionType.InCombat => LocalizationManager.RightLang.TargetConditionType_InCombat,
         TargetConditionType.Distance => LocalizationManager.RightLang.TargetConditionType_Distance,
         TargetConditionType.StatusEnd => LocalizationManager.RightLang.TargetConditionType_StatusEnd,
         TargetConditionType.StatusEndGCD => LocalizationManager.RightLang.TargetConditionType_StatusEndGCD,
         TargetConditionType.CastingAction => LocalizationManager.RightLang.TargetConditionType_CastingAction,
         TargetConditionType.CastingActionTimeUntil => LocalizationManager.RightLang.TargetConditionType_CastingActionTimeUntil,
-        TargetConditionType.DeadTime => LocalizationManager.RightLang.TargetConditionType_DeadTime,
+        TargetConditionType.TimeToKill => LocalizationManager.RightLang.TargetConditionType_TimeToKill,
         _ => string.Empty,
     };
 
     internal static string ToName(this ComboConditionType type) => type switch
     {
         ComboConditionType.Bool => LocalizationManager.RightLang.ComboConditionType_Bool,
-        ComboConditionType.Byte => LocalizationManager.RightLang.ComboConditionType_Byte,
+        ComboConditionType.Integer => LocalizationManager.RightLang.ComboConditionType_Byte,
         ComboConditionType.Float => LocalizationManager.RightLang.ComboConditionType_Float,
         ComboConditionType.Last => LocalizationManager.RightLang.ComboConditionType_Last,
         _ => string.Empty,
