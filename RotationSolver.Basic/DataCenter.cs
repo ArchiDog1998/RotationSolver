@@ -117,7 +117,7 @@ internal static class DataCenter
         }
     }
 
-    public static bool IsMovingOrJumping { get; internal set; }
+    public static bool IsMoving { get; internal set; }
 
     internal static float StopMovingRaw { get; set; }
 

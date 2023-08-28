@@ -79,7 +79,7 @@ public abstract partial class CustomRotation
                 {
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
-                else if(!IsMovingOrJumping)
+                else if(!IsMoving)
                 {
                     act = action;
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);

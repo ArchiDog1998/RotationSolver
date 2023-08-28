@@ -101,13 +101,13 @@ internal static class ActionUpdater
     static DateTime _stopMovingTime = DateTime.MinValue;
     private unsafe static void UpdateMoving()
     {
-        var last = DataCenter.IsMovingOrJumping;
-        DataCenter.IsMovingOrJumping = AgentMap.Instance()->IsPlayerMoving > 0 || Player.GameObject->GetHeight() > 0;
-        if (last && !DataCenter.IsMovingOrJumping)
+        var last = DataCenter.IsMoving;
+        DataCenter.IsMoving = AgentMap.Instance()->IsPlayerMoving > 0;
+        if (last && !DataCenter.IsMoving)
         {
             _stopMovingTime = DateTime.Now;
         }
-        else if (DataCenter.IsMovingOrJumping)
+        else if (DataCenter.IsMoving)
         {
             _stopMovingTime = DateTime.MinValue;
         }

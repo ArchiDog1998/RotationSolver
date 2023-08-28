@@ -60,7 +60,7 @@ public abstract partial class CustomRotation
         if (GeneralAbility(out act)) return true;
 
         //Run!
-        if (IsMovingOrJumping && NotInCombatDelay && Service.Config.GetValue(PluginConfigBool.AutoSpeedOutOfCombat) 
+        if (IsMoving && NotInCombatDelay && Service.Config.GetValue(PluginConfigBool.AutoSpeedOutOfCombat) 
             && SpeedAbility(out act)) return true;
 
         return false;

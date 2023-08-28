@@ -156,7 +156,7 @@ public abstract class SAM_Base : CustomRotation
     public static IBaseAction OgiNamikiri { get; } = new BaseAction(ActionID.OgiNamikiri)
     {
         StatusNeed = new[] { StatusID.OgiNamikiriReady },
-        ActionCheck = (b, m) => !IsMovingOrJumping
+        ActionCheck = (b, m) => !IsMoving
     };
 
     /// <summary>
@@ -174,7 +174,7 @@ public abstract class SAM_Base : CustomRotation
     /// </summary>
     public static IBaseAction Higanbana { get; } = new BaseAction(ActionID.Higanbana, ActionOption.Dot)
     {
-        ActionCheck = (b, m) => !IsMovingOrJumping && SenCount == 1,
+        ActionCheck = (b, m) => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
         TimeToDie = 40,
     };
@@ -184,7 +184,7 @@ public abstract class SAM_Base : CustomRotation
     /// </summary>
     public static IBaseAction TenkaGoken { get; } = new BaseAction(ActionID.TenkaGoken)
     {
-        ActionCheck = (b, m) => !IsMovingOrJumping && SenCount == 2,
+        ActionCheck = (b, m) => !IsMoving && SenCount == 2,
     };
 
     /// <summary>
@@ -192,7 +192,7 @@ public abstract class SAM_Base : CustomRotation
     /// </summary>
     public static IBaseAction MidareSetsugekka { get; } = new BaseAction(ActionID.MidareSetsugekka)
     {
-        ActionCheck = (b, m) => !IsMovingOrJumping && SenCount == 3,
+        ActionCheck = (b, m) => !IsMoving && SenCount == 3,
     };
 
     /// <summary>

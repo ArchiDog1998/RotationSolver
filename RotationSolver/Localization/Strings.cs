@@ -402,7 +402,7 @@ internal partial class Strings
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
     {
         #region Rotation
-        { nameof(CustomRotation.IsMovingOrJumping), "Is Moving or Jumping"},
+        { nameof(CustomRotation.IsMoving), "Is Moving or Jumping"},
         { nameof(CustomRotation.HasSwift), "Has Swift"},
         { nameof(CustomRotation.HasTankStance), "Has tank stance"},
         { nameof(CustomRotation.InCombat), "In Combat"},

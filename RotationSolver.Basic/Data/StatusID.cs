@@ -1341,4 +1341,19 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     MagicResistance = 942,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Exaltation = 2717,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Macrocosmos = 2718,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    CollectiveUnconscious = 849,
 }

@@ -2030,7 +2030,7 @@ public partial class RotationConfigWindow : Window
         {
             ImGui.Text("Fate: " + DataCenter.FateId.ToString());
         }
-        ImGui.Text("Moving: " + DataCenter.IsMovingOrJumping.ToString());
+        ImGui.Text("Moving: " + DataCenter.IsMoving.ToString());
         ImGui.Text("Stop Moving: " + DataCenter.StopMovingRaw.ToString());
 
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());

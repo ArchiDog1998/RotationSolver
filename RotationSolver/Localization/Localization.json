@@ -214,6 +214,7 @@
   "ActionSequencer_Adjusted": "Adjusted",
   "ActionSequencer_StatusSelf": "From Self",
   "ActionSequencer_StatusAll": "From All",
+  "ActionSequencer_Delay_Description": "How many seconds do you want to delay its turning to true.",
   "Action_Friendly": "Support",
   "Action_Ability": "0GCD",
   "Action_Attack": "Attack",
@@ -255,6 +256,7 @@
   "TargetConditionType_HasStatus": "Has Status",
   "TargetConditionType_IsDying": "Is Dying",
   "TargetConditionType_IsBoss": "Is Boss",
+  "TargetConditionType_InCombat": "In Combat",
   "TargetConditionType_Distance": "Distance",
   "TargetConditionType_StatusEnd": "Status End",
   "TargetConditionType_DeadTime": "Dead Time",
@@ -275,7 +277,7 @@
   "DescType_MoveBackAbility": "Move Back Ability",
   "DescType_SpeedAbility": "Speed Ability",
   "MemberInfoName": {
-    "IsMoving": "Is Moving",
+    "IsMoving": "Is Moving or Jumping",
     "HasSwift": "Has Swift",
     "HasTankStance": "Has tank stance",
     "InCombat": "In Combat",
@@ -291,6 +293,8 @@
     "HasHostilesInRange": "Has hostiles in Range",
     "NumberOfHostilesInRange": "The number of hostiles in Range",
     "NumberOfHostilesInMaxRange": "The number of hostiles in max Range",
+    "NumberOfAllHostilesInRange": "The number of all hostiles in Range",
+    "NumberOfAllHostilesInMaxRange": "The number of all hostiles in max Range",
     "InBurst": "In burst.",
     "CanHealAreaAbility": "Can heal area ability",
     "CanHealAreaSpell": "Can heal area spell",
@@ -500,5 +504,7 @@
   "ConfigWindow_UI_StateIconSize": "State Icon size",
   "ConfigWindow_UI_ShowStateIcon": "Show State Icon",
   "ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving": "Use beneficial area action when moving.",
-  "ConfigWindow_Auto_AutoDefenseNumber": "The count of hostiles who target on me. If it's larger than this, defense single."
+  "ConfigWindow_Auto_AutoDefenseNumber": "The count of hostiles who target on me. If it's larger than this, defense single.",
+  "ConfigWindow_Target_OnlyAttackInSight": "Only attack the targets in sight",
+  "ConfigWindow_Target_AngleOfSight": "The angle of your sight"
 }

@@ -25,13 +25,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Check the player is moving, such as running, walking or jumping.
     /// </summary>
-    public static bool IsMovingOrJumping => DataCenter.IsMovingOrJumping;
-
-    /// <summary>
-    /// Is moving.
-    /// </summary>
-    [Obsolete("Please use IsMovingOrJumping Instead")]
-    public static bool IsMoving => IsMovingOrJumping;
+    public static bool IsMoving => DataCenter.IsMoving;
 
     /// <summary>
     /// Is in combat.
@@ -487,7 +481,7 @@ public abstract partial class CustomRotation
     /// The time of stopping moving.
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
-    public static float StopMovingTime => IsMovingOrJumping ? 0 : DataCenter.StopMovingRaw + DataCenter.WeaponRemain;
+    public static float StopMovingTime => IsMoving ? 0 : DataCenter.StopMovingRaw + DataCenter.WeaponRemain;
 
     /// <summary>
     /// Time from GCD.

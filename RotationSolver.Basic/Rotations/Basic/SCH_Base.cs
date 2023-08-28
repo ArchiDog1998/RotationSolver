@@ -83,7 +83,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction SacredSoil { get; } = new BaseAction(ActionID.SacredSoil, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => HasAetherflow && !IsMovingOrJumping,
+        ActionCheck = (b, m) => HasAetherflow && !IsMoving,
     };
 
     /// <summary>
