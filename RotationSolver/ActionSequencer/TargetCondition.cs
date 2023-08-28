@@ -68,6 +68,10 @@ internal class TargetCondition : ICondition
                 result = tar.IsDying();
                 break;
 
+            case TargetConditionType.InCombat:
+                result = tar.InCombat();
+                break;
+
             case TargetConditionType.Distance:
                 result = tar.DistanceToPlayer() > DistanceOrTime;
                 break;
@@ -179,6 +183,7 @@ internal class TargetCondition : ICondition
                 break;
             case TargetConditionType.IsDying:
             case TargetConditionType.IsBoss:
+            case TargetConditionType.InCombat:
             case TargetConditionType.CastingAction:
                 combos = new string[]
                 {
@@ -309,6 +314,7 @@ public enum TargetConditionType : byte
     HasStatus,
     IsDying,
     IsBoss,
+    InCombat,
     Distance,
     StatusEnd,
     StatusEndGCD,

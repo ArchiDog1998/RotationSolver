@@ -167,6 +167,16 @@ public static class ObjectHelper
         return b.GetDeadTime() <= Service.Config.GetValue(Configuration.PluginConfigFloat.DeadTimeDying) || b.GetHealthRatio() < 0.02f;
     }
 
+    /// <summary>
+    /// Whether the character is in combat.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static unsafe bool InCombat(this BattleChara obj)
+    {
+        return obj.Struct()->Character.InCombat;
+    }
+
     private static readonly TimeSpan CheckSpan = TimeSpan.FromSeconds(2.5);
 
     /// <summary>

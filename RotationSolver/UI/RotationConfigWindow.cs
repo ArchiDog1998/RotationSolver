@@ -2064,6 +2064,12 @@ public partial class RotationConfigWindow : Window
         ImGui.Text("CanHealAreaSpell: " + DataCenter.CanHealAreaSpell.ToString());
         ImGui.Text("CanHealAreaSpell: " + DataCenter.CanHealAreaSpell.ToString());
         ImGui.Text("PartyMembersAverHP: " + DataCenter.PartyMembersAverHP.ToString());
+
+        foreach (var p in Svc.Party)
+        {
+            if (p.GameObject is not BattleChara b) continue;
+            ImGui.Text($"In Combat: {b.InCombat()}");
+        }
     }
 
     private static unsafe void DrawTargetData()
