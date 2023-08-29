@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.2.10](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.9...v3.2.10) (2023-08-29)
+
+
+### Bug Fixes
+
+* action sequencer redraw. ([eb47ec6](https://github.com/ArchiDog1998/RotationSolver/commit/eb47ec6f36844edcf5e74c0982f7cd742be8221c))
+* add an incompatible plugins. ([f06c99c](https://github.com/ArchiDog1998/RotationSolver/commit/f06c99cec479153943f763b8a0d191cc3871cda2))
+* add delay for heal when nothing to do. ([5b16e58](https://github.com/ArchiDog1998/RotationSolver/commit/5b16e58eddc2716a689df94753bd27b9e69d83a5))
+* fixed action sequencer delay. ([44fc4f9](https://github.com/ArchiDog1998/RotationSolver/commit/44fc4f9933ca276e2f8b6fcc4fc1048a0be4b26f))
+
 ## [3.2.9](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.8...v3.2.9) (2023-08-28)
 
 
