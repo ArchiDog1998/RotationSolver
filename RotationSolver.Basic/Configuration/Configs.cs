@@ -328,6 +328,8 @@ public enum PluginConfigBool : byte
     [Default(true)] ShowStateIcon,
     [Default(true)] ShowBeneficialPositions,
     [Default(false)] HideWarning,
+
+    [Default(true)] HealWhenNothingTodo,
 }
 
 public enum PluginConfigFloat : byte
@@ -382,6 +384,9 @@ public enum PluginConfigFloat : byte
 
     [Default(0.1f, 0.05f, 0.25f)] ClickingDelayMin,
     [Default(0.15f)] ClickingDelayMax,
+
+    [Default(0.5f, 0f, 5f)] HealWhenNothingTodoMin,
+    [Default(1f)] HealWhenNothingTodoMax,
 
     [Default(0.5f, 0f, 3f)] CountdownDelayMin,
     [Default(1f)] CountdownDelayMax,

@@ -8,14 +8,14 @@ internal abstract class BaseCondition : ICondition
     public float DelayMin = 0;
     public float DelayMax = 0;
 
-    private RandomDelay _delay = new RandomDelay();
+    RandomDelay _delay = new RandomDelay();
 
     [JsonIgnore]
     private const float MIN = 0, MAX = 60;
 
     public bool IsTrue(ICustomRotation rotation)
     {
-        if (_delay.GetRange == null)
+        if(_delay.GetRange == null)
         {
             _delay.GetRange = () => (DelayMin, DelayMax);
         }
@@ -26,6 +26,7 @@ internal abstract class BaseCondition : ICondition
 
     public void Draw(ICustomRotation rotation)
     {
+        BeforeDraw();
         ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
         if(ImGui.DragFloatRange2($"##Random Delay {GetHashCode()}", ref DelayMin, ref DelayMax, 0.1f, MIN, MAX))
         {
@@ -38,5 +39,9 @@ internal abstract class BaseCondition : ICondition
         DrawInside(rotation);
     }
 
+    public virtual void BeforeDraw()
+    {
+
+    }
     public abstract void DrawInside(ICustomRotation rotation);
 }

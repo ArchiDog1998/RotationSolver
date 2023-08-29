@@ -524,8 +524,21 @@ public partial class RotationConfigWindow
             new DragFloatSearchPlugin(PluginConfigFloat.AutoHealTimeToKill, 0.02f),
             new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
 
+        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHotOnTanks)
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Healer,
+            }
+        },
+
         new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),
-        new DragFloatSearchPlugin(PluginConfigFloat.HealWhenNothingTodoBelow, 0.002f),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.HealWhenNothingTodo,
+            new DragFloatSearchPlugin(PluginConfigFloat.HealWhenNothingTodoBelow, 0.002f),
+            new DragFloatRangeSearchPlugin(PluginConfigFloat.HealWhenNothingTodoMin,
+                PluginConfigFloat.HealWhenNothingTodoMax, 0.05f)),
+
         new DragFloatSearchPlugin(PluginConfigFloat.HealthHealerRatio, 0.02f)
             {
                 JobRoles = new JobRole[]
@@ -665,14 +678,6 @@ public partial class RotationConfigWindow
         new CheckBoxSearchPlugin(PluginConfigBool.UseHealPotions),
 
         new DragIntSearchPlugin(PluginConfigInt.LessMPNoRaise, 200)
-        {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Healer,
-            }
-        },
-
-        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHotOnTanks)
         {
             JobRoles = new JobRole[]
             {

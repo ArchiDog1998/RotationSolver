@@ -7,7 +7,6 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using System.Configuration;
 using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 

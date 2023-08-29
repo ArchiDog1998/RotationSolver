@@ -26,10 +26,13 @@ internal class ConditionSet : BaseCondition
     public List<ICondition> Conditions { get; set; } = new List<ICondition>();
     public LogicalType Type;
 
-    public override void DrawInside(ICustomRotation rotation)
+    public override void BeforeDraw()
     {
         ImGui.BeginGroup();
+    }
 
+    public override void DrawInside(ICustomRotation rotation)
+    {
         AddButton();
 
         ImGui.SameLine();
