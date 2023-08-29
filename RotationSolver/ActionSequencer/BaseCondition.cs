@@ -8,14 +8,17 @@ internal abstract class BaseCondition : ICondition
     public float DelayMin = 0;
     public float DelayMax = 0;
 
-    private RandomDelay _delay = new RandomDelay();
+    RandomDelay _delay = new RandomDelay();
 
     [JsonIgnore]
     private const float MIN = 0, MAX = 60;
 
     public bool IsTrue(ICustomRotation rotation)
     {
-        _delay.GetRange = () => (DelayMin, DelayMax);
+        if(_delay.GetRange == null)
+        {
+            _delay.GetRange = () => (DelayMin, DelayMax);
+        }
         return _delay.Delay(IsTrueInside(rotation));
     }
 

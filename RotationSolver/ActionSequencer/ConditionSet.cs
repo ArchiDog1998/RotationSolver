@@ -33,7 +33,6 @@ internal class ConditionSet : BaseCondition
 
     public override void DrawInside(ICustomRotation rotation)
     {
-
         AddButton();
 
         ImGui.SameLine();
