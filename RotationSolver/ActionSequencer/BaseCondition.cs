@@ -15,10 +15,7 @@ internal abstract class BaseCondition : ICondition
 
     public bool IsTrue(ICustomRotation rotation)
     {
-        if (_delay.GetRange == null)
-        {
-            _delay.GetRange = () => (DelayMin, DelayMax);
-        }
+        _delay.GetRange = () => (DelayMin, DelayMax);
         return _delay.Delay(IsTrueInside(rotation));
     }
 
@@ -26,6 +23,7 @@ internal abstract class BaseCondition : ICondition
 
     public void Draw(ICustomRotation rotation)
     {
+        BeforeDraw();
         ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
         if(ImGui.DragFloatRange2($"##Random Delay {GetHashCode()}", ref DelayMin, ref DelayMax, 0.1f, MIN, MAX))
         {
@@ -38,5 +36,9 @@ internal abstract class BaseCondition : ICondition
         DrawInside(rotation);
     }
 
+    public virtual void BeforeDraw()
+    {
+
+    }
     public abstract void DrawInside(ICustomRotation rotation);
 }
