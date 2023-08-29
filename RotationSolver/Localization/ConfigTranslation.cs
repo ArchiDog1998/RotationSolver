@@ -105,6 +105,8 @@ internal static class ConfigTranslation
         PluginConfigBool.HealOutOfCombat => LocalizationManager.RightLang.ConfigWindow_Param_HealOutOfCombat,
         PluginConfigBool.OnlyHotOnTanks => LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
         PluginConfigBool.RecordCastingArea => "Record AOE actions",
+         PluginConfigBool.HealWhenNothingTodo => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodo,
+
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
         PluginConfigBool.ChooseAttackMark => LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
@@ -180,6 +182,7 @@ internal static class ConfigTranslation
 
         // auto
         PluginConfigFloat.HealWhenNothingTodoBelow => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoBelow,
+        PluginConfigFloat.HealWhenNothingTodoMin => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoDelay,
         PluginConfigFloat.DistanceForMoving => LocalizationManager.RightLang.ConfigWindow_Param_DistanceForMoving,
         PluginConfigFloat.MeleeRangeOffset => LocalizationManager.RightLang.ConfigWindow_Param_MeleeRangeOffset,
         PluginConfigFloat.HealthDifference => LocalizationManager.RightLang.ConfigWindow_Param_HealthDifference,

@@ -4,6 +4,7 @@ namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
+    private static DateTime _nextTimeToHeal = DateTime.MinValue;
     private IAction GCD(bool helpDefenseAOE, bool helpDefenseSingle)
     {
         IAction act = DataCenter.CommandNextAction;
@@ -46,10 +47,26 @@ public abstract partial class CustomRotation
         }
 
         if (GeneralGCD(out var action)) return action;
-        if (DataCenter.PartyMembersMinHP < Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoBelow) && DataCenter.InCombat)
+
+        if (Service.Config.GetValue(PluginConfigBool.HealWhenNothingTodo) && DataCenter.InCombat)
         {
-            if (DataCenter.PartyMembersDifferHP < DataCenter.PartyMembersDifferHP && HealAreaGCD(out act)) return act;
-            if (HealSingleGCD(out act)) return act;
+            // Please don't tell me someone's fps is less than 1!!
+            if (DateTime.Now - _nextTimeToHeal > TimeSpan.FromSeconds(1))
+            {
+                var min = Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoMin);
+                var max = Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoMax);
+                _nextTimeToHeal = DateTime.Now + TimeSpan.FromSeconds(new Random().NextDouble() * (max - min) + min);
+            }
+            else if (_nextTimeToHeal < DateTime.Now)
+            {
+                _nextTimeToHeal = DateTime.Now;
+
+                if (DataCenter.PartyMembersMinHP < Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoBelow))
+                {
+                    if (DataCenter.PartyMembersDifferHP < DataCenter.PartyMembersDifferHP && HealAreaGCD(out act)) return act;
+                    if (HealSingleGCD(out act)) return act;
+                }
+            }
         }
         
         if (Service.Config.GetValue(PluginConfigBool.RaisePlayerByCasting) && RaiseSpell(specialType, out act, true)) return act;

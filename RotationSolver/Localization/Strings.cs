@@ -201,8 +201,10 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP%% is lower than this.";
 
     public string ConfigWindow_Param_DistanceForMoving { get; set; } = "Use gapcloser as a damage ability if the distance to your target is less then this.";
+    public string ConfigWindow_Param_HealWhenNothingTodo { get; set; } = "Healing the members with GCD if there is nothing to do in combat.";
 
-    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "Healing the members with GCD if there is nothing to do in combat and their min HP%% is lower than this.";
+    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "When their min HP%% is lower than this.";
+    public string ConfigWindow_Param_HealWhenNothingTodoDelay { get; set; } = "The delay of this type of healing.";
 
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invulnerability";
 
