@@ -32,7 +32,6 @@ internal abstract class BaseCondition : ICondition
         {
             DelayMin = Math.Max(Math.Min(DelayMin, DelayMax), MIN);
             DelayMax = Math.Min(Math.Max(DelayMin, DelayMax), MAX);
-            _delay = new(() => (DelayMin, DelayMax));
         }
         ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Delay_Description);
 

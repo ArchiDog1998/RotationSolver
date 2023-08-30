@@ -284,6 +284,7 @@ internal partial class Strings
     public string ConfigWindow_List_HostileCastingAreaDesc { get; set; } = "Use AOE damage mitigation abilities if the target is casting any of these actions";
 
     public string ConfigWindow_List_NoHostile { get; set; } = "No Hostile";
+    public string ConfigWindow_List_NoProvoke { get; set; } = "No Provoke";
     public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add names of targets that will never be attacked.";
     public string ConfigWindow_List_NoProvokeDesc { get; set; } = "Add names of targets that will never be provoked.";
 

@@ -421,25 +421,24 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.ControlWindowUnlockBg),
             new ColorEditSearchPlugin(PluginConfigVector4.ControlWindowLockBg),
         }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowNextActionWindow, new ISearchable[]
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowCooldownWindow, new ISearchable[]
         {
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
+            new CheckBoxSearchPlugin(PluginConfigBool.IsControlWindowLock),
 
-            new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
-        }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowCooldownWindow, new ISearchable[] 
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
             new CheckBoxSearchPlugin(PluginConfigBool.UseOriginalCooldown),
             new CheckBoxSearchPlugin(PluginConfigBool.ShowGCDCooldown),
             new CheckBoxSearchPlugin(PluginConfigBool.ShowItemsCooldown),
 
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownFontSize, 0.1f),
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownWindowIconSize, 0.2f),
+
+            new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
+        }),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowNextActionWindow, new ISearchable[]
+        {
+            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
+            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
 
             new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
         }),
@@ -704,7 +703,7 @@ public partial class RotationConfigWindow
                 }
             },
             new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank,
-                new DragFloatRangeSearchPlugin(PluginConfigFloat.ProvokeDelayMin, PluginConfigFloat.ProvokeDelayMax, 0.05f)
+                new DragFloatRangeSearchPlugin(PluginConfigFloat.ProvokeDelayMin, PluginConfigFloat.ProvokeDelayMax, 0.05f))
             {
                 JobRoles = new JobRole[]
                 {

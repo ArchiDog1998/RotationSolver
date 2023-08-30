@@ -1884,6 +1884,9 @@ public partial class RotationConfigWindow : Window
             ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_NoHostile);
 
             ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_NoProvoke);
+
+            ImGui.TableNextColumn();
             ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_BeneficialPositions);
 
             ImGui.TableNextRow();
@@ -1941,7 +1944,7 @@ public partial class RotationConfigWindow : Window
             //Add one.
             if (!libs.Any(string.IsNullOrEmpty))
             {
-                OtherConfiguration.NoHostileNames[territoryId] = libs.Append(string.Empty).ToArray();
+                OtherConfiguration.NoProvokeNames[territoryId] = libs.Append(string.Empty).ToArray();
             }
             removeIndex = -1;
             for (int i = 0; i < libs.Length; i++)
