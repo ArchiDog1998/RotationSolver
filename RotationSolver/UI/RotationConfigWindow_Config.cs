@@ -302,10 +302,11 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _basicSwitchTurnOff = new ISearchable[]
     {
         // Turn off
-        new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombatTime, 1f),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffBetweenArea),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffCutScene),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffWhenDead),
+        new CheckBoxSearchPlugin(PluginConfigBool.AutoOffAfterCombat,
+            new DragFloatSearchPlugin(PluginConfigFloat.AutoOffAfterCombatTime, 1f)),
     };
     #endregion
 
@@ -378,7 +379,7 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor)
         ),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetDeadTime),
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetTimeToKill),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget, 
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)
@@ -420,25 +421,24 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.ControlWindowUnlockBg),
             new ColorEditSearchPlugin(PluginConfigVector4.ControlWindowLockBg),
         }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowNextActionWindow, new ISearchable[]
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowCooldownWindow, new ISearchable[]
         {
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
+            new CheckBoxSearchPlugin(PluginConfigBool.IsControlWindowLock),
 
-            new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
-        }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowCooldownWindow, new ISearchable[] 
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
             new CheckBoxSearchPlugin(PluginConfigBool.UseOriginalCooldown),
             new CheckBoxSearchPlugin(PluginConfigBool.ShowGCDCooldown),
             new CheckBoxSearchPlugin(PluginConfigBool.ShowItemsCooldown),
 
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownFontSize, 0.1f),
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownWindowIconSize, 0.2f),
+
+            new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
+        }),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowNextActionWindow, new ISearchable[]
+        {
+            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
+            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
 
             new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
         }),
@@ -520,11 +520,24 @@ public partial class RotationConfigWindow
                 }
             },
 
-            new DragFloatSearchPlugin(PluginConfigFloat.AutoHealDeadTime, 0.02f),
+            new DragFloatSearchPlugin(PluginConfigFloat.AutoHealTimeToKill, 0.02f),
             new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
 
+        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHotOnTanks)
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Healer,
+            }
+        },
+
         new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),
-        new DragFloatSearchPlugin(PluginConfigFloat.HealWhenNothingTodoBelow, 0.002f),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.HealWhenNothingTodo,
+            new DragFloatSearchPlugin(PluginConfigFloat.HealWhenNothingTodoBelow, 0.002f),
+            new DragFloatRangeSearchPlugin(PluginConfigFloat.HealWhenNothingTodoMin,
+                PluginConfigFloat.HealWhenNothingTodoMax, 0.05f)),
+
         new DragFloatSearchPlugin(PluginConfigFloat.HealthHealerRatio, 0.02f)
             {
                 JobRoles = new JobRole[]
@@ -539,7 +552,7 @@ public partial class RotationConfigWindow
                     JobRole.Healer,
                 }
             },
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMin, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMax, 0.002f),
     };
 
     private static readonly ISearchable[] _autoActionConditionSearchable_Raise = new ISearchable[]
@@ -671,14 +684,6 @@ public partial class RotationConfigWindow
             }
         },
 
-        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHotOnTanks)
-        {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Healer,
-            }
-        },
-
         new CheckBoxSearchPlugin(PluginConfigBool.UseAbility, new ISearchable[]
         {
             new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility,
@@ -697,7 +702,8 @@ public partial class RotationConfigWindow
                     JobRole.Tank,
                 }
             },
-            new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank)
+            new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank,
+                new DragFloatRangeSearchPlugin(PluginConfigFloat.ProvokeDelayMin, PluginConfigFloat.ProvokeDelayMax, 0.05f))
             {
                 JobRoles = new JobRole[]
                 {
@@ -792,10 +798,13 @@ public partial class RotationConfigWindow
 
     private static readonly ISearchable[] _targetHostileSelectSearchable = new ISearchable[]
     {
-        new DragFloatSearchPlugin(PluginConfigFloat.DeadTimeBoss, 0.02f),
-        new DragFloatSearchPlugin(PluginConfigFloat.DeadTimeDying, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.BossTimeToKill, 0.02f),
+        new DragFloatSearchPlugin(PluginConfigFloat.DyingTimeToKill, 0.02f),
 
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInView),
+        new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInVisionCone,
+            new DragFloatSearchPlugin(PluginConfigFloat.AngleOfVisionCone, 0.02f)),
+
         new CheckBoxSearchPlugin(PluginConfigBool.ChangeTargetForFate),
         new CheckBoxSearchPlugin(PluginConfigBool.TargetFatePriority),
         new CheckBoxSearchPlugin(PluginConfigBool.TargetHuntingRelicLevePriority),

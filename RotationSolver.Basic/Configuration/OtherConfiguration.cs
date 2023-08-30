@@ -13,6 +13,7 @@ public class OtherConfiguration
     public static SortedList<uint, float> AnimationLockTime = new();
 
     public static Dictionary<uint, string[]> NoHostileNames = new();
+    public static Dictionary<uint, string[]> NoProvokeNames = new();
     public static Dictionary<uint, Vector3[]> BeneficialPositions = new();
 
     public static HashSet<uint> DangerousStatus = new();
@@ -33,6 +34,8 @@ public class OtherConfiguration
         Task.Run(() => InitOne(ref InvincibleStatus, nameof(InvincibleStatus)));
 
         Task.Run(() => InitOne(ref NoHostileNames, nameof(NoHostileNames)));
+
+        Task.Run(() => InitOne(ref NoProvokeNames, nameof(NoProvokeNames)));
 
         Task.Run(() => InitOne(ref AnimationLockTime, nameof(AnimationLockTime)));
 
@@ -55,11 +58,15 @@ public class OtherConfiguration
         SaveHostileCastingTank();
         SaveBeneficialPositions();
         SaveRotationSolverRecord();
+        SaveNoProvokeNames();
     }
-
     public static void SaveRotationSolverRecord()
     {
         Task.Run(() => Save(RotationSolverRecord, nameof(RotationSolverRecord)));
+    }
+    public static void SaveNoProvokeNames()
+    {
+        Task.Run(() => Save(NoProvokeNames, nameof(NoProvokeNames)));
     }
 
     public static void SaveBeneficialPositions()

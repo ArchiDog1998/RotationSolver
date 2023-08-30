@@ -2,7 +2,9 @@
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -95,8 +97,7 @@ public static class TargetFilter
     private static T FindMoveTargetFaceDirection<T>(IEnumerable<T> charas) where T : GameObject
     {
         Vector3 pPosition = Player.Object.Position;
-        float rotation = Player.Object.Rotation;
-        Vector2 faceVec = new((float)Math.Cos(rotation), (float)Math.Sin(rotation));
+        Vector2 faceVec = Player.Object.GetFaceVector();
 
         var tars = charas.Where(t =>
         {
@@ -104,7 +105,7 @@ public static class TargetFilter
 
             Vector3 dir = t.Position - pPosition;
             Vector2 dirVec = new(dir.Z, dir.X);
-            double angle = Math.Acos(Vector2.Dot(dirVec, faceVec) / dirVec.Length() / faceVec.Length());
+            double angle = faceVec.AngleTo(dirVec);
             return angle <= Math.PI * Service.Config.GetValue(Configuration.PluginConfigFloat.MoveTargetAngle) / 360;
         }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 
@@ -176,6 +177,13 @@ public static class TargetFilter
 
         var targets = inputCharas.Where(target =>
         {
+            //Removed the listed names.
+            IEnumerable<string> names = Array.Empty<string>();
+            if (OtherConfiguration.NoProvokeNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
+                names = names.Union(ns1);
+
+            if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(target.Name.ToString()).Success)) return false;
+
             //Target can move or two big and has a target
             if ((target.GetObjectNPC()?.Unknown12 == 0 || target.HitboxRadius >= 5)
             && (target.TargetObject?.IsValid() ?? false))

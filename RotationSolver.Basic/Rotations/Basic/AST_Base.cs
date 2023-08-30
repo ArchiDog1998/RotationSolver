@@ -136,7 +136,10 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Macrocosmos { get; } = new BaseAction(ActionID.Macrocosmos, ActionOption.Heal);
+    public static IBaseAction Macrocosmos { get; } = new BaseAction(ActionID.Macrocosmos, ActionOption.Heal)
+    {
+        StatusProvide = new StatusID[] { StatusID.Macrocosmos }
+    };
     #endregion
 
     #region Defense Single
@@ -155,6 +158,7 @@ public abstract class AST_Base : CustomRotation
     public static IBaseAction Exaltation { get; } = new BaseAction(ActionID.Exaltation, ActionOption.Heal)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
+        TargetStatus = new StatusID[] { StatusID.Exaltation },
     };
     #endregion
 
@@ -162,7 +166,10 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction CollectiveUnconscious { get; } = new BaseAction(ActionID.CollectiveUnconscious, ActionOption.Defense);
+    public static IBaseAction CollectiveUnconscious { get; } = new BaseAction(ActionID.CollectiveUnconscious, ActionOption.Defense)
+    {
+        StatusProvide = new StatusID[] { StatusID.CollectiveUnconscious },
+    };
 
     #endregion
 

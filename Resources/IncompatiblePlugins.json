@@ -35,6 +35,13 @@
     "Type": 1
   },
   {
+    "Name": "Mare Synchronos",
+    "Icon": "https://raw.githubusercontent.com/Penumbra-Sync/repo/main/MareSynchronos/images/icon.png",
+    "Url": "https://github.com/Penumbra-Sync/client",
+    "Features": "Not so sure, but sometimes, it may effect the usage.",
+    "Type": 1
+  },
+  {
     "Name": "Simple Tweaks",
     "Icon": "https://raw.githubusercontent.com/Caraxi/SimpleTweaksPlugin/main/images/icon.png",
     "Url": "https://github.com/Caraxi/SimpleTweaksPlugin/blob/main/Tweaks/TreasureHuntTargets.cs",

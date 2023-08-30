@@ -26,13 +26,13 @@ internal static partial class TargetUpdater
         UpdateNamePlate(Svc.Objects.OfType<BattleChara>());
     }
 
-    private static DateTime _lastUpdateDeadTime = DateTime.MinValue;
-    private static readonly TimeSpan _deadTimeSpan = TimeSpan.FromSeconds(0.5);
-    private static void UpdateDeadTime(IEnumerable<BattleChara> allTargets)
+    private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;
+    private static readonly TimeSpan _timeToKillSpan = TimeSpan.FromSeconds(0.5);
+    private static void UpdateTimeToKill(IEnumerable<BattleChara> allTargets)
     {
         var now = DateTime.Now;
-        if (now - _lastUpdateDeadTime < _deadTimeSpan) return;
-        _lastUpdateDeadTime = now;
+        if (now - _lastUpdateTimeToKill < _timeToKillSpan) return;
+        _lastUpdateTimeToKill = now;
 
         if (DataCenter.RecordedHP.Count >= DataCenter.HP_RECORD_TIME)
         {
@@ -82,6 +82,8 @@ internal static partial class TargetUpdater
         }
     }
 
+    static RandomDelay _provokeDelay = new(() => (Service.Config.GetValue(PluginConfigFloat.ProvokeDelayMin), Service.Config.GetValue(PluginConfigFloat.ProvokeDelayMax)));
+
     private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
     {
         var deadHP = DataCenter.PartyMembers.Count() > 1 ? 0 : 1;
@@ -98,7 +100,7 @@ internal static partial class TargetUpdater
             return true;
         });
 
-        UpdateDeadTime(allTargets);
+        UpdateTimeToKill(allTargets);
 
         DataCenter.AllHostileTargets = allTargets.Where(b =>
         {
@@ -112,11 +114,21 @@ internal static partial class TargetUpdater
             {
                 if (!Svc.GameGui.WorldToScreen(b.Position, out _)) return false;
             }
+            if(Service.Config.GetValue(PluginConfigBool.OnlyAttackInVisionCone))
+            {
+                Vector3 dir = b.Position - Player.Object.Position;
+                Vector2 dirVec = new(dir.Z, dir.X);
+                double angle = Player.Object.GetFaceVector().AngleTo(dirVec);
+                if (angle > Math.PI * Service.Config.GetValue(PluginConfigFloat.AngleOfVisionCone) / 360)
+                {
+                    return false;
+                }
+            }
             return true;
         })));
 
-        var deadTimes = DataCenter.HostileTargets.Select(b => b.GetDeadTime()).Where(v => !float.IsNaN(v));
-        DataCenter.AverageDeadTime = deadTimes.Any() ? deadTimes.Average() : 0;
+        var timesToKill = DataCenter.HostileTargets.Select(b => b.GetTimeToKill()).Where(v => !float.IsNaN(v));
+        DataCenter.AverageTimeToKill = timesToKill.Any() ? timesToKill.Average() : 0;
 
         DataCenter.CanInterruptTargets.Delay(DataCenter.HostileTargets.Where(ObjectHelper.CanInterrupt));
 
@@ -125,6 +137,10 @@ internal static partial class TargetUpdater
         DataCenter.NumberOfHostilesInRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
 
         DataCenter.NumberOfHostilesInMaxRange = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= 25);
+
+        DataCenter.NumberOfAllHostilesInRange = DataCenter.AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
+
+        DataCenter.NumberOfAllHostilesInMaxRange = DataCenter.AllHostileTargets.Count(o => o.DistanceToPlayer() <= 25);
 
         DataCenter.MobsTime = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
             >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber);
@@ -140,6 +156,8 @@ internal static partial class TargetUpdater
         {
             DataCenter.IsHostileCastingToTank = DataCenter.IsHostileCastingAOE = false;
         }
+
+        DataCenter.CanProvoke = _provokeDelay.Delay(TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count());
     }
 
     private static IEnumerable<BattleChara> GetHostileTargets(IEnumerable<BattleChara> allAttackableTargets)
@@ -224,21 +242,6 @@ internal static partial class TargetUpdater
         return IsHostileCastingBase(h, (act) =>
         {
             return OtherConfiguration.HostileCastingArea.Contains(act.RowId);
-
-            //if ((act.CastType == 1 || act.CastType == 2)
-            //  && act.Range == 0
-            //  && act.EffectRange >= 40)
-            //    return true;
-
-            //if (act.CastType == 2
-            // && act.EffectRange == 6
-            // && act.Cast100ms == 50
-            // && act.CanTargetHostile
-            // && !act.CanTargetSelf
-            // && act.Range == 100)
-            //    return true;
-
-            //return false;
         });
     }
 
@@ -383,10 +386,10 @@ internal static partial class TargetUpdater
 
     static (float min, float max) GetHealRange() => (Service.Config.GetValue(PluginConfigFloat.HealDelayMin), Service.Config.GetValue(PluginConfigFloat.HealDelayMax));
 
-    static RandomDelay _healDelay1 = new(GetHealRange);
-    static RandomDelay _healDelay2 = new(GetHealRange);
-    static RandomDelay _healDelay3 = new(GetHealRange);
-    static RandomDelay _healDelay4 = new(GetHealRange);
+    static RandomDelay _healDelay1 = new(GetHealRange),
+                       _healDelay2 = new(GetHealRange),
+                       _healDelay3 = new(GetHealRange),
+                       _healDelay4 = new(GetHealRange);
     static void UpdateCanHeal(PlayerCharacter player)
     {
         var job = (Job)player.ClassJob.Id;

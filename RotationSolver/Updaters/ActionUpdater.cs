@@ -135,7 +135,10 @@ internal static class ActionUpdater
         {
             _startCombatTime = DateTime.MinValue;
 
-            AutoCancelTime = DateTime.Now.AddSeconds(Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombatTime));
+            if (Service.Config.GetValue(PluginConfigBool.AutoOffAfterCombat))
+            {
+                AutoCancelTime = DateTime.Now.AddSeconds(Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombatTime));
+            }
         }
 
         if (_startCombatTime == DateTime.MinValue)

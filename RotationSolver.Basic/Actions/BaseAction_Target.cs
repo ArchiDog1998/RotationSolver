@@ -78,7 +78,7 @@ public partial class BaseAction
 
     internal static bool TankDefenseSelf(BattleChara chara, bool mustUse)
     {
-        return (DataCenter.TarOnMeTargets.Any() || mustUse) && DataCenter.AverageDeadTime > 8;
+        return (DataCenter.TarOnMeTargets.Any() || mustUse) && DataCenter.AverageTimeToKill > 8;
     }
     internal static bool TankBreakOtherCheck(Job id)
     {
@@ -372,7 +372,7 @@ public partial class BaseAction
         {
             if (!mustUse)
             {
-                var time = b.GetDeadTime();
+                var time = b.GetTimeToKill();
 
                 //No need to dot.
                 if (TargetStatus != null && !float.IsNaN(time) && time < TimeToDie) return false;
@@ -535,7 +535,7 @@ public partial class BaseAction
         var dontHave = tars.Where(CheckStatus);
         var canDot = dontHave.Where(b =>
         {
-            var time = b.GetDeadTime();
+            var time = b.GetTimeToKill();
             return float.IsNaN(time) || time >= TimeToDie;
         });
 

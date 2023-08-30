@@ -4,7 +4,7 @@ using RotationSolver.UI;
 
 namespace RotationSolver.ActionSequencer;
 
-internal class RotationCondition : ICondition
+internal class RotationCondition : BaseCondition
 {
     public ComboConditionType ComboConditionType = ComboConditionType.Float;
     PropertyInfo _prop;
@@ -29,7 +29,7 @@ internal class RotationCondition : ICondition
         ConditionHelper.CheckMemberInfo(rotation, MethodName, ref _method);
     }
 
-    public bool IsTrue(ICustomRotation rotation)
+    public override bool IsTrueInside(ICustomRotation rotation)
     {
         if (!Player.Available) return false;
         UpdateInfo(rotation);
@@ -44,9 +44,11 @@ internal class RotationCondition : ICondition
                 }
                 return false;
 
-            case ComboConditionType.Byte:
+            case ComboConditionType.Integer:
                 if (_prop == null) return false;
-                if (_prop.GetValue(rotation) is byte by)
+
+                var value = _prop.GetValue(rotation);
+                if (value is byte by)
                 {
                     switch (Condition)
                     {
@@ -56,6 +58,18 @@ internal class RotationCondition : ICondition
                             return by < Param1;
                         case 2:
                             return by == Param1;
+                    }
+                }
+                else if (value is int i)
+                {
+                    switch (Condition)
+                    {
+                        case 0:
+                            return i > Param1;
+                        case 1:
+                            return i < Param1;
+                        case 2:
+                            return i == Param1;
                     }
                 }
                 return false;
@@ -100,7 +114,7 @@ internal class RotationCondition : ICondition
     {
         HeaderSize = 12,
     };
-    public void Draw(ICustomRotation rotation)
+    public override void DrawInside(ICustomRotation rotation)
     {
         UpdateInfo(rotation);
 
@@ -125,9 +139,9 @@ internal class RotationCondition : ICondition
 
                 break;
 
-            case ComboConditionType.Byte:
+            case ComboConditionType.Integer:
                 ImGui.SameLine();
-                ConditionHelper.SearchItemsReflection($"##ByteChoice{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllBytes, i =>
+                ConditionHelper.SearchItemsReflection($"##ByteChoice{GetHashCode()}", _prop?.GetMemberName(), ref searchTxt, rotation.AllBytesOrInt, i =>
                 {
                     _prop = i;
                     PropertyName = i.Name;
@@ -216,7 +230,7 @@ internal class RotationCondition : ICondition
 public enum ComboConditionType : byte
 {
     Bool,
-    Byte,
+    Integer,
     Float,
     Last,
 }

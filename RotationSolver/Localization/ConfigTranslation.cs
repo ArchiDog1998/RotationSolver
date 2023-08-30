@@ -105,6 +105,8 @@ internal static class ConfigTranslation
         PluginConfigBool.HealOutOfCombat => LocalizationManager.RightLang.ConfigWindow_Param_HealOutOfCombat,
         PluginConfigBool.OnlyHotOnTanks => LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
         PluginConfigBool.RecordCastingArea => "Record AOE actions",
+         PluginConfigBool.HealWhenNothingTodo => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodo,
+
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
         PluginConfigBool.ChooseAttackMark => LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
@@ -121,8 +123,9 @@ internal static class ConfigTranslation
         PluginConfigBool.TargetFatePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetFatePriority,
         PluginConfigBool.TargetHuntingRelicLevePriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetHuntingRelicLevePriority,
         PluginConfigBool.TargetQuestPriority => LocalizationManager.RightLang.ConfigWindow_Param_TargetQuestPriority,
-        PluginConfigBool.ShowTargetDeadTime => LocalizationManager.RightLang.ConfigWindow_Param_ShowTargetDeadTime,
+        PluginConfigBool.ShowTargetTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_ShowTargetTimeToKill,
         PluginConfigBool.ShowStateIcon => LocalizationManager.RightLang.ConfigWindow_UI_ShowStateIcon,
+        PluginConfigBool.OnlyAttackInVisionCone => LocalizationManager.RightLang.ConfigWindow_Target_OnlyAttackInVisionCone,
 
 
         // extra
@@ -137,6 +140,7 @@ internal static class ConfigTranslation
         PluginConfigBool.DownloadRotations => LocalizationManager.RightLang.ConfigWindow_Rotation_DownloadRotations,
         PluginConfigBool.AutoUpdateRotations => LocalizationManager.RightLang.ConfigWindow_Rotation_AutoUpdateRotations,
         PluginConfigBool.AutoLoadCustomRotations => LocalizationManager.RightLang.ConfigWindow_Rotations_AutoLoadCustomRotations,
+        PluginConfigBool.AutoOffAfterCombat => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombat,
 
         _ => string.Empty,
     };
@@ -178,17 +182,20 @@ internal static class ConfigTranslation
 
         // auto
         PluginConfigFloat.HealWhenNothingTodoBelow => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoBelow,
+        PluginConfigFloat.HealWhenNothingTodoMin => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodoDelay,
         PluginConfigFloat.DistanceForMoving => LocalizationManager.RightLang.ConfigWindow_Param_DistanceForMoving,
         PluginConfigFloat.MeleeRangeOffset => LocalizationManager.RightLang.ConfigWindow_Param_MeleeRangeOffset,
         PluginConfigFloat.HealthDifference => LocalizationManager.RightLang.ConfigWindow_Param_HealthDifference,
         PluginConfigFloat.HealthHealerRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthHealerRatio,
         PluginConfigFloat.HealthTankRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
         PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
-        PluginConfigFloat.AutoHealDeadTime => LocalizationManager.RightLang.ConfigWindow_Auto_AutoHealDeadTime,
+        PluginConfigFloat.AutoHealTimeToKill => LocalizationManager.RightLang.ConfigWindow_Auto_AutoHealTimeToKill,
+        PluginConfigFloat.ProvokeDelayMin => LocalizationManager.RightLang.ConfigWindow_Auto_ProvokeDelay,
 
         // target
-        PluginConfigFloat.DeadTimeBoss => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeBoss,
-        PluginConfigFloat.DeadTimeDying => LocalizationManager.RightLang.ConfigWindow_Param_DeadTimeDying,
+        PluginConfigFloat.BossTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_BossTimeToKill,
+        PluginConfigFloat.DyingTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_DyingTimeToKill,
+        PluginConfigFloat.AngleOfVisionCone => LocalizationManager.RightLang.ConfigWindow_Target_VisionCone,
 
         _ => string.Empty,   
     };

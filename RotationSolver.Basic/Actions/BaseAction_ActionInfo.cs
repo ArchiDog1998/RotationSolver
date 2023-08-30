@@ -47,10 +47,6 @@ public partial class BaseAction
                 }
                 else
                 {
-                    if ((Job)Player.Object.ClassJob.Id != Job.BLU
-                        && ChoiceTarget != TargetFilter.FindTargetForMoving
-                        && DataCenter.LastAction == (ActionID)AdjustedID) return false;
-
                     if (!HasOneCharge && RecastTimeRemainOneChargeRaw > DataCenter.ActionRemain) return false;
                 }
             }

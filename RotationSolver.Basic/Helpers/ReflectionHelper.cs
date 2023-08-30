@@ -9,7 +9,7 @@ internal static class ReflectionHelper
         var props = from prop in type.GetRuntimeProperties()
                     where typeof(T).IsAssignableFrom(prop.PropertyType)
                             && prop.GetMethod is MethodInfo info
-                            && info.IsStatic
+                            && info.IsStatic && info.GetCustomAttribute<ObsoleteAttribute>() == null
                     select prop;
 
         return props.Union(type.BaseType.GetStaticProperties<T>()).ToArray();

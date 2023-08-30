@@ -7,9 +7,14 @@ public struct RandomDelay
 {
     DateTime _startDelayTime = DateTime.Now;
     float _delayTime = -1;
-    readonly Func<(float min, float max)> _getRange;
+
     readonly Random _ran = new(DateTime.Now.Millisecond);
     bool _lastValue = false;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Func<(float min, float max)> GetRange { get; init; } = null;
 
     /// <summary>
     /// Constructer.
@@ -17,7 +22,7 @@ public struct RandomDelay
     /// <param name="getRange"></param>
     public RandomDelay(Func<(float min, float max)> getRange)
     {
-        _getRange = getRange;
+        GetRange = getRange;
     }
 
     /// <summary>
@@ -27,7 +32,9 @@ public struct RandomDelay
     /// <returns></returns>
     public bool Delay(bool originData)
     {
-        if (_getRange == null) return false;
+        if (GetRange == null) return originData;
+        var (min, max) = GetRange();
+        if (min <= 0 || max <= 0) return originData;
 
         if (!originData)
         {
@@ -41,7 +48,6 @@ public struct RandomDelay
         {
             _lastValue = true;
             _startDelayTime = DateTime.Now;
-            var (min, max) = _getRange();
             _delayTime = min + (float)_ran.NextDouble() * (max - min);
         }
         //Times up

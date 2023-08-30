@@ -189,7 +189,7 @@ public abstract partial class CustomRotation
         //Auto Provoke
         if (DataCenter.SetAutoStatus(AutoStatus.Provoke, role == JobRole.Tank
             && (Service.Config.GetValue(PluginConfigBool.AutoProvokeForTank) || DataCenter.AllianceTanks.Count() < 2)
-            && TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count()))
+            && DataCenter.CanProvoke))
         {
             if (!HasTankStance && TankStance.CanUse(out act)) return true;
             if (Provoke.CanUse(out act, CanUseOption.MustUse)) return true;

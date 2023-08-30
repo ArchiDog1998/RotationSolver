@@ -90,9 +90,9 @@ internal partial class Strings
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
     public string ConfigWindow_Param_MaxPing { get; set; } = "Set the max ping that RS can get to before skipping to the next action.";
-    public string ConfigWindow_Param_AutoOffAfterCombatTime { get; set; } = "Auto turn off RS when combat is over more for more then...";
     public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is moving between areas.";
-
+    public string ConfigWindow_Param_AutoOffAfterCombat { get; set; } = "Auto turn off RS when combat is over more for more then...";
+    public string ConfigWindow_Param_AutoOffAfterCombatTime { get; set; } = "seconds.";
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cutscenes.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
@@ -119,11 +119,11 @@ internal partial class Strings
     public string ConfigWindow_Param_ShowTooltips { get; set; } = "Show tooltips";
     public string ConfigWindow_Param_InDebug { get; set; } = "Debug Mode";
 
-    public string ConfigWindow_Param_ShowTargetDeadTime { get; set; } = "Show the target's time until death.";
+    public string ConfigWindow_Param_ShowTargetTimeToKill { get; set; } = "Show the target's time to kill.";
 
-    public string ConfigWindow_Param_DeadTimeBoss { get; set; } = "If target's time until death is higher than this, regard it as Boss.";
+    public string ConfigWindow_Param_BossTimeToKill { get; set; } = "If target's time until death is higher than this, regard it as Boss.";
 
-    public string ConfigWindow_Param_DeadTimeDying { get; set; } = "If target's time until death is lower than this, regard it is dying.";
+    public string ConfigWindow_Param_DyingTimeToKill { get; set; } = "If target's time until death is lower than this, regard it is dying.";
     public string ConfigWindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
     public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
     public string ConfigWindow_Param_TeachingMode { get; set; } = "Teaching mode";
@@ -201,8 +201,10 @@ internal partial class Strings
     public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP%% is lower than this.";
 
     public string ConfigWindow_Param_DistanceForMoving { get; set; } = "Use gapcloser as a damage ability if the distance to your target is less then this.";
+    public string ConfigWindow_Param_HealWhenNothingTodo { get; set; } = "Healing the members with GCD if there is nothing to do in combat.";
 
-    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "Healing the members with GCD if there is nothing to do in combat and their min HP%% is lower than this.";
+    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "When their min HP%% is lower than this.";
+    public string ConfigWindow_Param_HealWhenNothingTodoDelay { get; set; } = "The delay of this type of healing.";
 
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invulnerability";
 
@@ -282,11 +284,13 @@ internal partial class Strings
     public string ConfigWindow_List_HostileCastingAreaDesc { get; set; } = "Use AOE damage mitigation abilities if the target is casting any of these actions";
 
     public string ConfigWindow_List_NoHostile { get; set; } = "No Hostile";
-    public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add names of targets that will not be targeted.";
+    public string ConfigWindow_List_NoProvoke { get; set; } = "No Provoke";
+    public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add names of targets that will never be attacked.";
+    public string ConfigWindow_List_NoProvokeDesc { get; set; } = "Add names of targets that will never be provoked.";
 
     #endregion
 
-    #region ScriptWindow
+    #region Action Sequencer
     public string ActionSequencer_Load { get; set; } = "Load From folder.";
     public string ActionSequencer_Can { get; set; } = "Can";
     public string ActionSequencer_Cannot { get; set; } = "Can Not";
@@ -310,6 +314,7 @@ internal partial class Strings
     public string ActionSequencer_Adjusted { get; set; } = "Adjusted";
     public string ActionSequencer_StatusSelf { get; set; } = "From Self";
     public string ActionSequencer_StatusAll { get; set; } = "From All";
+    public string ActionSequencer_Delay_Description { get; set; } = "How many seconds do you want to delay its turning to true.";
     #endregion
 
     #region Actions
@@ -370,9 +375,10 @@ internal partial class Strings
     public string TargetConditionType_HasStatus { get; set; } = "Has Status";
     public string TargetConditionType_IsDying { get; set; } = "Is Dying";
     public string TargetConditionType_IsBoss { get; set; } = "Is Boss";
+    public string TargetConditionType_InCombat { get; set; } = "In Combat";
     public string TargetConditionType_Distance { get; set; } = "Distance";
     public string TargetConditionType_StatusEnd { get; set; } = "Status End";
-    public string TargetConditionType_DeadTime { get; set; } = "Dead Time";
+    public string TargetConditionType_TimeToKill { get; set; } = "Time To Kill";
     public string TargetConditionType_StatusEndGCD { get; set; } = "Status End GCD";
     public string TargetConditionType_CastingAction { get; set; } = "Casting Action";
     public string TargetConditionType_CastingActionTimeUntil { get; set; } = "Casting Action Time Until";
@@ -400,7 +406,7 @@ internal partial class Strings
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
     {
         #region Rotation
-        { nameof(CustomRotation.IsMoving), "Is Moving"},
+        { nameof(CustomRotation.IsMoving), "Is Moving or Jumping"},
         { nameof(CustomRotation.HasSwift), "Has Swift"},
         { nameof(CustomRotation.HasTankStance), "Has tank stance"},
         { nameof(CustomRotation.InCombat), "In Combat"},
@@ -416,6 +422,8 @@ internal partial class Strings
         { nameof(CustomRotation.HasHostilesInRange), "Has hostiles in Range"},
         { nameof(CustomRotation.NumberOfHostilesInRange), "The number of hostiles in Range"},
         { nameof(CustomRotation.NumberOfHostilesInMaxRange), "The number of hostiles in max Range"},
+        { nameof(CustomRotation.NumberOfAllHostilesInRange), "The number of all hostiles in Range"},
+        { nameof(CustomRotation.NumberOfAllHostilesInMaxRange), "The number of all hostiles in max Range"},
         { nameof(CustomRotation.InBurst), "In burst."},
 
         { nameof(CustomRotation.CanHealAreaAbility), "Can heal area ability"},
@@ -449,7 +457,7 @@ internal partial class Strings
 
         { nameof(CustomRotation.IsValid), "Is this rotation valid"},
         { nameof(CustomRotation.ShowStatus), "Show the status"},
-        { nameof(CustomRotation.AverageDeadTime), "Average dead time"},
+        { nameof(CustomRotation.AverageTimeToKill), "Average time to kill"},
 
         { nameof(CustomRotation.MobsTime), "Mobs Time"},
         #endregion
@@ -658,6 +666,7 @@ internal partial class Strings
 
     public string ConfigWindow_List_BeneficialPositions { get; set; } = "Beneficial AoE locations";
     public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of object that you don't want to attack";
+    public string ConfigWindow_List_NoProvokeName { get; set; } = "The name of object that you don't want to provoke";
 
     public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
 
@@ -705,10 +714,10 @@ internal partial class Strings
     public string ConfigWindow_Basic_WeaponDelay { get; set; } = "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.";
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
     public string ConfigWindow_About_ClickingTooMuch { get; set; } = "Well, you must be a lazy player!";
-    public string ConfigWindow_Auto_AutoHealDeadTime { get; set; } = "Auto heal before combat end several seconds.";
-    public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile target indicator icon";
-    public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Hostile target indicator icon height";
-    public string ConfigWindow_UI_HostileIconSize { get; set; } = "Hostile target icon indicator size";
+    public string ConfigWindow_Auto_AutoHealTimeToKill { get; set; } = "Auto heal before combat end several seconds.";
+    public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile targets";
+    public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Hostile Icon height from position";
+    public string ConfigWindow_UI_HostileIconSize { get; set; } = "Hostile Icon size";
 
     public string ConfigWindow_UI_StateIconHeight { get; set; } = "State icon height";
     public string ConfigWindow_UI_StateIconSize { get; set; } = "State icon size";
@@ -716,4 +725,8 @@ internal partial class Strings
     public string ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving { get; set; } = "Use beneficial AoE actions when moving.";
     public string ConfigWindow_Auto_AutoDefenseNumber { get; set; } = "The number hostile targets attacking you. If it's larger than this, use personal mitigation abilities.";
 
+    public string ConfigWindow_Target_OnlyAttackInVisionCone { get; set; } = "Only attack the targets in vision cone";
+    public string ConfigWindow_Target_VisionCone { get; set; } = "The angle of your vision cone";
+
+    public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke in seconds.";
 }
