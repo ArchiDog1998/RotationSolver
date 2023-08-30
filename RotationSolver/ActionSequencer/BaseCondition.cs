@@ -8,7 +8,7 @@ internal abstract class BaseCondition : ICondition
     public float DelayMin = 0;
     public float DelayMax = 0;
 
-    RandomDelay _delay = new RandomDelay();
+    RandomDelay _delay = default;
 
     [JsonIgnore]
     private const float MIN = 0, MAX = 60;
@@ -17,7 +17,7 @@ internal abstract class BaseCondition : ICondition
     {
         if(_delay.GetRange == null)
         {
-            _delay.GetRange = () => (DelayMin, DelayMax);
+            _delay = new(() => (DelayMin, DelayMax));
         }
         return _delay.Delay(IsTrueInside(rotation));
     }
@@ -32,6 +32,7 @@ internal abstract class BaseCondition : ICondition
         {
             DelayMin = Math.Max(Math.Min(DelayMin, DelayMax), MIN);
             DelayMax = Math.Min(Math.Max(DelayMin, DelayMax), MAX);
+            _delay = new(() => (DelayMin, DelayMax));
         }
         ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Delay_Description);
 

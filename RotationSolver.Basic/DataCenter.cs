@@ -237,6 +237,8 @@ internal static class DataCenter
 
     public static IEnumerable<GameObject> AllTargets { get; set; }
 
+    public static bool CanProvoke { get; set; } = false;
+
     public static uint[] TreasureCharas { get; internal set; } = Array.Empty<uint>();
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
     public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;

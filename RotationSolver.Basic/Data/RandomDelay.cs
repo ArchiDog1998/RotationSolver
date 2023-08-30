@@ -3,7 +3,7 @@
 /// <summary>
 /// Random delay the bool.
 /// </summary>
-public class RandomDelay
+public struct RandomDelay
 {
     DateTime _startDelayTime = DateTime.Now;
     float _delayTime = -1;
@@ -14,7 +14,7 @@ public class RandomDelay
     /// <summary>
     /// 
     /// </summary>
-    public Func<(float min, float max)> GetRange { get; set; } = null;
+    public Func<(float min, float max)> GetRange { get; init; } = null;
 
     /// <summary>
     /// Constructer.
@@ -23,14 +23,6 @@ public class RandomDelay
     public RandomDelay(Func<(float min, float max)> getRange)
     {
         GetRange = getRange;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public RandomDelay()
-    {
-        
     }
 
     /// <summary>

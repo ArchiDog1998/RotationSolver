@@ -724,4 +724,6 @@ internal partial class Strings
 
     public string ConfigWindow_Target_OnlyAttackInVisionCone { get; set; } = "Only attack the targets in vision cone";
     public string ConfigWindow_Target_VisionCone { get; set; } = "The angle of your vision cone";
+
+    public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke in seconds.";
 }

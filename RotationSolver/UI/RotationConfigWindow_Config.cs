@@ -703,7 +703,8 @@ public partial class RotationConfigWindow
                     JobRole.Tank,
                 }
             },
-            new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank)
+            new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank,
+                new DragFloatRangeSearchPlugin(PluginConfigFloat.ProvokeDelayMin, PluginConfigFloat.ProvokeDelayMax, 0.05f)
             {
                 JobRoles = new JobRole[]
                 {

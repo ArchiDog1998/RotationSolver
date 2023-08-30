@@ -385,6 +385,9 @@ public enum PluginConfigFloat : byte
     [Default(0.1f, 0.05f, 0.25f)] ClickingDelayMin,
     [Default(0.15f)] ClickingDelayMax,
 
+    [Default(0.5f, 0f, 10f)] ProvokeDelayMin,
+    [Default(1f)] ProvokeDelayMax,
+
     [Default(0.5f, 0f, 5f)] HealWhenNothingTodoMin,
     [Default(1f)] HealWhenNothingTodoMax,
 
