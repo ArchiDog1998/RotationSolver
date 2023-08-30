@@ -553,7 +553,7 @@ public partial class RotationConfigWindow
                     JobRole.Healer,
                 }
             },
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMin, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMax, 0.002f),
     };
 
     private static readonly ISearchable[] _autoActionConditionSearchable_Raise = new ISearchable[]
