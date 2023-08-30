@@ -285,6 +285,7 @@ internal partial class Strings
 
     public string ConfigWindow_List_NoHostile { get; set; } = "No Hostile";
     public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add names of targets that will never be attacked.";
+    public string ConfigWindow_List_NoProvokeDesc { get; set; } = "Add names of targets that will never be provoked.";
 
     #endregion
 
@@ -664,6 +665,7 @@ internal partial class Strings
 
     public string ConfigWindow_List_BeneficialPositions { get; set; } = "Beneficial positions";
     public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of object that you don't want to attack";
+    public string ConfigWindow_List_NoProvokeName { get; set; } = "The name of object that you don't want to provoke";
 
     public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
 
