@@ -193,7 +193,9 @@
   "ConfigWindow_List_HostileCastingArea": "AOE",
   "ConfigWindow_List_HostileCastingAreaDesc": "Use AOE damage mitigation abilities if the target is casting any of these actions",
   "ConfigWindow_List_NoHostile": "不作为敌对目标",
+  "ConfigWindow_List_NoProvoke": "No Provoke",
   "ConfigWindow_List_NoHostileDesc": "Add names of targets that will never be attacked.",
+  "ConfigWindow_List_NoProvokeDesc": "Add names of targets that will never be provoked.",
   "ActionSequencer_Load": "从文件夹中加载。",
   "ActionSequencer_Can": "能",
   "ActionSequencer_Cannot": "不能使用",
@@ -456,6 +458,7 @@
   "ConfigWindow_List_AddAction": "添加技能",
   "ConfigWindow_List_BeneficialPositions": "增益类放置技能",
   "ConfigWindow_List_NoHostilesName": "你不想攻击的对象名称",
+  "ConfigWindow_List_NoProvokeName": "The name of object that you don't want to provoke",
   "ConfigWindow_Basic_AutoSwitch": "自动开关",
   "ConfigWindow_Basic_Timer": "时间相关",
   "ConfigWindow_UI_Windows": "窗口",
@@ -508,5 +511,6 @@
   "ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving": "Use beneficial area action when moving.",
   "ConfigWindow_Auto_AutoDefenseNumber": "The count of hostiles who target on me. If it's larger than this, defense single.",
   "ConfigWindow_Target_OnlyAttackInVisionCone": "Only attack the targets in vision cone",
-  "ConfigWindow_Target_VisionCone": "The angle of your vision cone"
+  "ConfigWindow_Target_VisionCone": "The angle of your vision cone",
+  "ConfigWindow_Auto_ProvokeDelay": "The delay of provoke in seconds."
 }
