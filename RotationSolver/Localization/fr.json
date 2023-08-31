@@ -193,7 +193,9 @@
   "ConfigWindow_List_HostileCastingArea": "Zone",
   "ConfigWindow_List_HostileCastingAreaDesc": "Use AOE damage mitigation abilities if the target is casting any of these actions",
   "ConfigWindow_List_NoHostile": "Pas d'ennemis",
+  "ConfigWindow_List_NoProvoke": "No Provoke",
   "ConfigWindow_List_NoHostileDesc": "Add names of targets that will never be attacked.",
+  "ConfigWindow_List_NoProvokeDesc": "Add names of targets that will never be provoked.",
   "ActionSequencer_Load": "Charger depuis un dossier.",
   "ActionSequencer_Can": "Peut",
   "ActionSequencer_Cannot": "Ne peut pas",
@@ -456,6 +458,7 @@
   "ConfigWindow_List_AddAction": "Add Action",
   "ConfigWindow_List_BeneficialPositions": "Beneficial positions",
   "ConfigWindow_List_NoHostilesName": "The name of object that you don't want to attack",
+  "ConfigWindow_List_NoProvokeName": "The name of object that you don't want to provoke",
   "ConfigWindow_Basic_AutoSwitch": "Auto Switch",
   "ConfigWindow_Basic_Timer": "Timer",
   "ConfigWindow_UI_Windows": "Windows",
@@ -508,5 +511,6 @@
   "ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving": "Use beneficial area action when moving.",
   "ConfigWindow_Auto_AutoDefenseNumber": "The count of hostiles who target on me. If it's larger than this, defense single.",
   "ConfigWindow_Target_OnlyAttackInVisionCone": "Only attack the targets in vision cone",
-  "ConfigWindow_Target_VisionCone": "The angle of your vision cone"
+  "ConfigWindow_Target_VisionCone": "The angle of your vision cone",
+  "ConfigWindow_Auto_ProvokeDelay": "The delay of provoke in seconds."
 }
