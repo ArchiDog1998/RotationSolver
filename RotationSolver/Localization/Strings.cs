@@ -729,4 +729,6 @@ internal partial class Strings
     public string ConfigWindow_Target_VisionCone { get; set; } = "The angle of your vision cone";
 
     public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke in seconds.";
+
+    public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of TTK.";
 }

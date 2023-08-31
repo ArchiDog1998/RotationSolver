@@ -181,6 +181,7 @@ public enum JobConfigFloat : byte
     public DictionConfig<PluginConfigVector4, Vector4> Vectors { get; private set; } = new(new()
     {
         { PluginConfigVector4.TeachingModeColor, new (0f, 1f, 0.8f, 1f)},
+        { PluginConfigVector4.TTKTextColor, new (0f, 1f, 0.8f, 1f)},
         { PluginConfigVector4.MovingTargetColor, new (0f, 1f, 0.8f, 0.6f)},
         { PluginConfigVector4.BeneficialPositionColor, new (0.5f, 0.9f, 0.1f, 0.7f)},
         { PluginConfigVector4.HoveredBeneficialPositionColor, new (1f, 0.5f, 0f, 0.8f)},
@@ -428,6 +429,7 @@ public enum PluginConfigVector4 : byte
     ControlWindowLockBg,
     ControlWindowUnlockBg,
     InfoWindowBg,
+    TTKTextColor,
 }
 #endregion
 

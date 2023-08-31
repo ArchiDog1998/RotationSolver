@@ -379,7 +379,8 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor)
         ),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetTimeToKill),
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetTimeToKill, 
+            new ColorEditSearchPlugin(PluginConfigVector4.TTKTextColor)),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget, 
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)

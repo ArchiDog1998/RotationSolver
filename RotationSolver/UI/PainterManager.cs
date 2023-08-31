@@ -155,7 +155,6 @@ internal static class PainterManager
     {
         const int ItemsCount = 16;
 
-        static readonly uint HealthRatioColor = ImGui.GetColorU32(new Vector4(0, 1, 0.8f, 1));
         public TargetText()
         {
             SubItems = new IDrawing3D[ItemsCount];
@@ -173,6 +172,8 @@ internal static class PainterManager
             }
 
             if (!Service.Config.GetValue(PluginConfigBool.ShowTargetTimeToKill)) return;
+
+            uint HealthRatioColor = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.TTKTextColor));
 
             int index = 0;
             foreach (GameObject t in DataCenter.AllHostileTargets.OrderBy(ObjectHelper.DistanceToPlayer))
