@@ -283,6 +283,7 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _basicParamsSearchable = new ISearchable[]
     {
         new CheckBoxSearchPlugin(PluginConfigBool.ToggleManual),
+        new CheckBoxSearchPlugin(PluginConfigBool.ToggleAuto),
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseWorkTask),
 

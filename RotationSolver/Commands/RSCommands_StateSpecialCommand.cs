@@ -21,21 +21,31 @@ public static partial class RSCommands
         });
     }
 
-    private static unsafe void DoStateCommandType(StateCommandType stateType) => DoOneCommandType(EnumTranslations.ToSayout, role =>
+    private static unsafe void DoStateCommandType(StateCommandType stateType, int index = -1) => DoOneCommandType(EnumTranslations.ToSayout, role =>
     {
-        if (DataCenter.State && !DataCenter.IsManual
-            && stateType == StateCommandType.Auto)
+        if (DataCenter.State)
         {
-            var index = Service.Config.GetValue(Basic.Configuration.PluginConfigInt.TargetingIndex) + 1; 
-            index %= Service.Config.GlobalConfig.TargetingTypes.Count;
-            Service.Config.SetValue(Basic.Configuration.PluginConfigInt.TargetingIndex, index);
-        }
-
-        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ToggleManual)
-            && DataCenter.State && DataCenter.IsManual
-            && stateType == StateCommandType.Manual)
-        {
-            stateType = StateCommandType.Cancel;
+            if (DataCenter.IsManual && stateType == StateCommandType.Manual
+                && Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ToggleManual))
+            {
+                stateType = StateCommandType.Cancel;
+            }
+            else if (stateType == StateCommandType.Auto)
+            {
+                if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ToggleAuto))
+                {
+                    stateType = StateCommandType.Cancel;
+                }
+                else
+                {
+                    if (index == -1)
+                    {
+                        index = Service.Config.GetValue(Basic.Configuration.PluginConfigInt.TargetingIndex) + 1;
+                    }
+                    index %= Service.Config.GlobalConfig.TargetingTypes.Count;
+                    Service.Config.SetValue(Basic.Configuration.PluginConfigInt.TargetingIndex, index);
+                }
+            }
         }
 
         switch (stateType)

@@ -99,6 +99,7 @@ internal partial class Strings
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make Manual Command as toggle.";
+    public string ConfigWindow_Param_ToggleAuto { get; set; } = "Make Auto Command as toggle.";
 
     public string ConfigWindow_Param_WeaponDelay { get; set; } = "Set the range of random delay for GCD in second.";
     public string ConfigWindow_Param_DeathDelay { get; set; } = "Set the range of random delay for using revival abilities in seconds.";

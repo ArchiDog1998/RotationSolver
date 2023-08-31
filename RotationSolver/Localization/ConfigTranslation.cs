@@ -53,6 +53,7 @@ internal static class ConfigTranslation
         PluginConfigBool.StartOnAttackedBySomeone => LocalizationManager.RightLang.ConfigWindow_Param_StartOnAttackedBySomeone,
         PluginConfigBool.UseWorkTask => LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
         PluginConfigBool.ToggleManual => LocalizationManager.RightLang.ConfigWindow_Param_ToggleManual,
+        PluginConfigBool.ToggleAuto => LocalizationManager.RightLang.ConfigWindow_Param_ToggleAuto,
         PluginConfigBool.UseStopCasting => LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,
 
         // UI

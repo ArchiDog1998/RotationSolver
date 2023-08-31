@@ -286,6 +286,7 @@ public enum PluginConfigBool : byte
     [Default(true)] AutoUpdateRotations,
 
     [Default(false)] ToggleManual,
+    [Default(false)] ToggleAuto,
     [Default(true)] OnlyShowWithHostileOrInDuty,
     [Default(false)] ShowControlWindow,
     [Default(false)] IsControlWindowLock,

@@ -24,7 +24,9 @@ public static partial class RSCommands
     {
         if (TryGetOneEnum<StateCommandType>(str, out var stateType))
         {
-            DoStateCommandType(stateType);
+            var intStr = str.Split(' ', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+            if (!int.TryParse(intStr, out var index)) index = -1;
+            DoStateCommandType(stateType, index);
         }
         else if (TryGetOneEnum<SpecialCommandType>(str, out var specialType))
         {
