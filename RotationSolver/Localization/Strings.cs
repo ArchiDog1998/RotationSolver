@@ -732,4 +732,5 @@ internal partial class Strings
     public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke in seconds.";
 
     public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of TTK.";
+    public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The min time between updating information in second.";
 }

@@ -272,6 +272,7 @@ public partial class RotationConfigWindow
         new DragFloatSearchPlugin(PluginConfigFloat.MaxPing, 0.002f),
         new DragFloatRangeSearchPlugin(PluginConfigFloat.WeaponDelayMin, PluginConfigFloat.WeaponDelayMax, 0.002f),
         new DragFloatRangeSearchPlugin(PluginConfigFloat.ClickingDelayMin, PluginConfigFloat.ClickingDelayMax, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MinUpdatingTime, 0.002f),
     };
 
     private static readonly ISearchable[] _basicTimerOthers = new ISearchable[]

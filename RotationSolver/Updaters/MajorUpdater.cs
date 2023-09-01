@@ -22,14 +22,17 @@ internal static class MajorUpdater
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
         && Player.Available && !SocialUpdater.InPvp;
 
-#if DEBUG
-    private static readonly Dictionary<int, bool> _values = new();
-#endif
-
     static bool _showed;
     static Exception _threadException;
+
+   static DateTime _lastUpdated = DateTime.Now;
+
     private unsafe static void FrameworkUpdate(Framework framework)
     {
+        if (DateTime.Now - _lastUpdated < TimeSpan.FromSeconds(Service.Config.GetValue(PluginConfigFloat.MinUpdatingTime)))
+            return;
+        _lastUpdated = DateTime.Now;
+
         PainterManager.ActionIds.Clear();
         RotationSolverPlugin.UpdateDisplayWindow();
         if (!IsValid)
@@ -47,27 +50,6 @@ internal static class MajorUpdater
             Svc.Toasts.ShowError(warning);
             Svc.Chat.PrintError(warning);
         }
-
-#if DEBUG
-        //Get changed condition.
-        string[] enumNames = Enum.GetNames(typeof(ConditionFlag));
-        int[] indexs = (int[])Enum.GetValues(typeof(ConditionFlag));
-        if (enumNames.Length == indexs.Length)
-        {
-            for (int i = 0; i < enumNames.Length; i++)
-            {
-                string key = enumNames[i];
-                bool newValue = Svc.Condition[(ConditionFlag)indexs[i]];
-                if (_values.TryGetValue(i, out bool value) && value != newValue && indexs[i] != 48 && indexs[i] != 27)
-                {
-                    //var str = indexs[i].ToString() + " " + key + ": " + newValue.ToString();
-                    //Svc.Chat.Print(str);
-                    //Svc.Toasts.ShowQuest(str);
-                }
-                _values[i] = newValue;
-            }
-        }
-#endif
 
         try
         {

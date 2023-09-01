@@ -166,6 +166,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.ClickingDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_ClickingDelay,
         PluginConfigFloat.StopCastingDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_StopCastingDelay,
         PluginConfigFloat.MistakeRatio => LocalizationManager.RightLang.ConfigWindow_Param_ClickMistake,
+        PluginConfigFloat.MinUpdatingTime => LocalizationManager.RightLang.ConfigWindow_Basic_MinUpdatingTime,
 
         // UI
         PluginConfigFloat.TargetIconSize => LocalizationManager.RightLang.ConfigWindow_Param_TargetIconSize,

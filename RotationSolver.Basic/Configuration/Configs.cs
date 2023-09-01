@@ -417,6 +417,8 @@ public enum PluginConfigFloat : byte
 
     [Default(1f, 0f, 3f)] StateIconHeight,
     [Default(1f, 0.2f, 10f)] StateIconSize,
+
+    [Default(0.02f, 0f, 1f)] MinUpdatingTime,
 }
 
 public enum PluginConfigVector4 : byte
