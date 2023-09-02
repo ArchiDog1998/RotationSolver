@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.2.11](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.10...v3.2.11) (2023-09-02)
+
+
+### Bug Fixes
+
+* add a delay for provoke. ([cd363ec](https://github.com/ArchiDog1998/RotationSolver/commit/cd363eceda527ff5fab5c9381ced32b168bacbaf))
+* add min updating time. ([3913063](https://github.com/ArchiDog1998/RotationSolver/commit/3913063cbf618ae8ec3ce1e1e0d7afa40af26158))
+* add provoke target list. ([27ec7d5](https://github.com/ArchiDog1998/RotationSolver/commit/27ec7d523d06618f288d0472ab712ba606895fb6))
+* add toggle for auto command. ([ab61790](https://github.com/ArchiDog1998/RotationSolver/commit/ab61790c18184e1c14a7f8a2a50cbf67fddb8fba))
+* add ttk color option. ([59d7ca7](https://github.com/ArchiDog1998/RotationSolver/commit/59d7ca7db1929a7f299dd7015916aa207fd278ee))
+* fixed heal delay range. ([d5e3837](https://github.com/ArchiDog1998/RotationSolver/commit/d5e3837840ba486d4122ca8417bfc857354ce41b))
+* fixed windows no move option. ([e3b96a6](https://github.com/ArchiDog1998/RotationSolver/commit/e3b96a6c59d68b9b52b5f6c1fe07e33efd59ea22))
+
 ## [3.2.10](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.9...v3.2.10) (2023-08-29)
 
 
