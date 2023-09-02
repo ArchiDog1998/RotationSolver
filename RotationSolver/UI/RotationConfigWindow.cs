@@ -1875,13 +1875,16 @@ public partial class RotationConfigWindow : Window
         ImGui.PopStyleColor();
         ImGui.PopFont();
 
-        if (ImGui.BeginTable("Rotation Solver List Territories", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
+        if (ImGui.BeginTable("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
         {
             ImGui.TableSetupScrollFreeze(0, 1);
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
 
             ImGui.TableNextColumn();
             ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_NoHostile);
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_NoProvoke);
 
             ImGui.TableNextColumn();
             ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_BeneficialPositions);
@@ -1909,14 +1912,14 @@ public partial class RotationConfigWindow : Window
             for (int i = 0; i < libs.Length; i++)
             {
                 ImGui.SetNextItemWidth(width);
-                if(ImGui.InputTextWithHint($"##Rotation Solver Territory Name {i}", LocalizationManager.RightLang.ConfigWindow_List_NoHostilesName, ref libs[i], 1024))
+                if(ImGui.InputTextWithHint($"##Rotation Solver Territory Target Name {i}", LocalizationManager.RightLang.ConfigWindow_List_NoHostilesName, ref libs[i], 1024))
                 {
                     OtherConfiguration.NoHostileNames[territoryId] = libs;
                     OtherConfiguration.SaveNoHostileNames();
                 }
                 ImGui.SameLine();
 
-                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Name {i}"))
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Target Name {i}"))
                 {
                     removeIndex = i;
                 }
@@ -1928,6 +1931,45 @@ public partial class RotationConfigWindow : Window
                 OtherConfiguration.NoHostileNames[territoryId] = list.ToArray();
                 OtherConfiguration.SaveNoHostileNames();
             }
+            ImGui.TableNextColumn();
+
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_NoProvokeDesc);
+
+            width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * _scale;
+
+            if (!OtherConfiguration.NoProvokeNames.TryGetValue(territoryId, out libs))
+            {
+                OtherConfiguration.NoProvokeNames[territoryId] = libs = Array.Empty<string>();
+            }
+            //Add one.
+            if (!libs.Any(string.IsNullOrEmpty))
+            {
+                OtherConfiguration.NoProvokeNames[territoryId] = libs.Append(string.Empty).ToArray();
+            }
+            removeIndex = -1;
+            for (int i = 0; i < libs.Length; i++)
+            {
+                ImGui.SetNextItemWidth(width);
+                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Provoke Name {i}", LocalizationManager.RightLang.ConfigWindow_List_NoProvokeName, ref libs[i], 1024))
+                {
+                    OtherConfiguration.NoProvokeNames[territoryId] = libs;
+                    OtherConfiguration.SaveNoProvokeNames();
+                }
+                ImGui.SameLine();
+
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Provoke Name {i}"))
+                {
+                    removeIndex = i;
+                }
+            }
+            if (removeIndex > -1)
+            {
+                var list = libs.ToList();
+                list.RemoveAt(removeIndex);
+                OtherConfiguration.NoProvokeNames[territoryId] = list.ToArray();
+                OtherConfiguration.SaveNoProvokeNames();
+            }
+
             ImGui.TableNextColumn();
 
             if (!OtherConfiguration.BeneficialPositions.TryGetValue(territoryId, out var pts))

@@ -53,6 +53,7 @@ internal static class ConfigTranslation
         PluginConfigBool.StartOnAttackedBySomeone => LocalizationManager.RightLang.ConfigWindow_Param_StartOnAttackedBySomeone,
         PluginConfigBool.UseWorkTask => LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,
         PluginConfigBool.ToggleManual => LocalizationManager.RightLang.ConfigWindow_Param_ToggleManual,
+        PluginConfigBool.ToggleAuto => LocalizationManager.RightLang.ConfigWindow_Param_ToggleAuto,
         PluginConfigBool.UseStopCasting => LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,
 
         // UI
@@ -165,6 +166,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.ClickingDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_ClickingDelay,
         PluginConfigFloat.StopCastingDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_StopCastingDelay,
         PluginConfigFloat.MistakeRatio => LocalizationManager.RightLang.ConfigWindow_Param_ClickMistake,
+        PluginConfigFloat.MinUpdatingTime => LocalizationManager.RightLang.ConfigWindow_Basic_MinUpdatingTime,
 
         // UI
         PluginConfigFloat.TargetIconSize => LocalizationManager.RightLang.ConfigWindow_Param_TargetIconSize,
@@ -190,6 +192,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.HealthTankRatio => LocalizationManager.RightLang.ConfigWindow_Param_HealthTankRatio,
         PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
         PluginConfigFloat.AutoHealTimeToKill => LocalizationManager.RightLang.ConfigWindow_Auto_AutoHealTimeToKill,
+        PluginConfigFloat.ProvokeDelayMin => LocalizationManager.RightLang.ConfigWindow_Auto_ProvokeDelay,
 
         // target
         PluginConfigFloat.BossTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_BossTimeToKill,
@@ -210,7 +213,8 @@ internal static class ConfigTranslation
         PluginConfigVector4.ControlWindowUnlockBg => LocalizationManager.RightLang.ConfigWindow_Control_UnlockBackgroundColor,
         PluginConfigVector4.BeneficialPositionColor => LocalizationManager.RightLang.ConfigWindow_UI_BeneficialPositionColor,
         PluginConfigVector4.HoveredBeneficialPositionColor => LocalizationManager.RightLang.ConfigWindow_UI_HoveredBeneficialPositionColor,
-        
+        PluginConfigVector4.TTKTextColor => LocalizationManager.RightLang.ConfigWindow_UI_TTKTextColor,
+
         _ => string.Empty,
     };
 

@@ -82,6 +82,8 @@ internal static partial class TargetUpdater
         }
     }
 
+    static RandomDelay _provokeDelay = new(() => (Service.Config.GetValue(PluginConfigFloat.ProvokeDelayMin), Service.Config.GetValue(PluginConfigFloat.ProvokeDelayMax)));
+
     private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
     {
         var deadHP = DataCenter.PartyMembers.Count() > 1 ? 0 : 1;
@@ -154,6 +156,8 @@ internal static partial class TargetUpdater
         {
             DataCenter.IsHostileCastingToTank = DataCenter.IsHostileCastingAOE = false;
         }
+
+        DataCenter.CanProvoke = _provokeDelay.Delay(TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count());
     }
 
     private static IEnumerable<BattleChara> GetHostileTargets(IEnumerable<BattleChara> allAttackableTargets)
@@ -238,21 +242,6 @@ internal static partial class TargetUpdater
         return IsHostileCastingBase(h, (act) =>
         {
             return OtherConfiguration.HostileCastingArea.Contains(act.RowId);
-
-            //if ((act.CastType == 1 || act.CastType == 2)
-            //  && act.Range == 0
-            //  && act.EffectRange >= 40)
-            //    return true;
-
-            //if (act.CastType == 2
-            // && act.EffectRange == 6
-            // && act.Cast100ms == 50
-            // && act.CanTargetHostile
-            // && !act.CanTargetSelf
-            // && act.Range == 100)
-            //    return true;
-
-            //return false;
         });
     }
 
@@ -397,10 +386,10 @@ internal static partial class TargetUpdater
 
     static (float min, float max) GetHealRange() => (Service.Config.GetValue(PluginConfigFloat.HealDelayMin), Service.Config.GetValue(PluginConfigFloat.HealDelayMax));
 
-    static RandomDelay _healDelay1 = new(GetHealRange);
-    static RandomDelay _healDelay2 = new(GetHealRange);
-    static RandomDelay _healDelay3 = new(GetHealRange);
-    static RandomDelay _healDelay4 = new(GetHealRange);
+    static RandomDelay _healDelay1 = new(GetHealRange),
+                       _healDelay2 = new(GetHealRange),
+                       _healDelay3 = new(GetHealRange),
+                       _healDelay4 = new(GetHealRange);
     static void UpdateCanHeal(PlayerCharacter player)
     {
         var job = (Job)player.ClassJob.Id;

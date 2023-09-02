@@ -181,6 +181,7 @@ public enum JobConfigFloat : byte
     public DictionConfig<PluginConfigVector4, Vector4> Vectors { get; private set; } = new(new()
     {
         { PluginConfigVector4.TeachingModeColor, new (0f, 1f, 0.8f, 1f)},
+        { PluginConfigVector4.TTKTextColor, new (0f, 1f, 0.8f, 1f)},
         { PluginConfigVector4.MovingTargetColor, new (0f, 1f, 0.8f, 0.6f)},
         { PluginConfigVector4.BeneficialPositionColor, new (0.5f, 0.9f, 0.1f, 0.7f)},
         { PluginConfigVector4.HoveredBeneficialPositionColor, new (1f, 0.5f, 0f, 0.8f)},
@@ -285,6 +286,7 @@ public enum PluginConfigBool : byte
     [Default(true)] AutoUpdateRotations,
 
     [Default(false)] ToggleManual,
+    [Default(false)] ToggleAuto,
     [Default(true)] OnlyShowWithHostileOrInDuty,
     [Default(false)] ShowControlWindow,
     [Default(false)] IsControlWindowLock,
@@ -385,6 +387,9 @@ public enum PluginConfigFloat : byte
     [Default(0.1f, 0.05f, 0.25f)] ClickingDelayMin,
     [Default(0.15f)] ClickingDelayMax,
 
+    [Default(0.5f, 0f, 10f)] ProvokeDelayMin,
+    [Default(1f)] ProvokeDelayMax,
+
     [Default(0.5f, 0f, 5f)] HealWhenNothingTodoMin,
     [Default(1f)] HealWhenNothingTodoMax,
 
@@ -412,6 +417,8 @@ public enum PluginConfigFloat : byte
 
     [Default(1f, 0f, 3f)] StateIconHeight,
     [Default(1f, 0.2f, 10f)] StateIconSize,
+
+    [Default(0.02f, 0f, 1f)] MinUpdatingTime,
 }
 
 public enum PluginConfigVector4 : byte
@@ -425,6 +432,7 @@ public enum PluginConfigVector4 : byte
     ControlWindowLockBg,
     ControlWindowUnlockBg,
     InfoWindowBg,
+    TTKTextColor,
 }
 #endregion
 

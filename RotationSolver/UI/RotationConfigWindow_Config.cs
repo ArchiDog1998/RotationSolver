@@ -272,6 +272,7 @@ public partial class RotationConfigWindow
         new DragFloatSearchPlugin(PluginConfigFloat.MaxPing, 0.002f),
         new DragFloatRangeSearchPlugin(PluginConfigFloat.WeaponDelayMin, PluginConfigFloat.WeaponDelayMax, 0.002f),
         new DragFloatRangeSearchPlugin(PluginConfigFloat.ClickingDelayMin, PluginConfigFloat.ClickingDelayMax, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.MinUpdatingTime, 0.002f),
     };
 
     private static readonly ISearchable[] _basicTimerOthers = new ISearchable[]
@@ -283,6 +284,7 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _basicParamsSearchable = new ISearchable[]
     {
         new CheckBoxSearchPlugin(PluginConfigBool.ToggleManual),
+        new CheckBoxSearchPlugin(PluginConfigBool.ToggleAuto),
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseWorkTask),
 
@@ -379,7 +381,8 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor)
         ),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetTimeToKill),
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetTimeToKill, 
+            new ColorEditSearchPlugin(PluginConfigVector4.TTKTextColor)),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget, 
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)
@@ -421,25 +424,24 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.ControlWindowUnlockBg),
             new ColorEditSearchPlugin(PluginConfigVector4.ControlWindowLockBg),
         }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowNextActionWindow, new ISearchable[]
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowCooldownWindow, new ISearchable[]
         {
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
+            new CheckBoxSearchPlugin(PluginConfigBool.IsControlWindowLock),
 
-            new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
-        }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowCooldownWindow, new ISearchable[] 
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
-            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
             new CheckBoxSearchPlugin(PluginConfigBool.UseOriginalCooldown),
             new CheckBoxSearchPlugin(PluginConfigBool.ShowGCDCooldown),
             new CheckBoxSearchPlugin(PluginConfigBool.ShowItemsCooldown),
 
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownFontSize, 0.1f),
             new DragFloatSearchPlugin(PluginConfigFloat.CooldownWindowIconSize, 0.2f),
+
+            new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
+        }),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowNextActionWindow, new ISearchable[]
+        {
+            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoMove),
+            new CheckBoxSearchPlugin(PluginConfigBool.IsInfoWindowNoInputs),
 
             new ColorEditSearchPlugin(PluginConfigVector4.InfoWindowBg),
         }),
@@ -553,7 +555,7 @@ public partial class RotationConfigWindow
                     JobRole.Healer,
                 }
             },
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMin, 0.002f),
+        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMax, 0.002f),
     };
 
     private static readonly ISearchable[] _autoActionConditionSearchable_Raise = new ISearchable[]
@@ -703,7 +705,8 @@ public partial class RotationConfigWindow
                     JobRole.Tank,
                 }
             },
-            new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank)
+            new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank,
+                new DragFloatRangeSearchPlugin(PluginConfigFloat.ProvokeDelayMin, PluginConfigFloat.ProvokeDelayMax, 0.05f))
             {
                 JobRoles = new JobRole[]
                 {

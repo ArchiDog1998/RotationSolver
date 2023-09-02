@@ -130,7 +130,7 @@ public static class Watcher
         DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
         foreach ( var effect in set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectSource))
         {
-            DataCenter.ApplyStatus.Add(effect.Key, effect.Value);
+            DataCenter.ApplyStatus[effect.Key] = effect.Value;
         }
         DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Player.Object.ObjectId).Sum(i => i.Value);
         DataCenter.EffectTime = DateTime.Now;

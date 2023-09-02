@@ -2,7 +2,9 @@
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -175,6 +177,13 @@ public static class TargetFilter
 
         var targets = inputCharas.Where(target =>
         {
+            //Removed the listed names.
+            IEnumerable<string> names = Array.Empty<string>();
+            if (OtherConfiguration.NoProvokeNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
+                names = names.Union(ns1);
+
+            if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(target.Name.ToString()).Success)) return false;
+
             //Target can move or two big and has a target
             if ((target.GetObjectNPC()?.Unknown12 == 0 || target.HitboxRadius >= 5)
             && (target.TargetObject?.IsValid() ?? false))
