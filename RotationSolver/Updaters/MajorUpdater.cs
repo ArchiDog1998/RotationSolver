@@ -10,6 +10,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Localization;
 using RotationSolver.UI;
 using System.Runtime.InteropServices;
 
@@ -22,17 +23,12 @@ internal static class MajorUpdater
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
         && Player.Available && !SocialUpdater.InPvp;
 
-    static bool _showed;
+    static bool _showed, _work;
     static Exception _threadException;
-
-   static DateTime _lastUpdated = DateTime.Now;
+    static DateTime _lastUpdatedWork = DateTime.Now;
 
     private unsafe static void FrameworkUpdate(Framework framework)
     {
-        if (DateTime.Now - _lastUpdated < TimeSpan.FromSeconds(Service.Config.GetValue(PluginConfigFloat.MinUpdatingTime)))
-            return;
-        _lastUpdated = DateTime.Now;
-
         PainterManager.ActionIds.Clear();
         RotationSolverPlugin.UpdateDisplayWindow();
         if (!IsValid)
@@ -87,6 +83,13 @@ internal static class MajorUpdater
 
         try
         {
+            if (_work) return;
+            if (DateTime.Now - _lastUpdatedWork < TimeSpan.FromSeconds(Service.Config.GetValue(PluginConfigFloat.MinUpdatingTime)))
+                return;
+
+            _work = true;
+            _lastUpdatedWork = DateTime.Now;
+
             if (Service.Config.GetValue(PluginConfigBool.UseWorkTask))
             {
                 Task.Run(UpdateWork);
@@ -110,18 +113,20 @@ internal static class MajorUpdater
         Svc.Framework.Update += FrameworkUpdate;
     }
 
-    static bool _work;
     static Exception _innerException;
     private static void UpdateWork()
     {
+        var waitingTime = (DateTime.Now - _lastUpdatedWork).TotalMilliseconds;
+        if (waitingTime > 100)
+        {
+            PluginLog.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
+        }
+
         if (!IsValid)
         {
             ActionUpdater.NextAction = ActionUpdater.NextGCDAction = null;
-            CustomRotation.MoveTarget = null;
             return;
         }
-        if (_work) return;
-        _work = true;
 
         try
         {
