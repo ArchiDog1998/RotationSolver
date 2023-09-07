@@ -1243,6 +1243,7 @@ public partial class RotationConfigWindow : Window
                             action.AOECount = (byte)aoeCount;
                         }
                     }
+
                     if (!action.IsFriendly)
                     {
                         var ttk = action.TimeToKill;
@@ -1250,7 +1251,17 @@ public partial class RotationConfigWindow : Window
                         if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_TTK}##{action}",
                             ref ttk, 0.1f, 0, 120))
                         {
-                            action.TimeToKill = (byte)ttk;
+                            action.TimeToKill = ttk;
+                        }
+                    }
+                    if (action.IsHeal)
+                    {
+                        var ratio = action.AutoHealRatio;
+                        ImGui.SetNextItemWidth(_scale * 150);
+                        if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_HealRatio}##{action}",
+                            ref ratio, 0.002f, 0, 1))
+                        {
+                            action.AutoHealRatio = ratio;
                         }
                     }
                 }

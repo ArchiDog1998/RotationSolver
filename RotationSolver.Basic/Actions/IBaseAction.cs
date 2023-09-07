@@ -41,6 +41,9 @@ public interface IBaseAction : IAction
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal bool IsEot { get; }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    internal bool IsHeal { get; }
+
     /// <summary>
     /// If player has these statuses from player self, this action will not used.
     /// </summary>
@@ -200,5 +203,10 @@ public interface IBaseAction : IAction
     /// How much ttk that this action needs the targets are.
     /// </summary>
     float TimeToKill { get; internal set; }
+
+    /// <summary>
+    /// The user seted heal ratio.
+    /// </summary>
+    float AutoHealRatio { get; internal set; }
     #endregion
 }

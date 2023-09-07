@@ -62,8 +62,9 @@ public class OtherConfiguration
         { (uint) ActionID.Bio, 20},
         { (uint) ActionID.EukrasianDosis, 20},
         { (uint) ActionID.Aero, 20},
-
     };
+
+    public static Dictionary<uint, float> ActionHealRatio = new();
 
     public static RotationSolverRecord RotationSolverRecord = new ();
 
@@ -94,6 +95,8 @@ public class OtherConfiguration
 
         Task.Run(() => InitOne(ref ActionTTK, nameof(ActionTTK)));
 
+        Task.Run(() => InitOne(ref ActionHealRatio, nameof(ActionHealRatio)));
+
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
     }
 
@@ -110,6 +113,12 @@ public class OtherConfiguration
         SaveNoProvokeNames();
         SaveActionAOECounts();
         SaveActionTTK();
+        SaveActionHealRatio();
+    }
+
+    public static void SaveActionHealRatio()
+    {
+        Task.Run(() => Save(ActionHealRatio, nameof(ActionHealRatio)));
     }
 
     public static void SaveActionTTK()

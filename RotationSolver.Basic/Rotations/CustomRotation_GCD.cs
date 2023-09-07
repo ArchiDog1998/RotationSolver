@@ -28,8 +28,26 @@ public abstract partial class CustomRotation
         if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer)
             && (DataCenter.InCombat || Service.Config.GetValue(PluginConfigBool.HealOutOfCombat)))
         {
-            if ((specialType == SpecialCommandType.HealArea || CanHealAreaSpell) && HealAreaGCD(out act)) return act;
-            if ((specialType == SpecialCommandType.HealSingle || CanHealSingleSpell) && HealSingleGCD(out act)) return act;
+            if (specialType == SpecialCommandType.HealArea)
+            {
+                if( HealAreaGCD(out act)) return act;
+            }
+            if (CanHealAreaSpell)
+            {
+                BaseAction.AutoHealCheck = true;
+                if (HealAreaGCD(out act)) return act;
+                BaseAction.AutoHealCheck = false;
+            }
+            if (specialType == SpecialCommandType.HealSingle)
+            {
+                if (HealSingleGCD(out act)) return act;
+            }
+            if (CanHealSingleSpell)
+            {
+                BaseAction.AutoHealCheck = true;
+                if (HealSingleGCD(out act)) return act;
+                BaseAction.AutoHealCheck = false;
+            }
         }
         if (specialType == SpecialCommandType.DefenseArea && DefenseAreaGCD(out act)) return act;
         if (specialType == SpecialCommandType.DefenseSingle && DefenseSingleGCD(out act)) return act;
