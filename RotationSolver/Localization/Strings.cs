@@ -735,4 +735,5 @@ internal partial class Strings
     public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The min time between updating information in second.";
 
     public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
+    public string ConfigWindow_Actions_TTK { get; set; } = "TTK that this action needs the target be.";
 }

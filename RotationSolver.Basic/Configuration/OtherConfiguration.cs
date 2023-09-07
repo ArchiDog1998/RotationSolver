@@ -48,6 +48,23 @@ public class OtherConfiguration
         { (uint) ActionID.SteelCyclone, 2},
     };
 
+    public static Dictionary<uint, float> ActionTTK = new()
+    {
+        { (uint) ActionID.Combust, 20},
+        { (uint) ActionID.VenomousBite, 30},
+        { (uint) ActionID.WindBite, 30},
+        { (uint) ActionID.IronJaws, 30},
+        { (uint) ActionID.BioBlaster, 10},
+        { (uint) ActionID.TwinSnakes, 10},
+        { (uint) ActionID.Demolish, 12},
+        { (uint) ActionID.ShadowOfDeath, 10},
+        { (uint) ActionID.Higanbana, 40},
+        { (uint) ActionID.Bio, 20},
+        { (uint) ActionID.EukrasianDosis, 20},
+        { (uint) ActionID.Aero, 20},
+
+    };
+
     public static RotationSolverRecord RotationSolverRecord = new ();
 
     public static void Init()
@@ -75,6 +92,8 @@ public class OtherConfiguration
 
         Task.Run(() => InitOne(ref ActionAOECounts, nameof(ActionAOECounts)));
 
+        Task.Run(() => InitOne(ref ActionTTK, nameof(ActionTTK)));
+
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
     }
 
@@ -90,6 +109,12 @@ public class OtherConfiguration
         SaveRotationSolverRecord();
         SaveNoProvokeNames();
         SaveActionAOECounts();
+        SaveActionTTK();
+    }
+
+    public static void SaveActionTTK()
+    {
+        Task.Run(() => Save(ActionTTK, nameof(ActionTTK)));
     }
 
     public static void SaveActionAOECounts()

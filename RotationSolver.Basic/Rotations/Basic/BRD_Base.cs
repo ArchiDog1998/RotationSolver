@@ -88,7 +88,6 @@ public abstract class BRD_Base : CustomRotation
     public static IBaseAction VenomousBite { get; } = new BaseAction(ActionID.VenomousBite, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.VenomousBite, StatusID.CausticBite },
-        TimeToDie = 30,
     };
 
     /// <summary>
@@ -97,7 +96,6 @@ public abstract class BRD_Base : CustomRotation
     public static IBaseAction WindBite { get; } = new BaseAction(ActionID.WindBite, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.WindBite, StatusID.StormBite },
-        TimeToDie = 30,
     };
 
     /// <summary>
@@ -107,7 +105,6 @@ public abstract class BRD_Base : CustomRotation
     {
         TargetStatus = VenomousBite.TargetStatus.Union(WindBite.TargetStatus).ToArray(),
         ActionCheck = (b, m) => b.HasStatus(true, VenomousBite.TargetStatus) & b.HasStatus(true, WindBite.TargetStatus),
-        TimeToDie = 30,
     };
 
     /// <summary>

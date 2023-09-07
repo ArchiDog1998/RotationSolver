@@ -194,6 +194,11 @@ public interface IBaseAction : IAction
     /// <summary>
     /// How many targets are needed to use this action.
     /// </summary>
-    byte AOECount { get; set; }
+    byte AOECount { get; internal set; }
+
+    /// <summary>
+    /// How much ttk that this action needs the targets are.
+    /// </summary>
+    float TimeToKill { get; internal set; }
     #endregion
 }

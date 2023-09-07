@@ -1237,10 +1237,20 @@ public partial class RotationConfigWindow : Window
                     {
                         var aoeCount = (int)action.AOECount;
                         ImGui.SetNextItemWidth(_scale * 150);
-                        if (ImGui.DragInt($"{LocalizationManager.RightLang.ConfigWindow_Actions_AOECount}##{action}", ref aoeCount,
-                            0.05f, 1, 10))
+                        if (ImGui.DragInt($"{LocalizationManager.RightLang.ConfigWindow_Actions_AOECount}##{action}", 
+                            ref aoeCount, 0.05f, 1, 10))
                         {
                             action.AOECount = (byte)aoeCount;
+                        }
+                    }
+                    if (!action.IsFriendly)
+                    {
+                        var ttk = action.TimeToKill;
+                        ImGui.SetNextItemWidth(_scale * 150);
+                        if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_TTK}##{action}",
+                            ref ttk, 0.1f, 0, 120))
+                        {
+                            action.TimeToKill = (byte)ttk;
                         }
                     }
                 }

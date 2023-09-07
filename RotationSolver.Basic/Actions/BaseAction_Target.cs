@@ -22,7 +22,7 @@ public partial class BaseAction
             return OtherConfiguration.ActionAOECounts.TryGetValue(ID, out var count)
                 ? count : IsFriendly ? (byte)1 :(byte)3;
         }
-        internal set
+        set
         {
             OtherConfiguration.ActionAOECounts[ID] = value;
             OtherConfiguration.SaveActionAOECounts();
@@ -32,7 +32,19 @@ public partial class BaseAction
     /// <summary>
     /// How many time does this action need the target keep in live.
     /// </summary>
-    public float TimeToDie { get; init; } = 0;
+    public float TimeToKill 
+    {
+        get
+        {
+            return OtherConfiguration.ActionTTK.TryGetValue(ID, out var time)
+                ? time : 0;
+        }
+        set
+        {
+            OtherConfiguration.ActionTTK[ID] = value;
+            OtherConfiguration.SaveActionTTK();
+        }
+    }
 
     /// <summary>
     /// Is this action's target dead?
@@ -386,7 +398,7 @@ public partial class BaseAction
                 var time = b.GetTimeToKill();
 
                 //No need to dot.
-                if (TargetStatus != null && !float.IsNaN(time) && time < TimeToDie) return false;
+                if (TargetStatus != null && !float.IsNaN(time) && time < TimeToKill) return false;
 
                 //Already has status.
                 if (!CheckStatus(b)) return false;
@@ -547,7 +559,7 @@ public partial class BaseAction
         var canDot = dontHave.Where(b =>
         {
             var time = b.GetTimeToKill();
-            return float.IsNaN(time) || time >= TimeToDie;
+            return float.IsNaN(time) || time >= TimeToKill;
         });
 
         if (mustUse)

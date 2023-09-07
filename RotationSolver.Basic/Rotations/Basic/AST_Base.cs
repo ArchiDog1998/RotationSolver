@@ -54,7 +54,6 @@ public abstract class AST_Base : CustomRotation
             StatusID.Combust3,
             StatusID.Combust4,
         },
-        TimeToDie = 20,
     };
 
     /// <summary>
