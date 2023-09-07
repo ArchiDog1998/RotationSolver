@@ -160,18 +160,12 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 1
     /// </summary>
-    public static IBaseAction DemonSlice { get; } = new BaseAction(ActionID.DemonSlice)
-    {
-        AOECount = 2,
-    };
+    public static IBaseAction DemonSlice { get; } = new BaseAction(ActionID.DemonSlice);
 
     /// <summary>
     /// 2
     /// </summary>
-    public static IBaseAction DemonSlaughter { get; } = new BaseAction(ActionID.DemonSlaughter)
-    {
-        AOECount = 2,
-    };
+    public static IBaseAction DemonSlaughter { get; } = new BaseAction(ActionID.DemonSlaughter);
 
     /// <summary>
     /// 

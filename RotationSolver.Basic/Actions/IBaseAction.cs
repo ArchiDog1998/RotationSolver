@@ -190,5 +190,10 @@ public interface IBaseAction : IAction
     /// Is this action's target type is target only one.
     /// </summary>
     bool IsSingleTarget { get; }
+
+    /// <summary>
+    /// How many targets are needed to use this action.
+    /// </summary>
+    byte AOECount { get; set; }
     #endregion
 }

@@ -733,4 +733,6 @@ internal partial class Strings
 
     public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of TTK.";
     public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The min time between updating information in second.";
+
+    public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
 }

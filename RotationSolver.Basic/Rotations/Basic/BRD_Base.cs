@@ -141,7 +141,6 @@ public abstract class BRD_Base : CustomRotation
     public static IBaseAction QuickNock { get; } = new BaseAction(ActionID.QuickNock)
     {
         StatusProvide = new[] { StatusID.ShadowBiteReady },
-        AOECount = 2,
     };
 
     /// <summary>
@@ -150,7 +149,6 @@ public abstract class BRD_Base : CustomRotation
     public static IBaseAction ShadowBite { get; } = new BaseAction(ActionID.ShadowBite)
     {
         StatusNeed = new[] { StatusID.ShadowBiteReady },
-        AOECount = 2,
     };
 
     /// <summary>
@@ -172,10 +170,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction RainOfDeath { get; } = new BaseAction(ActionID.RainOfDeath)
-    {
-        AOECount = 2,
-    };
+    public static IBaseAction RainOfDeath { get; } = new BaseAction(ActionID.RainOfDeath);
     #endregion
 
     #region Support

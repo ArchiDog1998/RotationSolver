@@ -310,18 +310,12 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction FeatherRain { get; } = new BLUAction(ActionID.FeatherRain)
-    {
-        AOECount = 1,
-    };
+    public static IBLUAction FeatherRain { get; } = new BLUAction(ActionID.FeatherRain);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Eruption { get; } = new BLUAction(ActionID.Eruption)
-    {
-        AOECount = 1,
-    };
+    public static IBLUAction Eruption { get; } = new BLUAction(ActionID.Eruption);
 
     /// <summary>
     /// 

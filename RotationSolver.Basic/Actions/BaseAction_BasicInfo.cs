@@ -202,8 +202,6 @@ public partial class BaseAction : IBaseAction
         _option = option;
 
         CoolDownGroup = _action.GetCoolDownGroup();
-
-        if (IsFriendly) AOECount = 1;
     }
 
     /// <summary>

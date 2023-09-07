@@ -20,6 +20,34 @@ public class OtherConfiguration
 
     public static HashSet<uint> InvincibleStatus = new();
 
+    public static Dictionary<uint, byte> ActionAOECounts = new()
+    {
+        { (uint) ActionID.Gravity, 2},
+        { (uint) ActionID.FeatherRain, 1},
+        { (uint) ActionID.Eruption, 1},
+        { (uint) ActionID.QuickNock, 2},
+        { (uint) ActionID.ShadowBite, 2},
+        { (uint) ActionID.RainOfDeath, 2},
+        { (uint) ActionID.BladeShower, 2},
+        { (uint) ActionID.RisingWindmill, 2},
+        { (uint) ActionID.BloodShower, 2},
+        { (uint) ActionID.FanDance2, 2},
+        { (uint) ActionID.Unleash, 2},
+        { (uint) ActionID.StalwartSoul, 2},
+        { (uint) ActionID.DemonSlice, 2},
+        { (uint) ActionID.DemonSlaughter, 2},
+        { (uint) ActionID.SpreadShot, 2},
+        { (uint) ActionID.AutoCrossbow, 2},
+        { (uint) ActionID.Katon, 2},
+        { (uint) ActionID.Scatter, 2},
+        { (uint) ActionID.WhorlOfDeath, 2},
+        { (uint) ActionID.ArtOfWar, 2},
+        { (uint) ActionID.Dyskrasia, 2},
+        { (uint) ActionID.Overpower, 2},
+        { (uint) ActionID.MythrilTempest, 2},
+        { (uint) ActionID.SteelCyclone, 2},
+    };
+
     public static RotationSolverRecord RotationSolverRecord = new ();
 
     public static void Init()
@@ -45,6 +73,8 @@ public class OtherConfiguration
 
         Task.Run(() => InitOne(ref BeneficialPositions, nameof(BeneficialPositions)));
 
+        Task.Run(() => InitOne(ref ActionAOECounts, nameof(ActionAOECounts)));
+
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
     }
 
@@ -59,6 +89,12 @@ public class OtherConfiguration
         SaveBeneficialPositions();
         SaveRotationSolverRecord();
         SaveNoProvokeNames();
+        SaveActionAOECounts();
+    }
+
+    public static void SaveActionAOECounts()
+    {
+        Task.Run(() => Save(ActionAOECounts, nameof(ActionAOECounts)));
     }
     public static void SaveRotationSolverRecord()
     {

@@ -116,10 +116,7 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 1
     /// </summary>
-    public static IBaseAction SpreadShot { get; } = new BaseAction(ActionID.SpreadShot)
-    {
-        AOECount = 2,
-    };
+    public static IBaseAction SpreadShot { get; } = new BaseAction(ActionID.SpreadShot);
 
     /// <summary>
     /// 2
@@ -127,7 +124,6 @@ public abstract class MCH_Base : CustomRotation
     public static IBaseAction AutoCrossbow { get; } = new BaseAction(ActionID.AutoCrossbow)
     {
         ActionCheck = HeatBlast.ActionCheck,
-        AOECount = 2,
     };
 
     /// <summary>
