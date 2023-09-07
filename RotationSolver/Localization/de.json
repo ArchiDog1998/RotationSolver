@@ -51,6 +51,7 @@
   "ConfigWindow_Param_AutoOffWhenDead": "Automatisch ausschalten, wenn tot.",
   "ConfigWindow_Param_UseWorkTask": "Use work task for acceleration.",
   "ConfigWindow_Param_ToggleManual": "Make Manual Command as toggle.",
+  "ConfigWindow_Param_ToggleAuto": "Make Auto Command as toggle.",
   "ConfigWindow_Param_WeaponDelay": "Set the range of random delay for GCD in second.",
   "ConfigWindow_Param_DeathDelay": "Set the range of random delay for using revival abilities in seconds.",
   "ConfigWindow_Param_HostileDelay": "Set the range of random delay for targetting hostile targets in seconds.",
@@ -512,5 +513,7 @@
   "ConfigWindow_Auto_AutoDefenseNumber": "The count of hostiles who target on me. If it's larger than this, defense single.",
   "ConfigWindow_Target_OnlyAttackInVisionCone": "Only attack the targets in vision cone",
   "ConfigWindow_Target_VisionCone": "The angle of your vision cone",
-  "ConfigWindow_Auto_ProvokeDelay": "The delay of provoke in seconds."
+  "ConfigWindow_Auto_ProvokeDelay": "The delay of provoke in seconds.",
+  "ConfigWindow_UI_TTKTextColor": "The text color of TTK.",
+  "ConfigWindow_Basic_MinUpdatingTime": "The min time between updating information in second."
 }
