@@ -1233,6 +1233,16 @@ public partial class RotationConfigWindow : Window
 
                 if(_activeAction is IBaseAction action)
                 {
+                    ImGui.Separator();
+
+                    var ttk = action.TimeToKill;
+                    ImGui.SetNextItemWidth(_scale * 150);
+                    if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_TTK}##{action}",
+                        ref ttk, 0.1f, 0, 120))
+                    {
+                        action.TimeToKill = ttk;
+                    }
+
                     if (!action.IsSingleTarget)
                     {
                         var aoeCount = (int)action.AOECount;
@@ -1244,16 +1254,6 @@ public partial class RotationConfigWindow : Window
                         }
                     }
 
-                    if (!action.IsFriendly)
-                    {
-                        var ttk = action.TimeToKill;
-                        ImGui.SetNextItemWidth(_scale * 150);
-                        if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_TTK}##{action}",
-                            ref ttk, 0.1f, 0, 120))
-                        {
-                            action.TimeToKill = ttk;
-                        }
-                    }
                     if (action.IsHeal)
                     {
                         var ratio = action.AutoHealRatio;

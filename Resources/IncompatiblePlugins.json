@@ -39,7 +39,7 @@
     "Icon": "https://raw.githubusercontent.com/Penumbra-Sync/repo/main/MareSynchronos/images/icon.png",
     "Url": "https://github.com/Penumbra-Sync/client",
     "Features": "It takes a lot of resources about Task, which may effect the usage.",
-    "Type": 1
+    "Type": 3
   },
   {
     "Name": "Simple Tweaks",

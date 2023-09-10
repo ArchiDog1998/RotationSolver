@@ -109,6 +109,8 @@ public partial class BaseAction
                 if (DataCenter.PartyMembersAverHP >= AutoHealRatio) return false;
             }
         }
+
+        if (IsFriendly && DataCenter.AverageTimeToKill < TimeToKill) return false;
         
         if (DataCenter.DisabledActionSequencer != null && DataCenter.DisabledActionSequencer.Contains(ID)) return false;
 
