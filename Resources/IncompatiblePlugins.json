@@ -38,8 +38,8 @@
     "Name": "Mare Synchronos",
     "Icon": "https://raw.githubusercontent.com/Penumbra-Sync/repo/main/MareSynchronos/images/icon.png",
     "Url": "https://github.com/Penumbra-Sync/client",
-    "Features": "Not so sure, but sometimes, it may effect the usage.",
-    "Type": 1
+    "Features": "It takes a lot of resources about Task, which may effect the usage.",
+    "Type": 3
   },
   {
     "Name": "Simple Tweaks",

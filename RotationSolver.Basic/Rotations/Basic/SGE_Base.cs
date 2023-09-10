@@ -78,16 +78,12 @@ public abstract class SGE_Base : CustomRotation
              StatusID.EukrasianDosis2,
              StatusID.EukrasianDosis3
         },
-        TimeToDie = 20,
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Dyskrasia { get; } = new BaseAction(ActionID.Dyskrasia) 
-    { 
-        AOECount = 2 
-    };
+    public static IBaseAction Dyskrasia { get; } = new BaseAction(ActionID.Dyskrasia);
 
     /// <summary>
     /// 

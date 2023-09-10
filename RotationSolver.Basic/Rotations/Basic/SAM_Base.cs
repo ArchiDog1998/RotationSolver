@@ -176,7 +176,6 @@ public abstract class SAM_Base : CustomRotation
     {
         ActionCheck = (b, m) => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
-        TimeToDie = 40,
     };
 
     /// <summary>

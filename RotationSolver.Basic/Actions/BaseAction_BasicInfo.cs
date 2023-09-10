@@ -20,6 +20,11 @@ public partial class BaseAction : IBaseAction
     readonly ActionOption _option;
 
     /// <summary>
+    /// Is a heal action.
+    /// </summary>
+    public bool IsHeal => _option.HasFlag(ActionOption.HealFlag);
+
+    /// <summary>
     /// Is a friendly action.
     /// </summary>
     public bool IsFriendly => _option.HasFlag(ActionOption.Friendly);
@@ -202,8 +207,12 @@ public partial class BaseAction : IBaseAction
         _option = option;
 
         CoolDownGroup = _action.GetCoolDownGroup();
+    }
 
-        if (IsFriendly) AOECount = 1;
+    internal static void CleanSpecial()
+    {
+        OtherOption =  CanUseOption.None;
+        AutoHealCheck = SkipDisable = false;
     }
 
     /// <summary>

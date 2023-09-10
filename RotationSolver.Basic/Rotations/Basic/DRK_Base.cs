@@ -143,18 +143,12 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 1
     /// </summary>
-    public static IBaseAction Unleash { get; } = new BaseAction(ActionID.Unleash)
-    {
-        AOECount = 2,
-    };
+    public static IBaseAction Unleash { get; } = new BaseAction(ActionID.Unleash);
 
     /// <summary>
     /// 2
     /// </summary>
-    public static IBaseAction StalwartSoul { get; } = new BaseAction(ActionID.StalwartSoul)
-    {
-        AOECount = 2,
-    };
+    public static IBaseAction StalwartSoul { get; } = new BaseAction(ActionID.StalwartSoul);
 
     /// <summary>
     /// 

@@ -19,6 +19,7 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
+using System;
 using System.Diagnostics;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
@@ -1158,6 +1159,7 @@ public partial class RotationConfigWindow : Window
             {
                 if(_activeAction is IBaseAction action)
                 {
+
                     try
                     {
 #if DEBUG
@@ -1227,6 +1229,41 @@ public partial class RotationConfigWindow : Window
                 if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_ShowOnCDWindow}##{_activeAction.Name}InCooldown", ref enable))
                 {
                     _activeAction.IsInCooldown = enable;
+                }
+
+                if(_activeAction is IBaseAction action)
+                {
+                    ImGui.Separator();
+
+                    var ttk = action.TimeToKill;
+                    ImGui.SetNextItemWidth(_scale * 150);
+                    if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_TTK}##{action}",
+                        ref ttk, 0.1f, 0, 120))
+                    {
+                        action.TimeToKill = ttk;
+                    }
+
+                    if (!action.IsSingleTarget)
+                    {
+                        var aoeCount = (int)action.AOECount;
+                        ImGui.SetNextItemWidth(_scale * 150);
+                        if (ImGui.DragInt($"{LocalizationManager.RightLang.ConfigWindow_Actions_AOECount}##{action}", 
+                            ref aoeCount, 0.05f, 1, 10))
+                        {
+                            action.AOECount = (byte)aoeCount;
+                        }
+                    }
+
+                    if (action.IsHeal)
+                    {
+                        var ratio = action.AutoHealRatio;
+                        ImGui.SetNextItemWidth(_scale * 150);
+                        if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_HealRatio}##{action}",
+                            ref ratio, 0.002f, 0, 1))
+                        {
+                            action.AutoHealRatio = ratio;
+                        }
+                    }
                 }
 
                 ImGui.Separator();

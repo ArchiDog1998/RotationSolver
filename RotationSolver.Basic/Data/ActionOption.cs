@@ -42,6 +42,11 @@ public enum ActionOption : byte
     DutyAction = 1 << 5,
 
     /// <summary>
+    /// flag to check this action is heal.
+    /// </summary>
+    HealFlag = 1 << 6,
+
+    /// <summary>
     /// Dot action
     /// </summary>
     Dot = Eot,
@@ -54,12 +59,12 @@ public enum ActionOption : byte
     /// <summary>
     /// Heal action
     /// </summary>
-    Heal = Friendly,
+    Heal = Friendly | HealFlag,
 
     /// <summary>
-    /// Defense action (you need to change the targeting strategy.
+    /// Defense action (you need to change the targeting strategy.)
     /// </summary>
-    Defense = Heal,
+    Defense = Friendly,
 
     /// <summary>
     /// Hot action

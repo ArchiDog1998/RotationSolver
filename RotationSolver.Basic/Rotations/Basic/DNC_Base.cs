@@ -101,7 +101,6 @@ public abstract class DNC_Base : CustomRotation
     public static IBaseAction BladeShower { get; } = new BaseAction(ActionID.BladeShower)
     {
         StatusProvide = Fountain.StatusProvide,
-        AOECount = 2,
     };
 
     /// <summary>
@@ -110,7 +109,6 @@ public abstract class DNC_Base : CustomRotation
     public static IBaseAction RisingWindmill { get; } = new BaseAction(ActionID.RisingWindmill)
     {
         StatusNeed = ReverseCascade.StatusNeed,
-        AOECount = 2,
     };
 
     /// <summary>
@@ -118,7 +116,6 @@ public abstract class DNC_Base : CustomRotation
     /// </summary>
     public static IBaseAction BloodShower { get; } = new BaseAction(ActionID.BloodShower)
     {
-        AOECount = 2,
         StatusNeed = FountainFall.StatusNeed,
     };
 
@@ -128,7 +125,6 @@ public abstract class DNC_Base : CustomRotation
     public static IBaseAction FanDance2 { get; } = new BaseAction(ActionID.FanDance2)
     {
         ActionCheck = (b, m) => Feathers > 0,
-        AOECount = 2,
         StatusProvide = new[] { StatusID.ThreefoldFanDance },
     };
 

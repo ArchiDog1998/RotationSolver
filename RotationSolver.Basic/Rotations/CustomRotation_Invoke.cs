@@ -16,6 +16,7 @@ public abstract partial class CustomRotation
         {
             UpdateInfo();
             UpdateActions(ClassJob.GetJobRole());
+            BaseAction.CleanSpecial();
 
             CountingOfLastUsing = CountingOfCombatTimeUsing = 0;
             newAction = Invoke(out gcdAction);

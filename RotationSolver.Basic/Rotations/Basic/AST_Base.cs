@@ -54,16 +54,12 @@ public abstract class AST_Base : CustomRotation
             StatusID.Combust3,
             StatusID.Combust4,
         },
-        TimeToDie = 20,
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Gravity { get; } = new BaseAction(ActionID.Gravity)
-    {
-        AOECount = 2,
-    };
+    public static IBaseAction Gravity { get; } = new BaseAction(ActionID.Gravity);
     #endregion
 
     #region Heal Single

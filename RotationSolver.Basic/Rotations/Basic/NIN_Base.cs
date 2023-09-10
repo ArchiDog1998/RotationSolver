@@ -289,10 +289,7 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static INinAction Katon { get; } = new NinAction(ActionID.Katon, Chi, Ten)
-    {
-        AOECount = 2,
-    };
+    public static INinAction Katon { get; } = new NinAction(ActionID.Katon, Chi, Ten);
 
     /// <summary>
     /// 

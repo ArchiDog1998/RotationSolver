@@ -20,6 +20,52 @@ public class OtherConfiguration
 
     public static HashSet<uint> InvincibleStatus = new();
 
+    public static Dictionary<uint, byte> ActionAOECounts = new()
+    {
+        { (uint) ActionID.Gravity, 2},
+        { (uint) ActionID.FeatherRain, 1},
+        { (uint) ActionID.Eruption, 1},
+        { (uint) ActionID.QuickNock, 2},
+        { (uint) ActionID.ShadowBite, 2},
+        { (uint) ActionID.RainOfDeath, 2},
+        { (uint) ActionID.BladeShower, 2},
+        { (uint) ActionID.RisingWindmill, 2},
+        { (uint) ActionID.BloodShower, 2},
+        { (uint) ActionID.FanDance2, 2},
+        { (uint) ActionID.Unleash, 2},
+        { (uint) ActionID.StalwartSoul, 2},
+        { (uint) ActionID.DemonSlice, 2},
+        { (uint) ActionID.DemonSlaughter, 2},
+        { (uint) ActionID.SpreadShot, 2},
+        { (uint) ActionID.AutoCrossbow, 2},
+        { (uint) ActionID.Katon, 2},
+        { (uint) ActionID.Scatter, 2},
+        { (uint) ActionID.WhorlOfDeath, 2},
+        { (uint) ActionID.ArtOfWar, 2},
+        { (uint) ActionID.Dyskrasia, 2},
+        { (uint) ActionID.Overpower, 2},
+        { (uint) ActionID.MythrilTempest, 2},
+        { (uint) ActionID.SteelCyclone, 2},
+    };
+
+    public static Dictionary<uint, float> ActionTTK = new()
+    {
+        { (uint) ActionID.Combust, 20},
+        { (uint) ActionID.VenomousBite, 30},
+        { (uint) ActionID.WindBite, 30},
+        { (uint) ActionID.IronJaws, 30},
+        { (uint) ActionID.BioBlaster, 10},
+        { (uint) ActionID.TwinSnakes, 10},
+        { (uint) ActionID.Demolish, 12},
+        { (uint) ActionID.ShadowOfDeath, 10},
+        { (uint) ActionID.Higanbana, 40},
+        { (uint) ActionID.Bio, 20},
+        { (uint) ActionID.EukrasianDosis, 20},
+        { (uint) ActionID.Aero, 20},
+    };
+
+    public static Dictionary<uint, float> ActionHealRatio = new();
+
     public static RotationSolverRecord RotationSolverRecord = new ();
 
     public static void Init()
@@ -45,6 +91,12 @@ public class OtherConfiguration
 
         Task.Run(() => InitOne(ref BeneficialPositions, nameof(BeneficialPositions)));
 
+        Task.Run(() => InitOne(ref ActionAOECounts, nameof(ActionAOECounts)));
+
+        Task.Run(() => InitOne(ref ActionTTK, nameof(ActionTTK)));
+
+        Task.Run(() => InitOne(ref ActionHealRatio, nameof(ActionHealRatio)));
+
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
     }
 
@@ -59,6 +111,24 @@ public class OtherConfiguration
         SaveBeneficialPositions();
         SaveRotationSolverRecord();
         SaveNoProvokeNames();
+        SaveActionAOECounts();
+        SaveActionTTK();
+        SaveActionHealRatio();
+    }
+
+    public static void SaveActionHealRatio()
+    {
+        Task.Run(() => Save(ActionHealRatio, nameof(ActionHealRatio)));
+    }
+
+    public static void SaveActionTTK()
+    {
+        Task.Run(() => Save(ActionTTK, nameof(ActionTTK)));
+    }
+
+    public static void SaveActionAOECounts()
+    {
+        Task.Run(() => Save(ActionAOECounts, nameof(ActionAOECounts)));
     }
     public static void SaveRotationSolverRecord()
     {

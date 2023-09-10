@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Localization;
 
-internal partial class Strings
+internal class Strings
 {
     #region Commands
     public string Commands_Rotation { get; set; } = "Open config window.";
@@ -733,4 +733,8 @@ internal partial class Strings
 
     public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of TTK.";
     public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The min time between updating information in second.";
+
+    public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
+    public string ConfigWindow_Actions_TTK { get; set; } = "TTK that this action needs the target be.";
+    public string ConfigWindow_Actions_HealRatio { get; set; } = "The HP ratio to auto heal";
 }

@@ -126,7 +126,6 @@ public abstract class SCH_Base : CustomRotation
     public static IBaseAction Bio { get; } = new BaseAction(ActionID.Bio, ActionOption.Dot)
     {
         TargetStatus = new StatusID[] { StatusID.Bio, StatusID.Bio2, StatusID.Biolysis },
-        TimeToDie = 20,
     };
 
     /// <summary>
@@ -150,10 +149,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction ArtOfWar { get; } = new BaseAction(ActionID.ArtOfWar) 
-    {
-        AOECount = 2 
-    };
+    public static IBaseAction ArtOfWar { get; } = new BaseAction(ActionID.ArtOfWar);
     #endregion
 
     #region Seraph

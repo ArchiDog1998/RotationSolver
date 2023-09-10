@@ -136,7 +136,6 @@ public abstract class RDM_Base : CustomRotation
     public static IBaseAction Scatter { get; } = new BaseAction(ActionID.Scatter)
     {
         StatusNeed = Jolt.StatusProvide,
-        AOECount = 2,
     };
 
     /// <summary>

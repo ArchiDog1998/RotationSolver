@@ -273,7 +273,7 @@ public enum PluginConfigBool : byte
 
     [Default(true)] InterruptibleMoreCheck,
 
-    [Default(true)] UseWorkTask,
+    [Default(false)] UseWorkTask,
     [Default(false)] UseStopCasting,
     [Default(false)] EsunaAll,
     [Default(false)] OnlyAttackInView,

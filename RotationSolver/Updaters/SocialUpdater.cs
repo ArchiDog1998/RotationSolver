@@ -9,6 +9,7 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Security.Cryptography;
 using System.Text;
@@ -28,7 +29,9 @@ internal class SocialUpdater
         "clap",
         "cheer",
         "stroke",
-    }; 
+    };
+
+    private static readonly HashSet<string> saidAuthors = new();
 
 
     static bool _canSaying = false;
@@ -146,22 +149,32 @@ internal class SocialUpdater
 
     private static async void SayHelloToAuthor()
     {
-        var authors = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
+        var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
 #if DEBUG
 #else
             .Where(c => c.ObjectId != Player.Object.ObjectId)
 #endif
+            .Select(player => (player, EncryptString(player)))
+            .Where(pair => !saidAuthors.Contains(pair.Item2));
+
+        IEnumerable<ChatEntity> entities = players
+            .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
+            .Select(p => new ContributorChatEntity(p.player));
+
+        entities = entities.Union(players
             .Select(c =>
             {
-                if (!RotationUpdater.AuthorHashes.TryGetValue(EncryptString(c), out var nameDesc)) nameDesc = string.Empty;
-                return (c, nameDesc);
+                if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
+                return (c.player, nameDesc);
             })
-            .Where(p => !string.IsNullOrEmpty(p.nameDesc));
+            .Where(p => !string.IsNullOrEmpty(p.nameDesc))
+            .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc)));
 
+        Svc.Chat.Print(entities.Count().ToString());
 
-        foreach (var (c, nameDesc) in authors)
+        foreach (var entity in entities)
         {
-            while (!c.IsTargetable() && !DataCenter.InCombat)
+            while (!entity.CanTarget && !DataCenter.InCombat)
             {
                 await Task.Delay(100);
             }
@@ -173,25 +186,11 @@ internal class SocialUpdater
 #endif
             Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
             {
-                Message = new SeString(new IconPayload(BitmapFontIcon.Mentor),
-
-                          new UIForegroundPayload(31),
-                          new PlayerPayload(c.Name.TextValue, c.HomeWorld.Id),
-                          UIForegroundPayload.UIForegroundOff,
-
-                          new TextPayload($"({nameDesc}) is one of the authors of "),
-
-                          new IconPayload(BitmapFontIcon.DPS),
-                          RotationSolverPlugin.OpenLinkPayload,
-                          new UIForegroundPayload(31),
-                          new TextPayload("Rotation Solver"),
-                          UIForegroundPayload.UIForegroundOff,
-                          RawPayload.LinkTerminator,
-
-                          new TextPayload(". So say hello to him/her!")),
+                Message = entity.GetMessage(),
                 Type = Dalamud.Game.Text.XivChatType.Notice,
             });
             UIModule.PlaySound(20, 0, 0, 0);
+            entity.Dispose();
 
             await Task.Delay(new Random().Next(800, 1200));
             Svc.Targets.Target = null;
@@ -215,5 +214,64 @@ internal class SocialUpdater
             PluginLog.Warning(ex, "Failed to read the player's name and world.");
             return string.Empty;
         }
+    }
+
+    internal abstract class ChatEntity : IDisposable
+    {
+        protected readonly PlayerCharacter player;
+
+        public bool CanTarget => player.IsTargetable();
+
+        protected SeString Character => new SeString(new IconPayload(BitmapFontIcon.Mentor),
+            new UIForegroundPayload(31),
+            new PlayerPayload(player.Name.TextValue, player.HomeWorld.Id),
+            UIForegroundPayload.UIForegroundOff);
+
+        protected SeString RotationSolver => new SeString(new IconPayload(BitmapFontIcon.DPS),
+            RotationSolverPlugin.OpenLinkPayload,
+            new UIForegroundPayload(31),
+            new TextPayload("Rotation Solver"),
+            UIForegroundPayload.UIForegroundOff,
+            RawPayload.LinkTerminator);
+
+        public ChatEntity(PlayerCharacter character)
+        {
+            player = character;
+        }
+        public abstract SeString GetMessage();
+
+        public void Dispose()
+        {
+            saidAuthors.Add(EncryptString(player));
+        }
+    }
+
+    internal class RotationAuthorChatEntity : ChatEntity
+    {
+        private readonly string name;
+        public RotationAuthorChatEntity(PlayerCharacter character, string nameDesc) : base(character)
+        {
+            name = nameDesc;
+        }
+
+        public override SeString GetMessage() =>
+            Character
+            .Append(new SeString(new TextPayload($"({name}) is one of the authors of ")))
+            .Append(RotationSolver)
+            .Append(new SeString(new TextPayload(". So say hello to him/her!")));
+    }
+
+
+    internal class ContributorChatEntity : ChatEntity
+    {
+        public ContributorChatEntity(PlayerCharacter character) : base(character)
+        {
+        }
+
+        public override SeString GetMessage() =>
+            Character
+            .Append(new SeString(new TextPayload($" is one of the contributors of ")))
+            .Append(RotationSolver)
+            .Append(new SeString(new TextPayload(". So say hello to him/her!")));
     }
 }

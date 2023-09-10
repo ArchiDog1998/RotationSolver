@@ -1,12 +1,29 @@
 ﻿using ECommons.DalamudServices;
-using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
+    /// <summary>
+    /// The user seted heal ratio.
+    /// </summary>
+    public float AutoHealRatio
+    {
+        get
+        {
+            return OtherConfiguration.ActionHealRatio.TryGetValue(ID, out var ratio)
+                ? ratio : 1;
+        }
+        set
+        {
+            OtherConfiguration.ActionHealRatio[ID] = value;
+            OtherConfiguration.SaveActionHealRatio();
+        }
+    }
+
     /// <summary>
     /// The range of the action.
     /// </summary>
@@ -56,6 +73,7 @@ public partial class BaseAction
     }
 
     internal static bool SkipDisable { get; set; } = false;
+    internal static bool AutoHealCheck { get; set; } = false;
 
     /// <summary>
     /// Can this action be used.
@@ -79,6 +97,20 @@ public partial class BaseAction
 
         if (!SkipDisable && !IsEnabled) return false;
         if (IsDutyAction && !IsDutyActionOnSlot) return false;
+
+        if (AutoHealCheck && IsFriendly)
+        {
+            if (IsSingleTarget)
+            {
+                if (DataCenter.PartyMembersMinHP >= AutoHealRatio) return false;
+            }
+            else
+            {
+                if (DataCenter.PartyMembersAverHP >= AutoHealRatio) return false;
+            }
+        }
+
+        if (IsFriendly && DataCenter.AverageTimeToKill < TimeToKill) return false;
         
         if (DataCenter.DisabledActionSequencer != null && DataCenter.DisabledActionSequencer.Contains(ID)) return false;
 

@@ -60,10 +60,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction TwinSnakes { get; } = new BaseAction(ActionID.TwinSnakes, ActionOption.Dot)
-    {
-        TimeToDie = 10,
-    };
+    public static IBaseAction TwinSnakes { get; } = new BaseAction(ActionID.TwinSnakes, ActionOption.Dot);
 
     /// <summary>
     /// 
@@ -77,7 +74,6 @@ public abstract class MNK_Base : CustomRotation
     {
         TargetStatus = new StatusID[] { StatusID.Demolish },
         GetDotGcdCount = () => 3,
-        TimeToDie = 12,
     };
 
     /// <summary>

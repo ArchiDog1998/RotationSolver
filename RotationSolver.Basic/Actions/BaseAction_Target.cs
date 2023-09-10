@@ -6,7 +6,6 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
-using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
@@ -16,12 +15,36 @@ public partial class BaseAction
     /// <summary>
     /// If it is aoe. How many targets this action needs.
     /// </summary>
-    public byte AOECount { private get; init; } = 3;
+    public byte AOECount
+    {
+        get
+        {
+            return OtherConfiguration.ActionAOECounts.TryGetValue(ID, out var count)
+                ? count : IsFriendly ? (byte)1 :(byte)3;
+        }
+        set
+        {
+            OtherConfiguration.ActionAOECounts[ID] = value;
+            OtherConfiguration.SaveActionAOECounts();
+        }
+    }
 
     /// <summary>
     /// How many time does this action need the target keep in live.
     /// </summary>
-    public float TimeToDie { get; init; } = 0;
+    public float TimeToKill 
+    {
+        get
+        {
+            return OtherConfiguration.ActionTTK.TryGetValue(ID, out var time)
+                ? time : 0;
+        }
+        set
+        {
+            OtherConfiguration.ActionTTK[ID] = value;
+            OtherConfiguration.SaveActionTTK();
+        }
+    }
 
     /// <summary>
     /// Is this action's target dead?
@@ -300,7 +323,7 @@ public partial class BaseAction
             return false;
         }
 
-        if (_action.CastType > 1 && (ActionID)ID != ActionID.DeploymentTactics)
+        if (!IsSingleTarget && (ActionID)ID != ActionID.DeploymentTactics)
         {
             target = ChoiceTarget(GetMostObjects(availableCharas, aoeCount), mustUse);
         }
@@ -341,7 +364,7 @@ public partial class BaseAction
             return false;
         }
 
-        if (_action.CastType > 1 && NoAOE)
+        if (!IsSingleTarget && NoAOE)
         {
             target = null;
             return false;
@@ -368,14 +391,14 @@ public partial class BaseAction
         if (!CanUseTo(b)) return false;
         if (ChoiceTarget(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), mustUse) == null) return false;
 
-        if (_action.CastType == 1)
+        if (IsSingleTarget)
         {
             if (!mustUse)
             {
                 var time = b.GetTimeToKill();
 
                 //No need to dot.
-                if (TargetStatus != null && !float.IsNaN(time) && time < TimeToDie) return false;
+                if (TargetStatus != null && !float.IsNaN(time) && time < TimeToKill) return false;
 
                 //Already has status.
                 if (!CheckStatus(b)) return false;
@@ -433,7 +456,7 @@ public partial class BaseAction
         var canAttack = TargetFilter.GetObjectInRadius(targets, range + EffectRange);
         var canGetObj = TargetFilter.GetObjectInRadius(canAttack, range).Where(CanUseTo);
 
-        if (_action.CastType == 1) return canGetObj;
+        if (IsSingleTarget) return canGetObj;
 
         List<BattleChara> objectMax = new(canGetObj.Count());
 
@@ -536,7 +559,7 @@ public partial class BaseAction
         var canDot = dontHave.Where(b =>
         {
             var time = b.GetTimeToKill();
-            return float.IsNaN(time) || time >= TimeToDie;
+            return float.IsNaN(time) || time >= TimeToKill;
         });
 
         if (mustUse)
