@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.3.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.11...v3.3.0) (2023-09-10)
+
+
+### Features
+
+* add auto heal ratio option to make auto heal more precise. ([c4ceb84](https://github.com/ArchiDog1998/RotationSolver/commit/c4ceb842ec0c8fd3b70e376eaf31e4e6ea4cfde3))
+
+
+### Bug Fixes
+
+* add a custom config about AOE Count. ([414dd40](https://github.com/ArchiDog1998/RotationSolver/commit/414dd4063d7d6d7920f44ebd6c947978724eb832))
+* add contributor's say hello. ([610972a](https://github.com/ArchiDog1998/RotationSolver/commit/610972afbf34f7e74aa7bf58174dfb5df0840f27))
+* add ttk options for action. ([0ab156e](https://github.com/ArchiDog1998/RotationSolver/commit/0ab156e9c765b1d571821a91381d653f244f0d0d))
+* long time delay warning. ([6df70b1](https://github.com/ArchiDog1998/RotationSolver/commit/6df70b14760796bcc12f273b66419ec4d3f03344))
+
 ## [3.2.11](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.10...v3.2.11) (2023-09-02)
 
 
