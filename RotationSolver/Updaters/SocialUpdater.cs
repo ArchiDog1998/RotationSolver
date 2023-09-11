@@ -170,8 +170,6 @@ internal class SocialUpdater
             .Where(p => !string.IsNullOrEmpty(p.nameDesc))
             .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc)));
 
-        Svc.Chat.Print(entities.Count().ToString());
-
         foreach (var entity in entities)
         {
             while (!entity.CanTarget && !DataCenter.InCombat)
