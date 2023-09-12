@@ -47,6 +47,11 @@ public enum ActionOption : byte
     HealFlag = 1 << 6,
 
     /// <summary>
+    /// Is the action a resource taken action.
+    /// </summary>
+    UseResources = 1 << 7,
+
+    /// <summary>
     /// Dot action
     /// </summary>
     Dot = Eot,

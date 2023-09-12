@@ -200,7 +200,7 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction WyrmwindThrust { get; } = new BaseAction(ActionID.WyrmwindThrust)
+    public static IBaseAction WyrmwindThrust { get; } = new BaseAction(ActionID.WyrmwindThrust, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => FocusCount == 2,
     };

@@ -144,9 +144,9 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction RookAutoturret { get; } = new BaseAction(ActionID.RookAutoturret)
+    public static IBaseAction RookAutoturret { get; } = new BaseAction(ActionID.RookAutoturret, ActionOption.UseResources)
     {
-        ActionCheck = (b, m) => JobGauge.Battery >= 50 && !JobGauge.IsRobotActive,
+        ActionCheck = (b, m) => Battery >= 50 && !JobGauge.IsRobotActive,
     };
     #endregion
 
@@ -163,9 +163,9 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Hypercharge { get; } = new BaseAction(ActionID.Hypercharge)
+    public static IBaseAction Hypercharge { get; } = new BaseAction(ActionID.Hypercharge, ActionOption.UseResources)
     {
-        ActionCheck = (b, m) => !JobGauge.IsOverheated && JobGauge.Heat >= 50 
+        ActionCheck = (b, m) => !IsOverheated && Heat >= 50 
         && IsLongerThan(8),
     };
 

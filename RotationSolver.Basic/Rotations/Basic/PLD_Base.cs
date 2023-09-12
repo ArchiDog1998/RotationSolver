@@ -201,7 +201,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Cover { get; } = new BaseAction(ActionID.Cover, ActionOption.Defense)
+    public static IBaseAction Cover { get; } = new BaseAction(ActionID.Cover, ActionOption.Defense | ActionOption.UseResources)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = (b, m) => OathGauge >= 50,
@@ -210,7 +210,7 @@ public abstract class PLD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Intervention { get; } = new BaseAction(ActionID.Intervention, ActionOption.Defense)
+    public static IBaseAction Intervention { get; } = new BaseAction(ActionID.Intervention, ActionOption.Defense | ActionOption.UseResources)
     {
         ActionCheck = Cover.ActionCheck,
         ChoiceTarget = TargetFilter.FindAttackedTarget,

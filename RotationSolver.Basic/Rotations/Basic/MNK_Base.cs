@@ -84,7 +84,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SteelPeak { get; } = new BaseAction(ActionID.SteelPeak)
+    public static IBaseAction SteelPeak { get; } = new BaseAction(ActionID.SteelPeak, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => InCombat && Chakra == 5,
     };

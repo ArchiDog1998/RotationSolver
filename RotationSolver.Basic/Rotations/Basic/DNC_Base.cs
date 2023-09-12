@@ -79,7 +79,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FanDance { get; } = new BaseAction(ActionID.FanDance)
+    public static IBaseAction FanDance { get; } = new BaseAction(ActionID.FanDance, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Feathers > 0,
         StatusProvide = new[] { StatusID.ThreefoldFanDance },
@@ -122,7 +122,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FanDance2 { get; } = new BaseAction(ActionID.FanDance2)
+    public static IBaseAction FanDance2 { get; } = new BaseAction(ActionID.FanDance2, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Feathers > 0,
         StatusProvide = new[] { StatusID.ThreefoldFanDance },
@@ -147,7 +147,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SaberDance { get; } = new BaseAction(ActionID.SaberDance)
+    public static IBaseAction SaberDance { get; } = new BaseAction(ActionID.SaberDance, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Esprit >= 50,
     };

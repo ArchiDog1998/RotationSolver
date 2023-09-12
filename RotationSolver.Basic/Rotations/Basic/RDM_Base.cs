@@ -89,15 +89,15 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Riposte { get; } = new BaseAction(ActionID.Riposte)
+    public static IBaseAction Riposte { get; } = new BaseAction(ActionID.Riposte, ActionOption.UseResources)
     {
-        ActionCheck = (b, m) => JobGauge.BlackMana >= 20 && JobGauge.WhiteMana >= 20,
+        ActionCheck = (b, m) => BlackMana >= 20 && WhiteMana >= 20,
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Zwerchhau { get; } = new BaseAction(ActionID.Zwerchhau)
+    public static IBaseAction Zwerchhau { get; } = new BaseAction(ActionID.Zwerchhau, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => BlackMana >= 15 && WhiteMana >= 15,
     };
@@ -105,7 +105,7 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Redoublement { get; } = new BaseAction(ActionID.Redoublement)
+    public static IBaseAction Redoublement { get; } = new BaseAction(ActionID.Redoublement, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => BlackMana >= 15 && WhiteMana >= 15,
     };
@@ -157,7 +157,7 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Moulinet { get; } = new BaseAction(ActionID.Moulinet)
+    public static IBaseAction Moulinet { get; } = new BaseAction(ActionID.Moulinet, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => BlackMana >= 20 && WhiteMana >= 20,
     };

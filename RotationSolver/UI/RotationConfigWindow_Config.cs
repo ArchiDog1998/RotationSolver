@@ -678,6 +678,7 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseTinctures),
         new CheckBoxSearchPlugin(PluginConfigBool.UseHealPotions),
+        new CheckBoxSearchPlugin(PluginConfigBool.UseResourcesAction),
 
         new DragIntSearchPlugin(PluginConfigInt.LessMPNoRaise, 200)
         {

@@ -77,7 +77,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BurstStrike { get; } = new BaseAction(ActionID.BurstStrike)
+    public static IBaseAction BurstStrike { get; } = new BaseAction(ActionID.BurstStrike, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Ammo > 0,
     };
@@ -85,7 +85,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction GnashingFang { get; } = new BaseAction(ActionID.GnashingFang)
+    public static IBaseAction GnashingFang { get; } = new BaseAction(ActionID.GnashingFang, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => AmmoComboStep == 0 && Ammo > 0,
     };
@@ -170,7 +170,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FatedCircle { get; } = new BaseAction(ActionID.FatedCircle)
+    public static IBaseAction FatedCircle { get; } = new BaseAction(ActionID.FatedCircle, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Ammo > 0,
     };
@@ -178,7 +178,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction DoubleDown { get; } = new BaseAction(ActionID.DoubleDown)
+    public static IBaseAction DoubleDown { get; } = new BaseAction(ActionID.DoubleDown, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Ammo > 1,
     };

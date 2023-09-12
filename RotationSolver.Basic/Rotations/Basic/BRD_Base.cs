@@ -151,7 +151,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction ApexArrow { get; } = new BaseAction(ActionID.ApexArrow)
+    public static IBaseAction ApexArrow { get; } = new BaseAction(ActionID.ApexArrow, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => SoulVoice >= 20 && !Player.HasStatus(true, StatusID.BlastArrowReady),
     };

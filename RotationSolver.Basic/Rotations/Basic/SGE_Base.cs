@@ -185,7 +185,7 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Kerachole { get; } = new BaseAction(ActionID.Kerachole, ActionOption.Heal)
+    public static IBaseAction Kerachole { get; } = new BaseAction(ActionID.Kerachole, ActionOption.Heal | ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Addersgall > 0,
     };
@@ -193,7 +193,7 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Ixochole { get; } = new BaseAction(ActionID.Ixochole, ActionOption.Heal)
+    public static IBaseAction Ixochole { get; } = new BaseAction(ActionID.Ixochole, ActionOption.Heal | ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Addersgall > 0,
     };
@@ -206,7 +206,7 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Taurochole { get; } = new BaseAction(ActionID.Taurochole, ActionOption.Heal)
+    public static IBaseAction Taurochole { get; } = new BaseAction(ActionID.Taurochole, ActionOption.Heal | ActionOption.UseResources)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
         ActionCheck = (b, m) => Addersgall > 0,
@@ -215,7 +215,7 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Druochole { get; } = new BaseAction(ActionID.Druochole, ActionOption.Heal)
+    public static IBaseAction Druochole { get; } = new BaseAction(ActionID.Druochole, ActionOption.Heal | ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Addersgall > 0,
     };

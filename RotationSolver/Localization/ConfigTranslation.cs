@@ -107,6 +107,7 @@ internal static class ConfigTranslation
         PluginConfigBool.OnlyHotOnTanks => LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
         PluginConfigBool.RecordCastingArea => "Record AOE actions",
          PluginConfigBool.HealWhenNothingTodo => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodo,
+         PluginConfigBool.UseResourcesAction => LocalizationManager.RightLang.ConfigWindow_Auto_UseResourcesAction,
 
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,

@@ -53,9 +53,9 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction InnerBeast { get; } = new BaseAction(ActionID.InnerBeast)
+    public static IBaseAction InnerBeast { get; } = new BaseAction(ActionID.InnerBeast, ActionOption.UseResources)
     {
-        ActionCheck = (b, m) => JobGauge.BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease),
+        ActionCheck = (b, m) => BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease),
     };
 
     /// <summary>
@@ -134,7 +134,7 @@ public abstract class WAR_Base : CustomRotation
     public static IBaseAction Infuriate { get; } = new BaseAction(ActionID.Infuriate)
     {
         StatusProvide = new[] { StatusID.NascentChaos },
-        ActionCheck = (b, m) => HasHostilesInRange && JobGauge.BeastGauge <= 50 && InCombat && IsLongerThan(5),
+        ActionCheck = (b, m) => HasHostilesInRange && BeastGauge <= 50 && InCombat && IsLongerThan(5),
     };
 
     /// <summary>

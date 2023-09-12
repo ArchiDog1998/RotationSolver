@@ -332,6 +332,7 @@ public enum PluginConfigBool : byte
     [Default(false)] HideWarning,
 
     [Default(true)] HealWhenNothingTodo,
+    [Default(true)] UseResourcesAction,
 }
 
 public enum PluginConfigFloat : byte
