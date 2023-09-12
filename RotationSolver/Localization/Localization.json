@@ -268,6 +268,8 @@
   "TargetConditionType_StatusEndGCD": "Status End GCD",
   "TargetConditionType_CastingAction": "Casting Action",
   "TargetConditionType_CastingActionTimeUntil": "Casting Action Time Until",
+  "TargetConditionType_HP": "HP",
+  "TargetConditionType_MP": "MP",
   "DescType_BurstActions": "Burst Actions",
   "DescType_MoveForwardGCD": "Move Forward GCD",
   "DescType_HealAreaGCD": "Area Healing GCD",
@@ -519,5 +521,6 @@
   "ConfigWindow_Actions_AOECount": "How many targets are needed to use this action.",
   "ConfigWindow_Actions_TTK": "TTK that this action needs the target be.",
   "ConfigWindow_Actions_HealRatio": "The HP ratio to auto heal",
-  "ConfigWindow_Actions_ConditionDescription": "Forced Condition has a higher priority. If Forced Condition is met, Disabled Condition will be ignored."
+  "ConfigWindow_Actions_ConditionDescription": "Forced Condition has a higher priority. If Forced Condition is met, Disabled Condition will be ignored.",
+  "ConfigWindow_Auto_UseResourcesAction": "Use actions that use resources"
 }
