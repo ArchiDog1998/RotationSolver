@@ -1,4 +1,7 @@
-﻿namespace RotationSolver.Localization;
+﻿using ExCSS;
+using Lumina.Excel.GeneratedSheets;
+
+namespace RotationSolver.Localization;
 
 internal class Strings
 {
@@ -732,9 +735,10 @@ internal class Strings
     public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke in seconds.";
 
     public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of TTK.";
-    public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The minimum time between updating RS informations in seconds.";
+    public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The minimum time between updating RS information in seconds.";
 
     public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
     public string ConfigWindow_Actions_TTK { get; set; } = "TTK that this action needs the target be.";
     public string ConfigWindow_Actions_HealRatio { get; set; } = "The HP ratio to auto heal";
+    public string ConfigWindow_Actions_ConditionDescription  { get; set; }= "Forced Condition has a higher priority. If Forced Condition is met, Disabled Condition will be ignored.";
 }

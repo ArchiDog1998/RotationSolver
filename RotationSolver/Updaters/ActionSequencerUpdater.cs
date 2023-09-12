@@ -153,5 +153,7 @@ internal class ActionSequencerUpdater
             LoadFiles();
         }
         ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Load);
+
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_ConditionDescription);
     }
 }

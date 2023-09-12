@@ -515,8 +515,9 @@
   "ConfigWindow_Target_VisionCone": "The angle of your vision cone",
   "ConfigWindow_Auto_ProvokeDelay": "The delay of provoke in seconds.",
   "ConfigWindow_UI_TTKTextColor": "The text color of TTK.",
-  "ConfigWindow_Basic_MinUpdatingTime": "The minimum time between updating RS informations in seconds.",
+  "ConfigWindow_Basic_MinUpdatingTime": "The minimum time between updating RS information in seconds.",
   "ConfigWindow_Actions_AOECount": "How many targets are needed to use this action.",
   "ConfigWindow_Actions_TTK": "TTK that this action needs the target be.",
-  "ConfigWindow_Actions_HealRatio": "The HP ratio to auto heal"
+  "ConfigWindow_Actions_HealRatio": "The HP ratio to auto heal",
+  "ConfigWindow_Actions_ConditionDescription": "Forced Condition has a higher priority. If Forced Condition is met, Disabled Condition will be ignored."
 }
