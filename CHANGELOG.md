@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.3.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.0...v3.3.1) (2023-09-12)
+
+
+### Bug Fixes
+
+* add an option for no using resouces. ([21aff0b](https://github.com/ArchiDog1998/RotationSolver/commit/21aff0bc6b00a9c0fa7d0dddf6aaa846f6ee47a5))
+* add desc about conditions. ([29ea7f9](https://github.com/ArchiDog1998/RotationSolver/commit/29ea7f92255cfcbe1578f8a3071ca07177a5e449))
+* add hp, mp. ([06de0a7](https://github.com/ArchiDog1998/RotationSolver/commit/06de0a78268e8433c2fde0988789c16fe78e0b6c))
+* contributor's case thing. ([2106f7d](https://github.com/ArchiDog1998/RotationSolver/commit/2106f7d0eee1c8003ba925a7eece401281c33934))
+* fixed the reflection issue. ([7a05738](https://github.com/ArchiDog1998/RotationSolver/commit/7a05738ab1d0cec4e906f81f439621ccbe09d023))
+* release version fix. ([801df0e](https://github.com/ArchiDog1998/RotationSolver/commit/801df0ea43e2f92d011a29e5ff71a88c178252cf))
+
 ## [3.3.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.2.11...v3.3.0) (2023-09-10)
 
 
