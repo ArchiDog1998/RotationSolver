@@ -313,7 +313,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Fester { get; } = new BaseAction(ActionID.Fester)
+    public static IBaseAction Fester { get; } = new BaseAction(ActionID.Fester, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => HasAetherflowStacks
     };

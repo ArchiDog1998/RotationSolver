@@ -161,7 +161,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BloodStalk { get; } = new BaseAction(ActionID.BloodStalk)
+    public static IBaseAction BloodStalk { get; } = new BaseAction(ActionID.BloodStalk, ActionOption.UseResources)
     {
         StatusProvide = new[] { StatusID.SoulReaver },
         ActionCheck = (b, m) => Slice.ActionCheck(b, m) && Soul >= 50
@@ -170,7 +170,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction GrimSwathe { get; } = new BaseAction(ActionID.GrimSwathe)
+    public static IBaseAction GrimSwathe { get; } = new BaseAction(ActionID.GrimSwathe, ActionOption.UseResources)
     {
         StatusProvide = new[] { StatusID.SoulReaver },
         ActionCheck = BloodStalk.ActionCheck,
@@ -179,7 +179,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Gluttony { get; } = new BaseAction(ActionID.Gluttony)
+    public static IBaseAction Gluttony { get; } = new BaseAction(ActionID.Gluttony, ActionOption.UseResources)
     {
         StatusProvide = new[] { StatusID.SoulReaver },
         ActionCheck = BloodStalk.ActionCheck,
@@ -210,7 +210,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Enshroud { get; } = new BaseAction(ActionID.Enshroud)
+    public static IBaseAction Enshroud { get; } = new BaseAction(ActionID.Enshroud, ActionOption.UseResources)
     {
         StatusProvide = new[] { StatusID.Enshrouded },
         ActionCheck = (b, m) => Shroud >= 50 && Slice.ActionCheck(b, m)

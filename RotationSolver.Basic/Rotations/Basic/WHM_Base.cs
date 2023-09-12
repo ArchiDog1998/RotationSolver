@@ -118,9 +118,9 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction AfflatusSolace { get; } = new BaseAction(ActionID.AfflatusSolace, ActionOption.Heal)
+    public static IBaseAction AfflatusSolace { get; } = new BaseAction(ActionID.AfflatusSolace, ActionOption.Heal | ActionOption.UseResources)
     {
-        ActionCheck = (b, m) => JobGauge.Lily > 0,
+        ActionCheck = (b, m) => Lily > 0,
     };
 
     /// <summary>
@@ -140,9 +140,9 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction AfflatusRapture { get; } = new BaseAction(ActionID.AfflatusRapture, ActionOption.Heal)
+    public static IBaseAction AfflatusRapture { get; } = new BaseAction(ActionID.AfflatusRapture, ActionOption.Heal | ActionOption.UseResources)
     {
-        ActionCheck = (b, m) => JobGauge.Lily > 0,
+        ActionCheck = (b, m) => Lily > 0,
     };
 
     /// <summary>
@@ -191,9 +191,9 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction AfflatusMisery { get; } = new BaseAction(ActionID.AfflatusMisery)
+    public static IBaseAction AfflatusMisery { get; } = new BaseAction(ActionID.AfflatusMisery, ActionOption.UseResources)
     {
-        ActionCheck = (b, m) => JobGauge.BloodLily == 3,
+        ActionCheck = (b, m) => BloodLily == 3,
     };
     #endregion
 

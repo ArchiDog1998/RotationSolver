@@ -1,4 +1,5 @@
-﻿using ECommons.GameHelpers;
+﻿using Dalamud.Logging;
+using ECommons.GameHelpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 
@@ -8,13 +9,12 @@ internal class RotationCondition : BaseCondition
 {
     public ComboConditionType ComboConditionType = ComboConditionType.Float;
     PropertyInfo _prop;
-    public string PropertyName { get; set; } = nameof(CustomRotation.CombatTime);
+    public string PropertyName = nameof(CustomRotation.CombatTime);
 
     MethodInfo _method;
-    public string MethodName { get; set; } = string.Empty;
+    public string MethodName = string.Empty;
 
     IBaseAction _action;
-
     public ActionID ID { get; set; } = ActionID.None;
 
     public int Condition;
@@ -25,8 +25,8 @@ internal class RotationCondition : BaseCondition
     private void UpdateInfo(ICustomRotation rotation)
     {
         ConditionHelper.CheckBaseAction(rotation, ID, ref _action);
-        ConditionHelper.CheckMemberInfo(rotation, PropertyName, ref _prop);
-        ConditionHelper.CheckMemberInfo(rotation, MethodName, ref _method);
+        ConditionHelper.CheckMemberInfo(rotation, ref PropertyName, ref _prop);
+        ConditionHelper.CheckMemberInfo(rotation, ref MethodName, ref _method);
     }
 
     public override bool IsTrueInside(ICustomRotation rotation)
@@ -95,7 +95,7 @@ internal class RotationCondition : BaseCondition
                 {
                     if (_method?.Invoke(rotation, new object[] { Param1 > 0, new IAction[] { _action } }) is bool boo)
                     {
-                        return Condition > 0 ? boo : !boo;
+                        return Condition > 0 ? !boo : boo;
                     }
                     return false;
                 }

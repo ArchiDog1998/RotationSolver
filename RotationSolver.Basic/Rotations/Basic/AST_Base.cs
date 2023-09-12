@@ -189,7 +189,7 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Astrodyne { get; } = new BaseAction(ActionID.Astrodyne)
+    public static IBaseAction Astrodyne { get; } = new BaseAction(ActionID.Astrodyne, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => !Seals.Contains(SealType.NONE) && IsLongerThan(10),
     };

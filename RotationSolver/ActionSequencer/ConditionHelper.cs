@@ -1,11 +1,12 @@
-﻿using ECommons.GameHelpers;
+﻿using Dalamud.Logging;
+using ECommons.GameHelpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.ActionSequencer;
 
-internal class ConditionHelper
+internal static class ConditionHelper
 {
     public static bool CheckBaseAction(ICustomRotation rotation, ActionID id, ref IBaseAction action)
     {
@@ -17,19 +18,28 @@ internal class ConditionHelper
         return true;
     }
 
-    public static void CheckMemberInfo<T>(ICustomRotation rotation, string name, ref T value) where T : MemberInfo
+    public static void CheckMemberInfo<T>(ICustomRotation rotation, ref string name, ref T value) where T : MemberInfo
     {
         if (!string.IsNullOrEmpty(name) && (value == null || value.Name != name))
         {
+            var memberName = name;
             if (typeof(T).IsAssignableFrom(typeof(PropertyInfo)))
             {
-                value = (T)(MemberInfo)rotation.GetType().GetPropertyInfo(name);
+                value = (T)rotation.GetType().GetAllMethods(RuntimeReflectionExtensions.GetRuntimeProperties).FirstOrDefault(m => m.Name == memberName);
             }
             else if (typeof(T).IsAssignableFrom(typeof(MethodInfo)))
             {
-                value = (T)(MemberInfo)rotation.GetType().GetMethodInfo(name);
+                value = (T)rotation.GetType().GetAllMethods(RuntimeReflectionExtensions.GetRuntimeMethods).FirstOrDefault(m => m.Name == memberName);
             }
         }
+    }
+
+    private static IEnumerable<MemberInfo> GetAllMethods(this Type type, Func<Type, IEnumerable<MemberInfo>> getFunc)
+    {
+        if (type == null || getFunc == null) return Array.Empty<MemberInfo>();
+
+        var methods = getFunc(type);
+        return methods.Union(GetAllMethods(type.BaseType, getFunc));
     }
 
     public static void DrawByteEnum<T>(string name, ref T value, Func<T, string> function) where T : struct, Enum

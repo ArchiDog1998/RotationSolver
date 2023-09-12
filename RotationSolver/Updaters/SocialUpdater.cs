@@ -170,8 +170,6 @@ internal class SocialUpdater
             .Where(p => !string.IsNullOrEmpty(p.nameDesc))
             .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc)));
 
-        Svc.Chat.Print(entities.Count().ToString());
-
         foreach (var entity in entities)
         {
             while (!entity.CanTarget && !DataCenter.InCombat)
@@ -181,7 +179,7 @@ internal class SocialUpdater
 
 #if DEBUG
 #else
-            Svc.Targets.Target = c;
+            Svc.Targets.Target = entity.player;
             Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
             Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
@@ -218,9 +216,22 @@ internal class SocialUpdater
 
     internal abstract class ChatEntity : IDisposable
     {
-        protected readonly PlayerCharacter player;
+        public readonly PlayerCharacter player;
 
-        public bool CanTarget => player.IsTargetable();
+        public bool CanTarget
+        {
+            get
+            {
+                try
+                {
+                    return player.IsTargetable();
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
 
         protected SeString Character => new SeString(new IconPayload(BitmapFontIcon.Mentor),
             new UIForegroundPayload(31),

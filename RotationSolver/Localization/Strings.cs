@@ -1,4 +1,7 @@
-﻿namespace RotationSolver.Localization;
+﻿using ExCSS;
+using Lumina.Excel.GeneratedSheets;
+
+namespace RotationSolver.Localization;
 
 internal class Strings
 {
@@ -84,11 +87,11 @@ internal class Strings
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
 
     public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
-    public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set min the time advance of using the last 0gcd.";
+    public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set minimum the time in advance before using the last 0gcd.";
 
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the number of seconds combat abilities will be used before finishing the countdown";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
-    public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set GCD advance of DOT refresh";
+    public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set the number of GCDs in advance for DOT refreshing";
     public string ConfigWindow_Param_MaxPing { get; set; } = "Set the max ping that RS can get to before skipping to the next action.";
     public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is moving between areas.";
     public string ConfigWindow_Param_AutoOffAfterCombat { get; set; } = "Auto turn off RS when combat is over more for more then...";
@@ -103,7 +106,7 @@ internal class Strings
 
     public string ConfigWindow_Param_WeaponDelay { get; set; } = "Set the range of random delay for GCD usage in seconds.";
     public string ConfigWindow_Param_DeathDelay { get; set; } = "Set the range of random delay for using revival abilities in seconds.";
-    public string ConfigWindow_Param_HostileDelay { get; set; } = "Set the range of random delay for targeting hostile targets in seconds.";
+    public string ConfigWindow_Param_HostileDelay { get; set; } = "Set the range of random delay for targeting in seconds.";
     public string ConfigWindow_Param_InterruptDelay { get; set; } = "Set the range of random delay for interrupting hostile targets in seconds.";
     public string ConfigWindow_Param_WeakenDelay { get; set; } = "Set the range of random delay for cleansing dispellable debuffs in seconds.";
 
@@ -144,16 +147,16 @@ internal class Strings
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin status on server info";
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin status on toast";
     public string ConfigWindow_Param_ShowToastsAboutDoAction { get; set; } = "Display do action feedback on toast";
-    public string ConfigWindow_Param_UseAOEAction { get; set; } = "Use AOE actions";
+    public string ConfigWindow_Param_UseAOEAction { get; set; } = "Use AoE actions";
 
-    public string ConfigWindow_Param_UseAOEWhenManual { get; set; } = "Use AOE actions in manual mode";
+    public string ConfigWindow_Param_UseAOEWhenManual { get; set; } = "Use AoE actions in manual mode";
     public string ConfigWindow_Param_AutoBurst { get; set; } = "Automatically trigger dps burst phase";
 
     public string ConfigWindow_Param_AutoHeal { get; set; } = "Automatic Heal";
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
-    public string ConfigWindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by aoe";
-    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AOE action when this action may attack the mobs that are not hostile targets.";
-    public string ConfigWindow_Param_UseDefenseAbility { get; set; } = "Use defense abilities";
+    public string ConfigWindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by AoE";
+    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AoE action when this action may attack the mobs that are not hostile targets.";
+    public string ConfigWindow_Param_UseDefenseAbility { get; set; } = "Use defensive abilities";
     public string ConfigWindow_Param_UseDefenseAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids or you can plan the heal and defense ability usage by yourself.";
     public string ConfigWindow_Param_AutoShield { get; set; } = "Automatically activate tank stance";
     public string ConfigWindow_Param_AutoProvokeForTank { get; set; } = "Auto provoke non-tank attacking targets";
@@ -162,7 +165,7 @@ internal class Strings
     public string ConfigWindow_Param_RaisePlayerBySwift { get; set; } = "Raise player by using swiftcast if avaliable";
     public string ConfigWindow_Param_UseGroundBeneficialAbility { get; set; } = "Use beneficial ground-targeted actions";
     public string ConfigWindow_Param_AutoSpeedOutOfCombat { get; set; } = "Use movement speed increase abilities when out of combat.";
-    public string ConfigWindow_Param_RaisePlayerByCasting { get; set; } = "Raise player while swiftcast is in cooldown";
+    public string ConfigWindow_Param_RaisePlayerByCasting { get; set; } = "Raise player while swiftcast is on cooldown";
     public string ConfigWindow_Param_UseHealWhenNotAHealer { get; set; } = "Use healing abilities when playing a non-healer role";
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
     public string ConfigWindow_Param_UseTinctures { get; set; } = "Use Tinctures";
@@ -185,15 +188,15 @@ internal class Strings
 
 
 
-    public string ConfigWindow_Param_HealthDifference { get; set; } = "HP%% for standard deviation for using AOE heal.";
-    public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP%% for AOE healing OGCDs";
+    public string ConfigWindow_Param_HealthDifference { get; set; } = "HP%% for standard deviation for using AoE heal.";
+    public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP%% for AoE healing oGCDs";
 
-    public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "HP%% for AOE healing GCDs";
+    public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "HP%% for AoE healing GCDs";
 
     public string ConfigWindow_Param_Normal { get; set; } = "Normal Targets";
     public string ConfigWindow_Param_HOT { get; set; } = "Targets with HOT";
 
-    public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "HP%% for ST healing OGCDs";
+    public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "HP%% for ST healing oGCDs";
 
     public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "HP%% for ST healing GCDs";
 
@@ -204,7 +207,7 @@ internal class Strings
     public string ConfigWindow_Param_DistanceForMoving { get; set; } = "Use gapcloser as a damage ability if the distance to your target is less then this.";
     public string ConfigWindow_Param_HealWhenNothingTodo { get; set; } = "Healing the members with GCD if there is nothing to do in combat.";
 
-    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "When their min HP%% is lower than this.";
+    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "When their minimum HP%% is lower than this.";
     public string ConfigWindow_Param_HealWhenNothingTodoDelay { get; set; } = "The delay of this type of healing.";
 
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invulnerability";
@@ -214,9 +217,9 @@ internal class Strings
     public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets that you can attack and are in range for any abilities";
     public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Targets have a target or all targets can attack";
     public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Targets that already have a target or are hostile towards the player/player party";
-    public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add Enemies list to the hostile targets.";
+    public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemies list to the hostile targets.";
     public string ConfigWindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
-    public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Allowed use of AOE to attack more mobs.";
+    public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Allowed use of AoE to attack more mobs.";
     public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
     public string ConfigWindow_Param_FilterStopMark { get; set; } = "Never attack targets with stop markers";
     public string ConfigWindow_Param_MoveTargetAngle { get; set; } = "The size of the sector angle that can be selected as the moveable target";
@@ -270,24 +273,24 @@ internal class Strings
     public string ConfigWindow_List_Description { get; set; } = "In this window, you can set the parameters about some list things.";
     public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
 
-    public string ConfigWindow_List_Invincibility { get; set; } = "Invincibility";
-    public string ConfigWindow_List_InvincibilityDesc { get; set; } = "If target get one of this statuses, never attack it.";
-    public string ConfigWindow_List_DangerousStatus { get; set; } = "Dangerous Status";
+    public string ConfigWindow_List_Invincibility { get; set; } = "Invulnerability";
+    public string ConfigWindow_List_InvincibilityDesc { get; set; } = "Ignores target if it has one of this statuses";
+    public string ConfigWindow_List_DangerousStatus { get; set; } = "Dispellable debuffs";
 
-    public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "Esuna immediately if one of your party members get these statuses";
+    public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "Esuna dispellable debuffs list";
 
     public string ConfigWindow_List_HostileCastingTank { get; set; } = "Tank Buster";
 
     public string ConfigWindow_List_HostileCastingTankDesc { get; set; } = "Use tank personal damage mitigation abilities if the target is casting any of these actions";
 
-    public string ConfigWindow_List_HostileCastingArea { get; set; } = "AOE";
+    public string ConfigWindow_List_HostileCastingArea { get; set; } = "AoE";
 
-    public string ConfigWindow_List_HostileCastingAreaDesc { get; set; } = "Use AOE damage mitigation abilities if the target is casting any of these actions";
+    public string ConfigWindow_List_HostileCastingAreaDesc { get; set; } = "Use AoE damage mitigation abilities if the target is casting any of these actions";
 
-    public string ConfigWindow_List_NoHostile { get; set; } = "No Hostile";
-    public string ConfigWindow_List_NoProvoke { get; set; } = "No Provoke";
-    public string ConfigWindow_List_NoHostileDesc { get; set; } = "Add names of targets that will never be attacked.";
-    public string ConfigWindow_List_NoProvokeDesc { get; set; } = "Add names of targets that will never be provoked.";
+    public string ConfigWindow_List_NoHostile { get; set; } = "Don't target";
+    public string ConfigWindow_List_NoProvoke { get; set; } = "Don't provoke";
+    public string ConfigWindow_List_NoHostileDesc { get; set; } = "Enemies that will never be targeted.";
+    public string ConfigWindow_List_NoProvokeDesc { get; set; } = "Enemies that will never be provoked.";
 
     #endregion
 
@@ -383,6 +386,8 @@ internal class Strings
     public string TargetConditionType_StatusEndGCD { get; set; } = "Status End GCD";
     public string TargetConditionType_CastingAction { get; set; } = "Casting Action";
     public string TargetConditionType_CastingActionTimeUntil { get; set; } = "Casting Action Time Until";
+    public string TargetConditionType_HP { get; set; } = "HP";
+    public string TargetConditionType_MP { get; set; } = "MP";
 
     #endregion
 
@@ -656,7 +661,7 @@ internal class Strings
 
     public string ConfigWindow_List_Statuses { get; set; } = "Statuses";
     public string ConfigWindow_List_Actions { get; set; } = "Actions";
-    public string ConfigWindow_List_Territories { get; set; } = "Map settings";
+    public string ConfigWindow_List_Territories { get; set; } = "Map specific settings";
     public string ConfigWindow_List_StatusNameOrId { get; set; } = "Status name or id";
     public string ConfigWindow_Actions_MemberName { get; set; } = "Member Name";
     public string ConfigWindow_List_AddStatus { get; set; } = "Add Status";
@@ -666,8 +671,8 @@ internal class Strings
     public string ConfigWindow_List_AddAction { get; set; } = "Add Action";
 
     public string ConfigWindow_List_BeneficialPositions { get; set; } = "Beneficial AoE locations";
-    public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of object that you don't want to attack";
-    public string ConfigWindow_List_NoProvokeName { get; set; } = "The name of object that you don't want to provoke";
+    public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of the enemy that you don't want to be targeted";
+    public string ConfigWindow_List_NoProvokeName { get; set; } = "The name of the enemy that you don't want to be provoked";
 
     public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
 
@@ -716,7 +721,7 @@ internal class Strings
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
     public string ConfigWindow_About_ClickingTooMuch { get; set; } = "Well, you must be a lazy player!";
     public string ConfigWindow_Auto_AutoHealTimeToKill { get; set; } = "Auto heal before combat end several seconds.";
-    public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile targets";
+    public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile target icon";
     public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Hostile Icon height from position";
     public string ConfigWindow_UI_HostileIconSize { get; set; } = "Hostile Icon size";
 
@@ -732,9 +737,12 @@ internal class Strings
     public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke in seconds.";
 
     public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of TTK.";
-    public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The min time between updating information in second.";
+    public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The minimum time between updating RS information in seconds.";
 
     public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
     public string ConfigWindow_Actions_TTK { get; set; } = "TTK that this action needs the target be.";
     public string ConfigWindow_Actions_HealRatio { get; set; } = "The HP ratio to auto heal";
+    public string ConfigWindow_Actions_ConditionDescription  { get; set; }= "Forced Condition has a higher priority. If Forced Condition is met, Disabled Condition will be ignored.";
+
+    public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
 }

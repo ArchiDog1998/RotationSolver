@@ -114,6 +114,8 @@ public partial class BaseAction
         
         if (DataCenter.DisabledActionSequencer != null && DataCenter.DisabledActionSequencer.Contains(ID)) return false;
 
+        if (!Service.Config.GetValue(PluginConfigBool.UseResourcesAction) && _option.HasFlag(ActionOption.UseResources)) return false;
+
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
             return false;
 

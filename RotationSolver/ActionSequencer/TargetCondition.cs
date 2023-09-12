@@ -111,6 +111,14 @@ internal class TargetCondition : BaseCondition
                 float castTime = tar.TotalCastTime - tar.CurrentCastTime;
                 result = castTime > DistanceOrTime + DataCenter.WeaponRemain;
                 break;
+
+            case TargetConditionType.HP:
+                result = tar.CurrentHp > GCD;
+                break;
+
+            case TargetConditionType.MP:
+                result = tar.CurrentMp > GCD;
+                break;
         }
 
         return Condition ? !result : result;
@@ -196,6 +204,8 @@ internal class TargetCondition : BaseCondition
             case TargetConditionType.Distance:
             case TargetConditionType.StatusEnd:
             case TargetConditionType.TimeToKill:
+            case TargetConditionType.HP:
+            case TargetConditionType.MP:
                 combos = new string[] { ">", "<=" };
                 break;
         }
@@ -303,7 +313,14 @@ internal class TargetCondition : BaseCondition
             case TargetConditionType.CastingActionTimeUntil:
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(DistanceOrTime.ToString()).X));
-                ImGui.InputFloat($"s##CastingActionTimeUntil{GetHashCode()}", ref DistanceOrTime, .1f);
+                ImGui.DragFloat($"s##CastingActionTimeUntil{GetHashCode()}", ref DistanceOrTime, .1f);
+                break;
+
+            case TargetConditionType.MP:
+            case TargetConditionType.HP:
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(GCD.ToString()).X));
+                ImGui.DragInt($"##HPorMP{GetHashCode()}", ref GCD, .1f);
                 break;
         }
     }
@@ -321,4 +338,6 @@ public enum TargetConditionType : byte
     CastingAction,
     CastingActionTimeUntil,
     TimeToKill,
+    HP,
+    MP,
 }

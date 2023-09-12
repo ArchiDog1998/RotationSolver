@@ -244,7 +244,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Xenoglossy { get; } = new BaseAction(ActionID.Xenoglossy) 
+    public static IBaseAction Xenoglossy { get; } = new BaseAction(ActionID.Xenoglossy, ActionOption.UseResources) 
     { 
         ActionCheck = (b, m) => PolyglotStacks > 0 
     };
@@ -295,7 +295,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Foul { get; } = new BaseAction(ActionID.Foul) 
+    public static IBaseAction Foul { get; } = new BaseAction(ActionID.Foul, ActionOption.UseResources) 
     { 
         ActionCheck = Xenoglossy.ActionCheck,
     };

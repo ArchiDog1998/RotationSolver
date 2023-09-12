@@ -124,7 +124,7 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Bhavacakra { get; } = new BaseAction(ActionID.Bhavacakra)
+    public static IBaseAction Bhavacakra { get; } = new BaseAction(ActionID.Bhavacakra, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Ninki >= 50,
     };

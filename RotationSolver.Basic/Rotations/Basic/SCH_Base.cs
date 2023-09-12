@@ -73,7 +73,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Lustrate { get; } = new BaseAction(ActionID.Lustrate, ActionOption.Heal)
+    public static IBaseAction Lustrate { get; } = new BaseAction(ActionID.Lustrate, ActionOption.Heal | ActionOption.UseResources)
     {
         ActionCheck = (b, m) => HasAetherflow
     };
@@ -81,7 +81,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SacredSoil { get; } = new BaseAction(ActionID.SacredSoil, ActionOption.Heal)
+    public static IBaseAction SacredSoil { get; } = new BaseAction(ActionID.SacredSoil, ActionOption.Heal | ActionOption.UseResources)
     {
         ActionCheck = (b, m) => HasAetherflow && !IsMoving,
     };
@@ -89,7 +89,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Indomitability { get; } = new BaseAction(ActionID.Indomitability, ActionOption.Heal)
+    public static IBaseAction Indomitability { get; } = new BaseAction(ActionID.Indomitability, ActionOption.Heal | ActionOption.UseResources)
     {
         ActionCheck = (b, m) => HasAetherflow
     };
@@ -97,7 +97,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Excogitation { get; } = new BaseAction(ActionID.Excogitation, ActionOption.Heal)
+    public static IBaseAction Excogitation { get; } = new BaseAction(ActionID.Excogitation, ActionOption.Heal | ActionOption.UseResources)
     {
         ActionCheck = (b, m) => HasAetherflow
     };
@@ -141,7 +141,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction EnergyDrain { get; } = new BaseAction(ActionID.EnergyDrain)
+    public static IBaseAction EnergyDrain { get; } = new BaseAction(ActionID.EnergyDrain, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => HasAetherflow
     };

@@ -172,7 +172,7 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Higanbana { get; } = new BaseAction(ActionID.Higanbana, ActionOption.Dot)
+    public static IBaseAction Higanbana { get; } = new BaseAction(ActionID.Higanbana, ActionOption.Dot | ActionOption.UseResources)
     {
         ActionCheck = (b, m) => !IsMoving && SenCount == 1,
         TargetStatus = new[] { StatusID.Higanbana },
@@ -181,7 +181,7 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction TenkaGoken { get; } = new BaseAction(ActionID.TenkaGoken)
+    public static IBaseAction TenkaGoken { get; } = new BaseAction(ActionID.TenkaGoken, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => !IsMoving && SenCount == 2,
     };
@@ -189,7 +189,7 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction MidareSetsugekka { get; } = new BaseAction(ActionID.MidareSetsugekka)
+    public static IBaseAction MidareSetsugekka { get; } = new BaseAction(ActionID.MidareSetsugekka , ActionOption.UseResources)
     {
         ActionCheck = (b, m) => !IsMoving && SenCount == 3,
     };
@@ -243,7 +243,7 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Hagakure { get; } = new BaseAction(ActionID.Hagakure)
+    public static IBaseAction Hagakure { get; } = new BaseAction(ActionID.Hagakure, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => SenCount > 0
     };
