@@ -25,15 +25,15 @@ internal class Strings
     public string ConfigWindow_EventItem { get; set; } = "Event";
 
     public string ConfigWindow_HelpItem_AttackAuto { get; set; }
-        = "Start the addon in Auto mode (auto-targeting) when out of combat or when combat starts, otherwise switch the target according to the set condition.";
+        = "Start the addon in Auto mode. When out of combat or when combat starts, switches the target according to the set condition.";
 
     public string ConfigWindow_HelpItem_AttackManual { get; set; }
-        = "Start the addon in manual mode. You need to choose the target manually. This will bypass any  engage settings that you have set up and will start attacking immediately once something is targeted.";
+        = "Start the addon in Manual mode. You need to choose the target manually. This will bypass any engage settings that you have set up and will start attacking immediately once something is targeted.";
 
     public string ConfigWindow_HelpItem_NextAction { get; set; } = "Do the next action";
 
     public string ConfigWindow_HelpItem_AttackCancel { get; set; }
-        = "Stop the addon. Always remember to turn it off when not in use!";
+        = "Stop the addon. Always remember to turn it off when it is not in use!";
 
     public string ConfigWindow_HelpItem_HealArea { get; set; }
         = "Open a window to use AoE heal.";
@@ -69,7 +69,7 @@ internal class Strings
 
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
         = "To end this special duration before the set time.";
-    public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch authors";
+    public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch rotations";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
     public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy the command";
@@ -86,8 +86,8 @@ internal class Strings
     public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display UI Overlay";
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
 
-    public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the time advance of using actions";
-    public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set minimum the time in advance before using the last 0gcd.";
+    public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the before an oGCD is avaliable to start trying using it";
+    public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set the time ahead of the last oGCD before the next GCD being avaliable to start trying using it (may affect skill weaving)";
 
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the number of seconds combat abilities will be used before finishing the countdown";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
@@ -110,7 +110,7 @@ internal class Strings
     public string ConfigWindow_Param_InterruptDelay { get; set; } = "Set the range of random delay for interrupting hostile targets in seconds.";
     public string ConfigWindow_Param_WeakenDelay { get; set; } = "Set the range of random delay for cleansing dispellable debuffs in seconds.";
 
-    public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing people in seconds.";
+    public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing in seconds.";
 
     public string ConfigWindow_Param_CountdownDelay { get; set; } = "Set the random delay between which auto mode activation on countdown varies.";
     public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in seconds.";
@@ -125,7 +125,7 @@ internal class Strings
 
     public string ConfigWindow_Param_ShowTargetTimeToKill { get; set; } = "Show the target's time to kill.";
 
-    public string ConfigWindow_Param_BossTimeToKill { get; set; } = "If target's time until death is higher than this, regard it as Boss.";
+    public string ConfigWindow_Param_BossTimeToKill { get; set; } = "If target's time until death is higher than this, regard it as boss.";
 
     public string ConfigWindow_Param_DyingTimeToKill { get; set; } = "If target's time until death is lower than this, regard it is dying.";
     public string ConfigWindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
@@ -214,13 +214,13 @@ internal class Strings
 
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
-    public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets that you can attack and are in range for any abilities";
-    public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Targets have a target or all targets can attack";
-    public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Targets that already have a target or are hostile towards the player/player party";
+    public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets that are in range for any abilities";
+    public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Previously engaged targets or all targets that are in range\n(engages on countdown timer and resets when out of combat)";
+    public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Previously engaged targets (engages on countdown timer)";
     public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemies list to the hostile targets.";
     public string ConfigWindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
     public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Allowed use of AoE to attack more mobs.";
-    public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will cover the marked target.";
+    public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will reach the marked target.";
     public string ConfigWindow_Param_FilterStopMark { get; set; } = "Never attack targets with stop markers";
     public string ConfigWindow_Param_MoveTargetAngle { get; set; } = "The size of the sector angle that can be selected as the moveable target";
     public string ConfigWindow_Param_MoveTargetAngleDesc { get; set; } = "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are moveable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.";
@@ -260,7 +260,7 @@ internal class Strings
     public string ConfigWindow_Control_LockBackgroundColor { get; set; } = "Locked Control Window's Background";
     public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Info Window's Background";
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
-    public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "0GCD icon size";
+    public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "oGCD icon size";
     public string ConfigWindow_Control_CooldownWindowIconSize { get; set; } = "Cooldown icon size";
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
@@ -270,7 +270,7 @@ internal class Strings
 
     public string ConfigWindow_Rotation_InvalidRotation { get; set; } = "Invalid Rotation! \nPlease update to the latest version or contact to the {0}!";
 
-    public string ConfigWindow_List_Description { get; set; } = "In this window, you can set the parameters about some list things.";
+    public string ConfigWindow_List_Description { get; set; } = "In this window, you can set the parameters that can be customised using lists.";
     public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
 
     public string ConfigWindow_List_Invincibility { get; set; } = "Invulnerability";
@@ -592,7 +592,7 @@ internal class Strings
         { nameof(SMN_Base.InTitan), "In Titan"},
         { nameof(SMN_Base.InGaruda), "In Garuda"},
         { nameof(SMN_Base.SummonTime), "Summon Time"},
-        { nameof(SMN_Base.AttunmentTime), "Attunment Time"},
+        { nameof(SMN_Base.AttunmentTime), "Attunement Time"},
         #endregion
 
         #region WAR
@@ -621,11 +621,11 @@ internal class Strings
     public string ConfigWindow_About_Links { get; set; } = "Links";
     public string ConfigWindow_About_Compatibility { get; set; } = "Compatibility";
     public string ConfigWindow_About_Compatibility_Description { get; set; } = "Literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:";
-    public string ConfigWindow_About_Compatibility_Others { get; set; } = "Please don't relog without closing the game. It may occur crash.";
+    public string ConfigWindow_About_Compatibility_Others { get; set; } = "Please don't relog without closing the game. Crashes may occur.";
 
-    public string ConfigWindow_About_Compatibility_Mistake { get; set; } = "Can't properly execute the behavior that RS is going to do.";
+    public string ConfigWindow_About_Compatibility_Mistake { get; set; } = "Can't properly execute the behavior that RS wants to do.";
     public string ConfigWindow_About_Compatibility_Mislead { get; set; } = "Misleading RS to make the right decision.";
-    public string ConfigWindow_About_Compatibility_Crash { get; set; } = "Cause the game to crash.";
+    public string ConfigWindow_About_Compatibility_Crash { get; set; } = "Causes the game to crash.";
 
     public string ConfigWindow_Rotation_Description { get; set; } = "Description";
     public string ConfigWindow_Rotation_Status { get; set; } = "Status";
@@ -639,12 +639,12 @@ internal class Strings
     public string ConfigWindow_Actions_Description { get; set; } = "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.";
 
     public string ConfigWindow_Actions_ForcedConditionSet { get; set; } = "Forced Condition";
-    public string ConfigWindow_Actions_ForcedConditionSet_Description { get; set; } = "Conditions when automatic use of action is forced.";
+    public string ConfigWindow_Actions_ForcedConditionSet_Description { get; set; } = "Conditions for forced automatic use of action.";
     public string ConfigWindow_Actions_DisabledConditionSet { get; set; } = "Disabled Condition";
-    public string ConfigWindow_Actions_DisabledConditionSet_Description { get; set; } = "Conditions when automatic use of action is disabled.";
+    public string ConfigWindow_Actions_DisabledConditionSet_Description { get; set; } = "Conditions for automatic use of action being disabled.";
     public string ConfigWindow_Actions_ShowOnCDWindow { get; set; } = "Show on CD window";
 
-    public string ConfigWindow_Configs_JobConfigTip { get; set; } = "This config is binding with the job, different job gets different value.";
+    public string ConfigWindow_Configs_JobConfigTip { get; set; } = "This config is job specific";
 
     public string ConfigWindow_Rotations_Settings { get; set; } = "Settings";
     public string ConfigWindow_Rotations_Loaded { get; set; } = "Loaded";
@@ -683,32 +683,32 @@ internal class Strings
     public string ConfigWindow_Auto_ActionUsage { get; set; } = "Action Usage";
     public string ConfigWindow_Auto_ActionUsage_Description { get; set; } = "Which actions Rotation Solver can use.";
     public string ConfigWindow_Extra_Others { get; set; } = "Others";
-    public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focuses on rotation itself. These are side features. If there are some plugins can do that, these feature will be deleted.";
-    public string ConfigWindow_Auto_Description { get; set; } = "Change the strategy or usage of the automatically using actions.";
+    public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focuses on the rotation itself. These are side features. If there are some other plugins can do that, these features will be deleted.";
+    public string ConfigWindow_Auto_Description { get; set; } = "Change the way that RS atomatically uses actions.";
     public string ConfigWindow_Auto_ActionCondition { get; set; } = "Action Condition";
-    public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the strategy of Rotation Solver to use these actions.";
+    public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the way that Rotation Solver uses actions.";
     public string ConfigWindow_Target_Config { get; set; } = "Configuration";
-    public string ConfigWindow_Search_Result { get; set; } = "Searching Result";
+    public string ConfigWindow_Search_Result { get; set; } = "Search Result";
     public string ConfigWindow_UI_DrawIconAnimation { get; set; } = "Show RS logo animation";
 
     public string ConfigWindow_UI_ShowBeneficialPosition { get; set; } = "Show beneficial AoE locations.";
     public string ConfigWindow_UI_BeneficialPositionColor { get; set; } = "The color of beneficial AoE positions";
     public string ConfigWindow_UI_HoveredBeneficialPositionColor { get; set; } = "The color of the hovered beneficial position";
 
-    public string ConfigWindow_Tab_Actions { get; set; } = "The actions' conditions about your job.";
-    public string ConfigWindow_Tab_Rotations { get; set; } = "All rotations that RS loaded.";
-    public string ConfigWindow_Tab_List { get; set; } = "Something that has to be a list.";
+    public string ConfigWindow_Tab_Actions { get; set; } = "The abilities and custom conditions that your selected job has.";
+    public string ConfigWindow_Tab_Rotations { get; set; } = "All rotations that RS has loaded.";
+    public string ConfigWindow_Tab_List { get; set; } = "Some things that have to be lists.";
     public string ConfigWindow_Tab_Basic { get; set; } = "Basic settings.";
-    public string ConfigWindow_Tab_UI { get; set; } = "Settings about user interface.";
-    public string ConfigWindow_Tab_Auto { get; set; } = "About some general actions' usage and conditions.";
+    public string ConfigWindow_Tab_UI { get; set; } = "Settings about the user interface.";
+    public string ConfigWindow_Tab_Auto { get; set; } = "About some general actions usage and conditions.";
     public string ConfigWindow_Tab_Target { get; set; } = "The way to find the targets, hostiles or friends.";
-    public string ConfigWindow_Tab_Extra { get; set; } = "Some features shouldn't be included by RS.";
+    public string ConfigWindow_Tab_Extra { get; set; } = "Some features that shouldn't be included in RS but help you.";
     public string ConfigWindow_List_AddPosition { get; set; } = "Add beneficial AoE location";
     public string ConfigWindow_Actions_MoveUp { get; set; } = "Move Up";
     public string ConfigWindow_Actions_MoveDown { get; set; } = "Move Down";
     public string ConfigWindow_NotInJob { get; set; } = "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}";
 
-    public string ConfigWindow_Searching { get; set; } = "Searching...";
+    public string ConfigWindow_Searching { get; set; } = "Search...";
     public string ConfigWindow_UI_HideWarning { get; set; } = "Hide warning when entering High-end Duty";
     public string ConfigWindow_Auto_BeneficialAreaStrategy { get; set; } = "Beneficial AoE strategy";
     public string ConfigWindow_About_OpenConfigFolder { get; set; } = "Open Config Folder";
@@ -716,11 +716,11 @@ internal class Strings
     public string ConfigWindow_Basic_Ping { get; set; } = "The ping time.\nIn RS, it means the time from sending the action request to receiving the using success message from the server.";
     public string ConfigWindow_Basic_IdealClickingTime { get; set; } = "The ideal click time.";
     public string ConfigWindow_Basic_RealClickingTime { get; set; } = "The real click time.";
-    public string ConfigWindow_Basic_ClickingDuration { get; set; } = "The clicking duration, RS will try to click at this duration.";
+    public string ConfigWindow_Basic_ClickingDuration { get; set; } = "The clicking duration, RS will try to click at this moment.";
     public string ConfigWindow_Basic_WeaponDelay { get; set; } = "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.";
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
     public string ConfigWindow_About_ClickingTooMuch { get; set; } = "Well, you must be a lazy player!";
-    public string ConfigWindow_Auto_AutoHealTimeToKill { get; set; } = "Auto heal before combat end several seconds.";
+    public string ConfigWindow_Auto_AutoHealTimeToKill { get; set; } = "Stop healing when time to kill is lower then...";
     public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile target icon";
     public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Hostile Icon height from position";
     public string ConfigWindow_UI_HostileIconSize { get; set; } = "Hostile Icon size";
@@ -729,20 +729,20 @@ internal class Strings
     public string ConfigWindow_UI_StateIconSize { get; set; } = "State icon size";
     public string ConfigWindow_UI_ShowStateIcon { get; set; } = "Show RS state icon";
     public string ConfigWindow_Auto_UseGroundBeneficialAbilityWhenMoving { get; set; } = "Use beneficial AoE actions when moving.";
-    public string ConfigWindow_Auto_AutoDefenseNumber { get; set; } = "The number hostile targets attacking you. If it's larger than this, use personal mitigation abilities.";
+    public string ConfigWindow_Auto_AutoDefenseNumber { get; set; } = "The number hostile targets attacking you. If it's larger than this RS uses personal mitigation abilities.";
 
     public string ConfigWindow_Target_OnlyAttackInVisionCone { get; set; } = "Only attack the targets in vision cone";
     public string ConfigWindow_Target_VisionCone { get; set; } = "The angle of your vision cone";
 
     public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke in seconds.";
 
-    public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of TTK.";
+    public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of the time to kill indicator.";
     public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The minimum time between updating RS information in seconds.";
 
     public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
     public string ConfigWindow_Actions_TTK { get; set; } = "TTK that this action needs the target be.";
     public string ConfigWindow_Actions_HealRatio { get; set; } = "The HP ratio to auto heal";
-    public string ConfigWindow_Actions_ConditionDescription  { get; set; }= "Forced Condition has a higher priority. If Forced Condition is met, Disabled Condition will be ignored.";
+    public string ConfigWindow_Actions_ConditionDescription  { get; set; }= "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.";
 
     public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
 }
