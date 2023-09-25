@@ -169,6 +169,7 @@ public enum JobConfigFloat : byte
     [Default(0.55f)] HealthSingleSpell,
 
     [Default(0.15f)] HealthForDyingTanks,
+    [Default(1f)] HealthForAutoDefense,
 }
 #endregion
 

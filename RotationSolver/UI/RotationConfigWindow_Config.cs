@@ -638,6 +638,7 @@ public partial class RotationConfigWindow
                     ECommons.ExcelServices.Job.BRD,
                 },
             },
+
         new DragFloatRangeSearchPlugin(PluginConfigFloat.WeakenDelayMin, PluginConfigFloat.WeakenDelayMax, 0.002f)
             {
                 JobRoles = new JobRole[]
@@ -692,6 +693,14 @@ public partial class RotationConfigWindow
         {
             new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility,
                 new DragIntSearchPlugin(PluginConfigInt.AutoDefenseNumber, 0.05f)
+                {
+                    JobRoles = new JobRole[]
+                    {
+                        JobRole.Tank,
+                    }
+                },
+
+                new DragFloatSearchJob(JobConfigFloat.HealthForAutoDefense, 0.02f)
                 {
                     JobRoles = new JobRole[]
                     {

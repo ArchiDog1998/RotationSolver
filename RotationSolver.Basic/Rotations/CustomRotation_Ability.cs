@@ -231,6 +231,7 @@ public abstract partial class CustomRotation
 
             //A lot targets are targeting on me.
             if (tarOnMeCount >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber) 
+                && Player.GetHealthRatio() <= Service.Config.GetValue(DataCenter.Job, JobConfigFloat.HealthForAutoDefense)
                 && movingHere && attacked)
             {
                 if (DefenseSingleAbility(out act)) return true;

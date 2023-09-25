@@ -29,6 +29,7 @@ internal static class ConfigTranslation
     public static string ToName(this JobConfigFloat config) => config switch
     {
         JobConfigFloat.HealthForDyingTanks => LocalizationManager.RightLang.ConfigWindow_Param_HealthForDyingTank,
+        JobConfigFloat.HealthForAutoDefense => LocalizationManager.RightLang.ConfigWindow_Auto_HealthForAutoDefense,
         _ => string.Empty,
     };
 

@@ -745,4 +745,5 @@ internal class Strings
     public string ConfigWindow_Actions_ConditionDescription  { get; set; }= "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.";
 
     public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
+    public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";
 }
