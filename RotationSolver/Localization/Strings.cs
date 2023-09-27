@@ -747,5 +747,5 @@ internal class Strings
 
     public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
     public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";
-    public string ConfigWindow_Basic_SayHelloToUsers { get; set; } = "Say hello to the users of Rotation Solver.";
+    public string ConfigWindow_Basic_SayHelloToParticipants { get; set; } = "Say hello to the participants of Rotation Solver.";
 }

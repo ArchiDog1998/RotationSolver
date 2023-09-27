@@ -141,11 +141,15 @@ internal class SocialUpdater
 #endif
             Service.Config.GlobalConfig.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
-            SayHelloToAuthor();
+
+            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayHelloToParticipants))
+            {
+                SayHelloToParticipants();
+            }
         }
     }
 
-    private static async void SayHelloToAuthor()
+    private static async void SayHelloToParticipants()
     {
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
 #if DEBUG
@@ -159,12 +163,9 @@ internal class SocialUpdater
             .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
             .Select(p => new ContributorChatEntity(p.player));
 
-        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayHelloToUsers))
-        {
             entities = entities.Union(players
                 .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
                 .Select(p => new UserChatEntity(p.player)));
-        }
 
         entities = entities.Union(players
             .Select(c =>
