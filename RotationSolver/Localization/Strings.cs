@@ -675,6 +675,7 @@ internal class Strings
     public string ConfigWindow_List_NoProvokeName { get; set; } = "The name of the enemy that you don't want to be provoked";
 
     public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
+    public string ConfigWindow_Basic_Others { get; set; } = "Others";
 
     public string ConfigWindow_Basic_Timer { get; set; } = "Timer";
     public string ConfigWindow_UI_Windows { get; set; } = "Windows";
@@ -746,4 +747,5 @@ internal class Strings
 
     public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
     public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";
+    public string ConfigWindow_Basic_SayHelloToUsers { get; set; } = "Say hello to the users of Rotation Solver.";
 }

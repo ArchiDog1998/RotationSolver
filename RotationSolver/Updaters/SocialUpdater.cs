@@ -159,9 +159,12 @@ internal class SocialUpdater
             .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
             .Select(p => new ContributorChatEntity(p.player));
 
-        entities = entities.Union(players
-            .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
-            .Select(p => new UserChatEntity(p.player)));
+        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayHelloToUsers))
+        {
+            entities = entities.Union(players
+                .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
+                .Select(p => new UserChatEntity(p.player)));
+        }
 
         entities = entities.Union(players
             .Select(c =>

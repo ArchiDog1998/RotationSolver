@@ -82,12 +82,12 @@ public partial class RotationConfigWindow
     {
         { () =>  LocalizationManager.RightLang.ConfigWindow_Basic_Timer, DrawBasicTimer },
         { () => LocalizationManager.RightLang.ConfigWindow_Basic_AutoSwitch, DrawBasicAutoSwitch },
-        { () => "Others", () =>
+        { () => LocalizationManager.RightLang.ConfigWindow_Basic_Others, () =>
         {
-        foreach (var searchable in _basicParamsSearchable)
-        {
-            searchable?.Draw(Job);
-        }
+            foreach (var searchable in _basicParamsSearchable)
+            {
+                searchable?.Draw(Job);
+            }
         } },
     });
 
@@ -287,6 +287,8 @@ public partial class RotationConfigWindow
         new CheckBoxSearchPlugin(PluginConfigBool.ToggleAuto),
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseWorkTask),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.SayHelloToUsers),
 
         new DragFloatSearchPlugin(PluginConfigFloat.MistakeRatio, 0.002f),
 
