@@ -249,6 +249,8 @@ internal static class ConfigTranslation
         PluginConfigBool.MoveTowardsScreenCenter => LocalizationManager.RightLang.ConfigWindow_Param_MoveTowardsScreenDesc,
         PluginConfigBool.MoveAreaActionFarthest => LocalizationManager.RightLang.ConfigWindow_Param_MoveAreaActionFarthestDesc,
 
+        PluginConfigBool.SayHelloToUsers => LocalizationManager.RightLang.ConfigWindow_Basic_SayHelloToUsersDesc,
+
         PluginConfigBool.AutoOpenChest => "Because of the feature in pandora, there is an issue the treasure chest cannot be opened in some cases, I find the code from roll for loot. Once Pandora fixed that, this feature will be deleted.",
         _ => string.Empty,
     };

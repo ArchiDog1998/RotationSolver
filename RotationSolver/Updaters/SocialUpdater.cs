@@ -32,7 +32,6 @@ internal class SocialUpdater
 
     private static readonly HashSet<string> saidAuthors = new();
 
-
     static bool _canSaying = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
 
@@ -143,15 +142,12 @@ internal class SocialUpdater
             Service.Config.GlobalConfig.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
 
-            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayHelloToUsers))
-            {
-                SayHelloToParticipants();
-            }
+            SayHelloToUsers();
         }
     }
 
     private static readonly ChatEntityComparer _comparer = new ChatEntityComparer();
-    private static async void SayHelloToParticipants()
+    private static async void SayHelloToUsers()
     {
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
 #if DEBUG
@@ -174,9 +170,12 @@ internal class SocialUpdater
             .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
             .Select(p => new ContributorChatEntity(p.player)), _comparer);
 
-        entities = entities.Union(players
-            .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
-            .Select(p => new UserChatEntity(p.player)), _comparer);
+        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayHelloToUsers))
+        {
+            entities = entities.Union(players
+                .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
+                .Select(p => new UserChatEntity(p.player)), _comparer);
+        }
 
         foreach (var entity in entities)
         {

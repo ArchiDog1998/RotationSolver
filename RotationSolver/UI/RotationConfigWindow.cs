@@ -2068,10 +2068,6 @@ public partial class RotationConfigWindow : Window
             searchable?.Draw(Job);
         }
 
-        var str = SocialUpdater.EncryptString(Player.Object);
-        ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
-        ImGui.InputText("That is your HASH", ref str, 100);
-
         if (!Player.Available || !Service.Config.GetValue(PluginConfigBool.InDebug)) return;
 
         _debugHeader?.Draw();

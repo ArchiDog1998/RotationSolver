@@ -748,4 +748,5 @@ internal class Strings
     public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
     public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";
     public string ConfigWindow_Basic_SayHelloToUsers { get; set; } = "Say hello to the users of Rotation Solver.";
+    public string ConfigWindow_Basic_SayHelloToUsersDesc { get; set; } = "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!";
 }
