@@ -9,6 +9,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -142,13 +143,14 @@ internal class SocialUpdater
             Service.Config.GlobalConfig.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
 
-            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayHelloToParticipants))
+            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayHelloToUsers))
             {
                 SayHelloToParticipants();
             }
         }
     }
 
+    private static readonly ChatEntityComparer _comparer = new ChatEntityComparer();
     private static async void SayHelloToParticipants()
     {
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
@@ -160,21 +162,21 @@ internal class SocialUpdater
             .Where(pair => !saidAuthors.Contains(pair.Item2));
 
         IEnumerable<ChatEntity> entities = players
-            .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
-            .Select(p => new ContributorChatEntity(p.player));
-
-            entities = entities.Union(players
-                .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
-                .Select(p => new UserChatEntity(p.player)));
-
-        entities = entities.Union(players
             .Select(c =>
             {
-                if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
+                if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc =    string.Empty;
                 return (c.player, nameDesc);
             })
             .Where(p => !string.IsNullOrEmpty(p.nameDesc))
-            .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc)));
+            .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc));
+
+        entities = entities.Union(players
+            .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
+            .Select(p => new ContributorChatEntity(p.player)), _comparer);
+
+        entities = entities.Union(players
+            .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
+            .Select(p => new UserChatEntity(p.player)), _comparer);
 
         foreach (var entity in entities)
         {
@@ -263,6 +265,15 @@ internal class SocialUpdater
         {
             saidAuthors.Add(EncryptString(player));
         }
+    }
+
+    internal class ChatEntityComparer : IEqualityComparer<ChatEntity>
+    {
+        public bool Equals(ChatEntity x, ChatEntity y)
+            => x.player.Equals(y.player);
+
+        public int GetHashCode([DisallowNull] ChatEntity obj)
+            => obj.player.GetHashCode();
     }
 
     internal class RotationAuthorChatEntity : ChatEntity
