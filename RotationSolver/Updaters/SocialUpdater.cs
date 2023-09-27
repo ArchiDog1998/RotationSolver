@@ -3,9 +3,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
-using ECommons.Automation;
 using ECommons.DalamudServices;
-using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
@@ -162,6 +160,10 @@ internal class SocialUpdater
             .Select(p => new ContributorChatEntity(p.player));
 
         entities = entities.Union(players
+            .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
+            .Select(p => new UserChatEntity(p.player)));
+
+        entities = entities.Union(players
             .Select(c =>
             {
                 if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
@@ -233,7 +235,9 @@ internal class SocialUpdater
             }
         }
 
-        protected SeString Character => new SeString(new IconPayload(BitmapFontIcon.Mentor),
+        public virtual BitmapFontIcon Icon => BitmapFontIcon.Mentor;
+
+        protected SeString Character => new SeString(new IconPayload(Icon),
             new UIForegroundPayload(31),
             new PlayerPayload(player.Name.TextValue, player.HomeWorld.Id),
             UIForegroundPayload.UIForegroundOff);
@@ -282,6 +286,21 @@ internal class SocialUpdater
         public override SeString GetMessage() =>
             Character
             .Append(new SeString(new TextPayload($" is one of the contributors of ")))
+            .Append(RotationSolver)
+            .Append(new SeString(new TextPayload(". So say hello to him/her!")));
+    }
+
+    internal class UserChatEntity : ChatEntity
+    {
+        public override BitmapFontIcon Icon => BitmapFontIcon.NewAdventurer;
+
+        public UserChatEntity(PlayerCharacter character) : base(character)
+        {
+        }
+
+        public override SeString GetMessage() =>
+            Character
+            .Append(new SeString(new TextPayload($" is one of the users of ")))
             .Append(RotationSolver)
             .Append(new SeString(new TextPayload(". So say hello to him/her!")));
     }
