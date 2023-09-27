@@ -224,7 +224,7 @@ internal class SocialUpdater
             {
                 try
                 {
-                    return player.IsTargetable();
+                    return player.IsTargetable;
                 }
                 catch
                 {

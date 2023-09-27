@@ -255,7 +255,7 @@ public static class TargetFilter
             if (!item.IsDead) return false;
             if (item.CurrentHp != 0) return false;
 
-            if (!item.IsTargetable()) return false;
+            if (!item.IsTargetable) return false;
 
             if (item.HasStatus(false, StatusID.Raise)) return false;
 
