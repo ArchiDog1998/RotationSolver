@@ -463,6 +463,7 @@
   "ConfigWindow_List_NoHostilesName": "The name of the enemy that you don't want to be targeted",
   "ConfigWindow_List_NoProvokeName": "The name of the enemy that you don't want to be provoked",
   "ConfigWindow_Basic_AutoSwitch": "自动开关",
+  "ConfigWindow_Basic_Others": "Others",
   "ConfigWindow_Basic_Timer": "时间相关",
   "ConfigWindow_UI_Windows": "窗口",
   "ConfigWindow_UI_Overlay": "叠加层",
@@ -522,5 +523,8 @@
   "ConfigWindow_Actions_TTK": "TTK that this action needs the target be.",
   "ConfigWindow_Actions_HealRatio": "The HP ratio to auto heal",
   "ConfigWindow_Actions_ConditionDescription": "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.",
-  "ConfigWindow_Auto_UseResourcesAction": "Use actions that use resources"
+  "ConfigWindow_Auto_UseResourcesAction": "Use actions that use resources",
+  "ConfigWindow_Auto_HealthForAutoDefense": "HP Ratio about defense single of Tanks",
+  "ConfigWindow_Basic_SayHelloToUsers": "Say hello to the users of Rotation Solver.",
+  "ConfigWindow_Basic_SayHelloToUsersDesc": "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!"
 }
