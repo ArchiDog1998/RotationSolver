@@ -316,6 +316,7 @@ public partial class RotationConfigWindow
         new DragFloatRangeSearchPlugin(PluginConfigFloat.NotInCombatDelayMin, PluginConfigFloat.NotInCombatDelayMax, 0.002f),
 
         new CheckBoxSearchPlugin(PluginConfigBool.SayHelloToUsers),
+        new CheckBoxSearchPlugin(PluginConfigBool.JustSayHelloOnce),
     };
 
     private static readonly ISearchable[] _basicSwitchTurnOn = new ISearchable[]

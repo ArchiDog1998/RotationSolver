@@ -748,6 +748,7 @@ internal class Strings
     public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";
     public string ConfigWindow_Basic_SayHelloToUsers { get; set; } = "Say hello to the users of Rotation Solver.";
     public string ConfigWindow_Basic_SayHelloToUsersDesc { get; set; } = "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!";
+    public string ConfigWindow_Basic_JustSayHelloOnce { get; set; } = "Just say hello once to the same user.";
 
     public string ConfigWindow_About_Clicking100k { get; set; } = "Well, you must be a lazy player!";
     public string ConfigWindow_About_Clicking500k { get; set; } = "You're tiring RS out, give it a break!";

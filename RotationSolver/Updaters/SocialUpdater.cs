@@ -7,6 +7,7 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Diagnostics.CodeAnalysis;
@@ -155,7 +156,8 @@ internal class SocialUpdater
             .Where(c => c.ObjectId != Player.Object.ObjectId)
 #endif
             .Select(player => (player, EncryptString(player)))
-            .Where(pair => !saidAuthors.Contains(pair.Item2));
+            .Where(pair => !saidAuthors.Contains(pair.Item2) 
+                && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(pair.Item2));
 
         IEnumerable<ChatEntity> entities = players
             .Select(c =>
@@ -262,7 +264,12 @@ internal class SocialUpdater
 
         public void Dispose()
         {
-            saidAuthors.Add(EncryptString(player));
+            var hash = EncryptString(player);
+            saidAuthors.Add(hash);
+            if (Service.Config.GetValue(PluginConfigBool.JustSayHelloOnce))
+            {
+                OtherConfiguration.RotationSolverRecord.SaidUsers.Add(hash);
+            }
         }
     }
 
