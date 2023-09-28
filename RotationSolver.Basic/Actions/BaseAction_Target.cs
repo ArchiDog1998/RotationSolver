@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Logging;
+using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -7,6 +8,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using RotationSolver.Basic.Configuration;
+using System.Runtime.InteropServices;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -226,9 +228,21 @@ public partial class BaseAction
         {
             case 0: // Find from list
             case 1: // Only the list
+                OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts);
 
-                if (OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts) 
-                    && pts != null && pts.Length > 0)
+                pts ??= Array.Empty<Vector3>();
+
+                if (pts.Length == 0)
+                {
+                    if (DataCenter.TerritoryContentType == TerritoryContentType.Trials ||
+                        DataCenter.TerritoryContentType == TerritoryContentType.Raids
+                        && DataCenter.AllianceMembers.Count(p => p is PlayerCharacter) == 8)
+                    {
+                        pts = pts.Union(new Vector3[] { Vector3.Zero, new Vector3(100, 0, 100) }).ToArray();
+                    }
+                }
+
+                if (pts.Length > 0)
                 {
                     var closest = pts.MinBy(p => Vector3.Distance(player.Position, p));
                     var rotation = new Random().NextDouble() * Math.Tau;
@@ -244,6 +258,7 @@ public partial class BaseAction
 
                 if (strategy == 1) return false;
                 break;
+
             case 2: // Target
                 if(Svc.Targets.Target != null && Svc.Targets.Target.DistanceToPlayer() < range)
                 {
