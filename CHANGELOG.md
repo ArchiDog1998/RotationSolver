@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.3.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.1...v3.3.2) (2023-09-30)
+
+
+### Bug Fixes
+
+* add a DM button for sending Hash to Archi. ([0efd7fd](https://github.com/ArchiDog1998/RotationSolver/commit/0efd7fd6f3eae14100b7e9ce1962fa8459fe1116))
+* add an option for saying hello to users. ([8c96494](https://github.com/ArchiDog1998/RotationSolver/commit/8c964944b4f661b821f2db2c0523627e268d065a))
+* add just say once option. ([e24738c](https://github.com/ArchiDog1998/RotationSolver/commit/e24738c82d8bc632bffc568cabfa4ea083b15316))
+* add some default center position in the trails and raids. ([f9cec3e](https://github.com/ArchiDog1998/RotationSolver/commit/f9cec3e540fae67fe96d3f48016a72f9fbca3ce7))
+* add user hash for saying hello feature. ([85634a4](https://github.com/ArchiDog1998/RotationSolver/commit/85634a41f6b2ed438c312a9305f1455d22e1d137))
+* changed the name of saying hello option. ([1d8f367](https://github.com/ArchiDog1998/RotationSolver/commit/1d8f367fb4cea7fd03d4825532975885d9bab657))
+* more condition for tank defense single. ([2557b26](https://github.com/ArchiDog1998/RotationSolver/commit/2557b26da39d1fa65f52f30eefb32c9e129f4114))
+* no fate check in eureka. ([2648a54](https://github.com/ArchiDog1998/RotationSolver/commit/2648a54fd39ed31a68df6942aca65630b57a9121))
+* patch. ([dd3fa8b](https://github.com/ArchiDog1998/RotationSolver/commit/dd3fa8bd1272acd944151809adb13fb83c65f14d))
+* the say hello feature can be disabled entirely. ([eeeef6a](https://github.com/ArchiDog1998/RotationSolver/commit/eeeef6aebbb680492e9f6cf3c169796fa8661240))
+
 ## [3.3.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.0...v3.3.1) (2023-09-12)
 
 
