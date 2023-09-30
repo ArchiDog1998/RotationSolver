@@ -209,5 +209,8 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    protected abstract bool GeneralGCD(out IAction act);
+    protected virtual bool GeneralGCD(out IAction act)
+    {
+        act = null; return false;
+    }
 }
