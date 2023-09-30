@@ -19,7 +19,6 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
-using System;
 using System.Diagnostics;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
@@ -472,6 +471,13 @@ public partial class RotationConfigWindow : Window
     }
 
     #region About
+
+    private static readonly SortedList<uint, string> CountStringPair = new SortedList<uint, string>()
+    {
+        { 100_000, LocalizationManager.RightLang.ConfigWindow_About_Clicking100k },
+        { 500_000, LocalizationManager.RightLang.ConfigWindow_About_Clicking500k },
+    };
+
     private static void DrawAbout()
     {
         ImGui.PushFont(ImGuiHelper.GetFont(18));
@@ -505,17 +511,21 @@ public partial class RotationConfigWindow : Window
                 ImGui.TextWrapped(countStr);
             }, width, ImGui.CalcTextSize(countStr).X);
 
-            if (clickingCount >= 100_000)
+            foreach (var pair in CountStringPair.Reverse())
             {
-                countStr = LocalizationManager.RightLang.ConfigWindow_About_ClickingTooMuch;
-                ImGuiHelper.DrawItemMiddle(() =>
+                if (clickingCount >= pair.Key)
                 {
-                    ImGui.TextWrapped(countStr);
-                }, width, ImGui.CalcTextSize(countStr).X);
+                    countStr = pair.Value;
+                    ImGuiHelper.DrawItemMiddle(() =>
+                    {
+                        ImGui.TextWrapped(countStr);
+                    }, width, ImGui.CalcTextSize(countStr).X);
+                    break;
+                }
             }
+
             ImGui.PopStyleColor();
         }
-
 
         _aboutHeaders.Draw();
     }
@@ -2069,10 +2079,6 @@ public partial class RotationConfigWindow : Window
         }
 
         if (!Player.Available || !Service.Config.GetValue(PluginConfigBool.InDebug)) return;
-
-        var str = SocialUpdater.EncryptString(Player.Object);
-        ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
-        ImGui.InputText("That is your HASH", ref str, 100);
 
         _debugHeader?.Draw();
     }

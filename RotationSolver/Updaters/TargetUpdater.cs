@@ -21,7 +21,7 @@ internal static partial class TargetUpdater
         UpdateHostileTargets(battles);
         UpdateFriends(battles
             .Where(b => b.Character()->CharacterData.OnlineStatus != 15 //Removed the one watching cutscene.
-            && b.IsTargetable() //Removed the one can't target.
+            && b.IsTargetable //Removed the one can't target.
             ));
         UpdateNamePlate(Svc.Objects.OfType<BattleChara>());
     }
@@ -95,7 +95,7 @@ internal static partial class TargetUpdater
             //Dead.
             if (b.CurrentHp <= deadHP) return false;
 
-            if (!b.IsTargetable()) return false;
+            if (!b.IsTargetable) return false;
 
             return true;
         });
@@ -181,6 +181,9 @@ internal static partial class TargetUpdater
                 names = names.Union(ns1);
 
             if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(b.Name.ToString()).Success)) return false;
+
+            //No fate check in eureka.
+            if (DataCenter.TerritoryContentType == TerritoryContentType.Eureka) return true;
 
             var tarFateId = b.FateId();
             return tarFateId == 0 || tarFateId == fateId;

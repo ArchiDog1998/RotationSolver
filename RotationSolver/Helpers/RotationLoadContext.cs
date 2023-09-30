@@ -1,10 +1,7 @@
 ﻿using System.Runtime.Loader;
-
 using Dalamud.Logging;
 using Dalamud.Plugin;
-
 using FFXIVClientStructs.Interop;
-
 using Lumina.Excel;
 using Lumina.Excel.CustomSheets;
 

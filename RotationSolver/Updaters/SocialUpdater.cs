@@ -3,14 +3,14 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
-using ECommons.Automation;
 using ECommons.DalamudServices;
-using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -32,7 +32,6 @@ internal class SocialUpdater
     };
 
     private static readonly HashSet<string> saidAuthors = new();
-
 
     static bool _canSaying = false;
     public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
@@ -143,11 +142,13 @@ internal class SocialUpdater
 #endif
             Service.Config.GlobalConfig.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
-            SayHelloToAuthor();
+
+            SayHelloToUsers();
         }
     }
 
-    private static async void SayHelloToAuthor()
+    private static readonly ChatEntityComparer _comparer = new ChatEntityComparer();
+    private static async void SayHelloToUsers()
     {
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
 #if DEBUG
@@ -155,20 +156,28 @@ internal class SocialUpdater
             .Where(c => c.ObjectId != Player.Object.ObjectId)
 #endif
             .Select(player => (player, EncryptString(player)))
-            .Where(pair => !saidAuthors.Contains(pair.Item2));
+            .Where(pair => !saidAuthors.Contains(pair.Item2) 
+                && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(pair.Item2));
 
         IEnumerable<ChatEntity> entities = players
-            .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
-            .Select(p => new ContributorChatEntity(p.player));
-
-        entities = entities.Union(players
             .Select(c =>
             {
-                if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
+                if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc =    string.Empty;
                 return (c.player, nameDesc);
             })
             .Where(p => !string.IsNullOrEmpty(p.nameDesc))
-            .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc)));
+            .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc));
+
+        entities = entities.Union(players
+            .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
+            .Select(p => new ContributorChatEntity(p.player)), _comparer);
+
+        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayHelloToUsers))
+        {
+            entities = entities.Union(players
+                .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
+                .Select(p => new UserChatEntity(p.player)), _comparer);
+        }
 
         foreach (var entity in entities)
         {
@@ -224,7 +233,7 @@ internal class SocialUpdater
             {
                 try
                 {
-                    return player.IsTargetable();
+                    return player.IsTargetable;
                 }
                 catch
                 {
@@ -233,7 +242,9 @@ internal class SocialUpdater
             }
         }
 
-        protected SeString Character => new SeString(new IconPayload(BitmapFontIcon.Mentor),
+        public virtual BitmapFontIcon Icon => BitmapFontIcon.Mentor;
+
+        protected SeString Character => new SeString(new IconPayload(Icon),
             new UIForegroundPayload(31),
             new PlayerPayload(player.Name.TextValue, player.HomeWorld.Id),
             UIForegroundPayload.UIForegroundOff);
@@ -253,8 +264,22 @@ internal class SocialUpdater
 
         public void Dispose()
         {
-            saidAuthors.Add(EncryptString(player));
+            var hash = EncryptString(player);
+            saidAuthors.Add(hash);
+            if (Service.Config.GetValue(PluginConfigBool.JustSayHelloOnce))
+            {
+                OtherConfiguration.RotationSolverRecord.SaidUsers.Add(hash);
+            }
         }
+    }
+
+    internal class ChatEntityComparer : IEqualityComparer<ChatEntity>
+    {
+        public bool Equals(ChatEntity x, ChatEntity y)
+            => x.player.Equals(y.player);
+
+        public int GetHashCode([DisallowNull] ChatEntity obj)
+            => obj.player.GetHashCode();
     }
 
     internal class RotationAuthorChatEntity : ChatEntity
@@ -282,6 +307,21 @@ internal class SocialUpdater
         public override SeString GetMessage() =>
             Character
             .Append(new SeString(new TextPayload($" is one of the contributors of ")))
+            .Append(RotationSolver)
+            .Append(new SeString(new TextPayload(". So say hello to him/her!")));
+    }
+
+    internal class UserChatEntity : ChatEntity
+    {
+        public override BitmapFontIcon Icon => BitmapFontIcon.NewAdventurer;
+
+        public UserChatEntity(PlayerCharacter character) : base(character)
+        {
+        }
+
+        public override SeString GetMessage() =>
+            Character
+            .Append(new SeString(new TextPayload($" is one of the users of ")))
             .Append(RotationSolver)
             .Append(new SeString(new TextPayload(". So say hello to him/her!")));
     }

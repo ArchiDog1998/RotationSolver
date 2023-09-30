@@ -1,19 +1,24 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
+using Dalamud.Utility;
+using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
+using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
 
 public partial class RotationConfigWindow
 {
+    private static char[] _splitChar = new char[] { ' ', ',', '、', '.', '。' };
     internal static float Similarity(string text, string key)
     {
-        var chars = text.Split(new char[] { ' ', ',', '、', '.', '。' }, StringSplitOptions.RemoveEmptyEntries);
-        var keys = key.Split(new char[] { ' ', ',', '、', '.', '。' }, StringSplitOptions.RemoveEmptyEntries);
+        var chars = text.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
+        var keys = key.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
 
         var startWithCount = chars.Count(i => keys.Any(k => i.StartsWith(k, StringComparison.OrdinalIgnoreCase)));
 
@@ -82,13 +87,7 @@ public partial class RotationConfigWindow
     {
         { () =>  LocalizationManager.RightLang.ConfigWindow_Basic_Timer, DrawBasicTimer },
         { () => LocalizationManager.RightLang.ConfigWindow_Basic_AutoSwitch, DrawBasicAutoSwitch },
-        { () => "Others", () =>
-        {
-        foreach (var searchable in _basicParamsSearchable)
-        {
-            searchable?.Draw(Job);
-        }
-        } },
+        { () => LocalizationManager.RightLang.ConfigWindow_Basic_Others, DrawBasicOthers },
     });
 
     private static readonly uint PING_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedGreen);
@@ -265,6 +264,30 @@ public partial class RotationConfigWindow
         }
     }
 
+    private static void DrawBasicOthers()
+    {
+        foreach (var searchable in _basicParamsSearchable)
+        {
+            searchable?.Draw(Job);
+        }
+
+        var str = SocialUpdater.EncryptString(Player.Object);
+        ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
+        ImGui.InputText("That is your HASH:", ref str, 100);
+
+        if (!DownloadHelper.ContributorsHash.Contains(str)
+            && !DownloadHelper.UsersHash.Contains(str)
+            && !RotationUpdater.AuthorHashes.ContainsKey(str))
+        {
+            if (ImGui.Button("DM your Hash to ArchiTed for being greeted."))
+            {
+                ImGui.SetClipboardText(str);
+                Notify.Success($"Your hash \"{str}\" copied to clipboard.");
+                Util.OpenLink("https://discord.com/users/1007293294100877322");
+            }
+        }
+    }
+
     private static readonly ISearchable[] _basicTimer = new ISearchable[]
     {
         new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0.002f),
@@ -291,6 +314,9 @@ public partial class RotationConfigWindow
         new DragFloatSearchPlugin(PluginConfigFloat.MistakeRatio, 0.002f),
 
         new DragFloatRangeSearchPlugin(PluginConfigFloat.NotInCombatDelayMin, PluginConfigFloat.NotInCombatDelayMax, 0.002f),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.SayHelloToUsers),
+        new CheckBoxSearchPlugin(PluginConfigBool.JustSayHelloOnce),
     };
 
     private static readonly ISearchable[] _basicSwitchTurnOn = new ISearchable[]
@@ -638,6 +664,7 @@ public partial class RotationConfigWindow
                     ECommons.ExcelServices.Job.BRD,
                 },
             },
+
         new DragFloatRangeSearchPlugin(PluginConfigFloat.WeakenDelayMin, PluginConfigFloat.WeakenDelayMax, 0.002f)
             {
                 JobRoles = new JobRole[]
@@ -692,6 +719,14 @@ public partial class RotationConfigWindow
         {
             new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility,
                 new DragIntSearchPlugin(PluginConfigInt.AutoDefenseNumber, 0.05f)
+                {
+                    JobRoles = new JobRole[]
+                    {
+                        JobRole.Tank,
+                    }
+                },
+
+                new DragFloatSearchJob(JobConfigFloat.HealthForAutoDefense, 0.02f)
                 {
                     JobRoles = new JobRole[]
                     {
