@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
+using ECommons.Automation;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -172,7 +173,7 @@ internal class SocialUpdater
             .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
             .Select(p => new ContributorChatEntity(p.player)), _comparer);
 
-        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayHelloToUsers))
+        if (Service.Config.GetValue(PluginConfigBool.SayHelloToUsers))
         {
             entities = entities.Union(players
                 .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))

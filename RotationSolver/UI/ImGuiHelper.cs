@@ -1,4 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Interface.Internal;
+using Dalamud.Interface.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using ImGuiScene;
@@ -206,7 +208,7 @@ internal static class ImGuiHelper
         return result;
     }
 
-    internal static bool TextureButton(TextureWrap texture, float wholeWidth, float maxWidth, string id = "")
+    internal static bool TextureButton(IDalamudTextureWrap texture, float wholeWidth, float maxWidth, string id = "")
     {
         if (texture == null) return false;
 

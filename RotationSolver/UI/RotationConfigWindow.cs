@@ -1,4 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Internal;
+using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
 using Dalamud.Utility;
@@ -10,7 +12,6 @@ using ECommons.ImGuiMethods;
 using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
-using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
@@ -235,8 +236,8 @@ public partial class RotationConfigWindow : Window
     }
 
     private const int FRAME_COUNT = 180;
-    private static SortedList<string, TextureWrap> _textureWrapList = new SortedList<string, TextureWrap>(FRAME_COUNT);
-    private static bool GetLocalImage(string name, out TextureWrap texture)
+    private static SortedList<string, IDalamudTextureWrap> _textureWrapList = new SortedList<string, IDalamudTextureWrap>(FRAME_COUNT);
+    private static bool GetLocalImage(string name, out IDalamudTextureWrap texture)
     {
         var url = $"RotationSolver.Logos.{name}.png";
         if (_textureWrapList.TryGetValue(name, out texture)) return texture != null;
