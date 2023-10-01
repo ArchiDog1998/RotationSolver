@@ -1,6 +1,7 @@
 ﻿using Dalamud;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Plugin.Services;
 using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Rotations;
@@ -49,7 +50,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Condition.
     /// </summary>
-    protected static Condition Condition => Svc.Condition;
+    protected static ICondition Condition => Svc.Condition;
 
     #endregion
 

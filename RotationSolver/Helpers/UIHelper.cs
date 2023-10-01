@@ -39,7 +39,7 @@ public static class UIHelper
               new TextPayload("(Hide Warning)"),
               RawPayload.LinkTerminator);
 
-        Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+        Svc.Chat.Print(new Dalamud.Game.Text.XivChatEntry()
         {
             Message = seString,
             Type = Dalamud.Game.Text.XivChatType.ErrorMessage,

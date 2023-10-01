@@ -1,4 +1,5 @@
-﻿using Dalamud.Utility.Signatures;
+﻿using Dalamud.Plugin.Services;
+using Dalamud.Utility.Signatures;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.Attributes;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -42,7 +43,7 @@ internal class Service : IDisposable
 
     public Service()
     {
-        SignatureHelper.Initialise(this);
+        Svc.Hook.InitializeFromAttributes(this);
     }
     public static ActionID GetAdjustedActionId(ActionID id)
         => (ActionID)GetAdjustedActionId((uint)id);

@@ -106,16 +106,6 @@ public static class IconSet
     /// <returns></returns>
     public static bool GetTexture(this ITexture text, out IDalamudTextureWrap texture) => GetTexture(text?.IconID ?? 0, out texture);
 
-    /// <summary>
-    /// Get Texture from id.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [Obsolete]
-
-    public static TextureWrap GetTexture(uint id)
-        => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out var texture) ? texture :
-        ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture) ? texture : null;
 
     /// <summary>
     /// 

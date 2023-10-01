@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Loader;
 using Dalamud.Logging;
 using Dalamud.Plugin;
+using ECommons.DalamudServices;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel;
 using Lumina.Excel.CustomSheets;
@@ -65,7 +66,7 @@ namespace RotationSolver.Helpers
             var pdbPath = Path.ChangeExtension(filePath, ".pdb");
             if (!File.Exists(pdbPath))
             {
-                PluginLog.Information($"Failed to find {pdbPath}");
+                Svc.Log.Information($"Failed to find {pdbPath}");
                 return LoadFromStream(file);
             }
             using var pdbFile = File.Open(pdbPath, FileMode.Open, FileAccess.Read, FileShare.Read);

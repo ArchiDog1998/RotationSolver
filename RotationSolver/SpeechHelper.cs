@@ -47,7 +47,7 @@ internal static class SpeechHelper
         }
         catch (Exception ex)
         {
-            PluginLog.Warning(ex, "Something wrong with TTT.");
+            Svc.Log.Warning(ex, "Something wrong with TTT.");
         }
     }
 }

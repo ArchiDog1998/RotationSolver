@@ -1,4 +1,5 @@
 ﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Internal;
 using ECommons.DalamudServices;
 using ImGuiScene;
 using RotationSolver.Basic.Configuration;
@@ -270,7 +271,7 @@ internal class ControlWindow : CtrlWindow
         if (IconSet.GetTexture(iconId, out var texture)) DrawCommandAction(texture, command, color);
     }
 
-    static void DrawCommandAction(TextureWrap texture, SpecialCommandType command, Vector4 color)
+    static void DrawCommandAction(IDalamudTextureWrap texture, SpecialCommandType command, Vector4 color)
     {
         var abilityW = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize);
         var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;

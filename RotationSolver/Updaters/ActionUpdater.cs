@@ -69,7 +69,7 @@ internal static class ActionUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Error(ex, "Failed to update next action.");
+            Svc.Log.Error(ex, "Failed to update next action.");
         }
 
         WrongAction = NextAction = NextGCDAction = null;

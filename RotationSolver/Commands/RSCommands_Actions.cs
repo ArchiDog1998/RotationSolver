@@ -105,7 +105,7 @@ namespace RotationSolver.Commands
             }
             catch (Exception ex)
             {
-                PluginLog.Warning(ex, "Pulse Failed!");
+                Svc.Log.Warning(ex, "Pulse Failed!");
             }
             finally { started = false; }
             started = false;

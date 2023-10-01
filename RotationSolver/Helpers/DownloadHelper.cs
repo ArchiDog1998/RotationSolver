@@ -1,4 +1,5 @@
 ﻿using Dalamud.Logging;
+using ECommons.DalamudServices;
 using RotationSolver.UI;
 using System.Text;
 
@@ -31,7 +32,7 @@ public static class DownloadHelper
         }
         catch (Exception ex)
         {
-            PluginLog.Log(ex, "Failed to load downloading List.");
+            Svc.Log.Information(ex, "Failed to load downloading List.");
             return default;
         }
     }

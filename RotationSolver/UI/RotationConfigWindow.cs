@@ -100,7 +100,7 @@ public partial class RotationConfigWindow : Window
                 }
                 catch (Exception ex)
                 {
-                    PluginLog.Warning(ex, "Something wrong with sideBar");
+                    Svc.Log.Warning(ex, "Something wrong with sideBar");
                 }
 
                 ImGui.TableNextColumn();
@@ -111,7 +111,7 @@ public partial class RotationConfigWindow : Window
                 }
                 catch (Exception ex)
                 {
-                    PluginLog.Warning(ex, "Something wrong with body");
+                    Svc.Log.Warning(ex, "Something wrong with body");
                 }
 
                 ImGui.EndTable();
@@ -119,7 +119,7 @@ public partial class RotationConfigWindow : Window
         }
         catch(Exception ex)
         {
-            PluginLog.Warning(ex, "Something wrong with config window.");
+            Svc.Log.Warning(ex, "Something wrong with config window.");
         }
     }
 
@@ -245,7 +245,7 @@ public partial class RotationConfigWindow : Window
         using var stream = typeof(RotationConfigWindow).Assembly.GetManifestResourceStream(url);
         if (stream == null)
         {
-            PluginLog.Warning($"Failed to load the pic: {url} when getting the stream from assembly.");
+            Svc.Log.Warning($"Failed to load the pic: {url} when getting the stream from assembly.");
             _textureWrapList[url] = null;
             return false;
         }
@@ -255,7 +255,7 @@ public partial class RotationConfigWindow : Window
         texture = Svc.PluginInterface.UiBuilder.LoadImage(memory.ToArray());
         if(texture == null)
         {
-            PluginLog.Warning($"Failed to load the pic: {url} when convert bytes to image.");
+            Svc.Log.Warning($"Failed to load the pic: {url} when convert bytes to image.");
             _textureWrapList[url] = null;
             return false;
         }

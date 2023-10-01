@@ -34,7 +34,7 @@ public static class Watcher
 
     private static void UpdateRTTDetour(dynamic obj)
     {
-        PluginLog.LogDebug($"LastRTT:{obj.LastRTT}");
+        Svc.Log.Debug($"LastRTT:{obj.LastRTT}");
         DataCenter.RTT = (long)obj.LastRTT / 1000f;
     }
 

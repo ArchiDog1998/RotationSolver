@@ -72,18 +72,18 @@ internal static class PreviewUpdater
         });
     }
 
-    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotBarSlot* hot, uint actionID)
+    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotBarSlot? hot, uint actionID)
     {
-        if ((IntPtr)hot != IntPtr.Zero)
+        if (hot.HasValue)
         {
-            if (hot->IconTypeA != HotbarSlotType.CraftAction && hot->IconTypeA != HotbarSlotType.Action) return false;
-            if (hot->IconTypeB != HotbarSlotType.CraftAction && hot->IconTypeB != HotbarSlotType.Action) return false;
+            if (hot.Value.IconTypeA != HotbarSlotType.CraftAction && hot.Value.IconTypeA != HotbarSlotType.Action) return false;
+            if (hot.Value.IconTypeB != HotbarSlotType.CraftAction && hot.Value.IconTypeB != HotbarSlotType.Action) return false;
         }
 
         return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
     }
 
-    unsafe delegate bool ActionBarAction(ActionBarSlot bar, HotBarSlot* hot, uint highLightID);
+    unsafe delegate bool ActionBarAction(ActionBarSlot bar, HotBarSlot? hot, uint highLightID);
     unsafe delegate bool ActionBarPredicate(ActionBarSlot bar, HotBarSlot* hot);
     private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
     {
@@ -96,13 +96,13 @@ internal static class PreviewUpdater
         {
             if (intPtr == IntPtr.Zero) continue;
             var actionBar = (AddonActionBarBase*)intPtr;
-            var hotBar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBar[hotBarIndex];
+            var hotBar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBarsSpan[hotBarIndex];
             var slotIndex = 0;
             foreach (var slot in actionBar->Slot)
             {
                 var highLightId = 0x53550000 + index;
 
-                if (doingSomething(slot, hotBarIndex > 9 ? null: hotBar->Slot[slotIndex], (uint)highLightId))
+                if (doingSomething(slot, hotBarIndex > 9 ? null: hotBar.SlotsSpan[slotIndex], (uint)highLightId))
                 {
                     var iconAddon = slot.Icon;
                     if ((IntPtr)iconAddon == IntPtr.Zero) continue;

@@ -65,7 +65,7 @@ internal class SocialUpdater
         Svc.DutyState.DutyWiped += DutyState_DutyWiped;
         Svc.DutyState.DutyCompleted += DutyState_DutyCompleted;
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
-        ClientState_TerritoryChanged(null, Svc.ClientState.TerritoryType);
+        ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);
 
         HighEndDuties = Service.GetSheet<TerritoryType>()
             .Where(t => t?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
@@ -81,11 +81,11 @@ internal class SocialUpdater
         Service.Config.GlobalConfig.DutyEnd.AddMacro();
     }
 
-    static void ClientState_TerritoryChanged(object sender, ushort e)
+    static void ClientState_TerritoryChanged(ushort id)
     {
         DataCenter.ResetAllLastActions();
 
-        var territory = Service.GetSheet<TerritoryType>().GetRow(e);
+        var territory = Service.GetSheet<TerritoryType>().GetRow(id);
         if (territory?.ContentFinderCondition?.Value?.RowId != 0)
         {
             _canSaying = true;
@@ -101,7 +101,7 @@ internal class SocialUpdater
         }
         catch(Exception ex)
         {
-            PluginLog.Error(ex, "Failed on Territory changed.");
+            Svc.Log.Error(ex, "Failed on Territory changed.");
         }
     }
 
@@ -192,7 +192,7 @@ internal class SocialUpdater
             Svc.Targets.Target = entity.player;
             Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
-            Svc.Chat.PrintChat(new Dalamud.Game.Text.XivChatEntry()
+            Svc.Chat.Print(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = entity.GetMessage(),
                 Type = Dalamud.Game.Text.XivChatType.Notice,
@@ -219,7 +219,7 @@ internal class SocialUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Warning(ex, "Failed to read the player's name and world.");
+            Svc.Log.Warning(ex, "Failed to read the player's name and world.");
             return string.Empty;
         }
     }

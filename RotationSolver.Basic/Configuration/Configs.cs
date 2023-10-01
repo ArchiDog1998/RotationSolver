@@ -11,7 +11,7 @@ public class PluginConfig : IPluginConfiguration
 {
     public static PluginConfig Create()
     {
-        PluginLog.Warning("You created a new configuration!");
+        Svc.Log.Warning("You created a new configuration!");
         var result = new PluginConfig();
         result.SetValue(Job.WAR, JobConfigInt.HostileType, 0);
         result.SetValue(Job.DRK, JobConfigInt.HostileType, 0);
@@ -131,7 +131,7 @@ public class PluginConfig : IPluginConfiguration
     public void Save()
     {
 #if DEBUG
-        PluginLog.Information("Saved configurations.");
+        Svc.Log.Information("Saved configurations.");
 #endif
         File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,
             JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings()
