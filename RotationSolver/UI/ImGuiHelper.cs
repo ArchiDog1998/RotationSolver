@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using ImGuiScene;
@@ -297,7 +298,8 @@ internal static class ImGuiHelper
     #region PopUp
     public static void DrawHotKeysPopup(string key, string command, params (string name, Action action, string[] keys)[] pairs)
     {
-        if (ImGui.BeginPopup(key))
+        using var popup = ImRaii.Popup(key);
+        if (popup)
         {
             if (ImGui.BeginTable(key, 2, ImGuiTableFlags.BordersOuter))
             {
@@ -314,8 +316,6 @@ internal static class ImGuiHelper
                 }
                 ImGui.EndTable();
             }
-
-            ImGui.EndPopup();
         }
     }
     public static void PrepareGroup(string key, string command, Action reset)

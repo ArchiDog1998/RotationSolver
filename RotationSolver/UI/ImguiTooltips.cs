@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
 
 namespace RotationSolver.UI;
 
@@ -34,7 +35,8 @@ internal static class ImguiTooltips
         if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowTooltips)) return;
 
         ImGui.SetNextWindowBgAlpha(1);
-        ImGui.PushStyleColor(ImGuiCol.BorderShadow, ImGuiColors.DalamudWhite);
+
+        using var color = ImRaii.PushColor(ImGuiCol.BorderShadow, ImGuiColors.DalamudWhite);
 
         ImGui.SetNextWindowSizeConstraints(new Vector2(150, 0) * ImGuiHelpers.GlobalScale, new Vector2(1200, 1500) * ImGuiHelpers.GlobalScale);
         ImGui.SetWindowPos(TOOLTIP_ID, ImGui.GetIO().MousePos);
@@ -44,7 +46,5 @@ internal static class ImguiTooltips
             act();
             ImGui.End();
         }
-
-        ImGui.PopStyleColor();
     }
 }

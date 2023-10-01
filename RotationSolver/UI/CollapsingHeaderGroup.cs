@@ -1,4 +1,5 @@
-﻿using Dalamud.Logging;
+﻿using Dalamud.Interface.Utility.Raii;
+using Dalamud.Logging;
 using ECommons.DalamudServices;
 
 namespace RotationSolver.UI;
@@ -53,9 +54,12 @@ internal class CollapsingHeaderGroup
                 ImGui.Spacing();
                 ImGui.Separator();
                 var selected = index == _openedIndex;
-                ImGui.PushFont(ImGuiHelper.GetFont(HeaderSize));
-                var changed = ImGui.Selectable(name, selected, ImGuiSelectableFlags.DontClosePopups);
-                ImGui.PopFont();
+                var changed = false;
+                using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(HeaderSize)))
+                {
+                    changed = ImGui.Selectable(name, selected, ImGuiSelectableFlags.DontClosePopups);
+                }
+
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);

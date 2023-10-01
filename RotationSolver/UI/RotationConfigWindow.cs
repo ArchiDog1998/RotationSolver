@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
 using Dalamud.Utility;
@@ -48,18 +49,6 @@ public partial class RotationConfigWindow : Window
         RespectCloseHotkey = true;
     }
 
-    public override void PreDraw()
-    {
-        ImGui.PushStyleVar(ImGuiStyleVar.SelectableTextAlign, new Vector2(0.5f, 0.5f));
-        base.PreDraw();
-    }
-
-    public override void PostDraw()
-    {
-        ImGui.PopStyleVar();
-        base.PostDraw();
-    }
-
     public override void OnClose()
     {
         Service.Config.Save();
@@ -69,6 +58,7 @@ public partial class RotationConfigWindow : Window
 
     public override void Draw()
     {
+        using var style = ImRaii.PushStyle(ImGuiStyleVar.SelectableTextAlign, new Vector2(0.5f, 0.5f));
         try
         {
             var leftTop = ImGui.GetWindowPos() + ImGui.GetCursorPos();
@@ -83,38 +73,38 @@ public partial class RotationConfigWindow : Window
                     str += "Move away! Don't crash! ";
                 }
 
-                ImGui.PushFont(ImGuiHelper.GetFont(24));
-                ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+                using var font = ImRaii.PushFont(ImGuiHelper.GetFont(24));
+                using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
                 ImGui.TextWrapped(str);
-                ImGui.PopStyleColor();
-                ImGui.PopFont();
             }
-            else if (ImGui.BeginTable("Rotation Config Table", 2, ImGuiTableFlags.Resizable))
+            else
             {
-                ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * _scale);
-                ImGui.TableNextColumn();
-
-                try
+                using var table = ImRaii.Table("Rotation Config Table", 2, ImGuiTableFlags.Resizable);
+                if (table)
                 {
-                    DrawSideBar();
-                }
-                catch (Exception ex)
-                {
-                    Svc.Log.Warning(ex, "Something wrong with sideBar");
-                }
+                    ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * _scale);
+                    ImGui.TableNextColumn();
 
-                ImGui.TableNextColumn();
+                    try
+                    {
+                        DrawSideBar();
+                    }
+                    catch (Exception ex)
+                    {
+                        Svc.Log.Warning(ex, "Something wrong with sideBar");
+                    }
 
-                try
-                {
-                    DrawBody();
-                }
-                catch (Exception ex)
-                {
-                    Svc.Log.Warning(ex, "Something wrong with body");
-                }
+                    ImGui.TableNextColumn();
 
-                ImGui.EndTable();
+                    try
+                    {
+                        DrawBody();
+                    }
+                    catch (Exception ex)
+                    {
+                        Svc.Log.Warning(ex, "Something wrong with body");
+                    }
+                }
             }
         }
         catch(Exception ex)
@@ -125,7 +115,8 @@ public partial class RotationConfigWindow : Window
 
     private void DrawSideBar()
     {
-        if (BeginChild("Rotation Solver Side bar", -Vector2.One, false, ImGuiWindowFlags.NoScrollbar))
+        using var child = ImRaii.Child("Rotation Solver Side bar", -Vector2.One, false, ImGuiWindowFlags.NoScrollbar);
+        if (child)
         {
             var wholeWidth = ImGui.GetWindowSize().X;
 
@@ -150,7 +141,8 @@ public partial class RotationConfigWindow : Window
                 {
                     ImGuiHelper.DrawItemMiddle(() =>
                     {
-                        if (ImGui.BeginPopup("Searching Popup"))
+                        using var popup = ImRaii.Popup("Searching Popup");
+                        if (popup)
                         {
                             ImGui.SetNextItemWidth(200 * _scale);
                             SearchingBox();
@@ -158,7 +150,6 @@ public partial class RotationConfigWindow : Window
                             {
                                 ImGui.CloseCurrentPopup();
                             }
-                            ImGui.EndPopup();
                         }
 
                         var cursor = ImGui.GetCursorPos();
@@ -230,8 +221,6 @@ public partial class RotationConfigWindow : Window
                     Util.OpenLink("https://ko-fi.com/B0B0IN5DX");
                 }
             }
-
-            ImGui.EndChild();
         }
     }
 
@@ -330,7 +319,7 @@ public partial class RotationConfigWindow : Window
 
                     ImGui.SameLine();
 
-                    ImGui.BeginGroup();
+                    using var group = ImRaii.Group();
 
                     DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
                     ImGui.TextDisabled(slash);
@@ -342,7 +331,7 @@ public partial class RotationConfigWindow : Window
                         ImGui.SameLine();
                     }
                     ImGui.Text(rotation.GameVersion);
-                    ImGui.EndGroup();
+
                 }, wholeWidth, horizonalWholeWidth);
             }
         }
@@ -364,28 +353,32 @@ public partial class RotationConfigWindow : Window
     private static void DrawRotationCombo(float comboSize, ICustomRotation[] rotations, ICustomRotation rotation, string gameVersion)
     {
         ImGui.SetNextItemWidth(comboSize);
-        ImGui.PushStyleColor(ImGuiCol.Text, rotation.GetColor());
         const string popUp = "Rotation Solver Select Rotation";
-        if (ImGui.Selectable(rotation.RotationName + "##RotationName:" + rotation.Name))
-        {
-            if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
-        }
-        ImGui.PopStyleColor();
 
-        if (ImGui.BeginPopup(popUp))
+        using (var color = ImRaii.PushColor(ImGuiCol.Text, rotation.GetColor()))
         {
-            foreach (var r in rotations)
+            if (ImGui.Selectable(rotation.RotationName + "##RotationName:" + rotation.Name))
             {
-                ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
-                if (ImGui.Selectable(r.RotationName))
-                {
-                    Service.Config.GetJobConfig(Job).RotationChoice = r.GetType().FullName;
-                    Service.Config.Save();
-                }
-                ImguiTooltips.HoveredTooltip(r.Description);
-                ImGui.PopStyleColor();
+                if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
             }
-            ImGui.EndPopup();
+        }
+
+        using (var popup = ImRaii.Popup(popUp))
+        {
+            if (popup)
+            {
+                foreach (var r in rotations)
+                {
+                    ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
+                    if (ImGui.Selectable(r.RotationName))
+                    {
+                        Service.Config.GetJobConfig(Job).RotationChoice = r.GetType().FullName;
+                        Service.Config.Save();
+                    }
+                    ImguiTooltips.HoveredTooltip(r.Description);
+                    ImGui.PopStyleColor();
+                }
+            }
         }
 
         var warning = gameVersion + rotation.GameVersion;
@@ -401,15 +394,17 @@ public partial class RotationConfigWindow : Window
     private void DrawBody()
     {
         ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * 8 * _scale);
-        if (BeginChild("Rotation Solver Body", -Vector2.One))
+        using var child = ImRaii.Child("Rotation Solver Body", -Vector2.One);
+        if (child)
         {
             if (_searchResults != null && _searchResults.Any())
             {
-                ImGui.PushFont(ImGuiHelper.GetFont(18));
-                ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-                ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Search_Result);
-                ImGui.PopStyleColor();
-                ImGui.PopFont();
+                using(var font = ImRaii.PushFont(ImGuiHelper.GetFont(18)))
+                {
+                    using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+                    ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Search_Result);
+                }
+
                 ImGui.Spacing();
 
                 foreach (var searchable in _searchResults)
@@ -466,8 +461,6 @@ public partial class RotationConfigWindow : Window
                         break;
                 }
             }
-
-            ImGui.EndChild();
         }
     }
 
@@ -481,19 +474,21 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawAbout()
     {
-        ImGui.PushFont(ImGuiHelper.GetFont(18));
-        ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
-        ImGui.PopStyleColor();
-        ImGui.PopFont();
+        using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(18)))
+        {
+            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
+        }
+
         ImGui.Spacing();
 
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Description);
 
         ImGui.Spacing();
-        ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudOrange));
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Warning);
-        ImGui.PopStyleColor();
+        using (var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudOrange)))
+        {
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Warning);
+        }
 
         var width = ImGui.GetWindowWidth();
         if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
@@ -504,7 +499,7 @@ public partial class RotationConfigWindow : Window
         var clickingCount = OtherConfiguration.RotationSolverRecord.ClickingCount;
         if (clickingCount > 0)
         {
-            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.2f, 0.6f, 0.95f, 1));
+            using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.6f, 0.95f, 1));
             var countStr = string.Format(LocalizationManager.RightLang.ConfigWindow_About_ClickingCount,
                 clickingCount);
             ImGuiHelper.DrawItemMiddle(() =>
@@ -524,8 +519,6 @@ public partial class RotationConfigWindow : Window
                     break;
                 }
             }
-
-            ImGui.PopStyleColor();
         }
 
         _aboutHeaders.Draw();
@@ -540,7 +533,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawAboutMacros()
     {
-        ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
+        using var style = ImRaii.PushStyle(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
         StateCommandType.Auto.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
@@ -575,8 +568,6 @@ public partial class RotationConfigWindow : Window
         SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
         SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
-
-        ImGui.PopStyleVar();
     }
 
     private static void DrawAboutCompatibility()
@@ -589,9 +580,10 @@ public partial class RotationConfigWindow : Window
 
         var iconSize = 40 * _scale;
 
-        if (ImGui.BeginTable("Incompatible plugin", 4, ImGuiTableFlags.BordersInner
+        using var table = ImRaii.Table("Incompatible plugin", 4, ImGuiTableFlags.BordersInner
         | ImGuiTableFlags.Resizable
-        | ImGuiTableFlags.SizingStretchProp))
+        | ImGuiTableFlags.SizingStretchProp);
+        if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
@@ -649,9 +641,7 @@ public partial class RotationConfigWindow : Window
                     ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Crash);
                 }
             }
-            ImGui.EndTable();
         }
-
     }
 
     private static void DrawAboutLinks()
@@ -677,7 +667,6 @@ public partial class RotationConfigWindow : Window
                 Process.Start("explorer.exe", Svc.PluginInterface.ConfigDirectory.FullName);
             }
         }, width, textWidth);
-
     }
     #endregion
 
@@ -690,9 +679,8 @@ public partial class RotationConfigWindow : Window
         var desc = rotation.Description;
         if (!string.IsNullOrEmpty(desc))
         {
-            ImGui.PushFont(ImGuiHelper.GetFont(15));
+            using var font = ImRaii.PushFont(ImGuiHelper.GetFont(15));
             ImGuiEx.TextWrappedCopy(desc);
-            ImGui.PopFont();
         }
 
         var wholeWidth = ImGui.GetWindowWidth();
@@ -703,9 +691,9 @@ public partial class RotationConfigWindow : Window
         {
             var author = info.Author;
             if (string.IsNullOrEmpty(author)) author = "Author";
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DPSRed);
+
+            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DPSRed);
             ImGui.TextWrapped(string.Format(rotation.WhyNotValid, author));
-            ImGui.PopStyleColor();
         }
 
         if (!string.IsNullOrEmpty(info.DonateLink))
@@ -745,23 +733,28 @@ public partial class RotationConfigWindow : Window
         var spacing = ImGui.GetStyle().ItemSpacing;
         ImGui.GetStyle().ItemSpacing = Vector2.Zero;
 
-        ImGui.PushFont(ImGuiHelper.GetFont(16));
-        ImGui.PushStyleColor(ImGuiCol.Text, RatingColors[(int)(ratio1 * count)]);
-        ImGui.Text($"{value1:F2}");
-        var size = ImGui.GetItemRectSize();
-        ImGui.PopStyleColor();
+        var size = Vector2.Zero;
+        using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(16)))
+        {
+            using (var color = ImRaii.PushColor(ImGuiCol.Text, RatingColors[(int)(ratio1 * count)]))
+            {
+                ImGui.Text($"{value1:F2}");
+            }
+            size += ImGui.GetItemRectSize();
 
-        ImGui.SameLine();
-        ImGui.Text("/");
-        size.X += ImGui.GetItemRectSize().X;
+            ImGui.SameLine();
+            ImGui.Text("/");
+            size.X += ImGui.GetItemRectSize().X;
 
-        ImGui.SameLine();
-        ImGui.PushStyleColor(ImGuiCol.Text, RatingColors[(int)(ratio2 * count)]);
-        ImGui.Text($"{value2}  ");
-        size.X += ImGui.GetItemRectSize().X;
-        ImGui.PopStyleColor();
+            ImGui.SameLine();
 
-        ImGui.PopFont();
+            using (var color = ImRaii.PushColor(ImGuiCol.Text, RatingColors[(int)(ratio2 * count)]))
+            {
+                ImGui.Text($"{value2}  ");
+            }
+
+            size.X += ImGui.GetItemRectSize().X;
+        }
         ImGui.GetStyle().ItemSpacing = spacing;
 
         var radius = size.Y * 0.2f;
@@ -845,65 +838,67 @@ public partial class RotationConfigWindow : Window
             attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));
         }
 
-        if (ImGui.BeginTable("Rotation Description", 2, ImGuiTableFlags.Borders
+        using (var table = ImRaii.Table("Rotation Description", 2, ImGuiTableFlags.Borders
             | ImGuiTableFlags.Resizable
             | ImGuiTableFlags.SizingStretchProp))
         {
-            foreach (var a in RotationDescAttribute.Merge(attrs))
+            if (table)
             {
-                var attr = RotationDescAttribute.MergeToOne(a);
-                if (attr == null) continue;
-
-                var allActions = attr.Actions.Select(i => rotation.AllBaseActions
-                .FirstOrDefault(a => a.ID == (uint)i))
-                .Where(i => i != null);
-
-                bool hasDesc = !string.IsNullOrEmpty(attr.Description);
-
-                if (!hasDesc && !allActions.Any()) continue;
-
-                ImGui.TableNextRow();
-                ImGui.TableNextColumn();
-
-                if(IconSet.GetTexture(attr.IconID, out var image)) ImGui.Image(image.ImGuiHandle, Vector2.One * DESC_SIZE * _scale);
-
-                ImGui.SameLine();
-                var isOnCommand = attr.IsOnCommand;
-                if (isOnCommand) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-                ImGui.Text(" " + attr.Type.ToName());
-                if (isOnCommand) ImGui.PopStyleColor();
-
-                ImGui.TableNextColumn();
-
-                if (hasDesc)
+                foreach (var a in RotationDescAttribute.Merge(attrs))
                 {
-                    ImGui.Text(attr.Description);
-                }
+                    var attr = RotationDescAttribute.MergeToOne(a);
+                    if (attr == null) continue;
 
-                bool notStart = false;
-                var size = DESC_SIZE * _scale;
-                var y = ImGui.GetCursorPosY() + size * 4 / 82;
-                foreach (var item in allActions)
-                {
-                    if (item == null) continue;
+                    var allActions = attr.Actions.Select(i => rotation.AllBaseActions
+                    .FirstOrDefault(a => a.ID == (uint)i))
+                    .Where(i => i != null);
 
-                    if (notStart)
+                    bool hasDesc = !string.IsNullOrEmpty(attr.Description);
+
+                    if (!hasDesc && !allActions.Any()) continue;
+
+                    ImGui.TableNextRow();
+                    ImGui.TableNextColumn();
+
+                    if (IconSet.GetTexture(attr.IconID, out var image)) ImGui.Image(image.ImGuiHandle, Vector2.One * DESC_SIZE * _scale);
+
+                    ImGui.SameLine();
+                    var isOnCommand = attr.IsOnCommand;
+                    if (isOnCommand) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+                    ImGui.Text(" " + attr.Type.ToName());
+                    if (isOnCommand) ImGui.PopStyleColor();
+
+                    ImGui.TableNextColumn();
+
+                    if (hasDesc)
                     {
-                        ImGui.SameLine();
+                        ImGui.Text(attr.Description);
                     }
 
-                    if (item.GetTexture(out var texture))
+                    bool notStart = false;
+                    var size = DESC_SIZE * _scale;
+                    var y = ImGui.GetCursorPosY() + size * 4 / 82;
+                    foreach (var item in allActions)
                     {
-                        ImGui.SetCursorPosY(y);
-                        var cursor = ImGui.GetCursorPos();
-                        ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size);
-                        ImGuiHelper.DrawActionOverlay(cursor, size, 1);
-                        ImguiTooltips.HoveredTooltip(item.Name);
+                        if (item == null) continue;
+
+                        if (notStart)
+                        {
+                            ImGui.SameLine();
+                        }
+
+                        if (item.GetTexture(out var texture))
+                        {
+                            ImGui.SetCursorPosY(y);
+                            var cursor = ImGui.GetCursorPos();
+                            ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size);
+                            ImGuiHelper.DrawActionOverlay(cursor, size, 1);
+                            ImguiTooltips.HoveredTooltip(item.Name);
+                        }
+                        notStart = true;
                     }
-                    notStart = true;
                 }
             }
-            ImGui.EndTable();
         }
 
         var links = type.GetCustomAttributes<LinkDescriptionAttribute>();
@@ -1080,19 +1075,22 @@ public partial class RotationConfigWindow : Window
 
             ImGuiHelper.DrawItemMiddle(() =>
             {
-                ImGui.BeginGroup();
-                if (ImGui.Button(info.Name))
+                using var group = ImRaii.Group();
+                if (group)
                 {
-                    Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
+                    if (ImGui.Button(info.Name))
+                    {
+                        Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
+                    }
+
+                    var version = assembly.GetName().Version;
+                    if (version != null)
+                    {
+                        ImGui.Text(" v " + version.ToString());
+                    }
+                    ImGui.Text(" - " + info.Author);
                 }
 
-                var version = assembly.GetName().Version;
-                if (version != null)
-                {
-                    ImGui.Text(" v " + version.ToString());
-                }
-                ImGui.Text(" - " + info.Author);
-                ImGui.EndGroup();
             }, wholeWidth, _groupWidth);
 
             _groupWidth = ImGui.GetItemRectSize().X;
@@ -1107,7 +1105,9 @@ public partial class RotationConfigWindow : Window
     {
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_Description);
 
-        if (ImGui.BeginTable("Rotation Solver Actions", 2, ImGuiTableFlags.Resizable))
+        using var table = ImRaii.Table("Rotation Solver Actions", 2, ImGuiTableFlags.Resizable);
+
+        if (table)
         {
             ImGui.TableSetupColumn("Action Column", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 2);
             ImGui.TableNextColumn();
@@ -1285,8 +1285,6 @@ public partial class RotationConfigWindow : Window
             {
                 _sequencerList.Draw();
             }
-
-            ImGui.EndTable();
         }
     }
 
@@ -1365,10 +1363,11 @@ public partial class RotationConfigWindow : Window
             .SelectMany(g => g.Rotations)
             .GroupBy(r => r.GetType().Assembly);
 
-
-        if (ImGui.BeginTable("Rotation Solver AssemblyTable", 3, ImGuiTableFlags.BordersInner
+        using var table = ImRaii.Table("Rotation Solver AssemblyTable", 3, ImGuiTableFlags.BordersInner
             | ImGuiTableFlags.Resizable
-            | ImGuiTableFlags.SizingStretchProp))
+            | ImGuiTableFlags.SizingStretchProp);
+
+        if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
@@ -1430,7 +1429,6 @@ public partial class RotationConfigWindow : Window
                     Util.OpenLink(info.DonateLink);
                 }
             }
-            ImGui.EndTable();
         }
     }
 
@@ -1657,7 +1655,8 @@ public partial class RotationConfigWindow : Window
         ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
         ImGui.InputTextWithHint("##Searching the action", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref _statusSearching, 128);
 
-        if (ImGui.BeginTable("Rotation Solver List Statuses", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
+        using var table = ImRaii.Table("Rotation Solver List Statuses", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+        if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
@@ -1680,8 +1679,6 @@ public partial class RotationConfigWindow : Window
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatusDesc);
 
             DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, AllDispelStatus);
-
-            ImGui.EndTable();
         }
     }
 
@@ -1747,14 +1744,16 @@ public partial class RotationConfigWindow : Window
 
     internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100, float size = 32)
     {
-        if (ImGui.BeginPopup(popupId))
+        using var popup = ImRaii.Popup(popupId);
+        if (popup)
         {
             ImGui.SetNextItemWidth(200 * _scale);
             ImGui.InputTextWithHint("##Searching the status", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref searching, 128);
 
             ImGui.Spacing();
 
-            if (ImGui.BeginChild("Rotation Solver Add Status", new Vector2(-1, 400 * _scale)))
+            using var child = ImRaii.Child("Rotation Solver Add Status", new Vector2(-1, 400 * _scale));
+            if (child)
             {
                 var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * _scale + ImGui.GetStyle().ItemSpacing.X)));
                 var index = 0;
@@ -1776,10 +1775,7 @@ public partial class RotationConfigWindow : Window
                         ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
                     }
                 }
-                ImGui.EndChild();
             }
-
-            ImGui.EndPopup();
         }
     }
 
@@ -1787,12 +1783,14 @@ public partial class RotationConfigWindow : Window
     {
         new CheckBoxSearchPlugin(PluginConfigBool.RecordCastingArea),
     };
+
     private static void DrawListActions()
     {
         ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
         ImGui.InputTextWithHint("##Searching the action", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
 
-        if (ImGui.BeginTable("Rotation Solver List Actions", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
+        using var table = ImRaii.Table("Rotation Solver List Actions", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+        if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
@@ -1817,8 +1815,6 @@ public partial class RotationConfigWindow : Window
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingAreaDesc);
 
             DrawActionsList(nameof(OtherConfiguration.HostileCastingArea), OtherConfiguration.HostileCastingArea);
-
-            ImGui.EndTable();
         }
     }
 
@@ -1829,14 +1825,16 @@ public partial class RotationConfigWindow : Window
 
         var popupId = "Rotation Solver Action Popup" + name;
 
-        if (ImGui.BeginPopup(popupId))
+        using var popup = ImRaii.Popup(popupId);
+        if (popup)
         {
             ImGui.SetNextItemWidth(200 * _scale);
             ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
 
             ImGui.Spacing();
 
-            if (ImGui.BeginChild("Rotation Solver Add action", new Vector2(-1, 400 * _scale)))
+            using var child = ImRaii.Child("Rotation Solver Add action", new Vector2(-1, 400 * _scale));
+            if (child)
             {
                 foreach (var action in AllActions.OrderByDescending(s =>Similarity(s.Name  + " " + s.RowId.ToString(), _actionSearching)))
                 {
@@ -1852,10 +1850,7 @@ public partial class RotationConfigWindow : Window
                         }
                     }
                 }
-                ImGui.EndChild();
             }
-
-            ImGui.EndPopup();
         }
 
 
@@ -1896,34 +1891,35 @@ public partial class RotationConfigWindow : Window
 
         var territoryId = Svc.ClientState.TerritoryType;
 
-        ImGui.PushFont(ImGuiHelper.GetFont(21));
-        ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-        const int iconSize = 32;
-        var territory = Service.GetSheet<TerritoryType>().GetRow(territoryId);
-        if (territory == null) return;
-        var contentFinder = territory?.ContentFinderCondition?.Value;
-        var territoryName = territory?.PlaceName?.Value?.Name ?? string.Empty;
-        if(contentFinder != null && !string.IsNullOrEmpty(contentFinder.Name))
+        using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(21)))
         {
-            territoryName += $" ({contentFinder.Name})";
-        }
-        var icon = territory?.ContentFinderCondition?.Value?.ContentType?.Value?.Icon ?? 23;
-        if (icon == 0) icon = 23;
-        var getIcon = IconSet.GetTexture(icon, out var texture);
-        ImGuiHelper.DrawItemMiddle(() =>
-        {
-            if (getIcon)
+            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+
+            const int iconSize = 32;
+            var territory = Service.GetSheet<TerritoryType>().GetRow(territoryId);
+            if (territory == null) return;
+            var contentFinder = territory?.ContentFinderCondition?.Value;
+            var territoryName = territory?.PlaceName?.Value?.Name ?? string.Empty;
+            if (contentFinder != null && !string.IsNullOrEmpty(contentFinder.Name))
             {
-                ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * _scale);
-                ImGui.SameLine();
+                territoryName += $" ({contentFinder.Name})";
             }
-            ImGui.Text(territoryName);
-        }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
+            var icon = territory?.ContentFinderCondition?.Value?.ContentType?.Value?.Icon ?? 23;
+            if (icon == 0) icon = 23;
+            var getIcon = IconSet.GetTexture(icon, out var texture);
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                if (getIcon)
+                {
+                    ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * _scale);
+                    ImGui.SameLine();
+                }
+                ImGui.Text(territoryName);
+            }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
+        }
 
-        ImGui.PopStyleColor();
-        ImGui.PopFont();
-
-        if (ImGui.BeginTable("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame))
+        using var table = ImRaii.Table("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+        if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
@@ -2064,8 +2060,6 @@ public partial class RotationConfigWindow : Window
                 OtherConfiguration.BeneficialPositions[territoryId] = list.ToArray();
                 OtherConfiguration.SaveBeneficialPositions();
             }
-
-            ImGui.EndTable();
         }
     }
     #endregion
