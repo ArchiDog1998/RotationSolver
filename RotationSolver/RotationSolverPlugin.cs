@@ -81,9 +81,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Watcher.Enable();
         OtherConfiguration.Init();
         _dis.Add(new LocalizationManager());
-#if DEBUG
-        LocalizationManager.ExportLocalization();
-#endif
         ChangeUITranslation();
 
         OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>

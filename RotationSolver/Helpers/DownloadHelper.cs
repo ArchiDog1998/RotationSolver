@@ -27,8 +27,8 @@ public static class DownloadHelper
         using var client = new HttpClient();
         try
         {
-            var bts = await client.GetByteArrayAsync(url);
-            return JsonConvert.DeserializeObject<T>(Encoding.Default.GetString(bts));
+            var str = await client.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<T>(str);
         }
         catch (Exception ex)
         {

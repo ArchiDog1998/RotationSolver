@@ -10,26 +10,15 @@ internal class LocalizationManager : IDisposable
     private readonly Dictionary<string, Strings> _translations = new();
     public LocalizationManager()
     {
-        var assembly = Assembly.GetCallingAssembly();
-
-        foreach (var lang in Dalamud.Localization.ApplicableLangCodes)
-        {
-            ReadFile(lang, assembly);
-        }
-
         SetLanguage(Svc.PluginInterface.UiLanguage);
         Svc.PluginInterface.LanguageChanged += OnLanguageChange;
+#if DEBUG
+        ExportLocalization();
+#endif
+
     }
 
-    private void ReadFile(string lang, Assembly assembly)
-    {
-        Stream manifestResourceStream = assembly.GetManifestResourceStream("RotationSolver.Localization." + lang + ".json");
-        if (manifestResourceStream == null) return;
-        using StreamReader streamReader = new(manifestResourceStream);
-        _translations[lang] = JsonConvert.DeserializeObject<Strings>(streamReader.ReadToEnd());
-    }
-
-    private void SetLanguage(string lang)
+    private async void SetLanguage(string lang)
     {
         if (_translations.TryGetValue(lang, out var value))
         {
@@ -37,14 +26,29 @@ internal class LocalizationManager : IDisposable
         }
         else
         {
-            RightLang = new Strings();
+            try
+            {
+                var url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/RotationSolver/Localization/{lang}.json";
+                using var client = new HttpClient();
+                RightLang = _translations[lang] = JsonConvert.DeserializeObject<Strings>(await client.GetStringAsync(url));
+            }
+            catch (HttpRequestException ex) when (ex?.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                Svc.Log.Information(ex, $"No language {lang}");
+                RightLang = new Strings();
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Warning(ex, $"Failed to download the language {lang}");
+                RightLang = new Strings();
+            }
         }
 
         RotationSolverPlugin.ChangeUITranslation();
     }
 
 #if DEBUG
-    public static void ExportLocalization()
+    private static void ExportLocalization()
     {
         var directory = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\RotationSolver\Localization";
         if (!Directory.Exists(directory)) return;
