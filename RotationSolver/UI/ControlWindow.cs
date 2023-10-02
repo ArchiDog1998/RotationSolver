@@ -2,7 +2,6 @@
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
-using ImGuiScene;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
