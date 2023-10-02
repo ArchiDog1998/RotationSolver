@@ -64,12 +64,12 @@ internal class LocalizationManager : IDisposable
     {
         try
         {
-            PluginLog.Information($"Loading Localization for {languageCode}");
+            Svc.Log.Information($"Loading Localization for {languageCode}");
             SetLanguage(languageCode);
         }
         catch (Exception ex)
         {
-            PluginLog.Error(ex, "Unable to Load Localization");
+            Svc.Log.Error(ex, "Unable to Load Localization");
         }
     }
 }

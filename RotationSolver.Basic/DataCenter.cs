@@ -136,7 +136,7 @@ internal static class DataCenter
             }
             catch (Exception ex)
             {
-                PluginLog.Error(ex.StackTrace);
+                Svc.Log.Error(ex.StackTrace);
             }
             return 0;
         }

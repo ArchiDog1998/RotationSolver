@@ -547,7 +547,7 @@ public partial class BaseAction
                 return dis <= EffectRange && dis >= 8;
         }
 
-        PluginLog.LogDebug(Name + "'s CastType is not valid! The value is " + _action.CastType.ToString());
+        Svc.Log.Debug(Name + "'s CastType is not valid! The value is " + _action.CastType.ToString());
         return false;
     }
     #endregion

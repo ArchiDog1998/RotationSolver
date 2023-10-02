@@ -1,4 +1,5 @@
-﻿using Dalamud.Logging;
+﻿using Dalamud.Interface.Utility;
+using Dalamud.Logging;
 using ECommons.GameHelpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;

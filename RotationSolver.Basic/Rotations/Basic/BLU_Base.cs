@@ -155,7 +155,7 @@ public abstract class BLU_Base : CustomRotation
                 }
                 catch (Exception ex)
                 {
-                    PluginLog.Warning(ex, "Failed for checking target status.");
+                    Svc.Log.Warning(ex, "Failed for checking target status.");
                 }
                 return true;
             }

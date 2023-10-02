@@ -58,7 +58,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         }
         catch(Exception ex)
         {
-            PluginLog.Warning(ex, "Failed to load config");
+            Svc.Log.Warning(ex, "Failed to load config");
             Service.Config = PluginConfig.Create(); ;
         }
 

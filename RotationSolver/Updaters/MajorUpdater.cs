@@ -2,6 +2,8 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Logging;
+using Dalamud.Plugin.Services;
+using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
@@ -27,7 +29,7 @@ internal static class MajorUpdater
     static Exception _threadException;
     static DateTime _lastUpdatedWork = DateTime.Now;
 
-    private unsafe static void FrameworkUpdate(Framework framework)
+    private unsafe static void FrameworkUpdate(IFramework framework)
     {
         PainterManager.ActionIds.Clear();
         RotationSolverPlugin.UpdateDisplayWindow();
@@ -42,9 +44,10 @@ internal static class MajorUpdater
         if ((int)Svc.ClientState.ClientLanguage == 4 && !_showed)
         {
             _showed = true;
-            var warning = "Rotation Solver 未进行国服适配并不提供相关支持!";
+            var warning = "Rotation Solver 未进行国服适配并不提供相关支持! 建议使用国服的插件，如AE Assist 2.0";
             Svc.Toasts.ShowError(warning);
             Svc.Chat.PrintError(warning);
+            Util.OpenLink("http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=EyT0BfZWCVq8v2yiMjSqcb4lEqYuaF_P&authKey=UJFoVZ3OljlBhSilXpeLKIIzofI4ZUjJfjuqCgr%2BiaT3Y6HmQFVbXZ5xBOlSv5yZ&noverify=0&group_code=552689154");
         }
 
         try
@@ -77,7 +80,7 @@ internal static class MajorUpdater
             if(_threadException != ex)
             {
                 _threadException = ex;
-                PluginLog.Error(ex, "Main Thread Exception");
+                Svc.Log.Error(ex, "Main Thread Exception");
             }
         }
 
@@ -101,7 +104,7 @@ internal static class MajorUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Error(ex, "Worker Exception");
+            Svc.Log.Error(ex, "Worker Exception");
         }
     }
 
@@ -119,7 +122,7 @@ internal static class MajorUpdater
         var waitingTime = (DateTime.Now - _lastUpdatedWork).TotalMilliseconds;
         if (waitingTime > 100)
         {
-            PluginLog.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
+            Svc.Log.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
         }
 
         if (!IsValid)
@@ -150,7 +153,7 @@ internal static class MajorUpdater
             if(_innerException != ex)
             {
                 _innerException = ex;
-                PluginLog.Error(ex, "Inner Worker Exception");
+                Svc.Log.Error(ex, "Inner Worker Exception");
             }
         }
 
@@ -178,7 +181,7 @@ internal static class MajorUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Warning(ex, "Failed to close the window!");
+            Svc.Log.Warning(ex, "Failed to close the window!");
         }
         finally
         {
@@ -228,7 +231,7 @@ internal static class MajorUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Error(ex, "Failed to open the chest!");
+            Svc.Log.Error(ex, "Failed to open the chest!");
         }
 
         if (!Service.Config.GetValue(PluginConfigBool.AutoCloseChestWindow)) return;

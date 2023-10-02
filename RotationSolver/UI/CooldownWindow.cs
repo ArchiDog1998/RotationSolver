@@ -1,4 +1,6 @@
-﻿using RotationSolver.Basic.Configuration;
+﻿using Dalamud.Interface.Utility.Raii;
+using ECommons.DalamudServices;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
@@ -50,7 +52,9 @@ internal class CooldownWindow : CtrlWindow
         var elapsed = act.RecastTimeElapsedRaw;
         var shouldSkip = recast < 3 && act is IBaseAction a && !a.IsRealGCD;
 
-        ImGui.BeginGroup();
+        using var group = ImRaii.Group();
+        if (!group) return;
+
         var winPos = ImGui.GetWindowPos();
 
         var r = -1f;
@@ -82,13 +86,12 @@ internal class CooldownWindow : CtrlWindow
                 ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), black);
             }
 
-            ImGui.PushFont(ImGuiHelper.GetFont(Service.Config.GetValue(PluginConfigFloat.CooldownFontSize)));
+            using var font = ImRaii.PushFont(ImGuiHelper.GetFont(Service.Config.GetValue(PluginConfigFloat.CooldownFontSize)));
             string time = recast == 0  ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;
 
             TextShade(fontPos, time);
-            ImGui.PopFont();
         }
 
         if (act.EnoughLevel && act is IBaseAction bAct && bAct.MaxCharges > 1)
@@ -98,8 +101,6 @@ internal class CooldownWindow : CtrlWindow
                 ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + (i + 0.5f) * new Vector2(width / 5, 0), width / 12, white);
             }
         }
-
-        ImGui.EndGroup();
     }
 
     static readonly uint black = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 0, 0, 1));
