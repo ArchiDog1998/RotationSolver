@@ -504,7 +504,6 @@
   "ConfigWindow_Basic_ClickingDuration": "The clicking duration, RS will try to click at this moment.",
   "ConfigWindow_Basic_WeaponDelay": "这是缩短时间。\nGCD结束了。但是，RS忘记点击下一个技能。",
   "ConfigWindow_About_ClickingCount": "Rotation Solver 帮助您点击 {0:N0} 次技能。",
-  "ConfigWindow_About_ClickingTooMuch": "好吧，你一定是一个懒惰的玩家！",
   "ConfigWindow_Auto_AutoHealTimeToKill": "Stop healing when time to kill is lower then...",
   "ConfigWindow_UI_ShowHostiles": "Show the hostile target icon",
   "ConfigWindow_UI_HostileIconHeight": "Hostile Icon height from position",
@@ -526,5 +525,8 @@
   "ConfigWindow_Auto_UseResourcesAction": "Use actions that use resources",
   "ConfigWindow_Auto_HealthForAutoDefense": "HP Ratio about defense single of Tanks",
   "ConfigWindow_Basic_SayHelloToUsers": "Say hello to the users of Rotation Solver.",
-  "ConfigWindow_Basic_SayHelloToUsersDesc": "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!"
+  "ConfigWindow_Basic_SayHelloToUsersDesc": "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!",
+  "ConfigWindow_Basic_JustSayHelloOnce": "Just say hello once to the same user.",
+  "ConfigWindow_About_Clicking100k": "Well, you must be a lazy player!",
+  "ConfigWindow_About_Clicking500k": "You're tiring RS out, give it a break!"
 }
