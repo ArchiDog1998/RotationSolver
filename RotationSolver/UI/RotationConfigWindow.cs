@@ -22,6 +22,8 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Xml.Linq;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI;
@@ -528,6 +530,7 @@ public partial class RotationConfigWindow : Window
     {
         { () => LocalizationManager.RightLang.ConfigWindow_About_Macros, DrawAboutMacros},
         { () => LocalizationManager.RightLang.ConfigWindow_About_Compatibility, DrawAboutCompatibility},
+        { () => LocalizationManager.RightLang.ConfigWindow_About_Supporters, DrawAboutSupporters},
         { () => LocalizationManager.RightLang.ConfigWindow_About_Links, DrawAboutLinks},
     });
 
@@ -640,6 +643,24 @@ public partial class RotationConfigWindow : Window
                     ImGui.TextColored(ImGuiColors.DalamudRed, CompatibleType.Crash.ToString().Replace('_', ' '));
                     ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Crash);
                 }
+            }
+        }
+    }
+    private static void DrawAboutSupporters()
+    {
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_ThanksToSupporters);
+
+        var width = ImGui.GetWindowWidth();
+        using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(12)))
+        {
+            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+
+            foreach (var name in DownloadHelper.Supporters)
+            {
+                ImGuiHelper.DrawItemMiddle(() =>
+                {
+                    ImGui.TextWrapped(name);
+                }, width, ImGui.CalcTextSize(name).X);
             }
         }
     }

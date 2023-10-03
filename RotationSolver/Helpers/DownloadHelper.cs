@@ -10,6 +10,7 @@ public static class DownloadHelper
     public static string[] LinkLibraries { get; private set; } = Array.Empty<string>();
     public static string[] ContributorsHash { get; private set; } = Array.Empty<string>();
     public static string[] UsersHash { get; private set; } = Array.Empty<string>();
+    public static string[] Supporters { get; private set; } = Array.Empty<string>();
     public static IncompatiblePlugin[] IncompatiblePlugins { get; private set; } = Array.Empty<IncompatiblePlugin>();
 
     public static async Task DownloadAsync()
@@ -20,6 +21,8 @@ public static class DownloadHelper
         ContributorsHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/ContributorsHash.json") ?? Array.Empty<string>();
 
         UsersHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/UsersHash.json") ?? Array.Empty<string>();
+
+        Supporters = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/Supporters.json") ?? Array.Empty<string>();
     }
 
     private static async Task<T> DownloadOneAsync<T>(string url)
