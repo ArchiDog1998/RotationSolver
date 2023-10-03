@@ -45,8 +45,8 @@ internal static class MajorUpdater
         {
             _showed = true;
 
-            var warning = "Rotation Solver 未进行国服适配并不提供相关支持! 建议使用国服的插件，如";
-            Svc.Toasts.ShowError(warning + "AE Assist 2.0");
+            var warning = "Rotation Solver 未进行国服适配并不提供相关支持! 建议使用国服的插件，如：";
+            Svc.Toasts.ShowError(warning + "AE Assist 2.0！");
 
             var seString = new SeString(new TextPayload(warning)
                 , Svc.PluginInterface.AddChatLinkHandler(2, (id, str) =>
@@ -56,8 +56,11 @@ internal static class MajorUpdater
                         Util.OpenLink("http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=EyT0BfZWCVq8v2yiMjSqcb4lEqYuaF_P&authKey=UJFoVZ3OljlBhSilXpeLKIIzofI4ZUjJfjuqCgr%2BiaT3Y6HmQFVbXZ5xBOlSv5yZ&noverify=0&group_code=552689154");
                     }
                 }),
+                new UIForegroundPayload(31),
                 new TextPayload("AE Assist 2.0"),
-                RawPayload.LinkTerminator);
+                UIForegroundPayload.UIForegroundOff,
+                RawPayload.LinkTerminator,
+                new TextPayload("！"));
 
             Svc.Chat.Print(new Dalamud.Game.Text.XivChatEntry()
             {
@@ -71,7 +74,7 @@ internal static class MajorUpdater
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
 
-            if (Service.Config.GetValue(PluginConfigBool.TeachingMode) && ActionUpdater.NextAction!= null)
+            if (Service.Config.GetValue(PluginConfigBool.TeachingMode) && ActionUpdater.NextAction != null)
             {
                 //Sprint action id is 3 however the id in hot bar is 4.
                 var id = ActionUpdater.NextAction.AdjustedID;
@@ -79,7 +82,7 @@ internal static class MajorUpdater
             }
             ActionUpdater.UpdateActionInfo();
 
-            var canDoAction =  ActionUpdater.CanDoAction();
+            var canDoAction = ActionUpdater.CanDoAction();
             MovingUpdater.UpdateCanMove(canDoAction);
             if (canDoAction)
             {
@@ -93,7 +96,7 @@ internal static class MajorUpdater
         }
         catch (Exception ex)
         {
-            if(_threadException != ex)
+            if (_threadException != ex)
             {
                 _threadException = ex;
                 Svc.Log.Error(ex, "Main Thread Exception");

@@ -15,7 +15,7 @@ internal static class PreviewUpdater
 {
     internal static void UpdatePreview()
     {
-        UpdateEntry();
+        //UpdateEntry();
         UpdateCancelCast();
     }
 

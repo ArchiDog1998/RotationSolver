@@ -152,7 +152,7 @@ public partial class BaseAction : IBaseAction
     /// <summary>
     /// Casting time.
     /// </summary>
-    public unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Spell, AdjustedID) / 1000f;
+    public unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Action, AdjustedID) / 1000f;
 
     /// <summary>
     /// Action Positional.
@@ -176,7 +176,7 @@ public partial class BaseAction : IBaseAction
     {
         get
         {
-            var mp = (uint)ActionManager.GetActionCost(ActionType.Spell, AdjustedID, 0, 0, 0, 0);
+            var mp = (uint)ActionManager.GetActionCost(ActionType.Action, AdjustedID, 0, 0, 0, 0);
             if (mp < 100) return 0;
             return mp;
         }

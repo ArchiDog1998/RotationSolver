@@ -369,7 +369,7 @@ internal static class DataCenter
             case ActionCate.Spell:
             case ActionCate.WeaponSkill:
                 LastAction = LastGCD = id;
-                if (ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)id) == 0)
+                if (ActionManager.GetAdjustedCastTime(ActionType.Action, (uint)id) == 0)
                 {
                     FetchTime = WeaponElapsed;
                 }

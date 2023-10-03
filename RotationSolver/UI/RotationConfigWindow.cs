@@ -1207,7 +1207,7 @@ public partial class RotationConfigWindow : Window
                     {
 #if DEBUG
                         ImGui.Text("Is Real GCD: " + action.IsRealGCD.ToString());
-                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Spell, action.AdjustedID).ToString());
+                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
                         ImGui.Text("Cast Time: " + action.CastTime.ToString());
                         ImGui.Text("MP: " + action.MPNeed.ToString());
 #endif

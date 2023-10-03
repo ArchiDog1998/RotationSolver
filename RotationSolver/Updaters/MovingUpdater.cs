@@ -59,7 +59,7 @@ internal static class MovingUpdater
                 ? (ActionID)RSCommands._lastActionID
                 : doNextAction ? (ActionID)(ActionUpdater.NextAction?.AdjustedID ?? 0) : 0;
 
-            var specialActions = ActionManager.GetAdjustedCastTime(ActionType.Spell, (uint)action) > 0
+            var specialActions = ActionManager.GetAdjustedCastTime(ActionType.Action, (uint)action) > 0
                 || actionList.Any(id => Service.GetAdjustedActionId(id) == action);
 
             //Status

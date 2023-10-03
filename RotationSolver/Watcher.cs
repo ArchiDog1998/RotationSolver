@@ -80,7 +80,7 @@ public static class Watcher
             }
         }
 
-        if (set.Header.ActionType == ActionType.Spell && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
+        if (set.Header.ActionType == ActionType.Action && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
         {
             var type = set.Action.GetActionCate();
 
@@ -92,7 +92,7 @@ public static class Watcher
                     && (effect.value > 0 || (effect.param0 & 6) == 6))
                     == DataCenter.PartyMembers.Count())
                 {
-                    if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.RecordCastingArea))
+                    if (Service.Config.GetValue(PluginConfigBool.RecordCastingArea))
                     {
                         OtherConfiguration.HostileCastingArea.Add(set.Action.RowId);
                         OtherConfiguration.SaveHostileCastingArea();
@@ -105,7 +105,7 @@ public static class Watcher
     private static void ActionFromSelf(ActionEffectSet set)
     {
         if (set.Source.ObjectId != Player.Object.ObjectId) return;
-        if (set.Header.ActionType != ActionType.Spell && set.Header.ActionType != ActionType.Item) return;
+        if (set.Header.ActionType != ActionType.Action && set.Header.ActionType != ActionType.Item) return;
         if (set.Action == null) return;
         if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 

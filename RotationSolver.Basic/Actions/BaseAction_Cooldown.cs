@@ -97,7 +97,7 @@ public partial class BaseAction
     /// 
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public float RecastTimeOneChargeRaw => ActionManager.GetAdjustedRecastTime(ActionType.Spell, AdjustedID) / 1000f;
+    public float RecastTimeOneChargeRaw => ActionManager.GetAdjustedRecastTime(ActionType.Action, AdjustedID) / 1000f;
 
     /// <summary>
     /// 

@@ -116,7 +116,7 @@ public partial class BaseAction
 
         if (!Service.Config.GetValue(PluginConfigBool.UseResourcesAction) && _option.HasFlag(ActionOption.UseResources)) return false;
 
-        if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Spell, AdjustedID)))
+        if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Action, AdjustedID)))
             return false;
 
         if (!EnoughLevel) return false;
@@ -218,7 +218,7 @@ public partial class BaseAction
         {
             var loc = new FFXIVClientStructs.FFXIV.Common.Math.Vector3() { X = Position.X, Y = Position.Y, Z = Position.Z };
 
-            return ActionManager.Instance()->UseActionLocation(ActionType.Spell, ID, Player.Object.ObjectId, &loc);
+            return ActionManager.Instance()->UseActionLocation(ActionType.Action, ID, Player.Object.ObjectId, &loc);
         }
         else if(Svc.Objects.SearchById(_targetId) == null)
         {
@@ -226,7 +226,7 @@ public partial class BaseAction
         }
         else
         {
-            return ActionManager.Instance()->UseAction(ActionType.Spell, adjustId, _targetId);
+            return ActionManager.Instance()->UseAction(ActionType.Action, adjustId, _targetId);
         }
     }
 }
