@@ -77,7 +77,6 @@ internal static class PainterManager
 
             base.UpdateOnFrame(painter);
         }
-
     }
 
     class TargetDrawing : Drawing3DPoly

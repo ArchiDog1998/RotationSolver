@@ -214,6 +214,7 @@ internal static partial class TargetUpdater
 
     private static unsafe uint[] GetEnemies()
     {
+        return Array.Empty<uint>();
         if (!Service.Config.GetValue(PluginConfigBool.AddEnemyListToHostile)) return Array.Empty<uint>();
 
         var addons = Service.GetAddons<AddonEnemyList>();

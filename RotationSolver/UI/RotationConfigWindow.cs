@@ -1367,6 +1367,18 @@ public partial class RotationConfigWindow : Window
             });
         }
 
+        var width = ImGui.GetWindowWidth();
+
+        var text = "Links of the rotations online";
+        var textWidth = ImGuiHelpers.GetButtonSize(text).X;
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            if (ImGui.Button(text))
+            {
+                Util.OpenLink($"https://github.com/{Service.USERNAME}/{Service.REPO}/blob/main/Rotations%20Link.md");
+            }
+        }, width, textWidth);
+
         _rotationsHeader?.Draw();
     }
     private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
