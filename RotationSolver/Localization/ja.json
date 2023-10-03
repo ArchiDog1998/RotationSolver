@@ -421,6 +421,7 @@
   "ConfigWindow_About_Macros": "Macros",
   "ConfigWindow_About_Links": "Links",
   "ConfigWindow_About_Compatibility": "Compatibility",
+  "ConfigWindow_About_Supporters": "Supporters",
   "ConfigWindow_About_Compatibility_Description": "Literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:",
   "ConfigWindow_About_Compatibility_Others": "Please don't relog without closing the game. Crashes may occur.",
   "ConfigWindow_About_Compatibility_Mistake": "Can't properly execute the behavior that RS wants to do.",
@@ -528,5 +529,6 @@
   "ConfigWindow_Basic_SayHelloToUsersDesc": "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!",
   "ConfigWindow_Basic_JustSayHelloOnce": "Just say hello once to the same user.",
   "ConfigWindow_About_Clicking100k": "Well, you must be a lazy player!",
-  "ConfigWindow_About_Clicking500k": "You're tiring RS out, give it a break!"
+  "ConfigWindow_About_Clicking500k": "You're tiring RS out, give it a break!",
+  "ConfigWindow_About_ThanksToSupporters": "Many thanks to the sponsors."
 }
