@@ -620,6 +620,7 @@ internal class Strings
     public string ConfigWindow_About_Macros { get; set; } = "Macros";
     public string ConfigWindow_About_Links { get; set; } = "Links";
     public string ConfigWindow_About_Compatibility { get; set; } = "Compatibility";
+    public string ConfigWindow_About_Supporters { get; set; } = "Supporters";
     public string ConfigWindow_About_Compatibility_Description { get; set; } = "Literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:";
     public string ConfigWindow_About_Compatibility_Others { get; set; } = "Please don't relog without closing the game. Crashes may occur.";
 
@@ -753,4 +754,7 @@ internal class Strings
     public string ConfigWindow_About_Clicking100k { get; set; } = "Well, you must be a lazy player!";
     public string ConfigWindow_About_Clicking500k { get; set; } = "You're tiring RS out, give it a break!";
 
+    public string ConfigWindow_About_ThanksToSupporters { get; set; } = "Many thanks to the sponsors.";
+    public string ConfigWindow_Rotations_Download { get; set; } = "Download Rotations";
+    public string ConfigWindow_Rotations_Links { get; set; } = "Links of the rotations online";
 }

@@ -1,4 +1,6 @@
-﻿using ECommons.ExcelServices;
+﻿using Dalamud.Interface.Internal;
+using Dalamud.Interface.Utility;
+using ECommons.ExcelServices;
 using ImGuiScene;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -78,7 +80,7 @@ internal abstract class CheckBoxSearch : Searchable
     protected override void DrawMain(Job job)
     {
         var hasChild = Children != null && Children.Length > 0;
-        TextureWrap texture = null;
+        IDalamudTextureWrap texture = null;
         var hasIcon = Action != ActionID.None && IconSet.GetTexture(Action, out texture);
 
         var enable = GetValue(job);

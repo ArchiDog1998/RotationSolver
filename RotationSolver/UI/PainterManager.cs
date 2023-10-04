@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
-using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
@@ -78,7 +77,6 @@ internal static class PainterManager
 
             base.UpdateOnFrame(painter);
         }
-
     }
 
     class TargetDrawing : Drawing3DPoly

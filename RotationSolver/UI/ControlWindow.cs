@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Internal;
+using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
-using ImGuiScene;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
@@ -179,17 +180,21 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.SameLine();
 
-        ImGui.BeginGroup();
-        ImGui.Text(DataCenter.RightNowTargetToHostileType switch
+        using (var group = ImRaii.Group())
         {
-             TargetHostileType.AllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
-             TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
-             TargetHostileType.TargetsHaveTarget => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
-             _ => string.Empty,
-        });
+            if (group)
+            {
+                ImGui.Text(DataCenter.RightNowTargetToHostileType switch
+                {
+                    TargetHostileType.AllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
+                    TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
+                    TargetHostileType.TargetsHaveTarget => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
+                    _ => string.Empty,
+                });
 
-        ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
-        ImGui.EndGroup();
+                ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
+            }
+        }
 
         if (Service.Config.GetValue(PluginConfigFloat.MistakeRatio) > 0)
         {
@@ -211,30 +216,37 @@ internal class ControlWindow : CtrlWindow
         var strWidth = ImGui.CalcTextSize(str).X;
 
         var pos = ImGui.GetCursorPos();
-        ImGui.BeginGroup();
-        ImGui.BeginGroup();
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
-        ImGui.TextColored(color, str);
 
-        var help = command.ToHelp();
-        string baseId = "ImgButton" + command.ToString();
+        using var group = ImRaii.Group();
+        if (!group) return;
 
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
-
-        if(IconSet.GetTexture(gcd, out var texture))
+        using (var subGroup = ImRaii.Group())
         {
-            var y = ImGui.GetCursorPosY();
-
-            DrawIAction(texture.ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
-            if (IconSet.GetTexture(ability, out texture))
+            if (subGroup)
             {
-                ImGui.SameLine();
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.TextColored(color, str);
 
-                ImGui.SetCursorPosY(y);
-                DrawIAction(texture.ImGuiHandle, baseId + nameof(ability), abilityW, command, help);
+                var help = command.ToHelp();
+                string baseId = "ImgButton" + command.ToString();
+
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+
+                if (IconSet.GetTexture(gcd, out var texture))
+                {
+                    var y = ImGui.GetCursorPosY();
+
+                    DrawIAction(texture.ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
+                    if (IconSet.GetTexture(ability, out texture))
+                    {
+                        ImGui.SameLine();
+
+                        ImGui.SetCursorPosY(y);
+                        DrawIAction(texture.ImGuiHandle, baseId + nameof(ability), abilityW, command, help);
+                    }
+                }
             }
         }
-        ImGui.EndGroup();
 
         if (DataCenter.SpecialType == command)
         {
@@ -250,7 +262,6 @@ internal class ControlWindow : CtrlWindow
                 CooldownWindow.TextShade(winPos + pos + size - strSize, time);
             }
         }
-        ImGui.EndGroup();
     }
 
     public static void HighLight(Vector2 pt, Vector2 size, float thickness = 2f)
@@ -270,7 +281,7 @@ internal class ControlWindow : CtrlWindow
         if (IconSet.GetTexture(iconId, out var texture)) DrawCommandAction(texture, command, color);
     }
 
-    static void DrawCommandAction(TextureWrap texture, SpecialCommandType command, Vector4 color)
+    static void DrawCommandAction(IDalamudTextureWrap texture, SpecialCommandType command, Vector4 color)
     {
         var abilityW = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize);
         var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
@@ -278,17 +289,25 @@ internal class ControlWindow : CtrlWindow
         var strWidth = ImGui.CalcTextSize(str).X;
 
         var pos = ImGui.GetCursorPos();
-        ImGui.BeginGroup();
-        ImGui.BeginGroup();
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
-        ImGui.TextColored(color, str);
 
-        var help = command.ToHelp();
-        string baseId = "ImgButton" + command.ToString();
+        using var group = ImRaii.Group();
+        if (!group) return;
 
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
-        if(texture != null) DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
-        ImGui.EndGroup();
+        using (var subGroup = ImRaii.Group())
+        {
+            if (subGroup)
+            {
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.TextColored(color, str);
+
+                var help = command.ToHelp();
+                string baseId = "ImgButton" + command.ToString();
+
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+                if (texture != null) DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
+
+            }
+        }
 
         if (DataCenter.SpecialType == command)
         {
@@ -304,7 +323,6 @@ internal class ControlWindow : CtrlWindow
                 CooldownWindow.TextShade(winPos + pos + size - strSize, time);
             }
         }
-        ImGui.EndGroup();
     }
 
     static void DrawCommandAction(uint iconId, StateCommandType command, Vector4 color)
@@ -315,20 +333,25 @@ internal class ControlWindow : CtrlWindow
         var strWidth = ImGui.CalcTextSize(str).X;
 
         var pos = ImGui.GetCursorPos();
-        ImGui.BeginGroup();
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
-        ImGui.TextColored(color, str);
 
-        var help = command.ToHelp();
-        string baseId = "ImgButton" + command.ToString();
-
-        if(IconSet.GetTexture(iconId, out var texture))
+        using (var group = ImRaii.Group())
         {
-            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
-            DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
-        }
+            if (group)
+            {
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.TextColored(color, str);
 
-        ImGui.EndGroup();
+                var help = command.ToHelp();
+                string baseId = "ImgButton" + command.ToString();
+
+                if (IconSet.GetTexture(iconId, out var texture))
+                {
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+                    DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
+                }
+
+            }
+        }
 
         bool isMatch = false;
         switch (command)
@@ -409,7 +432,9 @@ internal class ControlWindow : CtrlWindow
 
     static unsafe void DrawNextAction(float gcd, float ability, float width)
     {
-        ImGui.BeginGroup();
+        using var group = ImRaii.Group();
+        if (!group) return;
+
         var str = "Next Action";
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
         ImGui.TextColored(ImGuiColors.DalamudYellow, str);
@@ -427,6 +452,5 @@ internal class ControlWindow : CtrlWindow
         ImGui.SetCursorPosY(y);
 
         DrawIAction(next, ability, 1);
-        ImGui.EndGroup();
     }
 }

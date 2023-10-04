@@ -17,10 +17,10 @@ public class MacroInfo
     {
         if (MacroIndex < 0 || MacroIndex > 99) return false;
 
-        DataCenter.Macros.Enqueue(new MacroItem(tar, IsShared ?
-            RaptureMacroModule.Instance->Shared[MacroIndex] :
-            RaptureMacroModule.Instance->Individual[MacroIndex]));
+        var shared = RaptureMacroModule.Instance()->SharedSpan[MacroIndex];
+        var individual = RaptureMacroModule.Instance()->IndividualSpan[MacroIndex];
 
+        DataCenter.Macros.Enqueue(new MacroItem(tar, IsShared ? &shared : &individual));
         return true;
     }
 }

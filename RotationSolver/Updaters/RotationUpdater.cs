@@ -62,7 +62,7 @@ internal static class RotationUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.LogError(ex, "Failed to get custom rotations");
+            Svc.Log.Error(ex, "Failed to get custom rotations");
         }
         finally
         {
@@ -122,7 +122,7 @@ internal static class RotationUpdater
             }
             catch (Exception ex)
             {
-                PluginLog.Warning(ex, "Failed to get author's hash");
+                Svc.Log.Warning(ex, "Failed to get author's hash");
             }
         }
 
@@ -268,12 +268,12 @@ internal static class RotationUpdater
                 await response.Content.CopyToAsync(stream);
             }
 
-            PluginLog.Log($"Successfully download the {filePath}");
+            Svc.Log.Information($"Successfully download the {filePath}");
             return true;
         }
         catch (Exception ex)
         {
-            PluginLog.LogError(ex, $"failed to download from {url}");
+            Svc.Log.Error(ex, $"failed to download from {url}");
         }
         return false;
     }
@@ -294,7 +294,7 @@ internal static class RotationUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Warning(ex, "Failed to load " + filePath);
+            Svc.Log.Warning(ex, "Failed to load " + filePath);
         }
         return null;
     }
@@ -350,7 +350,7 @@ internal static class RotationUpdater
         }
         catch(Exception ex)
         {
-            PluginLog.Warning(ex, $"Failed to load the types from {assembly.FullName}");
+            Svc.Log.Warning(ex, $"Failed to load the types from {assembly.FullName}");
             return Array.Empty<Type>();
         }
     }
@@ -363,7 +363,7 @@ internal static class RotationUpdater
         }
         catch (Exception ex) 
         {
-            PluginLog.Error(ex, $"Failed to load the rotation: {t.Name}");
+            Svc.Log.Error(ex, $"Failed to load the rotation: {t.Name}");
             return null; 
         }
     }

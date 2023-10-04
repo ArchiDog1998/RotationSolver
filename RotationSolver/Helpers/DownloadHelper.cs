@@ -1,6 +1,5 @@
-﻿using Dalamud.Logging;
+﻿using ECommons.DalamudServices;
 using RotationSolver.UI;
-using System.Text;
 
 namespace RotationSolver.Helpers;
 
@@ -9,6 +8,7 @@ public static class DownloadHelper
     public static string[] LinkLibraries { get; private set; } = Array.Empty<string>();
     public static string[] ContributorsHash { get; private set; } = Array.Empty<string>();
     public static string[] UsersHash { get; private set; } = Array.Empty<string>();
+    public static string[] Supporters { get; private set; } = Array.Empty<string>();
     public static IncompatiblePlugin[] IncompatiblePlugins { get; private set; } = Array.Empty<IncompatiblePlugin>();
 
     public static async Task DownloadAsync()
@@ -19,6 +19,8 @@ public static class DownloadHelper
         ContributorsHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/ContributorsHash.json") ?? Array.Empty<string>();
 
         UsersHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/UsersHash.json") ?? Array.Empty<string>();
+
+        Supporters = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/Supporters.json") ?? Array.Empty<string>();
     }
 
     private static async Task<T> DownloadOneAsync<T>(string url)
@@ -26,12 +28,12 @@ public static class DownloadHelper
         using var client = new HttpClient();
         try
         {
-            var bts = await client.GetByteArrayAsync(url);
-            return JsonConvert.DeserializeObject<T>(Encoding.Default.GetString(bts));
+            var str = await client.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<T>(str);
         }
         catch (Exception ex)
         {
-            PluginLog.Log(ex, "Failed to load downloading List.");
+            Svc.Log.Information(ex, "Failed to load downloading List.");
             return default;
         }
     }

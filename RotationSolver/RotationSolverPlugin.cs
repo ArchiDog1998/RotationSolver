@@ -58,7 +58,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         }
         catch(Exception ex)
         {
-            PluginLog.Warning(ex, "Failed to load config");
+            Svc.Log.Warning(ex, "Failed to load config");
             Service.Config = PluginConfig.Create(); ;
         }
 
@@ -81,9 +81,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Watcher.Enable();
         OtherConfiguration.Init();
         _dis.Add(new LocalizationManager());
-#if DEBUG
-        LocalizationManager.ExportLocalization();
-#endif
         ChangeUITranslation();
 
         OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>

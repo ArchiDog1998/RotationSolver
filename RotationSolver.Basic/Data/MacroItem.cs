@@ -39,11 +39,11 @@ public unsafe class MacroItem
     /// <returns></returns>
     public bool StartUseMacro()
     {
-        if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
+        if (RaptureShellModule.Instance()->MacroCurrentLine > -1) return false;
 
         _lastTarget = Svc.Targets.Target;
         Svc.Targets.Target = Target;
-        RaptureShellModule.Instance->ExecuteMacro(_macro);
+        RaptureShellModule.Instance()->ExecuteMacro(_macro);
 
         IsRunning = true;
         return true;
@@ -55,7 +55,7 @@ public unsafe class MacroItem
     /// <returns></returns>
     public bool EndUseMacro()
     {
-        if (RaptureShellModule.Instance->MacroCurrentLine > -1) return false;
+        if (RaptureShellModule.Instance()->MacroCurrentLine > -1) return false;
 
         Svc.Targets.Target = _lastTarget;
 

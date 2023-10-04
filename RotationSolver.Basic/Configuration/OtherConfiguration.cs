@@ -208,7 +208,7 @@ public class OtherConfiguration
             }
             catch (Exception ex)
             {
-                PluginLog.Warning(ex, $"Failed to load {name}.");
+                Svc.Log.Warning(ex, $"Failed to load {name}.");
             }
         }
         else if(download)

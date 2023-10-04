@@ -12,7 +12,7 @@ description: |-
 punchline: Analyses PvE combat information every frame and finds the best action.
 repo_url: https://github.com/ArchiDog1998/RotationSolver
 icon_url: https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png
-dalamud_api_level: 8
+dalamud_api_level: 9
 tags:
   - combat
   - rotation

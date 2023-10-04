@@ -69,7 +69,7 @@ internal static class ActionUpdater
         }
         catch (Exception ex)
         {
-            PluginLog.Error(ex, "Failed to update next action.");
+            Svc.Log.Error(ex, "Failed to update next action.");
         }
 
         WrongAction = NextAction = NextGCDAction = null;
@@ -160,11 +160,11 @@ internal static class ActionUpdater
 
         var castTotal = player.TotalCastTime;
 
-        var weaponTotal = instance->GetRecastTime(ActionType.Spell, 11);
+        var weaponTotal = instance->GetRecastTime(ActionType.Action, 11);
         if (castTotal > 0) castTotal += 0.1f;
         if (player.IsCasting) weaponTotal = Math.Max(castTotal, weaponTotal);
 
-        DataCenter.WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Spell, 11);
+        DataCenter.WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Action, 11);
         DataCenter.WeaponRemain = DataCenter.WeaponElapsed == 0 ? player.TotalCastTime - player.CurrentCastTime
             : Math.Max(weaponTotal - DataCenter.WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
