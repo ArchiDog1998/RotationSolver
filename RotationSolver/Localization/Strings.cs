@@ -755,4 +755,6 @@ internal class Strings
     public string ConfigWindow_About_Clicking500k { get; set; } = "You're tiring RS out, give it a break!";
 
     public string ConfigWindow_About_ThanksToSupporters { get; set; } = "Many thanks to the sponsors.";
+    public string ConfigWindow_Rotations_Download { get; set; } = "Download Rotations";
+    public string ConfigWindow_Rotations_Links { get; set; } = "Links of the rotations online";
 }

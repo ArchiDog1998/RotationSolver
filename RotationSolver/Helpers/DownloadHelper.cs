@@ -1,7 +1,5 @@
-﻿using Dalamud.Logging;
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
 using RotationSolver.UI;
-using System.Text;
 
 namespace RotationSolver.Helpers;
 

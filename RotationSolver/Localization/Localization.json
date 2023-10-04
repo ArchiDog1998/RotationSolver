@@ -530,5 +530,7 @@
   "ConfigWindow_Basic_JustSayHelloOnce": "Just say hello once to the same user.",
   "ConfigWindow_About_Clicking100k": "Well, you must be a lazy player!",
   "ConfigWindow_About_Clicking500k": "You're tiring RS out, give it a break!",
-  "ConfigWindow_About_ThanksToSupporters": "Many thanks to the sponsors."
+  "ConfigWindow_About_ThanksToSupporters": "Many thanks to the sponsors.",
+  "ConfigWindow_Rotations_Download": "Download Rotations",
+  "ConfigWindow_Rotations_Links": "Links of the rotations online"
 }

@@ -1359,23 +1359,30 @@ public partial class RotationConfigWindow : Window
     #region Rotations
     private static void DrawRotations()
     {
-        if (ImGui.Button("Download Rotations"))
-        {
-            Task.Run(async () =>
-            {
-                await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
-            });
-        }
-
         var width = ImGui.GetWindowWidth();
 
-        var text = "Links of the rotations online";
+
+        var text = LocalizationManager.RightLang.ConfigWindow_Rotations_Download;
         var textWidth = ImGuiHelpers.GetButtonSize(text).X;
+
         ImGuiHelper.DrawItemMiddle(() =>
         {
             if (ImGui.Button(text))
             {
-                Util.OpenLink($"https://github.com/{Service.USERNAME}/{Service.REPO}/blob/main/Rotations%20Link.md");
+                Task.Run(async () =>
+                {
+                    await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
+                });
+            }
+        }, width, textWidth);
+
+        text = LocalizationManager.RightLang.ConfigWindow_Rotations_Links;
+        textWidth = ImGuiHelpers.GetButtonSize(text).X;
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            if (ImGui.Button(text))
+            {
+                Util.OpenLink($"https://github.com/{Service.USERNAME}/{Service.REPO}/blob/main/RotationsLink.md");
             }
         }, width, textWidth);
 
