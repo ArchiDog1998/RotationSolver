@@ -349,6 +349,11 @@ public partial class BaseAction
                 availableCharas = availableCharas.Where(b => b.IsJobCategory(JobRole.Tank));
             }
             availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range).Where(CanUseTo);
+            if (availableCharas == null || !availableCharas.Any())
+            {
+                target = null;
+                return false;
+            }
 
             target = ChoiceTarget(availableCharas, mustUse);
         }
