@@ -1,4 +1,5 @@
-﻿using ECommons.GameFunctions;
+﻿using ECommons.ExcelServices;
+using ECommons.GameFunctions;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations;
@@ -286,6 +287,179 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction VariantRampart2 { get; } = new RoleAction(ActionID.VariantRampart2,
         new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical }, ActionOption.Buff | ActionOption.DutyAction);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostSpellforge { get; } = new BaseAction(ActionID.LostSpellforge,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] {StatusID.LostSpellforge },
+        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.MagicalAversion) ?? false, 
+        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t =>
+            {
+                switch((Job)t.ClassJob.Id)
+                {
+                    case Job.WAR:
+                    case Job.GNB:
+                    case Job.MNK:
+                    case Job.SAM:
+                    case Job.DRG:
+                    case Job.MCH:
+                    case Job.DNC:
+
+                    case Job.PLD:
+                    case Job.DRK:
+                    case Job.NIN:
+                    case Job.BRD:
+                    case Job.RDM:
+                        return true;
+                }
+                return false;
+            }),
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostSteelsting { get; } = new BaseAction(ActionID.LostSteelsting,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostSteelsting },
+        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
+        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t =>
+        {
+            switch ((Job)t.ClassJob.Id)
+            {
+                case Job.WHM:
+                case Job.SCH:
+                case Job.AST:
+                case Job.SGE:
+                case Job.BLM:
+                case Job.SMN:
+
+                case Job.PLD:
+                case Job.DRK:
+                case Job.NIN:
+                case Job.BRD:
+                case Job.RDM:
+                    return true;
+            }
+
+            return false;
+        }),
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostRampage { get; } = new BaseAction(ActionID.LostRampage,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostRampage },
+        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostBurst { get; } = new BaseAction(ActionID.LostBurst,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostBurst },
+        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostBravery { get; } = new BaseAction(ActionID.LostBravery,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostBravery },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostProtect { get; } = new BaseAction(ActionID.LostProtect,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostProtect, StatusID.LostProtect2 },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostShell { get; } = new BaseAction(ActionID.LostShell,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostShell, StatusID.LostShell2 },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostProtect2 { get; } = new BaseAction(ActionID.LostProtect2,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostProtect2 },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostShell2 { get; } = new BaseAction(ActionID.LostShell2,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostShell2 },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostBubble { get; } = new BaseAction(ActionID.LostBubble,
+        ActionOption.DutyAction | ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostBubble },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostStoneskin { get; } = new BaseAction(ActionID.LostStoneskin,
+        ActionOption.DutyAction | ActionOption.Defense)
+    {
+        ChoiceTarget = TargetFilter.FindAttackedTarget,
+        StatusProvide = new StatusID[] { StatusID.LostStoneskin },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostStoneskin2 { get; } = new BaseAction(ActionID.LostStoneskin2,
+        ActionOption.DutyAction | ActionOption.Defense)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostStoneskin },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlarestar,
+    ActionOption.DutyAction)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostFlarestar },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction LostSeraphStrike { get; } = new BaseAction(ActionID.LostSeraphStrike,
+        ActionOption.DutyAction)
+    {
+        StatusProvide = new StatusID[] { StatusID.LostSeraphStrike },
+    };
     #endregion
 
     IBaseAction[] _allBaseActions;

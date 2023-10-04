@@ -1356,4 +1356,80 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     CollectiveUnconscious = 849,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostSpellforge = 2338,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    MagicalAversion = 2370,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostSteelsting = 2339,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PhysicalAversion = 2369,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostRampage = 2559,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostBurst = 2558,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostBravery = 2341,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostProtect = 2333,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostShell = 2334,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostProtect2 = 2561,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostShell2 = 2562,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostBubble = 2563,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostStoneskin = 151,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostFlarestar = 2440,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostSeraphStrike = 2484,
+
 }

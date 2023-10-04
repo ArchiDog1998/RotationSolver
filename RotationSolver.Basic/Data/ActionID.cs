@@ -3562,7 +3562,7 @@ public enum ActionID : uint
     Sprint = 3,
     #endregion
 
-    #region VariantActions
+    #region Variant Actions
     /// <summary>
     /// 
     /// </summary>
@@ -3607,5 +3607,78 @@ public enum ActionID : uint
     /// 
     /// </summary>
     VariantRampart2 = 33864,
+    #endregion
+
+    #region Bozja Actions
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostSpellforge = 20706,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostSteelsting = 20707,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostRampage = 23910,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostBurst = 23909,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostBravery = 20713,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostProtect = 20719,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostShell = 20710,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostProtect2 = 23915,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostShell2 = 23916,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostBubble = 23917,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostStoneskin = 20712,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostStoneskin2 = 23908,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostFlarestar = 22352,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LostSeraphStrike = 22354,
     #endregion
 }
