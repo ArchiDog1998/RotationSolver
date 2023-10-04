@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.3.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.2...v3.3.3) (2023-10-04)
+
+
+### Bug Fixes
+
+* add links of rotations. ([781e217](https://github.com/ArchiDog1998/RotationSolver/commit/781e2174c594eb8d23e6ba3f5693f7eac5c15412))
+* add story link into about page. ([25c2e8f](https://github.com/ArchiDog1998/RotationSolver/commit/25c2e8fa68015194d2229345eb5537e22582a408))
+* add supporters list in about page. ([0ed5ec3](https://github.com/ArchiDog1998/RotationSolver/commit/0ed5ec3a318126bac79dea295deb9ed956713426))
+* clean using. ([1adc750](https://github.com/ArchiDog1998/RotationSolver/commit/1adc7508e1153c2fc82a411f2538994b35db62b3))
+* ImRaii. ([701554b](https://github.com/ArchiDog1998/RotationSolver/commit/701554b0fef29ada670004225848dc4f7fdd909f))
+* little patch. ([6218cf2](https://github.com/ArchiDog1998/RotationSolver/commit/6218cf20c8d817389b599a692538fa2afa611844))
+* make localization online. ([7578487](https://github.com/ArchiDog1998/RotationSolver/commit/757848777b9eae60bd82a150655e989e86879980))
+* patch api 9 with the normal things. ([703642b](https://github.com/ArchiDog1998/RotationSolver/commit/703642b44113fcc121fef5af0c22c9164a29beb7))
+* patch api 9. ([f21cfaa](https://github.com/ArchiDog1998/RotationSolver/commit/f21cfaad9b1f967a0fbddd9075067d0259723378))
+* update submodules. ([b83ab31](https://github.com/ArchiDog1998/RotationSolver/commit/b83ab310f52f20a84f8ab8c9c67b53c48909fe1f))
+
 ## [3.3.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.1...v3.3.2) (2023-09-30)
 
 
