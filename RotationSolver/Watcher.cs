@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Logging;
 using Dalamud.Plugin.Ipc;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
@@ -14,10 +13,22 @@ namespace RotationSolver;
 
 public static class Watcher
 {
+#if DEBUG
+    private unsafe delegate bool OnUseAction(ActionManager* manager, ActionType actionType, uint actionID, ulong targetID, uint a4, uint a5, uint a6, void* a7);
+    private static Dalamud.Hooking.Hook<OnUseAction> _useActionHook;
+#endif
+
     public static ICallGateSubscriber<object, object> IpcSubscriber;
 
     public static void Enable()
     {
+#if DEBUG
+        unsafe
+        {
+            _useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? EB 64 B1 01", UseActionDetour);
+            //_useActionHook.Enable();
+        }
+#endif
         IpcSubscriber = Svc.PluginInterface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
         IpcSubscriber.Subscribe(UpdateRTTDetour);
 
@@ -27,10 +38,27 @@ public static class Watcher
 
     public static void Disable()
     {
+#if DEBUG
+        _useActionHook?.Dispose();
+#endif
         IpcSubscriber.Unsubscribe(UpdateRTTDetour);
         ActionEffect.ActionEffectEvent -= ActionFromEnemy;
         ActionEffect.ActionEffectEvent -= ActionFromSelf;
     }
+#if DEBUG
+    private static unsafe bool UseActionDetour(ActionManager* manager, ActionType actionType, uint actionID, ulong targetID, uint a4, uint a5, uint a6, void* a7)
+    {
+        try
+        {
+            Svc.Chat.Print($"Type: {actionType}, ID: {actionID}, Tar: {targetID}, 4: {a4}, 5: {a5}, 6: {a6}");
+        }
+        catch(Exception e)
+        {
+            Svc.Log.Warning(e, "Failed to detour actions");
+        }
+        return _useActionHook.Original(manager, actionType, actionID, targetID, a4, a5, a6, a7);
+    }
+#endif
 
     private static void UpdateRTTDetour(dynamic obj)
     {

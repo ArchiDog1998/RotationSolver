@@ -20,13 +20,9 @@ public class MacroInfo
 
         try
         {
-#if DEBUG
-#else
-            var shared = RaptureMacroModule.Instance()->SharedSpan[MacroIndex];
-            var individual = RaptureMacroModule.Instance()->IndividualSpan[MacroIndex];
+            var macro = RaptureMacroModule.Instance()->GetMacro(IsShared ? 1u : 0u, (uint)MacroIndex);
 
-            DataCenter.Macros.Enqueue(new MacroItem(tar, IsShared ? &shared : &individual));
-#endif
+            DataCenter.Macros.Enqueue(new MacroItem(tar, macro));
             return true;
         }
         catch (Exception ex)
