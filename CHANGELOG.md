@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.3.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.3...v3.3.4) (2023-10-06)
+
+
+### Bug Fixes
+
+* add bozja actions. ([c489f6d](https://github.com/ArchiDog1998/RotationSolver/commit/c489f6d93828f2c6119512d3acf0e624164ab215))
+* fixed target. ([73f101b](https://github.com/ArchiDog1998/RotationSolver/commit/73f101bd66f7485f90cf7ddf27a0ce350613fb65))
+* marco things. ([07933e4](https://github.com/ArchiDog1998/RotationSolver/commit/07933e40e451a3df8b16a047909e179437526a45))
+
 ## [3.3.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.2...v3.3.3) (2023-10-04)
 
 
