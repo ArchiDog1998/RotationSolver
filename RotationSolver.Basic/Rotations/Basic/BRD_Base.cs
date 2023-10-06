@@ -221,7 +221,21 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction WardensPaean { get; } = new BaseAction(ActionID.WardensPaean, ActionOption.Heal);
+    public static IBaseAction WardensPaean { get; } = new BaseAction(ActionID.WardensPaean, ActionOption.Heal)
+    {
+        ChoiceTarget = (tars, mustUse) =>
+        {
+            if (DyingPeople.Any())
+            {
+                return DyingPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
+            }
+            else if (WeakenPeople.Any())
+            {
+                return WeakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
+            }
+            return null;
+        },
+    };
 
     /// <summary>
     /// 
