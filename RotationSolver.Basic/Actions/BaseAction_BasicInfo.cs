@@ -57,7 +57,7 @@ public partial class BaseAction : IBaseAction
     /// <summary>
     /// Is this duty action on the slot.
     /// </summary>
-    public bool IsDutyActionOnSlot => DataCenter.BluSlots.Contains(AdjustedID);
+    public bool IsDutyActionOnSlot => DataCenter.DutyActions.Contains(AdjustedID);
 
     /// <summary>
     /// How many gcd left to add the dot.
