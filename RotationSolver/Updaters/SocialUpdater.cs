@@ -87,10 +87,8 @@ internal class SocialUpdater
         DataCenter.ResetAllLastActions();
 
         var territory = Service.GetSheet<TerritoryType>().GetRow(id);
-        if (territory?.ContentFinderCondition?.Value?.RowId != 0)
-        {
-            _canSaying = true;
-        }
+        _canSaying = territory?.ContentFinderCondition?.Value?.RowId != 0;
+
         InPvp = territory?.IsPvpZone ?? false;
 
         DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);
