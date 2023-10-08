@@ -15,6 +15,8 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using Module = ECommons.Module;
 
 namespace RotationSolver;

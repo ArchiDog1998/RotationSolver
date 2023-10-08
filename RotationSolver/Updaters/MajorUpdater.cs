@@ -7,6 +7,7 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -68,6 +69,11 @@ internal static class MajorUpdater
                 Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
             });
         }
+
+#if DEBUG
+        //*(float*)((IntPtr)(void*)CameraManager.Instance()->Camera + 0x130) = 0;
+
+#endif
 
         try
         {
