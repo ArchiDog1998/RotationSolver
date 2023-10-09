@@ -72,7 +72,6 @@ internal static class MajorUpdater
 
 #if DEBUG
         //*(float*)((IntPtr)(void*)CameraManager.Instance()->Camera + 0x130) = 0;
-
 #endif
 
         try
