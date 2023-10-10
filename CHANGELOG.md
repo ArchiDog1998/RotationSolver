@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.3.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.4...v3.3.5) (2023-10-10)
+
+
+### Bug Fixes
+
+* add  avarice not installed warning. ([a4b8ca5](https://github.com/ArchiDog1998/RotationSolver/commit/a4b8ca5f221cf9c04dab9f99ab4ba729cf009050))
+* fixed rotation link bugs. ([dea4657](https://github.com/ArchiDog1998/RotationSolver/commit/dea4657f4f9c567ca62e82345796d218580cb757))
+* fixed wardensPaean target finding. ([a28823b](https://github.com/ArchiDog1998/RotationSolver/commit/a28823b0e0196ff10efbee4b5d883aeed547a83a))
+* safely save for the json files. ([c7c91e8](https://github.com/ArchiDog1998/RotationSolver/commit/c7c91e804f6f1defaa50b5805b488aadfe985312))
+* social update only showed in duty. ([5e6d80f](https://github.com/ArchiDog1998/RotationSolver/commit/5e6d80f5aeba47693ee593031bb35fcc308983ba))
+* toggle actions can be added with boolean. ([90b48c7](https://github.com/ArchiDog1998/RotationSolver/commit/90b48c7eff382a860ec3594c484f4604c5311ae7))
+
 ## [3.3.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.3...v3.3.4) (2023-10-06)
 
 
