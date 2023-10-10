@@ -608,6 +608,7 @@ internal class Strings
 
     public string HighEndWarning { get; set; } = "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!";
     public string TextToTalkWarning { get; set; } = "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!";
+    public string AvariceWarning { get; set; } = "It seems that you didn't installed Avarice. If you want to get the positional indicator from Rotation Solver, please install it.";
 
     public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action ({0})!";
 
