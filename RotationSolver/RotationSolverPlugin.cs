@@ -2,7 +2,6 @@ using Clipper2Lib;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
-using Dalamud.Logging;
 using Dalamud.Plugin;
 using ECommons;
 using ECommons.DalamudServices;
@@ -15,7 +14,6 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
-using Module = ECommons.Module;
 
 namespace RotationSolver;
 
@@ -35,7 +33,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public static DalamudLinkPayload HideWarningLinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
-        ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector, Module.ObjectFunctions);
+        ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out _);
         IconSet.InIt();
 

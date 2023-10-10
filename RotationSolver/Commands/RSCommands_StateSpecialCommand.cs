@@ -1,5 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 

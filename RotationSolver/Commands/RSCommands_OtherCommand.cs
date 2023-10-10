@@ -2,7 +2,6 @@
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Configuration;
 
 namespace RotationSolver.Commands
 {
@@ -85,15 +84,11 @@ namespace RotationSolver.Commands
         {
             foreach (var act in RotationUpdater.RightRotationActions)
             {
-                if (str == act.Name)
+                if (str.StartsWith(act.Name))
                 {
-                    act.IsEnabled = !act.IsEnabled;
+                    var flag = str.Substring(act.Name.Length).Trim();
 
-                    //Svc.Toasts.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
-                    //    new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                    //    {
-                    //        IconId = act.IconID,
-                    //    });
+                    act.IsEnabled = bool.TryParse(flag, out var parse) ? parse : !act.IsEnabled;
 
                     return;
                 }
@@ -102,7 +97,6 @@ namespace RotationSolver.Commands
 
         private static void DoActionCommand(string str)
         {
-            //Todo!
             var strs = str.Split('-');
 
             if (strs != null && strs.Length == 2 && double.TryParse(strs[1], out var time))

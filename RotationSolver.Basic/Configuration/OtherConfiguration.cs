@@ -1,6 +1,4 @@
-﻿using Dalamud.Game.ClientState.GamePad;
-using Dalamud.Logging;
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -190,11 +188,18 @@ public class OtherConfiguration
 
     private static void SavePath<T>(T value, string path)
     {
-        File.WriteAllTextAsync(path,
-        JsonConvert.SerializeObject(value, Formatting.Indented, new JsonSerializerSettings()
+        try
         {
-            TypeNameHandling = TypeNameHandling.None,
-        }));
+            File.WriteAllTextAsync(path,
+            JsonConvert.SerializeObject(value, Formatting.Indented, new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.None,
+            }));
+        }
+        catch(Exception ex)
+        {
+            Svc.Log.Warning(ex, $"Failed to save the file to {path}");
+        }
     }
 
     private static void InitOne<T>(ref T value, string name, bool download = true)

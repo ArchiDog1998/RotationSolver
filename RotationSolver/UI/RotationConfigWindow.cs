@@ -12,6 +12,7 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
@@ -1101,7 +1102,7 @@ public partial class RotationConfigWindow : Window
             {
                 var userName = info.GitHubUserName;
                 var repository = info.GitHubRepository;
-                DrawGitHubBadge(userName, repository, $"https://github.com/{userName}/{repository}/blob/{link.Path}", center: true);
+                DrawGitHubBadge(userName, repository, link.Path, $"https://github.com/{userName}/{repository}/blob/{link.Path}", center: true);
             }
             ImGui.NewLine();
 
@@ -2280,9 +2281,18 @@ public partial class RotationConfigWindow : Window
 
     private static unsafe void DrawIcon()
     {
-        if (Player.Available)
+        ImGui.Text("Hate");
+        foreach (var hate in UIState.Instance()->Hate.HateArraySpan)
         {
-            ImGui.Text(Player.GameObject->Height.ToString());  
+            var name = Svc.Objects.SearchById(hate.ObjectId)?.Name ?? "Unknown";
+            ImGui.Text($"{name} : {hate.Enmity}");
+        }
+        ImGui.Spacing();
+        ImGui.Text("Hater");
+        foreach (var hater in UIState.Instance()->Hater.HaterArraySpan)
+        {
+            var name = Svc.Objects.SearchById(hater.ObjectId)?.Name ?? "Unknown";
+            ImGui.Text($"{name} : {hater.Enmity}");
         }
 
         ImGui.Text(DataCenter.TerritoryContentType.ToString());
