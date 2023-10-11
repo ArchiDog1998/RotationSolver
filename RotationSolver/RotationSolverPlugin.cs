@@ -90,6 +90,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             if (id == 1)
             {
                 Service.Config.SetValue(PluginConfigBool.HideWarning, true);
+                Svc.Chat.Print("Warning has been hidden.");
             }
         });
         Task.Run(async () =>

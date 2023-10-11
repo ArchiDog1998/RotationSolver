@@ -7,7 +7,6 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -137,11 +136,11 @@ internal static class MajorUpdater
 
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "Avarice"))
         {
-            Svc.Chat.PrintError(LocalizationManager.RightLang.AvariceWarning);
+            LocalizationManager.RightLang.AvariceWarning.ShowWarning(0);
         }
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "TextToTalk"))
         {
-            Svc.Chat.PrintError(LocalizationManager.RightLang.TextToTalkWarning);
+            LocalizationManager.RightLang.TextToTalkWarning.ShowWarning(0);
         }
     }
 

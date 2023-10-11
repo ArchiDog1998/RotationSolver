@@ -1,5 +1,4 @@
-﻿using Dalamud.Plugin.Services;
-using Dalamud.Utility.Signatures;
+﻿using Dalamud.Utility.Signatures;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.Attributes;
 using FFXIVClientStructs.FFXIV.Client.Game;
