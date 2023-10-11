@@ -1,5 +1,4 @@
 ﻿using Dalamud.Configuration;
-using Dalamud.Logging;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;

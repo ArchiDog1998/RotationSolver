@@ -496,7 +496,7 @@
   "ConfigWindow_Actions_MoveDown": "Move Down",
   "ConfigWindow_NotInJob": "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}",
   "ConfigWindow_Searching": "Search...",
-  "ConfigWindow_UI_HideWarning": "Hide warning when entering High-end Duty",
+  "ConfigWindow_UI_HideWarning": "Hide all warnings",
   "ConfigWindow_Auto_BeneficialAreaStrategy": "Beneficial AoE strategy",
   "ConfigWindow_About_OpenConfigFolder": "Open Config Folder",
   "ConfigWindow_Basic_AnimationLockTime": "The Animation lock time from individual actions. Here is 0.6s for example.",

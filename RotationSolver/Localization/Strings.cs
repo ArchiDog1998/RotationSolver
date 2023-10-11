@@ -1,7 +1,4 @@
-﻿using ExCSS;
-using Lumina.Excel.GeneratedSheets;
-
-namespace RotationSolver.Localization;
+﻿namespace RotationSolver.Localization;
 
 internal class Strings
 {
@@ -711,7 +708,7 @@ internal class Strings
     public string ConfigWindow_NotInJob { get; set; } = "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}";
 
     public string ConfigWindow_Searching { get; set; } = "Search...";
-    public string ConfigWindow_UI_HideWarning { get; set; } = "Hide warning when entering High-end Duty";
+    public string ConfigWindow_UI_HideWarning { get; set; } = "Hide all warnings";
     public string ConfigWindow_Auto_BeneficialAreaStrategy { get; set; } = "Beneficial AoE strategy";
     public string ConfigWindow_About_OpenConfigFolder { get; set; } = "Open Config Folder";
     public string ConfigWindow_Basic_AnimationLockTime { get; set; } = "The Animation lock time from individual actions. Here is 0.6s for example.";
