@@ -612,7 +612,6 @@ internal class Strings
 
     public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action ({0})!";
 
-
     public string ConfigWindow_About_Punchline { get; set; } = "Analyses PvE combat information every frame and finds the best action.";
     public string ConfigWindow_About_Description { get; set; } = "This means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.\n\nThen, it will highlight the best action on the hot bar, or help you to click on it.";
 

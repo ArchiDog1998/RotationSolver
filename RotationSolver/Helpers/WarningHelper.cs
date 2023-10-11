@@ -4,8 +4,11 @@ using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Helpers;
 
-public static class UIHelper
+public static class WarningHelper
 {
+    private static Queue<string> _showWarnings = new Queue<string>();
+    private static bool _run = false;
+
     public static void ShowWarning(this string message, int times = 3, DalamudLinkPayload link = null)
     {
         if (Service.Config.GetValue(Configuration.PluginConfigBool.HideWarning)) return;
@@ -31,8 +34,9 @@ public static class UIHelper
               new TextPayload("Rotation Solver"),
               UIForegroundPayload.UIForegroundOff,
               RawPayload.LinkTerminator,
+              new TextPayload(": "),
               link,
-              new TextPayload(": " + message),
+              new TextPayload(message),
               RawPayload.LinkTerminator,
 
               RotationSolverPlugin.HideWarningLinkPayload,
@@ -45,13 +49,25 @@ public static class UIHelper
             Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
         });
 
-        Task.Run(async () =>
+        for (int i = 0; i < times; i++)
         {
-            for (int i = 0; i < times; i++)
-            {
-                await Task.Delay(3000);
-                Svc.Toasts.ShowError(message);
-            }
-        });
+            _showWarnings.Enqueue(message);
+        }
+
+        if (!_run)
+        {
+            _run = true;
+            Task.Run(RunShowError);
+        }
+    }
+
+    private static async Task RunShowError()
+    {
+        while (_showWarnings.TryDequeue(out var message))
+        {
+            Svc.Toasts.ShowError(message);
+            await Task.Delay(3000);
+        }
+        _run = false;
     }
 }
