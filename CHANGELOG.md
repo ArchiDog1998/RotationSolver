@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.3.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.5...v3.3.6) (2023-10-11)
+
+
+### Bug Fixes
+
+* simplify warning. ([3b03040](https://github.com/ArchiDog1998/RotationSolver/commit/3b03040533b5c284c44cca7b3e51e066976e2f8f))
+* warning manager. ([e9efc0c](https://github.com/ArchiDog1998/RotationSolver/commit/e9efc0cf8b2a401c47448b5ccf27ab3d30b15b60))
+
 ## [3.3.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.4...v3.3.5) (2023-10-10)
 
 
