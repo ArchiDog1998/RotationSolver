@@ -28,7 +28,7 @@ namespace RotationSolver.UI;
 
 public partial class RotationConfigWindow : Window
 {
-    private static float _scale => ImGuiHelpers.GlobalScale;
+    private static float Scale => ImGuiHelpers.GlobalScale;
     private static Job Job => DataCenter.Job;
 
     private RotationConfigWindowTab _activeTab;
@@ -82,7 +82,7 @@ public partial class RotationConfigWindow : Window
                 using var table = ImRaii.Table("Rotation Config Table", 2, ImGuiTableFlags.Resizable);
                 if (table)
                 {
-                    ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * _scale);
+                    ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
                     ImGui.TableNextColumn();
 
                     try
@@ -126,9 +126,9 @@ public partial class RotationConfigWindow : Window
             ImGui.Separator();
             ImGui.Spacing(); 
 
-            var iconSize = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH)) * 0.6f;
+            var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH)) * 0.6f;
 
-            if (wholeWidth > JOB_ICON_WIDTH * _scale)
+            if (wholeWidth > JOB_ICON_WIDTH * Scale)
             {
                 ImGui.SetNextItemWidth(wholeWidth);
                 SearchingBox();
@@ -144,7 +144,7 @@ public partial class RotationConfigWindow : Window
                         using var popup = ImRaii.Popup("Searching Popup");
                         if (popup)
                         {
-                            ImGui.SetNextItemWidth(200 * _scale);
+                            ImGui.SetNextItemWidth(200 * Scale);
                             SearchingBox();
                             if (ImGui.IsKeyDown(ImGuiKey.Enter))
                             {
@@ -160,7 +160,7 @@ public partial class RotationConfigWindow : Window
                         ImGuiHelper.DrawActionOverlay(cursor, iconSize, -1);
                         ImguiTooltips.HoveredTooltip("Search");
 
-                    }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
+                    }, Math.Max(Scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
                 }
             }
 
@@ -168,7 +168,7 @@ public partial class RotationConfigWindow : Window
             {
                 if (item.GetAttribute<TabSkipAttribute>() != null) continue;
 
-                if(IconSet.GetTexture(item.GetAttribute<TabIconAttribute>()?.Icon ?? 0, out var icon) && wholeWidth <= JOB_ICON_WIDTH * _scale)
+                if(IconSet.GetTexture(item.GetAttribute<TabIconAttribute>()?.Icon ?? 0, out var icon) && wholeWidth <= JOB_ICON_WIDTH * Scale)
                 {
                     ImGuiHelper.DrawItemMiddle(() =>
                     {
@@ -179,7 +179,7 @@ public partial class RotationConfigWindow : Window
                             _searchResults = Array.Empty<ISearchable>();
                         }
                         ImGuiHelper.DrawActionOverlay(cursor, iconSize, _activeTab == item ? 1 : 0);
-                    }, Math.Max(_scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
+                    }, Math.Max(Scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
 
                     var desc = item.ToString();
                     var addition = item.ToDescription();
@@ -202,13 +202,13 @@ public partial class RotationConfigWindow : Window
                 }
             }
 
-            if (wholeWidth <= 60 * _scale 
+            if (wholeWidth <= 60 * Scale 
                 ? IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_s_logo_nolabel.png", out var texture)
                 : IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_bg_tag_dark.png", out texture))
             {
-                var width = Math.Min(150 * _scale, Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, texture.Width)));
+                var width = Math.Min(150 * Scale, Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, texture.Width)));
                 var size = new Vector2(width, width * texture.Height / texture.Width);
-                size *= MathF.Max(_scale * MIN_COLUMN_WIDTH / size.Y, 1);
+                size *= MathF.Max(Scale * MIN_COLUMN_WIDTH / size.Y, 1);
                 var result = false;
                 ImGuiHelper.DrawItemMiddle(() =>
                 {
@@ -225,7 +225,7 @@ public partial class RotationConfigWindow : Window
     }
 
     private const int FRAME_COUNT = 180;
-    private static SortedList<string, IDalamudTextureWrap> _textureWrapList = new SortedList<string, IDalamudTextureWrap>(FRAME_COUNT);
+    private static readonly SortedList<string, IDalamudTextureWrap> _textureWrapList = new(FRAME_COUNT);
     private static bool GetLocalImage(string name, out IDalamudTextureWrap texture)
     {
         var url = $"RotationSolver.Logos.{name}.png";
@@ -254,7 +254,7 @@ public partial class RotationConfigWindow : Window
 
     private void DrawHeader(float wholeWidth)
     {
-        var size = MathF.Max(MathF.Min(wholeWidth, _scale * 128), _scale * MIN_COLUMN_WIDTH);
+        var size = MathF.Max(MathF.Min(wholeWidth, Scale * 128), Scale * MIN_COLUMN_WIDTH);
 
         if (IconSet.GetTexture((uint)0, out var overlay))
         {
@@ -288,7 +288,7 @@ public partial class RotationConfigWindow : Window
         {
             var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? Array.Empty<ICustomRotation>();
 
-            var iconSize = Math.Max(_scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, _scale * JOB_ICON_WIDTH));
+            var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH));
             var comboSize = ImGui.CalcTextSize(rotation.RotationName).X;
 
             const string slash = " - ";
@@ -306,7 +306,7 @@ public partial class RotationConfigWindow : Window
                     DrawRotationIcon(rotation, iconSize);
                 }, wholeWidth, iconSize);
 
-                if (_scale * JOB_ICON_WIDTH < wholeWidth)
+                if (Scale * JOB_ICON_WIDTH < wholeWidth)
                 {
                     DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
                 }
@@ -393,7 +393,7 @@ public partial class RotationConfigWindow : Window
 
     private void DrawBody()
     {
-        ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * 8 * _scale);
+        ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * 8 * Scale);
         using var child = ImRaii.Child("Rotation Solver Body", -Vector2.One);
         if (child)
         {
@@ -466,7 +466,7 @@ public partial class RotationConfigWindow : Window
 
     #region About
 
-    private static readonly SortedList<uint, string> CountStringPair = new SortedList<uint, string>()
+    private static readonly SortedList<uint, string> CountStringPair = new()
     {
         { 100_000, LocalizationManager.RightLang.ConfigWindow_About_Clicking100k },
         { 500_000, LocalizationManager.RightLang.ConfigWindow_About_Clicking500k },
@@ -579,7 +579,7 @@ public partial class RotationConfigWindow : Window
 
         ImGui.Spacing();
 
-        var iconSize = 40 * _scale;
+        var iconSize = 40 * Scale;
 
         using var table = ImRaii.Table("Incompatible plugin", 4, ImGuiTableFlags.BordersInner
         | ImGuiTableFlags.Resizable
@@ -649,17 +649,15 @@ public partial class RotationConfigWindow : Window
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_ThanksToSupporters);
 
         var width = ImGui.GetWindowWidth();
-        using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(12)))
-        {
-            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+        using var font = ImRaii.PushFont(ImGuiHelper.GetFont(12));
+        using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
 
-            foreach (var name in DownloadHelper.Supporters)
+        foreach (var name in DownloadHelper.Supporters)
+        {
+            ImGuiHelper.DrawItemMiddle(() =>
             {
-                ImGuiHelper.DrawItemMiddle(() =>
-                {
-                    ImGui.TextWrapped(name);
-                }, width, ImGui.CalcTextSize(name).X);
-            }
+                ImGui.TextWrapped(name);
+            }, width, ImGui.CalcTextSize(name).X);
         }
     }
 
@@ -728,7 +726,7 @@ public partial class RotationConfigWindow : Window
 
         if (!string.IsNullOrEmpty(info.DonateLink))
         {
-            if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * _scale, "Ko-fi link"))
+            if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Ko-fi link"))
             {
                 Util.OpenLink(info.DonateLink);
             }
@@ -890,7 +888,7 @@ public partial class RotationConfigWindow : Window
                     ImGui.TableNextRow();
                     ImGui.TableNextColumn();
 
-                    if (IconSet.GetTexture(attr.IconID, out var image)) ImGui.Image(image.ImGuiHandle, Vector2.One * DESC_SIZE * _scale);
+                    if (IconSet.GetTexture(attr.IconID, out var image)) ImGui.Image(image.ImGuiHandle, Vector2.One * DESC_SIZE * Scale);
 
                     ImGui.SameLine();
                     var isOnCommand = attr.IsOnCommand;
@@ -906,7 +904,7 @@ public partial class RotationConfigWindow : Window
                     }
 
                     bool notStart = false;
-                    var size = DESC_SIZE * _scale;
+                    var size = DESC_SIZE * Scale;
                     var y = ImGui.GetCursorPosY() + size * 4 / 82;
                     foreach (var item in allActions)
                     {
@@ -1005,7 +1003,7 @@ public partial class RotationConfigWindow : Window
             if (config is RotationConfigCombo c)
             {
                 var val = set.GetCombo(c.Name);
-                ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.Items[val]).X + 50 * _scale);
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.Items[val]).X + 50 * Scale);
                 var openCombo = ImGui.BeginCombo(name, c.Items[val]);
                 ImGuiHelper.ReactPopup(key, command, Reset);
                 if (openCombo)
@@ -1033,7 +1031,7 @@ public partial class RotationConfigWindow : Window
             else if (config is RotationConfigFloat f)
             {
                 float val = set.GetFloat(config.Name);
-                ImGui.SetNextItemWidth(_scale * Searchable.DRAG_WIDTH);
+                ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
                 if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max))
                 {
                     set.SetValue(config.Name, val.ToString());
@@ -1055,7 +1053,7 @@ public partial class RotationConfigWindow : Window
             else if (config is RotationConfigInt i)
             {
                 int val = set.GetInt(config.Name);
-                ImGui.SetNextItemWidth(_scale * Searchable.DRAG_WIDTH);
+                ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
                 if (ImGui.DragInt(name, ref val, i.Speed, i.Min, i.Max))
                 {
                     set.SetValue(config.Name, val.ToString());
@@ -1081,7 +1079,7 @@ public partial class RotationConfigWindow : Window
         if (!string.IsNullOrEmpty(youtubeLink))
         {
             ImGui.NewLine();
-            if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * _scale, "Youtube Link"))
+            if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Youtube Link"))
             {
                 Util.OpenLink("https://www.youtube.com/watch?v=" + youtubeLink);
             }
@@ -1148,7 +1146,7 @@ public partial class RotationConfigWindow : Window
 
                 if (RotationUpdater.RightNowRotation != null)
                 {
-                    var size = 30 * _scale;
+                    var size = 30 * Scale;
                     var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (size * 1.1f + ImGui.GetStyle().ItemSpacing.X)));
                     foreach (var pair in RotationUpdater.AllGroupedActions)
                     {
@@ -1277,7 +1275,7 @@ public partial class RotationConfigWindow : Window
                     ImGui.Separator();
 
                     var ttk = action.TimeToKill;
-                    ImGui.SetNextItemWidth(_scale * 150);
+                    ImGui.SetNextItemWidth(Scale * 150);
                     if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_TTK}##{action}",
                         ref ttk, 0.1f, 0, 120))
                     {
@@ -1287,7 +1285,7 @@ public partial class RotationConfigWindow : Window
                     if (!action.IsSingleTarget)
                     {
                         var aoeCount = (int)action.AOECount;
-                        ImGui.SetNextItemWidth(_scale * 150);
+                        ImGui.SetNextItemWidth(Scale * 150);
                         if (ImGui.DragInt($"{LocalizationManager.RightLang.ConfigWindow_Actions_AOECount}##{action}", 
                             ref aoeCount, 0.05f, 1, 10))
                         {
@@ -1298,7 +1296,7 @@ public partial class RotationConfigWindow : Window
                     if (action.IsHeal)
                     {
                         var ratio = action.AutoHealRatio;
-                        ImGui.SetNextItemWidth(_scale * 150);
+                        ImGui.SetNextItemWidth(Scale * 150);
                         if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_HealRatio}##{action}",
                             ref ratio, 0.002f, 0, 1))
                         {
@@ -1310,11 +1308,8 @@ public partial class RotationConfigWindow : Window
                 ImGui.Separator();
             }
 
-            ActionSequencerUpdater.DrawHeader(30 * _scale);
-            if (_sequencerList != null)
-            {
-                _sequencerList.Draw();
-            }
+            ActionSequencerUpdater.DrawHeader(30 * Scale);
+            _sequencerList?.Draw();
         }
     }
 
@@ -1462,7 +1457,7 @@ public partial class RotationConfigWindow : Window
                     lastRole = role;
 
                     if(IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed), out var texture, 62574))
-                    ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * _scale);
+                    ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
 
                     ImguiTooltips.HoveredTooltip(string.Join('\n', jobs));
                 }
@@ -1473,7 +1468,7 @@ public partial class RotationConfigWindow : Window
 
                 if (!string.IsNullOrEmpty(info.DonateLink)
                     && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon)
-                    && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height/ icon.Width) * MathF.Min(250, icon.Width) * _scale, info.FilePath))
+                    && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height/ icon.Width) * MathF.Min(250, icon.Width) * Scale, info.FilePath))
                 {
                     Util.OpenLink(info.DonateLink);
                 }
@@ -1570,7 +1565,7 @@ public partial class RotationConfigWindow : Window
 
             var changed = false;
 
-            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X * 3 - 10 * _scale;
+            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X * 3 - 10 * Scale;
             width /= 3;
 
             ImGui.SetNextItemWidth(width);
@@ -1612,7 +1607,7 @@ public partial class RotationConfigWindow : Window
 
         ImGui.Spacing();
 
-        var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * _scale;
+        var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
 
         int removeIndex = -1;
         for (int i = 0; i < Service.Config.GlobalConfig.OtherLibs.Length; i++)
@@ -1732,20 +1727,20 @@ public partial class RotationConfigWindow : Window
     }
 
     static string _statusSearching = string.Empty;
-    private static void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
+    private static async void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
     {
         uint removeId = 0;
         uint notLoadId = 10100;
 
         var popupId = "Rotation Solver Popup" + name;
 
-        StatusPopUp(popupId, allStatus, ref _statusSearching, status =>
+        StatusPopUp(popupId, allStatus, ref _statusSearching, async status =>
         {
             statuses.Add(status.RowId);
-            OtherConfiguration.Save();
+            await OtherConfiguration.Save();
         }, notLoadId);
 
-        var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+        var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * Scale + ImGui.GetStyle().ItemSpacing.X)));
         var index = 0;
 
         if (IconSet.GetTexture(16220, out var text))
@@ -1754,7 +1749,7 @@ public partial class RotationConfigWindow : Window
             {
                 ImGui.SameLine();
             }
-            if (ImGuiHelper.NoPaddingNoColorImageButton(text.ImGuiHandle, new Vector2(24, 32) * _scale, name))
+            if (ImGuiHelper.NoPaddingNoColorImageButton(text.ImGuiHandle, new Vector2(24, 32) * Scale, name))
             {
                 if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
             }
@@ -1777,7 +1772,7 @@ public partial class RotationConfigWindow : Window
                 {
                     ImGui.SameLine();
                 }
-                ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * _scale, "Status" + status.RowId.ToString());
+                ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * Scale, "Status" + status.RowId.ToString());
 
                 ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false, 
                     (Delete, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
@@ -1787,7 +1782,7 @@ public partial class RotationConfigWindow : Window
         if (removeId != 0)
         {
             statuses.Remove(removeId);
-            OtherConfiguration.Save();
+            await OtherConfiguration.Save();
         }
     }
 
@@ -1796,15 +1791,15 @@ public partial class RotationConfigWindow : Window
         using var popup = ImRaii.Popup(popupId);
         if (popup)
         {
-            ImGui.SetNextItemWidth(200 * _scale);
+            ImGui.SetNextItemWidth(200 * Scale);
             ImGui.InputTextWithHint("##Searching the status", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref searching, 128);
 
             ImGui.Spacing();
 
-            using var child = ImRaii.Child("Rotation Solver Add Status", new Vector2(-1, 400 * _scale));
+            using var child = ImRaii.Child("Rotation Solver Add Status", new Vector2(-1, 400 * Scale));
             if (child)
             {
-                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * _scale + ImGui.GetStyle().ItemSpacing.X)));
+                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * Scale + ImGui.GetStyle().ItemSpacing.X)));
                 var index = 0;
 
                 var searchingKey = searching;
@@ -1816,7 +1811,7 @@ public partial class RotationConfigWindow : Window
                         {
                             ImGui.SameLine();
                         }
-                        if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(size * 3 / 4, size) * _scale, "Adding" + status.RowId.ToString()))
+                        if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(size * 3 / 4, size) * Scale, "Adding" + status.RowId.ToString()))
                         {
                             clicked?.Invoke(status);
                             ImGui.CloseCurrentPopup();
@@ -1868,7 +1863,7 @@ public partial class RotationConfigWindow : Window
     }
 
     private static string _actionSearching = string.Empty;
-    private static void DrawActionsList(string name, HashSet<uint> actions)
+    private static async void DrawActionsList(string name, HashSet<uint> actions)
     {
         uint removeId = 0;
 
@@ -1877,12 +1872,12 @@ public partial class RotationConfigWindow : Window
         using var popup = ImRaii.Popup(popupId);
         if (popup)
         {
-            ImGui.SetNextItemWidth(200 * _scale);
+            ImGui.SetNextItemWidth(200 * Scale);
             ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
 
             ImGui.Spacing();
 
-            using var child = ImRaii.Child("Rotation Solver Add action", new Vector2(-1, 400 * _scale));
+            using var child = ImRaii.Child("Rotation Solver Add action", new Vector2(-1, 400 * Scale));
             if (child)
             {
                 foreach (var action in AllActions.OrderByDescending(s =>Similarity(s.Name  + " " + s.RowId.ToString(), _actionSearching)))
@@ -1894,7 +1889,7 @@ public partial class RotationConfigWindow : Window
                         if(selected)
                         {
                             actions.Add(action.RowId);
-                            OtherConfiguration.Save();
+                            await OtherConfiguration.Save();
                             ImGui.CloseCurrentPopup();
                         }
                     }
@@ -1928,11 +1923,10 @@ public partial class RotationConfigWindow : Window
         if (removeId != 0)
         {
             actions.Remove(removeId);
-            OtherConfiguration.Save();
+            await OtherConfiguration.Save();
         }
     }
 
-    private static string _territorySearching = string.Empty;
     public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
     private static void DrawListTerritories()
     {
@@ -1960,7 +1954,7 @@ public partial class RotationConfigWindow : Window
             {
                 if (getIcon)
                 {
-                    ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * _scale);
+                    ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * Scale);
                     ImGui.SameLine();
                 }
                 ImGui.Text(territoryName);
@@ -1988,7 +1982,7 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_NoHostileDesc);
 
-            var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * _scale;
+            var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
 
             if(!OtherConfiguration.NoHostileNames.TryGetValue(territoryId, out var libs))
             {
@@ -2028,7 +2022,7 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_NoProvokeDesc);
 
-            width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * _scale;
+            width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
 
             if (!OtherConfiguration.NoProvokeNames.TryGetValue(territoryId, out libs))
             {

@@ -27,7 +27,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static CooldownWindow _cooldownWindow;
 
     static readonly List<IDisposable> _dis = new();
-    public string Name => "Rotation Solver";
+    public static string Name => "Rotation Solver";
 
     public static DalamudLinkPayload OpenLinkPayload { get; private set; }
     public static DalamudLinkPayload HideWarningLinkPayload { get; private set; }
@@ -109,7 +109,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         RSCommands.Enable();
     }
 
-    public void Dispose()
+    public async void Dispose()
     {
         RSCommands.Disable();
         Watcher.Disable();
@@ -125,7 +125,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         MajorUpdater.Dispose();
         PainterManager.Dispose();
-        OtherConfiguration.Save();
+        await OtherConfiguration.Save();
 
         ECommonsMain.Dispose();
 

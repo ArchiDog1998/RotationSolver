@@ -904,7 +904,7 @@ public partial class RotationConfigWindow
             var names = Enum.GetNames(typeof(TargetingType));
             var targingType = (int)Service.Config.GlobalConfig.TargetingTypes[i];
             var text = LocalizationManager.RightLang.ConfigWindow_Param_HostileCondition;
-            ImGui.SetNextItemWidth(ImGui.CalcTextSize(text).X + 30 * _scale);
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(text).X + 30 * Scale);
             if (ImGui.Combo(text + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
             {
                 Service.Config.GlobalConfig.TargetingTypes[i] = (TargetingType)targingType;
