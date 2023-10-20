@@ -1250,7 +1250,6 @@ public partial class RotationConfigWindow : Window
                 }
             }
 
-
             if (_activeAction != null)
             {
                 var enable = _activeAction.IsEnabled;

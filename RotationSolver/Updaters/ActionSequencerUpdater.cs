@@ -1,12 +1,9 @@
 ﻿using Dalamud.Interface.Colors;
-using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI;
-using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace RotationSolver.Updaters;
 

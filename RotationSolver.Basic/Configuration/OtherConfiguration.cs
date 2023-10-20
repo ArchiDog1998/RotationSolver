@@ -221,7 +221,7 @@ public class OtherConfiguration
         {
             try
             {
-                var client = new HttpClient();
+                using var client = new HttpClient();
                 var str = client.GetStringAsync($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/{name}.json").Result;
 
                 File.WriteAllText(path, str);

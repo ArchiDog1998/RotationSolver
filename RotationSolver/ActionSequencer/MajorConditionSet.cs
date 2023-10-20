@@ -1,6 +1,4 @@
 ﻿using ECommons.DalamudServices;
-using Lumina.Data.Parsing;
-using static FFXIVClientStructs.FFXIV.Client.UI.AddonAOZNotebook;
 
 namespace RotationSolver.ActionSequencer;
 
@@ -16,7 +14,6 @@ internal class MajorConditionSet
     public string Name;
     public void DrawCondition(uint id, ICustomRotation rotation)
     {
-
         if (!Conditions.TryGetValue(id, out var conditionSet))
         {
             conditionSet = Conditions[id] = new ConditionSet();
@@ -24,7 +21,7 @@ internal class MajorConditionSet
 
         if (conditionSet == null) return;
 
-        ConditionSet.DrawCondition(conditionSet.IsTrue(rotation));
+        ConditionHelper.DrawCondition(conditionSet.IsTrue(rotation));
         ImGui.SameLine();
         conditionSet?.Draw(rotation);
     }
@@ -37,7 +34,7 @@ internal class MajorConditionSet
         }
         if (conditionSet == null) return;
 
-        ConditionSet.DrawCondition(conditionSet.IsTrue(rotation));
+        ConditionHelper.DrawCondition(conditionSet.IsTrue(rotation));
         ImGui.SameLine();
         conditionSet?.Draw(rotation);
     }
