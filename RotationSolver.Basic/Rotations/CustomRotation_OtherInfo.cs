@@ -203,7 +203,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(Configuration.PluginConfigBool.AutoBurst);
 
-    bool _canUseHealAction => 
+    private bool CanUseHealAction => 
         //Job
         (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer)) 
         && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal)
@@ -212,22 +212,22 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && _canUseHealAction;
+    public virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && CanUseHealAction;
 
     /// <summary>
     /// 
     /// </summary>
-    public virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && _canUseHealAction;
+    public virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && CanUseHealAction;
 
     /// <summary>
     /// 
     /// </summary>
-    public virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && _canUseHealAction;
+    public virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && CanUseHealAction;
 
     /// <summary>
     /// 
     /// </summary>
-    public virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && _canUseHealAction;
+    public virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && CanUseHealAction;
 
     /// <summary>
     /// 
@@ -277,6 +277,11 @@ public abstract partial class CustomRotation
     /// Is player in high-end duty.
     /// </summary>
     public static bool IsInHighEndDuty => DataCenter.IsInHighEndDuty;
+
+    /// <summary>
+    /// Is player in duty.
+    /// </summary>
+    public static bool IsInDuty => Svc.Condition[ConditionFlag.BoundByDuty];
 
     /// <summary>
     /// 

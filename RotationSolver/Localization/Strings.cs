@@ -438,6 +438,7 @@ internal class Strings
         { nameof(CustomRotation.IsManual), "The state of manual. True for manual."},
 
         { nameof(CustomRotation.IsInHighEndDuty), "Is in the high-end duty"},
+        { nameof(CustomRotation.IsInDuty), "Is player in duty"},
         { nameof(CustomRotation.Ping), "Your ping"},
         { nameof(CustomRotation.NextAbilityToNextGCD), "Time from next ability to next GCD"},
 
