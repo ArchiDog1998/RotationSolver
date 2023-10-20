@@ -17,6 +17,8 @@ public partial class RotationConfigWindow
     private static char[] _splitChar = new char[] { ' ', ',', '、', '.', '。' };
     internal static float Similarity(string text, string key)
     {
+        if (string.IsNullOrEmpty(text)) return 0;
+
         var chars = text.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
         var keys = key.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
 

@@ -2,7 +2,7 @@
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
 
-namespace RotationSolver.ActionSequencer;
+namespace RotationSolver.Basic.Configuration.Conditions;
 
 internal class TargetCondition : DelayCondition
 {
@@ -27,7 +27,7 @@ internal class TargetCondition : DelayCondition
         if (_action != null)
         {
             _action.CanUse(out _, CanUseOption.EmptyOrSkipCombo | CanUseOption.MustUse
-                |  CanUseOption.IgnoreTarget);
+                | CanUseOption.IgnoreTarget);
             tar = _action.Target;
         }
         else

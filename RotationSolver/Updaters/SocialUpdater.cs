@@ -96,7 +96,7 @@ internal class SocialUpdater
 
         try
         {
-            RotationUpdater.RightNowRotation?.OnTerritoryChanged();
+            DataCenter.RightNowRotation?.OnTerritoryChanged();
         }
         catch(Exception ex)
         {
@@ -147,7 +147,7 @@ internal class SocialUpdater
         }
     }
 
-    private static readonly ChatEntityComparer _comparer = new ChatEntityComparer();
+    private static readonly ChatEntityComparer _comparer = new ();
     private static async void SayHelloToUsers()
     {
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
@@ -244,12 +244,12 @@ internal class SocialUpdater
 
         public virtual BitmapFontIcon Icon => BitmapFontIcon.Mentor;
 
-        protected SeString Character => new SeString(new IconPayload(Icon),
+        protected SeString Character => new (new IconPayload(Icon),
             new UIForegroundPayload(31),
             new PlayerPayload(player.Name.TextValue, player.HomeWorld.Id),
             UIForegroundPayload.UIForegroundOff);
 
-        protected SeString RotationSolver => new SeString(new IconPayload(BitmapFontIcon.DPS),
+        protected static SeString RotationSolver => new (new IconPayload(BitmapFontIcon.DPS),
             RotationSolverPlugin.OpenLinkPayload,
             new UIForegroundPayload(31),
             new TextPayload("Rotation Solver"),

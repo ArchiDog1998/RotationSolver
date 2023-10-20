@@ -1,7 +1,7 @@
 ﻿using Dalamud.Interface.Colors;
 using ECommons.ImGuiMethods;
-using RotationSolver.ActionSequencer;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 
@@ -11,38 +11,41 @@ internal class ActionSequencerUpdater
 {
     static string _actionSequencerFolder;
 
-    static IEnumerable<MajorConditionSet> _conditionSet;
-    public static MajorConditionSet RightSet => _conditionSet?
-        .ElementAtOrDefault(Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex));
-
-    public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? Array.Empty<string>();
+   
+    public static string[] ConditionSetsName => DataCenter.ConditionSets?.Select(s => s.Name).ToArray() ?? Array.Empty<string>();
 
     public static void UpdateActionSequencerAction()
     {
-        if (_conditionSet == null) return;
-        var customRotation = RotationUpdater.RightNowRotation;
+        if (DataCenter.ConditionSets == null) return;
+        var customRotation = DataCenter.RightNowRotation;
         if (customRotation == null) return;
 
         var allActions = RotationUpdater.RightRotationActions;
 
-        var set = RightSet;
+        var set = DataCenter.RightSet;
         if (set == null) return;
 
-        DataCenter.DisabledActionSequencer = new HashSet<uint>(set.DiabledConditions.Where(pair => pair.Value.IsTrue(customRotation))
-             .Select(pair => pair.Key));
+        DataCenter.DisabledActionSequencer = new HashSet<uint>(set.DisableConditionDict
+            .Where(pair => pair.Value.IsTrue(customRotation))
+            .Select(pair => pair.Key));
 
         bool find = false;
-        foreach (var conditionPair in set.Conditions)
+        var conditions = set.ConditionDict;
+        if (conditions != null)
         {
-            var nextAct = allActions.FirstOrDefault(a => a.ID == conditionPair.Key);
-            if (nextAct == null) continue;
+            foreach (var conditionPair in conditions)
+            {
+                var nextAct = allActions.FirstOrDefault(a => a.ID == conditionPair.Key);
+                if (nextAct == null) continue;
 
-            if (!conditionPair.Value.IsTrue(customRotation)) continue;
+                if (!conditionPair.Value.IsTrue(customRotation)) continue;
 
-            DataCenter.ActionSequencerAction = nextAct;
-            find = true;
-            break;
+                DataCenter.ActionSequencerAction = nextAct;
+                find = true;
+                break;
+            }
         }
+
         if (!find)
         {
             DataCenter.ActionSequencerAction = null;
@@ -54,7 +57,7 @@ internal class ActionSequencerUpdater
         _actionSequencerFolder = folder;
         if (!Directory.Exists(_actionSequencerFolder)) Directory.CreateDirectory(_actionSequencerFolder);
 
-        _conditionSet = MajorConditionSet.Read(_actionSequencerFolder);
+        LoadFiles();
     }
 
     public static void SaveFiles()
@@ -68,7 +71,7 @@ internal class ActionSequencerUpdater
         {
 
         }
-        foreach (var set in _conditionSet)
+        foreach (var set in DataCenter.ConditionSets)
         {
             set.Save(_actionSequencerFolder);
         }
@@ -76,27 +79,26 @@ internal class ActionSequencerUpdater
 
     public static void LoadFiles()
     {
-        _conditionSet = MajorConditionSet.Read(_actionSequencerFolder);
+        DataCenter.ConditionSets = MajorConditionSet.Read(_actionSequencerFolder);
     }
 
     private static void AddNew()
     {
-        const string conditionName = "Unnamed";
-        if (!_conditionSet.Any(c => c.Name == conditionName))
+        if (!DataCenter.ConditionSets.Any(c => c.IsUnnamed))
         {
-            _conditionSet = _conditionSet.Union(new[] { new MajorConditionSet(conditionName) });
+            DataCenter.ConditionSets = DataCenter.ConditionSets.Append(new MajorConditionSet());
         }
     }
 
     private static void Delete(string name)
     {
-        _conditionSet = _conditionSet.Where(c => c.Name != name);
+        DataCenter.ConditionSets = DataCenter.ConditionSets.Where(c => c.Name != name);
         File.Delete(_actionSequencerFolder + $"\\{name}.json");
     }
 
     public static void DrawHeader(float width)
     {
-        var set = RightSet;
+        var set = DataCenter.RightSet;
         bool hasSet = set != null;
 
         if (hasSet)

@@ -64,7 +64,7 @@ internal class ControlWindow : CtrlWindow
             LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowMove,
         }, ref value))
         {
-            Service.Config.SetValue(PluginConfigBool.IsControlWindowLock, value == 0);
+            Service.Config.SetBoolRaw(PluginConfigBool.IsControlWindowLock, value == 0);
         }
 
         ImGui.EndGroup();
@@ -82,8 +82,8 @@ internal class ControlWindow : CtrlWindow
         if (!isAoe) ImGui.PushStyleColor( ImGuiCol.Text, color);
         if (ImGuiHelper.SelectableButton("AOE"))
         {
-            Service.Config.SetValue(PluginConfigBool.UseAOEAction, !isAoe);
-            Service.Config.SetValue(PluginConfigBool.UseAOEWhenManual, !isAoe);
+            Service.Config.SetBoolRaw(PluginConfigBool.UseAOEAction, !isAoe);
+            Service.Config.SetBoolRaw(PluginConfigBool.UseAOEWhenManual, !isAoe);
         }
         if(!isAoe) ImGui.PopStyleColor();
 
@@ -93,7 +93,7 @@ internal class ControlWindow : CtrlWindow
         if (!isBurst) ImGui.PushStyleColor(ImGuiCol.Text, color);
         if (ImGuiHelper.SelectableButton("Burst"))
         {
-            Service.Config.SetValue(PluginConfigBool.AutoBurst, !isBurst);
+            Service.Config.SetBoolRaw(PluginConfigBool.AutoBurst, !isBurst);
         }
         if (!isBurst) ImGui.PopStyleColor();
         ImGui.SameLine();
@@ -112,7 +112,7 @@ internal class ControlWindow : CtrlWindow
 
     private static void DrawSpecials()
     {
-        var rotation = RotationUpdater.RightNowRotation;
+        var rotation = DataCenter.RightNowRotation;
 
         DrawCommandAction(rotation?.ActionHealAreaGCD, rotation?.ActionHealAreaAbility,
             SpecialCommandType.HealArea, ImGuiColors.HealerGreen);

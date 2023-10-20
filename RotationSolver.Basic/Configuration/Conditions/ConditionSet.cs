@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.ActionSequencer;
+﻿namespace RotationSolver.Basic.Configuration.Conditions;
 
 internal class ConditionSet : DelayCondition
 {
@@ -21,7 +21,7 @@ internal class ConditionSet : DelayCondition
     }
 }
 
-internal enum LogicalType: byte
+internal enum LogicalType : byte
 {
     And,
     Or,

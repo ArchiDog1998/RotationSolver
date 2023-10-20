@@ -1,6 +1,6 @@
 ﻿using ECommons.GameHelpers;
 
-namespace RotationSolver.ActionSequencer;
+namespace RotationSolver.Basic.Configuration.Conditions;
 
 internal abstract class DelayCondition : ICondition
 {
@@ -11,7 +11,7 @@ internal abstract class DelayCondition : ICondition
 
     public bool IsTrue(ICustomRotation rotation)
     {
-        if(_delay.GetRange == null)
+        if (_delay.GetRange == null)
         {
             _delay = new(() => (DelayMin, DelayMax));
         }

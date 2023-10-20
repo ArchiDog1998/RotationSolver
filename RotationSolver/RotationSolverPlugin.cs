@@ -89,7 +89,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             if (id == 1)
             {
-                Service.Config.SetValue(PluginConfigBool.HideWarning, true);
+                Service.Config.SetBoolRaw(PluginConfigBool.HideWarning, true);
                 Svc.Chat.Print("Warning has been hidden.");
             }
         });
@@ -147,7 +147,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void UpdateDisplayWindow()
     {
         var isValid = validDelay.Delay(MajorUpdater.IsValid
-            && RotationUpdater.RightNowRotation != null
+            && DataCenter.RightNowRotation != null
             && !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
             && !Svc.Condition[ConditionFlag.Occupied38] //Treasure hunt.
             && !Svc.Condition[ConditionFlag.WaitingForDuty]

@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.ActionSequencer;
+﻿namespace RotationSolver.Basic.Configuration.Conditions;
 
 internal interface ICondition
 {

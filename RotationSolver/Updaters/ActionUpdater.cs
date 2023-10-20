@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -21,7 +20,7 @@ internal static class ActionUpdater
     internal static IAction NextAction { get; set; }
     internal static IBaseAction NextGCDAction { get; set; }
     internal static IAction WrongAction { get; set; }
-    static Random _wrongRandom = new();
+    static readonly Random _wrongRandom = new();
 
     internal static void ClearNextAction()
     {
@@ -32,7 +31,7 @@ internal static class ActionUpdater
     internal static void UpdateNextAction()
     {
         PlayerCharacter localPlayer = Player.Object;
-        var customRotation = RotationUpdater.RightNowRotation;
+        var customRotation = DataCenter.RightNowRotation;
 
         try
         {

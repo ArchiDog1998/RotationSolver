@@ -283,7 +283,7 @@ public partial class RotationConfigWindow : Window
             ImGui.Spacing();
         }
 
-        var rotation = RotationUpdater.RightNowRotation;
+        var rotation = DataCenter.RightNowRotation;
         if (rotation != null)
         {
             var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? Array.Empty<ICustomRotation>();
@@ -701,7 +701,7 @@ public partial class RotationConfigWindow : Window
     #region Rotation
     private static void DrawRotation()
     {
-        var rotation = RotationUpdater.RightNowRotation;
+        var rotation = DataCenter.RightNowRotation;
         if (rotation == null) return;
 
         var desc = rotation.Description;
@@ -835,7 +835,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawRotationRating()
     {
-        var rotation = RotationUpdater.RightNowRotation;
+        var rotation = DataCenter.RightNowRotation;
         if (rotation == null) return;
 
         ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Rotation_Rating_Description);
@@ -853,7 +853,7 @@ public partial class RotationConfigWindow : Window
     private const float DESC_SIZE = 24;
     private static void DrawRotationDescription()
     {
-        var rotation = RotationUpdater.RightNowRotation;
+        var rotation = DataCenter.RightNowRotation;
         if (rotation == null) return;
 
         var wholeWidth = ImGui.GetWindowWidth();
@@ -959,14 +959,14 @@ public partial class RotationConfigWindow : Window
 
     private static string GetRotationStatusHead()
     {
-        var rotation = RotationUpdater.RightNowRotation;
+        var rotation = DataCenter.RightNowRotation;
         if (rotation == null || !rotation.ShowStatus) return string.Empty;
         return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
     }
 
     private static void DrawRotationStatus()
     {
-        RotationUpdater.RightNowRotation?.DisplayStatus();
+        DataCenter.RightNowRotation?.DisplayStatus();
     }
 
     private static string ToCommandStr(OtherCommandType type, string str, string extra = "")
@@ -977,7 +977,7 @@ public partial class RotationConfigWindow : Window
     }
     private static void DrawRotationConfiguration()
     {
-        var rotation = RotationUpdater.RightNowRotation;
+        var rotation = DataCenter.RightNowRotation;
         if (rotation == null) return;
 
         var enable = rotation.IsEnabled;
@@ -1070,7 +1070,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawRotationInformation()
     {
-        var rotation = RotationUpdater.RightNowRotation;
+        var rotation = DataCenter.RightNowRotation;
         if (rotation == null) return;
 
         var youtubeLink = rotation.GetType().GetCustomAttribute<YoutubeLinkAttribute>()?.ID;
@@ -1144,7 +1144,7 @@ public partial class RotationConfigWindow : Window
             {
                 _actionsList.ClearCollapsingHeader();
 
-                if (RotationUpdater.RightNowRotation != null)
+                if (DataCenter.RightNowRotation != null)
                 {
                     var size = 30 * Scale;
                     var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (size * 1.1f + ImGui.GetStyle().ItemSpacing.X)));
@@ -1325,22 +1325,22 @@ public partial class RotationConfigWindow : Window
         {
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_ForcedConditionSet_Description);
 
-            var rotation = RotationUpdater.RightNowRotation;
-            var set = ActionSequencerUpdater.RightSet;
+            var rotation = DataCenter.RightNowRotation;
+            var set = DataCenter.RightSet;
 
             if (set == null || _activeAction == null || rotation == null) return;
-            set.DrawCondition(_activeAction.ID, rotation);
+            set.GetCondition(_activeAction.ID)?.DrawMain(rotation);
         } },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Actions_DisabledConditionSet, () =>
         {
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_DisabledConditionSet_Description);
 
-            var rotation = RotationUpdater.RightNowRotation;
-            var set = ActionSequencerUpdater.RightSet;
+            var rotation = DataCenter.RightNowRotation;
+            var set = DataCenter.RightSet;
 
             if (set == null || _activeAction == null || rotation == null) return;
-            set.DrawDisabledCondition(_activeAction.ID, rotation);
+            set.GetDisabledCondition(_activeAction.ID)?.DrawMain(rotation);
         } },
     })
     {
@@ -2126,7 +2126,7 @@ public partial class RotationConfigWindow : Window
 
     private static readonly CollapsingHeaderGroup _debugHeader = new(new()
     {
-        {() => RotationUpdater.RightNowRotation != null ? "Rotation" : string.Empty, DrawDebugRotationStatus},
+        {() => DataCenter.RightNowRotation != null ? "Rotation" : string.Empty, DrawDebugRotationStatus},
         {() =>"Status", DrawStatus },
         {() =>"Party", DrawParty },
         {() =>"Target Data", DrawTargetData },
@@ -2143,7 +2143,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawDebugRotationStatus()
     {
-        RotationUpdater.RightNowRotation?.DisplayStatus();
+        DataCenter.RightNowRotation?.DisplayStatus();
     }
 
     private static unsafe void DrawStatus()
@@ -2252,7 +2252,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawNextAction()
     {
-        ImGui.Text(RotationUpdater.RightNowRotation.RotationName);
+        ImGui.Text(DataCenter.RightNowRotation.RotationName);
         ImGui.Text(DataCenter.SpecialType.ToString());
 
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());

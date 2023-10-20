@@ -16,7 +16,7 @@ internal class CooldownWindow : CtrlWindow
 
     public override void Draw()
     {
-        if (RotationUpdater.RightNowRotation != null)
+        if (DataCenter.RightNowRotation != null)
         {
             var width = Service.Config.GetValue(PluginConfigFloat.CooldownWindowIconSize);
             var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (width * (1 + 6 / 82) + ImGui.GetStyle().ItemSpacing.X)));

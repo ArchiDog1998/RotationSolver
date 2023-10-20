@@ -1,11 +1,12 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Conditions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
@@ -13,14 +14,39 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
+    public static MajorConditionSet RightSet
+    {
+        get
+        {
+            if (ConditionSets == null || !ConditionSets.Any())
+            {
+                ConditionSets = new MajorConditionSet[] { new MajorConditionSet() };
+            }
+
+            var index = Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex);
+            if(index < 0 || index >= ConditionSets.Count())
+            {
+                index = 0;
+                Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, index);
+            }
+
+            return ConditionSets.ElementAt(index);
+        }
+    }
+
+    internal static IEnumerable<MajorConditionSet> ConditionSets { get; set; } = Array.Empty<MajorConditionSet>();
+
     /// <summary>
     /// Only recorded 15s hps.
     /// </summary>
     public const int HP_RECORD_TIME = 240;
     internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } = new(HP_RECORD_TIME + 1);
 
+    public static ICustomRotation RightNowRotation { get; internal set; }
+
+
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
-        || !Service.Config.GetValue(Configuration.PluginConfigBool.PoslockCasting)
+        || !Service.Config.GetValue(PluginConfigBool.PoslockCasting)
         //Key cancel.
         || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.GetValue(Configuration.PluginConfigInt.PoslockModifier) % ConfigurationHelper.Keys.Length]]
         //Gamepad cancel.

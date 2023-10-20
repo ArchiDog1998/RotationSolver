@@ -17,7 +17,6 @@ internal static class RotationUpdater
     internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
     internal static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
 
-    public static ICustomRotation RightNowRotation { get; private set; }
     public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
 
     private static DateTime LastRunTime;
@@ -383,7 +382,7 @@ internal static class RotationUpdater
     }
 
     public static IEnumerable<IGrouping<string, IAction>> AllGroupedActions
-        => GroupActions(RightNowRotation?.AllActions);
+        => GroupActions(DataCenter.RightNowRotation?.AllActions);
 
     public static IEnumerable<IGrouping<string, IAction>> GroupActions(IEnumerable<IAction> actions)
        => actions?.GroupBy(a =>
@@ -442,20 +441,20 @@ internal static class RotationUpdater
             if (!group.ClassJobIds.Contains(nowJob)) continue;
 
             var rotation = GetChosenRotation(group);
-            if (rotation != RightNowRotation)
+            if (rotation != DataCenter.RightNowRotation)
             {
                 rotation?.OnTerritoryChanged();
             }
-            RightNowRotation = rotation;
-            RightRotationActions = RightNowRotation.AllActions;
-            DataCenter.Job = RightNowRotation?.Jobs[0] ?? Job.ADV;
+            DataCenter.RightNowRotation = rotation;
+            RightRotationActions = DataCenter.RightNowRotation.AllActions;
+            DataCenter.Job = DataCenter.RightNowRotation?.Jobs[0] ?? Job.ADV;
             return;
         }
 
         CustomRotation.MoveTarget = null;
-        RightNowRotation = null;
+        DataCenter.RightNowRotation = null;
         RightRotationActions = Array.Empty<IAction>();
-        DataCenter.Job = RightNowRotation?.Jobs[0] ?? Job.ADV;
+        DataCenter.Job = DataCenter.RightNowRotation?.Jobs[0] ?? Job.ADV;
     }
 
     internal static ICustomRotation GetChosenRotation(CustomRotationGroup group)

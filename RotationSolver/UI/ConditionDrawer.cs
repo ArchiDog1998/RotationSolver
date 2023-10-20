@@ -2,24 +2,28 @@
 using Dalamud.Interface.Utility;
 using Dalamud.Utility;
 using ECommons.ImGuiMethods;
-using ExCSS;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
-using RotationSolver.UI;
 using RotationSolver.Updaters;
-using static Dalamud.Interface.Utility.Raii.ImRaii;
-using System.Reflection;
 using Action = System.Action;
-using RotationSolver.Basic.Data;
-using System;
 
-namespace RotationSolver.ActionSequencer;
+namespace RotationSolver.UI;
 
-internal static class ConditionHelper
+internal static class ConditionDrawer
 {
+    internal static void DrawMain(this ConditionSet conditionSet, ICustomRotation rotation)
+    {
+        if (conditionSet == null) return;
+
+        DrawCondition(conditionSet.IsTrue(rotation));
+        ImGui.SameLine();
+        conditionSet.Draw(rotation);
+    }
+
     internal static void DrawCondition(bool? tag)
     {
-        float size = ConditionHelper.IconSize * (1 + 8 / 82);
+        float size = IconSize * (1 + 8 / 82);
 
         if (!tag.HasValue)
         {
@@ -60,7 +64,7 @@ internal static class ConditionHelper
         if (type == null || getFunc == null) return Array.Empty<MemberInfo>();
 
         var methods = getFunc(type);
-        return methods.Union(GetAllMethods(type.BaseType, getFunc));
+        return methods.Union(type.BaseType.GetAllMethods(getFunc));
     }
 
     public static void DrawByteEnum<T>(string name, ref T value, Func<T, string> function) where T : struct, Enum
@@ -69,7 +73,7 @@ internal static class ConditionHelper
         var index = Array.IndexOf(values, value);
         var names = values.Select(function).ToArray();
 
-        if(ImGuiHelper.SelectableCombo(name, names, ref index))
+        if (ImGuiHelper.SelectableCombo(name, names, ref index))
         {
             value = values[index];
         }
@@ -126,14 +130,14 @@ internal static class ConditionHelper
 
             ImGui.Spacing();
 
-                foreach (var member in members)
+            foreach (var member in members)
+            {
+                if (ImGui.Selectable(member.Item2))
                 {
-                    if (ImGui.Selectable(member.Item2))
-                    {
-                        selectAction?.Invoke(member.m);
-                        ImGui.CloseCurrentPopup();
-                    }
+                    selectAction?.Invoke(member.m);
+                    ImGui.CloseCurrentPopup();
                 }
+            }
 
             ImGui.EndPopup();
         }
@@ -212,7 +216,7 @@ internal static class ConditionHelper
 
     private static void DrawBefore(this ICondition condition)
     {
-        if(condition is ConditionSet)
+        if (condition is ConditionSet)
         {
             ImGui.BeginGroup();
         }
@@ -263,12 +267,12 @@ internal static class ConditionHelper
 
                 ImGui.BeginGroup();
                 var cursor = ImGui.GetCursorPos();
-                if (ImGuiHelper.NoPaddingNoColorImageButton(traitIcon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, trait.GetHashCode().ToString()))
+                if (ImGuiHelper.NoPaddingNoColorImageButton(traitIcon.ImGuiHandle, Vector2.One * IconSize, trait.GetHashCode().ToString()))
                 {
                     traitCondition.TraitID = trait.ID;
                     ImGui.CloseCurrentPopup();
                 }
-                ImGuiHelper.DrawActionOverlay(cursor, ConditionHelper.IconSize, -1);
+                ImGuiHelper.DrawActionOverlay(cursor, IconSize, -1);
                 ImGui.EndGroup();
 
                 var tooltip = trait.Name;
@@ -281,11 +285,11 @@ internal static class ConditionHelper
         if (traitCondition._trait?.GetTexture(out var icon) ?? false || IconSet.GetTexture(4, out icon))
         {
             var cursor = ImGui.GetCursorPos();
-            if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionHelper.IconSize, traitCondition.GetHashCode().ToString()))
+            if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, traitCondition.GetHashCode().ToString()))
             {
                 if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
             }
-            ImGuiHelper.DrawActionOverlay(cursor, ConditionHelper.IconSize, -1);
+            ImGuiHelper.DrawActionOverlay(cursor, IconSize, -1);
             ImguiTooltips.HoveredTooltip(name);
         }
 
@@ -388,7 +392,7 @@ internal static class ConditionHelper
                 {
                     actionCondition.Param1 = Math.Max(0, actionCondition.Param1);
                 }
-                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{actionCondition.GetHashCode()}", ref actionCondition.Param2))
+                if (DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{actionCondition.GetHashCode()}", ref actionCondition.Param2))
                 {
                     actionCondition.Param2 = Math.Max(0, actionCondition.Param2);
                 }
@@ -428,7 +432,7 @@ internal static class ConditionHelper
 
             case ActionConditionType.CurrentCharges:
             case ActionConditionType.MaxCharges:
-                if (ConditionHelper.DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Charges}##Charges{actionCondition.GetHashCode()}", ref actionCondition.Param1))
+                if (DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Charges}##Charges{actionCondition.GetHashCode()}", ref actionCondition.Param1))
                 {
                     actionCondition.Param1 = Math.Max(0, actionCondition.Param1);
                 }
@@ -549,7 +553,7 @@ internal static class ConditionHelper
 
             case ComboConditionType.Integer:
                 ImGui.SameLine();
-                ConditionHelper.SearchItemsReflection($"##ByteChoice{rotationCondition.GetHashCode()}", rotationCondition._prop?.GetMemberName(), ref searchTxt, rotation.AllBytesOrInt, i =>
+                SearchItemsReflection($"##ByteChoice{rotationCondition.GetHashCode()}", rotationCondition._prop?.GetMemberName(), ref searchTxt, rotation.AllBytesOrInt, i =>
                 {
                     rotationCondition._prop = i;
                     rotationCondition.PropertyName = i.Name;
@@ -672,7 +676,7 @@ internal static class ConditionHelper
             }
         });
 
-        if (targetCondition._action != null ? (targetCondition._action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon))
+        if (targetCondition._action != null ? targetCondition._action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon)
             : IconSet.GetTexture(targetCondition.IsTarget ? 16u : 18u, out icon))
         {
             var cursor = ImGui.GetCursorPos();
@@ -787,7 +791,7 @@ internal static class ConditionHelper
                     targetCondition.FromSelf = check != 0;
                 }
 
-                ConditionHelper.DrawDragFloat($"s##Seconds{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
+                DrawDragFloat($"s##Seconds{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
 
