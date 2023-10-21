@@ -113,6 +113,70 @@ public partial class RotationConfigWindow : Window
         }
     }
 
+    private void DrawConditionSet()
+    {
+        var set = DataCenter.RightSet;
+
+        const string popUpId = "Right Set Popup";
+        if (ImGui.Selectable(set.Name, false, ImGuiSelectableFlags.None, new Vector2(0, 20)))
+        {
+            ImGui.OpenPopup(popUpId);
+        }
+        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_ConditionSetDesc);
+
+        using (var popup = ImRaii.Popup(popUpId))
+        {
+            if (popup.Success)
+            {
+                var combos = DataCenter.ConditionSets;
+                for (int i = 0; i < combos.Length; i++)
+                {
+                    void DeleteFile()
+                    {
+                        ActionSequencerUpdater.Delete(combos[i].Name);
+                    }
+
+                    if (combos[i].Name == set.Name)
+                    {
+                        ImGuiHelper.SetNextWidthWithName(set.Name);
+                        ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
+                    }
+                    else
+                    {
+                        var key = "Condition Set At " + i.ToString();
+                        ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, new string[] { "Delete" }));
+
+
+                        if (ImGui.Selectable(combos[i].Name))
+                        {
+                            Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, i);
+                        }
+
+                        ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
+            (DeleteFile, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+                    }
+                }
+
+                ImGui.PushFont(UiBuilder.IconFont);
+
+                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
+                if (ImGui.Selectable(FontAwesomeIcon.Plus.ToIconString()))
+                {
+                    ActionSequencerUpdater.AddNew();
+                }
+                ImGui.PopStyleColor();
+
+                if (ImGui.Selectable(FontAwesomeIcon.FileDownload.ToIconString()))
+                {
+                    ActionSequencerUpdater.LoadFiles();
+                }
+
+                ImGui.PopFont();
+                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Load);
+            }
+        }
+    }
+
     private void DrawSideBar()
     {
         using var child = ImRaii.Child("Rotation Solver Side bar", -Vector2.One, false, ImGuiWindowFlags.NoScrollbar);
@@ -130,6 +194,11 @@ public partial class RotationConfigWindow : Window
 
             if (wholeWidth > JOB_ICON_WIDTH * Scale)
             {
+                DrawConditionSet();
+
+                ImGui.Separator();
+                ImGui.Spacing();
+
                 ImGui.SetNextItemWidth(wholeWidth);
                 SearchingBox();
 
@@ -1307,7 +1376,7 @@ public partial class RotationConfigWindow : Window
                 ImGui.Separator();
             }
 
-            ActionSequencerUpdater.DrawHeader(30 * Scale);
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_ConditionDescription);
             _sequencerList?.Draw();
         }
     }

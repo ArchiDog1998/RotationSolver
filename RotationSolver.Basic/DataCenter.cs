@@ -14,6 +14,9 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
+    /// <summary>
+    /// This one never be null.
+    /// </summary>
     public static MajorConditionSet RightSet
     {
         get
@@ -30,11 +33,11 @@ internal static class DataCenter
                 Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, index);
             }
 
-            return ConditionSets.ElementAt(index);
+            return ConditionSets[index];
         }
     }
 
-    internal static IEnumerable<MajorConditionSet> ConditionSets { get; set; } = Array.Empty<MajorConditionSet>();
+    internal static MajorConditionSet[] ConditionSets { get; set; } = Array.Empty<MajorConditionSet>();
 
     /// <summary>
     /// Only recorded 15s hps.

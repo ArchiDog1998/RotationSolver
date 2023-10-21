@@ -27,14 +27,14 @@ internal static class ConditionDrawer
 
         if (!tag.HasValue)
         {
-            if (IconSet.GetTexture("ui/uld/image2.tex", out var texture) || IconSet.GetTexture(0u, out texture))
+            if (IconSet.GetTexture("ui/uld/image2.tex", out var texture, true) || IconSet.GetTexture(0u, out texture))
             {
                 ImGui.Image(texture.ImGuiHandle, Vector2.One * size);
             }
         }
         else
         {
-            if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
+            if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture, true))
             {
                 ImGui.Image(texture.ImGuiHandle, Vector2.One * size,
                     new Vector2(tag.Value ? 0 : 0.5f, 0),

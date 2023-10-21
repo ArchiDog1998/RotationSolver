@@ -560,5 +560,6 @@
   "ConfigWindow_Auto_MoveBackConditionSet": "Move Back Forced Condition",
   "ConfigWindow_Auto_AntiKnockbackConditionSet": "Anti Knockback Forced Condition",
   "ConfigWindow_Auto_BurstConditionSet": "Burst Forced Condition",
-  "ConfigWindow_Auto_SpeedConditionSet": "Speed Forced Condition"
+  "ConfigWindow_Auto_SpeedConditionSet": "Speed Forced Condition",
+  "ConfigWindow_ConditionSetDesc": "The Condition set you chose, click to modify."
 }
