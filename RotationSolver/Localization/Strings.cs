@@ -427,7 +427,17 @@ internal class Strings
         { nameof(CustomRotation.NumberOfHostilesInMaxRange), "The number of hostiles in max Range"},
         { nameof(CustomRotation.NumberOfAllHostilesInRange), "The number of all hostiles in Range"},
         { nameof(CustomRotation.NumberOfAllHostilesInMaxRange), "The number of all hostiles in max Range"},
-        { nameof(CustomRotation.InBurst), "In burst."},
+        { nameof(CustomRotation.IsBurst), "Is burst"},
+        { nameof(CustomRotation.IsHealArea), "Is Heal Area"},
+        { nameof(CustomRotation.IsHealSingle), "Is Heal Single"},
+        { nameof(CustomRotation.IsDefenseArea), "Is Defense Area"},
+        { nameof(CustomRotation.IsDefenseSingle), "Is Defense Single"},
+        { nameof(CustomRotation.IsEsunaStanceNorth), "Is Esuna Stance North"},
+        { nameof(CustomRotation.IsRaiseShirk), "Is Raise Shirk"},
+        { nameof(CustomRotation.IsMoveForward), "Is Move Forward"},
+        { nameof(CustomRotation.IsMoveBack), "Is Move Back"},
+        { nameof(CustomRotation.IsAntiKnockback), "Is Anti Knockback"},
+        { nameof(CustomRotation.IsSpeed), "Is Speed"},
 
         { nameof(CustomRotation.CanHealAreaAbility), "Can heal area ability"},
         { nameof(CustomRotation.CanHealAreaSpell), "Can heal area spell"},
@@ -686,6 +696,7 @@ internal class Strings
     public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focuses on the rotation itself. These are side features. If there are some other plugins can do that, these features will be deleted.";
     public string ConfigWindow_Auto_Description { get; set; } = "Change the way that RS atomatically uses actions.";
     public string ConfigWindow_Auto_ActionCondition { get; set; } = "Action Condition";
+    public string ConfigWindow_Auto_StateCondition { get; set; } = "State Condition";
     public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the way that Rotation Solver uses actions.";
     public string ConfigWindow_Target_Config { get; set; } = "Configuration";
     public string ConfigWindow_Search_Result { get; set; } = "Search Result";
@@ -755,9 +766,22 @@ internal class Strings
     public string ConfigWindow_About_ThanksToSupporters { get; set; } = "Many thanks to the sponsors.";
     public string ConfigWindow_Rotations_Download { get; set; } = "Download Rotations";
     public string ConfigWindow_Rotations_Links { get; set; } = "Links of the rotations online";
-    public string ConfigWindow_Options_ForcedEnableCondition { get; set; } = "Forced Enable Condition";
+    public string ConfigWindow_Options_ForcedEnableCondition { get; set; } = "Use Forced Enable Condition";
     public string ConfigWindow_Options_ForcedEnableConditionDesc { get; set; } = "The conditions of forced to make it true.";
 
-    public string ConfigWindow_Options_ForcedDisableCondition { get; set; } = "Forced Disable Condition";
+    public string ConfigWindow_Options_ForcedDisableCondition { get; set; } = "Use Forced Disable Condition";
     public string ConfigWindow_Options_ForcedDisableConditionDesc { get; set; } = "The conditions of forced to make it false.";
+
+    public string ConfigWindow_Auto_HealAreaConditionSet { get; set; } = "Heal Area Forced Condition";
+    public string ConfigWindow_Auto_HealSingleConditionSet { get; set; } = "Heal Single Forced Condition";
+    public string ConfigWindow_Auto_DefenseAreaConditionSet { get; set; } = "Defense Area Forced Condition";
+    public string ConfigWindow_Auto_DefenseSingleConditionSet { get; set; } = "Defense Single Forced Condition";
+    public string ConfigWindow_Auto_EsunaStanceNorthConditionSet { get; set; } = "Esuna Stance North Forced Condition";
+    public string ConfigWindow_Auto_RaiseShirkConditionSet { get; set; } = "Raise Shirk Forced Condition";
+    public string ConfigWindow_Auto_MoveForwardConditionSet { get; set; } = "Move Forward Forced Condition";
+    public string ConfigWindow_Auto_MoveBackConditionSet { get; set; } = "Move Back Forced Condition";
+    public string ConfigWindow_Auto_AntiKnockbackConditionSet { get; set; } = "Anti Knockback Forced Condition";
+    public string ConfigWindow_Auto_BurstConditionSet { get; set; } = "Burst Forced Condition";
+    public string ConfigWindow_Auto_SpeedConditionSet { get; set; } = "Speed Forced Condition";
+
 }

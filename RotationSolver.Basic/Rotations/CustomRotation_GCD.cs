@@ -15,11 +15,9 @@ public abstract partial class CustomRotation
 
         if (EmergencyGCD(out act)) return act;
 
-        var specialType = DataCenter.SpecialType;
+        if (RaiseSpell(out act, false)) return act;
 
-        if (RaiseSpell(specialType, out act, false)) return act;
-
-        if (specialType == SpecialCommandType.MoveForward && MoveForwardGCD(out act))
+        if (DataCenter.IsMoveForward && MoveForwardGCD(out act))
         {
             if (act is IBaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return act;
         }
@@ -28,7 +26,7 @@ public abstract partial class CustomRotation
         if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer)
             && (DataCenter.InCombat || Service.Config.GetValue(PluginConfigBool.HealOutOfCombat)))
         {
-            if (specialType == SpecialCommandType.HealArea)
+            if (DataCenter.IsHealArea)
             {
                 if( HealAreaGCD(out act)) return act;
             }
@@ -38,7 +36,7 @@ public abstract partial class CustomRotation
                 if (HealAreaGCD(out act)) return act;
                 BaseAction.AutoHealCheck = false;
             }
-            if (specialType == SpecialCommandType.HealSingle)
+            if (DataCenter.IsHealSingle)
             {
                 if (HealSingleGCD(out act)) return act;
             }
@@ -49,15 +47,15 @@ public abstract partial class CustomRotation
                 BaseAction.AutoHealCheck = false;
             }
         }
-        if (specialType == SpecialCommandType.DefenseArea && DefenseAreaGCD(out act)) return act;
-        if (specialType == SpecialCommandType.DefenseSingle && DefenseSingleGCD(out act)) return act;
+        if (DataCenter.IsDefenseArea && DefenseAreaGCD(out act)) return act;
+        if (DataCenter.IsDefenseSingle && DefenseSingleGCD(out act)) return act;
 
         //Auto Defense
         if (DataCenter.SetAutoStatus(AutoStatus.DefenseArea, helpDefenseAOE) && DefenseAreaGCD(out act)) return act;
         if (DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, helpDefenseSingle) && DefenseSingleGCD(out act)) return act;
 
         //Esuna
-        if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (specialType == SpecialCommandType.EsunaStanceNorth 
+        if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (DataCenter.IsEsunaStanceNorth
             || !HasHostilesInRange || Service.Config.GetValue(PluginConfigBool.EsunaAll))
             && DataCenter.WeakenPeople.Any()  || DataCenter.DyingPeople.Any()))
         {
@@ -87,15 +85,15 @@ public abstract partial class CustomRotation
             }
         }
         
-        if (Service.Config.GetValue(PluginConfigBool.RaisePlayerByCasting) && RaiseSpell(specialType, out act, true)) return act;
+        if (Service.Config.GetValue(PluginConfigBool.RaisePlayerByCasting) && RaiseSpell(out act, true)) return act;
 
         return null;
     }
 
-    private bool RaiseSpell(SpecialCommandType specialType, out IAction act, bool mustUse)
+    private bool RaiseSpell(out IAction act, bool mustUse)
     {
         act = null;
-        if (specialType == SpecialCommandType.RaiseShirk && DataCenter.DeathPeopleAll.Any())
+        if (DataCenter.IsRaiseShirk && DataCenter.DeathPeopleAll.Any())
         {
             if (RaiseAction(out act)) return true;
         }

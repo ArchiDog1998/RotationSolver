@@ -49,6 +49,18 @@ internal class MajorConditionSet
     public Dictionary<PluginConfigBool, ConditionSet> ForceDisableConditions { get; private set; }
         = new();
 
+    public ConditionSet HealAreaConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet HealSingleConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet DefenseAreaConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet DefenseSingleConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet EsunaStanceNorthConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet RaiseShirkConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet MoveForwardConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet MoveBackConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet AntiKnockbackConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet BurstConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet SpeedConditionSet { get; set; } = new ConditionSet();
+
     public string Name;
 
     public ConditionSet GetCondition(uint id)

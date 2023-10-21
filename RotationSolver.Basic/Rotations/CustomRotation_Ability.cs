@@ -27,30 +27,28 @@ public abstract partial class CustomRotation
 
         if (InterruptAbility(role, out act)) return true;
 
-        var specialType = DataCenter.SpecialType;
+        if (ShirkOrShield(role, out act)) return true;
+        if (DataCenter.IsAntiKnockback && AntiKnockback(role, out act)) return true;
 
-        if (ShirkOrShield(role, specialType, out act)) return true;
-        if (AntiKnockback(role, specialType, out act)) return true;
-
-        if (specialType == SpecialCommandType.EsunaStanceNorth && role == JobRole.Melee)
+        if (DataCenter.IsEsunaStanceNorth && role == JobRole.Melee)
         {
             if (TrueNorth.CanUse(out act)) return true;
         }
 
-        if (GeneralHealAbility(specialType, out act)) return true;
-        if(specialType == SpecialCommandType.Speed && SpeedAbility(out act)) return true;
+        if (GeneralHealAbility(out act)) return true;
+        if (DataCenter.IsSpeed && SpeedAbility(out act)) return true;
 
         if (AutoDefense(role, helpDefenseAOE, helpDefenseSingle, out act)) return true;
 
         BaseAction.OtherOption |= CanUseOption.EmptyOrSkipCombo;
-        if (MovingAbility(specialType, out act)) return true;
+        if (MovingAbility(out act)) return true;
         BaseAction.OtherOption &= ~CanUseOption.EmptyOrSkipCombo;
 
         if (GeneralUsingAbility(role, out act)) return true;
 
         if (DataCenter.HPNotFull && InCombat)
         {
-            if (DataCenter.SpecialType == SpecialCommandType.HealSingle || CanHealSingleAbility)
+            if (DataCenter.IsHealSingle || CanHealSingleAbility)
             {
                 if (UseHealPotion(out act)) return true;
             }
@@ -90,7 +88,7 @@ public abstract partial class CustomRotation
         return false;
     }
 
-    private bool ShirkOrShield(JobRole role, SpecialCommandType specialType, out IAction act)
+    private bool ShirkOrShield(JobRole role, out IAction act)
     {
         act = null;
         if (role != JobRole.Tank)
@@ -98,16 +96,8 @@ public abstract partial class CustomRotation
             return DataCenter.SetAutoStatus(AutoStatus.TankStance, false);
         }
 
-        switch (specialType)
-        {
-            case SpecialCommandType.RaiseShirk:
-                if (Shirk.CanUse(out act)) return true;
-                break;
-
-            case SpecialCommandType.EsunaStanceNorth:
-                if (TankStance.CanUse(out act)) return true;
-                break;
-        }
+        if (DataCenter.IsRaiseShirk && Shirk.CanUse(out act)) return true;
+        if (DataCenter.IsEsunaStanceNorth && TankStance.CanUse(out act)) return true;
 
         if (DataCenter.SetAutoStatus(AutoStatus.TankStance, Service.Config.GetValue(PluginConfigBool.AutoTankStance)
             && !DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
@@ -119,12 +109,9 @@ public abstract partial class CustomRotation
         return false;
     }
 
-    private static bool AntiKnockback(JobRole role, SpecialCommandType specialType, out IAction act)
+    private static bool AntiKnockback(JobRole role, out IAction act)
     {
         act = null;
-
-        if (specialType != SpecialCommandType.AntiKnockback) return false;
-
         switch (role)
         {
             case JobRole.Tank:
@@ -145,26 +132,19 @@ public abstract partial class CustomRotation
         return false;
     }
 
-    private bool GeneralHealAbility(SpecialCommandType specialType, out IAction act)
+    private bool GeneralHealAbility(out IAction act)
     {
         act = null;
 
         BaseAction.OtherOption |= CanUseOption.MustUse;
-        switch (specialType)
-        {
-            case SpecialCommandType.DefenseArea:
-                if (DefenseAreaAbility(out act)) return true;
-                break;
+        if (DataCenter.IsDefenseArea && DefenseAreaAbility(out act)) return true;
+        if (DataCenter.IsDefenseSingle && DefenseSingleAbility(out act)) return true;
 
-            case SpecialCommandType.DefenseSingle:
-                if (DefenseSingleAbility(out act)) return true;
-                break;
-        }
         BaseAction.OtherOption &= ~CanUseOption.MustUse;
 
         if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer) && InCombat)
         {
-            if (DataCenter.SpecialType == SpecialCommandType.HealArea)
+            if (DataCenter.IsHealArea)
             {
                 if (HealAreaAbility(out act)) return true;
             }
@@ -174,7 +154,7 @@ public abstract partial class CustomRotation
                 if (HealAreaAbility(out act)) return true;
                 BaseAction.AutoHealCheck = false;
             }
-            if (DataCenter.SpecialType == SpecialCommandType.HealSingle)
+            if (DataCenter.IsHealSingle)
             {
                 if (HealSingleAbility(out act)) return true;
             }
@@ -250,11 +230,11 @@ public abstract partial class CustomRotation
         return false;
     }
 
-    private bool MovingAbility(SpecialCommandType specialType, out IAction act)
+    private bool MovingAbility(out IAction act)
     {
         act = null;
-        if (specialType == SpecialCommandType.MoveForward && MoveForwardAbility(out act)) return true;
-        else if (specialType == SpecialCommandType.MoveBack && MoveBackAbility(out act)) return true;
+        if (DataCenter.IsMoveForward && MoveForwardAbility(out act)) return true;
+        else if (DataCenter.IsMoveBack && MoveBackAbility(out act)) return true;
         return false;
     }
 

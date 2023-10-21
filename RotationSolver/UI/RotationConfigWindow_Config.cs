@@ -496,7 +496,47 @@ public partial class RotationConfigWindow
             }
         },
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_ActionCondition, DrawAutoActionCondition },
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_StateCondition, () => _autoState?.Draw() },
     });
+
+    private static readonly CollapsingHeaderGroup _autoState = new(new()
+    {
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_HealAreaConditionSet, 
+            () => DataCenter.RightSet.HealAreaConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_HealSingleConditionSet,
+            () => DataCenter.RightSet.HealSingleConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_DefenseAreaConditionSet,
+            () => DataCenter.RightSet.DefenseAreaConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_DefenseSingleConditionSet, 
+            () => DataCenter.RightSet.DefenseSingleConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_EsunaStanceNorthConditionSet,
+            () => DataCenter.RightSet.EsunaStanceNorthConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_RaiseShirkConditionSet, 
+            () => DataCenter.RightSet.RaiseShirkConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_MoveForwardConditionSet, 
+            () => DataCenter.RightSet.MoveForwardConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_MoveBackConditionSet,
+            () => DataCenter.RightSet.MoveBackConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_AntiKnockbackConditionSet, 
+            () => DataCenter.RightSet.AntiKnockbackConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_BurstConditionSet,
+            () => DataCenter.RightSet.BurstConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_SpeedConditionSet,
+            () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+    })
+    {
+        HeaderSize = 18,
+    };
 
     private static void DrawAutoActionCondition()
     {

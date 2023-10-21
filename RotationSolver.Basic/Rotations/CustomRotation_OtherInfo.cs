@@ -197,11 +197,66 @@ public abstract partial class CustomRotation
     #endregion
 
     #region Command
+    /// <summary>
+    /// Is in burst right now? Usually it used with team support actions. Please use <see cref="IsBurst"/> instead.
+    /// </summary>
+    [Obsolete("It will be removed in the future version", true)]
+    public static bool InBurst => IsBurst;
 
     /// <summary>
     /// Is in burst right now? Usually it used with team support actions.
     /// </summary>
-    public static bool InBurst => DataCenter.SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(Configuration.PluginConfigBool.AutoBurst);
+    public static bool IsBurst => DataCenter.IsBurst || Service.Config.GetValue(Configuration.PluginConfigBool.AutoBurst);
+
+    /// <summary>
+    /// Is in the command heal area.
+    /// </summary>
+    public static bool IsHealArea => DataCenter.IsHealArea;
+
+    /// <summary>
+    /// Is in the command heal single.
+    /// </summary>
+    public static bool IsHealSingle => DataCenter.IsHealSingle;
+
+    /// <summary>
+    /// Is in the command defense area.
+    /// </summary>
+    public static bool IsDefenseArea => DataCenter.IsDefenseArea;
+
+    /// <summary>
+    /// Is in the command defense single.
+    /// </summary>
+    public static bool IsDefenseSingle => DataCenter.IsDefenseSingle;
+
+    /// <summary>
+    /// Is in the command Esuna Stance North.
+    /// </summary>
+    public static bool IsEsunaStanceNorth => DataCenter.IsEsunaStanceNorth;
+
+    /// <summary>
+    /// Is in the command Raise Shirk.
+    /// </summary>
+    public static bool IsRaiseShirk => DataCenter.IsRaiseShirk;
+
+    /// <summary>
+    /// Is in the command move forward.
+    /// </summary>
+    public static bool IsMoveForward => DataCenter.IsMoveForward;
+
+    /// <summary>
+    /// Is in the command move back.
+    /// </summary>
+    public static bool IsMoveBack => DataCenter.IsMoveBack;
+
+    /// <summary>
+    /// Is in the command anti knockback.
+    /// </summary>
+    public static bool IsAntiKnockback => DataCenter.IsAntiKnockback;
+
+    /// <summary>
+    /// Is in the command speed.
+    /// </summary>
+    public static bool IsSpeed => DataCenter.IsSpeed;
 
     private bool CanUseHealAction => 
         //Job
@@ -228,11 +283,6 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && CanUseHealAction;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected static SpecialCommandType SpecialType => DataCenter.SpecialType;
 
     /// <summary>
     /// True for On, false for off.

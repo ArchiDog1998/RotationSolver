@@ -205,12 +205,25 @@ internal static class DataCenter
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
     private static double SpecialTimeElapsed => (DateTime.Now - _specialStateStartTime).TotalSeconds;
-    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.GetValue(Configuration.PluginConfigFloat.SpecialDuration) - SpecialTimeElapsed :
-        Math.Ceiling((Service.Config.GetValue(Configuration.PluginConfigFloat.SpecialDuration) + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
+    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.GetValue(PluginConfigFloat.SpecialDuration) - SpecialTimeElapsed :
+        Math.Ceiling((Service.Config.GetValue(PluginConfigFloat.SpecialDuration) + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
 
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
-    public static SpecialCommandType SpecialType =>
+    internal static SpecialCommandType SpecialType =>
          SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
+
+    public static bool IsHealArea => SpecialType == SpecialCommandType.HealArea || RightSet.HealAreaConditionSet.IsTrue(RightNowRotation);
+    public static bool IsHealSingle => SpecialType == SpecialCommandType.HealSingle || RightSet.HealSingleConditionSet.IsTrue(RightNowRotation);
+    public static bool IsDefenseArea => SpecialType == SpecialCommandType.DefenseArea || RightSet.DefenseAreaConditionSet.IsTrue(RightNowRotation);
+    public static bool IsDefenseSingle => SpecialType == SpecialCommandType.DefenseSingle || RightSet.DefenseSingleConditionSet.IsTrue(RightNowRotation);
+    public static bool IsEsunaStanceNorth => SpecialType == SpecialCommandType.EsunaStanceNorth || RightSet.EsunaStanceNorthConditionSet.IsTrue(RightNowRotation);
+    public static bool IsRaiseShirk => SpecialType == SpecialCommandType.RaiseShirk || RightSet.RaiseShirkConditionSet.IsTrue(RightNowRotation);
+    public static bool IsMoveForward => SpecialType == SpecialCommandType.MoveForward || RightSet.MoveForwardConditionSet.IsTrue(RightNowRotation);
+    public static bool IsMoveBack => SpecialType == SpecialCommandType.MoveBack || RightSet.MoveBackConditionSet.IsTrue(RightNowRotation);
+    public static bool IsAntiKnockback => SpecialType == SpecialCommandType.AntiKnockback || RightSet.AntiKnockbackConditionSet.IsTrue(RightNowRotation);
+    public static bool IsBurst => SpecialType == SpecialCommandType.Burst || RightSet.BurstConditionSet.IsTrue(RightNowRotation);
+    public static bool IsSpeed => SpecialType == SpecialCommandType.Speed || RightSet.SpeedConditionSet.IsTrue(RightNowRotation);
+
     public static bool State { get; set; } = false;
     
     public static bool IsManual { get; set; } = false;
