@@ -294,32 +294,43 @@ public partial class RotationConfigWindow : Window
     }
 
     private const int FRAME_COUNT = 180;
-    private static readonly SortedList<string, IDalamudTextureWrap> _textureWrapList = new(FRAME_COUNT);
+    private static readonly List<string> _downloadingList = new(FRAME_COUNT);
     private static bool GetLocalImage(string name, out IDalamudTextureWrap texture)
     {
-        var url = $"RotationSolver.Logos.{name}.png";
-        if (_textureWrapList.TryGetValue(name, out texture)) return texture != null;
+        var dir = $"{Svc.PluginInterface.ConfigDirectory.FullName}\\Images";
 
-        using var stream = typeof(RotationConfigWindow).Assembly.GetManifestResourceStream(url);
-        if (stream == null)
+        if(!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+
+        var file = dir + $"\\{name}.png";
+
+        
+        if (Directory.GetFiles(dir, "*.png").Length >= FRAME_COUNT || name == "Logo" && File.Exists(file))
         {
-            Svc.Log.Warning($"Failed to load the pic: {url} when getting the stream from assembly.");
-            _textureWrapList[url] = null;
-            return false;
+            return IconSet.GetTexture(file, out texture);
+        }
+        if (!File.Exists(file) && !_downloadingList.Contains(name))
+        {
+            _downloadingList.Add(name);
+
+            Task.Run(async () =>
+            {
+                var url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/{name}.png";
+
+                using var client = new HttpClient();
+                var stream = await client.GetStreamAsync(url);
+
+                using var fs = new FileStream(file, FileMode.CreateNew);
+                await stream.CopyToAsync(fs);
+
+                _downloadingList.Remove(name);
+            });
         }
 
-        using var memory = new MemoryStream();
-        stream.CopyTo(memory);
-        texture = Svc.PluginInterface.UiBuilder.LoadImage(memory.ToArray());
-        if(texture == null)
-        {
-            Svc.Log.Warning($"Failed to load the pic: {url} when convert bytes to image.");
-            _textureWrapList[url] = null;
-            return false;
-        }
-        _textureWrapList[url] = texture;
-        return true;
+        texture = null;
+        return false;
     }
+
+
 
     private void DrawHeader(float wholeWidth)
     {
@@ -340,9 +351,8 @@ public partial class RotationConfigWindow : Window
 
                 var frame = Environment.TickCount / 34 % FRAME_COUNT;
                 if (frame <= 0) frame += FRAME_COUNT;
-                if (Service.Config.GetValue(PluginConfigBool.DrawIconAnimation) 
-                    ? GetLocalImage(frame.ToString("D4"), out var logo)
-                    : IconSet.GetTexture($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/Logo.png", out logo))
+                if ( GetLocalImage(Service.Config.GetValue(PluginConfigBool.DrawIconAnimation)
+                    ? frame.ToString("D4") : "Logo", out var logo))
                 {
                     ImGui.SetCursorPos(cursor);
                     ImGui.Image(logo.ImGuiHandle, Vector2.One * size);

@@ -13,7 +13,6 @@
 		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
 		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
 		<ProjectReference Include="..\XIVPainter\XIVPainter\XIVPainter.csproj" />
-		<EmbeddedResource Include="Logos\*.png" />
 		
 		<Using Include="Dalamud.Game.ClientState.Objects.Types" />
 		<Using Include="RotationSolver.Basic" />
