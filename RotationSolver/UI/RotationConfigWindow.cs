@@ -21,6 +21,7 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
+using System.Collections.Generic;
 using System.Diagnostics;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
@@ -294,7 +295,8 @@ public partial class RotationConfigWindow : Window
     }
 
     private const int FRAME_COUNT = 180;
-    private static readonly List<string> _downloadingList = new(FRAME_COUNT);
+    private static readonly List<string> _loadingList = new(FRAME_COUNT);
+    private static readonly Dictionary<string, IDalamudTextureWrap> _logosWrap = new(FRAME_COUNT + 1);
     private static bool GetLocalImage(string name, out IDalamudTextureWrap texture)
     {
         var dir = $"{Svc.PluginInterface.ConfigDirectory.FullName}\\Images";
@@ -303,31 +305,37 @@ public partial class RotationConfigWindow : Window
 
         var file = dir + $"\\{name}.png";
 
-        
-        if (Directory.GetFiles(dir, "*.png").Length >= FRAME_COUNT || name == "Logo" && File.Exists(file))
+        if (File.Exists(file))
         {
-            return IconSet.GetTexture(file, out texture);
+            if (!_logosWrap.ContainsKey(file))
+            {
+                _logosWrap[name] = Svc.PluginInterface.UiBuilder.LoadImage(file);
+            }
         }
-        if (!File.Exists(file) && !_downloadingList.Contains(name))
+        else if (!_loadingList.Contains(name))
         {
-            _downloadingList.Add(name);
+            _loadingList.Add(name);
 
             Task.Run(async () =>
             {
-                var url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/{name}.png";
+                if (!File.Exists(file))
+                {
+                    var url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/{name}.png";
 
-                using var client = new HttpClient();
-                var stream = await client.GetStreamAsync(url);
+                    using var client = new HttpClient();
+                    var stream = await client.GetStreamAsync(url);
 
-                using var fs = new FileStream(file, FileMode.CreateNew);
-                await stream.CopyToAsync(fs);
+                    using var fs = new FileStream(file, FileMode.CreateNew);
 
-                _downloadingList.Remove(name);
+                    await stream.CopyToAsync(fs);
+                }
+
+
+                _loadingList.Remove(name);
             });
         }
 
-        texture = null;
-        return false;
+        return _logosWrap.TryGetValue(name, out texture);
     }
 
 
