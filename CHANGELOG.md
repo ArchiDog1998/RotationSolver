@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.4.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.6...v3.4.0) (2023-10-22)
+
+
+### Features
+
+* add conditions for all command states. ([fe9f19e](https://github.com/ArchiDog1998/RotationSolver/commit/fe9f19e456bf52bb894681cf63e6cd627a3b3139))
+* all options can be add some conditions! ([5cbafc8](https://github.com/ArchiDog1998/RotationSolver/commit/5cbafc87b85546b775c51451d366958383180dff))
+
+
+### Bug Fixes
+
+* add rotation property called IsInDuty. ([37ac0d3](https://github.com/ArchiDog1998/RotationSolver/commit/37ac0d31251ee17774509edf1b6ecfdf5f5e3038))
+* add some status. ([a2040fa](https://github.com/ArchiDog1998/RotationSolver/commit/a2040fad531d59788ce94d87bbbf8e5d61cda5b8))
+* changed the condition file location. ([af219ec](https://github.com/ArchiDog1998/RotationSolver/commit/af219ec04b8e7149f8de7eab82b8d81678b49b3e))
+* make pngs online. ([6457d92](https://github.com/ArchiDog1998/RotationSolver/commit/6457d92831238b307d54b1a2997f92f72dc5fa8b))
+* moved the condition set drawing position. ([b7b0568](https://github.com/ArchiDog1998/RotationSolver/commit/b7b0568ac561a92ecd5cde4ed08f415bd813a688))
+* sge kardia usage. ([5aa00a9](https://github.com/ArchiDog1998/RotationSolver/commit/5aa00a93255e518372a1eef6a858b7271af8d63f))
+
 ## [3.3.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.5...v3.3.6) (2023-10-11)
 
 
