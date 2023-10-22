@@ -302,14 +302,14 @@ internal static class ConfigTranslation
 
     public static LinkDescription[] ToAction(this PluginConfigFloat config) => config switch
     {
-        PluginConfigFloat.ActionAhead => new LinkDescription[]
-        {
-            //new LinkDescription()
-            //{
-            //    Url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/HowAndWhenToClick.svg",
-            //    Description = "This plugin helps you to use the right action during the combat. Here is a guide about the different options.",
-            //},
-        },
+        //PluginConfigFloat.ActionAhead => new LinkDescription[]
+        //{
+        //    //new LinkDescription()
+        //    //{
+        //    //    Url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/HowAndWhenToClick.svg",
+        //    //    Description = "This plugin helps you to use the right action during the combat. Here is a guide about the different options.",
+        //    //},
+        //},
         //PluginConfigFloat.MinLastAbilityAdvanced => new LinkDescription[]
         //{
         //},

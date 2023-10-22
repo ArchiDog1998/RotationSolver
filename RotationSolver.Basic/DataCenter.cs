@@ -1,11 +1,12 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Conditions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
@@ -14,13 +15,41 @@ namespace RotationSolver.Basic;
 internal static class DataCenter
 {
     /// <summary>
+    /// This one never be null.
+    /// </summary>
+    public static MajorConditionSet RightSet
+    {
+        get
+        {
+            if (ConditionSets == null || !ConditionSets.Any())
+            {
+                ConditionSets = new MajorConditionSet[] { new MajorConditionSet() };
+            }
+
+            var index = Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex);
+            if(index < 0 || index >= ConditionSets.Count())
+            {
+                index = 0;
+                Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, index);
+            }
+
+            return ConditionSets[index];
+        }
+    }
+
+    internal static MajorConditionSet[] ConditionSets { get; set; } = Array.Empty<MajorConditionSet>();
+
+    /// <summary>
     /// Only recorded 15s hps.
     /// </summary>
     public const int HP_RECORD_TIME = 240;
     internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } = new(HP_RECORD_TIME + 1);
 
+    public static ICustomRotation RightNowRotation { get; internal set; }
+
+
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
-        || !Service.Config.GetValue(Configuration.PluginConfigBool.PoslockCasting)
+        || !Service.Config.GetValue(PluginConfigBool.PoslockCasting)
         //Key cancel.
         || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.GetValue(Configuration.PluginConfigInt.PoslockModifier) % ConfigurationHelper.Keys.Length]]
         //Gamepad cancel.
@@ -179,12 +208,25 @@ internal static class DataCenter
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
     private static double SpecialTimeElapsed => (DateTime.Now - _specialStateStartTime).TotalSeconds;
-    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.GetValue(Configuration.PluginConfigFloat.SpecialDuration) - SpecialTimeElapsed :
-        Math.Ceiling((Service.Config.GetValue(Configuration.PluginConfigFloat.SpecialDuration) + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
+    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.GetValue(PluginConfigFloat.SpecialDuration) - SpecialTimeElapsed :
+        Math.Ceiling((Service.Config.GetValue(PluginConfigFloat.SpecialDuration) + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
 
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
-    public static SpecialCommandType SpecialType =>
+    internal static SpecialCommandType SpecialType =>
          SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
+
+    public static bool IsHealArea => SpecialType == SpecialCommandType.HealArea || RightSet.HealAreaConditionSet.IsTrue(RightNowRotation);
+    public static bool IsHealSingle => SpecialType == SpecialCommandType.HealSingle || RightSet.HealSingleConditionSet.IsTrue(RightNowRotation);
+    public static bool IsDefenseArea => SpecialType == SpecialCommandType.DefenseArea || RightSet.DefenseAreaConditionSet.IsTrue(RightNowRotation);
+    public static bool IsDefenseSingle => SpecialType == SpecialCommandType.DefenseSingle || RightSet.DefenseSingleConditionSet.IsTrue(RightNowRotation);
+    public static bool IsEsunaStanceNorth => SpecialType == SpecialCommandType.EsunaStanceNorth || RightSet.EsunaStanceNorthConditionSet.IsTrue(RightNowRotation);
+    public static bool IsRaiseShirk => SpecialType == SpecialCommandType.RaiseShirk || RightSet.RaiseShirkConditionSet.IsTrue(RightNowRotation);
+    public static bool IsMoveForward => SpecialType == SpecialCommandType.MoveForward || RightSet.MoveForwardConditionSet.IsTrue(RightNowRotation);
+    public static bool IsMoveBack => SpecialType == SpecialCommandType.MoveBack || RightSet.MoveBackConditionSet.IsTrue(RightNowRotation);
+    public static bool IsAntiKnockback => SpecialType == SpecialCommandType.AntiKnockback || RightSet.AntiKnockbackConditionSet.IsTrue(RightNowRotation);
+    public static bool IsBurst => SpecialType == SpecialCommandType.Burst || RightSet.BurstConditionSet.IsTrue(RightNowRotation);
+    public static bool IsSpeed => SpecialType == SpecialCommandType.Speed || RightSet.SpeedConditionSet.IsTrue(RightNowRotation);
+
     public static bool State { get; set; } = false;
     
     public static bool IsManual { get; set; } = false;

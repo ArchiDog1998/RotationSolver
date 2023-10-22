@@ -124,11 +124,12 @@ public static class IconSet
     /// </summary>
     /// <param name="path"></param>
     /// <param name="texture"></param>
+    /// <param name="loadingIcon"></param>
     /// <returns></returns>
-    public static bool GetTexture(string path, out IDalamudTextureWrap texture)
+    public static bool GetTexture(string path, out IDalamudTextureWrap texture, bool loadingIcon = false)
         => ThreadLoadImageHandler.TryGetTextureWrap(path, out texture)
-        || (path.StartsWith("http:", StringComparison.OrdinalIgnoreCase) || path.StartsWith("https:", StringComparison.OrdinalIgnoreCase))
-        && GetTexture("ui/uld/image2.tex", out texture); // loading pics.
+        || loadingIcon && ThreadLoadImageHandler.TryGetTextureWrap("ui/uld/image2.tex", out texture)
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture); // loading pics.
 
     private static readonly Dictionary<uint, uint> _actionIcons = new();
 

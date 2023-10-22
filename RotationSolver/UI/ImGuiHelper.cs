@@ -4,7 +4,6 @@ using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
-using ImGuiScene;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
@@ -14,7 +13,6 @@ namespace RotationSolver.UI;
 
 internal static class ImGuiHelper
 {
-
     internal static void SetNextWidthWithName(string name)
     {
         ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X + 30 * ImGuiHelpers.GlobalScale));
@@ -233,7 +231,7 @@ internal static class ImGuiHelper
             {
                 ImGui.SetCursorPos(cursor - new Vector2(pixPerUnit * 3, pixPerUnit * 4));
 
-                var step = new Vector2(88f / cover.Width, 96f / cover.Height);
+                //var step = new Vector2(88f / cover.Width, 96f / cover.Height);
                 var start = new Vector2((96f * 0 + 4f) / cover.Width, (96f * 2) / cover.Height);
 
                 //Out Size is 88, 96

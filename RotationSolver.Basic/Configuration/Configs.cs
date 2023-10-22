@@ -2,6 +2,9 @@
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using FFXIVClientStructs.STD;
+using RotationSolver.Basic.Configuration.Conditions;
+using System;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -20,7 +23,7 @@ public class PluginConfig : IPluginConfiguration
     }
 
     [JsonProperty]
-    private Dictionary<Job, JobConfig> _jobsConfig = new();
+    private readonly Dictionary<Job, JobConfig> _jobsConfig = new();
     public GlobalConfig GlobalConfig { get; private set; } = new();
     public int Version { get; set; } = 7;
 
@@ -34,7 +37,25 @@ public class PluginConfig : IPluginConfiguration
         => GlobalConfig.Ints.GetValue(config);
 
     public bool GetValue(PluginConfigBool config)
+    {
+        var rotation = DataCenter.RightNowRotation;
+        var set = DataCenter.RightSet;
+        if (rotation != null && set != null)
+        {
+            if (GetEnableBoolRaw(config) && set.GetEnableCondition(config).IsTrue(rotation)) return true;
+            if (GetDisableBoolRaw(config) && set.GetDisableCondition(config).IsTrue(rotation)) return false;
+        }
+
+        return GetBoolRaw(config);
+    }
+
+    public bool GetBoolRaw(PluginConfigBool config)
         => GlobalConfig.Bools.GetValue(config);
+
+    public bool GetDisableBoolRaw(PluginConfigBool config)
+        => GlobalConfig.ForcedDisableBools.GetValue(config);
+    public bool GetEnableBoolRaw(PluginConfigBool config)
+        => GlobalConfig.ForcedEnableBools.GetValue(config);
 
     public float GetValue(PluginConfigFloat config)
         => GlobalConfig.Floats.GetValue(config);
@@ -51,7 +72,7 @@ public class PluginConfig : IPluginConfiguration
     public int GetDefault(PluginConfigInt config)
         => GlobalConfig.Ints.GetDefault(config);
 
-    public bool GetDefault(PluginConfigBool config)
+    public bool GetBoolRawDefault(PluginConfigBool config)
         => GlobalConfig.Bools.GetDefault(config);
 
     public float GetDefault(PluginConfigFloat config)
@@ -101,9 +122,12 @@ public class PluginConfig : IPluginConfiguration
         }
         GlobalConfig.Ints.SetValue(config, value);
     }
-    public void SetValue(PluginConfigBool config, bool value)
+    public void SetBoolRaw(PluginConfigBool config, bool value)
         => GlobalConfig.Bools.SetValue(config, value);
-
+    public void SetDisableBoolRaw(PluginConfigBool config, bool value)
+        => GlobalConfig.ForcedDisableBools.SetValue(config, value); 
+    public void SetEnableBoolRaw(PluginConfigBool config, bool value)
+        => GlobalConfig.ForcedEnableBools.SetValue(config, value);
     public void SetValue(PluginConfigFloat config, float value)
     {
         var attr = config.GetAttribute<DefaultAttribute>();
@@ -177,6 +201,9 @@ public enum JobConfigFloat : byte
 {
     public DictionConfig<PluginConfigInt, int> Ints { get; private set; } = new();
     public DictionConfig<PluginConfigBool, bool> Bools { get; private set; } = new();
+    public DictionConfig<PluginConfigBool, bool> ForcedEnableBools { get; private set; } = new(defaultGetter: cmd => false);
+    public DictionConfig<PluginConfigBool, bool> ForcedDisableBools { get; private set; } = new(defaultGetter: cmd => false);
+
     public DictionConfig<PluginConfigFloat, float> Floats { get; private set; } = new();
     public DictionConfig<PluginConfigVector4, Vector4> Vectors { get; private set; } = new(new()
     {
@@ -456,13 +483,19 @@ public enum PluginConfigVector4 : byte
 [Serializable] public class DictionConfig<TConfig, TValue> where TConfig : struct, Enum
 {
     [JsonProperty]
-    private Dictionary<TConfig, TValue> configs = new ();
+    private readonly Dictionary<TConfig, TValue> configs = new ();
 
     private readonly SortedList<TConfig, TValue> _defaults;
 
-    public DictionConfig(SortedList<TConfig, TValue> @default = null)
+    private readonly Func<TConfig, TValue> _defaultGetter;
+
+    public DictionConfig(SortedList<TConfig, TValue> @default = null, Func<TConfig, TValue> defaultGetter = null)
     {
         _defaults = @default;
+        _defaultGetter = defaultGetter ?? ((command) =>
+            {
+                return (TValue)command.GetAttribute<DefaultAttribute>()?.Default ?? default;
+            });
     }
 
     public TValue GetValue(TConfig command)
@@ -471,7 +504,20 @@ public enum PluginConfigVector4 : byte
 
     public TValue GetDefault(TConfig command)
         => _defaults?.TryGetValue(command, out var value) ?? false ? value
-        : (TValue)command.GetAttribute<DefaultAttribute>()?.Default ?? default;
+        : Get_Default(command);
+
+    private TValue Get_Default(TConfig command)
+    {
+        try
+        {
+            return _defaultGetter(command);
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Warning(ex, "Failed to load the default value.");
+            return default;
+        }
+    }
 
     public void SetValue(TConfig command, TValue value)
         => configs[command] = value;

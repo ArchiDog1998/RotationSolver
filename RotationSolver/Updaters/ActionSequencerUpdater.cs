@@ -1,12 +1,4 @@
-﻿using Dalamud.Interface.Colors;
-using ECommons.DalamudServices;
-using ECommons.ImGuiMethods;
-using RotationSolver.ActionSequencer;
-using RotationSolver.Basic.Configuration;
-using RotationSolver.Localization;
-using RotationSolver.UI;
-using System.Diagnostics;
-using System.Windows.Forms;
+﻿using RotationSolver.Basic.Configuration.Conditions;
 
 namespace RotationSolver.Updaters;
 
@@ -14,38 +6,38 @@ internal class ActionSequencerUpdater
 {
     static string _actionSequencerFolder;
 
-    static IEnumerable<MajorConditionSet> _conditionSet;
-    public static MajorConditionSet RightSet => _conditionSet?
-        .ElementAtOrDefault(Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex));
-
-    public static string[] ConditionSetsName => _conditionSet?.Select(s => s.Name).ToArray() ?? Array.Empty<string>();
-
     public static void UpdateActionSequencerAction()
     {
-        if (_conditionSet == null) return;
-        var customRotation = RotationUpdater.RightNowRotation;
+        if (DataCenter.ConditionSets == null) return;
+        var customRotation = DataCenter.RightNowRotation;
         if (customRotation == null) return;
 
         var allActions = RotationUpdater.RightRotationActions;
 
-        var set = RightSet;
+        var set = DataCenter.RightSet;
         if (set == null) return;
 
-        DataCenter.DisabledActionSequencer = new HashSet<uint>(set.DiabledConditions.Where(pair => pair.Value.IsTrue(customRotation))
-             .Select(pair => pair.Key));
+        DataCenter.DisabledActionSequencer = new HashSet<uint>(set.DisableConditionDict
+            .Where(pair => pair.Value.IsTrue(customRotation))
+            .Select(pair => pair.Key));
 
         bool find = false;
-        foreach (var conditionPair in set.Conditions)
+        var conditions = set.ConditionDict;
+        if (conditions != null)
         {
-            var nextAct = allActions.FirstOrDefault(a => a.ID == conditionPair.Key);
-            if (nextAct == null) continue;
+            foreach (var conditionPair in conditions)
+            {
+                var nextAct = allActions.FirstOrDefault(a => a.ID == conditionPair.Key);
+                if (nextAct == null) continue;
 
-            if (!conditionPair.Value.IsTrue(customRotation)) continue;
+                if (!conditionPair.Value.IsTrue(customRotation)) continue;
 
-            DataCenter.ActionSequencerAction = nextAct;
-            find = true;
-            break;
+                DataCenter.ActionSequencerAction = nextAct;
+                find = true;
+                break;
+            }
         }
+
         if (!find)
         {
             DataCenter.ActionSequencerAction = null;
@@ -57,7 +49,7 @@ internal class ActionSequencerUpdater
         _actionSequencerFolder = folder;
         if (!Directory.Exists(_actionSequencerFolder)) Directory.CreateDirectory(_actionSequencerFolder);
 
-        _conditionSet = MajorConditionSet.Read(_actionSequencerFolder);
+        LoadFiles();
     }
 
     public static void SaveFiles()
@@ -71,7 +63,7 @@ internal class ActionSequencerUpdater
         {
 
         }
-        foreach (var set in _conditionSet)
+        foreach (var set in DataCenter.ConditionSets)
         {
             set.Save(_actionSequencerFolder);
         }
@@ -79,81 +71,20 @@ internal class ActionSequencerUpdater
 
     public static void LoadFiles()
     {
-        _conditionSet = MajorConditionSet.Read(_actionSequencerFolder);
+        DataCenter.ConditionSets = MajorConditionSet.Read(_actionSequencerFolder);
     }
 
-    private static void AddNew()
+    public static void AddNew()
     {
-        const string conditionName = "Unnamed";
-        if (!_conditionSet.Any(c => c.Name == conditionName))
+        if (!DataCenter.ConditionSets.Any(c => c.IsUnnamed))
         {
-            _conditionSet = _conditionSet.Union(new[] { new MajorConditionSet(conditionName) });
+            DataCenter.ConditionSets = DataCenter.ConditionSets.Append(new MajorConditionSet()).ToArray();
         }
     }
 
-    private static void Delete(string name)
+    public static void Delete(string name)
     {
-        _conditionSet = _conditionSet.Where(c => c.Name != name);
+        DataCenter.ConditionSets = DataCenter.ConditionSets.Where(c => c.Name != name).ToArray();
         File.Delete(_actionSequencerFolder + $"\\{name}.json");
-    }
-
-    public static void DrawHeader(float width)
-    {
-        var set = RightSet;
-        bool hasSet = set != null;
-
-        if (hasSet)
-        {
-            ImGuiHelper.SetNextWidthWithName(set.Name);
-            ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
-
-            ImGui.SameLine();
-        }
-
-        var combos = ConditionSetsName;
-        ImGui.SetNextItemWidth(width);
-
-        if(ImGui.BeginCombo("##MajorConditionCombo", ""))
-        {
-            for (int i = 0; i < combos.Length; i++)
-            {
-                void DeleteFile()
-                {
-                    Delete(combos[i]);
-                }
-
-                var key = "Condition Set At " + i.ToString();
-
-                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, new string[] { "Delete" }));
-
-
-                if (ImGui.Selectable(combos[i]))
-                {
-                    Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, i);
-                }
-
-                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
-    (DeleteFile, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
-            }
-
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
-            ImGui.PushFont(UiBuilder.IconFont);
-            if (ImGui.Selectable(FontAwesomeIcon.Plus.ToIconString()))
-            {
-                AddNew();
-            }
-            ImGui.PopFont();
-            ImGui.PopStyleColor();
-            ImGui.EndCombo();
-        }
-
-        ImGui.SameLine();
-        if (ImGuiEx.IconButton(FontAwesomeIcon.FileDownload, "##LoadTheConditions"))
-        {
-            LoadFiles();
-        }
-        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Load);
-
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_ConditionDescription);
     }
 }

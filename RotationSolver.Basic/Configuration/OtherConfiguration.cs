@@ -3,6 +3,7 @@
 namespace RotationSolver.Basic.Configuration;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CA2211 
 public class OtherConfiguration
 {
     public static HashSet<uint> HostileCastingArea = new();
@@ -98,78 +99,78 @@ public class OtherConfiguration
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
     }
 
-    public static void Save()
+    public static async Task Save()
     {
-        SaveDangerousStatus();
-        SaveInvincibleStatus();
-        SaveNoHostileNames();
-        SaveAnimationLockTime();
-        SaveHostileCastingArea();
-        SaveHostileCastingTank();
-        SaveBeneficialPositions();
-        SaveRotationSolverRecord();
-        SaveNoProvokeNames();
-        SaveActionAOECounts();
-        SaveActionTTK();
-        SaveActionHealRatio();
+        await SaveDangerousStatus();
+        await SaveInvincibleStatus();
+        await SaveNoHostileNames();
+        await SaveAnimationLockTime();
+        await SaveHostileCastingArea();
+        await SaveHostileCastingTank();
+        await SaveBeneficialPositions();
+        await SaveRotationSolverRecord();
+        await SaveNoProvokeNames();
+        await SaveActionAOECounts();
+        await SaveActionTTK();
+        await SaveActionHealRatio();
     }
 
-    public static void SaveActionHealRatio()
+    public static Task SaveActionHealRatio()
     {
-        Task.Run(() => Save(ActionHealRatio, nameof(ActionHealRatio)));
+        return Task.Run(() => Save(ActionHealRatio, nameof(ActionHealRatio)));
     }
 
-    public static void SaveActionTTK()
+    public static Task SaveActionTTK()
     {
-        Task.Run(() => Save(ActionTTK, nameof(ActionTTK)));
+        return Task.Run(() => Save(ActionTTK, nameof(ActionTTK)));
     }
 
-    public static void SaveActionAOECounts()
+    public static Task SaveActionAOECounts()
     {
-        Task.Run(() => Save(ActionAOECounts, nameof(ActionAOECounts)));
+        return Task.Run(() => Save(ActionAOECounts, nameof(ActionAOECounts)));
     }
-    public static void SaveRotationSolverRecord()
+    public static Task SaveRotationSolverRecord()
     {
-        Task.Run(() => Save(RotationSolverRecord, nameof(RotationSolverRecord)));
+        return Task.Run(() => Save(RotationSolverRecord, nameof(RotationSolverRecord)));
     }
-    public static void SaveNoProvokeNames()
+    public static Task SaveNoProvokeNames()
     {
-        Task.Run(() => Save(NoProvokeNames, nameof(NoProvokeNames)));
-    }
-
-    public static void SaveBeneficialPositions()
-    {
-        Task.Run(() => Save(BeneficialPositions, nameof(BeneficialPositions)));
+        return Task.Run(() => Save(NoProvokeNames, nameof(NoProvokeNames)));
     }
 
-    public static void SaveHostileCastingArea()
+    public static Task SaveBeneficialPositions()
     {
-        Task.Run(() => Save(HostileCastingArea, nameof(HostileCastingArea)));
+        return Task.Run(() => Save(BeneficialPositions, nameof(BeneficialPositions)));
     }
 
-    public static void SaveHostileCastingTank()
+    public static Task SaveHostileCastingArea()
     {
-        Task.Run(() => Save(HostileCastingTank, nameof(HostileCastingTank)));
+        return Task.Run(() => Save(HostileCastingArea, nameof(HostileCastingArea)));
     }
 
-    public static void SaveDangerousStatus()
+    public static Task SaveHostileCastingTank()
     {
-        Task.Run(() => Save(DangerousStatus, nameof(DangerousStatus)));
+        return Task.Run(() => Save(HostileCastingTank, nameof(HostileCastingTank)));
     }
 
-    public static void SaveInvincibleStatus()
+    public static Task SaveDangerousStatus()
     {
-        Task.Run(() => Save(InvincibleStatus, nameof(InvincibleStatus)));
+        return Task.Run(() => Save(DangerousStatus, nameof(DangerousStatus)));
     }
 
-    public static void SaveNoHostileNames()
+    public static Task SaveInvincibleStatus()
     {
-        Task.Run(() => Save(NoHostileNames, nameof(NoHostileNames)));
+        return Task.Run(() => Save(InvincibleStatus, nameof(InvincibleStatus)));
     }
 
-    public static void SaveAnimationLockTime()
+    public static Task SaveNoHostileNames()
     {
-        Task.Run(() => Save(AnimationLockTime, nameof(AnimationLockTime)));
+        return Task.Run(() => Save(NoHostileNames, nameof(NoHostileNames)));
+    }
+
+    public static Task SaveAnimationLockTime()
+    {
+        return Task.Run(() => Save(AnimationLockTime, nameof(AnimationLockTime)));
     }
 
     private static string GetFilePath(string name)
@@ -220,7 +221,7 @@ public class OtherConfiguration
         {
             try
             {
-                var client = new HttpClient();
+                using var client = new HttpClient();
                 var str = client.GetStringAsync($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/{name}.json").Result;
 
                 File.WriteAllText(path, str);
@@ -244,4 +245,5 @@ public class OtherConfiguration
         }
     }
 }
+#pragma warning restore CA2211
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

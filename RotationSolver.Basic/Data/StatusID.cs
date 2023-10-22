@@ -1432,4 +1432,28 @@ public enum StatusID : ushort
     /// </summary>
     LostSeraphStrike = 2484,
 
+    /// <summary>
+    /// 
+    /// </summary>
+    Gobskin = 2114,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    ToadOil = 1737,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Poison = 18,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    BreathOfMagic = 3712,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    MortalFlame = 3643,
 }

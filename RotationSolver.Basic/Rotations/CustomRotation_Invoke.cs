@@ -108,7 +108,7 @@ public abstract partial class CustomRotation
             JobRole.Tank => Shirk.CanUse(out act) ? act : null,
             _ => null,
         };
-        AntiKnockbackAbility = AntiKnockback(role, SpecialCommandType.AntiKnockback, out act) ? act : null;
+        AntiKnockbackAbility = AntiKnockback(role, out act) ? act : null;
 
         BaseAction.OtherOption |= CanUseOption.EmptyOrSkipCombo;
 

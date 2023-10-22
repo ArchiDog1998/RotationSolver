@@ -996,7 +996,7 @@ public abstract class BLU_Base : CustomRotation
         if (BlueId == BLUID.Healer)
         {
             //Esuna
-            if (DataCenter.SpecialType == SpecialCommandType.EsunaStanceNorth && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any())
+            if (DataCenter.IsEsunaStanceNorth && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any())
             {
                 if (Exuviation.CanUse(out act, CanUseOption.MustUse)) return true;
             }

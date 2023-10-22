@@ -17,6 +17,8 @@ public partial class RotationConfigWindow
     private static char[] _splitChar = new char[] { ' ', ',', '、', '.', '。' };
     internal static float Similarity(string text, string key)
     {
+        if (string.IsNullOrEmpty(text)) return 0;
+
         var chars = text.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
         var keys = key.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
 
@@ -494,7 +496,47 @@ public partial class RotationConfigWindow
             }
         },
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_ActionCondition, DrawAutoActionCondition },
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_StateCondition, () => _autoState?.Draw() },
     });
+
+    private static readonly CollapsingHeaderGroup _autoState = new(new()
+    {
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_HealAreaConditionSet, 
+            () => DataCenter.RightSet.HealAreaConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_HealSingleConditionSet,
+            () => DataCenter.RightSet.HealSingleConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_DefenseAreaConditionSet,
+            () => DataCenter.RightSet.DefenseAreaConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_DefenseSingleConditionSet, 
+            () => DataCenter.RightSet.DefenseSingleConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_EsunaStanceNorthConditionSet,
+            () => DataCenter.RightSet.EsunaStanceNorthConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_RaiseShirkConditionSet, 
+            () => DataCenter.RightSet.RaiseShirkConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_MoveForwardConditionSet, 
+            () => DataCenter.RightSet.MoveForwardConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_MoveBackConditionSet,
+            () => DataCenter.RightSet.MoveBackConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_AntiKnockbackConditionSet, 
+            () => DataCenter.RightSet.AntiKnockbackConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_BurstConditionSet,
+            () => DataCenter.RightSet.BurstConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_SpeedConditionSet,
+            () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+    })
+    {
+        HeaderSize = 18,
+    };
 
     private static void DrawAutoActionCondition()
     {
@@ -904,7 +946,7 @@ public partial class RotationConfigWindow
             var names = Enum.GetNames(typeof(TargetingType));
             var targingType = (int)Service.Config.GlobalConfig.TargetingTypes[i];
             var text = LocalizationManager.RightLang.ConfigWindow_Param_HostileCondition;
-            ImGui.SetNextItemWidth(ImGui.CalcTextSize(text).X + 30 * _scale);
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(text).X + 30 * Scale);
             if (ImGui.Combo(text + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
             {
                 Service.Config.GlobalConfig.TargetingTypes[i] = (TargetingType)targingType;

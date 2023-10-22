@@ -14,7 +14,7 @@ internal abstract class Searchable : ISearchable
     protected static float Scale => ImGuiHelpers.GlobalScale;
     public CheckBoxSearch Parent { get; set; }
 
-    public string SearchingKeys => Name + " " + Description;
+    public virtual string SearchingKeys => Name + " " + Description;
     public abstract string Name { get; }
     public abstract string Description { get; }
     public abstract string Command { get; }
@@ -40,7 +40,7 @@ internal abstract class Searchable : ISearchable
 
         if (JobRoles != null)
         {
-            var role = RotationUpdater.RightNowRotation?.ClassJob?.GetJobRole();
+            var role = DataCenter.RightNowRotation?.ClassJob?.GetJobRole();
             if (role.HasValue)
             {
                 canDraw = JobRoles.Contains(role.Value);

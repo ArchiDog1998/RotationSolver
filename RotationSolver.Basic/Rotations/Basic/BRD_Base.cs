@@ -344,7 +344,7 @@ public abstract class BRD_Base : CustomRotation
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         //Esuna
-        if (DataCenter.SpecialType == SpecialCommandType.EsunaStanceNorth && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any())
+        if (DataCenter.IsEsunaStanceNorth && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any())
         {
             if (WardensPaean.CanUse(out act, CanUseOption.MustUse)) return true;
         }

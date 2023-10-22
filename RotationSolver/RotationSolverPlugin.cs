@@ -27,7 +27,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static CooldownWindow _cooldownWindow;
 
     static readonly List<IDisposable> _dis = new();
-    public string Name => "Rotation Solver";
+    public static string Name => "Rotation Solver";
 
     public static DalamudLinkPayload OpenLinkPayload { get; private set; }
     public static DalamudLinkPayload HideWarningLinkPayload { get; private set; }
@@ -89,7 +89,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             if (id == 1)
             {
-                Service.Config.SetValue(PluginConfigBool.HideWarning, true);
+                Service.Config.SetBoolRaw(PluginConfigBool.HideWarning, true);
                 Svc.Chat.Print("Warning has been hidden.");
             }
         });
@@ -109,7 +109,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         RSCommands.Enable();
     }
 
-    public void Dispose()
+    public async void Dispose()
     {
         RSCommands.Disable();
         Watcher.Disable();
@@ -125,7 +125,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         MajorUpdater.Dispose();
         PainterManager.Dispose();
-        OtherConfiguration.Save();
+        await OtherConfiguration.Save();
 
         ECommonsMain.Dispose();
 
@@ -147,7 +147,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     internal static void UpdateDisplayWindow()
     {
         var isValid = validDelay.Delay(MajorUpdater.IsValid
-            && RotationUpdater.RightNowRotation != null
+            && DataCenter.RightNowRotation != null
             && !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent]
             && !Svc.Condition[ConditionFlag.Occupied38] //Treasure hunt.
             && !Svc.Condition[ConditionFlag.WaitingForDuty]

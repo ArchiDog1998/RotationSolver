@@ -1,16 +1,105 @@
 ﻿using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
-using ImGuiScene;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
+using RotationSolver.Updaters;
 
 namespace RotationSolver.UI.SearchableSettings;
 
 internal class CheckBoxSearchPlugin : CheckBoxSearch
 {
-    private PluginConfigBool _config;
+    private abstract class CheckBoxConditionAbstract : CheckBoxSearch
+    {
+        protected readonly PluginConfigBool _config;
+
+        public override string SearchingKeys => string.Empty;
+
+        public override string Command => string.Empty;
+
+        public override LinkDescription[] Tooltips => null;
+
+        public override string ID => _config.ToString() + Name;
+
+        public CheckBoxConditionAbstract(PluginConfigBool config) : base()
+        {
+            _config = config;
+            AdditionalDraw = () =>
+            {
+                GetCondition(DataCenter.Job)?.DrawMain(DataCenter.RightNowRotation);
+                ImGui.Separator();
+            };
+        }
+
+        protected abstract ConditionSet GetCondition(Job job);
+    }
+
+    private class CheckBoxDisable : CheckBoxConditionAbstract
+    {
+        public override string Name => LocalizationManager.RightLang.ConfigWindow_Options_ForcedDisableCondition;
+
+        public override string Description => LocalizationManager.RightLang.ConfigWindow_Options_ForcedDisableConditionDesc;
+
+        public CheckBoxDisable(PluginConfigBool config) : base(config)
+        {
+        }
+        public override void ResetToDefault(Job job)
+        {
+            Service.Config.SetDisableBoolRaw(_config, false);
+        }
+
+        protected override bool GetValue(Job job)
+        {
+            return Service.Config.GetDisableBoolRaw(_config);
+        }
+
+        protected override void SetValue(Job job, bool value)
+        {
+            Service.Config.SetDisableBoolRaw(_config, value);
+        }
+
+        protected override ConditionSet GetCondition(Job job)
+        {
+            return DataCenter.RightSet.GetDisableCondition(_config);
+        }
+    }
+
+    private class CheckBoxEnable : CheckBoxConditionAbstract
+    {
+        public override string Name => LocalizationManager.RightLang.ConfigWindow_Options_ForcedEnableCondition;
+
+        public override string Description => LocalizationManager.RightLang.ConfigWindow_Options_ForcedEnableConditionDesc;
+
+        public CheckBoxEnable(PluginConfigBool config) : base(config)
+        {
+        }
+
+        public override void ResetToDefault(Job job)
+        {
+            Service.Config.SetEnableBoolRaw(_config, false);
+        }
+
+        protected override bool GetValue(Job job)
+        {
+            return Service.Config.GetEnableBoolRaw(_config);
+        }
+
+        protected override void SetValue(Job job, bool value)
+        {
+            Service.Config.SetEnableBoolRaw(_config, value);
+        }
+
+        protected override ConditionSet GetCondition(Job job)
+        {
+            return DataCenter.RightSet.GetEnableCondition(_config);
+        }
+    }
+
+
+    private readonly PluginConfigBool _config;
     public override string ID => _config.ToString();
 
     public override string Name => _config.ToName();
@@ -21,25 +110,30 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     public override string Command => _config.ToCommand();
 
+    private static readonly Action _emptyAction = () => { };
     public CheckBoxSearchPlugin(PluginConfigBool config, params ISearchable[] children)
-        :base(children)
+        :base(new ISearchable[] 
+        { 
+            new CheckBoxEnable(config), new CheckBoxDisable(config),
+        }.Concat(children).ToArray())
     {
         _config = config;
+        AdditionalDraw = _emptyAction;
     }
 
     protected override bool GetValue(Job job)
     {
-        return Service.Config.GetValue(_config);
+        return Service.Config.GetBoolRaw(_config);
     }
 
     protected override void SetValue(Job job, bool value)
     {
-        Service.Config.SetValue(_config, value);
+        Service.Config.SetBoolRaw(_config, value);
     }
 
     public override void ResetToDefault(Job job)
     {
-        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
+        Service.Config.SetBoolRaw(_config, Service.Config.GetBoolRawDefault(_config));
     }
 }
 
@@ -48,6 +142,8 @@ internal abstract class CheckBoxSearch : Searchable
     public ISearchable[] Children { get; protected set; }
 
     public ActionID Action { get; init; } = ActionID.None;
+
+    public Action AdditionalDraw { get; set; } = null;
 
     public CheckBoxSearch(params ISearchable[] children)
     {
@@ -80,6 +176,8 @@ internal abstract class CheckBoxSearch : Searchable
     protected override void DrawMain(Job job)
     {
         var hasChild = Children != null && Children.Length > 0;
+        var hasAdditional = AdditionalDraw != null;
+        var hasSub = hasChild || hasAdditional;
         IDalamudTextureWrap texture = null;
         var hasIcon = Action != ActionID.None && IconSet.GetTexture(Action, out texture);
 
@@ -107,9 +205,9 @@ internal abstract class CheckBoxSearch : Searchable
 
             if (ImGui.IsItemHovered()) ShowTooltip(job);
         }
-        else if (hasChild)
+        else if (hasSub)
         {
-            if (enable)
+            if (enable && hasChild || hasAdditional)
             {
                 var x = ImGui.GetCursorPosX();
                 var drawBody = ImGui.TreeNode(name);
@@ -119,7 +217,11 @@ internal abstract class CheckBoxSearch : Searchable
                 {
                     ImGui.SetCursorPosX(x);
                     ImGui.BeginGroup();
-                    DrawChildren(job);
+                    AdditionalDraw?.Invoke();
+                    if (hasChild)
+                    {
+                        DrawChildren(job);
+                    }
                     ImGui.EndGroup();
                     ImGui.TreePop();
                 }
