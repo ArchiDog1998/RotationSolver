@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.1...v3.4.2) (2023-10-23)
+
+
+### Bug Fixes
+
+* crash when add action in Actions in List. ([00b5549](https://github.com/ArchiDog1998/RotationSolver/commit/00b5549c8291f6f0c38d85481c660d65a1b7f0fb))
+
 ## [3.4.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.0...v3.4.1) (2023-10-23)
 
 
