@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.4.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.0...v3.4.1) (2023-10-23)
+
+
+### Bug Fixes
+
+* fixed rotation condition IsTrue value. ([5b9851c](https://github.com/ArchiDog1998/RotationSolver/commit/5b9851cc552f61d9544415e00e905488df5e9db5))
+* sge kardia only bind to non tank when there is no tanks for more than 3 - 5 s. ([fa2e289](https://github.com/ArchiDog1998/RotationSolver/commit/fa2e289aeaae591dc3fcb990eee0eb5575a1c4a2))
+
 ## [3.4.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.3.6...v3.4.0) (2023-10-22)
 
 
