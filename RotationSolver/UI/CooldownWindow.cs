@@ -1,7 +1,5 @@
 ﻿using Dalamud.Interface.Utility.Raii;
-using ECommons.DalamudServices;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;

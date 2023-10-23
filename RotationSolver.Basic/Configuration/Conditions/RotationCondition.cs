@@ -4,10 +4,10 @@ internal class RotationCondition : DelayCondition
 {
     public ComboConditionType ComboConditionType = ComboConditionType.Float;
     internal PropertyInfo _prop;
-    public string PropertyName = nameof(CustomRotation.CombatTime);
+    public string PropertyName = "Not Chosen";
 
     MethodInfo _method;
-    public string MethodName = string.Empty;
+    public string MethodName = "Not Chosen";
 
     internal IBaseAction _action;
     public ActionID ID { get; set; } = ActionID.None;
@@ -17,13 +17,12 @@ internal class RotationCondition : DelayCondition
     public int Param1;
     public float Param2;
 
-
     public override bool CheckBefore(ICustomRotation rotation)
     {
-        return CheckBaseAction(rotation, ID, ref _action)
-            && CheckMemberInfo(rotation, ref PropertyName, ref _prop)
-            && CheckMemberInfo(rotation, ref MethodName, ref _method)
-            && base.CheckBefore(rotation);
+        CheckBaseAction(rotation, ID, ref _action);
+        CheckMemberInfo(rotation, ref PropertyName, ref _prop);
+        CheckMemberInfo(rotation, ref MethodName, ref _method);
+        return base.CheckBefore(rotation);
     }
 
     public override bool IsTrueInside(ICustomRotation rotation)

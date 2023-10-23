@@ -135,6 +135,7 @@ public abstract class SGE_Base : CustomRotation
     /// </summary>
     public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, ActionOption.Heal);
 
+    static RandomDelay noTankDelay = new RandomDelay(() => (3, 5));
     /// <summary>
     /// 
     /// </summary>
@@ -143,7 +144,10 @@ public abstract class SGE_Base : CustomRotation
         ChoiceTarget = (Targets, mustUse) =>
         {
             var targets = Targets.GetJobCategory(JobRole.Tank);
-            targets = targets.Any() ? targets : Targets;
+            if (noTankDelay.Delay(!targets.Any()))
+            {
+                targets = targets.Any() ? targets : Targets;
+            }
 
             if (!targets.Any()) return null;
 

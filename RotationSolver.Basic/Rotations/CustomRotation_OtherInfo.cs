@@ -145,6 +145,11 @@ public abstract partial class CustomRotation
     public static bool HasHostilesInRange => DataCenter.HasHostilesInRange;
 
     /// <summary>
+    /// Is there any hostile target in 25 yalms?
+    /// </summary>
+    public static bool HasHostilesInMaxRange => DataCenter.HasHostilesInMaxRange;
+
+    /// <summary>
     /// How many hostile targets in range? 25 for ranged jobs and healer, 3 for melee and tank.
     /// </summary>
     public static int NumberOfHostilesInRange => DataCenter.NumberOfHostilesInRange;

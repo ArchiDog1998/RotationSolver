@@ -47,7 +47,6 @@ internal static class DataCenter
 
     public static ICustomRotation RightNowRotation { get; internal set; }
 
-
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
         || !Service.Config.GetValue(PluginConfigBool.PoslockCasting)
         //Key cancel.
@@ -252,30 +251,30 @@ internal static class DataCenter
     public static IEnumerable<BattleChara> AllianceTanks { get; internal set; } = Array.Empty<PlayerCharacter>();
     
     public static ObjectListDelay<BattleChara> DeathPeopleAll { get; } = new(
-    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.DeathDelayMin),
-    Service.Config.GetValue(Configuration.PluginConfigFloat.DeathDelayMax)));
+    () => (Service.Config.GetValue(PluginConfigFloat.DeathDelayMin),
+    Service.Config.GetValue(PluginConfigFloat.DeathDelayMax)));
 
     public static ObjectListDelay<BattleChara> DeathPeopleParty { get; } = new(
-    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.DeathDelayMin),
-    Service.Config.GetValue(Configuration.PluginConfigFloat.DeathDelayMax)));
+    () => (Service.Config.GetValue(PluginConfigFloat.DeathDelayMin),
+    Service.Config.GetValue(PluginConfigFloat.DeathDelayMax)));
 
     public static ObjectListDelay<BattleChara> WeakenPeople { get; } = new(
-    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.WeakenDelayMin),
-    Service.Config.GetValue(Configuration.PluginConfigFloat.WeakenDelayMax)));
+    () => (Service.Config.GetValue(PluginConfigFloat.WeakenDelayMin),
+    Service.Config.GetValue(PluginConfigFloat.WeakenDelayMax)));
 
     public static IEnumerable<BattleChara> DyingPeople { get; internal set; } = Array.Empty<BattleChara>();
 
     public static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
-    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.HostileDelayMin),
-    Service.Config.GetValue(Configuration.PluginConfigFloat.HostileDelayMax)));
+    () => (Service.Config.GetValue(PluginConfigFloat.HostileDelayMin),
+    Service.Config.GetValue(PluginConfigFloat.HostileDelayMax)));
 
     public static IEnumerable<BattleChara> AllHostileTargets { get; internal set; } = Array.Empty<BattleChara>();
 
     public static IEnumerable<BattleChara> TarOnMeTargets { get; internal set; } = Array.Empty<BattleChara>();
 
     public static ObjectListDelay<BattleChara> CanInterruptTargets { get; } = new ObjectListDelay<BattleChara>(
-    () => (Service.Config.GetValue(Configuration.PluginConfigFloat.InterruptDelayMin),
-    Service.Config.GetValue(Configuration.PluginConfigFloat.InterruptDelayMax)));
+    () => (Service.Config.GetValue(PluginConfigFloat.InterruptDelayMin),
+    Service.Config.GetValue(PluginConfigFloat.InterruptDelayMax)));
 
     public static IEnumerable<GameObject> AllTargets { get; set; }
 
@@ -296,7 +295,6 @@ internal static class DataCenter
     public static bool IsHostileCastingToTank { get; internal set; }
 
     public static bool HasPet { get; internal set; }
-
 
     public static unsafe bool HasCompanion => (IntPtr)Player.BattleChara != IntPtr.Zero 
                                            && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Player.BattleChara) != IntPtr.Zero;
