@@ -298,6 +298,7 @@
     "IsTargetDying": "La cible est sur le point de mourir",
     "IsTargetBoss": "La cible est un Boss",
     "HasHostilesInRange": "A des ennemis dans sa zone d'attaque",
+    "HasHostilesInMaxRange": "Has hostiles in 25 yalms",
     "NumberOfHostilesInRange": "Nombre d'ennemis dans la zone d'attaque",
     "NumberOfHostilesInMaxRange": "Nombre d'ennemis dans la zone d'attaque la plus loin",
     "NumberOfAllHostilesInRange": "The number of all hostiles in Range",
