@@ -298,6 +298,7 @@
     "IsTargetDying": "Is target going to die",
     "IsTargetBoss": "Is target a boss",
     "HasHostilesInRange": "Has hostiles in Range",
+    "HasHostilesInMaxRange": "Has hostiles in 25 yalms",
     "NumberOfHostilesInRange": "The number of hostiles in Range",
     "NumberOfHostilesInMaxRange": "The number of hostiles in max Range",
     "NumberOfAllHostilesInRange": "The number of all hostiles in Range",
