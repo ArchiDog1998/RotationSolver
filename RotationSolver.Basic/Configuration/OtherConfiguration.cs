@@ -99,20 +99,23 @@ public class OtherConfiguration
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
     }
 
-    public static async Task Save()
+    public static Task Save()
     {
-        await SaveDangerousStatus();
-        await SaveInvincibleStatus();
-        await SaveNoHostileNames();
-        await SaveAnimationLockTime();
-        await SaveHostileCastingArea();
-        await SaveHostileCastingTank();
-        await SaveBeneficialPositions();
-        await SaveRotationSolverRecord();
-        await SaveNoProvokeNames();
-        await SaveActionAOECounts();
-        await SaveActionTTK();
-        await SaveActionHealRatio();
+        return Task.Run(async () =>
+        {
+            await SaveDangerousStatus();
+            await SaveInvincibleStatus();
+            await SaveNoHostileNames();
+            await SaveAnimationLockTime();
+            await SaveHostileCastingArea();
+            await SaveHostileCastingTank();
+            await SaveBeneficialPositions();
+            await SaveRotationSolverRecord();
+            await SaveNoProvokeNames();
+            await SaveActionAOECounts();
+            await SaveActionTTK();
+            await SaveActionHealRatio();
+        });
     }
 
     public static Task SaveActionHealRatio()

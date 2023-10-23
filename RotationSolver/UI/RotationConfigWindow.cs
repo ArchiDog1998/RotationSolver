@@ -1813,17 +1813,17 @@ public partial class RotationConfigWindow : Window
     }
 
     static string _statusSearching = string.Empty;
-    private static async void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
+    private static void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
     {
         uint removeId = 0;
         uint notLoadId = 10100;
 
         var popupId = "Rotation Solver Popup" + name;
 
-        StatusPopUp(popupId, allStatus, ref _statusSearching, async status =>
+        StatusPopUp(popupId, allStatus, ref _statusSearching, status =>
         {
             statuses.Add(status.RowId);
-            await OtherConfiguration.Save();
+            OtherConfiguration.Save();
         }, notLoadId);
 
         var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * Scale + ImGui.GetStyle().ItemSpacing.X)));
@@ -1868,7 +1868,7 @@ public partial class RotationConfigWindow : Window
         if (removeId != 0)
         {
             statuses.Remove(removeId);
-            await OtherConfiguration.Save();
+            OtherConfiguration.Save();
         }
     }
 
@@ -1949,40 +1949,11 @@ public partial class RotationConfigWindow : Window
     }
 
     private static string _actionSearching = string.Empty;
-    private static async void DrawActionsList(string name, HashSet<uint> actions)
+    private static void DrawActionsList(string name, HashSet<uint> actions)
     {
         uint removeId = 0;
 
         var popupId = "Rotation Solver Action Popup" + name;
-
-        using var popup = ImRaii.Popup(popupId);
-        if (popup)
-        {
-            ImGui.SetNextItemWidth(200 * Scale);
-            ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
-
-            ImGui.Spacing();
-
-            using var child = ImRaii.Child("Rotation Solver Add action", new Vector2(-1, 400 * Scale));
-            if (child)
-            {
-                foreach (var action in AllActions.OrderByDescending(s =>Similarity(s.Name  + " " + s.RowId.ToString(), _actionSearching)))
-                {
-                    var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImguiTooltips.ShowTooltip($"{action.Name} ({action.RowId})");
-                        if(selected)
-                        {
-                            actions.Add(action.RowId);
-                            await OtherConfiguration.Save();
-                            ImGui.CloseCurrentPopup();
-                        }
-                    }
-                }
-            }
-        }
-
 
         if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_List_AddAction + "##" + name))
         {
@@ -2009,7 +1980,34 @@ public partial class RotationConfigWindow : Window
         if (removeId != 0)
         {
             actions.Remove(removeId);
-            await OtherConfiguration.Save();
+            OtherConfiguration.Save();
+        }
+
+        using var popup = ImRaii.Popup(popupId);
+        if (popup)
+        {
+            ImGui.SetNextItemWidth(200 * Scale);
+            ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
+
+            ImGui.Spacing();
+
+            using var child = ImRaii.Child("Rotation Solver Add action", new Vector2(-1, 400 * Scale));
+            if (child)
+            {
+                foreach (var action in AllActions.OrderByDescending(s => Similarity(s.Name + " " + s.RowId.ToString(), _actionSearching)))
+                {
+                    var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImguiTooltips.ShowTooltip($"{action.Name} ({action.RowId})");
+                        if (selected)
+                        {
+                            actions.Add(action.RowId);
+                            OtherConfiguration.Save(); ImGui.CloseCurrentPopup();
+                        }
+                    }
+                }
+            }
         }
     }
 
