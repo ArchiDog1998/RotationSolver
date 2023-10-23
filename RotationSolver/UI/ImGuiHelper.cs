@@ -20,6 +20,8 @@ internal static class ImGuiHelper
 
     public static string GetMemberName(this MemberInfo info)
     {
+        if (info == null) return "Not Chosen";
+
         if (LocalizationManager.RightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
 
         return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? info.Name;

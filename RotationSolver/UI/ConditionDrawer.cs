@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
@@ -118,28 +119,26 @@ internal static class ConditionDrawer
             if (!ImGui.IsPopupOpen(popId)) ImGui.OpenPopup(popId);
         }
 
-        if (ImGui.BeginPopup(popId))
+        using var popUp = ImRaii.Popup(popId);
+        if (!popUp.Success) return;
+
+        var searchingKey = searchTxt;
+
+        var members = actions.Select(m => (m, m.GetMemberName()))
+            .OrderByDescending(s => RotationConfigWindow.Similarity(s.Item2, searchingKey));
+
+        ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
+        ImGui.InputTextWithHint("##Searching the member", LocalizationManager.RightLang.ConfigWindow_Actions_MemberName, ref searchTxt, 128);
+
+        ImGui.Spacing();
+
+        foreach (var member in members)
         {
-            var searchingKey = searchTxt;
-
-            var members = actions.Select(m => (m, m.GetMemberName()))
-                .OrderByDescending(s => RotationConfigWindow.Similarity(s.Item2, searchingKey));
-
-            ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
-            ImGui.InputTextWithHint("##Searching the member", LocalizationManager.RightLang.ConfigWindow_Actions_MemberName, ref searchTxt, 128);
-
-            ImGui.Spacing();
-
-            foreach (var member in members)
+            if (ImGui.Selectable(member.Item2))
             {
-                if (ImGui.Selectable(member.Item2))
-                {
-                    selectAction?.Invoke(member.m);
-                    ImGui.CloseCurrentPopup();
-                }
+                selectAction?.Invoke(member.m);
+                ImGui.CloseCurrentPopup();
             }
-
-            ImGui.EndPopup();
         }
     }
 
@@ -148,27 +147,32 @@ internal static class ConditionDrawer
     private const int count = 8;
     public static void ActionSelectorPopUp(string popUpId, CollapsingHeaderGroup group, ICustomRotation rotation, Action<IAction> action, Action others = null)
     {
-        if (group != null && ImGui.BeginPopup(popUpId))
+        if (group == null) return;
+
+        using var popUp = ImRaii.Popup(popUpId);
+
+        if (!popUp.Success) return;
+
+        others?.Invoke();
+
+        group.ClearCollapsingHeader();
+
+        foreach (var pair in RotationUpdater.GroupActions(rotation.AllBaseActions))
         {
-            others?.Invoke();
-
-            group.ClearCollapsingHeader();
-
-            foreach (var pair in RotationUpdater.GroupActions(rotation.AllBaseActions))
+            group.AddCollapsingHeader(() => pair.Key, () =>
             {
-                group.AddCollapsingHeader(() => pair.Key, () =>
+                var index = 0;
+                foreach (var item in pair.OrderBy(t => t.ID))
                 {
-                    var index = 0;
-                    foreach (var item in pair.OrderBy(t => t.ID))
+                    if (!item.GetTexture(out var icon)) continue;
+
+                    if (index++ % count != 0)
                     {
-                        if (!item.GetTexture(out var icon)) continue;
+                        ImGui.SameLine();
+                    }
 
-                        if (index++ % count != 0)
-                        {
-                            ImGui.SameLine();
-                        }
-
-                        ImGui.BeginGroup();
+                    using (var group = ImRaii.Group())
+                    {
                         var cursor = ImGui.GetCursorPos();
                         if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, group.GetHashCode().ToString()))
                         {
@@ -176,15 +180,17 @@ internal static class ConditionDrawer
                             ImGui.CloseCurrentPopup();
                         }
                         ImGuiHelper.DrawActionOverlay(cursor, IconSize, 1);
-                        ImGui.EndGroup();
-                        var name = item.Name;
-                        if (!string.IsNullOrEmpty(name)) ImguiTooltips.HoveredTooltip(name);
                     }
-                });
-            }
-            group.Draw();
-            ImGui.EndPopup();
+
+                    var name = item.Name;
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        ImguiTooltips.HoveredTooltip(name);
+                    }
+                }
+            });
         }
+        group.Draw();
     }
 
     #region Draw
@@ -253,33 +259,41 @@ internal static class ConditionDrawer
         var name = traitCondition._trait?.Name ?? string.Empty;
         var popUpKey = "Trait Condition Pop Up" + traitCondition.GetHashCode().ToString();
 
-        if (ImGui.BeginPopup(popUpKey))
+        using (var popUp = ImRaii.Popup(popUpKey))
         {
-            var index = 0;
-            foreach (var trait in rotation.AllTraits)
+            if (popUp.Success)
             {
-                if (!trait.GetTexture(out var traitIcon)) continue;
-
-                if (index++ % count != 0)
+                var index = 0;
+                foreach (var trait in rotation.AllTraits)
                 {
-                    ImGui.SameLine();
+                    if (!trait.GetTexture(out var traitIcon)) continue;
+
+                    if (index++ % count != 0)
+                    {
+                        ImGui.SameLine();
+                    }
+
+                    using (var group = ImRaii.Group())
+                    {
+                        if (group.Success)
+                        {
+                            var cursor = ImGui.GetCursorPos();
+                            if (ImGuiHelper.NoPaddingNoColorImageButton(traitIcon.ImGuiHandle, Vector2.One * IconSize, trait.GetHashCode().ToString()))
+                            {
+                                traitCondition.TraitID = trait.ID;
+                                ImGui.CloseCurrentPopup();
+                            }
+                            ImGuiHelper.DrawActionOverlay(cursor, IconSize, -1);
+                        }
+                    }
+
+                    var tooltip = trait.Name;
+                    if (!string.IsNullOrEmpty(tooltip))
+                    {
+                        ImguiTooltips.HoveredTooltip(tooltip);
+                    }
                 }
-
-                ImGui.BeginGroup();
-                var cursor = ImGui.GetCursorPos();
-                if (ImGuiHelper.NoPaddingNoColorImageButton(traitIcon.ImGuiHandle, Vector2.One * IconSize, trait.GetHashCode().ToString()))
-                {
-                    traitCondition.TraitID = trait.ID;
-                    ImGui.CloseCurrentPopup();
-                }
-                ImGuiHelper.DrawActionOverlay(cursor, IconSize, -1);
-                ImGui.EndGroup();
-
-                var tooltip = trait.Name;
-                if (!string.IsNullOrEmpty(tooltip)) ImguiTooltips.HoveredTooltip(tooltip);
-
             }
-            ImGui.EndPopup();
         }
 
         if (traitCondition._trait?.GetTexture(out var icon) ?? false || IconSet.GetTexture(4, out icon))
@@ -310,13 +324,13 @@ internal static class ConditionDrawer
         {
             traitCondition.Condition = condition > 0;
         }
-
     }
 
     private static readonly CollapsingHeaderGroup _actionsList = new()
     {
         HeaderSize = 12,
     };
+
     static string searchTxt = string.Empty;
 
     private static void DrawAfter(this ActionCondition actionCondition, ICustomRotation rotation)
@@ -378,7 +392,6 @@ internal static class ConditionDrawer
             actionCondition.Condition = condition > 0;
         }
 
-
         switch (actionCondition.ActionConditionType)
         {
             case ActionConditionType.Elapsed:
@@ -407,21 +420,22 @@ internal static class ConditionDrawer
                     if (!ImGui.IsPopupOpen(popUpId)) ImGui.OpenPopup(popUpId);
                 }
 
-                if (ImGui.BeginPopup(popUpId))
+                using (var popUp = ImRaii.Popup(popUpId))
                 {
-                    var showedValues = Enum.GetValues<CanUseOption>().Where(i => i.GetAttribute<JsonIgnoreAttribute>() == null);
-
-                    foreach (var value in showedValues)
+                    if (popUp.Success)
                     {
-                        var b = option.HasFlag(value);
-                        if (ImGui.Checkbox(value.ToString(), ref b))
+                        var showedValues = Enum.GetValues<CanUseOption>().Where(i => i.GetAttribute<JsonIgnoreAttribute>() == null);
+
+                        foreach (var value in showedValues)
                         {
-                            option ^= value;
-                            actionCondition.Param1 = (int)option;
+                            var b = option.HasFlag(value);
+                            if (ImGui.Checkbox(value.ToString(), ref b))
+                            {
+                                option ^= value;
+                                actionCondition.Param1 = (int)option;
+                            }
                         }
                     }
-
-                    ImGui.EndPopup();
                 }
 
                 if (DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_AOECount}##AOECount{actionCondition.GetHashCode()}", ref actionCondition.Param2))
@@ -438,7 +452,6 @@ internal static class ConditionDrawer
                 }
                 break;
         }
-
     }
 
     private static void DrawAfter(this ConditionSet conditionSet, ICustomRotation rotation)
@@ -506,15 +519,16 @@ internal static class ConditionDrawer
                 ImGui.OpenPopup("Popup" + conditionSet.GetHashCode().ToString());
             }
 
-            if (ImGui.BeginPopup("Popup" + conditionSet.GetHashCode().ToString()))
+            using (var popUp = ImRaii.Popup("Popup" + conditionSet.GetHashCode().ToString()))
             {
-                AddOneCondition<ConditionSet>(LocalizationManager.RightLang.ActionSequencer_ConditionSet);
-                AddOneCondition<ActionCondition>(LocalizationManager.RightLang.ActionSequencer_ActionCondition);
-                AddOneCondition<TraitCondition>(LocalizationManager.RightLang.ActionSequencer_TraitCondition);
-                AddOneCondition<TargetCondition>(LocalizationManager.RightLang.ActionSequencer_TargetCondition);
-                AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
-
-                ImGui.EndPopup();
+                if (popUp.Success)
+                {
+                    AddOneCondition<ConditionSet>(LocalizationManager.RightLang.ActionSequencer_ConditionSet);
+                    AddOneCondition<ActionCondition>(LocalizationManager.RightLang.ActionSequencer_ActionCondition);
+                    AddOneCondition<TraitCondition>(LocalizationManager.RightLang.ActionSequencer_TraitCondition);
+                    AddOneCondition<TargetCondition>(LocalizationManager.RightLang.ActionSequencer_TargetCondition);
+                    AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
+                }
             }
 
             void AddOneCondition<T>(string name) where T : ICondition
@@ -536,7 +550,7 @@ internal static class ConditionDrawer
         {
             case ComboConditionType.Bool:
                 ImGui.SameLine();
-                SearchItemsReflection($"##Comparation{rotationCondition.GetHashCode()}", rotationCondition._prop?.GetMemberName(), ref searchTxt, rotation.AllBools, i =>
+                SearchItemsReflection($"##Comparation{rotationCondition.GetHashCode()}", rotationCondition._prop.GetMemberName(), ref searchTxt, rotation.AllBools, i =>
                 {
                     rotationCondition._prop = i;
                     rotationCondition.PropertyName = i.Name;
@@ -553,7 +567,7 @@ internal static class ConditionDrawer
 
             case ComboConditionType.Integer:
                 ImGui.SameLine();
-                SearchItemsReflection($"##ByteChoice{rotationCondition.GetHashCode()}", rotationCondition._prop?.GetMemberName(), ref searchTxt, rotation.AllBytesOrInt, i =>
+                SearchItemsReflection($"##ByteChoice{rotationCondition.GetHashCode()}", rotationCondition._prop.GetMemberName(), ref searchTxt, rotation.AllBytesOrInt, i =>
                 {
                     rotationCondition._prop = i;
                     rotationCondition.PropertyName = i.Name;
@@ -571,7 +585,7 @@ internal static class ConditionDrawer
                 break;
             case ComboConditionType.Float:
                 ImGui.SameLine();
-                SearchItemsReflection($"##FloatChoice{rotationCondition.GetHashCode()}", rotationCondition._prop?.GetMemberName(), ref searchTxt, rotation.AllFloats, i =>
+                SearchItemsReflection($"##FloatChoice{rotationCondition.GetHashCode()}", rotationCondition._prop.GetMemberName(), ref searchTxt, rotation.AllFloats, i =>
                 {
                     rotationCondition._prop = i;
                     rotationCondition.PropertyName = i.Name;

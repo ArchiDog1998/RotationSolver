@@ -147,8 +147,7 @@ namespace RotationSolver.Commands
                 CancelState();
             }
             else if (Service.Config.GetValue(PluginConfigBool.AutoOffBetweenArea) 
-                && (
-                Svc.Condition[ConditionFlag.BetweenAreas]
+                && (Svc.Condition[ConditionFlag.BetweenAreas]
                 || Svc.Condition[ConditionFlag.BetweenAreas51]))
             {
                 CancelState();

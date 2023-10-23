@@ -423,6 +423,7 @@ internal class Strings
         { nameof(CustomRotation.IsTargetDying), "Is target going to die"},
         { nameof(CustomRotation.IsTargetBoss), "Is target a boss"},
         { nameof(CustomRotation.HasHostilesInRange), "Has hostiles in Range"},
+        { nameof(CustomRotation.HasHostilesInMaxRange), "Has hostiles in 25 yalms"},
         { nameof(CustomRotation.NumberOfHostilesInRange), "The number of hostiles in Range"},
         { nameof(CustomRotation.NumberOfHostilesInMaxRange), "The number of hostiles in max Range"},
         { nameof(CustomRotation.NumberOfAllHostilesInRange), "The number of all hostiles in Range"},
