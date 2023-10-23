@@ -298,6 +298,7 @@
     "IsTargetDying": "目标已经死亡",
     "IsTargetBoss": "目标是Boss",
     "HasHostilesInRange": "范围内有敌对目标",
+    "HasHostilesInMaxRange": "Has hostiles in 25 yalms",
     "NumberOfHostilesInRange": "范围内敌对目标数量",
     "NumberOfHostilesInMaxRange": "最大范围内敌对目标数量",
     "NumberOfAllHostilesInRange": "The number of all hostiles in Range",
