@@ -267,7 +267,6 @@ public partial class RotationConfigWindow
     };
     private static void DrawBasicAutoSwitch()
     {
-
         foreach (var searchable in _basicSwitchTurnOff)
         {
             searchable?.Draw(Job);
@@ -279,8 +278,6 @@ public partial class RotationConfigWindow
         {
             searchable?.Draw(Job);
         }
-
-        ImGui.Separator();
 
         _autoSwitch?.Draw();
     }

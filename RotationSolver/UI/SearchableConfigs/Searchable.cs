@@ -109,7 +109,7 @@ internal abstract class Searchable : ISearchable
                 }
                 var wholeWidth = ImGui.GetWindowWidth();
 
-                if(Tooltips != null) foreach (var tooltip in Tooltips)
+                if (Tooltips != null) foreach (var tooltip in Tooltips)
                 {
                     RotationConfigWindow.DrawLinkDescription(tooltip, wholeWidth, false);
                 }

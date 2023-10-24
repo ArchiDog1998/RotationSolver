@@ -135,6 +135,16 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
     {
         Service.Config.SetBoolRaw(_config, Service.Config.GetBoolRawDefault(_config));
     }
+
+    protected override void DrawMiddle()
+    {
+        if (Service.Config.GetValue(PluginConfigBool.UseAdditionalConditions))
+        {
+            ConditionDrawer.DrawCondition(Service.Config.GetValue(_config));
+            ImGui.SameLine();
+        }
+        base.DrawMiddle();
+    }
 }
 
 internal abstract class CheckBoxSearch : Searchable
@@ -177,9 +187,14 @@ internal abstract class CheckBoxSearch : Searchable
         }
     }
 
+    protected virtual void DrawMiddle()
+    {
+
+    }
+
     protected override void DrawMain(Job job)
     {
-        var hasChild = Children != null && Children.Length > 0;
+        var hasChild = Children != null && Children.Any(c => c.ShowInChild);
         var hasAdditional = AdditionalDraw != null;
         var hasSub = hasChild || hasAdditional;
         IDalamudTextureWrap texture = null;
@@ -214,6 +229,7 @@ internal abstract class CheckBoxSearch : Searchable
             if (enable || AlwaysShowChildren)
             {
                 var x = ImGui.GetCursorPosX();
+                DrawMiddle();
                 var drawBody = ImGui.TreeNode(name);
                 if (ImGui.IsItemHovered()) ShowTooltip(job);
 
