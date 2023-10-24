@@ -4,7 +4,6 @@ using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
-using RotationSolver.Updaters;
 
 namespace RotationSolver.UI.SearchableConfigs;
 
@@ -33,6 +32,8 @@ internal abstract class Searchable : ISearchable
     /// Or these jobs.
     /// </summary>
     public Job[] Jobs { get; set; }
+
+    public virtual bool ShowInChild => true;
 
     public unsafe void Draw(Job job)
     {
@@ -108,7 +109,7 @@ internal abstract class Searchable : ISearchable
                 }
                 var wholeWidth = ImGui.GetWindowWidth();
 
-                if(Tooltips != null) foreach (var tooltip in Tooltips)
+                if (Tooltips != null) foreach (var tooltip in Tooltips)
                 {
                     RotationConfigWindow.DrawLinkDescription(tooltip, wholeWidth, false);
                 }

@@ -1,12 +1,10 @@
 ﻿using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
-using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
-using RotationSolver.Updaters;
 
 namespace RotationSolver.UI.SearchableSettings;
 
@@ -24,13 +22,14 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
         public override string ID => _config.ToString() + Name;
 
+        public override bool ShowInChild => Service.Config.GetValue(PluginConfigBool.UseAdditionalConditions);
+
         public CheckBoxConditionAbstract(PluginConfigBool config) : base()
         {
             _config = config;
             AdditionalDraw = () =>
             {
                 GetCondition(DataCenter.Job)?.DrawMain(DataCenter.RightNowRotation);
-                ImGui.Separator();
             };
         }
 
@@ -110,15 +109,16 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     public override string Command => _config.ToCommand();
 
-    private static readonly Action _emptyAction = () => { };
+    public override bool AlwaysShowChildren => Service.Config.GetValue(PluginConfigBool.UseAdditionalConditions);
+
     public CheckBoxSearchPlugin(PluginConfigBool config, params ISearchable[] children)
-        :base(new ISearchable[] 
+        :base(config == PluginConfigBool.UseAdditionalConditions ? children
+            :new ISearchable[] 
         { 
             new CheckBoxEnable(config), new CheckBoxDisable(config),
         }.Concat(children).ToArray())
     {
         _config = config;
-        AdditionalDraw = _emptyAction;
     }
 
     protected override bool GetValue(Job job)
@@ -135,6 +135,16 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
     {
         Service.Config.SetBoolRaw(_config, Service.Config.GetBoolRawDefault(_config));
     }
+
+    protected override void DrawMiddle()
+    {
+        if (Service.Config.GetValue(PluginConfigBool.UseAdditionalConditions))
+        {
+            ConditionDrawer.DrawCondition(Service.Config.GetValue(_config));
+            ImGui.SameLine();
+        }
+        base.DrawMiddle();
+    }
 }
 
 internal abstract class CheckBoxSearch : Searchable
@@ -144,6 +154,8 @@ internal abstract class CheckBoxSearch : Searchable
     public ActionID Action { get; init; } = ActionID.None;
 
     public Action AdditionalDraw { get; set; } = null;
+
+    public virtual bool AlwaysShowChildren => false;
 
     public CheckBoxSearch(params ISearchable[] children)
     {
@@ -162,6 +174,8 @@ internal abstract class CheckBoxSearch : Searchable
         var lastIs = false;
         foreach (var child in Children)
         {
+            if (!child.ShowInChild) continue;
+
             var thisIs = child is CheckBoxSearch c && c.Action != ActionID.None && IconSet.GetTexture(c.Action, out var texture);
             if (lastIs && thisIs)
             {
@@ -173,9 +187,14 @@ internal abstract class CheckBoxSearch : Searchable
         }
     }
 
+    protected virtual void DrawMiddle()
+    {
+
+    }
+
     protected override void DrawMain(Job job)
     {
-        var hasChild = Children != null && Children.Length > 0;
+        var hasChild = Children != null && Children.Any(c => c.ShowInChild);
         var hasAdditional = AdditionalDraw != null;
         var hasSub = hasChild || hasAdditional;
         IDalamudTextureWrap texture = null;
@@ -207,9 +226,10 @@ internal abstract class CheckBoxSearch : Searchable
         }
         else if (hasSub)
         {
-            if (enable && hasChild || hasAdditional)
+            if (enable || AlwaysShowChildren)
             {
                 var x = ImGui.GetCursorPosX();
+                DrawMiddle();
                 var drawBody = ImGui.TreeNode(name);
                 if (ImGui.IsItemHovered()) ShowTooltip(job);
 

@@ -298,6 +298,7 @@
     "IsTargetDying": "目标已经死亡",
     "IsTargetBoss": "目标是Boss",
     "HasHostilesInRange": "范围内有敌对目标",
+    "HasHostilesInMaxRange": "Has hostiles in 25 yalms",
     "NumberOfHostilesInRange": "范围内敌对目标数量",
     "NumberOfHostilesInMaxRange": "最大范围内敌对目标数量",
     "NumberOfAllHostilesInRange": "The number of all hostiles in Range",
@@ -559,7 +560,10 @@
   "ConfigWindow_Auto_MoveForwardConditionSet": "Move Forward Forced Condition",
   "ConfigWindow_Auto_MoveBackConditionSet": "Move Back Forced Condition",
   "ConfigWindow_Auto_AntiKnockbackConditionSet": "Anti Knockback Forced Condition",
-  "ConfigWindow_Auto_BurstConditionSet": "Burst Forced Condition",
   "ConfigWindow_Auto_SpeedConditionSet": "Speed Forced Condition",
-  "ConfigWindow_ConditionSetDesc": "The Condition set you chose, click to modify."
+  "ConfigWindow_ConditionSetDesc": "The Condition set you chose, click to modify.",
+  "ConfigWindow_Basic_UseAdditionalConditions": "Use additional conditions",
+  "ConfigWindow_Basic_SwitchCancelConditionSet": "Auto turn off conditions",
+  "ConfigWindow_Basic_SwitchManualConditionSet": "Auto turn manual conditions",
+  "ConfigWindow_Basic_SwitchAutoConditionSet": "Auto turn auto conditions"
 }

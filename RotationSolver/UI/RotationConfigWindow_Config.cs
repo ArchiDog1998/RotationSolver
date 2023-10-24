@@ -251,19 +251,35 @@ public partial class RotationConfigWindow
         }
     }
 
+    private static readonly CollapsingHeaderGroup _autoSwitch = new(new()
+    {
+        { () => LocalizationManager.RightLang.ConfigWindow_Basic_SwitchCancelConditionSet,
+            () => DataCenter.RightSet.SwitchCancelConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Basic_SwitchManualConditionSet,
+            () => DataCenter.RightSet.SwitchManualConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Basic_SwitchAutoConditionSet,
+            () => DataCenter.RightSet.SwitchAutoConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+    })
+    {
+        HeaderSize = 18,
+    };
     private static void DrawBasicAutoSwitch()
     {
-        foreach (var searchable in _basicSwitchTurnOn)
+        foreach (var searchable in _basicSwitchTurnOff)
         {
             searchable?.Draw(Job);
         }
 
         ImGui.Separator();
 
-        foreach (var searchable in _basicSwitchTurnOff)
+        foreach (var searchable in _basicSwitchTurnOn)
         {
             searchable?.Draw(Job);
         }
+
+        _autoSwitch?.Draw();
     }
 
     private static void DrawBasicOthers()
@@ -319,6 +335,8 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.SayHelloToUsers),
         new CheckBoxSearchPlugin(PluginConfigBool.JustSayHelloOnce),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.UseAdditionalConditions),
     };
 
     private static readonly ISearchable[] _basicSwitchTurnOn = new ISearchable[]
@@ -527,9 +545,6 @@ public partial class RotationConfigWindow
 
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_AntiKnockbackConditionSet, 
             () => DataCenter.RightSet.AntiKnockbackConditionSet?.DrawMain(DataCenter.RightNowRotation) },
-
-        { () => LocalizationManager.RightLang.ConfigWindow_Auto_BurstConditionSet,
-            () => DataCenter.RightSet.BurstConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_SpeedConditionSet,
             () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation) },

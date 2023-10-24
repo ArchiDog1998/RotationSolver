@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Logging;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
@@ -184,6 +183,26 @@ namespace RotationSolver.Commands
             {
                 CancelState();
                 ActionUpdater.AutoCancelTime = DateTime.MinValue;
+            }
+
+            //Auto switch conditions.
+            else if (DataCenter.RightSet.SwitchCancelConditionSet?.IsTrue(DataCenter.RightNowRotation) ?? false)
+            {
+                CancelState();
+            }
+            else if (DataCenter.RightSet.SwitchManualConditionSet?.IsTrue(DataCenter.RightNowRotation) ?? false)
+            {
+                if (!DataCenter.State)
+                {
+                    DoStateCommandType(StateCommandType.Manual);
+                }
+            }
+            else if (DataCenter.RightSet.SwitchAutoConditionSet?.IsTrue(DataCenter.RightNowRotation) ?? false)
+            {
+                if (!DataCenter.State)
+                {
+                    DoStateCommandType(StateCommandType.Auto);
+                }
             }
         }
     }
