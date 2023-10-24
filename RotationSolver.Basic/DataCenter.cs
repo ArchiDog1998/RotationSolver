@@ -27,7 +27,7 @@ internal static class DataCenter
             }
 
             var index = Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex);
-            if(index < 0 || index >= ConditionSets.Count())
+            if(index < 0 || index >= ConditionSets.Length)
             {
                 index = 0;
                 Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, index);
@@ -223,7 +223,7 @@ internal static class DataCenter
     public static bool IsMoveForward => SpecialType == SpecialCommandType.MoveForward || RightSet.MoveForwardConditionSet.IsTrue(RightNowRotation);
     public static bool IsMoveBack => SpecialType == SpecialCommandType.MoveBack || RightSet.MoveBackConditionSet.IsTrue(RightNowRotation);
     public static bool IsAntiKnockback => SpecialType == SpecialCommandType.AntiKnockback || RightSet.AntiKnockbackConditionSet.IsTrue(RightNowRotation);
-    public static bool IsBurst => SpecialType == SpecialCommandType.Burst || RightSet.BurstConditionSet.IsTrue(RightNowRotation);
+    public static bool IsBurst => SpecialType == SpecialCommandType.Burst;
     public static bool IsSpeed => SpecialType == SpecialCommandType.Speed || RightSet.SpeedConditionSet.IsTrue(RightNowRotation);
 
     public static bool State { get; set; } = false;

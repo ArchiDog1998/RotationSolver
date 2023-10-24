@@ -782,7 +782,6 @@ internal class Strings
     public string ConfigWindow_Auto_MoveForwardConditionSet { get; set; } = "Move Forward Forced Condition";
     public string ConfigWindow_Auto_MoveBackConditionSet { get; set; } = "Move Back Forced Condition";
     public string ConfigWindow_Auto_AntiKnockbackConditionSet { get; set; } = "Anti Knockback Forced Condition";
-    public string ConfigWindow_Auto_BurstConditionSet { get; set; } = "Burst Forced Condition";
     public string ConfigWindow_Auto_SpeedConditionSet { get; set; } = "Speed Forced Condition";
     public string ConfigWindow_ConditionSetDesc { get; set; } = "The Condition set you chose, click to modify.";
     public string ConfigWindow_Basic_UseAdditionalConditions { get; set; } = "Use additional conditions";

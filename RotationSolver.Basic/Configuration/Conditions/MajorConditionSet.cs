@@ -58,7 +58,6 @@ internal class MajorConditionSet
     public ConditionSet MoveForwardConditionSet { get; set; } = new ConditionSet();
     public ConditionSet MoveBackConditionSet { get; set; } = new ConditionSet();
     public ConditionSet AntiKnockbackConditionSet { get; set; } = new ConditionSet();
-    public ConditionSet BurstConditionSet { get; set; } = new ConditionSet();
     public ConditionSet SpeedConditionSet { get; set; } = new ConditionSet();
 
     public string Name;

@@ -530,9 +530,6 @@ public partial class RotationConfigWindow
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_AntiKnockbackConditionSet, 
             () => DataCenter.RightSet.AntiKnockbackConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
-        { () => LocalizationManager.RightLang.ConfigWindow_Auto_BurstConditionSet,
-            () => DataCenter.RightSet.BurstConditionSet?.DrawMain(DataCenter.RightNowRotation) },
-
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_SpeedConditionSet,
             () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation) },
     })
