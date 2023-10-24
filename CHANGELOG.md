@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.4.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.2...v3.4.3) (2023-10-24)
+
+
+### Bug Fixes
+
+* add a bool icon for the conditions. ([8eb4d29](https://github.com/ArchiDog1998/RotationSolver/commit/8eb4d29e7dc3c5f8b752d0e7e82e6fb2d41b4f6d))
+* add an option for the additional conditions. ([40200be](https://github.com/ArchiDog1998/RotationSolver/commit/40200be285608b85e58d89925f2821d761f22056))
+* add conditions for auto switch. ([bbfec02](https://github.com/ArchiDog1998/RotationSolver/commit/bbfec02366d169e3303072717459c94539e9f08a))
+* remove in burst condition, use auto burst instead. ([1a97362](https://github.com/ArchiDog1998/RotationSolver/commit/1a973627f977f29ee5a95bfbaa9ab5597f5a40dd))
+
 ## [3.4.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.1...v3.4.2) (2023-10-23)
 
 
