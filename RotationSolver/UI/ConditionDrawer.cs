@@ -473,7 +473,7 @@ internal static class ConditionDrawer
 
         for (int i = 0; i < conditionSet.Conditions.Count; i++)
         {
-            ICondition condition = conditionSet.Conditions[i];
+            var condition = conditionSet.Conditions[i];
 
             void Delete()
             {
@@ -485,6 +485,7 @@ internal static class ConditionDrawer
                 conditionSet.Conditions.RemoveAt(i);
                 conditionSet.Conditions.Insert(Math.Max(0, i - 1), condition);
             };
+            
             void Down()
             {
                 conditionSet.Conditions.RemoveAt(i);
@@ -519,16 +520,14 @@ internal static class ConditionDrawer
                 ImGui.OpenPopup("Popup" + conditionSet.GetHashCode().ToString());
             }
 
-            using (var popUp = ImRaii.Popup("Popup" + conditionSet.GetHashCode().ToString()))
+            using var popUp = ImRaii.Popup("Popup" + conditionSet.GetHashCode().ToString());
+            if (popUp.Success)
             {
-                if (popUp.Success)
-                {
-                    AddOneCondition<ConditionSet>(LocalizationManager.RightLang.ActionSequencer_ConditionSet);
-                    AddOneCondition<ActionCondition>(LocalizationManager.RightLang.ActionSequencer_ActionCondition);
-                    AddOneCondition<TraitCondition>(LocalizationManager.RightLang.ActionSequencer_TraitCondition);
-                    AddOneCondition<TargetCondition>(LocalizationManager.RightLang.ActionSequencer_TargetCondition);
-                    AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
-                }
+                AddOneCondition<ConditionSet>(LocalizationManager.RightLang.ActionSequencer_ConditionSet);
+                AddOneCondition<ActionCondition>(LocalizationManager.RightLang.ActionSequencer_ActionCondition);
+                AddOneCondition<TraitCondition>(LocalizationManager.RightLang.ActionSequencer_TraitCondition);
+                AddOneCondition<TargetCondition>(LocalizationManager.RightLang.ActionSequencer_TargetCondition);
+                AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
             }
 
             void AddOneCondition<T>(string name) where T : ICondition
@@ -653,14 +652,9 @@ internal static class ConditionDrawer
     }
 
     private static Status[] _allStatus = null;
-    private static Status[] AllStatus
-    {
-        get
-        {
-            _allStatus ??= Enum.GetValues<StatusID>().Select(id => Service.GetSheet<Status>().GetRow((uint)id)).ToArray();
-            return _allStatus;
-        }
-    }
+    private static Status[] AllStatus => _allStatus ??= Enum.GetValues<StatusID>()
+        .Select(id => Service.GetSheet<Status>().GetRow((uint)id)).ToArray();
+
     private static void DrawAfter(this TargetCondition targetCondition, ICustomRotation rotation)
     {
         DelayCondition.CheckBaseAction(rotation, targetCondition.ID, ref targetCondition._action);

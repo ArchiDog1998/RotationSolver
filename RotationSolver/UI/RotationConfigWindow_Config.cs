@@ -251,8 +251,30 @@ public partial class RotationConfigWindow
         }
     }
 
+    private static readonly CollapsingHeaderGroup _autoSwitch = new(new()
+    {
+        { () => LocalizationManager.RightLang.ConfigWindow_Basic_SwitchCancelConditionSet,
+            () => DataCenter.RightSet.SwitchCancelConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Basic_SwitchManualConditionSet,
+            () => DataCenter.RightSet.SwitchManualConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Basic_SwitchAutoConditionSet,
+            () => DataCenter.RightSet.SwitchAutoConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+    })
+    {
+        HeaderSize = 18,
+    };
     private static void DrawBasicAutoSwitch()
     {
+
+        foreach (var searchable in _basicSwitchTurnOff)
+        {
+            searchable?.Draw(Job);
+        }
+
+        ImGui.Separator();
+
         foreach (var searchable in _basicSwitchTurnOn)
         {
             searchable?.Draw(Job);
@@ -260,10 +282,7 @@ public partial class RotationConfigWindow
 
         ImGui.Separator();
 
-        foreach (var searchable in _basicSwitchTurnOff)
-        {
-            searchable?.Draw(Job);
-        }
+        _autoSwitch?.Draw();
     }
 
     private static void DrawBasicOthers()

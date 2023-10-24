@@ -785,5 +785,7 @@ internal class Strings
     public string ConfigWindow_Auto_SpeedConditionSet { get; set; } = "Speed Forced Condition";
     public string ConfigWindow_ConditionSetDesc { get; set; } = "The Condition set you chose, click to modify.";
     public string ConfigWindow_Basic_UseAdditionalConditions { get; set; } = "Use additional conditions";
-
+    public string ConfigWindow_Basic_SwitchCancelConditionSet { get; set; } = "Auto turn off conditions";
+    public string ConfigWindow_Basic_SwitchManualConditionSet { get; set; } = "Auto turn manual conditions";
+    public string ConfigWindow_Basic_SwitchAutoConditionSet { get; set; } = "Auto turn auto conditions";
 }

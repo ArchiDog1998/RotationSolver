@@ -60,6 +60,11 @@ internal class MajorConditionSet
     public ConditionSet AntiKnockbackConditionSet { get; set; } = new ConditionSet();
     public ConditionSet SpeedConditionSet { get; set; } = new ConditionSet();
 
+    public ConditionSet SwitchAutoConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet SwitchManualConditionSet { get; set; } = new ConditionSet();
+    public ConditionSet SwitchCancelConditionSet { get; set; } = new ConditionSet();
+
+
     public string Name;
 
     public ConditionSet GetCondition(uint id)
