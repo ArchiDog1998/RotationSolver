@@ -18,7 +18,6 @@ internal static class ConfigTranslation
         _ => string.Empty,
     };
 
-
     public static string ToName(this JobConfigInt config) => config switch
     {
         JobConfigInt.AddDotGCDCount => LocalizationManager.RightLang.ConfigWindow_Param_AddDotGCDCount,
@@ -58,6 +57,7 @@ internal static class ConfigTranslation
         PluginConfigBool.UseStopCasting => LocalizationManager.RightLang.ConfigWindow_Param_UseStopCasting,
         PluginConfigBool.SayHelloToUsers => LocalizationManager.RightLang.ConfigWindow_Basic_SayHelloToUsers,
         PluginConfigBool.JustSayHelloOnce => LocalizationManager.RightLang.ConfigWindow_Basic_JustSayHelloOnce,
+        PluginConfigBool.UseAdditionalConditions => LocalizationManager.RightLang.ConfigWindow_Basic_UseAdditionalConditions,
 
         // UI
         PluginConfigBool.HideWarning => LocalizationManager.RightLang.ConfigWindow_UI_HideWarning,

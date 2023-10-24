@@ -319,6 +319,8 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.SayHelloToUsers),
         new CheckBoxSearchPlugin(PluginConfigBool.JustSayHelloOnce),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.UseAdditionalConditions),
     };
 
     private static readonly ISearchable[] _basicSwitchTurnOn = new ISearchable[]

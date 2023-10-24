@@ -2,9 +2,6 @@
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
-using FFXIVClientStructs.STD;
-using RotationSolver.Basic.Configuration.Conditions;
-using System;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -38,12 +35,16 @@ public class PluginConfig : IPluginConfiguration
 
     public bool GetValue(PluginConfigBool config)
     {
-        var rotation = DataCenter.RightNowRotation;
-        var set = DataCenter.RightSet;
-        if (rotation != null && set != null)
+        if (config != PluginConfigBool.UseAdditionalConditions
+            && GetBoolRaw(PluginConfigBool.UseAdditionalConditions))
         {
-            if (GetEnableBoolRaw(config) && set.GetEnableCondition(config).IsTrue(rotation)) return true;
-            if (GetDisableBoolRaw(config) && set.GetDisableCondition(config).IsTrue(rotation)) return false;
+            var rotation = DataCenter.RightNowRotation;
+            var set = DataCenter.RightSet;
+            if (rotation != null && set != null)
+            {
+                if (GetEnableBoolRaw(config) && set.GetEnableCondition(config).IsTrue(rotation)) return true;
+                if (GetDisableBoolRaw(config) && set.GetDisableCondition(config).IsTrue(rotation)) return false;
+            }
         }
 
         return GetBoolRaw(config);
@@ -362,6 +363,8 @@ public enum PluginConfigBool : byte
     [Default(true)] UseResourcesAction,
     [Default(true)] SayHelloToUsers,
     [Default(false)] JustSayHelloOnce,
+
+    [Default(false)] UseAdditionalConditions,
 }
 
 public enum PluginConfigFloat : byte
