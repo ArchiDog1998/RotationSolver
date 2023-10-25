@@ -445,7 +445,7 @@ internal static partial class TargetUpdater
         var h = p.GetHealthRatio();
         if (h == 0 || !p.NeedHealing()) return false;
 
-        return h < Lerp(healSingle, healSingle, ratio);
+        return h < Lerp(healSingle, healSingleHot, ratio);
     });
 
     static float Lerp(float a, float b, float ratio)

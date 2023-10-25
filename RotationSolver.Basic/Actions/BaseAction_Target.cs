@@ -101,7 +101,7 @@ public partial class BaseAction
     /// </summary>
     public StatusID[] TargetStatus { get; init; } = null;
 
-    internal static bool TankDefenseSelf(BattleChara chara, bool mustUse)
+    internal static bool TankDefenseSelf(BattleChara _, bool mustUse)
     {
         return (DataCenter.TarOnMeTargets.Any() || mustUse) && DataCenter.AverageTimeToKill > 8;
     }
