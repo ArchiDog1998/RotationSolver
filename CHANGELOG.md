@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.4.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.3...v3.4.4) (2023-10-26)
+
+
+### Bug Fixes
+
+* add property for rdm. ([264e59b](https://github.com/ArchiDog1998/RotationSolver/commit/264e59b9d6c5f6f9a601db4481eb65c0e55b5159))
+* fixed debug window. ([62dffcd](https://github.com/ArchiDog1998/RotationSolver/commit/62dffcdffd25954b7deeebffc766a0b30b539be7))
+* fixed the relationship between `AllTargetsCanAttack` and `NoHostileNames`. ([0d03263](https://github.com/ArchiDog1998/RotationSolver/commit/0d03263ea07ec5b2229a485b9557a94503298339))
+* hot heal ratio fixed. ([51b36b6](https://github.com/ArchiDog1998/RotationSolver/commit/51b36b6c3fe46d1189a91b4ca0aa89aea453d22c))
+
 ## [3.4.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.2...v3.4.3) (2023-10-24)
 
 
