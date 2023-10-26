@@ -270,6 +270,7 @@
   "TargetConditionType_CastingActionTimeUntil": "Casting Action Time Until",
   "TargetConditionType_HP": "HP",
   "TargetConditionType_MP": "MP",
+  "TargetConditionType_TargetName": "Target Name",
   "DescType_BurstActions": "Burst Actions",
   "DescType_MoveForwardGCD": "Move Forward GCD",
   "DescType_HealAreaGCD": "Area Healing GCD",

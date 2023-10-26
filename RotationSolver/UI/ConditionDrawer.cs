@@ -719,6 +719,7 @@ internal static class ConditionDrawer
             case TargetConditionType.IsBoss:
             case TargetConditionType.InCombat:
             case TargetConditionType.CastingAction:
+            case TargetConditionType.TargetName:
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_Is,
@@ -833,7 +834,7 @@ internal static class ConditionDrawer
             case TargetConditionType.CastingAction:
                 ImGui.SameLine();
                 ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
-                ImGui.InputText($"Ability name##CastingActionName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
+                ImGui.InputText($"Ability Name##CastingActionName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
                 break;
 
             case TargetConditionType.CastingActionTimeUntil:
@@ -847,6 +848,18 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.GCD.ToString()).X));
                 ImGui.DragInt($"##HPorMP{targetCondition.GetHashCode()}", ref targetCondition.GCD, .1f);
+                break;
+
+            case TargetConditionType.TimeToKill:
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
+                ImGui.DragFloat($"##TimeToKill{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
+                break;
+
+            case TargetConditionType.TargetName:
+                ImGui.SameLine();
+                ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
+                ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
                 break;
         }
     }

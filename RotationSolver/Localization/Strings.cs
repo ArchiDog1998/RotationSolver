@@ -385,6 +385,7 @@ internal class Strings
     public string TargetConditionType_CastingActionTimeUntil { get; set; } = "Casting Action Time Until";
     public string TargetConditionType_HP { get; set; } = "HP";
     public string TargetConditionType_MP { get; set; } = "MP";
+    public string TargetConditionType_TargetName { get; set; } = "Target Name";
 
     #endregion
 
