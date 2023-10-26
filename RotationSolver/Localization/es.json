@@ -385,6 +385,7 @@
     "WhiteMana": "White Mana",
     "BlackMana": "Black Mana",
     "ManaStacks": "Mana Stacks",
+    "IsWhiteManaLargerThanBlackMana": "Is White Mana Larger Than Black Mana",
     "HasEnshrouded": "Has Enshrouded",
     "HasSoulReaver": "Has Soul Reaver",
     "Soul": "Soul",
