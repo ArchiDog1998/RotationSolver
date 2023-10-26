@@ -194,7 +194,7 @@ public class OtherConfiguration
     {
         try
         {
-            File.WriteAllTextAsync(path,
+            File.WriteAllText(path,
             JsonConvert.SerializeObject(value, Formatting.Indented, new JsonSerializerSettings()
             {
                 TypeNameHandling = TypeNameHandling.None,

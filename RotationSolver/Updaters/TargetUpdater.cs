@@ -163,15 +163,8 @@ internal static partial class TargetUpdater
     private static IEnumerable<BattleChara> GetHostileTargets(IEnumerable<BattleChara> allAttackableTargets)
     {
         var type = DataCenter.RightNowTargetToHostileType;
-        if (type == TargetHostileType.AllTargetsCanAttack || Service.CountDownTime > 0)
-        {
-            return allAttackableTargets;
-        }
-
-        uint[] ids = GetEnemies();
 
         var fateId = DataCenter.FateId;
-
         allAttackableTargets = allAttackableTargets.Where(b =>
         {
             if (Svc.ClientState == null) return false;
@@ -189,7 +182,12 @@ internal static partial class TargetUpdater
             return tarFateId == 0 || tarFateId == fateId;
         });
 
+        if (type == TargetHostileType.AllTargetsCanAttack || Service.CountDownTime > 0)
+        {
+            return allAttackableTargets;
+        }
 
+        uint[] ids = GetEnemies();
         var hostiles = allAttackableTargets.Where(t =>
         {
             if (ids.Contains(t.ObjectId)) return true;
@@ -447,7 +445,7 @@ internal static partial class TargetUpdater
         var h = p.GetHealthRatio();
         if (h == 0 || !p.NeedHealing()) return false;
 
-        return h < Lerp(healSingle, healSingle, ratio);
+        return h < Lerp(healSingle, healSingleHot, ratio);
     });
 
     static float Lerp(float a, float b, float ratio)

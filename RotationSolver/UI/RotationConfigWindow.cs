@@ -21,7 +21,6 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
-using System.Collections.Generic;
 using System.Diagnostics;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
@@ -1047,7 +1046,11 @@ public partial class RotationConfigWindow : Window
     private static string GetRotationStatusHead()
     {
         var rotation = DataCenter.RightNowRotation;
-        if (rotation == null || !rotation.ShowStatus) return string.Empty;
+        if (Service.Config.GetValue(PluginConfigBool.InDebug))
+        {
+            return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
+        }
+        if ( rotation == null || !rotation.ShowStatus) return string.Empty;
         return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
     }
 
