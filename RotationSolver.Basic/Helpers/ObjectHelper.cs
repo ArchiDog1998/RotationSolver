@@ -244,7 +244,7 @@ public static class ObjectHelper
         var tarPt = b.Position + Vector3.UnitY * b.Struct()->Height;
         var direction = tarPt - point;
 
-        int* unknown = stackalloc int[] { 0x2000, 0, 0x2000, 0 };
+        int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
 
         RaycastHit hit = default;
 

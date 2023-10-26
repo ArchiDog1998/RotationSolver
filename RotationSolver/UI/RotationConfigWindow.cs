@@ -1046,7 +1046,11 @@ public partial class RotationConfigWindow : Window
     private static string GetRotationStatusHead()
     {
         var rotation = DataCenter.RightNowRotation;
-        if (rotation == null || !rotation.ShowStatus) return string.Empty;
+        if (Service.Config.GetValue(PluginConfigBool.InDebug))
+        {
+            return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
+        }
+        if ( rotation == null || !rotation.ShowStatus) return string.Empty;
         return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
     }
 
