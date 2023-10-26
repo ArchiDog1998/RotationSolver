@@ -41,6 +41,11 @@ public abstract class RDM_Base : CustomRotation
     /// 
     /// </summary>
     public static byte ManaStacks => JobGauge.ManaStacks;
+
+    /// <summary>
+    /// Is <see cref="WhiteMana"/> larger than <see cref="BlackMana"/>
+    /// </summary>
+    public static bool IsWhiteManaLargerThanBlackMana => WhiteMana > BlackMana;
     #endregion
 
     #region Attack Single

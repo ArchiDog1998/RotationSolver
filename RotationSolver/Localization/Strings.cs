@@ -553,6 +553,7 @@ internal class Strings
         { nameof(RDM_Base.WhiteMana), "White Mana"},
         { nameof(RDM_Base.BlackMana), "Black Mana"},
         { nameof(RDM_Base.ManaStacks), "Mana Stacks"},
+        { nameof(RDM_Base.IsWhiteManaLargerThanBlackMana), "Is White Mana Larger Than Black Mana"},
         #endregion
 
         #region RPR

@@ -15,7 +15,6 @@ internal class LocalizationManager : IDisposable
 #if DEBUG
         ExportLocalization();
 #endif
-
     }
 
     private async void SetLanguage(string lang)
