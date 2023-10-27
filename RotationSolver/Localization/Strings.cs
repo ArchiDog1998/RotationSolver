@@ -790,4 +790,6 @@ internal class Strings
     public string ConfigWindow_Basic_SwitchCancelConditionSet { get; set; } = "Auto turn off conditions";
     public string ConfigWindow_Basic_SwitchManualConditionSet { get; set; } = "Auto turn manual conditions";
     public string ConfigWindow_Basic_SwitchAutoConditionSet { get; set; } = "Auto turn auto conditions";
+
+    public string ConfigWindow_Condition_RotationNullWarning { get; set; } = "Rotation is null, please login or switch the job!";
 }

@@ -19,7 +19,7 @@ internal class ActionCondition : DelayCondition
         return CheckBaseAction(rotation, ID, ref _action) && base.CheckBefore(rotation);
     }
 
-    public override bool IsTrueInside(ICustomRotation rotation)
+    protected override bool IsTrueInside(ICustomRotation rotation)
     {
         var result = false;
 

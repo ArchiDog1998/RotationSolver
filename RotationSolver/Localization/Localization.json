@@ -567,5 +567,6 @@
   "ConfigWindow_Basic_UseAdditionalConditions": "Use additional conditions",
   "ConfigWindow_Basic_SwitchCancelConditionSet": "Auto turn off conditions",
   "ConfigWindow_Basic_SwitchManualConditionSet": "Auto turn manual conditions",
-  "ConfigWindow_Basic_SwitchAutoConditionSet": "Auto turn auto conditions"
+  "ConfigWindow_Basic_SwitchAutoConditionSet": "Auto turn auto conditions",
+  "ConfigWindow_Condition_RotationNullWarning": "Rotation is null, please login or switch the job!"
 }

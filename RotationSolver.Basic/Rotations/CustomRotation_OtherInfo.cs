@@ -203,15 +203,9 @@ public abstract partial class CustomRotation
 
     #region Command
     /// <summary>
-    /// Is in burst right now? Usually it used with team support actions. Please use <see cref="IsBurst"/> instead.
-    /// </summary>
-    [Obsolete("It will be removed in the future version", true)]
-    public static bool InBurst => IsBurst;
-
-    /// <summary>
     /// Is in burst right now? Usually it used with team support actions.
     /// </summary>
-    public static bool IsBurst => DataCenter.IsBurst || Service.Config.GetValue(Configuration.PluginConfigBool.AutoBurst);
+    public static bool IsBurst => DataCenter.IsBurst;
 
     /// <summary>
     /// Is in the command heal area.

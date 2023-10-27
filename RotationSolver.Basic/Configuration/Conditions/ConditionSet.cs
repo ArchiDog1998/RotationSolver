@@ -6,7 +6,7 @@ internal class ConditionSet : DelayCondition
 
     public LogicalType Type;
 
-    public override bool IsTrueInside(ICustomRotation rotation)
+    protected override bool IsTrueInside(ICustomRotation rotation)
     {
         if (Conditions.Count == 0) return false;
 

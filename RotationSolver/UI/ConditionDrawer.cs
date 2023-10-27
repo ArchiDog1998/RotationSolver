@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
@@ -196,6 +197,12 @@ internal static class ConditionDrawer
     #region Draw
     public static void Draw(this ICondition condition, ICustomRotation rotation)
     {
+        if (rotation == null)
+        {
+            ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager.RightLang.ConfigWindow_Condition_RotationNullWarning);
+            return;
+        }
+
         condition.CheckBefore(rotation);
 
         condition.DrawBefore();

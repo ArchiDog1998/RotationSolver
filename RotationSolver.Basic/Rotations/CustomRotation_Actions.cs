@@ -295,28 +295,26 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = new StatusID[] {StatusID.LostSpellforge },
-        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.MagicalAversion) ?? false, 
-        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t =>
-            {
-                switch((Job)t.ClassJob.Id)
-                {
-                    case Job.WAR:
-                    case Job.GNB:
-                    case Job.MNK:
-                    case Job.SAM:
-                    case Job.DRG:
-                    case Job.MCH:
-                    case Job.DNC:
+        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
+        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
+        {
+            Job.WAR
+            or Job.GNB
+            or Job.MNK
+            or Job.SAM
+            or Job.DRG
+            or Job.MCH
+            or Job.DNC
 
-                    case Job.PLD:
-                    case Job.DRK:
-                    case Job.NIN:
-                    case Job.BRD:
-                    case Job.RDM:
-                        return true;
-                }
-                return false;
-            }),
+            or Job.PLD
+            or Job.DRK
+            or Job.NIN
+            or Job.BRD
+            or Job.RDM
+            => true,
+
+            _ => false,
+        }),
     };
 
     /// <summary>
@@ -327,26 +325,23 @@ public abstract partial class CustomRotation
     {
         StatusProvide = new StatusID[] { StatusID.LostSteelsting },
         ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
-        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t =>
+        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
-            switch ((Job)t.ClassJob.Id)
-            {
-                case Job.WHM:
-                case Job.SCH:
-                case Job.AST:
-                case Job.SGE:
-                case Job.BLM:
-                case Job.SMN:
+            Job.WHM
+            or Job.SCH
+            or Job.AST
+            or Job.SGE
+            or Job.BLM
+            or Job.SMN
 
-                case Job.PLD:
-                case Job.DRK:
-                case Job.NIN:
-                case Job.BRD:
-                case Job.RDM:
-                    return true;
-            }
+            or Job.PLD
+            or Job.DRK
+            or Job.NIN
+            or Job.BRD
+            or Job.RDM
+            => true,
 
-            return false;
+            _ => false,
         }),
     };
 

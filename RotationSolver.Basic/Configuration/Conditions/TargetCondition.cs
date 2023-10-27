@@ -21,7 +21,7 @@ internal class TargetCondition : DelayCondition
 
     public string CastingActionName = string.Empty;
 
-    public override bool IsTrueInside(ICustomRotation rotation)
+    protected override bool IsTrueInside(ICustomRotation rotation)
     {
         BattleChara tar;
         if (_action != null)
