@@ -1,5 +1,4 @@
 ﻿using ECommons.DalamudServices;
-using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
@@ -79,7 +78,7 @@ public static class TargetFilter
         {
             var tar = charas.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
             if (tar == null) return null;
-            if (tar.DistanceToPlayer() < Service.Config.GetValue(Configuration.PluginConfigFloat.DistanceForMoving) )return tar;
+            if (tar.DistanceToPlayer() < Service.Config.GetValue(Configuration.PluginConfigFloat.DistanceForMoving)) return tar;
             return null;
         }
 
@@ -189,7 +188,7 @@ public static class TargetFilter
             && (target.TargetObject?.IsValid() ?? false))
             {
                 //the target is not a tank role
-                if (Svc.Objects.SearchById(target.TargetObjectId) is BattleChara battle 
+                if (Svc.Objects.SearchById(target.TargetObjectId) is BattleChara battle
                     && !battle.IsJobCategory(JobRole.Tank)
                     && (!needDistance || Vector3.Distance(target.Position, loc) > 5))
                 {

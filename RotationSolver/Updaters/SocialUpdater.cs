@@ -2,11 +2,8 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
-using Dalamud.Logging;
-using ECommons.Automation;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
@@ -98,7 +95,7 @@ internal class SocialUpdater
         {
             DataCenter.RightNowRotation?.OnTerritoryChanged();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Error(ex, "Failed on Territory changed.");
         }
@@ -147,7 +144,7 @@ internal class SocialUpdater
         }
     }
 
-    private static readonly ChatEntityComparer _comparer = new ();
+    private static readonly ChatEntityComparer _comparer = new();
     private static async void SayHelloToUsers()
     {
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
@@ -156,13 +153,13 @@ internal class SocialUpdater
             .Where(c => c.ObjectId != Player.Object.ObjectId)
 #endif
             .Select(player => (player, EncryptString(player)))
-            .Where(pair => !saidAuthors.Contains(pair.Item2) 
+            .Where(pair => !saidAuthors.Contains(pair.Item2)
                 && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(pair.Item2));
 
         IEnumerable<ChatEntity> entities = players
             .Select(c =>
             {
-                if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc =    string.Empty;
+                if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
                 return (c.player, nameDesc);
             })
             .Where(p => !string.IsNullOrEmpty(p.nameDesc))
@@ -244,12 +241,12 @@ internal class SocialUpdater
 
         public virtual BitmapFontIcon Icon => BitmapFontIcon.Mentor;
 
-        protected SeString Character => new (new IconPayload(Icon),
+        protected SeString Character => new(new IconPayload(Icon),
             new UIForegroundPayload(31),
             new PlayerPayload(player.Name.TextValue, player.HomeWorld.Id),
             UIForegroundPayload.UIForegroundOff);
 
-        protected static SeString RotationSolver => new (new IconPayload(BitmapFontIcon.DPS),
+        protected static SeString RotationSolver => new(new IconPayload(BitmapFontIcon.DPS),
             RotationSolverPlugin.OpenLinkPayload,
             new UIForegroundPayload(31),
             new TextPayload("Rotation Solver"),

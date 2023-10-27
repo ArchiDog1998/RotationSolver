@@ -28,7 +28,7 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.NIN, Job.ROG };
+    public sealed override Job[] Jobs => new[] { Job.NIN, Job.ROG };
 
     #region Job Gauge
     static NINGauge JobGauge => Svc.Gauges.Get<NINGauge>();
@@ -184,7 +184,7 @@ public abstract class NIN_Base : CustomRotation
     public static IBaseAction TrickAttack { get; } = new BaseAction(ActionID.TrickAttack)
     {
         StatusNeed = new StatusID[] { StatusID.Suiton, StatusID.Hidden },
-        ActionCheck = (b, m) =>IsLongerThan(10),
+        ActionCheck = (b, m) => IsLongerThan(10),
     };
 
     /// <summary>
@@ -361,32 +361,32 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait FleetOfFoot    { get; } = new BaseTrait(93);
+    public static IBaseTrait FleetOfFoot { get; } = new BaseTrait(93);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait Shukiho    { get; } = new BaseTrait(165);
+    public static IBaseTrait Shukiho { get; } = new BaseTrait(165);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedShukuchi    { get; } = new BaseTrait(166);
+    public static IBaseTrait EnhancedShukuchi { get; } = new BaseTrait(166);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedMug    { get; } = new BaseTrait(167);
+    public static IBaseTrait EnhancedMug { get; } = new BaseTrait(167);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedKassatsu    { get; } = new BaseTrait(250);
+    public static IBaseTrait EnhancedKassatsu { get; } = new BaseTrait(250);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedShukuchi2    { get; } = new BaseTrait(279);
+    public static IBaseTrait EnhancedShukuchi2 { get; } = new BaseTrait(279);
 
     /// <summary>
     /// 

@@ -202,8 +202,8 @@ public partial class BaseAction : IBaseAction
         _action = Service.GetSheet<Action>().GetRow((uint)actionID);
 
         option &= ~(ActionOption.GeneralGCD | ActionOption.RealGCD);
-        if(_action.IsGeneralGCD()) option |= ActionOption.GeneralGCD;
-        if(_action.IsRealGCD()) option |= ActionOption.RealGCD;
+        if (_action.IsGeneralGCD()) option |= ActionOption.GeneralGCD;
+        if (_action.IsRealGCD()) option |= ActionOption.RealGCD;
         _option = option;
 
         CoolDownGroup = _action.GetCoolDownGroup();
@@ -211,7 +211,7 @@ public partial class BaseAction : IBaseAction
 
     internal static void CleanSpecial()
     {
-        OtherOption =  CanUseOption.None;
+        OtherOption = CanUseOption.None;
         AutoHealCheck = SkipDisable = false;
     }
 

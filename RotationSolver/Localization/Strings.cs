@@ -757,7 +757,7 @@ internal class Strings
     public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
     public string ConfigWindow_Actions_TTK { get; set; } = "TTK that this action needs the target be.";
     public string ConfigWindow_Actions_HealRatio { get; set; } = "The HP ratio to auto heal";
-    public string ConfigWindow_Actions_ConditionDescription  { get; set; }= "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.";
+    public string ConfigWindow_Actions_ConditionDescription { get; set; } = "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.";
 
     public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
     public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";

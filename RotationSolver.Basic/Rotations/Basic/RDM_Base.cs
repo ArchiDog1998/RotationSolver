@@ -17,7 +17,7 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.RDM };
+    public sealed override Job[] Jobs => new[] { Job.RDM };
 
     /// <summary>
     /// 
@@ -229,7 +229,7 @@ public abstract class RDM_Base : CustomRotation
     /// 
     /// </summary>
     public static IBaseAction Embolden { get; } = new BaseAction(ActionID.Embolden, ActionOption.Buff)
-    { 
+    {
         ActionCheck = (b, m) => IsLongerThan(10),
     };
 
@@ -252,62 +252,62 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MaimAndMend    { get; } = new BaseTrait(200);
+    public static IBaseTrait MaimAndMend { get; } = new BaseTrait(200);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(201);
+    public static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(201);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait Dualcast    { get; } = new BaseTrait(216);
+    public static IBaseTrait Dualcast { get; } = new BaseTrait(216);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait ScatterMastery    { get; } = new BaseTrait(303);
+    public static IBaseTrait ScatterMastery { get; } = new BaseTrait(303);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedDisplacement    { get; } = new BaseTrait(304);
+    public static IBaseTrait EnhancedDisplacement { get; } = new BaseTrait(304);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedManafication    { get; } = new BaseTrait(305);
+    public static IBaseTrait EnhancedManafication { get; } = new BaseTrait(305);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait RedMagicMastery    { get; } = new BaseTrait(306);
+    public static IBaseTrait RedMagicMastery { get; } = new BaseTrait(306);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait ManaStack    { get; } = new BaseTrait(482);
+    public static IBaseTrait ManaStack { get; } = new BaseTrait(482);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait RedMagicMastery2    { get; } = new BaseTrait(483);
+    public static IBaseTrait RedMagicMastery2 { get; } = new BaseTrait(483);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait RedMagicMastery3    { get; } = new BaseTrait(484);
+    public static IBaseTrait RedMagicMastery3 { get; } = new BaseTrait(484);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedAcceleration    { get; } = new BaseTrait(485);
+    public static IBaseTrait EnhancedAcceleration { get; } = new BaseTrait(485);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedManafication2    { get; } = new BaseTrait(486);
+    public static IBaseTrait EnhancedManafication2 { get; } = new BaseTrait(486);
     #endregion
 
     /// <summary>

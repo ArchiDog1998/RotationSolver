@@ -2,7 +2,6 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
-using ImGuiScene;
 using Lumina.Excel.GeneratedSheets;
 using Svg;
 using System.Drawing.Imaging;

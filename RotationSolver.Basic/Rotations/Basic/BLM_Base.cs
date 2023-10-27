@@ -244,9 +244,9 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Xenoglossy { get; } = new BaseAction(ActionID.Xenoglossy, ActionOption.UseResources) 
-    { 
-        ActionCheck = (b, m) => PolyglotStacks > 0 
+    public static IBaseAction Xenoglossy { get; } = new BaseAction(ActionID.Xenoglossy, ActionOption.UseResources)
+    {
+        ActionCheck = (b, m) => PolyglotStacks > 0
     };
 
     /// <summary>
@@ -295,8 +295,8 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Foul { get; } = new BaseAction(ActionID.Foul, ActionOption.UseResources) 
-    { 
+    public static IBaseAction Foul { get; } = new BaseAction(ActionID.Foul, ActionOption.UseResources)
+    {
         ActionCheck = Xenoglossy.ActionCheck,
     };
     #endregion
@@ -313,9 +313,9 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Amplifier { get; } = new BaseAction(ActionID.Amplifier) 
-    { 
-        ActionCheck = (b, m) => !EnchinaEndAfter(10) && PolyglotStacks < 2 
+    public static IBaseAction Amplifier { get; } = new BaseAction(ActionID.Amplifier)
+    {
+        ActionCheck = (b, m) => !EnchinaEndAfter(10) && PolyglotStacks < 2
     };
 
     /// <summary>
@@ -368,17 +368,17 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Transpose { get; } = new BaseAction(ActionID.Transpose) 
-    { 
+    public static IBaseAction Transpose { get; } = new BaseAction(ActionID.Transpose)
+    {
         ActionCheck = (b, m) => DataCenter.ActionRemain <= ElementTimeRaw,
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction UmbralSoul { get; } = new BaseAction(ActionID.UmbralSoul) 
-    { 
-        ActionCheck = (b, m) => JobGauge.InUmbralIce && Transpose.ActionCheck(b, m) 
+    public static IBaseAction UmbralSoul { get; } = new BaseAction(ActionID.UmbralSoul)
+    {
+        ActionCheck = (b, m) => JobGauge.InUmbralIce && Transpose.ActionCheck(b, m)
     };
     #endregion
 
@@ -416,22 +416,22 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedEnochian {get; } = new BaseTrait(174);
+    public static IBaseTrait EnhancedEnochian { get; } = new BaseTrait(174);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedFreeze {get; } = new BaseTrait(295);
+    public static IBaseTrait EnhancedFreeze { get; } = new BaseTrait(295);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait AspectMastery {get; } = new BaseTrait(296);
+    public static IBaseTrait AspectMastery { get; } = new BaseTrait(296);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedPolyglot {get; } = new BaseTrait(297);
+    public static IBaseTrait EnhancedPolyglot { get; } = new BaseTrait(297);
 
     /// <summary>
     /// 
@@ -476,7 +476,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedSharpcast2    { get; } = new BaseTrait(464);
+    public static IBaseTrait EnhancedSharpcast2 { get; } = new BaseTrait(464);
 
     /// <summary>
     /// 

@@ -1,5 +1,4 @@
 ﻿using Dalamud.Utility;
-using ECommons.Configuration;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -20,7 +19,7 @@ internal class DragIntRangeSearchJob : DragIntRangeSearch
     protected override bool IsJob => true;
 
     public DragIntRangeSearchJob(JobConfigInt configMin, JobConfigInt configMax, float speed)
-    :base ((int)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
+    : base((int)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
     {
         _configMin = configMin;
         _configMax = configMax;

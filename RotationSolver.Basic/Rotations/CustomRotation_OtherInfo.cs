@@ -257,9 +257,9 @@ public abstract partial class CustomRotation
     /// </summary>
     public static bool IsSpeed => DataCenter.IsSpeed;
 
-    private bool CanUseHealAction => 
+    private bool CanUseHealAction =>
         //Job
-        (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer)) 
+        (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer))
         && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal)
         && IsLongerThan(Service.Config.GetValue(Configuration.PluginConfigFloat.AutoHealTimeToKill));
 
@@ -489,7 +489,7 @@ public abstract partial class CustomRotation
     /// <returns></returns>
     protected static bool CombatElapsedLessGCD(int GCD)
     {
-        CountingOfCombatTimeUsing ++;
+        CountingOfCombatTimeUsing++;
         return CombatElapsedLess(GCD * DataCenter.WeaponTotal);
     }
 

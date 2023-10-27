@@ -276,17 +276,17 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedEmpyrealArrow    { get; } = new BaseTrait(169);
+    public static IBaseTrait EnhancedEmpyrealArrow { get; } = new BaseTrait(169);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait StraightShotMastery    { get; } = new BaseTrait(282);
+    public static IBaseTrait StraightShotMastery { get; } = new BaseTrait(282);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedQuickNock    { get; } = new BaseTrait(283);
+    public static IBaseTrait EnhancedQuickNock { get; } = new BaseTrait(283);
 
     /// <summary>
     /// 
@@ -296,42 +296,42 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait HeavyShotMastery    { get; } = new BaseTrait(285);
+    public static IBaseTrait HeavyShotMastery { get; } = new BaseTrait(285);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedArmysPaeon    { get; } = new BaseTrait(286);
+    public static IBaseTrait EnhancedArmysPaeon { get; } = new BaseTrait(286);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait SoulVoiceTraits    { get; } = new BaseTrait(287);
+    public static IBaseTrait SoulVoiceTraits { get; } = new BaseTrait(287);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait QuickNockMastery    { get; } = new BaseTrait(444);
+    public static IBaseTrait QuickNockMastery { get; } = new BaseTrait(444);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedBloodletter    { get; } = new BaseTrait(445);
+    public static IBaseTrait EnhancedBloodletter { get; } = new BaseTrait(445);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedApexArrow    { get; } = new BaseTrait(446);
+    public static IBaseTrait EnhancedApexArrow { get; } = new BaseTrait(446);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedTroubadour    { get; } = new BaseTrait(447);
+    public static IBaseTrait EnhancedTroubadour { get; } = new BaseTrait(447);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MinstrelsCoda    { get; } = new BaseTrait(448);
+    public static IBaseTrait MinstrelsCoda { get; } = new BaseTrait(448);
 
     #endregion
 

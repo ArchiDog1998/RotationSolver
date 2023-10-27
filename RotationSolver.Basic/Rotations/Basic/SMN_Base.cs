@@ -17,7 +17,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.SMN, Job.ACN };
+    public sealed override Job[] Jobs => new[] { Job.SMN, Job.ACN };
 
     /// <summary>
     /// 
@@ -354,107 +354,107 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MaimAndMend    { get; } = new BaseTrait(66);
+    public static IBaseTrait MaimAndMend { get; } = new BaseTrait(66);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(69);
+    public static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(69);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedDreadwyrmTrance    { get; } = new BaseTrait(178);
+    public static IBaseTrait EnhancedDreadwyrmTrance { get; } = new BaseTrait(178);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait RuinMastery    { get; } = new BaseTrait(217);
+    public static IBaseTrait RuinMastery { get; } = new BaseTrait(217);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedAethercharge    { get; } = new BaseTrait(466);
+    public static IBaseTrait EnhancedAethercharge { get; } = new BaseTrait(466);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedAethercharge2    { get; } = new BaseTrait(467);
+    public static IBaseTrait EnhancedAethercharge2 { get; } = new BaseTrait(467);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait RubySummoningMastery    { get; } = new BaseTrait(468);
+    public static IBaseTrait RubySummoningMastery { get; } = new BaseTrait(468);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait TopazSummoningMastery    { get; } = new BaseTrait(469);
+    public static IBaseTrait TopazSummoningMastery { get; } = new BaseTrait(469);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EmeraldSummoningMastery    { get; } = new BaseTrait(470);
+    public static IBaseTrait EmeraldSummoningMastery { get; } = new BaseTrait(470);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait Enkindle    { get; } = new BaseTrait(471);
+    public static IBaseTrait Enkindle { get; } = new BaseTrait(471);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait RuinMastery2    { get; } = new BaseTrait(473);
+    public static IBaseTrait RuinMastery2 { get; } = new BaseTrait(473);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait AetherchargeMastery    { get; } = new BaseTrait(474);
+    public static IBaseTrait AetherchargeMastery { get; } = new BaseTrait(474);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedEnergySiphon    { get; } = new BaseTrait(475);
+    public static IBaseTrait EnhancedEnergySiphon { get; } = new BaseTrait(475);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait RuinMastery3    { get; } = new BaseTrait(476);
+    public static IBaseTrait RuinMastery3 { get; } = new BaseTrait(476);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait OutburstMastery    { get; } = new BaseTrait(477);
+    public static IBaseTrait OutburstMastery { get; } = new BaseTrait(477);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait OutburstMastery2    { get; } = new BaseTrait(478);
+    public static IBaseTrait OutburstMastery2 { get; } = new BaseTrait(478);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait RuinMastery4    { get; } = new BaseTrait(479);
+    public static IBaseTrait RuinMastery4 { get; } = new BaseTrait(479);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedRadiantAegis    { get; } = new BaseTrait(480);
+    public static IBaseTrait EnhancedRadiantAegis { get; } = new BaseTrait(480);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait Enkindle2    { get; } = new BaseTrait(481);
+    public static IBaseTrait Enkindle2 { get; } = new BaseTrait(481);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedSummonBahamut    { get; } = new BaseTrait(502);
+    public static IBaseTrait EnhancedSummonBahamut { get; } = new BaseTrait(502);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait ElementalMastery    { get; } = new BaseTrait(503);
+    public static IBaseTrait ElementalMastery { get; } = new BaseTrait(503);
     #endregion
 
     /// <summary>

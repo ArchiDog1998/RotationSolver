@@ -28,7 +28,7 @@ public abstract partial class CustomRotation
                 MaxCountOfLastUsing = Math.Max(MaxCountOfLastUsing, CountingOfLastUsing);
 
                 AverageCountOfCombatTimeUsing =
-                    (AverageCountOfCombatTimeUsing * (CountOfTracking -1)+ CountingOfCombatTimeUsing)
+                    (AverageCountOfCombatTimeUsing * (CountOfTracking - 1) + CountingOfCombatTimeUsing)
                     / CountOfTracking;
                 MaxCountOfCombatTimeUsing = Math.Max(MaxCountOfCombatTimeUsing, CountingOfCombatTimeUsing);
             }
@@ -39,7 +39,7 @@ public abstract partial class CustomRotation
         {
             WhyNotValid = $"Failed to invoke the next action,please contact to \"{{0}}\".";
 
-            while(ex != null)
+            while (ex != null)
             {
                 if (!string.IsNullOrEmpty(ex.Message)) WhyNotValid += "\n" + ex.Message;
                 if (!string.IsNullOrEmpty(ex.StackTrace)) WhyNotValid += "\n" + ex.StackTrace;
@@ -117,11 +117,11 @@ public abstract partial class CustomRotation
 
         if (movingTarget && act is IBaseAction a)
         {
-            if(a.Target == null || a.Target == Player)
+            if (a.Target == null || a.Target == Player)
             {
-                if((ActionID)a.ID == ActionID.EnAvant)
+                if ((ActionID)a.ID == ActionID.EnAvant)
                 {
-                    var dir =  new Vector3(MathF.Sin(Player.Rotation), 0, MathF.Cos(Player.Rotation));
+                    var dir = new Vector3(MathF.Sin(Player.Rotation), 0, MathF.Cos(Player.Rotation));
                     MoveTarget = Player.Position + dir * 10;
                 }
                 else
@@ -133,7 +133,7 @@ public abstract partial class CustomRotation
             {
                 var dir = Player.Position - a.Target.Position;
                 var length = dir.Length();
-                if(length != 0)
+                if (length != 0)
                 {
                     dir /= length;
 
@@ -186,7 +186,7 @@ public abstract partial class CustomRotation
 
         if (gcdAction != null)
         {
-            if (DataCenter.NextAbilityToNextGCD < DataCenter.MinAnimationLock + DataCenter.Ping 
+            if (DataCenter.NextAbilityToNextGCD < DataCenter.MinAnimationLock + DataCenter.Ping
                 || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
 
             if (Ability(gcdAction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;

@@ -7,14 +7,14 @@ internal static class ConfigTranslation
 {
     public static string ToDescription(this RotationConfigWindowTab tab) => tab switch
     {
-         RotationConfigWindowTab.Actions => LocalizationManager.RightLang.ConfigWindow_Tab_Actions,
-         RotationConfigWindowTab.Rotations => LocalizationManager.RightLang.ConfigWindow_Tab_Rotations,
-         RotationConfigWindowTab.List => LocalizationManager.RightLang.ConfigWindow_Tab_List,
-         RotationConfigWindowTab.Basic => LocalizationManager.RightLang.ConfigWindow_Tab_Basic,
-         RotationConfigWindowTab.UI => LocalizationManager.RightLang.ConfigWindow_Tab_UI,
-         RotationConfigWindowTab.Auto => LocalizationManager.RightLang.ConfigWindow_Tab_Auto,
-         RotationConfigWindowTab.Target => LocalizationManager.RightLang.ConfigWindow_Tab_Target,
-         RotationConfigWindowTab.Extra => LocalizationManager.RightLang.ConfigWindow_Tab_Extra,
+        RotationConfigWindowTab.Actions => LocalizationManager.RightLang.ConfigWindow_Tab_Actions,
+        RotationConfigWindowTab.Rotations => LocalizationManager.RightLang.ConfigWindow_Tab_Rotations,
+        RotationConfigWindowTab.List => LocalizationManager.RightLang.ConfigWindow_Tab_List,
+        RotationConfigWindowTab.Basic => LocalizationManager.RightLang.ConfigWindow_Tab_Basic,
+        RotationConfigWindowTab.UI => LocalizationManager.RightLang.ConfigWindow_Tab_UI,
+        RotationConfigWindowTab.Auto => LocalizationManager.RightLang.ConfigWindow_Tab_Auto,
+        RotationConfigWindowTab.Target => LocalizationManager.RightLang.ConfigWindow_Tab_Target,
+        RotationConfigWindowTab.Extra => LocalizationManager.RightLang.ConfigWindow_Tab_Extra,
         _ => string.Empty,
     };
 
@@ -109,8 +109,8 @@ internal static class ConfigTranslation
         PluginConfigBool.HealOutOfCombat => LocalizationManager.RightLang.ConfigWindow_Param_HealOutOfCombat,
         PluginConfigBool.OnlyHotOnTanks => LocalizationManager.RightLang.ConfigWindow_Param_OnlyHotOnTanks,
         PluginConfigBool.RecordCastingArea => "Record AOE actions",
-         PluginConfigBool.HealWhenNothingTodo => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodo,
-         PluginConfigBool.UseResourcesAction => LocalizationManager.RightLang.ConfigWindow_Auto_UseResourcesAction,
+        PluginConfigBool.HealWhenNothingTodo => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodo,
+        PluginConfigBool.UseResourcesAction => LocalizationManager.RightLang.ConfigWindow_Auto_UseResourcesAction,
 
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
@@ -203,7 +203,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.DyingTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_DyingTimeToKill,
         PluginConfigFloat.AngleOfVisionCone => LocalizationManager.RightLang.ConfigWindow_Target_VisionCone,
 
-        _ => string.Empty,   
+        _ => string.Empty,
     };
 
     public static string ToName(this PluginConfigVector4 config) => config switch
@@ -272,11 +272,11 @@ internal static class ConfigTranslation
     public static string ToCommand(this JobConfigFloat config) => ToCommandStr(config, "0");
     public static string ToCommand(this PluginConfigInt config) => ToCommandStr(config, "1");
     public static string ToCommand(this PluginConfigBool config) => ToCommandStr(config);
-    public static string ToCommand(this PluginConfigFloat config)  => ToCommandStr(config, "0");
+    public static string ToCommand(this PluginConfigFloat config) => ToCommandStr(config, "0");
     private static string ToCommandStr(object obj, string extra = "")
     {
         var result = Service.COMMAND + " " + OtherCommandType.Settings.ToString() + " " + obj.ToString();
-        if(!string.IsNullOrEmpty(extra)) result += " " + extra;
+        if (!string.IsNullOrEmpty(extra)) result += " " + extra;
         return result;
     }
 

@@ -17,7 +17,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.SCH };
+    public sealed override Job[] Jobs => new[] { Job.SCH };
 
     #region Job Gauge
     static SCHGauge JobGauge => Svc.Gauges.Get<SCHGauge>();
@@ -53,7 +53,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Adloquium { get; } = new BaseAction(ActionID.Adloquium, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.EukrasianDiagnosis, 
+        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.EukrasianDiagnosis,
             StatusID.EukrasianPrognosis, StatusID.Galvanize),
     };
 
@@ -273,7 +273,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait CorruptionMastery2    { get; } = new BaseTrait(311);
+    public static IBaseTrait CorruptionMastery2 { get; } = new BaseTrait(311);
 
     /// <summary>
     /// 
@@ -283,12 +283,12 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedSacredSoil    { get; } = new BaseTrait(313);
+    public static IBaseTrait EnhancedSacredSoil { get; } = new BaseTrait(313);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait CorruptionMastery    { get; } = new BaseTrait(324);
+    public static IBaseTrait CorruptionMastery { get; } = new BaseTrait(324);
 
     /// <summary>
     /// 
@@ -303,12 +303,12 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(493);
+    public static IBaseTrait EnhancedHealingMagic { get; } = new BaseTrait(493);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedDeploymentTactics    { get; } = new BaseTrait(494);
+    public static IBaseTrait EnhancedDeploymentTactics { get; } = new BaseTrait(494);
     #endregion
 
     /// <summary>
@@ -318,7 +318,7 @@ public abstract class SCH_Base : CustomRotation
     /// <returns></returns>
     protected override bool SpeedAbility(out IAction act)
     {
-        if(InCombat && Expedient.CanUse(out act, CanUseOption.MustUse)) return true;
+        if (InCombat && Expedient.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.SpeedAbility(out act);
     }
 }

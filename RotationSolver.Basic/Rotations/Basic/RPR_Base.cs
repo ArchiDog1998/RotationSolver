@@ -17,7 +17,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.RPR };
+    public sealed override Job[] Jobs => new[] { Job.RPR };
 
     /// <summary>
     /// 
@@ -328,47 +328,47 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait DeathScytheMastery    { get; } = new BaseTrait(380);
+    public static IBaseTrait DeathScytheMastery { get; } = new BaseTrait(380);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedAvatar    { get; } = new BaseTrait(381);
+    public static IBaseTrait EnhancedAvatar { get; } = new BaseTrait(381);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait Hellsgate    { get; } = new BaseTrait(382);
+    public static IBaseTrait Hellsgate { get; } = new BaseTrait(382);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait TemperedSoul    { get; } = new BaseTrait(383);
+    public static IBaseTrait TemperedSoul { get; } = new BaseTrait(383);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait ShroudGauge    { get; } = new BaseTrait(384);
+    public static IBaseTrait ShroudGauge { get; } = new BaseTrait(384);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedArcaneCrest    { get; } = new BaseTrait(385);
+    public static IBaseTrait EnhancedArcaneCrest { get; } = new BaseTrait(385);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedShroud    { get; } = new BaseTrait(386);
+    public static IBaseTrait EnhancedShroud { get; } = new BaseTrait(386);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedArcaneCircle    { get; } = new BaseTrait(387);
+    public static IBaseTrait EnhancedArcaneCircle { get; } = new BaseTrait(387);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait DeathScytheMastery2    { get; } = new BaseTrait(523);
+    public static IBaseTrait DeathScytheMastery2 { get; } = new BaseTrait(523);
     #endregion
 
     /// <summary>

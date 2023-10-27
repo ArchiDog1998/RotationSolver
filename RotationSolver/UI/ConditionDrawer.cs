@@ -8,7 +8,6 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Xml.Linq;
 using Action = System.Action;
 
 namespace RotationSolver.UI;
@@ -294,7 +293,7 @@ internal static class ConditionDrawer
             {
                 namedCondition.ConditionName = i;
 
-            },LocalizationManager.RightLang.ConfigWindow_Condition_ConditionName);
+            }, LocalizationManager.RightLang.ConfigWindow_Condition_ConditionName);
 
         ImGui.SameLine();
 
@@ -536,7 +535,7 @@ internal static class ConditionDrawer
                 conditionSet.Conditions.RemoveAt(i);
                 conditionSet.Conditions.Insert(Math.Max(0, i - 1), condition);
             };
-            
+
             void Down()
             {
                 conditionSet.Conditions.RemoveAt(i);

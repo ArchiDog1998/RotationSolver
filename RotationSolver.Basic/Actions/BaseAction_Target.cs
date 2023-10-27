@@ -1,6 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Logging;
-using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -8,7 +6,6 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using RotationSolver.Basic.Configuration;
-using System.Runtime.InteropServices;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -22,7 +19,7 @@ public partial class BaseAction
         get
         {
             return OtherConfiguration.ActionAOECounts.TryGetValue(ID, out var count)
-                ? count : IsFriendly ? (byte)1 :(byte)3;
+                ? count : IsFriendly ? (byte)1 : (byte)3;
         }
         set
         {
@@ -34,7 +31,7 @@ public partial class BaseAction
     /// <summary>
     /// How many time does this action need the target keep in live.
     /// </summary>
-    public float TimeToKill 
+    public float TimeToKill
     {
         get
         {
@@ -69,7 +66,7 @@ public partial class BaseAction
     public BattleChara Target { get; private set; } = Player.Object;
 
     internal bool IsTargetArea => _action.TargetArea;
-    
+
     /// <summary>
     /// The position
     /// </summary>
@@ -260,7 +257,7 @@ public partial class BaseAction
                 break;
 
             case 2: // Target
-                if(Svc.Targets.Target != null && Svc.Targets.Target.DistanceToPlayer() < range)
+                if (Svc.Targets.Target != null && Svc.Targets.Target.DistanceToPlayer() < range)
                 {
                     Position = Svc.Targets.Target.Position;
                     return true;
@@ -268,7 +265,7 @@ public partial class BaseAction
                 break;
         }
 
-        if (Svc.Targets.Target is BattleChara b && b.DistanceToPlayer() < range && 
+        if (Svc.Targets.Target is BattleChara b && b.DistanceToPlayer() < range &&
             b.IsBoss() && b.HasPositional() && b.HitboxRadius <= 8)
         {
             Position = b.Position;
@@ -393,7 +390,7 @@ public partial class BaseAction
         if (Service.Config.GetValue(PluginConfigBool.ChooseAttackMark))
         {
             var b = MarkingHelper.GetAttackMarkChara(DataCenter.HostileTargets);
-            if (b != null && ChoiceTarget(GetMostObjects(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), Service.Config.GetValue(PluginConfigBool.CanAttackMarkAOE) ?  aoeCount : int.MaxValue), mustUse) != null)
+            if (b != null && ChoiceTarget(GetMostObjects(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), Service.Config.GetValue(PluginConfigBool.CanAttackMarkAOE) ? aoeCount : int.MaxValue), mustUse) != null)
             {
                 target = b;
                 return true;
@@ -427,7 +424,7 @@ public partial class BaseAction
             return true;
         }
 
-        if (Service.Config.GetValue(PluginConfigBool.UseAOEAction) 
+        if (Service.Config.GetValue(PluginConfigBool.UseAOEAction)
             && Service.Config.GetValue(PluginConfigBool.UseAOEWhenManual) || mustUse)
         {
             if (GetMostObjects(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), aoeCount).Contains(b))
@@ -461,7 +458,7 @@ public partial class BaseAction
 
             var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), EffectRange);
             if (tars.Count() < aoeCount) return false;
-            
+
             if (Service.Config.GetValue(PluginConfigBool.NoNewHostiles) && TargetFilter.GetObjectInRadius(DataCenter.AllHostileTargets, EffectRange)
                 .Any(t => t.TargetObject == null)) return false;
         }
@@ -504,11 +501,11 @@ public partial class BaseAction
         int count = 0;
         foreach (var t in canAttack)
         {
-            if(target == t)
+            if (target == t)
             {
                 count++;
             }
-            else if(CanGetTarget(target, t))
+            else if (CanGetTarget(target, t))
             {
                 count++;
             }
@@ -539,7 +536,7 @@ public partial class BaseAction
                 return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= EffectRange;
 
             case 3: // Sector
-                if(subTarget.DistanceToPlayer() > EffectRange) return false;
+                if (subTarget.DistanceToPlayer() > EffectRange) return false;
                 tdir += dir / dir.Length() * target.HitboxRadius / (float)Math.Sin(_alpha);
                 return Vector3.Dot(dir, tdir) / (dir.Length() * tdir.Length()) >= Math.Cos(_alpha);
 
@@ -605,7 +602,7 @@ public partial class BaseAction
 
         if (TargetStatus == null) return true;
 
-        return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Config.GetValue(DataCenter.Job, JobConfigInt.AddDotGCDCount), 
+        return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Config.GetValue(DataCenter.Job, JobConfigInt.AddDotGCDCount),
             0, true, TargetStatus);
     }
 
@@ -627,8 +624,8 @@ public partial class BaseAction
         {
             if (!Service.Config.GetValue(PluginConfigBool.UseAOEAction)) return true;
 
-            return Service.Config.GetValue(PluginConfigBool.ChooseAttackMark)   
-                && !Service.Config.GetValue(PluginConfigBool.CanAttackMarkAOE)  
+            return Service.Config.GetValue(PluginConfigBool.ChooseAttackMark)
+                && !Service.Config.GetValue(PluginConfigBool.CanAttackMarkAOE)
                 && MarkingHelper.HaveAttackChara(DataCenter.HostileTargets);
         }
     }

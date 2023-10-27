@@ -829,7 +829,7 @@ public enum ActionID : uint
     /// 
     /// </summary>
     BothEnds = 23287,
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -1006,7 +1006,7 @@ public enum ActionID : uint
     /// 
     /// </summary>
     RagingStrikes = 101,
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -1863,7 +1863,7 @@ public enum ActionID : uint
     /// 
     /// </summary>
     RiddleOfFire = 7395,
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -2850,7 +2850,7 @@ public enum ActionID : uint
     /// 
     /// </summary>
     FeyIllumination = 16538,
-    
+
     /// <summary>
     /// 
     /// </summary>

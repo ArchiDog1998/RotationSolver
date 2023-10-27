@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Statuses;
-using Dalamud.Logging;
 using ECommons.Automation;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
@@ -107,7 +106,7 @@ public static class StatusHelper
             return Math.Max(0, times.Min() - DataCenter.WeaponRemain);
         }
         catch
-        { 
+        {
             return 0;
         }
     }
@@ -146,7 +145,7 @@ public static class StatusHelper
     /// <returns></returns>
     public static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        if(DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return true;
+        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return true;
         return obj.GetStatus(isFromSelf, statusIDs).Any();
     }
 
@@ -175,7 +174,7 @@ public static class StatusHelper
     {
         if (obj == null) return Array.Empty<Status>();
 
-        return obj.StatusList.Where(status => !isFromSelf 
+        return obj.StatusList.Where(status => !isFromSelf
                                               || status.SourceId == Player.Object.ObjectId
                                               || status.SourceObject?.OwnerId == Player.Object.ObjectId);
     }

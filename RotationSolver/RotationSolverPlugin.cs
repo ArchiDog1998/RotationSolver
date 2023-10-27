@@ -38,7 +38,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         IconSet.InIt();
 
         //Init!
-        Clipper.InflatePaths(new PathsD(new PathD[] { Clipper.MakePath(new double[] {0, 0, 1, 1 }) }), 0, JoinType.Round, EndType.Joined);
+        Clipper.InflatePaths(new PathsD(new PathD[] { Clipper.MakePath(new double[] { 0, 0, 1, 1 }) }), 0, JoinType.Round, EndType.Joined);
 
         _dis.Add(new Service());
         try
@@ -47,14 +47,14 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new JsonSerializerSettings()
                 {
                     MissingMemberHandling = MissingMemberHandling.Error,
-                    Error = delegate (object sender, Newtonsoft.Json.Serialization. ErrorEventArgs args)
+                    Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
                     {
                         args.ErrorContext.Handled = true;
                     }
-                }) 
+                })
                 ?? PluginConfig.Create();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Warning(ex, "Failed to load config");
             Service.Config = PluginConfig.Create(); ;

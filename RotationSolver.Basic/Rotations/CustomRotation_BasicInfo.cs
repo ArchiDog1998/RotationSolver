@@ -1,6 +1,5 @@
 ﻿using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
-using System.Linq;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -80,7 +79,7 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public IAction AntiKnockbackAbility { get; private set; }
 
-    public bool IsValid { get; private set; } = true;   
+    public bool IsValid { get; private set; } = true;
     public string WhyNotValid { get; private set; } = string.Empty;
 
     public virtual bool ShowStatus => false;

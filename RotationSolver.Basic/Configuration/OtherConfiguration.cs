@@ -65,7 +65,7 @@ public class OtherConfiguration
 
     public static Dictionary<uint, float> ActionHealRatio = new();
 
-    public static RotationSolverRecord RotationSolverRecord = new ();
+    public static RotationSolverRecord RotationSolverRecord = new();
 
     public static void Init()
     {
@@ -200,7 +200,7 @@ public class OtherConfiguration
                 TypeNameHandling = TypeNameHandling.None,
             }));
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Warning(ex, $"Failed to save the file to {path}");
         }
@@ -220,7 +220,7 @@ public class OtherConfiguration
                 Svc.Log.Warning(ex, $"Failed to load {name}.");
             }
         }
-        else if(download)
+        else if (download)
         {
             try
             {

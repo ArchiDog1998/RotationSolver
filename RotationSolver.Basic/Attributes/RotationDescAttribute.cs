@@ -25,10 +25,10 @@ public class RotationDescAttribute : Attribute
     {
         DescType.BurstActions => 62583,
 
-        DescType.HealAreaGCD or DescType.HealAreaAbility or 
+        DescType.HealAreaGCD or DescType.HealAreaAbility or
         DescType.HealSingleGCD or DescType.HealSingleAbility => 62582,
 
-        DescType.DefenseAreaGCD or DescType.DefenseAreaAbility or 
+        DescType.DefenseAreaGCD or DescType.DefenseAreaAbility or
         DescType.DefenseSingleGCD or DescType.DefenseSingleAbility => 62581,
 
         DescType.MoveForwardGCD or DescType.MoveForwardAbility or

@@ -1,5 +1,4 @@
 ﻿using Dalamud.Interface.Utility.Raii;
-using Dalamud.Logging;
 using ECommons.DalamudServices;
 
 namespace RotationSolver.UI;
@@ -13,7 +12,7 @@ internal class CollapsingHeaderGroup
 
     public CollapsingHeaderGroup()
     {
-        
+
     }
 
     public CollapsingHeaderGroup(Dictionary<Func<string>, Action> headers)
@@ -47,7 +46,7 @@ internal class CollapsingHeaderGroup
             if (header.Value == null) continue;
 
             var name = header.Key();
-            if(string.IsNullOrEmpty(name)) continue;
+            if (string.IsNullOrEmpty(name)) continue;
 
             try
             {

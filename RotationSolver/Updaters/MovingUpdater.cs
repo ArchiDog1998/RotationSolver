@@ -16,7 +16,7 @@ internal static class MovingUpdater
             Service.CanMove = true;
         }
         //Casting the action in list.
-        else if (Svc.Condition[ConditionFlag.Casting] && Player.Available && Enum.IsDefined((ActionID)Player.Object.CastActionId)) 
+        else if (Svc.Condition[ConditionFlag.Casting] && Player.Available && Enum.IsDefined((ActionID)Player.Object.CastActionId))
         {
             Service.CanMove = false;
         }

@@ -152,7 +152,7 @@ public abstract class WHM_Base : CustomRotation
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -226,12 +226,12 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MaimAndMend    { get; } = new BaseTrait(23);
+    public static IBaseTrait MaimAndMend { get; } = new BaseTrait(23);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait Freecure    { get; } = new BaseTrait(25);
+    public static IBaseTrait Freecure { get; } = new BaseTrait(25);
 
     /// <summary>
     /// 
@@ -266,41 +266,41 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait AeroMastery2    { get; } = new BaseTrait(307);
+    public static IBaseTrait AeroMastery2 { get; } = new BaseTrait(307);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait StoneMastery4    { get; } = new BaseTrait(308);
+    public static IBaseTrait StoneMastery4 { get; } = new BaseTrait(308);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait TranscendentAfflatus    { get; } = new BaseTrait(309);
+    public static IBaseTrait TranscendentAfflatus { get; } = new BaseTrait(309);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedAsylum    { get; } = new BaseTrait(310);
+    public static IBaseTrait EnhancedAsylum { get; } = new BaseTrait(310);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait GlareMastery    { get; } = new BaseTrait(487);
+    public static IBaseTrait GlareMastery { get; } = new BaseTrait(487);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait HolyMastery    { get; } = new BaseTrait(488);
+    public static IBaseTrait HolyMastery { get; } = new BaseTrait(488);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(489);
+    public static IBaseTrait EnhancedHealingMagic { get; } = new BaseTrait(489);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedDivineBenison    { get; } = new BaseTrait(490);
+    public static IBaseTrait EnhancedDivineBenison { get; } = new BaseTrait(490);
     #endregion
 }

@@ -21,14 +21,14 @@ public abstract partial class CustomRotation
         {
             if (act is IBaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return act;
         }
-        
+
         //General Heal
         if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer)
             && (DataCenter.InCombat || Service.Config.GetValue(PluginConfigBool.HealOutOfCombat)))
         {
             if (DataCenter.IsHealArea)
             {
-                if( HealAreaGCD(out act)) return act;
+                if (HealAreaGCD(out act)) return act;
             }
             if (CanHealAreaSpell)
             {
@@ -57,7 +57,7 @@ public abstract partial class CustomRotation
         //Esuna
         if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (DataCenter.IsEsunaStanceNorth
             || !HasHostilesInRange || Service.Config.GetValue(PluginConfigBool.EsunaAll))
-            && DataCenter.WeakenPeople.Any()  || DataCenter.DyingPeople.Any()))
+            && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any()))
         {
             if (ClassJob.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, CanUseOption.MustUse)) return act;
         }
@@ -84,7 +84,7 @@ public abstract partial class CustomRotation
                 }
             }
         }
-        
+
         if (Service.Config.GetValue(PluginConfigBool.RaisePlayerByCasting) && RaiseSpell(out act, true)) return act;
 
         return null;
@@ -108,17 +108,17 @@ public abstract partial class CustomRotation
             else if (mustUse)
             {
                 var action = act;
-                if(Swiftcast.CanUse(out act))
+                if (Swiftcast.CanUse(out act))
                 {
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
-                else if(!IsMoving)
+                else if (!IsMoving)
                 {
                     act = action;
                     return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
                 }
             }
-            else if (Service.Config.GetValue(PluginConfigBool.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown 
+            else if (Service.Config.GetValue(PluginConfigBool.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown
                 && DataCenter.NextAbilityToNextGCD > DataCenter.MinAnimationLock + DataCenter.Ping)
             {
                 return DataCenter.SetAutoStatus(AutoStatus.Raise, true);

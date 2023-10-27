@@ -1,5 +1,4 @@
 ﻿using Dalamud.Utility;
-using ECommons.Configuration;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -20,7 +19,7 @@ internal class DragFloatRangeSearchJob : DragFloatRangeSearch
     protected override bool IsJob => true;
 
     public DragFloatRangeSearchJob(JobConfigFloat configMin, JobConfigFloat configMax, float speed)
-        : base ((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
+        : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
     {
         _configMin = configMin;
         _configMax = configMax;

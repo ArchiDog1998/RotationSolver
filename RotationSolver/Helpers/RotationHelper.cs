@@ -29,7 +29,7 @@ internal static class RotationHelper
 
     public static unsafe Vector4 GetColor(this ICustomRotation rotation)
     {
-        if (!rotation.IsEnabled) 
+        if (!rotation.IsEnabled)
         {
             return *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
         }

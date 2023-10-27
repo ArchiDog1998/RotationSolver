@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
-using RotationSolver.Basic.Configuration.Conditions;
+﻿using RotationSolver.Basic.Configuration.Conditions;
 
 namespace RotationSolver.Localization;
 

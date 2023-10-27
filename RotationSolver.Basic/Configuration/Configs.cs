@@ -126,7 +126,7 @@ public class PluginConfig : IPluginConfiguration
     public void SetBoolRaw(PluginConfigBool config, bool value)
         => GlobalConfig.Bools.SetValue(config, value);
     public void SetDisableBoolRaw(PluginConfigBool config, bool value)
-        => GlobalConfig.ForcedDisableBools.SetValue(config, value); 
+        => GlobalConfig.ForcedDisableBools.SetValue(config, value);
     public void SetEnableBoolRaw(PluginConfigBool config, bool value)
         => GlobalConfig.ForcedEnableBools.SetValue(config, value);
     public void SetValue(PluginConfigFloat config, float value)
@@ -160,19 +160,20 @@ public class PluginConfig : IPluginConfiguration
         File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,
             JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings()
             {
-                 TypeNameHandling = TypeNameHandling.None,
+                TypeNameHandling = TypeNameHandling.None,
             }));
     }
 }
 
 #region Job Config
-[Serializable] public class JobConfig
+[Serializable]
+public class JobConfig
 {
     public string RotationChoice { get; set; }
     public DictionConfig<JobConfigFloat, float> Floats { get; set; } = new();
 
     public DictionConfig<JobConfigInt, int> Ints { get; set; } = new();
-    public Dictionary<string, Dictionary<string, string>> RotationsConfigurations { get; set; } = new ();
+    public Dictionary<string, Dictionary<string, string>> RotationsConfigurations { get; set; } = new();
 }
 
 public enum JobConfigInt : byte
@@ -198,7 +199,8 @@ public enum JobConfigFloat : byte
 #endregion
 
 #region Global
-[Serializable] public class GlobalConfig
+[Serializable]
+public class GlobalConfig
 {
     public DictionConfig<PluginConfigInt, int> Ints { get; private set; } = new();
     public DictionConfig<PluginConfigBool, bool> Bools { get; private set; } = new();
@@ -221,12 +223,12 @@ public enum JobConfigFloat : byte
         { PluginConfigVector4.InfoWindowBg, new (0, 0, 0, 0.4f)},
     });
 
-    public SortedSet<Job> DisabledJobs { get; private set; } = new ();
-    public SortedSet<uint> DisabledActions { get; private set; } = new ();
-    public SortedSet<uint> NotInCoolDownActions { get; private set; } = new ();
-    public SortedSet<uint> DisabledItems { get; private set; } = new ();
-    public SortedSet<uint> NotInCoolDownItems { get; private set; } = new ();
-    public List<ActionEventInfo> Events { get; private set; } = new ();
+    public SortedSet<Job> DisabledJobs { get; private set; } = new();
+    public SortedSet<uint> DisabledActions { get; private set; } = new();
+    public SortedSet<uint> NotInCoolDownActions { get; private set; } = new();
+    public SortedSet<uint> DisabledItems { get; private set; } = new();
+    public SortedSet<uint> NotInCoolDownItems { get; private set; } = new();
+    public List<ActionEventInfo> Events { get; private set; } = new();
 
     public string[] OtherLibs = Array.Empty<string>();
 
@@ -469,7 +471,8 @@ public enum PluginConfigVector4 : byte
 }
 #endregion
 
-[AttributeUsage(AttributeTargets.Field)] public class DefaultAttribute : Attribute
+[AttributeUsage(AttributeTargets.Field)]
+public class DefaultAttribute : Attribute
 {
     public object Default { get; set; }
     public object Min { get; set; }
@@ -483,10 +486,11 @@ public enum PluginConfigVector4 : byte
     }
 }
 
-[Serializable] public class DictionConfig<TConfig, TValue> where TConfig : struct, Enum
+[Serializable]
+public class DictionConfig<TConfig, TValue> where TConfig : struct, Enum
 {
     [JsonProperty]
-    private readonly Dictionary<TConfig, TValue> configs = new ();
+    private readonly Dictionary<TConfig, TValue> configs = new();
 
     private readonly SortedList<TConfig, TValue> _defaults;
 

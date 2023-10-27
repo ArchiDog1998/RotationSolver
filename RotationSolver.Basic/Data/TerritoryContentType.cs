@@ -9,7 +9,7 @@ public enum TerritoryContentType : uint
     /// 
     /// </summary>
     None = 0,
-    
+
     /// <summary>
     /// 
     /// </summary>

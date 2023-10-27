@@ -180,7 +180,7 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     HallowedGround = 82,
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -315,7 +315,7 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     Combust2 = 843,
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -834,7 +834,7 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     ShadowWall = 747,
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -1266,7 +1266,7 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     RespellingSpray = 556,
-    
+
     /// <summary>
     /// 
     /// </summary>

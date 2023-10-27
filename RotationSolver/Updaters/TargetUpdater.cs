@@ -17,7 +17,7 @@ internal static partial class TargetUpdater
     internal unsafe static void UpdateTarget()
     {
         DataCenter.AllTargets = Svc.Objects.GetObjectInRadius(30);
-        var battles = DataCenter.AllTargets.OfType<BattleChara>(); 
+        var battles = DataCenter.AllTargets.OfType<BattleChara>();
         UpdateHostileTargets(battles);
         UpdateFriends(battles
             .Where(b => b.Character()->CharacterData.OnlineStatus != 15 //Removed the one watching cutscene.
@@ -46,7 +46,7 @@ internal static partial class TargetUpdater
     {
         var empty = Array.Empty<BattleChara>();
         DataCenter.AllTargets
-            = DataCenter.AllHostileTargets 
+            = DataCenter.AllHostileTargets
             = DataCenter.TarOnMeTargets
             = DataCenter.PartyMembers
             = DataCenter.PartyTanks
@@ -114,7 +114,7 @@ internal static partial class TargetUpdater
             {
                 if (!Svc.GameGui.WorldToScreen(b.Position, out _)) return false;
             }
-            if(Service.Config.GetValue(PluginConfigBool.OnlyAttackInVisionCone))
+            if (Service.Config.GetValue(PluginConfigBool.OnlyAttackInVisionCone))
             {
                 Vector3 dir = b.Position - Player.Object.Position;
                 Vector2 dirVec = new(dir.Z, dir.X);
@@ -170,7 +170,7 @@ internal static partial class TargetUpdater
             if (Svc.ClientState == null) return false;
 
             IEnumerable<string> names = Array.Empty<string>();
-            if(OtherConfiguration.NoHostileNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
+            if (OtherConfiguration.NoHostileNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
                 names = names.Union(ns1);
 
             if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(b.Name.ToString()).Success)) return false;
@@ -216,7 +216,7 @@ internal static partial class TargetUpdater
 
         var addons = Service.GetAddons<AddonEnemyList>();
 
-        if(!addons.Any()) return Array.Empty<uint>();
+        if (!addons.Any()) return Array.Empty<uint>();
         var addon = addons.FirstOrDefault();
         var enemy = (AddonEnemyList*)addon;
 
@@ -311,7 +311,7 @@ internal static partial class TargetUpdater
         if (DataCenter.InEffectTime)
         {
             var rightMp = Player.Object.CurrentMp;
-            if(rightMp - _lastMp == DataCenter.MPGain)
+            if (rightMp - _lastMp == DataCenter.MPGain)
             {
                 DataCenter.MPGain = 0;
             }
@@ -415,7 +415,7 @@ internal static partial class TargetUpdater
         }
 
         //Delay
-        
+
         DataCenter.CanHealSingleAbility = DataCenter.SetAutoStatus(AutoStatus.HealSingleAbility,
             _healDelay1.Delay(DataCenter.CanHealSingleAbility));
         DataCenter.CanHealSingleSpell = DataCenter.SetAutoStatus(AutoStatus.HealSingleSpell,

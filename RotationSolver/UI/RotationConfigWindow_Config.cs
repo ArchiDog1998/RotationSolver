@@ -3,7 +3,6 @@ using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
-using RotationSolver.Basic;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Helpers;
@@ -11,7 +10,6 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
-using System.Linq;
 
 namespace RotationSolver.UI;
 
@@ -71,7 +69,7 @@ public partial class RotationConfigWindow
         if (searchable is CheckBoxSearch c && c.Children != null)
         {
             return c.Children.SelectMany(GetChildren).Union(myself);
-        } 
+        }
         else return myself;
     }
 
@@ -135,7 +133,7 @@ public partial class RotationConfigWindow
 
                 ImGui.Separator();
 
-                ImGui.TextColored(ImGui.ColorConvertU32ToFloat4( IDEAL_CLICK_TIME_COLOR),
+                ImGui.TextColored(ImGui.ColorConvertU32ToFloat4(IDEAL_CLICK_TIME_COLOR),
                     LocalizationManager.RightLang.ConfigWindow_Basic_IdealClickingTime);
 
                 ImGui.TextColored(ImGui.ColorConvertU32ToFloat4(CLICK_TIME_COLOR),
@@ -174,8 +172,8 @@ public partial class RotationConfigWindow
         var actionAhead = Service.Config.GetValue(PluginConfigFloat.ActionAhead);
         var minAbilityAhead = Service.Config.GetValue(PluginConfigFloat.MinLastAbilityAdvanced);
         var animationLockTime = DataCenter.MinAnimationLock;
-        var weaponDelay = (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin) + Service.Config.GetValue(PluginConfigFloat.WeaponDelayMax))/2;
-        var clickingDelay = (Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin) + Service.Config.GetValue(PluginConfigFloat.ClickingDelayMax))/2;
+        var weaponDelay = (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin) + Service.Config.GetValue(PluginConfigFloat.WeaponDelayMax)) / 2;
+        var clickingDelay = (Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin) + Service.Config.GetValue(PluginConfigFloat.ClickingDelayMax)) / 2;
 
         var drawList = ImGui.GetWindowDrawList();
         ImGui.Spacing();
@@ -197,7 +195,7 @@ public partial class RotationConfigWindow
         {
             ImguiTooltips.ShowTooltip(LocalizationManager.RightLang.ConfigWindow_Basic_WeaponDelay);
         }
-        drawList.AddLine(lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, -spacingHeight), lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, 
+        drawList.AddLine(lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, -spacingHeight), lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime,
             pingHeight * 2 + spacingHeight), IDEAL_CLICK_TIME_COLOR, 2);
 
         ImGui.PushFont(ImGuiHelper.GetFont(20));
@@ -396,7 +394,7 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _basicSwitchTurnOn = new ISearchable[]
     {
         // Turn on
-        new CheckBoxSearchPlugin(PluginConfigBool.StartOnCountdown, 
+        new CheckBoxSearchPlugin(PluginConfigBool.StartOnCountdown,
             new DragFloatRangeSearchPlugin(PluginConfigFloat.CountdownDelayMin, PluginConfigFloat.CountdownDelayMax, 0.002f)),
         new CheckBoxSearchPlugin(PluginConfigBool.StartOnAttackedBySomeone),
     };
@@ -471,7 +469,7 @@ public partial class RotationConfigWindow
             new DragFloatSearchPlugin(PluginConfigFloat.DrawingHeight, 0.02f),
             new DragFloatSearchPlugin(PluginConfigFloat.SampleLength, 0.001f),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.TeachingMode, 
+        new CheckBoxSearchPlugin(PluginConfigBool.TeachingMode,
             new ColorEditSearchPlugin(PluginConfigVector4.TeachingModeColor)
         ),
 
@@ -481,10 +479,10 @@ public partial class RotationConfigWindow
             new ColorEditSearchPlugin(PluginConfigVector4.SubTargetColor)
         ),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetTimeToKill, 
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowTargetTimeToKill,
             new ColorEditSearchPlugin(PluginConfigVector4.TTKTextColor)),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget, 
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowMoveTarget,
             new ColorEditSearchPlugin(PluginConfigVector4.MovingTargetColor)
         ),
 
@@ -573,7 +571,7 @@ public partial class RotationConfigWindow
 
     private static readonly CollapsingHeaderGroup _autoState = new(new()
     {
-        { () => LocalizationManager.RightLang.ConfigWindow_Auto_HealAreaConditionSet, 
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_HealAreaConditionSet,
             () => DataCenter.RightSet.HealAreaConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_HealSingleConditionSet,
@@ -582,22 +580,22 @@ public partial class RotationConfigWindow
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_DefenseAreaConditionSet,
             () => DataCenter.RightSet.DefenseAreaConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
-        { () => LocalizationManager.RightLang.ConfigWindow_Auto_DefenseSingleConditionSet, 
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_DefenseSingleConditionSet,
             () => DataCenter.RightSet.DefenseSingleConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_EsunaStanceNorthConditionSet,
             () => DataCenter.RightSet.EsunaStanceNorthConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
-        { () => LocalizationManager.RightLang.ConfigWindow_Auto_RaiseShirkConditionSet, 
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_RaiseShirkConditionSet,
             () => DataCenter.RightSet.RaiseShirkConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
-        { () => LocalizationManager.RightLang.ConfigWindow_Auto_MoveForwardConditionSet, 
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_MoveForwardConditionSet,
             () => DataCenter.RightSet.MoveForwardConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_MoveBackConditionSet,
             () => DataCenter.RightSet.MoveBackConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
-        { () => LocalizationManager.RightLang.ConfigWindow_Auto_AntiKnockbackConditionSet, 
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_AntiKnockbackConditionSet,
             () => DataCenter.RightSet.AntiKnockbackConditionSet?.DrawMain(DataCenter.RightNowRotation) },
 
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_SpeedConditionSet,
@@ -788,7 +786,7 @@ public partial class RotationConfigWindow
                 },
             },
 
-        
+
         new DragFloatSearchJob(JobConfigFloat.HealthForDyingTanks, 0.02f)
             {
                 JobRoles = new JobRole[]
@@ -916,7 +914,7 @@ public partial class RotationConfigWindow
         foreach (var searchable in _targetHostileSelectSearchable)
         {
             searchable?.Draw(Job);
-        } 
+        }
         ImGui.Separator();
         foreach (var searchable in _targetMovingSearchable)
         {
@@ -1070,9 +1068,9 @@ public partial class RotationConfigWindow
             Action = ActionID.Improvisation
         }),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.UseStopCasting,new ISearchable[] 
+        new CheckBoxSearchPlugin(PluginConfigBool.UseStopCasting,new ISearchable[]
         {
-            new DragFloatRangeSearchPlugin(PluginConfigFloat.StopCastingDelayMin, PluginConfigFloat.StopCastingDelayMax, 0.002f) 
+            new DragFloatRangeSearchPlugin(PluginConfigFloat.StopCastingDelayMin, PluginConfigFloat.StopCastingDelayMax, 0.002f)
         }),
 
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOpenChest, new ISearchable[]

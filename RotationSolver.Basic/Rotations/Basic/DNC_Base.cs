@@ -17,7 +17,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] {Job.DNC };
+    public sealed override Job[] Jobs => new[] { Job.DNC };
 
     #region Job Gauge
     static DNCGauge JobGauge => Svc.Gauges.Get<DNCGauge>();
@@ -216,8 +216,8 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment) 
-    { 
+    public static IBaseAction Devilment { get; } = new BaseAction(ActionID.Devilment)
+    {
         ActionCheck = (b, m) => IsLongerThan(10)
     };
 
@@ -339,7 +339,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedEnAvant    { get; } = new BaseTrait(254);
+    public static IBaseTrait EnhancedEnAvant { get; } = new BaseTrait(254);
 
     /// <summary>
     /// 
@@ -349,32 +349,32 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedEnAvant2    { get; } = new BaseTrait(256);
+    public static IBaseTrait EnhancedEnAvant2 { get; } = new BaseTrait(256);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedTechnicalFinish    { get; } = new BaseTrait(453);
+    public static IBaseTrait EnhancedTechnicalFinish { get; } = new BaseTrait(453);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedEsprit    { get; } = new BaseTrait(454);
+    public static IBaseTrait EnhancedEsprit { get; } = new BaseTrait(454);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedFlourish    { get; } = new BaseTrait(455);
+    public static IBaseTrait EnhancedFlourish { get; } = new BaseTrait(455);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedShieldSamba    { get; } = new BaseTrait(456);
+    public static IBaseTrait EnhancedShieldSamba { get; } = new BaseTrait(456);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedDevilment    { get; } = new BaseTrait(457);
+    public static IBaseTrait EnhancedDevilment { get; } = new BaseTrait(457);
 
     #endregion
 

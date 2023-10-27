@@ -1,5 +1,4 @@
-﻿using ECommons.DalamudServices;
-using ECommons.GameHelpers;
+﻿using ECommons.GameHelpers;
 
 namespace RotationSolver.Basic.Configuration.Conditions;
 

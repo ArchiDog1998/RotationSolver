@@ -42,7 +42,7 @@ public interface ICustomRotation : ITexture
     /// <summary>
     /// Why this rotation is not valid.
     /// </summary>
-    string WhyNotValid { get;}
+    string WhyNotValid { get; }
 
     /// <summary>
     /// The class job about this rotation.

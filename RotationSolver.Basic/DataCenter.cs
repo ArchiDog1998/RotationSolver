@@ -27,7 +27,7 @@ internal static class DataCenter
             }
 
             var index = Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex);
-            if(index < 0 || index >= ConditionSets.Length)
+            if (index < 0 || index >= ConditionSets.Length)
             {
                 index = 0;
                 Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, index);
@@ -58,7 +58,7 @@ internal static class DataCenter
     internal static DateTime EffectEndTime { private get; set; } = DateTime.Now;
 
     internal const int ATTACKED_TARGETS_COUNT = 48;
-    internal static Queue<(ulong id, DateTime time)> AttackedTargets { get; } = new (ATTACKED_TARGETS_COUNT);
+    internal static Queue<(ulong id, DateTime time)> AttackedTargets { get; } = new(ATTACKED_TARGETS_COUNT);
 
     internal static bool InEffectTime => DateTime.Now >= EffectTime && DateTime.Now <= EffectEndTime;
     internal static Dictionary<ulong, uint> HealHP { get; set; } = new Dictionary<ulong, uint>();
@@ -141,7 +141,7 @@ internal static class DataCenter
                 Service.Config.Save();
             }
 
-            return Service.Config.GlobalConfig.TargetingTypes[Service.Config.GetValue(Configuration.PluginConfigInt.TargetingIndex) %Service.Config.GlobalConfig.TargetingTypes.Count];
+            return Service.Config.GlobalConfig.TargetingTypes[Service.Config.GetValue(Configuration.PluginConfigInt.TargetingIndex) % Service.Config.GlobalConfig.TargetingTypes.Count];
         }
     }
 
@@ -227,7 +227,7 @@ internal static class DataCenter
     public static bool IsSpeed => SpecialType == SpecialCommandType.Speed || RightSet.SpeedConditionSet.IsTrue(RightNowRotation);
 
     public static bool State { get; set; } = false;
-    
+
     public static bool IsManual { get; set; } = false;
 
     public static void SetSpecialType(SpecialCommandType specialType)
@@ -249,7 +249,7 @@ internal static class DataCenter
     public static IEnumerable<BattleChara> AllianceMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
 
     public static IEnumerable<BattleChara> AllianceTanks { get; internal set; } = Array.Empty<PlayerCharacter>();
-    
+
     public static ObjectListDelay<BattleChara> DeathPeopleAll { get; } = new(
     () => (Service.Config.GetValue(PluginConfigFloat.DeathDelayMin),
     Service.Config.GetValue(PluginConfigFloat.DeathDelayMax)));
@@ -296,7 +296,7 @@ internal static class DataCenter
 
     public static bool HasPet { get; internal set; }
 
-    public static unsafe bool HasCompanion => (IntPtr)Player.BattleChara != IntPtr.Zero 
+    public static unsafe bool HasCompanion => (IntPtr)Player.BattleChara != IntPtr.Zero
                                            && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Player.BattleChara) != IntPtr.Zero;
 
     public static float RatioOfMembersIn2minsBurst
@@ -313,8 +313,8 @@ internal static class DataCenter
                     {
                         if (member.Level >= burstInfo.Level)
                         {
-                            var tar = burstInfo.IsOnHostile 
-                                && Svc.Targets.Target is BattleChara b ? b 
+                            var tar = burstInfo.IsOnHostile
+                                && Svc.Targets.Target is BattleChara b ? b
                                 : Player.Object;
                             if (tar.HasStatus(false, burstInfo.Status)
                                 && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
@@ -400,7 +400,7 @@ internal static class DataCenter
     internal static unsafe void AddActionRec(Action act)
     {
         if (!Player.Available) return;
-            
+
         var id = (ActionID)act.RowId;
 
         //Record

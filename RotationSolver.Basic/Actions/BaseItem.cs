@@ -135,7 +135,7 @@ public class BaseItem : IBaseItem
     /// <param name="row"></param>
     /// <param name="a4"></param>
     public unsafe BaseItem(uint row, uint a4 = 65535)
-        :this (Service.GetSheet<Item>().GetRow(row), a4)
+        : this(Service.GetSheet<Item>().GetRow(row), a4)
     {
     }
 
@@ -164,14 +164,14 @@ public class BaseItem : IBaseItem
         if (_item == null) return false;
         if (!CanUseThis) return false;
         if (DataCenter.DisabledActionSequencer != null && DataCenter.DisabledActionSequencer.Contains(ID)) return false;
-        if(!IsEnabled) return false;
+        if (!IsEnabled) return false;
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))
             && ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID + 1000000))) return false;
 
         var remain = RecastTimeOneChargeRaw - RecastTimeElapsedRaw;
 
-        if(DataCenter.WeaponRemain > 0)
+        if (DataCenter.WeaponRemain > 0)
         {
             if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping) return false;
 

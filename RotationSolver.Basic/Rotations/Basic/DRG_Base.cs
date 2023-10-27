@@ -17,7 +17,7 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.DRG, Job.LNC };
+    public sealed override Job[] Jobs => new[] { Job.DRG, Job.LNC };
 
     #region Job Gauge
     static DRGGauge JobGauge => Svc.Gauges.Get<DRGGauge>();
@@ -219,8 +219,8 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge) 
-    { 
+    public static IBaseAction LanceCharge { get; } = new BaseAction(ActionID.LanceCharge)
+    {
         ActionCheck = (b, m) => IsLongerThan(10),
     };
 
@@ -240,12 +240,12 @@ public abstract class DRG_Base : CustomRotation
         },
         ActionCheck = (b, m) => IsLongerThan(10),
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, ActionOption.Buff) 
-    { 
+    public static IBaseAction BattleLitany { get; } = new BaseAction(ActionID.BattleLitany, ActionOption.Buff)
+    {
         ActionCheck = (b, m) => IsLongerThan(10),
     };
     #endregion
@@ -284,12 +284,12 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedCoerthanTorment    { get; } = new BaseTrait(435);
+    public static IBaseTrait EnhancedCoerthanTorment { get; } = new BaseTrait(435);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedSpineshatterDive    { get; } = new BaseTrait(436);
+    public static IBaseTrait EnhancedSpineshatterDive { get; } = new BaseTrait(436);
 
     /// <summary>
     /// 
@@ -299,12 +299,12 @@ public abstract class DRG_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedLifeSurge    { get; } = new BaseTrait(438);
+    public static IBaseTrait EnhancedLifeSurge { get; } = new BaseTrait(438);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait LanceMastery4    { get; } = new BaseTrait(508);
+    public static IBaseTrait LanceMastery4 { get; } = new BaseTrait(508);
 
     #endregion
     /// <summary>
@@ -332,7 +332,7 @@ public abstract class DRG_Base : CustomRotation
     [RotationDesc(ActionID.ElusiveJump)]
     protected override bool MoveBackAbility(out IAction act)
     {
-        if(ElusiveJump.CanUse(out act, CanUseOption.IgnoreClippingCheck)) return true;
+        if (ElusiveJump.CanUse(out act, CanUseOption.IgnoreClippingCheck)) return true;
         return base.MoveBackAbility(out act);
     }
 }

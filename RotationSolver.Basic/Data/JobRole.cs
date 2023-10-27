@@ -94,9 +94,9 @@ public static class JobRoleExtension
             case JobRole.Tank:
                 return new Job[] { Job.WAR, Job.PLD, Job.DRK, Job.GNB };
             case JobRole.Healer:
-                return new Job[] {Job.WHM, Job.SCH, Job.AST, Job.SGE };
+                return new Job[] { Job.WHM, Job.SCH, Job.AST, Job.SGE };
             case JobRole.Melee:
-                return new Job[] {Job.MNK, Job.DRG, Job.NIN, Job.SAM, Job.RPR };
+                return new Job[] { Job.MNK, Job.DRG, Job.NIN, Job.SAM, Job.RPR };
             case JobRole.RangedPhysical:
                 return new Job[] { Job.BRD, Job.MCH, Job.DNC };
             case JobRole.RangedMagical:

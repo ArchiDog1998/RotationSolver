@@ -49,20 +49,20 @@ internal class MajorConditionSet
     public Dictionary<PluginConfigBool, ConditionSet> ForceDisableConditions { get; private set; }
         = new();
 
-    public ConditionSet HealAreaConditionSet { get; set; } = new ();
-    public ConditionSet HealSingleConditionSet { get; set; } = new ();
-    public ConditionSet DefenseAreaConditionSet { get; set; } = new ();
-    public ConditionSet DefenseSingleConditionSet { get; set; } = new ();
-    public ConditionSet EsunaStanceNorthConditionSet { get; set; } = new ();
-    public ConditionSet RaiseShirkConditionSet { get; set; } = new ();
-    public ConditionSet MoveForwardConditionSet { get; set; } = new ();
-    public ConditionSet MoveBackConditionSet { get; set; } = new ();
-    public ConditionSet AntiKnockbackConditionSet { get; set; } = new ();
-    public ConditionSet SpeedConditionSet { get; set; } = new ();
+    public ConditionSet HealAreaConditionSet { get; set; } = new();
+    public ConditionSet HealSingleConditionSet { get; set; } = new();
+    public ConditionSet DefenseAreaConditionSet { get; set; } = new();
+    public ConditionSet DefenseSingleConditionSet { get; set; } = new();
+    public ConditionSet EsunaStanceNorthConditionSet { get; set; } = new();
+    public ConditionSet RaiseShirkConditionSet { get; set; } = new();
+    public ConditionSet MoveForwardConditionSet { get; set; } = new();
+    public ConditionSet MoveBackConditionSet { get; set; } = new();
+    public ConditionSet AntiKnockbackConditionSet { get; set; } = new();
+    public ConditionSet SpeedConditionSet { get; set; } = new();
 
-    public ConditionSet SwitchAutoConditionSet { get; set; } = new ();
-    public ConditionSet SwitchManualConditionSet { get; set; } = new ();
-    public ConditionSet SwitchCancelConditionSet { get; set; } = new ();
+    public ConditionSet SwitchAutoConditionSet { get; set; } = new();
+    public ConditionSet SwitchManualConditionSet { get; set; } = new();
+    public ConditionSet SwitchCancelConditionSet { get; set; } = new();
 
     public (string Name, ConditionSet Condition)[] NamedConditions { get; set; }
         = Array.Empty<(string, ConditionSet)>();

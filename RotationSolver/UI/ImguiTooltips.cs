@@ -25,7 +25,7 @@ internal static class ImguiTooltips
 
     public static void ShowTooltip(string text)
     {
-        if(string.IsNullOrEmpty(text)) return;
+        if (string.IsNullOrEmpty(text)) return;
         ShowTooltip(() => ImGui.Text(text));
     }
 

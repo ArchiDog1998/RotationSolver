@@ -22,7 +22,7 @@ internal class DragIntSearchJob : DragIntSearch
     protected override bool IsJob => true;
 
     public DragIntSearchJob(JobConfigInt config, float speed)
-        :base ((int)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
+        : base((int)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
     {
         _config = config;
     }
@@ -63,13 +63,13 @@ internal class DragIntSearchPlugin : DragIntSearch
     public override string Command => _config.ToCommand();
 
     public DragIntSearchPlugin(PluginConfigInt config, float speed)
-        :base((int)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
+        : base((int)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
     {
         _config = config;
     }
 
     public DragIntSearchPlugin(PluginConfigInt config, Func<string[]> getNames)
-        :base(getNames)
+        : base(getNames)
     {
         _config = config;
     }
@@ -111,7 +111,7 @@ internal abstract class DragIntSearch : Searchable
     {
         var value = GetValue(job);
 
-        if(GetNames != null && GetNames() is string[] strs && strs.Length > 0)
+        if (GetNames != null && GetNames() is string[] strs && strs.Length > 0)
         {
             ImGui.SetNextItemWidth(Math.Max(ImGui.CalcTextSize(strs[value % strs.Length]).X + 30, DRAG_WIDTH) * Scale);
             if (ImGui.Combo($"##Config_{ID}{GetHashCode()}", ref value, strs, strs.Length))
