@@ -8,6 +8,7 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Xml.Linq;
 using Action = System.Action;
 
 namespace RotationSolver.UI;
@@ -115,6 +116,11 @@ internal static class ConditionDrawer
 
     internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
     {
+        SearchItems(popId, name, ref searchTxt, actions, ImGuiHelper.GetMemberName, selectAction, LocalizationManager.RightLang.ConfigWindow_Actions_MemberName);
+    }
+
+    internal static void SearchItems<T>(string popId, string name, ref string searchTxt, T[] items, Func<T, string> getSearchName, Action<T> selectAction, string searchingHint)
+    {
         if (ImGuiHelper.SelectableButton(name + "##" + popId))
         {
             if (!ImGui.IsPopupOpen(popId)) ImGui.OpenPopup(popId);
@@ -123,15 +129,29 @@ internal static class ConditionDrawer
         using var popUp = ImRaii.Popup(popId);
         if (!popUp.Success) return;
 
+        if (items == null || items.Length == 0)
+        {
+            ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager.RightLang.ConfigWindow_Condition_NoItemsWarning);
+            return;
+        }
+
         var searchingKey = searchTxt;
 
-        var members = actions.Select(m => (m, m.GetMemberName()))
+        var members = items.Select(m => (m, getSearchName(m)))
             .OrderByDescending(s => RotationConfigWindow.Similarity(s.Item2, searchingKey));
 
         ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
-        ImGui.InputTextWithHint("##Searching the member", LocalizationManager.RightLang.ConfigWindow_Actions_MemberName, ref searchTxt, 128);
+        ImGui.InputTextWithHint("##Searching the member", searchingHint, ref searchTxt, 128);
 
         ImGui.Spacing();
+
+        ImRaii.IEndObject child = null;
+        if (members.Count() >= 15)
+        {
+            ImGui.SetNextWindowSizeConstraints(new Vector2(0, 300), new Vector2(500, 300));
+            child = ImRaii.Child(popId);
+            if (!child) return;
+        }
 
         foreach (var member in members)
         {
@@ -141,6 +161,7 @@ internal static class ConditionDrawer
                 ImGui.CloseCurrentPopup();
             }
         }
+        child?.Dispose();
     }
 
     public static float IconSizeRaw => ImGuiHelpers.GetButtonSize("H").Y;
@@ -258,7 +279,30 @@ internal static class ConditionDrawer
             case TargetCondition targetCondition:
                 targetCondition.DrawAfter(rotation);
                 break;
+
+            case NamedCondition namedCondition:
+                namedCondition.DrawAfter(rotation);
+
+                break;
         }
+    }
+
+    private static void DrawAfter(this NamedCondition namedCondition, ICustomRotation rotation)
+    {
+        SearchItems($"##Comparation{namedCondition.GetHashCode()}", namedCondition.ConditionName, ref searchTxt,
+            DataCenter.RightSet.NamedConditions.Select(p => p.Name).ToArray(), i => i.ToString(), i =>
+            {
+                namedCondition.ConditionName = i;
+
+            },LocalizationManager.RightLang.ConfigWindow_Condition_ConditionName);
+
+        ImGui.SameLine();
+
+        ImGuiHelper.SelectableCombo($"##IsOrNot{namedCondition.GetHashCode()}", new string[]
+        {
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
+        }, ref namedCondition.Condition);
     }
 
     private static void DrawAfter(this TraitCondition traitCondition, ICustomRotation rotation)
@@ -535,6 +579,7 @@ internal static class ConditionDrawer
                 AddOneCondition<TraitCondition>(LocalizationManager.RightLang.ActionSequencer_TraitCondition);
                 AddOneCondition<TargetCondition>(LocalizationManager.RightLang.ActionSequencer_TargetCondition);
                 AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
+                AddOneCondition<NamedCondition>(LocalizationManager.RightLang.ActionSequencer_NamedCondition);
             }
 
             void AddOneCondition<T>(string name) where T : ICondition

@@ -3,12 +3,15 @@ using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using RotationSolver.Basic;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
+using System.Linq;
 
 namespace RotationSolver.UI;
 
@@ -89,6 +92,7 @@ public partial class RotationConfigWindow
     {
         { () =>  LocalizationManager.RightLang.ConfigWindow_Basic_Timer, DrawBasicTimer },
         { () => LocalizationManager.RightLang.ConfigWindow_Basic_AutoSwitch, DrawBasicAutoSwitch },
+        { () => LocalizationManager.RightLang.ConfigWindow_Basic_NamedConditions, DrawBasicNamedConditions },
         { () => LocalizationManager.RightLang.ConfigWindow_Basic_Others, DrawBasicOthers },
     });
 
@@ -280,6 +284,56 @@ public partial class RotationConfigWindow
         }
 
         _autoSwitch?.Draw();
+    }
+
+    private static readonly Dictionary<int, bool> _isOpen = new();
+    private static void DrawBasicNamedConditions()
+    {
+        if (!DataCenter.RightSet.NamedConditions.Any(c => string.IsNullOrEmpty(c.Name)))
+        {
+            DataCenter.RightSet.NamedConditions = DataCenter.RightSet.NamedConditions.Append((string.Empty, new ConditionSet())).ToArray();
+        }
+
+        ImGui.Spacing();
+
+        int removeIndex = -1;
+        for (int i = 0; i < DataCenter.RightSet.NamedConditions.Length; i++)
+        {
+            var value = _isOpen.TryGetValue(i, out var open) && open;
+
+            var toggle = value ? FontAwesomeIcon.ArrowUp : FontAwesomeIcon.ArrowDown;
+            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X
+                - ImGuiEx.CalcIconSize(toggle).X - ImGui.GetStyle().ItemSpacing.X * 2 - 20 * Scale;
+
+            ImGui.SetNextItemWidth(width);
+            ImGui.InputTextWithHint($"##Rotation Solver Named Condition{i}", LocalizationManager.RightLang.ConfigWindow_Condition_ConditionName,
+                ref DataCenter.RightSet.NamedConditions[i].Name, 1024);
+
+            ImGui.SameLine();
+
+            if (ImGuiEx.IconButton(toggle, $"##Rotation Solver Toggle Named Condition{i}"))
+            {
+                _isOpen[i] = value = !value;
+            }
+
+            ImGui.SameLine();
+
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Named Condition{i}"))
+            {
+                removeIndex = i;
+            }
+
+            if (value)
+            {
+                DataCenter.RightSet.NamedConditions[i].Condition?.DrawMain(DataCenter.RightNowRotation);
+            }
+        }
+        if (removeIndex > -1)
+        {
+            var list = DataCenter.RightSet.NamedConditions.ToList();
+            list.RemoveAt(removeIndex);
+            DataCenter.RightSet.NamedConditions = list.ToArray();
+        }
     }
 
     private static void DrawBasicOthers()

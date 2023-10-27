@@ -26,6 +26,10 @@ internal class IConditionConverter : JsonCreationConverter<ICondition>
         {
             return new TraitCondition();
         }
+        else if (FieldExists(nameof(NamedCondition.ConditionName), jObject))
+        {
+            return new NamedCondition();
+        }
         else
         {
             return null;

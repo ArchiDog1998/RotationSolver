@@ -307,6 +307,7 @@ internal class Strings
     public string ActionSequencer_ActionCondition { get; set; } = "Action Condition";
     public string ActionSequencer_TargetCondition { get; set; } = "Target Condition";
     public string ActionSequencer_RotationCondition { get; set; } = "Rotation Condition";
+    public string ActionSequencer_NamedCondition { get; set; } = "Named Condition";
     public string ActionSequencer_TraitCondition { get; set; } = "Trait Condition";
     public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
     public string ActionSequencer_Target { get; set; } = "Target";
@@ -687,6 +688,7 @@ internal class Strings
     public string ConfigWindow_List_NoProvokeName { get; set; } = "The name of the enemy that you don't want to be provoked";
 
     public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
+    public string ConfigWindow_Basic_NamedConditions { get; set; } = "Named Conditions";
     public string ConfigWindow_Basic_Others { get; set; } = "Others";
 
     public string ConfigWindow_Basic_Timer { get; set; } = "Timer";
@@ -792,4 +794,8 @@ internal class Strings
     public string ConfigWindow_Basic_SwitchAutoConditionSet { get; set; } = "Auto turn auto conditions";
 
     public string ConfigWindow_Condition_RotationNullWarning { get; set; } = "Rotation is null, please login or switch the job!";
+
+    public string ConfigWindow_Condition_NoItemsWarning { get; set; } = "There are no items!";
+
+    public string ConfigWindow_Condition_ConditionName { get; set; } = "Condition Name";
 }

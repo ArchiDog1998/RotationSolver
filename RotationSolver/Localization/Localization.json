@@ -211,6 +211,7 @@
   "ActionSequencer_ActionCondition": "Action Condition",
   "ActionSequencer_TargetCondition": "Target Condition",
   "ActionSequencer_RotationCondition": "Rotation Condition",
+  "ActionSequencer_NamedCondition": "Named Condition",
   "ActionSequencer_TraitCondition": "Trait Condition",
   "ActionSequencer_ActionTarget": "{0}'s target",
   "ActionSequencer_Target": "Target",
@@ -479,6 +480,7 @@
   "ConfigWindow_List_NoHostilesName": "The name of the enemy that you don't want to be targeted",
   "ConfigWindow_List_NoProvokeName": "The name of the enemy that you don't want to be provoked",
   "ConfigWindow_Basic_AutoSwitch": "Auto Switch",
+  "ConfigWindow_Basic_NamedConditions": "Named Conditions",
   "ConfigWindow_Basic_Others": "Others",
   "ConfigWindow_Basic_Timer": "Timer",
   "ConfigWindow_UI_Windows": "Windows",
@@ -568,5 +570,7 @@
   "ConfigWindow_Basic_SwitchCancelConditionSet": "Auto turn off conditions",
   "ConfigWindow_Basic_SwitchManualConditionSet": "Auto turn manual conditions",
   "ConfigWindow_Basic_SwitchAutoConditionSet": "Auto turn auto conditions",
-  "ConfigWindow_Condition_RotationNullWarning": "Rotation is null, please login or switch the job!"
+  "ConfigWindow_Condition_RotationNullWarning": "Rotation is null, please login or switch the job!",
+  "ConfigWindow_Condition_NoItemsWarning": "There are no items!",
+  "ConfigWindow_Condition_ConditionName": "Condition Name"
 }
