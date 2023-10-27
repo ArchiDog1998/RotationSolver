@@ -211,6 +211,7 @@
   "ActionSequencer_ActionCondition": "技能使用条件",
   "ActionSequencer_TargetCondition": "目标选择条件",
   "ActionSequencer_RotationCondition": "循环配置",
+  "ActionSequencer_NamedCondition": "Named Condition",
   "ActionSequencer_TraitCondition": "特性配置",
   "ActionSequencer_ActionTarget": "{0} 的目标",
   "ActionSequencer_Target": "目标",
@@ -270,6 +271,7 @@
   "TargetConditionType_CastingActionTimeUntil": "读条技能时间直到",
   "TargetConditionType_HP": "HP",
   "TargetConditionType_MP": "MP",
+  "TargetConditionType_TargetName": "Target Name",
   "DescType_BurstActions": "爆发技能",
   "DescType_MoveForwardGCD": "GCD突进",
   "DescType_HealAreaGCD": "GCD群体治疗",
@@ -478,6 +480,7 @@
   "ConfigWindow_List_NoHostilesName": "The name of the enemy that you don't want to be targeted",
   "ConfigWindow_List_NoProvokeName": "The name of the enemy that you don't want to be provoked",
   "ConfigWindow_Basic_AutoSwitch": "自动开关",
+  "ConfigWindow_Basic_NamedConditions": "Named Conditions",
   "ConfigWindow_Basic_Others": "Others",
   "ConfigWindow_Basic_Timer": "时间相关",
   "ConfigWindow_UI_Windows": "窗口",
@@ -566,5 +569,8 @@
   "ConfigWindow_Basic_UseAdditionalConditions": "Use additional conditions",
   "ConfigWindow_Basic_SwitchCancelConditionSet": "Auto turn off conditions",
   "ConfigWindow_Basic_SwitchManualConditionSet": "Auto turn manual conditions",
-  "ConfigWindow_Basic_SwitchAutoConditionSet": "Auto turn auto conditions"
+  "ConfigWindow_Basic_SwitchAutoConditionSet": "Auto turn auto conditions",
+  "ConfigWindow_Condition_RotationNullWarning": "Rotation is null, please login or switch the job!",
+  "ConfigWindow_Condition_NoItemsWarning": "There are no items!",
+  "ConfigWindow_Condition_ConditionName": "Condition Name"
 }
