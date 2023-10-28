@@ -211,6 +211,7 @@
   "ActionSequencer_ActionCondition": "Condition d'action",
   "ActionSequencer_TargetCondition": "Condition de la cible",
   "ActionSequencer_RotationCondition": "Conditions de rotation",
+  "ActionSequencer_NamedCondition": "Named Condition",
   "ActionSequencer_TraitCondition": "Condition de Caractéristique",
   "ActionSequencer_ActionTarget": "{0} cible",
   "ActionSequencer_Target": "Cible",
@@ -270,6 +271,7 @@
   "TargetConditionType_CastingActionTimeUntil": "Casting Action Time Until",
   "TargetConditionType_HP": "HP",
   "TargetConditionType_MP": "MP",
+  "TargetConditionType_TargetName": "Target Name",
   "DescType_BurstActions": "Burst Actions",
   "DescType_MoveForwardGCD": "Move Forward GCD",
   "DescType_HealAreaGCD": "Area Healing GCD",
@@ -385,6 +387,7 @@
     "WhiteMana": "White Mana",
     "BlackMana": "Black Mana",
     "ManaStacks": "Mana Stacks",
+    "IsWhiteManaLargerThanBlackMana": "Is White Mana Larger Than Black Mana",
     "HasEnshrouded": "Has Enshrouded",
     "HasSoulReaver": "Has Soul Reaver",
     "Soul": "Soul",
@@ -477,6 +480,7 @@
   "ConfigWindow_List_NoHostilesName": "The name of the enemy that you don't want to be targeted",
   "ConfigWindow_List_NoProvokeName": "The name of the enemy that you don't want to be provoked",
   "ConfigWindow_Basic_AutoSwitch": "Auto Switch",
+  "ConfigWindow_Basic_NamedConditions": "Named Conditions",
   "ConfigWindow_Basic_Others": "Others",
   "ConfigWindow_Basic_Timer": "Timer",
   "ConfigWindow_UI_Windows": "Windows",
@@ -565,5 +569,8 @@
   "ConfigWindow_Basic_UseAdditionalConditions": "Use additional conditions",
   "ConfigWindow_Basic_SwitchCancelConditionSet": "Auto turn off conditions",
   "ConfigWindow_Basic_SwitchManualConditionSet": "Auto turn manual conditions",
-  "ConfigWindow_Basic_SwitchAutoConditionSet": "Auto turn auto conditions"
+  "ConfigWindow_Basic_SwitchAutoConditionSet": "Auto turn auto conditions",
+  "ConfigWindow_Condition_RotationNullWarning": "Rotation is null, please login or switch the job!",
+  "ConfigWindow_Condition_NoItemsWarning": "There are no items!",
+  "ConfigWindow_Condition_ConditionName": "Condition Name"
 }
