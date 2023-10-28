@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.4.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.4...v3.4.5) (2023-10-28)
+
+
+### Bug Fixes
+
+* add condition target name. ([54099e0](https://github.com/ArchiDog1998/RotationSolver/commit/54099e090f686404ce9fb3da2c42f5d561c5e6b3))
+* add named conditions. ([3619f2d](https://github.com/ArchiDog1998/RotationSolver/commit/3619f2da787bb0c798bb940ab3415c35ea0c8857))
+* fixed recursion in condition set. ([a8e3246](https://github.com/ArchiDog1998/RotationSolver/commit/a8e3246b355c25864700f64da2b05508fb7721ad))
+
 ## [3.4.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.3...v3.4.4) (2023-10-26)
 
 
