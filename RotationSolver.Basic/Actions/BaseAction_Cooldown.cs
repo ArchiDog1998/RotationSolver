@@ -53,7 +53,7 @@ public partial class BaseAction
     /// </summary>
     /// <param name="remain"></param>
     /// <returns></returns>
-    public bool WillHaveOneCharge(float remain) 
+    public bool WillHaveOneCharge(float remain)
         => HasOneCharge || RecastTimeRemainOneCharge <= remain;
 
     unsafe RecastDetail* CoolDownDetail => ActionManager.Instance()->GetRecastGroupDetail(CoolDownGroup - 1);

@@ -30,7 +30,7 @@ internal class Service : IDisposable
             {
                 ForceDisableMovement++;
             }
-            else if(ForceDisableMovement > 0)
+            else if (ForceDisableMovement > 0)
             {
                 ForceDisableMovement--;
             }
@@ -52,7 +52,7 @@ internal class Service : IDisposable
 
     public unsafe static IEnumerable<IntPtr> GetAddons<T>() where T : struct
     {
-        if(typeof(T).GetCustomAttribute<Addon>() is not Addon on) return Array.Empty<nint>();
+        if (typeof(T).GetCustomAttribute<Addon>() is not Addon on) return Array.Empty<nint>();
 
         return on.AddonIdentifiers
             .Select(str => Svc.GameGui.GetAddonByName(str, 1))

@@ -1,5 +1,4 @@
-﻿using Dalamud.Logging;
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
@@ -905,7 +904,7 @@ public abstract class BLU_Base : CustomRotation
     public static IBLUAction BasicInstinct { get; } = new BLUAction(ActionID.BasicInstinct)
     {
         StatusProvide = new StatusID[] { StatusID.BasicInstinct },
-        ActionCheck = (b, m) =>  Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56] && DataCenter.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1,
+        ActionCheck = (b, m) => Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BoundByDuty56] && DataCenter.PartyMembers.Count(p => p.GetHealthRatio() > 0) == 1,
     };
 
     static IBaseAction AethericMimicry { get; } = new BaseAction(ActionID.AethericMimicry, ActionOption.Friendly)

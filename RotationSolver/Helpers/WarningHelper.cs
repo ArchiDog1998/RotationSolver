@@ -17,7 +17,7 @@ public static class WarningHelper
               RawPayload.LinkTerminator,
               new TextPayload(": "));
 
-    public static SeString Close_String => new SeString(new IconPayload(BitmapFontIcon.DoNotDisturb),                 RotationSolverPlugin.HideWarningLinkPayload,
+    public static SeString Close_String => new SeString(new IconPayload(BitmapFontIcon.DoNotDisturb), RotationSolverPlugin.HideWarningLinkPayload,
               new UIForegroundPayload(2),
               new TextPayload("(Hide Warning)"),
               UIForegroundPayload.UIForegroundOff,

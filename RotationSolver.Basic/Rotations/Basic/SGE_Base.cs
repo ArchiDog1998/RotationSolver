@@ -17,7 +17,7 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.SGE };
+    public sealed override Job[] Jobs => new[] { Job.SGE };
 
     #region Job Gauge
     static SGEGauge JobGauge => Svc.Gauges.Get<SGEGauge>();
@@ -302,42 +302,42 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MaimAndMend    { get; } = new BaseTrait(368);
+    public static IBaseTrait MaimAndMend { get; } = new BaseTrait(368);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MaimAndMend2    { get; } = new BaseTrait(369);
+    public static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(369);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait AddersgallTrait    { get; } = new BaseTrait(370);
+    public static IBaseTrait AddersgallTrait { get; } = new BaseTrait(370);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait SomanouticOath    { get; } = new BaseTrait(371);
+    public static IBaseTrait SomanouticOath { get; } = new BaseTrait(371);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait SomanouticOath2    { get; } = new BaseTrait(372);
+    public static IBaseTrait SomanouticOath2 { get; } = new BaseTrait(372);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait AdderstingTrait    { get; } = new BaseTrait(373);
+    public static IBaseTrait AdderstingTrait { get; } = new BaseTrait(373);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait OffensiveMagicMastery    { get; } = new BaseTrait(374);
+    public static IBaseTrait OffensiveMagicMastery { get; } = new BaseTrait(374);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedKerachole    { get; } = new BaseTrait(375);
+    public static IBaseTrait EnhancedKerachole { get; } = new BaseTrait(375);
 
     /// <summary>
     /// 
@@ -347,16 +347,16 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedHealingMagic    { get; } = new BaseTrait(377);
+    public static IBaseTrait EnhancedHealingMagic { get; } = new BaseTrait(377);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedZoe    { get; } = new BaseTrait(378);
+    public static IBaseTrait EnhancedZoe { get; } = new BaseTrait(378);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait PhysisMastery    { get; } = new BaseTrait(510);
+    public static IBaseTrait PhysisMastery { get; } = new BaseTrait(510);
     #endregion
 }

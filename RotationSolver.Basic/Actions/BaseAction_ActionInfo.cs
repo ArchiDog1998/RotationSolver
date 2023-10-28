@@ -8,7 +8,7 @@ namespace RotationSolver.Basic.Actions;
 public partial class BaseAction
 {
     /// <summary>
-    /// The user seted heal ratio.
+    /// The user set heal ratio.
     /// </summary>
     public float AutoHealRatio
     {
@@ -111,7 +111,7 @@ public partial class BaseAction
         }
 
         if (IsFriendly && DataCenter.AverageTimeToKill < TimeToKill) return false;
-        
+
         if (DataCenter.DisabledActionSequencer != null && DataCenter.DisabledActionSequencer.Contains(ID)) return false;
 
         if (!Service.Config.GetValue(PluginConfigBool.UseResourcesAction) && _option.HasFlag(ActionOption.UseResources)) return false;
@@ -148,7 +148,7 @@ public partial class BaseAction
             }
         }
 
-        if(!IsRealGCD)
+        if (!IsRealGCD)
         {
             if (option.HasFlag(CanUseOption.OnLastAbility))
             {
@@ -220,7 +220,7 @@ public partial class BaseAction
 
             return ActionManager.Instance()->UseActionLocation(ActionType.Action, ID, Player.Object.ObjectId, &loc);
         }
-        else if(Svc.Objects.SearchById(_targetId) == null)
+        else if (Svc.Objects.SearchById(_targetId) == null)
         {
             return false;
         }

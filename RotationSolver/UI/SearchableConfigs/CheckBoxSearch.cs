@@ -112,9 +112,9 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
     public override bool AlwaysShowChildren => Service.Config.GetValue(PluginConfigBool.UseAdditionalConditions);
 
     public CheckBoxSearchPlugin(PluginConfigBool config, params ISearchable[] children)
-        :base(config == PluginConfigBool.UseAdditionalConditions ? children
-            :new ISearchable[] 
-        { 
+        : base(config == PluginConfigBool.UseAdditionalConditions ? children
+            : new ISearchable[]
+        {
             new CheckBoxEnable(config), new CheckBoxDisable(config),
         }.Concat(children).ToArray())
     {
@@ -210,7 +210,7 @@ internal abstract class CheckBoxSearch : Searchable
         ImGui.SameLine();
 
         var name = $"{Name}##Config_{ID}{GetHashCode()}";
-        if(hasIcon)
+        if (hasIcon)
         {
             ImGui.BeginGroup();
             var cursor = ImGui.GetCursorPos();

@@ -17,7 +17,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.MNK, Job.PGL };
+    public sealed override Job[] Jobs => new[] { Job.MNK, Job.PGL };
 
     #region Job Gauge
     static MNKGauge JobGauge => Svc.Gauges.Get<MNKGauge>();
@@ -156,9 +156,9 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Mantra { get; } = new BaseAction(ActionID.Mantra, ActionOption.Heal) 
-    { 
-        ActionCheck = (b, m) => IsLongerThan(10), 
+    public static IBaseAction Mantra { get; } = new BaseAction(ActionID.Mantra, ActionOption.Heal)
+    {
+        ActionCheck = (b, m) => IsLongerThan(10),
     };
 
     /// <summary>
@@ -201,7 +201,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Brotherhood { get; } = new BaseAction(ActionID.Brotherhood, ActionOption.Buff) 
+    public static IBaseAction Brotherhood { get; } = new BaseAction(ActionID.Brotherhood, ActionOption.Buff)
     {
         ActionCheck = (b, m) => IsLongerThan(10)
     };
@@ -234,62 +234,62 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedGreasedLightning    { get; } = new BaseTrait(365);
+    public static IBaseTrait EnhancedGreasedLightning { get; } = new BaseTrait(365);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedGreasedLightning2    { get; } = new BaseTrait(366);
+    public static IBaseTrait EnhancedGreasedLightning2 { get; } = new BaseTrait(366);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedGreasedLightning3    { get; } = new BaseTrait(367);
+    public static IBaseTrait EnhancedGreasedLightning3 { get; } = new BaseTrait(367);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait SteelPeakMastery    { get; } = new BaseTrait(428);
+    public static IBaseTrait SteelPeakMastery { get; } = new BaseTrait(428);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait HowlingFistMastery    { get; } = new BaseTrait(429);
+    public static IBaseTrait HowlingFistMastery { get; } = new BaseTrait(429);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait ArmOfTheDestroyerMastery    { get; } = new BaseTrait(430);
+    public static IBaseTrait ArmOfTheDestroyerMastery { get; } = new BaseTrait(430);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedThunderclap    { get; } = new BaseTrait(431);
+    public static IBaseTrait EnhancedThunderclap { get; } = new BaseTrait(431);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedBrotherhood    { get; } = new BaseTrait(432);
+    public static IBaseTrait EnhancedBrotherhood { get; } = new BaseTrait(432);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedPerfectBalance    { get; } = new BaseTrait(433);
+    public static IBaseTrait EnhancedPerfectBalance { get; } = new BaseTrait(433);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait FlintStrikeMastery    { get; } = new BaseTrait(512);
+    public static IBaseTrait FlintStrikeMastery { get; } = new BaseTrait(512);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait TornadoKickMastery    { get; } = new BaseTrait(513);
+    public static IBaseTrait TornadoKickMastery { get; } = new BaseTrait(513);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MeleeMastery    { get; } = new BaseTrait(518);
+    public static IBaseTrait MeleeMastery { get; } = new BaseTrait(518);
     #endregion
 
     /// <summary>

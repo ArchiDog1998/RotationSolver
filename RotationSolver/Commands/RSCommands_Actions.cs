@@ -26,7 +26,7 @@ namespace RotationSolver.Commands
 
             //Do not click the button in random time.
             if (DateTime.Now - _lastClickTime < TimeSpan.FromMilliseconds(new Random().Next(
-                (int)(Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin) * 1000), (int)(Service.Config.GetValue(PluginConfigFloat.ClickingDelayMax) * 1000)))) return  false;
+                (int)(Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin) * 1000), (int)(Service.Config.GetValue(PluginConfigFloat.ClickingDelayMax) * 1000)))) return false;
             _lastClickTime = DateTime.Now;
 
             if (!isGCD && ActionUpdater.NextAction is IBaseAction act1 && act1.IsRealGCD) return false;
@@ -97,7 +97,7 @@ namespace RotationSolver.Commands
                     Service.Config.GetValue(PluginConfigInt.KeyBoardNoiseMax)); i++)
                 {
                     PreviewUpdater.PulseActionBar(id);
-                    var time = Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin) + 
+                    var time = Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin) +
                         new Random().NextDouble() * (Service.Config.GetValue(PluginConfigFloat.ClickingDelayMax) - Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin));
                     await Task.Delay((int)(time * 1000));
                 }
@@ -122,7 +122,7 @@ namespace RotationSolver.Commands
         static float _lastCountdownTime = 0;
         internal static void UpdateRotationState()
         {
-            if(ActionUpdater.AutoCancelTime != DateTime.MinValue && 
+            if (ActionUpdater.AutoCancelTime != DateTime.MinValue &&
                 (!DataCenter.State || DataCenter.InCombat))
             {
                 ActionUpdater.AutoCancelTime = DateTime.MinValue;
@@ -145,7 +145,7 @@ namespace RotationSolver.Commands
             {
                 CancelState();
             }
-            else if (Service.Config.GetValue(PluginConfigBool.AutoOffBetweenArea) 
+            else if (Service.Config.GetValue(PluginConfigBool.AutoOffBetweenArea)
                 && (Svc.Condition[ConditionFlag.BetweenAreas]
                 || Svc.Condition[ConditionFlag.BetweenAreas51]))
             {
@@ -162,7 +162,7 @@ namespace RotationSolver.Commands
                 && target != null
                 && !target.IsDummy())
             {
-                if(!DataCenter.State)
+                if (!DataCenter.State)
                 {
                     DoStateCommandType(StateCommandType.Manual);
                 }

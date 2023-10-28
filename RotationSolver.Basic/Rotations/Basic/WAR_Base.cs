@@ -17,7 +17,7 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.WAR, Job.MRD };
+    public sealed override Job[] Jobs => new[] { Job.WAR, Job.MRD };
 
     static WARGauge JobGauge => Svc.Gauges.Get<WARGauge>();
 
@@ -218,67 +218,67 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait TheBeastWithin    { get; } = new BaseTrait(249);
+    public static IBaseTrait TheBeastWithin { get; } = new BaseTrait(249);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait InnerBeastMastery    { get; } = new BaseTrait(265);
+    public static IBaseTrait InnerBeastMastery { get; } = new BaseTrait(265);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait SteelCycloneMastery    { get; } = new BaseTrait(266);
+    public static IBaseTrait SteelCycloneMastery { get; } = new BaseTrait(266);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait NascentChaos    { get; } = new BaseTrait(267);
+    public static IBaseTrait NascentChaos { get; } = new BaseTrait(267);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MasteringTheBeast    { get; } = new BaseTrait(268);
+    public static IBaseTrait MasteringTheBeast { get; } = new BaseTrait(268);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedThrillOfBattle    { get; } = new BaseTrait(269);
+    public static IBaseTrait EnhancedThrillOfBattle { get; } = new BaseTrait(269);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait TankMastery    { get; } = new BaseTrait(318);
+    public static IBaseTrait TankMastery { get; } = new BaseTrait(318);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedShakeItOff    { get; } = new BaseTrait(417);
+    public static IBaseTrait EnhancedShakeItOff { get; } = new BaseTrait(417);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait RawIntuitionMastery    { get; } = new BaseTrait(418);
+    public static IBaseTrait RawIntuitionMastery { get; } = new BaseTrait(418);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedNascentFlash    { get; } = new BaseTrait(419);
+    public static IBaseTrait EnhancedNascentFlash { get; } = new BaseTrait(419);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedEquilibrium    { get; } = new BaseTrait(420);
+    public static IBaseTrait EnhancedEquilibrium { get; } = new BaseTrait(420);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedOnslaught    { get; } = new BaseTrait(421);
+    public static IBaseTrait EnhancedOnslaught { get; } = new BaseTrait(421);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MeleeMastery    { get; } = new BaseTrait(505);
+    public static IBaseTrait MeleeMastery { get; } = new BaseTrait(505);
     #endregion
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member

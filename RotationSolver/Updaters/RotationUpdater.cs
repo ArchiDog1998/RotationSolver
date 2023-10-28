@@ -1,12 +1,10 @@
-﻿using Dalamud.Logging;
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using System.Text;
 
 namespace RotationSolver.Updaters;
 
@@ -223,7 +221,7 @@ internal static class RotationUpdater
         var username = split[0];
         var repo = split[1];
         var file = split.Last();
-        if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(repo) || string.IsNullOrEmpty(file)) return value;
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(repo) || string.IsNullOrEmpty(file)) return value;
         return $"https://GitHub.com/{username}/{repo}/releases/latest/download/{file}.dll";
     }
 
@@ -347,7 +345,7 @@ internal static class RotationUpdater
         {
             return assembly.GetTypes();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Warning(ex, $"Failed to load the types from {assembly.FullName}");
             return Array.Empty<Type>();
@@ -360,10 +358,10 @@ internal static class RotationUpdater
         {
             return (ICustomRotation)Activator.CreateInstance(t);
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             Svc.Log.Error(ex, $"Failed to load the rotation: {t.Name}");
-            return null; 
+            return null;
         }
     }
 
@@ -460,7 +458,7 @@ internal static class RotationUpdater
     internal static ICustomRotation GetChosenRotation(CustomRotationGroup group)
     {
         var name = Service.Config.GetJobConfig(group.JobId).RotationChoice;
-       
+
         var rotation = group.Rotations.FirstOrDefault(r => r.GetType().FullName == name);
         rotation ??= group.Rotations.FirstOrDefault(r => r.GetType().Assembly.FullName.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
 

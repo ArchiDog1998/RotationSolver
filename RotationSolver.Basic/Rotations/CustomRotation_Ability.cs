@@ -9,13 +9,13 @@ public abstract partial class CustomRotation
         act = DataCenter.CommandNextAction;
 
         BaseAction.SkipDisable = true;
-        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,  
+        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,
             CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
         BaseAction.SkipDisable = false;
 
         if (act is IBaseItem i && i.CanUse(out _, true)) return true;
 
-        if (!Service.Config.GetValue(PluginConfigBool.UseAbility) 
+        if (!Service.Config.GetValue(PluginConfigBool.UseAbility)
             || Player.TotalCastTime > 0)
         {
             act = null;
@@ -58,7 +58,7 @@ public abstract partial class CustomRotation
         if (GeneralAbility(out act)) return true;
 
         //Run!
-        if (IsMoving && NotInCombatDelay && Service.Config.GetValue(PluginConfigBool.AutoSpeedOutOfCombat) 
+        if (IsMoving && NotInCombatDelay && Service.Config.GetValue(PluginConfigBool.AutoSpeedOutOfCombat)
             && SpeedAbility(out act)) return true;
 
         return false;
@@ -210,7 +210,7 @@ public abstract partial class CustomRotation
             var attacked = (float)attackedCount / tarOnMeCount > 0.7f;
 
             //A lot targets are targeting on me.
-            if (tarOnMeCount >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber) 
+            if (tarOnMeCount >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber)
                 && Player.GetHealthRatio() <= Service.Config.GetValue(DataCenter.Job, JobConfigFloat.HealthForAutoDefense)
                 && movingHere && attacked)
             {

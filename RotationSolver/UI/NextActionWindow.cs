@@ -42,7 +42,7 @@ internal class NextActionWindow : Window
 
     public override void Draw()
     {
-        var width = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize) 
+        var width = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize)
             * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
         DrawGcdCooldown(width, false);
         ControlWindow.DrawIAction(ActionUpdater.NextAction, width, 1);
@@ -67,7 +67,7 @@ internal class NextActionWindow : Window
         ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);
 
         var actionRemain = DataCenter.ActionRemain;
-        if(remain > actionRemain + 0.6f + DataCenter.Ping)
+        if (remain > actionRemain + 0.6f + DataCenter.Ping)
         {
             var value = total - remain + actionRemain;
 

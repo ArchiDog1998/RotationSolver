@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
@@ -114,6 +115,11 @@ internal static class ConditionDrawer
 
     internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
     {
+        SearchItems(popId, name, ref searchTxt, actions, ImGuiHelper.GetMemberName, selectAction, LocalizationManager.RightLang.ConfigWindow_Actions_MemberName);
+    }
+
+    internal static void SearchItems<T>(string popId, string name, ref string searchTxt, T[] items, Func<T, string> getSearchName, Action<T> selectAction, string searchingHint)
+    {
         if (ImGuiHelper.SelectableButton(name + "##" + popId))
         {
             if (!ImGui.IsPopupOpen(popId)) ImGui.OpenPopup(popId);
@@ -122,15 +128,29 @@ internal static class ConditionDrawer
         using var popUp = ImRaii.Popup(popId);
         if (!popUp.Success) return;
 
+        if (items == null || items.Length == 0)
+        {
+            ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager.RightLang.ConfigWindow_Condition_NoItemsWarning);
+            return;
+        }
+
         var searchingKey = searchTxt;
 
-        var members = actions.Select(m => (m, m.GetMemberName()))
+        var members = items.Select(m => (m, getSearchName(m)))
             .OrderByDescending(s => RotationConfigWindow.Similarity(s.Item2, searchingKey));
 
         ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
-        ImGui.InputTextWithHint("##Searching the member", LocalizationManager.RightLang.ConfigWindow_Actions_MemberName, ref searchTxt, 128);
+        ImGui.InputTextWithHint("##Searching the member", searchingHint, ref searchTxt, 128);
 
         ImGui.Spacing();
+
+        ImRaii.IEndObject child = null;
+        if (members.Count() >= 15)
+        {
+            ImGui.SetNextWindowSizeConstraints(new Vector2(0, 300), new Vector2(500, 300));
+            child = ImRaii.Child(popId);
+            if (!child) return;
+        }
 
         foreach (var member in members)
         {
@@ -140,6 +160,7 @@ internal static class ConditionDrawer
                 ImGui.CloseCurrentPopup();
             }
         }
+        child?.Dispose();
     }
 
     public static float IconSizeRaw => ImGuiHelpers.GetButtonSize("H").Y;
@@ -196,6 +217,12 @@ internal static class ConditionDrawer
     #region Draw
     public static void Draw(this ICondition condition, ICustomRotation rotation)
     {
+        if (rotation == null)
+        {
+            ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager.RightLang.ConfigWindow_Condition_RotationNullWarning);
+            return;
+        }
+
         condition.CheckBefore(rotation);
 
         condition.DrawBefore();
@@ -251,7 +278,30 @@ internal static class ConditionDrawer
             case TargetCondition targetCondition:
                 targetCondition.DrawAfter(rotation);
                 break;
+
+            case NamedCondition namedCondition:
+                namedCondition.DrawAfter(rotation);
+
+                break;
         }
+    }
+
+    private static void DrawAfter(this NamedCondition namedCondition, ICustomRotation rotation)
+    {
+        SearchItems($"##Comparation{namedCondition.GetHashCode()}", namedCondition.ConditionName, ref searchTxt,
+            DataCenter.RightSet.NamedConditions.Select(p => p.Name).ToArray(), i => i.ToString(), i =>
+            {
+                namedCondition.ConditionName = i;
+
+            }, LocalizationManager.RightLang.ConfigWindow_Condition_ConditionName);
+
+        ImGui.SameLine();
+
+        ImGuiHelper.SelectableCombo($"##IsOrNot{namedCondition.GetHashCode()}", new string[]
+        {
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
+        }, ref namedCondition.Condition);
     }
 
     private static void DrawAfter(this TraitCondition traitCondition, ICustomRotation rotation)
@@ -485,7 +535,7 @@ internal static class ConditionDrawer
                 conditionSet.Conditions.RemoveAt(i);
                 conditionSet.Conditions.Insert(Math.Max(0, i - 1), condition);
             };
-            
+
             void Down()
             {
                 conditionSet.Conditions.RemoveAt(i);
@@ -528,6 +578,7 @@ internal static class ConditionDrawer
                 AddOneCondition<TraitCondition>(LocalizationManager.RightLang.ActionSequencer_TraitCondition);
                 AddOneCondition<TargetCondition>(LocalizationManager.RightLang.ActionSequencer_TargetCondition);
                 AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
+                AddOneCondition<NamedCondition>(LocalizationManager.RightLang.ActionSequencer_NamedCondition);
             }
 
             void AddOneCondition<T>(string name) where T : ICondition
@@ -719,6 +770,7 @@ internal static class ConditionDrawer
             case TargetConditionType.IsBoss:
             case TargetConditionType.InCombat:
             case TargetConditionType.CastingAction:
+            case TargetConditionType.TargetName:
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_Is,
@@ -833,7 +885,7 @@ internal static class ConditionDrawer
             case TargetConditionType.CastingAction:
                 ImGui.SameLine();
                 ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
-                ImGui.InputText($"Ability name##CastingActionName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
+                ImGui.InputText($"Ability Name##CastingActionName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
                 break;
 
             case TargetConditionType.CastingActionTimeUntil:
@@ -847,6 +899,18 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.GCD.ToString()).X));
                 ImGui.DragInt($"##HPorMP{targetCondition.GetHashCode()}", ref targetCondition.GCD, .1f);
+                break;
+
+            case TargetConditionType.TimeToKill:
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
+                ImGui.DragFloat($"##TimeToKill{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
+                break;
+
+            case TargetConditionType.TargetName:
+                ImGui.SameLine();
+                ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
+                ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
                 break;
         }
     }

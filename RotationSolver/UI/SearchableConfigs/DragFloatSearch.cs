@@ -58,7 +58,7 @@ internal class DragFloatSearchPlugin : DragFloatSearch
     public override string Command => _config.ToCommand();
 
     public DragFloatSearchPlugin(PluginConfigFloat config, float speed, uint color = 0)
-        :base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
+        : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
     {
         _config = config;
         Color = color;

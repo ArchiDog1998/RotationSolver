@@ -24,7 +24,7 @@ internal class ControlWindow : CtrlWindow
     public override unsafe void Draw()
     {
         ImGui.Columns(3, "Control Bolder", false);
-        var gcd = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize) 
+        var gcd = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize)
             * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
         var ability = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize)
             * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
@@ -57,8 +57,8 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.ToName());
 
-        var value = Service.Config.GetValue(PluginConfigBool.IsControlWindowLock) ? 0: 1;
-        if(ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window", new string[]
+        var value = Service.Config.GetValue(PluginConfigBool.IsControlWindowLock) ? 0 : 1;
+        if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window", new string[]
         {
             LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
             LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowMove,
@@ -79,13 +79,13 @@ internal class ControlWindow : CtrlWindow
             && (!DataCenter.IsManual
             || Service.Config.GetValue(PluginConfigBool.UseAOEWhenManual));
 
-        if (!isAoe) ImGui.PushStyleColor( ImGuiCol.Text, color);
+        if (!isAoe) ImGui.PushStyleColor(ImGuiCol.Text, color);
         if (ImGuiHelper.SelectableButton("AOE"))
         {
             Service.Config.SetBoolRaw(PluginConfigBool.UseAOEAction, !isAoe);
             Service.Config.SetBoolRaw(PluginConfigBool.UseAOEWhenManual, !isAoe);
         }
-        if(!isAoe) ImGui.PopStyleColor();
+        if (!isAoe) ImGui.PopStyleColor();
 
         ImGui.SameLine();
 
@@ -175,7 +175,7 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.Text("CMD:");
         ImGui.SameLine();
-        
+
         DrawIAction(DataCenter.CommandNextAction, Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize), 1);
 
         ImGui.SameLine();
@@ -202,7 +202,7 @@ internal class ControlWindow : CtrlWindow
             ImGui.TextColored(ImGuiColors.DPSRed, "    | Mistake | \n    | Mistake | ");
             ImGui.SameLine();
 
-            DrawIAction(DateTime.Now - DidTime < TimeSpan.FromSeconds(5) ? Wrong : null, 
+            DrawIAction(DateTime.Now - DidTime < TimeSpan.FromSeconds(5) ? Wrong : null,
                 Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize), 1);
         }
     }
@@ -255,7 +255,7 @@ internal class ControlWindow : CtrlWindow
 
             HighLight(winPos + pos, size);
 
-            if(DataCenter.SpecialTimeLeft > 0)
+            if (DataCenter.SpecialTimeLeft > 0)
             {
                 var time = DataCenter.SpecialTimeLeft.ToString("F2") + "s";
                 var strSize = ImGui.CalcTextSize(time);
@@ -359,7 +359,7 @@ internal class ControlWindow : CtrlWindow
             case StateCommandType.Auto when DataCenter.State && !DataCenter.IsManual:
             case StateCommandType.Manual when DataCenter.State && DataCenter.IsManual:
             case StateCommandType.Cancel when !DataCenter.State:
-                isMatch = true; 
+                isMatch = true;
                 break;
         }
 
@@ -386,7 +386,7 @@ internal class ControlWindow : CtrlWindow
     static void DrawIAction(nint handle, string id, float width, StateCommandType command, string help)
     {
         var cursor = ImGui.GetCursorPos();
-        if(ImGuiHelper.NoPaddingNoColorImageButton(handle, Vector2.One * width, id))
+        if (ImGuiHelper.NoPaddingNoColorImageButton(handle, Vector2.One * width, id))
         {
             Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
@@ -441,7 +441,7 @@ internal class ControlWindow : CtrlWindow
 
         NextActionWindow.DrawGcdCooldown(width, true);
 
-        var y= ImGui.GetCursorPosY();
+        var y = ImGui.GetCursorPosY();
 
         DrawIAction(ActionUpdater.NextGCDAction, gcd, 1);
 

@@ -17,7 +17,7 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.MCH };
+    public sealed override Job[] Jobs => new[] { Job.MCH };
 
     #region Job Gauge
     static MCHGauge JobGauge => Svc.Gauges.Get<MCHGauge>();
@@ -165,7 +165,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Hypercharge { get; } = new BaseAction(ActionID.Hypercharge, ActionOption.UseResources)
     {
-        ActionCheck = (b, m) => !IsOverheated && Heat >= 50 
+        ActionCheck = (b, m) => !IsOverheated && Heat >= 50
         && IsLongerThan(8),
     };
 
@@ -189,7 +189,7 @@ public abstract class MCH_Base : CustomRotation
     {
         ActionCheck = (b, m) => IsLongerThan(8),
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -228,62 +228,62 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait SplitShotMastery    { get; } = new BaseTrait(288);
+    public static IBaseTrait SplitShotMastery { get; } = new BaseTrait(288);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait SlugShotMastery    { get; } = new BaseTrait(289);
+    public static IBaseTrait SlugShotMastery { get; } = new BaseTrait(289);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait CleanShotMastery    { get; } = new BaseTrait(290);
+    public static IBaseTrait CleanShotMastery { get; } = new BaseTrait(290);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait HotShotMastery    { get; } = new BaseTrait(291);
+    public static IBaseTrait HotShotMastery { get; } = new BaseTrait(291);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait ChargedActionMastery    { get; } = new BaseTrait(292);
+    public static IBaseTrait ChargedActionMastery { get; } = new BaseTrait(292);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedWildfire    { get; } = new BaseTrait(293);
+    public static IBaseTrait EnhancedWildfire { get; } = new BaseTrait(293);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait Promotion    { get; } = new BaseTrait(294);
+    public static IBaseTrait Promotion { get; } = new BaseTrait(294);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait SpreadShotMastery    { get; } = new BaseTrait(449);
+    public static IBaseTrait SpreadShotMastery { get; } = new BaseTrait(449);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedReassemble    { get; } = new BaseTrait(450);
+    public static IBaseTrait EnhancedReassemble { get; } = new BaseTrait(450);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait QueensGambit    { get; } = new BaseTrait(451);
+    public static IBaseTrait QueensGambit { get; } = new BaseTrait(451);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedTactician    { get; } = new BaseTrait(452);
+    public static IBaseTrait EnhancedTactician { get; } = new BaseTrait(452);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait MarksmansMastery    { get; } = new BaseTrait(517);
+    public static IBaseTrait MarksmansMastery { get; } = new BaseTrait(517);
     #endregion
 
     /// <summary>

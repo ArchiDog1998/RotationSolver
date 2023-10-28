@@ -21,7 +21,7 @@ internal class TargetCondition : DelayCondition
 
     public string CastingActionName = string.Empty;
 
-    public override bool IsTrueInside(ICustomRotation rotation)
+    protected override bool IsTrueInside(ICustomRotation rotation)
     {
         BattleChara tar;
         if (_action != null)
@@ -105,6 +105,15 @@ internal class TargetCondition : DelayCondition
             case TargetConditionType.MP:
                 result = tar.CurrentMp > GCD;
                 break;
+
+            case TargetConditionType.TargetName:
+                if (string.IsNullOrEmpty(CastingActionName))
+                {
+                    result = false;
+                    break;
+                }
+                result = tar.Name.TextValue == CastingActionName;
+                break;
         }
 
         return Condition ? !result : result;
@@ -125,4 +134,5 @@ internal enum TargetConditionType : byte
     TimeToKill,
     HP,
     MP,
+    TargetName,
 }

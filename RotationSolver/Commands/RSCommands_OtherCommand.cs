@@ -41,7 +41,7 @@ public static partial class RSCommands
         var job = DataCenter.Job;
         var strs = str.Split(' ');
         var value = strs.LastOrDefault();
-        if(TryGetOneEnum<PluginConfigBool>(str, out var b))
+        if (TryGetOneEnum<PluginConfigBool>(str, out var b))
         {
             var v = !Service.Config.GetValue(b);
             Service.Config.SetBoolRaw(b, v);

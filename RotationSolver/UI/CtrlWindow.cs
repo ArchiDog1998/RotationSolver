@@ -13,7 +13,7 @@ internal abstract class CtrlWindow : Window
     public CtrlWindow(string name)
                 : base(name, BaseFlags)
     {
-        
+
     }
 
     public override void PreDraw()

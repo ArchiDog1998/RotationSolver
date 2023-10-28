@@ -307,6 +307,7 @@ internal class Strings
     public string ActionSequencer_ActionCondition { get; set; } = "Action Condition";
     public string ActionSequencer_TargetCondition { get; set; } = "Target Condition";
     public string ActionSequencer_RotationCondition { get; set; } = "Rotation Condition";
+    public string ActionSequencer_NamedCondition { get; set; } = "Named Condition";
     public string ActionSequencer_TraitCondition { get; set; } = "Trait Condition";
     public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
     public string ActionSequencer_Target { get; set; } = "Target";
@@ -385,6 +386,7 @@ internal class Strings
     public string TargetConditionType_CastingActionTimeUntil { get; set; } = "Casting Action Time Until";
     public string TargetConditionType_HP { get; set; } = "HP";
     public string TargetConditionType_MP { get; set; } = "MP";
+    public string TargetConditionType_TargetName { get; set; } = "Target Name";
 
     #endregion
 
@@ -686,6 +688,7 @@ internal class Strings
     public string ConfigWindow_List_NoProvokeName { get; set; } = "The name of the enemy that you don't want to be provoked";
 
     public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
+    public string ConfigWindow_Basic_NamedConditions { get; set; } = "Named Conditions";
     public string ConfigWindow_Basic_Others { get; set; } = "Others";
 
     public string ConfigWindow_Basic_Timer { get; set; } = "Timer";
@@ -754,7 +757,7 @@ internal class Strings
     public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
     public string ConfigWindow_Actions_TTK { get; set; } = "TTK that this action needs the target be.";
     public string ConfigWindow_Actions_HealRatio { get; set; } = "The HP ratio to auto heal";
-    public string ConfigWindow_Actions_ConditionDescription  { get; set; }= "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.";
+    public string ConfigWindow_Actions_ConditionDescription { get; set; } = "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.";
 
     public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
     public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";
@@ -789,4 +792,10 @@ internal class Strings
     public string ConfigWindow_Basic_SwitchCancelConditionSet { get; set; } = "Auto turn off conditions";
     public string ConfigWindow_Basic_SwitchManualConditionSet { get; set; } = "Auto turn manual conditions";
     public string ConfigWindow_Basic_SwitchAutoConditionSet { get; set; } = "Auto turn auto conditions";
+
+    public string ConfigWindow_Condition_RotationNullWarning { get; set; } = "Rotation is null, please login or switch the job!";
+
+    public string ConfigWindow_Condition_NoItemsWarning { get; set; } = "There are no items!";
+
+    public string ConfigWindow_Condition_ConditionName { get; set; } = "Condition Name";
 }

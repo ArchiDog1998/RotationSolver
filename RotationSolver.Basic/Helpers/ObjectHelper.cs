@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -82,7 +81,7 @@ public static class ObjectHelper
     {
         var fateId = DataCenter.FateId;
         //Fate
-        if (Service.Config.GetValue(Configuration.PluginConfigBool.TargetFatePriority) &&  fateId != 0 &&  obj.FateId() == fateId) return true;
+        if (Service.Config.GetValue(Configuration.PluginConfigBool.TargetFatePriority) && fateId != 0 && obj.FateId() == fateId) return true;
 
         var icon = obj.GetNamePlateIcon();
 
@@ -100,7 +99,7 @@ public static class ObjectHelper
             or 71144 //Major Quest
             or 71224 //Other Quest
             or 71344 //Major Quest
-           ||  obj.GetEventType() is EventHandlerType.Quest)) return true;
+           || obj.GetEventType() is EventHandlerType.Quest)) return true;
 
         return false;
     }
@@ -225,7 +224,7 @@ public static class ObjectHelper
     {
         foreach (var item in DataCenter.AttackedTargets)
         {
-            if(item.id == b.ObjectId)
+            if (item.id == b.ObjectId)
             {
                 return DateTime.Now - item.time > TimeSpan.FromSeconds(1);
             }
@@ -296,7 +295,7 @@ public static class ObjectHelper
     /// <param name="vec1"></param>
     /// <param name="vec2"></param>
     /// <returns></returns>
-    public static double AngleTo(this Vector2 vec1,  Vector2 vec2)
+    public static double AngleTo(this Vector2 vec1, Vector2 vec2)
     {
         return Math.Acos(Vector2.Dot(vec1, vec2) / vec1.Length() / vec2.Length());
     }

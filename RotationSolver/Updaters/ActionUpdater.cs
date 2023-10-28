@@ -13,7 +13,7 @@ internal static class ActionUpdater
 {
     internal static DateTime AutoCancelTime { get; set; } = DateTime.MinValue;
 
-    static  RandomDelay _GCDDelay = new(() =>
+    static RandomDelay _GCDDelay = new(() =>
     (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin),
     Service.Config.GetValue(PluginConfigFloat.WeaponDelayMax)));
 
@@ -209,7 +209,7 @@ internal static class ActionUpdater
             || Svc.Condition[ConditionFlag.SufferingStatusAffliction2]
             || Svc.Condition[ConditionFlag.RolePlaying]
             || Svc.Condition[ConditionFlag.InFlight]
-            ||  ActionManager.Instance()->ActionQueued && NextAction != null
+            || ActionManager.Instance()->ActionQueued && NextAction != null
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Player.Object.CurrentHp == 0) return false;
 

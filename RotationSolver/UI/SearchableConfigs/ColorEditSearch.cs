@@ -47,7 +47,7 @@ internal abstract class ColorEditSearch : Searchable
     {
         var value = GetValue(job);
         ImGui.SetNextItemWidth(DRAG_WIDTH * 1.5f * Scale);
-        if(ImGui.ColorEdit4($"{Name}##Config_{ID}{GetHashCode()}", ref value))
+        if (ImGui.ColorEdit4($"{Name}##Config_{ID}{GetHashCode()}", ref value))
         {
             SetValue(job, value);
         }

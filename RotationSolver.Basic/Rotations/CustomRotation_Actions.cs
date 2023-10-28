@@ -1,5 +1,4 @@
 ﻿using ECommons.ExcelServices;
-using ECommons.GameFunctions;
 using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations;
@@ -9,7 +8,7 @@ public abstract partial class CustomRotation
     internal class RoleAction : BaseAction
     {
         private readonly JobRole[] _roles;
-        internal RoleAction(ActionID actionID, JobRole[] roles, ActionOption option = ActionOption.None) 
+        internal RoleAction(ActionID actionID, JobRole[] roles, ActionOption option = ActionOption.None)
             : base(actionID, option)
         {
             _roles = roles;
@@ -19,7 +18,7 @@ public abstract partial class CustomRotation
 
         public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)
         {
-            return base.CanUse(out act, option, aoeCount, gcdCountForAbility) 
+            return base.CanUse(out act, option, aoeCount, gcdCountForAbility)
                 && Player != null && InRole(Player.ClassJob.GameData.GetJobRole());
         }
     }
@@ -108,7 +107,7 @@ public abstract partial class CustomRotation
             StatusID.Rampart, StatusID.Bulwark,
             StatusID.BloodWhetting,
             StatusID.Vengeance,
-            StatusID.Sentinel,  
+            StatusID.Sentinel,
             StatusID.ShadowWall,
             StatusID.Nebula,
 
@@ -226,7 +225,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction Sprint { get; } = new BaseAction(ActionID.Sprint, ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] {StatusID.DualCast},
+        StatusProvide = new StatusID[] { StatusID.DualCast },
     };
 
     private protected virtual IBaseAction Raise => null;
@@ -249,7 +248,7 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public static IBaseAction VariantCure { get; } = new RoleAction(ActionID.VariantCure,
-        new JobRole[] { JobRole.Melee, JobRole.Tank,JobRole.RangedMagical, JobRole.RangedPhysical },
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical },
         ActionOption.Heal | ActionOption.DutyAction);
 
     /// <summary>
@@ -294,29 +293,27 @@ public abstract partial class CustomRotation
     public static IBaseAction LostSpellforge { get; } = new BaseAction(ActionID.LostSpellforge,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] {StatusID.LostSpellforge },
-        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.MagicalAversion) ?? false, 
-        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t =>
-            {
-                switch((Job)t.ClassJob.Id)
-                {
-                    case Job.WAR:
-                    case Job.GNB:
-                    case Job.MNK:
-                    case Job.SAM:
-                    case Job.DRG:
-                    case Job.MCH:
-                    case Job.DNC:
+        StatusProvide = new StatusID[] { StatusID.LostSpellforge },
+        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
+        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
+        {
+            Job.WAR
+            or Job.GNB
+            or Job.MNK
+            or Job.SAM
+            or Job.DRG
+            or Job.MCH
+            or Job.DNC
 
-                    case Job.PLD:
-                    case Job.DRK:
-                    case Job.NIN:
-                    case Job.BRD:
-                    case Job.RDM:
-                        return true;
-                }
-                return false;
-            }),
+            or Job.PLD
+            or Job.DRK
+            or Job.NIN
+            or Job.BRD
+            or Job.RDM
+            => true,
+
+            _ => false,
+        }),
     };
 
     /// <summary>
@@ -327,26 +324,23 @@ public abstract partial class CustomRotation
     {
         StatusProvide = new StatusID[] { StatusID.LostSteelsting },
         ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
-        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t =>
+        ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
-            switch ((Job)t.ClassJob.Id)
-            {
-                case Job.WHM:
-                case Job.SCH:
-                case Job.AST:
-                case Job.SGE:
-                case Job.BLM:
-                case Job.SMN:
+            Job.WHM
+            or Job.SCH
+            or Job.AST
+            or Job.SGE
+            or Job.BLM
+            or Job.SMN
 
-                case Job.PLD:
-                case Job.DRK:
-                case Job.NIN:
-                case Job.BRD:
-                case Job.RDM:
-                    return true;
-            }
+            or Job.PLD
+            or Job.DRK
+            or Job.NIN
+            or Job.BRD
+            or Job.RDM
+            => true,
 
-            return false;
+            _ => false,
         }),
     };
 

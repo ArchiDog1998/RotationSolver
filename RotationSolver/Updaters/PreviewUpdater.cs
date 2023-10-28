@@ -102,7 +102,7 @@ internal static class PreviewUpdater
             {
                 var highLightId = 0x53550000 + index;
 
-                if (doingSomething(slot, hotBarIndex > 9 ? null: hotBar.SlotsSpan[slotIndex], (uint)highLightId))
+                if (doingSomething(slot, hotBarIndex > 9 ? null : hotBar.SlotsSpan[slotIndex], (uint)highLightId))
                 {
                     var iconAddon = slot.Icon;
                     if ((IntPtr)iconAddon == IntPtr.Zero) continue;

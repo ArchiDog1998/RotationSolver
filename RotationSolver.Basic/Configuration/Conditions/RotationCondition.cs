@@ -25,7 +25,7 @@ internal class RotationCondition : DelayCondition
         return base.CheckBefore(rotation);
     }
 
-    public override bool IsTrueInside(ICustomRotation rotation)
+    protected override bool IsTrueInside(ICustomRotation rotation)
     {
         switch (ComboConditionType)
         {

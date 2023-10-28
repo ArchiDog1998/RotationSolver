@@ -22,8 +22,8 @@ internal static class PainterManager
 
             if (Svc.ClientState == null) return;
             if (!Player.Available) return;
-            
-            if(!OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts)) return;
+
+            if (!OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts)) return;
 
             var d = DateTime.Now.Millisecond / 1000f;
             var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
@@ -59,12 +59,12 @@ internal static class PainterManager
 
             List<IDrawing3D> subItems = new List<IDrawing3D>();
 
-            if(IconSet.GetTexture(61510, out var hostileIcon))
+            if (IconSet.GetTexture(61510, out var hostileIcon))
             {
                 foreach (var hostile in DataCenter.HostileTargets)
                 {
-                    subItems.Add(new Drawing3DImage(hostileIcon, hostile.Position + new Vector3(0, 
-                        Service.Config.GetValue(PluginConfigFloat.HostileIconHeight), 0), 
+                    subItems.Add(new Drawing3DImage(hostileIcon, hostile.Position + new Vector3(0,
+                        Service.Config.GetValue(PluginConfigFloat.HostileIconHeight), 0),
                         Service.Config.GetValue(PluginConfigFloat.HostileIconSize))
                     {
                         DrawWithHeight = false,
@@ -112,10 +112,10 @@ internal static class PainterManager
             var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
             List<IDrawing3D> subItems = new List<IDrawing3D>();
 
-            if(Service.Config.GetValue(PluginConfigFloat.TargetIconSize) > 0)
+            if (Service.Config.GetValue(PluginConfigFloat.TargetIconSize) > 0)
             {
                 _targetImage.Position = act.IsTargetArea ? act.Position : act.Target.Position;
-                if(act.GetTexture(out var texture, true)) _targetImage.SetTexture(texture, Service.Config.GetValue(PluginConfigFloat.TargetIconSize));
+                if (act.GetTexture(out var texture, true)) _targetImage.SetTexture(texture, Service.Config.GetValue(PluginConfigFloat.TargetIconSize));
                 subItems.Add(_targetImage);
             }
             else

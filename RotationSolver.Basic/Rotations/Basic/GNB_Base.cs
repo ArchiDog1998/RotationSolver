@@ -12,7 +12,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.GNB };
+    public sealed override Job[] Jobs => new[] { Job.GNB };
 
     /// <summary>
     /// 
@@ -246,8 +246,8 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction NoMercy { get; } = new BaseAction(ActionID.NoMercy) 
-    { 
+    public static IBaseAction NoMercy { get; } = new BaseAction(ActionID.NoMercy)
+    {
         ActionCheck = (b, m) => IsLongerThan(10),
     };
 
@@ -269,32 +269,32 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedBrutalShell    { get; } = new BaseTrait(258);
+    public static IBaseTrait EnhancedBrutalShell { get; } = new BaseTrait(258);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait DangerZoneMastery    { get; } = new BaseTrait(259);
+    public static IBaseTrait DangerZoneMastery { get; } = new BaseTrait(259);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait TankMastery    { get; } = new BaseTrait(320);
+    public static IBaseTrait TankMastery { get; } = new BaseTrait(320);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait HeartOfStoneMastery    { get; } = new BaseTrait(424);
+    public static IBaseTrait HeartOfStoneMastery { get; } = new BaseTrait(424);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedAurora    { get; } = new BaseTrait(425);
+    public static IBaseTrait EnhancedAurora { get; } = new BaseTrait(425);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedContinuation    { get; } = new BaseTrait(426);
+    public static IBaseTrait EnhancedContinuation { get; } = new BaseTrait(426);
 
     /// <summary>
     /// 

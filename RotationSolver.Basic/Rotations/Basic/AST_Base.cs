@@ -17,7 +17,7 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.AST };
+    public sealed override Job[] Jobs => new[] { Job.AST };
 
     static ASTGauge JobGauge => Svc.Gauges.Get<ASTGauge>();
 
@@ -181,11 +181,11 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction NeutralSect { get; } = new BaseAction(ActionID.NeutralSect, ActionOption.Heal) 
+    public static IBaseAction NeutralSect { get; } = new BaseAction(ActionID.NeutralSect, ActionOption.Heal)
     {
         ActionCheck = (b, m) => IsLongerThan(15),
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -216,7 +216,7 @@ public abstract class AST_Base : CustomRotation
     public static IBaseAction Redraw { get; } = new BaseAction(ActionID.Redraw)
     {
         StatusNeed = new[] { StatusID.ClarifyingDraw },
-        ActionCheck = (b, m) => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard)) 
+        ActionCheck = (b, m) => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard))
         && !Astrodyne.ActionCheck(b, m),
     };
 

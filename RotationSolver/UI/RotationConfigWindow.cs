@@ -43,8 +43,8 @@ public partial class RotationConfigWindow : Window
         Size = new Vector2(740f, 490f);
         SizeConstraints = new WindowSizeConstraints()
         {
-             MinimumSize = new Vector2(250, 300),
-             MaximumSize = new Vector2(5000, 5000),
+            MinimumSize = new Vector2(250, 300),
+            MaximumSize = new Vector2(5000, 5000),
         };
         RespectCloseHotkey = true;
     }
@@ -107,7 +107,7 @@ public partial class RotationConfigWindow : Window
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Warning(ex, "Something wrong with config window.");
         }
@@ -188,7 +188,7 @@ public partial class RotationConfigWindow : Window
 
             ImGui.Spacing();
             ImGui.Separator();
-            ImGui.Spacing(); 
+            ImGui.Spacing();
 
             var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH)) * 0.6f;
 
@@ -206,7 +206,7 @@ public partial class RotationConfigWindow : Window
             }
             else
             {
-                if(IconSet.GetTexture(46, out var icon))
+                if (IconSet.GetTexture(46, out var icon))
                 {
                     ImGuiHelper.DrawItemMiddle(() =>
                     {
@@ -237,7 +237,7 @@ public partial class RotationConfigWindow : Window
             {
                 if (item.GetAttribute<TabSkipAttribute>() != null) continue;
 
-                if(IconSet.GetTexture(item.GetAttribute<TabIconAttribute>()?.Icon ?? 0, out var icon) && wholeWidth <= JOB_ICON_WIDTH * Scale)
+                if (IconSet.GetTexture(item.GetAttribute<TabIconAttribute>()?.Icon ?? 0, out var icon) && wholeWidth <= JOB_ICON_WIDTH * Scale)
                 {
                     ImGuiHelper.DrawItemMiddle(() =>
                     {
@@ -271,7 +271,7 @@ public partial class RotationConfigWindow : Window
                 }
             }
 
-            if (wholeWidth <= 60 * Scale 
+            if (wholeWidth <= 60 * Scale
                 ? IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_s_logo_nolabel.png", out var texture)
                 : IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_bg_tag_dark.png", out texture))
             {
@@ -300,7 +300,7 @@ public partial class RotationConfigWindow : Window
     {
         var dir = $"{Svc.PluginInterface.ConfigDirectory.FullName}\\Images";
 
-        if(!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+        if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
         var file = dir + $"\\{name}.png";
 
@@ -358,7 +358,7 @@ public partial class RotationConfigWindow : Window
 
                 var frame = Environment.TickCount / 34 % FRAME_COUNT;
                 if (frame <= 0) frame += FRAME_COUNT;
-                if ( GetLocalImage(Service.Config.GetValue(PluginConfigBool.DrawIconAnimation)
+                if (GetLocalImage(Service.Config.GetValue(PluginConfigBool.DrawIconAnimation)
                     ? frame.ToString("D4") : "Logo", out var logo))
                 {
                     ImGui.SetCursorPos(cursor);
@@ -485,7 +485,7 @@ public partial class RotationConfigWindow : Window
         {
             if (_searchResults != null && _searchResults.Any())
             {
-                using(var font = ImRaii.PushFont(ImGuiHelper.GetFont(18)))
+                using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(18)))
                 {
                     using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
                     ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Search_Result);
@@ -610,7 +610,7 @@ public partial class RotationConfigWindow : Window
         _aboutHeaders.Draw();
     }
 
-    private static readonly CollapsingHeaderGroup _aboutHeaders = new (new ()
+    private static readonly CollapsingHeaderGroup _aboutHeaders = new(new()
     {
         { () => LocalizationManager.RightLang.ConfigWindow_About_Macros, DrawAboutMacros},
         { () => LocalizationManager.RightLang.ConfigWindow_About_Compatibility, DrawAboutCompatibility},
@@ -872,7 +872,7 @@ public partial class RotationConfigWindow : Window
         ImGui.GetStyle().ItemSpacing = spacing;
 
         var radius = size.Y * 0.2f;
-        var wholeWidth = ImGui.GetWindowSize().X - size.X- 2 * radius;
+        var wholeWidth = ImGui.GetWindowSize().X - size.X - 2 * radius;
         var step = new Vector2(wholeWidth / count, size.Y);
         var shift = new Vector2(0, size.Y * 0.2f);
 
@@ -881,12 +881,12 @@ public partial class RotationConfigWindow : Window
 
         var veryStart = start += new Vector2(size.X, 0);
 
-        for (var i = 0; i < count; i++ )
+        for (var i = 0; i < count; i++)
         {
             var isStart = i == 0;
             var isLast = i == count - 1;
             var stepThis = step;
-            if(isStart || isLast)
+            if (isStart || isLast)
             {
                 stepThis = step + new Vector2(radius, 0);
             }
@@ -899,14 +899,14 @@ public partial class RotationConfigWindow : Window
         ImGui.GetWindowDrawList().AddRect(veryStart + shift, start + new Vector2(0, size.Y) - shift, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudWhite2), radius);
 
         var linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio1, 0);
-        ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y -  2 * shift.Y), uint.MaxValue, 3);
+        ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - 2 * shift.Y), uint.MaxValue, 3);
 
         linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio2, 0);
         ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - 2 * shift.Y), uint.MaxValue, 3);
 
         return result;
     }
-   
+
     private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
     {
         { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Description, DrawRotationDescription },
@@ -1050,7 +1050,7 @@ public partial class RotationConfigWindow : Window
         {
             return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
         }
-        if ( rotation == null || !rotation.ShowStatus) return string.Empty;
+        if (rotation == null || !rotation.ShowStatus) return string.Empty;
         return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
     }
 
@@ -1071,7 +1071,7 @@ public partial class RotationConfigWindow : Window
         if (rotation == null) return;
 
         var enable = rotation.IsEnabled;
-        if(ImGui.Checkbox(rotation.Name, ref  enable))
+        if (ImGui.Checkbox(rotation.Name, ref enable))
         {
             rotation.IsEnabled = enable;
         }
@@ -1079,13 +1079,13 @@ public partial class RotationConfigWindow : Window
 
         var set = rotation.Configs;
 
-        if(set.Any()) ImGui.Separator();
+        if (set.Any()) ImGui.Separator();
 
         foreach (var config in set.Configs)
         {
             var key = config.Name;
             var name = $"##{config.GetHashCode()}_{config.Name}";
-            string command = ToCommandStr(OtherCommandType.Rotations,config.Name,  config.DefaultValue);
+            string command = ToCommandStr(OtherCommandType.Rotations, config.Name, config.DefaultValue);
             void Reset() => set.SetValue(config.Name, config.DefaultValue);
 
             ImGuiHelper.PrepareGroup(key, command, Reset);
@@ -1260,11 +1260,11 @@ public partial class RotationConfigWindow : Window
                                 }
                                 ImGuiHelper.DrawActionOverlay(cursor, size, _activeAction == item ? 1 : 0);
 
-                                if(IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
+                                if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
                                 {
                                     var offset = new Vector2(1 / 12f, 1 / 6f);
                                     ImGui.SetCursorPos(cursor + new Vector2(0.6f, 0.7f) * size);
-                                    ImGui.Image(texture.ImGuiHandle, Vector2.One * size * 0.5f, 
+                                    ImGui.Image(texture.ImGuiHandle, Vector2.One * size * 0.5f,
                                         new Vector2(item.IsEnabled ? 0 : 0.5f, 0) + offset,
                                         new Vector2(item.IsEnabled ? 0.5f : 1, 1) - offset);
                                 }
@@ -1286,7 +1286,7 @@ public partial class RotationConfigWindow : Window
 
             if (Service.Config.GetValue(PluginConfigBool.InDebug))
             {
-                if(_activeAction is IBaseAction action)
+                if (_activeAction is IBaseAction action)
                 {
 
                     try
@@ -1359,7 +1359,7 @@ public partial class RotationConfigWindow : Window
                     _activeAction.IsInCooldown = enable;
                 }
 
-                if(_activeAction is IBaseAction action)
+                if (_activeAction is IBaseAction action)
                 {
                     ImGui.Separator();
 
@@ -1375,7 +1375,7 @@ public partial class RotationConfigWindow : Window
                     {
                         var aoeCount = (int)action.AOECount;
                         ImGui.SetNextItemWidth(Scale * 150);
-                        if (ImGui.DragInt($"{LocalizationManager.RightLang.ConfigWindow_Actions_AOECount}##{action}", 
+                        if (ImGui.DragInt($"{LocalizationManager.RightLang.ConfigWindow_Actions_AOECount}##{action}",
                             ref aoeCount, 0.05f, 1, 10))
                         {
                             action.AOECount = (byte)aoeCount;
@@ -1406,7 +1406,7 @@ public partial class RotationConfigWindow : Window
 
     private static readonly CollapsingHeaderGroup _actionsList = new()
     {
-         HeaderSize = 18,
+        HeaderSize = 18,
     };
 
     private static readonly CollapsingHeaderGroup _sequencerList = new(new()
@@ -1478,7 +1478,7 @@ public partial class RotationConfigWindow : Window
         {() => LocalizationManager.RightLang.ConfigWindow_Rotations_Libraries, DrawRotationsLibraries},
     });
 
-    private static readonly CheckBoxSearchPlugin _updateRotation = new (PluginConfigBool.DownloadRotations,
+    private static readonly CheckBoxSearchPlugin _updateRotation = new(PluginConfigBool.DownloadRotations,
         new CheckBoxSearchPlugin(PluginConfigBool.AutoUpdateRotations));
 
     private static readonly CheckBoxSearchPlugin _autoLoadRotations = new(PluginConfigBool.AutoLoadCustomRotations);
@@ -1545,8 +1545,8 @@ public partial class RotationConfigWindow : Window
                     if (lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
                     lastRole = role;
 
-                    if(IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed), out var texture, 62574))
-                    ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
+                    if (IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed), out var texture, 62574))
+                        ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
 
                     ImguiTooltips.HoveredTooltip(string.Join('\n', jobs));
                 }
@@ -1557,7 +1557,7 @@ public partial class RotationConfigWindow : Window
 
                 if (!string.IsNullOrEmpty(info.DonateLink)
                     && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon)
-                    && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height/ icon.Width) * MathF.Min(250, icon.Width) * Scale, info.FilePath))
+                    && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height / icon.Width) * MathF.Min(250, icon.Width) * Scale, info.FilePath))
                 {
                     Util.OpenLink(info.DonateLink);
                 }
@@ -1595,11 +1595,11 @@ public partial class RotationConfigWindow : Window
             var ratio = MathF.Min(1, wholeWidth / width);
             ImGuiHelper.DrawItemMiddle(() =>
             {
-                if(hasDate && ImGuiHelper.NoPaddingNoColorImageButton(releaseDate.ImGuiHandle, new Vector2(releaseDate.Width, releaseDate.Height) * ratio, id))
+                if (hasDate && ImGuiHelper.NoPaddingNoColorImageButton(releaseDate.ImGuiHandle, new Vector2(releaseDate.Width, releaseDate.Height) * ratio, id))
                 {
                     Util.OpenLink(link);
                 }
-                if(hasDate && hasCount) ImGui.SameLine();
+                if (hasDate && hasCount) ImGui.SameLine();
                 if (hasCount && ImGuiHelper.NoPaddingNoColorImageButton(downloadCount.ImGuiHandle, new Vector2(downloadCount.Width, downloadCount.Height) * ratio, id))
                 {
                     Util.OpenLink(link);
@@ -1650,7 +1650,7 @@ public partial class RotationConfigWindow : Window
             var repository = strs.Length > 1 ? strs[1] : string.Empty;
             var fileName = strs.LastOrDefault() ?? string.Empty;
 
-            DrawGitHubBadge(userName, repository, fileName, center:true);
+            DrawGitHubBadge(userName, repository, fileName, center: true);
 
             var changed = false;
 
@@ -1669,7 +1669,7 @@ public partial class RotationConfigWindow : Window
             changed |= ImGui.InputTextWithHint($"##GitHubLib{i}FileName", LocalizationManager.RightLang.ConfigWindow_Rotations_FileName, ref fileName, 1024);
             ImGui.SameLine();
 
-            if(changed)
+            if (changed)
             {
                 Service.Config.GlobalConfig.GitHubLibs[i] = $"{userName}|{repository}|{fileName}";
             }
@@ -1774,7 +1774,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawList()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_Description); 
+        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_Description);
         _idsHeader?.Draw();
     }
     private static readonly CollapsingHeaderGroup _idsHeader = new(new()
@@ -1863,7 +1863,7 @@ public partial class RotationConfigWindow : Window
                 }
                 ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * Scale, "Status" + status.RowId.ToString());
 
-                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false, 
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false,
                     (Delete, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
             }
         }
@@ -2071,7 +2071,7 @@ public partial class RotationConfigWindow : Window
 
             var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
 
-            if(!OtherConfiguration.NoHostileNames.TryGetValue(territoryId, out var libs))
+            if (!OtherConfiguration.NoHostileNames.TryGetValue(territoryId, out var libs))
             {
                 OtherConfiguration.NoHostileNames[territoryId] = libs = Array.Empty<string>();
             }
@@ -2086,7 +2086,7 @@ public partial class RotationConfigWindow : Window
             for (int i = 0; i < libs.Length; i++)
             {
                 ImGui.SetNextItemWidth(width);
-                if(ImGui.InputTextWithHint($"##Rotation Solver Territory Target Name {i}", LocalizationManager.RightLang.ConfigWindow_List_NoHostilesName, ref libs[i], 1024))
+                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Target Name {i}", LocalizationManager.RightLang.ConfigWindow_List_NoHostilesName, ref libs[i], 1024))
                 {
                     OtherConfiguration.NoHostileNames[territoryId] = libs;
                     OtherConfiguration.SaveNoHostileNames();

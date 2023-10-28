@@ -20,8 +20,8 @@ namespace RotationSolver.Updaters;
 
 internal static class MajorUpdater
 {
-    public static bool IsValid => Svc.Condition.Any() 
-        && !Svc.Condition[ConditionFlag.BetweenAreas] 
+    public static bool IsValid => Svc.Condition.Any()
+        && !Svc.Condition[ConditionFlag.BetweenAreas]
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
         && Player.Available && !SocialUpdater.InPvp;
 
@@ -113,7 +113,7 @@ internal static class MajorUpdater
             var warning = "Rotation Solver 未进行国服适配并不提供相关支持! 建议使用国服的插件，如：";
             Svc.Toasts.ShowError(warning + "AE Assist 2.0！");
 
-            var seString = new SeString(new TextPayload(warning), 
+            var seString = new SeString(new TextPayload(warning),
                 Svc.PluginInterface.AddChatLinkHandler(2, (id, str) =>
                 {
                     if (id == 2)
@@ -177,7 +177,7 @@ internal static class MajorUpdater
             }
 
             RotationUpdater.UpdateRotation();
-            
+
             ActionSequencerUpdater.UpdateActionSequencerAction();
             ActionUpdater.UpdateNextAction();
 
@@ -186,7 +186,7 @@ internal static class MajorUpdater
         }
         catch (Exception ex)
         {
-            if(_innerException != ex)
+            if (_innerException != ex)
             {
                 _innerException = ex;
                 Svc.Log.Error(ex, "Inner Worker Exception");
@@ -259,7 +259,7 @@ internal static class MajorUpdater
 
         try
         {
-            Svc.Targets.Target =treasure;
+            Svc.Targets.Target = treasure;
 
             TargetSystem.Instance()->InteractWithObject((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)treasure.Address);
 

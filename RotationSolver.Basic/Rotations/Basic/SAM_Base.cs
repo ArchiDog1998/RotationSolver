@@ -17,7 +17,7 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public sealed override Job[] Jobs => new [] { Job.SAM };
+    public sealed override Job[] Jobs => new[] { Job.SAM };
 
     /// <summary>
     /// 
@@ -189,7 +189,7 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction MidareSetsugekka { get; } = new BaseAction(ActionID.MidareSetsugekka , ActionOption.UseResources)
+    public static IBaseAction MidareSetsugekka { get; } = new BaseAction(ActionID.MidareSetsugekka, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => !IsMoving && SenCount == 3,
     };
@@ -338,27 +338,27 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedMeikyoShisui    { get; } = new BaseTrait(443);
+    public static IBaseTrait EnhancedMeikyoShisui { get; } = new BaseTrait(443);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait EnhancedIkishoten    { get; } = new BaseTrait(514);
+    public static IBaseTrait EnhancedIkishoten { get; } = new BaseTrait(514);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait FugaMastery    { get; } = new BaseTrait(519);
+    public static IBaseTrait FugaMastery { get; } = new BaseTrait(519);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait WayOfTheSamurai    { get; } = new BaseTrait(520);
+    public static IBaseTrait WayOfTheSamurai { get; } = new BaseTrait(520);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseTrait WayOfTheSamurai2    { get; } = new BaseTrait(521);
+    public static IBaseTrait WayOfTheSamurai2 { get; } = new BaseTrait(521);
     #endregion
 
     /// <summary>

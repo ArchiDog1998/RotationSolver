@@ -100,7 +100,7 @@ internal static class ImGuiHelper
         var style = new Dalamud.Interface.GameFonts.GameFontStyle(Dalamud.Interface.GameFonts.GameFontStyle.GetRecommendedFamilyAndSize(Dalamud.Interface.GameFonts.GameFontFamily.Axis, size));
         var font = Svc.PluginInterface.UiBuilder.GetGameFontHandle(style).ImFont;
 
-        if((IntPtr)font.NativePtr == IntPtr.Zero) 
+        if ((IntPtr)font.NativePtr == IntPtr.Zero)
         {
             return ImGui.GetFont();
         }
@@ -117,7 +117,7 @@ internal static class ImGuiHelper
 
         if (SelectableButton(name))
         {
-            if(count < 3)
+            if (count < 3)
             {
                 index = (index + 1) % count;
                 result = true;

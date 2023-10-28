@@ -52,7 +52,7 @@ public static class Watcher
         {
             Svc.Chat.Print($"Type: {actionType}, ID: {actionID}, Tar: {targetID}, 4: {a4}, 5: {a5}, 6: {a6}");
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Svc.Log.Warning(e, "Failed to detour actions");
         }
@@ -96,10 +96,10 @@ public static class Watcher
         foreach (var effect in set.TargetEffects)
         {
             if (effect.TargetID != Player.Object.ObjectId) continue;
-            if(effect.GetSpecificTypeEffect(ActionEffectType.Knockback, out var entry))
+            if (effect.GetSpecificTypeEffect(ActionEffectType.Knockback, out var entry))
             {
                 var knock = Svc.Data.GetExcelSheet<Knockback>()?.GetRow(entry.value);
-                if(knock != null)
+                if (knock != null)
                 {
                     DataCenter.KnockbackStart = DateTime.Now;
                     DataCenter.KnockbackFinished = DateTime.Now + TimeSpan.FromSeconds(knock.Distance / (float)knock.Speed);
@@ -112,7 +112,7 @@ public static class Watcher
         {
             var type = set.Action.GetActionCate();
 
-            if(type is ActionCate.Spell or ActionCate.WeaponSkill or ActionCate.Ability)
+            if (type is ActionCate.Spell or ActionCate.WeaponSkill or ActionCate.Ability)
             {
                 if (set.TargetEffects.Count(e =>
                     DataCenter.PartyMembers.Any(p => p.ObjectId == e.TargetID)
@@ -138,7 +138,7 @@ public static class Watcher
         if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
         var id = set.Action.RowId;
-        if(!set.Action.IsRealGCD() && (set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id)))
+        if (!set.Action.IsRealGCD() && (set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id)))
         {
             OtherConfiguration.AnimationLockTime[id] = set.Header.AnimationLockTime;
         }
@@ -156,7 +156,7 @@ public static class Watcher
 
         DataCenter.HealHP = set.GetSpecificTypeEffect(ActionEffectType.Heal);
         DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
-        foreach ( var effect in set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectSource))
+        foreach (var effect in set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectSource))
         {
             DataCenter.ApplyStatus[effect.Key] = effect.Value;
         }
@@ -170,7 +170,7 @@ public static class Watcher
 
             if (DataCenter.AttackedTargets.Any(i => i.id == effect.TargetID)) continue;
 
-            if(DataCenter.AttackedTargets.Count >= DataCenter.ATTACKED_TARGETS_COUNT)
+            if (DataCenter.AttackedTargets.Count >= DataCenter.ATTACKED_TARGETS_COUNT)
             {
                 DataCenter.AttackedTargets.Dequeue();
             }

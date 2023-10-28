@@ -7,9 +7,9 @@ namespace RotationSolver.UI;
 internal class CooldownWindow : CtrlWindow
 {
     public CooldownWindow()
-        :base(nameof(CooldownWindow))
+        : base(nameof(CooldownWindow))
     {
-        
+
     }
 
     public override void Draw()
@@ -58,7 +58,7 @@ internal class CooldownWindow : CtrlWindow
         var r = -1f;
         if (Service.Config.GetValue(PluginConfigBool.UseOriginalCooldown))
         {
-            r = !act.EnoughLevel ? 0: recast == 0 || !act.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
+            r = !act.EnoughLevel ? 0 : recast == 0 || !act.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
         }
         var pair = ControlWindow.DrawIAction(act, width, r, false);
         var pos = pair.Item1;
@@ -85,7 +85,7 @@ internal class CooldownWindow : CtrlWindow
             }
 
             using var font = ImRaii.PushFont(ImGuiHelper.GetFont(Service.Config.GetValue(PluginConfigFloat.CooldownFontSize)));
-            string time = recast == 0  ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
+            string time = recast == 0 ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;
 
