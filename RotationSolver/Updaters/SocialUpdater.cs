@@ -33,11 +33,10 @@ internal class SocialUpdater
     private static readonly HashSet<string> saidAuthors = new();
 
     static bool _canSaying = false;
-    public static TerritoryType[] HighEndDuties { get; private set; } = Array.Empty<TerritoryType>();
 
     public static string GetDutyName(TerritoryType territory)
     {
-        return territory.ContentFinderCondition?.Value?.Name?.RawString ?? "High-end Duty";
+        return territory.ContentFinderCondition?.Value?.Name?.RawString;
     }
 
     static bool CanSocial
@@ -64,10 +63,6 @@ internal class SocialUpdater
         Svc.DutyState.DutyCompleted += DutyState_DutyCompleted;
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);
-
-        HighEndDuties = Service.GetSheet<TerritoryType>()
-            .Where(t => t?.ContentFinderCondition?.Value?.HighEndDuty ?? false)
-            .ToArray();
     }
 
     static async void DutyState_DutyCompleted(object sender, ushort e)
@@ -87,9 +82,7 @@ internal class SocialUpdater
         _canSaying = territory?.ContentFinderCondition?.Value?.RowId != 0;
 
         InPvp = territory?.IsPvpZone ?? false;
-
-        DataCenter.TerritoryContentType = (TerritoryContentType)(territory?.ContentFinderCondition?.Value?.ContentType?.Value?.RowId ?? 0);
-        DataCenter.IsInHighEndDuty = HighEndDuties.Any(t => t.RowId == territory.RowId);
+        DataCenter.Territory = territory;
 
         try
         {
@@ -106,10 +99,10 @@ internal class SocialUpdater
         if (!Player.Available) return;
         if (!Player.Object.IsJobCategory(JobRole.Tank) && !Player.Object.IsJobCategory(JobRole.Healer)) return;
 
-        var territory = Service.GetSheet<TerritoryType>().GetRow(e);
-        if (HighEndDuties.Any(t => t.RowId == territory.RowId))
+        if (DataCenter.IsInHighEndDuty)
         {
-            string.Format(LocalizationManager.RightLang.HighEndWarning, GetDutyName(territory)).ShowWarning();
+            string.Format(LocalizationManager.RightLang.HighEndWarning,
+                DataCenter.ContentFinderName).ShowWarning();
         }
     }
 
@@ -186,7 +179,7 @@ internal class SocialUpdater
 #if DEBUG
 #else
             Svc.Targets.Target = entity.player;
-            Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
+            ECommons.Automation.Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
 #endif
             Svc.Chat.Print(new Dalamud.Game.Text.XivChatEntry()
             {

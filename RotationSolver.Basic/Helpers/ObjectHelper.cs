@@ -53,22 +53,22 @@ public static class ObjectHelper
     }
 
     /// <summary>
-    /// Is this target a npc enemy.
+    /// Is this target an enemy (can be attacked).
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
     public static unsafe bool IsNPCEnemy(this GameObject obj)
-        => obj != null && obj.GetObjectKind() == ObjectKind.BattleNpc
+        => obj != null
         && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.Struct());
 
     /// <summary>
-    /// Is alliance (can be heal.
+    /// Is alliance (can be healed).
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
     public static unsafe bool IsAlliance(this GameObject obj)
-        => obj != null && (obj is PlayerCharacter
-        || ActionManager.CanUseActionOnTarget((uint)ActionID.Cure, obj.Struct()));
+        => obj != null 
+        && ActionManager.CanUseActionOnTarget((uint)ActionID.Cure, obj.Struct());
 
     /// <summary>
     /// Get the object kind.
@@ -151,6 +151,7 @@ public static class ObjectHelper
     {
         if (obj == null) return false;
         if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return true;
+
         return obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)
             || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
     }

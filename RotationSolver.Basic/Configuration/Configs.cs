@@ -371,7 +371,7 @@ public enum PluginConfigBool : byte
 
 public enum PluginConfigFloat : byte
 {
-    [Default(8f, 0f, 600f)] AutoOffAfterCombatTime,
+    [Default(30f, 0f, 600f)] AutoOffAfterCombatTime,
     [Default(3f, 0f, 8f)] DrawingHeight,
     [Default(0.2f, 0.005f, 0.05f)] SampleLength,
     [Default(0.1f)] KeyBoardNoiseTimeMin,

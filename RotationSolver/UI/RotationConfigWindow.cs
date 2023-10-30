@@ -2026,15 +2026,13 @@ public partial class RotationConfigWindow : Window
             using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
 
             const int iconSize = 32;
-            var territory = Service.GetSheet<TerritoryType>().GetRow(territoryId);
-            if (territory == null) return;
-            var contentFinder = territory?.ContentFinderCondition?.Value;
-            var territoryName = territory?.PlaceName?.Value?.Name ?? string.Empty;
+            var contentFinder = DataCenter.ContentFinder;
+            var territoryName = DataCenter.TerritoryName;
             if (contentFinder != null && !string.IsNullOrEmpty(contentFinder.Name))
             {
-                territoryName += $" ({contentFinder.Name})";
+                territoryName += $" ({DataCenter.ContentFinderName})";
             }
-            var icon = territory?.ContentFinderCondition?.Value?.ContentType?.Value?.Icon ?? 23;
+            var icon = DataCenter.ContentFinder?.ContentType?.Value?.Icon ?? 23;
             if (icon == 0) icon = 23;
             var getIcon = IconSet.GetTexture(icon, out var texture);
             ImGuiHelper.DrawItemMiddle(() =>

@@ -3,6 +3,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
+using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Conditions;
@@ -281,12 +282,15 @@ internal static class ConditionDrawer
 
             case NamedCondition namedCondition:
                 namedCondition.DrawAfter(rotation);
+                break;
 
+            case TerritoryCondition territoryCondition:
+                territoryCondition.DrawAfter(rotation);
                 break;
         }
     }
 
-    private static void DrawAfter(this NamedCondition namedCondition, ICustomRotation rotation)
+    private static void DrawAfter(this NamedCondition namedCondition, ICustomRotation _)
     {
         SearchItems($"##Comparation{namedCondition.GetHashCode()}", namedCondition.ConditionName, ref searchTxt,
             DataCenter.RightSet.NamedConditions.Select(p => p.Name).ToArray(), i => i.ToString(), i =>
@@ -579,6 +583,7 @@ internal static class ConditionDrawer
                 AddOneCondition<TargetCondition>(LocalizationManager.RightLang.ActionSequencer_TargetCondition);
                 AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
                 AddOneCondition<NamedCondition>(LocalizationManager.RightLang.ActionSequencer_NamedCondition);
+                AddOneCondition<TerritoryCondition>(LocalizationManager.RightLang.ActionSequencer_TerritoryCondition);
             }
 
             void AddOneCondition<T>(string name) where T : ICondition
@@ -911,6 +916,59 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
                 ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
                 ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
+                break;
+        }
+    }
+
+    private static string[] _territoryNames = null;
+    public static string[] TerritoryNames => _territoryNames ??= Service.GetSheet<TerritoryType>()?
+        .Select(t => t?.PlaceName?.Value?.Name?.RawString ?? string.Empty).Where(s => !string.IsNullOrEmpty(s)).ToArray();
+
+    private static string[] _dutyNames = null;
+
+    public static string[] DutyNames => _dutyNames ??= new HashSet<string>(Service.GetSheet<ContentFinderCondition>()?
+        .Select(t => t?.Name?.RawString ?? string.Empty).Where(s => !string.IsNullOrEmpty(s)).Reverse()).ToArray();
+
+    private static void DrawAfter(this TerritoryCondition territoryCondition, ICustomRotation rotation)
+    {
+        DrawByteEnum($"##Category{territoryCondition.GetHashCode()}", ref territoryCondition.TerritoryConditionType, EnumTranslations.ToName);
+
+        ImGui.SameLine();
+
+        ImGuiHelper.SelectableCombo($"##IsNot{territoryCondition.GetHashCode()}", new string[]
+        {
+                    LocalizationManager.RightLang.ActionSequencer_Is,
+                    LocalizationManager.RightLang.ActionSequencer_Isnot,
+        }, ref territoryCondition.Condition);
+
+        switch (territoryCondition.TerritoryConditionType)
+        {
+            case TerritoryConditionType.TerritoryContentType:
+                ImGui.SameLine();
+
+                var type = (TerritoryContentType)territoryCondition.Param1;
+                DrawByteEnum($"##TerritoryContentType{territoryCondition.GetHashCode()}", ref type, i => i.ToString());
+                territoryCondition.Param1 = (int)type;
+                break;
+
+            case TerritoryConditionType.TerritoryName:
+                ImGui.SameLine();
+
+                SearchItems($"##TerritoryName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
+                TerritoryNames, i => i.ToString(), i =>
+                {
+                    territoryCondition.Name = i;
+                }, LocalizationManager.RightLang.ConfigWindow_Condition_TeritoryName);
+                break;
+
+            case TerritoryConditionType.DutyName:
+                ImGui.SameLine();
+
+                SearchItems($"##DutyName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
+                DutyNames, i => i.ToString(), i =>
+                {
+                    territoryCondition.Name = i;
+                }, LocalizationManager.RightLang.ConfigWindow_Condition_DutyName);
                 break;
         }
     }
