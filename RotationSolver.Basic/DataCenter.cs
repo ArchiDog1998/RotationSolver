@@ -5,6 +5,7 @@ using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -72,8 +73,17 @@ internal static class DataCenter
         }
         return false;
     }
-    public static bool IsInHighEndDuty { get; set; } = false;
-    public static TerritoryContentType TerritoryContentType { get; set; } = TerritoryContentType.None;
+
+    public static TerritoryType Territory { get; set; }
+
+    public static string TerritoryName => Territory?.Name?.RawString ?? "Territory";
+
+    public static ContentFinderCondition ContentFinder => Territory?.ContentFinderCondition?.Value;
+
+    public static string ContentFinderName => ContentFinder?.Name?.RawString ?? "Duty";
+
+    public static bool IsInHighEndDuty => ContentFinder?.HighEndDuty ?? false;
+    public static TerritoryContentType TerritoryContentType => (TerritoryContentType)(ContentFinder?.ContentType?.Value?.RowId ?? 0);
 
     public static AutoStatus AutoStatus { get; private set; } = AutoStatus.None;
     public static bool SetAutoStatus(AutoStatus status, bool keep)

@@ -151,6 +151,7 @@ public static class ObjectHelper
     {
         if (obj == null) return false;
         if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return true;
+
         return obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)
             || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
     }

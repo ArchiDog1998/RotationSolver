@@ -308,6 +308,7 @@ internal class Strings
     public string ActionSequencer_TargetCondition { get; set; } = "Target Condition";
     public string ActionSequencer_RotationCondition { get; set; } = "Rotation Condition";
     public string ActionSequencer_NamedCondition { get; set; } = "Named Condition";
+    public string ActionSequencer_TerritoryCondition { get; set; } = "Territory Condition";
     public string ActionSequencer_TraitCondition { get; set; } = "Trait Condition";
     public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
     public string ActionSequencer_Target { get; set; } = "Target";
@@ -388,6 +389,12 @@ internal class Strings
     public string TargetConditionType_MP { get; set; } = "MP";
     public string TargetConditionType_TargetName { get; set; } = "Target Name";
 
+    #endregion
+
+    #region TerritoryConditionType
+    public string TerritoryConditionType_TerritoryContentType { get; set; } = "Territory Content Type";
+    public string TerritoryConditionType_TeritoryName { get; set; } = "Teritory Name";
+    public string TerritoryConditionType_DutyName { get; set; } = "Duty Name";
     #endregion
 
     #region DescType
@@ -798,4 +805,8 @@ internal class Strings
     public string ConfigWindow_Condition_NoItemsWarning { get; set; } = "There are no items!";
 
     public string ConfigWindow_Condition_ConditionName { get; set; } = "Condition Name";
+
+    public string ConfigWindow_Condition_TeritoryName { get; set; } = "Teritory Name";
+
+    public string ConfigWindow_Condition_DutyName { get; set; } = "Duty Name";
 }

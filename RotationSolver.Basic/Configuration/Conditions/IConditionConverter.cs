@@ -30,6 +30,10 @@ internal class IConditionConverter : JsonCreationConverter<ICondition>
         {
             return new NamedCondition();
         }
+        else if (FieldExists(nameof(TerritoryCondition.TerritoryConditionType), jObject))
+        {
+            return new TerritoryCondition();
+        }
         else
         {
             return null;

@@ -31,6 +31,14 @@ internal static class EnumTranslations
         _ => string.Empty,
     };
 
+    internal static string ToName(this TerritoryConditionType type) => type switch
+    {
+        TerritoryConditionType.TerritoryContentType => LocalizationManager.RightLang.TerritoryConditionType_TerritoryContentType,
+        TerritoryConditionType.TeritoryName => LocalizationManager.RightLang.TerritoryConditionType_TeritoryName,
+        TerritoryConditionType.DutyName => LocalizationManager.RightLang.TerritoryConditionType_DutyName,
+        _ => string.Empty,
+    };
+
     internal static string ToName(this ActionConditionType type) => type switch
     {
         ActionConditionType.Elapsed => LocalizationManager.RightLang.ActionConditionType_Elapsed,
