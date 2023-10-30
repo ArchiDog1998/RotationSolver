@@ -33,7 +33,6 @@ internal class TargetCondition : DelayCondition
         else
         {
             tar = IsTarget ? Svc.Targets.Target as BattleChara : Player.Object;
-            tar ??= Player.Object;
         }
 
         if (tar == null) return false;
