@@ -922,12 +922,12 @@ internal static class ConditionDrawer
 
     private static string[] _territoryNames = null;
     public static string[] TerritoryNames => _territoryNames ??= Service.GetSheet<TerritoryType>()?
-        .Select(t => t?.Name?.RawString ?? string.Empty).Where(s => !string.IsNullOrEmpty(s)).ToArray();
+        .Select(t => t?.PlaceName?.Value?.Name?.RawString ?? string.Empty).Where(s => !string.IsNullOrEmpty(s)).ToArray();
 
     private static string[] _dutyNames = null;
 
-    public static string[] DutyNames => _dutyNames ??= Service.GetSheet<ContentFinderCondition>()?
-        .Select(t => t?.Name?.RawString ?? string.Empty).Where(s => !string.IsNullOrEmpty(s)).Reverse().ToArray();
+    public static string[] DutyNames => _dutyNames ??= new HashSet<string>(Service.GetSheet<ContentFinderCondition>()?
+        .Select(t => t?.Name?.RawString ?? string.Empty).Where(s => !string.IsNullOrEmpty(s)).Reverse()).ToArray();
 
     private static void DrawAfter(this TerritoryCondition territoryCondition, ICustomRotation rotation)
     {
@@ -951,7 +951,7 @@ internal static class ConditionDrawer
                 territoryCondition.Param1 = (int)type;
                 break;
 
-            case TerritoryConditionType.TeritoryName:
+            case TerritoryConditionType.TerritoryName:
                 ImGui.SameLine();
 
                 SearchItems($"##TerritoryName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,

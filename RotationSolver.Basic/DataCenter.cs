@@ -76,7 +76,7 @@ internal static class DataCenter
 
     public static TerritoryType Territory { get; set; }
 
-    public static string TerritoryName => Territory?.Name?.RawString ?? "Territory";
+    public static string TerritoryName => Territory?.PlaceName?.Value?.Name?.RawString ?? "Territory";
 
     public static ContentFinderCondition ContentFinder => Territory?.ContentFinderCondition?.Value;
 
