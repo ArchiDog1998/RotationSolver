@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.4.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.5...v3.4.6) (2023-10-30)
+
+
+### Bug Fixes
+
+* add territory condition. ([53a2344](https://github.com/ArchiDog1998/RotationSolver/commit/53a2344c07f592310cbc3dff3ef62df4a72354ac))
+* add territory conditions. ([de4ad60](https://github.com/ArchiDog1998/RotationSolver/commit/de4ad609e6ead043eab1f033cabe75295c27667e))
+* fixed target selection in target condition. ([319753c](https://github.com/ArchiDog1998/RotationSolver/commit/319753c7514454e0433c9f375c8023cd196f7312))
+
 ## [3.4.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.4...v3.4.5) (2023-10-28)
 
 
