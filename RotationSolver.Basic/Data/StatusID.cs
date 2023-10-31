@@ -1303,6 +1303,11 @@ public enum StatusID : ushort
     Mug = 3183,
 
     /// <summary>
+    ///
+    /// </summary>
+    TrickAttack = 3254,
+    
+    /// <summary>
     /// 
     /// </summary>
     Oblation = 2682,
