@@ -18,7 +18,7 @@ public static class Watcher
     private static Dalamud.Hooking.Hook<OnUseAction> _useActionHook;
 #endif
 
-    public static ICallGateSubscriber<object, object> IpcSubscriber;
+    private static ICallGateSubscriber<object, object> IpcSubscriber;
 
     public static void Enable()
     {
@@ -34,6 +34,15 @@ public static class Watcher
 
         ActionEffect.ActionEffectEvent += ActionFromEnemy;
         ActionEffect.ActionEffectEvent += ActionFromSelf;
+        MapEffect.Init((a1, position, param1, param2) =>
+        {
+            if(DataCenter.MapEffects.Count >= 64)
+            {
+                DataCenter.MapEffects.TryDequeue(out _);
+            }
+
+            DataCenter.MapEffects.Enqueue(new MapEffectData(position, param1, param2));
+        });
     }
 
     public static void Disable()
@@ -42,6 +51,7 @@ public static class Watcher
         _useActionHook?.Dispose();
 #endif
         IpcSubscriber.Unsubscribe(UpdateRTTDetour);
+        MapEffect.Dispose();
         ActionEffect.ActionEffectEvent -= ActionFromEnemy;
         ActionEffect.ActionEffectEvent -= ActionFromSelf;
     }

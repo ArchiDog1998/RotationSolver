@@ -899,6 +899,12 @@ internal static class ConditionDrawer
                 ImGui.DragFloat($"s##CastingActionTimeUntil{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
                 break;
 
+            case TargetConditionType.HPRatio:
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
+                ImGui.DragFloat($"##HPRatio{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
+                break;
+
             case TargetConditionType.MP:
             case TargetConditionType.HP:
                 ImGui.SameLine();
@@ -929,7 +935,7 @@ internal static class ConditionDrawer
     public static string[] DutyNames => _dutyNames ??= new HashSet<string>(Service.GetSheet<ContentFinderCondition>()?
         .Select(t => t?.Name?.RawString ?? string.Empty).Where(s => !string.IsNullOrEmpty(s)).Reverse()).ToArray();
 
-    private static void DrawAfter(this TerritoryCondition territoryCondition, ICustomRotation rotation)
+    private static void DrawAfter(this TerritoryCondition territoryCondition, ICustomRotation _)
     {
         DrawByteEnum($"##Category{territoryCondition.GetHashCode()}", ref territoryCondition.TerritoryConditionType, EnumTranslations.ToName);
 
@@ -969,6 +975,42 @@ internal static class ConditionDrawer
                 {
                     territoryCondition.Name = i;
                 }, LocalizationManager.RightLang.ConfigWindow_Condition_DutyName);
+                break;
+
+            case TerritoryConditionType.MapEffect:
+                ImGui.SameLine();
+
+                ImGui.Text("Pos:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(territoryCondition.Position.ToString()).X));
+                ImGui.DragInt($"##Position{territoryCondition.GetHashCode()}", ref territoryCondition.Position, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("Param1:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(territoryCondition.Param1.ToString()).X));
+                ImGui.DragInt($"##Param1{territoryCondition.GetHashCode()}", ref territoryCondition.Param1, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("Param2:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(territoryCondition.Param2.ToString()).X));
+                ImGui.DragInt($"##Param2{territoryCondition.GetHashCode()}", ref territoryCondition.Param2, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("Time Offset:");
+                ImGui.SameLine();
+                const float MIN = 0, MAX = 60;
+
+                ImGui.SetNextItemWidth(150 * ImGuiHelpers.GlobalScale);
+                if (ImGui.DragFloatRange2($"##TimeOffset {territoryCondition.GetHashCode()}", ref territoryCondition.TimeStart, ref territoryCondition.TimeEnd, 0.1f, MIN, MAX))
+                {
+                    territoryCondition.TimeStart = Math.Max(Math.Min(territoryCondition.TimeStart, territoryCondition.TimeEnd), MIN);
+                    territoryCondition.TimeEnd = Math.Min(Math.Max(territoryCondition.TimeStart, territoryCondition.TimeEnd), MAX);
+                }
                 break;
         }
     }

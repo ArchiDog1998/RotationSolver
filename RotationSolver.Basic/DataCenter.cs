@@ -15,6 +15,8 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
+    internal static Queue<MapEffectData> MapEffects { get; } = new(64);
+
     /// <summary>
     /// This one never be null.
     /// </summary>
@@ -449,13 +451,15 @@ internal static class DataCenter
         _actions.Enqueue(new ActionRec(_timeLastActionUsed, act));
     }
 
-    internal static void ResetAllLastActions()
+    internal static void ResetAllRecords()
     {
         LastAction = 0;
         LastGCD = 0;
         LastAbility = 0;
         _timeLastActionUsed = DateTime.Now;
         _actions.Clear();
+
+        DataCenter.MapEffects.Clear();
     }
 
     internal static void AddDamageRec(float damageRatio)

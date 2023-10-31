@@ -17,6 +17,7 @@ internal static class EnumTranslations
         TargetConditionType.CastingActionTimeUntil => LocalizationManager.RightLang.TargetConditionType_CastingActionTimeUntil,
         TargetConditionType.TimeToKill => LocalizationManager.RightLang.TargetConditionType_TimeToKill,
         TargetConditionType.HP => LocalizationManager.RightLang.TargetConditionType_HP,
+        TargetConditionType.HPRatio => LocalizationManager.RightLang.TargetConditionType_HPRatio,
         TargetConditionType.MP => LocalizationManager.RightLang.TargetConditionType_MP,
         TargetConditionType.TargetName => LocalizationManager.RightLang.TargetConditionType_TargetName,
         _ => string.Empty,

@@ -101,6 +101,10 @@ internal class TargetCondition : DelayCondition
                 result = tar.CurrentHp > GCD;
                 break;
 
+            case TargetConditionType.HPRatio:
+                result = tar.GetHealthRatio() > DistanceOrTime;
+                break;
+
             case TargetConditionType.MP:
                 result = tar.CurrentMp > GCD;
                 break;
@@ -132,6 +136,7 @@ internal enum TargetConditionType : byte
     CastingActionTimeUntil,
     TimeToKill,
     HP,
+    HPRatio,
     MP,
     TargetName,
 }
