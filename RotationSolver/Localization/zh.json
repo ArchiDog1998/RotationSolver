@@ -212,6 +212,7 @@
   "ActionSequencer_TargetCondition": "目标选择条件",
   "ActionSequencer_RotationCondition": "循环配置",
   "ActionSequencer_NamedCondition": "Named Condition",
+  "ActionSequencer_TerritoryCondition": "Territory Condition",
   "ActionSequencer_TraitCondition": "特性配置",
   "ActionSequencer_ActionTarget": "{0} 的目标",
   "ActionSequencer_Target": "目标",
@@ -272,6 +273,9 @@
   "TargetConditionType_HP": "HP",
   "TargetConditionType_MP": "MP",
   "TargetConditionType_TargetName": "Target Name",
+  "TerritoryConditionType_TerritoryContentType": "Territory Content Type",
+  "TerritoryConditionType_TeritoryName": "Teritory Name",
+  "TerritoryConditionType_DutyName": "Duty Name",
   "DescType_BurstActions": "爆发技能",
   "DescType_MoveForwardGCD": "GCD突进",
   "DescType_HealAreaGCD": "GCD群体治疗",
@@ -572,5 +576,7 @@
   "ConfigWindow_Basic_SwitchAutoConditionSet": "Auto turn auto conditions",
   "ConfigWindow_Condition_RotationNullWarning": "Rotation is null, please login or switch the job!",
   "ConfigWindow_Condition_NoItemsWarning": "There are no items!",
-  "ConfigWindow_Condition_ConditionName": "Condition Name"
+  "ConfigWindow_Condition_ConditionName": "Condition Name",
+  "ConfigWindow_Condition_TeritoryName": "Teritory Name",
+  "ConfigWindow_Condition_DutyName": "Duty Name"
 }
