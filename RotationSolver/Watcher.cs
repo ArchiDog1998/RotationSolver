@@ -1,5 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Hooking;
+using Dalamud.Memory;
 using Dalamud.Plugin.Ipc;
+using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.Hooks;
@@ -8,6 +11,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using System.Text.RegularExpressions;
+using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace RotationSolver;
 
@@ -15,20 +19,28 @@ public static class Watcher
 {
 #if DEBUG
     private unsafe delegate bool OnUseAction(ActionManager* manager, ActionType actionType, uint actionID, ulong targetID, uint a4, uint a5, uint a6, void* a7);
-    private static Dalamud.Hooking.Hook<OnUseAction> _useActionHook;
+    private static Hook<OnUseAction> _useActionHook;
 #endif
+
+    private unsafe delegate long ProcessObjectEffect(GameObject* a1, ushort a2, ushort a3, long a4);
+    private static Hook<ProcessObjectEffect> _processObjectEffectHook;
+
 
     private static ICallGateSubscriber<object, object> IpcSubscriber;
 
     public static void Enable()
     {
-#if DEBUG
         unsafe
         {
+#if DEBUG
+
             _useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? EB 64 B1 01", UseActionDetour);
             //_useActionHook.Enable();
-        }
 #endif
+            //From https://github.com/PunishXIV/Splatoon/blob/main/Splatoon/Memory/ObjectEffectProcessor.cs#L14
+            _processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B7 FA", ProcessObjectEffectDetour);
+            _processObjectEffectHook.Enable();
+        }
         IpcSubscriber = Svc.PluginInterface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
         IpcSubscriber.Subscribe(UpdateRTTDetour);
 
@@ -36,7 +48,7 @@ public static class Watcher
         ActionEffect.ActionEffectEvent += ActionFromSelf;
         MapEffect.Init((a1, position, param1, param2) =>
         {
-            if(DataCenter.MapEffects.Count >= 64)
+            if (DataCenter.MapEffects.Count >= 64)
             {
                 DataCenter.MapEffects.TryDequeue(out _);
             }
@@ -50,11 +62,31 @@ public static class Watcher
 #if DEBUG
         _useActionHook?.Dispose();
 #endif
+        _processObjectEffectHook?.Disable();
         IpcSubscriber.Unsubscribe(UpdateRTTDetour);
         MapEffect.Dispose();
         ActionEffect.ActionEffectEvent -= ActionFromEnemy;
         ActionEffect.ActionEffectEvent -= ActionFromSelf;
     }
+
+    private static unsafe long ProcessObjectEffectDetour(GameObject* a1, ushort a2, ushort a3, long a4)
+    {
+        try
+        {
+            if (DataCenter.ObjectEffects.Count >= 64)
+            {
+                DataCenter.ObjectEffects.TryDequeue(out _);
+            }
+
+            DataCenter.ObjectEffects.Enqueue(new ObjectEffectData(a1->ObjectID, a2, a3));
+        }
+        catch (Exception e)
+        {
+            Svc.Log.Warning(e, "Failed to execute the object effect!");
+        }
+        return _processObjectEffectHook.Original(a1, a2, a3, a4);
+    }
+
 #if DEBUG
     private static unsafe bool UseActionDetour(ActionManager* manager, ActionType actionType, uint actionID, ulong targetID, uint a4, uint a5, uint a6, void* a7)
     {

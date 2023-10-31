@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -67,7 +66,7 @@ public static class ObjectHelper
     /// <param name="obj"></param>
     /// <returns></returns>
     public static unsafe bool IsAlliance(this GameObject obj)
-        => obj != null 
+        => obj != null
         && ActionManager.CanUseActionOnTarget((uint)ActionID.Cure, obj.Struct());
 
     /// <summary>

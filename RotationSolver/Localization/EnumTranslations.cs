@@ -20,6 +20,7 @@ internal static class EnumTranslations
         TargetConditionType.HPRatio => LocalizationManager.RightLang.TargetConditionType_HPRatio,
         TargetConditionType.MP => LocalizationManager.RightLang.TargetConditionType_MP,
         TargetConditionType.TargetName => LocalizationManager.RightLang.TargetConditionType_TargetName,
+        TargetConditionType.ObjectEffect => LocalizationManager.RightLang.TargetConditionType_ObjectEffect,
         _ => string.Empty,
     };
 

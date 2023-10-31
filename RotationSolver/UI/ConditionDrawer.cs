@@ -3,7 +3,6 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
-using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Conditions;
@@ -922,6 +921,46 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
                 ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
                 ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
+                break;
+
+            case TargetConditionType.ObjectEffect:
+                ImGui.SameLine();
+
+                ImGui.Text("Param1:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.GCD.ToString()).X));
+                ImGui.DragInt($"##Param1{targetCondition.GetHashCode()}", ref targetCondition.GCD, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("Param2:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.Param2.ToString()).X));
+                ImGui.DragInt($"##Param2{targetCondition.GetHashCode()}", ref targetCondition.Param2, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("Time Offset:");
+                ImGui.SameLine();
+                const float MIN = 0, MAX = 60;
+
+                ImGui.SetNextItemWidth(150 * ImGuiHelpers.GlobalScale);
+                if (ImGui.DragFloatRange2($"##TimeOffset {targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, ref targetCondition.TimeEnd, 0.1f, MIN, MAX))
+                {
+                    targetCondition.DistanceOrTime = Math.Max(Math.Min(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MIN);
+                    targetCondition.TimeEnd = Math.Min(Math.Max(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MAX);
+                }
+
+                ImGui.SameLine();
+                check = targetCondition.FromSelf ? 1 : 0;
+                if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check))
+                {
+                    targetCondition.FromSelf = check != 0;
+                }
                 break;
         }
     }

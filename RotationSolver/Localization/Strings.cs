@@ -389,6 +389,7 @@ internal class Strings
     public string TargetConditionType_HPRatio { get; set; } = "HP%";
     public string TargetConditionType_MP { get; set; } = "MP";
     public string TargetConditionType_TargetName { get; set; } = "Target Name";
+    public string TargetConditionType_ObjectEffect { get; set; } = "Object Effect";
 
     #endregion
 

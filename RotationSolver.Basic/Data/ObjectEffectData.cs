@@ -1,8 +1,8 @@
 ﻿namespace RotationSolver.Basic.Data;
 
-internal readonly struct MapEffectData
+internal readonly struct ObjectEffectData
 {
-    public readonly uint Position;
+    public readonly uint ObjectId;
 
     public readonly ushort Param1, Param2;
 
@@ -10,10 +10,10 @@ internal readonly struct MapEffectData
 
     public readonly TimeSpan TimeDuration => DateTime.Now - Time;
 
-    public MapEffectData(uint position, ushort param1, ushort param2)
+    public ObjectEffectData(uint objectId, ushort param1, ushort param2)
     {
         Time = DateTime.Now;
-        Position = position;
+        ObjectId = objectId;
         Param1 = param1;
         Param2 = param2;
     }

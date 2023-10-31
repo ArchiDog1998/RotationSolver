@@ -16,8 +16,8 @@ internal class TargetCondition : DelayCondition
     public bool IsTarget;
     public TargetConditionType TargetConditionType;
 
-    public float DistanceOrTime;
-    public int GCD;
+    public float DistanceOrTime, TimeEnd;
+    public int GCD, Param2;
 
     public string CastingActionName = string.Empty;
 
@@ -117,6 +117,23 @@ internal class TargetCondition : DelayCondition
                 }
                 result = tar.Name.TextValue == CastingActionName;
                 break;
+
+            case TargetConditionType.ObjectEffect:
+                foreach (var effect in DataCenter.ObjectEffects.Reverse())
+                {
+                    var time = effect.TimeDuration.TotalSeconds;
+                    if (time > DistanceOrTime && time < TimeEnd
+                        && effect.Param1 == GCD
+                        && effect.Param2 == Param2)
+                    {
+                        if (!FromSelf || effect.ObjectId == tar.ObjectId)
+                        {
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+                break;
         }
 
         return Condition ? !result : result;
@@ -139,4 +156,5 @@ internal enum TargetConditionType : byte
     HPRatio,
     MP,
     TargetName,
+    ObjectEffect,
 }
