@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Data;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Data;
 
 internal readonly struct ObjectEffectData
 {
@@ -17,4 +19,6 @@ internal readonly struct ObjectEffectData
         Param1 = param1;
         Param2 = param2;
     }
+
+    public override string ToString() => $"Object Effect: {Svc.Objects.SearchById(ObjectId)?.Name ?? "Object"}, P1: {Param1}, P2: {Param2}";
 }

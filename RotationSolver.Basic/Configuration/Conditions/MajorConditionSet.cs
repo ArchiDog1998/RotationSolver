@@ -131,9 +131,10 @@ internal class MajorConditionSet
             {
                 return JsonConvert.DeserializeObject<MajorConditionSet>(str, new IConditionConverter());
             }
-            catch
+            catch(Exception ex) 
             {
-                Svc.Chat.Print($"Failed to load the conditionSet from {p}");
+                Svc.Log.Warning(ex, $"Failed to load the ConditionSet from {p}");
+                Svc.Chat.Print($"Failed to load the ConditionSet from {p}");
                 return null;
             }
         }).Where(set => set != null && !string.IsNullOrEmpty(set.Name)).ToArray();

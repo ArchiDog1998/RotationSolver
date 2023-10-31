@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Data;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Data;
 
 internal readonly struct MapEffectData
 {
@@ -17,4 +19,6 @@ internal readonly struct MapEffectData
         Param1 = param1;
         Param2 = param2;
     }
+
+    public override string ToString() => $"MapEffect: Pos: {Position}, P1: {Param1}, P2: {Param2}";
 }

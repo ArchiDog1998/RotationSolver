@@ -53,7 +53,11 @@ public static class Watcher
                 DataCenter.MapEffects.TryDequeue(out _);
             }
 
-            DataCenter.MapEffects.Enqueue(new MapEffectData(position, param1, param2));
+            var effect = new MapEffectData(position, param1, param2);
+            DataCenter.MapEffects.Enqueue(effect);
+#if DEBUG
+            Svc.Log.Debug(effect.ToString());
+#endif
         });
     }
 
@@ -78,7 +82,11 @@ public static class Watcher
                 DataCenter.ObjectEffects.TryDequeue(out _);
             }
 
-            DataCenter.ObjectEffects.Enqueue(new ObjectEffectData(a1->ObjectID, a2, a3));
+            var effect = new ObjectEffectData(a1->ObjectID, a2, a3);
+            DataCenter.ObjectEffects.Enqueue(effect);
+#if DEBUG
+            Svc.Log.Debug(effect.ToString());
+#endif
         }
         catch (Exception e)
         {

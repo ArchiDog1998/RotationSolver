@@ -3,11 +3,13 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
+using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Xml.Linq;
 using Action = System.Action;
 
 namespace RotationSolver.UI;
@@ -295,7 +297,6 @@ internal static class ConditionDrawer
             DataCenter.RightSet.NamedConditions.Select(p => p.Name).ToArray(), i => i.ToString(), i =>
             {
                 namedCondition.ConditionName = i;
-
             }, LocalizationManager.RightLang.ConfigWindow_Condition_ConditionName);
 
         ImGui.SameLine();
@@ -545,20 +546,28 @@ internal static class ConditionDrawer
                 conditionSet.Conditions.Insert(Math.Min(conditionSet.Conditions.Count, i + 1), condition);
             }
 
+            void Copy()
+            {
+                var str = JsonConvert.SerializeObject(conditionSet.Conditions[i], Formatting.Indented);
+                ImGui.SetClipboardText(str);
+            }
+
             var key = $"Condition Pop Up: {condition.GetHashCode()}";
 
             ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
                 (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }),
                 (LocalizationManager.RightLang.ConfigWindow_Actions_MoveUp, Up, new string[] { "↑" }),
-                (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }));
+                (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }),
+                (LocalizationManager.RightLang.ConfigWindow_Actions_Copy, Copy, new string[] { "Ctrl" }));
 
             DrawCondition(condition.IsTrue(rotation));
 
             ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
                 (Delete, new VirtualKey[] { VirtualKey.DELETE }),
                 (Up, new VirtualKey[] { VirtualKey.UP }),
-                (Down, new VirtualKey[] { VirtualKey.DOWN }));
-
+                (Down, new VirtualKey[] { VirtualKey.DOWN }),
+                (Copy, new VirtualKey[] { VirtualKey.CONTROL }));
+            
             ImGui.SameLine();
 
             condition.Draw(rotation);
@@ -574,7 +583,7 @@ internal static class ConditionDrawer
             }
 
             using var popUp = ImRaii.Popup("Popup" + conditionSet.GetHashCode().ToString());
-            if (popUp.Success)
+            if (popUp)
             {
                 AddOneCondition<ConditionSet>(LocalizationManager.RightLang.ActionSequencer_ConditionSet);
                 AddOneCondition<ActionCondition>(LocalizationManager.RightLang.ActionSequencer_ActionCondition);
@@ -583,6 +592,20 @@ internal static class ConditionDrawer
                 AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
                 AddOneCondition<NamedCondition>(LocalizationManager.RightLang.ActionSequencer_NamedCondition);
                 AddOneCondition<TerritoryCondition>(LocalizationManager.RightLang.ActionSequencer_TerritoryCondition);
+                if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_FromClipboard))
+                {
+                    var str = ImGui.GetClipboardText();
+                    try
+                    {
+                        var set = JsonConvert.DeserializeObject<ICondition>(str, new IConditionConverter());
+                        conditionSet.Conditions.Add(set);
+                    }
+                    catch (Exception ex)
+                    {
+                        Svc.Log.Warning(ex, "Failed to load the condition.");
+                    }
+                    ImGui.CloseCurrentPopup();
+                }
             }
 
             void AddOneCondition<T>(string name) where T : ICondition

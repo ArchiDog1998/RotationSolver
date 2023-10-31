@@ -145,17 +145,19 @@ internal static partial class TargetUpdater
         DataCenter.MobsTime = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
             >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber);
 
-        if (DataCenter.HostileTargets.Count() == 1)
-        {
-            var tar = DataCenter.HostileTargets.FirstOrDefault();
+        DataCenter.IsHostileCastingToTank = DataCenter.HostileTargets.Any(IsHostileCastingTank);
+        DataCenter.IsHostileCastingAOE = DataCenter.HostileTargets.Any(IsHostileCastingArea);
+        //if (DataCenter.HostileTargets.Count() == 1)
+        //{
+        //    var tar = DataCenter.HostileTargets.FirstOrDefault();
 
-            DataCenter.IsHostileCastingToTank = IsHostileCastingTank(tar);
-            DataCenter.IsHostileCastingAOE = IsHostileCastingArea(tar);
-        }
-        else
-        {
-            DataCenter.IsHostileCastingToTank = DataCenter.IsHostileCastingAOE = false;
-        }
+        //    DataCenter.IsHostileCastingToTank = IsHostileCastingTank(tar);
+        //    DataCenter.IsHostileCastingAOE = IsHostileCastingArea(tar);
+        //}
+        //else
+        //{
+        //    DataCenter.IsHostileCastingToTank = DataCenter.IsHostileCastingAOE = false;
+        //}
 
         DataCenter.CanProvoke = _provokeDelay.Delay(TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count());
     }
@@ -240,6 +242,7 @@ internal static partial class TargetUpdater
 
     private static bool IsHostileCastingArea(BattleChara h)
     {
+        //TODO: Add some stack effects here!
         return IsHostileCastingBase(h, (act) =>
         {
             return OtherConfiguration.HostileCastingArea.Contains(act.RowId);

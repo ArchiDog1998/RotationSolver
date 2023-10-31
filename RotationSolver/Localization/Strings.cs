@@ -309,6 +309,7 @@ internal class Strings
     public string ActionSequencer_RotationCondition { get; set; } = "Rotation Condition";
     public string ActionSequencer_NamedCondition { get; set; } = "Named Condition";
     public string ActionSequencer_TerritoryCondition { get; set; } = "Territory Condition";
+    public string ActionSequencer_FromClipboard { get; set; } = "From Clipboard";
     public string ActionSequencer_TraitCondition { get; set; } = "Trait Condition";
     public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
     public string ActionSequencer_Target { get; set; } = "Target";
@@ -731,6 +732,7 @@ internal class Strings
     public string ConfigWindow_List_AddPosition { get; set; } = "Add beneficial AoE location";
     public string ConfigWindow_Actions_MoveUp { get; set; } = "Move Up";
     public string ConfigWindow_Actions_MoveDown { get; set; } = "Move Down";
+    public string ConfigWindow_Actions_Copy { get; set; } = "Copy to clipboard";
     public string ConfigWindow_NotInJob { get; set; } = "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}";
 
     public string ConfigWindow_Searching { get; set; } = "Search...";
