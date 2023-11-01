@@ -14,6 +14,12 @@
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
   <ItemGroup>
 	  <Using Include="System.ComponentModel" />
 	  <Using Include="Dalamud.Game.ClientState.JobGauge.Types" />

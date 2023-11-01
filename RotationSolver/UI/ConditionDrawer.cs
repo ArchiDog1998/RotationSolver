@@ -969,7 +969,7 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
                 const float MIN = 0, MAX = 60;
 
-                ImGui.SetNextItemWidth(150 * ImGuiHelpers.GlobalScale);
+                ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
                 if (ImGui.DragFloatRange2($"##TimeOffset {targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, ref targetCondition.TimeEnd, 0.1f, MIN, MAX))
                 {
                     targetCondition.DistanceOrTime = Math.Max(Math.Min(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MIN);
@@ -992,6 +992,8 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
 
                 ImGui.Text("Vfx Path:");
+                ImGui.SameLine();
+
                 ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
                 ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
 
@@ -1000,7 +1002,7 @@ internal static class ConditionDrawer
                 ImGui.Text("Time Offset:");
                 ImGui.SameLine();
 
-                ImGui.SetNextItemWidth(150 * ImGuiHelpers.GlobalScale);
+                ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
                 if (ImGui.DragFloatRange2($"##TimeOffset {targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, ref targetCondition.TimeEnd, 0.1f, MIN, MAX))
                 {
                     targetCondition.DistanceOrTime = Math.Max(Math.Min(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MIN);
@@ -1100,7 +1102,7 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
                 const float MIN = 0, MAX = 60;
 
-                ImGui.SetNextItemWidth(150 * ImGuiHelpers.GlobalScale);
+                ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
                 if (ImGui.DragFloatRange2($"##TimeOffset {territoryCondition.GetHashCode()}", ref territoryCondition.TimeStart, ref territoryCondition.TimeEnd, 0.1f, MIN, MAX))
                 {
                     territoryCondition.TimeStart = Math.Max(Math.Min(territoryCondition.TimeStart, territoryCondition.TimeEnd), MIN);
