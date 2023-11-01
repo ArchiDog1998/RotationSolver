@@ -812,6 +812,7 @@ internal static class ConditionDrawer
             case TargetConditionType.StatusEnd:
             case TargetConditionType.TimeToKill:
             case TargetConditionType.HP:
+            case TargetConditionType.HPRatio:
             case TargetConditionType.MP:
                 combos = new string[] { ">", "<=" };
                 break;
@@ -951,16 +952,16 @@ internal static class ConditionDrawer
             case TargetConditionType.ObjectEffect:
                 ImGui.SameLine();
 
-                ImGui.Text("Param1:");
+                ImGui.Text("P1:");
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.GCD.ToString()).X));
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
                 ImGui.DragInt($"##Param1{targetCondition.GetHashCode()}", ref targetCondition.GCD, .1f);
 
                 ImGui.SameLine();
 
-                ImGui.Text("Param2:");
+                ImGui.Text("P2:");
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.Param2.ToString()).X));
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
                 ImGui.DragInt($"##Param2{targetCondition.GetHashCode()}", ref targetCondition.Param2, .1f);
 
                 ImGui.SameLine();
@@ -1079,21 +1080,21 @@ internal static class ConditionDrawer
 
                 ImGui.Text("Pos:");
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(territoryCondition.Position.ToString()).X));
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
                 ImGui.DragInt($"##Position{territoryCondition.GetHashCode()}", ref territoryCondition.Position, .1f);
 
                 ImGui.SameLine();
 
-                ImGui.Text("Param1:");
+                ImGui.Text("P1:");
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(territoryCondition.Param1.ToString()).X));
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
                 ImGui.DragInt($"##Param1{territoryCondition.GetHashCode()}", ref territoryCondition.Param1, .1f);
 
                 ImGui.SameLine();
 
-                ImGui.Text("Param2:");
+                ImGui.Text("P2:");
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(territoryCondition.Param2.ToString()).X));
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
                 ImGui.DragInt($"##Param2{territoryCondition.GetHashCode()}", ref territoryCondition.Param2, .1f);
 
                 ImGui.SameLine();

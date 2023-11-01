@@ -397,8 +397,9 @@ internal class Strings
 
     #region TerritoryConditionType
     public string TerritoryConditionType_TerritoryContentType { get; set; } = "Territory Content Type";
-    public string TerritoryConditionType_TeritoryName { get; set; } = "Teritory Name";
+    public string TerritoryConditionType_TerritoryName { get; set; } = "Territory Name";
     public string TerritoryConditionType_DutyName { get; set; } = "Duty Name";
+    public string TerritoryConditionType_MapEffect { get; set; } = "Map Effect";
     #endregion
 
     #region DescType
@@ -733,7 +734,7 @@ internal class Strings
     public string ConfigWindow_List_AddPosition { get; set; } = "Add beneficial AoE location";
     public string ConfigWindow_Actions_MoveUp { get; set; } = "Move Up";
     public string ConfigWindow_Actions_MoveDown { get; set; } = "Move Down";
-    public string ConfigWindow_Actions_Copy { get; set; } = "Copy to clipboard";
+    public string ConfigWindow_Actions_Copy { get; set; } = "Copy to Clipboard";
     public string ConfigWindow_NotInJob { get; set; } = "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}";
 
     public string ConfigWindow_Searching { get; set; } = "Search...";
@@ -772,7 +773,7 @@ internal class Strings
     public string ConfigWindow_Actions_ConditionDescription { get; set; } = "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.";
 
     public string ConfigWindow_Auto_UseResourcesAction { get; set; } = "Use actions that use resources";
-    public string ConfigWindow_Auto_OnlyHealselfWhenNoHealer { get; set; } = "Only Healself When No Healer";
+    public string ConfigWindow_Auto_OnlyHealSelfWhenNoHealer { get; set; } = "Only Heal self When Not a healer";
 
     public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";
     public string ConfigWindow_Basic_SayHelloToUsers { get; set; } = "Say hello to the users of Rotation Solver.";

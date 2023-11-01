@@ -409,7 +409,7 @@ internal static partial class TargetUpdater
         var singleAbility = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot());
         var singleSpell = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot());
 
-        var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealselfWhenNoHealer) && player.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
+        var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealSelfWhenNoHealer) && player.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
         DataCenter.CanHealSingleAbility = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot())
             : singleAbility > 0;
         DataCenter.CanHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer,StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot()) : singleSpell > 0;

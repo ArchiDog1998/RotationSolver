@@ -37,8 +37,9 @@ internal static class EnumTranslations
     internal static string ToName(this TerritoryConditionType type) => type switch
     {
         TerritoryConditionType.TerritoryContentType => LocalizationManager.RightLang.TerritoryConditionType_TerritoryContentType,
-        TerritoryConditionType.TerritoryName => LocalizationManager.RightLang.TerritoryConditionType_TeritoryName,
+        TerritoryConditionType.TerritoryName => LocalizationManager.RightLang.TerritoryConditionType_TerritoryName,
         TerritoryConditionType.DutyName => LocalizationManager.RightLang.TerritoryConditionType_DutyName,
+        TerritoryConditionType.MapEffect => LocalizationManager.RightLang.TerritoryConditionType_MapEffect,
         _ => string.Empty,
     };
 

@@ -22,7 +22,7 @@ public static class TargetFilter
         if (availableCharas == null || !availableCharas.Any()) return null;
 
         var player = Svc.ClientState.LocalPlayer;
-        var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealselfWhenNoHealer) && player?.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
+        var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealSelfWhenNoHealer) && player?.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
 
         if (onlyHealSelf)
         {
