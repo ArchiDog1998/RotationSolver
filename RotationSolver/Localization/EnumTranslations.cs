@@ -21,6 +21,7 @@ internal static class EnumTranslations
         TargetConditionType.MP => LocalizationManager.RightLang.TargetConditionType_MP,
         TargetConditionType.TargetName => LocalizationManager.RightLang.TargetConditionType_TargetName,
         TargetConditionType.ObjectEffect => LocalizationManager.RightLang.TargetConditionType_ObjectEffect,
+        TargetConditionType.Vfx => LocalizationManager.RightLang.TargetConditionType_Vfx,
         _ => string.Empty,
     };
 

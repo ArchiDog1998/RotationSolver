@@ -249,13 +249,13 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction VariantCure { get; } = new RoleAction(ActionID.VariantCure,
         new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical },
-        ActionOption.Heal | ActionOption.DutyAction);
+        ActionOption.Heal | ActionOption.DutyAction | ActionOption.EndSpecial);
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction VariantCure2 { get; } = new RoleAction(ActionID.VariantCure2,
-        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical }, ActionOption.Heal | ActionOption.DutyAction);
+        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical }, ActionOption.Heal | ActionOption.DutyAction | ActionOption.EndSpecial);
 
     /// <summary>
     /// 

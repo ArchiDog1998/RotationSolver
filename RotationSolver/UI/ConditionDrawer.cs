@@ -798,6 +798,8 @@ internal static class ConditionDrawer
             case TargetConditionType.InCombat:
             case TargetConditionType.CastingAction:
             case TargetConditionType.TargetName:
+            case TargetConditionType.ObjectEffect:
+            case TargetConditionType.Vfx:
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_Is,
@@ -966,6 +968,37 @@ internal static class ConditionDrawer
                 ImGui.Text("Time Offset:");
                 ImGui.SameLine();
                 const float MIN = 0, MAX = 60;
+
+                ImGui.SetNextItemWidth(150 * ImGuiHelpers.GlobalScale);
+                if (ImGui.DragFloatRange2($"##TimeOffset {targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, ref targetCondition.TimeEnd, 0.1f, MIN, MAX))
+                {
+                    targetCondition.DistanceOrTime = Math.Max(Math.Min(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MIN);
+                    targetCondition.TimeEnd = Math.Min(Math.Max(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MAX);
+                }
+
+                ImGui.SameLine();
+                check = targetCondition.FromSelf ? 1 : 0;
+                if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check))
+                {
+                    targetCondition.FromSelf = check != 0;
+                }
+                break;
+
+            case TargetConditionType.Vfx:
+                ImGui.SameLine();
+
+                ImGui.Text("Vfx Path:");
+                ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
+                ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
+
+                ImGui.SameLine();
+
+                ImGui.Text("Time Offset:");
+                ImGui.SameLine();
 
                 ImGui.SetNextItemWidth(150 * ImGuiHelpers.GlobalScale);
                 if (ImGui.DragFloatRange2($"##TimeOffset {targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, ref targetCondition.TimeEnd, 0.1f, MIN, MAX))

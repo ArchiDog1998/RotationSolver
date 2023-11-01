@@ -134,6 +134,22 @@ internal class TargetCondition : DelayCondition
                     }
                 }
                 break;
+
+            case TargetConditionType.Vfx:
+                foreach (var effect in DataCenter.VfxNewDatas.Reverse())
+                {
+                    var time = effect.TimeDuration.TotalSeconds;
+                    if (time > DistanceOrTime && time < TimeEnd
+                        && effect.Path == CastingActionName)
+                    {
+                        if (!FromSelf || effect.ObjectId == tar.ObjectId)
+                        {
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+                break;
         }
 
         return Condition ? !result : result;
@@ -157,4 +173,5 @@ internal enum TargetConditionType : byte
     MP,
     TargetName,
     ObjectEffect,
+    Vfx,
 }

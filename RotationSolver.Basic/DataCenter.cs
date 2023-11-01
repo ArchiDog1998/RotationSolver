@@ -17,6 +17,7 @@ internal static class DataCenter
 {
     internal static Queue<MapEffectData> MapEffects { get; } = new(64);
     internal static Queue<ObjectEffectData> ObjectEffects { get; } = new(64);
+    internal static Queue<VfxNewData> VfxNewDatas { get; } = new(64);
 
     /// <summary>
     /// This one never be null.
@@ -462,6 +463,7 @@ internal static class DataCenter
 
         MapEffects.Clear();
         ObjectEffects.Clear();
+        VfxNewDatas.Clear();
     }
 
     internal static void AddDamageRec(float damageRatio)
