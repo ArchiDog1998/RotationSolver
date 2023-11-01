@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.4.7](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.6...v3.4.7) (2023-11-01)
+
+
+### Bug Fixes
+
+* add an option to heal only to self when no healer. ([c997eb4](https://github.com/ArchiDog1998/RotationSolver/commit/c997eb4d6ce619f0f26b5e6db52c0fed35dcc706))
+* add HP% condition, add MapEffect condition. ([f05db68](https://github.com/ArchiDog1998/RotationSolver/commit/f05db68359ea9a8f608eda8d52ff252a5e2fd65f))
+* add target effect condition. Thanks Splatoon! ([e9e7e02](https://github.com/ArchiDog1998/RotationSolver/commit/e9e7e0226d668bd46262d077b3d63606e6be8896))
+* add vfx condition. ([507fdc1](https://github.com/ArchiDog1998/RotationSolver/commit/507fdc146a0d269e8b0686bbee47577302529a89))
+* conditions can be copied. ([e02234c](https://github.com/ArchiDog1998/RotationSolver/commit/e02234cb9bb8ce983623dd0020facfd495292e8e))
+* fixed clipping check in base item. ([a95cb5f](https://github.com/ArchiDog1998/RotationSolver/commit/a95cb5fbb8bd1892a246a64c885d8defbe186323))
+* fixed some ui bugs. ([2ee6e4c](https://github.com/ArchiDog1998/RotationSolver/commit/2ee6e4c379618e901b59f40f291a5ccdea94617b))
+
 ## [3.4.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.5...v3.4.6) (2023-10-30)
 
 
