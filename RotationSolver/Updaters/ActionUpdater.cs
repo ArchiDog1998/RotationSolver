@@ -229,9 +229,9 @@ internal static class ActionUpdater
 
         var timeToNext = DataCenter.ActionRemain;
 
-        //No time to use 0gcd
-        if (timeToNext + nextAction.AnimationLockTime
-            > DataCenter.WeaponRemain) return false;
+        ////No time to use 0gcd
+        //if (timeToNext + nextAction.AnimationLockTime
+        //    > DataCenter.WeaponRemain) return false;
 
         //Skip when casting
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return false;

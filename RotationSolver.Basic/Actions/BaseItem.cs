@@ -171,11 +171,11 @@ public class BaseItem : IBaseItem
 
         var remain = RecastTimeOneChargeRaw - RecastTimeElapsedRaw;
 
-        if (DataCenter.WeaponRemain > 0)
+        if (clippingCheck && DataCenter.WeaponRemain > 0)
         {
-            if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping) return false;
+            if (DataCenter.NextAbilityToNextGCD < AnimationLockTime + DataCenter.Ping) return false;
 
-            if (clippingCheck && remain > DataCenter.ActionRemain) return false;
+            if (remain > DataCenter.ActionRemain) return false;
         }
 
         if (ItemCheck != null && !ItemCheck()) return false;

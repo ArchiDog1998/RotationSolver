@@ -4,6 +4,12 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="DalamudPackager" Version="2.1.12" />

@@ -111,6 +111,7 @@ internal static class ConfigTranslation
         PluginConfigBool.RecordCastingArea => "Record AOE actions",
         PluginConfigBool.HealWhenNothingTodo => LocalizationManager.RightLang.ConfigWindow_Param_HealWhenNothingTodo,
         PluginConfigBool.UseResourcesAction => LocalizationManager.RightLang.ConfigWindow_Auto_UseResourcesAction,
+        PluginConfigBool.OnlyHealSelfWhenNoHealer => LocalizationManager.RightLang.ConfigWindow_Auto_OnlyHealSelfWhenNoHealer,
 
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,

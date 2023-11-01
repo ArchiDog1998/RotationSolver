@@ -661,6 +661,17 @@ public partial class RotationConfigWindow
             new DragFloatSearchPlugin(PluginConfigFloat.AutoHealTimeToKill, 0.02f),
             new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
 
+        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHealSelfWhenNoHealer) 
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Tank,
+                JobRole.Melee,
+                JobRole.RangedMagical,
+                JobRole.RangedPhysical,
+            }
+        },
+
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyHotOnTanks)
         {
             JobRoles = new JobRole[]

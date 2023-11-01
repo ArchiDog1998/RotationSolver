@@ -50,7 +50,7 @@ namespace RotationSolver.Commands
 
 #if DEBUG
             //if (nextAction is BaseAction acti)
-            //    Svc.Chat.Print($"Will Do {acti}");
+            //    Svc.Log.Debug($"Will Do {acti}");
 #endif
 
             if (Service.Config.GetValue(PluginConfigBool.KeyBoardNoise))
@@ -72,7 +72,7 @@ namespace RotationSolver.Commands
 
                     if (act.ShouldEndSpecial) ResetSpecial();
 #if DEBUG
-                    //Svc.Chat.Print($"{act}, {act.Target.Name}, {ActionUpdater.AbilityRemainCount}, {ActionUpdater.WeaponElapsed}");
+                    //Svc.Log.Debug($"{act}, {act.Target.Name}");
 #endif
                     //Change Target
                     if (act.Target != null && act.Target != Player.Object && !DataCenter.IsManual

@@ -9,6 +9,7 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Xml.Linq;
 using Action = System.Action;
 
 namespace RotationSolver.UI;
@@ -296,7 +297,6 @@ internal static class ConditionDrawer
             DataCenter.RightSet.NamedConditions.Select(p => p.Name).ToArray(), i => i.ToString(), i =>
             {
                 namedCondition.ConditionName = i;
-
             }, LocalizationManager.RightLang.ConfigWindow_Condition_ConditionName);
 
         ImGui.SameLine();
@@ -546,20 +546,28 @@ internal static class ConditionDrawer
                 conditionSet.Conditions.Insert(Math.Min(conditionSet.Conditions.Count, i + 1), condition);
             }
 
+            void Copy()
+            {
+                var str = JsonConvert.SerializeObject(conditionSet.Conditions[i], Formatting.Indented);
+                ImGui.SetClipboardText(str);
+            }
+
             var key = $"Condition Pop Up: {condition.GetHashCode()}";
 
             ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
                 (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }),
                 (LocalizationManager.RightLang.ConfigWindow_Actions_MoveUp, Up, new string[] { "↑" }),
-                (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }));
+                (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }),
+                (LocalizationManager.RightLang.ConfigWindow_Actions_Copy, Copy, new string[] { "Ctrl" }));
 
             DrawCondition(condition.IsTrue(rotation));
 
             ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
                 (Delete, new VirtualKey[] { VirtualKey.DELETE }),
                 (Up, new VirtualKey[] { VirtualKey.UP }),
-                (Down, new VirtualKey[] { VirtualKey.DOWN }));
-
+                (Down, new VirtualKey[] { VirtualKey.DOWN }),
+                (Copy, new VirtualKey[] { VirtualKey.CONTROL }));
+            
             ImGui.SameLine();
 
             condition.Draw(rotation);
@@ -575,7 +583,7 @@ internal static class ConditionDrawer
             }
 
             using var popUp = ImRaii.Popup("Popup" + conditionSet.GetHashCode().ToString());
-            if (popUp.Success)
+            if (popUp)
             {
                 AddOneCondition<ConditionSet>(LocalizationManager.RightLang.ActionSequencer_ConditionSet);
                 AddOneCondition<ActionCondition>(LocalizationManager.RightLang.ActionSequencer_ActionCondition);
@@ -584,6 +592,20 @@ internal static class ConditionDrawer
                 AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
                 AddOneCondition<NamedCondition>(LocalizationManager.RightLang.ActionSequencer_NamedCondition);
                 AddOneCondition<TerritoryCondition>(LocalizationManager.RightLang.ActionSequencer_TerritoryCondition);
+                if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_FromClipboard))
+                {
+                    var str = ImGui.GetClipboardText();
+                    try
+                    {
+                        var set = JsonConvert.DeserializeObject<ICondition>(str, new IConditionConverter());
+                        conditionSet.Conditions.Add(set);
+                    }
+                    catch (Exception ex)
+                    {
+                        Svc.Log.Warning(ex, "Failed to load the condition.");
+                    }
+                    ImGui.CloseCurrentPopup();
+                }
             }
 
             void AddOneCondition<T>(string name) where T : ICondition
@@ -776,6 +798,8 @@ internal static class ConditionDrawer
             case TargetConditionType.InCombat:
             case TargetConditionType.CastingAction:
             case TargetConditionType.TargetName:
+            case TargetConditionType.ObjectEffect:
+            case TargetConditionType.Vfx:
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_Is,
@@ -788,6 +812,7 @@ internal static class ConditionDrawer
             case TargetConditionType.StatusEnd:
             case TargetConditionType.TimeToKill:
             case TargetConditionType.HP:
+            case TargetConditionType.HPRatio:
             case TargetConditionType.MP:
                 combos = new string[] { ">", "<=" };
                 break;
@@ -899,6 +924,12 @@ internal static class ConditionDrawer
                 ImGui.DragFloat($"s##CastingActionTimeUntil{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
                 break;
 
+            case TargetConditionType.HPRatio:
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
+                ImGui.DragFloat($"##HPRatio{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
+                break;
+
             case TargetConditionType.MP:
             case TargetConditionType.HP:
                 ImGui.SameLine();
@@ -917,6 +948,79 @@ internal static class ConditionDrawer
                 ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
                 ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
                 break;
+
+            case TargetConditionType.ObjectEffect:
+                ImGui.SameLine();
+
+                ImGui.Text("P1:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
+                ImGui.DragInt($"##Param1{targetCondition.GetHashCode()}", ref targetCondition.GCD, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("P2:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
+                ImGui.DragInt($"##Param2{targetCondition.GetHashCode()}", ref targetCondition.Param2, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("Time Offset:");
+                ImGui.SameLine();
+                const float MIN = 0, MAX = 60;
+
+                ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
+                if (ImGui.DragFloatRange2($"##TimeOffset {targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, ref targetCondition.TimeEnd, 0.1f, MIN, MAX))
+                {
+                    targetCondition.DistanceOrTime = Math.Max(Math.Min(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MIN);
+                    targetCondition.TimeEnd = Math.Min(Math.Max(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MAX);
+                }
+
+                ImGui.SameLine();
+                check = targetCondition.FromSelf ? 1 : 0;
+                if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check))
+                {
+                    targetCondition.FromSelf = check != 0;
+                }
+                break;
+
+            case TargetConditionType.Vfx:
+                ImGui.SameLine();
+
+                ImGui.Text("Vfx Path:");
+                ImGui.SameLine();
+
+                ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
+                ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
+
+                ImGui.SameLine();
+
+                ImGui.Text("Time Offset:");
+                ImGui.SameLine();
+
+                ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
+                if (ImGui.DragFloatRange2($"##TimeOffset {targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, ref targetCondition.TimeEnd, 0.1f, MIN, MAX))
+                {
+                    targetCondition.DistanceOrTime = Math.Max(Math.Min(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MIN);
+                    targetCondition.TimeEnd = Math.Min(Math.Max(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MAX);
+                }
+
+                ImGui.SameLine();
+                check = targetCondition.FromSelf ? 1 : 0;
+                if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}", new string[]
+                {
+                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
+                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                }, ref check))
+                {
+                    targetCondition.FromSelf = check != 0;
+                }
+                break;
         }
     }
 
@@ -929,7 +1033,7 @@ internal static class ConditionDrawer
     public static string[] DutyNames => _dutyNames ??= new HashSet<string>(Service.GetSheet<ContentFinderCondition>()?
         .Select(t => t?.Name?.RawString ?? string.Empty).Where(s => !string.IsNullOrEmpty(s)).Reverse()).ToArray();
 
-    private static void DrawAfter(this TerritoryCondition territoryCondition, ICustomRotation rotation)
+    private static void DrawAfter(this TerritoryCondition territoryCondition, ICustomRotation _)
     {
         DrawByteEnum($"##Category{territoryCondition.GetHashCode()}", ref territoryCondition.TerritoryConditionType, EnumTranslations.ToName);
 
@@ -969,6 +1073,42 @@ internal static class ConditionDrawer
                 {
                     territoryCondition.Name = i;
                 }, LocalizationManager.RightLang.ConfigWindow_Condition_DutyName);
+                break;
+
+            case TerritoryConditionType.MapEffect:
+                ImGui.SameLine();
+
+                ImGui.Text("Pos:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
+                ImGui.DragInt($"##Position{territoryCondition.GetHashCode()}", ref territoryCondition.Position, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("P1:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
+                ImGui.DragInt($"##Param1{territoryCondition.GetHashCode()}", ref territoryCondition.Param1, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("P2:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
+                ImGui.DragInt($"##Param2{territoryCondition.GetHashCode()}", ref territoryCondition.Param2, .1f);
+
+                ImGui.SameLine();
+
+                ImGui.Text("Time Offset:");
+                ImGui.SameLine();
+                const float MIN = 0, MAX = 60;
+
+                ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
+                if (ImGui.DragFloatRange2($"##TimeOffset {territoryCondition.GetHashCode()}", ref territoryCondition.TimeStart, ref territoryCondition.TimeEnd, 0.1f, MIN, MAX))
+                {
+                    territoryCondition.TimeStart = Math.Max(Math.Min(territoryCondition.TimeStart, territoryCondition.TimeEnd), MIN);
+                    territoryCondition.TimeEnd = Math.Min(Math.Max(territoryCondition.TimeStart, territoryCondition.TimeEnd), MAX);
+                }
                 break;
         }
     }

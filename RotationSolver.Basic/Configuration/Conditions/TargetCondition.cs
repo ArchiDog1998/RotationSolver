@@ -16,8 +16,8 @@ internal class TargetCondition : DelayCondition
     public bool IsTarget;
     public TargetConditionType TargetConditionType;
 
-    public float DistanceOrTime;
-    public int GCD;
+    public float DistanceOrTime, TimeEnd;
+    public int GCD, Param2;
 
     public string CastingActionName = string.Empty;
 
@@ -101,6 +101,10 @@ internal class TargetCondition : DelayCondition
                 result = tar.CurrentHp > GCD;
                 break;
 
+            case TargetConditionType.HPRatio:
+                result = tar.GetHealthRatio() > DistanceOrTime;
+                break;
+
             case TargetConditionType.MP:
                 result = tar.CurrentMp > GCD;
                 break;
@@ -112,6 +116,39 @@ internal class TargetCondition : DelayCondition
                     break;
                 }
                 result = tar.Name.TextValue == CastingActionName;
+                break;
+
+            case TargetConditionType.ObjectEffect:
+                foreach (var effect in DataCenter.ObjectEffects.Reverse())
+                {
+                    var time = effect.TimeDuration.TotalSeconds;
+                    if (time > DistanceOrTime && time < TimeEnd
+                        && effect.Param1 == GCD
+                        && effect.Param2 == Param2)
+                    {
+                        if (!FromSelf || effect.ObjectId == tar.ObjectId)
+                        {
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+                break;
+
+            case TargetConditionType.Vfx:
+                foreach (var effect in DataCenter.VfxNewDatas.Reverse())
+                {
+                    var time = effect.TimeDuration.TotalSeconds;
+                    if (time > DistanceOrTime && time < TimeEnd
+                        && effect.Path == CastingActionName)
+                    {
+                        if (!FromSelf || effect.ObjectId == tar.ObjectId)
+                        {
+                            result = true;
+                            break;
+                        }
+                    }
+                }
                 break;
         }
 
@@ -132,6 +169,9 @@ internal enum TargetConditionType : byte
     CastingActionTimeUntil,
     TimeToKill,
     HP,
+    HPRatio,
     MP,
     TargetName,
+    ObjectEffect,
+    Vfx,
 }

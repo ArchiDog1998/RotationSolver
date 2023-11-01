@@ -76,7 +76,7 @@ internal class SocialUpdater
 
     static void ClientState_TerritoryChanged(ushort id)
     {
-        DataCenter.ResetAllLastActions();
+        DataCenter.ResetAllRecords();
 
         var territory = Service.GetSheet<TerritoryType>().GetRow(id);
         _canSaying = territory?.ContentFinderCondition?.Value?.RowId != 0;
@@ -109,7 +109,7 @@ internal class SocialUpdater
     static void DutyState_DutyWiped(object sender, ushort e)
     {
         if (!Player.Available) return;
-        DataCenter.ResetAllLastActions();
+        DataCenter.ResetAllRecords();
     }
 
     internal static void Disable()

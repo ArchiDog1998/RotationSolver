@@ -86,14 +86,12 @@ internal static partial class TargetUpdater
 
     private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
     {
-        var deadHP = DataCenter.PartyMembers.Count() > 1 ? 0 : 1;
-
         allTargets = allTargets.Where(b =>
         {
             if (!b.IsNPCEnemy()) return false;
 
             //Dead.
-            if (b.CurrentHp <= deadHP) return false;
+            if (b.CurrentHp <= 1) return false;
 
             if (!b.IsTargetable) return false;
 
@@ -145,17 +143,8 @@ internal static partial class TargetUpdater
         DataCenter.MobsTime = DataCenter.HostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
             >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber);
 
-        if (DataCenter.HostileTargets.Count() == 1)
-        {
-            var tar = DataCenter.HostileTargets.FirstOrDefault();
-
-            DataCenter.IsHostileCastingToTank = IsHostileCastingTank(tar);
-            DataCenter.IsHostileCastingAOE = IsHostileCastingArea(tar);
-        }
-        else
-        {
-            DataCenter.IsHostileCastingToTank = DataCenter.IsHostileCastingAOE = false;
-        }
+        DataCenter.IsHostileCastingToTank = IsCastingTankVfx() || DataCenter.HostileTargets.Any(IsHostileCastingTank);
+        DataCenter.IsHostileCastingAOE = IsCastingAreaVfx() || DataCenter.HostileTargets.Any(IsHostileCastingArea);
 
         DataCenter.CanProvoke = _provokeDelay.Delay(TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count());
     }
@@ -229,6 +218,29 @@ internal static partial class TargetUpdater
         return list.ToArray();
     }
 
+    private static bool IsCastingTankVfx()
+    {
+        return false;
+    }
+
+    private static bool IsCastingAreaVfx()
+    {
+        return false;
+    }
+
+    private static bool IsCastingVfx(Func<string, bool> isVfx)
+    {
+        if (isVfx == null) return false;
+        foreach (var item in DataCenter.VfxNewDatas.Reverse())
+        {
+            if (item.TimeDuration.TotalSeconds is > 1 and < 5)
+            {
+                if (isVfx(item.Path)) return true;
+            }
+        }
+        return false;
+    }
+
     private static bool IsHostileCastingTank(BattleChara h)
     {
         return IsHostileCastingBase(h, (act) =>
@@ -262,7 +274,6 @@ internal static partial class TargetUpdater
         }
         return false;
     }
-
     #endregion
 
     #region Friends
@@ -397,8 +408,11 @@ internal static partial class TargetUpdater
 
         var singleAbility = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot());
         var singleSpell = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot());
-        DataCenter.CanHealSingleAbility = singleAbility > 0;
-        DataCenter.CanHealSingleSpell = singleSpell > 0;
+
+        var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealSelfWhenNoHealer) && player.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
+        DataCenter.CanHealSingleAbility = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot())
+            : singleAbility > 0;
+        DataCenter.CanHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer,StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot()) : singleSpell > 0;
         DataCenter.CanHealAreaAbility = singleAbility > 2;
         DataCenter.CanHealAreaSpell = singleSpell > 2;
 
@@ -415,7 +429,6 @@ internal static partial class TargetUpdater
         }
 
         //Delay
-
         DataCenter.CanHealSingleAbility = DataCenter.SetAutoStatus(AutoStatus.HealSingleAbility,
             _healDelay1.Delay(DataCenter.CanHealSingleAbility));
         DataCenter.CanHealSingleSpell = DataCenter.SetAutoStatus(AutoStatus.HealSingleSpell,
@@ -438,15 +451,19 @@ internal static partial class TargetUpdater
         return Math.Min(1, buffTime / buffWholeTime);
     }
 
-    static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float healSingleHot) => DataCenter.PartyMembers.Count(p =>
-    {
-        var ratio = GetHealingOfTimeRatio(p, hotStatus);
+    static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float healSingleHot) => DataCenter.PartyMembers.Count(p => ShouldHealSingle(p, hotStatus, healSingle, healSingleHot));
 
-        var h = p.GetHealthRatio();
-        if (h == 0 || !p.NeedHealing()) return false;
+    static bool ShouldHealSingle(BattleChara target, StatusID[] hotStatus, float healSingle, float healSingleHot)
+    {
+        if(target == null) return false;
+
+        var ratio = GetHealingOfTimeRatio(target, hotStatus);
+
+        var h = target.GetHealthRatio();
+        if (h == 0 || !target.NeedHealing()) return false;
 
         return h < Lerp(healSingle, healSingleHot, ratio);
-    });
+    }
 
     static float Lerp(float a, float b, float ratio)
     {

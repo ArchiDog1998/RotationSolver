@@ -17,8 +17,11 @@ internal static class EnumTranslations
         TargetConditionType.CastingActionTimeUntil => LocalizationManager.RightLang.TargetConditionType_CastingActionTimeUntil,
         TargetConditionType.TimeToKill => LocalizationManager.RightLang.TargetConditionType_TimeToKill,
         TargetConditionType.HP => LocalizationManager.RightLang.TargetConditionType_HP,
+        TargetConditionType.HPRatio => LocalizationManager.RightLang.TargetConditionType_HPRatio,
         TargetConditionType.MP => LocalizationManager.RightLang.TargetConditionType_MP,
         TargetConditionType.TargetName => LocalizationManager.RightLang.TargetConditionType_TargetName,
+        TargetConditionType.ObjectEffect => LocalizationManager.RightLang.TargetConditionType_ObjectEffect,
+        TargetConditionType.Vfx => LocalizationManager.RightLang.TargetConditionType_Vfx,
         _ => string.Empty,
     };
 
@@ -34,8 +37,9 @@ internal static class EnumTranslations
     internal static string ToName(this TerritoryConditionType type) => type switch
     {
         TerritoryConditionType.TerritoryContentType => LocalizationManager.RightLang.TerritoryConditionType_TerritoryContentType,
-        TerritoryConditionType.TerritoryName => LocalizationManager.RightLang.TerritoryConditionType_TeritoryName,
+        TerritoryConditionType.TerritoryName => LocalizationManager.RightLang.TerritoryConditionType_TerritoryName,
         TerritoryConditionType.DutyName => LocalizationManager.RightLang.TerritoryConditionType_DutyName,
+        TerritoryConditionType.MapEffect => LocalizationManager.RightLang.TerritoryConditionType_MapEffect,
         _ => string.Empty,
     };
 
