@@ -400,8 +400,11 @@ internal static partial class TargetUpdater
 
         var singleAbility = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot());
         var singleSpell = ShouldHealSingle(StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot());
-        DataCenter.CanHealSingleAbility = singleAbility > 0;
-        DataCenter.CanHealSingleSpell = singleSpell > 0;
+
+        var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealselfWhenNoHealer) && player.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
+        DataCenter.CanHealSingleAbility = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot())
+            : singleAbility > 0;
+        DataCenter.CanHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer,StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot()) : singleSpell > 0;
         DataCenter.CanHealAreaAbility = singleAbility > 2;
         DataCenter.CanHealAreaSpell = singleSpell > 2;
 
@@ -441,15 +444,19 @@ internal static partial class TargetUpdater
         return Math.Min(1, buffTime / buffWholeTime);
     }
 
-    static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float healSingleHot) => DataCenter.PartyMembers.Count(p =>
-    {
-        var ratio = GetHealingOfTimeRatio(p, hotStatus);
+    static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float healSingleHot) => DataCenter.PartyMembers.Count(p => ShouldHealSingle(p, hotStatus, healSingle, healSingleHot));
 
-        var h = p.GetHealthRatio();
-        if (h == 0 || !p.NeedHealing()) return false;
+    static bool ShouldHealSingle(BattleChara target, StatusID[] hotStatus, float healSingle, float healSingleHot)
+    {
+        if(target == null) return false;
+
+        var ratio = GetHealingOfTimeRatio(target, hotStatus);
+
+        var h = target.GetHealthRatio();
+        if (h == 0 || !target.NeedHealing()) return false;
 
         return h < Lerp(healSingle, healSingleHot, ratio);
-    });
+    }
 
     static float Lerp(float a, float b, float ratio)
     {

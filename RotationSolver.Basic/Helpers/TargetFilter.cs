@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
@@ -14,11 +15,21 @@ public static class TargetFilter
 {
     #region Find one target
     internal static IEnumerable<BattleChara> MeleeRangeTargetFilter(IEnumerable<BattleChara> availableCharas)
-        => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.GetValue(Configuration.PluginConfigFloat.MeleeRangeOffset));
+        => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.GetValue(PluginConfigFloat.MeleeRangeOffset));
 
     internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool mustUse)
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
+
+        var player = Svc.ClientState.LocalPlayer;
+        var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealselfWhenNoHealer) && player?.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
+
+        if (onlyHealSelf)
+        {
+            if (player == null) return null;
+            if (player.GetHealthRatio() == 1) return null;
+            return player;
+        }
 
         availableCharas = availableCharas.Where(StatusHelper.NeedHealing);
 
@@ -26,11 +37,11 @@ public static class TargetFilter
         var tankTars = availableCharas.GetJobCategory(JobRole.Tank);
 
         var healerTar = tankTars.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
-        if (healerTar != null && healerTar.GetHealthRatio() < Service.Config.GetValue(Configuration.PluginConfigFloat.HealthHealerRatio))
+        if (healerTar != null && healerTar.GetHealthRatio() < Service.Config.GetValue(PluginConfigFloat.HealthHealerRatio))
             return healerTar;
 
         var tankTar = tankTars.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
-        if (tankTar != null && tankTar.GetHealthRatio() < Service.Config.GetValue(Configuration.PluginConfigFloat.HealthTankRatio))
+        if (tankTar != null && tankTar.GetHealthRatio() < Service.Config.GetValue(PluginConfigFloat.HealthTankRatio))
             return tankTar;
 
         var tar = availableCharas.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
@@ -44,7 +55,7 @@ public static class TargetFilter
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
 
-        if (Service.Config.GetValue(Configuration.PluginConfigBool.FilterStopMark))
+        if (Service.Config.GetValue(PluginConfigBool.FilterStopMark))
         {
             var charas = MarkingHelper.FilterStopCharaes(availableCharas);
             if (charas?.Any() ?? false) availableCharas = charas;

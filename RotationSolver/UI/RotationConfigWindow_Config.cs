@@ -647,7 +647,8 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _autoActionConditionSearchable_Heal = new ISearchable[]
     {
         new AutoHealCheckBox(
-            new CheckBoxSearchPlugin(PluginConfigBool.UseHealWhenNotAHealer)
+            new CheckBoxSearchPlugin(PluginConfigBool.UseHealWhenNotAHealer, 
+                new CheckBoxSearchPlugin(PluginConfigBool.OnlyHealselfWhenNoHealer))
             {
                 JobRoles = new JobRole[]
                 {

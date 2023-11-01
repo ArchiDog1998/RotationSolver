@@ -367,6 +367,7 @@ public enum PluginConfigBool : byte
     [Default(false)] JustSayHelloOnce,
 
     [Default(false)] UseAdditionalConditions,
+    [Default(false)] OnlyHealselfWhenNoHealer,
 }
 
 public enum PluginConfigFloat : byte
