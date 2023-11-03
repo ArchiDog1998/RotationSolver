@@ -10,7 +10,7 @@ public enum ActionID : uint
     /// </summary>
     None = 0,
 
-    #region Astrologian
+    #region AST
     /// <summary>
     /// 
     /// </summary>
@@ -177,7 +177,7 @@ public enum ActionID : uint
     Spire = 4406,
     #endregion
 
-    #region BlackMage
+    #region BLM
     /// <summary>
     /// 
     /// </summary>
@@ -324,7 +324,7 @@ public enum ActionID : uint
     Freeze = 159,
     #endregion
 
-    #region BlueMage
+    #region BLU
     /// <summary>
     /// 
     /// </summary>
@@ -956,7 +956,7 @@ public enum ActionID : uint
     BeingMortal = 34582,
     #endregion
 
-    #region Bard
+    #region BRD
     /// <summary>
     /// 
     /// </summary>
@@ -1076,9 +1076,54 @@ public enum ActionID : uint
     /// 
     /// </summary>
     Troubadour = 7405,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_PowerfulShot = 29391,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_EmpyrealArrow = 29396,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_PitchPerfect = 29392,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_ApexArrow = 29393,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_SilentNocturne = 29395,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_RepellingShot = 29399,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_TheWardensPaean = 29400,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_FinalFantasia = 29401,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_BlastArrow = 29394,
     #endregion
 
-    #region Dancer
+    #region DNC
     /// <summary>
     /// 
     /// </summary>
@@ -1235,7 +1280,7 @@ public enum ActionID : uint
     Tillana = 25790,
     #endregion
 
-    #region Dragoon
+    #region DRG
     /// <summary>
     /// 
     /// </summary>
@@ -3450,7 +3495,7 @@ public enum ActionID : uint
     Temperance = 16536,
     #endregion
 
-    #region General
+    #region General PvE
     /// <summary>
     /// 
     /// </summary>
@@ -3560,6 +3605,33 @@ public enum ActionID : uint
     /// 
     /// </summary>
     Sprint = 3,
+    #endregion
+
+    #region General PvP
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_StandardIssueElixir = 29055,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Recuperate = 29711,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Purify = 29056,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Guard = 29054,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Sprint = 29057,
     #endregion
 
     #region Variant Actions

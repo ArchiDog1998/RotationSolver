@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Plugin.Services;
 using ECommons.DalamudServices;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -129,17 +130,6 @@ public abstract partial class CustomRotation
     protected static BattleChara Target => Svc.Targets.Target is BattleChara b ? b : Player;
 
     /// <summary>
-    /// Shortcut for Target.IsDying();
-    /// </summary>
-    public static bool IsTargetDying => Target?.IsDying() ?? false;
-
-    /// <summary>
-    /// Shortcut for Target.IsBoss();
-    /// </summary>
-    public static bool IsTargetBoss => Target?.IsBoss() ?? false;
-
-
-    /// <summary>
     /// Is there any hostile target in range? 25 for ranged jobs and healer, 3 for melee and tank.
     /// </summary>
     public static bool HasHostilesInRange => DataCenter.HasHostilesInRange;
@@ -183,6 +173,18 @@ public abstract partial class CustomRotation
     /// Average dead time of hostiles.
     /// </summary>
     public static float AverageTimeToKill => DataCenter.AverageTimeToKill;
+
+    /// <summary>
+    /// The level of LB.
+    /// </summary>
+    public unsafe static byte LimitBreakLevel
+    {
+        get
+        {
+            var controller = UIState.Instance()->LimitBreakController;
+            return (byte)(controller.CurrentValue / *(ushort*)&controller.BarValue);
+        }
+    }
 
     /// <summary>
     /// Is the <see cref="AverageTimeToKill"/> larger than <paramref name="time"/>.

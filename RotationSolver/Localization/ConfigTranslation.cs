@@ -49,6 +49,7 @@ internal static class ConfigTranslation
         PluginConfigBool.AutoOffBetweenArea => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffBetweenArea,
         PluginConfigBool.AutoOffCutScene => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffCutScene,
         PluginConfigBool.AutoOffWhenDead => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffWhenDead,
+        PluginConfigBool.AutoOffWhenDutyCompleted => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffWhenDutyCompleted,
         PluginConfigBool.StartOnCountdown => LocalizationManager.RightLang.ConfigWindow_Param_StartOnCountdown,
         PluginConfigBool.StartOnAttackedBySomeone => LocalizationManager.RightLang.ConfigWindow_Param_StartOnAttackedBySomeone,
         PluginConfigBool.UseWorkTask => LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask,

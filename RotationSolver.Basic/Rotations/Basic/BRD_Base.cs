@@ -335,6 +335,68 @@ public abstract class BRD_Base : CustomRotation
 
     #endregion
 
+    #region PvP
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_PowerfulShot { get; } = new BaseAction(ActionID.PvP_PowerfulShot);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_EmpyrealArrow { get; } = new BaseAction(ActionID.PvP_EmpyrealArrow);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_PitchPerfect { get; } = new BaseAction(ActionID.PvP_PitchPerfect)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_Repertoire },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_ApexArrow { get; } = new BaseAction(ActionID.PvP_ApexArrow);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_SilentNocturne { get; } = new BaseAction(ActionID.PvP_SilentNocturne)
+    {
+        StatusProvide = PvP_PitchPerfect.StatusNeed,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_RepellingShot { get; } = new BaseAction(ActionID.PvP_RepellingShot);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_TheWardensPaean { get; } = new BaseAction(ActionID.PvP_TheWardensPaean)
+    {
+        StatusProvide = PvP_PitchPerfect.StatusNeed,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_BlastArrow { get; } = new BaseAction(ActionID.PvP_BlastArrow)
+    {
+        StatusNeed = new StatusID[] {StatusID.PvP_BlastArrowReady},
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_FinalFantasia { get; } = new BaseAction(ActionID.PvP_FinalFantasia, ActionOption.Buff)
+    {
+        ActionCheck = (t, m) => LimitBreakLevel >= 1,
+    };
+    #endregion
+
     /// <summary>
     /// 
     /// </summary>

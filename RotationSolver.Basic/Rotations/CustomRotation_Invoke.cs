@@ -17,6 +17,7 @@ public abstract partial class CustomRotation
             UpdateInfo();
             UpdateActions(ClassJob.GetJobRole());
             BaseAction.CleanSpecial();
+            if (Player.HasStatus(true, StatusID.PvP_Guard)) return false;
 
             CountingOfLastUsing = CountingOfCombatTimeUsing = 0;
             newAction = Invoke(out gcdAction);
@@ -80,13 +81,13 @@ public abstract partial class CustomRotation
 
         EsunaStanceNorthGCD = role switch
         {
-            JobRole.Healer => DataCenter.WeakenPeople.Any() && Esuna.CanUse(out act, CanUseOption.MustUse) ? act : null,
+            JobRole.Healer => DataCenter.WeakenPeople.Any() && EsunaAction(out act, CanUseOption.MustUse) ? act : null,
             _ => null,
         };
 
         RaiseShirkGCD = role switch
         {
-            JobRole.Healer => DataCenter.DeathPeopleAll.Any() && Raise.CanUse(out act) ? act : null,
+            JobRole.Healer => DataCenter.DeathPeopleAll.Any() && RaiseAction(out act) ? act : null,
             _ => null,
         };
 

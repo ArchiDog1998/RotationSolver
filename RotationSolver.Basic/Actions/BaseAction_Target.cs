@@ -314,7 +314,8 @@ public partial class BaseAction
     #region Target party
     private bool TargetParty(float range, int aoeCount, bool mustUse, out BattleChara target)
     {
-        if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 || (ActionID)ID == ActionID.AngelWhisper)
+        if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 
+            || (ActionID)ID is ActionID.AngelWhisper or ActionID.VariantRaise or ActionID.VariantRaise2)
         {
             return TargetDeath(out target);
         }
@@ -542,7 +543,9 @@ public partial class BaseAction
 
             case 4: //Line
                 if (subTarget.DistanceToPlayer() > EffectRange) return false;
-                return Vector3.Cross(dir, tdir).Length() / dir.Length() <= 2 + target.HitboxRadius;
+
+                return Vector3.Cross(dir, tdir).Length() / dir.Length() <= 2 + target.HitboxRadius
+                    && Vector3.Dot(dir, tdir) >= 0;
 
             case 10: //Donut
                 var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;

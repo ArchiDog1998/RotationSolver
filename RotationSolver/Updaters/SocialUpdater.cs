@@ -7,6 +7,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Commands;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Diagnostics.CodeAnalysis;
@@ -17,8 +18,6 @@ namespace RotationSolver.Updaters;
 
 internal class SocialUpdater
 {
-    public static bool InPvp { get; private set; }
-
     private static readonly List<string> _macroToAuthor = new()
     {
         "blush",
@@ -72,6 +71,11 @@ internal class SocialUpdater
         await Task.Delay(new Random().Next(4000, 6000));
 
         Service.Config.GlobalConfig.DutyEnd.AddMacro();
+
+        if (Service.Config.GetValue(PluginConfigBool.AutoOffWhenDutyCompleted))
+        {
+            RSCommands.CancelState();
+        }
     }
 
     static void ClientState_TerritoryChanged(ushort id)
@@ -81,7 +85,6 @@ internal class SocialUpdater
         var territory = Service.GetSheet<TerritoryType>().GetRow(id);
         _canSaying = territory?.ContentFinderCondition?.Value?.RowId != 0;
 
-        InPvp = territory?.IsPvpZone ?? false;
         DataCenter.Territory = territory;
 
         try

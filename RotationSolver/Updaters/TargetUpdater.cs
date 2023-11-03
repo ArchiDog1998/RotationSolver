@@ -171,7 +171,7 @@ internal static partial class TargetUpdater
             return tarFateId == 0 || tarFateId == fateId;
         });
 
-        if (type == TargetHostileType.AllTargetsCanAttack || Service.CountDownTime > 0)
+        if (type == TargetHostileType.AllTargetsCanAttack || Service.CountDownTime > 0 || (DataCenter.Territory?.IsPvpZone ?? false))
         {
             return allAttackableTargets;
         }
@@ -220,7 +220,7 @@ internal static partial class TargetUpdater
 
     private static bool IsCastingTankVfx()
     {
-        return false;
+        return IsCastingVfx(s => s.StartsWith("vfx/lockon/eff/tank_lockon"));
     }
 
     private static bool IsCastingAreaVfx()

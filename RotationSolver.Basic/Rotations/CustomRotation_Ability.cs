@@ -26,6 +26,7 @@ public abstract partial class CustomRotation
         var role = ClassJob.GetJobRole();
 
         if (InterruptAbility(role, out act)) return true;
+        if (PvP_Purify.CanUse(out act)) return true;
 
         if (ShirkOrShield(role, out act)) return true;
         if (DataCenter.IsAntiKnockback && AntiKnockback(role, out act)) return true;
@@ -323,6 +324,7 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.HealSingleAbility)]
     protected virtual bool HealSingleAbility(out IAction act)
     {
+        if (PvP_Recuperate.CanUse(out act)) return true;
         act = null; return false;
     }
 
@@ -370,6 +372,8 @@ public abstract partial class CustomRotation
     [RotationDesc(ActionID.Sprint)]
     protected virtual bool SpeedAbility(out IAction act)
     {
+        if (PvP_Sprint.CanUse(out act, CanUseOption.MustUse)) return true;
+
         if (Peloton.CanUse(out act, CanUseOption.MustUse)) return true;
         if (Sprint.CanUse(out act, CanUseOption.MustUse)) return true;
         return false;

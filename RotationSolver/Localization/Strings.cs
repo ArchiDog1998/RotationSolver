@@ -96,6 +96,7 @@ internal class Strings
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cutscenes.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
+    public string ConfigWindow_Param_AutoOffWhenDutyCompleted { get; set; } = "Auto turn off when duty completed.";
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make /rotation Manual as a toggle command.";
@@ -434,8 +435,6 @@ internal class Strings
         { nameof(CustomRotation.IsFullParty), "Is Full Party"},
         { nameof(CustomRotation.PartyMembersMinHP), "Min HP in party members."},
         { nameof(CustomRotation.PartyMembersAverHP), "Average HP in party members."},
-        { nameof(CustomRotation.IsTargetDying), "Is target going to die"},
-        { nameof(CustomRotation.IsTargetBoss), "Is target a boss"},
         { nameof(CustomRotation.HasHostilesInRange), "Has hostiles in Range"},
         { nameof(CustomRotation.HasHostilesInMaxRange), "Has hostiles in 25 yalms"},
         { nameof(CustomRotation.NumberOfHostilesInRange), "The number of hostiles in Range"},
@@ -487,6 +486,7 @@ internal class Strings
         { nameof(CustomRotation.IsValid), "Is this rotation valid"},
         { nameof(CustomRotation.ShowStatus), "Show the status"},
         { nameof(CustomRotation.AverageTimeToKill), "Average time to kill"},
+        { nameof(CustomRotation.LimitBreakLevel), "Limit Break Level"},
 
         { nameof(CustomRotation.MobsTime), "Mobs Time"},
         #endregion

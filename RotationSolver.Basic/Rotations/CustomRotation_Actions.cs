@@ -23,6 +23,7 @@ public abstract partial class CustomRotation
         }
     }
 
+    #region PvE
     /// <summary>
     /// 
     /// </summary>
@@ -230,6 +231,8 @@ public abstract partial class CustomRotation
 
     private protected virtual IBaseAction Raise => null;
     private protected virtual IBaseAction TankStance => null;
+
+    #endregion
 
     #region Duty Action
     /// <summary>
@@ -454,6 +457,43 @@ public abstract partial class CustomRotation
     {
         StatusProvide = new StatusID[] { StatusID.LostSeraphStrike },
     };
+    #endregion
+
+    #region PvP
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_StandardIssueElixir { get; } = new BaseAction(ActionID.PvP_StandardIssueElixir, ActionOption.Heal)
+    {
+        ActionCheck = (t, m) => !HasHostilesInMaxRange
+            && (t.CurrentMp <= t.MaxMp / 3 || t.CurrentHp <= t.MaxHp / 3),
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Recuperate { get; } = new BaseAction(ActionID.PvP_Recuperate, ActionOption.Heal)
+    {
+        ActionCheck = (t, m) => t.MaxHp - t.CurrentHp > 15000,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Purify { get; } = new BaseAction(ActionID.PvP_Purify, ActionOption.Heal)
+    {
+        ActionCheck = (t, m) => WeakenPeople.Any(t => t == Player),
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Guard { get; } = new BaseAction(ActionID.PvP_Guard, ActionOption.Defense);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Sprint { get; } = new BaseAction(ActionID.PvP_Sprint, ActionOption.Friendly);
     #endregion
 
     IBaseAction[] _allBaseActions;

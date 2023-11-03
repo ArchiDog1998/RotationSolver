@@ -259,6 +259,7 @@ public enum PluginConfigBool : byte
     [Default(true)] AutoOffBetweenArea,
     [Default(true)] AutoOffCutScene,
     [Default(true)] AutoOffWhenDead,
+    [Default(true)] AutoOffWhenDutyCompleted,
     [Default(true)] ChangeTargetForFate,
     [Default(true)] MoveTowardsScreenCenter,
     [Default(true)] SayOutStateChanged,

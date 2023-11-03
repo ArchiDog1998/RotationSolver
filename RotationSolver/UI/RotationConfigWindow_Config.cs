@@ -385,10 +385,10 @@ public partial class RotationConfigWindow
 
         new DragFloatRangeSearchPlugin(PluginConfigFloat.NotInCombatDelayMin, PluginConfigFloat.NotInCombatDelayMax, 0.002f),
 
+        new CheckBoxSearchPlugin(PluginConfigBool.UseAdditionalConditions),
+
         new CheckBoxSearchPlugin(PluginConfigBool.SayHelloToUsers),
         new CheckBoxSearchPlugin(PluginConfigBool.JustSayHelloOnce),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.UseAdditionalConditions),
     };
 
     private static readonly ISearchable[] _basicSwitchTurnOn = new ISearchable[]
@@ -403,6 +403,7 @@ public partial class RotationConfigWindow
     {
         // Turn off
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffBetweenArea),
+        new CheckBoxSearchPlugin(PluginConfigBool.AutoOffWhenDutyCompleted),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffCutScene),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffWhenDead),
         new CheckBoxSearchPlugin(PluginConfigBool.AutoOffAfterCombat,
