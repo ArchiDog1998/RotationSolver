@@ -7,6 +7,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Commands;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Diagnostics.CodeAnalysis;
@@ -70,6 +71,11 @@ internal class SocialUpdater
         await Task.Delay(new Random().Next(4000, 6000));
 
         Service.Config.GlobalConfig.DutyEnd.AddMacro();
+
+        if (Service.Config.GetValue(PluginConfigBool.AutoOffWhenDutyCompleted))
+        {
+            RSCommands.CancelState();
+        }
     }
 
     static void ClientState_TerritoryChanged(ushort id)

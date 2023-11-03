@@ -20,16 +20,9 @@ internal static class MovingUpdater
         {
             Service.CanMove = false;
         }
-        //Not in combat.
-        else if (!DataCenter.InCombat)
-        {
-            Service.CanMove = true;
-        }
         //Special actions.
         else
         {
-            var canMove = !Svc.Condition[ConditionFlag.Casting];
-
             var statusList = new List<StatusID>(4);
             var actionList = new List<ActionID>(4);
 
@@ -60,12 +53,13 @@ internal static class MovingUpdater
                 : doNextAction ? (ActionID)(ActionUpdater.NextAction?.AdjustedID ?? 0) : 0;
 
             var specialActions = ActionManager.GetAdjustedCastTime(ActionType.Action, (uint)action) > 0
+                && Enum.IsDefined(action)
                 || actionList.Any(id => Service.GetAdjustedActionId(id) == action);
 
             //Status
             var specialStatus = Player.Object.HasStatus(true, statusList.ToArray());
 
-            Service.CanMove = !specialStatus && !specialActions && canMove;
+            Service.CanMove = !specialStatus && !specialActions;
         }
     }
 }

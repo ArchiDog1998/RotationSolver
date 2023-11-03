@@ -96,6 +96,7 @@ internal class Strings
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cutscenes.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
+    public string ConfigWindow_Param_AutoOffWhenDutyCompleted { get; set; } = "Auto turn off when duty completed.";
 
     public string ConfigWindow_Param_UseWorkTask { get; set; } = "Use work task for acceleration.";
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make /rotation Manual as a toggle command.";

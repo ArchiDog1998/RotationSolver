@@ -114,7 +114,7 @@ namespace RotationSolver.Commands
         {
             DoSpecialCommandType(SpecialCommandType.EndSpecial, false);
         }
-        private static void CancelState()
+        internal static void CancelState()
         {
             if (DataCenter.State) DoStateCommandType(StateCommandType.Cancel);
         }

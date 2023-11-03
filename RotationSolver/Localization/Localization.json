@@ -49,6 +49,7 @@
   "ConfigWindow_Param_AutoOffAfterCombatTime": "seconds.",
   "ConfigWindow_Param_AutoOffCutScene": "Auto turn off during cutscenes.",
   "ConfigWindow_Param_AutoOffWhenDead": "Auto turn off when dead.",
+  "ConfigWindow_Param_AutoOffWhenDutyCompleted": "Auto turn off when duty completed.",
   "ConfigWindow_Param_UseWorkTask": "Use work task for acceleration.",
   "ConfigWindow_Param_ToggleManual": "Make /rotation Manual as a toggle command.",
   "ConfigWindow_Param_ToggleAuto": "Make /rotation Auto as a toggle command.",
