@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.4.8](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.7...v3.4.8) (2023-11-03)
+
+
+### Bug Fixes
+
+* PvP ready! ([3a8fb6c](https://github.com/ArchiDog1998/RotationSolver/commit/3a8fb6c7b55692c9e2365fdc96844a61b9f9e774))
+* removed Is Target dying and Is target boss property. ([7dca494](https://github.com/ArchiDog1998/RotationSolver/commit/7dca494f8dc1f46cface312e9d9786195ac98f9e))
+* the poslock. ([8bc11f0](https://github.com/ArchiDog1998/RotationSolver/commit/8bc11f060cc50f3fae5a91a40ff795248f4a6bd3))
+
 ## [3.4.7](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.6...v3.4.7) (2023-11-01)
 
 
