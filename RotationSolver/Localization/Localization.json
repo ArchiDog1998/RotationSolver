@@ -306,8 +306,6 @@
     "IsFullParty": "Is Full Party",
     "PartyMembersMinHP": "Min HP in party members.",
     "PartyMembersAverHP": "Average HP in party members.",
-    "IsTargetDying": "Is target going to die",
-    "IsTargetBoss": "Is target a boss",
     "HasHostilesInRange": "Has hostiles in Range",
     "HasHostilesInMaxRange": "Has hostiles in 25 yalms",
     "NumberOfHostilesInRange": "The number of hostiles in Range",

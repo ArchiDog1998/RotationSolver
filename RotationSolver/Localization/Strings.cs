@@ -434,8 +434,6 @@ internal class Strings
         { nameof(CustomRotation.IsFullParty), "Is Full Party"},
         { nameof(CustomRotation.PartyMembersMinHP), "Min HP in party members."},
         { nameof(CustomRotation.PartyMembersAverHP), "Average HP in party members."},
-        { nameof(CustomRotation.IsTargetDying), "Is target going to die"},
-        { nameof(CustomRotation.IsTargetBoss), "Is target a boss"},
         { nameof(CustomRotation.HasHostilesInRange), "Has hostiles in Range"},
         { nameof(CustomRotation.HasHostilesInMaxRange), "Has hostiles in 25 yalms"},
         { nameof(CustomRotation.NumberOfHostilesInRange), "The number of hostiles in Range"},

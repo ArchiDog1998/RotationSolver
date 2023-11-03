@@ -314,7 +314,8 @@ public partial class BaseAction
     #region Target party
     private bool TargetParty(float range, int aoeCount, bool mustUse, out BattleChara target)
     {
-        if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 || (ActionID)ID == ActionID.AngelWhisper)
+        if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 
+            || (ActionID)ID is ActionID.AngelWhisper or ActionID.VariantRaise or ActionID.VariantRaise2)
         {
             return TargetDeath(out target);
         }

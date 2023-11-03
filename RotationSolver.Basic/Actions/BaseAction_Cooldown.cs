@@ -74,7 +74,7 @@ public partial class BaseAction
     /// <summary>
     /// 
     /// </summary>
-    public unsafe bool IsCoolingDown => CoolDownDetail == null ? false : CoolDownDetail->IsActive != 0;
+    public unsafe bool IsCoolingDown => CoolDownDetail != null && CoolDownDetail->IsActive != 0;
 
     private float RecastTimeRemain => RecastTime - RecastTimeElapsedRaw;
 

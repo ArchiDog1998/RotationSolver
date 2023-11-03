@@ -324,7 +324,7 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.HealSingleAbility)]
     protected virtual bool HealSingleAbility(out IAction act)
     {
-        if(PvP_Recuperate.CanUse(out act)) return true;
+        if (PvP_Recuperate.CanUse(out act)) return true;
         act = null; return false;
     }
 

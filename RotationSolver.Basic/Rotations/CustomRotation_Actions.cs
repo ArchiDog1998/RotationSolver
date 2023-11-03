@@ -465,7 +465,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction PvP_StandardIssueElixir { get; } = new BaseAction(ActionID.PvP_StandardIssueElixir, ActionOption.Heal)
     {
-        ActionCheck = (t, m) => !InCombat
+        ActionCheck = (t, m) => !HasHostilesInMaxRange
             && (t.CurrentMp != t.MaxMp || t.CurrentHp != t.MaxHp),
     };
 

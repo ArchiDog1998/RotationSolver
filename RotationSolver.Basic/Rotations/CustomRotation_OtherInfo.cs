@@ -130,16 +130,6 @@ public abstract partial class CustomRotation
     protected static BattleChara Target => Svc.Targets.Target is BattleChara b ? b : Player;
 
     /// <summary>
-    /// Shortcut for Target.IsDying();
-    /// </summary>
-    public static bool IsTargetDying => Target?.IsDying() ?? false;
-
-    /// <summary>
-    /// Shortcut for Target.IsBoss();
-    /// </summary>
-    public static bool IsTargetBoss => Target?.IsBoss() ?? false;
-
-    /// <summary>
     /// Is there any hostile target in range? 25 for ranged jobs and healer, 3 for melee and tank.
     /// </summary>
     public static bool HasHostilesInRange => DataCenter.HasHostilesInRange;
