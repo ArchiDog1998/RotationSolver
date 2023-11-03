@@ -177,7 +177,14 @@ public abstract partial class CustomRotation
     /// <summary>
     /// The level of LB.
     /// </summary>
-    public unsafe static byte LimitBreakLevel => (byte)(UIState.Instance()->LimitBreakController.CurrentValue / 4000);
+    public unsafe static byte LimitBreakLevel
+    {
+        get
+        {
+            var controller = UIState.Instance()->LimitBreakController;
+            return (byte)(controller.CurrentValue / *(ushort*)&controller.BarValue);
+        }
+    }
 
     /// <summary>
     /// Is the <see cref="AverageTimeToKill"/> larger than <paramref name="time"/>.

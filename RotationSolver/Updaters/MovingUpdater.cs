@@ -8,6 +8,11 @@ namespace RotationSolver.Updaters;
 
 internal static class MovingUpdater
 {
+    private static readonly uint[] ActionsNoNeedLock = new uint[]
+    {
+        5,
+    };
+
     internal unsafe static void UpdateCanMove(bool doNextAction)
     {
         //Special state.
@@ -16,9 +21,9 @@ internal static class MovingUpdater
             Service.CanMove = true;
         }
         //Casting the action in list.
-        else if (Svc.Condition[ConditionFlag.Casting] && Player.Available && Enum.IsDefined((ActionID)Player.Object.CastActionId))
+        else if (Svc.Condition[ConditionFlag.Casting] && Player.Available)
         {
-            Service.CanMove = false;
+            Service.CanMove = ActionsNoNeedLock.Contains(Player.Object.CastActionId);
         }
         //Special actions.
         else
@@ -53,7 +58,6 @@ internal static class MovingUpdater
                 : doNextAction ? (ActionID)(ActionUpdater.NextAction?.AdjustedID ?? 0) : 0;
 
             var specialActions = ActionManager.GetAdjustedCastTime(ActionType.Action, (uint)action) > 0
-                && Enum.IsDefined(action)
                 || actionList.Any(id => Service.GetAdjustedActionId(id) == action);
 
             //Status

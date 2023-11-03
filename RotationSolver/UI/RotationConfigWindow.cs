@@ -2358,10 +2358,6 @@ public partial class RotationConfigWindow : Window
         //}
 
         //ImGui.Text(DataCenter.TerritoryContentType.ToString());
-
-        var controller = UIState.Instance()->LimitBreakController;
-        var a = *(uint*)((IntPtr)(void*)&controller + 0);
-        ImGui.Text($"LB: CurrentValue {controller.CurrentValue}, Bar Value {*(int*)&controller.BarValue}, Bar Count {controller.BarCount}");
     }
 
     private static void DrawAction(ActionID id, string type)
