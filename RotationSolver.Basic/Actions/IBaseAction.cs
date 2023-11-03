@@ -86,9 +86,9 @@ public interface IBaseAction : IAction
     bool IsDutyAction { get; }
 
     /// <summary>
-    /// Is this duty action on the slot.
+    /// Is this action on the slot.
     /// </summary>
-    bool IsDutyActionOnSlot { get; }
+    bool IsOnSlot { get; }
 
     /// <summary>
     /// Can I use this action at this time. It will check a lot of things.

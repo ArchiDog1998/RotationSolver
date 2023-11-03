@@ -51,7 +51,7 @@ public static class TargetFilter
            ?? tankTars.FirstOrDefault();
     }
 
-    internal static BattleChara DefaultFindHostile(IEnumerable<BattleChara> availableCharas, bool mustUse)
+    internal static BattleChara DefaultFindHostile(IEnumerable<BattleChara> availableCharas, bool _)
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
 
@@ -367,7 +367,12 @@ public static class TargetFilter
         => objects.Where(o => o.DistanceToPlayer() <= radius);
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
-        => DataCenter.TargetingType switch
+    {
+        if(DataCenter.Territory?.IsPvpZone ?? false)
+        {
+            return charas.OrderBy(p => p.CurrentHp);
+        }
+        return DataCenter.TargetingType switch
         {
             TargetingType.Small => charas.OrderBy(p => p.HitboxRadius),
             TargetingType.HighHP => charas.OrderByDescending(p => p.CurrentHp),
@@ -376,4 +381,5 @@ public static class TargetFilter
             TargetingType.LowMaxHP => charas.OrderBy(p => p.MaxHp),
             _ => charas.OrderByDescending(p => p.HitboxRadius),
         };
+    }
 }

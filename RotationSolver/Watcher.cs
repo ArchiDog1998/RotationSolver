@@ -1,8 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Hooking;
-using Dalamud.Memory;
 using Dalamud.Plugin.Ipc;
-using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.Hooks;
@@ -82,22 +80,26 @@ public static class Watcher
     {
         try
         {
-            if (DataCenter.VfxNewDatas.Count >= 64)
+            if (!path.StartsWith("vfx/common/eff/", StringComparison.OrdinalIgnoreCase))
             {
-                DataCenter.VfxNewDatas.TryDequeue(out _);
-            }
+                if (DataCenter.VfxNewDatas.Count >= 64)
+                {
+                    DataCenter.VfxNewDatas.TryDequeue(out _);
+                }
 
-            var obj = Svc.Objects.CreateObjectReference(a2);
-            var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
-            DataCenter.VfxNewDatas.Enqueue(effect);
+                var obj = Svc.Objects.CreateObjectReference(a2);
+                var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
+                DataCenter.VfxNewDatas.Enqueue(effect);
 #if DEBUG
-            Svc.Log.Debug(effect.ToString());
+                Svc.Log.Debug(effect.ToString());
 #endif
+            }
         }
         catch (Exception e)
         {
             Svc.Log.Warning(e, "Failed to load the vfx value!");
         }
+
         return _actorVfxCreateHook.Original(path, a2, a3, a4, a5, a6, a7);
     }
 

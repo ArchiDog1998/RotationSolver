@@ -17,8 +17,6 @@ namespace RotationSolver.Updaters;
 
 internal class SocialUpdater
 {
-    public static bool InPvp { get; private set; }
-
     private static readonly List<string> _macroToAuthor = new()
     {
         "blush",
@@ -81,7 +79,6 @@ internal class SocialUpdater
         var territory = Service.GetSheet<TerritoryType>().GetRow(id);
         _canSaying = territory?.ContentFinderCondition?.Value?.RowId != 0;
 
-        InPvp = territory?.IsPvpZone ?? false;
         DataCenter.Territory = territory;
 
         try

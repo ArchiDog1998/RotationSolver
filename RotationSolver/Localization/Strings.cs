@@ -487,6 +487,7 @@ internal class Strings
         { nameof(CustomRotation.IsValid), "Is this rotation valid"},
         { nameof(CustomRotation.ShowStatus), "Show the status"},
         { nameof(CustomRotation.AverageTimeToKill), "Average time to kill"},
+        { nameof(CustomRotation.LimitBreakLevel), "Limit Break Level"},
 
         { nameof(CustomRotation.MobsTime), "Mobs Time"},
         #endregion

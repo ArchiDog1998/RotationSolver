@@ -1720,20 +1720,6 @@ public partial class RotationConfigWindow : Window
     #endregion 
 
     #region List
-    private static TerritoryType[] _allTerritories = null;
-    internal static TerritoryType[] AllTerritories
-    {
-        get
-        {
-            _allTerritories ??= Service.GetSheet<TerritoryType>()
-                    .Where(t => t != null
-                        && t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId != 0)
-                    .OrderBy(t => t.ContentFinderCondition?.Value?.ContentType?.Value?.RowId)
-                    .ToArray();
-            return _allTerritories;
-        }
-    }
-
     private static Status[] _allDispelStatus = null;
     internal static Status[] AllDispelStatus
     {
@@ -1752,7 +1738,7 @@ public partial class RotationConfigWindow : Window
         get
         {
             _allInvStatus ??= Service.GetSheet<Status>()
-                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff && s.HitEffect.Row == 16 && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
+                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
                         && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
                     .ToArray();
             return _allInvStatus;
@@ -2357,21 +2343,24 @@ public partial class RotationConfigWindow : Window
 
     private static unsafe void DrawIcon()
     {
-        ImGui.Text("Hate");
-        foreach (var hate in UIState.Instance()->Hate.HateArraySpan)
-        {
-            var name = Svc.Objects.SearchById(hate.ObjectId)?.Name ?? "Unknown";
-            ImGui.Text($"{name} : {hate.Enmity}");
-        }
-        ImGui.Spacing();
-        ImGui.Text("Hater");
-        foreach (var hater in UIState.Instance()->Hater.HaterArraySpan)
-        {
-            var name = Svc.Objects.SearchById(hater.ObjectId)?.Name ?? "Unknown";
-            ImGui.Text($"{name} : {hater.Enmity}");
-        }
+        //ImGui.Text("Hate");
+        //foreach (var hate in UIState.Instance()->Hate.HateArraySpan)
+        //{
+        //    var name = Svc.Objects.SearchById(hate.ObjectId)?.Name ?? "Unknown";
+        //    ImGui.Text($"{name} : {hate.Enmity}");
+        //}
+        //ImGui.Spacing();
+        //ImGui.Text("Hater");
+        //foreach (var hater in UIState.Instance()->Hater.HaterArraySpan)
+        //{
+        //    var name = Svc.Objects.SearchById(hater.ObjectId)?.Name ?? "Unknown";
+        //    ImGui.Text($"{name} : {hater.Enmity}");
+        //}
 
-        ImGui.Text(DataCenter.TerritoryContentType.ToString());
+        //ImGui.Text(DataCenter.TerritoryContentType.ToString());
+
+        var controller = UIState.Instance()->LimitBreakController;
+        ImGui.Text($"LB: {controller.CurrentValue}");
     }
 
     private static void DrawAction(ActionID id, string type)

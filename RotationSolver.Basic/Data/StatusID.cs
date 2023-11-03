@@ -1461,4 +1461,19 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     MortalFlame = 3643,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Guard = 3054,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_BlastArrowReady = 3142,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Repertoire = 3137,
 }

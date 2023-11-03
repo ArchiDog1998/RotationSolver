@@ -542,7 +542,9 @@ public partial class BaseAction
 
             case 4: //Line
                 if (subTarget.DistanceToPlayer() > EffectRange) return false;
-                return Vector3.Cross(dir, tdir).Length() / dir.Length() <= 2 + target.HitboxRadius;
+
+                return Vector3.Cross(dir, tdir).Length() / dir.Length() <= 2 + target.HitboxRadius
+                    && Vector3.Dot(dir, tdir) >= 0;
 
             case 10: //Donut
                 var dis = Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius;

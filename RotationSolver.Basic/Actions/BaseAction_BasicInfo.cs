@@ -49,15 +49,22 @@ public partial class BaseAction : IBaseAction
     /// </summary>
     public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
 
-    /// <summary>
-    /// Is this action a duty action.
-    /// </summary>
+    /// <inheritdoc/>
     public bool IsDutyAction => _option.HasFlag(ActionOption.DutyAction);
 
-    /// <summary>
-    /// Is this duty action on the slot.
-    /// </summary>
-    public bool IsDutyActionOnSlot => DataCenter.DutyActions.Contains(AdjustedID);
+    /// <inheritdoc/>
+    public bool IsOnSlot
+    {
+        get
+        {
+            if (IsDutyAction)
+            {
+                return DataCenter.DutyActions.Contains(AdjustedID);
+            }
+
+            return _action.IsPvP == DataCenter.Territory?.IsPvpZone;
+        }
+    }
 
     /// <summary>
     /// How many gcd left to add the dot.

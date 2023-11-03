@@ -96,7 +96,7 @@ public partial class BaseAction
         Target = player;
 
         if (!SkipDisable && !IsEnabled) return false;
-        if (IsDutyAction && !IsDutyActionOnSlot) return false;
+        if (!IsOnSlot) return false;
 
         if (AutoHealCheck && IsFriendly)
         {

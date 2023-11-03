@@ -387,11 +387,13 @@ internal static class RotationUpdater
        {
            if (a is IBaseAction act)
            {
+               if(!act.IsOnSlot) return string.Empty;
+
                string result;
 
                if (act.IsDutyAction)
                {
-                   return act.IsDutyActionOnSlot ? "Duty Action" : string.Empty;
+                   return "Duty Action";
                }
 
                if (act.IsRealGCD)

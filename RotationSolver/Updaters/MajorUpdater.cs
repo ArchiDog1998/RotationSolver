@@ -23,7 +23,7 @@ internal static class MajorUpdater
     public static bool IsValid => Svc.Condition.Any()
         && !Svc.Condition[ConditionFlag.BetweenAreas]
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
-        && Player.Available && !SocialUpdater.InPvp;
+        && Player.Available;
 
     static bool _showedWarning, _work;
     static Exception _threadException;

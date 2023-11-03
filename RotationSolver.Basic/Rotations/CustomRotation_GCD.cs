@@ -59,7 +59,7 @@ public abstract partial class CustomRotation
             || !HasHostilesInRange || Service.Config.GetValue(PluginConfigBool.EsunaAll))
             && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any()))
         {
-            if (ClassJob.GetJobRole() == JobRole.Healer && Esuna.CanUse(out act, CanUseOption.MustUse)) return act;
+            if (ClassJob.GetJobRole() == JobRole.Healer && EsunaAction(out act, CanUseOption.MustUse)) return act;
         }
 
         if (GeneralGCD(out var action)) return action;
@@ -135,6 +135,13 @@ public abstract partial class CustomRotation
         return false;
     }
 
+    private static bool EsunaAction(out IAction act, CanUseOption option = CanUseOption.None)
+    {
+        if (Esuna.CanUse(out act, option)) return true;
+
+        return false;
+    }
+
     /// <summary>
     /// The emergency gcd with highest priority.
     /// </summary>
@@ -159,6 +166,11 @@ public abstract partial class CustomRotation
         //if (LostFlarestar.CanUse(out act)) return true;
         //if (LostSeraphStrike.CanUse(out act)) return true;
 
+        #endregion
+
+        #region PvP
+        if (IsRaiseShirk && PvP_Guard.CanUse(out act)) return true;
+        if (PvP_StandardIssueElixir.CanUse(out act)) return true;
         #endregion
         act = null; return false;
     }
