@@ -814,7 +814,8 @@ internal class Strings
 
     public string ConfigWindow_Condition_ConditionName { get; set; } = "Condition Name";
 
-    public string ConfigWindow_Condition_TeritoryName { get; set; } = "Teritory Name";
+    public string ConfigWindow_Condition_TerritoryName { get; set; } = "Territory Name";
 
     public string ConfigWindow_Condition_DutyName { get; set; } = "Duty Name";
+    public string ConfigWindow_Condition_TargetWarning { get; set; } = "You'd better not use it. Because this target isn't the action's target. Try to pick it from action.";
 }

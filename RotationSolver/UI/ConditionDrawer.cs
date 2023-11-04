@@ -1022,6 +1022,12 @@ internal static class ConditionDrawer
                 }
                 break;
         }
+
+        if (targetCondition._action == null && targetCondition.IsTarget)
+        {
+            using var style = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Condition_TargetWarning);
+        }
     }
 
     private static string[] _territoryNames = null;
@@ -1062,7 +1068,7 @@ internal static class ConditionDrawer
                 TerritoryNames, i => i.ToString(), i =>
                 {
                     territoryCondition.Name = i;
-                }, LocalizationManager.RightLang.ConfigWindow_Condition_TeritoryName);
+                }, LocalizationManager.RightLang.ConfigWindow_Condition_TerritoryName);
                 break;
 
             case TerritoryConditionType.DutyName:

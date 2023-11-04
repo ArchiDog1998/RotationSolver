@@ -126,7 +126,9 @@ public abstract partial class CustomRotation
     #region Target
     /// <summary>
     /// The player's target.
+    /// <br>WARNING: You'd better not use it. Because this target isn't the action's target. Try to use <see cref="IBaseAction.Target"/> instead after using <seealso cref="IBaseAction.CanUse(out IAction, CanUseOption, byte, byte)"/></br>
     /// </summary>
+    [Obsolete("You'd better not use it. More information in summary.")]
     protected static BattleChara Target => Svc.Targets.Target is BattleChara b ? b : Player;
 
     /// <summary>

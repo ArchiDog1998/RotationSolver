@@ -297,7 +297,7 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = new StatusID[] { StatusID.LostSpellforge },
-        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
+        ActionCheck = (b, m) => LostSpellforge.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
         ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
             Job.WAR
@@ -326,7 +326,7 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = new StatusID[] { StatusID.LostSteelsting },
-        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
+        ActionCheck = (b, m) => LostSteelsting.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
         ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
             Job.WHM
@@ -354,7 +354,7 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = new StatusID[] { StatusID.LostRampage },
-        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
+        ActionCheck = (b, m) => LostRampage.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
     };
 
     /// <summary>
@@ -364,7 +364,7 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = new StatusID[] { StatusID.LostBurst },
-        ActionCheck = (b, m) => Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
+        ActionCheck = (b, m) => LostBurst.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
     };
 
     /// <summary>
@@ -466,7 +466,8 @@ public abstract partial class CustomRotation
     public static IBaseAction PvP_StandardIssueElixir { get; } = new BaseAction(ActionID.PvP_StandardIssueElixir, ActionOption.Heal)
     {
         ActionCheck = (t, m) => !HasHostilesInMaxRange
-            && (t.CurrentMp <= t.MaxMp / 3 || t.CurrentHp <= t.MaxHp / 3),
+            && (t.CurrentMp <= t.MaxMp / 3 || t.CurrentHp <= t.MaxHp / 3)
+            && !IsLastAction(ActionID.PvP_StandardIssueElixir),
     };
 
     /// <summary>
