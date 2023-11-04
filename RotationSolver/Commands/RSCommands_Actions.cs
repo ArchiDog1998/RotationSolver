@@ -75,7 +75,9 @@ namespace RotationSolver.Commands
                     //Svc.Log.Debug($"{act}, {act.Target.Name}");
 #endif
                     //Change Target
-                    var tar = act.Target ?? act.AffectedTargets.FirstOrDefault();
+                    var tar = (act.Target == null || act.Target == Player.Object) 
+                        ? act.AffectedTargets.FirstOrDefault() : act.Target;
+
                     if (tar != null && tar != Player.Object && tar.IsEnemy())
                     {
                         DataCenter.HostileTarget = tar;

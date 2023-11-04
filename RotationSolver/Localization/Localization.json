@@ -279,6 +279,7 @@
   "TargetConditionType_TargetName": "Target Name",
   "TargetConditionType_ObjectEffect": "Object Effect",
   "TargetConditionType_Vfx": "Vfx",
+  "TargetConditionType_IsNull": "Is Null",
   "TerritoryConditionType_TerritoryContentType": "Territory Content Type",
   "TerritoryConditionType_TerritoryName": "Territory Name",
   "TerritoryConditionType_DutyName": "Duty Name",

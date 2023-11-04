@@ -430,7 +430,7 @@ public partial class BaseAction
             if (b != null && ChoiceTarget(GetMostObjects(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), Service.Config.GetValue(PluginConfigBool.CanAttackMarkAOE) ? aoeCount : int.MaxValue), mustUse) != null)
             {
                 target = b;
-                affectedTargets = GetAffectedTargets(DataCenter.HostileTargets, target);
+                affectedTargets = GetAffectedTargets(DataCenter.AllHostileTargets, target);
                 return true;
             }
         }
@@ -441,7 +441,7 @@ public partial class BaseAction
             affectedTargets = Array.Empty<BattleChara>();
             return false;
         }
-        affectedTargets = GetAffectedTargets(DataCenter.HostileTargets, target);
+        affectedTargets = GetAffectedTargets(DataCenter.AllHostileTargets, target);
         return true;
     }
 
@@ -474,7 +474,7 @@ public partial class BaseAction
         {
             if (GetMostObjects(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), aoeCount).Contains(b))
             {
-                affectedTargets = GetAffectedTargets(DataCenter.HostileTargets, target);
+                affectedTargets = GetAffectedTargets(DataCenter.AllHostileTargets, target);
                 return true;
             }
         }
@@ -518,7 +518,7 @@ public partial class BaseAction
             if (Service.Config.GetValue(PluginConfigBool.NoNewHostiles) && TargetFilter.GetObjectInRadius(DataCenter.AllHostileTargets, EffectRange)
                 .Any(t => t.TargetObject == null)) return false;
 
-            affectedTargets = GetAffectedTargets(DataCenter.HostileTargets, Player.Object);
+            affectedTargets = GetAffectedTargets(DataCenter.AllHostileTargets, Player.Object);
         }
 
         return true;

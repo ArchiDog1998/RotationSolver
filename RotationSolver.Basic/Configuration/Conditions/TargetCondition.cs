@@ -42,6 +42,11 @@ internal class TargetCondition : DelayCondition
             };
         }
 
+        if (TargetConditionType == TargetConditionType.IsNull)
+        {
+            return Condition ? tar != null : tar == null;
+        }
+
         if (tar == null) return false;
 
         var result = false;
@@ -172,6 +177,7 @@ internal enum TargetType : byte
 
 internal enum TargetConditionType : byte
 {
+    IsNull,
     HasStatus,
     IsDying,
     IsBoss,

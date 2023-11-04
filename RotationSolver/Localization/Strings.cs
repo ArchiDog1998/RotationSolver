@@ -394,6 +394,7 @@ internal class Strings
     public string TargetConditionType_TargetName { get; set; } = "Target Name";
     public string TargetConditionType_ObjectEffect { get; set; } = "Object Effect";
     public string TargetConditionType_Vfx { get; set; } = "Vfx";
+    public string TargetConditionType_IsNull { get; set; } = "Is Null";
 
     #endregion
 

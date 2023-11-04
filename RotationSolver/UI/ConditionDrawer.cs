@@ -819,6 +819,7 @@ internal static class ConditionDrawer
             case TargetConditionType.TargetName:
             case TargetConditionType.ObjectEffect:
             case TargetConditionType.Vfx:
+            case TargetConditionType.IsNull:
                 combos = new string[]
                 {
                     LocalizationManager.RightLang.ActionSequencer_Is,
