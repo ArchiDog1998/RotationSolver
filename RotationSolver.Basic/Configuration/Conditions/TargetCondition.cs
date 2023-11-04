@@ -26,9 +26,10 @@ internal class TargetCondition : DelayCondition
         BattleChara tar;
         if (_action != null)
         {
-            _action.CanUse(out _, CanUseOption.EmptyOrSkipCombo | CanUseOption.MustUse
-                | CanUseOption.IgnoreTarget);
-            tar = _action.Target;
+            if(!_action.FindTarget(true, 0, out tar, out _))
+            {
+                tar = null;
+            }
         }
         else
         {

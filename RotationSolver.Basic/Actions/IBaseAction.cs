@@ -205,8 +205,15 @@ public interface IBaseAction : IAction
     float TimeToKill { get; internal set; }
 
     /// <summary>
-    /// The user seted heal ratio.
+    /// The user set heal ratio.
     /// </summary>
     float AutoHealRatio { get; internal set; }
+
+    /// <summary>
+    /// The targets that this action affected on.
+    /// </summary>
+    BattleChara[] AffectedTargets { get; }
+
+    internal bool FindTarget(bool mustUse, byte aoeCount, out BattleChara target, out BattleChara[] affectedTargets);
     #endregion
 }

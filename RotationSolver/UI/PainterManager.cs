@@ -130,16 +130,13 @@ internal static class PainterManager
             {
                 var SColor = ImGui.GetColorU32(Service.Config.GetValue(PluginConfigVector4.SubTargetColor));
 
-                foreach (var t in DataCenter.HostileTargets)
+                foreach (var t in act.AffectedTargets)
                 {
                     if (t == act.Target) continue;
-                    if (act.CanGetTarget(act.Target, t))
+                    subItems.Add(new Drawing3DCircularSector(t.Position, targetRadius * ratio, SColor, 3)
                     {
-                        subItems.Add(new Drawing3DCircularSector(t.Position, targetRadius * ratio, SColor, 3)
-                        {
-                            IsFill = false,
-                        });
-                    }
+                        IsFill = false,
+                    });
                 }
             }
 

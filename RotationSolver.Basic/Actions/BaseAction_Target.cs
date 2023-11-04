@@ -65,6 +65,9 @@ public partial class BaseAction
     /// </summary>
     public BattleChara Target { get; private set; } = Player.Object;
 
+    /// <inheritdoc/>
+    public BattleChara[] AffectedTargets { get; private set; } = Array.Empty<BattleChara>();
+
     internal bool IsTargetArea => _action.TargetArea;
 
     /// <summary>
@@ -111,7 +114,8 @@ public partial class BaseAction
             && DataCenter.PartyMembersAverHP > tankHealth + 0.01f;
     }
 
-    private bool FindTarget(bool mustUse, byte aoeCount, out BattleChara target)
+    /// <inheritdoc/>
+    public bool FindTarget(bool mustUse, byte aoeCount, out BattleChara target, out BattleChara[] affectedTargets)
     {
         aoeCount = Math.Max(aoeCount, mustUse ? (byte)1 : AOECount);
 
@@ -123,35 +127,46 @@ public partial class BaseAction
         if (range == 0 && EffectRange == 0)
         {
             target = player;
+            affectedTargets = Array.Empty<BattleChara>();
             return true;
         }
         else if (IsTargetArea)
         {
             target = player;
+            affectedTargets = Array.Empty<BattleChara>();
             return TargetArea(range, mustUse, aoeCount, player);
         }
         else if (_action.CanTargetParty && _action.CanTargetHostile)
         {
-            return TargetPartyAndHostile(range, mustUse, out target);
+            return TargetPartyAndHostile(range, mustUse, out target, out affectedTargets);
         }
         else if (_action.CanTargetParty)
         {
-            return TargetParty(range, aoeCount, mustUse, out target);
+            return TargetParty(range, aoeCount, mustUse, out target, out affectedTargets);
         }
         else if (_action.CanTargetHostile)
         {
-            return TargetHostile(range, mustUse, aoeCount, out target);
+            return TargetHostile(range, mustUse, aoeCount, out target, out affectedTargets);
         }
         else if (_action.CanTargetSelf)
         {
             target = player;
-            return TargetSelf(mustUse, aoeCount);
+            return TargetSelf(mustUse, aoeCount, out affectedTargets);
         }
         else
         {
             target = Svc.Targets.Target is BattleChara battle ? battle : player;
+            affectedTargets = Array.Empty<BattleChara>();
             return true;
         }
+    }
+
+    private BattleChara[] GetAffectedTargets(IEnumerable<BattleChara> targets, BattleChara target)
+    {
+        return targets.Where(t =>
+        {
+            return CanGetTarget(target, t);
+        }).ToArray();
     }
 
     #region TargetArea
@@ -300,24 +315,30 @@ public partial class BaseAction
     }
     #endregion
 
-    private bool TargetPartyAndHostile(float range, bool mustUse, out BattleChara target)
+    private bool TargetPartyAndHostile(float range, bool mustUse, out BattleChara target, out BattleChara[] affectedTargets)
     {
         var availableCharas = DataCenter.PartyMembers.Union(DataCenter.HostileTargets)
             .Where(b => b.ObjectId != Player.Object.ObjectId);
         availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range).Where(CanUseTo);
 
         target = ChoiceTarget(availableCharas, mustUse);
-        if (target == null) return false;
+        if (target == null)
+        {
+            affectedTargets = Array.Empty<BattleChara>();
+            return false;
+        }
+
+        affectedTargets = new BattleChara[] { target };
         return true;
     }
 
     #region Target party
-    private bool TargetParty(float range, int aoeCount, bool mustUse, out BattleChara target)
+    private bool TargetParty(float range, int aoeCount, bool mustUse, out BattleChara target, out BattleChara[] affectedTargets)
     {
         if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 
             || (ActionID)ID is ActionID.AngelWhisper or ActionID.VariantRaise or ActionID.VariantRaise2)
         {
-            return TargetDeath(out target);
+            return TargetDeath(out target, out affectedTargets);
         }
 
         var availableCharas = DataCenter.PartyMembers.Where(player => player.CurrentHp != 0);
@@ -333,6 +354,7 @@ public partial class BaseAction
         if (!availableCharas.Any())
         {
             target = null;
+            affectedTargets = Array.Empty<BattleChara>();
             return false;
         }
 
@@ -346,45 +368,59 @@ public partial class BaseAction
             {
                 availableCharas = availableCharas.Where(b => b.IsJobCategory(JobRole.Tank));
             }
-            availableCharas = TargetFilter.GetObjectInRadius(availableCharas, range).Where(CanUseTo);
-            if (availableCharas == null || !availableCharas.Any())
+            var targetingCharas = TargetFilter.GetObjectInRadius(availableCharas, range).Where(CanUseTo);
+            if (targetingCharas == null || !targetingCharas.Any())
             {
                 target = null;
+                affectedTargets = Array.Empty<BattleChara>();
                 return false;
             }
 
-            target = ChoiceTarget(availableCharas, mustUse);
+            target = ChoiceTarget(targetingCharas, mustUse);
         }
-        if (target == null) return false;
+        if (target == null)
+        {
+            affectedTargets = Array.Empty<BattleChara>();
+            return false;
+        }
 
+        affectedTargets = GetAffectedTargets(availableCharas, target);
         return mustUse || CheckStatus(target);
     }
 
-    private static bool TargetDeath(out BattleChara target)
+    private static bool TargetDeath(out BattleChara target, out BattleChara[] affectedTargets)
     {
         target = TargetFilter.GetDeathPeople(DataCenter.DeathPeopleAll, DataCenter.DeathPeopleParty);
-        if (target == null) return false;
+        if (target == null)
+        {
+            affectedTargets = Array.Empty<BattleChara>();
+            return false;
+        }
+
+        affectedTargets = new BattleChara[] { target };
         return true;
     }
     #endregion
 
     #region Target Hostile
-    private bool TargetHostile(float range, bool mustUse, int aoeCount, out BattleChara target)
+    private bool TargetHostile(float range, bool mustUse, int aoeCount, out BattleChara target, out BattleChara[] affectedTargets)
     {
         if (DataCenter.IsManual)
         {
             if (Svc.Targets.Target is BattleChara b && b.IsNPCEnemy() && b.DistanceToPlayer() <= range)
             {
-                return TargetHostileManual(b, mustUse, aoeCount, out target);
+                return TargetHostileManual(b, mustUse, aoeCount, out target, out affectedTargets);
             }
 
             target = null;
+            affectedTargets = Array.Empty<BattleChara>();
             return false;
         }
 
         if (!IsSingleTarget && NoAOE)
         {
             target = null;
+            affectedTargets = Array.Empty<BattleChara>();
             return false;
         }
 
@@ -394,18 +430,25 @@ public partial class BaseAction
             if (b != null && ChoiceTarget(GetMostObjects(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), Service.Config.GetValue(PluginConfigBool.CanAttackMarkAOE) ? aoeCount : int.MaxValue), mustUse) != null)
             {
                 target = b;
+                affectedTargets = GetAffectedTargets(DataCenter.HostileTargets, target);
                 return true;
             }
         }
 
         target = ChoiceTarget(GetMostObjects(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), aoeCount), mustUse);
-        if (target == null) return false;
+        if (target == null)
+        {
+            affectedTargets = Array.Empty<BattleChara>();
+            return false;
+        }
+        affectedTargets = GetAffectedTargets(DataCenter.HostileTargets, target);
         return true;
     }
 
-    private bool TargetHostileManual(BattleChara b, bool mustUse, int aoeCount, out BattleChara target)
+    private bool TargetHostileManual(BattleChara b, bool mustUse, int aoeCount, out BattleChara target, out BattleChara[] affectedTargets)
     {
         target = b;
+        affectedTargets = Array.Empty<BattleChara>();
         if (!CanUseTo(b)) return false;
         if (ChoiceTarget(TargetFilterFuncEot(new BattleChara[] { b }, mustUse), mustUse) == null) return false;
 
@@ -422,6 +465,7 @@ public partial class BaseAction
                 if (!CheckStatus(b)) return false;
             }
 
+            affectedTargets = new BattleChara[] { target };
             return true;
         }
 
@@ -430,6 +474,7 @@ public partial class BaseAction
         {
             if (GetMostObjects(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), aoeCount).Contains(b))
             {
+                affectedTargets = GetAffectedTargets(DataCenter.HostileTargets, target);
                 return true;
             }
         }
@@ -438,14 +483,24 @@ public partial class BaseAction
     }
     #endregion
 
-    private bool TargetSelf(bool mustUse, int aoeCount)
+    private bool TargetSelf(bool mustUse, int aoeCount, out BattleChara[] affectedTargets)
     {
-        if (EffectRange <= 0) return true;
+        if (EffectRange <= 0)
+        {
+            affectedTargets = new BattleChara[] { Player.Object };
+            return true;
+        }
+        affectedTargets = Array.Empty<BattleChara>();
 
         if (IsFriendly)
         {
             var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.PartyMembers, mustUse), EffectRange);
-            if (tars.Count() < aoeCount) return false;
+            if (tars.Count() < aoeCount)
+            {
+                return false;
+            }
+
+            affectedTargets = GetAffectedTargets(DataCenter.PartyMembers, Player.Object);
         }
         else
         {
@@ -462,6 +517,8 @@ public partial class BaseAction
 
             if (Service.Config.GetValue(PluginConfigBool.NoNewHostiles) && TargetFilter.GetObjectInRadius(DataCenter.AllHostileTargets, EffectRange)
                 .Any(t => t.TargetObject == null)) return false;
+
+            affectedTargets = GetAffectedTargets(DataCenter.HostileTargets, Player.Object);
         }
 
         return true;
@@ -521,7 +578,7 @@ public partial class BaseAction
 
     const double _alpha = Math.PI / 3;
 
-    internal bool CanGetTarget(BattleChara target, BattleChara subTarget)
+    private bool CanGetTarget(BattleChara target, BattleChara subTarget)
     {
         if (target == null) return false;
         if (IsSingleTarget) return false;
@@ -609,7 +666,7 @@ public partial class BaseAction
             0, true, TargetStatus);
     }
 
-    internal unsafe bool CanUseTo(GameObject tar)
+    private unsafe bool CanUseTo(GameObject tar)
     {
         if (tar == null || !Player.Available) return false;
 
