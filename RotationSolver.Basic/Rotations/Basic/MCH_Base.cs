@@ -286,6 +286,82 @@ public abstract class MCH_Base : CustomRotation
     public static IBaseTrait MarksmansMastery { get; } = new BaseTrait(517);
     #endregion
 
+    #region PvP
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_BlastCharge { get; } = new BaseAction(ActionID.PVP_BlastCharge);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_Scattergun { get; } = new BaseAction(ActionID.PVP_Scattergun);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_Drill { get; } = new BaseAction(ActionID.PVP_Drill)
+    {
+        StatusNeed = new StatusID[] { StatusID.PVP_DrillPrimed },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_Wildfire { get; } = new BaseAction(ActionID.PVP_Wildfire);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_BishopAutoTurret { get; } = new BaseAction(ActionID.PVP_BishopAutoTurret);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_Analysis { get; } = new BaseAction(ActionID.PVP_Analysis);
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_MarksmansSpite { get; } = new BaseAction(ActionID.PVP_MarksmansSpite)
+    {
+        ActionCheck = (t, m) => LimitBreakLevel >= 1,
+    };
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_HeatBlast { get; } = new BaseAction(ActionID.PVP_HeatBlast)
+    {
+        StatusNeed = new StatusID[] { StatusID.PVP_Overheat },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_Bioblaster { get; } = new BaseAction(ActionID.PVP_Bioblaster)
+    {
+        StatusNeed = new StatusID[] { StatusID.PVP_BioblasterPrimed },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_AirAnchor { get; } = new BaseAction(ActionID.PVP_AirAnchor)
+    {
+        StatusNeed = new StatusID[] { StatusID.PVP_AirAnchorPrimed },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_ChainSaw { get; } = new BaseAction(ActionID.PVP_ChainSaw)
+    {
+        StatusNeed = new StatusID[] { StatusID.PVP_ChainSawPrimed },
+    };
+    
+    #endregion
     /// <summary>
     /// 
     /// </summary>
