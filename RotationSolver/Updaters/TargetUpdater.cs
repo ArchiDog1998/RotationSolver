@@ -231,7 +231,7 @@ internal static partial class TargetUpdater
     private static bool IsCastingVfx(Func<string, bool> isVfx)
     {
         if (isVfx == null) return false;
-        foreach (var item in DataCenter.VfxNewDatas.Reverse())
+        foreach (var item in DataCenter.VfxNewData.Reverse())
         {
             if (item.TimeDuration.TotalSeconds is > 1 and < 5)
             {

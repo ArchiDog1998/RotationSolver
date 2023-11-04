@@ -747,19 +747,18 @@ internal static class ConditionDrawer
 
         ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => targetCondition.ID = (ActionID)item.ID, () =>
         {
-            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Target))
-            {
-                targetCondition._action = null;
-                targetCondition.ID = ActionID.None;
-                targetCondition.TargetType = TargetType.Target;
-            }
-
-
             if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_HostileTarget))
             {
                 targetCondition._action = null;
                 targetCondition.ID = ActionID.None;
                 targetCondition.TargetType = TargetType.HostileTarget;
+            }
+
+            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Target))
+            {
+                targetCondition._action = null;
+                targetCondition.ID = ActionID.None;
+                targetCondition.TargetType = TargetType.Target;
             }
 
             if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Player))
@@ -768,7 +767,6 @@ internal static class ConditionDrawer
                 targetCondition.ID = ActionID.None;
                 targetCondition.TargetType = TargetType.Player;
             }
-
         });
 
         if (targetCondition._action != null ? targetCondition._action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon)

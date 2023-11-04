@@ -148,7 +148,7 @@ internal class TargetCondition : DelayCondition
                 break;
 
             case TargetConditionType.Vfx:
-                foreach (var effect in DataCenter.VfxNewDatas.Reverse())
+                foreach (var effect in DataCenter.VfxNewData.Reverse())
                 {
                     var time = effect.TimeDuration.TotalSeconds;
                     if (time > DistanceOrTime && time < TimeEnd
@@ -170,9 +170,9 @@ internal class TargetCondition : DelayCondition
 
 internal enum TargetType : byte
 {
-    Target,
     HostileTarget,
-    Player
+    Player,
+    Target,
 }
 
 internal enum TargetConditionType : byte
