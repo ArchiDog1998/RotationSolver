@@ -1502,6 +1502,19 @@ public enum StatusID : ushort
     /// </summary>
     PVP_Overheat = 3149,
     
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_Analysis = 3158,
     
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_FirebirdTrance = 3229,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_DreadwyrmTrance = 3228,
     
 }
