@@ -55,7 +55,7 @@ internal static class PreviewUpdater
     {
         var tarDead = Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseStopCasting)
             && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
-            && b.IsNPCEnemy() && b.CurrentHp == 0;
+            && b.IsEnemy() && b.CurrentHp == 0;
 
         if (_tarStopCastDelay.Delay(tarDead))
         {

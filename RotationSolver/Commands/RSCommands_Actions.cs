@@ -75,13 +75,18 @@ namespace RotationSolver.Commands
                     //Svc.Log.Debug($"{act}, {act.Target.Name}");
 #endif
                     //Change Target
-                    if (act.Target != null && act.Target != Player.Object && !DataCenter.IsManual
-                        && (Service.Config.GetValue(PluginConfigBool.SwitchTargetFriendly) || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
-                        || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
-                        && act.Target.IsNPCEnemy()))
+                    var tar = act.Target ?? act.AffectedTargets.FirstOrDefault();
+                    if (tar != null && tar != Player.Object && tar.IsEnemy())
                     {
-                        Svc.Targets.Target = act.Target;
+                        DataCenter.HostileTarget = tar;
+                        if (!DataCenter.IsManual
+                            && (Service.Config.GetValue(PluginConfigBool.SwitchTargetFriendly) || ((Svc.Targets.Target?.IsEnemy() ?? true)
+                            || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)))
+                        {
+                            Svc.Targets.Target = tar;
+                        }
                     }
+
                 }
             }
         }

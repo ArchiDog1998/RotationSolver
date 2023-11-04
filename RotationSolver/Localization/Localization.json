@@ -218,6 +218,7 @@
   "ActionSequencer_TraitCondition": "Trait Condition",
   "ActionSequencer_ActionTarget": "{0}'s target",
   "ActionSequencer_Target": "Target",
+  "ActionSequencer_HostileTarget": "Hostile Target",
   "ActionSequencer_Player": "Player",
   "ActionSequencer_Original": "Original",
   "ActionSequencer_Adjusted": "Adjusted",

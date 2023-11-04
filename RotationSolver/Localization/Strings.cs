@@ -314,6 +314,7 @@ internal class Strings
     public string ActionSequencer_TraitCondition { get; set; } = "Trait Condition";
     public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
     public string ActionSequencer_Target { get; set; } = "Target";
+    public string ActionSequencer_HostileTarget { get; set; } = "Hostile Target";
     public string ActionSequencer_Player { get; set; } = "Player";
     public string ActionSequencer_Original { get; set; } = "Original";
     public string ActionSequencer_Adjusted { get; set; } = "Adjusted";

@@ -751,19 +751,34 @@ internal static class ConditionDrawer
             {
                 targetCondition._action = null;
                 targetCondition.ID = ActionID.None;
-                targetCondition.IsTarget = true;
+                targetCondition.TargetType = TargetType.Target;
+            }
+
+
+            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_HostileTarget))
+            {
+                targetCondition._action = null;
+                targetCondition.ID = ActionID.None;
+                targetCondition.TargetType = TargetType.HostileTarget;
             }
 
             if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Player))
             {
                 targetCondition._action = null;
                 targetCondition.ID = ActionID.None;
-                targetCondition.IsTarget = false;
+                targetCondition.TargetType = TargetType.Player;
             }
+
         });
 
         if (targetCondition._action != null ? targetCondition._action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon)
-            : IconSet.GetTexture(targetCondition.IsTarget ? 16u : 18u, out icon))
+            : IconSet.GetTexture(targetCondition.TargetType switch 
+            { 
+                TargetType.Target => 16u,
+                TargetType.HostileTarget => 15u,
+                TargetType.Player => 18u,
+                _ => 0,
+            }, out icon))
         {
             var cursor = ImGui.GetCursorPos();
             if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, targetCondition.GetHashCode().ToString()))
@@ -773,9 +788,13 @@ internal static class ConditionDrawer
             ImGuiHelper.DrawActionOverlay(cursor, IconSize, 1);
 
             var description = targetCondition._action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, targetCondition._action.Name)
-                : targetCondition.IsTarget
-                ? LocalizationManager.RightLang.ActionSequencer_Target
-                : LocalizationManager.RightLang.ActionSequencer_Player;
+                : targetCondition.TargetType switch
+                {
+                    TargetType.Target => LocalizationManager.RightLang.ActionSequencer_Target,
+                    TargetType.HostileTarget => LocalizationManager.RightLang.ActionSequencer_HostileTarget,
+                    TargetType.Player => LocalizationManager.RightLang.ActionSequencer_Player,
+                    _ => string.Empty,
+                };
             ImguiTooltips.HoveredTooltip(description);
         }
 
@@ -1023,7 +1042,7 @@ internal static class ConditionDrawer
                 break;
         }
 
-        if (targetCondition._action == null && targetCondition.IsTarget)
+        if (targetCondition._action == null && targetCondition.TargetType == TargetType.Target)
         {
             using var style = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Condition_TargetWarning);

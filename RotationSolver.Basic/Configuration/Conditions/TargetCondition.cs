@@ -13,7 +13,7 @@ internal class TargetCondition : DelayCondition
     public bool FromSelf;
     internal Status Status;
     public StatusID StatusId { get; set; }
-    public bool IsTarget;
+    public TargetType TargetType;
     public TargetConditionType TargetConditionType;
 
     public float DistanceOrTime, TimeEnd;
@@ -33,7 +33,13 @@ internal class TargetCondition : DelayCondition
         }
         else
         {
-            tar = IsTarget ? Svc.Targets.Target as BattleChara : Player.Object;
+            tar = TargetType switch
+            {
+                TargetType.Target => Svc.Targets.Target as BattleChara,
+                TargetType.HostileTarget => DataCenter.HostileTarget,
+                TargetType.Player => Player.Object,
+                _ => null,
+            };
         }
 
         if (tar == null) return false;
@@ -155,6 +161,13 @@ internal class TargetCondition : DelayCondition
 
         return Condition ? !result : result;
     }
+}
+
+internal enum TargetType : byte
+{
+    Target,
+    HostileTarget,
+    Player
 }
 
 internal enum TargetConditionType : byte

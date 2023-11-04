@@ -407,7 +407,7 @@ public partial class BaseAction
     {
         if (DataCenter.IsManual)
         {
-            if (Svc.Targets.Target is BattleChara b && b.IsNPCEnemy() && b.DistanceToPlayer() <= range)
+            if (Svc.Targets.Target is BattleChara b && b.IsEnemy() && b.DistanceToPlayer() <= range)
             {
                 return TargetHostileManual(b, mustUse, aoeCount, out target, out affectedTargets);
             }

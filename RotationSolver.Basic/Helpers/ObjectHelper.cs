@@ -56,7 +56,15 @@ public static class ObjectHelper
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static unsafe bool IsNPCEnemy(this GameObject obj)
+    [Obsolete("Please use IsEnemy instead", true)]
+    public static bool IsNPCEnemy(this GameObject obj) => obj.IsEnemy();
+
+    /// <summary>
+    /// Is this target an enemy (can be attacked).
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static unsafe bool IsEnemy(this GameObject obj)
         => obj != null
         && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.Struct());
 

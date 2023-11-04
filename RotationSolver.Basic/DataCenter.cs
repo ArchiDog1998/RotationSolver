@@ -15,6 +15,8 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
+    internal static BattleChara HostileTarget { get; set; } = null;
+
     internal static Queue<MapEffectData> MapEffects { get; } = new(64);
     internal static Queue<ObjectEffectData> ObjectEffects { get; } = new(64);
     internal static Queue<VfxNewData> VfxNewDatas { get; } = new(64);

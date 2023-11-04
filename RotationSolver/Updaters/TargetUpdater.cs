@@ -88,7 +88,7 @@ internal static partial class TargetUpdater
     {
         allTargets = allTargets.Where(b =>
         {
-            if (!b.IsNPCEnemy()) return false;
+            if (!b.IsEnemy()) return false;
 
             //Dead.
             if (b.CurrentHp <= 1) return false;

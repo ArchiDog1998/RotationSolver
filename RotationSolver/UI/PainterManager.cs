@@ -220,7 +220,7 @@ internal static class PainterManager
 
         annulus.UpdateEveryFrame = () =>
         {
-            if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsNPCEnemy() ?? false) && Service.Config.GetValue(PluginConfigBool.DrawMeleeOffset)
+            if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsEnemy() ?? false) && Service.Config.GetValue(PluginConfigBool.DrawMeleeOffset)
             && ActionUpdater.NextGCDAction == null)
             {
                 annulus.Target = Svc.Targets.Target;
