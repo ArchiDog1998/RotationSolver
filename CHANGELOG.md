@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.4.9](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.8...v3.4.9) (2023-11-04)
+
+
+### Bug Fixes
+
+* add a warning on target in target condition. ([bcc1433](https://github.com/ArchiDog1998/RotationSolver/commit/bcc1433f74feb0e2164452fcbc61d26a71f1869e))
+* add affected targets ([4db689a](https://github.com/ArchiDog1998/RotationSolver/commit/4db689aa685fe86d7563db32c5acb2926cda980e))
+* add hostiletarget property. ([88eab52](https://github.com/ArchiDog1998/RotationSolver/commit/88eab5225137aa853a1fa2c5dfbad3f1c9e889f3))
+* add IsNull in target condition. ([5731349](https://github.com/ArchiDog1998/RotationSolver/commit/5731349a557e5e83d33a5cdb4ee1c093fac22438))
+* changed the order of target conditions. ([3f8b454](https://github.com/ArchiDog1998/RotationSolver/commit/3f8b454dd3e638b732404cc0e05dab559698dc65))
+* identify boss by mobs' rank, which is 2 or 6. ([9b2e39a](https://github.com/ArchiDog1998/RotationSolver/commit/9b2e39a688a94e7e4b29b841be397bab2c778b39))
+
 ## [3.4.8](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.7...v3.4.8) (2023-11-03)
 
 
