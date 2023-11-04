@@ -126,15 +126,15 @@ public abstract partial class CustomRotation
     #region Target
     /// <summary>
     /// The player's target.
-    /// <br>WARNING: You'd better not use it. Because this target isn't the action's target. Try to use <see cref="IBaseAction.Target"/> instead after using <seealso cref="IBaseAction.CanUse(out IAction, CanUseOption, byte, byte)"/></br>
+    /// <br>WARNING: You'd better not use it. Because this target isn't the action's target. Try to use <see cref="IBaseAction.Target"/> or <seealso cref="HostileTarget"/> instead after using <seealso cref="IBaseAction.CanUse(out IAction, CanUseOption, byte, byte)"/></br>
     /// </summary>
     [Obsolete("You'd better not use it. More information in summary.")]
     protected static BattleChara Target => Svc.Targets.Target is BattleChara b ? b : Player;
 
     /// <summary>
-    /// The last picked hostile target.
+    /// The last attacked hostile target.
     /// </summary>
-    protected static BattleChara LastHostileTarget => DataCenter.HostileTarget;
+    protected static BattleChara HostileTarget => DataCenter.HostileTarget;
 
     /// <summary>
     /// Is there any hostile target in range? 25 for ranged jobs and healer, 3 for melee and tank.

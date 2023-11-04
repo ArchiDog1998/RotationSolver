@@ -93,7 +93,6 @@ namespace RotationSolver.Commands
                             Svc.Targets.Target = tar;
                         }
                     }
-
                 }
             }
         }

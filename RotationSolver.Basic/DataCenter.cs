@@ -15,7 +15,18 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
-    internal static BattleChara HostileTarget { get; set; } = null;
+    private static uint _hostileTargetId = GameObject.InvalidGameObjectId;
+    internal static BattleChara HostileTarget 
+    {
+        get
+        {
+            return Svc.Objects.SearchById(_hostileTargetId) as BattleChara;
+        }
+        set
+        {
+            _hostileTargetId = value?.ObjectId ?? GameObject.InvalidGameObjectId;
+        }
+    }
 
     internal static Queue<MapEffectData> MapEffects { get; } = new(64);
     internal static Queue<ObjectEffectData> ObjectEffects { get; } = new(64);
