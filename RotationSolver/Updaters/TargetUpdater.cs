@@ -88,7 +88,7 @@ internal static partial class TargetUpdater
     {
         allTargets = allTargets.Where(b =>
         {
-            if (!b.IsNPCEnemy()) return false;
+            if (!b.IsEnemy()) return false;
 
             //Dead.
             if (b.CurrentHp <= 1) return false;
@@ -225,13 +225,13 @@ internal static partial class TargetUpdater
 
     private static bool IsCastingAreaVfx()
     {
-        return false;
+        return IsCastingVfx(s => s.StartsWith("vfx/lockon/eff/com_share"));
     }
 
     private static bool IsCastingVfx(Func<string, bool> isVfx)
     {
         if (isVfx == null) return false;
-        foreach (var item in DataCenter.VfxNewDatas.Reverse())
+        foreach (var item in DataCenter.VfxNewData.Reverse())
         {
             if (item.TimeDuration.TotalSeconds is > 1 and < 5)
             {

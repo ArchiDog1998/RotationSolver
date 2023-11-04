@@ -13,7 +13,7 @@ internal class TargetCondition : DelayCondition
     public bool FromSelf;
     internal Status Status;
     public StatusID StatusId { get; set; }
-    public bool IsTarget;
+    public TargetType TargetType;
     public TargetConditionType TargetConditionType;
 
     public float DistanceOrTime, TimeEnd;
@@ -26,13 +26,25 @@ internal class TargetCondition : DelayCondition
         BattleChara tar;
         if (_action != null)
         {
-            _action.CanUse(out _, CanUseOption.EmptyOrSkipCombo | CanUseOption.MustUse
-                | CanUseOption.IgnoreTarget);
-            tar = _action.Target;
+            if(!_action.FindTarget(true, 0, out tar, out _))
+            {
+                tar = null;
+            }
         }
         else
         {
-            tar = IsTarget ? Svc.Targets.Target as BattleChara : Player.Object;
+            tar = TargetType switch
+            {
+                TargetType.Target => Svc.Targets.Target as BattleChara,
+                TargetType.HostileTarget => DataCenter.HostileTarget,
+                TargetType.Player => Player.Object,
+                _ => null,
+            };
+        }
+
+        if (TargetConditionType == TargetConditionType.IsNull)
+        {
+            return Condition ? tar != null : tar == null;
         }
 
         if (tar == null) return false;
@@ -136,7 +148,7 @@ internal class TargetCondition : DelayCondition
                 break;
 
             case TargetConditionType.Vfx:
-                foreach (var effect in DataCenter.VfxNewDatas.Reverse())
+                foreach (var effect in DataCenter.VfxNewData.Reverse())
                 {
                     var time = effect.TimeDuration.TotalSeconds;
                     if (time > DistanceOrTime && time < TimeEnd
@@ -156,8 +168,16 @@ internal class TargetCondition : DelayCondition
     }
 }
 
+internal enum TargetType : byte
+{
+    HostileTarget,
+    Player,
+    Target,
+}
+
 internal enum TargetConditionType : byte
 {
+    IsNull,
     HasStatus,
     IsDying,
     IsBoss,

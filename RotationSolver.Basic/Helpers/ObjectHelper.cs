@@ -56,7 +56,15 @@ public static class ObjectHelper
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static unsafe bool IsNPCEnemy(this GameObject obj)
+    [Obsolete("Please use IsEnemy instead", true)]
+    public static bool IsNPCEnemy(this GameObject obj) => obj.IsEnemy();
+
+    /// <summary>
+    /// Is this target an enemy (can be attacked).
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static unsafe bool IsEnemy(this GameObject obj)
         => obj != null
         && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.Struct());
 
@@ -151,8 +159,7 @@ public static class ObjectHelper
         if (obj == null) return false;
         if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return true;
 
-        return obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)
-            || !(obj.GetObjectNPC()?.IsTargetLine ?? true);
+        return obj.GetObjectNPC()?.Rank is 2 or 6;
     }
 
     /// <summary>

@@ -15,9 +15,22 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
+    private static uint _hostileTargetId = GameObject.InvalidGameObjectId;
+    internal static BattleChara HostileTarget 
+    {
+        get
+        {
+            return Svc.Objects.SearchById(_hostileTargetId) as BattleChara;
+        }
+        set
+        {
+            _hostileTargetId = value?.ObjectId ?? GameObject.InvalidGameObjectId;
+        }
+    }
+
     internal static Queue<MapEffectData> MapEffects { get; } = new(64);
     internal static Queue<ObjectEffectData> ObjectEffects { get; } = new(64);
-    internal static Queue<VfxNewData> VfxNewDatas { get; } = new(64);
+    internal static Queue<VfxNewData> VfxNewData { get; } = new(64);
 
     /// <summary>
     /// This one never be null.
@@ -463,7 +476,7 @@ internal static class DataCenter
 
         MapEffects.Clear();
         ObjectEffects.Clear();
-        VfxNewDatas.Clear();
+        VfxNewData.Clear();
     }
 
     internal static void AddDamageRec(float damageRatio)

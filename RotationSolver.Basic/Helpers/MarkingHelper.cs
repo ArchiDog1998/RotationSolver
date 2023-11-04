@@ -14,7 +14,7 @@ internal class MarkingHelper
         for (uint i = 0; i < 5; i++)
         {
             var b = GetChara(charas, GetMarker(i));
-            if (b?.IsNPCEnemy() ?? false) return b;
+            if (b?.IsEnemy() ?? false) return b;
         }
         return null;
     }

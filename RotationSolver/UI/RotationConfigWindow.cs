@@ -2285,6 +2285,7 @@ public partial class RotationConfigWindow : Window
         {
             ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
             ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+            ImGui.Text("Rank: " + b.GetObjectNPC().Rank.ToString());
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());
             ImGui.Text("EventType: " + b.GetEventType().ToString());
@@ -2357,7 +2358,7 @@ public partial class RotationConfigWindow : Window
         //    ImGui.Text($"{name} : {hater.Enmity}");
         //}
 
-        //ImGui.Text(DataCenter.TerritoryContentType.ToString());
+        ImGui.Text(CustomRotation.LimitBreakLevel.ToString());
     }
 
     private static void DrawAction(ActionID id, string type)

@@ -94,6 +94,7 @@ public partial class BaseAction
         var player = Player.Object;
         if (player == null) return false;
         Target = player;
+        AffectedTargets = Array.Empty<BattleChara>();
 
         if (!SkipDisable && !IsEnabled) return false;
         if (!IsOnSlot) return false;
@@ -172,11 +173,17 @@ public partial class BaseAction
         if (IsGeneralGCD && IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)
             && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;
 
-        if (!FindTarget(mustUse, aoeCount, out var target) || target == null) return false;
+        if (!FindTarget(mustUse, aoeCount, out var target, out var affectedTargets) || target == null)
+        {
+            AffectedTargets = affectedTargets;
+            return false;
+        }
 
         if (ActionCheck != null && !ActionCheck(target, mustUse)) return false;
 
         Target = target;
+        AffectedTargets = affectedTargets;
+
         if (!option.HasFlag(CanUseOption.IgnoreTarget)) _targetId = target.ObjectId;
         return true;
     }

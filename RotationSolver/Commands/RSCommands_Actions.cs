@@ -72,15 +72,26 @@ namespace RotationSolver.Commands
 
                     if (act.ShouldEndSpecial) ResetSpecial();
 #if DEBUG
-                    //Svc.Log.Debug($"{act}, {act.Target.Name}");
+                    //Svc.Chat.Print(act.Name);
+                    //Svc.Chat.Print(act.Target?.Name.TextValue ?? string.Empty);
+                    //foreach (var item in act.AffectedTargets)
+                    //{
+                    //    Svc.Chat.Print(item?.Name.TextValue ?? string.Empty);
+                    //}
 #endif
                     //Change Target
-                    if (act.Target != null && act.Target != Player.Object && !DataCenter.IsManual
-                        && (Service.Config.GetValue(PluginConfigBool.SwitchTargetFriendly) || ((Svc.Targets.Target?.IsNPCEnemy() ?? true)
-                        || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)
-                        && act.Target.IsNPCEnemy()))
+                    var tar = (act.Target == null || act.Target == Player.Object) 
+                        ? act.AffectedTargets.FirstOrDefault() : act.Target;
+
+                    if (tar != null && tar != Player.Object && tar.IsEnemy())
                     {
-                        Svc.Targets.Target = act.Target;
+                        DataCenter.HostileTarget = tar;
+                        if (!DataCenter.IsManual
+                            && (Service.Config.GetValue(PluginConfigBool.SwitchTargetFriendly) || ((Svc.Targets.Target?.IsEnemy() ?? true)
+                            || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)))
+                        {
+                            Svc.Targets.Target = tar;
+                        }
                     }
                 }
             }

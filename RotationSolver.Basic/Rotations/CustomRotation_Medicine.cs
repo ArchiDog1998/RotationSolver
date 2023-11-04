@@ -122,7 +122,9 @@ public abstract partial class CustomRotation
     {
         act = null;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         if (!(Target?.IsDummy() ?? false) && !DataCenter.IsInHighEndDuty) return false;
+#pragma warning restore CS0618 // Type or member is obsolete
 
         return MedicineType switch
         {

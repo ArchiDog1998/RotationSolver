@@ -82,14 +82,14 @@ public static class Watcher
         {
             if (!path.StartsWith("vfx/common/eff/", StringComparison.OrdinalIgnoreCase))
             {
-                if (DataCenter.VfxNewDatas.Count >= 64)
+                if (DataCenter.VfxNewData.Count >= 64)
                 {
-                    DataCenter.VfxNewDatas.TryDequeue(out _);
+                    DataCenter.VfxNewData.TryDequeue(out _);
                 }
 
                 var obj = Svc.Objects.CreateObjectReference(a2);
                 var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
-                DataCenter.VfxNewDatas.Enqueue(effect);
+                DataCenter.VfxNewData.Enqueue(effect);
 #if DEBUG
                 Svc.Log.Debug(effect.ToString());
 #endif

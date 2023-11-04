@@ -314,6 +314,7 @@ internal class Strings
     public string ActionSequencer_TraitCondition { get; set; } = "Trait Condition";
     public string ActionSequencer_ActionTarget { get; set; } = "{0}'s target";
     public string ActionSequencer_Target { get; set; } = "Target";
+    public string ActionSequencer_HostileTarget { get; set; } = "Hostile Target";
     public string ActionSequencer_Player { get; set; } = "Player";
     public string ActionSequencer_Original { get; set; } = "Original";
     public string ActionSequencer_Adjusted { get; set; } = "Adjusted";
@@ -393,6 +394,7 @@ internal class Strings
     public string TargetConditionType_TargetName { get; set; } = "Target Name";
     public string TargetConditionType_ObjectEffect { get; set; } = "Object Effect";
     public string TargetConditionType_Vfx { get; set; } = "Vfx";
+    public string TargetConditionType_IsNull { get; set; } = "Is Null";
 
     #endregion
 
@@ -814,7 +816,8 @@ internal class Strings
 
     public string ConfigWindow_Condition_ConditionName { get; set; } = "Condition Name";
 
-    public string ConfigWindow_Condition_TeritoryName { get; set; } = "Teritory Name";
+    public string ConfigWindow_Condition_TerritoryName { get; set; } = "Territory Name";
 
     public string ConfigWindow_Condition_DutyName { get; set; } = "Duty Name";
+    public string ConfigWindow_Condition_TargetWarning { get; set; } = "You'd better not use it. Because this target isn't the action's target. Try to pick it from action.";
 }
