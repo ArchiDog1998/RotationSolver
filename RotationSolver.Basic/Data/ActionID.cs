@@ -1831,6 +1831,63 @@ public enum ActionID : uint
     /// 
     /// </summary>
     Dismantle = 2887,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_BlastCharge = 29402,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_Scattergun = 29404,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_Drill = 29405,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_Wildfire = 29409,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_BishopAutoTurret = 29412,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_Analysis = 29414,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_MarksmansSpite = 29415,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_HeatBlast = 29403,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_Bioblaster = 29406,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_AirAnchor = 29407,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_ChainSaw = 29408,
+    
+    
     #endregion
 
     #region MNK
