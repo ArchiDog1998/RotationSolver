@@ -513,12 +513,13 @@ public partial class BaseAction
             }
 
             var tars = TargetFilter.GetObjectInRadius(TargetFilterFuncEot(DataCenter.HostileTargets, mustUse), EffectRange);
+
+            affectedTargets = GetAffectedTargets(DataCenter.AllHostileTargets, Player.Object);
+
             if (tars.Count() < aoeCount) return false;
 
             if (Service.Config.GetValue(PluginConfigBool.NoNewHostiles) && TargetFilter.GetObjectInRadius(DataCenter.AllHostileTargets, EffectRange)
                 .Any(t => t.TargetObject == null)) return false;
-
-            affectedTargets = GetAffectedTargets(DataCenter.AllHostileTargets, Player.Object);
         }
 
         return true;
@@ -582,7 +583,6 @@ public partial class BaseAction
     {
         if (target == null) return false;
         if (IsSingleTarget) return false;
-        if (target.DistanceToPlayer() > Range) return false;
 
         var pPos = Player.Object.Position;
         Vector3 dir = target.Position - pPos;

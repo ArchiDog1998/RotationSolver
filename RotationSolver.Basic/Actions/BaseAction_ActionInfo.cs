@@ -173,7 +173,11 @@ public partial class BaseAction
         if (IsGeneralGCD && IsEot && IsFriendly && IActionHelper.IsLastGCD(true, this)
             && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;
 
-        if (!FindTarget(mustUse, aoeCount, out var target, out var affectedTargets) || target == null) return false;
+        if (!FindTarget(mustUse, aoeCount, out var target, out var affectedTargets) || target == null)
+        {
+            AffectedTargets = affectedTargets;
+            return false;
+        }
 
         if (ActionCheck != null && !ActionCheck(target, mustUse)) return false;
 

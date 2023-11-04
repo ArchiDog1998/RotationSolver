@@ -159,7 +159,7 @@ public static class ObjectHelper
         if (obj == null) return false;
         if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return true;
 
-        return  !(obj.GetObjectNPC()?.IsTargetLine ?? true);
+        return obj.GetObjectNPC()?.Rank is 2 or 6;
     }
 
     /// <summary>

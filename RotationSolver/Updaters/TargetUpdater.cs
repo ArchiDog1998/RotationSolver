@@ -225,7 +225,7 @@ internal static partial class TargetUpdater
 
     private static bool IsCastingAreaVfx()
     {
-        return false;
+        return IsCastingVfx(s => s.StartsWith("vfx/lockon/eff/com_share"));
     }
 
     private static bool IsCastingVfx(Func<string, bool> isVfx)

@@ -72,7 +72,12 @@ namespace RotationSolver.Commands
 
                     if (act.ShouldEndSpecial) ResetSpecial();
 #if DEBUG
-                    //Svc.Log.Debug($"{act}, {act.Target.Name}");
+                    //Svc.Chat.Print(act.Name);
+                    //Svc.Chat.Print(act.Target?.Name.TextValue ?? string.Empty);
+                    //foreach (var item in act.AffectedTargets)
+                    //{
+                    //    Svc.Chat.Print(item?.Name.TextValue ?? string.Empty);
+                    //}
 #endif
                     //Change Target
                     var tar = (act.Target == null || act.Target == Player.Object) 
