@@ -291,40 +291,40 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_BlastCharge { get; } = new BaseAction(ActionID.PVP_BlastCharge);
+    public static IBaseAction PvP_BlastCharge { get; } = new BaseAction(ActionID.PvP_BlastCharge);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_Scattergun { get; } = new BaseAction(ActionID.PVP_Scattergun);
+    public static IBaseAction PvP_Scattergun { get; } = new BaseAction(ActionID.PvP_Scattergun);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_Drill { get; } = new BaseAction(ActionID.PVP_Drill)
+    public static IBaseAction PvP_Drill { get; } = new BaseAction(ActionID.PvP_Drill)
     {
-        StatusNeed = new StatusID[] { StatusID.PVP_DrillPrimed },
+        StatusNeed = new StatusID[] { StatusID.PvP_DrillPrimed },
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_Wildfire { get; } = new BaseAction(ActionID.PVP_Wildfire);
+    public static IBaseAction PvP_Wildfire { get; } = new BaseAction(ActionID.PvP_Wildfire);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_BishopAutoTurret { get; } = new BaseAction(ActionID.PVP_BishopAutoTurret);
+    public static IBaseAction PvP_BishopAutoTurret { get; } = new BaseAction(ActionID.PvP_BishopAutoTurret);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_Analysis { get; } = new BaseAction(ActionID.PVP_Analysis);
+    public static IBaseAction PvP_Analysis { get; } = new BaseAction(ActionID.PvP_Analysis);
     
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_MarksmansSpite { get; } = new BaseAction(ActionID.PVP_MarksmansSpite)
+    public static IBaseAction PvP_MarksmansSpite { get; } = new BaseAction(ActionID.PvP_MarksmansSpite)
     {
         ActionCheck = (t, m) => LimitBreakLevel >= 1,
     };
@@ -332,33 +332,33 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_HeatBlast { get; } = new BaseAction(ActionID.PVP_HeatBlast)
+    public static IBaseAction PvP_HeatBlast { get; } = new BaseAction(ActionID.PvP_HeatBlast)
     {
-        StatusNeed = new StatusID[] { StatusID.PVP_Overheat },
+        StatusNeed = new StatusID[] { StatusID.PvP_Overheat },
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_Bioblaster { get; } = new BaseAction(ActionID.PVP_Bioblaster)
+    public static IBaseAction PvP_Bioblaster { get; } = new BaseAction(ActionID.PvP_Bioblaster)
     {
-        StatusNeed = new StatusID[] { StatusID.PVP_BioblasterPrimed },
+        StatusNeed = new StatusID[] { StatusID.PvP_BioblasterPrimed },
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_AirAnchor { get; } = new BaseAction(ActionID.PVP_AirAnchor)
+    public static IBaseAction PvP_AirAnchor { get; } = new BaseAction(ActionID.PvP_AirAnchor)
     {
-        StatusNeed = new StatusID[] { StatusID.PVP_AirAnchorPrimed },
+        StatusNeed = new StatusID[] { StatusID.PvP_AirAnchorPrimed },
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PVP_ChainSaw { get; } = new BaseAction(ActionID.PVP_ChainSaw)
+    public static IBaseAction PvP_ChainSaw { get; } = new BaseAction(ActionID.PvP_ChainSaw)
     {
-        StatusNeed = new StatusID[] { StatusID.PVP_ChainSawPrimed },
+        StatusNeed = new StatusID[] { StatusID.PvP_ChainSawPrimed },
     };
     
     #endregion

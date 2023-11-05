@@ -1835,59 +1835,57 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
-    PVP_BlastCharge = 29402,
+    PvP_BlastCharge = 29402,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_Scattergun = 29404,
+    PvP_Scattergun = 29404,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_Drill = 29405,
+    PvP_Drill = 29405,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_Wildfire = 29409,
+    PvP_Wildfire = 29409,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_BishopAutoTurret = 29412,
+    PvP_BishopAutoTurret = 29412,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_Analysis = 29414,
+    PvP_Analysis = 29414,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_MarksmansSpite = 29415,
+    PvP_MarksmansSpite = 29415,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_HeatBlast = 29403,
+    PvP_HeatBlast = 29403,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_Bioblaster = 29406,
+    PvP_Bioblaster = 29406,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_AirAnchor = 29407,
+    PvP_AirAnchor = 29407,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_ChainSaw = 29408,
-    
-    
+    PvP_ChainSaw = 29408,
     #endregion
 
     #region MNK
@@ -3305,70 +3303,67 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
-    PVP_RuinIII = 29664,
+    PvP_Ruin3 = 29664,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_AstralImpulse = 29665,
+    PvP_AstralImpulse = 29665,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_EnkindleBahamut = 29674,
+    PvP_EnkindleBahamut = 29674,
 
     /// <summary>
     /// 
     /// </summary>
-    PVP_FountainOfFire = 29666,
+    PvP_FountainOfFire = 29666,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_EnkindlePhoenix = 29679,
+    PvP_EnkindlePhoenix = 29679,
 
     /// <summary>
     /// 
     /// </summary>
-    PVP_CrimsonCyclone = 29667,
+    PvP_CrimsonCyclone = 29667,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_CrimsonStrike = 29668,
+    PvP_CrimsonStrike = 29668,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_Slipstream = 29669,
+    PvP_Slipstream = 29669,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_RadiantAegis = 29670,
+    PvP_RadiantAegis = 29670,
 
     /// <summary>
     /// 
     /// </summary>
-    PVP_MountainBuster = 29671,
+    PvP_MountainBuster = 29671,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_Fester = 29672,
+    PvP_Fester = 29672,
 
     /// <summary>
     /// 
     /// </summary>
-    PVP_SummonBahamut = 29673,
+    PvP_SummonBahamut = 29673,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_SummonPhoenix = 29678,
-
-
-    
+    PvP_SummonPhoenix = 29678,
     #endregion
 
     #region WAR

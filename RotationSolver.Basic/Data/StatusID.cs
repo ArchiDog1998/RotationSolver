@@ -1480,42 +1480,42 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
-    PVP_DrillPrimed = 3150,
+    PvP_DrillPrimed = 3150,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_BioblasterPrimed = 3151,
+    PvP_BioblasterPrimed = 3151,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_AirAnchorPrimed = 3152,
+    PvP_AirAnchorPrimed = 3152,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_ChainSawPrimed = 3153,
+    PvP_ChainSawPrimed = 3153,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_Overheat = 3149,
+    PvP_Overheat = 3149,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_Analysis = 3158,
+    PvP_Analysis = 3158,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_FirebirdTrance = 3229,
+    PvP_FirebirdTrance = 3229,
     
     /// <summary>
     /// 
     /// </summary>
-    PVP_DreadwyrmTrance = 3228,
+    PvP_DreadwyrmTrance = 3228,
 
     /// <summary>
     /// 
