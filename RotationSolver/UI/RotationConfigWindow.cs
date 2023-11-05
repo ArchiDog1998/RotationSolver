@@ -2224,6 +2224,7 @@ public partial class RotationConfigWindow : Window
         {
             ImGui.Text("Fate: " + DataCenter.FateId.ToString());
         }
+        ImGui.Text("Height: " + Player.Character->CalculateHeight().ToString());
         ImGui.Text("Moving: " + DataCenter.IsMoving.ToString());
         ImGui.Text("Stop Moving: " + DataCenter.StopMovingRaw.ToString());
 

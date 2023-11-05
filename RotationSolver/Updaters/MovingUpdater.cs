@@ -16,7 +16,7 @@ internal static class MovingUpdater
     internal unsafe static void UpdateCanMove(bool doNextAction)
     {
         //Special state.
-        if (Svc.Condition[ConditionFlag.OccupiedInEvent])
+        if (Svc.Condition[ConditionFlag.OccupiedInEvent] || (DataCenter.Territory?.IsPvpZone ?? false))
         {
             Service.CanMove = true;
         }
