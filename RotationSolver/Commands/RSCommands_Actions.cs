@@ -50,7 +50,8 @@ namespace RotationSolver.Commands
                 ControlWindow.DidTime = DateTime.Now;
             }
 
-            if (nextAction is BaseAction act1 && act1.Target is PlayerCharacter p)
+            if (nextAction is BaseAction act1 && act1.IsPvP && !act1.IsFriendly
+                && act1.Target is PlayerCharacter p)
             {
                 var hash = SocialUpdater.EncryptString(p);
 

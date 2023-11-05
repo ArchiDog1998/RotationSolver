@@ -833,6 +833,11 @@ public partial class RotationConfigWindow
             JobRoles = new JobRole[]
             {
                 JobRole.Healer,
+            },
+            Jobs = new ECommons.ExcelServices.Job[]
+            {
+                ECommons.ExcelServices.Job.SMN,
+                ECommons.ExcelServices.Job.RDM,
             }
         },
 
