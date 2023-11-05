@@ -4556,7 +4556,7 @@ public enum ActionID : uint
 	/// <summary>
 	/// 
 	/// </summary>
-	PvP_RuinIII = 29664,
+	PvP_Ruin3 = 29664,
 
 	/// <summary>
 	/// 
