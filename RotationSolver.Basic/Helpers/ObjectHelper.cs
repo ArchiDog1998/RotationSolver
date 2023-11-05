@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -157,10 +158,16 @@ public static class ObjectHelper
     public static bool IsBoss(this BattleChara obj)
     {
         if (obj == null) return false;
+        if (obj is PlayerCharacter) return false;
+
         if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return true;
 
-        return obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)
-            || obj.GetObjectNPC()?.Rank is 1 or 2 /*or 4*/ or 6;
+        //Icon
+        if (obj.GetObjectNPC()?.Rank is 1 or 2 /*or 4*/ or 6) return true;
+
+        //Fate
+        if (obj.FateId() != 0 && obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)) return true;
+        return false;
     }
 
     /// <summary>

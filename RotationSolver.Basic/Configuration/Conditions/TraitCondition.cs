@@ -7,7 +7,6 @@ internal class TraitCondition : DelayCondition
 {
     public uint TraitID { get; set; } = 0;
     internal IBaseTrait _trait;
-    public bool Condition { get; set; }
 
     public override bool CheckBefore(ICustomRotation rotation)
     {
@@ -23,6 +22,6 @@ internal class TraitCondition : DelayCondition
         if (_trait == null || !Player.Available) return false;
 
         var result = _trait.EnoughLevel;
-        return Condition ? !result : result;
+        return result;
     }
 }

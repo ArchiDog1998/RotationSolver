@@ -9,7 +9,6 @@ internal class TargetCondition : DelayCondition
     internal IBaseAction _action;
     public ActionID ID { get; set; } = ActionID.None;
 
-    public bool Condition;
     public bool FromSelf;
     internal Status Status;
     public StatusID StatusId { get; set; }
@@ -44,7 +43,7 @@ internal class TargetCondition : DelayCondition
 
         if (TargetConditionType == TargetConditionType.IsNull)
         {
-            return Condition ? tar != null : tar == null;
+            return tar == null;
         }
 
         if (tar == null) return false;
@@ -164,7 +163,7 @@ internal class TargetCondition : DelayCondition
                 break;
         }
 
-        return Condition ? !result : result;
+        return result;
     }
 }
 

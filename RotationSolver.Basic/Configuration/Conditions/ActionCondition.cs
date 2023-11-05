@@ -8,8 +8,6 @@ internal class ActionCondition : DelayCondition
 
     public ActionConditionType ActionConditionType = ActionConditionType.Elapsed;
 
-    public bool Condition { get; set; }
-
     public int Param1;
     public int Param2;
     public float Time;
@@ -21,48 +19,36 @@ internal class ActionCondition : DelayCondition
 
     protected override bool IsTrueInside(ICustomRotation rotation)
     {
-        var result = false;
-
         switch (ActionConditionType)
         {
             case ActionConditionType.Elapsed:
-                result = _action.ElapsedOneChargeAfter(Time); // Bigger
-                break;
+                return _action.ElapsedOneChargeAfter(Time); // Bigger
 
             case ActionConditionType.ElapsedGCD:
-                result = _action.ElapsedOneChargeAfterGCD((uint)Param1, Param2); // Bigger
-                break;
+                return _action.ElapsedOneChargeAfterGCD((uint)Param1, Param2); // Bigger
 
             case ActionConditionType.Remain:
-                result = !_action.WillHaveOneCharge(Time); //Smaller
-                break;
+                return !_action.WillHaveOneCharge(Time); //Smaller
 
             case ActionConditionType.RemainGCD:
-                result = !_action.WillHaveOneChargeGCD((uint)Param1, Param2); // Smaller
-                break;
+                return !_action.WillHaveOneChargeGCD((uint)Param1, Param2); // Smaller
 
             case ActionConditionType.CanUse:
-                result = _action.CanUse(out _, (CanUseOption)Param1, (byte)Param2);
-                break;
+                return _action.CanUse(out _, (CanUseOption)Param1, (byte)Param2);
 
             case ActionConditionType.EnoughLevel:
-                result = _action.EnoughLevel;
-                break;
+                return _action.EnoughLevel;
 
             case ActionConditionType.IsCoolDown:
-                result = _action.IsCoolingDown;
-                break;
+                return _action.IsCoolingDown;
 
             case ActionConditionType.CurrentCharges:
-                result = _action.CurrentCharges > Param1;
-                break;
+                return _action.CurrentCharges > Param1;
 
             case ActionConditionType.MaxCharges:
-                result = _action.MaxCharges > Param1;
-                break;
+                return _action.MaxCharges > Param1;
         }
-
-        return Condition ? !result : result;
+        return false;
     }
 }
 

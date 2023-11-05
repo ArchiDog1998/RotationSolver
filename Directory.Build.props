@@ -3,7 +3,7 @@
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Authors>ArchiTed</Authors>
-		<Version>3.4.10</Version>
+		<Version>3.4.11</Version>
 		<PlatformTarget>x64</PlatformTarget>
 		<Platforms>AnyCPU</Platforms>
 

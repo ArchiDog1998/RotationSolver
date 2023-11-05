@@ -11,12 +11,13 @@ internal static class MovingUpdater
     private static readonly uint[] ActionsNoNeedLock = new uint[]
     {
         5,
+        (uint)ActionID.PvP_PowerfulShot,
     };
 
     internal unsafe static void UpdateCanMove(bool doNextAction)
     {
         //Special state.
-        if (Svc.Condition[ConditionFlag.OccupiedInEvent] || (DataCenter.Territory?.IsPvpZone ?? false))
+        if (Svc.Condition[ConditionFlag.OccupiedInEvent])
         {
             Service.CanMove = true;
         }

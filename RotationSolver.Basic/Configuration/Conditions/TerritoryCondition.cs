@@ -6,7 +6,6 @@ internal class TerritoryCondition : DelayCondition
 
     public int Position = 0;
     public int Param1 = 0, Param2 = 0;
-    public int Condition;
     public string Name = "Not Chosen";
     public float TimeStart, TimeEnd;
 
@@ -43,7 +42,7 @@ internal class TerritoryCondition : DelayCondition
 
                 break;
         }
-        return Condition > 0 ? !result : result;
+        return result;
     }
 }
 

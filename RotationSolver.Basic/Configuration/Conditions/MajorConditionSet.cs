@@ -59,7 +59,6 @@ internal class MajorConditionSet
     public ConditionSet MoveBackConditionSet { get; set; } = new();
     public ConditionSet AntiKnockbackConditionSet { get; set; } = new();
     public ConditionSet SpeedConditionSet { get; set; } = new();
-
     public ConditionSet SwitchAutoConditionSet { get; set; } = new();
     public ConditionSet SwitchManualConditionSet { get; set; } = new();
     public ConditionSet SwitchCancelConditionSet { get; set; } = new();
@@ -129,7 +128,15 @@ internal class MajorConditionSet
 
             try
             {
-                return JsonConvert.DeserializeObject<MajorConditionSet>(str, new IConditionConverter());
+                return JsonConvert.DeserializeObject<MajorConditionSet>(str, new JsonSerializerSettings()
+                {
+                    MissingMemberHandling = MissingMemberHandling.Error,
+                    Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
+                    {
+                        args.ErrorContext.Handled = true;
+                    }, 
+                    Converters = new List<JsonConverter>() { new IConditionConverter() }
+                });
             }
             catch(Exception ex) 
             {

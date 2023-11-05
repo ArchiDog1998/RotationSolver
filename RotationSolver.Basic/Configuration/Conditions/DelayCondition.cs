@@ -9,6 +9,8 @@ internal abstract class DelayCondition : ICondition
 
     RandomDelay _delay = default;
 
+    public bool Not = false;
+
     [ThreadStatic]
     private static Stack<ICondition> _callingStack;
 
@@ -28,7 +30,12 @@ internal abstract class DelayCondition : ICondition
         }
 
         _callingStack.Push(this);
-        var result = _delay.Delay(CheckBefore(rotation) && IsTrueInside(rotation));
+        var value = CheckBefore(rotation) && IsTrueInside(rotation);
+        if (Not)
+        {
+            value = !value;
+        }
+        var result = _delay.Delay(value);
         _callingStack.Pop();
 
         return result;

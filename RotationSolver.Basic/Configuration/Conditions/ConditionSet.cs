@@ -14,8 +14,6 @@ internal class ConditionSet : DelayCondition
         {
             LogicalType.And => Conditions.All(c => c.IsTrue(rotation)),
             LogicalType.Or => Conditions.Any(c => c.IsTrue(rotation)),
-            LogicalType.NotAnd => !Conditions.All(c => c.IsTrue(rotation)),
-            LogicalType.NotOr => !Conditions.Any(c => c.IsTrue(rotation)),
             _ => false,
         };
     }
@@ -25,6 +23,4 @@ internal enum LogicalType : byte
 {
     And,
     Or,
-    NotAnd,
-    NotOr,
 }
