@@ -3301,6 +3301,74 @@ public enum ActionID : uint
     /// 
     /// </summary>
     Slipstream = 25837,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_RuinIII = 29664,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_AstralImpulse = 29665,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_EnkindleBahamut = 29674,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_FountainOfFire = 29666,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_EnkindlePhoenix = 29679,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_CrimsonCyclone = 29667,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_CrimsonStrike = 29668,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_Slipstream = 29669,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_RadiantAegis = 29670,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_MountainBuster = 29671,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_Fester = 29672,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_SummonBahamut = 29673,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_SummonPhoenix = 29678,
+
+
+    
     #endregion
 
     #region WAR

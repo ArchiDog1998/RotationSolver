@@ -457,6 +457,80 @@ public abstract class SMN_Base : CustomRotation
     public static IBaseTrait ElementalMastery { get; } = new BaseTrait(503);
     #endregion
 
+    #region PVP
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_RuinIII { get; } = new BaseAction(ActionID.PVP_RuinIII);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_CrimsonCyclone { get; } = new BaseAction(ActionID.PVP_CrimsonCyclone);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_CrimsonStrike { get; } = new BaseAction(ActionID.PVP_CrimsonStrike);
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_Slipstream { get; } = new BaseAction(ActionID.PVP_Slipstream);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_RadiantAegis { get; } = new BaseAction(ActionID.PVP_RadiantAegis);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_MountainBuster { get; } = new BaseAction(ActionID.PVP_MountainBuster);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_Fester { get; } = new BaseAction(ActionID.PVP_Fester);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_SummonBahamut { get; } = new BaseAction(ActionID.PVP_SummonBahamut)
+    {
+        ActionCheck = (t, m) => LimitBreakLevel >= 1,
+    };
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_SummonPhoenix { get; } = new BaseAction(ActionID.PVP_SummonPhoenix)
+    {
+        ActionCheck = (t, m) => LimitBreakLevel >= 1,
+    };
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_AstralImpulse { get; } = new BaseAction(ActionID.PVP_AstralImpulse);
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_FountainOfFire { get; } = new BaseAction(ActionID.PVP_FountainOfFire);
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_EnkindleBahamut { get; } = new BaseAction(ActionID.PVP_EnkindleBahamut);
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PVP_EnkindlePhoenix { get; } = new BaseAction(ActionID.PVP_EnkindlePhoenix);
+    
+    #endregion
+    
     /// <summary>
     /// 
     /// </summary>

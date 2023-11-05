@@ -1505,5 +1505,20 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
+    PVP_Analysis = 3158,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_FirebirdTrance = 3229,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PVP_DreadwyrmTrance = 3228,
+
+    /// <summary>
+    /// 
+    /// </summary>
     PvP_Sprint = 1342,
 }
