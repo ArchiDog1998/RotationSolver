@@ -51,7 +51,7 @@ namespace RotationSolver.Commands
             }
 
             if (nextAction is BaseAction act1 && act1.IsPvP && !act1.IsFriendly
-                && act1.Target is PlayerCharacter p)
+                && act1.Target is PlayerCharacter p/* && p != Player.Object*/)
             {
                 var hash = SocialUpdater.EncryptString(p);
 
@@ -59,7 +59,7 @@ namespace RotationSolver.Commands
                 if (RotationUpdater.AuthorHashes.ContainsKey(hash)
                     || DownloadHelper.ContributorsHash.Contains(hash))
                 {
-                    Svc.Chat.PrintError("Please don't attack RS developers with RS!");
+                    Svc.Chat.PrintError($"Please don't attack RS developers with RS by {act1}!");
                     return;
                 }
             }
