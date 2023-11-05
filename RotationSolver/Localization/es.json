@@ -218,6 +218,7 @@
   "ActionSequencer_TraitCondition": "Trait Condition",
   "ActionSequencer_ActionTarget": "{0}'s target",
   "ActionSequencer_Target": "Target",
+  "ActionSequencer_HostileTarget": "Hostile Target",
   "ActionSequencer_Player": "Player",
   "ActionSequencer_Original": "Original",
   "ActionSequencer_Adjusted": "Adjusted",
@@ -278,6 +279,7 @@
   "TargetConditionType_TargetName": "Target Name",
   "TargetConditionType_ObjectEffect": "Object Effect",
   "TargetConditionType_Vfx": "Vfx",
+  "TargetConditionType_IsNull": "Is Null",
   "TerritoryConditionType_TerritoryContentType": "Territory Content Type",
   "TerritoryConditionType_TerritoryName": "Territory Name",
   "TerritoryConditionType_DutyName": "Duty Name",
@@ -584,6 +586,7 @@
   "ConfigWindow_Condition_RotationNullWarning": "Rotation is null, please login or switch the job!",
   "ConfigWindow_Condition_NoItemsWarning": "There are no items!",
   "ConfigWindow_Condition_ConditionName": "Condition Name",
-  "ConfigWindow_Condition_TeritoryName": "Teritory Name",
-  "ConfigWindow_Condition_DutyName": "Duty Name"
+  "ConfigWindow_Condition_TerritoryName": "Territory Name",
+  "ConfigWindow_Condition_DutyName": "Duty Name",
+  "ConfigWindow_Condition_TargetWarning": "You'd better not use it. Because this target isn't the action's target. Try to pick it from action."
 }
