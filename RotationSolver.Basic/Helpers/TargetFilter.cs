@@ -27,7 +27,6 @@ public static class TargetFilter
         if (onlyHealSelf)
         {
             if (player == null) return null;
-            if (player.GetHealthRatio() == 1) return null;
             return player;
         }
 

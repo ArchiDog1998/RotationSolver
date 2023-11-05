@@ -267,8 +267,10 @@ public abstract partial class CustomRotation
     public static bool IsSpeed => DataCenter.IsSpeed;
 
     private bool CanUseHealAction =>
+        //PvP
+        DataCenter.Territory.IsPvpZone
         //Job
-        (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer))
+        || (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer))
         && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal)
         && IsLongerThan(Service.Config.GetValue(Configuration.PluginConfigFloat.AutoHealTimeToKill));
 
