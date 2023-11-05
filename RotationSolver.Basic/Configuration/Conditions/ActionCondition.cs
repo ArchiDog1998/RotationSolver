@@ -43,10 +43,28 @@ internal class ActionCondition : DelayCondition
                 return _action.IsCoolingDown;
 
             case ActionConditionType.CurrentCharges:
-                return _action.CurrentCharges > Param1;
+                switch (Param2)
+                {
+                    case 0:
+                        return _action.CurrentCharges > Param1;
+                    case 1:
+                        return _action.CurrentCharges < Param1;
+                    case 2:
+                        return _action.CurrentCharges == Param1;
+                }
+                break;
 
             case ActionConditionType.MaxCharges:
-                return _action.MaxCharges > Param1;
+                switch (Param2)
+                {
+                    case 0:
+                        return _action.MaxCharges > Param1;
+                    case 1:
+                        return _action.MaxCharges < Param1;
+                    case 2:
+                        return _action.MaxCharges == Param1;
+                }
+                break;
         }
         return false;
     }

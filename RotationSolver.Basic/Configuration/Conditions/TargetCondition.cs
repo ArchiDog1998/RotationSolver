@@ -69,7 +69,18 @@ internal class TargetCondition : DelayCondition
                 break;
 
             case TargetConditionType.Distance:
-                result = tar.DistanceToPlayer() > DistanceOrTime;
+                switch (Param2)
+                {
+                    case 0:
+                        result = tar.DistanceToPlayer() > DistanceOrTime;
+                        break;
+                    case 1:
+                        result = tar.DistanceToPlayer() < DistanceOrTime;
+                        break;
+                    case 2:
+                        result = tar.DistanceToPlayer() == DistanceOrTime;
+                        break;
+                }
                 break;
 
             case TargetConditionType.StatusEnd:
@@ -81,7 +92,18 @@ internal class TargetCondition : DelayCondition
                 break;
 
             case TargetConditionType.TimeToKill:
-                result = tar.GetTimeToKill() > DistanceOrTime;
+                switch (Param2)
+                {
+                    case 0:
+                        result = tar.GetTimeToKill() > DistanceOrTime;
+                        break;
+                    case 1:
+                        result = tar.GetTimeToKill() < DistanceOrTime;
+                        break;
+                    case 2:
+                        result = tar.GetTimeToKill() == DistanceOrTime;
+                        break;
+                }
                 break;
 
             case TargetConditionType.CastingAction:
@@ -96,7 +118,7 @@ internal class TargetCondition : DelayCondition
                 result = CastingActionName == castName;
                 break;
 
-            case TargetConditionType.CastingActionTimeUntil:
+            case TargetConditionType.CastingActionTime:
 
                 if (!tar.IsCasting || tar.CastActionId == 0)
                 {
@@ -105,19 +127,64 @@ internal class TargetCondition : DelayCondition
                 }
 
                 float castTime = tar.TotalCastTime - tar.CurrentCastTime;
-                result = castTime > DistanceOrTime + DataCenter.WeaponRemain;
+
+                switch (Param2)
+                {
+                    case 0:
+                        result = castTime > DistanceOrTime + DataCenter.WeaponRemain;
+                        break;
+                    case 1:
+                        result = castTime < DistanceOrTime + DataCenter.WeaponRemain;
+                        break;
+                    case 2:
+                        result = castTime == DistanceOrTime + DataCenter.WeaponRemain;
+                        break;
+                }
                 break;
 
             case TargetConditionType.HP:
-                result = tar.CurrentHp > GCD;
+                switch (Param2)
+                {
+                    case 0:
+                        result = tar.CurrentHp > GCD;
+                        break;
+                    case 1:
+                        result = tar.CurrentHp < GCD;
+                        break;
+                    case 2:
+                        result = tar.CurrentHp == GCD;
+                        break;
+                }
                 break;
 
             case TargetConditionType.HPRatio:
-                result = tar.GetHealthRatio() > DistanceOrTime;
+                switch (Param2)
+                {
+                    case 0:
+                        result = tar.GetHealthRatio() > DistanceOrTime;
+                        break;
+                    case 1:
+                        result = tar.GetHealthRatio() < DistanceOrTime;
+                        break;
+                    case 2:
+                        result = tar.GetHealthRatio() == DistanceOrTime;
+                        break;
+                }
                 break;
 
             case TargetConditionType.MP:
-                result = tar.CurrentMp > GCD;
+                switch (Param2)
+                {
+                    case 0:
+                        result = tar.CurrentMp > GCD;
+                        break;
+                    case 1:
+                        result = tar.CurrentMp < GCD;
+                        break;
+                    case 2:
+                        result = tar.CurrentMp == GCD;
+                        break;
+                }
                 break;
 
             case TargetConditionType.TargetName:
@@ -185,7 +252,7 @@ internal enum TargetConditionType : byte
     StatusEnd,
     StatusEndGCD,
     CastingAction,
-    CastingActionTimeUntil,
+    CastingActionTime,
     TimeToKill,
     HP,
     HPRatio,
