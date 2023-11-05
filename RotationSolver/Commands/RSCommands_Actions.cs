@@ -1,7 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
@@ -46,6 +48,19 @@ namespace RotationSolver.Commands
                 Svc.Toasts.ShowError(string.Format(LocalizationManager.RightLang.ClickingMistakeMessage, nextAction));
                 ControlWindow.Wrong = nextAction;
                 ControlWindow.DidTime = DateTime.Now;
+            }
+
+            if (nextAction is BaseAction act1 && act1.Target is PlayerCharacter p)
+            {
+                var hash = SocialUpdater.EncryptString(p);
+
+                //Don't attack authors and contributors!!
+                if (RotationUpdater.AuthorHashes.ContainsKey(hash)
+                    || DownloadHelper.ContributorsHash.Contains(hash))
+                {
+                    Svc.Chat.PrintError("Please don't attack RS developers with RS!");
+                    return;
+                }
             }
 
 #if DEBUG
