@@ -1831,6 +1831,61 @@ public enum ActionID : uint
     /// 
     /// </summary>
     Dismantle = 2887,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_BlastCharge = 29402,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Scattergun = 29404,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Drill = 29405,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Wildfire = 29409,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_BishopAutoTurret = 29412,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Analysis = 29414,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_MarksmansSpite = 29415,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_HeatBlast = 29403,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Bioblaster = 29406,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_AirAnchor = 29407,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_ChainSaw = 29408,
     #endregion
 
     #region MNK
@@ -3244,6 +3299,71 @@ public enum ActionID : uint
     /// 
     /// </summary>
     Slipstream = 25837,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Ruin3 = 29664,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_AstralImpulse = 29665,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_EnkindleBahamut = 29674,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_FountainOfFire = 29666,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_EnkindlePhoenix = 29679,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_CrimsonCyclone = 29667,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_CrimsonStrike = 29668,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Slipstream = 29669,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_RadiantAegis = 29670,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_MountainBuster = 29671,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Fester = 29672,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_SummonBahamut = 29673,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_SummonPhoenix = 29678,
     #endregion
 
     #region WAR

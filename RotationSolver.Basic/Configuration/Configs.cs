@@ -435,7 +435,7 @@ public enum PluginConfigFloat : byte
     [Default(0.4f, 0f, 0.7f)] CountDownAhead,
 
     [Default(24f, 0f, 90f)] MoveTargetAngle,
-    [Default(60f, 10f, 1800f)] BossTimeToKill,
+    [Default(90f, 10f, 1800f)] BossTimeToKill,
     [Default(10f, 0f, 60f)] DyingTimeToKill,
 
     [Default(16f, 9.6f, 96f)] CooldownFontSize,
