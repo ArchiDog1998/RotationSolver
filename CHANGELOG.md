@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.4.10](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.9...v3.4.10) (2023-11-05)
+
+
+### Bug Fixes
+
+* fixed pos lock on PvP. ([2f73cf0](https://github.com/ArchiDog1998/RotationSolver/commit/2f73cf053075acbc6a46da925835d72a37834d84))
+* make rank 1 mobs as boss. ([5c8bd48](https://github.com/ArchiDog1998/RotationSolver/commit/5c8bd486e61122d3cc19406882559343609c0174))
+* pvp sprint status. ([bcd558d](https://github.com/ArchiDog1998/RotationSolver/commit/bcd558ddc2b4fbb7966ff784d65c894e3b2a9aef))
+
 ## [3.4.9](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.8...v3.4.9) (2023-11-04)
 
 
