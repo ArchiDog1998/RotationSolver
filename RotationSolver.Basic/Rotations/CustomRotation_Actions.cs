@@ -494,7 +494,10 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Sprint { get; } = new BaseAction(ActionID.PvP_Sprint, ActionOption.Friendly);
+    public static IBaseAction PvP_Sprint { get; } = new BaseAction(ActionID.PvP_Sprint, ActionOption.Friendly)
+    {
+        StatusProvide = new StatusID[] { StatusID.PvP_Sprint },
+    };
     #endregion
 
     IBaseAction[] _allBaseActions;

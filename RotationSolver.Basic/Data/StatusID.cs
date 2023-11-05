@@ -1502,6 +1502,8 @@ public enum StatusID : ushort
     /// </summary>
     PVP_Overheat = 3149,
     
-    
-    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Sprint = 1342,
 }
