@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.4.11](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.10...v3.4.11) (2023-11-05)
+
+
+### Bug Fixes
+
+* add a not for all conditions. Remove the reversion in the condition. ([c5b13eb](https://github.com/ArchiDog1998/RotationSolver/commit/c5b13ebf1f8c6f99503a50b38151ee793650a170))
+* boss identify. ([3330ed9](https://github.com/ArchiDog1998/RotationSolver/commit/3330ed94bb2e17da70e149105c2e1ee43705c77b))
+* don't lock movement for the special actions. ([af7fe0d](https://github.com/ArchiDog1998/RotationSolver/commit/af7fe0d1047b038d0660f2f10404800dc8c38971))
+
 ## [3.4.10](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.9...v3.4.10) (2023-11-05)
 
 
