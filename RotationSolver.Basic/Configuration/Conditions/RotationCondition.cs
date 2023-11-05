@@ -33,7 +33,7 @@ internal class RotationCondition : DelayCondition
                 if (_prop == null) return false;
                 if (_prop.GetValue(rotation) is bool b)
                 {
-                    return Condition > 0 ? !b : b;
+                    return b;
                 }
                 return false;
 
@@ -88,7 +88,7 @@ internal class RotationCondition : DelayCondition
                 {
                     if (_method?.Invoke(rotation, new object[] { Param1 > 0, new IAction[] { _action } }) is bool boo)
                     {
-                        return Condition > 0 ? !boo : boo;
+                        return boo;
                     }
                     return false;
                 }

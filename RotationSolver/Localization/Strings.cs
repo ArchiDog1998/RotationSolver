@@ -294,12 +294,6 @@ internal class Strings
 
     #region Action Sequencer
     public string ActionSequencer_Load { get; set; } = "Load From folder.";
-    public string ActionSequencer_Can { get; set; } = "Can";
-    public string ActionSequencer_Cannot { get; set; } = "Can Not";
-    public string ActionSequencer_Is { get; set; } = "Is";
-    public string ActionSequencer_Isnot { get; set; } = "Is Not";
-    public string ActionSequencer_Has { get; set; } = "Has";
-    public string ActionSequencer_HasNot { get; set; } = "Has not";
     public string ActionSequencer_TimeOffset { get; set; } = "Time Offset";
 
     public string ActionSequencer_AOECount { get; set; } = "AOE Count";
@@ -321,6 +315,8 @@ internal class Strings
     public string ActionSequencer_StatusSelf { get; set; } = "From Self";
     public string ActionSequencer_StatusAll { get; set; } = "From All";
     public string ActionSequencer_Delay_Description { get; set; } = "How many seconds do you want to delay its turning to true.";
+    public string ActionSequencer_NotDescription { get; set; } = "Click to make it reverse.\nIs reversed : {0}";
+
     #endregion
 
     #region Actions

@@ -9,7 +9,6 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Xml.Linq;
 using Action = System.Action;
 
 namespace RotationSolver.UI;
@@ -20,9 +19,40 @@ internal static class ConditionDrawer
     {
         if (conditionSet == null) return;
 
-        DrawCondition(conditionSet.IsTrue(rotation));
+        DrawCondition(conditionSet.IsTrue(rotation), conditionSet.GetHashCode().ToString(), ref conditionSet.Not);
         ImGui.SameLine();
         conditionSet.Draw(rotation);
+    }
+
+    internal static void DrawCondition(bool? tag, string id, ref bool isNot)
+    {
+        float size = IconSize * (1 + 8 / 82);
+        if (!tag.HasValue)
+        {
+            if (IconSet.GetTexture("ui/uld/image2.tex", out var texture, true) || IconSet.GetTexture(0u, out texture))
+            {
+                if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size, false, id))
+                {
+                    isNot = !isNot;
+                }
+                
+                ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ActionSequencer_NotDescription, isNot));
+            }
+        }
+        else
+        {
+            if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture, true))
+            {
+                if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size,
+                    new Vector2(tag.Value ? 0 : 0.5f, 0),
+                    new Vector2(tag.Value ? 0.5f : 1, 1), isNot ? ImGui.ColorConvertFloat4ToU32(new Vector4(1, 0.8f, 0.5f, 0.2f)) : 0, id))
+                {
+                    isNot = !isNot;
+                }
+                ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ActionSequencer_NotDescription, isNot));
+
+            }
+        }
     }
 
     internal static void DrawCondition(bool? tag)
@@ -300,12 +330,6 @@ internal static class ConditionDrawer
             }, LocalizationManager.RightLang.ConfigWindow_Condition_ConditionName);
 
         ImGui.SameLine();
-
-        ImGuiHelper.SelectableCombo($"##IsOrNot{namedCondition.GetHashCode()}", new string[]
-        {
-                    LocalizationManager.RightLang.ActionSequencer_Is,
-                    LocalizationManager.RightLang.ActionSequencer_Isnot,
-        }, ref namedCondition.Condition);
     }
 
     private static void DrawAfter(this TraitCondition traitCondition, ICustomRotation rotation)
@@ -368,16 +392,6 @@ internal static class ConditionDrawer
             LocalizationManager.RightLang.ActionConditionType_EnoughLevel
         }, ref i);
         ImGui.SameLine();
-
-        var condition = traitCondition.Condition ? 1 : 0;
-        if (ImGuiHelper.SelectableCombo($"##Comparation{traitCondition.GetHashCode()}", new string[]
-                {
-                    LocalizationManager.RightLang.ActionSequencer_Is,
-                    LocalizationManager.RightLang.ActionSequencer_Isnot,
-                }, ref condition))
-        {
-            traitCondition.Condition = condition > 0;
-        }
     }
 
     private static readonly CollapsingHeaderGroup _actionsList = new()
@@ -408,43 +422,6 @@ internal static class ConditionDrawer
         ImGui.SameLine();
 
         DrawByteEnum($"##Category{actionCondition.GetHashCode()}", ref actionCondition.ActionConditionType, EnumTranslations.ToName);
-
-        var condition = actionCondition.Condition ? 1 : 0;
-        var combos = Array.Empty<string>();
-        switch (actionCondition.ActionConditionType)
-        {
-            case ActionConditionType.ElapsedGCD:
-            case ActionConditionType.RemainGCD:
-            case ActionConditionType.Elapsed:
-            case ActionConditionType.Remain:
-            case ActionConditionType.CurrentCharges:
-            case ActionConditionType.MaxCharges:
-                combos = new string[] { ">", "<=" };
-                break;
-
-            case ActionConditionType.CanUse:
-                combos = new string[]
-                {
-                    LocalizationManager.RightLang.ActionSequencer_Can,
-                    LocalizationManager.RightLang.ActionSequencer_Cannot,
-                };
-                break;
-
-            case ActionConditionType.EnoughLevel:
-            case ActionConditionType.IsCoolDown:
-                combos = new string[]
-                {
-                    LocalizationManager.RightLang.ActionSequencer_Is,
-                    LocalizationManager.RightLang.ActionSequencer_Isnot,
-                };
-                break;
-        }
-        ImGui.SameLine();
-
-        if (ImGuiHelper.SelectableCombo($"##Comparation{actionCondition.GetHashCode()}", combos, ref condition))
-        {
-            actionCondition.Condition = condition > 0;
-        }
 
         switch (actionCondition.ActionConditionType)
         {
@@ -518,8 +495,6 @@ internal static class ConditionDrawer
         {
             LogicalType.And => "&&",
             LogicalType.Or => " | | ",
-            LogicalType.NotAnd => "! &&",
-            LogicalType.NotOr => "!  | | ",
             _ => string.Empty,
         });
 
@@ -560,7 +535,14 @@ internal static class ConditionDrawer
                 (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }),
                 (LocalizationManager.RightLang.ConfigWindow_Actions_Copy, Copy, new string[] { "Ctrl" }));
 
-            DrawCondition(condition.IsTrue(rotation));
+            if(condition is DelayCondition delay)
+            {
+                DrawCondition(delay.IsTrue(rotation), delay.GetHashCode().ToString(), ref delay.Not);
+            }
+            else
+            {
+                DrawCondition(condition.IsTrue(rotation));
+            }
 
             ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
                 (Delete, new VirtualKey[] { VirtualKey.DELETE }),
@@ -632,13 +614,6 @@ internal static class ConditionDrawer
                     rotationCondition._prop = i;
                     rotationCondition.PropertyName = i.Name;
                 });
-                ImGui.SameLine();
-
-                ImGuiHelper.SelectableCombo($"##IsOrNot{rotationCondition.GetHashCode()}", new string[]
-                {
-                    LocalizationManager.RightLang.ActionSequencer_Is,
-                    LocalizationManager.RightLang.ActionSequencer_Isnot,
-                }, ref rotationCondition.Condition);
 
                 break;
 
@@ -692,14 +667,6 @@ internal static class ConditionDrawer
                 {
                     rotationCondition.MethodName = names[index];
                 }
-
-                ImGui.SameLine();
-
-                ImGuiHelper.SelectableCombo($"##IsNot{rotationCondition.GetHashCode()}", new string[]
-                {
-                    LocalizationManager.RightLang.ActionSequencer_Is,
-                    LocalizationManager.RightLang.ActionSequencer_Isnot,
-                }, ref rotationCondition.Condition);
 
                 ImGui.SameLine();
 
@@ -798,50 +765,6 @@ internal static class ConditionDrawer
 
         ImGui.SameLine();
         DrawByteEnum($"##Category{targetCondition.GetHashCode()}", ref targetCondition.TargetConditionType, EnumTranslations.ToName);
-
-        var condition = targetCondition.Condition ? 1 : 0;
-        var combos = Array.Empty<string>();
-        switch (targetCondition.TargetConditionType)
-        {
-            case TargetConditionType.HasStatus:
-                combos = new string[]
-                {
-                    LocalizationManager.RightLang.ActionSequencer_Has,
-                    LocalizationManager.RightLang.ActionSequencer_HasNot,
-                };
-                break;
-            case TargetConditionType.IsDying:
-            case TargetConditionType.IsBoss:
-            case TargetConditionType.InCombat:
-            case TargetConditionType.CastingAction:
-            case TargetConditionType.TargetName:
-            case TargetConditionType.ObjectEffect:
-            case TargetConditionType.Vfx:
-            case TargetConditionType.IsNull:
-                combos = new string[]
-                {
-                    LocalizationManager.RightLang.ActionSequencer_Is,
-                    LocalizationManager.RightLang.ActionSequencer_Isnot,
-                };
-                break;
-
-            case TargetConditionType.CastingActionTimeUntil:
-            case TargetConditionType.Distance:
-            case TargetConditionType.StatusEnd:
-            case TargetConditionType.TimeToKill:
-            case TargetConditionType.HP:
-            case TargetConditionType.HPRatio:
-            case TargetConditionType.MP:
-                combos = new string[] { ">", "<=" };
-                break;
-        }
-
-        ImGui.SameLine();
-
-        if (ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", combos, ref condition))
-        {
-            targetCondition.Condition = condition > 0;
-        }
 
         var popupId = "Status Finding Popup" + targetCondition.GetHashCode().ToString();
 
@@ -1060,14 +983,6 @@ internal static class ConditionDrawer
     private static void DrawAfter(this TerritoryCondition territoryCondition, ICustomRotation _)
     {
         DrawByteEnum($"##Category{territoryCondition.GetHashCode()}", ref territoryCondition.TerritoryConditionType, EnumTranslations.ToName);
-
-        ImGui.SameLine();
-
-        ImGuiHelper.SelectableCombo($"##IsNot{territoryCondition.GetHashCode()}", new string[]
-        {
-                    LocalizationManager.RightLang.ActionSequencer_Is,
-                    LocalizationManager.RightLang.ActionSequencer_Isnot,
-        }, ref territoryCondition.Condition);
 
         switch (territoryCondition.TerritoryConditionType)
         {

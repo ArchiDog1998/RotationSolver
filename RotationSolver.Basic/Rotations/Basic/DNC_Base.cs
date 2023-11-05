@@ -265,7 +265,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction StandardFinish { get; } = new BaseAction(ActionID.StandardFinish)
+    protected static IBaseAction StandardFinish { get; } = new BaseAction(ActionID.StandardFinish)
     {
         StatusNeed = new[] { StatusID.StandardStep },
         ActionCheck = (b, m) => IsDancing && CompletedSteps == 2,
@@ -274,7 +274,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction TechnicalFinish { get; } = new BaseAction(ActionID.TechnicalFinish)
+    protected static IBaseAction TechnicalFinish { get; } = new BaseAction(ActionID.TechnicalFinish)
     {
         StatusNeed = new[] { StatusID.TechnicalStep },
         ActionCheck = (b, m) => IsDancing && CompletedSteps == 4,
