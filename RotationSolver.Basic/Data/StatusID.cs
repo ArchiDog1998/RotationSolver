@@ -1521,4 +1521,56 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     PvP_Sprint = 1342,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_ThreeMudra = 1317,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_SealedHuton= 3196,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_SealedDoton = 3197,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_SealedGokaMekkyaku = 3193,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_SealedHyoshoRanryu = 3194,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_SealedForkedRaiju = 3195,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_SealedMeisui = 3198,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Bunshin = 2010,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_Hidden = 1316,
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_FleetingRaijuReady = 3211,
+    
+    
 }
