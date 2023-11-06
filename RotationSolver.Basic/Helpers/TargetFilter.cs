@@ -17,7 +17,7 @@ public static class TargetFilter
     internal static IEnumerable<BattleChara> MeleeRangeTargetFilter(IEnumerable<BattleChara> availableCharas)
         => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.GetValue(PluginConfigFloat.MeleeRangeOffset));
 
-    internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool mustUse)
+    internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool _)
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
 

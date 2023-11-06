@@ -341,21 +341,29 @@ public partial class RotationConfigWindow
             searchable?.Draw(Job);
         }
 
-        var str = SocialUpdater.EncryptString(Player.Object);
-        ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
-        ImGui.InputText("That is your HASH:", ref str, 100);
-
-        if (!DownloadHelper.ContributorsHash.Contains(str)
-            && !DownloadHelper.UsersHash.Contains(str)
-            && !RotationUpdater.AuthorHashes.ContainsKey(str))
+        if (Service.Config.GetValue(PluginConfigBool.SayHelloToAll))
         {
-            if (ImGui.Button("DM your Hash to ArchiTed for being greeted."))
+            var str = SocialUpdater.EncryptString(Player.Object);
+            ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
+            ImGui.InputText("That is your HASH:", ref str, 100);
+
+            if (!DownloadHelper.ContributorsHash.Contains(str)
+                && !DownloadHelper.UsersHash.Contains(str)
+                && !RotationUpdater.AuthorHashes.ContainsKey(str))
             {
-                ImGui.SetClipboardText(str);
-                Notify.Success($"Your hash \"{str}\" copied to clipboard.");
-                Util.OpenLink("https://discord.com/users/1007293294100877322");
+                if (ImGui.Button("DM your Hash to ArchiTed for being greeted."))
+                {
+                    ImGui.SetClipboardText(str);
+                    Notify.Success($"Your hash \"{str}\" copied to clipboard.");
+                    Util.OpenLink("https://discord.com/users/1007293294100877322");
+                }
             }
         }
+        else
+        {
+            ImGui.TextColored(ImGuiColors.DalamudRed, "The author of RS loves being greeted by you!");
+        }
+
     }
 
     private static readonly ISearchable[] _basicTimer = new ISearchable[]
@@ -387,8 +395,9 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseAdditionalConditions),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.SayHelloToUsers),
-        new CheckBoxSearchPlugin(PluginConfigBool.JustSayHelloOnce),
+        new CheckBoxSearchPlugin(PluginConfigBool.SayHelloToAll,
+            new CheckBoxSearchPlugin(PluginConfigBool.SayHelloToUsers),
+            new CheckBoxSearchPlugin(PluginConfigBool.JustSayHelloOnce)),
     };
 
     private static readonly ISearchable[] _basicSwitchTurnOn = new ISearchable[]

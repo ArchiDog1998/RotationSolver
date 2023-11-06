@@ -143,6 +143,11 @@ internal class SocialUpdater
     private static readonly ChatEntityComparer _comparer = new();
     private static async void SayHelloToUsers()
     {
+        if (!Service.Config.GetValue(PluginConfigBool.SayHelloToUsers))
+        {
+            return;
+        }
+
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
 #if DEBUG
 #else
