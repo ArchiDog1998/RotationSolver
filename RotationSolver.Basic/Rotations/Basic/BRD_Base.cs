@@ -375,7 +375,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_TheWardensPaean { get; } = new BaseAction(ActionID.PvP_TheWardensPaean)
+    public static IBaseAction PvP_TheWardensPaean { get; } = new BaseAction(ActionID.PvP_TheWardensPaean, ActionOption.Friendly)
     {
         StatusProvide = PvP_PitchPerfect.StatusNeed,
     };

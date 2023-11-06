@@ -6,7 +6,6 @@ internal class MarkingHelper
 {
     private unsafe static long GetMarker(uint index) => MarkingController.Instance()->MarkerArray[index];
 
-
     internal static bool HaveAttackChara(IEnumerable<BattleChara> charas) => GetAttackMarkChara(charas) != null;
 
     internal static BattleChara GetAttackMarkChara(IEnumerable<BattleChara> charas)

@@ -7,6 +7,12 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
+    internal static readonly uint[] ActionsNoNeedCasting = new uint[]
+    {
+        5,
+        (uint)ActionID.PvP_PowerfulShot,
+        (uint)ActionID.PvP_BlastCharge,
+    };
     /// <summary>
     /// The user set heal ratio.
     /// </summary>
@@ -155,7 +161,7 @@ public partial class BaseAction
             {
                 if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock) return false;
             }
-            else if (!option.HasFlag(CanUseOption.IgnoreClippingCheck))
+            else if (!option.HasFlag(CanUseOption.IgnoreClippingCheck) && !ActionsNoNeedCasting.Contains(ID))
             {
                 if (DataCenter.NextAbilityToNextGCD < AnimationLockTime) return false;
             }

@@ -17,7 +17,7 @@ public static class TargetFilter
     internal static IEnumerable<BattleChara> MeleeRangeTargetFilter(IEnumerable<BattleChara> availableCharas)
         => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.GetValue(PluginConfigFloat.MeleeRangeOffset));
 
-    internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool mustUse)
+    internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool _)
     {
         if (availableCharas == null || !availableCharas.Any()) return null;
 
@@ -27,7 +27,6 @@ public static class TargetFilter
         if (onlyHealSelf)
         {
             if (player == null) return null;
-            if (player.GetHealthRatio() == 1) return null;
             return player;
         }
 
@@ -78,9 +77,7 @@ public static class TargetFilter
             availableCharas = DefaultTargetingType(availableCharas);
         }
 
-        float radius = availableCharas.FirstOrDefault()?.HitboxRadius ?? 0.5f;
-        return availableCharas.Where(c => c.HitboxRadius == radius)
-            .OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
+        return availableCharas.FirstOrDefault();
     }
 
     internal static T FindTargetForMoving<T>(this IEnumerable<T> charas, bool mustUse) where T : GameObject
@@ -368,7 +365,7 @@ public static class TargetFilter
 
     private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
     {
-        if(DataCenter.Territory?.IsPvpZone ?? false)
+        if (DataCenter.Territory?.IsPvpZone ?? false)
         {
             return charas.OrderBy(p => p.CurrentHp);
         }

@@ -477,6 +477,10 @@ internal static class ConditionDrawer
 
             case ActionConditionType.CurrentCharges:
             case ActionConditionType.MaxCharges:
+                ImGuiHelper.SelectableCombo($"##Comparation{actionCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref actionCondition.Param2);
+
+                ImGui.SameLine();
+
                 if (DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Charges}##Charges{actionCondition.GetHashCode()}", ref actionCondition.Param1))
                 {
                     actionCondition.Param1 = Math.Max(0, actionCondition.Param1);
@@ -822,6 +826,10 @@ internal static class ConditionDrawer
                     targetCondition.FromSelf = check != 0;
                 }
 
+                ImGui.SameLine();
+
+                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
+
                 DrawDragFloat($"s##Seconds{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
@@ -847,6 +855,10 @@ internal static class ConditionDrawer
                 break;
 
             case TargetConditionType.Distance:
+                ImGui.SameLine();
+
+                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
+
                 if (DrawDragFloat($"yalm##yalm{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime))
                 {
                     targetCondition.DistanceOrTime = Math.Max(0, targetCondition.DistanceOrTime);
@@ -859,13 +871,21 @@ internal static class ConditionDrawer
                 ImGui.InputText($"Ability Name##CastingActionName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
                 break;
 
-            case TargetConditionType.CastingActionTimeUntil:
+            case TargetConditionType.CastingActionTime:
+                ImGui.SameLine();
+
+                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
+
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
                 ImGui.DragFloat($"s##CastingActionTimeUntil{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
                 break;
 
             case TargetConditionType.HPRatio:
+                ImGui.SameLine();
+
+                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
+
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
                 ImGui.DragFloat($"##HPRatio{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
@@ -874,11 +894,19 @@ internal static class ConditionDrawer
             case TargetConditionType.MP:
             case TargetConditionType.HP:
                 ImGui.SameLine();
+
+                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
+
+                ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.GCD.ToString()).X));
                 ImGui.DragInt($"##HPorMP{targetCondition.GetHashCode()}", ref targetCondition.GCD, .1f);
                 break;
 
             case TargetConditionType.TimeToKill:
+                ImGui.SameLine();
+
+                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
+
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
                 ImGui.DragFloat($"##TimeToKill{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);

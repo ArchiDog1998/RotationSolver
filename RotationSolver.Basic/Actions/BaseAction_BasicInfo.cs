@@ -52,6 +52,11 @@ public partial class BaseAction : IBaseAction
     /// <inheritdoc/>
     public bool IsDutyAction => _option.HasFlag(ActionOption.DutyAction);
 
+    /// <summary>
+    /// Is a pvp action.
+    /// </summary>
+    public bool IsPvP => _action.IsPvP;
+
     /// <inheritdoc/>
     public bool IsOnSlot
     {
@@ -62,7 +67,7 @@ public partial class BaseAction : IBaseAction
                 return DataCenter.DutyActions.Contains(AdjustedID);
             }
 
-            return _action.IsPvP == DataCenter.Territory?.IsPvpZone;
+            return IsPvP == DataCenter.Territory?.IsPvpZone;
         }
     }
 

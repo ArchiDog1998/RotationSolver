@@ -184,17 +184,17 @@ public enum JobConfigInt : byte
 
 public enum JobConfigFloat : byte
 {
-    [Default(0.55f)] HealthAreaAbilityHot,
-    [Default(0.55f)] HealthAreaSpellHot,
-    [Default(0.75f)] HealthAreaAbility,
-    [Default(0.65f)] HealthAreaSpell,
-    [Default(0.6f)] HealthSingleAbilityHot,
-    [Default(0.45f)] HealthSingleSpellHot,
-    [Default(0.7f)] HealthSingleAbility,
-    [Default(0.55f)] HealthSingleSpell,
+    [Default(0.55f), Unit(ConfigUnitType.Ratio)] HealthAreaAbilityHot,
+    [Default(0.55f), Unit(ConfigUnitType.Ratio)] HealthAreaSpellHot,
+    [Default(0.75f), Unit(ConfigUnitType.Ratio)] HealthAreaAbility,
+    [Default(0.65f), Unit(ConfigUnitType.Ratio)] HealthAreaSpell,
+    [Default(0.6f), Unit(ConfigUnitType.Ratio)] HealthSingleAbilityHot,
+    [Default(0.45f), Unit(ConfigUnitType.Ratio)] HealthSingleSpellHot,
+    [Default(0.7f), Unit(ConfigUnitType.Ratio)] HealthSingleAbility,
+    [Default(0.55f), Unit(ConfigUnitType.Ratio)] HealthSingleSpell,
 
-    [Default(0.15f)] HealthForDyingTanks,
-    [Default(1f)] HealthForAutoDefense,
+    [Default(0.15f), Unit(ConfigUnitType.Ratio)] HealthForDyingTanks,
+    [Default(1f), Unit(ConfigUnitType.Ratio)] HealthForAutoDefense,
 }
 #endregion
 
@@ -286,7 +286,7 @@ public enum PluginConfigBool : byte
     [Default(false)] ShowTargetTimeToKill,
     [Default(true)] ShowTarget,
     [Default(true)] ChooseAttackMark,
-    [Default(false)] CanAttackMarkAOE,
+    [Default(true)] CanAttackMarkAOE,
     [Default(true)] FilterStopMark,
     [Default(true)] ShowHostilesIcons,
 
@@ -364,6 +364,7 @@ public enum PluginConfigBool : byte
 
     [Default(true)] HealWhenNothingTodo,
     [Default(true)] UseResourcesAction,
+    [Default(true)] SayHelloToAll,
     [Default(true)] SayHelloToUsers,
     [Default(false)] JustSayHelloOnce,
 
@@ -373,89 +374,87 @@ public enum PluginConfigBool : byte
 
 public enum PluginConfigFloat : byte
 {
-    [Default(30f, 0f, 600f)] AutoOffAfterCombatTime,
-    [Default(3f, 0f, 8f)] DrawingHeight,
-    [Default(0.2f, 0.005f, 0.05f)] SampleLength,
-    [Default(0.1f)] KeyBoardNoiseTimeMin,
-    [Default(0.2f)] KeyBoardNoiseTimeMax,
-    [Default(45f, 0f, 90f)] AngleOfVisionCone,
+    [Default(30f, 0f, 600f), Unit(ConfigUnitType.Seconds)] AutoOffAfterCombatTime,
+    [Default(3f, 0f, 8f), Unit(ConfigUnitType.Ratio)] DrawingHeight,
+    [Default(0.2f, 0.005f, 0.05f), Unit(ConfigUnitType.Yalms)] SampleLength,
+    [Default(45f, 0f, 90f), Unit(ConfigUnitType.Degree)] AngleOfVisionCone,
 
 
-    [Default(0.25f, 0f, 0.5f)] HealthDifference,
-    [Default(1f, 0f, 5f)] MeleeRangeOffset,
-    [Default(0.1f, 0f, 0.4f)] MinLastAbilityAdvanced,
-    [Default(0.8f, 0f, 1f)] HealWhenNothingTodoBelow,
-    [Default(0.6f, 0f, 1f)] TargetIconSize,
+    [Default(0.25f, 0f, 0.5f), Unit(ConfigUnitType.Ratio)] HealthDifference,
+    [Default(1f, 0f, 5f), Unit(ConfigUnitType.Yalms)] MeleeRangeOffset,
+    [Default(0.1f, 0f, 0.4f), Unit(ConfigUnitType.Seconds)] MinLastAbilityAdvanced,
+    [Default(0.8f, 0f, 1f), Unit(ConfigUnitType.Ratio)] HealWhenNothingTodoBelow,
+    [Default(0.6f, 0f, 1f), Unit(ConfigUnitType.Pixels)] TargetIconSize,
 
-    [Default(0f, 0f, 1f)] MistakeRatio,
+    [Default(0f, 0f, 1f), Unit(ConfigUnitType.Ratio)] MistakeRatio,
 
-    [Default(0.4f, 0f, 1f)] HealthTankRatio,
-    [Default(0.4f, 0f, 1f)] HealthHealerRatio,
+    [Default(0.4f, 0f, 1f), Unit(ConfigUnitType.Ratio)] HealthTankRatio,
+    [Default(0.4f, 0f, 1f), Unit(ConfigUnitType.Ratio)] HealthHealerRatio,
 
-    [Default(3f, 1f, 20f)] SpecialDuration,
+    [Default(3f, 1f, 20f), Unit(ConfigUnitType.Seconds)] SpecialDuration,
 
-    [Default(0.08f, 0f, 0.5f)] ActionAhead,
-    [Default(0.06f)] ActionAheadForLast0GCD,
+    [Default(0.08f, 0f, 0.5f), Unit(ConfigUnitType.Seconds)] ActionAhead,
+    [Default(0.06f, 0f, 0.5f), Unit(ConfigUnitType.Seconds)] ActionAheadForLast0GCD,
 
-    [Default(0f, 0f, 1f)] WeaponDelayMin,
+    [Default(0f, 0f, 1f), Unit(ConfigUnitType.Seconds)] WeaponDelayMin,
     [Default(0f)] WeaponDelayMax,
 
-    [Default(1f, 0f, 3f)] DeathDelayMin,
+    [Default(1f, 0f, 3f), Unit(ConfigUnitType.Seconds)] DeathDelayMin,
     [Default(1.5f)] DeathDelayMax,
 
-    [Default(0.5f, 0f, 3f)] WeakenDelayMin,
+    [Default(0.5f, 0f, 3f), Unit(ConfigUnitType.Seconds)] WeakenDelayMin,
     [Default(1f)] WeakenDelayMax,
 
-    [Default(0f, 0f, 3f)] HostileDelayMin,
+    [Default(0f, 0f, 3f), Unit(ConfigUnitType.Seconds)] HostileDelayMin,
     [Default(0f)] HostileDelayMax,
 
-    [Default(0f, 0f, 3f)] HealDelayMin,
+    [Default(0f, 0f, 3f), Unit(ConfigUnitType.Seconds)] HealDelayMin,
     [Default(0f)] HealDelayMax,
 
-    [Default(0.5f, 0f, 3f)] StopCastingDelayMin,
+    [Default(0.5f, 0f, 3f), Unit(ConfigUnitType.Seconds)] StopCastingDelayMin,
     [Default(1f)] StopCastingDelayMax,
 
-    [Default(0.5f, 0f, 3f)] InterruptDelayMin,
+    [Default(0.5f, 0f, 3f), Unit(ConfigUnitType.Seconds)] InterruptDelayMin,
     [Default(1f)] InterruptDelayMax,
 
-    [Default(3f, 0f, 10f)] NotInCombatDelayMin,
+    [Default(3f, 0f, 10f), Unit(ConfigUnitType.Seconds)] NotInCombatDelayMin,
     [Default(4f)] NotInCombatDelayMax,
 
-    [Default(0.1f, 0.05f, 0.25f)] ClickingDelayMin,
+    [Default(0.1f, 0.05f, 0.25f), Unit(ConfigUnitType.Seconds)] ClickingDelayMin,
     [Default(0.15f)] ClickingDelayMax,
 
-    [Default(0.5f, 0f, 10f)] ProvokeDelayMin,
+    [Default(0.5f, 0f, 10f), Unit(ConfigUnitType.Seconds)] ProvokeDelayMin,
     [Default(1f)] ProvokeDelayMax,
 
-    [Default(0.5f, 0f, 5f)] HealWhenNothingTodoMin,
+    [Default(0.5f, 0f, 5f), Unit(ConfigUnitType.Seconds)] HealWhenNothingTodoMin,
     [Default(1f)] HealWhenNothingTodoMax,
 
-    [Default(0.5f, 0f, 3f)] CountdownDelayMin,
-    [Default(1f)] CountdownDelayMax,
-    [Default(0.4f, 0f, 0.7f)] CountDownAhead,
+    [Default(0.5f, 0f, 3f), Unit(ConfigUnitType.Seconds)] CountdownDelayMin,
+    [Default(1f), Unit(ConfigUnitType.Seconds)] CountdownDelayMax,
+    [Default(0.4f, 0f, 0.7f), Unit(ConfigUnitType.Seconds)] CountDownAhead,
 
-    [Default(24f, 0f, 90f)] MoveTargetAngle,
-    [Default(90f, 10f, 1800f)] BossTimeToKill,
-    [Default(10f, 0f, 60f)] DyingTimeToKill,
+    [Default(24f, 0f, 90f), Unit(ConfigUnitType.Degree)] MoveTargetAngle,
+    [Default(90f, 10f, 1800f), Unit(ConfigUnitType.Seconds)] BossTimeToKill,
+    [Default(10f, 0f, 60f), Unit(ConfigUnitType.Seconds)] DyingTimeToKill,
 
-    [Default(16f, 9.6f, 96f)] CooldownFontSize,
+    [Default(16f, 9.6f, 96f), Unit(ConfigUnitType.Pixels)] CooldownFontSize,
 
-    [Default(40f, 0f, 80f)] ControlWindowGCDSize,
-    [Default(30f, 0f, 80f)] ControlWindow0GCDSize,
-    [Default(30f, 0f, 80f)] CooldownWindowIconSize,
-    [Default(1.5f, 0f, 10f)] ControlWindowNextSizeRatio,
-    [Default(8f)] ControlProgressHeight,
-    [Default(1.2f, 0f, 30f)] DistanceForMoving,
-    [Default(0.2f, 0.01f, 0.5f)] MaxPing,
+    [Default(40f, 0f, 80f), Unit(ConfigUnitType.Pixels)] ControlWindowGCDSize,
+    [Default(30f, 0f, 80f), Unit(ConfigUnitType.Pixels)] ControlWindow0GCDSize,
+    [Default(30f, 0f, 80f), Unit(ConfigUnitType.Pixels)] CooldownWindowIconSize,
+    [Default(1.5f, 0f, 10f), Unit(ConfigUnitType.Ratio)] ControlWindowNextSizeRatio,
+    [Default(8f), Unit(ConfigUnitType.Pixels)] ControlProgressHeight,
+    [Default(1.2f, 0f, 30f), Unit(ConfigUnitType.Yalms)] DistanceForMoving,
+    [Default(0.2f, 0.01f, 0.5f), Unit(ConfigUnitType.Seconds)] MaxPing,
 
-    [Default(8f, 0f, 30f)] AutoHealTimeToKill,
-    [Default(0.5f, 0f, 10f)] HostileIconHeight,
-    [Default(1f, 0.1f, 10f)] HostileIconSize,
+    [Default(8f, 0f, 30f), Unit(ConfigUnitType.Seconds)] AutoHealTimeToKill,
+    [Default(0.5f, 0f, 10f), Unit(ConfigUnitType.Pixels)] HostileIconHeight,
+    [Default(1f, 0.1f, 10f), Unit(ConfigUnitType.Pixels)] HostileIconSize,
 
-    [Default(1f, 0f, 3f)] StateIconHeight,
-    [Default(1f, 0.2f, 10f)] StateIconSize,
+    [Default(1f, 0f, 3f), Unit(ConfigUnitType.Pixels)] StateIconHeight,
+    [Default(1f, 0.2f, 10f), Unit(ConfigUnitType.Pixels)] StateIconSize,
 
-    [Default(0.02f, 0f, 1f)] MinUpdatingTime,
+    [Default(0.02f, 0f, 1f), Unit(ConfigUnitType.Seconds)] MinUpdatingTime,
 }
 
 public enum PluginConfigVector4 : byte
@@ -485,6 +484,26 @@ public class DefaultAttribute : Attribute
         Default = @default;
         Min = min;
         Max = max;
+    }
+}
+
+public enum ConfigUnitType : byte
+{
+    Seconds,
+    Degree,
+    Yalms,
+    Ratio,
+    Pixels,
+}
+
+[AttributeUsage(AttributeTargets.Field)]
+public class UnitAttribute : Attribute
+{
+    public ConfigUnitType UnitType { get; set; }
+
+    public UnitAttribute(ConfigUnitType unitType)
+    {
+        UnitType = unitType;
     }
 }
 

@@ -319,7 +319,7 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Analysis { get; } = new BaseAction(ActionID.PvP_Analysis);
+    public static IBaseAction PvP_Analysis { get; } = new BaseAction(ActionID.PvP_Analysis,ActionOption.Buff);
     
     /// <summary>
     /// 

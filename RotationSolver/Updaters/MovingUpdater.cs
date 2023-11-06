@@ -8,12 +8,6 @@ namespace RotationSolver.Updaters;
 
 internal static class MovingUpdater
 {
-    private static readonly uint[] ActionsNoNeedLock = new uint[]
-    {
-        5,
-        (uint)ActionID.PvP_PowerfulShot,
-    };
-
     internal unsafe static void UpdateCanMove(bool doNextAction)
     {
         //Special state.
@@ -24,7 +18,7 @@ internal static class MovingUpdater
         //Casting the action in list.
         else if (Svc.Condition[ConditionFlag.Casting] && Player.Available)
         {
-            Service.CanMove = ActionsNoNeedLock.Contains(Player.Object.CastActionId);
+            Service.CanMove = BaseAction.ActionsNoNeedCasting.Contains(Player.Object.CastActionId);
         }
         //Special actions.
         else

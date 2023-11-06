@@ -143,6 +143,11 @@ internal class SocialUpdater
     private static readonly ChatEntityComparer _comparer = new();
     private static async void SayHelloToUsers()
     {
+        if (!Service.Config.GetValue(PluginConfigBool.SayHelloToAll))
+        {
+            return;
+        }
+
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
 #if DEBUG
 #else
@@ -200,6 +205,8 @@ internal class SocialUpdater
 
     internal static string EncryptString(PlayerCharacter player)
     {
+        if (player == null) return string.Empty;
+
         try
         {
             byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString()
