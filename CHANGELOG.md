@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.4.12](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.11...v3.4.12) (2023-11-06)
+
+
+### Bug Fixes
+
+* add an option about the say hello feature. ([d014aeb](https://github.com/ArchiDog1998/RotationSolver/commit/d014aeb4ad3dbd9167e0a5a8b3ef8e6b636cb4ee))
+* add operators for conditions. ([561718d](https://github.com/ArchiDog1998/RotationSolver/commit/561718d239a9fe48b4f96ce1526d9b4f476e1955))
+* fixed PvP lock movement. ([42539eb](https://github.com/ArchiDog1998/RotationSolver/commit/42539eb21380a3045efd5a8c379d6efa2e5c7095))
+* fixed target choice! ([f659191](https://github.com/ArchiDog1998/RotationSolver/commit/f6591911bc73c09e9d0a7adef8278fca1937d66e))
+* no attacking on authors and contributors in PvP! ([5abab09](https://github.com/ArchiDog1998/RotationSolver/commit/5abab09d549a664605ca2d33f620fe68f8b00d73))
+* PvP sprint spam. ([589ee68](https://github.com/ArchiDog1998/RotationSolver/commit/589ee68aa1ddb354de8b9c8f91f4976ebde373f8))
+* self healing in PvP. ([f1f2c05](https://github.com/ArchiDog1998/RotationSolver/commit/f1f2c05ed30718065719037a3664108ee4b04fa8))
+* target area action. ([dcc8870](https://github.com/ArchiDog1998/RotationSolver/commit/dcc8870e9b187fdca619085a6c7cc15b0c909ede))
+
 ## [3.4.11](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.10...v3.4.11) (2023-11-05)
 
 
