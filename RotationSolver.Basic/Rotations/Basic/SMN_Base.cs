@@ -481,7 +481,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_RadiantAegis { get; } = new BaseAction(ActionID.PvP_RadiantAegis);
+    public static IBaseAction PvP_RadiantAegis { get; } = new BaseAction(ActionID.PvP_RadiantAegis,ActionOption.Defense);
 
     /// <summary>
     /// 
