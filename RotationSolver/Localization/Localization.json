@@ -552,6 +552,7 @@
   "ConfigWindow_Auto_OnlyHealSelfWhenNoHealer": "Only Heal self When Not a healer",
   "ConfigWindow_Auto_HealthForAutoDefense": "HP Ratio about defense single of Tanks",
   "ConfigWindow_Basic_SayHelloToUsers": "Say hello to the users of Rotation Solver.",
+  "ConfigWindow_Basic_SayHelloToAll": "Say hello to all users of Rotation Solver.",
   "ConfigWindow_Basic_SayHelloToUsersDesc": "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!",
   "ConfigWindow_Basic_JustSayHelloOnce": "Just say hello once to the same user.",
   "ConfigWindow_About_Clicking100k": "Well, you must be a lazy player!",

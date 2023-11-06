@@ -51,6 +51,7 @@ namespace RotationSolver.Commands
             }
 
             if (nextAction is BaseAction act1 && act1.IsPvP && !act1.IsFriendly
+                && !act1.IsTargetArea
                 && act1.Target is PlayerCharacter p/* && p != Player.Object*/)
             {
                 var hash = SocialUpdater.EncryptString(p);
