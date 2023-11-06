@@ -205,6 +205,8 @@ internal class SocialUpdater
 
     internal static string EncryptString(PlayerCharacter player)
     {
+        if (player == null) return string.Empty;
+
         try
         {
             byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString()
