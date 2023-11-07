@@ -1,4 +1,5 @@
-﻿using Dalamud.Utility;
+﻿using Dalamud.Interface.Colors;
+using Dalamud.Utility;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -21,7 +22,8 @@ internal class DragFloatSearchJob : DragFloatSearch
     protected override bool IsJob => true;
 
     public DragFloatSearchJob(JobConfigFloat config, float speed)
-          : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
+          : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed,
+          config.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
     {
         _config = config;
     }
@@ -58,7 +60,8 @@ internal class DragFloatSearchPlugin : DragFloatSearch
     public override string Command => _config.ToCommand();
 
     public DragFloatSearchPlugin(PluginConfigFloat config, float speed, uint color = 0)
-        : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
+        : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed, 
+          config.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
     {
         _config = config;
         Color = color;
@@ -86,11 +89,13 @@ internal abstract class DragFloatSearch : Searchable
     public float Min { get; init; }
     public float Max { get; init; }
     public float Speed { get; init; }
+    public ConfigUnitType Unit { get; init; }
 
-    public DragFloatSearch(float min, float max, float speed)
+    public DragFloatSearch(float min, float max, float speed, ConfigUnitType unit)
     {
         Min = min; Max = max;
         Speed = speed;
+        Unit = unit;
     }
     protected abstract float GetValue(Job job);
     protected abstract void SetValue(Job job, float value);
@@ -98,13 +103,27 @@ internal abstract class DragFloatSearch : Searchable
     {
         var value = GetValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
-        if (ImGui.DragFloat($"##Config_{ID}{GetHashCode()}", ref value, Speed, Min, Max))
+        if(Unit == ConfigUnitType.Ratio)
         {
-            SetValue(job, value);
+            var v = (int)value * 100;
+            if (ImGui.SliderInt($"##Config_{ID}{GetHashCode()}", ref v, (int)(Min * 100), (int)(Max * 100)))
+            {
+                SetValue(job, v / 100f);
+            }
         }
+        else
+        {
+            if (ImGui.DragFloat($"##Config_{ID}{GetHashCode()}", ref value, Speed, Min, Max))
+            {
+                SetValue(job, value);
+            }
+        }
+
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 
-        if (IsJob) DrawJobIcon();
+        DrawUnitType(Unit);
+
+         if (IsJob) DrawJobIcon();
 
         ImGui.SameLine();
 

@@ -133,7 +133,7 @@ internal class Strings
     public string ConfigWindow_Param_MovingTargetColor { get; set; } = "Prompt box color of moving target";
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
-    public string ConfigWindow_Param_DrawingHeight { get; set; } = "The height of the next ability that will be used icon.";
+    public string ConfigWindow_Param_DrawingHeight { get; set; } = "The height of the drawing things.";
     public string ConfigWindow_Param_SampleLength { get; set; } = "Drawing smoothness.";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing abilities";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
@@ -392,6 +392,15 @@ internal class Strings
     public string TargetConditionType_ObjectEffect { get; set; } = "Object Effect";
     public string TargetConditionType_Vfx { get; set; } = "Vfx";
     public string TargetConditionType_IsNull { get; set; } = "Is Null";
+
+    #endregion
+
+    #region COnfigUnitType
+    public string ConfigUnitType_Seconds { get; set; } = "Time Unit, in seconds.";
+    public string ConfigUnitType_Degree { get; set; } = "Angle Unit, in degree.";
+    public string ConfigUnitType_Pixels { get; set; } = "Display Unit, in piexels.";
+    public string ConfigUnitType_Yalms { get; set; } = "Distance Unit, in yalms.";
+    public string ConfigUnitType_Ratio { get; set; } = "Ratio Unit, in percents.";
 
     #endregion
 

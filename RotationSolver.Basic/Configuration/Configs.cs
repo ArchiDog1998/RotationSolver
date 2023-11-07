@@ -375,7 +375,7 @@ public enum PluginConfigBool : byte
 public enum PluginConfigFloat : byte
 {
     [Default(30f, 0f, 600f), Unit(ConfigUnitType.Seconds)] AutoOffAfterCombatTime,
-    [Default(3f, 0f, 8f), Unit(ConfigUnitType.Ratio)] DrawingHeight,
+    [Default(3f, 0f, 8f), Unit(ConfigUnitType.Yalms)] DrawingHeight,
     [Default(0.2f, 0.005f, 0.05f), Unit(ConfigUnitType.Yalms)] SampleLength,
     [Default(45f, 0f, 90f), Unit(ConfigUnitType.Degree)] AngleOfVisionCone,
 
@@ -449,10 +449,10 @@ public enum PluginConfigFloat : byte
 
     [Default(8f, 0f, 30f), Unit(ConfigUnitType.Seconds)] AutoHealTimeToKill,
     [Default(0.5f, 0f, 10f), Unit(ConfigUnitType.Pixels)] HostileIconHeight,
-    [Default(1f, 0.1f, 10f), Unit(ConfigUnitType.Pixels)] HostileIconSize,
+    [Default(1f, 0.1f, 10f), Unit(ConfigUnitType.Ratio)] HostileIconSize,
 
     [Default(1f, 0f, 3f), Unit(ConfigUnitType.Pixels)] StateIconHeight,
-    [Default(1f, 0.2f, 10f), Unit(ConfigUnitType.Pixels)] StateIconSize,
+    [Default(1f, 0.2f, 10f), Unit(ConfigUnitType.Ratio)] StateIconSize,
 
     [Default(0.02f, 0f, 1f), Unit(ConfigUnitType.Seconds)] MinUpdatingTime,
     [Default(0.15f), Unit(ConfigUnitType.Ratio)] HealthForGuard,
@@ -490,6 +490,7 @@ public class DefaultAttribute : Attribute
 
 public enum ConfigUnitType : byte
 {
+    None,
     Seconds,
     Degree,
     Yalms,
