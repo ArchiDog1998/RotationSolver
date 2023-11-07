@@ -16,33 +16,63 @@ internal class RotationConfigSet : IRotationConfigSet
     }
 
     #region Set
+    [Obsolete("Please use the one with types!", true)]
     public IRotationConfigSet SetFloat(string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f)
     {
-        Configs.Add(new RotationConfigFloat(name, value, displayName, min, max, speed));
+        return SetFloat(ConfigUnitType.None, CombatType.Both, name, value, displayName, min, max, speed);
+    }
+
+    public IRotationConfigSet SetFloat(ConfigUnitType unit, CombatType type, string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f)
+    {
+        Configs.Add(new RotationConfigFloat(name, value, displayName, min, max, speed, unit, type));
         return this;
     }
 
+    [Obsolete("Please use the one with types!", true)]
     public IRotationConfigSet SetString(string name, string value, string displayName)
     {
-        Configs.Add(new RotationConfigString(name, value, displayName));
+        return SetString(CombatType.Both, name, value, displayName);
+    }
+
+    public IRotationConfigSet SetString(CombatType type, string name, string value, string displayName)
+    {
+        Configs.Add(new RotationConfigString(name, value, displayName, type));
         return this;
     }
 
+    [Obsolete("Please use the one with types!", true)]
     public IRotationConfigSet SetBool(string name, bool value, string displayName)
     {
-        Configs.Add(new RotationConfigBoolean(name, value, displayName));
+        return SetBool(CombatType.Both, name, value, displayName);  
+    }
+
+    public IRotationConfigSet SetBool(CombatType type, string name, bool value, string displayName)
+    {
+        Configs.Add(new RotationConfigBoolean(name, value, displayName, type));
         return this;
     }
 
+    [Obsolete("Please use the one with types!", true)]
     public IRotationConfigSet SetCombo(string name, int value, string displayName, params string[] items)
     {
-        Configs.Add(new RotationConfigCombo(name, value, displayName, items));
+        return SetCombo(CombatType.Both, name, value, displayName, items);
+    }
+
+    public IRotationConfigSet SetCombo(CombatType type, string name, int value, string displayName, params string[] items)
+    {
+        Configs.Add(new RotationConfigCombo(name, value, displayName, items, type));
         return this;
     }
 
+    [Obsolete("Please use the one with types!", true)]
     public IRotationConfigSet SetInt(string name, int value, string displayName, int min = 0, int max = 10, int speed = 1)
     {
-        Configs.Add(new RotationConfigInt(name, value, displayName, min, max, speed));
+        return SetInt(CombatType.Both, name, value, displayName, min, max, speed);
+    }
+
+    public IRotationConfigSet SetInt(CombatType type, string name, int value, string displayName, int min = 0, int max = 10, int speed = 1)
+    {
+        Configs.Add(new RotationConfigInt(name, value, displayName, min, max, speed, type));
         return this;
     }
 
@@ -100,7 +130,6 @@ internal class RotationConfigSet : IRotationConfigSet
 
 
     public IEnumerator<IRotationConfig> GetEnumerator() => Configs.GetEnumerator();
-
 
     IEnumerator IEnumerable.GetEnumerator() => Configs.GetEnumerator();
 

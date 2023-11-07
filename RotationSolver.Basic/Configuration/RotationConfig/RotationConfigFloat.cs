@@ -4,11 +4,15 @@ internal class RotationConfigFloat : RotationConfigBase
 {
     public float Min, Max, Speed;
 
-    public RotationConfigFloat(string name, float value, string displayName, float min, float max, float speed) : base(name, value.ToString(), displayName)
+    public ConfigUnitType UnitType { get; set; }
+
+
+    public RotationConfigFloat(string name, float value, string displayName, float min, float max, float speed, ConfigUnitType unitType, CombatType type) : base(name, value.ToString(), displayName, type)
     {
         Min = min;
         Max = max;
         Speed = speed;
+        UnitType = unitType;
     }
 
     public override bool DoCommand(IRotationConfigSet set, string str)

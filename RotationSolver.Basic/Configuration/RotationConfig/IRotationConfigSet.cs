@@ -20,7 +20,21 @@ public interface IRotationConfigSet : IEnumerable<IRotationConfig>
     /// <param name="max"></param>
     /// <param name="speed"></param>
     /// <returns></returns>
+    [Obsolete("Please use the one with types!", true)]
     IRotationConfigSet SetFloat(string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f);
+
+    /// <summary>
+    /// Set the float.
+    /// </summary>
+    /// <param name="unit">tye unit type</param>
+    /// <param name="type">the combat type</param>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    /// <param name="displayName"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <param name="speed"></param>
+    IRotationConfigSet SetFloat(ConfigUnitType unit, CombatType type, string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f);
 
     /// <summary>
     /// Set the string.
@@ -29,7 +43,18 @@ public interface IRotationConfigSet : IEnumerable<IRotationConfig>
     /// <param name="value"></param>
     /// <param name="displayName"></param>
     /// <returns></returns>
+    [Obsolete("Please use the one with types!", true)]
     IRotationConfigSet SetString(string name, string value, string displayName);
+
+    /// <summary>
+    /// Set the string.
+    /// </summary>
+    /// <param name="type">the combat type</param>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    /// <param name="displayName"></param>
+    /// <returns></returns>
+    IRotationConfigSet SetString(CombatType type, string name, string value, string displayName);
 
     /// <summary>
     /// Set the bool.
@@ -38,7 +63,18 @@ public interface IRotationConfigSet : IEnumerable<IRotationConfig>
     /// <param name="value"></param>
     /// <param name="displayName"></param>
     /// <returns></returns>
+    [Obsolete("Please use the one with types!", true)]
     IRotationConfigSet SetBool(string name, bool value, string displayName);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="type">the combat type</param>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    /// <param name="displayName"></param>
+    /// <returns></returns>
+    IRotationConfigSet SetBool(CombatType type, string name, bool value, string displayName);
 
     /// <summary>
     /// Set the combo.
@@ -48,7 +84,19 @@ public interface IRotationConfigSet : IEnumerable<IRotationConfig>
     /// <param name="displayName"></param>
     /// <param name="items"></param>
     /// <returns></returns>
+    [Obsolete("Please use the one with types!", true)]
     IRotationConfigSet SetCombo(string name, int value, string displayName, params string[] items);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    /// <param name="displayName"></param>
+    /// <param name="items"></param>
+    /// <returns></returns>
+    IRotationConfigSet SetCombo(CombatType type, string name, int value, string displayName, params string[] items);
 
     /// <summary>
     /// Set the int.
@@ -60,7 +108,21 @@ public interface IRotationConfigSet : IEnumerable<IRotationConfig>
     /// <param name="max"></param>
     /// <param name="speed"></param>
     /// <returns></returns>
+    [Obsolete("Please use the one with types!", true)]
     IRotationConfigSet SetInt(string name, int value, string displayName, int min = 0, int max = 10, int speed = 1);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    /// <param name="displayName"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <param name="speed"></param>
+    /// <returns></returns>
+    IRotationConfigSet SetInt(CombatType type, string name, int value, string displayName, int min = 0, int max = 10, int speed = 1);
 
     /// <summary>
     /// Set the value.

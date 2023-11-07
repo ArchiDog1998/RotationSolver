@@ -169,7 +169,7 @@ public abstract partial class CustomRotation
     {
         FilterForHostiles = bs => bs.Where((Func<BattleChara, bool>)(b =>
         {
-            if (b.IsBoss() || CustomRotation.IsMoving || b.CastActionId == 0) return false;
+            if (b.IsBossFromIcon() || IsMoving || b.CastActionId == 0) return false;
 
             if (!b.IsCastInterruptible || Interject.IsCoolingDown) return true;
             return false;

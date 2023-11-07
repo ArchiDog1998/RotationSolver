@@ -23,6 +23,11 @@ public interface IRotationConfig
     string DefaultValue { get; }
 
     /// <summary>
+    /// Type of this config, pvp, pve, or both.
+    /// </summary>
+    CombatType Type { get; }
+
+    /// <summary>
     /// Get the value of this.
     /// </summary>
     /// <param name="job"></param>

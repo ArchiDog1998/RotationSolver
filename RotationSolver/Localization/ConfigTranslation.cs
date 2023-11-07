@@ -200,7 +200,7 @@ internal static class ConfigTranslation
         PluginConfigFloat.MoveTargetAngle => LocalizationManager.RightLang.ConfigWindow_Param_MoveTargetAngle,
         PluginConfigFloat.AutoHealTimeToKill => LocalizationManager.RightLang.ConfigWindow_Auto_AutoHealTimeToKill,
         PluginConfigFloat.ProvokeDelayMin => LocalizationManager.RightLang.ConfigWindow_Auto_ProvokeDelay,
-
+        PluginConfigFloat.HealthForGuard => LocalizationManager.RightLang.ConfigWindow_Param_HealthForGuard,
         // target
         PluginConfigFloat.BossTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_BossTimeToKill,
         PluginConfigFloat.DyingTimeToKill => LocalizationManager.RightLang.ConfigWindow_Param_DyingTimeToKill,

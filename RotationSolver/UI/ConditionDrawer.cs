@@ -6,9 +6,11 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using System.Reflection.Emit;
 using Action = System.Action;
 
 namespace RotationSolver.UI;
@@ -77,22 +79,6 @@ internal static class ConditionDrawer
         }
     }
 
-    public static void CheckMemberInfo<T>(ICustomRotation rotation, ref string name, ref T value) where T : MemberInfo
-    {
-        if (!string.IsNullOrEmpty(name) && (value == null || value.Name != name))
-        {
-            var memberName = name;
-            if (typeof(T).IsAssignableFrom(typeof(PropertyInfo)))
-            {
-                value = (T)rotation.GetType().GetAllMethods(RuntimeReflectionExtensions.GetRuntimeProperties).FirstOrDefault(m => m.Name == memberName);
-            }
-            else if (typeof(T).IsAssignableFrom(typeof(MethodInfo)))
-            {
-                value = (T)rotation.GetType().GetAllMethods(RuntimeReflectionExtensions.GetRuntimeMethods).FirstOrDefault(m => m.Name == memberName);
-            }
-        }
-    }
-
     private static IEnumerable<MemberInfo> GetAllMethods(this Type type, Func<Type, IEnumerable<MemberInfo>> getFunc)
     {
         if (type == null || getFunc == null) return Array.Empty<MemberInfo>();
@@ -113,36 +99,27 @@ internal static class ConditionDrawer
         }
     }
 
-    public static bool DrawDragFloat(string name, ref float value)
+    public static bool DrawDragFloat(ConfigUnitType type, string name, ref float value)
     {
         ImGui.SameLine();
-        ImGui.SetNextItemWidth(50);
-        return ImGui.DragFloat(name, ref value);
+        ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(value.ToString()).X));
+        var result = ImGui.DragFloat(name, ref value);
+        type.Draw();
+        return result;
     }
 
     public static bool DrawDragInt(string name, ref int value)
     {
         ImGui.SameLine();
-        ImGui.SetNextItemWidth(50);
+        ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(value.ToString()).X));
         return ImGui.DragInt(name, ref value);
     }
 
-    public static bool DrawCheckBox(string name, ref int value, string desc = "")
+    public static bool DrawCondition(ICondition condition, ref int index)
     {
         ImGui.SameLine();
 
-        var @bool = value != 0;
-
-        var result = false;
-        if (ImGui.Checkbox(name, ref @bool))
-        {
-            value = @bool ? 1 : 0;
-            result = true;
-        }
-
-        ImguiTooltips.HoveredTooltip(desc);
-
-        return result;
+        return ImGuiHelper.SelectableCombo($"##Comparation{condition.GetHashCode()}", new string[] { ">", "<", "=" }, ref index);
     }
 
     internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
@@ -427,7 +404,7 @@ internal static class ConditionDrawer
         {
             case ActionConditionType.Elapsed:
             case ActionConditionType.Remain:
-                DrawDragFloat($"s##Seconds{actionCondition.GetHashCode()}", ref actionCondition.Time);
+                DrawDragFloat(ConfigUnitType.Seconds, $"##Seconds{actionCondition.GetHashCode()}", ref actionCondition.Time);
                 break;
 
             case ActionConditionType.ElapsedGCD:
@@ -477,7 +454,7 @@ internal static class ConditionDrawer
 
             case ActionConditionType.CurrentCharges:
             case ActionConditionType.MaxCharges:
-                ImGuiHelper.SelectableCombo($"##Comparation{actionCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref actionCondition.Param2);
+                DrawCondition(actionCondition, ref actionCondition.Param2);
 
                 ImGui.SameLine();
 
@@ -629,14 +606,9 @@ internal static class ConditionDrawer
                     rotationCondition.PropertyName = i.Name;
                 });
 
-                ImGui.SameLine();
+                DrawCondition(rotationCondition, ref rotationCondition.Condition);
 
-                ImGuiHelper.SelectableCombo($"##Comparation{rotationCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref rotationCondition.Condition);
-
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-
-                ImGui.DragInt($"##Value{rotationCondition.GetHashCode()}", ref rotationCondition.Param1);
+                DrawDragInt($"##Value{rotationCondition.GetHashCode()}", ref rotationCondition.Param1);
 
                 break;
             case ComboConditionType.Float:
@@ -647,14 +619,9 @@ internal static class ConditionDrawer
                     rotationCondition.PropertyName = i.Name;
                 });
 
-                ImGui.SameLine();
-                ImGuiHelper.SelectableCombo($"##Comparation{rotationCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref rotationCondition.Condition);
+                DrawCondition(rotationCondition, ref rotationCondition.Condition);
 
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(50);
-
-                ImGui.DragFloat($"##Value{rotationCondition.GetHashCode()}", ref rotationCondition.Param2);
-
+                DrawDragFloat(ConfigUnitType.None, $"##Value{rotationCondition.GetHashCode()}", ref rotationCondition.Param2);
                 break;
 
             case ComboConditionType.Last:
@@ -826,11 +793,9 @@ internal static class ConditionDrawer
                     targetCondition.FromSelf = check != 0;
                 }
 
-                ImGui.SameLine();
+                DrawCondition(targetCondition, ref targetCondition.Param2);
 
-                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
-
-                DrawDragFloat($"s##Seconds{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
+                DrawDragFloat(ConfigUnitType.Seconds, $"s##Seconds{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
 
@@ -851,15 +816,13 @@ internal static class ConditionDrawer
                 }
 
                 DrawDragInt($"GCD##GCD{targetCondition.GetHashCode()}", ref targetCondition.GCD);
-                DrawDragFloat($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
+                DrawDragFloat(ConfigUnitType.Seconds, $"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
             case TargetConditionType.Distance:
-                ImGui.SameLine();
+                DrawCondition(targetCondition, ref targetCondition.Param2);
 
-                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
-
-                if (DrawDragFloat($"yalm##yalm{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime))
+                if (DrawDragFloat(ConfigUnitType.Yalms, $"##yalm{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime))
                 {
                     targetCondition.DistanceOrTime = Math.Max(0, targetCondition.DistanceOrTime);
                 }
@@ -872,44 +835,27 @@ internal static class ConditionDrawer
                 break;
 
             case TargetConditionType.CastingActionTime:
-                ImGui.SameLine();
-
-                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
-
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
-                ImGui.DragFloat($"s##CastingActionTimeUntil{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
+                DrawCondition(targetCondition, ref targetCondition.Param2);
+                DrawDragFloat(ConfigUnitType.Seconds, $"##CastingActionTimeUntil{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
             case TargetConditionType.HPRatio:
-                ImGui.SameLine();
+                DrawCondition(targetCondition, ref targetCondition.Param2);
 
-                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
-
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
-                ImGui.DragFloat($"##HPRatio{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
+                DrawDragFloat( ConfigUnitType.Percent,$"##HPRatio{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
             case TargetConditionType.MP:
             case TargetConditionType.HP:
-                ImGui.SameLine();
+                DrawCondition(targetCondition, ref targetCondition.Param2);
 
-                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
-
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.GCD.ToString()).X));
-                ImGui.DragInt($"##HPorMP{targetCondition.GetHashCode()}", ref targetCondition.GCD, .1f);
+                DrawDragInt($"##HPorMP{targetCondition.GetHashCode()}", ref targetCondition.GCD);
                 break;
 
             case TargetConditionType.TimeToKill:
-                ImGui.SameLine();
+                DrawCondition(targetCondition, ref targetCondition.Param2);
 
-                ImGuiHelper.SelectableCombo($"##Comparation{targetCondition.GetHashCode()}", new string[] { ">", "<", "=" }, ref targetCondition.Param2);
-
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(Math.Max(150 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(targetCondition.DistanceOrTime.ToString()).X));
-                ImGui.DragFloat($"##TimeToKill{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, .1f);
+                DrawDragFloat(ConfigUnitType.Seconds, $"##TimeToKill{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
             case TargetConditionType.TargetName:
@@ -922,16 +868,12 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
 
                 ImGui.Text("P1:");
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
-                ImGui.DragInt($"##Param1{targetCondition.GetHashCode()}", ref targetCondition.GCD, .1f);
+                DrawDragInt($"##Param1{targetCondition.GetHashCode()}", ref targetCondition.GCD);
 
                 ImGui.SameLine();
 
                 ImGui.Text("P2:");
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
-                ImGui.DragInt($"##Param2{targetCondition.GetHashCode()}", ref targetCondition.Param2, .1f);
+                DrawDragInt($"##Param2{targetCondition.GetHashCode()}", ref targetCondition.Param2);
 
                 ImGui.SameLine();
 
@@ -1046,23 +988,17 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
 
                 ImGui.Text("Pos:");
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
-                ImGui.DragInt($"##Position{territoryCondition.GetHashCode()}", ref territoryCondition.Position, .1f);
+                DrawDragInt($"##Position{territoryCondition.GetHashCode()}", ref territoryCondition.Position);
 
                 ImGui.SameLine();
 
                 ImGui.Text("P1:");
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
-                ImGui.DragInt($"##Param1{territoryCondition.GetHashCode()}", ref territoryCondition.Param1, .1f);
+                DrawDragInt($"##Param1{territoryCondition.GetHashCode()}", ref territoryCondition.Param1);
 
                 ImGui.SameLine();
 
                 ImGui.Text("P2:");
-                ImGui.SameLine();
-                ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
-                ImGui.DragInt($"##Param2{territoryCondition.GetHashCode()}", ref territoryCondition.Param2, .1f);
+                DrawDragInt($"##Param2{territoryCondition.GetHashCode()}", ref territoryCondition.Param2);
 
                 ImGui.SameLine();
 

@@ -46,16 +46,6 @@ public partial class BaseAction
     }
 
     /// <summary>
-    /// Is this action's target dead?
-    /// </summary>
-    public bool IsTargetDying => Target?.IsDying() ?? false;
-
-    /// <summary>
-    /// Is this action's target is a boss?
-    /// </summary>
-    public bool IsTargetBoss => Target?.IsBoss() ?? false;
-
-    /// <summary>
     /// Is this action single target?
     /// </summary>
     public bool IsSingleTarget => _action.CastType == 1;
@@ -281,7 +271,7 @@ public partial class BaseAction
         }
 
         if (Svc.Targets.Target is BattleChara b && b.DistanceToPlayer() < range &&
-            b.IsBoss() && b.HasPositional() && b.HitboxRadius <= 8)
+            b.IsBossFromIcon() && b.HasPositional() && b.HitboxRadius <= 8)
         {
             Position = b.Position;
         }

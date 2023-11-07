@@ -184,17 +184,17 @@ public enum JobConfigInt : byte
 
 public enum JobConfigFloat : byte
 {
-    [Default(0.55f), Unit(ConfigUnitType.Ratio)] HealthAreaAbilityHot,
-    [Default(0.55f), Unit(ConfigUnitType.Ratio)] HealthAreaSpellHot,
-    [Default(0.75f), Unit(ConfigUnitType.Ratio)] HealthAreaAbility,
-    [Default(0.65f), Unit(ConfigUnitType.Ratio)] HealthAreaSpell,
-    [Default(0.6f), Unit(ConfigUnitType.Ratio)] HealthSingleAbilityHot,
-    [Default(0.45f), Unit(ConfigUnitType.Ratio)] HealthSingleSpellHot,
-    [Default(0.7f), Unit(ConfigUnitType.Ratio)] HealthSingleAbility,
-    [Default(0.55f), Unit(ConfigUnitType.Ratio)] HealthSingleSpell,
+    [Default(0.55f), Unit(ConfigUnitType.Percent)] HealthAreaAbilityHot,
+    [Default(0.55f), Unit(ConfigUnitType.Percent)] HealthAreaSpellHot,
+    [Default(0.75f), Unit(ConfigUnitType.Percent)] HealthAreaAbility,
+    [Default(0.65f), Unit(ConfigUnitType.Percent)] HealthAreaSpell,
+    [Default(0.6f), Unit(ConfigUnitType.Percent)] HealthSingleAbilityHot,
+    [Default(0.45f), Unit(ConfigUnitType.Percent)] HealthSingleSpellHot,
+    [Default(0.7f), Unit(ConfigUnitType.Percent)] HealthSingleAbility,
+    [Default(0.55f), Unit(ConfigUnitType.Percent)] HealthSingleSpell,
 
-    [Default(0.15f), Unit(ConfigUnitType.Ratio)] HealthForDyingTanks,
-    [Default(1f), Unit(ConfigUnitType.Ratio)] HealthForAutoDefense,
+    [Default(0.15f), Unit(ConfigUnitType.Percent)] HealthForDyingTanks,
+    [Default(1f), Unit(ConfigUnitType.Percent)] HealthForAutoDefense,
 }
 #endregion
 
@@ -375,21 +375,21 @@ public enum PluginConfigBool : byte
 public enum PluginConfigFloat : byte
 {
     [Default(30f, 0f, 600f), Unit(ConfigUnitType.Seconds)] AutoOffAfterCombatTime,
-    [Default(3f, 0f, 8f), Unit(ConfigUnitType.Ratio)] DrawingHeight,
+    [Default(3f, 0f, 8f), Unit(ConfigUnitType.Yalms)] DrawingHeight,
     [Default(0.2f, 0.005f, 0.05f), Unit(ConfigUnitType.Yalms)] SampleLength,
     [Default(45f, 0f, 90f), Unit(ConfigUnitType.Degree)] AngleOfVisionCone,
 
 
-    [Default(0.25f, 0f, 0.5f), Unit(ConfigUnitType.Ratio)] HealthDifference,
+    [Default(0.25f, 0f, 0.5f), Unit(ConfigUnitType.Percent)] HealthDifference,
     [Default(1f, 0f, 5f), Unit(ConfigUnitType.Yalms)] MeleeRangeOffset,
     [Default(0.1f, 0f, 0.4f), Unit(ConfigUnitType.Seconds)] MinLastAbilityAdvanced,
-    [Default(0.8f, 0f, 1f), Unit(ConfigUnitType.Ratio)] HealWhenNothingTodoBelow,
+    [Default(0.8f, 0f, 1f), Unit(ConfigUnitType.Percent)] HealWhenNothingTodoBelow,
     [Default(0.6f, 0f, 1f), Unit(ConfigUnitType.Pixels)] TargetIconSize,
 
-    [Default(0f, 0f, 1f), Unit(ConfigUnitType.Ratio)] MistakeRatio,
+    [Default(0f, 0f, 1f), Unit(ConfigUnitType.Percent)] MistakeRatio,
 
-    [Default(0.4f, 0f, 1f), Unit(ConfigUnitType.Ratio)] HealthTankRatio,
-    [Default(0.4f, 0f, 1f), Unit(ConfigUnitType.Ratio)] HealthHealerRatio,
+    [Default(0.4f, 0f, 1f), Unit(ConfigUnitType.Percent)] HealthTankRatio,
+    [Default(0.4f, 0f, 1f), Unit(ConfigUnitType.Percent)] HealthHealerRatio,
 
     [Default(3f, 1f, 20f), Unit(ConfigUnitType.Seconds)] SpecialDuration,
 
@@ -442,19 +442,20 @@ public enum PluginConfigFloat : byte
     [Default(40f, 0f, 80f), Unit(ConfigUnitType.Pixels)] ControlWindowGCDSize,
     [Default(30f, 0f, 80f), Unit(ConfigUnitType.Pixels)] ControlWindow0GCDSize,
     [Default(30f, 0f, 80f), Unit(ConfigUnitType.Pixels)] CooldownWindowIconSize,
-    [Default(1.5f, 0f, 10f), Unit(ConfigUnitType.Ratio)] ControlWindowNextSizeRatio,
+    [Default(1.5f, 0f, 10f), Unit(ConfigUnitType.Percent)] ControlWindowNextSizeRatio,
     [Default(8f), Unit(ConfigUnitType.Pixels)] ControlProgressHeight,
     [Default(1.2f, 0f, 30f), Unit(ConfigUnitType.Yalms)] DistanceForMoving,
     [Default(0.2f, 0.01f, 0.5f), Unit(ConfigUnitType.Seconds)] MaxPing,
 
     [Default(8f, 0f, 30f), Unit(ConfigUnitType.Seconds)] AutoHealTimeToKill,
     [Default(0.5f, 0f, 10f), Unit(ConfigUnitType.Pixels)] HostileIconHeight,
-    [Default(1f, 0.1f, 10f), Unit(ConfigUnitType.Pixels)] HostileIconSize,
+    [Default(1f, 0.1f, 10f), Unit(ConfigUnitType.Percent)] HostileIconSize,
 
     [Default(1f, 0f, 3f), Unit(ConfigUnitType.Pixels)] StateIconHeight,
-    [Default(1f, 0.2f, 10f), Unit(ConfigUnitType.Pixels)] StateIconSize,
+    [Default(1f, 0.2f, 10f), Unit(ConfigUnitType.Percent)] StateIconSize,
 
     [Default(0.02f, 0f, 1f), Unit(ConfigUnitType.Seconds)] MinUpdatingTime,
+    [Default(0.15f), Unit(ConfigUnitType.Percent)] HealthForGuard,
 }
 
 public enum PluginConfigVector4 : byte
@@ -489,10 +490,11 @@ public class DefaultAttribute : Attribute
 
 public enum ConfigUnitType : byte
 {
+    None,
     Seconds,
     Degree,
     Yalms,
-    Ratio,
+    Percent,
     Pixels,
 }
 

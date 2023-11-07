@@ -11,7 +11,6 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
@@ -124,56 +123,54 @@ public partial class RotationConfigWindow : Window
         }
         ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_ConditionSetDesc);
 
-        using (var popup = ImRaii.Popup(popUpId))
+        using var popup = ImRaii.Popup(popUpId);
+        if (popup.Success)
         {
-            if (popup.Success)
+            var combos = DataCenter.ConditionSets;
+            for (int i = 0; i < combos.Length; i++)
             {
-                var combos = DataCenter.ConditionSets;
-                for (int i = 0; i < combos.Length; i++)
+                void DeleteFile()
                 {
-                    void DeleteFile()
-                    {
-                        ActionSequencerUpdater.Delete(combos[i].Name);
-                    }
-
-                    if (combos[i].Name == set.Name)
-                    {
-                        ImGuiHelper.SetNextWidthWithName(set.Name);
-                        ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
-                    }
-                    else
-                    {
-                        var key = "Condition Set At " + i.ToString();
-                        ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, new string[] { "Delete" }));
-
-
-                        if (ImGui.Selectable(combos[i].Name))
-                        {
-                            Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, i);
-                        }
-
-                        ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
-            (DeleteFile, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
-                    }
+                    ActionSequencerUpdater.Delete(combos[i].Name);
                 }
 
-                ImGui.PushFont(UiBuilder.IconFont);
-
-                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
-                if (ImGui.Selectable(FontAwesomeIcon.Plus.ToIconString()))
+                if (combos[i].Name == set.Name)
                 {
-                    ActionSequencerUpdater.AddNew();
+                    ImGuiHelper.SetNextWidthWithName(set.Name);
+                    ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
                 }
-                ImGui.PopStyleColor();
-
-                if (ImGui.Selectable(FontAwesomeIcon.FileDownload.ToIconString()))
+                else
                 {
-                    ActionSequencerUpdater.LoadFiles();
-                }
+                    var key = "Condition Set At " + i.ToString();
+                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, new string[] { "Delete" }));
 
-                ImGui.PopFont();
-                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Load);
+
+                    if (ImGui.Selectable(combos[i].Name))
+                    {
+                        Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, i);
+                    }
+
+                    ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
+        (DeleteFile, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+                }
             }
+
+            ImGui.PushFont(UiBuilder.IconFont);
+
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
+            if (ImGui.Selectable(FontAwesomeIcon.Plus.ToIconString()))
+            {
+                ActionSequencerUpdater.AddNew();
+            }
+            ImGui.PopStyleColor();
+
+            if (ImGui.Selectable(FontAwesomeIcon.FileDownload.ToIconString()))
+            {
+                ActionSequencerUpdater.LoadFiles();
+            }
+
+            ImGui.PopFont();
+            ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Load);
         }
     }
 
@@ -425,6 +422,7 @@ public partial class RotationConfigWindow : Window
 
     private void DrawRotationIcon(ICustomRotation rotation, float iconSize)
     {
+        var cursor = ImGui.GetCursorPos();
         if (rotation.GetTexture(out var jobIcon) && ImGuiHelper.SilenceImageButton(jobIcon.ImGuiHandle,
             Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
         {
@@ -432,8 +430,32 @@ public partial class RotationConfigWindow : Window
             _searchResults = Array.Empty<ISearchable>();
         }
         var desc = rotation.Name + $" ({rotation.RotationName})";
+        var type = rotation.Type;
+        if (type.HasFlag(CombatType.PvE))
+        {
+            desc += " PvE";
+        }
+        if(type.HasFlag(CombatType.PvP))
+        {
+            desc += " PvP";
+        }
         if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;
         ImguiTooltips.HoveredTooltip(desc);
+
+        var icon = type switch
+        {
+            CombatType.Both => 61540u,
+            CombatType.PvE => 61542u,
+            CombatType.PvP => 61544u,
+            _ => 61523u,
+        };
+
+        if(IconSet.GetTexture(icon, out var texture))
+        {
+            ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
+
+            ImGui.Image(texture.ImGuiHandle, Vector2.One * iconSize / 2);
+        }
     }
 
     private static void DrawRotationCombo(float comboSize, ICustomRotation[] rotations, ICustomRotation rotation, string gameVersion)
@@ -551,7 +573,6 @@ public partial class RotationConfigWindow : Window
     }
 
     #region About
-
     private static readonly SortedList<uint, string> CountStringPair = new()
     {
         { 100_000, LocalizationManager.RightLang.ConfigWindow_About_Clicking100k },
@@ -605,6 +626,18 @@ public partial class RotationConfigWindow : Window
                     break;
                 }
             }
+        }
+
+        var sayHelloCount = OtherConfiguration.RotationSolverRecord.SayingHelloCount;
+        if(sayHelloCount > 0)
+        {
+            using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.8f, 0.95f, 1));
+            var countStr = string.Format(LocalizationManager.RightLang.ConfigWindow_About_SayHelloCount, sayHelloCount);
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextWrapped(countStr);
+            }, width, ImGui.CalcTextSize(countStr).X);
         }
 
         _aboutHeaders.Draw();
@@ -1083,6 +1116,15 @@ public partial class RotationConfigWindow : Window
 
         foreach (var config in set.Configs)
         {
+            if(DataCenter.Territory?.IsPvpZone ?? false)
+            {
+                if (!config.Type.HasFlag(CombatType.PvP)) continue;
+            }
+            else
+            {
+                if (!config.Type.HasFlag(CombatType.PvE)) continue;
+            }
+
             var key = config.Name;
             var name = $"##{config.GetHashCode()}_{config.Name}";
             string command = ToCommandStr(OtherCommandType.Rotations, config.Name, config.DefaultValue);
@@ -1122,10 +1164,23 @@ public partial class RotationConfigWindow : Window
             {
                 float val = set.GetFloat(config.Name);
                 ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
-                if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max))
+                if (f.UnitType == ConfigUnitType.Percent)
                 {
-                    set.SetValue(config.Name, val.ToString());
+                    var v = (int)val * 100;
+                    if (ImGui.SliderInt(name, ref v, (int)(f.Min * 100), (int)(f.Max * 100)))
+                    {
+                        set.SetValue(config.Name, (v / 100f).ToString());
+                    }
                 }
+                else
+                {
+                    if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max))
+                    {
+                        set.SetValue(config.Name, val.ToString());
+                    }
+                }
+
+                f.UnitType.Draw();
                 ImGuiHelper.ReactPopup(key, command, Reset);
             }
             else if (config is RotationConfigString s)
@@ -2285,7 +2340,8 @@ public partial class RotationConfigWindow : Window
         if (Svc.Targets.Target is BattleChara b)
         {
             ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
-            ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+            ImGui.Text("Is Boss TTK: " + b.IsBossFromTTK().ToString());
+            ImGui.Text("Is Boss Icon: " + b.IsBossFromIcon().ToString());
             ImGui.Text("Rank: " + b.GetObjectNPC().Rank.ToString());
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());

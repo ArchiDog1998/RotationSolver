@@ -1,4 +1,5 @@
 ﻿using Dalamud.Utility;
+using ECommons.Configuration;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -19,7 +20,8 @@ internal class DragFloatRangeSearchJob : DragFloatRangeSearch
     protected override bool IsJob => true;
 
     public DragFloatRangeSearchJob(JobConfigFloat configMin, JobConfigFloat configMax, float speed)
-        : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
+        : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed,
+          configMin.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
     {
         _configMin = configMin;
         _configMax = configMax;
@@ -66,7 +68,7 @@ internal class DragFloatRangeSearchPlugin : DragFloatRangeSearch
 
 
     public DragFloatRangeSearchPlugin(PluginConfigFloat configMin, PluginConfigFloat configMax, float speed, uint color = 0)
-    : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed)
+    : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed, configMin.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
     {
         _configMin = configMin;
         _configMax = configMax;
@@ -105,13 +107,15 @@ internal abstract class DragFloatRangeSearch : Searchable
     public float Min { get; init; }
     public float Max { get; init; }
     public float Speed { get; init; }
+    public ConfigUnitType Unit { get; init; }
 
     public sealed override string Command => "";
 
-    public DragFloatRangeSearch(float min, float max, float speed)
+    public DragFloatRangeSearch(float min, float max, float speed, ConfigUnitType unit)
     {
         Min = min; Max = max;
         Speed = speed;
+        Unit = unit;
     }
 
     protected abstract float GetMinValue(Job job);
@@ -123,12 +127,35 @@ internal abstract class DragFloatRangeSearch : Searchable
         var minValue = GetMinValue(job);
         var maxValue = GetMaxValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
+
+        if (Unit == ConfigUnitType.Percent)
+        {
+            var vm = (int)minValue * 100;
+            var vM = (int)maxValue * 100;
+            if (ImGui.DragIntRange2($"##Config_{ID}{GetHashCode()}", ref vm, ref vM, Speed, (int)(Min * 100), (int)(Max * 100)))
+            {
+                SetMinValue(job, Math.Min(vm / 100f, vM / 100f));
+                SetMaxValue(job, Math.Max(vm / 100f, vM / 100f));
+            }
+        }
+        else
+        {
+            if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max))
+            {
+                SetMinValue(job, Math.Min(minValue, maxValue));
+                SetMaxValue(job, Math.Max(minValue, maxValue));
+            }
+        }
+
         if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max))
         {
             SetMinValue(job, Math.Min(minValue, maxValue));
             SetMaxValue(job, Math.Max(minValue, maxValue));
         }
+
         if (ImGui.IsItemHovered()) ShowTooltip(job);
+
+        Unit.Draw();
 
         if (IsJob) DrawJobIcon();
         ImGui.SameLine();

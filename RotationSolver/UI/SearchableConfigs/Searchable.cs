@@ -1,11 +1,137 @@
-﻿using Dalamud.Interface.Utility;
+﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 
 namespace RotationSolver.UI.SearchableConfigs;
+
+internal readonly struct JobFilter
+{
+    public static readonly JobFilter
+        NoJob = new()
+        {
+            JobRoles = Array.Empty<JobRole>(),
+        },
+
+        NoHealer = new()
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Tank,
+                JobRole.Melee,
+                JobRole.RangedMagical,
+                JobRole.RangedPhysical,
+            }
+        },
+
+        Healer = new()
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Healer,
+            }
+        },
+
+        Raise = new()
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Healer,
+            },
+            Jobs = new Job[]
+            {
+                Job.RDM,
+                Job.SMN,
+            },
+        },
+
+        Interrupt = new()
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Tank,
+                JobRole.Melee,
+                JobRole.RangedPhysical,
+            },
+        },
+
+        Esuna = new()
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Healer,
+            },
+            Jobs = new Job[]
+            {
+                Job.BRD,
+            },
+        },
+
+        Tank = new()
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Tank,
+            }
+        },
+
+        Melee = new()
+        {
+            JobRoles = new JobRole[]
+            {
+                JobRole.Melee,
+            }
+        };
+
+
+    /// <summary>
+    /// Only these job roles can get this setting.
+    /// </summary>
+    public JobRole[] JobRoles { get; init; }
+
+    /// <summary>
+    /// Or these jobs.
+    /// </summary>
+    public Job[] Jobs { get; init; }
+
+    public bool CanDraw
+    {
+        get
+        {
+            var canDraw = true;
+
+            if (JobRoles != null)
+            {
+                var role = DataCenter.RightNowRotation?.ClassJob?.GetJobRole();
+                if (role.HasValue)
+                {
+                    canDraw = JobRoles.Contains(role.Value);
+                }
+            }
+
+            if (Jobs != null)
+            {
+                canDraw |= Jobs.Contains(DataCenter.Job);
+            }
+            return canDraw;
+        }
+    }
+
+    public string Description
+    {
+        get
+        {
+            var jobs = JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? Array.Empty<Job>());
+            var roleOrJob = string.Join("\n",
+                jobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
+            return string.Format(LocalizationManager.RightLang.ConfigWindow_NotInJob, roleOrJob);
+        }
+    }
+}
 
 internal abstract class Searchable : ISearchable
 {
@@ -24,36 +150,16 @@ internal abstract class Searchable : ISearchable
 
     public uint Color { get; set; } = 0;
 
-    /// <summary>
-    /// Only these job roles can get this setting.
-    /// </summary>
-    public JobRole[] JobRoles { get; set; }
-    /// <summary>
-    /// Or these jobs.
-    /// </summary>
-    public Job[] Jobs { get; set; }
+    public JobFilter PvPFilter { get; set; }
+    public JobFilter PvEFilter { get; set; }
 
     public virtual bool ShowInChild => true;
 
     public unsafe void Draw(Job job)
     {
-        var canDraw = true;
+        var filter = (DataCenter.Territory?.IsPvpZone ?? false) ? PvPFilter : PvEFilter;
 
-        if (JobRoles != null)
-        {
-            var role = DataCenter.RightNowRotation?.ClassJob?.GetJobRole();
-            if (role.HasValue)
-            {
-                canDraw = JobRoles.Contains(role.Value);
-            }
-        }
-
-        if (Jobs != null)
-        {
-            canDraw |= Jobs.Contains(DataCenter.Job);
-        }
-
-        if (!canDraw)
+        if (!filter.CanDraw)
         {
             var textColor = *ImGui.GetStyleColorVec4(ImGuiCol.Text);
 
@@ -75,11 +181,8 @@ internal abstract class Searchable : ISearchable
                 wholeWidth -= size.X;
             }
 
-            var jobs = JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? Array.Empty<Job>());
-            var roleOrJob = string.Join("\n",
-                jobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
 
-            ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ConfigWindow_NotInJob, roleOrJob));
+            ImguiTooltips.HoveredTooltip(filter.Description);
             return;
         }
 

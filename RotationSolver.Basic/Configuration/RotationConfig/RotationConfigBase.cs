@@ -7,12 +7,14 @@ internal abstract class RotationConfigBase : IRotationConfig
     public string Name { get; }
     public string DefaultValue { get; }
     public string DisplayName { get; }
+    public CombatType Type { get; }
 
-    public RotationConfigBase(string name, string value, string displayName)
+    public RotationConfigBase(string name, string value, string displayName, CombatType type)
     {
         Name = name;
         DefaultValue = value;
         DisplayName = displayName;
+        Type = type;
     }
 
     public string GetValue(Job job, string rotationName)

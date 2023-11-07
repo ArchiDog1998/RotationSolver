@@ -144,9 +144,9 @@ public static class TargetFilter
     /// Find the one being attacked.
     /// </summary>
     /// <param name="charas"></param>
-    /// <param name="mustUse"></param>
+    /// <param name="_"></param>
     /// <returns></returns>
-    public static BattleChara FindAttackedTarget(IEnumerable<BattleChara> charas, bool mustUse)
+    public static BattleChara FindAttackedTarget(IEnumerable<BattleChara> charas, bool _)
     {
         if (!charas.Any()) return null;
         var attachedT = charas.Where(tank => tank.TargetObject?.TargetObject == tank);
@@ -303,14 +303,14 @@ public static class TargetFilter
         return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
     }
 
-    internal static BattleChara ASTRangeTarget(IEnumerable<BattleChara> ASTTargets, bool mustUse)
+    internal static BattleChara ASTRangeTarget(IEnumerable<BattleChara> ASTTargets, bool _)
     {
         ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkOfDeath));
 
         return ASTTargets.ASTGetTargetByJobs(JobRole.RangedMagical, JobRole.RangedPhysical, JobRole.Melee);
     }
 
-    internal static BattleChara ASTMeleeTarget(IEnumerable<BattleChara> ASTTargets, bool mustUse)
+    internal static BattleChara ASTMeleeTarget(IEnumerable<BattleChara> ASTTargets, bool _)
     {
         ASTTargets = ASTTargets.Where(b => !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkOfDeath));
 

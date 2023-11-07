@@ -133,7 +133,7 @@ internal class Strings
     public string ConfigWindow_Param_MovingTargetColor { get; set; } = "Prompt box color of moving target";
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
-    public string ConfigWindow_Param_DrawingHeight { get; set; } = "The height of the next ability that will be used icon.";
+    public string ConfigWindow_Param_DrawingHeight { get; set; } = "The height of the drawing things.";
     public string ConfigWindow_Param_SampleLength { get; set; } = "Drawing smoothness.";
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing abilities";
     public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
@@ -209,6 +209,7 @@ internal class Strings
     public string ConfigWindow_Param_HealWhenNothingTodoDelay { get; set; } = "The delay of this type of healing.";
 
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invulnerability";
+    public string ConfigWindow_Param_HealthForGuard { get; set; } = "Set the HP%% for using Guard.";
 
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
@@ -376,7 +377,8 @@ internal class Strings
     #region TargetConditionType
     public string TargetConditionType_HasStatus { get; set; } = "Has Status";
     public string TargetConditionType_IsDying { get; set; } = "Is Dying";
-    public string TargetConditionType_IsBoss { get; set; } = "Is Boss";
+    public string TargetConditionType_IsBossFromTTK { get; set; } = "Is Boss From TTK";
+    public string TargetConditionType_IsBossFromIcon { get; set; } = "Is Boss From Icon";
     public string TargetConditionType_InCombat { get; set; } = "In Combat";
     public string TargetConditionType_Distance { get; set; } = "Distance";
     public string TargetConditionType_StatusEnd { get; set; } = "Status End";
@@ -391,6 +393,15 @@ internal class Strings
     public string TargetConditionType_ObjectEffect { get; set; } = "Object Effect";
     public string TargetConditionType_Vfx { get; set; } = "Vfx";
     public string TargetConditionType_IsNull { get; set; } = "Is Null";
+
+    #endregion
+
+    #region COnfigUnitType
+    public string ConfigUnitType_Seconds { get; set; } = "Time Unit, in seconds.";
+    public string ConfigUnitType_Degree { get; set; } = "Angle Unit, in degree.";
+    public string ConfigUnitType_Pixels { get; set; } = "Display Unit, in piexels.";
+    public string ConfigUnitType_Yalms { get; set; } = "Distance Unit, in yalms.";
+    public string ConfigUnitType_Ratio { get; set; } = "Ratio Unit, in percents.";
 
     #endregion
 
@@ -746,6 +757,7 @@ internal class Strings
     public string ConfigWindow_Basic_ClickingDuration { get; set; } = "The clicking duration, RS will try to click at this moment.";
     public string ConfigWindow_Basic_WeaponDelay { get; set; } = "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.";
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
+    public string ConfigWindow_About_SayHelloCount { get; set; } = "You have sayed hello to other users {0:N0} times!";
     public string ConfigWindow_Auto_AutoHealTimeToKill { get; set; } = "Stop healing when time to kill is lower then...";
     public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile target icon";
     public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Hostile Icon height from position";

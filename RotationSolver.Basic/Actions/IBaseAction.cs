@@ -180,16 +180,6 @@ public interface IBaseAction : IAction
     BattleChara Target { get; }
 
     /// <summary>
-    /// Is target a boss.
-    /// </summary>
-    bool IsTargetBoss { get; }
-
-    /// <summary>
-    /// Is target will die immediately.
-    /// </summary>
-    bool IsTargetDying { get; }
-
-    /// <summary>
     /// Is this action's target type is target only one.
     /// </summary>
     bool IsSingleTarget { get; }
