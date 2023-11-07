@@ -124,56 +124,54 @@ public partial class RotationConfigWindow : Window
         }
         ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_ConditionSetDesc);
 
-        using (var popup = ImRaii.Popup(popUpId))
+        using var popup = ImRaii.Popup(popUpId);
+        if (popup.Success)
         {
-            if (popup.Success)
+            var combos = DataCenter.ConditionSets;
+            for (int i = 0; i < combos.Length; i++)
             {
-                var combos = DataCenter.ConditionSets;
-                for (int i = 0; i < combos.Length; i++)
+                void DeleteFile()
                 {
-                    void DeleteFile()
-                    {
-                        ActionSequencerUpdater.Delete(combos[i].Name);
-                    }
-
-                    if (combos[i].Name == set.Name)
-                    {
-                        ImGuiHelper.SetNextWidthWithName(set.Name);
-                        ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
-                    }
-                    else
-                    {
-                        var key = "Condition Set At " + i.ToString();
-                        ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, new string[] { "Delete" }));
-
-
-                        if (ImGui.Selectable(combos[i].Name))
-                        {
-                            Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, i);
-                        }
-
-                        ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
-            (DeleteFile, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
-                    }
+                    ActionSequencerUpdater.Delete(combos[i].Name);
                 }
 
-                ImGui.PushFont(UiBuilder.IconFont);
-
-                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
-                if (ImGui.Selectable(FontAwesomeIcon.Plus.ToIconString()))
+                if (combos[i].Name == set.Name)
                 {
-                    ActionSequencerUpdater.AddNew();
+                    ImGuiHelper.SetNextWidthWithName(set.Name);
+                    ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
                 }
-                ImGui.PopStyleColor();
-
-                if (ImGui.Selectable(FontAwesomeIcon.FileDownload.ToIconString()))
+                else
                 {
-                    ActionSequencerUpdater.LoadFiles();
-                }
+                    var key = "Condition Set At " + i.ToString();
+                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, new string[] { "Delete" }));
 
-                ImGui.PopFont();
-                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Load);
+
+                    if (ImGui.Selectable(combos[i].Name))
+                    {
+                        Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, i);
+                    }
+
+                    ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
+        (DeleteFile, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+                }
             }
+
+            ImGui.PushFont(UiBuilder.IconFont);
+
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
+            if (ImGui.Selectable(FontAwesomeIcon.Plus.ToIconString()))
+            {
+                ActionSequencerUpdater.AddNew();
+            }
+            ImGui.PopStyleColor();
+
+            if (ImGui.Selectable(FontAwesomeIcon.FileDownload.ToIconString()))
+            {
+                ActionSequencerUpdater.LoadFiles();
+            }
+
+            ImGui.PopFont();
+            ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Load);
         }
     }
 
@@ -551,7 +549,6 @@ public partial class RotationConfigWindow : Window
     }
 
     #region About
-
     private static readonly SortedList<uint, string> CountStringPair = new()
     {
         { 100_000, LocalizationManager.RightLang.ConfigWindow_About_Clicking100k },

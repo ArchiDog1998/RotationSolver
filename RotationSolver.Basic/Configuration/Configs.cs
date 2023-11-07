@@ -455,6 +455,7 @@ public enum PluginConfigFloat : byte
     [Default(1f, 0.2f, 10f), Unit(ConfigUnitType.Pixels)] StateIconSize,
 
     [Default(0.02f, 0f, 1f), Unit(ConfigUnitType.Seconds)] MinUpdatingTime,
+    [Default(0.15f), Unit(ConfigUnitType.Ratio)] HealthForGuard,
 }
 
 public enum PluginConfigVector4 : byte

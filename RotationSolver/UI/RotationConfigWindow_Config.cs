@@ -659,13 +659,8 @@ public partial class RotationConfigWindow
         new AutoHealCheckBox(
             new CheckBoxSearchPlugin(PluginConfigBool.UseHealWhenNotAHealer)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Tank,
-                    JobRole.Melee,
-                    JobRole.RangedMagical,
-                    JobRole.RangedPhysical,
-                }
+                PvEFilter = JobFilter.NoHealer,
+                PvPFilter = JobFilter.NoJob,
             },
 
             new DragFloatSearchPlugin(PluginConfigFloat.AutoHealTimeToKill, 0.02f),
@@ -673,21 +668,14 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyHealSelfWhenNoHealer) 
         {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Tank,
-                JobRole.Melee,
-                JobRole.RangedMagical,
-                JobRole.RangedPhysical,
-            }
+            PvEFilter = JobFilter.NoHealer,
+            PvPFilter = JobFilter.NoHealer,
         },
 
         new CheckBoxSearchPlugin(PluginConfigBool.OnlyHotOnTanks)
         {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Healer,
-            }
+            PvEFilter = JobFilter.Healer,
+            PvPFilter = JobFilter.Healer,
         },
 
         new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),
@@ -699,17 +687,11 @@ public partial class RotationConfigWindow
 
         new DragFloatSearchPlugin(PluginConfigFloat.HealthHealerRatio, 0.02f)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                }
+                PvEFilter = JobFilter.Healer,
             },
         new DragFloatSearchPlugin(PluginConfigFloat.HealthTankRatio, 0.02f)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                }
+                PvEFilter = JobFilter.Healer,
             },
         new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMax, 0.002f),
     };
@@ -719,43 +701,23 @@ public partial class RotationConfigWindow
 
         new CheckBoxSearchPlugin(PluginConfigBool.RaisePlayerByCasting)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                }
+                PvEFilter = JobFilter.Raise,
+                PvPFilter = JobFilter.NoJob,
             },
         new CheckBoxSearchPlugin(PluginConfigBool.RaiseAll)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                },
-                Jobs = new ECommons.ExcelServices.Job[]
-                {
-                    ECommons.ExcelServices.Job.RDM,
-                },
+                PvEFilter = JobFilter.Raise,
+                PvPFilter = JobFilter.NoJob,
             },
         new CheckBoxSearchPlugin(PluginConfigBool.RaiseBrinkOfDeath)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                },
-                Jobs = new ECommons.ExcelServices.Job[]
-                {
-                    ECommons.ExcelServices.Job.RDM,
-                },
+                PvEFilter = JobFilter.Raise,
+                PvPFilter = JobFilter.NoJob,
             },
         new DragFloatRangeSearchPlugin(PluginConfigFloat.DeathDelayMin, PluginConfigFloat.DeathDelayMax, 0.002f)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                },
-                Jobs = new ECommons.ExcelServices.Job[]
-                {
-                    ECommons.ExcelServices.Job.RDM,
-                },
+                PvEFilter = JobFilter.Raise,
+                PvPFilter = JobFilter.NoJob,
             },
     };
 
@@ -764,64 +726,39 @@ public partial class RotationConfigWindow
     {
         new CheckBoxSearchPlugin(PluginConfigBool.InterruptibleMoreCheck)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Tank,
-                    JobRole.Melee,
-                    JobRole.RangedPhysical,
-                }
+                PvEFilter = JobFilter.Interrupt,
             },
 
         new DragFloatRangeSearchPlugin(PluginConfigFloat.InterruptDelayMin, PluginConfigFloat.InterruptDelayMax, 0.002f)
              {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Tank,
-                    JobRole.Melee,
-                    JobRole.RangedPhysical,
-                }
+                PvEFilter = JobFilter.Interrupt,
             },
 
 
         new CheckBoxSearchPlugin(PluginConfigBool.EsunaAll)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                },
-                Jobs = new ECommons.ExcelServices.Job[]
-                {
-                    ECommons.ExcelServices.Job.BRD,
-                },
+                PvEFilter = JobFilter.Esuna,
             },
 
         new DragFloatRangeSearchPlugin(PluginConfigFloat.WeakenDelayMin, PluginConfigFloat.WeakenDelayMax, 0.002f)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                },
-                Jobs = new ECommons.ExcelServices.Job[]
-                {
-                    ECommons.ExcelServices.Job.BRD,
-                },
+                PvEFilter = JobFilter.Esuna,
             },
 
 
         new DragFloatSearchJob(JobConfigFloat.HealthForDyingTanks, 0.02f)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Tank,
-                }
+                PvEFilter = JobFilter.Tank,
+            },
+
+        new DragFloatSearchPlugin(PluginConfigFloat.HealthForGuard, 0.02f)
+            {
+                PvEFilter = JobFilter.NoJob,
             },
 
         new DragFloatSearchPlugin(PluginConfigFloat.MeleeRangeOffset, 0.02f)
         {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Melee,
-            },
+            PvEFilter = JobFilter.Melee,
         },
     };
 
@@ -839,15 +776,7 @@ public partial class RotationConfigWindow
 
         new DragIntSearchPlugin(PluginConfigInt.LessMPNoRaise, 200)
         {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Healer,
-            },
-            Jobs = new ECommons.ExcelServices.Job[]
-            {
-                ECommons.ExcelServices.Job.SMN,
-                ECommons.ExcelServices.Job.RDM,
-            }
+            PvEFilter = JobFilter.Raise,
         },
 
         new CheckBoxSearchPlugin(PluginConfigBool.UseAbility, new ISearchable[]
@@ -855,49 +784,31 @@ public partial class RotationConfigWindow
             new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility,
                 new DragIntSearchPlugin(PluginConfigInt.AutoDefenseNumber, 0.05f)
                 {
-                    JobRoles = new JobRole[]
-                    {
-                        JobRole.Tank,
-                    }
+                    PvEFilter = JobFilter.Tank,
                 },
 
                 new DragFloatSearchJob(JobConfigFloat.HealthForAutoDefense, 0.02f)
                 {
-                    JobRoles = new JobRole[]
-                    {
-                        JobRole.Tank,
-                    }
+                    PvEFilter = JobFilter.Tank,
                 }),
 
             new CheckBoxSearchPlugin(PluginConfigBool.AutoTankStance)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Tank,
-                }
+                PvEFilter = JobFilter.Tank,
             },
             new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank,
                 new DragFloatRangeSearchPlugin(PluginConfigFloat.ProvokeDelayMin, PluginConfigFloat.ProvokeDelayMax, 0.05f))
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Tank,
-                }
+                PvEFilter = JobFilter.Tank,
             },
 
             new CheckBoxSearchPlugin(PluginConfigBool.AutoUseTrueNorth)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Melee,
-                }
+                PvEFilter = JobFilter.Melee,
             },
             new CheckBoxSearchPlugin(PluginConfigBool.RaisePlayerBySwift)
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                }
+                 PvEFilter = JobFilter.Healer,
             },
             new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbility,
             new DragIntSearchPlugin(PluginConfigInt.BeneficialAreaStrategy, () => new string[]{
@@ -907,10 +818,7 @@ public partial class RotationConfigWindow
                 LocalizationManager.RightLang.ConfigWindow_Param_BeneficialAreaOnCalculated }),
              new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving))
             {
-                JobRoles = new JobRole[]
-                {
-                    JobRole.Healer,
-                }
+                PvEFilter = JobFilter.Healer,
             },
 
             new CheckBoxSearchPlugin(PluginConfigBool.AutoSpeedOutOfCombat),

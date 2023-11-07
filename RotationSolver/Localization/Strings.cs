@@ -209,6 +209,7 @@ internal class Strings
     public string ConfigWindow_Param_HealWhenNothingTodoDelay { get; set; } = "The delay of this type of healing.";
 
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invulnerability";
+    public string ConfigWindow_Param_HealthForGuard { get; set; } = "Set the HP%% for using Guard.";
 
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
