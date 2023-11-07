@@ -1462,63 +1462,721 @@ public enum StatusID : ushort
     /// </summary>
     MortalFlame = 3643,
 
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_Guard = 3054,
+	#region PvP StatusID
 
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_BlastArrowReady = 3142,
+	#region General PvP Buffs
 
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_Repertoire = 3137,
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_DrillPrimed = 3150,
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_BioblasterPrimed = 3151,
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_AirAnchorPrimed = 3152,
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_ChainSawPrimed = 3153,
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_Overheat = 3149,
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_Analysis = 3158,
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_FirebirdTrance = 3229,
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_DreadwyrmTrance = 3228,
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Sprint = 1342,
 
-    /// <summary>
-    /// 
-    /// </summary>
-    PvP_Sprint = 1342,
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Guard = 3054,
+
+	#endregion General PvP Buffs
+
+	#region General PvP DeBuffs
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Stun = 1343,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Heavy = 1344,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Bind = 1345,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Slow = 1346,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Silence = 1347,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Sleep = 1348,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Unguarded = 3021,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_HalfAsleep = 3022,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_DeepFreeze = 3219,
+
+	#endregion General PvP DeBuffs
+
+	#region AST_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_BalanceDrawn = 3101,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_BoleDrawn = 3403,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_ArrowDrawn = 3404,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Arrow = 3402,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Balance = 1338,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Bole = 1339,
+
+	#endregion AST_PvP
+
+	#region BLM_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_AstralFire2 = 3212,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_AstralFire3 = 3213,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_UmbralIce2 = 3214,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_UmbralIce3 = 3215,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Burst = 3221,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SoulResonance = 3222,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Polyglot = 3169,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_AstralWarmth = 3216,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_UmbralFreeze = 3217,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Burns = 3218,
+
+	#endregion BLM_PvP
+
+	#region BRD_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_FrontlinersMarch = 3138,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_FrontlinersForte = 3140,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Repertoire = 3137,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_BlastArrowReady = 3142,
+
+	#endregion BRD_PvP
+
+	#region DNC_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_EnAvant = 2048,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_FanDance = 2052,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Bladecatcher = 3159,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_FlourishingSaberDance = 3160,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_StarfallDance = 3161,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_HoningDance = 3162,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Acclaim = 3163,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_HoningOvation = 3164,
+
+	#endregion DNC_PvP
+
+	#region DRG_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_FirstmindsFocus = 3178,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_LifeOfTheDragon = 3177,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Heavensent = 3176,
+
+	#endregion DRG_PvP
+
+	#region DRK_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_BlackestNight = 1308,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Blackblood = 3033,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SaltedEarthDMG = 3036,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SaltedEarthDEF = 3037,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_DarkArts = 3034,
+
+	/// <summary>
+	/// DRK's PvP invulnv
+	/// </summary>
+	PvP_UndeadRedemption = 3039,
+
+	#endregion DRK_PvP
+
+	#region GNB_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_ReadyToRip = 2002,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_ReadyToTear = 2003,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_ReadyToGouge = 2004,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_ReadyToBlast = 3041,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_NoMercy = 3042,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_PowderBarrel = 3043,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_JunctionTank = 3044,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_JunctionDPS = 3045,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_JunctionHealer = 3046,
+
+	#endregion GNB_PvP
+
+	#region MCH_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_HeatStack = 3148,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Overheated = 3149,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_DrillPrimed = 3150,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_BioblasterPrimed = 3151,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_AirAnchorPrimed = 3152,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_ChainSawPrimed = 3153,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Analysis = 3158,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_WildfireDebuff = 1323,
+
+	#endregion MCH_PvP	
+
+	#region MNK_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_WindResonance = 2007,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_FireResonance = 3170,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_EarthResonance = 3171,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_PressurePoint = 3172,
+
+	#endregion MNK_PvP
+
+	#region NIN_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_ThreeMudra = 1317,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Hidden = 1316,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Bunshin = 2010,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_ShadeShift = 2011,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SealedHyoshoRanryu = 3194,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SealedGokaMekkyaku = 3193,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SealedHuton = 3196,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SealedDoton = 3197,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SeakedForkedRaiju = 3195,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SealedMeisui = 3198,
+
+	#endregion NIN_PvP
+
+	#region PLD_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_HallowedGround = 1302,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_sheltron = 3026,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_KnightResolve = 3188,
+
+	#endregion PLD_PvP
+
+	#region RDM_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_WhiteShift = 3245,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_BlackShift = 3246,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Dualcast = 1393,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_EnchantedRiposte = 3234,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_EnchantedRedoublement = 3236,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_EnchantedZwerchhau = 3235,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_VermilionRadiance = 3233,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_MagickBarrier = 3240,
+
+	#endregion RDM_PvP
+
+	#region RPR_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Soulsow = 2750,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SoulReaver = 2854,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_GallowsOiled = 2856,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Enshrouded = 2863,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_ImmortalSacrifice = 3204,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_PlentifulHarvest = 3205,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_DeathWarrant = 3206,
+
+	#endregion RPR_PvP
+
+	#region SAM_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Kaiten = 3201,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Midare = 3203,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Chiten = 1240,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Kuzushi = 3202,
+
+	#endregion SAM_PvP
+
+	#region SCH_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Galvanize = 3087,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Catalyze = 3088,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Biolysis = 3089,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Biolytic = 3090,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Mummification = 3091,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Expedience = 3092,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_DesperateMeasures = 3093,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Recitation = 3094,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SummonSeraph = 3095,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SeraphFlight = 3096,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_SeraphicVeil = 3097,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Consolation = 3098,
+
+	#endregion SCH_PvP
+
+	#region SGE_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Kardia = 2871,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Kardion = 2872,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Eukrasia = 3107,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Addersting = 3115,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Haima = 3110,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Haimatinon = 3111,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_EukrasianDosis = 3108,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Toxicon = 3113,
+
+	#endregion SGE_PvP
+
+	#region SMN_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_FirebirdTrance = 3229,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_DreadwyrmTrance = 3228,
+
+	#endregion SMN_PvP
+
+	#region WAR_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_NascentChaos = 1992,
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_InnerRelease = 1303,
+
+	#endregion WAR_PvP
+
+	#region WHM_PvP
+
+	/// <summary>
+	///
+	/// </summary>
+	PvP_Cure3Ready = 3083,
+
+	#endregion WHM_PvP
+    
+    
 }
