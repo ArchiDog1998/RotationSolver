@@ -746,6 +746,7 @@ internal class Strings
     public string ConfigWindow_Basic_ClickingDuration { get; set; } = "The clicking duration, RS will try to click at this moment.";
     public string ConfigWindow_Basic_WeaponDelay { get; set; } = "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.";
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
+    public string ConfigWindow_About_SayHelloCount { get; set; } = "You have sayed hello to other users {0:N0} times!";
     public string ConfigWindow_Auto_AutoHealTimeToKill { get; set; } = "Stop healing when time to kill is lower then...";
     public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile target icon";
     public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Hostile Icon height from position";

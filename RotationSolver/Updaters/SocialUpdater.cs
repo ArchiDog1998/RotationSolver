@@ -260,10 +260,12 @@ internal class SocialUpdater
         {
             player = character;
         }
+
         public abstract SeString GetMessage();
 
         public void Dispose()
         {
+            OtherConfiguration.RotationSolverRecord.SayingHelloCount++;
             var hash = EncryptString(player);
             saidAuthors.Add(hash);
             if (Service.Config.GetValue(PluginConfigBool.JustSayHelloOnce))

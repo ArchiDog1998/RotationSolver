@@ -607,6 +607,18 @@ public partial class RotationConfigWindow : Window
             }
         }
 
+        var sayHelloCount = OtherConfiguration.RotationSolverRecord.SayingHelloCount;
+        if(sayHelloCount > 0)
+        {
+            using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.8f, 0.95f, 1));
+            var countStr = string.Format(LocalizationManager.RightLang.ConfigWindow_About_SayHelloCount, sayHelloCount);
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextWrapped(countStr);
+            }, width, ImGui.CalcTextSize(countStr).X);
+        }
+
         _aboutHeaders.Draw();
     }
 
