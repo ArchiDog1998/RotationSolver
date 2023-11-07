@@ -56,8 +56,12 @@ internal class TargetCondition : DelayCondition
                 result = tar.HasStatus(FromSelf, StatusId);
                 break;
 
-            case TargetConditionType.IsBoss:
-                result = tar.IsBoss();
+            case TargetConditionType.IsBossFromTTK:
+                result = tar.IsBossFromTTK();
+                break;
+
+            case TargetConditionType.IsBossFromIcon:
+                result = tar.IsBossFromIcon();
                 break;
 
             case TargetConditionType.IsDying:
@@ -246,7 +250,8 @@ internal enum TargetConditionType : byte
     IsNull,
     HasStatus,
     IsDying,
-    IsBoss,
+    IsBossFromTTK,
+    IsBossFromIcon,
     InCombat,
     Distance,
     StatusEnd,
@@ -260,4 +265,7 @@ internal enum TargetConditionType : byte
     TargetName,
     ObjectEffect,
     Vfx,
+
+    [Obsolete("Please use Target type instead.")]
+    IsBoss = IsBossFromTTK,
 }

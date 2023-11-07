@@ -377,7 +377,8 @@ internal class Strings
     #region TargetConditionType
     public string TargetConditionType_HasStatus { get; set; } = "Has Status";
     public string TargetConditionType_IsDying { get; set; } = "Is Dying";
-    public string TargetConditionType_IsBoss { get; set; } = "Is Boss";
+    public string TargetConditionType_IsBossFromTTK { get; set; } = "Is Boss From TTK";
+    public string TargetConditionType_IsBossFromIcon { get; set; } = "Is Boss From Icon";
     public string TargetConditionType_InCombat { get; set; } = "In Combat";
     public string TargetConditionType_Distance { get; set; } = "Distance";
     public string TargetConditionType_StatusEnd { get; set; } = "Status End";

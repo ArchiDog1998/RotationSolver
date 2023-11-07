@@ -57,14 +57,6 @@ public static class ObjectHelper
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    [Obsolete("Please use IsEnemy instead", true)]
-    public static bool IsNPCEnemy(this GameObject obj) => obj.IsEnemy();
-
-    /// <summary>
-    /// Is this target an enemy (can be attacked).
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
     public static unsafe bool IsEnemy(this GameObject obj)
         => obj != null
         && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.Struct());
@@ -113,7 +105,6 @@ public static class ObjectHelper
     }
 
     internal static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.Struct()->NamePlateIconId;
-    internal static unsafe void SetNamePlateIcon(this GameObject obj, uint id) => obj.Struct()->NamePlateIconId = id;
     internal static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.Struct()->EventId.Type;
 
     /// <summary>
@@ -155,18 +146,43 @@ public static class ObjectHelper
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
+    [Obsolete("Please use IsBossFromTTK or IsBossFromIcon instead", true)]
     public static bool IsBoss(this BattleChara obj)
     {
+        return IsBossFromTTK(obj);
+    }
+
+    /// <summary>
+    /// Is character a boss? Calculate from ttk.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool IsBossFromTTK(this BattleChara obj)
+    {
         if (obj == null) return false;
-        if (obj is PlayerCharacter) return false;
+
+        if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return true;
+
+        //Fate
+        if (obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)) return true;
+
+        return false;
+    }
+
+    /// <summary>
+    /// Is character a boss? Calculated from the icon.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool IsBossFromIcon(this BattleChara obj)
+    {
+        if (obj == null) return false;
 
         if (obj.IsDummy() && !Service.Config.GetValue(Configuration.PluginConfigBool.ShowTargetTimeToKill)) return true;
 
         //Icon
         if (obj.GetObjectNPC()?.Rank is 1 or 2 /*or 4*/ or 6) return true;
 
-        //Fate
-        if (obj.FateId() != 0 && obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)) return true;
         return false;
     }
 
@@ -237,11 +253,11 @@ public static class ObjectHelper
     /// <returns></returns>
     public static bool IsAttacked(this BattleChara b)
     {
-        foreach (var item in DataCenter.AttackedTargets)
+        foreach (var (id, time) in DataCenter.AttackedTargets)
         {
-            if (item.id == b.ObjectId)
+            if (id == b.ObjectId)
             {
-                return DateTime.Now - item.time > TimeSpan.FromSeconds(1);
+                return DateTime.Now - time > TimeSpan.FromSeconds(1);
             }
         }
         return false;

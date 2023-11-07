@@ -8,7 +8,8 @@ internal static class EnumTranslations
     {
         TargetConditionType.HasStatus => LocalizationManager.RightLang.TargetConditionType_HasStatus,
         TargetConditionType.IsDying => LocalizationManager.RightLang.TargetConditionType_IsDying,
-        TargetConditionType.IsBoss => LocalizationManager.RightLang.TargetConditionType_IsBoss,
+        TargetConditionType.IsBossFromTTK => LocalizationManager.RightLang.TargetConditionType_IsBossFromTTK,
+        TargetConditionType.IsBossFromIcon => LocalizationManager.RightLang.TargetConditionType_IsBossFromIcon,
         TargetConditionType.InCombat => LocalizationManager.RightLang.TargetConditionType_InCombat,
         TargetConditionType.Distance => LocalizationManager.RightLang.TargetConditionType_Distance,
         TargetConditionType.StatusEnd => LocalizationManager.RightLang.TargetConditionType_StatusEnd,
@@ -131,7 +132,7 @@ internal static class EnumTranslations
         _ => string.Empty,
     };
 
-    internal static string ToStateString(this StateCommandType type, JobRole role) => type switch
+    internal static string ToStateString(this StateCommandType type, JobRole _) => type switch
     {
         StateCommandType.Auto => LocalizationManager.RightLang.SpecialCommandType_Smart + DataCenter.TargetingType.ToName(),
         StateCommandType.Manual => LocalizationManager.RightLang.SpecialCommandType_Manual,
