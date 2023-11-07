@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.4.14](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.13...v3.4.14) (2023-11-07)
+
+
+### Bug Fixes
+
+* changed the unit showing. ([8a5be95](https://github.com/ArchiDog1998/RotationSolver/commit/8a5be951adc2e66665ad8cabb0e278c204129008))
+* fixed status id. ([cfb686d](https://github.com/ArchiDog1998/RotationSolver/commit/cfb686dd79356c083d511f58f84f29c05b77df54))
+
 ## [3.4.13](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.12...v3.4.13) (2023-11-07)
 
 
