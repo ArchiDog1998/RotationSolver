@@ -424,6 +424,106 @@ public abstract class NIN_Base : CustomRotation
     public static IBaseTrait MeleeMastery2 { get; } = new BaseTrait(522);
     #endregion
 
+    #region PvP
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_AeolianEdgeCombo { get; } = new BaseAction(ActionID.PvP_AeolianEdgeCombo);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_FumaShuriken { get; } = new BaseAction(ActionID.PvP_Fumashuriken);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Mug { get; } = new BaseAction(ActionID.PvP_Mug);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_ThreeMudra { get; } = new BaseAction(ActionID.PvP_Threemudra, ActionOption.Buff);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Bunshin { get; } = new BaseAction(ActionID.Bunshin, ActionOption.Buff);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Shukuchi { get; } = new BaseAction(ActionID.Bunshin);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_SeitonTenchu { get; } = new BaseAction(ActionID.PvP_Seitontenchu)
+    {
+        ActionCheck = (t, m) => LimitBreakLevel >= 1,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_ForkedRaiju { get; } = new BaseAction(ActionID.PvP_AeolianEdgeCombo)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_FleetingRaiju { get; } = new BaseAction(ActionID.PvP_Fleetingraiju)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_FleetingRaijuReady }
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_HyoshoRanryu { get; } = new BaseAction(ActionID.PvP_Hyoshoranryu)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_GokaMekkyaku { get; } = new BaseAction(ActionID.PvP_Gokamekkyaku)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+    };
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Meisui { get; } = new BaseAction(ActionID.PvP_Meisui)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+    };
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Huton { get; } = new BaseAction(ActionID.PvP_Huton)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+    };
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Doton { get; } = new BaseAction(ActionID.PvP_Doton)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+    };
+    
+    
+    
+    #endregion
+
     /// <summary>
     /// 
     /// </summary>
