@@ -334,7 +334,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_HeatBlast { get; } = new BaseAction(ActionID.PvP_HeatBlast)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_Overheat },
+        StatusNeed = new StatusID[] { StatusID.PvP_Overheated },
     };
 
     /// <summary>

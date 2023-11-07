@@ -284,7 +284,7 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction HellsIngress { get; } = new BaseAction(ActionID.HellsIngress)
     {
         StatusProvide = new[] { StatusID.EnhancedHarpe },
-        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.Bind1, StatusID.Bind2)
+        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.Bind1)
     };
 
     /// <summary>

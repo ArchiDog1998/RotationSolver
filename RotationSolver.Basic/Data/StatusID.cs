@@ -151,10 +151,6 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     Bind1 = 13,
-    /// <summary>
-    /// 
-    /// </summary>
-    Bind2 = 1345,
 
     /// <summary>
     /// 
@@ -990,22 +986,12 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
-    Stun2 = 1343,
-
-    /// <summary>
-    /// 
-    /// </summary>
     Sleep = 3,
 
     /// <summary>
     /// 
     /// </summary>
     Sleep2 = 926,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    Sleep3 = 1348,
 
     /// <summary>
     /// 
@@ -1021,11 +1007,6 @@ public enum StatusID : ushort
     /// 
     /// </summary>
     Silence = 7,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    Silence2 = 1347,
 
     /// <summary>
     /// 
@@ -1050,22 +1031,12 @@ public enum StatusID : ushort
     /// <summary>
     /// 
     /// </summary>
-    Slow5 = 1346,
-
-    /// <summary>
-    /// 
-    /// </summary>
     Blind = 15,
 
     /// <summary>
     /// 
     /// </summary>
     Blind2 = 564,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    Blind3 = Blind2,
 
     /// <summary>
     /// 
@@ -1865,10 +1836,15 @@ public enum StatusID : ushort
 	/// </summary>
 	PvP_Hidden = 1316,
 
-	/// <summary>
-	///
-	/// </summary>
-	PvP_Bunshin = 2010,
+    /// <summary>
+    /// 
+    /// </summary>
+    PvP_FleetingRaijuReady = 3211,
+
+    /// <summary>
+    ///
+    /// </summary>
+    PvP_Bunshin = 2010,
 
 	/// <summary>
 	///
@@ -2176,7 +2152,7 @@ public enum StatusID : ushort
 	/// </summary>
 	PvP_Cure3Ready = 3083,
 
-	#endregion WHM_PvP
-    
-    
+    #endregion WHM_PvP
+
+    #endregion
 }
