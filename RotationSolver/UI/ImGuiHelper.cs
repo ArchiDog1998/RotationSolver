@@ -417,32 +417,24 @@ internal static class ImGuiHelper
         return true;
     }
 
-    public static void Draw(this ConfigUnitType unit)
+
+    public static string ToSymbol(this ConfigUnitType unit) => unit switch
     {
-        if (unit == ConfigUnitType.None) return;
+        ConfigUnitType.Seconds => " s",
+        ConfigUnitType.Degree => " °",
+        ConfigUnitType.Pixels => " p",
+        ConfigUnitType.Yalms => " y",
+        ConfigUnitType.Percent => " %%",
+        _ => string.Empty,
+    };
 
-        var unitName = unit switch
-        {
-            ConfigUnitType.Seconds => "(s)",
-            ConfigUnitType.Degree => "(°)",
-            ConfigUnitType.Pixels => "(p)",
-            ConfigUnitType.Yalms => "(y)",
-            ConfigUnitType.Percent => "(%%)",
-            _ => string.Empty,
-        };
-
-        ImGui.SameLine();
-        ImGui.TextColored(ImGuiColors.DalamudViolet, unitName);
-
-        var desc = unit switch
-        {
-            ConfigUnitType.Seconds => LocalizationManager.RightLang.ConfigUnitType_Seconds,
-            ConfigUnitType.Degree => LocalizationManager.RightLang.ConfigUnitType_Degree,
-            ConfigUnitType.Pixels => LocalizationManager.RightLang.ConfigUnitType_Pixels,
-            ConfigUnitType.Yalms => LocalizationManager.RightLang.ConfigUnitType_Yalms,
-            ConfigUnitType.Percent => LocalizationManager.RightLang.ConfigUnitType_Ratio,
-            _ => string.Empty,
-        };
-        ImguiTooltips.HoveredTooltip(desc);
-    }
+    public static string ToDesc(this ConfigUnitType unit) => unit switch
+    {
+        ConfigUnitType.Seconds =>  LocalizationManager.RightLang.ConfigUnitType_Seconds,
+        ConfigUnitType.Degree => LocalizationManager.RightLang.ConfigUnitType_Degree,
+        ConfigUnitType.Pixels => LocalizationManager.RightLang.ConfigUnitType_Pixels,
+        ConfigUnitType.Yalms =>  LocalizationManager.RightLang.ConfigUnitType_Yalms,
+        ConfigUnitType.Percent => LocalizationManager.RightLang.ConfigUnitType_Ratio,
+        _ => string.Empty,
+    };
 }

@@ -1,5 +1,4 @@
 ﻿using Dalamud.Utility;
-using ECommons.Configuration;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -13,8 +12,21 @@ internal class DragFloatRangeSearchJob : DragFloatRangeSearch
 
     public override string Name => _configMin.ToName();
 
-    public override string Description => _configMin.ToDescription();
-
+    public override string Description
+    {
+        get
+        {
+            var baseDesc = _configMin.ToDescription();
+            if (!string.IsNullOrEmpty(baseDesc))
+            {
+                return baseDesc + "\n" + Unit.ToDesc();
+            }
+            else
+            {
+                return Unit.ToDesc();
+            }
+        }
+    }
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
     protected override bool IsJob => true;
@@ -62,7 +74,21 @@ internal class DragFloatRangeSearchPlugin : DragFloatRangeSearch
 
     public override string Name => _configMin.ToName();
 
-    public override string Description => _configMin.ToDescription();
+    public override string Description
+    {
+        get
+        {
+            var baseDesc = _configMin.ToDescription();
+            if (!string.IsNullOrEmpty(baseDesc))
+            {
+                return baseDesc + "\n" + Unit.ToDesc();
+            }
+            else
+            {
+                return Unit.ToDesc();
+            }
+        }
+    }
 
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
@@ -130,9 +156,10 @@ internal abstract class DragFloatRangeSearch : Searchable
 
         if (Unit == ConfigUnitType.Percent)
         {
-            var vm = (int)minValue * 100;
-            var vM = (int)maxValue * 100;
-            if (ImGui.DragIntRange2($"##Config_{ID}{GetHashCode()}", ref vm, ref vM, Speed, (int)(Min * 100), (int)(Max * 100)))
+            var vm = minValue * 100;
+            var vM = maxValue * 100;
+            if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref vm, ref vM, Speed, Min * 100, Max * 100,
+                $"{vm:F1}{Unit.ToSymbol()}", $"{vM:F1}{Unit.ToSymbol()}"))
             {
                 SetMinValue(job, Math.Min(vm / 100f, vM / 100f));
                 SetMaxValue(job, Math.Max(vm / 100f, vM / 100f));
@@ -140,22 +167,15 @@ internal abstract class DragFloatRangeSearch : Searchable
         }
         else
         {
-            if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max))
+            if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max,
+                $"{minValue:F2}{Unit.ToSymbol()}", $"{maxValue:F2}{Unit.ToSymbol()}"))
             {
                 SetMinValue(job, Math.Min(minValue, maxValue));
                 SetMaxValue(job, Math.Max(minValue, maxValue));
             }
         }
 
-        if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max))
-        {
-            SetMinValue(job, Math.Min(minValue, maxValue));
-            SetMaxValue(job, Math.Max(minValue, maxValue));
-        }
-
         if (ImGui.IsItemHovered()) ShowTooltip(job);
-
-        Unit.Draw();
 
         if (IsJob) DrawJobIcon();
         ImGui.SameLine();

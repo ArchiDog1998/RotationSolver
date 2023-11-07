@@ -1166,21 +1166,21 @@ public partial class RotationConfigWindow : Window
                 ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
                 if (f.UnitType == ConfigUnitType.Percent)
                 {
-                    var v = (int)val * 100;
-                    if (ImGui.SliderInt(name, ref v, (int)(f.Min * 100), (int)(f.Max * 100)))
+                    var v = val * 100;
+                    if (ImGui.SliderFloat(name, ref v,f.Min * 100,f.Max * 100, $"{v:F1}{f.UnitType.ToSymbol()}"))
                     {
                         set.SetValue(config.Name, (v / 100f).ToString());
                     }
                 }
                 else
                 {
-                    if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max))
+                    if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max, $"{val:F2}{f.UnitType.ToSymbol()}"))
                     {
                         set.SetValue(config.Name, val.ToString());
                     }
                 }
+                ImguiTooltips.HoveredTooltip(f.UnitType.ToDesc());
 
-                f.UnitType.Draw();
                 ImGuiHelper.ReactPopup(key, command, Reset);
             }
             else if (config is RotationConfigString s)

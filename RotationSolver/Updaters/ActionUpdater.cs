@@ -51,7 +51,12 @@ internal static class ActionUpdater
                         }
                         return false;
                     });
-                    WrongAction = actions.ElementAt(_wrongRandom.Next(actions.Count()));
+
+                    var count = actions.Count();
+                    if (count > 0)
+                    {
+                        WrongAction = actions.ElementAt(_wrongRandom.Next(count));
+                    }
                 }
 
                 NextAction = newAction;
