@@ -144,7 +144,7 @@ public static class TargetFilter
     /// Find the one being attacked.
     /// </summary>
     /// <param name="charas"></param>
-    /// <param name="mustUse"></param>
+    /// <param name="_"></param>
     /// <returns></returns>
     public static BattleChara FindAttackedTarget(IEnumerable<BattleChara> charas, bool _)
     {

@@ -1037,8 +1037,8 @@ public abstract class BLU_Base : CustomRotation
     protected override IRotationConfigSet CreateConfiguration()
     {
         return base.CreateConfiguration()
-            .SetCombo("BlueId", 2, "Role", "Tank", "Healer", "DPS")
-            .SetCombo("AttackType", 2, "Type", "Both", "Magic", "Physic");
+            .SetCombo(CombatType.PvE, "BlueId", 2, "Role", "Tank", "Healer", "DPS")
+            .SetCombo(CombatType.PvE, "AttackType", 2, "Type", "Both", "Magic", "Physic");
     }
 
     /// <summary>

@@ -2,7 +2,9 @@
 
 internal class RotationConfigBoolean : RotationConfigBase
 {
-    public RotationConfigBoolean(string name, bool value, string displayName) : base(name, value.ToString(), displayName)
+
+    public RotationConfigBoolean(string name, bool value, string displayName, CombatType type) 
+        : base(name, value.ToString(), displayName, type)
     {
     }
 

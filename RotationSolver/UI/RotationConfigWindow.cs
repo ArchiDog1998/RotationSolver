@@ -422,6 +422,7 @@ public partial class RotationConfigWindow : Window
 
     private void DrawRotationIcon(ICustomRotation rotation, float iconSize)
     {
+        var cursor = ImGui.GetCursorPos();
         if (rotation.GetTexture(out var jobIcon) && ImGuiHelper.SilenceImageButton(jobIcon.ImGuiHandle,
             Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
         {
@@ -429,8 +430,32 @@ public partial class RotationConfigWindow : Window
             _searchResults = Array.Empty<ISearchable>();
         }
         var desc = rotation.Name + $" ({rotation.RotationName})";
+        var type = rotation.Type;
+        if (type.HasFlag(CombatType.PvE))
+        {
+            desc += " PvE";
+        }
+        if(type.HasFlag(CombatType.PvP))
+        {
+            desc += " PvP";
+        }
         if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;
         ImguiTooltips.HoveredTooltip(desc);
+
+        var icon = type switch
+        {
+            CombatType.Both => 61540u,
+            CombatType.PvE => 61542u,
+            CombatType.PvP => 61544u,
+            _ => 61523u,
+        };
+
+        if(IconSet.GetTexture(icon, out var texture))
+        {
+            ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
+
+            ImGui.Image(texture.ImGuiHandle, Vector2.One * iconSize / 2);
+        }
     }
 
     private static void DrawRotationCombo(float comboSize, ICustomRotation[] rotations, ICustomRotation rotation, string gameVersion)
@@ -1091,6 +1116,15 @@ public partial class RotationConfigWindow : Window
 
         foreach (var config in set.Configs)
         {
+            if(DataCenter.Territory?.IsPvpZone ?? false)
+            {
+                if (!config.Type.HasFlag(CombatType.PvP)) continue;
+            }
+            else
+            {
+                if (!config.Type.HasFlag(CombatType.PvE)) continue;
+            }
+
             var key = config.Name;
             var name = $"##{config.GetHashCode()}_{config.Name}";
             string command = ToCommandStr(OtherCommandType.Rotations, config.Name, config.DefaultValue);

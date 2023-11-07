@@ -10,6 +10,11 @@ namespace RotationSolver.Basic.Rotations;
 public interface ICustomRotation : ITexture
 {
     /// <summary>
+    /// The type of this rotation, pvp, pve, or both.
+    /// </summary>
+    CombatType Type { get; }
+
+    /// <summary>
     /// The average count of not recommend members using.
     /// </summary>
     double AverageCountOfLastUsing { get; }

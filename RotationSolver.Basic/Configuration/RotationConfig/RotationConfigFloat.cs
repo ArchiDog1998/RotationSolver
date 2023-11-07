@@ -7,14 +7,7 @@ internal class RotationConfigFloat : RotationConfigBase
     public ConfigUnitType UnitType { get; set; }
 
 
-    [Obsolete("Please use the one with unit type!", true)]
-    public RotationConfigFloat(string name, float value, string displayName, float min, float max, float speed)
-        :this(name, value, displayName, min, max, speed, ConfigUnitType.None)
-    {
-        
-    }
-
-    public RotationConfigFloat(string name, float value, string displayName, float min, float max, float speed, ConfigUnitType unitType) : base(name, value.ToString(), displayName)
+    public RotationConfigFloat(string name, float value, string displayName, float min, float max, float speed, ConfigUnitType unitType, CombatType type) : base(name, value.ToString(), displayName, type)
     {
         Min = min;
         Max = max;
