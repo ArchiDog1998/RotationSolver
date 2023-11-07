@@ -10,7 +10,6 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using System.Reflection.Emit;
 using Action = System.Action;
 
 namespace RotationSolver.UI;
@@ -102,9 +101,11 @@ internal static class ConditionDrawer
     public static bool DrawDragFloat(ConfigUnitType type, string name, ref float value)
     {
         ImGui.SameLine();
-        ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(value.ToString()).X));
-        var result = ImGui.DragFloat(name, ref value);
-        type.Draw();
+        var show = type == ConfigUnitType.Percent ? $"{value:F1}{type.ToSymbol()}" : $"{value:F2}{type.ToSymbol()}";
+
+        ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(show).X));
+        var result = ImGui.DragFloat(name, ref value, 0.1f, 0, 0, show);
+        ImguiTooltips.HoveredTooltip(type.ToDesc());
         return result;
     }
 
@@ -248,12 +249,14 @@ internal static class ConditionDrawer
         const float MIN = 0, MAX = 60;
 
         ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
-        if (ImGui.DragFloatRange2($"##Random Delay {condition.GetHashCode()}", ref condition.DelayMin, ref condition.DelayMax, 0.1f, MIN, MAX))
+        if (ImGui.DragFloatRange2($"##Random Delay {condition.GetHashCode()}", ref condition.DelayMin, ref condition.DelayMax, 0.1f, MIN, MAX,
+            $"{condition.DelayMin:F1}{ConfigUnitType.Seconds.ToSymbol()}", $"{condition.DelayMax:F1}{ConfigUnitType.Seconds.ToSymbol()}"))
         {
             condition.DelayMin = Math.Max(Math.Min(condition.DelayMin, condition.DelayMax), MIN);
             condition.DelayMax = Math.Min(Math.Max(condition.DelayMin, condition.DelayMax), MAX);
         }
-        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Delay_Description);
+        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Delay_Description +
+            "\n" + ConfigUnitType.Seconds.ToDesc());
     }
 
     private static void DrawBefore(this ICondition condition)

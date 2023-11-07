@@ -14,8 +14,21 @@ internal class DragFloatSearchJob : DragFloatSearch
 
     public override string Name => _config.ToName();
 
-    public override string Description => _config.ToDescription();
-
+    public override string Description
+    {
+        get
+        {
+            var baseDesc = _config.ToDescription();
+            if (!string.IsNullOrEmpty(baseDesc))
+            {
+                return baseDesc + "\n" + Unit.ToDesc();
+            }
+            else
+            {
+                return Unit.ToDesc();
+            }
+        }
+    }
     public override LinkDescription[] Tooltips => _config.ToAction();
 
     public override string Command => _config.ToCommand();
@@ -53,7 +66,21 @@ internal class DragFloatSearchPlugin : DragFloatSearch
 
     public override string Name => _config.ToName();
 
-    public override string Description => _config.ToDescription();
+    public override string Description
+    {
+        get
+        {
+            var baseDesc = _config.ToDescription();
+            if (!string.IsNullOrEmpty(baseDesc))
+            {
+                return baseDesc + "\n" + Unit.ToDesc();
+            }
+            else
+            {
+                return Unit.ToDesc();
+            }
+        }
+    }
 
     public override LinkDescription[] Tooltips => _config.ToAction();
 
@@ -90,7 +117,6 @@ internal abstract class DragFloatSearch : Searchable
     public float Max { get; init; }
     public float Speed { get; init; }
     public ConfigUnitType Unit { get; init; }
-
     public DragFloatSearch(float min, float max, float speed, ConfigUnitType unit)
     {
         Min = min; Max = max;
@@ -103,25 +129,23 @@ internal abstract class DragFloatSearch : Searchable
     {
         var value = GetValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
+        var v = value * 100f;
         if (Unit == ConfigUnitType.Percent)
         {
-            var v = (int)value * 100;
-            if (ImGui.SliderInt($"##Config_{ID}{GetHashCode()}", ref v, (int)(Min * 100), (int)(Max * 100)))
+            if (ImGui.SliderFloat($"##Config_{ID}{GetHashCode()}", ref v, Min * 100, Max * 100, $"{v:F1}{Unit.ToSymbol()}"))
             {
                 SetValue(job, v / 100f);
             }
         }
         else
         {
-            if (ImGui.DragFloat($"##Config_{ID}{GetHashCode()}", ref value, Speed, Min, Max))
+            if (ImGui.DragFloat($"##Config_{ID}{GetHashCode()}", ref value, Speed, Min, Max, $"{value:F2}{Unit.ToSymbol()}"))
             {
                 SetValue(job, value);
             }
         }
 
         if (ImGui.IsItemHovered()) ShowTooltip(job);
-
-        Unit.Draw();
 
         if (IsJob) DrawJobIcon();
 
