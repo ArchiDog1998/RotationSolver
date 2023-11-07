@@ -11,7 +11,6 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
@@ -1131,10 +1130,23 @@ public partial class RotationConfigWindow : Window
             {
                 float val = set.GetFloat(config.Name);
                 ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
-                if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max))
+                if (f.UnitType == ConfigUnitType.Percent)
                 {
-                    set.SetValue(config.Name, val.ToString());
+                    var v = (int)val * 100;
+                    if (ImGui.SliderInt(name, ref v, (int)(f.Min * 100), (int)(f.Max * 100)))
+                    {
+                        set.SetValue(config.Name, (v / 100f).ToString());
+                    }
                 }
+                else
+                {
+                    if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max))
+                    {
+                        set.SetValue(config.Name, val.ToString());
+                    }
+                }
+
+                f.UnitType.Draw();
                 ImGuiHelper.ReactPopup(key, command, Reset);
             }
             else if (config is RotationConfigString s)
@@ -2294,7 +2306,8 @@ public partial class RotationConfigWindow : Window
         if (Svc.Targets.Target is BattleChara b)
         {
             ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
-            ImGui.Text("Is Boss: " + b.IsBoss().ToString());
+            ImGui.Text("Is Boss TTK: " + b.IsBossFromTTK().ToString());
+            ImGui.Text("Is Boss Icon: " + b.IsBossFromIcon().ToString());
             ImGui.Text("Rank: " + b.GetObjectNPC().Rank.ToString());
             ImGui.Text("Has Positional: " + b.HasPositional().ToString());
             ImGui.Text("Is Dying: " + b.IsDying().ToString());

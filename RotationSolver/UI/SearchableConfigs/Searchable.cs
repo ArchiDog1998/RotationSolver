@@ -232,31 +232,4 @@ internal abstract class Searchable : ISearchable
             ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_Configs_JobConfigTip);
         }
     }
-
-    protected static void DrawUnitType(ConfigUnitType unit)
-    {
-        var unitName = unit switch
-        {
-            ConfigUnitType.Seconds => "(s)",
-            ConfigUnitType.Degree => "(°)",
-            ConfigUnitType.Pixels => "(p)",
-            ConfigUnitType.Yalms => "(y)",
-            ConfigUnitType.Ratio => "(%%)",
-            _ => string.Empty,
-        };
-
-        ImGui.SameLine();
-        ImGui.TextColored(ImGuiColors.DalamudViolet, unitName);
-
-        var desc = unit switch
-        {
-            ConfigUnitType.Seconds => LocalizationManager.RightLang.ConfigUnitType_Seconds,
-            ConfigUnitType.Degree => LocalizationManager.RightLang.ConfigUnitType_Degree,
-            ConfigUnitType.Pixels => LocalizationManager.RightLang.ConfigUnitType_Pixels,
-            ConfigUnitType.Yalms => LocalizationManager.RightLang.ConfigUnitType_Yalms,
-            ConfigUnitType.Ratio => LocalizationManager.RightLang.ConfigUnitType_Ratio,
-            _ => string.Empty,
-        };
-        ImguiTooltips.HoveredTooltip(desc);
-    }
 }

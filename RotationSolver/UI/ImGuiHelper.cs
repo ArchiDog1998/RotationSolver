@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -414,5 +415,34 @@ internal static class ImGuiHelper
         var pos = ImGui.GetMousePos() - leftTop;
         if (pos.X <= 0 || pos.Y <= 0 || pos.X >= size.X || pos.Y >= size.Y) return false;
         return true;
+    }
+
+    public static void Draw(this ConfigUnitType unit)
+    {
+        if (unit == ConfigUnitType.None) return;
+
+        var unitName = unit switch
+        {
+            ConfigUnitType.Seconds => "(s)",
+            ConfigUnitType.Degree => "(°)",
+            ConfigUnitType.Pixels => "(p)",
+            ConfigUnitType.Yalms => "(y)",
+            ConfigUnitType.Percent => "(%%)",
+            _ => string.Empty,
+        };
+
+        ImGui.SameLine();
+        ImGui.TextColored(ImGuiColors.DalamudViolet, unitName);
+
+        var desc = unit switch
+        {
+            ConfigUnitType.Seconds => LocalizationManager.RightLang.ConfigUnitType_Seconds,
+            ConfigUnitType.Degree => LocalizationManager.RightLang.ConfigUnitType_Degree,
+            ConfigUnitType.Pixels => LocalizationManager.RightLang.ConfigUnitType_Pixels,
+            ConfigUnitType.Yalms => LocalizationManager.RightLang.ConfigUnitType_Yalms,
+            ConfigUnitType.Percent => LocalizationManager.RightLang.ConfigUnitType_Ratio,
+            _ => string.Empty,
+        };
+        ImguiTooltips.HoveredTooltip(desc);
     }
 }

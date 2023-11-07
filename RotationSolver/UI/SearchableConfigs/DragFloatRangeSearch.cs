@@ -128,6 +128,25 @@ internal abstract class DragFloatRangeSearch : Searchable
         var maxValue = GetMaxValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
 
+        if (Unit == ConfigUnitType.Percent)
+        {
+            var vm = (int)minValue * 100;
+            var vM = (int)maxValue * 100;
+            if (ImGui.DragIntRange2($"##Config_{ID}{GetHashCode()}", ref vm, ref vM, Speed, (int)(Min * 100), (int)(Max * 100)))
+            {
+                SetMinValue(job, Math.Min(vm / 100f, vM / 100f));
+                SetMaxValue(job, Math.Max(vm / 100f, vM / 100f));
+            }
+        }
+        else
+        {
+            if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max))
+            {
+                SetMinValue(job, Math.Min(minValue, maxValue));
+                SetMaxValue(job, Math.Max(minValue, maxValue));
+            }
+        }
+
         if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max))
         {
             SetMinValue(job, Math.Min(minValue, maxValue));
@@ -136,7 +155,7 @@ internal abstract class DragFloatRangeSearch : Searchable
 
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 
-        DrawUnitType(Unit);
+        Unit.Draw();
 
         if (IsJob) DrawJobIcon();
         ImGui.SameLine();

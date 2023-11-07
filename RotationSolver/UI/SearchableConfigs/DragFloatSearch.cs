@@ -103,7 +103,7 @@ internal abstract class DragFloatSearch : Searchable
     {
         var value = GetValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
-        if(Unit == ConfigUnitType.Ratio)
+        if (Unit == ConfigUnitType.Percent)
         {
             var v = (int)value * 100;
             if (ImGui.SliderInt($"##Config_{ID}{GetHashCode()}", ref v, (int)(Min * 100), (int)(Max * 100)))
@@ -121,9 +121,9 @@ internal abstract class DragFloatSearch : Searchable
 
         if (ImGui.IsItemHovered()) ShowTooltip(job);
 
-        DrawUnitType(Unit);
+        Unit.Draw();
 
-         if (IsJob) DrawJobIcon();
+        if (IsJob) DrawJobIcon();
 
         ImGui.SameLine();
 
