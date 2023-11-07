@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.4.13](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.12...v3.4.13) (2023-11-07)
+
+
+### Bug Fixes
+
+* add a saying hello count message on the main page. ([acd7003](https://github.com/ArchiDog1998/RotationSolver/commit/acd7003cd5492a1d348ffe7c2d02fd67971da7a9))
+* add combat type for rotation and its config. ([43955fc](https://github.com/ArchiDog1998/RotationSolver/commit/43955fcb35181a81c8aeec5ed081aa1fbefb7305))
+* add two target is boss conditions. ([1902edb](https://github.com/ArchiDog1998/RotationSolver/commit/1902edbab2db1d36e48b8d9dc3e450041a20f018))
+* add unit description for all units! ([540a836](https://github.com/ArchiDog1998/RotationSolver/commit/540a8364abed7636ecb6b088e21826f027ddc589))
+* add unit for rotation config and conditions. ([031a1aa](https://github.com/ArchiDog1998/RotationSolver/commit/031a1aa803ab162061e8235055c36bbb8c14c2d7))
+* changed the visibility of options between pvp and pve. ([56b6968](https://github.com/ArchiDog1998/RotationSolver/commit/56b696863776e920e519b319ba2777417fea1e7d))
+
 ## [3.4.12](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.11...v3.4.12) (2023-11-06)
 
 
