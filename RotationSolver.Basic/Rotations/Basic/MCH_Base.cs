@@ -1,3 +1,4 @@
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
@@ -326,6 +327,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_MarksmansSpite { get; } = new BaseAction(ActionID.PvP_MarksmansSpite)
     {
+        FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
         ActionCheck = (t, m) => LimitBreakLevel >= 1,
     };
 
