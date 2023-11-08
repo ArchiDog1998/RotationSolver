@@ -88,7 +88,7 @@ internal static class ConditionDrawer
 
     public static void DrawByteEnum<T>(string name, ref T value, Func<T, string> function) where T : struct, Enum
     {
-        var values = Enum.GetValues<T>();
+        var values = Enum.GetValues<T>().Where(i => i.GetAttribute<ObsoleteAttribute>() == null).ToHashSet().ToArray();
         var index = Array.IndexOf(values, value);
         var names = values.Select(function).ToArray();
 
@@ -104,8 +104,10 @@ internal static class ConditionDrawer
         var show = type == ConfigUnitType.Percent ? $"{value * 100:F1}{type.ToSymbol()}" : $"{value:F2}{type.ToSymbol()}";
 
         ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(show).X));
-        var result = ImGui.DragFloat(name, ref value, type == ConfigUnitType.Percent ? 0.001f : 0.1f, 0, 0, show);
+        var result = type == ConfigUnitType.Percent ? ImGui.SliderFloat(name, ref value, 0, 1, show) 
+            : ImGui.DragFloat(name, ref value, 0.1f, 0, 0, show);
         ImguiTooltips.HoveredTooltip(type.ToDesc());
+
         return result;
     }
 
