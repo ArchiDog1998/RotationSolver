@@ -13,6 +13,7 @@ using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
+using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -1421,10 +1422,12 @@ public partial class RotationConfigWindow : Window
                     var ttk = action.TimeToKill;
                     ImGui.SetNextItemWidth(Scale * 150);
                     if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_TTK}##{action}",
-                        ref ttk, 0.1f, 0, 120))
+                        ref ttk, 0.1f, 0, 120, $"{ttk:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
                     {
                         action.TimeToKill = ttk;
                     }
+                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.ToDesc());
+
 
                     if (!action.IsSingleTarget)
                     {
@@ -1442,10 +1445,12 @@ public partial class RotationConfigWindow : Window
                         var ratio = action.AutoHealRatio;
                         ImGui.SetNextItemWidth(Scale * 150);
                         if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_HealRatio}##{action}",
-                            ref ratio, 0.002f, 0, 1))
+                            ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
                         {
                             action.AutoHealRatio = ratio;
                         }
+                        ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.ToDesc());
+
                     }
                 }
 

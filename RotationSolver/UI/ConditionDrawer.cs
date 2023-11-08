@@ -459,8 +459,6 @@ internal static class ConditionDrawer
             case ActionConditionType.MaxCharges:
                 DrawCondition(actionCondition, ref actionCondition.Param2);
 
-                ImGui.SameLine();
-
                 if (DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Charges}##Charges{actionCondition.GetHashCode()}", ref actionCondition.Param1))
                 {
                     actionCondition.Param1 = Math.Max(0, actionCondition.Param1);
@@ -614,6 +612,7 @@ internal static class ConditionDrawer
                 DrawDragInt($"##Value{rotationCondition.GetHashCode()}", ref rotationCondition.Param1);
 
                 break;
+
             case ComboConditionType.Float:
                 ImGui.SameLine();
                 SearchItemsReflection($"##FloatChoice{rotationCondition.GetHashCode()}", rotationCondition._prop.GetMemberName(), ref searchTxt, rotation.AllFloats, i =>

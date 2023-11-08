@@ -56,7 +56,7 @@ public abstract partial class CustomRotation
 
         //Esuna
         if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (DataCenter.IsEsunaStanceNorth
-            || !HasHostilesInRange || Service.Config.GetValue(PluginConfigBool.EsunaAll))
+            || !HasHostilesInRange || Service.Config.GetValue(PluginConfigBool.EsunaAll) || (DataCenter.Territory?.IsPvpZone ?? false))
             && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any()))
         {
             if (ClassJob.GetJobRole() == JobRole.Healer && EsunaAction(out act, CanUseOption.MustUse)) return act;

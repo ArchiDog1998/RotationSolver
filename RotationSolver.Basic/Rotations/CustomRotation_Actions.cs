@@ -483,7 +483,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction PvP_Purify { get; } = new BaseAction(ActionID.PvP_Purify, ActionOption.Heal)
     {
-        ActionCheck = (t, m) => WeakenPeople.Any(t => t == Player),
+        ActionCheck = (t, m) => Player?.StatusList.Any(s => s.GameData.CanDispel) ?? false,
     };
 
     /// <summary>
