@@ -435,7 +435,7 @@ public partial class RotationConfigWindow : Window
         {
             desc += " PvE";
         }
-        if(type.HasFlag(CombatType.PvP))
+        if (type.HasFlag(CombatType.PvP))
         {
             desc += " PvP";
         }
@@ -450,7 +450,7 @@ public partial class RotationConfigWindow : Window
             _ => 61523u,
         };
 
-        if(IconSet.GetTexture(icon, out var texture))
+        if (IconSet.GetTexture(icon, out var texture))
         {
             ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
 
@@ -629,7 +629,7 @@ public partial class RotationConfigWindow : Window
         }
 
         var sayHelloCount = OtherConfiguration.RotationSolverRecord.SayingHelloCount;
-        if(sayHelloCount > 0)
+        if (sayHelloCount > 0)
         {
             using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.8f, 0.95f, 1));
             var countStr = string.Format(LocalizationManager.RightLang.ConfigWindow_About_SayHelloCount, sayHelloCount);
@@ -1116,7 +1116,7 @@ public partial class RotationConfigWindow : Window
 
         foreach (var config in set.Configs)
         {
-            if(DataCenter.Territory?.IsPvpZone ?? false)
+            if (DataCenter.Territory?.IsPvpZone ?? false)
             {
                 if (!config.Type.HasFlag(CombatType.PvP)) continue;
             }
@@ -1164,12 +1164,12 @@ public partial class RotationConfigWindow : Window
             {
                 float val = set.GetFloat(config.Name);
                 ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
+
                 if (f.UnitType == ConfigUnitType.Percent)
                 {
-                    var v = val * 100;
-                    if (ImGui.SliderFloat(name, ref v,f.Min * 100,f.Max * 100, $"{v:F1}{f.UnitType.ToSymbol()}"))
+                    if (ImGui.SliderFloat(name, ref val, f.Min, f.Max, $"{val * 100:F1}{f.UnitType.ToSymbol()}"))
                     {
-                        set.SetValue(config.Name, (v / 100f).ToString());
+                        set.SetValue(config.Name, val.ToString());
                     }
                 }
                 else

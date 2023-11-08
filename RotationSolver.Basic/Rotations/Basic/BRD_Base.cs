@@ -385,7 +385,7 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_BlastArrow { get; } = new BaseAction(ActionID.PvP_BlastArrow)
     {
-        StatusNeed = new StatusID[] {StatusID.PvP_BlastArrowReady},
+        StatusNeed = new StatusID[] { StatusID.PvP_BlastArrowReady },
     };
 
     /// <summary>

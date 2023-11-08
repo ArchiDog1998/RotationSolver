@@ -472,7 +472,7 @@ public abstract class SMN_Base : CustomRotation
     /// 
     /// </summary>
     public static IBaseAction PvP_CrimsonStrike { get; } = new BaseAction(ActionID.PvP_CrimsonStrike);
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -481,7 +481,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_RadiantAegis { get; } = new BaseAction(ActionID.PvP_RadiantAegis,ActionOption.Defense);
+    public static IBaseAction PvP_RadiantAegis { get; } = new BaseAction(ActionID.PvP_RadiantAegis, ActionOption.Defense);
 
     /// <summary>
     /// 
@@ -500,7 +500,7 @@ public abstract class SMN_Base : CustomRotation
     {
         ActionCheck = (t, m) => LimitBreakLevel >= 1,
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -508,29 +508,29 @@ public abstract class SMN_Base : CustomRotation
     {
         ActionCheck = (t, m) => LimitBreakLevel >= 1,
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction PvP_AstralImpulse { get; } = new BaseAction(ActionID.PvP_AstralImpulse);
-    
+
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction PvP_FountainOfFire { get; } = new BaseAction(ActionID.PvP_FountainOfFire);
-    
+
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction PvP_EnkindleBahamut { get; } = new BaseAction(ActionID.PvP_EnkindleBahamut);
-    
+
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction PvP_EnkindlePhoenix { get; } = new BaseAction(ActionID.PvP_EnkindlePhoenix);
-    
+
     #endregion
-    
+
     /// <summary>
     /// 
     /// </summary>

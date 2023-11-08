@@ -36,7 +36,7 @@ internal static class ConditionDrawer
                 {
                     isNot = !isNot;
                 }
-                
+
                 ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ActionSequencer_NotDescription, isNot));
             }
         }
@@ -519,7 +519,7 @@ internal static class ConditionDrawer
                 (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }),
                 (LocalizationManager.RightLang.ConfigWindow_Actions_Copy, Copy, new string[] { "Ctrl" }));
 
-            if(condition is DelayCondition delay)
+            if (condition is DelayCondition delay)
             {
                 DrawCondition(delay.IsTrue(rotation), delay.GetHashCode().ToString(), ref delay.Not);
             }
@@ -533,7 +533,7 @@ internal static class ConditionDrawer
                 (Up, new VirtualKey[] { VirtualKey.UP }),
                 (Down, new VirtualKey[] { VirtualKey.DOWN }),
                 (Copy, new VirtualKey[] { VirtualKey.CONTROL }));
-            
+
             ImGui.SameLine();
 
             condition.Draw(rotation);
@@ -711,8 +711,8 @@ internal static class ConditionDrawer
         });
 
         if (targetCondition._action != null ? targetCondition._action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon)
-            : IconSet.GetTexture(targetCondition.TargetType switch 
-            { 
+            : IconSet.GetTexture(targetCondition.TargetType switch
+            {
                 TargetType.Target => 16u,
                 TargetType.HostileTarget => 15u,
                 TargetType.Player => 18u,
@@ -845,7 +845,7 @@ internal static class ConditionDrawer
             case TargetConditionType.HPRatio:
                 DrawCondition(targetCondition, ref targetCondition.Param2);
 
-                DrawDragFloat( ConfigUnitType.Percent,$"##HPRatio{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
+                DrawDragFloat(ConfigUnitType.Percent, $"##HPRatio{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
             case TargetConditionType.MP:

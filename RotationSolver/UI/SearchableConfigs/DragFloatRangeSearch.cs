@@ -154,25 +154,12 @@ internal abstract class DragFloatRangeSearch : Searchable
         var maxValue = GetMaxValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
 
-        if (Unit == ConfigUnitType.Percent)
+        if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max,
+     Unit == ConfigUnitType.Percent ? $"{minValue * 100:F1}{Unit.ToSymbol()}" : $"{minValue:F2}{Unit.ToSymbol()}",
+    Unit == ConfigUnitType.Percent ? $"{maxValue * 100:F1}{Unit.ToSymbol()}" : $"{maxValue:F2}{Unit.ToSymbol()}"))
         {
-            var vm = minValue * 100;
-            var vM = maxValue * 100;
-            if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref vm, ref vM, Speed, Min * 100, Max * 100,
-                $"{vm:F1}{Unit.ToSymbol()}", $"{vM:F1}{Unit.ToSymbol()}"))
-            {
-                SetMinValue(job, Math.Min(vm / 100f, vM / 100f));
-                SetMaxValue(job, Math.Max(vm / 100f, vM / 100f));
-            }
-        }
-        else
-        {
-            if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max,
-                $"{minValue:F2}{Unit.ToSymbol()}", $"{maxValue:F2}{Unit.ToSymbol()}"))
-            {
-                SetMinValue(job, Math.Min(minValue, maxValue));
-                SetMaxValue(job, Math.Max(minValue, maxValue));
-            }
+            SetMinValue(job, Math.Min(minValue, maxValue));
+            SetMaxValue(job, Math.Max(minValue, maxValue));
         }
 
         if (ImGui.IsItemHovered()) ShowTooltip(job);

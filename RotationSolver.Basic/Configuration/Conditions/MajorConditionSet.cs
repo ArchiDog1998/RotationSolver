@@ -134,11 +134,11 @@ internal class MajorConditionSet
                     Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
                     {
                         args.ErrorContext.Handled = true;
-                    }, 
+                    },
                     Converters = new List<JsonConverter>() { new IConditionConverter() }
                 });
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 Svc.Log.Warning(ex, $"Failed to load the ConditionSet from {p}");
                 Svc.Chat.Print($"Failed to load the ConditionSet from {p}");

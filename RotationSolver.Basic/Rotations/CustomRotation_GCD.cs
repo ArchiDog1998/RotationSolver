@@ -169,7 +169,7 @@ public abstract partial class CustomRotation
         #endregion
 
         #region PvP
-        if (PvP_Guard.CanUse(out act) 
+        if (PvP_Guard.CanUse(out act)
             && (Player.GetHealthRatio() <= Service.Config.GetValue(PluginConfigFloat.HealthForGuard)
             || IsRaiseShirk)) return true;
 

@@ -495,7 +495,7 @@ public abstract class NIN_Base : CustomRotation
     {
         StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -503,7 +503,7 @@ public abstract class NIN_Base : CustomRotation
     {
         StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -511,7 +511,7 @@ public abstract class NIN_Base : CustomRotation
     {
         StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -519,9 +519,9 @@ public abstract class NIN_Base : CustomRotation
     {
         StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
     };
-    
-    
-    
+
+
+
     #endregion
 
     /// <summary>

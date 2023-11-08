@@ -287,7 +287,7 @@ public abstract class MCH_Base : CustomRotation
     #endregion
 
     #region PvP
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -319,8 +319,8 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Analysis { get; } = new BaseAction(ActionID.PvP_Analysis,ActionOption.Buff);
-    
+    public static IBaseAction PvP_Analysis { get; } = new BaseAction(ActionID.PvP_Analysis, ActionOption.Buff);
+
     /// <summary>
     /// 
     /// </summary>
@@ -328,7 +328,7 @@ public abstract class MCH_Base : CustomRotation
     {
         ActionCheck = (t, m) => LimitBreakLevel >= 1,
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -360,7 +360,7 @@ public abstract class MCH_Base : CustomRotation
     {
         StatusNeed = new StatusID[] { StatusID.PvP_ChainSawPrimed },
     };
-    
+
     #endregion
     /// <summary>
     /// 

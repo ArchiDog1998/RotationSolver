@@ -1,5 +1,4 @@
 ﻿using ECommons.DalamudServices;
-using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;

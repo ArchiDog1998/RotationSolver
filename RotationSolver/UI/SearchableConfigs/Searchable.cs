@@ -1,9 +1,7 @@
-﻿using Dalamud.Interface.Colors;
-using Dalamud.Interface.Utility;
+﻿using Dalamud.Interface.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 

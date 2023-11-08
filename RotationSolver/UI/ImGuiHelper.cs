@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Keys;
-using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -430,10 +429,10 @@ internal static class ImGuiHelper
 
     public static string ToDesc(this ConfigUnitType unit) => unit switch
     {
-        ConfigUnitType.Seconds =>  LocalizationManager.RightLang.ConfigUnitType_Seconds,
+        ConfigUnitType.Seconds => LocalizationManager.RightLang.ConfigUnitType_Seconds,
         ConfigUnitType.Degree => LocalizationManager.RightLang.ConfigUnitType_Degree,
         ConfigUnitType.Pixels => LocalizationManager.RightLang.ConfigUnitType_Pixels,
-        ConfigUnitType.Yalms =>  LocalizationManager.RightLang.ConfigUnitType_Yalms,
+        ConfigUnitType.Yalms => LocalizationManager.RightLang.ConfigUnitType_Yalms,
         ConfigUnitType.Percent => LocalizationManager.RightLang.ConfigUnitType_Ratio,
         _ => string.Empty,
     };

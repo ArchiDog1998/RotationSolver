@@ -1,5 +1,4 @@
-﻿using Dalamud.Interface.Colors;
-using Dalamud.Utility;
+﻿using Dalamud.Utility;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -87,7 +86,7 @@ internal class DragFloatSearchPlugin : DragFloatSearch
     public override string Command => _config.ToCommand();
 
     public DragFloatSearchPlugin(PluginConfigFloat config, float speed, uint color = 0)
-        : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed, 
+        : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed,
           config.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
     {
         _config = config;
@@ -129,12 +128,12 @@ internal abstract class DragFloatSearch : Searchable
     {
         var value = GetValue(job);
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
-        var v = value * 100f;
+
         if (Unit == ConfigUnitType.Percent)
         {
-            if (ImGui.SliderFloat($"##Config_{ID}{GetHashCode()}", ref v, Min * 100, Max * 100, $"{v:F1}{Unit.ToSymbol()}"))
+            if (ImGui.SliderFloat($"##Config_{ID}{GetHashCode()}", ref value, Min, Max, $"{value * 100f:F1}{Unit.ToSymbol()}"))
             {
-                SetValue(job, v / 100f);
+                SetValue(job, value);
             }
         }
         else

@@ -666,7 +666,7 @@ public partial class RotationConfigWindow
             new DragFloatSearchPlugin(PluginConfigFloat.AutoHealTimeToKill, 0.02f),
             new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHealSelfWhenNoHealer) 
+        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHealSelfWhenNoHealer)
         {
             PvEFilter = JobFilter.NoHealer,
             PvPFilter = JobFilter.NoHealer,
