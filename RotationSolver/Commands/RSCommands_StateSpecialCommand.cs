@@ -85,7 +85,9 @@ public static partial class RSCommands
         where T : struct, Enum
     {
         //Get job role.
-        var role = Player.Object.ClassJob.GameData.GetJobRole();
+        var role = Player.Object?.ClassJob.GameData?.GetJobRole() ?? JobRole.None;
+
+        if (role == JobRole.None) return;
 
         T type = doingSomething(role);
 
