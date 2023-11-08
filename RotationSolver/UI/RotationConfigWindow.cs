@@ -430,28 +430,20 @@ public partial class RotationConfigWindow : Window
             _activeTab = RotationConfigWindowTab.Rotation;
             _searchResults = Array.Empty<ISearchable>();
         }
-        var desc = rotation.Name + $" ({rotation.RotationName})";
-        var type = rotation.Type;
-        if (type.HasFlag(CombatType.PvE))
+        if (ImGui.IsItemHovered())
         {
-            desc += " PvE";
+            ImguiTooltips.ShowTooltip(() =>
+            {
+                ImGui.Text(rotation.Name + $" ({rotation.RotationName})");
+                rotation.Type.Draw();
+                if (!string.IsNullOrEmpty(rotation.Description))
+                {
+                    ImGui.Text(rotation.Description);
+                }
+            });
         }
-        if (type.HasFlag(CombatType.PvP))
-        {
-            desc += " PvP";
-        }
-        if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;
-        ImguiTooltips.HoveredTooltip(desc);
 
-        var icon = type switch
-        {
-            CombatType.Both => 61540u,
-            CombatType.PvE => 61542u,
-            CombatType.PvP => 61544u,
-            _ => 61523u,
-        };
-
-        if (IconSet.GetTexture(icon, out var texture))
+        if (IconSet.GetTexture(rotation.Type.GetIcon(), out var texture))
         {
             ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
 
@@ -478,6 +470,18 @@ public partial class RotationConfigWindow : Window
             {
                 foreach (var r in rotations)
                 {
+                    if (IconSet.GetTexture(r.Type.GetIcon(), out var texture))
+                    {
+                        ImGui.Image(texture.ImGuiHandle, Vector2.One * 20 * Scale);
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImguiTooltips.ShowTooltip(() =>
+                            {
+                                rotation.Type.Draw();
+                            });
+                        }
+                    }
+                    ImGui.SameLine();
                     ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
                     if (ImGui.Selectable(r.RotationName))
                     {

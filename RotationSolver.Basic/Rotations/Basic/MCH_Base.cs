@@ -288,7 +288,6 @@ public abstract class MCH_Base : CustomRotation
     #endregion
 
     #region PvP
-
     /// <summary>
     /// 
     /// </summary>

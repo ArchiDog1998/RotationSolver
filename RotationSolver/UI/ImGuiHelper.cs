@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -436,4 +437,23 @@ internal static class ImGuiHelper
         ConfigUnitType.Percent => LocalizationManager.RightLang.ConfigUnitType_Ratio,
         _ => string.Empty,
     };
+
+    public static void Draw(this CombatType type)
+    {
+        if (type.HasFlag(CombatType.PvE))
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(ImGuiColors.DalamudYellow, " PvE");
+        }
+        if (type.HasFlag(CombatType.PvP))
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(ImGuiColors.TankBlue, " PvP");
+        }
+        if(type == CombatType.None)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(ImGuiColors.DalamudRed, " None of PvE or PvP!");
+        }
+    }
 }
