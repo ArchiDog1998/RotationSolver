@@ -424,7 +424,7 @@ internal static partial class TargetUpdater
         var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealSelfWhenNoHealer) && player.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
         DataCenter.CanHealSingleAbility = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, job.GetHealthSingleAbility(), job.GetHealthSingleAbilityHot())
             : singleAbility > 0;
-        DataCenter.CanHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer,StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot()) : singleSpell > 0;
+        DataCenter.CanHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, job.GetHealthSingleSpell(), job.GetHealthSingleSpellHot()) : singleSpell > 0;
         DataCenter.CanHealAreaAbility = singleAbility > 2;
         DataCenter.CanHealAreaSpell = singleSpell > 2;
 
@@ -467,7 +467,7 @@ internal static partial class TargetUpdater
 
     static bool ShouldHealSingle(BattleChara target, StatusID[] hotStatus, float healSingle, float healSingleHot)
     {
-        if(target == null) return false;
+        if (target == null) return false;
 
         var ratio = GetHealingOfTimeRatio(target, hotStatus);
 

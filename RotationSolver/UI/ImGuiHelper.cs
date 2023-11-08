@@ -430,11 +430,30 @@ internal static class ImGuiHelper
 
     public static string ToDesc(this ConfigUnitType unit) => unit switch
     {
-        ConfigUnitType.Seconds =>  LocalizationManager.RightLang.ConfigUnitType_Seconds,
+        ConfigUnitType.Seconds => LocalizationManager.RightLang.ConfigUnitType_Seconds,
         ConfigUnitType.Degree => LocalizationManager.RightLang.ConfigUnitType_Degree,
         ConfigUnitType.Pixels => LocalizationManager.RightLang.ConfigUnitType_Pixels,
-        ConfigUnitType.Yalms =>  LocalizationManager.RightLang.ConfigUnitType_Yalms,
+        ConfigUnitType.Yalms => LocalizationManager.RightLang.ConfigUnitType_Yalms,
         ConfigUnitType.Percent => LocalizationManager.RightLang.ConfigUnitType_Ratio,
         _ => string.Empty,
     };
+
+    public static void Draw(this CombatType type)
+    {
+        if (type.HasFlag(CombatType.PvE))
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(ImGuiColors.DalamudYellow, " PvE");
+        }
+        if (type.HasFlag(CombatType.PvP))
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(ImGuiColors.TankBlue, " PvP");
+        }
+        if(type == CombatType.None)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(ImGuiColors.DalamudRed, " None of PvE or PvP!");
+        }
+    }
 }

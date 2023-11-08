@@ -66,7 +66,7 @@ public partial class BaseAction
     /// Is this action's target is a boss?
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Please use Target.IsBossFromTTK() or Target.IsBossFromIcon instead.", true)]
+    [Obsolete("Please use Target.IsBossFromTTK() or Target.IsBossFromIcon() instead.", true)]
     public bool IsTargetBoss => Target?.IsBossFromTTK() ?? false;
 
     /// <inheritdoc/>
@@ -339,7 +339,7 @@ public partial class BaseAction
     #region Target party
     private bool TargetParty(float range, int aoeCount, bool mustUse, out BattleChara target, out BattleChara[] affectedTargets)
     {
-        if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24 
+        if (_action.PrimaryCostType == 3 && _action.PrimaryCostValue == 24
             || (ActionID)ID is ActionID.AngelWhisper or ActionID.VariantRaise or ActionID.VariantRaise2)
         {
             return TargetDeath(out target, out affectedTargets);

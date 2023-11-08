@@ -1,6 +1,4 @@
-﻿using ECommons.DalamudServices;
-
-namespace RotationSolver.Basic.Data;
+﻿namespace RotationSolver.Basic.Data;
 
 internal readonly struct MapEffectData
 {

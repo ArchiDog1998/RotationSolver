@@ -97,7 +97,7 @@ namespace RotationSolver.Commands
                     //}
 #endif
                     //Change Target
-                    var tar = (act.Target == null || act.Target == Player.Object) 
+                    var tar = (act.Target == null || act.Target == Player.Object)
                         ? act.AffectedTargets.FirstOrDefault() : act.Target;
 
                     if (tar != null && tar != Player.Object && tar.IsEnemy())

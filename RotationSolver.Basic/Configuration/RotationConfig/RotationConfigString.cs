@@ -2,7 +2,7 @@
 
 internal class RotationConfigString : RotationConfigBase
 {
-    public RotationConfigString(string name, string value, string displayName, CombatType type) 
+    public RotationConfigString(string name, string value, string displayName, CombatType type)
         : base(name, value, displayName, type)
     {
     }

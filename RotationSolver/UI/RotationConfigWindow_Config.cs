@@ -379,7 +379,10 @@ public partial class RotationConfigWindow
     private static readonly ISearchable[] _basicTimerOthers = new ISearchable[]
     {
         new DragFloatSearchPlugin(PluginConfigFloat.SpecialDuration, 1f),
-        new DragFloatSearchPlugin(PluginConfigFloat.CountDownAhead, 0.002f),
+        new DragFloatSearchPlugin(PluginConfigFloat.CountDownAhead, 0.002f)
+        {
+            PvPFilter = JobFilter.NoJob,
+        },
     };
 
     private static readonly ISearchable[] _basicParamsSearchable = new ISearchable[]
@@ -511,8 +514,6 @@ public partial class RotationConfigWindow
         ),
 
         new CheckBoxSearchPlugin(PluginConfigBool.DrawMeleeOffset)),
-
-
     };
 
     // Windows
@@ -666,7 +667,7 @@ public partial class RotationConfigWindow
             new DragFloatSearchPlugin(PluginConfigFloat.AutoHealTimeToKill, 0.02f),
             new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
 
-        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHealSelfWhenNoHealer) 
+        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHealSelfWhenNoHealer)
         {
             PvEFilter = JobFilter.NoHealer,
             PvPFilter = JobFilter.NoHealer,
@@ -688,17 +689,18 @@ public partial class RotationConfigWindow
         new DragFloatSearchPlugin(PluginConfigFloat.HealthHealerRatio, 0.02f)
             {
                 PvEFilter = JobFilter.Healer,
+                PvPFilter = JobFilter.Healer,
             },
         new DragFloatSearchPlugin(PluginConfigFloat.HealthTankRatio, 0.02f)
             {
                 PvEFilter = JobFilter.Healer,
+                PvPFilter = JobFilter.Healer,
             },
         new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMax, 0.002f),
     };
 
     private static readonly ISearchable[] _autoActionConditionSearchable_Raise = new ISearchable[]
     {
-
         new CheckBoxSearchPlugin(PluginConfigBool.RaisePlayerByCasting)
             {
                 PvEFilter = JobFilter.Raise,
@@ -721,23 +723,25 @@ public partial class RotationConfigWindow
             },
     };
 
-
     private static readonly ISearchable[] _autoActionConditionSearchable_Others = new ISearchable[]
     {
         new CheckBoxSearchPlugin(PluginConfigBool.InterruptibleMoreCheck)
             {
                 PvEFilter = JobFilter.Interrupt,
+                PvPFilter = JobFilter.NoJob,
             },
 
         new DragFloatRangeSearchPlugin(PluginConfigFloat.InterruptDelayMin, PluginConfigFloat.InterruptDelayMax, 0.002f)
-             {
+            {
                 PvEFilter = JobFilter.Interrupt,
+                PvPFilter = JobFilter.NoJob,
             },
 
 
         new CheckBoxSearchPlugin(PluginConfigBool.EsunaAll)
             {
                 PvEFilter = JobFilter.Esuna,
+                PvPFilter = JobFilter.NoJob,
             },
 
         new DragFloatRangeSearchPlugin(PluginConfigFloat.WeakenDelayMin, PluginConfigFloat.WeakenDelayMax, 0.002f)
@@ -749,6 +753,7 @@ public partial class RotationConfigWindow
         new DragFloatSearchJob(JobConfigFloat.HealthForDyingTanks, 0.02f)
             {
                 PvEFilter = JobFilter.Tank,
+                PvPFilter = JobFilter.NoJob,
             },
 
         new DragFloatSearchPlugin(PluginConfigFloat.HealthForGuard, 0.02f)
@@ -759,6 +764,7 @@ public partial class RotationConfigWindow
         new DragFloatSearchPlugin(PluginConfigFloat.MeleeRangeOffset, 0.02f)
         {
             PvEFilter = JobFilter.Melee,
+            PvPFilter = JobFilter.NoJob,
         },
     };
 
@@ -796,6 +802,7 @@ public partial class RotationConfigWindow
             {
                 PvEFilter = JobFilter.Tank,
             },
+
             new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank,
                 new DragFloatRangeSearchPlugin(PluginConfigFloat.ProvokeDelayMin, PluginConfigFloat.ProvokeDelayMax, 0.05f))
             {
@@ -866,7 +873,11 @@ public partial class RotationConfigWindow
         new DragIntSearchJob(JobConfigInt.HostileType, () => new string []{
             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
             LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
-            LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3 }),
+            LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3
+        })
+        {
+            PvPFilter = JobFilter.NoJob,
+        },
 
         new CheckBoxSearchPlugin(PluginConfigBool.AddEnemyListToHostile),
         new CheckBoxSearchPlugin(PluginConfigBool.FilterStopMark),
@@ -906,7 +917,6 @@ public partial class RotationConfigWindow
         new CheckBoxSearchPlugin(PluginConfigBool.TargetAllForFriendly),
         new CheckBoxSearchPlugin(PluginConfigBool.SwitchTargetFriendly),
     };
-
 
     private static void DrawTargetHostile()
     {

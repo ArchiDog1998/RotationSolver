@@ -387,7 +387,7 @@ internal static class RotationUpdater
        {
            if (a is IBaseAction act)
            {
-               if(!act.IsOnSlot) return string.Empty;
+               if (!act.IsOnSlot) return string.Empty;
 
                string result;
 

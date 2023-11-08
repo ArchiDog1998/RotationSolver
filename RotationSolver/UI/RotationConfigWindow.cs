@@ -13,6 +13,7 @@ using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
+using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -429,28 +430,20 @@ public partial class RotationConfigWindow : Window
             _activeTab = RotationConfigWindowTab.Rotation;
             _searchResults = Array.Empty<ISearchable>();
         }
-        var desc = rotation.Name + $" ({rotation.RotationName})";
-        var type = rotation.Type;
-        if (type.HasFlag(CombatType.PvE))
+        if (ImGui.IsItemHovered())
         {
-            desc += " PvE";
+            ImguiTooltips.ShowTooltip(() =>
+            {
+                ImGui.Text(rotation.Name + $" ({rotation.RotationName})");
+                rotation.Type.Draw();
+                if (!string.IsNullOrEmpty(rotation.Description))
+                {
+                    ImGui.Text(rotation.Description);
+                }
+            });
         }
-        if(type.HasFlag(CombatType.PvP))
-        {
-            desc += " PvP";
-        }
-        if (!string.IsNullOrEmpty(rotation.Description)) desc += "\n \n" + rotation.Description;
-        ImguiTooltips.HoveredTooltip(desc);
 
-        var icon = type switch
-        {
-            CombatType.Both => 61540u,
-            CombatType.PvE => 61542u,
-            CombatType.PvP => 61544u,
-            _ => 61523u,
-        };
-
-        if(IconSet.GetTexture(icon, out var texture))
+        if (IconSet.GetTexture(rotation.Type.GetIcon(), out var texture))
         {
             ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
 
@@ -477,6 +470,18 @@ public partial class RotationConfigWindow : Window
             {
                 foreach (var r in rotations)
                 {
+                    if (IconSet.GetTexture(r.Type.GetIcon(), out var texture))
+                    {
+                        ImGui.Image(texture.ImGuiHandle, Vector2.One * 20 * Scale);
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImguiTooltips.ShowTooltip(() =>
+                            {
+                                rotation.Type.Draw();
+                            });
+                        }
+                    }
+                    ImGui.SameLine();
                     ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
                     if (ImGui.Selectable(r.RotationName))
                     {
@@ -629,7 +634,7 @@ public partial class RotationConfigWindow : Window
         }
 
         var sayHelloCount = OtherConfiguration.RotationSolverRecord.SayingHelloCount;
-        if(sayHelloCount > 0)
+        if (sayHelloCount > 0)
         {
             using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.8f, 0.95f, 1));
             var countStr = string.Format(LocalizationManager.RightLang.ConfigWindow_About_SayHelloCount, sayHelloCount);
@@ -1116,7 +1121,7 @@ public partial class RotationConfigWindow : Window
 
         foreach (var config in set.Configs)
         {
-            if(DataCenter.Territory?.IsPvpZone ?? false)
+            if (DataCenter.Territory?.IsPvpZone ?? false)
             {
                 if (!config.Type.HasFlag(CombatType.PvP)) continue;
             }
@@ -1164,12 +1169,12 @@ public partial class RotationConfigWindow : Window
             {
                 float val = set.GetFloat(config.Name);
                 ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
+
                 if (f.UnitType == ConfigUnitType.Percent)
                 {
-                    var v = val * 100;
-                    if (ImGui.SliderFloat(name, ref v,f.Min * 100,f.Max * 100, $"{v:F1}{f.UnitType.ToSymbol()}"))
+                    if (ImGui.SliderFloat(name, ref val, f.Min, f.Max, $"{val * 100:F1}{f.UnitType.ToSymbol()}"))
                     {
-                        set.SetValue(config.Name, (v / 100f).ToString());
+                        set.SetValue(config.Name, val.ToString());
                     }
                 }
                 else
@@ -1421,10 +1426,12 @@ public partial class RotationConfigWindow : Window
                     var ttk = action.TimeToKill;
                     ImGui.SetNextItemWidth(Scale * 150);
                     if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_TTK}##{action}",
-                        ref ttk, 0.1f, 0, 120))
+                        ref ttk, 0.1f, 0, 120, $"{ttk:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
                     {
                         action.TimeToKill = ttk;
                     }
+                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.ToDesc());
+
 
                     if (!action.IsSingleTarget)
                     {
@@ -1442,10 +1449,12 @@ public partial class RotationConfigWindow : Window
                         var ratio = action.AutoHealRatio;
                         ImGui.SetNextItemWidth(Scale * 150);
                         if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_HealRatio}##{action}",
-                            ref ratio, 0.002f, 0, 1))
+                            ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
                         {
                             action.AutoHealRatio = ratio;
                         }
+                        ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.ToDesc());
+
                     }
                 }
 
@@ -1856,9 +1865,48 @@ public partial class RotationConfigWindow : Window
         }
     }
 
+    private static void FromClipBoardButton(HashSet<uint> items)
+    {
+        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Actions_Copy))
+        {
+            try
+            {
+                ImGui.SetClipboardText(JsonConvert.SerializeObject(items));
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Warning(ex, "Failed to copy the values to the clipboard.");
+            }
+        }
+
+        ImGui.SameLine();
+
+        if (ImGui.Button(LocalizationManager.RightLang.ActionSequencer_FromClipboard))
+        {
+            try
+            {
+                foreach (var aId in JsonConvert.DeserializeObject<uint[]>(ImGui.GetClipboardText()))
+                {
+                    items.Add(aId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Warning(ex, "Failed to copy the values from the clipboard.");
+            }
+            finally
+            {
+                OtherConfiguration.Save();
+                ImGui.CloseCurrentPopup();
+            }
+        }
+    }
+
     static string _statusSearching = string.Empty;
     private static void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
     {
+        FromClipBoardButton(statuses);
+
         uint removeId = 0;
         uint notLoadId = 10100;
 
@@ -2004,6 +2052,9 @@ public partial class RotationConfigWindow : Window
             if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
         }
 
+        ImGui.SameLine();
+        FromClipBoardButton(actions);
+
         ImGui.Spacing();
 
         foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
@@ -2047,7 +2098,8 @@ public partial class RotationConfigWindow : Window
                         if (selected)
                         {
                             actions.Add(action.RowId);
-                            OtherConfiguration.Save(); ImGui.CloseCurrentPopup();
+                            OtherConfiguration.Save(); 
+                            ImGui.CloseCurrentPopup();
                         }
                     }
                 }

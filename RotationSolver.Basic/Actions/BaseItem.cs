@@ -163,7 +163,7 @@ public class BaseItem : IBaseItem
         item = this;
         if (_item == null) return false;
         if (!CanUseThis) return false;
-        if (DataCenter.DisabledActionSequencer != null && DataCenter.DisabledActionSequencer.Contains(ID)) return false;
+        if (DataCenter.DisabledActionSequencer?.Contains(ID) ?? false) return false;
         if (!IsEnabled) return false;
 
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))
@@ -171,11 +171,11 @@ public class BaseItem : IBaseItem
 
         var remain = RecastTimeOneChargeRaw - RecastTimeElapsedRaw;
 
+        if (remain > DataCenter.ActionRemain) return false;
+
         if (clippingCheck && DataCenter.WeaponRemain > 0)
         {
             if (DataCenter.NextAbilityToNextGCD < AnimationLockTime + DataCenter.Ping) return false;
-
-            if (remain > DataCenter.ActionRemain) return false;
         }
 
         if (ItemCheck != null && !ItemCheck()) return false;

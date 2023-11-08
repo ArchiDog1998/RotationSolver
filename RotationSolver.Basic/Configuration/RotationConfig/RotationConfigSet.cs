@@ -43,7 +43,7 @@ internal class RotationConfigSet : IRotationConfigSet
     [Obsolete("Please use the one with types!", true)]
     public IRotationConfigSet SetBool(string name, bool value, string displayName)
     {
-        return SetBool(CombatType.Both, name, value, displayName);  
+        return SetBool(CombatType.Both, name, value, displayName);
     }
 
     public IRotationConfigSet SetBool(CombatType type, string name, bool value, string displayName)

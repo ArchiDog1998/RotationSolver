@@ -1,9 +1,7 @@
-﻿using Dalamud.Interface.Colors;
-using Dalamud.Interface.Utility;
+﻿using Dalamud.Interface.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 
@@ -121,13 +119,14 @@ internal readonly struct JobFilter
         }
     }
 
+    public Job[] AllJobs => JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? Array.Empty<Job>()).ToArray();
+
     public string Description
     {
         get
         {
-            var jobs = JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? Array.Empty<Job>());
             var roleOrJob = string.Join("\n",
-                jobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
+                AllJobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
             return string.Format(LocalizationManager.RightLang.ConfigWindow_NotInJob, roleOrJob);
         }
     }
@@ -161,6 +160,11 @@ internal abstract class Searchable : ISearchable
 
         if (!filter.CanDraw)
         {
+            if (!filter.Jobs.Any())
+            {
+                return;
+            }
+
             var textColor = *ImGui.GetStyleColorVec4(ImGuiCol.Text);
 
             ImGui.PushStyleColor(ImGuiCol.Text, *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled));
@@ -180,7 +184,6 @@ internal abstract class Searchable : ISearchable
                 height += step.Y;
                 wholeWidth -= size.X;
             }
-
 
             ImguiTooltips.HoveredTooltip(filter.Description);
             return;

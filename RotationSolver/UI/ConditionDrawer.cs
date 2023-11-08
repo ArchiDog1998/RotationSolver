@@ -36,7 +36,7 @@ internal static class ConditionDrawer
                 {
                     isNot = !isNot;
                 }
-                
+
                 ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ActionSequencer_NotDescription, isNot));
             }
         }
@@ -88,7 +88,7 @@ internal static class ConditionDrawer
 
     public static void DrawByteEnum<T>(string name, ref T value, Func<T, string> function) where T : struct, Enum
     {
-        var values = Enum.GetValues<T>();
+        var values = Enum.GetValues<T>().Where(i => i.GetAttribute<ObsoleteAttribute>() == null).ToHashSet().ToArray();
         var index = Array.IndexOf(values, value);
         var names = values.Select(function).ToArray();
 
@@ -101,11 +101,13 @@ internal static class ConditionDrawer
     public static bool DrawDragFloat(ConfigUnitType type, string name, ref float value)
     {
         ImGui.SameLine();
-        var show = type == ConfigUnitType.Percent ? $"{value:F1}{type.ToSymbol()}" : $"{value:F2}{type.ToSymbol()}";
+        var show = type == ConfigUnitType.Percent ? $"{value * 100:F1}{type.ToSymbol()}" : $"{value:F2}{type.ToSymbol()}";
 
         ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(show).X));
-        var result = ImGui.DragFloat(name, ref value, 0.1f, 0, 0, show);
+        var result = type == ConfigUnitType.Percent ? ImGui.SliderFloat(name, ref value, 0, 1, show) 
+            : ImGui.DragFloat(name, ref value, 0.1f, 0, 0, show);
         ImguiTooltips.HoveredTooltip(type.ToDesc());
+
         return result;
     }
 
@@ -459,8 +461,6 @@ internal static class ConditionDrawer
             case ActionConditionType.MaxCharges:
                 DrawCondition(actionCondition, ref actionCondition.Param2);
 
-                ImGui.SameLine();
-
                 if (DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Charges}##Charges{actionCondition.GetHashCode()}", ref actionCondition.Param1))
                 {
                     actionCondition.Param1 = Math.Max(0, actionCondition.Param1);
@@ -519,7 +519,7 @@ internal static class ConditionDrawer
                 (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }),
                 (LocalizationManager.RightLang.ConfigWindow_Actions_Copy, Copy, new string[] { "Ctrl" }));
 
-            if(condition is DelayCondition delay)
+            if (condition is DelayCondition delay)
             {
                 DrawCondition(delay.IsTrue(rotation), delay.GetHashCode().ToString(), ref delay.Not);
             }
@@ -533,7 +533,7 @@ internal static class ConditionDrawer
                 (Up, new VirtualKey[] { VirtualKey.UP }),
                 (Down, new VirtualKey[] { VirtualKey.DOWN }),
                 (Copy, new VirtualKey[] { VirtualKey.CONTROL }));
-            
+
             ImGui.SameLine();
 
             condition.Draw(rotation);
@@ -614,6 +614,7 @@ internal static class ConditionDrawer
                 DrawDragInt($"##Value{rotationCondition.GetHashCode()}", ref rotationCondition.Param1);
 
                 break;
+
             case ComboConditionType.Float:
                 ImGui.SameLine();
                 SearchItemsReflection($"##FloatChoice{rotationCondition.GetHashCode()}", rotationCondition._prop.GetMemberName(), ref searchTxt, rotation.AllFloats, i =>
@@ -711,8 +712,8 @@ internal static class ConditionDrawer
         });
 
         if (targetCondition._action != null ? targetCondition._action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon)
-            : IconSet.GetTexture(targetCondition.TargetType switch 
-            { 
+            : IconSet.GetTexture(targetCondition.TargetType switch
+            {
                 TargetType.Target => 16u,
                 TargetType.HostileTarget => 15u,
                 TargetType.Player => 18u,
@@ -845,7 +846,7 @@ internal static class ConditionDrawer
             case TargetConditionType.HPRatio:
                 DrawCondition(targetCondition, ref targetCondition.Param2);
 
-                DrawDragFloat( ConfigUnitType.Percent,$"##HPRatio{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
+                DrawDragFloat(ConfigUnitType.Percent, $"##HPRatio{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
             case TargetConditionType.MP:

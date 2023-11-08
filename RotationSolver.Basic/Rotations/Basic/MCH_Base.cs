@@ -1,3 +1,4 @@
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
@@ -287,7 +288,6 @@ public abstract class MCH_Base : CustomRotation
     #endregion
 
     #region PvP
-    
     /// <summary>
     /// 
     /// </summary>
@@ -319,16 +319,17 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Analysis { get; } = new BaseAction(ActionID.PvP_Analysis,ActionOption.Buff);
-    
+    public static IBaseAction PvP_Analysis { get; } = new BaseAction(ActionID.PvP_Analysis, ActionOption.Buff);
+
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction PvP_MarksmansSpite { get; } = new BaseAction(ActionID.PvP_MarksmansSpite)
     {
+        FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
         ActionCheck = (t, m) => LimitBreakLevel >= 1,
     };
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -360,7 +361,7 @@ public abstract class MCH_Base : CustomRotation
     {
         StatusNeed = new StatusID[] { StatusID.PvP_ChainSawPrimed },
     };
-    
+
     #endregion
     /// <summary>
     /// 
