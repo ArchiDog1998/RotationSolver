@@ -1861,9 +1861,48 @@ public partial class RotationConfigWindow : Window
         }
     }
 
+    private static void FromClipBoardButton(HashSet<uint> items)
+    {
+        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Actions_Copy))
+        {
+            try
+            {
+                ImGui.SetClipboardText(JsonConvert.SerializeObject(items));
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Warning(ex, "Failed to copy the values to the clipboard.");
+            }
+        }
+
+        ImGui.SameLine();
+
+        if (ImGui.Button(LocalizationManager.RightLang.ActionSequencer_FromClipboard))
+        {
+            try
+            {
+                foreach (var aId in JsonConvert.DeserializeObject<uint[]>(ImGui.GetClipboardText()))
+                {
+                    items.Add(aId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Warning(ex, "Failed to copy the values from the clipboard.");
+            }
+            finally
+            {
+                OtherConfiguration.Save();
+                ImGui.CloseCurrentPopup();
+            }
+        }
+    }
+
     static string _statusSearching = string.Empty;
     private static void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
     {
+        FromClipBoardButton(statuses);
+
         uint removeId = 0;
         uint notLoadId = 10100;
 
@@ -2009,6 +2048,9 @@ public partial class RotationConfigWindow : Window
             if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
         }
 
+        ImGui.SameLine();
+        FromClipBoardButton(actions);
+
         ImGui.Spacing();
 
         foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
@@ -2052,7 +2094,8 @@ public partial class RotationConfigWindow : Window
                         if (selected)
                         {
                             actions.Add(action.RowId);
-                            OtherConfiguration.Save(); ImGui.CloseCurrentPopup();
+                            OtherConfiguration.Save(); 
+                            ImGui.CloseCurrentPopup();
                         }
                     }
                 }
