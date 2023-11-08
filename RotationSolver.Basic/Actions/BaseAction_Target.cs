@@ -66,7 +66,7 @@ public partial class BaseAction
     /// Is this action's target is a boss?
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Please use Target.IsBossFromTTK() or Target.IsBossFromIcon instead.", true)]
+    [Obsolete("Please use Target.IsBossFromTTK() or Target.IsBossFromIcon() instead.", true)]
     public bool IsTargetBoss => Target?.IsBossFromTTK() ?? false;
 
     /// <inheritdoc/>

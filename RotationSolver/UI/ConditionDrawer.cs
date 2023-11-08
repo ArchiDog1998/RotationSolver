@@ -101,10 +101,10 @@ internal static class ConditionDrawer
     public static bool DrawDragFloat(ConfigUnitType type, string name, ref float value)
     {
         ImGui.SameLine();
-        var show = type == ConfigUnitType.Percent ? $"{value:F1}{type.ToSymbol()}" : $"{value:F2}{type.ToSymbol()}";
+        var show = type == ConfigUnitType.Percent ? $"{value * 100:F1}{type.ToSymbol()}" : $"{value:F2}{type.ToSymbol()}";
 
         ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(show).X));
-        var result = ImGui.DragFloat(name, ref value, 0.1f, 0, 0, show);
+        var result = ImGui.DragFloat(name, ref value, type == ConfigUnitType.Percent ? 0.001f : 0.1f, 0, 0, show);
         ImguiTooltips.HoveredTooltip(type.ToDesc());
         return result;
     }

@@ -195,7 +195,7 @@ public interface IBaseAction : IAction
     /// Is target a boss.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Please use Target.IsBossFromTTK() or Target.IsBossFromIcon instead.", true)]
+    [Obsolete("Please use Target.IsBossFromTTK() or Target.IsBossFromIcon() instead.", true)]
     bool IsTargetBoss { get; }
 
     /// <summary>
