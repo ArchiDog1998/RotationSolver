@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.4.15](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.14...v3.4.15) (2023-11-08)
+
+
+### Bug Fixes
+
+* add copy paste thing for status and actions. ([53eca15](https://github.com/ArchiDog1998/RotationSolver/commit/53eca15243a3d2a9334d476c88ca3be1258ff001))
+* add some ui things hidden in PvP, add unit for action config. ([c647d20](https://github.com/ArchiDog1998/RotationSolver/commit/c647d2057506cf9813acb0212d002f1c2c5b70a2))
+* add the pve and pvp icon. ([97490fa](https://github.com/ArchiDog1998/RotationSolver/commit/97490fa95384c59be0d95b0fac93915bf3866adc))
+* fixed command bug. ([13a4bd4](https://github.com/ArchiDog1998/RotationSolver/commit/13a4bd442fccddd2311ab72b7865de7d8023aa1f))
+* fixed percent condition. ([d7cd205](https://github.com/ArchiDog1998/RotationSolver/commit/d7cd205aa2d63be49a86e000d8b18efa9380adce))
+* item usage about cd. ([da6fd9a](https://github.com/ArchiDog1998/RotationSolver/commit/da6fd9a1641d248cbf7ef392318d2a2ff1c00a46))
+* MCH no LB on non players. ([8c24a85](https://github.com/ArchiDog1998/RotationSolver/commit/8c24a857b35d4e00b4b3480ac4d23936c3825191))
+
 ## [3.4.14](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.13...v3.4.14) (2023-11-07)
 
 
