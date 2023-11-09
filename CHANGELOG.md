@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.5.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.15...v3.5.0) (2023-11-09)
+
+
+### Features
+
+* add an option for only attacking the targets in enemy list. ([8903546](https://github.com/ArchiDog1998/RotationSolver/commit/8903546697b464df1ce1123414cba6327975e90a))
+* seperate the name choice to PvE and PvP . ([8f35bd3](https://github.com/ArchiDog1998/RotationSolver/commit/8f35bd3e075bc2229622a536ecec540be22de33c))
+
+
+### Bug Fixes
+
+* casting moving check. ([d510f2d](https://github.com/ArchiDog1998/RotationSolver/commit/d510f2db8911672c76885812cdae60138704ffc2))
+* fixed action id about dnc. ([4954c51](https://github.com/ArchiDog1998/RotationSolver/commit/4954c515f6b68a57eea02796b3829226da48edb1))
+
 ## [3.4.15](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.14...v3.4.15) (2023-11-08)
 
 
