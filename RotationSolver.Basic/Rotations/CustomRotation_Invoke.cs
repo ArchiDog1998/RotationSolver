@@ -12,6 +12,15 @@ public abstract partial class CustomRotation
             return false;
         }
 
+        //if(DataCenter.Territory?.IsPvpZone ?? false)
+        //{
+        //    if (!Type.HasFlag(CombatType.PvP)) return false;
+        //}
+        //else
+        //{
+        //    if (!Type.HasFlag(CombatType.PvE)) return false;
+        //}
+
         try
         {
             UpdateInfo();

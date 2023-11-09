@@ -55,20 +55,6 @@ public partial class BaseAction
     /// </summary>
     public BattleChara Target { get; private set; } = Player.Object;
 
-    /// <summary>
-    /// Is this action's target dead?
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Please use Target.IsDying() instead.", true)]
-    public bool IsTargetDying => Target?.IsDying() ?? false;
-
-    /// <summary>
-    /// Is this action's target is a boss?
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Please use Target.IsBossFromTTK() or Target.IsBossFromIcon() instead.", true)]
-    public bool IsTargetBoss => Target?.IsBossFromTTK() ?? false;
-
     /// <inheritdoc/>
     public BattleChara[] AffectedTargets { get; private set; } = Array.Empty<BattleChara>();
 

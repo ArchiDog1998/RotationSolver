@@ -99,13 +99,6 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-
-    [Obsolete("Please use ArmOfTheDestroyer instead.")]
-    public static IBaseAction ShadowOfTheDestroyer { get; } = new BaseAction(ActionID.ShadowOfTheDestroyer);
-
-    /// <summary>
-    /// 
-    /// </summary>
     public static IBaseAction FourPointFury { get; } = new BaseAction(ActionID.FourPointFury);
 
     /// <summary>

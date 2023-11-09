@@ -265,7 +265,4 @@ internal enum TargetConditionType : byte
     TargetName,
     ObjectEffect,
     Vfx,
-
-    [Obsolete("Please use Target type instead.")]
-    IsBoss = IsBossFromTTK,
 }
