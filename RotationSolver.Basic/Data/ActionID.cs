@@ -1524,12 +1524,24 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    [Obsolete("This is the one for 0 steps.")]
     StandardFinish = 16003,
 
     /// <summary>
     /// 
     /// </summary>
+    DoubleStandardFinish = 16192,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Obsolete("This is the one for 0 steps.")]
     TechnicalFinish = 16004,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    QuadrupleTechnicalFinish = 16196,
 
     /// <summary>
     /// 

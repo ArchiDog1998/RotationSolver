@@ -2293,7 +2293,6 @@ public partial class RotationConfigWindow : Window
     #endregion
 
     #region Debug
-
     private static void DrawDebug()
     {
         foreach (var searchable in _debugSearchable)
