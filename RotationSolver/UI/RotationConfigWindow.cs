@@ -368,10 +368,16 @@ public partial class RotationConfigWindow : Window
         var rotation = DataCenter.RightNowRotation;
         if (rotation != null)
         {
-            var isPvP = DataCenter.Territory?.IsPvpZone ?? false;
+            var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? Array.Empty<ICustomRotation>();
 
-            var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? Array.Empty<ICustomRotation>()
-                .Where(r => isPvP ? r.Type.HasFlag(CombatType.PvP): r.Type.HasFlag(CombatType.PvE)).ToArray();
+            if (DataCenter.Territory?.IsPvpZone ?? false)
+            {
+                rotations = rotations.Where(r => r.Type.HasFlag(CombatType.PvP)).ToArray();
+            }
+            else
+            {
+                rotations = rotations.Where(r => r.Type.HasFlag(CombatType.PvE)).ToArray();
+            }
 
             var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH));
             var comboSize = ImGui.CalcTextSize(rotation.RotationName).X;
