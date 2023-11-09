@@ -160,7 +160,7 @@ internal abstract class Searchable : ISearchable
 
         if (!filter.CanDraw)
         {
-            if (!filter.Jobs.Any())
+            if (!filter.AllJobs.Any())
             {
                 return;
             }
