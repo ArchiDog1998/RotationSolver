@@ -117,6 +117,7 @@ internal static class ConfigTranslation
 
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
+        PluginConfigBool.OnlyAttackInEnemyList => LocalizationManager.RightLang.ConfigWindow_Param_OnlyAttackInEnemyList,
         PluginConfigBool.ChooseAttackMark => LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
         PluginConfigBool.CanAttackMarkAOE => LocalizationManager.RightLang.ConfigWindow_Param_CanAttackMarkAOE,
         PluginConfigBool.FilterStopMark => LocalizationManager.RightLang.ConfigWindow_Param_FilterStopMark,

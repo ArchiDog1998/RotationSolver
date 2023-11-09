@@ -216,7 +216,8 @@ internal class Strings
     public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets that are in range for any abilities";
     public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Previously engaged targets or all targets that are in range\n(engages on countdown timer and resets when out of combat)";
     public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Previously engaged targets (engages on countdown timer)";
-    public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemies list to the hostile targets.";
+    public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemy list to the hostile targets.";
+    public string ConfigWindow_Param_OnlyAttackInEnemyList { get; set; } = "Only attack the targets in enemy list.";
     public string ConfigWindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
     public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Allowed use of AoE to attack more mobs.";
     public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will reach the marked target.";
