@@ -79,12 +79,6 @@ public abstract class DRG_Base : CustomRotation
     public static IBaseAction FullThrust { get; } = new BaseAction(ActionID.FullThrust);
 
     /// <summary>
-    /// 3
-    /// </summary>
-    [Obsolete("Please use Full Thrust instead.")]
-    public static IBaseAction HeavensThrust { get; } = new BaseAction(ActionID.HeavensThrust);
-
-    /// <summary>
     /// 
     /// </summary>
     public static IBaseAction Disembowel { get; } = new BaseAction(ActionID.Disembowel)

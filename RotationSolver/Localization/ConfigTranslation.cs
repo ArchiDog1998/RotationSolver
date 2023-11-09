@@ -117,6 +117,7 @@ internal static class ConfigTranslation
 
         // target
         PluginConfigBool.AddEnemyListToHostile => LocalizationManager.RightLang.ConfigWindow_Param_AddEnemyListToHostile,
+        PluginConfigBool.OnlyAttackInEnemyList => LocalizationManager.RightLang.ConfigWindow_Param_OnlyAttackInEnemyList,
         PluginConfigBool.ChooseAttackMark => LocalizationManager.RightLang.ConfigWindow_Param_ChooseAttackMark,
         PluginConfigBool.CanAttackMarkAOE => LocalizationManager.RightLang.ConfigWindow_Param_CanAttackMarkAOE,
         PluginConfigBool.FilterStopMark => LocalizationManager.RightLang.ConfigWindow_Param_FilterStopMark,
@@ -161,7 +162,6 @@ internal static class ConfigTranslation
         PluginConfigFloat.CountDownAhead => LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
         PluginConfigFloat.SpecialDuration => LocalizationManager.RightLang.ConfigWindow_Param_SpecialDuration,
         PluginConfigFloat.MaxPing => LocalizationManager.RightLang.ConfigWindow_Param_MaxPing,
-        PluginConfigFloat.AutoOffAfterCombatTime => LocalizationManager.RightLang.ConfigWindow_Param_AutoOffAfterCombatTime,
         PluginConfigFloat.WeaponDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_WeaponDelay,
         PluginConfigFloat.HostileDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_HostileDelay,
         PluginConfigFloat.InterruptDelayMin => LocalizationManager.RightLang.ConfigWindow_Param_InterruptDelay,

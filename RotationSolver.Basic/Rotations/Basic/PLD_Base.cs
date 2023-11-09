@@ -114,11 +114,6 @@ public abstract class PLD_Base : CustomRotation
     /// </summary>
     public static IBaseAction SpiritsWithin { get; } = new BaseAction(ActionID.SpiritsWithin);
 
-    /// <summary>
-    /// 
-    /// </summary>
-    [Obsolete("Please use SpiritsWithin instead.")]
-    public static IBaseAction Expiacion { get; } = new BaseAction(ActionID.Expiacion);
     #endregion
 
     #region Attack Area

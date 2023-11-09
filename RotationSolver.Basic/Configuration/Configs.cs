@@ -170,6 +170,7 @@ public class PluginConfig : IPluginConfiguration
 public class JobConfig
 {
     public string RotationChoice { get; set; }
+    public string PvPRotationChoice { get; set; }
     public DictionConfig<JobConfigFloat, float> Floats { get; set; } = new();
 
     public DictionConfig<JobConfigInt, int> Ints { get; set; } = new();
@@ -277,6 +278,7 @@ public enum PluginConfigBool : byte
     [Default(true)] RaisePlayerByCasting,
     [Default(true)] RaiseBrinkOfDeath,
     [Default(true)] AddEnemyListToHostile,
+    [Default(false)] OnlyAttackInEnemyList,
     [Default(false)] UseTinctures,
     [Default(false)] UseHealPotions,
 

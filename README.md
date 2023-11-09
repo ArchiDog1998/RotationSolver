@@ -15,7 +15,7 @@ https://raw.githubusercontent.com/ArchiDog1998/Dalamud_Plugins/main/pluginmaster
 
 ## Brief
 
-> Analyses PvE combat information every frame and finds the best action.
+> Analyses combat information every frame and finds the best action.
 
 This means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.
 

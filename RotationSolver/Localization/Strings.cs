@@ -83,16 +83,15 @@ internal class Strings
     public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display UI Overlay";
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
 
-    public string ConfigWindow_Param_ActionAhead { get; set; } = "Set the before an oGCD is avaliable to start trying using it";
-    public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "Set the time ahead of the last oGCD before the next GCD being avaliable to start trying using it (may affect skill weaving)";
+    public string ConfigWindow_Param_ActionAhead { get; set; } = "The before an oGCD is avaliable to start trying using it";
+    public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "The time ahead of the last oGCD before the next GCD being avaliable to start trying using it (may affect skill weaving)";
 
-    public string ConfigWindow_Param_CountDownAhead { get; set; } = "Set the number of seconds combat abilities will be used before finishing the countdown";
-    public string ConfigWindow_Param_SpecialDuration { get; set; } = "Set the duration of special windows set by commands";
-    public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "Set the number of GCDs in advance for DOT refreshing";
-    public string ConfigWindow_Param_MaxPing { get; set; } = "Set the max ping that RS can get to before skipping to the next action.";
+    public string ConfigWindow_Param_CountDownAhead { get; set; } = "The abilities will be used before finishing the countdown";
+    public string ConfigWindow_Param_SpecialDuration { get; set; } = "The duration of special windows set by commands";
+    public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "The number of GCDs in advance for DOT refreshing";
+    public string ConfigWindow_Param_MaxPing { get; set; } = "The max ping that RS can get to before skipping to the next action.";
     public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is moving between areas.";
     public string ConfigWindow_Param_AutoOffAfterCombat { get; set; } = "Auto turn off RS when combat is over more for more then...";
-    public string ConfigWindow_Param_AutoOffAfterCombatTime { get; set; } = "seconds.";
     public string ConfigWindow_Param_AutoOffCutScene { get; set; } = "Auto turn off during cutscenes.";
 
     public string ConfigWindow_Param_AutoOffWhenDead { get; set; } = "Auto turn off when dead.";
@@ -102,19 +101,19 @@ internal class Strings
     public string ConfigWindow_Param_ToggleManual { get; set; } = "Make /rotation Manual as a toggle command.";
     public string ConfigWindow_Param_ToggleAuto { get; set; } = "Make /rotation Auto as a toggle command.";
 
-    public string ConfigWindow_Param_WeaponDelay { get; set; } = "Set the range of random delay for GCD usage in seconds.";
-    public string ConfigWindow_Param_DeathDelay { get; set; } = "Set the range of random delay for using revival abilities in seconds.";
-    public string ConfigWindow_Param_HostileDelay { get; set; } = "Set the range of random delay for targeting in seconds.";
-    public string ConfigWindow_Param_InterruptDelay { get; set; } = "Set the range of random delay for interrupting hostile targets in seconds.";
-    public string ConfigWindow_Param_WeakenDelay { get; set; } = "Set the range of random delay for cleansing dispellable debuffs in seconds.";
+    public string ConfigWindow_Param_WeaponDelay { get; set; } = "The range of random delay for GCD usage.";
+    public string ConfigWindow_Param_DeathDelay { get; set; } = "The range of random delay for using revival abilities.";
+    public string ConfigWindow_Param_HostileDelay { get; set; } = "The range of random delay for targeting.";
+    public string ConfigWindow_Param_InterruptDelay { get; set; } = "The range of random delay for interrupting hostile targets.";
+    public string ConfigWindow_Param_WeakenDelay { get; set; } = "The range of random delay for cleansing dispellable debuffs.";
 
-    public string ConfigWindow_Param_HealDelay { get; set; } = "Set the range of random delay for healing in seconds.";
+    public string ConfigWindow_Param_HealDelay { get; set; } = "The range of random delay for healing.";
 
-    public string ConfigWindow_Param_CountdownDelay { get; set; } = "Set the random delay between which auto mode activation on countdown varies.";
-    public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "Set the range of random delay for Not In Combat in seconds.";
+    public string ConfigWindow_Param_CountdownDelay { get; set; } = "The random delay between which auto mode activation on countdown varies.";
+    public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "The range of random delay for Not In Combat.";
 
-    public string ConfigWindow_Param_ClickingDelay { get; set; } = "Set the range of random delay for clicking actions.";
-    public string ConfigWindow_Param_StopCastingDelay { get; set; } = "Set the range of random delay for stopping casting when the target is dead or immune to damage in seconds.";
+    public string ConfigWindow_Param_ClickingDelay { get; set; } = "The range of random delay for clicking actions.";
+    public string ConfigWindow_Param_StopCastingDelay { get; set; } = "The range of random delay for stopping casting when the target is dead or immune to damage.";
     public string ConfigWindow_Param_ClickMistake { get; set; } = "How likely is it that RS will click the wrong action.";
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or when doing some actions.";
     public string ConfigWindow_Param_UseStopCasting { get; set; } = "Stops casting when the target is dead.";
@@ -126,7 +125,7 @@ internal class Strings
     public string ConfigWindow_Param_BossTimeToKill { get; set; } = "If target's time until death is higher than this, regard it as boss.";
 
     public string ConfigWindow_Param_DyingTimeToKill { get; set; } = "If target's time until death is lower than this, regard it is dying.";
-    public string ConfigWindow_Param_PoslockModifier { get; set; } = "Set the modifier key to unlock the movement temporary";
+    public string ConfigWindow_Param_PoslockModifier { get; set; } = "The modifier key to unlock the movement temporary";
     public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
     public string ConfigWindow_Param_TeachingMode { get; set; } = "Teaching mode";
     public string ConfigWindow_Param_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
@@ -186,37 +185,38 @@ internal class Strings
 
 
 
-    public string ConfigWindow_Param_HealthDifference { get; set; } = "HP%% for standard deviation for using AoE heal.";
-    public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP%% for AoE healing oGCDs";
+    public string ConfigWindow_Param_HealthDifference { get; set; } = "HP for standard deviation for using AoE heal.";
+    public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP for AoE healing oGCDs";
 
-    public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "HP%% for AoE healing GCDs";
+    public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "HP for AoE healing GCDs";
 
     public string ConfigWindow_Param_Normal { get; set; } = "Normal Targets";
     public string ConfigWindow_Param_HOT { get; set; } = "Targets with HOT";
 
-    public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "HP%% for ST healing oGCDs";
+    public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "HP for ST healing oGCDs";
 
-    public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "HP%% for ST healing GCDs";
+    public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "HP for ST healing GCDs";
 
-    public string ConfigWindow_Param_HealthHealerRatio { get; set; } = "Heal healer first if its HP%% is lower than this.";
+    public string ConfigWindow_Param_HealthHealerRatio { get; set; } = "Heal healer first if its HP is lower than this.";
 
-    public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP%% is lower than this.";
+    public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP is lower than this.";
 
     public string ConfigWindow_Param_DistanceForMoving { get; set; } = "Use gapcloser as a damage ability if the distance to your target is less then this.";
     public string ConfigWindow_Param_HealWhenNothingTodo { get; set; } = "Healing the members with GCD if there is nothing to do in combat.";
 
-    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "When their minimum HP%% is lower than this.";
+    public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "When their minimum HP is lower than this.";
     public string ConfigWindow_Param_HealWhenNothingTodoDelay { get; set; } = "The delay of this type of healing.";
 
-    public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "Set the HP%% for tank to use invulnerability";
-    public string ConfigWindow_Param_HealthForGuard { get; set; } = "Set the HP%% for using Guard.";
+    public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "The HP for tank to use invulnerability";
+    public string ConfigWindow_Param_HealthForGuard { get; set; } = "The HP for using Guard.";
 
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
     public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets that are in range for any abilities";
     public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Previously engaged targets or all targets that are in range\n(engages on countdown timer and resets when out of combat)";
     public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Previously engaged targets (engages on countdown timer)";
-    public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemies list to the hostile targets.";
+    public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemy list to the hostile targets.";
+    public string ConfigWindow_Param_OnlyAttackInEnemyList { get; set; } = "Only attack the targets in enemy list.";
     public string ConfigWindow_Param_ChooseAttackMark { get; set; } = "Priority attack targets with attack markers";
     public string ConfigWindow_Param_CanAttackMarkAOE { get; set; } = "Allowed use of AoE to attack more mobs.";
     public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will reach the marked target.";
@@ -239,7 +239,7 @@ internal class Strings
     public string ConfigWindow_Param_MoveAreaActionFarthest { get; set; } = "Target movement area ability to the farthest possible location";
     public string ConfigWindow_Param_MoveAreaActionFarthestDesc { get; set; } = "Move to the furthest position for targeting are movement actions.";
 
-    public string ConfigWindow_Param_HostileDesc { get; set; } = "You can set the logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
+    public string ConfigWindow_Param_HostileDesc { get; set; } = "You can The logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
 
     public string ConfigWindow_Control_OnlyShowWithHostileOrInDuty { get; set; } = "Only show these windows if there are enemies in or in duty";
@@ -315,9 +315,8 @@ internal class Strings
     public string ActionSequencer_Adjusted { get; set; } = "Adjusted";
     public string ActionSequencer_StatusSelf { get; set; } = "From Self";
     public string ActionSequencer_StatusAll { get; set; } = "From All";
-    public string ActionSequencer_Delay_Description { get; set; } = "How many seconds do you want to delay its turning to true.";
+    public string ActionSequencer_Delay_Description { get; set; } = "Delay its turning to true.";
     public string ActionSequencer_NotDescription { get; set; } = "Click to make it reverse.\nIs reversed : {0}";
-
     #endregion
 
     #region Actions
@@ -772,10 +771,10 @@ internal class Strings
     public string ConfigWindow_Target_OnlyAttackInVisionCone { get; set; } = "Only attack the targets in vision cone";
     public string ConfigWindow_Target_VisionCone { get; set; } = "The angle of your vision cone";
 
-    public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke in seconds.";
+    public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke.";
 
     public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of the time to kill indicator.";
-    public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The minimum time between updating RS information in seconds.";
+    public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The minimum time between updating RS information.";
 
     public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
     public string ConfigWindow_Actions_TTK { get; set; } = "TTK that this action needs the target be.";

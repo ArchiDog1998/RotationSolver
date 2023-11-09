@@ -185,20 +185,6 @@ public interface IBaseAction : IAction
     bool IsSingleTarget { get; }
 
     /// <summary>
-    /// Is target will die immediately.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Please use Target.IsDying() instead.", true)]
-    bool IsTargetDying { get; }
-
-    /// <summary>
-    /// Is target a boss.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Please use Target.IsBossFromTTK() or Target.IsBossFromIcon() instead.", true)]
-    bool IsTargetBoss { get; }
-
-    /// <summary>
     /// How many targets are needed to use this action.
     /// </summary>
     byte AOECount { get; internal set; }

@@ -191,7 +191,13 @@ internal static partial class TargetUpdater
         uint[] ids = GetEnemies();
         var hostiles = allAttackableTargets.Where(t =>
         {
-            if (ids.Contains(t.ObjectId)) return true;
+            if (Service.Config.GetValue(PluginConfigBool.AddEnemyListToHostile))
+            {
+                if (ids.Contains(t.ObjectId)) return true;
+                //Only attack
+                if (Service.Config.GetValue(PluginConfigBool.OnlyAttackInEnemyList)) return false;
+            }
+
             if (t.TargetObject == Player.Object
             || t.TargetObject?.OwnerId == Player.Object.ObjectId) return true;
 
@@ -213,8 +219,6 @@ internal static partial class TargetUpdater
 
     private static unsafe uint[] GetEnemies()
     {
-        if (!Service.Config.GetValue(PluginConfigBool.AddEnemyListToHostile)) return Array.Empty<uint>();
-
         var addons = Service.GetAddons<AddonEnemyList>();
 
         if (!addons.Any()) return Array.Empty<uint>();

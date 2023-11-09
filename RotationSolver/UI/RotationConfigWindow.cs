@@ -335,8 +335,6 @@ public partial class RotationConfigWindow : Window
         return _logosWrap.TryGetValue(name, out texture);
     }
 
-
-
     private void DrawHeader(float wholeWidth)
     {
         var size = MathF.Max(MathF.Min(wholeWidth, Scale * 128), Scale * MIN_COLUMN_WIDTH);
@@ -371,6 +369,15 @@ public partial class RotationConfigWindow : Window
         if (rotation != null)
         {
             var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? Array.Empty<ICustomRotation>();
+
+            if (DataCenter.Territory?.IsPvpZone ?? false)
+            {
+                rotations = rotations.Where(r => r.Type.HasFlag(CombatType.PvP)).ToArray();
+            }
+            else
+            {
+                rotations = rotations.Where(r => r.Type.HasFlag(CombatType.PvE)).ToArray();
+            }
 
             var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH));
             var comboSize = ImGui.CalcTextSize(rotation.RotationName).X;
@@ -485,7 +492,14 @@ public partial class RotationConfigWindow : Window
                     ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
                     if (ImGui.Selectable(r.RotationName))
                     {
-                        Service.Config.GetJobConfig(Job).RotationChoice = r.GetType().FullName;
+                        if( DataCenter.Territory?.IsPvpZone ?? false)
+                        {
+                            Service.Config.GetJobConfig(Job).PvPRotationChoice = r.GetType().FullName;
+                        }
+                        else
+                        {
+                            Service.Config.GetJobConfig(Job).RotationChoice = r.GetType().FullName;
+                        }
                         Service.Config.Save();
                     }
                     ImguiTooltips.HoveredTooltip(r.Description);
@@ -1507,7 +1521,6 @@ public partial class RotationConfigWindow : Window
     {
         var width = ImGui.GetWindowWidth();
 
-
         var text = LocalizationManager.RightLang.ConfigWindow_Rotations_Download;
         var textWidth = ImGuiHelpers.GetButtonSize(text).X;
 
@@ -2286,7 +2299,6 @@ public partial class RotationConfigWindow : Window
     #endregion
 
     #region Debug
-
     private static void DrawDebug()
     {
         foreach (var searchable in _debugSearchable)

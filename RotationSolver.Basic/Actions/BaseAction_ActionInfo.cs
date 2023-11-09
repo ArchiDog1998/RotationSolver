@@ -94,7 +94,6 @@ public partial class BaseAction
         act = this;
 
         option |= OtherOption;
-
         var mustUse = option.HasFlag(CanUseOption.MustUse);
 
         var player = Player.Object;
@@ -102,8 +101,8 @@ public partial class BaseAction
         Target = player;
         AffectedTargets = Array.Empty<BattleChara>();
 
-        if (!SkipDisable && !IsEnabled) return false;
         if (!IsOnSlot) return false;
+        if (!SkipDisable && !IsEnabled) return false;
 
         if (AutoHealCheck && IsFriendly)
         {
@@ -161,14 +160,15 @@ public partial class BaseAction
             {
                 if (DataCenter.NextAbilityToNextGCD > AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock) return false;
             }
-            else if (!option.HasFlag(CanUseOption.IgnoreClippingCheck) && !ActionsNoNeedCasting.Contains(ID))
+            else if (!option.HasFlag(CanUseOption.IgnoreClippingCheck))
             {
                 if (DataCenter.NextAbilityToNextGCD < AnimationLockTime) return false;
             }
         }
 
         //Need casting.
-        if (CastTime > 0 && !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide))
+        if (CastTime > 0 && !player.HasStatus(true, CustomRotation.Swiftcast.StatusProvide)
+            && !ActionsNoNeedCasting.Contains(ID))
         {
             //Is knocking back.
             if (DateTime.Now > DataCenter.KnockbackStart && DateTime.Now < DataCenter.KnockbackFinished) return false;

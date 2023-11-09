@@ -879,7 +879,7 @@ public partial class RotationConfigWindow
             PvPFilter = JobFilter.NoJob,
         },
 
-        new CheckBoxSearchPlugin(PluginConfigBool.AddEnemyListToHostile),
+        new CheckBoxSearchPlugin(PluginConfigBool.AddEnemyListToHostile, new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInEnemyList)),
         new CheckBoxSearchPlugin(PluginConfigBool.FilterStopMark),
         new CheckBoxSearchPlugin(PluginConfigBool.ChooseAttackMark, new ISearchable[]
         {

@@ -265,19 +265,19 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseAction StandardFinish { get; } = new BaseAction(ActionID.StandardFinish)
+    protected static IBaseAction StandardFinish { get; } = new BaseAction(ActionID.DoubleStandardFinish)
     {
         StatusNeed = new[] { StatusID.StandardStep },
-        ActionCheck = (b, m) => IsDancing && CompletedSteps == 2,
+        ActionCheck = (b, m) => IsDancing && CompletedSteps == 2 && Service.GetAdjustedActionId(ActionID.StandardStep) == ActionID.DoubleStandardFinish,
     };
 
     /// <summary>
     /// 
     /// </summary>
-    protected static IBaseAction TechnicalFinish { get; } = new BaseAction(ActionID.TechnicalFinish)
+    protected static IBaseAction TechnicalFinish { get; } = new BaseAction(ActionID.QuadrupleTechnicalFinish)
     {
         StatusNeed = new[] { StatusID.TechnicalStep },
-        ActionCheck = (b, m) => IsDancing && CompletedSteps == 4,
+        ActionCheck = (b, m) => IsDancing && CompletedSteps == 4 && Service.GetAdjustedActionId(ActionID.TechnicalStep) == ActionID.QuadrupleTechnicalFinish,
     };
 
     private static IBaseAction Emboite { get; } = new BaseAction(ActionID.Emboite)
@@ -309,8 +309,32 @@ public abstract class DNC_Base : CustomRotation
     {
         act = null;
         if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;
-        if (Player.HasStatus(true, StatusID.StandardStep) && CompletedSteps == 2) return false;
-        if (Player.HasStatus(true, StatusID.TechnicalStep) && CompletedSteps == 4) return false;
+        if (Player.HasStatus(true, StatusID.StandardStep) && CompletedSteps == 2)
+        {
+            if (StandardFinish.CanUse(out act, CanUseOption.MustUse))
+            {
+                return true;
+            }
+            if (Player.WillStatusEnd(1, true, StatusID.StandardStep, StatusID.StandardFinish))
+            {
+                act = StandardStep;
+                return true;
+            }
+            return false;
+        }
+        if (Player.HasStatus(true, StatusID.TechnicalStep) && CompletedSteps == 4)
+        {
+            if (TechnicalFinish.CanUse(out act, CanUseOption.MustUse))
+            {
+                return true;
+            }
+            if (Player.WillStatusEnd(1, true, StatusID.TechnicalStep))
+            {
+                act = TechnicalStep;
+                return true;
+            }
+            return false;
+        }
 
         if (Emboite.CanUse(out act)) return true;
         if (Entrechat.CanUse(out act)) return true;

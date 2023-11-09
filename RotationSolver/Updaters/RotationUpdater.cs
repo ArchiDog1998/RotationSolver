@@ -459,14 +459,19 @@ internal static class RotationUpdater
 
     internal static ICustomRotation GetChosenRotation(CustomRotationGroup group)
     {
-        var name = Service.Config.GetJobConfig(group.JobId).RotationChoice;
+        var isPvP = DataCenter.Territory?.IsPvpZone ?? false;
 
-        var rotation = group.Rotations.FirstOrDefault(r => r.GetType().FullName == name);
-        rotation ??= group.Rotations.FirstOrDefault(r => r.GetType().Assembly.FullName.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
+        var rotations =  group.Rotations.Where(r => isPvP ? r.Type.HasFlag(CombatType.PvP)
+        : r.Type.HasFlag(CombatType.PvE));
+        var name = isPvP ? Service.Config.GetJobConfig(group.JobId).PvPRotationChoice
+            : Service.Config.GetJobConfig(group.JobId).RotationChoice;
 
-        rotation ??= group.Rotations.FirstOrDefault(r => r.GetType().Assembly.FullName.Contains("DefaultRotations", StringComparison.OrdinalIgnoreCase));
+        var rotation = rotations.FirstOrDefault(r => r.GetType().FullName == name);
+        rotation ??= rotations.FirstOrDefault(r => r.GetType().Assembly.FullName.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
 
-        rotation ??= group.Rotations.FirstOrDefault();
+        rotation ??= rotations.FirstOrDefault(r => r.GetType().Assembly.FullName.Contains("DefaultRotations", StringComparison.OrdinalIgnoreCase));
+
+        rotation ??= rotations.FirstOrDefault();
 
         return rotation;
     }

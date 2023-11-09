@@ -141,17 +141,6 @@ public static class ObjectHelper
     public static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
 
     /// <summary>
-    /// Is character a boss? Max HP exceeds a certain amount.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    [Obsolete("Please use IsBossFromTTK or IsBossFromIcon instead", true)]
-    public static bool IsBoss(this BattleChara obj)
-    {
-        return IsBossFromTTK(obj);
-    }
-
-    /// <summary>
     /// Is character a boss? Calculate from ttk.
     /// </summary>
     /// <param name="obj"></param>

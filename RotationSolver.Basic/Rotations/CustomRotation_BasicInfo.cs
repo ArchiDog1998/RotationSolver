@@ -10,7 +10,7 @@ namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation : ICustomRotation
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public virtual CombatType Type => CombatType.None;
+    public abstract CombatType Type { get; }
 
     public abstract Job[] Jobs { get; }
 
@@ -116,5 +116,4 @@ public abstract partial class CustomRotation : ICustomRotation
     /// The things on territory changed.
     /// </summary>
     public virtual void OnTerritoryChanged() { }
-
 }
