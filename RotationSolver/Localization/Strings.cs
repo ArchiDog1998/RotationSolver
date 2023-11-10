@@ -144,6 +144,7 @@ internal class Strings
     public string ConfigWindow_Param_ShowInfoOnDtr { get; set; } = "Display plugin status on server info";
     public string ConfigWindow_Param_ShowInfoOnToast { get; set; } = "Display plugin status on toast";
     public string ConfigWindow_Param_ShowToastsAboutDoAction { get; set; } = "Display do action feedback on toast";
+    public string ConfigWindow_Param_ShowToggledActionInChat { get; set; } = "Display toggle action feedback on chat";
     public string ConfigWindow_Param_UseAOEAction { get; set; } = "Use AoE actions";
 
     public string ConfigWindow_Param_UseAOEWhenManual { get; set; } = "Use AoE actions in manual mode";

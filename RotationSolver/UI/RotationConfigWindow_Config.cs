@@ -464,6 +464,7 @@ public partial class RotationConfigWindow
         new CheckBoxSearchPlugin(PluginConfigBool.ShowInfoOnToast),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowToastsAboutDoAction),
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowToggledActionInChat),
 
         new CheckBoxSearchPlugin(PluginConfigBool.KeyBoardNoise,
             new DragIntRangeSearchPlugin(PluginConfigInt.KeyBoardNoiseMin, PluginConfigInt.KeyBoardNoiseMax, 1)),

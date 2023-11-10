@@ -74,6 +74,7 @@ internal static class ConfigTranslation
         PluginConfigBool.ShowInfoOnDtr => LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnDtr,
         PluginConfigBool.ShowInfoOnToast => LocalizationManager.RightLang.ConfigWindow_Param_ShowInfoOnToast,
         PluginConfigBool.ShowToastsAboutDoAction => LocalizationManager.RightLang.ConfigWindow_Param_ShowToastsAboutDoAction,
+        PluginConfigBool.ShowToggledActionInChat => LocalizationManager.RightLang.ConfigWindow_Param_ShowToggledActionInChat,
         PluginConfigBool.OnlyShowWithHostileOrInDuty => LocalizationManager.RightLang.ConfigWindow_Control_OnlyShowWithHostileOrInDuty,
         PluginConfigBool.ShowNextActionWindow => LocalizationManager.RightLang.ConfigWindow_Control_ShowNextActionWindow,
         PluginConfigBool.ShowCooldownWindow => LocalizationManager.RightLang.ConfigWindow_Control_ShowCooldownWindow,

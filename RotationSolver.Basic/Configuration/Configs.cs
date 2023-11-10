@@ -372,6 +372,9 @@ public enum PluginConfigBool : byte
 
     [Default(false)] UseAdditionalConditions,
     [Default(false)] OnlyHealSelfWhenNoHealer,
+
+    [Default(true)] ShowToggledActionInChat,
+
 }
 
 public enum PluginConfigFloat : byte
