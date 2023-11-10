@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.0...v3.5.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* fixed jobs check in searchable. ([b968c6b](https://github.com/ArchiDog1998/RotationSolver/commit/b968c6b3ef25b0f6877daecedb61f177dd9bce5a))
+
 ## [3.5.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.4.15...v3.5.0) (2023-11-09)
 
 
