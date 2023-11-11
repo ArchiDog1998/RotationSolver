@@ -201,7 +201,7 @@ public abstract partial class CustomRotation
         }
 
         //Defense himself.
-        if (role == JobRole.Tank && HasTankStance)
+        if (role == JobRole.Tank)
         {
             var movingHere = (float)NumberOfHostilesInRange / NumberOfHostilesInMaxRange > 0.3f;
 
@@ -220,7 +220,7 @@ public abstract partial class CustomRotation
             }
 
             //Big damage casting action.
-            if (tarOnMeCount == 1 && DataCenter.IsHostileCastingToTank)
+            if (DataCenter.IsHostileCastingToTank)
             {
                 if (DefenseSingleAbility(out act)) return true;
             }
