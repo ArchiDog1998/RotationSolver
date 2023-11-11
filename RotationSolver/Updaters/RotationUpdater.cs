@@ -446,7 +446,7 @@ internal static class RotationUpdater
                 rotation?.OnTerritoryChanged();
             }
             DataCenter.RightNowRotation = rotation;
-            RightRotationActions = DataCenter.RightNowRotation.AllActions;
+            RightRotationActions = DataCenter.RightNowRotation?.AllActions ?? Array.Empty<IAction>();
             DataCenter.Job = DataCenter.RightNowRotation?.Jobs[0] ?? Job.ADV;
             return;
         }
