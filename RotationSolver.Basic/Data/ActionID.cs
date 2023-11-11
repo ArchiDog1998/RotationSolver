@@ -4951,7 +4951,7 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
-    PvP_Cure2 = 29225,
+    PvP_Cure2 = 29224,
 
     /// <summary>
     /// 
