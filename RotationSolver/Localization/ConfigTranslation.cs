@@ -29,6 +29,9 @@ internal static class ConfigTranslation
     {
         JobConfigFloat.HealthForDyingTanks => LocalizationManager.RightLang.ConfigWindow_Param_HealthForDyingTank,
         JobConfigFloat.HealthForAutoDefense => LocalizationManager.RightLang.ConfigWindow_Auto_HealthForAutoDefense,
+
+        JobConfigFloat.ActionAhead => LocalizationManager.RightLang.ConfigWindow_Param_ActionAhead,
+
         _ => string.Empty,
     };
 
@@ -158,7 +161,6 @@ internal static class ConfigTranslation
     public static string ToName(this PluginConfigFloat config) => config switch
     {
         // basic
-        PluginConfigFloat.ActionAhead => LocalizationManager.RightLang.ConfigWindow_Param_ActionAhead,
         PluginConfigFloat.MinLastAbilityAdvanced => LocalizationManager.RightLang.ConfigWindow_Param_MinLastAbilityAdvanced,
         PluginConfigFloat.CountDownAhead => LocalizationManager.RightLang.ConfigWindow_Param_CountDownAhead,
         PluginConfigFloat.SpecialDuration => LocalizationManager.RightLang.ConfigWindow_Param_SpecialDuration,

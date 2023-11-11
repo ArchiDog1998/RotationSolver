@@ -196,6 +196,8 @@ public enum JobConfigFloat : byte
 
     [Default(0.15f), Unit(ConfigUnitType.Percent)] HealthForDyingTanks,
     [Default(1f), Unit(ConfigUnitType.Percent)] HealthForAutoDefense,
+
+    [Default(0.08f, 0f, 0.5f), Unit(ConfigUnitType.Seconds)] ActionAhead,
 }
 #endregion
 
@@ -398,7 +400,6 @@ public enum PluginConfigFloat : byte
 
     [Default(3f, 1f, 20f), Unit(ConfigUnitType.Seconds)] SpecialDuration,
 
-    [Default(0.08f, 0f, 0.5f), Unit(ConfigUnitType.Seconds)] ActionAhead,
     [Default(0.06f, 0f, 0.5f), Unit(ConfigUnitType.Seconds)] ActionAheadForLast0GCD,
 
     [Default(0f, 0f, 1f), Unit(ConfigUnitType.Seconds)] WeaponDelayMin,
