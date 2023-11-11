@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.5.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.1...v3.5.2) (2023-11-11)
+
+
+### Bug Fixes
+
+* add show toggle action in chat option. ([c49208f](https://github.com/ArchiDog1998/RotationSolver/commit/c49208fe3766872500c2f5a35b57d75df5ee6491))
+* changed action ahead to job config. ([06a9f4d](https://github.com/ArchiDog1998/RotationSolver/commit/06a9f4d0716a62b2267d6420ce77b1a41d2d247f))
+* geting all actions when rightnow rotation is null. ([2768f65](https://github.com/ArchiDog1998/RotationSolver/commit/2768f651d67771f28387ead2d0947aef8fe039b3))
+* split dnc steps to execute and finish. ([09da87c](https://github.com/ArchiDog1998/RotationSolver/commit/09da87cd93b7763d278736554ae6d9b8eec5f79c))
+
 ## [3.5.1](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.0...v3.5.1) (2023-11-10)
 
 
