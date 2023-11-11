@@ -53,10 +53,7 @@ internal static class ActionUpdater
                     });
 
                     var count = actions.Count();
-                    if (count > 0)
-                    {
-                        WrongAction = actions.ElementAt(_wrongRandom.Next(count));
-                    }
+                    WrongAction = count > 0 ? actions.ElementAt(_wrongRandom.Next(count)) : null;
                 }
 
                 NextAction = newAction;
@@ -219,7 +216,7 @@ internal static class ActionUpdater
             || Player.Object.CurrentHp == 0) return false;
 
         var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
-        var ahead = Math.Min(maxAhead, Service.Config.GetValue(PluginConfigFloat.ActionAhead));
+        var ahead = Math.Min(maxAhead, Service.Config.GetValue(DataCenter.Job, JobConfigFloat.ActionAhead));
 
         //GCD
         var canUseGCD = DataCenter.WeaponRemain <= ahead;

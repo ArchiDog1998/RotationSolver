@@ -301,14 +301,12 @@ public abstract class DNC_Base : CustomRotation
     };
 
     /// <summary>
-    /// 
+    /// Finish the dance.
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    protected static bool ExecuteStepGCD(out IAction act)
+    protected static bool DanceFinishGCD(out IAction act)
     {
-        act = null;
-        if (!Player.HasStatus(true, StatusID.StandardStep, StatusID.TechnicalStep)) return false;
         if (Player.HasStatus(true, StatusID.StandardStep) && CompletedSteps == 2)
         {
             if (StandardFinish.CanUse(out act, CanUseOption.MustUse))
@@ -322,6 +320,7 @@ public abstract class DNC_Base : CustomRotation
             }
             return false;
         }
+
         if (Player.HasStatus(true, StatusID.TechnicalStep) && CompletedSteps == 4)
         {
             if (TechnicalFinish.CanUse(out act, CanUseOption.MustUse))
@@ -333,6 +332,23 @@ public abstract class DNC_Base : CustomRotation
                 act = TechnicalStep;
                 return true;
             }
+            return false;
+        }
+
+        act = null;
+        return false;
+    }
+
+    /// <summary>
+    /// Do the dancing steps.
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    protected static bool ExecuteStepGCD(out IAction act)
+    {
+        if (!IsDancing)
+        {
+            act = null;
             return false;
         }
 

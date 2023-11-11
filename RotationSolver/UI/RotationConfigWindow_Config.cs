@@ -169,7 +169,7 @@ public partial class RotationConfigWindow
         ImGui.PopStyleColor();
         ImGui.PopFont();
 
-        var actionAhead = Service.Config.GetValue(PluginConfigFloat.ActionAhead);
+        var actionAhead = Service.Config.GetValue(DataCenter.Job, JobConfigFloat.ActionAhead);
         var minAbilityAhead = Service.Config.GetValue(PluginConfigFloat.MinLastAbilityAdvanced);
         var animationLockTime = DataCenter.MinAnimationLock;
         var weaponDelay = (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin) + Service.Config.GetValue(PluginConfigFloat.WeaponDelayMax)) / 2;
@@ -368,7 +368,7 @@ public partial class RotationConfigWindow
 
     private static readonly ISearchable[] _basicTimer = new ISearchable[]
     {
-        new DragFloatSearchPlugin(PluginConfigFloat.ActionAhead, 0.002f),
+        new DragFloatSearchJob(JobConfigFloat.ActionAhead, 0.002f),
         new DragFloatSearchPlugin(PluginConfigFloat.MinLastAbilityAdvanced, 0.002f),
         new DragFloatSearchPlugin(PluginConfigFloat.MaxPing, 0.002f),
         new DragFloatRangeSearchPlugin(PluginConfigFloat.WeaponDelayMin, PluginConfigFloat.WeaponDelayMax, 0.002f),
@@ -464,6 +464,7 @@ public partial class RotationConfigWindow
         new CheckBoxSearchPlugin(PluginConfigBool.ShowInfoOnToast),
 
         new CheckBoxSearchPlugin(PluginConfigBool.ShowToastsAboutDoAction),
+        new CheckBoxSearchPlugin(PluginConfigBool.ShowToggledActionInChat),
 
         new CheckBoxSearchPlugin(PluginConfigBool.KeyBoardNoise,
             new DragIntRangeSearchPlugin(PluginConfigInt.KeyBoardNoiseMin, PluginConfigInt.KeyBoardNoiseMax, 1)),

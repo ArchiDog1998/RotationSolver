@@ -90,6 +90,11 @@ public static partial class RSCommands
 
                 act.IsEnabled = bool.TryParse(flag, out var parse) ? parse : !act.IsEnabled;
 
+                if (Service.Config.GetValue(PluginConfigBool.ShowToggledActionInChat))
+                {
+                    Svc.Chat.Print($"Toggled {act.Name} : {act.IsEnabled}");
+                }
+
                 return;
             }
         }
