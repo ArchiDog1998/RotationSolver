@@ -229,6 +229,7 @@ public class GlobalConfig
     public SortedSet<Job> DisabledJobs { get; private set; } = new();
     public SortedSet<uint> DisabledActions { get; private set; } = new();
     public SortedSet<uint> NotInCoolDownActions { get; private set; } = new();
+    public SortedSet<uint> NotInMistakeActions { get; private set; } = new();
     public SortedSet<uint> DisabledItems { get; private set; } = new();
     public SortedSet<uint> NotInCoolDownItems { get; private set; } = new();
     public List<ActionEventInfo> Events { get; private set; } = new();

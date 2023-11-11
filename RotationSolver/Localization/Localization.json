@@ -471,6 +471,7 @@
   "ConfigWindow_Actions_DisabledConditionSet": "Disabled Condition",
   "ConfigWindow_Actions_DisabledConditionSet_Description": "Conditions for automatic use of action being disabled.",
   "ConfigWindow_Actions_ShowOnCDWindow": "Show on CD window",
+  "ConfigWindow_Actions_IsInMistake": "Can be used by mistake",
   "ConfigWindow_Configs_JobConfigTip": "This config is job specific",
   "ConfigWindow_Rotations_Settings": "Settings",
   "ConfigWindow_Rotations_Loaded": "Loaded",

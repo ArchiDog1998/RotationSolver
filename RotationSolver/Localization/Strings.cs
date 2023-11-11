@@ -677,6 +677,7 @@ internal class Strings
     public string ConfigWindow_Actions_DisabledConditionSet { get; set; } = "Disabled Condition";
     public string ConfigWindow_Actions_DisabledConditionSet_Description { get; set; } = "Conditions for automatic use of action being disabled.";
     public string ConfigWindow_Actions_ShowOnCDWindow { get; set; } = "Show on CD window";
+    public string ConfigWindow_Actions_IsInMistake { get; set; } = "Can be used by mistake";
 
     public string ConfigWindow_Configs_JobConfigTip { get; set; } = "This config is job specific";
 
