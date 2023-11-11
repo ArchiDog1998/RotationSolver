@@ -1,15 +1,26 @@
 [
-  151,
-  198,
-  469,
-  2413,
-  3052,
-  1303,
-  1302,
-  1240,
-  3054,
-  385,
-  592,
-  350,
-  3039
+
+  //PvE
+
+  151, //Stoneskin
+  198, //Ice Spikes 
+  350, //Vulnerability Down
+  385, //Fool's Tightrope
+  469, //High and Mighty
+  592, //Ring of Fire 
+  945, //Shield of the Heavens
+
+  //PvE
+
+  //PvP
+
+  1240, //Chiten
+  1302, //Hallowed Ground
+  1303, //Inner Release
+  2413, //Covered
+  3039, //Undead redemption
+  3052, //Relentless Rush
+  3054 //Guard
+
+  //PvP
 ]

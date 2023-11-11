@@ -51,7 +51,7 @@ internal class Strings
         = "Open a window to use Raise or Shirk.";
 
     public string ConfigWindow_HelpItem_AntiKnockback { get; set; }
-        = "Open a window to use knockback-penalty actions.";
+        = "Open a window to use knockback immunity actions.";
 
     public string ConfigWindow_HelpItem_Burst { get; set; }
         = "Open a window to burst.";
@@ -83,10 +83,10 @@ internal class Strings
     public string ConfigWindow_Param_UseOverlayWindow { get; set; } = "Display UI Overlay";
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
 
-    public string ConfigWindow_Param_ActionAhead { get; set; } = "The before an oGCD is avaliable to start trying using it";
+    public string ConfigWindow_Param_ActionAhead { get; set; } = "The time before an oGCD is avaliable to start trying using it";
     public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "The time ahead of the last oGCD before the next GCD being avaliable to start trying using it (may affect skill weaving)";
 
-    public string ConfigWindow_Param_CountDownAhead { get; set; } = "The abilities will be used before finishing the countdown";
+    public string ConfigWindow_Param_CountDownAhead { get; set; } = "The starting when abilities will be used before finishing the countdown";
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "The duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "The number of GCDs in advance for DOT refreshing";
     public string ConfigWindow_Param_MaxPing { get; set; } = "The max ping that RS can get to before skipping to the next action.";
@@ -153,7 +153,7 @@ internal class Strings
     public string ConfigWindow_Param_AutoHeal { get; set; } = "Automatic Heal";
     public string ConfigWindow_Param_UseAbility { get; set; } = "Auto-use abilities";
     public string ConfigWindow_Param_NoNewHostiles { get; set; } = "Don't attack new mobs by AoE";
-    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AoE action when this action may attack the mobs that are not hostile targets.";
+    public string ConfigWindow_Params_NoNewHostilesDesc { get; set; } = "Never use any AoE action when this may attack the mobs that are not hostile targets.";
     public string ConfigWindow_Param_UseDefenseAbility { get; set; } = "Use defensive abilities";
     public string ConfigWindow_Param_UseDefenseAbilityDesc { get; set; } = "It is recommended to check this option if you are playing Raids or you can plan the heal and defense ability usage by yourself.";
     public string ConfigWindow_Param_AutoShield { get; set; } = "Automatically activate tank stance";
@@ -398,10 +398,10 @@ internal class Strings
 
     #region COnfigUnitType
     public string ConfigUnitType_Seconds { get; set; } = "Time Unit, in seconds.";
-    public string ConfigUnitType_Degree { get; set; } = "Angle Unit, in degree.";
-    public string ConfigUnitType_Pixels { get; set; } = "Display Unit, in piexels.";
+    public string ConfigUnitType_Degree { get; set; } = "Angle Unit, in degrees.";
+    public string ConfigUnitType_Pixels { get; set; } = "Display Unit, in pixels.";
     public string ConfigUnitType_Yalms { get; set; } = "Distance Unit, in yalms.";
-    public string ConfigUnitType_Ratio { get; set; } = "Ratio Unit, in percents.";
+    public string ConfigUnitType_Ratio { get; set; } = "Ratio Unit, as percentage.";
 
     #endregion
 
@@ -640,8 +640,8 @@ internal class Strings
     };
 
     public string HighEndWarning { get; set; } = "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!";
-    public string TextToTalkWarning { get; set; } = "You didn't install TextToTalk, please install it to make Rotation Solver say something for you!";
-    public string AvariceWarning { get; set; } = "It seems that you didn't installed Avarice. If you want to get the positional indicator from Rotation Solver, please install it.";
+    public string TextToTalkWarning { get; set; } = "TextToTalk addon was not detected, please install it to make Rotation Solver give audio notifications!";
+    public string AvariceWarning { get; set; } = "Avarice addon was not detected, please install it if you want to get the positional indicators for Rotation Solver!";
 
     public string ClickingMistakeMessage { get; set; } = "OOOps! RS clicked the wrong action ({0})!";
 
@@ -757,7 +757,7 @@ internal class Strings
     public string ConfigWindow_Basic_ClickingDuration { get; set; } = "The clicking duration, RS will try to click at this moment.";
     public string ConfigWindow_Basic_WeaponDelay { get; set; } = "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.";
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
-    public string ConfigWindow_About_SayHelloCount { get; set; } = "You have sayed hello to other users {0:N0} times!";
+    public string ConfigWindow_About_SayHelloCount { get; set; } = "You have said hello to other users {0:N0} times!";
     public string ConfigWindow_Auto_AutoHealTimeToKill { get; set; } = "Stop healing when time to kill is lower then...";
     public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile target icon";
     public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Hostile Icon height from position";
