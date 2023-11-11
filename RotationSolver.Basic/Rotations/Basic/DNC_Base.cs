@@ -304,8 +304,9 @@ public abstract class DNC_Base : CustomRotation
     /// Finish the dance.
     /// </summary>
     /// <param name="act"></param>
+    /// <param name="finishNow">Finish the dance as soon as possible</param>
     /// <returns></returns>
-    protected static bool DanceFinishGCD(out IAction act)
+    protected static bool DanceFinishGCD(out IAction act, bool finishNow = false)
     {
         if (Player.HasStatus(true, StatusID.StandardStep) && CompletedSteps == 2)
         {
@@ -313,7 +314,7 @@ public abstract class DNC_Base : CustomRotation
             {
                 return true;
             }
-            if (Player.WillStatusEnd(1, true, StatusID.StandardStep, StatusID.StandardFinish))
+            if (Player.WillStatusEnd(1, true, StatusID.StandardStep, StatusID.StandardFinish) || finishNow)
             {
                 act = StandardStep;
                 return true;
@@ -327,7 +328,7 @@ public abstract class DNC_Base : CustomRotation
             {
                 return true;
             }
-            if (Player.WillStatusEnd(1, true, StatusID.TechnicalStep))
+            if (Player.WillStatusEnd(1, true, StatusID.TechnicalStep) || finishNow)
             {
                 act = TechnicalStep;
                 return true;
