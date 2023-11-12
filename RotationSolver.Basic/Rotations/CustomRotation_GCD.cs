@@ -130,6 +130,7 @@ public abstract partial class CustomRotation
     private bool RaiseAction(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (VariantRaise.CanUse(out act, option)) return true;
+        if (VariantRaise2.CanUse(out act, option)) return true;
         if (Player.CurrentMp > Service.Config.GetValue(PluginConfigInt.LessMPNoRaise) && (Raise?.CanUse(out act, option) ?? false)) return true;
 
         return false;
