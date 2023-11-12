@@ -16,6 +16,7 @@ public class OtherConfiguration
     public static Dictionary<uint, Vector3[]> BeneficialPositions = new();
 
     public static HashSet<uint> DangerousStatus = new();
+    public static HashSet<uint> PriorityStatus = new();
 
     public static HashSet<uint> InvincibleStatus = new();
 
@@ -78,6 +79,8 @@ public class OtherConfiguration
 
         Task.Run(() => InitOne(ref DangerousStatus, nameof(DangerousStatus)));
 
+        Task.Run(() => InitOne(ref PriorityStatus, nameof(PriorityStatus)));
+
         Task.Run(() => InitOne(ref InvincibleStatus, nameof(InvincibleStatus)));
 
         Task.Run(() => InitOne(ref NoHostileNames, nameof(NoHostileNames)));
@@ -105,6 +108,7 @@ public class OtherConfiguration
     {
         return Task.Run(async () =>
         {
+            await SavePriorityStatus();
             await SaveDangerousStatus();
             await SaveInvincibleStatus();
             await SaveNoHostileNames();
@@ -118,6 +122,10 @@ public class OtherConfiguration
             await SaveActionTTK();
             await SaveActionHealRatio();
         });
+    }
+    public static Task SavePriorityStatus()
+    {
+        return Task.Run(() => Save(PriorityStatus, nameof(PriorityStatus)));
     }
 
     public static Task SaveActionHealRatio()

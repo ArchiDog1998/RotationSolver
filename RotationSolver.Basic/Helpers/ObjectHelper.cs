@@ -100,6 +100,8 @@ public static class ObjectHelper
             or 71344 //Major Quest
            || obj.GetEventType() is EventHandlerType.Quest)) return true;
 
+        if (obj is BattleChara b && b.StatusList.Any(StatusHelper.IsPriority)) return true;
+
         return false;
     }
 

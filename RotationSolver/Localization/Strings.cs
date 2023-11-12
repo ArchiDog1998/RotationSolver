@@ -277,7 +277,9 @@ internal class Strings
     public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
 
     public string ConfigWindow_List_Invincibility { get; set; } = "Invulnerability";
+    public string ConfigWindow_List_Priority { get; set; } = "Priority";
     public string ConfigWindow_List_InvincibilityDesc { get; set; } = "Ignores target if it has one of this statuses";
+    public string ConfigWindow_List_PriorityDesc { get; set; } = "Attacks the target first if it has one of this statuses";
     public string ConfigWindow_List_DangerousStatus { get; set; } = "Dispellable debuffs";
 
     public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "Esuna dispellable debuffs list";

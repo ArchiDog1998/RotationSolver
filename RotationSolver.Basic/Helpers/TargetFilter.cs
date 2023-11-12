@@ -71,10 +71,9 @@ public static class TargetFilter
         {
             availableCharas = highPriority;
         }
-        else
-        {
-            availableCharas = DefaultTargetingType(availableCharas);
-        }
+
+        availableCharas = DefaultTargetingType(availableCharas);
+
 
         return availableCharas.FirstOrDefault();
     }

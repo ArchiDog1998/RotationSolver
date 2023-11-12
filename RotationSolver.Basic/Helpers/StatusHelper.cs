@@ -180,7 +180,7 @@ public static class StatusHelper
     }
 
     /// <summary>
-    /// Is status Invincibel.
+    /// Is status Invincible.
     /// </summary>
     /// <param name="status"></param>
     /// <returns></returns>
@@ -188,6 +188,16 @@ public static class StatusHelper
     {
         if (status.GameData.Icon == 15024) return true;
         return OtherConfiguration.InvincibleStatus.Any(id => (uint)id == status.StatusId);
+    }
+
+    /// <summary>
+    /// Is the status the priority one.
+    /// </summary>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    public static bool IsPriority(this Status status)
+    {
+        return OtherConfiguration.PriorityStatus.Any(id => (uint)id == status.StatusId);
     }
 
     /// <summary>
