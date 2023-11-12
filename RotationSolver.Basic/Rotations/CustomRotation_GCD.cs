@@ -13,20 +13,22 @@ public abstract partial class CustomRotation
         if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return act;
         BaseAction.SkipDisable = false;
 
+        if (IsLimitBreak && UseLimitBreak(out act)) return act;
+
         if (EmergencyGCD(out act)) return act;
 
         if (RaiseSpell(out act, false)) return act;
 
-        if (DataCenter.IsMoveForward && MoveForwardGCD(out act))
+        if (IsMoveForward && MoveForwardGCD(out act))
         {
             if (act is IBaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return act;
         }
 
         //General Heal
         if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer)
-            && (DataCenter.InCombat || Service.Config.GetValue(PluginConfigBool.HealOutOfCombat)))
+            && (InCombat || Service.Config.GetValue(PluginConfigBool.HealOutOfCombat)))
         {
-            if (DataCenter.IsHealArea)
+            if (IsHealArea)
             {
                 if (HealAreaGCD(out act)) return act;
             }
@@ -36,7 +38,7 @@ public abstract partial class CustomRotation
                 if (HealAreaGCD(out act)) return act;
                 BaseAction.AutoHealCheck = false;
             }
-            if (DataCenter.IsHealSingle)
+            if (IsHealSingle)
             {
                 if (HealSingleGCD(out act)) return act;
             }
@@ -47,24 +49,24 @@ public abstract partial class CustomRotation
                 BaseAction.AutoHealCheck = false;
             }
         }
-        if (DataCenter.IsDefenseArea && DefenseAreaGCD(out act)) return act;
-        if (DataCenter.IsDefenseSingle && DefenseSingleGCD(out act)) return act;
+        if (IsDefenseArea && DefenseAreaGCD(out act)) return act;
+        if (IsDefenseSingle && DefenseSingleGCD(out act)) return act;
 
         //Auto Defense
         if (DataCenter.SetAutoStatus(AutoStatus.DefenseArea, helpDefenseAOE) && DefenseAreaGCD(out act)) return act;
         if (DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, helpDefenseSingle) && DefenseSingleGCD(out act)) return act;
 
         //Esuna
-        if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (DataCenter.IsEsunaStanceNorth
+        if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (IsEsunaStanceNorth
             || !HasHostilesInRange || Service.Config.GetValue(PluginConfigBool.EsunaAll) || (DataCenter.Territory?.IsPvpZone ?? false))
-            && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any()))
+            && WeakenPeople.Any() || DyingPeople.Any()))
         {
             if (ClassJob.GetJobRole() == JobRole.Healer && EsunaAction(out act, CanUseOption.MustUse)) return act;
         }
 
         if (GeneralGCD(out var action)) return action;
 
-        if (Service.Config.GetValue(PluginConfigBool.HealWhenNothingTodo) && DataCenter.InCombat)
+        if (Service.Config.GetValue(PluginConfigBool.HealWhenNothingTodo) && InCombat)
         {
             // Please don't tell me someone's fps is less than 1!!
             if (DateTime.Now - _nextTimeToHeal > TimeSpan.FromSeconds(1))
@@ -77,9 +79,9 @@ public abstract partial class CustomRotation
             {
                 _nextTimeToHeal = DateTime.Now;
 
-                if (DataCenter.PartyMembersMinHP < Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoBelow))
+                if (PartyMembersMinHP < Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoBelow))
                 {
-                    if (DataCenter.PartyMembersDifferHP < DataCenter.PartyMembersDifferHP && HealAreaGCD(out act)) return act;
+                    if (DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && HealAreaGCD(out act)) return act;
                     if (HealSingleGCD(out act)) return act;
                 }
             }
@@ -90,10 +92,40 @@ public abstract partial class CustomRotation
         return null;
     }
 
+    private bool UseLimitBreak(out IAction act)
+    {
+        var role = ClassJob.GetJobRole();
+        act = null;
+
+        return LimitBreakLevel switch
+        {
+            1 => role switch
+            {
+                JobRole.Tank => ShieldWall.CanUse(out act, CanUseOption.MustUse),
+                JobRole.Healer => HealingWind.CanUse(out act, CanUseOption.MustUse),
+                JobRole.Melee => Braver.CanUse(out act, CanUseOption.MustUse),
+                JobRole.RangedPhysical => BigShot.CanUse(out act, CanUseOption.MustUse),
+                JobRole.RangedMagical => Skyshard.CanUse(out act, CanUseOption.MustUse),
+                _ => false,
+            },
+            2 => role switch
+            {
+                JobRole.Tank => Stronghold.CanUse(out act, CanUseOption.MustUse),
+                JobRole.Healer => BreathOfTheEarth.CanUse(out act, CanUseOption.MustUse),
+                JobRole.Melee => Bladedance.CanUse(out act, CanUseOption.MustUse),
+                JobRole.RangedPhysical => Desperado.CanUse(out act, CanUseOption.MustUse),
+                JobRole.RangedMagical => Starstorm.CanUse(out act, CanUseOption.MustUse),
+                _ => false,
+            },
+            3 => LimitBreak?.CanUse(out act, CanUseOption.MustUse) ?? false,
+            _ => false,
+        };
+    }
+
     private bool RaiseSpell(out IAction act, bool mustUse)
     {
         act = null;
-        if (DataCenter.IsRaiseShirk && DataCenter.DeathPeopleAll.Any())
+        if (IsRaiseShirk && DataCenter.DeathPeopleAll.Any())
         {
             if (RaiseAction(out act)) return true;
         }
@@ -119,7 +151,7 @@ public abstract partial class CustomRotation
                 }
             }
             else if (Service.Config.GetValue(PluginConfigBool.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown
-                && DataCenter.NextAbilityToNextGCD > DataCenter.MinAnimationLock + DataCenter.Ping)
+                && NextAbilityToNextGCD > DataCenter.MinAnimationLock + Ping)
             {
                 return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
             }
@@ -130,6 +162,7 @@ public abstract partial class CustomRotation
     private bool RaiseAction(out IAction act, CanUseOption option = CanUseOption.None)
     {
         if (VariantRaise.CanUse(out act, option)) return true;
+        if (VariantRaise2.CanUse(out act, option)) return true;
         if (Player.CurrentMp > Service.Config.GetValue(PluginConfigInt.LessMPNoRaise) && (Raise?.CanUse(out act, option) ?? false)) return true;
 
         return false;

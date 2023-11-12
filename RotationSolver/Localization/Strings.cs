@@ -64,6 +64,9 @@ internal class Strings
     public string ConfigWindow_HelpItem_Speed { get; set; }
         = "Open a window to speed up.";
 
+    public string ConfigWindow_HelpItem_LimitBreak { get; set; }
+    = "Open a window to use limit break.";
+
     public string ConfigWindow_HelpItem_EndSpecial { get; set; }
         = "To end this special duration before the set time.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch rotations";
@@ -274,7 +277,9 @@ internal class Strings
     public string ConfigWindow_List_Hostile { get; set; } = "Hostile";
 
     public string ConfigWindow_List_Invincibility { get; set; } = "Invulnerability";
+    public string ConfigWindow_List_Priority { get; set; } = "Priority";
     public string ConfigWindow_List_InvincibilityDesc { get; set; } = "Ignores target if it has one of this statuses";
+    public string ConfigWindow_List_PriorityDesc { get; set; } = "Attacks the target first if it has one of this statuses";
     public string ConfigWindow_List_DangerousStatus { get; set; } = "Dispellable debuffs";
 
     public string ConfigWindow_List_DangerousStatusDesc { get; set; } = "Esuna dispellable debuffs list";
@@ -356,6 +361,7 @@ internal class Strings
     public string SpecialCommandType_Burst { get; set; } = "Burst";
     public string SpecialCommandType_EndSpecial { get; set; } = "End Special";
     public string SpecialCommandType_Speed { get; set; } = "Speed";
+    public string SpecialCommandType_LimitBreak { get; set; } = "Limit Break";
     public string SpecialCommandType_Smart { get; set; } = "Auto Target ";
     public string SpecialCommandType_Manual { get; set; } = "Manual Target";
     public string SpecialCommandType_Cancel { get; set; } = "Cancel";
@@ -461,6 +467,7 @@ internal class Strings
         { nameof(CustomRotation.IsMoveBack), "Is Move Back"},
         { nameof(CustomRotation.IsAntiKnockback), "Is Anti Knockback"},
         { nameof(CustomRotation.IsSpeed), "Is Speed"},
+        { nameof(CustomRotation.IsLimitBreak), "Is Limit Break"},
 
         { nameof(CustomRotation.CanHealAreaAbility), "Can heal area ability"},
         { nameof(CustomRotation.CanHealAreaSpell), "Can heal area spell"},
@@ -677,6 +684,7 @@ internal class Strings
     public string ConfigWindow_Actions_DisabledConditionSet { get; set; } = "Disabled Condition";
     public string ConfigWindow_Actions_DisabledConditionSet_Description { get; set; } = "Conditions for automatic use of action being disabled.";
     public string ConfigWindow_Actions_ShowOnCDWindow { get; set; } = "Show on CD window";
+    public string ConfigWindow_Actions_IsInMistake { get; set; } = "Can be used by mistake";
 
     public string ConfigWindow_Configs_JobConfigTip { get; set; } = "This config is job specific";
 
@@ -813,6 +821,7 @@ internal class Strings
     public string ConfigWindow_Auto_MoveBackConditionSet { get; set; } = "Move Back Forced Condition";
     public string ConfigWindow_Auto_AntiKnockbackConditionSet { get; set; } = "Anti Knockback Forced Condition";
     public string ConfigWindow_Auto_SpeedConditionSet { get; set; } = "Speed Forced Condition";
+    public string ConfigWindow_Auto_LimitBreakConditionSet { get; set; } = "Limit Break Condition";
     public string ConfigWindow_ConditionSetDesc { get; set; } = "The Condition set you chose, click to modify.";
     public string ConfigWindow_Basic_UseAdditionalConditions { get; set; } = "Use additional conditions";
     public string ConfigWindow_Basic_SwitchCancelConditionSet { get; set; } = "Auto turn off conditions";

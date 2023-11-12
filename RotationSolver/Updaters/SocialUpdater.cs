@@ -130,9 +130,6 @@ internal class SocialUpdater
         if (_canSaying && socialDelay.Delay(CanSocial))
         {
             _canSaying = false;
-#if DEBUG
-            Svc.Chat.Print("Macro now.");
-#endif
             Service.Config.GlobalConfig.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
 

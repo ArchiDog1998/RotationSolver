@@ -201,7 +201,7 @@ public abstract partial class CustomRotation
         }
 
         //Defense himself.
-        if (role == JobRole.Tank && HasTankStance)
+        if (role == JobRole.Tank)
         {
             var movingHere = (float)NumberOfHostilesInRange / NumberOfHostilesInMaxRange > 0.3f;
 
@@ -220,7 +220,7 @@ public abstract partial class CustomRotation
             }
 
             //Big damage casting action.
-            if (tarOnMeCount == 1 && DataCenter.IsHostileCastingToTank)
+            if (DataCenter.IsHostileCastingToTank)
             {
                 if (DefenseSingleAbility(out act)) return true;
             }
@@ -402,8 +402,8 @@ public abstract partial class CustomRotation
     /// <returns>Can we use it.</returns>
     protected virtual bool AttackAbility(out IAction act)
     {
-        if (VariantSpiritDart.CanUse(out act)) return true;
-        if (VariantSpiritDart2.CanUse(out act)) return true;
+        if (VariantSpiritDart.CanUse(out act, CanUseOption.MustUse)) return true;
+        if (VariantSpiritDart2.CanUse(out act, CanUseOption.MustUse)) return true;
         if (VariantRampart.CanUse(out act)) return true;
         if (VariantRampart2.CanUse(out act)) return true;
         return false;

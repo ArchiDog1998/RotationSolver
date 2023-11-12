@@ -303,4 +303,14 @@ public abstract class WHM_Base : CustomRotation
     /// </summary>
     public static IBaseTrait EnhancedDivineBenison { get; } = new BaseTrait(490);
     #endregion
+
+    private protected override IBaseAction LimitBreak => PulseOfLife;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction PulseOfLife { get; } = new BaseAction(ActionID.PulseOfLife, ActionOption.Heal)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
 }

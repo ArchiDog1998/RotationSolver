@@ -6,6 +6,11 @@
 public interface IBaseAction : IAction
 {
     /// <summary>
+    /// Is in the mistake actions.
+    /// </summary>
+    bool IsInMistake { get; set; }
+
+    /// <summary>
     /// Attack Type
     /// </summary>
     AttackType AttackType { get; }
@@ -84,6 +89,11 @@ public interface IBaseAction : IAction
     /// Is this action a duty action.
     /// </summary>
     bool IsDutyAction { get; }
+
+    /// <summary>
+    /// Is this action a LB.
+    /// </summary>
+    bool IsLimitBreak { get; }
 
     /// <summary>
     /// Is this action on the slot.

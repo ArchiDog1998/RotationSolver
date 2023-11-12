@@ -68,6 +68,11 @@ public enum SpecialCommandType : byte
     /// <summary>
     /// 
     /// </summary>
+    LimitBreak,
+
+    /// <summary>
+    /// 
+    /// </summary>
     None,
 }
 

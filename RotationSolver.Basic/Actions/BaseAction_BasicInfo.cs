@@ -58,6 +58,9 @@ public partial class BaseAction : IBaseAction
     public bool IsPvP => _action.IsPvP;
 
     /// <inheritdoc/>
+    public bool IsLimitBreak => _action.ActionCategory?.Value?.RowId == 9;
+
+    /// <inheritdoc/>
     public bool IsOnSlot
     {
         get
@@ -125,9 +128,7 @@ public partial class BaseAction : IBaseAction
         }
     }
 
-    /// <summary>
-    /// Is in the cd window.
-    /// </summary>
+    /// <inheritdoc/>
     public bool IsInCooldown
     {
         get => !Service.Config.GlobalConfig.NotInCoolDownActions.Contains(ID);
@@ -140,6 +141,23 @@ public partial class BaseAction : IBaseAction
             else
             {
                 Service.Config.GlobalConfig.NotInCoolDownActions.Add(ID);
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public bool IsInMistake
+    {
+        get => !Service.Config.GlobalConfig.NotInMistakeActions.Contains(ID);
+        set
+        {
+            if (value)
+            {
+                Service.Config.GlobalConfig.NotInMistakeActions.Remove(ID);
+            }
+            else
+            {
+                Service.Config.GlobalConfig.NotInMistakeActions.Add(ID);
             }
         }
     }

@@ -397,6 +397,16 @@ public abstract class BRD_Base : CustomRotation
     };
     #endregion
 
+    private protected override IBaseAction LimitBreak => SagittariusArrow;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction SagittariusArrow { get; } = new BaseAction(ActionID.SagittariusArrow)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
     /// <summary>
     /// 
     /// </summary>

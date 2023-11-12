@@ -236,22 +236,29 @@ internal static partial class TargetUpdater
 
     private static bool IsCastingTankVfx()
     {
-        return IsCastingVfx(s => s.StartsWith("vfx/lockon/eff/tank_lockon"));
+        return IsCastingVfx(s =>
+        {
+            if (!s.Path.StartsWith("vfx/lockon/eff/tank_lockon")) return false;
+            if (!Player.Available) return false;
+            if (Player.Object.IsJobCategory(JobRole.Tank) && s.ObjectId != Player.Object.ObjectId) return false;
+
+            return true;
+        });
     }
 
     private static bool IsCastingAreaVfx()
     {
-        return IsCastingVfx(s => s.StartsWith("vfx/lockon/eff/com_share"));
+        return IsCastingVfx(s => s.Path.StartsWith("vfx/lockon/eff/com_share"));
     }
 
-    private static bool IsCastingVfx(Func<string, bool> isVfx)
+    private static bool IsCastingVfx(Func<VfxNewData, bool> isVfx)
     {
         if (isVfx == null) return false;
         foreach (var item in DataCenter.VfxNewData.Reverse())
         {
             if (item.TimeDuration.TotalSeconds is > 1 and < 5)
             {
-                if (isVfx(item.Path)) return true;
+                if (isVfx(item)) return true;
             }
         }
         return false;

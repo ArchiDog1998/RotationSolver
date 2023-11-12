@@ -707,6 +707,8 @@ public partial class RotationConfigWindow : Window
         SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
         SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+
+        SpecialCommandType.LimitBreak.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
     }
 
     private static void DrawAboutCompatibility()
@@ -1435,6 +1437,16 @@ public partial class RotationConfigWindow : Window
 
                 if (_activeAction is IBaseAction action)
                 {
+                    if (Service.Config.GetValue(PluginConfigFloat.MistakeRatio) > 0
+                        && !action.IsFriendly && action.ChoiceTarget != TargetFilter.FindTargetForMoving)
+                    {
+                        enable = action.IsInMistake;
+                        if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_IsInMistake}##{action.Name}InMistake", ref enable))
+                        {
+                            action.IsInMistake = enable;
+                        }
+                    }
+                    
                     ImGui.Separator();
 
                     var ttk = action.TimeToKill;
@@ -1445,7 +1457,6 @@ public partial class RotationConfigWindow : Window
                         action.TimeToKill = ttk;
                     }
                     ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.ToDesc());
-
 
                     if (!action.IsSingleTarget)
                     {
@@ -1799,41 +1810,24 @@ public partial class RotationConfigWindow : Window
     #region List
     private static Status[] _allDispelStatus = null;
     internal static Status[] AllDispelStatus
-    {
-        get
-        {
-            _allDispelStatus ??= Service.GetSheet<Status>()
+        => _allDispelStatus ??= Service.GetSheet<Status>()
                     .Where(s => s.CanDispel)
                     .ToArray();
-            return _allDispelStatus;
-        }
-    }
 
-    private static Status[] _allInvStatus = null;
-    internal static Status[] AllInvStatus
-    {
-        get
-        {
-            _allInvStatus ??= Service.GetSheet<Status>()
-                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
+
+    private static Status[] _allStatus = null;
+    internal static Status[] AllStatus
+        => _allStatus ??= Service.GetSheet<Status>()
+                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff
                         && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
                     .ToArray();
-            return _allInvStatus;
-        }
-    }
 
     private static GAction[] _allActions = null;
     internal static GAction[] AllActions
-    {
-        get
-        {
-            _allActions ??= Service.GetSheet<GAction>()
+        => _allActions ??= Service.GetSheet<GAction>()
                     .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction
                     && a.ClassJob.Value == null && a.Cast100ms > 0)
                     .ToArray();
-            return _allActions;
-        }
-    }
 
     private static void DrawList()
     {
@@ -1842,16 +1836,16 @@ public partial class RotationConfigWindow : Window
     }
     private static readonly CollapsingHeaderGroup _idsHeader = new(new()
     {
-        { () => LocalizationManager.RightLang.ConfigWindow_List_Statuses, DrawActionsStatuses},
+        { () => LocalizationManager.RightLang.ConfigWindow_List_Statuses, DrawListStatuses},
         { () => Service.Config.GetValue(PluginConfigBool.UseDefenseAbility) ? LocalizationManager.RightLang.ConfigWindow_List_Actions : string.Empty, DrawListActions},
         { () => LocalizationManager.RightLang.ConfigWindow_List_Territories, DrawListTerritories},
     });
-    private static void DrawActionsStatuses()
+    private static void DrawListStatuses()
     {
         ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
         ImGui.InputTextWithHint("##Searching the action", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref _statusSearching, 128);
 
-        using var table = ImRaii.Table("Rotation Solver List Statuses", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+        using var table = ImRaii.Table("Rotation Solver List Statuses", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
         if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);
@@ -1861,6 +1855,9 @@ public partial class RotationConfigWindow : Window
             ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_Invincibility);
 
             ImGui.TableNextColumn();
+            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_Priority);
+
+            ImGui.TableNextColumn();
             ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatus);
 
             ImGui.TableNextRow();
@@ -1868,12 +1865,16 @@ public partial class RotationConfigWindow : Window
             ImGui.TableNextColumn();
 
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_InvincibilityDesc);
-            DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, AllInvStatus);
+            DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, AllStatus);
+
+            ImGui.TableNextColumn();
+
+            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_PriorityDesc);
+            DrawStatusList(nameof(OtherConfiguration.PriorityStatus), OtherConfiguration.PriorityStatus, AllStatus);
 
             ImGui.TableNextColumn();
 
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatusDesc);
-
             DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, AllDispelStatus);
         }
     }

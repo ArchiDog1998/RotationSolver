@@ -286,18 +286,6 @@ public abstract class SGE_Base : CustomRotation
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
-    [RotationDesc(ActionID.Icarus)]
-    protected sealed override bool MoveForwardAbility(out IAction act)
-    {
-        if (Icarus.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
-    }
-
     #region Traits
     /// <summary>
     /// 
@@ -359,4 +347,22 @@ public abstract class SGE_Base : CustomRotation
     /// </summary>
     public static IBaseTrait PhysisMastery { get; } = new BaseTrait(510);
     #endregion
+
+    private protected override IBaseAction LimitBreak => TechneMakre;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction TechneMakre { get; } = new BaseAction(ActionID.TechneMakre, ActionOption.Heal)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
+    /// <inheritdoc/>
+    [RotationDesc(ActionID.Icarus)]
+    protected sealed override bool MoveForwardAbility(out IAction act)
+    {
+        if (Icarus.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
+    }
 }

@@ -85,13 +85,11 @@ public static class ObjectHelper
         var icon = obj.GetNamePlateIcon();
 
         //Hunting log and weapon.
-
         if (Service.Config.GetValue(Configuration.PluginConfigBool.TargetHuntingRelicLevePriority) && icon
             is 60092 //Hunting
             or 60096 //Weapon
             or 71244 //Leve
             ) return true;
-
 
         if (Service.Config.GetValue(Configuration.PluginConfigBool.TargetQuestPriority) && (icon
             is 71204 //Main Quest
@@ -99,6 +97,8 @@ public static class ObjectHelper
             or 71224 //Other Quest
             or 71344 //Major Quest
            || obj.GetEventType() is EventHandlerType.Quest)) return true;
+
+        if (obj is BattleChara b && b.StatusList.Any(StatusHelper.IsPriority)) return true;
 
         return false;
     }

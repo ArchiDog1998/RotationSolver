@@ -293,7 +293,17 @@ public abstract class MNK_Base : CustomRotation
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    private protected override IBaseAction LimitBreak => FinalHeaven;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction FinalHeaven { get; } = new BaseAction(ActionID.FinalHeaven)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Thunderclap)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -301,6 +311,7 @@ public abstract class MNK_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
@@ -308,6 +319,7 @@ public abstract class MNK_Base : CustomRotation
         return base.DefenseAreaAbility(out act);
     }
 
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Mantra)]
     protected sealed override bool HealAreaAbility(out IAction act)
     {
@@ -315,12 +327,11 @@ public abstract class MNK_Base : CustomRotation
         return base.HealAreaAbility(out act);
     }
 
+    /// <inheritdoc/>
     [RotationDesc(ActionID.RiddleOfEarth)]
     protected sealed override bool DefenseSingleAbility(out IAction act)
     {
         if (RiddleOfEarth.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         return base.DefenseSingleAbility(out act);
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
 }

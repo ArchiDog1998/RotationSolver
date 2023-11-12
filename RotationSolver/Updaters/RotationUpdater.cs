@@ -391,6 +391,11 @@ internal static class RotationUpdater
 
                string result;
 
+               if (act.IsLimitBreak)
+               {
+                   return "Limit Break";
+               }
+
                if (act.IsDutyAction)
                {
                    return "Duty Action";

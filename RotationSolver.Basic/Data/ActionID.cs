@@ -163,6 +163,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    AstralStasis = 4248,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Ascend = 3603,
 
     /// <summary>
@@ -398,6 +403,11 @@ public enum ActionID : uint
     #endregion
 
     #region BLM
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Meteor = 205,
 
     /// <summary>
     /// 
@@ -1250,6 +1260,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    SagittariusArrow = 4244,
+
+    /// <summary>
+    /// 
+    /// </summary>
     HeavyShoot = 97,
 
     /// <summary>
@@ -1415,6 +1430,11 @@ public enum ActionID : uint
     #endregion
 
     #region DNC
+
+    /// <summary>
+    /// 
+    /// </summary>
+    CrimsonLotus = 17106,
 
     /// <summary>
     /// 
@@ -1660,6 +1680,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    DragonsongDive = 4242,
+
+    /// <summary>
+    /// 
+    /// </summary>
     TrueThrust = 75,
 
     /// <summary>
@@ -1855,6 +1880,11 @@ public enum ActionID : uint
     #endregion
 
     #region DRK
+
+    /// <summary>
+    /// 
+    /// </summary>
+    DarkForce = 4241,
 
     /// <summary>
     /// 
@@ -2069,6 +2099,11 @@ public enum ActionID : uint
     #endregion
 
     #region GNB
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GunmetalSoul = 17105,
 
     /// <summary>
     /// 
@@ -2347,6 +2382,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    SatelliteBeam = 4245,
+
+    /// <summary>
+    /// 
+    /// </summary>
     SplitShot = 2866,
 
     /// <summary>
@@ -2537,6 +2577,11 @@ public enum ActionID : uint
     #endregion
 
     #region MNK
+
+    /// <summary>
+    /// 
+    /// </summary>
+    FinalHeaven = 202,
 
     /// <summary>
     /// 
@@ -2746,11 +2791,16 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
-    PvP_Meteordrive = 29485,
+    PvP_Meteodrive = 29485,
 
     #endregion
 
     #region NIN
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Chimatsuri = 4243,
 
     /// <summary>
     /// 
@@ -3074,6 +3124,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    LastBastion = 199,
+
+    /// <summary>
+    /// 
+    /// </summary>
     IronWill = 28,
 
     /// <summary>
@@ -3308,6 +3363,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    VermilionScourge = 7862,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Verraise = 7523,
 
     /// <summary>
@@ -3538,6 +3598,11 @@ public enum ActionID : uint
     #endregion
 
     #region RPR
+
+    /// <summary>
+    /// 
+    /// </summary>
+    TheEnd = 24858,
 
     /// <summary>
     /// 
@@ -3786,6 +3851,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    DoomOfTheLiving = 7861,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Hakaze = 7477,
 
     /// <summary>
@@ -4020,6 +4090,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    AngelFeathers = 4247,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Physick = 190,
 
     /// <summary>
@@ -4210,6 +4285,11 @@ public enum ActionID : uint
     #endregion
 
     #region SGE
+
+    /// <summary>
+    /// 
+    /// </summary>
+    TechneMakre = 24859,
 
     /// <summary>
     /// 
@@ -4414,6 +4494,11 @@ public enum ActionID : uint
     #endregion
 
     #region SMN
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Teraflare = 4246,
 
     /// <summary>
     /// 
@@ -4637,6 +4722,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    LandWaker = 4240,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Defiance = 48,
 
     /// <summary>
@@ -4826,6 +4916,11 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
+    PulseOfLife = 208,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Cure = 120,
 
     /// <summary>
@@ -4951,7 +5046,7 @@ public enum ActionID : uint
     /// <summary>
     /// 
     /// </summary>
-    PvP_Cure2 = 29225,
+    PvP_Cure2 = 29224,
 
     /// <summary>
     /// 
@@ -4983,6 +5078,58 @@ public enum ActionID : uint
     /// </summary>
     PvP_AfflatusPurgation = 29230,
 
+    #endregion
+
+    #region PvE LimitBreak
+    /// <summary>
+    /// 
+    /// </summary>
+    ShieldWall = 197,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Stronghold = 198,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    HealingWind = 206,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    BreathOfTheEarth = 207,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Braver = 200,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Bladedance = 201,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    BigShot = 4238,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Desperado = 4239,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Skyshard = 203,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Starstorm = 204,
     #endregion
 
     #region Variant Actions

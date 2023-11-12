@@ -18,11 +18,8 @@ public partial class BaseAction
     /// </summary>
     public float AutoHealRatio
     {
-        get
-        {
-            return OtherConfiguration.ActionHealRatio.TryGetValue(ID, out var ratio)
+        get => OtherConfiguration.ActionHealRatio.TryGetValue(ID, out var ratio)
                 ? ratio : 1;
-        }
         set
         {
             OtherConfiguration.ActionHealRatio[ID] = value;
@@ -93,16 +90,16 @@ public partial class BaseAction
     {
         act = this;
 
+        if (!IsOnSlot) return false;
+        if (!SkipDisable && !IsEnabled) return false;
+        var player = Player.Object;
+        if (player == null) return false;
+
         option |= OtherOption;
         var mustUse = option.HasFlag(CanUseOption.MustUse);
 
-        var player = Player.Object;
-        if (player == null) return false;
         Target = player;
         AffectedTargets = Array.Empty<BattleChara>();
-
-        if (!IsOnSlot) return false;
-        if (!SkipDisable && !IsEnabled) return false;
 
         if (AutoHealCheck && IsFriendly)
         {

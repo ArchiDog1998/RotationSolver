@@ -531,11 +531,17 @@ public abstract class SMN_Base : CustomRotation
 
     #endregion
 
+    private protected override IBaseAction LimitBreak => Teraflare;
+
     /// <summary>
-    /// 
+    /// LB
     /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    public static IBaseAction Teraflare { get; } = new BaseAction(ActionID.Teraflare)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
+    /// <inheritdoc/>
     [RotationDesc(ActionID.RadiantAegis)]
     protected sealed override bool DefenseSingleAbility(out IAction act)
     {
@@ -543,11 +549,7 @@ public abstract class SMN_Base : CustomRotation
         return base.DefenseSingleAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Physick)]
     protected sealed override bool HealSingleGCD(out IAction act)
     {
@@ -555,11 +557,7 @@ public abstract class SMN_Base : CustomRotation
         return base.HealSingleGCD(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Addle)]
     protected override bool DefenseAreaAbility(out IAction act)
     {

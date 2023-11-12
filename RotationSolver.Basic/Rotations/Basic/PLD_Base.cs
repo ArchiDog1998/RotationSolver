@@ -311,23 +311,24 @@ public abstract class PLD_Base : CustomRotation
     public static IBaseTrait MeleeMastery { get; } = new BaseTrait(504);
     #endregion
 
+    private protected override IBaseAction LimitBreak => LastBastion;
+
     /// <summary>
-    /// 
+    /// LB
     /// </summary>
-    /// <param name="nextGCD"></param>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    public static IBaseAction LastBastion { get; } = new BaseAction(ActionID.LastBastion, ActionOption.Defense)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
+    /// <inheritdoc//>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc//>
     [RotationDesc(ActionID.Intervene)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -335,11 +336,7 @@ public abstract class PLD_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc//>
     [RotationDesc(ActionID.Clemency)]
     protected sealed override bool HealSingleGCD(out IAction act)
     {

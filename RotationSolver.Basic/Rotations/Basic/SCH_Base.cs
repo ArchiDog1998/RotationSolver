@@ -311,11 +311,17 @@ public abstract class SCH_Base : CustomRotation
     public static IBaseTrait EnhancedDeploymentTactics { get; } = new BaseTrait(494);
     #endregion
 
+    private protected override IBaseAction LimitBreak => AngelFeathers;
+
     /// <summary>
-    /// 
+    /// LB
     /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    public static IBaseAction AngelFeathers { get; } = new BaseAction(ActionID.AngelFeathers, ActionOption.Heal)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
+    /// <inheritdoc/>
     protected override bool SpeedAbility(out IAction act)
     {
         if (InCombat && Expedient.CanUse(out act, CanUseOption.MustUse)) return true;

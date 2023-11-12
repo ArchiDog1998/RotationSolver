@@ -306,6 +306,16 @@ public abstract class DRG_Base : CustomRotation
     /// </summary>
     public static IBaseAction ElusiveJump { get; } = new BaseAction(ActionID.ElusiveJump);
 
+    private protected override IBaseAction LimitBreak => DragonsongDive;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction DragonsongDive { get; } = new BaseAction(ActionID.DragonsongDive)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
     /// <summary>
     /// 
     /// </summary>

@@ -489,6 +489,17 @@ public abstract partial class BLM_Base : CustomRotation
     public static IBaseTrait EnhancedEnochian3 { get; } = new BaseTrait(509);
 
     #endregion
+
+    private protected override IBaseAction LimitBreak => Meteor;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction Meteor { get; } = new BaseAction(ActionID.Meteor)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
     /// <summary>
     /// 
     /// </summary>

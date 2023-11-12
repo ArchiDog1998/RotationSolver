@@ -45,7 +45,7 @@ internal static class ActionUpdater
                         if (a.ID == newAction?.ID) return false;
                         if (a is IBaseAction action)
                         {
-                            return !action.IsFriendly
+                            return !action.IsFriendly && action.IsInMistake
                             && action.ChoiceTarget != TargetFilter.FindTargetForMoving
                             && action.CanUse(out _, CanUseOption.MustUseEmpty | CanUseOption.IgnoreClippingCheck);
                         }

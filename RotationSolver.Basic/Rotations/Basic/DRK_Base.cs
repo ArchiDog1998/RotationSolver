@@ -313,6 +313,17 @@ public abstract class DRK_Base : CustomRotation
     public static IBaseTrait EnhancedLivingShadow { get; } = new BaseTrait(511);
 
     #endregion
+
+    private protected override IBaseAction LimitBreak => DarkForce;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction DarkForce { get; } = new BaseAction(ActionID.DarkForce, ActionOption.Defense)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
     /// <summary>
     /// 
     /// </summary>
