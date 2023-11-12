@@ -1815,10 +1815,10 @@ public partial class RotationConfigWindow : Window
                     .ToArray();
 
 
-    private static Status[] _allInvStatus = null;
-    internal static Status[] AllInvStatus
-        => _allInvStatus ??= Service.GetSheet<Status>()
-                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff && s.ClassJobCategory.Row == 1 && s.StatusCategory == 1
+    private static Status[] _allStatus = null;
+    internal static Status[] AllStatus
+        => _allStatus ??= Service.GetSheet<Status>()
+                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff
                         && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
                     .ToArray();
 
@@ -1865,12 +1865,12 @@ public partial class RotationConfigWindow : Window
             ImGui.TableNextColumn();
 
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_InvincibilityDesc);
-            DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, AllInvStatus);
+            DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, AllStatus);
 
             ImGui.TableNextColumn();
 
             ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_PriorityDesc);
-            DrawStatusList(nameof(OtherConfiguration.PriorityStatus), OtherConfiguration.PriorityStatus, AllInvStatus);
+            DrawStatusList(nameof(OtherConfiguration.PriorityStatus), OtherConfiguration.PriorityStatus, AllStatus);
 
             ImGui.TableNextColumn();
 
