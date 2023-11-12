@@ -307,6 +307,16 @@ public abstract class GNB_Base : CustomRotation
     public static IBaseTrait MeleeMastery { get; } = new BaseTrait(507);
     #endregion
 
+    private protected override IBaseAction LimitBreak => GunmetalSoul;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction GunmetalSoul { get; } = new BaseAction(ActionID.GunmetalSoul, ActionOption.Defense)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
     /// <summary>
     /// 
     /// </summary>

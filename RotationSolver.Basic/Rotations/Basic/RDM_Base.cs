@@ -310,11 +310,17 @@ public abstract class RDM_Base : CustomRotation
     public static IBaseTrait EnhancedManafication2 { get; } = new BaseTrait(486);
     #endregion
 
+    private protected override IBaseAction LimitBreak => VermilionScourge;
+
     /// <summary>
-    /// 
+    /// LB
     /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    public static IBaseAction VermilionScourge { get; } = new BaseAction(ActionID.VermilionScourge)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Vercure)]
     protected sealed override bool HealSingleGCD(out IAction act)
     {
@@ -322,11 +328,7 @@ public abstract class RDM_Base : CustomRotation
         return base.HealSingleGCD(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.CorpsACorps)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -334,11 +336,7 @@ public abstract class RDM_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Addle, ActionID.MagickBarrier)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {

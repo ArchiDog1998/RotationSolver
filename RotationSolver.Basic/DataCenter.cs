@@ -250,8 +250,9 @@ internal static class DataCenter
     public static bool IsMoveForward => SpecialType == SpecialCommandType.MoveForward || RightSet.MoveForwardConditionSet.IsTrue(RightNowRotation);
     public static bool IsMoveBack => SpecialType == SpecialCommandType.MoveBack || RightSet.MoveBackConditionSet.IsTrue(RightNowRotation);
     public static bool IsAntiKnockback => SpecialType == SpecialCommandType.AntiKnockback || RightSet.AntiKnockbackConditionSet.IsTrue(RightNowRotation);
-    public static bool IsBurst => SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(Configuration.PluginConfigBool.AutoBurst);
+    public static bool IsBurst => SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(PluginConfigBool.AutoBurst);
     public static bool IsSpeed => SpecialType == SpecialCommandType.Speed || RightSet.SpeedConditionSet.IsTrue(RightNowRotation);
+    public static bool IsLimitBreak => SpecialType == SpecialCommandType.LimitBreak || RightSet.LimitBreakConditionSet.IsTrue(RightNowRotation);
 
     public static bool State { get; set; } = false;
 

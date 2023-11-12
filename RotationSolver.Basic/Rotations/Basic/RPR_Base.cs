@@ -371,11 +371,17 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseTrait DeathScytheMastery2 { get; } = new BaseTrait(523);
     #endregion
 
+    private protected override IBaseAction LimitBreak => TheEnd;
+
     /// <summary>
-    /// 
+    /// LB
     /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    public static IBaseAction TheEnd { get; } = new BaseAction(ActionID.TheEnd)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
+    /// <inheritdoc/>
     [RotationDesc(ActionID.HellsIngress)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -383,11 +389,7 @@ public abstract class RPR_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
@@ -395,11 +397,7 @@ public abstract class RPR_Base : CustomRotation
         return base.DefenseAreaAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.ArcaneCrest)]
     protected override bool DefenseSingleAbility(out IAction act)
     {

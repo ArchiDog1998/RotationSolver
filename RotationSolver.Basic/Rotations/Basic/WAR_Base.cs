@@ -281,13 +281,24 @@ public abstract class WAR_Base : CustomRotation
     public static IBaseTrait MeleeMastery { get; } = new BaseTrait(505);
     #endregion
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    private protected override IBaseAction LimitBreak => LandWaker;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction LandWaker { get; } = new BaseAction(ActionID.LandWaker, ActionOption.Defense)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
+    /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
         if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Onslaught)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -295,12 +306,11 @@ public abstract class WAR_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
+    /// <inheritdoc/>
     [RotationDesc(ActionID.PrimalRend)]
     protected sealed override bool MoveForwardGCD(out IAction act)
     {
         if (PrimalRend.CanUse(out act, CanUseOption.MustUse)) return true;
         return base.MoveForwardGCD(out act);
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
 }

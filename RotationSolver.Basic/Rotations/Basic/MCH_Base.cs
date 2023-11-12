@@ -363,6 +363,17 @@ public abstract class MCH_Base : CustomRotation
     };
 
     #endregion
+
+    private protected override IBaseAction LimitBreak => SatelliteBeam;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction SatelliteBeam { get; } = new BaseAction(ActionID.SatelliteBeam)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
     /// <summary>
     /// 
     /// </summary>

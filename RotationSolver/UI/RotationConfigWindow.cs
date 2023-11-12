@@ -707,6 +707,8 @@ public partial class RotationConfigWindow : Window
         SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
         SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+
+        SpecialCommandType.LimitBreak.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
     }
 
     private static void DrawAboutCompatibility()

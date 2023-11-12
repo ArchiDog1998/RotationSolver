@@ -524,16 +524,22 @@ public abstract class NIN_Base : CustomRotation
 
     #endregion
 
+    private protected override IBaseAction LimitBreak => Chimatsuri;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction Chimatsuri { get; } = new BaseAction(ActionID.Chimatsuri)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction Shukuchi { get; } = new BaseAction(ActionID.Shukuchi, ActionOption.EndSpecial);
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Shukuchi)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -541,11 +547,7 @@ public abstract class NIN_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
@@ -553,11 +555,7 @@ public abstract class NIN_Base : CustomRotation
         return base.DefenseAreaAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.ShadeShift)]
     protected override bool DefenseSingleAbility(out IAction act)
     {

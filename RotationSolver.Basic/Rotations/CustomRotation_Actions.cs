@@ -230,8 +230,91 @@ public abstract partial class CustomRotation
     };
 
     private protected virtual IBaseAction Raise => null;
+    private protected virtual IBaseAction LimitBreak => null;
     private protected virtual IBaseAction TankStance => null;
 
+    #endregion
+
+    #region PvE Limitbreak
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction ShieldWall { get; } = new RoleAction(ActionID.ShieldWall, new JobRole[] { JobRole.Tank }, ActionOption.Defense)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 1,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction Stronghold { get; } = new RoleAction(ActionID.Stronghold, new JobRole[] { JobRole.Tank }, ActionOption.Defense)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 2,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction HealingWind { get; } = new RoleAction(ActionID.HealingWind, new JobRole[] { JobRole.Healer }, ActionOption.Heal)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 1,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction BreathOfTheEarth { get; } = new RoleAction(ActionID.BreathOfTheEarth, new JobRole[] { JobRole.Healer }, ActionOption.Heal)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 2,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction Braver { get; } = new RoleAction(ActionID.Braver, new JobRole[] { JobRole.Melee })
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 1,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction Bladedance { get; } = new RoleAction(ActionID.Bladedance, new JobRole[] { JobRole.Melee })
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 2,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction BigShot { get; } = new RoleAction(ActionID.BigShot, new JobRole[] { JobRole.RangedPhysical })
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 1,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction Desperado { get; } = new RoleAction(ActionID.Desperado, new JobRole[] { JobRole.RangedPhysical })
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 2,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction Skyshard { get; } = new RoleAction(ActionID.Skyshard, new JobRole[] { JobRole.RangedMagical })
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 1,
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction Starstorm { get; } = new RoleAction(ActionID.Starstorm, new JobRole[] { JobRole.RangedMagical })
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 2,
+    };
     #endregion
 
     #region Duty Action

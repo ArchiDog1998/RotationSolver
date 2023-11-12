@@ -59,6 +59,7 @@ internal class MajorConditionSet
     public ConditionSet MoveBackConditionSet { get; set; } = new();
     public ConditionSet AntiKnockbackConditionSet { get; set; } = new();
     public ConditionSet SpeedConditionSet { get; set; } = new();
+    public ConditionSet LimitBreakConditionSet { get; set; } = new();
     public ConditionSet SwitchAutoConditionSet { get; set; } = new();
     public ConditionSet SwitchManualConditionSet { get; set; } = new();
     public ConditionSet SwitchCancelConditionSet { get; set; } = new();

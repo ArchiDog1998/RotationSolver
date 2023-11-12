@@ -612,6 +612,9 @@ public partial class RotationConfigWindow
 
         { () => LocalizationManager.RightLang.ConfigWindow_Auto_SpeedConditionSet,
             () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation) },
+
+        { () => LocalizationManager.RightLang.ConfigWindow_Auto_LimitBreakConditionSet,
+            () => DataCenter.RightSet.LimitBreakConditionSet?.DrawMain(DataCenter.RightNowRotation) },
     })
     {
         HeaderSize = 18,

@@ -361,11 +361,17 @@ public abstract class SAM_Base : CustomRotation
     public static IBaseTrait WayOfTheSamurai2 { get; } = new BaseTrait(521);
     #endregion
 
+    private protected override IBaseAction LimitBreak => DoomOfTheLiving;
+
     /// <summary>
-    /// 
+    /// LB
     /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    public static IBaseAction DoomOfTheLiving { get; } = new BaseAction(ActionID.DoomOfTheLiving)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
+    /// <inheritdoc/>
     [RotationDesc(ActionID.HissatsuGyoten)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -373,11 +379,7 @@ public abstract class SAM_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Feint)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
@@ -385,11 +387,7 @@ public abstract class SAM_Base : CustomRotation
         return base.DefenseAreaAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.ThirdEye)]
     protected override bool DefenseSingleAbility(out IAction act)
     {

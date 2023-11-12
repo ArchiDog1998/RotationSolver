@@ -419,6 +419,16 @@ public abstract class DNC_Base : CustomRotation
 
     #endregion
 
+    private protected override IBaseAction LimitBreak => CrimsonLotus;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction CrimsonLotus { get; } = new BaseAction(ActionID.CrimsonLotus)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
     /// <summary>
     /// 
     /// </summary>

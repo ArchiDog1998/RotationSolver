@@ -266,6 +266,11 @@ public abstract partial class CustomRotation
     /// </summary>
     public static bool IsSpeed => DataCenter.IsSpeed;
 
+    /// <summary>
+    /// Is in the command limit break.
+    /// </summary>
+    public static bool IsLimitBreak => DataCenter.IsLimitBreak;
+
     private bool CanUseHealAction =>
         //PvP
         DataCenter.Territory.IsPvpZone

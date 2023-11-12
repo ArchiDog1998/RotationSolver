@@ -349,6 +349,16 @@ public abstract class AST_Base : CustomRotation
 
     #endregion
 
+    private protected override IBaseAction LimitBreak => AstralStasis;
+
+    /// <summary>
+    /// LB
+    /// </summary>
+    public static IBaseAction AstralStasis { get; } = new BaseAction(ActionID.AstralStasis, ActionOption.Heal)
+    {
+        ActionCheck = (b, m) => LimitBreakLevel == 3,
+    };
+
     /// <summary>
     /// 
     /// </summary>

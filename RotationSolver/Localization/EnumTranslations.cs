@@ -129,6 +129,7 @@ internal static class EnumTranslations
         SpecialCommandType.Burst => LocalizationManager.RightLang.SpecialCommandType_Burst,
         SpecialCommandType.EndSpecial => LocalizationManager.RightLang.SpecialCommandType_EndSpecial,
         SpecialCommandType.Speed => LocalizationManager.RightLang.SpecialCommandType_Speed,
+        SpecialCommandType.LimitBreak => LocalizationManager.RightLang.SpecialCommandType_LimitBreak,
         _ => string.Empty,
     };
 
@@ -154,6 +155,7 @@ internal static class EnumTranslations
         SpecialCommandType.Burst => LocalizationManager.RightLang.ConfigWindow_HelpItem_Burst,
         SpecialCommandType.EndSpecial => LocalizationManager.RightLang.ConfigWindow_HelpItem_EndSpecial,
         SpecialCommandType.Speed => LocalizationManager.RightLang.ConfigWindow_HelpItem_Speed,
+        SpecialCommandType.LimitBreak => LocalizationManager.RightLang.ConfigWindow_HelpItem_LimitBreak,
         _ => string.Empty,
     };
 

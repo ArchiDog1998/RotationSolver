@@ -91,6 +91,11 @@ public interface IBaseAction : IAction
     bool IsDutyAction { get; }
 
     /// <summary>
+    /// Is this action a LB.
+    /// </summary>
+    bool IsLimitBreak { get; }
+
+    /// <summary>
     /// Is this action on the slot.
     /// </summary>
     bool IsOnSlot { get; }

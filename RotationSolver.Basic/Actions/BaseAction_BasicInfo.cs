@@ -58,6 +58,9 @@ public partial class BaseAction : IBaseAction
     public bool IsPvP => _action.IsPvP;
 
     /// <inheritdoc/>
+    public bool IsLimitBreak => _action.ActionCategory?.Value?.RowId == 9;
+
+    /// <inheritdoc/>
     public bool IsOnSlot
     {
         get
