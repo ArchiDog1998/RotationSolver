@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.5.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.2...v3.5.3) (2023-11-12)
+
+
+### Bug Fixes
+
+* action id. ([bd25676](https://github.com/ArchiDog1998/RotationSolver/commit/bd2567640ccf7f10bb4b82addf65be11b9a6ade6))
+* add an option for if the action can be used by mistake. ([15b01e5](https://github.com/ArchiDog1998/RotationSolver/commit/15b01e5ee7349258f4379e8e9acdb0689a00d432))
+* add LimitBreak. ([6224ff8](https://github.com/ArchiDog1998/RotationSolver/commit/6224ff80ae0e42d5345f8d1257cbe2103f9195ab))
+* add priority status. ([06d7ee1](https://github.com/ArchiDog1998/RotationSolver/commit/06d7ee1eea1ee75fb22dfffdb9b502581378c822))
+* changed auto defense on tank lockon. ([bb6773a](https://github.com/ArchiDog1998/RotationSolver/commit/bb6773a5084122badbaccc6ea01c30bd9f52dfed))
+* fixed action id of PvP_Cure2 ([d0ead73](https://github.com/ArchiDog1998/RotationSolver/commit/d0ead73f4a8a1325f68465ea95f9b0532d09aeb2))
+* variant actions condition change. ([138ba69](https://github.com/ArchiDog1998/RotationSolver/commit/138ba6905721ea34e3f6a41b9bf7d03060d61e0a))
+
 ## [3.5.2](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.1...v3.5.2) (2023-11-11)
 
 
