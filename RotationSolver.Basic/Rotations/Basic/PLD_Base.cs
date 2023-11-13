@@ -321,14 +321,14 @@ public abstract class PLD_Base : CustomRotation
         ActionCheck = (b, m) => LimitBreakLevel == 3,
     };
 
-    /// <inheritdoc//>
+    /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (HallowedGround.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
+        if (HallowedGround.CanUse(out act) && BaseAction.CanTankBurst()) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 
-    /// <inheritdoc//>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Intervene)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
@@ -336,7 +336,7 @@ public abstract class PLD_Base : CustomRotation
         return base.MoveForwardAbility(out act);
     }
 
-    /// <inheritdoc//>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.Clemency)]
     protected sealed override bool HealSingleGCD(out IAction act)
     {

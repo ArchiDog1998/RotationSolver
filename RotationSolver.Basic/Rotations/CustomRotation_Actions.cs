@@ -89,7 +89,7 @@ public abstract partial class CustomRotation
     public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,
         new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, ActionOption.Heal)
     {
-        ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.GetValue(DataCenter.Job, Configuration.JobConfigFloat.HealthSingleAbility) && InCombat,
+        ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat,
     };
 
     /// <summary>

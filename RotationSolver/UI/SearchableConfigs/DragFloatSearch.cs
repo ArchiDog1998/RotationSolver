@@ -1,5 +1,4 @@
 ﻿using Dalamud.Utility;
-using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 
@@ -33,6 +32,12 @@ internal class DragFloatSearchJob : DragFloatSearch
     public override string Command => _config.ToCommand();
     protected override bool IsJob => true;
 
+    protected override float Value
+    {
+        get => Service.Config.GetValue(_config);
+        set => Service.Config.SetValue(_config, value);
+    }
+
     public DragFloatSearchJob(JobConfigFloat config, float speed)
           : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed,
           config.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
@@ -40,22 +45,11 @@ internal class DragFloatSearchJob : DragFloatSearch
         _config = config;
     }
 
-    public override void ResetToDefault(Job job)
+    public override void ResetToDefault()
     {
-        Service.Config.SetValue(job, _config, Service.Config.GetDefault(job, _config));
-    }
-
-    protected override float GetValue(Job job)
-    {
-        return Service.Config.GetValue(job, _config);
-    }
-
-    protected override void SetValue(Job job, float value)
-    {
-        Service.Config.SetValue(job, _config, value);
+        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
     }
 }
-
 
 internal class DragFloatSearchPlugin : DragFloatSearch
 {
@@ -85,6 +79,12 @@ internal class DragFloatSearchPlugin : DragFloatSearch
 
     public override string Command => _config.ToCommand();
 
+    protected override float Value
+    { 
+        get => Service.Config.GetValue(_config);
+        set => Service.Config.SetValue(_config, value); 
+    }
+
     public DragFloatSearchPlugin(PluginConfigFloat config, float speed, uint color = 0)
         : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed,
           config.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
@@ -93,19 +93,9 @@ internal class DragFloatSearchPlugin : DragFloatSearch
         Color = color;
     }
 
-    public override void ResetToDefault(Job job)
+    public override void ResetToDefault()
     {
         Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
-    }
-
-    protected override float GetValue(Job job)
-    {
-        return Service.Config.GetValue(_config);
-    }
-
-    protected override void SetValue(Job job, float value)
-    {
-        Service.Config.SetValue(_config, value);
     }
 }
 
@@ -122,29 +112,30 @@ internal abstract class DragFloatSearch : Searchable
         Speed = speed;
         Unit = unit;
     }
-    protected abstract float GetValue(Job job);
-    protected abstract void SetValue(Job job, float value);
-    protected override void DrawMain(Job job)
+
+    protected abstract float Value { get; set; }
+
+    protected override void DrawMain()
     {
-        var value = GetValue(job);
+        var value = Value;
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
 
         if (Unit == ConfigUnitType.Percent)
         {
             if (ImGui.SliderFloat($"##Config_{ID}{GetHashCode()}", ref value, Min, Max, $"{value * 100f:F1}{Unit.ToSymbol()}"))
             {
-                SetValue(job, value);
+                Value = value;
             }
         }
         else
         {
             if (ImGui.DragFloat($"##Config_{ID}{GetHashCode()}", ref value, Speed, Min, Max, $"{value:F2}{Unit.ToSymbol()}"))
             {
-                SetValue(job, value);
+                Value = value;
             }
         }
 
-        if (ImGui.IsItemHovered()) ShowTooltip(job);
+        if (ImGui.IsItemHovered()) ShowTooltip();
 
         if (IsJob) DrawJobIcon();
 
@@ -154,6 +145,6 @@ internal abstract class DragFloatSearch : Searchable
         ImGui.TextWrapped(Name);
         if (Color != 0) ImGui.PopStyleColor();
 
-        if (ImGui.IsItemHovered()) ShowTooltip(job, false);
+        if (ImGui.IsItemHovered()) ShowTooltip(false);
     }
 }

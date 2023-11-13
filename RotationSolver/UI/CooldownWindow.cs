@@ -21,7 +21,8 @@ internal class CooldownWindow : CtrlWindow
 
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
-                var showItems = pair.OrderBy(a => a.SortKey).Where(a => a.IsInCooldown);
+                var showItems = pair.OrderBy(a => a.SortKey).Where(a => a.IsInCooldown 
+                    && (a is not IBaseAction b || !b.IsLimitBreak));
                 if (!Service.Config.GetValue(PluginConfigBool.ShowGCDCooldown)) showItems = showItems.Where(i => !(i is IBaseAction a && a.IsGeneralGCD));
 
                 if (!showItems.Any()) continue;

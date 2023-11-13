@@ -24,11 +24,11 @@ public class PluginConfig : IPluginConfiguration
     public GlobalConfig GlobalConfig { get; private set; } = new();
     public int Version { get; set; } = 7;
 
-    public int GetValue(Job job, JobConfigInt config)
-        => GetJobConfig(job).Ints.GetValue(config);
+    public int GetValue(JobConfigInt config)
+        => GetJobConfig(DataCenter.Job).Ints.GetValue(config);
 
-    public float GetValue(Job job, JobConfigFloat config)
-        => GetJobConfig(job).Floats.GetValue(config);
+    public float GetValue(JobConfigFloat config)
+        => GetJobConfig(DataCenter.Job).Floats.GetValue(config);
 
     public int GetValue(PluginConfigInt config)
         => GlobalConfig.Ints.GetValue(config);
@@ -64,11 +64,11 @@ public class PluginConfig : IPluginConfiguration
     public Vector4 GetValue(PluginConfigVector4 config)
         => GlobalConfig.Vectors.GetValue(config);
 
-    public int GetDefault(Job job, JobConfigInt config)
-        => GetJobConfig(job).Ints.GetDefault(config);
+    public int GetDefault(JobConfigInt config)
+        => GetJobConfig(DataCenter.Job).Ints.GetDefault(config);
 
-    public float GetDefault(Job job, JobConfigFloat config)
-        => GetJobConfig(job).Floats.GetDefault(config);
+    public float GetDefault(JobConfigFloat config)
+        => GetJobConfig(DataCenter.Job).Floats.GetDefault(config);
 
     public int GetDefault(PluginConfigInt config)
         => GlobalConfig.Ints.GetDefault(config);
@@ -82,7 +82,10 @@ public class PluginConfig : IPluginConfiguration
     public Vector4 GetDefault(PluginConfigVector4 config)
         => GlobalConfig.Vectors.GetDefault(config);
 
-    public void SetValue(Job job, JobConfigInt config, int value)
+    public void SetValue(JobConfigInt config, int value)
+        => SetValue(DataCenter.Job, config, value);
+
+    private void SetValue(Job job, JobConfigInt config, int value)
     {
         var attr = config.GetAttribute<DefaultAttribute>();
         if (attr != null)
@@ -96,7 +99,10 @@ public class PluginConfig : IPluginConfiguration
         GetJobConfig(job).Ints.SetValue(config, value);
     }
 
-    public void SetValue(Job job, JobConfigFloat config, float value)
+    public void SetValue(JobConfigFloat config, float value)
+        => SetValue(DataCenter.Job, config, value);
+
+    private void SetValue(Job job, JobConfigFloat config, float value)
     {
         var attr = config.GetAttribute<DefaultAttribute>();
         if (attr != null)

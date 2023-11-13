@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Keys;
-using ECommons.ExcelServices;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -32,31 +31,4 @@ internal static class ConfigurationHelper
     };
 
     public static readonly VirtualKey[] Keys = new VirtualKey[] { VirtualKey.CONTROL, VirtualKey.SHIFT, VirtualKey.MENU };
-
-    public static float GetHealthAreaAbility(this Job job)
-        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthAreaAbility);
-
-    public static float GetHealthAreaSpell(this Job job)
-        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthAreaSpell);
-
-    public static float GetHealthAreaAbilityHot(this Job job)
-        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthAreaAbilityHot);
-
-    public static float GetHealthAreaSpellHot(this Job job)
-    => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthAreaSpellHot);
-
-    public static float GetHealthSingleAbility(this Job job)
-        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthSingleAbility);
-
-    public static float GetHealthSingleSpell(this Job job)
-        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthSingleSpell);
-
-    public static float GetHealthSingleAbilityHot(this Job job)
-    => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthSingleAbilityHot);
-
-    public static float GetHealthSingleSpellHot(this Job job)
-    => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthSingleSpellHot);
-
-    public static float GetHealthForDyingTank(this Job job)
-        => Service.Config.GetValue(job, Configuration.JobConfigFloat.HealthForDyingTanks);
 }

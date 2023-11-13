@@ -332,7 +332,7 @@ public abstract class DRK_Base : CustomRotation
     /// <returns></returns>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (LivingDead.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
+        if (LivingDead.CanUse(out act) && BaseAction.CanTankBurst()) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

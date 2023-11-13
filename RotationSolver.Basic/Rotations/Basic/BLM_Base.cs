@@ -1,4 +1,5 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
@@ -487,6 +488,106 @@ public abstract partial class BLM_Base : CustomRotation
     /// 
     /// </summary>
     public static IBaseTrait EnhancedEnochian3 { get; } = new BaseTrait(509);
+
+    #endregion
+    
+    #region PvP
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Fire { get; } = new BaseAction(ActionID.PvP_Fire);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Blizzard { get; } = new BaseAction(ActionID.PvP_Blizzard);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Burst { get; } = new BaseAction(ActionID.PvP_Burst,ActionOption.Defense);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Paradox { get; } = new BaseAction(ActionID.PvP_Paradox);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Nightwing { get; } = new BaseAction(ActionID.PvP_Nightwing);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_AetherialManipulation { get; } = new BaseAction(ActionID.PvP_AetherialManipulation);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Superflare { get; } = new BaseAction(ActionID.PvP_Superflare);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Fire4 { get; } = new BaseAction(ActionID.PvP_Fire4,ActionOption.Buff)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_AstralFire2 },
+    };
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Flare { get; } = new BaseAction(ActionID.PvP_Flare)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_AstralFire3 },
+    };
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Blizzard4 { get; } = new BaseAction(ActionID.PvP_Blizzard4,ActionOption.Buff)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_UmbralIce2 },
+    };
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Freeze { get; } = new BaseAction(ActionID.PvP_Freeze)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_UmbralIce3 },
+    };
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Foul { get; } = new BaseAction(ActionID.PvP_Foul)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_Polyglot },
+    };
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_SoulResonance { get; } = new BaseAction(ActionID.PvP_SoulResonance)
+    {
+        FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
+        ActionCheck = (t, m) => LimitBreakLevel >= 1,
+    };
 
     #endregion
 
