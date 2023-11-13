@@ -153,7 +153,7 @@ internal static class DataCenter
     }
 
     public static TargetHostileType RightNowTargetToHostileType
-        => (TargetHostileType)Service.Config.GetValue(Job, Configuration.JobConfigInt.HostileType);
+        => (TargetHostileType)Service.Config.GetValue(JobConfigInt.HostileType);
 
     public static unsafe ActionID LastComboAction => (ActionID)ActionManager.Instance()->Combo.Action;
     public static unsafe float ComboTime => ActionManager.Instance()->Combo.Timer;

@@ -216,7 +216,7 @@ internal static class ActionUpdater
             || Player.Object.CurrentHp == 0) return false;
 
         var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
-        var ahead = Math.Min(maxAhead, Service.Config.GetValue(DataCenter.Job, JobConfigFloat.ActionAhead));
+        var ahead = Math.Min(maxAhead, Service.Config.GetValue(JobConfigFloat.ActionAhead));
 
         //GCD
         var canUseGCD = DataCenter.WeaponRemain <= ahead;

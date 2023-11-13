@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Plugin.Services;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
@@ -567,51 +568,51 @@ public abstract partial class CustomRotation
     /// <summary>
     /// The count down ahead.
     /// </summary>
-    public static float CountDownAhead => Service.Config.GetValue(Configuration.PluginConfigFloat.CountDownAhead);
+    public static float CountDownAhead => Service.Config.GetValue(PluginConfigFloat.CountDownAhead);
 
     /// <summary>
     /// 
     /// </summary>
-    public float HealthAreaAbility => Jobs.FirstOrDefault().GetHealthAreaAbility();
+    public static float HealthAreaAbility => Service.Config.GetValue(JobConfigFloat.HealthAreaAbility);
 
     /// <summary>
     /// 
     /// </summary>
-    public float HealthAreaSpell => Jobs.FirstOrDefault().GetHealthAreaSpell();
+    public static float HealthAreaSpell => Service.Config.GetValue(JobConfigFloat.HealthAreaSpell);
 
     /// <summary>
     /// 
     /// </summary>
-    public float HealthAreaAbilityHot => Jobs.FirstOrDefault().GetHealthAreaAbilityHot();
+    public static float HealthAreaAbilityHot => Service.Config.GetValue(JobConfigFloat.HealthAreaAbilityHot);
 
     /// <summary>
     /// 
     /// </summary>
-    public float HealthAreaSpellHot => Jobs.FirstOrDefault().GetHealthAreaSpellHot();
+    public static float HealthAreaSpellHot => Service.Config.GetValue(JobConfigFloat.HealthAreaSpellHot);
 
     /// <summary>
     /// 
     /// </summary>
-    public float HealthSingleAbility => Jobs.FirstOrDefault().GetHealthSingleAbility();
+    public static float HealthSingleAbility => Service.Config.GetValue(JobConfigFloat.HealthSingleAbility);
 
     /// <summary>
     /// 
     /// </summary>
-    public float HealthSingleSpell => Jobs.FirstOrDefault().GetHealthSingleSpell();
+    public static float HealthSingleSpell => Service.Config.GetValue(JobConfigFloat.HealthSingleSpell);
 
     /// <summary>
     /// 
     /// </summary>
-    public float HealthSingleAbilityHot => Jobs.FirstOrDefault().GetHealthSingleAbilityHot();
+    public static float HealthSingleAbilityHot => Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot);
 
     /// <summary>
     /// 
     /// </summary>
-    public float HealthSingleSpellHot => Jobs.FirstOrDefault().GetHealthSingleSpellHot();
+    public static float HealthSingleSpellHot => Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot);
 
     /// <summary>
     /// 
     /// </summary>
-    public float HealthForDyingTanksDefault => Jobs.FirstOrDefault().GetHealthForDyingTank();
+    public static float HealthForDyingTanks => Service.Config.GetValue(Configuration.JobConfigFloat.HealthForDyingTanks);
     #endregion
 }

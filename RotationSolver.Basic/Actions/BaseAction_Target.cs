@@ -95,9 +95,10 @@ public partial class BaseAction
     {
         return (DataCenter.TarOnMeTargets.Any() || mustUse) && DataCenter.AverageTimeToKill > 8;
     }
-    internal static bool TankBreakOtherCheck(Job id)
+
+    internal static bool CanTankBurst()
     {
-        var tankHealth = id.GetHealthForDyingTank();
+        var tankHealth = Service.Config.GetValue(JobConfigFloat.HealthForDyingTanks);
 
         return DataCenter.HasHostilesInRange
             && Player.Object.GetHealthRatio() < tankHealth
@@ -652,7 +653,7 @@ public partial class BaseAction
 
         if (TargetStatus == null) return true;
 
-        return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Config.GetValue(DataCenter.Job, JobConfigInt.AddDotGCDCount),
+        return tar.WillStatusEndGCD(GetDotGcdCount?.Invoke() ?? (uint)Service.Config.GetValue(JobConfigInt.AddDotGCDCount),
             0, true, TargetStatus);
     }
 

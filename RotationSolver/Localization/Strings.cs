@@ -497,7 +497,7 @@ internal class Strings
         { nameof(CustomRotation.HealthSingleSpell), "Health of single spell"},
         { nameof(CustomRotation.HealthSingleAbilityHot), "Health of single ability Hot"},
         { nameof(CustomRotation.HealthSingleSpellHot), "Health of single spell Hot"},
-        { nameof(CustomRotation.HealthForDyingTanksDefault), "Health of dying tank"},
+        { nameof(CustomRotation.HealthForDyingTanks), "Health of dying tank"},
 
         { nameof(CustomRotation.IsValid), "Is this rotation valid"},
         { nameof(CustomRotation.ShowStatus), "Show the status"},

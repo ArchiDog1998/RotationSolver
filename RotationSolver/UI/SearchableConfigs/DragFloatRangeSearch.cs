@@ -1,4 +1,5 @@
 ﻿using Dalamud.Utility;
+using ECommons.Configuration;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
@@ -31,6 +32,18 @@ internal class DragFloatRangeSearchJob : DragFloatRangeSearch
 
     protected override bool IsJob => true;
 
+    protected override float MinValue
+    {
+        get => Service.Config.GetValue(_configMin);
+        set => Service.Config.SetValue(_configMin, value);
+    }
+
+    protected override float MaxValue
+    {
+        get => Service.Config.GetValue(_configMax);
+        set => Service.Config.SetValue(_configMax, value);
+    }
+
     public DragFloatRangeSearchJob(JobConfigFloat configMin, JobConfigFloat configMax, float speed)
         : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed,
           configMin.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
@@ -39,30 +52,10 @@ internal class DragFloatRangeSearchJob : DragFloatRangeSearch
         _configMax = configMax;
     }
 
-    public override void ResetToDefault(Job job)
+    public override void ResetToDefault()
     {
-        Service.Config.SetValue(job, _configMin, Service.Config.GetDefault(job, _configMin));
-        Service.Config.SetValue(job, _configMax, Service.Config.GetDefault(job, _configMax));
-    }
-
-    protected override float GetMinValue(Job job)
-    {
-        return Service.Config.GetValue(job, _configMin);
-    }
-
-    protected override void SetMinValue(Job job, float value)
-    {
-        Service.Config.SetValue(job, _configMin, value);
-    }
-
-    protected override float GetMaxValue(Job job)
-    {
-        return Service.Config.GetValue(job, _configMax);
-    }
-
-    protected override void SetMaxValue(Job job, float value)
-    {
-        Service.Config.SetValue(job, _configMax, value);
+        Service.Config.SetValue(_configMin, Service.Config.GetDefault(_configMin));
+        Service.Config.SetValue(_configMax, Service.Config.GetDefault(_configMax));
     }
 }
 
@@ -92,6 +85,17 @@ internal class DragFloatRangeSearchPlugin : DragFloatRangeSearch
 
     public override LinkDescription[] Tooltips => _configMin.ToAction();
 
+    protected override float MinValue
+    {
+        get => Service.Config.GetValue(_configMin);
+        set => Service.Config.SetValue(_configMin, value);
+    }
+
+    protected override float MaxValue
+    {
+        get => Service.Config.GetValue(_configMax);
+        set => Service.Config.SetValue(_configMax, value);
+    }
 
     public DragFloatRangeSearchPlugin(PluginConfigFloat configMin, PluginConfigFloat configMax, float speed, uint color = 0)
     : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed, configMin.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
@@ -101,30 +105,10 @@ internal class DragFloatRangeSearchPlugin : DragFloatRangeSearch
         Color = color;
     }
 
-    public override void ResetToDefault(Job job)
+    public override void ResetToDefault()
     {
         Service.Config.SetValue(_configMin, Service.Config.GetDefault(_configMin));
         Service.Config.SetValue(_configMax, Service.Config.GetDefault(_configMax));
-    }
-
-    protected override float GetMinValue(Job job)
-    {
-        return Service.Config.GetValue(_configMin);
-    }
-
-    protected override void SetMinValue(Job job, float value)
-    {
-        Service.Config.SetValue(_configMin, value);
-    }
-
-    protected override float GetMaxValue(Job job)
-    {
-        return Service.Config.GetValue(_configMax);
-    }
-
-    protected override void SetMaxValue(Job job, float value)
-    {
-        Service.Config.SetValue(_configMax, value);
     }
 }
 
@@ -136,7 +120,8 @@ internal abstract class DragFloatRangeSearch : Searchable
     public ConfigUnitType Unit { get; init; }
 
     public sealed override string Command => "";
-
+    protected abstract float MinValue { get; set; }
+    protected abstract float MaxValue { get; set; }
     public DragFloatRangeSearch(float min, float max, float speed, ConfigUnitType unit)
     {
         Min = min; Max = max;
@@ -144,31 +129,27 @@ internal abstract class DragFloatRangeSearch : Searchable
         Unit = unit;
     }
 
-    protected abstract float GetMinValue(Job job);
-    protected abstract void SetMinValue(Job job, float value);
-    protected abstract float GetMaxValue(Job job);
-    protected abstract void SetMaxValue(Job job, float value);
-    protected override void DrawMain(Job job)
+    protected override void DrawMain()
     {
-        var minValue = GetMinValue(job);
-        var maxValue = GetMaxValue(job);
+        var minValue = MinValue;
+        var maxValue = MaxValue;
         ImGui.SetNextItemWidth(Scale * DRAG_WIDTH);
 
         if (ImGui.DragFloatRange2($"##Config_{ID}{GetHashCode()}", ref minValue, ref maxValue, Speed, Min, Max,
      Unit == ConfigUnitType.Percent ? $"{minValue * 100:F1}{Unit.ToSymbol()}" : $"{minValue:F2}{Unit.ToSymbol()}",
     Unit == ConfigUnitType.Percent ? $"{maxValue * 100:F1}{Unit.ToSymbol()}" : $"{maxValue:F2}{Unit.ToSymbol()}"))
         {
-            SetMinValue(job, Math.Min(minValue, maxValue));
-            SetMaxValue(job, Math.Max(minValue, maxValue));
+            MinValue = Math.Min(minValue, maxValue);
+            MaxValue = Math.Max(minValue, maxValue);
         }
 
-        if (ImGui.IsItemHovered()) ShowTooltip(job);
+        if (ImGui.IsItemHovered()) ShowTooltip();
 
         if (IsJob) DrawJobIcon();
         ImGui.SameLine();
         if (Color != 0) ImGui.PushStyleColor(ImGuiCol.Text, Color);
         ImGui.TextWrapped(Name);
         if (Color != 0) ImGui.PopStyleColor();
-        if (ImGui.IsItemHovered()) ShowTooltip(job, false);
+        if (ImGui.IsItemHovered()) ShowTooltip(false);
     }
 }

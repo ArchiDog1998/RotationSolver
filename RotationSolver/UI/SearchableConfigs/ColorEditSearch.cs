@@ -1,5 +1,4 @@
-﻿using ECommons.ExcelServices;
-using RotationSolver.Basic.Configuration;
+﻿using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 
 namespace RotationSolver.UI.SearchableConfigs;
@@ -18,39 +17,35 @@ internal class ColorEditSearchPlugin : ColorEditSearch
 
     public override string Command => "";
 
+    protected override Vector4 Value
+    {
+        get => Service.Config.GetValue(_config);
+        set => Service.Config.SetValue(_config, value);
+    }
+
     public ColorEditSearchPlugin(PluginConfigVector4 config)
     {
         _config = config;
     }
 
-    public override void ResetToDefault(Job job)
+    public override void ResetToDefault()
     {
         Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
-    }
-
-    protected override Vector4 GetValue(Job job)
-    {
-        return Service.Config.GetValue(_config);
-    }
-
-    protected override void SetValue(Job job, Vector4 value)
-    {
-        Service.Config.SetValue(_config, value);
     }
 }
 
 internal abstract class ColorEditSearch : Searchable
 {
-    protected abstract Vector4 GetValue(Job job);
-    protected abstract void SetValue(Job job, Vector4 value);
-    protected override void DrawMain(Job job)
+    protected abstract Vector4 Value { get; set; }
+
+    protected override void DrawMain()
     {
-        var value = GetValue(job);
+        var value = Value;
         ImGui.SetNextItemWidth(DRAG_WIDTH * 1.5f * Scale);
         if (ImGui.ColorEdit4($"{Name}##Config_{ID}{GetHashCode()}", ref value))
         {
-            SetValue(job, value);
+            Value = value;
         }
-        if (ImGui.IsItemHovered()) ShowTooltip(job);
+        if (ImGui.IsItemHovered()) ShowTooltip();
     }
 }

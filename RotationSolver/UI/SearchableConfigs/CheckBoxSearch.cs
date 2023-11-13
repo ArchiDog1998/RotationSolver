@@ -42,22 +42,18 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
         public override string Description => LocalizationManager.RightLang.ConfigWindow_Options_ForcedDisableConditionDesc;
 
+        protected override bool Value
+        {
+            get => Service.Config.GetDisableBoolRaw(_config);
+            set => Service.Config.SetDisableBoolRaw(_config, value);
+        }
+
         public CheckBoxDisable(PluginConfigBool config) : base(config)
         {
         }
-        public override void ResetToDefault(Job job)
+        public override void ResetToDefault()
         {
             Service.Config.SetDisableBoolRaw(_config, false);
-        }
-
-        protected override bool GetValue(Job job)
-        {
-            return Service.Config.GetDisableBoolRaw(_config);
-        }
-
-        protected override void SetValue(Job job, bool value)
-        {
-            Service.Config.SetDisableBoolRaw(_config, value);
         }
 
         protected override ConditionSet GetCondition(Job job)
@@ -72,23 +68,19 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
         public override string Description => LocalizationManager.RightLang.ConfigWindow_Options_ForcedEnableConditionDesc;
 
+        protected override bool Value 
+        { 
+            get => Service.Config.GetEnableBoolRaw(_config);
+            set => Service.Config.SetEnableBoolRaw(_config, value);
+        }
+
         public CheckBoxEnable(PluginConfigBool config) : base(config)
         {
         }
 
-        public override void ResetToDefault(Job job)
+        public override void ResetToDefault()
         {
             Service.Config.SetEnableBoolRaw(_config, false);
-        }
-
-        protected override bool GetValue(Job job)
-        {
-            return Service.Config.GetEnableBoolRaw(_config);
-        }
-
-        protected override void SetValue(Job job, bool value)
-        {
-            Service.Config.SetEnableBoolRaw(_config, value);
         }
 
         protected override ConditionSet GetCondition(Job job)
@@ -111,6 +103,12 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     public override bool AlwaysShowChildren => Service.Config.GetValue(PluginConfigBool.UseAdditionalConditions);
 
+    protected override bool Value
+    {
+        get => Service.Config.GetBoolRaw(_config);
+        set => Service.Config.SetBoolRaw(_config, value);
+    }
+
     public CheckBoxSearchPlugin(PluginConfigBool config, params ISearchable[] children)
         : base(config == PluginConfigBool.UseAdditionalConditions ? children
             : new ISearchable[]
@@ -121,17 +119,7 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
         _config = config;
     }
 
-    protected override bool GetValue(Job job)
-    {
-        return Service.Config.GetBoolRaw(_config);
-    }
-
-    protected override void SetValue(Job job, bool value)
-    {
-        Service.Config.SetBoolRaw(_config, value);
-    }
-
-    public override void ResetToDefault(Job job)
+    public override void ResetToDefault()
     {
         Service.Config.SetBoolRaw(_config, Service.Config.GetBoolRawDefault(_config));
     }
@@ -166,10 +154,9 @@ internal abstract class CheckBoxSearch : Searchable
         }
     }
 
-    protected abstract bool GetValue(Job job);
-    protected abstract void SetValue(Job job, bool value);
+    protected abstract bool Value { get; set; }
 
-    protected virtual void DrawChildren(Job job)
+    protected virtual void DrawChildren()
     {
         var lastIs = false;
         foreach (var child in Children)
@@ -183,7 +170,7 @@ internal abstract class CheckBoxSearch : Searchable
             }
             lastIs = thisIs;
 
-            child.Draw(job);
+            child.Draw();
         }
     }
 
@@ -192,7 +179,7 @@ internal abstract class CheckBoxSearch : Searchable
 
     }
 
-    protected override void DrawMain(Job job)
+    protected override void DrawMain()
     {
         var hasChild = Children != null && Children.Any(c => c.ShowInChild);
         var hasAdditional = AdditionalDraw != null;
@@ -200,12 +187,12 @@ internal abstract class CheckBoxSearch : Searchable
         IDalamudTextureWrap texture = null;
         var hasIcon = Action != ActionID.None && IconSet.GetTexture(Action, out texture);
 
-        var enable = GetValue(job);
+        var enable = Value;
         if (ImGui.Checkbox($"##{ID}", ref enable))
         {
-            SetValue(job, enable);
+            Value = enable;
         }
-        if (ImGui.IsItemHovered()) ShowTooltip(job);
+        if (ImGui.IsItemHovered()) ShowTooltip();
 
         ImGui.SameLine();
 
@@ -217,12 +204,12 @@ internal abstract class CheckBoxSearch : Searchable
             var size = ImGuiHelpers.GlobalScale * 32;
             if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size, ID))
             {
-                SetValue(job, !enable);
+                Value = enable;
             }
             ImGuiHelper.DrawActionOverlay(cursor, size, enable ? 1 : 0);
             ImGui.EndGroup();
 
-            if (ImGui.IsItemHovered()) ShowTooltip(job);
+            if (ImGui.IsItemHovered()) ShowTooltip();
         }
         else if (hasSub)
         {
@@ -231,7 +218,7 @@ internal abstract class CheckBoxSearch : Searchable
                 var x = ImGui.GetCursorPosX();
                 DrawMiddle();
                 var drawBody = ImGui.TreeNode(name);
-                if (ImGui.IsItemHovered()) ShowTooltip(job);
+                if (ImGui.IsItemHovered()) ShowTooltip();
 
                 if (drawBody)
                 {
@@ -240,7 +227,7 @@ internal abstract class CheckBoxSearch : Searchable
                     AdditionalDraw?.Invoke();
                     if (hasChild)
                     {
-                        DrawChildren(job);
+                        DrawChildren();
                     }
                     ImGui.EndGroup();
                     ImGui.TreePop();
@@ -251,7 +238,7 @@ internal abstract class CheckBoxSearch : Searchable
                 ImGui.PushStyleColor(ImGuiCol.HeaderHovered, 0x0);
                 ImGui.PushStyleColor(ImGuiCol.HeaderActive, 0x0);
                 ImGui.TreeNodeEx(name, ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen);
-                if (ImGui.IsItemHovered()) ShowTooltip(job, false);
+                if (ImGui.IsItemHovered()) ShowTooltip(false);
 
                 ImGui.PopStyleColor(2);
             }
@@ -259,7 +246,7 @@ internal abstract class CheckBoxSearch : Searchable
         else
         {
             ImGui.TextWrapped(Name);
-            if (ImGui.IsItemHovered()) ShowTooltip(job, false);
+            if (ImGui.IsItemHovered()) ShowTooltip(false);
         }
     }
 }

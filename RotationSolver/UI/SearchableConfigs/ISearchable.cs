@@ -9,5 +9,5 @@ internal interface ISearchable
     string SearchingKeys { get; }
     bool ShowInChild { get; }
 
-    void Draw(Job job);
+    void Draw();
 }

@@ -325,7 +325,7 @@ public abstract class GNB_Base : CustomRotation
     /// <returns></returns>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (SuperBolide.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
+        if (SuperBolide.CanUse(out act) && BaseAction.CanTankBurst()) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 

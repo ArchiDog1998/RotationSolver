@@ -375,7 +375,7 @@ public abstract class WAR_Base : CustomRotation
     /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
     {
-        if (Holmgang.CanUse(out act) && BaseAction.TankBreakOtherCheck(Jobs[0])) return true;
+        if (Holmgang.CanUse(out act) && BaseAction.CanTankBurst()) return true;
         return base.EmergencyAbility(nextGCD, out act);
     }
 
