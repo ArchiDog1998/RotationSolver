@@ -1,4 +1,5 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
@@ -302,6 +303,57 @@ public abstract class WHM_Base : CustomRotation
     /// 
     /// </summary>
     public static IBaseTrait EnhancedDivineBenison { get; } = new BaseTrait(490);
+    #endregion
+    
+    #region PvP
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Glare3 { get; } = new BaseAction(ActionID.PvP_Glare3);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Cure2 { get; } = new BaseAction(ActionID.PvP_Cure2,ActionOption.Heal);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_AfflatusMisery { get; } = new BaseAction(ActionID.PvP_AfflatusMisery);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Aquaveil { get; } = new BaseAction(ActionID.PvP_Aquaveil,ActionOption.Defense);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_MiracleOfNature { get; } = new BaseAction(ActionID.PvP_MiracleOfNature);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_SeraphStrike { get; } = new BaseAction(ActionID.PvP_SeraphStrike);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Cure3 { get; } = new BaseAction(ActionID.PvP_Cure3,ActionOption.Heal)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_Cure3Ready },
+    };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_AfflatusPurgation { get; } = new BaseAction(ActionID.PvP_AfflatusPurgation)
+    {
+        FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
+        ActionCheck = (t, m) => LimitBreakLevel >= 1,
+    };
+
     #endregion
 
     private protected override IBaseAction LimitBreak => PulseOfLife;

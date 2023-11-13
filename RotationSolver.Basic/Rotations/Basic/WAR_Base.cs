@@ -1,4 +1,5 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
@@ -279,6 +280,86 @@ public abstract class WAR_Base : CustomRotation
     /// 
     /// </summary>
     public static IBaseTrait MeleeMastery { get; } = new BaseTrait(505);
+    #endregion
+    
+    #region PvP
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_HeavySwing { get; } = new BaseAction(ActionID.PvP_HeavySwing);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Maim { get; } = new BaseAction(ActionID.PvP_Maim);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_StormsPath { get; } = new BaseAction(ActionID.PvP_StormsPath);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_PrimalRend { get; } = new BaseAction(ActionID.PvP_PrimalRend);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Onslaught { get; } = new BaseAction(ActionID.PvP_Onslaught);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Orogeny { get; } = new BaseAction(ActionID.PvP_Orogeny,ActionOption.Buff);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Blota { get; } = new BaseAction(ActionID.PvP_Blota);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_Bloodwhetting { get; } = new BaseAction(ActionID.PvP_Bloodwhetting,ActionOption.Buff);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_FellCleave { get; } = new BaseAction(ActionID.PvP_FellCleave)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_InnerRelease },
+    };
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_ChaoticCyclone { get; } = new BaseAction(ActionID.PvP_ChaoticCyclone,ActionOption.Buff)
+    {
+        StatusNeed = new StatusID[] { StatusID.PvP_NascentChaos },
+    };
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static IBaseAction PvP_PrimalScream { get; } = new BaseAction(ActionID.PvP_PrimalScream)
+    {
+        FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
+        ActionCheck = (t, m) => LimitBreakLevel >= 1,
+    };
+
+
     #endregion
 
     private protected override IBaseAction LimitBreak => LandWaker;
