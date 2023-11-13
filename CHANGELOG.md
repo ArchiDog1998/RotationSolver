@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.5.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.3...v3.5.4) (2023-11-13)
+
+
+### Bug Fixes
+
+* Added PvP ActionID ([7978be1](https://github.com/ArchiDog1998/RotationSolver/commit/7978be1f3445f60bd7ecc87cd8be1eef751f3d99))
+* no LB in cd window. ([9512b1b](https://github.com/ArchiDog1998/RotationSolver/commit/9512b1bdb6888a98e0751f2095f2ddd0816f197e))
+* simplify config. ([156b2ec](https://github.com/ArchiDog1998/RotationSolver/commit/156b2ec12eaa5d13ed2f9ea38be91032e1ab67f5))
+* Vfc check safer. ([208aa1c](https://github.com/ArchiDog1998/RotationSolver/commit/208aa1c90630b9cea7cd68ed3f0a8e650c62cabd))
+
 ## [3.5.3](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.2...v3.5.3) (2023-11-12)
 
 
