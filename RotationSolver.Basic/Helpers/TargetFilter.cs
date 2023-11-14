@@ -264,7 +264,7 @@ public static class TargetFilter
 
             if (item.HasStatus(false, StatusID.Raise)) return false;
 
-            if (!Service.Config.GetValue(Configuration.PluginConfigBool.RaiseBrinkOfDeath) && item.HasStatus(false, StatusID.BrinkOfDeath)) return false;
+            if (!Service.Config.GetValue(PluginConfigBool.RaiseBrinkOfDeath) && item.HasStatus(false, StatusID.BrinkOfDeath)) return false;
 
             if (DataCenter.AllianceMembers.Any(c => c.CastTargetObjectId == item.ObjectId)) return false;
 

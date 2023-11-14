@@ -613,6 +613,6 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthForDyingTanks => Service.Config.GetValue(Configuration.JobConfigFloat.HealthForDyingTanks);
+    public static float HealthForDyingTanks => Service.Config.GetValue(JobConfigFloat.HealthForDyingTanks);
     #endregion
 }
