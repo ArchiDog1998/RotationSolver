@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.4...v3.5.5) (2023-11-20)
+
+
+### Bug Fixes
+
+* alliance members check. ([231598f](https://github.com/ArchiDog1998/RotationSolver/commit/231598fb871a8e1ffab104983115dfe0aa42b8d5))
+
 ## [3.5.4](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.3...v3.5.4) (2023-11-13)
 
 
