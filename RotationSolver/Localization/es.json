@@ -358,7 +358,7 @@
     "HealthSingleSpell": "Health of single spell",
     "HealthSingleAbilityHot": "Health of single ability Hot",
     "HealthSingleSpellHot": "Health of single spell Hot",
-    "HealthForDyingTanksDefault": "Health of dying tank",
+    "HealthForDyingTanks": "Health of dying tank",
     "IsValid": "Is this rotation valid",
     "ShowStatus": "Show the status",
     "AverageTimeToKill": "Average time to kill",
