@@ -1382,6 +1382,7 @@ public partial class RotationConfigWindow : Window
                         ImGui.Text("Must Use:" + action.CanUse(out _, option | CanUseOption.MustUse).ToString());
                         ImGui.Text("Empty Use:" + action.CanUse(out _, option | CanUseOption.EmptyOrSkipCombo).ToString());
                         ImGui.Text("Must & Empty Use:" + action.CanUse(out _, option | CanUseOption.MustUseEmpty).ToString());
+                        ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, option | CanUseOption.IgnoreCastCheck).ToString());
                         if (action.Target != null)
                         {
                             ImGui.Text("Target Name: " + action.Target.Name);
@@ -2371,6 +2372,10 @@ public partial class RotationConfigWindow : Window
     {
         ImGui.Text("Party Burst Ratio: " + DataCenter.RatioOfMembersIn2minsBurst.ToString());
         ImGui.Text("Party: " + DataCenter.PartyMembers.Count().ToString());
+        ImGui.Text("Alliance: " + DataCenter.AllianceMembers.Count().ToString());
+        ImGui.Text("DeathAll: " + DataCenter.DeathPeopleAll.Count().ToString());
+        ImGui.Text("DeathPt: " + DataCenter.DeathPeopleParty.Count().ToString());
+
         ImGui.Text("CanHealSingleAbility: " + DataCenter.CanHealSingleAbility.ToString());
         ImGui.Text("CanHealSingleSpell: " + DataCenter.CanHealSingleSpell.ToString());
         ImGui.Text("CanHealAreaAbility: " + DataCenter.CanHealAreaAbility.ToString());

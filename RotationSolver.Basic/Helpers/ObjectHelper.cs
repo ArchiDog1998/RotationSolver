@@ -67,7 +67,8 @@ public static class ObjectHelper
     /// <returns></returns>
     public static unsafe bool IsAlliance(this GameObject obj)
         => obj != null
-        && ActionManager.CanUseActionOnTarget((uint)ActionID.Cure, obj.Struct());
+        && (ActionManager.CanUseActionOnTarget((uint)ActionID.Cure, obj.Struct())
+        || ActionManager.CanUseActionOnTarget((uint)ActionID.Raise1, obj.Struct()));
 
     /// <summary>
     /// Get the object kind.

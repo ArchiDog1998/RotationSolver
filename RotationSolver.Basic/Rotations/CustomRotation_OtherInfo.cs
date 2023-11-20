@@ -133,6 +133,11 @@ public abstract partial class CustomRotation
     protected static BattleChara Target => Svc.Targets.Target is BattleChara b ? b : Player;
 
     /// <summary>
+    /// The player's target, or null if no valid target. (null clears the target)
+    /// </summary>
+    protected static BattleChara CurrentTarget => Svc.Targets.Target is BattleChara b ? b : null;
+
+    /// <summary>
     /// The last attacked hostile target.
     /// </summary>
     protected static BattleChara HostileTarget => DataCenter.HostileTarget;
@@ -613,6 +618,6 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthForDyingTanks => Service.Config.GetValue(Configuration.JobConfigFloat.HealthForDyingTanks);
+    public static float HealthForDyingTanks => Service.Config.GetValue(JobConfigFloat.HealthForDyingTanks);
     #endregion
 }

@@ -66,8 +66,8 @@ public static partial class RSCommands
         }
 
 #if DEBUG
-        //if (nextAction is BaseAction acti)
-        //    Svc.Log.Debug($"Will Do {acti}");
+        if (nextAction is BaseAction acti)
+            Svc.Log.Debug($"Will Do {acti}");
 #endif
 
         if (Service.Config.GetValue(PluginConfigBool.KeyBoardNoise))
@@ -89,12 +89,12 @@ public static partial class RSCommands
 
                 if (act.ShouldEndSpecial) ResetSpecial();
 #if DEBUG
-                //Svc.Chat.Print(act.Name);
-                //Svc.Chat.Print(act.Target?.Name.TextValue ?? string.Empty);
-                //foreach (var item in act.AffectedTargets)
-                //{
-                //    Svc.Chat.Print(item?.Name.TextValue ?? string.Empty);
-                //}
+                Svc.Chat.Print(act.Name);
+                Svc.Chat.Print(act.Target?.Name.TextValue ?? string.Empty);
+                foreach (var item in act.AffectedTargets)
+                {
+                    Svc.Chat.Print(item?.Name.TextValue ?? string.Empty);
+                }
 #endif
                 //Change Target
                 var tar = (act.Target == null || act.Target == Player.Object)

@@ -11,6 +11,21 @@ public enum StatusID : ushort
     None = 0,
 
     /// <summary>
+    /// Damage dealt is reduced.
+    /// </summary>
+    Reprisal = 1193,
+
+    /// <summary>
+    /// Damage dealt is reduced.
+    /// </summary>
+    Dismantled = 860,
+
+    /// <summary>
+    /// Recently resurrected.
+    /// </summary>
+    Transcendent = 418,
+
+    /// <summary>
     /// 
     /// </summary>
     VariantSpiritDart = 3359,
