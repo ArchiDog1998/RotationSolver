@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.5...v3.5.6) (2023-11-23)
+
+
+### Bug Fixes
+
+* Feint and Addle "Invalid Target" ([6e86413](https://github.com/ArchiDog1998/RotationSolver/commit/6e8641369023a1d4bc0ec6ef2349fd9d264f5dad))
+
 ## [3.5.5](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.4...v3.5.5) (2023-11-20)
 
 
