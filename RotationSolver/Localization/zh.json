@@ -358,7 +358,7 @@
     "HealthSingleSpell": "单体治疗魔法",
     "HealthSingleAbilityHot": "单体Hot能力技",
     "HealthSingleSpellHot": "单体Hot魔法",
-    "HealthForDyingTanksDefault": "濒死坦克的生命值",
+    "HealthForDyingTanks": "Health of dying tank",
     "IsValid": "此循环生效",
     "ShowStatus": "显示状态",
     "AverageTimeToKill": "Average time to kill",

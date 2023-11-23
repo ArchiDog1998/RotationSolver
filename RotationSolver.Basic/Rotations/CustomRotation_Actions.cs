@@ -27,9 +27,9 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, new JobRole[] { JobRole.RangedMagical }, ActionOption.Defense)
+    public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, new JobRole[] { JobRole.RangedMagical }, ActionOption.None/* | ActionOption.Defense*/)
     {
-        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle),
+        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle) && CurrentTarget.IsTargetable,
     };
 
     /// <summary>
@@ -77,8 +77,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LucidDreaming { get; } = new RoleAction(ActionID.LucidDreaming,
-        new JobRole[] { JobRole.Healer, JobRole.RangedMagical }, ActionOption.Buff)
+    public static IBaseAction LucidDreaming { get; } = new RoleAction(ActionID.LucidDreaming,new JobRole[] { JobRole.Healer, JobRole.RangedMagical }, ActionOption.Buff)
     {
         ActionCheck = (b, m) => Player.CurrentMp < 6000 && InCombat,
     };
@@ -86,8 +85,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,
-        new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, ActionOption.Heal)
+    public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, ActionOption.Heal)
     {
         ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat,
     };
@@ -149,7 +147,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Feint { get; } = new RoleAction(ActionID.Feint, new JobRole[] { JobRole.Melee }, ActionOption.Defense)
+    public static IBaseAction Feint { get; } = new RoleAction(ActionID.Feint, new JobRole[] { JobRole.Melee },  ActionOption.None /*| ActionOption.Defense*/)
     {
         ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Feint),
     };
@@ -195,14 +193,12 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SureCast { get; } = new RoleAction(ActionID.SureCast,
-        new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, ActionOption.Heal);
+    public static IBaseAction SureCast { get; } = new RoleAction(ActionID.SureCast,new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction TrueNorth { get; } = new RoleAction(ActionID.TrueNorth,
-        new JobRole[] { JobRole.Melee }, ActionOption.Heal)
+    public static IBaseAction TrueNorth { get; } = new RoleAction(ActionID.TrueNorth,new JobRole[] { JobRole.Melee }, ActionOption.Heal)
     {
         StatusProvide = new StatusID[] { StatusID.TrueNorth, StatusID.RightEye },
     };

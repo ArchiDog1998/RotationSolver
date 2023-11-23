@@ -293,7 +293,7 @@ internal class SocialUpdater
             Character
             .Append(new SeString(new TextPayload($"({name}) is one of the authors of ")))
             .Append(RotationSolver)
-            .Append(new SeString(new TextPayload(". So say hello to him/her!")));
+            .Append(new SeString(new TextPayload(". So say hello to them!")));
     }
 
 
@@ -307,7 +307,7 @@ internal class SocialUpdater
             Character
             .Append(new SeString(new TextPayload($" is one of the contributors of ")))
             .Append(RotationSolver)
-            .Append(new SeString(new TextPayload(". So say hello to him/her!")));
+            .Append(new SeString(new TextPayload(". So say hello to them!")));
     }
 
     internal class UserChatEntity : ChatEntity
@@ -322,6 +322,6 @@ internal class SocialUpdater
             Character
             .Append(new SeString(new TextPayload($" is one of the users of ")))
             .Append(RotationSolver)
-            .Append(new SeString(new TextPayload(". So say hello to him/her!")));
+            .Append(new SeString(new TextPayload(". So say hello to them!")));
     }
 }
