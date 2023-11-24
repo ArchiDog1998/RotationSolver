@@ -407,21 +407,27 @@ internal static partial class TargetUpdater
         SortedDictionary<uint, Vector3> locs = new();
         foreach (var item in deathAll)
         {
+            if (item is null) continue;
             locs[item.ObjectId] = item.Position;
         }
         foreach (var item in deathParty)
         {
+            if (item is null) continue;
             locs[item.ObjectId] = item.Position;
         }
-
-        deathAll = FilterForDeath(deathAll);
-        deathParty = FilterForDeath(deathParty);
-
+        if (deathAll is not null)
+        {
+            deathAll = FilterForDeath(deathAll);
+        }
+        if (deathParty is not null)
+        {
+            deathParty = FilterForDeath(deathParty);
+        }
         _locations = locs;
     }
 
     private static IEnumerable<BattleChara> FilterForDeath(IEnumerable<BattleChara> battleCharas)
-    => battleCharas.Where(b =>
+    => battleCharas?.Where(b =>
     {
         if (!_locations.TryGetValue(b.ObjectId, out var loc)) return false;
 
