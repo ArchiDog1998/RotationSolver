@@ -1,14 +1,12 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
-using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Helpers;
-using System.Configuration;
 using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -407,21 +405,27 @@ internal static partial class TargetUpdater
         SortedDictionary<uint, Vector3> locs = new();
         foreach (var item in deathAll)
         {
+            if (item is null) continue;
             locs[item.ObjectId] = item.Position;
         }
         foreach (var item in deathParty)
         {
+            if (item is null) continue;
             locs[item.ObjectId] = item.Position;
         }
-
-        deathAll = FilterForDeath(deathAll);
-        deathParty = FilterForDeath(deathParty);
-
+        if (deathAll is not null)
+        {
+            deathAll = FilterForDeath(deathAll);
+        }
+        if (deathParty is not null)
+        {
+            deathParty = FilterForDeath(deathParty);
+        }
         _locations = locs;
     }
 
     private static IEnumerable<BattleChara> FilterForDeath(IEnumerable<BattleChara> battleCharas)
-    => battleCharas.Where(b =>
+    => battleCharas?.Where(b =>
     {
         if (!_locations.TryGetValue(b.ObjectId, out var loc)) return false;
 
@@ -436,12 +440,12 @@ internal static partial class TargetUpdater
                        _healDelay4 = new(GetHealRange);
     static void UpdateCanHeal(PlayerCharacter player)
     {
-        var singleAbility = ShouldHealSingle(StatusHelper.SingleHots, 
+        var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,
             Service.Config.GetValue(JobConfigFloat.HealthSingleAbility),
             Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot));
 
         var singleSpell = ShouldHealSingle(StatusHelper.SingleHots,
-            Service.Config.GetValue(JobConfigFloat.HealthSingleSpell), 
+            Service.Config.GetValue(JobConfigFloat.HealthSingleSpell),
             Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot));
 
         var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealSelfWhenNoHealer) && player.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
@@ -452,7 +456,7 @@ internal static partial class TargetUpdater
             : singleAbility > 0;
 
         DataCenter.CanHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, Service.Config.GetValue(JobConfigFloat.HealthSingleSpell),
-           Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot)) 
+           Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot))
             : singleSpell > 0;
 
         DataCenter.CanHealAreaAbility = singleAbility > 2;
