@@ -35,6 +35,12 @@ NOTICE: It can't use with [`Block Targeting Treasure Hunt Enemies`](https://gith
 
 I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXIVClientStructs/blob/c554a586c4649a472433734b45c59a4bc4979ead/FFXIVClientStructs/FFXIV/Client/Game/Object/GameObject.cs#L71) Method in [FFXIVClientStructs](https://github.com/aers/FFXIVClientStructs). If anybody knows why, please tell me.
 
+## Want to contribute?
+
+- Create a fork
+- Make your changes
+- Test the changes
+- Create a PR and point it to main
 
 ## Links
 
