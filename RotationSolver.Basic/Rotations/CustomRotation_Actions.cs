@@ -27,9 +27,9 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, new JobRole[] { JobRole.RangedMagical }, ActionOption.None)
+    public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, new JobRole[] { JobRole.RangedMagical }, ActionOption.None/* | ActionOption.Defense*/)
     {
-        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle) && b.IsTargetable
+        ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle) && CurrentTarget.IsTargetable,
     };
 
     /// <summary>
