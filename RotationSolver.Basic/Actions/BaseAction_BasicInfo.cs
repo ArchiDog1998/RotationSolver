@@ -27,7 +27,15 @@ public partial class BaseAction : IBaseAction
     /// <summary>
     /// Is a friendly action.
     /// </summary>
-    public bool IsFriendly => _option.HasFlag(ActionOption.Friendly);
+    public bool IsFriendly
+    {
+        get
+        {
+            if (_action.CanTargetFriendly) return true;
+            if (_action.CanTargetHostile) return false;
+            return _option.HasFlag(ActionOption.Friendly);
+        }
+    }
 
     /// <summary>
     /// Is effect of time.
