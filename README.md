@@ -1,3 +1,5 @@
+## There is no repo, development and support by Archi has stopped.
+
 
 # [![](Images/Logo.gif)](https://archidog1998.github.io/RotationSolver/#/) **Rotation Solver**
 
