@@ -10,12 +10,12 @@ namespace RotationSolver.Updaters;
 
 internal static class RotationUpdater
 {
-    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
+    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = [];
 
-    internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
-    internal static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
+    internal static SortedList<string, string> AuthorHashes { get; private set; } = [];
+    internal static CustomRotationGroup[] CustomRotations { get; set; } = [];
 
-    public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
+    public static IAction[] RightRotationActions { get; private set; } = [];
 
     private static DateTime LastRunTime;
 
@@ -96,7 +96,7 @@ internal static class RotationUpdater
             }
         }
 
-        AuthorHashes = new SortedList<string, string>();
+        AuthorHashes = [];
         foreach (var assembly in assemblies)
         {
             try
@@ -128,14 +128,16 @@ internal static class RotationUpdater
         foreach (var customRotationGroup in CustomRotations)
         {
             var jobRole = customRotationGroup.Rotations[0].ClassJob.GetJobRole();
-            if (!customRotationsGroupedByJobRole.ContainsKey(jobRole))
+            if (!customRotationsGroupedByJobRole.TryGetValue(jobRole, out List<CustomRotationGroup> value))
             {
-                customRotationsGroupedByJobRole[jobRole] = new List<CustomRotationGroup>();
+                value = [];
+                customRotationsGroupedByJobRole[jobRole] = value;
             }
-            customRotationsGroupedByJobRole[jobRole].Add(customRotationGroup);
+
+            value.Add(customRotationGroup);
         }
 
-        CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>();
+        CustomRotationsDict = [];
         foreach (var jobRole in customRotationsGroupedByJobRole.Keys)
         {
             var customRotationGroups = customRotationsGroupedByJobRole[jobRole];
@@ -167,11 +169,13 @@ internal static class RotationUpdater
         foreach (var rotation in rotationList)
         {
             var jobId = rotation.Jobs[0];
-            if (!rotationGroups.ContainsKey(jobId))
+            if (!rotationGroups.TryGetValue(jobId, out List<ICustomRotation> value))
             {
-                rotationGroups.Add(jobId, new List<ICustomRotation>());
+                value = [];
+                rotationGroups.Add(jobId, value);
             }
-            rotationGroups[jobId].Add(rotation);
+
+            value.Add(rotation);
         }
 
         var result = new List<CustomRotationGroup>();
@@ -183,7 +187,7 @@ internal static class RotationUpdater
         }
 
 
-        return result.ToArray();
+        return [.. result];
     }
 
 
@@ -200,7 +204,7 @@ internal static class RotationUpdater
         // Code to download rotations from remote server
         bool hasDownload = false;
 
-        var GitHubLinks = Service.Config.GlobalConfig.GitHubLibs.Union(DownloadHelper.LinkLibraries ?? Array.Empty<string>());
+        var GitHubLinks = Service.Config.GlobalConfig.GitHubLibs.Union(DownloadHelper.LinkLibraries ?? []);
 
         using (var client = new HttpClient())
         {
@@ -348,7 +352,7 @@ internal static class RotationUpdater
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, $"Failed to load the types from {assembly.FullName}");
-            return Array.Empty<Type>();
+            return [];
         }
     }
 
@@ -376,7 +380,7 @@ internal static class RotationUpdater
                 result.Add(combo);
             }
         }
-        return result.ToArray();
+        return [.. result];
     }
 
     public static IEnumerable<IGrouping<string, IAction>> AllGroupedActions
@@ -451,14 +455,14 @@ internal static class RotationUpdater
                 rotation?.OnTerritoryChanged();
             }
             DataCenter.RightNowRotation = rotation;
-            RightRotationActions = DataCenter.RightNowRotation?.AllActions ?? Array.Empty<IAction>();
+            RightRotationActions = DataCenter.RightNowRotation?.AllActions ?? [];
             DataCenter.Job = DataCenter.RightNowRotation?.Jobs[0] ?? Job.ADV;
             return;
         }
 
         CustomRotation.MoveTarget = null;
         DataCenter.RightNowRotation = null;
-        RightRotationActions = Array.Empty<IAction>();
+        RightRotationActions = [];
         DataCenter.Job = DataCenter.RightNowRotation?.Jobs[0] ?? Job.ADV;
     }
 

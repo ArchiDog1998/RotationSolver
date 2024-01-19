@@ -1,15 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>full</DebugType>
+  <PropertyGroup>
+	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
   </ItemGroup>
   <ItemGroup>
-
+	  <Reference Include="Dalamud">
+		  <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="ImGui.NET">
+		  <HintPath>$(DalamudLibPath)ImGui.NET.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="ImGuiScene">
+		  <HintPath>$(DalamudLibPath)ImGuiScene.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Lumina">
+		  <HintPath>$(DalamudLibPath)Lumina.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Lumina.Excel">
+		  <HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="FFXIVClientStructs">
+		  <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Newtonsoft.Json">
+		  <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
 	  <Using Include="Dalamud.Game.ClientState.JobGauge.Enums" />
 	  <Using Include="Dalamud.Game.ClientState.Objects.Types" />
 	  <Using Include="Dalamud.Interface" />

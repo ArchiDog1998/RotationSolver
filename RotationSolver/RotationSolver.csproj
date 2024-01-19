@@ -3,15 +3,39 @@
 	  <Description>Based on the pve combat information in one frame, find the best action.</Description>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>full</DebugType>
+	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
   </PropertyGroup>
 
   <ItemGroup>
+	  <Reference Include="Dalamud">
+		  <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="ImGui.NET">
+		  <HintPath>$(DalamudLibPath)ImGui.NET.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="ImGuiScene">
+		  <HintPath>$(DalamudLibPath)ImGuiScene.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Lumina">
+		  <HintPath>$(DalamudLibPath)Lumina.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Lumina.Excel">
+		  <HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="FFXIVClientStructs">
+		  <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  <Reference Include="Newtonsoft.Json">
+		  <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
+		  <Private>False</Private>
+	  </Reference>
+	  
     <PackageReference Include="DalamudPackager" Version="2.1.12" />
   </ItemGroup>
 
@@ -29,5 +53,9 @@
 		<Using Include="RotationSolver.Basic.Helpers" />
 		<Using Include="RotationSolver.Basic.Rotations" />
 		<Using Include="RotationSolver.Basic.Rotations.Basic" />
+		<Using Include="Dalamud.Game.ClientState.JobGauge.Enums" />
+		<Using Include="Dalamud.Interface" />
+		<Using Include="ImGuiNET" />
+		<Using Include="Newtonsoft.Json" />
 	</ItemGroup>
 </Project>

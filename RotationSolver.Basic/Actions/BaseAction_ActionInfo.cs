@@ -7,12 +7,12 @@ namespace RotationSolver.Basic.Actions;
 
 public partial class BaseAction
 {
-    internal static readonly uint[] ActionsNoNeedCasting = new uint[]
-    {
+    internal static readonly uint[] ActionsNoNeedCasting =
+    [
         5,
         (uint)ActionID.PvP_PowerfulShot,
         (uint)ActionID.PvP_BlastCharge,
-    };
+    ];
     /// <summary>
     /// The user set heal ratio.
     /// </summary>
@@ -99,7 +99,7 @@ public partial class BaseAction
         var mustUse = option.HasFlag(CanUseOption.MustUse);
 
         Target = player;
-        AffectedTargets = Array.Empty<BattleChara>();
+        AffectedTargets = [];
 
         if (AutoHealCheck && IsFriendly)
         {
@@ -200,7 +200,7 @@ public partial class BaseAction
 
         var comboActions = _action.ActionCombo?.Row != 0
             ? new ActionID[] { (ActionID)_action.ActionCombo.Row }
-            : Array.Empty<ActionID>();
+            : [];
         if (ComboIds != null) comboActions = comboActions.Union(ComboIds).ToArray();
 
         if (comboActions.Length > 0)

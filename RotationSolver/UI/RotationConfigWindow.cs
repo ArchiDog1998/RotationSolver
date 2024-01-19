@@ -141,7 +141,7 @@ public partial class RotationConfigWindow : Window
                 else
                 {
                     var key = "Condition Set At " + i.ToString();
-                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, new string[] { "Delete" }));
+                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, ["Delete"]));
 
 
                     if (ImGui.Selectable(combos[i].Name))
@@ -150,7 +150,7 @@ public partial class RotationConfigWindow : Window
                     }
 
                     ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
-        (DeleteFile, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+        (DeleteFile, [Dalamud.Game.ClientState.Keys.VirtualKey.DELETE]));
                 }
             }
 
@@ -241,7 +241,7 @@ public partial class RotationConfigWindow : Window
                         if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize, item.ToString()))
                         {
                             _activeTab = item;
-                            _searchResults = Array.Empty<ISearchable>();
+                            _searchResults = [];
                         }
                         ImGuiHelper.DrawActionOverlay(cursor, iconSize, _activeTab == item ? 1 : 0);
                     }, Math.Max(Scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
@@ -256,7 +256,7 @@ public partial class RotationConfigWindow : Window
                     if (ImGui.Selectable(item.ToString(), _activeTab == item, ImGuiSelectableFlags.None, new Vector2(0, 20)))
                     {
                         _activeTab = item;
-                        _searchResults = Array.Empty<ISearchable>();
+                        _searchResults = [];
                     }
                     if (ImGui.IsItemHovered())
                     {
@@ -346,7 +346,7 @@ public partial class RotationConfigWindow : Window
                     _activeTab == RotationConfigWindowTab.About, "About Icon"))
                 {
                     _activeTab = RotationConfigWindowTab.About;
-                    _searchResults = Array.Empty<ISearchable>();
+                    _searchResults = [];
                 }
                 ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
 
@@ -366,7 +366,7 @@ public partial class RotationConfigWindow : Window
         var rotation = DataCenter.RightNowRotation;
         if (rotation != null)
         {
-            var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? Array.Empty<ICustomRotation>();
+            var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? [];
 
             if (DataCenter.Territory?.IsPvpZone ?? false)
             {
@@ -433,7 +433,7 @@ public partial class RotationConfigWindow : Window
             Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
         {
             _activeTab = RotationConfigWindowTab.Rotation;
-            _searchResults = Array.Empty<ISearchable>();
+            _searchResults = [];
         }
         if (ImGui.IsItemHovered())
         {
@@ -739,7 +739,7 @@ public partial class RotationConfigWindow : Window
             ImGui.TableNextColumn();
             ImGui.TableHeader("Type");
 
-            foreach (var item in DownloadHelper.IncompatiblePlugins ?? Array.Empty<IncompatiblePlugin>())
+            foreach (var item in DownloadHelper.IncompatiblePlugins ?? [])
             {
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
@@ -873,14 +873,14 @@ public partial class RotationConfigWindow : Window
         _rotationHeader.Draw();
     }
 
-    private static readonly uint[] RatingColors = new uint[]
-    {
+    private static readonly uint[] RatingColors =
+    [
         ImGui.ColorConvertFloat4ToU32(ImGuiColors.TankBlue),
         ImGui.ColorConvertFloat4ToU32(ImGuiColors.HealerGreen),
         ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow),
         ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudOrange),
         ImGui.ColorConvertFloat4ToU32(ImGuiColors.DPSRed),
-    };
+    ];
     private static uint ChangeAlpha(uint color)
     {
         var c = ImGui.ColorConvertU32ToFloat4(color);
@@ -1712,12 +1712,12 @@ public partial class RotationConfigWindow : Window
     {
         if (!Service.Config.GlobalConfig.GitHubLibs.Any(s => string.IsNullOrEmpty(s) || s == "||"))
         {
-            Service.Config.GlobalConfig.GitHubLibs = Service.Config.GlobalConfig.GitHubLibs.Append("||").ToArray();
+            Service.Config.GlobalConfig.GitHubLibs = [.. Service.Config.GlobalConfig.GitHubLibs, "||"];
         }
 
         ImGui.Spacing();
 
-        foreach (var gitHubLink in DownloadHelper.LinkLibraries ?? Array.Empty<string>())
+        foreach (var gitHubLink in DownloadHelper.LinkLibraries ?? [])
         {
             var strs = gitHubLink.Split('|');
             var userName = strs.FirstOrDefault() ?? string.Empty;
@@ -1770,7 +1770,7 @@ public partial class RotationConfigWindow : Window
         {
             var list = Service.Config.GlobalConfig.GitHubLibs.ToList();
             list.RemoveAt(removeIndex);
-            Service.Config.GlobalConfig.GitHubLibs = list.ToArray();
+            Service.Config.GlobalConfig.GitHubLibs = [.. list];
         }
     }
 
@@ -1778,7 +1778,7 @@ public partial class RotationConfigWindow : Window
     {
         if (!Service.Config.GlobalConfig.OtherLibs.Any(string.IsNullOrEmpty))
         {
-            Service.Config.GlobalConfig.OtherLibs = Service.Config.GlobalConfig.OtherLibs.Append(string.Empty).ToArray();
+            Service.Config.GlobalConfig.OtherLibs = [.. Service.Config.GlobalConfig.OtherLibs, string.Empty];
         }
 
         ImGui.Spacing();
@@ -1801,7 +1801,7 @@ public partial class RotationConfigWindow : Window
         {
             var list = Service.Config.GlobalConfig.OtherLibs.ToList();
             list.RemoveAt(removeIndex);
-            Service.Config.GlobalConfig.OtherLibs = list.ToArray();
+            Service.Config.GlobalConfig.OtherLibs = [.. list];
         }
     }
     #endregion 
@@ -1955,7 +1955,7 @@ public partial class RotationConfigWindow : Window
 
             var key = "Status" + status.RowId.ToString();
 
-            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }));
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, ["Delete"]));
 
             if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
             {
@@ -1966,7 +1966,7 @@ public partial class RotationConfigWindow : Window
                 ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * Scale, "Status" + status.RowId.ToString());
 
                 ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false,
-                    (Delete, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+                    (Delete, [Dalamud.Game.ClientState.Keys.VirtualKey.DELETE]));
             }
         }
 
@@ -2014,10 +2014,10 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private static readonly ISearchable[] _listSearchable = new ISearchable[]
-    {
+    private static readonly ISearchable[] _listSearchable =
+    [
         new CheckBoxSearchPlugin(PluginConfigBool.RecordCastingArea),
-    };
+    ];
 
     private static void DrawListActions()
     {
@@ -2078,11 +2078,11 @@ public partial class RotationConfigWindow : Window
 
             var key = "Action" + action.RowId.ToString();
 
-            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, ["Delete"]));
 
             ImGui.Selectable($"{action.Name} ({action.RowId})");
 
-            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [Dalamud.Game.ClientState.Keys.VirtualKey.DELETE]));
         }
 
         if (removeId != 0)
@@ -2177,13 +2177,13 @@ public partial class RotationConfigWindow : Window
 
             if (!OtherConfiguration.NoHostileNames.TryGetValue(territoryId, out var libs))
             {
-                OtherConfiguration.NoHostileNames[territoryId] = libs = Array.Empty<string>();
+                OtherConfiguration.NoHostileNames[territoryId] = libs = [];
             }
 
             //Add one.
             if (!libs.Any(string.IsNullOrEmpty))
             {
-                OtherConfiguration.NoHostileNames[territoryId] = libs.Append(string.Empty).ToArray();
+                OtherConfiguration.NoHostileNames[territoryId] = [.. libs, string.Empty];
             }
 
             int removeIndex = -1;
@@ -2206,7 +2206,7 @@ public partial class RotationConfigWindow : Window
             {
                 var list = libs.ToList();
                 list.RemoveAt(removeIndex);
-                OtherConfiguration.NoHostileNames[territoryId] = list.ToArray();
+                OtherConfiguration.NoHostileNames[territoryId] = [.. list];
                 OtherConfiguration.SaveNoHostileNames();
             }
             ImGui.TableNextColumn();
@@ -2217,12 +2217,12 @@ public partial class RotationConfigWindow : Window
 
             if (!OtherConfiguration.NoProvokeNames.TryGetValue(territoryId, out libs))
             {
-                OtherConfiguration.NoProvokeNames[territoryId] = libs = Array.Empty<string>();
+                OtherConfiguration.NoProvokeNames[territoryId] = libs = [];
             }
             //Add one.
             if (!libs.Any(string.IsNullOrEmpty))
             {
-                OtherConfiguration.NoProvokeNames[territoryId] = libs.Append(string.Empty).ToArray();
+                OtherConfiguration.NoProvokeNames[territoryId] = [.. libs, string.Empty];
             }
             removeIndex = -1;
             for (int i = 0; i < libs.Length; i++)
@@ -2244,7 +2244,7 @@ public partial class RotationConfigWindow : Window
             {
                 var list = libs.ToList();
                 list.RemoveAt(removeIndex);
-                OtherConfiguration.NoProvokeNames[territoryId] = list.ToArray();
+                OtherConfiguration.NoProvokeNames[territoryId] = [.. list];
                 OtherConfiguration.SaveNoProvokeNames();
             }
 
@@ -2252,7 +2252,7 @@ public partial class RotationConfigWindow : Window
 
             if (!OtherConfiguration.BeneficialPositions.TryGetValue(territoryId, out var pts))
             {
-                OtherConfiguration.BeneficialPositions[territoryId] = pts = Array.Empty<Vector3>();
+                OtherConfiguration.BeneficialPositions[territoryId] = pts = [];
             }
 
             if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_List_AddPosition) && Player.Available) unsafe
@@ -2263,8 +2263,12 @@ public partial class RotationConfigWindow : Window
                     RaycastHit hit = default;
 
                     OtherConfiguration.BeneficialPositions[territoryId]
-                    = pts.Append(FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
-                        ->RaycastEx(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point).ToArray();
+                    =
+                    [
+                        .. pts,
+                        FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
+                            ->RaycastEx(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
+                    ];
                     OtherConfiguration.SaveBeneficialPositions();
                 }
 
@@ -2276,7 +2280,7 @@ public partial class RotationConfigWindow : Window
 
                 var key = "Beneficial Positions" + i.ToString();
 
-                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, new string[] { "Delete" }));
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, ["Delete"]));
 
                 ImGui.Selectable(pts[i].ToString());
 
@@ -2285,13 +2289,13 @@ public partial class RotationConfigWindow : Window
                     HoveredPosition = pts[i];
                 }
 
-                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, new Dalamud.Game.ClientState.Keys.VirtualKey[] { Dalamud.Game.ClientState.Keys.VirtualKey.DELETE }));
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [Dalamud.Game.ClientState.Keys.VirtualKey.DELETE]));
             }
             if (removeIndex > -1)
             {
                 var list = pts.ToList();
                 list.RemoveAt(removeIndex);
-                OtherConfiguration.BeneficialPositions[territoryId] = list.ToArray();
+                OtherConfiguration.BeneficialPositions[territoryId] = [.. list];
                 OtherConfiguration.SaveBeneficialPositions();
             }
         }
@@ -2310,10 +2314,10 @@ public partial class RotationConfigWindow : Window
 
         _debugHeader?.Draw();
     }
-    private static readonly ISearchable[] _debugSearchable = new ISearchable[]
-    {
+    private static readonly ISearchable[] _debugSearchable =
+    [
         new CheckBoxSearchPlugin(PluginConfigBool.InDebug),
-    };
+    ];
 
     private static readonly CollapsingHeaderGroup _debugHeader = new(new()
     {
