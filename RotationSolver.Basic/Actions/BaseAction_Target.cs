@@ -118,7 +118,7 @@ public partial class BaseAction
         if (range == 0 && EffectRange == 0)
         {
             target = player;
-            affectedTargets = Array.Empty<BattleChara>();
+            affectedTargets = [];
             return true;
         }
         else if (IsTargetArea)
@@ -384,11 +384,11 @@ public partial class BaseAction
         target = TargetFilter.GetDeathPeople(DataCenter.DeathPeopleAll, DataCenter.DeathPeopleParty);
         if (target == null)
         {
-            affectedTargets = Array.Empty<BattleChara>();
+            affectedTargets = [];
             return false;
         }
 
-        affectedTargets = new BattleChara[] { target };
+        affectedTargets = [target];
         return true;
     }
     #endregion
@@ -404,14 +404,14 @@ public partial class BaseAction
             }
 
             target = null;
-            affectedTargets = Array.Empty<BattleChara>();
+            affectedTargets = [];
             return false;
         }
 
         if (!IsSingleTarget && NoAOE)
         {
             target = null;
-            affectedTargets = Array.Empty<BattleChara>();
+            affectedTargets = [];
             return false;
         }
 

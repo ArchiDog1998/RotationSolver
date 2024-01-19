@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+
+	  <Using Include="Dalamud.Game.ClientState.JobGauge.Enums" />
+	  <Using Include="Dalamud.Game.ClientState.Objects.Types" />
+	  <Using Include="Dalamud.Interface" />
+	  <Using Include="ImGuiNET" />
+	  <Using Include="Newtonsoft.Json" />
+	  <Using Include="RotationSolver.Basic" />
+	  <Using Include="RotationSolver.Basic.Actions" />
+	  <Using Include="RotationSolver.Basic.Attributes" />
+	  <Using Include="RotationSolver.Basic.Configuration.RotationConfig" />
+	  <Using Include="RotationSolver.Basic.Data" />
+	  <Using Include="RotationSolver.Basic.Helpers" />
+	  <Using Include="RotationSolver.Basic.Rotations" />
+	  <Using Include="RotationSolver.Basic.Rotations.Basic" />
+	  <Using Include="System.Numerics" />
+	  <Using Include="System.Reflection" />
+  </ItemGroup>
+</Project>
