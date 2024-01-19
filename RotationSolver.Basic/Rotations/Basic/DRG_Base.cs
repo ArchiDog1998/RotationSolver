@@ -96,7 +96,7 @@ public abstract class DRG_Base : CustomRotation
     /// </summary>
     public static IBaseAction FangandClaw { get; } = new BaseAction(ActionID.FangandClaw)
     {
-        StatusNeed = new StatusID[] { StatusID.SharperFangandClaw },
+        StatusNeed = [StatusID.FangAndClawBared],
     };
 
     /// <summary>
@@ -104,7 +104,7 @@ public abstract class DRG_Base : CustomRotation
     /// </summary>
     public static IBaseAction WheelingThrust { get; } = new BaseAction(ActionID.WheelingThrust)
     {
-        StatusNeed = new StatusID[] { StatusID.EnhancedWheelingThrust },
+        StatusNeed = [StatusID.WheelInMotion],
     };
 
     /// <summary>

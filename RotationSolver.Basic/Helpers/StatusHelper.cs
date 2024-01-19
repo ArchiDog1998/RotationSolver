@@ -14,44 +14,44 @@ public static class StatusHelper
     /// <summary>
     /// 
     /// </summary>
-    public static StatusID[] AreaHots { get; } = new StatusID[]
-    {
-        StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2
-    };
+    public static StatusID[] AreaHots { get; } =
+    [
+        StatusID.AspectedHelios, StatusID.MedicaIi, StatusID.TrueMedicaIi
+    ];
 
     /// <summary>
     /// 
     /// </summary>
-    public static StatusID[] SingleHots { get; } = new StatusID[]
-    {
-        StatusID.AspectedBenefic, StatusID.Regen1, StatusID.Regen2, StatusID.Regen3
-    };
+    public static StatusID[] SingleHots { get; } =
+    [
+        StatusID.AspectedBenefic, StatusID.Regen, StatusID.Regen_897, StatusID.Regen_1330
+    ];
 
-    internal static StatusID[] TankStanceStatus { get; } = new StatusID[]
-    {
+    internal static StatusID[] TankStanceStatus { get; } =
+    [
         StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance
-    };
+    ];
 
-    internal static StatusID[] NoNeedHealingStatus { get; } = new StatusID[]
-    {
+    internal static StatusID[] NoNeedHealingStatus { get; } =
+    [
         StatusID.Holmgang, StatusID.LivingDead, //StatusID.WalkingDead,
-    };
+    ];
 
     internal record Burst2MinsInfo(StatusID Status, bool IsOnHostile, byte Level, params Job[] Jobs);
 
-    internal static Burst2MinsInfo[] Burst2Mins { get; } = new Burst2MinsInfo[]
-    {
-        new Burst2MinsInfo(StatusID.Divination, false, AST_Base.Divination.Level, Job.AST),
-        new Burst2MinsInfo(StatusID.ChainStratagem, true, SCH_Base.ChainStratagem.Level, Job.SCH),
-        new Burst2MinsInfo(StatusID.Brotherhood, false, MNK_Base.Brotherhood.Level, Job.MNK),
-        new Burst2MinsInfo(StatusID.BattleLitany, false, DRG_Base.BattleLitany.Level, Job.DRG),
-        new Burst2MinsInfo(StatusID.ArcaneCircle, false, RPR_Base.ArcaneCircle.Level, Job.RPR),
-        new Burst2MinsInfo(StatusID.BattleVoice, false, BRD_Base.BattleVoice.Level,Job.BRD ),
-        new Burst2MinsInfo(StatusID.TechnicalFinish, false, DNC_Base.TechnicalStep.Level, Job.DNC),
-        new Burst2MinsInfo(StatusID.SearingLight, false, SMN_Base.SearingLight.Level, Job.SMN),
-        new Burst2MinsInfo(StatusID.Embolden, false, RDM_Base.Embolden.Level, Job.RDM),
-        new Burst2MinsInfo(StatusID.Mug, true, NIN_Base.Mug.Level, Job.NIN, Job.ROG),
-    };
+    internal static Burst2MinsInfo[] Burst2Mins { get; } =
+    [
+        new (StatusID.Divination, false, AST_Base.Divination.Level, Job.AST),
+        new (StatusID.ChainStratagem, true, SCH_Base.ChainStratagem.Level, Job.SCH),
+        new (StatusID.Brotherhood, false, MNK_Base.Brotherhood.Level, Job.MNK),
+        new (StatusID.BattleLitany, false, DRG_Base.BattleLitany.Level, Job.DRG),
+        new (StatusID.ArcaneCircle, false, RPR_Base.ArcaneCircle.Level, Job.RPR),
+        new (StatusID.BattleVoice, false, BRD_Base.BattleVoice.Level,Job.BRD ),
+        new (StatusID.TechnicalFinish, false, DNC_Base.TechnicalStep.Level, Job.DNC),
+        new (StatusID.SearingLight, false, SMN_Base.SearingLight.Level, Job.SMN),
+        new (StatusID.Embolden, false, RDM_Base.Embolden.Level, Job.RDM),
+        new (StatusID.Mug, true, NIN_Base.Mug.Level, Job.NIN, Job.ROG),
+    ];
 
     /// <summary>
     /// Check whether the target needs to be healing.

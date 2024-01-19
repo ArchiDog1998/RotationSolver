@@ -32,7 +32,7 @@ public sealed class SCH_Default : SCH_Base
         foreach (var item in PartyMembers)
         {
             if (item.GetHealthRatio() < 0.9) continue;
-            if (item.HasStatus(true, StatusID.Aetherpact))
+            if (item.HasStatus(true, StatusID.FeyUnion_1223))
             {
                 act = Aetherpact;
                 return true;
@@ -79,7 +79,7 @@ public sealed class SCH_Default : SCH_Base
     protected override bool HealSingleAbility(out IAction act)
     {
         //判断是否有人有线
-        var haveLink = PartyMembers.Any(p => p.HasStatus(true, StatusID.Aetherpact));
+        var haveLink = PartyMembers.Any(p => p.HasStatus(true, StatusID.FeyUnion_1223));
 
         //以太契约
         if (Aetherpact.CanUse(out act) && FairyGauge >= 70 && !haveLink) return true;

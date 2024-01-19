@@ -305,7 +305,7 @@ public class BLM_Default : BLM_Base
 
         //So long for thunder.
         if (Thunder.CanUse(out _) && !Thunder.Target.WillStatusEndGCD(gcdCount, 0, true,
-            StatusID.Thunder, StatusID.Thunder2, StatusID.Thunder3, StatusID.Thunder4))
+            StatusID.Thunder, StatusID.ThunderIi, StatusID.ThunderIii, StatusID.ThunderIv))
             return false;
 
         if (Thunder2.CanUse(out act)) return true;

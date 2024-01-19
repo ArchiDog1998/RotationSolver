@@ -27,7 +27,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, new JobRole[] { JobRole.RangedMagical }, ActionOption.Defense)
+    public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, [JobRole.RangedMagical], ActionOption.Defense)
     {
         ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle),
     };
@@ -35,20 +35,20 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.SwiftCast, new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, ActionOption.Buff)
+    public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.SwiftCast, [JobRole.RangedMagical, JobRole.Healer], ActionOption.Buff)
     {
-        StatusProvide = new StatusID[]
-        {
-            StatusID.SwiftCast,
-            StatusID.TripleCast,
-            StatusID.DualCast,
-        }
+        StatusProvide =
+        [
+            StatusID.Swiftcast,
+            StatusID.Triplecast,
+            StatusID.Dualcast,
+        ]
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Esuna { get; } = new RoleAction(ActionID.Esuna, new JobRole[] { JobRole.Healer }, ActionOption.Heal)
+    public static IBaseAction Esuna { get; } = new RoleAction(ActionID.Esuna, [JobRole.Healer], ActionOption.Heal)
     {
         ChoiceTarget = (tars, mustUse) =>
         {
@@ -67,18 +67,18 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Rescue { get; } = new RoleAction(ActionID.Rescue, new JobRole[] { JobRole.Healer }, ActionOption.Heal);
+    public static IBaseAction Rescue { get; } = new RoleAction(ActionID.Rescue, [JobRole.Healer], ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Repose { get; } = new RoleAction(ActionID.Repose, new JobRole[] { JobRole.Healer });
+    public static IBaseAction Repose { get; } = new RoleAction(ActionID.Repose, [JobRole.Healer]);
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction LucidDreaming { get; } = new RoleAction(ActionID.LucidDreaming,
-        new JobRole[] { JobRole.Healer, JobRole.RangedMagical }, ActionOption.Buff)
+        [JobRole.Healer, JobRole.RangedMagical], ActionOption.Buff)
     {
         ActionCheck = (b, m) => Player.CurrentMp < 6000 && InCombat,
     };
@@ -87,7 +87,7 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,
-        new JobRole[] { JobRole.RangedPhysical, JobRole.Melee }, ActionOption.Heal)
+        [JobRole.RangedPhysical, JobRole.Melee], ActionOption.Heal)
     {
         ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat,
     };
@@ -95,18 +95,18 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction ArmsLength { get; } = new RoleAction(ActionID.ArmsLength, new JobRole[] { JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical }, ActionOption.Defense | ActionOption.EndSpecial);
+    public static IBaseAction ArmsLength { get; } = new RoleAction(ActionID.ArmsLength, [JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical], ActionOption.Defense | ActionOption.EndSpecial);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Rampart { get; } = new RoleAction(ActionID.Rampart, new JobRole[] { JobRole.Tank }, ActionOption.Defense)
+    public static IBaseAction Rampart { get; } = new RoleAction(ActionID.Rampart, [JobRole.Tank], ActionOption.Defense)
     {
         StatusProvide = new StatusID[]
         {
-            StatusID.SuperBolide, StatusID.HallowedGround,
+            StatusID.Superbolide, StatusID.HallowedGround,
             StatusID.Rampart, StatusID.Bulwark,
-            StatusID.BloodWhetting,
+            StatusID.Bloodwhetting,
             StatusID.Vengeance,
             StatusID.Sentinel,
             StatusID.ShadowWall,
@@ -120,7 +120,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, new JobRole[] { JobRole.Tank })
+    public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, [JobRole.Tank])
     {
         FilterForHostiles = b => TargetFilter.ProvokeTarget(b),
     };
@@ -226,7 +226,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction Sprint { get; } = new BaseAction(ActionID.Sprint, ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.DualCast },
+        StatusProvide = new StatusID[] { StatusID.Dualcast },
     };
 
     private protected virtual IBaseAction Raise => null;
@@ -329,7 +329,7 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public static IBaseAction VariantRaise2 { get; } = new RoleAction(ActionID.VariantRaise2,
-    new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical, },
+    [JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical,],
     ActionOption.Friendly | ActionOption.DutyAction);
 
     /// <summary>
@@ -341,39 +341,39 @@ public abstract partial class CustomRotation
     /// 
     /// </summary>
     public static IBaseAction VariantCure { get; } = new RoleAction(ActionID.VariantCure,
-        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical },
+        [JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical],
         ActionOption.Heal | ActionOption.DutyAction | ActionOption.EndSpecial);
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction VariantCure2 { get; } = new RoleAction(ActionID.VariantCure2,
-        new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical },
+        [JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical],
         ActionOption.Heal | ActionOption.DutyAction | ActionOption.EndSpecial);
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction VariantSpiritDart { get; } = new RoleAction(ActionID.VariantSpiritDart,
-        new JobRole[] { JobRole.Healer, JobRole.Tank }, ActionOption.Dot | ActionOption.DutyAction);
+        [JobRole.Healer, JobRole.Tank], ActionOption.Dot | ActionOption.DutyAction);
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction VariantSpiritDart2 { get; } = new RoleAction(ActionID.VariantSpiritDart2,
-        new JobRole[] { JobRole.Healer, JobRole.Tank }, ActionOption.Dot | ActionOption.DutyAction);
+        [JobRole.Healer, JobRole.Tank], ActionOption.Dot | ActionOption.DutyAction);
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction VariantRampart { get; } = new RoleAction(ActionID.VariantRampart,
-        new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical, }, ActionOption.Buff | ActionOption.DutyAction);
+        [JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical,], ActionOption.Buff | ActionOption.DutyAction);
 
     /// <summary>
     /// 
     /// </summary>
     public static IBaseAction VariantRampart2 { get; } = new RoleAction(ActionID.VariantRampart2,
-        new JobRole[] { JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical }, ActionOption.Buff | ActionOption.DutyAction);
+        [JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical], ActionOption.Buff | ActionOption.DutyAction);
 
     /// <summary>
     /// 
@@ -381,7 +381,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostSpellforge { get; } = new BaseAction(ActionID.LostSpellforge,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostSpellforge },
+        StatusProvide = [StatusID.LostSpellforge],
         ActionCheck = (b, m) => LostSpellforge.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
         ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
@@ -410,7 +410,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostSteelsting { get; } = new BaseAction(ActionID.LostSteelsting,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostSteelsting },
+        StatusProvide = [StatusID.LostSteelsting],
         ActionCheck = (b, m) => LostSteelsting.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
         ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
         {
@@ -438,7 +438,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostRampage { get; } = new BaseAction(ActionID.LostRampage,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostRampage },
+        StatusProvide = [StatusID.LostRampage],
         ActionCheck = (b, m) => LostRampage.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
     };
 
@@ -448,7 +448,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostBurst { get; } = new BaseAction(ActionID.LostBurst,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostBurst },
+        StatusProvide = [StatusID.LostBurst],
         ActionCheck = (b, m) => LostBurst.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
     };
 
@@ -458,7 +458,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostBravery { get; } = new BaseAction(ActionID.LostBravery,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostBravery },
+        StatusProvide = [StatusID.LostBravery],
     };
 
     /// <summary>
@@ -467,7 +467,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostProtect { get; } = new BaseAction(ActionID.LostProtect,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostProtect, StatusID.LostProtect2 },
+        StatusProvide = [StatusID.LostProtect, StatusID.LostProtectIi],
     };
 
     /// <summary>
@@ -476,7 +476,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostShell { get; } = new BaseAction(ActionID.LostShell,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostShell, StatusID.LostShell2 },
+        StatusProvide = [StatusID.LostShell, StatusID.LostShellIi],
     };
 
     /// <summary>
@@ -485,7 +485,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostProtect2 { get; } = new BaseAction(ActionID.LostProtect2,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostProtect2 },
+        StatusProvide = [StatusID.LostProtectIi],
     };
 
     /// <summary>
@@ -494,7 +494,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostShell2 { get; } = new BaseAction(ActionID.LostShell2,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostShell2 },
+        StatusProvide = [StatusID.LostShellIi],
     };
 
     /// <summary>
@@ -503,7 +503,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostBubble { get; } = new BaseAction(ActionID.LostBubble,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.LostBubble },
+        StatusProvide = [StatusID.LostBubble],
     };
 
     /// <summary>
@@ -513,7 +513,7 @@ public abstract partial class CustomRotation
         ActionOption.DutyAction | ActionOption.Defense)
     {
         ChoiceTarget = TargetFilter.FindAttackedTarget,
-        StatusProvide = new StatusID[] { StatusID.LostStoneskin },
+        StatusProvide = [StatusID.Stoneskin],
     };
 
     /// <summary>
@@ -522,7 +522,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostStoneskin2 { get; } = new BaseAction(ActionID.LostStoneskin2,
         ActionOption.DutyAction | ActionOption.Defense)
     {
-        StatusProvide = new StatusID[] { StatusID.LostStoneskin },
+        StatusProvide = [StatusID.Stoneskin],
     };
 
     /// <summary>
@@ -531,7 +531,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlarestar,
     ActionOption.DutyAction)
     {
-        StatusProvide = new StatusID[] { StatusID.LostFlarestar },
+        StatusProvide = [StatusID.LostFlareStar],
     };
 
     /// <summary>
@@ -540,7 +540,7 @@ public abstract partial class CustomRotation
     public static IBaseAction LostSeraphStrike { get; } = new BaseAction(ActionID.LostSeraphStrike,
         ActionOption.DutyAction)
     {
-        StatusProvide = new StatusID[] { StatusID.LostSeraphStrike },
+        StatusProvide = [StatusID.ClericStance_2484],
     };
     #endregion
 
@@ -581,7 +581,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static IBaseAction PvP_Sprint { get; } = new BaseAction(ActionID.PvP_Sprint, ActionOption.Friendly)
     {
-        StatusProvide = new StatusID[] { StatusID.PvP_Sprint },
+        StatusProvide = [StatusID.Sprint_1342],
     };
     #endregion
 

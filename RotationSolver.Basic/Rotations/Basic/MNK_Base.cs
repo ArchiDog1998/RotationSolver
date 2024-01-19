@@ -365,7 +365,7 @@ public abstract class MNK_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Earthsreply { get; } = new BaseAction(ActionID.PvP_Earthsreply,ActionOption.Buff)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_EarthResonance },
+        StatusNeed = new StatusID[] { StatusID.EarthResonance },
     };
 
     /// <summary>

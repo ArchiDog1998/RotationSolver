@@ -71,7 +71,7 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction HeavyShoot { get; } = new BaseAction(ActionID.HeavyShoot)
     {
-        StatusProvide = new[] { StatusID.StraightShotReady }
+        StatusProvide = [StatusID.StraightShotReady]
     };
 
     /// <summary>
@@ -95,7 +95,7 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction WindBite { get; } = new BaseAction(ActionID.WindBite, ActionOption.Dot)
     {
-        TargetStatus = new[] { StatusID.WindBite, StatusID.StormBite },
+        TargetStatus = new[] { StatusID.Windbite, StatusID.Stormbite },
     };
 
     /// <summary>
@@ -137,7 +137,7 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction QuickNock { get; } = new BaseAction(ActionID.QuickNock)
     {
-        StatusProvide = new[] { StatusID.ShadowBiteReady },
+        StatusProvide = [StatusID.ShadowbiteReady],
     };
 
     /// <summary>
@@ -145,7 +145,7 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction ShadowBite { get; } = new BaseAction(ActionID.ShadowBite)
     {
-        StatusNeed = new[] { StatusID.ShadowBiteReady },
+        StatusNeed = [StatusID.ShadowbiteReady],
     };
 
     /// <summary>
@@ -248,7 +248,7 @@ public abstract class BRD_Base : CustomRotation
     public static IBaseAction Troubadour { get; } = new BaseAction(ActionID.Troubadour, ActionOption.Defense)
     {
         ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour,
-            StatusID.Tactician1, StatusID.Tactician2, StatusID.ShieldSamba),
+            StatusID.Tactician_1951, StatusID.Tactician_2177, StatusID.ShieldSamba),
     };
     #endregion
 
@@ -351,7 +351,7 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_PitchPerfect { get; } = new BaseAction(ActionID.PvP_PitchPerfect)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_Repertoire },
+        StatusNeed = new StatusID[] { StatusID.Repertoire },
     };
 
     /// <summary>
@@ -385,7 +385,7 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_BlastArrow { get; } = new BaseAction(ActionID.PvP_BlastArrow)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_BlastArrowReady },
+        StatusNeed = new StatusID[] { StatusID.BlastArrowReady_3142 },
     };
 
     /// <summary>

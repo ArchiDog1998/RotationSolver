@@ -67,7 +67,7 @@ public sealed class MNK_Default : MNK_Base
         if (PerfectBalanceActions(out act)) return true;
 
 
-        if (Player.HasStatus(true, StatusID.CoerlForm))
+        if (Player.HasStatus(true, StatusID.CoeurlForm))
         {
             if (CoerlForm(out act)) return true;
         }

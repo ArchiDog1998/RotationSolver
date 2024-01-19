@@ -192,7 +192,7 @@ public abstract class RPR_Base : CustomRotation
     /// </summary>
     public static IBaseAction ArcaneCircle { get; } = new BaseAction(ActionID.ArcaneCircle, ActionOption.Buff)
     {
-        StatusProvide = new[] { StatusID.CircleOfSacrifice, StatusID.BloodSownCircle },
+        StatusProvide = [StatusID.BloodsownCircle_2972],
         ActionCheck = (b, m) => IsLongerThan(10),
     };
 
@@ -202,7 +202,7 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction PlentifulHarvest { get; } = new BaseAction(ActionID.PlentifulHarvest)
     {
         StatusNeed = new[] { StatusID.ImmortalSacrifice },
-        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.BloodSownCircle)
+        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.BloodsownCircle_2972)
     };
     #endregion
 
@@ -284,7 +284,7 @@ public abstract class RPR_Base : CustomRotation
     public static IBaseAction HellsIngress { get; } = new BaseAction(ActionID.HellsIngress)
     {
         StatusProvide = new[] { StatusID.EnhancedHarpe },
-        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.Bind1)
+        ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.Bind)
     };
 
     /// <summary>
@@ -301,7 +301,7 @@ public abstract class RPR_Base : CustomRotation
     /// </summary>
     public static IBaseAction SoulSow { get; } = new BaseAction(ActionID.SoulSow)
     {
-        StatusProvide = new[] { StatusID.SoulSow },
+        StatusProvide = new[] { StatusID.Soulsow },
         ActionCheck = (b, m) => !InCombat,
     };
 
@@ -310,7 +310,7 @@ public abstract class RPR_Base : CustomRotation
     /// </summary>
     public static IBaseAction HarvestMoon { get; } = new BaseAction(ActionID.HarvestMoon)
     {
-        StatusNeed = new[] { StatusID.SoulSow },
+        StatusNeed = new[] { StatusID.Soulsow },
     };
 
     /// <summary>

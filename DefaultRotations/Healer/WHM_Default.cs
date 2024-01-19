@@ -102,7 +102,7 @@ public sealed class WHM_Default : WHM_Base
     {
         if (AfflatusRapture.CanUse(out act)) return true;
 
-        int hasMedica2 = PartyMembers.Count((n) => n.HasStatus(true, StatusID.Medica2));
+        int hasMedica2 = PartyMembers.Count((n) => n.HasStatus(true, StatusID.MedicaIi));
 
         if (Medica2.CanUse(out act) && hasMedica2 < PartyMembers.Count() / 2 && !IsLastAction(true, Medica2)) return true;
 

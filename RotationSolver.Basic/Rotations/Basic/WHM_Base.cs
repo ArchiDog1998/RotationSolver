@@ -85,7 +85,7 @@ public abstract class WHM_Base : CustomRotation
     /// </summary>
     public static IBaseAction Medica2 { get; } = new BaseAction(ActionID.Medica2, ActionOption.Hot)
     {
-        StatusProvide = new[] { StatusID.Medica2, StatusID.TrueMedica2 },
+        StatusProvide = [StatusID.MedicaIi, StatusID.TrueMedicaIi],
     };
 
     /// <summary>
@@ -93,12 +93,12 @@ public abstract class WHM_Base : CustomRotation
     /// </summary>
     public static IBaseAction Regen { get; } = new BaseAction(ActionID.Regen, ActionOption.Hot)
     {
-        TargetStatus = new[]
-        {
-            StatusID.Regen1,
-            StatusID.Regen2,
-            StatusID.Regen3,
-        }
+        TargetStatus =
+        [
+            StatusID.Regen,
+            StatusID.Regen_897,
+            StatusID.Regen_1330,
+        ]
     };
 
     /// <summary>
@@ -134,7 +134,7 @@ public abstract class WHM_Base : CustomRotation
     /// </summary>
     public static IBaseAction DivineBenison { get; } = new BaseAction(ActionID.DivineBenison, ActionOption.Defense)
     {
-        StatusProvide = new StatusID[] { StatusID.DivineBenison },
+        StatusProvide = [StatusID.DivineBenison],
         ChoiceTarget = TargetFilter.FindAttackedTarget,
     };
 
@@ -171,12 +171,12 @@ public abstract class WHM_Base : CustomRotation
     /// </summary>
     public static IBaseAction Aero { get; } = new BaseAction(ActionID.Aero, ActionOption.Dot)
     {
-        TargetStatus = new StatusID[]
-        {
+        TargetStatus =
+        [
             StatusID.Aero,
-            StatusID.Aero2,
+            StatusID.AeroIi,
             StatusID.Dia,
-        },
+        ],
     };
 
     /// <summary>
@@ -342,7 +342,7 @@ public abstract class WHM_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Cure3 { get; } = new BaseAction(ActionID.PvP_Cure3,ActionOption.Heal)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_Cure3Ready },
+        StatusNeed = [StatusID.CureIiiReady],
     };
 
     /// <summary>

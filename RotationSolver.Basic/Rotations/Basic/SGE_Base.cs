@@ -72,12 +72,12 @@ public abstract class SGE_Base : CustomRotation
     /// </summary>
     public static IBaseAction EukrasianDosis { get; } = new BaseAction(ActionID.EukrasianDosis, ActionOption.Dot)
     {
-        TargetStatus = new StatusID[]
-        {
+        TargetStatus =
+        [
              StatusID.EukrasianDosis,
-             StatusID.EukrasianDosis2,
-             StatusID.EukrasianDosis3
-        },
+             StatusID.EukrasianDosisIi,
+             StatusID.EukrasianDosisIii
+        ],
     };
 
     /// <summary>
@@ -135,7 +135,7 @@ public abstract class SGE_Base : CustomRotation
     /// </summary>
     public static IBaseAction Diagnosis { get; } = new BaseAction(ActionID.Diagnosis, ActionOption.Heal);
 
-    static RandomDelay noTankDelay = new RandomDelay(() => (3, 5));
+    static RandomDelay noTankDelay = new(() => (3, 5));
     /// <summary>
     /// 
     /// </summary>
@@ -154,7 +154,7 @@ public abstract class SGE_Base : CustomRotation
             return TargetFilter.FindAttackedTarget(targets, mustUse);
         },
 
-        TargetStatus = new StatusID[] { StatusID.Kardion },
+        TargetStatus = [StatusID.Kardion],
     };
 
     /// <summary>

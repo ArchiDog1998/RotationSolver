@@ -337,7 +337,7 @@ public abstract class WAR_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_FellCleave { get; } = new BaseAction(ActionID.PvP_FellCleave)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_InnerRelease },
+        StatusNeed = new StatusID[] { StatusID.InnerRelease_1303 },
     };
 
 
@@ -346,7 +346,7 @@ public abstract class WAR_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_ChaoticCyclone { get; } = new BaseAction(ActionID.PvP_ChaoticCyclone,ActionOption.Buff)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_NascentChaos },
+        StatusNeed = new StatusID[] { StatusID.NascentChaos_1992 },
     };
 
 

@@ -65,7 +65,7 @@ public abstract class DNC_Base : CustomRotation
     /// </summary>
     public static IBaseAction ReverseCascade { get; } = new BaseAction(ActionID.ReverseCascade)
     {
-        StatusNeed = new[] { StatusID.SilkenSymmetry, StatusID.SilkenSymmetry2 },
+        StatusNeed = new[] { StatusID.SilkenSymmetry, StatusID.FlourishingSymmetry },
     };
 
     /// <summary>
@@ -73,7 +73,7 @@ public abstract class DNC_Base : CustomRotation
     /// </summary>
     public static IBaseAction FountainFall { get; } = new BaseAction(ActionID.FountainFall)
     {
-        StatusNeed = new[] { StatusID.SilkenFlow, StatusID.SilkenFlow2 }
+        StatusNeed = new[] { StatusID.SilkenFlow, StatusID.FlourishingFlow }
     };
 
     /// <summary>
@@ -181,8 +181,8 @@ public abstract class DNC_Base : CustomRotation
     public static IBaseAction ShieldSamba { get; } = new BaseAction(ActionID.ShieldSamba, ActionOption.Defense)
     {
         ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour,
-            StatusID.Tactician1,
-            StatusID.Tactician2,
+            StatusID.Tactician_1951,
+            StatusID.Tactician_2177,
             StatusID.ShieldSamba),
     };
 
@@ -207,7 +207,7 @@ public abstract class DNC_Base : CustomRotation
             //Remove Weak
             !b.HasStatus(false, StatusID.Weakness, StatusID.BrinkOfDeath)
             //Remove other partner.
-            && (!b.HasStatus(false, StatusID.ClosedPosition2) || b.HasStatus(true, StatusID.ClosedPosition2)));
+            && (!b.HasStatus(false, StatusID.ClosedPosition_2026) || b.HasStatus(true, StatusID.ClosedPosition_2026)));
 
             return Targets.GetJobCategory(JobRole.Melee, JobRole.RangedMagical, JobRole.RangedPhysical).FirstOrDefault();
         },

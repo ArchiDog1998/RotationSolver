@@ -32,7 +32,7 @@ public class StaticCodeGenerator : IIncrementalGenerator
             /// <summary>
             /// The id of the status.
             /// </summary>
-            public enum StatusId : ushort
+            public enum StatusID : ushort
             {
                 /// <summary>
                 /// 
@@ -42,7 +42,7 @@ public class StaticCodeGenerator : IIncrementalGenerator
             }
             """;
 
-        context.AddSource("StatusId.g.cs", code);
+        context.AddSource("StatusID.g.cs", code);
     }
 
     private static void GenerateContentType(SourceProductionContext context)

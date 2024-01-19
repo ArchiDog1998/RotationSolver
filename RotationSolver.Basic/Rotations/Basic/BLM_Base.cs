@@ -354,7 +354,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// </summary>
     public static IBaseAction SharpCast { get; } = new BaseAction(ActionID.SharpCast)
     {
-        StatusProvide = new[] { StatusID.SharpCast },
+        StatusProvide = new[] { StatusID.Sharpcast },
         ActionCheck = (b, m) => HasHostilesInRange,
     };
 
@@ -540,7 +540,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Fire4 { get; } = new BaseAction(ActionID.PvP_Fire4,ActionOption.Buff)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_AstralFire2 },
+        StatusNeed = new StatusID[] { (StatusID) 3212 },
     };
 
 
@@ -549,7 +549,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Flare { get; } = new BaseAction(ActionID.PvP_Flare)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_AstralFire3 },
+        StatusNeed = new StatusID[] { StatusID.AstralFireIi_3213 },
     };
 
 
@@ -558,7 +558,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Blizzard4 { get; } = new BaseAction(ActionID.PvP_Blizzard4,ActionOption.Buff)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_UmbralIce2 },
+        StatusNeed = [(StatusID) 3214],
     };
 
 
@@ -567,7 +567,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Freeze { get; } = new BaseAction(ActionID.PvP_Freeze)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_UmbralIce3 },
+        StatusNeed = new StatusID[] { StatusID.UmbralIceIi_3215 },
     };
 
 
@@ -576,7 +576,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Foul { get; } = new BaseAction(ActionID.PvP_Foul)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_Polyglot },
+        StatusNeed = new StatusID[] { StatusID.Polyglot },
     };
 
 

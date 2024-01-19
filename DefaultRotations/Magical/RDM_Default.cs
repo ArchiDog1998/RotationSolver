@@ -52,9 +52,9 @@ public sealed class RDM_Default : RDM_Base
             && VerthunderStartUp.CanUse(out var act, CanUseOption.EmptyOrSkipCombo)) return act;
 
         //Remove Swift
-        StatusHelper.StatusOff(StatusID.DualCast);
+        StatusHelper.StatusOff(StatusID.Dualcast);
         StatusHelper.StatusOff(StatusID.Acceleration);
-        StatusHelper.StatusOff(StatusID.SwiftCast);
+        StatusHelper.StatusOff(StatusID.Swiftcast);
 
         return base.CountDownAction(remainTime);
     }

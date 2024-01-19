@@ -115,16 +115,16 @@ public abstract class BLU_Base : CustomRotation
     /// </summary>
     public class BLUAction : BaseAction, IBLUAction
     {
-        static readonly StatusID[] NoPhysic = new StatusID[]
-        {
+        static readonly StatusID[] NoPhysic =
+        [
             StatusID.IceSpikes,
-        };
+        ];
 
-        static readonly StatusID[] NoMagic = new StatusID[]
-        {
-            StatusID.RespellingSpray,
-            StatusID.Magitek,
-        };
+        static readonly StatusID[] NoMagic =
+        [
+            StatusID.RepellingSpray_556,
+            StatusID.MagitekField_2166,
+        ];
 
         /// <summary>
         /// Description about the action.
@@ -914,7 +914,7 @@ public abstract class BLU_Base : CustomRotation
             switch (BlueId)
             {
                 case BLUID.DPS:
-                    if (!Player.HasStatus(true, StatusID.AethericMimicryDPS))
+                    if (!Player.HasStatus(true, StatusID.AethericMimicryDps))
                     {
                         return charas.GetJobCategory(JobRole.Melee, JobRole.RangedMagical, JobRole.RangedPhysical).FirstOrDefault();
                     }

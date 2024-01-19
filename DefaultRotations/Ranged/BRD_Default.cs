@@ -109,7 +109,7 @@ public sealed class BRD_Default : BRD_Base
 
         if (WanderersMinuet.CanUse(out act, CanUseOption.OnLastAbility))
         {
-            if (SongEndAfter(ARMYRemainTime) && (Song != Song.NONE || Player.HasStatus(true, StatusID.ArmyEthos))) return true;
+            if (SongEndAfter(ARMYRemainTime) && (Song != Song.NONE || Player.HasStatus(true, StatusID.ArmysEthos))) return true;
         }
 
         if (Song != Song.NONE && EmpyrealArrow.CanUse(out act)) return true;

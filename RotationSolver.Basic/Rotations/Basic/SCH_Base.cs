@@ -125,7 +125,7 @@ public abstract class SCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Bio { get; } = new BaseAction(ActionID.Bio, ActionOption.Dot)
     {
-        TargetStatus = new StatusID[] { StatusID.Bio, StatusID.Bio2, StatusID.Biolysis },
+        TargetStatus = [StatusID.Bio, StatusID.BioIi, StatusID.Biolysis],
     };
 
     /// <summary>

@@ -59,7 +59,7 @@ public sealed class BLU_Default : BLU_Base
             return false;
         }
         //穿甲散弹
-        if (Player.HasStatus(true, StatusID.SurpanakhaFury))
+        if (Player.HasStatus(true, StatusID.SurpanakhasFury))
         {
             if (Surpanakha.CanUse(out act, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
         }

@@ -469,7 +469,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_ForkedRaiju { get; } = new BaseAction(ActionID.PvP_AeolianEdgeCombo)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
     };
 
     /// <summary>
@@ -477,7 +477,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_FleetingRaiju { get; } = new BaseAction(ActionID.PvP_Fleetingraiju)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_FleetingRaijuReady }
+        StatusNeed = new StatusID[] { StatusID.FleetingRaijuReady_3211 }
     };
 
     /// <summary>
@@ -485,7 +485,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_HyoshoRanryu { get; } = new BaseAction(ActionID.PvP_Hyoshoranryu)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
     };
 
     /// <summary>
@@ -493,7 +493,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_GokaMekkyaku { get; } = new BaseAction(ActionID.PvP_Gokamekkyaku)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
     };
 
     /// <summary>
@@ -501,7 +501,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Meisui { get; } = new BaseAction(ActionID.PvP_Meisui)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
     };
 
     /// <summary>
@@ -509,7 +509,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Huton { get; } = new BaseAction(ActionID.PvP_Huton)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
     };
 
     /// <summary>
@@ -517,7 +517,7 @@ public abstract class NIN_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Doton { get; } = new BaseAction(ActionID.PvP_Doton)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_ThreeMudra }
+        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
     };
 
 

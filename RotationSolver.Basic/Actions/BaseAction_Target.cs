@@ -124,7 +124,7 @@ public partial class BaseAction
         else if (IsTargetArea)
         {
             target = player;
-            affectedTargets = Array.Empty<BattleChara>();
+            affectedTargets = [];
             return TargetArea(range, mustUse, aoeCount, player);
         }
         else if (_action.CanTargetParty && _action.CanTargetHostile)

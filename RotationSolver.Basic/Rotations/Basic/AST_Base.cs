@@ -47,13 +47,13 @@ public abstract class AST_Base : CustomRotation
     /// </summary>
     public static IBaseAction Combust { get; } = new BaseAction(ActionID.Combust, ActionOption.Dot)
     {
-        TargetStatus = new StatusID[]
-        {
+        TargetStatus =
+        [
             StatusID.Combust,
-            StatusID.Combust2,
-            StatusID.Combust3,
-            StatusID.Combust4,
-        },
+            StatusID.CombustIi,
+            StatusID.CombustIii,
+            StatusID.CombustIii_2041,
+        ],
     };
 
     /// <summary>

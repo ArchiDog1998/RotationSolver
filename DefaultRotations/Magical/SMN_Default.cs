@@ -55,7 +55,7 @@ public sealed class SMN_Default : SMN_Base
 
         //毁4
         if (IsMoving && (Player.HasStatus(true, StatusID.GarudasFavor) || InIfrit)
-            && !Player.HasStatus(true, StatusID.SwiftCast) && !InBahamut && !InPhoenix
+            && !Player.HasStatus(true, StatusID.Swiftcast) && !InBahamut && !InPhoenix
             && RuinIV.CanUse(out act, CanUseOption.MustUse)) return true;
 
         //召唤蛮神
@@ -89,7 +89,7 @@ public sealed class SMN_Default : SMN_Base
                 break;
         }
         if (SummonTimeEndAfterGCD() && AttunmentTimeEndAfterGCD() &&
-            !Player.HasStatus(true, StatusID.SwiftCast) && !InBahamut && !InPhoenix &&
+            !Player.HasStatus(true, StatusID.Swiftcast) && !InBahamut && !InPhoenix &&
             RuinIV.CanUse(out act, CanUseOption.MustUse)) return true;
         //迸裂三灾
         if (Outburst.CanUse(out act)) return true;

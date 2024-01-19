@@ -272,7 +272,7 @@ public abstract class SAM_Base : CustomRotation
     /// </summary>
     public static IBaseAction HissatsuGyoten { get; } = new BaseAction(ActionID.HissatsuGyoten)
     {
-        ActionCheck = (b, m) => Kenki >= 10 && !Player.HasStatus(true, StatusID.Bind1),
+        ActionCheck = (b, m) => Kenki >= 10 && !Player.HasStatus(true, StatusID.Bind),
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
 

@@ -26,7 +26,7 @@ public abstract partial class CustomRotation
             UpdateInfo();
             UpdateActions(ClassJob.GetJobRole());
             BaseAction.CleanSpecial();
-            if (Player.HasStatus(true, StatusID.PvP_Guard)) return false;
+            if (Player.HasStatus(true, StatusID.Guard)) return false;
 
             CountingOfLastUsing = CountingOfCombatTimeUsing = 0;
             newAction = Invoke(out gcdAction);

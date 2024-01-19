@@ -149,12 +149,12 @@ public sealed class RPR_Default : RPR_Base
             if (LemuresSlice.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
         }
 
-        if (PlentifulHarvest.EnoughLevel && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodSownCircle) || !PlentifulHarvest.EnoughLevel)
+        if (PlentifulHarvest.EnoughLevel && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && !Player.HasStatus(true, StatusID.BloodsownCircle_2972) || !PlentifulHarvest.EnoughLevel)
         {
             if (Gluttony.CanUse(out act, CanUseOption.MustUse)) return true;
         }
 
-        if (!Player.HasStatus(true, StatusID.BloodSownCircle) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel || Soul == 100))
+        if (!Player.HasStatus(true, StatusID.BloodsownCircle_2972) && !Player.HasStatus(true, StatusID.ImmortalSacrifice) && (Gluttony.EnoughLevel && !Gluttony.WillHaveOneChargeGCD(4) || !Gluttony.EnoughLevel || Soul == 100))
         {
             if (GrimSwathe.CanUse(out act)) return true;
             if (BloodStalk.CanUse(out act)) return true;

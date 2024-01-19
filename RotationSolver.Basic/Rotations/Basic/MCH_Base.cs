@@ -157,7 +157,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Reassemble { get; } = new BaseAction(ActionID.Reassemble)
     {
-        StatusProvide = new StatusID[] { StatusID.Reassemble },
+        StatusProvide = new StatusID[] { StatusID.Reassembled },
         ActionCheck = (b, m) => HasHostilesInRange,
     };
 
@@ -206,7 +206,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction Tactician { get; } = new BaseAction(ActionID.Tactician, ActionOption.Defense)
     {
-        ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour, StatusID.Tactician1, StatusID.Tactician2, StatusID.ShieldSamba),
+        ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour, StatusID.Tactician_1951, StatusID.Tactician_2177, StatusID.ShieldSamba),
     };
 
     /// <summary>
@@ -303,7 +303,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Drill { get; } = new BaseAction(ActionID.PvP_Drill)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_DrillPrimed },
+        StatusNeed = new StatusID[] { StatusID.DrillPrimed },
     };
 
     /// <summary>
@@ -335,7 +335,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_HeatBlast { get; } = new BaseAction(ActionID.PvP_HeatBlast)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_Overheated },
+        StatusNeed = new StatusID[] { StatusID.Overheated_3149 },
     };
 
     /// <summary>
@@ -343,7 +343,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_Bioblaster { get; } = new BaseAction(ActionID.PvP_Bioblaster)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_BioblasterPrimed },
+        StatusNeed = new StatusID[] { StatusID.BioblasterPrimed },
     };
 
     /// <summary>
@@ -351,7 +351,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_AirAnchor { get; } = new BaseAction(ActionID.PvP_AirAnchor)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_AirAnchorPrimed },
+        StatusNeed = [StatusID.AirAnchorPrimed],
     };
 
     /// <summary>
@@ -359,7 +359,7 @@ public abstract class MCH_Base : CustomRotation
     /// </summary>
     public static IBaseAction PvP_ChainSaw { get; } = new BaseAction(ActionID.PvP_ChainSaw)
     {
-        StatusNeed = new StatusID[] { StatusID.PvP_ChainSawPrimed },
+        StatusNeed = [StatusID.ChainSawPrimed],
     };
 
     #endregion
