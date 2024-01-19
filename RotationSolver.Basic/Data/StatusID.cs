@@ -3,6 +3,7 @@
 /// <summary>
 /// The status Id.
 /// </summary>
+[Obsolete]
 public enum StatusID : ushort
 {
     /// <summary>

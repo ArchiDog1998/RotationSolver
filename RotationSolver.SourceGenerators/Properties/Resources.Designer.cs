@@ -61,7 +61,65 @@ namespace RotationSolver.SourceGenerators.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TestValue.
+        ///   Looks up a localized string similar to DutyRoulette = 1,
+        ///Dungeons = 2,
+        ///Guildhests = 3,
+        ///Trials = 4,
+        ///Raids = 5,
+        ///PvP = 6,
+        ///QuestBattles = 7,
+        ///FatEs = 8,
+        ///TreasureHunt = 9,
+        ///Levequests = 10,
+        ///GrandCompany = 11,
+        ///Companions = 12,
+        ///TribalQuests = 13,
+        ///OverallCompletion = 14,
+        ///PlayerCommendation = 15,
+        ///DisciplesOfTheLand = 16,
+        ///DisciplesOfTheHand = 17,
+        ///RetainerVentures = 18,
+        ///GoldSaucer = 19,
+        ///DeepDungeons = 21,
+        ///WondrousTails = 24,
+        ///CustomDeliveries = 25,
+        ///Eureka = 26,
+        ///UltimateRaids = 28,
+        ///VcDungeonFinder = 30,
+        ///OceanFishing = 31,
+        ///TripleTriad = 32,
+        ///TheHunt = 33,
+        ///Fishin [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ContentType {
+            get {
+                return ResourceManager.GetString("ContentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /// &lt;summary&gt;
+        ////// Stone-like rigidity is preventing the execution of actions.
+        ////// &lt;/summary&gt;
+        ///Petrification = 1,
+        ////// &lt;summary&gt;
+        ////// Unable to execute actions.
+        ////// &lt;/summary&gt;
+        ///Stun = 2,
+        ////// &lt;summary&gt;
+        ////// Overwhelming drowsiness is preventing the execution of actions.
+        ////// &lt;/summary&gt;
+        ///Sleep = 3,
+        ////// &lt;summary&gt;
+        ////// Scattered senses are preventing the execution of actions.
+        ////// &lt;/summary&gt;
+        ///Daze = 4,
+        ////// &lt;summary&gt;
+        ////// Unable to use abilities.
+        ////// &lt;/summary&gt;
+        ///Amnesia = 5,
+        ////// &lt;summary&gt;
+        ////// Unable to use we [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string StatusId {
             get {
