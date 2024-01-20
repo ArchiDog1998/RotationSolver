@@ -8,7 +8,7 @@ namespace RotationSolver.Basic.Traits;
 /// </summary>
 public class BaseTrait : IBaseTrait
 {
-    private Trait _trait;
+    private readonly Trait _trait;
 
     /// <summary>
     /// Has enough level.

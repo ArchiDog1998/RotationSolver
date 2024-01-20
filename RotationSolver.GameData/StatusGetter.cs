@@ -18,6 +18,7 @@ internal class StatusGetter(Lumina.GameData gameData)
         var name = item.Name.RawString;
         if (string.IsNullOrEmpty(name)) return false;
         if (!name.All(char.IsAscii)) return false;
+        if (item.Icon == 0) return false;
         return true;
     }
 
@@ -33,9 +34,22 @@ internal class StatusGetter(Lumina.GameData gameData)
             _addedNames.Add(name);
         }
 
+        var desc = item.Description.RawString;
+
+        var jobs = item.ClassJobCategory.Value?.Name.RawString;
+        jobs = string.IsNullOrEmpty(jobs) ? string.Empty : $" ({jobs})";
+
+        var cate = item.StatusCategory switch
+        {
+            1 => " ↑",
+            2 => " ↓",
+            _ => string.Empty,
+        };
+
         return $"""
         /// <summary>
-        /// {item.Description.RawString.OnlyAscii().Replace("\n", "\n/// ")}
+        /// <see href="https://garlandtools.org/db/#status/{item.RowId}"><strong>{item.Name.RawString}</strong></see>{cate}{jobs}
+        /// <para>{desc.Replace("\n", "\n/// ")}</para>
         /// </summary>
         {name} = {item.RowId},
         """;
