@@ -1,5 +1,4 @@
-﻿
-using Lumina.Excel.GeneratedSheets;
+﻿using Lumina.Excel.GeneratedSheets;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.GameData.Getters.Actions;
@@ -7,10 +6,14 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
     : ExcelRowGetter<Action>(gameData)
 {
     private readonly List<string> _addedNames = [];
-
+    private string[] _notCombatJobs = [];
     protected override void BeforeCreating()
     {
         _addedNames.Clear();
+        _notCombatJobs = [.. gameData.GetExcelSheet<ClassJob>()!.Where(c =>
+        {
+            return c.ClassJobCategory.Row is 32 or 33;
+        }).Select(c => c.Abbreviation.RawString)];
         base.BeforeCreating();
     }
 
@@ -21,13 +24,28 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
         if (string.IsNullOrEmpty(name)) return false;
         if (!name.All(char.IsAscii)) return false;
         if (item.Icon == 0) return false;
+
+        //No crafting or gathering.
+        var category = item.ClassJobCategory.Value;
+        if (category == null) return false;
+
+        if (category.RowId == 1) return true;
+
+        if (_notCombatJobs.Any(name =>
+        {
+            return (bool?)category.GetType().GetRuntimeProperty(name)?.GetValue(category) ?? false;
+        }))
+        {
+            return false;
+        }
+
         return true;
     }
 
     protected string GetName(Action item)
     {
         var name = item.Name.RawString.ToPascalCase()
-            + (item.IsPvP ? "_PvP" : "_PvE");
+            + (item.IsPvP ? "PvP" : "PvE");
 
         if (_addedNames.Contains(name))
         {

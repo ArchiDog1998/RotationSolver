@@ -3,9 +3,6 @@ using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Rotations;
 
-/// <summary>
-/// The custom rotations.
-/// </summary>
 [RotationDesc(DescType.BurstActions)]
 public abstract partial class CustomRotation : ICustomRotation
 {

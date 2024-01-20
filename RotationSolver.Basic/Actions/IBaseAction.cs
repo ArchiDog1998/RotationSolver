@@ -87,7 +87,7 @@ public interface IBaseAction : IAction
     /// <summary>
     /// The filter for hostiles.
     /// </summary>
-    Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; }
+    Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; set; }
 
     /// <summary>
     /// Is this action a duty action.

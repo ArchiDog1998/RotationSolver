@@ -84,7 +84,7 @@ public partial class BaseAction
     /// <summary>
     /// Filter for the targets.
     /// </summary>
-    public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; init; } = null;
+    public Func<IEnumerable<BattleChara>, IEnumerable<BattleChara>> FilterForHostiles { get; set; } = null;
 
     /// <summary>
     /// What status this action could put to the target.

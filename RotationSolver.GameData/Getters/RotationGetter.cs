@@ -20,6 +20,12 @@ internal class RotationGetter(Lumina.GameData gameData, ClassJob job)
             jobs += $", Job.{job.ClassJobParent.Value?.Abbreviation ?? "ADV"}";
         }
 
+        var rotationsGetter = new ActionSingleRotationGetter(gameData, job);
+        var traitsGetter = new TraitRotationGetter(gameData, job);
+
+        var rotationsCode = rotationsGetter.GetCode();
+        var traitsCode = traitsGetter.GetCode();
+
         return $$"""
          using ECommons.DalamudServices;
          using ECommons.ExcelServices;
@@ -30,19 +36,20 @@ internal class RotationGetter(Lumina.GameData gameData, ClassJob job)
 
          /// <summary>
          /// <see href="https://na.finalfantasyxiv.com/jobguide/{{jobName.Replace(" ", "").ToLower()}}"><strong>{{jobName}}</strong></see>
+         /// <br>Number of Actions: {{rotationsGetter.Count}}</br>
+         /// <br>Number of Traits: {{traitsGetter.Count}}</br>
          /// </summary>
          public abstract partial class {{GetName()}} : CustomRotation
          {
-
              public sealed override Job[] Jobs => new[] { {{jobs}} };
              static {{job.Abbreviation}}Gauge JobGauge => Svc.Gauges.Get<{{job.Abbreviation}}Gauge>();
 
          #region Actions
-         {{new ActionRotationGetter(gameData, job).GetCode().Table()}}
+         {{rotationsCode.Table()}}
          #endregion
 
          #region Traits
-         {{new TraitRotationGetter(gameData, job).GetCode().Table()}}
+         {{traitsCode.Table()}}
          #endregion
          }
          """;

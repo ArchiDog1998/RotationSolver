@@ -1,8 +1,17 @@
-﻿using System.Text.RegularExpressions;
+﻿using Lumina.Excel.GeneratedSheets;
+using System.Text.RegularExpressions;
 
 namespace RotationSolver.GameData;
 internal static partial class Util
 {
+    public static bool IsSingleJobForCombat(this ClassJobCategory jobCategory)
+    {
+        var str = jobCategory.Name.RawString.Replace(" ", "");
+        if (!str.All(char.IsUpper)) return false;
+        if (str.Length is not 3 and not 6) return false;
+        return true;
+    }
+
     public static string Table(this string str) => "    " + str.Replace("\n", "\n    ");
 
     public static string OnlyAscii(this string input) => new string(input.Where(char.IsAscii).ToArray());

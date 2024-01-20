@@ -115,16 +115,7 @@ public class StaticCodeGenerator : IIncrementalGenerator
 
     private static void GenerateActionFactory(SourceProductionContext context)
     {
-        var code = $$"""
-            namespace RotationSolver.Basic.Actions;
-
-            internal static partial class ActionFactory
-            {
-            {{Properties.Resources.Action.Table()}}
-            }
-            """;
-
-        context.AddSource("ActionFactory.g.cs", code);
+        context.AddSource("CustomRotation.g.cs", Properties.Resources.Action);
     }
 
     private static void GenerateRotations(SourceProductionContext context)

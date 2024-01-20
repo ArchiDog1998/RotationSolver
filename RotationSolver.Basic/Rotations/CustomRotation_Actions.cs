@@ -5,162 +5,94 @@ namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
-    internal class RoleAction : BaseAction
+    static partial void ModifyAddlePvE(ref IBaseAction action)
     {
-        private readonly JobRole[] _roles;
-        internal RoleAction(ActionID actionID, JobRole[] roles, ActionOption option = ActionOption.None)
-            : base(actionID, option)
-        {
-            _roles = roles;
-        }
-
-        internal bool InRole(JobRole role) => _roles.Contains(role);
-
-        public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)
-        {
-            return base.CanUse(out act, option, aoeCount, gcdCountForAbility)
-                && Player != null && InRole(Player.ClassJob.GameData.GetJobRole());
-        }
+        action.ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle);
     }
 
-    //#region PvE
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Addle { get; } = new RoleAction(ActionID.Addle, [JobRole.RangedMagical], ActionOption.Defense)
-    //{
-    //    ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle),
-    //};
+    static partial void ModifySwiftcastPvE(ref IBaseAction action)
+    {
+        action.Option = ActionOption.Buff;
+        action.StatusProvide =
+        [
+            StatusID.Swiftcast,
+            StatusID.Triplecast,
+            StatusID.Dualcast,
+        ];
+    }
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.Swiftcast, [JobRole.RangedMagical, JobRole.Healer], ActionOption.Buff)
-    //{
-    //    StatusProvide =
-    //    [
-    //        StatusID.Swiftcast,
-    //        StatusID.Triplecast,
-    //        StatusID.Dualcast,
-    //    ]
-    //};
+    static partial void ModifyEsunaPvE(ref IBaseAction action)
+    {
+        action.ChoiceTarget = (tars, mustUse) =>
+        {
+            if (DyingPeople.Any())
+            {
+                return DyingPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
+            }
+            else if (WeakenPeople.Any())
+            {
+                return WeakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
+            }
+            return null;
+        };
+    }
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Esuna { get; } = new RoleAction(ActionID.Esuna, [JobRole.Healer], ActionOption.Heal)
-    //{
-    //    ChoiceTarget = (tars, mustUse) =>
-    //    {
-    //        if (DyingPeople.Any())
-    //        {
-    //            return DyingPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
-    //        }
-    //        else if (WeakenPeople.Any())
-    //        {
-    //            return WeakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
-    //        }
-    //        return null;
-    //    },
-    //};
+    static partial void ModifyLucidDreamingPvE(ref IBaseAction action)
+    {
+        action.ActionCheck = (b, m) => Player.CurrentMp < 6000 && InCombat;
+    }
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Rescue { get; } = new RoleAction(ActionID.Rescue, [JobRole.Healer], ActionOption.Heal);
+    static partial void ModifySecondWindPvE(ref IBaseAction action)
+    {
+        action.ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat;
+    }
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Repose { get; } = new RoleAction(ActionID.Repose, [JobRole.Healer]);
+    static partial void ModifyArmsLengthPvE(ref IBaseAction action)
+    {
+        action.Option = ActionOption.Defense | ActionOption.EndSpecial;
+    }
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LucidDreaming { get; } = new RoleAction(ActionID.LucidDreaming,
-    //    [JobRole.Healer, JobRole.RangedMagical], ActionOption.Buff)
-    //{
-    //    ActionCheck = (b, m) => Player.CurrentMp < 6000 && InCombat,
-    //};
+    static partial void ModifyRampartPvE(ref IBaseAction action)
+    {
+        action.Option = ActionOption.Defense;
+        action.StatusProvide =
+        [
+            StatusID.Superbolide, StatusID.HallowedGround,
+            StatusID.Rampart, StatusID.Bulwark,
+            StatusID.Bloodwhetting,
+            StatusID.Vengeance,
+            StatusID.Sentinel,
+            StatusID.ShadowWall,
+            StatusID.Nebula,
+            .. StatusHelper.NoNeedHealingStatus,
+        ];
+        action.ActionCheck = BaseAction.TankDefenseSelf;
+    }
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction SecondWind { get; } = new RoleAction(ActionID.SecondWind,
-    //    [JobRole.RangedPhysical, JobRole.Melee], ActionOption.Heal)
-    //{
-    //    ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat,
-    //};
+    static partial void ModifyProvokePvE(ref IBaseAction action)
+    {
+        action.FilterForHostiles = b => TargetFilter.ProvokeTarget(b);
+    }
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction ArmsLength { get; } = new RoleAction(ActionID.ArmsLength, [JobRole.Tank, JobRole.Melee, JobRole.RangedPhysical], ActionOption.Defense | ActionOption.EndSpecial);
+    static partial void ModifyShirkPvE(ref IBaseAction action)
+    {
+        action.ChoiceTarget = (friends, mustUse) => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault();
+    }
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Rampart { get; } = new RoleAction(ActionID.Rampart, [JobRole.Tank], ActionOption.Defense)
-    //{
-    //    StatusProvide = new StatusID[]
-    //    {
-    //        StatusID.Superbolide, StatusID.HallowedGround,
-    //        StatusID.Rampart, StatusID.Bulwark,
-    //        StatusID.Bloodwhetting,
-    //        StatusID.Vengeance,
-    //        StatusID.Sentinel,
-    //        StatusID.ShadowWall,
-    //        StatusID.Nebula,
+    static partial void ModifyBloodbathPvE(ref IBaseAction action)
+    {
+        action.ActionCheck = (t, m) => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat && HasHostilesInRange;
+    }
 
-    //        //TODO:BLU Debuff
-    //    }.Union(StatusHelper.NoNeedHealingStatus).ToArray(),
-    //    ActionCheck = BaseAction.TankDefenseSelf,
-    //};
+    static partial void ModifyFeintPvE(ref IBaseAction action)
+    {
+        action.ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Feint);
+    }
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Provoke { get; } = new RoleAction(ActionID.Provoke, [JobRole.Tank])
-    //{
-    //    FilterForHostiles = b => TargetFilter.ProvokeTarget(b),
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Reprisal { get; } = new RoleAction(ActionID.Reprisal, new JobRole[] { JobRole.Tank });
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Shirk { get; } = new RoleAction(ActionID.Shirk, new JobRole[] { JobRole.Tank }, ActionOption.Friendly)
-    //{
-    //    ChoiceTarget = (friends, mustUse) => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault(),
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Bloodbath { get; } = new RoleAction(ActionID.Bloodbath, new JobRole[] { JobRole.Melee }, ActionOption.Heal)
-    //{
-    //    ActionCheck = (t, m) => SecondWind.ActionCheck(t, m) && HasHostilesInRange,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Feint { get; } = new RoleAction(ActionID.Feint, new JobRole[] { JobRole.Melee }, ActionOption.Defense)
-    //{
-    //    ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Feint),
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Interject { get; } = new RoleAction(ActionID.Interject, new JobRole[] { JobRole.Tank })
-    //{
-    //    FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
-    //};
+    static partial void ModifyInterjectPvE(ref IBaseAction action)
+    {
+        action.FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt);
+    }
 
     ///// <summary>
     ///// 
@@ -609,7 +541,7 @@ public abstract partial class CustomRotation
 
     private IEnumerable<IBaseAction> GetBaseActions(Type type)
     {
-        return GetIEnoughLevel<IBaseAction>(type).Where(a => a is not RoleAction role || role.InRole(ClassJob.GetJobRole()));
+        return GetIEnoughLevel<IBaseAction>(type);
     }
 
     private IEnumerable<IBaseItem> GetBaseItems(Type type)
