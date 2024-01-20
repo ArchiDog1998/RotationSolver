@@ -78,7 +78,7 @@ public partial class BaseAction
             if (_choiceTarget != null) return _choiceTarget;
             return IsFriendly ? TargetFilter.DefaultChooseFriend : TargetFilter.DefaultFindHostile;
         }
-        init => _choiceTarget = value;
+        set => _choiceTarget = value;
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public partial class BaseAction
     /// <summary>
     /// What status this action could put to the target.
     /// </summary>
-    public StatusID[] TargetStatus { get; init; } = null;
+    public StatusID[] TargetStatus { get; set; } = null;
 
     internal static bool TankDefenseSelf(BattleChara _, bool mustUse)
     {

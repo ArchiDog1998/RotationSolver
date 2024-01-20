@@ -3,6 +3,8 @@
 namespace RotationSolver.GameData;
 internal static partial class Util
 {
+    public static string Table(this string str) => "    " + str.Replace("\n", "\n    ");
+
     public static string OnlyAscii(this string input) => new string(input.Where(char.IsAscii).ToArray());
 
     public  static string ToPascalCase(this string input)

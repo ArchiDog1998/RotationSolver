@@ -41,7 +41,7 @@ public static class StatusHelper
 
     internal static Burst2MinsInfo[] Burst2Mins { get; } =
     [
-        new (StatusID.Divination, false, AST_Base.Divination.Level, Job.AST),
+        new (StatusID.Divination, false, AstrologianRotation.Divination.Level, Job.AST),
         new (StatusID.ChainStratagem, true, SCH_Base.ChainStratagem.Level, Job.SCH),
         new (StatusID.Brotherhood, false, MNK_Base.Brotherhood.Level, Job.MNK),
         new (StatusID.BattleLitany, false, DRG_Base.BattleLitany.Level, Job.DRG),

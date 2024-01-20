@@ -2,7 +2,7 @@ namespace DefaultRotations.Healer;
 
 [RotationDesc(ActionID.Divination)]
 [SourceCode(Path = "main/DefaultRotations/Healer/AST_Default.cs")]
-public sealed class AST_Default : AST_Base
+public sealed class AST_Default : AstrologianRotation
 {
     public override CombatType Type => CombatType.PvE;
 

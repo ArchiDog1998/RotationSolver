@@ -17,12 +17,27 @@ public partial class BaseAction : IBaseAction
     /// </summary>
     protected readonly Action _action;
 
-    readonly ActionOption _option;
+    ActionOption _option;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public ActionOption Option 
+    {
+        get => _option;
+        set
+        {
+            value &= ~(ActionOption.GeneralGCD | ActionOption.RealGCD);
+            if (_action.IsGeneralGCD()) value |= ActionOption.GeneralGCD;
+            if (_action.IsRealGCD()) value |= ActionOption.RealGCD;
+            _option = value;
+        }
+    }
 
     /// <summary>
     /// Is a heal action.
     /// </summary>
-    public bool IsHeal => _option.HasFlag(ActionOption.HealFlag);
+    public bool IsHeal => Option.HasFlag(ActionOption.HealFlag);
 
     /// <summary>
     /// Is a friendly action.
@@ -33,32 +48,32 @@ public partial class BaseAction : IBaseAction
         {
             if (_action.CanTargetFriendly) return true;
             if (_action.CanTargetHostile) return false;
-            return _option.HasFlag(ActionOption.Friendly);
+            return Option.HasFlag(ActionOption.Friendly);
         }
     }
 
     /// <summary>
     /// Is effect of time.
     /// </summary>
-    public bool IsEot => _option.HasFlag(ActionOption.Eot);
+    public bool IsEot => Option.HasFlag(ActionOption.Eot);
 
     /// <summary>
     /// Should end special window after used it.
     /// </summary>
-    public bool ShouldEndSpecial => _option.HasFlag(ActionOption.EndSpecial);
+    public bool ShouldEndSpecial => Option.HasFlag(ActionOption.EndSpecial);
 
     /// <summary>
     /// Has a normal gcd action.
     /// </summary>
-    public bool IsGeneralGCD => _option.HasFlag(ActionOption.GeneralGCD);
+    public bool IsGeneralGCD => Option.HasFlag(ActionOption.GeneralGCD);
 
     /// <summary>
     /// Is a real gcd action, that makes gcd work.
     /// </summary>
-    public bool IsRealGCD => _option.HasFlag(ActionOption.RealGCD);
+    public bool IsRealGCD => Option.HasFlag(ActionOption.RealGCD);
 
     /// <inheritdoc/>
-    public bool IsDutyAction => _option.HasFlag(ActionOption.DutyAction);
+    public bool IsDutyAction => Option.HasFlag(ActionOption.DutyAction);
 
     /// <summary>
     /// Is a pvp action.
@@ -238,12 +253,7 @@ public partial class BaseAction : IBaseAction
     public BaseAction(ActionID actionID, ActionOption option = ActionOption.None)
     {
         _action = Service.GetSheet<Action>().GetRow((uint)actionID);
-
-        option &= ~(ActionOption.GeneralGCD | ActionOption.RealGCD);
-        if (_action.IsGeneralGCD()) option |= ActionOption.GeneralGCD;
-        if (_action.IsRealGCD()) option |= ActionOption.RealGCD;
-        _option = option;
-
+        Option = option;
         CoolDownGroup = _action.GetCoolDownGroup();
     }
 

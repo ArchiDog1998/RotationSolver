@@ -374,7 +374,7 @@ public abstract partial class CustomRotation
     /// <returns>Can we use it.</returns>
 
     [RotationDesc(DescType.SpeedAbility)]
-    [RotationDesc(ActionID.Sprint)]
+    [RotationDesc(ActionID.Sprint_PvE)]
     protected virtual bool SpeedAbility(out IAction act)
     {
         if (PvP_Sprint.CanUse(out act)) return true;

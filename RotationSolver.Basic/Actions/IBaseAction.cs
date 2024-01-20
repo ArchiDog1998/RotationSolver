@@ -6,6 +6,10 @@
 public interface IBaseAction : IAction
 {
     /// <summary>
+    /// 
+    /// </summary>
+    ActionOption Option { get; set; }
+    /// <summary>
     /// Is in the mistake actions.
     /// </summary>
     bool IsInMistake { get; set; }
@@ -52,23 +56,23 @@ public interface IBaseAction : IAction
     /// <summary>
     /// If player has these statuses from player self, this action will not used.
     /// </summary>
-    StatusID[] StatusProvide { get; }
+    StatusID[] StatusProvide { get; set; }
 
     /// <summary>
     /// If player doesn't have these statuses from player self, this action will not used.
     /// </summary>
-    StatusID[] StatusNeed { get; }
+    StatusID[] StatusNeed { get; set; }
 
     /// <summary>
     /// Check for this action, but not for the rotation. It is some additional conditions for this action.
     /// Input data is the target for this action.
     /// </summary>
-    Func<BattleChara, bool, bool> ActionCheck { get; }
+    Func<BattleChara, bool, bool> ActionCheck { get; set; }
 
     /// <summary>
     /// The way to choice the target.
     /// </summary>
-    Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget { get; }
+    Func<IEnumerable<BattleChara>, bool, BattleChara> ChoiceTarget { get; set; }
 
     /// <summary>
     /// Is a GCD action.
@@ -177,7 +181,7 @@ public interface IBaseAction : IAction
     /// <summary>
     /// If target has these statuses from player self, this aciton will not used.
     /// </summary>
-    StatusID[] TargetStatus { get; }
+    StatusID[] TargetStatus { get; set; }
 
     /// <summary>
     /// Action using position.

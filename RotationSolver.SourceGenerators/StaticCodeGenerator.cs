@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Newtonsoft.Json;
 using System.Collections.Immutable;
 
 namespace RotationSolver.SourceGenerators;
@@ -15,15 +16,17 @@ public class StaticCodeGenerator : IIncrementalGenerator
 
         var compilation = context.CompilationProvider.Combine(provider.Collect());
 
-        context.RegisterSourceOutput(compilation, (spc, source) => Execute(spc, source.Left, source.Right));
+        context.RegisterSourceOutput(compilation, (spc, source) => Execute(spc));
     }
 
-    private static void Execute(SourceProductionContext context, Compilation compilation, ImmutableArray<ClassDeclarationSyntax> typeList)
+    private static void Execute(SourceProductionContext context)
     {
         GenerateStatus(context);
-        GenerateAction(context);
+        GenerateActionID(context);
         GenerateContentType(context);
         GenerateActionCate(context);
+        GenerateActionFactory(context);
+        GenerateRotations(context);
     }
 
     private static void GenerateStatus(SourceProductionContext context)
@@ -89,7 +92,7 @@ public class StaticCodeGenerator : IIncrementalGenerator
         context.AddSource("ActionCate.g.cs", code);
     }
 
-    private static void GenerateAction(SourceProductionContext context)
+    private static void GenerateActionID(SourceProductionContext context)
     {
         var code = $$"""
             namespace RotationSolver.Basic.Data;
@@ -108,5 +111,27 @@ public class StaticCodeGenerator : IIncrementalGenerator
             """;
 
         context.AddSource("ActionID.g.cs", code);
+    }
+
+    private static void GenerateActionFactory(SourceProductionContext context)
+    {
+        var code = $$"""
+            namespace RotationSolver.Basic.Actions;
+
+            internal static partial class ActionFactory
+            {
+            {{Properties.Resources.Action.Table()}}
+            }
+            """;
+
+        context.AddSource("ActionFactory.g.cs", code);
+    }
+
+    private static void GenerateRotations(SourceProductionContext context)
+    {
+        foreach (var pair in JsonConvert.DeserializeObject<Dictionary<string, string>>(Properties.Resources.Rotation))
+        {
+            context.AddSource($"{pair.Key}.g.cs", pair.Value);
+        }
     }
 }

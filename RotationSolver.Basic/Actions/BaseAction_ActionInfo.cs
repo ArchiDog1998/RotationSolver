@@ -10,8 +10,8 @@ public partial class BaseAction
     internal static readonly uint[] ActionsNoNeedCasting =
     [
         5,
-        (uint)ActionID.PowerfulShot,
-        (uint)ActionID.BlastCharge,
+        (uint)ActionID.PowerfulShot_PvP,
+        (uint)ActionID.BlastCharge_PvP,
     ];
     /// <summary>
     /// The user set heal ratio.
@@ -35,7 +35,7 @@ public partial class BaseAction
     /// <summary>
     /// The effect range of the action.
     /// </summary>
-    public float EffectRange => (ActionID)ID == ActionID.LiturgyOfTheBell ? 20 : _action?.EffectRange ?? 0;
+    public float EffectRange => (ActionID)ID == ActionID.LiturgyOfTheBell_PvE ? 20 : _action?.EffectRange ?? 0;
     internal ActionID[] ComboIdsNot { private get; init; } = null;
 
     internal ActionID[] ComboIds { private get; init; } = null;
@@ -43,17 +43,17 @@ public partial class BaseAction
     /// <summary>
     /// Status that this action provides.
     /// </summary>
-    public StatusID[] StatusProvide { get; init; } = null;
+    public StatusID[] StatusProvide { get; set; } = null;
 
     /// <summary>
     /// Status that this action needs.
     /// </summary>
-    public virtual StatusID[] StatusNeed { get; init; } = null;
+    public virtual StatusID[] StatusNeed { get; set; } = null;
 
     /// <summary>
     /// Some check that this action needs.
     /// </summary>
-    public Func<BattleChara, bool, bool> ActionCheck { get; init; } = null;
+    public Func<BattleChara, bool, bool> ActionCheck { get; set; } = null;
 
     private bool WillCooldown
     {
