@@ -1,8 +1,10 @@
 ﻿using Lumina.Excel.GeneratedSheets;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
-namespace RotationSolver.GameData;
-internal class StatusGetter(Lumina.GameData gameData) 
-    : ExcelRowGetter<Status>(gameData)
+namespace RotationSolver.GameData.Getters;
+
+internal class ActionGetter(Lumina.GameData gameData) 
+    : ExcelRowGetter<Action>(gameData)
 {
     private readonly List<string> _addedNames = [];
 
@@ -12,7 +14,7 @@ internal class StatusGetter(Lumina.GameData gameData)
         base.BeforeCreating();
     }
 
-    protected override bool AddToList(Status item)
+    protected override bool AddToList(Action item)
     {
         if (item.ClassJobCategory.Row == 0) return false;
         var name = item.Name.RawString;
@@ -22,7 +24,7 @@ internal class StatusGetter(Lumina.GameData gameData)
         return true;
     }
 
-    protected override string ToCode(Status item)
+    protected override string ToCode(Action item)
     {
         var name = item.Name.RawString.ToPascalCase();
         if (_addedNames.Contains(name))
@@ -34,22 +36,17 @@ internal class StatusGetter(Lumina.GameData gameData)
             _addedNames.Add(name);
         }
 
-        var desc = item.Description.RawString;
+        var desc = gameData.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description.RawString ?? string.Empty;
 
         var jobs = item.ClassJobCategory.Value?.Name.RawString;
         jobs = string.IsNullOrEmpty(jobs) ? string.Empty : $" ({jobs})";
 
-        var cate = item.StatusCategory switch
-        {
-            1 => " ↑",
-            2 => " ↓",
-            _ => string.Empty,
-        };
+        var cate = item.IsPvP ? " <i>PvP</i>" : " <i>PvE</i>";
 
         return $"""
         /// <summary>
-        /// <see href="https://garlandtools.org/db/#status/{item.RowId}"><strong>{item.Name.RawString}</strong></see>{cate}{jobs}
-        /// <para>{desc.Replace("\n", "\n/// ")}</para>
+        /// <see href="https://garlandtools.org/db/#action/{item.RowId}"><strong>{item.Name.RawString}</strong></see>{cate}{jobs}
+        /// <para>{desc.Replace("\n", "</para>\n/// <para>")}</para>
         /// </summary>
         {name} = {item.RowId},
         """;

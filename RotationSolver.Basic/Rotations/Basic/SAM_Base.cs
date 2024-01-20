@@ -145,7 +145,7 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Shoha2 { get; } = new BaseAction(ActionID.Shoha2)
+    public static IBaseAction Shoha2 { get; } = new BaseAction(ActionID.ShohaIi)
     {
         ActionCheck = (b, m) => MeditationStacks == 3
     };
@@ -197,7 +197,7 @@ public abstract class SAM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction TsubameGaeshi { get; } = new BaseAction(ActionID.TsubameGaeshi);
+    public static IBaseAction TsubameGaeshi { get; } = new BaseAction(ActionID.Tsubamegaeshi);
 
     /// <summary>
     /// 

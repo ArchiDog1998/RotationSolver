@@ -71,7 +71,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 4
     /// </summary>
-    public static IBaseAction FountainFall { get; } = new BaseAction(ActionID.FountainFall)
+    public static IBaseAction FountainFall { get; } = new BaseAction(ActionID.Fountainfall)
     {
         StatusNeed = new[] { StatusID.SilkenFlow, StatusID.FlourishingFlow }
     };
@@ -98,7 +98,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 2
     /// </summary>
-    public static IBaseAction BladeShower { get; } = new BaseAction(ActionID.BladeShower)
+    public static IBaseAction BladeShower { get; } = new BaseAction(ActionID.Bladeshower)
     {
         StatusProvide = Fountain.StatusProvide,
     };
@@ -114,7 +114,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 4
     /// </summary>
-    public static IBaseAction BloodShower { get; } = new BaseAction(ActionID.BloodShower)
+    public static IBaseAction BloodShower { get; } = new BaseAction(ActionID.Bloodshower)
     {
         StatusNeed = FountainFall.StatusNeed,
     };
@@ -122,7 +122,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FanDance2 { get; } = new BaseAction(ActionID.FanDance2, ActionOption.UseResources)
+    public static IBaseAction FanDance2 { get; } = new BaseAction(ActionID.FanDanceIi, ActionOption.UseResources)
     {
         ActionCheck = (b, m) => Feathers > 0,
         StatusProvide = new[] { StatusID.ThreefoldFanDance },
@@ -131,7 +131,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FanDance3 { get; } = new BaseAction(ActionID.FanDance3)
+    public static IBaseAction FanDance3 { get; } = new BaseAction(ActionID.FanDanceIii)
     {
         StatusNeed = FanDance2.StatusProvide,
     };
@@ -139,7 +139,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FanDance4 { get; } = new BaseAction(ActionID.FanDance4)
+    public static IBaseAction FanDance4 { get; } = new BaseAction(ActionID.FanDanceIv)
     {
         StatusNeed = new[] { StatusID.FourfoldFanDance },
     };
@@ -155,7 +155,7 @@ public abstract class DNC_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction StarFallDance { get; } = new BaseAction(ActionID.StarFallDance)
+    public static IBaseAction StarFallDance { get; } = new BaseAction(ActionID.StarfallDance)
     {
         StatusNeed = new[] { StatusID.FlourishingStarfall },
     };

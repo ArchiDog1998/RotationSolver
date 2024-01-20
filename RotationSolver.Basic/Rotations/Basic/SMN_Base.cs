@@ -27,7 +27,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.DeathFlare;
+    public static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlow) == ActionID.Deathflare;
 
     /// <summary>
     /// 
@@ -196,7 +196,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction AetherCharge { get; } = new BaseAction(ActionID.AetherCharge)
+    public static IBaseAction AetherCharge { get; } = new BaseAction(ActionID.Aethercharge)
     {
         ActionCheck = (b, m) => InCombat && HasSummon
     };
@@ -220,7 +220,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction DeathFlare { get; } = new BaseAction(ActionID.DeathFlare)
+    public static IBaseAction DeathFlare { get; } = new BaseAction(ActionID.Deathflare)
     {
         ActionCheck = (b, m) => InBahamut,
     };
@@ -267,12 +267,12 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Ruin { get; } = new BaseAction(ActionID.RuinSMN);
+    public static IBaseAction Ruin { get; } = new BaseAction(ActionID.Ruin);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction RuinIV { get; } = new BaseAction(ActionID.RuinIV)
+    public static IBaseAction RuinIV { get; } = new BaseAction(ActionID.RuinIv)
     {
         StatusNeed = new[] { StatusID.FurtherRuin },
     };
@@ -304,7 +304,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction EnergyDrain { get; } = new BaseAction(ActionID.EnergyDrainSMN)
+    public static IBaseAction EnergyDrain { get; } = new BaseAction(ActionID.EnergyDrain_16508)
     {
         StatusProvide = new[] { StatusID.FurtherRuin },
         ActionCheck = (b, m) => !HasAetherflowStacks
@@ -330,7 +330,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PainFlare { get; } = new BaseAction(ActionID.PainFlare)
+    public static IBaseAction PainFlare { get; } = new BaseAction(ActionID.Painflare)
     {
         ActionCheck = Fester.ActionCheck,
     };
@@ -342,7 +342,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.ResurrectionSMN, ActionOption.Friendly);
+    public static IBaseAction Resurrection { get; } = new BaseAction(ActionID.Resurrection, ActionOption.Friendly);
 
     /// <summary>
     /// 
@@ -461,42 +461,42 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Ruin3 { get; } = new BaseAction(ActionID.PvP_Ruin3);
+    public static IBaseAction PvP_Ruin3 { get; } = new BaseAction(ActionID.RuinIii_29664);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_CrimsonCyclone { get; } = new BaseAction(ActionID.PvP_CrimsonCyclone);
+    public static IBaseAction PvP_CrimsonCyclone { get; } = new BaseAction(ActionID.CrimsonCyclone_29667);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_CrimsonStrike { get; } = new BaseAction(ActionID.PvP_CrimsonStrike);
+    public static IBaseAction PvP_CrimsonStrike { get; } = new BaseAction(ActionID.CrimsonStrike_29668);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Slipstream { get; } = new BaseAction(ActionID.PvP_Slipstream);
+    public static IBaseAction PvP_Slipstream { get; } = new BaseAction(ActionID.Slipstream_29669);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_RadiantAegis { get; } = new BaseAction(ActionID.PvP_RadiantAegis, ActionOption.Defense);
+    public static IBaseAction PvP_RadiantAegis { get; } = new BaseAction(ActionID.RadiantAegis_29670, ActionOption.Defense);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_MountainBuster { get; } = new BaseAction(ActionID.PvP_MountainBuster);
+    public static IBaseAction PvP_MountainBuster { get; } = new BaseAction(ActionID.MountainBuster_29671);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Fester { get; } = new BaseAction(ActionID.PvP_Fester);
+    public static IBaseAction PvP_Fester { get; } = new BaseAction(ActionID.Fester_29672);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_SummonBahamut { get; } = new BaseAction(ActionID.PvP_SummonBahamut)
+    public static IBaseAction PvP_SummonBahamut { get; } = new BaseAction(ActionID.SummonBahamut_29673)
     {
         ActionCheck = (t, m) => LimitBreakLevel >= 1,
     };
@@ -504,7 +504,7 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_SummonPhoenix { get; } = new BaseAction(ActionID.PvP_SummonPhoenix)
+    public static IBaseAction PvP_SummonPhoenix { get; } = new BaseAction(ActionID.SummonPhoenix_29678)
     {
         ActionCheck = (t, m) => LimitBreakLevel >= 1,
     };
@@ -512,22 +512,22 @@ public abstract class SMN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_AstralImpulse { get; } = new BaseAction(ActionID.PvP_AstralImpulse);
+    public static IBaseAction PvP_AstralImpulse { get; } = new BaseAction(ActionID.AstralImpulse_29665);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_FountainOfFire { get; } = new BaseAction(ActionID.PvP_FountainOfFire);
+    public static IBaseAction PvP_FountainOfFire { get; } = new BaseAction(ActionID.FountainOfFire_29666);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_EnkindleBahamut { get; } = new BaseAction(ActionID.PvP_EnkindleBahamut);
+    public static IBaseAction PvP_EnkindleBahamut { get; } = new BaseAction(ActionID.EnkindleBahamut_29674);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_EnkindlePhoenix { get; } = new BaseAction(ActionID.PvP_EnkindlePhoenix);
+    public static IBaseAction PvP_EnkindlePhoenix { get; } = new BaseAction(ActionID.EnkindlePhoenix_29679);
 
     #endregion
 

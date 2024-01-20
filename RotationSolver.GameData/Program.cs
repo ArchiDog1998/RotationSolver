@@ -1,6 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Lumina;
-using RotationSolver.GameData;
+﻿using Lumina;
+using RotationSolver.GameData.Getters;
 using System.Resources.NetStandard;
 
 var gameData = new GameData("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack", new LuminaOptions
@@ -18,6 +17,8 @@ using var res = new ResXResourceWriter(dirInfo.FullName + "\\RotationSolver.Sour
 
 res.AddResource("StatusId", new StatusGetter(gameData).GetCode());
 res.AddResource("ContentType", new ContentTypeGetter(gameData).GetCode());
+res.AddResource("ActionId", new ActionGetter(gameData).GetCode());
+
 res.Generate();
 
 Console.WriteLine("Finished!");

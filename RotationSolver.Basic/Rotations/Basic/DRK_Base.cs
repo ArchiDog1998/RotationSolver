@@ -108,7 +108,7 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BloodSpiller { get; } = new BaseAction(ActionID.BloodSpiller)
+    public static IBaseAction BloodSpiller { get; } = new BaseAction(ActionID.Bloodspiller)
     {
         ActionCheck = (b, m) => JobGauge.Blood >= 50 || Player.HasStatus(true, StatusID.Delirium),
     };
@@ -176,7 +176,7 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SaltandDarkness { get; } = new BaseAction(ActionID.SaltandDarkness)
+    public static IBaseAction SaltandDarkness { get; } = new BaseAction(ActionID.SaltAndDarkness)
     {
         StatusNeed = new[] { StatusID.SaltedEarth },
     };
@@ -184,7 +184,7 @@ public abstract class DRK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction ShadowBringer { get; } = new BaseAction(ActionID.ShadowBringer)
+    public static IBaseAction ShadowBringer { get; } = new BaseAction(ActionID.Shadowbringer)
     {
         ActionCheck = (b, m) => !DarkSideEndAfterGCD(),
     };

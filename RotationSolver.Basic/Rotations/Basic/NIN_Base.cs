@@ -119,7 +119,7 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction DreamWithinADream { get; } = new BaseAction(ActionID.DreamWithInADream);
+    public static IBaseAction DreamWithinADream { get; } = new BaseAction(ActionID.DreamWithinADream);
 
     /// <summary>
     /// 
@@ -144,7 +144,7 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction HellfrogMedium { get; } = new BaseAction(ActionID.HellFrogMedium)
+    public static IBaseAction HellfrogMedium { get; } = new BaseAction(ActionID.HellfrogMedium)
     {
         ActionCheck = Bhavacakra.ActionCheck,
     };
@@ -224,32 +224,32 @@ public abstract class NIN_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FumaShurikenTen { get; } = new BaseAction(ActionID.FumaShurikenTen);
+    public static IBaseAction FumaShurikenTen { get; } = new BaseAction(ActionID.FumaShuriken_18873);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FumaShurikenJin { get; } = new BaseAction(ActionID.FumaShurikenJin);
+    public static IBaseAction FumaShurikenJin { get; } = new BaseAction(ActionID.FumaShuriken_18875);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction KatonTen { get; } = new BaseAction(ActionID.KatonTen);
+    public static IBaseAction KatonTen { get; } = new BaseAction(ActionID.Katon_18876);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction RaitonChi { get; } = new BaseAction(ActionID.RaitonChi);
+    public static IBaseAction RaitonChi { get; } = new BaseAction(ActionID.Raiton_18877);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction DotonChi { get; } = new BaseAction(ActionID.DotonChi);
+    public static IBaseAction DotonChi { get; } = new BaseAction(ActionID.Doton_18880);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SuitonJin { get; } = new BaseAction(ActionID.SuitonJin);
+    public static IBaseAction SuitonJin { get; } = new BaseAction(ActionID.Suiton_18881);
 
     /// <summary>
     /// 
@@ -422,106 +422,6 @@ public abstract class NIN_Base : CustomRotation
     /// 
     /// </summary>
     public static IBaseTrait MeleeMastery2 { get; } = new BaseTrait(522);
-    #endregion
-
-    #region PvP
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_AeolianEdgeCombo { get; } = new BaseAction(ActionID.PvP_AeolianEdgeCombo);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_FumaShuriken { get; } = new BaseAction(ActionID.PvP_Fumashuriken);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Mug { get; } = new BaseAction(ActionID.PvP_Mug);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_ThreeMudra { get; } = new BaseAction(ActionID.PvP_Threemudra, ActionOption.Buff);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Bunshin { get; } = new BaseAction(ActionID.Bunshin, ActionOption.Buff);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Shukuchi { get; } = new BaseAction(ActionID.Bunshin);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_SeitonTenchu { get; } = new BaseAction(ActionID.PvP_Seitontenchu)
-    {
-        ActionCheck = (t, m) => LimitBreakLevel >= 1,
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_ForkedRaiju { get; } = new BaseAction(ActionID.PvP_AeolianEdgeCombo)
-    {
-        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_FleetingRaiju { get; } = new BaseAction(ActionID.PvP_Fleetingraiju)
-    {
-        StatusNeed = new StatusID[] { StatusID.FleetingRaijuReady_3211 }
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_HyoshoRanryu { get; } = new BaseAction(ActionID.PvP_Hyoshoranryu)
-    {
-        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_GokaMekkyaku { get; } = new BaseAction(ActionID.PvP_Gokamekkyaku)
-    {
-        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Meisui { get; } = new BaseAction(ActionID.PvP_Meisui)
-    {
-        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Huton { get; } = new BaseAction(ActionID.PvP_Huton)
-    {
-        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Doton { get; } = new BaseAction(ActionID.PvP_Doton)
-    {
-        StatusNeed = new StatusID[] { StatusID.ThreeMudra }
-    };
-
-
-
     #endregion
 
     private protected override IBaseAction LimitBreak => Chimatsuri;

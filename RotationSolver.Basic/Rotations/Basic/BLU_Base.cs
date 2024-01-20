@@ -274,7 +274,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// <see href="https://ffxiv.consolegameswiki.com/wiki/Plaincracker"/>
     /// </summary>
-    public static IBLUAction PlainCracker { get; } = new BLUAction(ActionID.PlainCracker);
+    public static IBLUAction PlainCracker { get; } = new BLUAction(ActionID.Plaincracker);
 
     /// <summary>
     /// <see href="https://ffxiv.consolegameswiki.com/wiki/The_Look"/>
@@ -284,12 +284,12 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// <see href="https://ffxiv.consolegameswiki.com/wiki/The_Ram%27s_Voice"/>
     /// </summary>
-    public static IBLUAction TheRamVoice { get; } = new BLUAction(ActionID.TheRamVoice);
+    public static IBLUAction TheRamVoice { get; } = new BLUAction(ActionID.TheRamsVoice);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction TheDragonVoice { get; } = new BLUAction(ActionID.TheDragonVoice);
+    public static IBLUAction TheDragonVoice { get; } = new BLUAction(ActionID.TheDragonsVoice);
 
     /// <summary>
     /// 
@@ -319,7 +319,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction MountainBuster { get; } = new BLUAction(ActionID.MountainBusterBLU);
+    public static IBLUAction MountainBuster { get; } = new BLUAction(ActionID.MountainBuster);
 
     /// <summary>
     /// 
@@ -432,7 +432,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction NightBloom { get; } = new BLUAction(ActionID.NightBloom);
+    public static IBLUAction NightBloom { get; } = new BLUAction(ActionID.Nightbloom);
 
     /// <summary>
     /// 
@@ -445,7 +445,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction PhantomFlurry2 { get; } = new BLUAction(ActionID.PhantomFlurry2)
+    public static IBLUAction PhantomFlurry2 { get; } = new BLUAction(ActionID.PhantomFlurry_23289)
     {
         ActionCheck = (b, m) => Player.HasStatus(true, StatusID.PhantomFlurry)
     };
@@ -528,12 +528,12 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Weight4Tonze { get; } = new BLUAction(ActionID.Weight4Tonze);
+    public static IBLUAction Weight4Tonze { get; } = new BLUAction(ActionID._4TonzeWeight);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Needles1000 { get; } = new BLUAction(ActionID.Needles1000);
+    public static IBLUAction Needles1000 { get; } = new BLUAction(ActionID._1000Needles);
 
     /// <summary>
     /// 
@@ -637,7 +637,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction SelfDestruct { get; } = new BLUAction(ActionID.SelfDestruct)
+    public static IBLUAction SelfDestruct { get; } = new BLUAction(ActionID.Selfdestruct)
     {
         ActionCheck = (b, m) => !Player.HasStatus(true, StatusID.BrushWithDeath),
     };
@@ -680,7 +680,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction UltraVibration { get; } = new BLUAction(ActionID.UltraVibration);
+    public static IBLUAction UltraVibration { get; } = new BLUAction(ActionID.Ultravibration);
 
     /// <summary>
     /// 
@@ -760,7 +760,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction Cactguard { get; } = new BLUAction(ActionID.CactGuard, ActionOption.Defense)
+    public static IBLUAction Cactguard { get; } = new BLUAction(ActionID.Cactguard, ActionOption.Defense)
     {
         StatusProvide = Rampart.StatusProvide,
         ActionCheck = BaseAction.TankDefenseSelf,
@@ -802,7 +802,7 @@ public abstract class BLU_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBLUAction OffGuard { get; } = new BLUAction(ActionID.OffGuard, ActionOption.Buff);
+    public static IBLUAction OffGuard { get; } = new BLUAction(ActionID.Offguard, ActionOption.Buff);
 
     /// <summary>
     /// 

@@ -128,7 +128,7 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction CorpsACorps { get; } = new BaseAction(ActionID.CorpsACorps, ActionOption.EndSpecial)
+    public static IBaseAction CorpsACorps { get; } = new BaseAction(ActionID.Corpsacorps, ActionOption.EndSpecial)
     {
         ChoiceTarget = TargetFilter.FindTargetForMoving,
     };
@@ -146,7 +146,7 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Verthunder2 { get; } = new BaseAction(ActionID.Verthunder2)
+    public static IBaseAction Verthunder2 { get; } = new BaseAction(ActionID.VerthunderIi)
     {
         StatusProvide = Jolt.StatusProvide,
     };
@@ -154,7 +154,7 @@ public abstract class RDM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Veraero2 { get; } = new BaseAction(ActionID.Veraero2)
+    public static IBaseAction Veraero2 { get; } = new BaseAction(ActionID.VeraeroIi)
     {
         StatusProvide = Jolt.StatusProvide,
     };
@@ -329,7 +329,7 @@ public abstract class RDM_Base : CustomRotation
     }
 
     /// <inheritdoc/>
-    [RotationDesc(ActionID.CorpsACorps)]
+    [RotationDesc(ActionID.Corpsacorps)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
         if (CorpsACorps.CanUse(out act)) return true;

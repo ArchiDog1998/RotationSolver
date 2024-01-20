@@ -299,7 +299,7 @@ public abstract class RPR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SoulSow { get; } = new BaseAction(ActionID.SoulSow)
+    public static IBaseAction SoulSow { get; } = new BaseAction(ActionID.Soulsow)
     {
         StatusProvide = new[] { StatusID.Soulsow },
         ActionCheck = (b, m) => !InCombat,

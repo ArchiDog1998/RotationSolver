@@ -1,6 +1,6 @@
 ﻿using Lumina.Excel.GeneratedSheets;
 
-namespace RotationSolver.GameData;
+namespace RotationSolver.GameData.Getters;
 internal class ContentTypeGetter(Lumina.GameData gameData)
     : ExcelRowGetter<ContentType>(gameData)
 {

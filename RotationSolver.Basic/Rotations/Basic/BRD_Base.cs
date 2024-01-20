@@ -69,7 +69,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction HeavyShoot { get; } = new BaseAction(ActionID.HeavyShoot)
+    public static IBaseAction HeavyShoot { get; } = new BaseAction(ActionID.HeavyShot)
     {
         StatusProvide = [StatusID.StraightShotReady]
     };
@@ -77,7 +77,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction StraitShoot { get; } = new BaseAction(ActionID.StraitShoot)
+    public static IBaseAction StraitShoot { get; } = new BaseAction(ActionID.StraightShot)
     {
         StatusNeed = new[] { StatusID.StraightShotReady }
     };
@@ -93,7 +93,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction WindBite { get; } = new BaseAction(ActionID.WindBite, ActionOption.Dot)
+    public static IBaseAction WindBite { get; } = new BaseAction(ActionID.Windbite, ActionOption.Dot)
     {
         TargetStatus = new[] { StatusID.Windbite, StatusID.Stormbite },
     };
@@ -143,7 +143,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction ShadowBite { get; } = new BaseAction(ActionID.ShadowBite)
+    public static IBaseAction ShadowBite { get; } = new BaseAction(ActionID.Shadowbite)
     {
         StatusNeed = [StatusID.ShadowbiteReady],
     };
@@ -204,7 +204,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction WanderersMinuet { get; } = new BaseAction(ActionID.WanderersMinuet);
+    public static IBaseAction WanderersMinuet { get; } = new BaseAction(ActionID.TheWanderersMinuet);
 
     /// <summary>
     /// 
@@ -221,7 +221,7 @@ public abstract class BRD_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction WardensPaean { get; } = new BaseAction(ActionID.WardensPaean, ActionOption.Heal)
+    public static IBaseAction WardensPaean { get; } = new BaseAction(ActionID.TheWardensPaean, ActionOption.Heal)
     {
         ChoiceTarget = (tars, mustUse) =>
         {
@@ -333,68 +333,6 @@ public abstract class BRD_Base : CustomRotation
     /// </summary>
     public static IBaseTrait MinstrelsCoda { get; } = new BaseTrait(448);
 
-    #endregion
-
-    #region PvP
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_PowerfulShot { get; } = new BaseAction(ActionID.PvP_PowerfulShot);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_EmpyrealArrow { get; } = new BaseAction(ActionID.PvP_EmpyrealArrow);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_PitchPerfect { get; } = new BaseAction(ActionID.PvP_PitchPerfect)
-    {
-        StatusNeed = new StatusID[] { StatusID.Repertoire },
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_ApexArrow { get; } = new BaseAction(ActionID.PvP_ApexArrow);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_SilentNocturne { get; } = new BaseAction(ActionID.PvP_SilentNocturne)
-    {
-        StatusProvide = PvP_PitchPerfect.StatusNeed,
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_RepellingShot { get; } = new BaseAction(ActionID.PvP_RepellingShot);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_TheWardensPaean { get; } = new BaseAction(ActionID.PvP_TheWardensPaean, ActionOption.Friendly)
-    {
-        StatusProvide = PvP_PitchPerfect.StatusNeed,
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_BlastArrow { get; } = new BaseAction(ActionID.PvP_BlastArrow)
-    {
-        StatusNeed = new StatusID[] { StatusID.BlastArrowReady_3142 },
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_FinalFantasia { get; } = new BaseAction(ActionID.PvP_FinalFantasia, ActionOption.Buff)
-    {
-        ActionCheck = (t, m) => LimitBreakLevel >= 1,
-    };
     #endregion
 
     private protected override IBaseAction LimitBreak => SagittariusArrow;

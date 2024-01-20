@@ -195,15 +195,15 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Fire3 { get; } = new Fire3Action(ActionID.Fire3)
+    public static IBaseAction Fire3 { get; } = new Fire3Action(ActionID.FireIii)
     {
-        ActionCheck = (b, m) => !IsLastGCD(ActionID.Fire3),
+        ActionCheck = (b, m) => !IsLastGCD(ActionID.FireIii),
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Fire4 { get; } = new ElementAction(ActionID.Fire4)
+    public static IBaseAction Fire4 { get; } = new ElementAction(ActionID.FireIv)
     {
         ActionCheck = (b, m) => InAstralFire && !ElementTimeEndAfter(Fire4.CastTime),
     };
@@ -224,15 +224,15 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Blizzard3 { get; } = new BaseAction(ActionID.Blizzard3)
+    public static IBaseAction Blizzard3 { get; } = new BaseAction(ActionID.BlizzardIv)
     {
-        ActionCheck = (b, m) => !IsLastGCD(ActionID.Blizzard3),
+        ActionCheck = (b, m) => !IsLastGCD(ActionID.BlizzardIv),
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Blizzard4 { get; } = new ElementAction(ActionID.Blizzard4)
+    public static IBaseAction Blizzard4 { get; } = new ElementAction(ActionID.BlizzardIv)
     {
         ActionCheck = (b, m) => InUmbralIce && !ElementTimeEndAfter(Blizzard4.CastTime),
     };
@@ -268,7 +268,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Fire2 { get; } = new BaseAction(ActionID.Fire2);
+    public static IBaseAction Fire2 { get; } = new BaseAction(ActionID.FireIi);
 
     /// <summary>
     /// 
@@ -281,7 +281,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Blizzard2 { get; } = new BaseAction(ActionID.Blizzard2);
+    public static IBaseAction Blizzard2 { get; } = new BaseAction(ActionID.BlizzardIi);
 
     /// <summary>
     /// 
@@ -291,7 +291,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Thunder2 { get; } = new ThunderAction(ActionID.Thunder2);
+    public static IBaseAction Thunder2 { get; } = new ThunderAction(ActionID.ThunderIi);
 
     /// <summary>
     /// 
@@ -352,7 +352,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SharpCast { get; } = new BaseAction(ActionID.SharpCast)
+    public static IBaseAction SharpCast { get; } = new BaseAction(ActionID.Sharpcast)
     {
         StatusProvide = new[] { StatusID.Sharpcast },
         ActionCheck = (b, m) => HasHostilesInRange,
@@ -361,7 +361,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction TripleCast { get; } = new BaseAction(ActionID.TripleCast)
+    public static IBaseAction TripleCast { get; } = new BaseAction(ActionID.Triplecast)
     {
         StatusProvide = Swiftcast.StatusProvide,
     };
@@ -491,106 +491,6 @@ public abstract partial class BLM_Base : CustomRotation
 
     #endregion
     
-    #region PvP
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Fire { get; } = new BaseAction(ActionID.PvP_Fire);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Blizzard { get; } = new BaseAction(ActionID.PvP_Blizzard);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Burst { get; } = new BaseAction(ActionID.PvP_Burst,ActionOption.Defense);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Paradox { get; } = new BaseAction(ActionID.PvP_Paradox);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Nightwing { get; } = new BaseAction(ActionID.PvP_Nightwing);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_AetherialManipulation { get; } = new BaseAction(ActionID.PvP_AetherialManipulation);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Superflare { get; } = new BaseAction(ActionID.PvP_Superflare);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Fire4 { get; } = new BaseAction(ActionID.PvP_Fire4,ActionOption.Buff)
-    {
-        StatusNeed = new StatusID[] { (StatusID) 3212 },
-    };
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Flare { get; } = new BaseAction(ActionID.PvP_Flare)
-    {
-        StatusNeed = new StatusID[] { StatusID.AstralFireIi_3213 },
-    };
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Blizzard4 { get; } = new BaseAction(ActionID.PvP_Blizzard4,ActionOption.Buff)
-    {
-        StatusNeed = [(StatusID) 3214],
-    };
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Freeze { get; } = new BaseAction(ActionID.PvP_Freeze)
-    {
-        StatusNeed = new StatusID[] { StatusID.UmbralIceIi_3215 },
-    };
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Foul { get; } = new BaseAction(ActionID.PvP_Foul)
-    {
-        StatusNeed = new StatusID[] { StatusID.Polyglot },
-    };
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_SoulResonance { get; } = new BaseAction(ActionID.PvP_SoulResonance)
-    {
-        FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
-        ActionCheck = (t, m) => LimitBreakLevel >= 1,
-    };
-
-    #endregion
-
     private protected override IBaseAction LimitBreak => Meteor;
 
     /// <summary>
@@ -611,7 +511,7 @@ public abstract partial class BLM_Base : CustomRotation
     /// </summary>
     protected override void UpdateInfo()
     {
-        if (Player.CastActionId == (uint)ActionID.Fire4 && Player.CurrentCastTime < 0.2)
+        if (Player.CastActionId == (uint)ActionID.FireIv && Player.CurrentCastTime < 0.2)
         {
             Fire4Time = Player.TotalCastTime;
         }

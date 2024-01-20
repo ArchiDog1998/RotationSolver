@@ -35,7 +35,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.SwiftCast, [JobRole.RangedMagical, JobRole.Healer], ActionOption.Buff)
+    public static IBaseAction Swiftcast { get; } = new RoleAction(ActionID.Swiftcast, [JobRole.RangedMagical, JobRole.Healer], ActionOption.Buff)
     {
         StatusProvide =
         [
@@ -195,7 +195,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SureCast { get; } = new RoleAction(ActionID.SureCast,
+    public static IBaseAction SureCast { get; } = new RoleAction(ActionID.Surecast,
         new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, ActionOption.Heal);
 
     /// <summary>
@@ -328,7 +328,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction VariantRaise2 { get; } = new RoleAction(ActionID.VariantRaise2,
+    public static IBaseAction VariantRaise2 { get; } = new RoleAction(ActionID.VariantRaiseIi,
     [JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical,],
     ActionOption.Friendly | ActionOption.DutyAction);
 
@@ -347,7 +347,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction VariantCure2 { get; } = new RoleAction(ActionID.VariantCure2,
+    public static IBaseAction VariantCure2 { get; } = new RoleAction(ActionID.VariantCure_33862,
         [JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical],
         ActionOption.Heal | ActionOption.DutyAction | ActionOption.EndSpecial);
 
@@ -360,7 +360,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction VariantSpiritDart2 { get; } = new RoleAction(ActionID.VariantSpiritDart2,
+    public static IBaseAction VariantSpiritDart2 { get; } = new RoleAction(ActionID.VariantSpiritDart_33863,
         [JobRole.Healer, JobRole.Tank], ActionOption.Dot | ActionOption.DutyAction);
 
     /// <summary>
@@ -372,7 +372,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction VariantRampart2 { get; } = new RoleAction(ActionID.VariantRampart2,
+    public static IBaseAction VariantRampart2 { get; } = new RoleAction(ActionID.VariantRampart_33864,
         [JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical], ActionOption.Buff | ActionOption.DutyAction);
 
     /// <summary>
@@ -482,7 +482,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LostProtect2 { get; } = new BaseAction(ActionID.LostProtect2,
+    public static IBaseAction LostProtect2 { get; } = new BaseAction(ActionID.LostProtectIi,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = [StatusID.LostProtectIi],
@@ -491,7 +491,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LostShell2 { get; } = new BaseAction(ActionID.LostShell2,
+    public static IBaseAction LostShell2 { get; } = new BaseAction(ActionID.LostShellIi,
         ActionOption.DutyAction | ActionOption.Friendly)
     {
         StatusProvide = [StatusID.LostShellIi],
@@ -519,7 +519,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LostStoneskin2 { get; } = new BaseAction(ActionID.LostStoneskin2,
+    public static IBaseAction LostStoneskin2 { get; } = new BaseAction(ActionID.LostStoneskinIi,
         ActionOption.DutyAction | ActionOption.Defense)
     {
         StatusProvide = [StatusID.Stoneskin],
@@ -528,7 +528,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlarestar,
+    public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlareStar,
     ActionOption.DutyAction)
     {
         StatusProvide = [StatusID.LostFlareStar],
@@ -548,17 +548,17 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_StandardIssueElixir { get; } = new BaseAction(ActionID.PvP_StandardIssueElixir, ActionOption.Heal)
+    public static IBaseAction PvP_StandardIssueElixir { get; } = new BaseAction(ActionID.StandardissueElixir, ActionOption.Heal)
     {
         ActionCheck = (t, m) => !HasHostilesInMaxRange
             && (t.CurrentMp <= t.MaxMp / 3 || t.CurrentHp <= t.MaxHp / 3)
-            && !IsLastAction(ActionID.PvP_StandardIssueElixir),
+            && !IsLastAction(ActionID.StandardissueElixir),
     };
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Recuperate { get; } = new BaseAction(ActionID.PvP_Recuperate, ActionOption.Heal)
+    public static IBaseAction PvP_Recuperate { get; } = new BaseAction(ActionID.Recuperate, ActionOption.Heal)
     {
         ActionCheck = (t, m) => t.MaxHp - t.CurrentHp > 15000,
     };
@@ -566,7 +566,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Purify { get; } = new BaseAction(ActionID.PvP_Purify, ActionOption.Heal)
+    public static IBaseAction PvP_Purify { get; } = new BaseAction(ActionID.Purify_29056, ActionOption.Heal)
     {
         ActionCheck = (t, m) => Player?.StatusList.Any(s => s.GameData.CanDispel) ?? false,
     };
@@ -574,12 +574,12 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Guard { get; } = new BaseAction(ActionID.PvP_Guard, ActionOption.Defense);
+    public static IBaseAction PvP_Guard { get; } = new BaseAction(ActionID.Guard, ActionOption.Defense);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Sprint { get; } = new BaseAction(ActionID.PvP_Sprint, ActionOption.Friendly)
+    public static IBaseAction PvP_Sprint { get; } = new BaseAction(ActionID.Sprint_29057, ActionOption.Friendly)
     {
         StatusProvide = [StatusID.Sprint_1342],
     };

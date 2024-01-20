@@ -14,7 +14,13 @@ internal static partial class Util
             .Select(w => LowerCaseNextToNumber().Replace(w, m => m.Value.ToUpper()))
             .Select(w => UpperCaseInside().Replace(w, m => m.Value.ToLower()));
 
-        return string.Concat(pascalCase);
+        var result = string.Concat(pascalCase);
+
+        if (result.Length > 0 && char.IsNumber(result[0]))
+        {
+            result = "_" + result;
+        }
+        return result;
     }
 
     [GeneratedRegex("[^_a-zA-Z0-9]")]

@@ -135,7 +135,7 @@ public abstract class MCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BioBlaster { get; } = new BaseAction(ActionID.BioBlaster, ActionOption.Dot);
+    public static IBaseAction BioBlaster { get; } = new BaseAction(ActionID.Bioblaster, ActionOption.Dot);
 
     /// <summary>
     /// 
@@ -285,83 +285,6 @@ public abstract class MCH_Base : CustomRotation
     /// 
     /// </summary>
     public static IBaseTrait MarksmansMastery { get; } = new BaseTrait(517);
-    #endregion
-
-    #region PvP
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_BlastCharge { get; } = new BaseAction(ActionID.PvP_BlastCharge);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Scattergun { get; } = new BaseAction(ActionID.PvP_Scattergun);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Drill { get; } = new BaseAction(ActionID.PvP_Drill)
-    {
-        StatusNeed = new StatusID[] { StatusID.DrillPrimed },
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Wildfire { get; } = new BaseAction(ActionID.PvP_Wildfire);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_BishopAutoTurret { get; } = new BaseAction(ActionID.PvP_BishopAutoTurret);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Analysis { get; } = new BaseAction(ActionID.PvP_Analysis, ActionOption.Buff);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_MarksmansSpite { get; } = new BaseAction(ActionID.PvP_MarksmansSpite)
-    {
-        FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
-        ActionCheck = (t, m) => LimitBreakLevel >= 1,
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_HeatBlast { get; } = new BaseAction(ActionID.PvP_HeatBlast)
-    {
-        StatusNeed = new StatusID[] { StatusID.Overheated_3149 },
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Bioblaster { get; } = new BaseAction(ActionID.PvP_Bioblaster)
-    {
-        StatusNeed = new StatusID[] { StatusID.BioblasterPrimed },
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_AirAnchor { get; } = new BaseAction(ActionID.PvP_AirAnchor)
-    {
-        StatusNeed = [StatusID.AirAnchorPrimed],
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_ChainSaw { get; } = new BaseAction(ActionID.PvP_ChainSaw)
-    {
-        StatusNeed = [StatusID.ChainSawPrimed],
-    };
-
     #endregion
 
     private protected override IBaseAction LimitBreak => SatelliteBeam;

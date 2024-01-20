@@ -1,7 +1,7 @@
 ﻿using Lumina.Excel;
 
-namespace RotationSolver.GameData;
-internal abstract class ExcelRowGetter<T>(Lumina.GameData gameData) where T :ExcelRow
+namespace RotationSolver.GameData.Getters;
+internal abstract class ExcelRowGetter<T>(Lumina.GameData gameData) where T : ExcelRow
 {
     protected abstract bool AddToList(T item);
     protected abstract string ToCode(T item);

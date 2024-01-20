@@ -61,35 +61,70 @@ namespace RotationSolver.SourceGenerators.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DutyRoulette = 1,
+        ///   Looks up a localized string similar to /// &lt;summary&gt;
+        ////// &lt;see href=&quot;https://garlandtools.org/db/#action/1&quot;&gt;&lt;strong&gt;Key Item&lt;/strong&gt;&lt;/see&gt; PvE (All Classes)
+        ////// &lt;para&gt;&lt;/para&gt;
+        ////// &lt;/summary&gt;
+        ///KeyItem = 1,
+        ////// &lt;summary&gt;
+        ////// &lt;see href=&quot;https://garlandtools.org/db/#action/2&quot;&gt;&lt;strong&gt;Interaction&lt;/strong&gt;&lt;/see&gt; PvE (All Classes)
+        ////// &lt;para&gt;&lt;/para&gt;
+        ////// &lt;/summary&gt;
+        ///Interaction = 2,
+        ////// &lt;summary&gt;
+        ////// &lt;see href=&quot;https://garlandtools.org/db/#action/3&quot;&gt;&lt;strong&gt;Sprint&lt;/strong&gt;&lt;/see&gt; PvE (All Classes)
+        ////// &lt;para&gt;&lt;/para&gt;
+        ////// &lt;/summary&gt;
+        ///Sprint = 3,
+        //////  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ActionId {
+            get {
+                return ResourceManager.GetString("ActionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
+        ///DutyRoulette = 1,
+        ////// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
         ///Dungeons = 2,
+        ////// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
         ///Guildhests = 3,
+        ////// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
         ///Trials = 4,
+        ////// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
         ///Raids = 5,
+        ////// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
         ///PvP = 6,
+        ////// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
         ///QuestBattles = 7,
+        ////// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
         ///FatEs = 8,
+        ////// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
         ///TreasureHunt = 9,
-        ///Levequests = 10,
-        ///GrandCompany = 11,
-        ///Companions = 12,
-        ///TribalQuests = 13,
-        ///OverallCompletion = 14,
-        ///PlayerCommendation = 15,
-        ///DisciplesOfTheLand = 16,
-        ///DisciplesOfTheHand = 17,
-        ///RetainerVentures = 18,
-        ///GoldSaucer = 19,
-        ///DeepDungeons = 21,
-        ///WondrousTails = 24,
-        ///CustomDeliveries = 25,
-        ///Eureka = 26,
-        ///UltimateRaids = 28,
-        ///VcDungeonFinder = 30,
-        ///OceanFishing = 31,
-        ///TripleTriad = 32,
-        ///TheHunt = 33,
-        ///Fishin [rest of string was truncated]&quot;;.
+        ////// &lt;summary&gt;
+        ////// 
+        ////// &lt;/summary&gt;
+        ///Levequests = 10 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ContentType {
             get {
@@ -99,27 +134,17 @@ namespace RotationSolver.SourceGenerators.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to /// &lt;summary&gt;
-        ////// Stone-like rigidity is preventing the execution of actions.
+        ////// &lt;see href=&quot;https://garlandtools.org/db/#status/1&quot;&gt;&lt;strong&gt;Petrification&lt;/strong&gt;&lt;/see&gt; ↓ (All Classes)
+        ////// &lt;para&gt;Stone-like rigidity is preventing the execution of actions.&lt;/para&gt;
         ////// &lt;/summary&gt;
         ///Petrification = 1,
         ////// &lt;summary&gt;
-        ////// Unable to execute actions.
+        ////// &lt;see href=&quot;https://garlandtools.org/db/#status/2&quot;&gt;&lt;strong&gt;Stun&lt;/strong&gt;&lt;/see&gt; ↓ (All Classes)
+        ////// &lt;para&gt;Unable to execute actions.&lt;/para&gt;
         ////// &lt;/summary&gt;
         ///Stun = 2,
         ////// &lt;summary&gt;
-        ////// Overwhelming drowsiness is preventing the execution of actions.
-        ////// &lt;/summary&gt;
-        ///Sleep = 3,
-        ////// &lt;summary&gt;
-        ////// Scattered senses are preventing the execution of actions.
-        ////// &lt;/summary&gt;
-        ///Daze = 4,
-        ////// &lt;summary&gt;
-        ////// Unable to use abilities.
-        ////// &lt;/summary&gt;
-        ///Amnesia = 5,
-        ////// &lt;summary&gt;
-        ////// Unable to use we [rest of string was truncated]&quot;;.
+        ////// &lt;see href=&quot;https://garlandtools.org/db/#status/3&quot;&gt;&lt;strong&gt;Sleep&lt;/strong&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string StatusId {
             get {

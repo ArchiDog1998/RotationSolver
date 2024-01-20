@@ -6,7 +6,7 @@ internal static class ConfigurationHelper
 {
     public static readonly SortedList<ActionID, EnemyPositional> ActionPositional = new()
     {
-        {ActionID.FangandClaw, EnemyPositional.Flank},
+        {ActionID.FangAndClaw, EnemyPositional.Flank},
         {ActionID.WheelingThrust, EnemyPositional.Rear},
         {ActionID.ChaosThrust, EnemyPositional.Rear },
         {ActionID.ChaoticSpring, EnemyPositional.Rear },

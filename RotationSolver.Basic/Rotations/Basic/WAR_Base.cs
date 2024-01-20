@@ -287,55 +287,55 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_HeavySwing { get; } = new BaseAction(ActionID.PvP_HeavySwing);
+    public static IBaseAction PvP_HeavySwing { get; } = new BaseAction(ActionID.HeavySwing_29074);
 
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Maim { get; } = new BaseAction(ActionID.PvP_Maim);
+    public static IBaseAction PvP_Maim { get; } = new BaseAction(ActionID.Maim_29075);
 
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_StormsPath { get; } = new BaseAction(ActionID.PvP_StormsPath);
+    public static IBaseAction PvP_StormsPath { get; } = new BaseAction(ActionID.StormsPath_29076);
 
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_PrimalRend { get; } = new BaseAction(ActionID.PvP_PrimalRend);
+    public static IBaseAction PvP_PrimalRend { get; } = new BaseAction(ActionID.PrimalRend_29084);
 
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Onslaught { get; } = new BaseAction(ActionID.PvP_Onslaught);
+    public static IBaseAction PvP_Onslaught { get; } = new BaseAction(ActionID.Onslaught_29079);
 
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Orogeny { get; } = new BaseAction(ActionID.PvP_Orogeny,ActionOption.Buff);
+    public static IBaseAction PvP_Orogeny { get; } = new BaseAction(ActionID.Orogeny_29080,ActionOption.Buff);
 
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Blota { get; } = new BaseAction(ActionID.PvP_Blota);
+    public static IBaseAction PvP_Blota { get; } = new BaseAction(ActionID.Blota);
 
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Bloodwhetting { get; } = new BaseAction(ActionID.PvP_Bloodwhetting,ActionOption.Buff);
+    public static IBaseAction PvP_Bloodwhetting { get; } = new BaseAction(ActionID.Bloodwhetting_29082,ActionOption.Buff);
 
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_FellCleave { get; } = new BaseAction(ActionID.PvP_FellCleave)
+    public static IBaseAction PvP_FellCleave { get; } = new BaseAction(ActionID.FellCleave_29078)
     {
         StatusNeed = new StatusID[] { StatusID.InnerRelease_1303 },
     };
@@ -344,7 +344,7 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_ChaoticCyclone { get; } = new BaseAction(ActionID.PvP_ChaoticCyclone,ActionOption.Buff)
+    public static IBaseAction PvP_ChaoticCyclone { get; } = new BaseAction(ActionID.ChaoticCyclone_29736,ActionOption.Buff)
     {
         StatusNeed = new StatusID[] { StatusID.NascentChaos_1992 },
     };
@@ -353,7 +353,7 @@ public abstract class WAR_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_PrimalScream { get; } = new BaseAction(ActionID.PvP_PrimalScream)
+    public static IBaseAction PvP_PrimalScream { get; } = new BaseAction(ActionID.PrimalScream)
     {
         FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
         ActionCheck = (t, m) => LimitBreakLevel >= 1,

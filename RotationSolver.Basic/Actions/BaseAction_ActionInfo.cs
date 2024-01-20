@@ -10,8 +10,8 @@ public partial class BaseAction
     internal static readonly uint[] ActionsNoNeedCasting =
     [
         5,
-        (uint)ActionID.PvP_PowerfulShot,
-        (uint)ActionID.PvP_BlastCharge,
+        (uint)ActionID.PowerfulShot,
+        (uint)ActionID.BlastCharge,
     ];
     /// <summary>
     /// The user set heal ratio.

@@ -233,7 +233,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction SuperBolide { get; } = new BaseAction(ActionID.SuperBolide, ActionOption.Defense);
+    public static IBaseAction SuperBolide { get; } = new BaseAction(ActionID.Superbolide, ActionOption.Defense);
     #endregion
 
     #region Support
@@ -254,7 +254,7 @@ public abstract class GNB_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BloodFest { get; } = new BaseAction(ActionID.BloodFest, ActionOption.Buff)
+    public static IBaseAction BloodFest { get; } = new BaseAction(ActionID.Bloodfest, ActionOption.Buff)
     {
         ActionCheck = (b, m) => MaxAmmo - Ammo > 1,
     };

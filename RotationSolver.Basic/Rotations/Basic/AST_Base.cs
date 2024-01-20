@@ -78,7 +78,7 @@ public abstract class AST_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Benefic2 { get; } = new BaseAction(ActionID.Benefic2, ActionOption.Heal);
+    public static IBaseAction Benefic2 { get; } = new BaseAction(ActionID.BeneficIi, ActionOption.Heal);
 
     /// <summary>
     /// 
@@ -228,38 +228,38 @@ public abstract class AST_Base : CustomRotation
         ActionCheck = (b, m) => InCombat,
     };
 
-    static IBaseAction Balance { get; } = new BaseAction(ActionID.Balance)
+    static IBaseAction Balance { get; } = new BaseAction(ActionID.TheBalance)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = (b, m) => DrawnCard == CardType.BALANCE,
     };
 
-    static IBaseAction Arrow { get; } = new BaseAction(ActionID.Arrow)
+    static IBaseAction Arrow { get; } = new BaseAction(ActionID.TheArrow)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = (b, m) => DrawnCard == CardType.ARROW,
     };
 
-    static IBaseAction Spear { get; } = new BaseAction(ActionID.Spear)
+    static IBaseAction Spear { get; } = new BaseAction(ActionID.TheSpear)
     {
         ChoiceTarget = TargetFilter.ASTMeleeTarget,
         ActionCheck = (b, m) => DrawnCard == CardType.SPEAR,
     };
 
-    static IBaseAction Bole { get; } = new BaseAction(ActionID.Bole)
+    static IBaseAction Bole { get; } = new BaseAction(ActionID.TheBole)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = (b, m) => DrawnCard == CardType.BOLE,
     };
 
-    static IBaseAction Ewer { get; } = new BaseAction(ActionID.Ewer)
+    static IBaseAction Ewer { get; } = new BaseAction(ActionID.TheEwer)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = (b, m) => DrawnCard == CardType.EWER,
 
     };
 
-    static IBaseAction Spire { get; } = new BaseAction(ActionID.Spire)
+    static IBaseAction Spire { get; } = new BaseAction(ActionID.TheSpire)
     {
         ChoiceTarget = TargetFilter.ASTRangeTarget,
         ActionCheck = (b, m) => DrawnCard == CardType.SPIRE,

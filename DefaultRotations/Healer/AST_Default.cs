@@ -125,7 +125,7 @@ public sealed class AST_Default : AST_Base
         return base.GeneralAbility(out act);
     }
 
-    [RotationDesc(ActionID.AspectedBenefic, ActionID.Benefic2, ActionID.Benefic)]
+    [RotationDesc(ActionID.AspectedBenefic, ActionID.BeneficIi, ActionID.Benefic)]
     protected override bool HealSingleGCD(out IAction act)
     {
         //吉星相位

@@ -93,12 +93,12 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Phlegma2 { get; } = new BaseAction(ActionID.Phlegma2);
+    public static IBaseAction Phlegma2 { get; } = new BaseAction(ActionID.PhlegmaIi);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Phlegma3 { get; } = new BaseAction(ActionID.Phlegma3);
+    public static IBaseAction Phlegma3 { get; } = new BaseAction(ActionID.PhlegmaIii);
 
     /// <summary>
     /// 
@@ -170,7 +170,7 @@ public abstract class SGE_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Physis2 { get; } = new BaseAction(ActionID.Physis2, ActionOption.Heal);
+    public static IBaseAction Physis2 { get; } = new BaseAction(ActionID.PhysisIi, ActionOption.Heal);
 
     /// <summary>
     /// 

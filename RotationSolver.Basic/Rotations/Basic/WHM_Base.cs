@@ -63,7 +63,7 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Raise1 { get; } = new BaseAction(ActionID.Raise1, ActionOption.Friendly);
+    public static IBaseAction Raise1 { get; } = new BaseAction(ActionID.Raise, ActionOption.Friendly);
 
     /// <summary>
     /// 
@@ -78,12 +78,12 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Cure2 { get; } = new BaseAction(ActionID.Cure2, ActionOption.Heal);
+    public static IBaseAction Cure2 { get; } = new BaseAction(ActionID.CureIi, ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Medica2 { get; } = new BaseAction(ActionID.Medica2, ActionOption.Hot)
+    public static IBaseAction Medica2 { get; } = new BaseAction(ActionID.MedicaIi, ActionOption.Hot)
     {
         StatusProvide = [StatusID.MedicaIi, StatusID.TrueMedicaIi],
     };
@@ -104,7 +104,7 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Cure3 { get; } = new BaseAction(ActionID.Cure3, ActionOption.Heal | ActionOption.EndSpecial);
+    public static IBaseAction Cure3 { get; } = new BaseAction(ActionID.CureIii, ActionOption.Heal | ActionOption.EndSpecial);
 
     /// <summary>
     /// 
@@ -310,37 +310,37 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Glare3 { get; } = new BaseAction(ActionID.PvP_Glare3);
+    public static IBaseAction PvP_Glare3 { get; } = new BaseAction(ActionID.GlareIii_29223);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Cure2 { get; } = new BaseAction(ActionID.PvP_Cure2,ActionOption.Heal);
+    public static IBaseAction PvP_Cure2 { get; } = new BaseAction(ActionID.CureIi_29224,ActionOption.Heal);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_AfflatusMisery { get; } = new BaseAction(ActionID.PvP_AfflatusMisery);
+    public static IBaseAction PvP_AfflatusMisery { get; } = new BaseAction(ActionID.AfflatusMisery_29226);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Aquaveil { get; } = new BaseAction(ActionID.PvP_Aquaveil,ActionOption.Defense);
+    public static IBaseAction PvP_Aquaveil { get; } = new BaseAction(ActionID.Aquaveil_29227,ActionOption.Defense);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_MiracleOfNature { get; } = new BaseAction(ActionID.PvP_MiracleOfNature);
+    public static IBaseAction PvP_MiracleOfNature { get; } = new BaseAction(ActionID.MiracleOfNature);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_SeraphStrike { get; } = new BaseAction(ActionID.PvP_SeraphStrike);
+    public static IBaseAction PvP_SeraphStrike { get; } = new BaseAction(ActionID.SeraphStrike);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_Cure3 { get; } = new BaseAction(ActionID.PvP_Cure3,ActionOption.Heal)
+    public static IBaseAction PvP_Cure3 { get; } = new BaseAction(ActionID.CureIii_29225,ActionOption.Heal)
     {
         StatusNeed = [StatusID.CureIiiReady],
     };
@@ -348,7 +348,7 @@ public abstract class WHM_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction PvP_AfflatusPurgation { get; } = new BaseAction(ActionID.PvP_AfflatusPurgation)
+    public static IBaseAction PvP_AfflatusPurgation { get; } = new BaseAction(ActionID.AfflatusPurgation)
     {
         FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
         ActionCheck = (t, m) => LimitBreakLevel >= 1,

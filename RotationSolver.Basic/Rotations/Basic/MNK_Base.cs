@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Traits;
 
@@ -48,7 +47,7 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction BootShine { get; } = new BaseAction(ActionID.BootShine);
+    public static IBaseAction BootShine { get; } = new BaseAction(ActionID.Bootshine);
 
     /// <summary>
     /// 
@@ -100,12 +99,12 @@ public abstract class MNK_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction FourPointFury { get; } = new BaseAction(ActionID.FourPointFury);
+    public static IBaseAction FourPointFury { get; } = new BaseAction(ActionID.FourpointFury);
 
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction RockBreaker { get; } = new BaseAction(ActionID.RockBreaker);
+    public static IBaseAction RockBreaker { get; } = new BaseAction(ActionID.Rockbreaker);
 
     /// <summary>
     /// 
@@ -286,99 +285,6 @@ public abstract class MNK_Base : CustomRotation
     public static IBaseTrait MeleeMastery { get; } = new BaseTrait(518);
     #endregion
     
-    #region PvP
-
-		/// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Phantomrushcombo { get; } = new BaseAction(ActionID.PvP_Phantomrushcombo);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Bootshine { get; } = new BaseAction(ActionID.PvP_Bootshine);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Truestrike { get; } = new BaseAction(ActionID.PvP_Truestrike);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Snappunch { get; } = new BaseAction(ActionID.PvP_Snappunch);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Dragonkick { get; } = new BaseAction(ActionID.PvP_Dragonkick);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Twinsnakes { get; } = new BaseAction(ActionID.PvP_Twinsnakes);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Demolish { get; } = new BaseAction(ActionID.PvP_Demolish);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Phantomrush { get; } = new BaseAction(ActionID.PvP_Phantomrush);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Sixsidedstar { get; } = new BaseAction(ActionID.PvP_Sixsidedstar);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Enlightenment { get; } = new BaseAction(ActionID.PvP_Enlightenment);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Risingphoenix { get; } = new BaseAction(ActionID.PvP_Risingphoenix,ActionOption.Buff);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Riddleofearth { get; } = new BaseAction(ActionID.PvP_Riddleofearth,ActionOption.Buff);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Thunderclap { get; } = new BaseAction(ActionID.PvP_Thunderclap);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Earthsreply { get; } = new BaseAction(ActionID.PvP_Earthsreply,ActionOption.Buff)
-    {
-        StatusNeed = new StatusID[] { StatusID.EarthResonance },
-    };
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public static IBaseAction PvP_Meteodrive { get; } = new BaseAction(ActionID.PvP_Meteodrive)
-    {
-        FilterForHostiles = tars => tars.Where(t => t is PlayerCharacter),
-        ActionCheck = (t, m) => LimitBreakLevel >= 1,
-    };
-
-    #endregion
-
     /// <summary>
     /// 
     /// </summary>

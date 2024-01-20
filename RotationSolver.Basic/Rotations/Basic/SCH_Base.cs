@@ -136,7 +136,7 @@ public abstract class SCH_Base : CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public static IBaseAction Ruin2 { get; } = new BaseAction(ActionID.Ruin2);
+    public static IBaseAction Ruin2 { get; } = new BaseAction(ActionID.RuinIi_17870);
 
     /// <summary>
     /// 
