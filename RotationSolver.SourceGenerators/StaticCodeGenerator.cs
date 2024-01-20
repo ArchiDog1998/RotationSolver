@@ -23,6 +23,7 @@ public class StaticCodeGenerator : IIncrementalGenerator
         GenerateStatus(context);
         GenerateAction(context);
         GenerateContentType(context);
+        GenerateActionCate(context);
     }
 
     private static void GenerateStatus(SourceProductionContext context)
@@ -65,6 +66,27 @@ public class StaticCodeGenerator : IIncrementalGenerator
             """;
 
         context.AddSource("TerritoryContentType.g.cs", code);
+    }
+
+    private static void GenerateActionCate(SourceProductionContext context)
+    {
+        var code = $$"""
+            namespace RotationSolver.Basic.Data;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public enum ActionCate : byte
+            {
+                /// <summary>
+                /// 
+                /// </summary>
+                None = 0,
+            {{Properties.Resources.ActionCategory.Table()}}
+            }
+            """;
+
+        context.AddSource("ActionCate.g.cs", code);
     }
 
     private static void GenerateAction(SourceProductionContext context)

@@ -435,7 +435,7 @@ internal static class DataCenter
         switch (act.GetActionCate())
         {
             case ActionCate.Spell:
-            case ActionCate.WeaponSkill:
+            case ActionCate.Weaponskill:
                 LastAction = LastGCD = id;
                 if (ActionManager.GetAdjustedCastTime(ActionType.Action, (uint)id) == 0)
                 {

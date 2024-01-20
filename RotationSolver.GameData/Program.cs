@@ -18,6 +18,7 @@ using var res = new ResXResourceWriter(dirInfo.FullName + "\\RotationSolver.Sour
 res.AddResource("StatusId", new StatusGetter(gameData).GetCode());
 res.AddResource("ContentType", new ContentTypeGetter(gameData).GetCode());
 res.AddResource("ActionId", new ActionGetter(gameData).GetCode());
+res.AddResource("ActionCategory", new ActionCategoryGetter(gameData).GetCode());
 
 res.Generate();
 

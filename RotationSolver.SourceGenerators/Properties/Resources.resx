@@ -32013,4 +32013,70 @@ AFlameReborn = 34738,
 /// &lt;/summary&gt;
 Guillotine_34786 = 34786,</value>
   </data>
+  <data name="ActionCategory" xml:space="preserve">
+    <value>/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+Autoattack = 1,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+Spell = 2,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+Weaponskill = 3,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+Ability = 4,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+Item = 5,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+DoLAbility = 6,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+DoHAbility = 7,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+Event = 8,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+LimitBreak = 9,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+System = 10,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+System_11 = 11,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+Mount = 12,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+Special = 13,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+ItemManipulation = 14,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+LimitBreak_15 = 15,
+/// &lt;summary&gt;
+/// 
+/// &lt;/summary&gt;
+Artillery = 17,</value>
+  </data>
 </root>
