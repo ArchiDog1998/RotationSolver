@@ -9,17 +9,8 @@ using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Actions;
 
-public struct ActionTargetInfo
+public struct ActionTargetInfo(IBaseActionNew _action)
 {
-    private readonly IBaseActionNew _action;
-    public bool ShouldCheckStatus { get; set; } = true;
-    public StatusID[]? TargetStatus { get; set; } = null;
-    public uint StatusGcdCount { get; set; } = 2;
-    public byte AoeCount { get; set; } = 3;
-    public float TimeToKill { get; set; } = 0;
-    public TargetType Type { get; set; }
-    public Func<GameObject, bool> CanTarget { get; set; } = t => true;
-    public float AutoHealRatio { get; set; }
     public readonly bool TargetArea => _action.Action.TargetArea;
 
     public readonly float Range => ActionManager.GetActionRange(_action.Info.ID);
@@ -53,7 +44,7 @@ public struct ActionTargetInfo
         get
         {
             _canTargets.Delay(TargetFilter.GetObjectInRadius(DataCenter.AllTargets, Range)
-                .Where(GeneralCheck).Where(CanUseTo).Where(InViewTarget).Where(CanTarget));
+                .Where(GeneralCheck).Where(CanUseTo).Where(InViewTarget).Where(_action.Setting.CanTarget));
             return _canTargets;
         }
     }
@@ -63,7 +54,7 @@ public struct ActionTargetInfo
         get
         {
             if (EffectRange == 0) return [];
-            return TargetFilter.GetObjectInRadius(_action.Info.IsFriendly
+            return TargetFilter.GetObjectInRadius(_action.Setting.IsFriendly
                 ? DataCenter.PartyMembers
                 : DataCenter.HostileTargets,
                 Range + EffectRange).Where(GeneralCheck);
@@ -108,9 +99,9 @@ public struct ActionTargetInfo
 
     private readonly bool CheckStatus(GameObject gameObject)
     {
-        if (TargetStatus == null || !ShouldCheckStatus) return true;
+        if (_action.Setting.TargetStatus == null || !_action.Config.ShouldCheckStatus) return true;
 
-        return gameObject.WillStatusEndGCD(StatusGcdCount, 0, true, TargetStatus);
+        return gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0, true, _action.Setting.TargetStatus);
     }
 
     private readonly bool CheckResistance(GameObject gameObject)
@@ -137,17 +128,10 @@ public struct ActionTargetInfo
     {
         if (gameObject is not BattleChara b) return false;
         var time = b.GetTimeToKill();
-        return float.IsNaN(time) || time >= TimeToKill;
+        return float.IsNaN(time) || time >= _action.Config.TimeToKill;
     }
 
     #endregion
-
-
-    public ActionTargetInfo(IBaseActionNew action)
-    {
-        _action = action;
-        //TODO: figure out how the target type of this action is.
-    }
 
     /// <summary>
     /// Take a little long time..
@@ -171,8 +155,8 @@ public struct ActionTargetInfo
             return FindTargetArea(canTargets, canAffects, range, player);
         }
 
-        var targets = GetMostCanTargetObjects(canTargets, canAffects, AoeCount);
-        var target = FindTargetByType(targets, Type);
+        var targets = GetMostCanTargetObjects(canTargets, canAffects, _action.Config.AoeCount);
+        var target = FindTargetByType(targets, _action.Setting.Type);
         if (target == null) return null;
 
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
@@ -181,11 +165,11 @@ public struct ActionTargetInfo
     private readonly TargetResult? FindTargetArea(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects,
         float range, PlayerCharacter player)
     {
-        if (Type is TargetType.Move)
+        if (_action.Setting.Type is TargetType.Move)
         {
             return FindTargetAreaMove(range);
         }
-        else if (_action.Info.IsFriendly)
+        else if (_action.Setting.IsFriendly)
         {
             if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbility)) return null;
             if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving) && DataCenter.IsMoving) return null;
@@ -194,7 +178,7 @@ public struct ActionTargetInfo
         }
         else
         {
-            return FindTargetAreaHostile(canTargets, canAffects, AoeCount);
+            return FindTargetAreaHostile(canTargets, canAffects, _action.Config.AoeCount);
         }
     }
 
@@ -207,7 +191,7 @@ public struct ActionTargetInfo
         return new(target, [..GetAffects(target, canAffects)], target.Position);
     }
 
-    private static TargetResult? FindTargetAreaMove(float range)
+    private TargetResult? FindTargetAreaMove(float range)
     {
         if (Service.Config.GetValue(PluginConfigBool.MoveAreaActionFarthest))
         {
@@ -345,7 +329,7 @@ public struct ActionTargetInfo
     private readonly IEnumerable<GameObject> GetMostCanTargetObjects(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects, int aoeCount)
     {
         if (IsSingleTarget || EffectRange <= 0) return canTargets;
-        if (!_action.Info.IsFriendly && NoAOE) return [];
+        if (!_action.Setting.IsFriendly && NoAOE) return [];
 
         List<GameObject> objectMax = new(canTargets.Count());
 
@@ -443,7 +427,7 @@ public struct ActionTargetInfo
             TargetType.Weaken => FindWeakenPeople(),
             TargetType.Death => FindDeathPeople(),
             TargetType.Move => FindTargetForMoving(),
-            TargetType.Heal => FindHealTarget(AutoHealRatio),
+            TargetType.Heal => FindHealTarget(_action.Config.AutoHealRatio),
             TargetType.BeAttacked => FindBeAttackedTarget(),
             _ => FindHostile(),
         };

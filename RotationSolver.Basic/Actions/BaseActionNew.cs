@@ -34,8 +34,26 @@ public class BaseActionNew : IBaseActionNew
     public string Description => string.Empty;
 
     public byte Level => Info.Level;
-    public bool IsEnabled { get; set; }
-    public bool IsInCooldown { get; set; }
+    public bool IsEnabled 
+    { 
+        get => Config.IsEnable; 
+        set
+        {
+            var config = Config;
+            config.IsEnable = value;
+            Config = config;
+        }
+    }
+    public bool IsInCooldown
+    {
+        get => Config.IsInCooldown;
+        set
+        {
+            var config = Config;
+            config.IsInCooldown = value;
+            Config = config;
+        }
+    }
 
     public bool EnoughLevel => Info.EnoughLevel;
     public virtual unsafe uint MPNeed
@@ -48,12 +66,26 @@ public class BaseActionNew : IBaseActionNew
         }
     }
 
+    public ActionSetting Setting { get; set; }
+
+    public ActionConfig Config { get; set; }
+
     public BaseActionNew(ActionID actionID, bool isDutyAction)
     {
         Action = Service.GetSheet<Action>().GetRow((uint)actionID)!;
         TargetInfo = new(this);
         Info = new(this, isDutyAction);
         Cooldown = new(this);
+
+        //TODO: better target type check.
+        //TODO: better friendly check.
+        Setting = new()
+        {
+            IsFriendly = Action.CanTargetFriendly,
+        };
+
+        //TODO: load the config from the 
+        Config = new();
     }
 
     public bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipCombo = false, bool ignoreCastingCheck = false, 
@@ -65,7 +97,7 @@ public class BaseActionNew : IBaseActionNew
         if (!Cooldown.CooldownCheck(isEmpty, onLastAbility, ignoreClippingCheck, gcdCountForAbility)) return false;
 
         if (DataCenter.CurrentMp < MPNeed) return false;
-        if (Info.IsFriendly && DataCenter.AverageTimeToKill < TargetInfo.TimeToKill) return false;
+        if (Setting.IsFriendly && DataCenter.AverageTimeToKill < Config.TimeToKill) return false;
 
         Target = TargetInfo.FindTarget();
         if (Target == null) return false;

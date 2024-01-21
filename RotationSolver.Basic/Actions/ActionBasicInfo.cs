@@ -50,22 +50,7 @@ public struct ActionBasicInfo
     public bool IsDutyAction { get; }
     public Aspect Aspect { get; }
 
-    public bool IsFriendly { get; set; }
-    public bool IsEnable { get; set; } = true;
-    internal ActionID[]? ComboIdsNot {  get; set; }
 
-    internal ActionID[]? ComboIds {  get; set; }
-    /// <summary>
-    /// Status that this action provides.
-    /// </summary>
-    public StatusID[]? StatusProvide { get; set; } = null;
-
-    /// <summary>
-    /// Status that this action needs.
-    /// </summary>
-    public StatusID[]? StatusNeed { get; set; } = null;
-
-    public Func<bool>? ActionCheck { get; set; } = null;
 
     public ActionBasicInfo(IBaseActionNew action, bool isDutyAction)
     {
@@ -75,13 +60,11 @@ public struct ActionBasicInfo
         IsLimitBreak = _action.Action.ActionCategory?.Value?.RowId == 9;
         IsDutyAction = isDutyAction;
         Aspect = (Aspect)_action.Action.Aspect;
-        //TODO: better friendly check.
-        IsFriendly = _action.Action.CanTargetFriendly;
     }
 
     internal readonly bool BasicCheck(bool skipStatusProvideCheck, bool skipCombo, bool ignoreCastingCheck)
     {
-        if (!IsEnable || !IsOnSlot) return false;
+        if (!_action.Config.IsEnable || !IsOnSlot) return false;
 
         //Disabled.
         if (DataCenter.DisabledActionSequencer?.Contains(ID) ?? false) return false;
@@ -90,14 +73,14 @@ public struct ActionBasicInfo
 
         var player = Player.Object;
 
-        if (StatusNeed != null)
+        if (_action.Setting.StatusNeed != null)
         {
-            if (!player.HasStatus(true, StatusNeed)) return false;
+            if (!player.HasStatus(true, _action.Setting.StatusNeed)) return false;
         }
 
-        if (StatusProvide != null && !skipStatusProvideCheck)
+        if (_action.Setting.StatusProvide != null && !skipStatusProvideCheck)
         {
-            if (player.HasStatus(true, StatusProvide)) return false;
+            if (player.HasStatus(true, _action.Setting.StatusProvide)) return false;
         }
 
         if(!skipCombo && IsGeneralGCD)
@@ -120,25 +103,28 @@ public struct ActionBasicInfo
             if (DataCenter.NoPoslock && DataCenter.IsMoving && !ignoreCastingCheck) return false;
         }
 
-        if (IsGeneralGCD && StatusProvide?.Length > 0 && IsFriendly && IActionHelper.IsLastGCD(true, _action)
+        if (IsGeneralGCD && _action.Setting.StatusProvide?.Length > 0 && _action.Setting.IsFriendly
+            && IActionHelper.IsLastGCD(true, _action)
             && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;
 
-        if (!(ActionCheck?.Invoke() ?? true)) return false;
+        if (!(_action.Setting.ActionCheck?.Invoke() ?? true)) return false;
 
         return true;
     }
 
     private readonly bool CheckForCombo()
     {
-        if (ComboIdsNot != null)
+        if (_action.Setting.ComboIdsNot != null)
         {
-            if (ComboIdsNot.Contains(DataCenter.LastComboAction)) return false;
+            if (_action.Setting.ComboIdsNot.Contains(DataCenter.LastComboAction)) return false;
         }
 
         var comboActions = (_action.Action.ActionCombo?.Row ?? 0) != 0
             ? new ActionID[] { (ActionID)_action.Action.ActionCombo!.Row }
             : [];
-        if (ComboIds != null) comboActions = comboActions.Union(ComboIds).ToArray();
+
+
+        if (_action.Setting.ComboIds != null) comboActions = [.. comboActions, .. _action.Setting.ComboIds];
 
         if (comboActions.Length > 0)
         {
