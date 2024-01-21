@@ -30,13 +30,13 @@ partial class AstrologianRotation
     public AstrologianRotation()
     {
         //Combust_PvE.Option = ActionOption.Dot;
-        //Combust_PvE.TargetStatus =
-        //[
-        //    StatusID.Combust,
-        //    StatusID.CombustIi,
-        //    StatusID.CombustIii,
-        //    StatusID.CombustIii_2041,
-        //];
+        CombustPvE.TargetStatus =
+        [
+            StatusID.Combust,
+            StatusID.CombustIi,
+            StatusID.CombustIii,
+            StatusID.CombustIii_2041,
+        ];
 
         //Benefic_PvE.Option = Helios_PvE.Option = ActionOption.Hot;
 

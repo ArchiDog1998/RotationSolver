@@ -277,7 +277,7 @@ public static class TargetFilter
     /// <param name="objects"></param>
     /// <param name="roles"></param>
     /// <returns></returns>
-    public static IEnumerable<BattleChara> GetJobCategory(this IEnumerable<BattleChara> objects, params JobRole[] roles)
+    public static IEnumerable<GameObject> GetJobCategory(this IEnumerable<GameObject> objects, params JobRole[] roles)
         => roles.SelectMany(role => objects.Where(obj => obj.IsJobCategory(role)));
 
     /// <summary>
@@ -286,7 +286,7 @@ public static class TargetFilter
     /// <param name="obj"></param>
     /// <param name="role"></param>
     /// <returns></returns>
-    public static bool IsJobCategory(this BattleChara obj, JobRole role)
+    public static bool IsJobCategory(this GameObject obj, JobRole role)
     {
         SortedSet<byte> validJobs = new(Service.GetSheet<ClassJob>()
             .Where(job => role == job.GetJobRole())
@@ -296,9 +296,10 @@ public static class TargetFilter
     }
 
 
-    private static bool IsJobCategory(this BattleChara obj, SortedSet<byte> validJobs)
+    private static bool IsJobCategory(this GameObject obj, SortedSet<byte> validJobs)
     {
-        return validJobs.Contains((byte)obj.ClassJob.GameData?.RowId);
+        if(obj is not BattleChara b) return false;
+        return validJobs.Contains((byte?)b.ClassJob.GameData?.RowId ?? 0);
     }
 
     internal static BattleChara ASTRangeTarget(IEnumerable<BattleChara> ASTTargets, bool _)

@@ -56,7 +56,7 @@ public partial class BaseAction
     public BattleChara Target { get; private set; } = Player.Object;
 
     /// <inheritdoc/>
-    public BattleChara[] AffectedTargets { get; private set; } = Array.Empty<BattleChara>();
+    public BattleChara[] AffectedTargets { get; private set; } = [];
 
     internal bool IsTargetArea => _action.TargetArea;
 
@@ -233,7 +233,7 @@ public partial class BaseAction
             case 1: // Only the list
                 OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts);
 
-                pts ??= Array.Empty<Vector3>();
+                pts ??= [];
 
                 if (pts.Length == 0)
                 {

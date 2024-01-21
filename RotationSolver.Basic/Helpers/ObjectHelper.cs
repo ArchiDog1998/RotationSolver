@@ -1,10 +1,12 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
+using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -58,7 +60,7 @@ public static class ObjectHelper
     /// <returns></returns>
     public static unsafe bool IsEnemy(this GameObject obj)
         => obj != null
-        && ActionManager.CanUseActionOnTarget((uint)ActionID.Blizzard, obj.Struct());
+        && ActionManager.CanUseActionOnTarget((uint)ActionID.BlizzardPvE, obj.Struct());
 
     /// <summary>
     /// Is alliance (can be healed).
@@ -67,8 +69,42 @@ public static class ObjectHelper
     /// <returns></returns>
     public static unsafe bool IsAlliance(this GameObject obj)
         => obj != null
-        && (ActionManager.CanUseActionOnTarget((uint)ActionID.Cure, obj.Struct())
-        || ActionManager.CanUseActionOnTarget((uint)ActionID.Raise, obj.Struct()));
+        && (ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct())
+        || ActionManager.CanUseActionOnTarget((uint)ActionID.RaisePvE, obj.Struct()));
+
+    public static bool IsParty(this GameObject gameObject)
+    {
+        if (gameObject.ObjectId == Player.Object.ObjectId) return true;
+        if (Svc.Party.Any(p => p.GameObject?.ObjectId == gameObject.ObjectId)) return true;
+        if (gameObject.SubKind == 9) return true;
+        return false;
+    }
+
+    public static bool IsDeathToRaise(this GameObject obj)
+    {
+        if (obj == null) return false;
+        if (!obj.IsDead) return false;
+        if (obj is BattleChara b && b.CurrentHp != 0) return false;
+
+        if (!obj.IsTargetable) return false;
+
+        if (obj.HasStatus(false, StatusID.Raise)) return false;
+
+        if (!Service.Config.GetValue(PluginConfigBool.RaiseBrinkOfDeath) && obj.HasStatus(false, StatusID.BrinkOfDeath)) return false;
+
+        if (DataCenter.AllianceMembers.Any(c => c.CastTargetObjectId == obj.ObjectId)) return false;
+
+        return true;
+    }
+
+    public static bool IsAlive(this GameObject obj)
+    {
+        if (obj is BattleChara b && b.CurrentHp <= 1) return false;
+
+        if (!obj.IsTargetable) return false;
+
+        return true;
+    }
 
     /// <summary>
     /// Get the object kind.
@@ -276,9 +312,9 @@ public static class ObjectHelper
     /// </summary>
     /// <param name="b"></param>
     /// <returns></returns>
-    public static float GetHealthRatio(this BattleChara b)
+    public static float GetHealthRatio(this GameObject g)
     {
-        if (b == null) return 0;
+        if (g is not BattleChara b) return 0;
         if (DataCenter.RefinedHP.TryGetValue(b.ObjectId, out var hp)) return hp;
         return (float)b.CurrentHp / b.MaxHp;
     }

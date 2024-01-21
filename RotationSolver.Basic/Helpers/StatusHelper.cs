@@ -58,7 +58,7 @@ public static class StatusHelper
     /// </summary>
     /// <param name="p"></param>
     /// <returns></returns>
-    public static bool NeedHealing(this BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
+    public static bool NeedHealing(this GameObject p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
     /// <summary>
     /// Will any of <paramref name="statusIDs"/> be end after <paramref name="gcdCount"/> gcds add <paramref name="offset"/> seconds?
@@ -69,7 +69,7 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    public static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, float offset = 0, bool isFromSelf = true, params StatusID[] statusIDs)
+    public static bool WillStatusEndGCD(this GameObject obj, uint gcdCount = 0, float offset = 0, bool isFromSelf = true, params StatusID[] statusIDs)
         => WillStatusEnd(obj, DataCenter.GCDTime(gcdCount, offset), isFromSelf, statusIDs);
 
 
@@ -81,7 +81,7 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    public static bool WillStatusEnd(this BattleChara obj, float time, bool isFromSelf = true, params StatusID[] statusIDs)
+    public static bool WillStatusEnd(this GameObject obj, float time, bool isFromSelf = true, params StatusID[] statusIDs)
     {
         if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return false;
         var remain = obj.StatusTime(isFromSelf, statusIDs);
@@ -96,7 +96,7 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    internal static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    internal static float StatusTime(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         try
         {
@@ -111,7 +111,7 @@ public static class StatusHelper
         }
     }
 
-    private static IEnumerable<float> StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    private static IEnumerable<float> StatusTimes(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         return obj.GetStatus(isFromSelf, statusIDs).Select(status => status.RemainingTime == 0 ? float.MaxValue : status.RemainingTime);
     }
@@ -123,7 +123,7 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    public static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    public static byte StatusStack(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return byte.MaxValue;
         var stacks = obj.StatusStacks(isFromSelf, statusIDs);
@@ -131,7 +131,7 @@ public static class StatusHelper
         return stacks.Min();
     }
 
-    private static IEnumerable<byte> StatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    private static IEnumerable<byte> StatusStacks(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         return obj.GetStatus(isFromSelf, statusIDs).Select(status => status.StackCount == 0 ? byte.MaxValue : status.StackCount);
     }
@@ -143,7 +143,7 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    public static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    public static bool HasStatus(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return true;
         return obj.GetStatus(isFromSelf, statusIDs).Any();
@@ -164,17 +164,17 @@ public static class StatusHelper
         return Service.GetSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id).Name.ToString();
     }
 
-    private static IEnumerable<Status> GetStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    private static IEnumerable<Status> GetStatus(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         var newEffects = statusIDs.Select(a => (uint)a);
         return obj.GetAllStatus(isFromSelf).Where(status => newEffects.Contains(status.StatusId));
     }
 
-    private static IEnumerable<Status> GetAllStatus(this BattleChara obj, bool isFromSelf)
+    private static IEnumerable<Status> GetAllStatus(this GameObject obj, bool isFromSelf)
     {
-        if (obj == null) return Array.Empty<Status>();
+        if (obj is not BattleChara b) return [];
 
-        return obj.StatusList.Where(status => !isFromSelf
+        return b.StatusList.Where(status => !isFromSelf
                                               || status.SourceId == Player.Object.ObjectId
                                               || status.SourceObject?.OwnerId == Player.Object.ObjectId);
     }
