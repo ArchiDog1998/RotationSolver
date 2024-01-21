@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Action = Lumina.Excel.GeneratedSheets.Action;
+﻿using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Basic.Actions;
-public interface IBaseActionNew
+public interface IBaseActionNew : IAction
 {
     Action Action { get; }
 
     ActionTargetInfo TargetInfo { get; }
-    ActionBasicInfo BasicInfo { get; }
+    ActionBasicInfo Info { get; }
+    ActionCooldownInfo Cooldown { get; }
+
+    bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipCombo = false, bool ignoreCastingCheck = false,
+        bool isEmpty = false, bool onLastAbility = false, bool ignoreClippingCheck = false, byte gcdCountForAbility = 0);
 }

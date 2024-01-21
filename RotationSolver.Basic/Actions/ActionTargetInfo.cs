@@ -15,13 +15,16 @@ public struct ActionTargetInfo
     public bool ShouldCheckStatus { get; set; } = true;
     public StatusID[]? TargetStatus { get; set; } = null;
     public uint StatusGcdCount { get; set; } = 2;
-    public byte AoeCount { get; set; }
-    public float TimeToKill { get; set; }
+    public byte AoeCount { get; set; } = 3;
+    public float TimeToKill { get; set; } = 0;
     public TargetType Type { get; set; }
+    public Func<GameObject, bool> CanTarget { get; set; } = t => true;
+    public float AutoHealRatio { get; set; }
+    public readonly bool TargetArea => _action.Action.TargetArea;
 
-    public readonly float Range => ActionManager.GetActionRange(_action.BasicInfo.ID);
+    public readonly float Range => ActionManager.GetActionRange(_action.Info.ID);
 
-    public readonly float EffectRange => (ActionID)_action.BasicInfo.ID == ActionID.LiturgyOfTheBellPvE ? 20 : _action.Action.EffectRange;
+    public readonly float EffectRange => (ActionID)_action.Info.ID == ActionID.LiturgyOfTheBellPvE ? 20 : _action.Action.EffectRange;
 
     public readonly bool IsSingleTarget => _action.Action.CastType == 1;
 
@@ -50,7 +53,7 @@ public struct ActionTargetInfo
         get
         {
             _canTargets.Delay(TargetFilter.GetObjectInRadius(DataCenter.AllTargets, Range)
-                .Where(GeneralCheck).Where(CanUseTo).Where(InViewTarget));
+                .Where(GeneralCheck).Where(CanUseTo).Where(InViewTarget).Where(CanTarget));
             return _canTargets;
         }
     }
@@ -60,7 +63,7 @@ public struct ActionTargetInfo
         get
         {
             if (EffectRange == 0) return [];
-            return TargetFilter.GetObjectInRadius(_action.BasicInfo.IsFriendly
+            return TargetFilter.GetObjectInRadius(_action.Info.IsFriendly
                 ? DataCenter.PartyMembers
                 : DataCenter.HostileTargets,
                 Range + EffectRange).Where(GeneralCheck);
@@ -90,8 +93,8 @@ public struct ActionTargetInfo
         if (tar == null || !Player.Available) return false;
         var tarAddress = tar.Struct();
 
-        if ((ActionID)_action.BasicInfo.ID != ActionID.AethericMimicryPvE
-            && !ActionManager.CanUseActionOnTarget(_action.BasicInfo.AdjustedID, tarAddress)) return false;
+        if ((ActionID)_action.Info.ID != ActionID.AethericMimicryPvE
+            && !ActionManager.CanUseActionOnTarget(_action.Info.AdjustedID, tarAddress)) return false;
 
         return tar.CanSee();
     }
@@ -112,7 +115,7 @@ public struct ActionTargetInfo
 
     private readonly bool CheckResistance(GameObject gameObject)
     {
-        if (_action.BasicInfo.AttackType == AttackType.Magic) //TODO: special attack type resistance.
+        if (_action.Info.AttackType == AttackType.Magic) //TODO: special attack type resistance.
         {
             if (gameObject.HasStatus(false, StatusID.MagicResistance))
             {
@@ -150,7 +153,7 @@ public struct ActionTargetInfo
     /// Take a little long time..
     /// </summary>
     /// <returns></returns>
-    public readonly TargetResult? FindTarget()
+    internal readonly TargetResult? FindTarget()
     {
         var range = Range;
         var player = Player.Object;
@@ -165,7 +168,7 @@ public struct ActionTargetInfo
 
         if (_action.Action.TargetArea)
         {
-            return TargetArea(canTargets, canAffects, range, player);
+            return FindTargetArea(canTargets, canAffects, range, player);
         }
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects, AoeCount);
@@ -175,28 +178,28 @@ public struct ActionTargetInfo
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
     }
 
-    private readonly TargetResult? TargetArea(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects,
+    private readonly TargetResult? FindTargetArea(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects,
         float range, PlayerCharacter player)
     {
         if (Type is TargetType.Move)
         {
-            return TargetAreaMove(range);
+            return FindTargetAreaMove(range);
         }
-        else if (_action.BasicInfo.IsFriendly)
+        else if (_action.Info.IsFriendly)
         {
             if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbility)) return null;
             if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving) && DataCenter.IsMoving) return null;
 
-            return TargetAreaFriend(range, canAffects, player);
+            return FindTargetAreaFriend(range, canAffects, player);
         }
         else
         {
-            return TargetAreaHostile(canTargets, canAffects, AoeCount);
+            return FindTargetAreaHostile(canTargets, canAffects, AoeCount);
         }
     }
 
 
-    private readonly TargetResult? TargetAreaHostile(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects, int aoeCount)
+    private readonly TargetResult? FindTargetAreaHostile(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects, int aoeCount)
     {
         var target = GetMostCanTargetObjects(canTargets, canAffects, aoeCount)
             .OrderByDescending(ObjectHelper.GetHealthRatio).FirstOrDefault();
@@ -204,7 +207,7 @@ public struct ActionTargetInfo
         return new(target, [..GetAffects(target, canAffects)], target.Position);
     }
 
-    private static TargetResult? TargetAreaMove(float range)
+    private static TargetResult? FindTargetAreaMove(float range)
     {
         if (Service.Config.GetValue(PluginConfigBool.MoveAreaActionFarthest))
         {
@@ -237,7 +240,7 @@ public struct ActionTargetInfo
     }
 
 
-    private readonly TargetResult? TargetAreaFriend(float range, IEnumerable<GameObject> canAffects, PlayerCharacter player)
+    private readonly TargetResult? FindTargetAreaFriend(float range, IEnumerable<GameObject> canAffects, PlayerCharacter player)
     {
         var strategy = Service.Config.GetValue(PluginConfigInt.BeneficialAreaStrategy);
         switch (strategy)
@@ -342,7 +345,7 @@ public struct ActionTargetInfo
     private readonly IEnumerable<GameObject> GetMostCanTargetObjects(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects, int aoeCount)
     {
         if (IsSingleTarget || EffectRange <= 0) return canTargets;
-        if (!_action.BasicInfo.IsFriendly && NoAOE) return [];
+        if (!_action.Info.IsFriendly && NoAOE) return [];
 
         List<GameObject> objectMax = new(canTargets.Count());
 
@@ -418,7 +421,7 @@ public struct ActionTargetInfo
     #endregion
 
     #region TargetFind
-    private static GameObject? FindTargetByType(IEnumerable<GameObject> gameObjects, TargetType type)
+    private readonly GameObject? FindTargetByType(IEnumerable<GameObject> gameObjects, TargetType type)
     {
         switch (type) // Filter the objects.
         {
@@ -440,7 +443,7 @@ public struct ActionTargetInfo
             TargetType.Weaken => FindWeakenPeople(),
             TargetType.Death => FindDeathPeople(),
             TargetType.Move => FindTargetForMoving(),
-            TargetType.Heal => FindHealTarget(),
+            TargetType.Heal => FindHealTarget(AutoHealRatio),
             TargetType.BeAttacked => FindBeAttackedTarget(),
             _ => FindHostile(),
         };
@@ -564,10 +567,12 @@ public struct ActionTargetInfo
             }
         }
 
-        GameObject? FindHealTarget()
+        GameObject? FindHealTarget(float healRatio)
         {
             if (!gameObjects.Any()) return null;
 
+            gameObjects = gameObjects.Where(o => o.GetHealthRatio() < healRatio);
+            
             var partyMembers = gameObjects.Where(ObjectHelper.IsParty);
 
             return GeneralHealTarget(partyMembers)

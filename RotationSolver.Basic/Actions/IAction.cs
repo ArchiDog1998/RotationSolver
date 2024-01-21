@@ -26,18 +26,6 @@ public interface IAction : ITexture, IEnoughLevel
     uint SortKey { get; }
 
     /// <summary>
-    /// Please don't use it.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal float RecastTimeElapsedRaw { get; }
-
-    /// <summary>
-    /// Please don't use it.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal float RecastTimeOneChargeRaw { get; }
-
-    /// <summary>
     /// Is action cooling down.
     /// </summary>
     bool IsCoolingDown { get; }

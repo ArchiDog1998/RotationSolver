@@ -35,7 +35,7 @@ public partial class BaseAction
     /// <summary>
     /// The effect range of the action.
     /// </summary>
-    public float EffectRange => (ActionID)ID == ActionID.LiturgyOfTheBell_PvE ? 20 : _action?.EffectRange ?? 0;
+    public float EffectRange => (ActionID)ID == ActionID.LiturgyOfTheBellPvE ? 20 : _action?.EffectRange ?? 0;
     internal ActionID[] ComboIdsNot { private get; init; } = null;
 
     internal ActionID[] ComboIds { private get; init; } = null;
