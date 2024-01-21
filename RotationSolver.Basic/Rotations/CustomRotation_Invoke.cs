@@ -2,9 +2,8 @@
 
 public abstract partial class CustomRotation
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public bool TryInvoke(out IAction newAction, out IAction gcdAction)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+    /// <inheritdoc/>
+    public bool TryInvoke(out IAction? newAction, out IAction? gcdAction)
     {
         newAction = gcdAction = null;
         if (!IsEnabled)
@@ -12,7 +11,7 @@ public abstract partial class CustomRotation
             return false;
         }
 
-        //if(DataCenter.Territory?.IsPvpZone ?? false)
+        //if (DataCenter.Territory?.IsPvpZone ?? false)
         //{
         //    if (!Type.HasFlag(CombatType.PvP)) return false;
         //}
@@ -25,7 +24,7 @@ public abstract partial class CustomRotation
         {
             UpdateInfo();
             UpdateActions(ClassJob.GetJobRole());
-            BaseAction.CleanSpecial();
+
             if (Player.HasStatus(true, StatusID.Guard)) return false;
 
             CountingOfLastUsing = CountingOfCombatTimeUsing = 0;
@@ -45,7 +44,7 @@ public abstract partial class CustomRotation
 
             if (!IsValid) IsValid = true;
         }
-        catch (Exception ex)
+        catch (Exception? ex)
         {
             WhyNotValid = $"Failed to invoke the next action,please contact to \"{{0}}\".";
 
@@ -63,7 +62,7 @@ public abstract partial class CustomRotation
 
     private void UpdateActions(JobRole role)
     {
-        BaseAction.OtherOption = CanUseOption.IgnoreTarget;
+        IBaseAction.ActionPreview = true;
 
         ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
 
@@ -76,82 +75,75 @@ public abstract partial class CustomRotation
             ActionHealAreaGCD = HealAreaGCD(out act) ? act : null;
             ActionHealSingleGCD = HealSingleGCD(out act) ? act : null;
 
-            BaseAction.OtherOption |= CanUseOption.IgnoreClippingCheck;
-
             ActionHealAreaAbility = HealAreaAbility(out act) ? act : null;
             ActionHealSingleAbility = HealSingleAbility(out act) ? act : null;
-
-            BaseAction.OtherOption &= ~CanUseOption.IgnoreClippingCheck;
         }
 
         ActionDefenseAreaGCD = DefenseAreaGCD(out act) ? act : null;
 
         ActionDefenseSingleGCD = DefenseSingleGCD(out act) ? act : null;
 
-        EsunaStanceNorthGCD = role switch
+        ActionDispelStancePositionalGCD = role switch
         {
-            JobRole.Healer => DataCenter.WeakenPeople.Any() && EsunaAction(out act, CanUseOption.MustUse) ? act : null,
+            JobRole.Healer => DataCenter.WeakenPeople.Any() && DispelGCD(out act) ? act : null,
             _ => null,
         };
 
-        RaiseShirkGCD = role switch
+        ActionRaiseShirkGCD = role switch
         {
-            JobRole.Healer => DataCenter.DeathPeopleAll.Any() && RaiseAction(out act) ? act : null,
+            JobRole.Healer => DataCenter.DeathPeopleAll.Any() && RaiseSpell(out act, true) ? act : null,
             _ => null,
         };
-
-        BaseAction.OtherOption |= CanUseOption.IgnoreClippingCheck;
 
         ActionDefenseAreaAbility = DefenseAreaAbility(out act) ? act : null;
 
         ActionDefenseSingleAbility = DefenseSingleAbility(out act) ? act : null;
 
-        EsunaStanceNorthAbility = role switch
+        ActionDispelStancePositionalAbility = role switch
         {
-            JobRole.Melee => TrueNorth.CanUse(out act) ? act : null,
+            JobRole.Melee => TrueNorthPvE.CanUse(out act) ? act : null,
             JobRole.Tank => TankStance.CanUse(out act) ? act : null,
             _ => null,
         };
 
-        RaiseShirkAbility = role switch
+        ActionRaiseShirkAbility = role switch
         {
-            JobRole.Tank => Shirk.CanUse(out act) ? act : null,
+            JobRole.Tank => ShirkPvE.CanUse(out act) ? act : null,
             _ => null,
         };
-        AntiKnockbackAbility = AntiKnockback(role, out act) ? act : null;
-
-        BaseAction.OtherOption |= CanUseOption.EmptyOrSkipCombo;
+        ActionAntiKnockbackAbility = AntiKnockback(role, out act) ? act : null;
 
         var movingTarget = MoveForwardAbility(out act);
         ActionMoveForwardAbility = movingTarget ? act : null;
 
+        //TODO: that is too complex! 
         if (movingTarget && act is IBaseAction a)
         {
-            if (a.Target == null || a.Target == Player)
+            if (a.Target == null || a.Target?.Target == Player)
             {
-                if ((ActionID)a.ID == ActionID.EnAvant)
+                if ((ActionID)a.ID == ActionID.EnAvantPvE)
                 {
                     var dir = new Vector3(MathF.Sin(Player.Rotation), 0, MathF.Cos(Player.Rotation));
                     MoveTarget = Player.Position + dir * 10;
                 }
                 else
                 {
-                    MoveTarget = a.Position == a.Target.Position ? null : a.Position;
+                    MoveTarget = a.Target?.Position == a.Target?.Target.Position ? null : a.Target?.Position;
                 }
             }
             else
             {
-                var dir = Player.Position - a.Target.Position;
+                var dir = Player.Position - a.Target.Value.Position;
                 var length = dir.Length();
                 if (length != 0)
                 {
                     dir /= length;
 
-                    MoveTarget = a.Target.Position + dir * MathF.Min(length, Player.HitboxRadius + a.Target.HitboxRadius);
+                    MoveTarget = a.Target.Value.Position + dir * MathF.Min(length, Player.HitboxRadius + a.Target.Value.Target.HitboxRadius);
                 }
                 else
                 {
-                    MoveTarget = a.Target.Position;
+                    MoveTarget = a.Target.Value.Position;
                 }
             }
         }
@@ -163,10 +155,10 @@ public abstract partial class CustomRotation
         ActionMoveBackAbility = MoveBackAbility(out act) ? act : null;
         ActionSpeedAbility = SpeedAbility(out act) ? act : null;
 
-        BaseAction.OtherOption = CanUseOption.None;
+        IBaseAction.ActionPreview = false;
     }
 
-    private IAction Invoke(out IAction gcdAction)
+    private IAction? Invoke(out IAction? gcdAction)
     {
         var countDown = Service.CountDownTime;
         if (countDown > 0)
@@ -175,39 +167,24 @@ public abstract partial class CustomRotation
             return CountDownAction(countDown);
         }
 
-        var helpDefenseAOE = Service.Config.GetValue(Configuration.PluginConfigBool.UseDefenseAbility) && DataCenter.IsHostileCastingAOE;
-
-        bool helpDefenseSingle = false;
-        if (ClassJob.GetJobRole() == JobRole.Healer || ClassJob.RowId == (uint)ECommons.ExcelServices.Job.PLD)
-        {
-            if (DataCenter.PartyTanks.Any((tank) =>
-            {
-                var attackingTankObj = DataCenter.HostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
-
-                if (attackingTankObj.Count() != 1) return false;
-
-                return DataCenter.IsHostileCastingToTank;
-            })) helpDefenseSingle = true;
-        }
-
-        BaseAction.OtherOption = CanUseOption.IgnoreClippingCheck;
-        gcdAction = GCD(helpDefenseAOE, helpDefenseSingle);
-        BaseAction.OtherOption = CanUseOption.None;
+        IBaseAction.IgnoreClipping = true;
+        gcdAction = GCD();
+        IBaseAction.IgnoreClipping = false;
 
         if (gcdAction != null)
         {
             if (DataCenter.NextAbilityToNextGCD < DataCenter.MinAnimationLock + DataCenter.Ping
                 || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
 
-            if (Ability(gcdAction, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
+            if (Ability(gcdAction, out var ability)) return ability;
 
             return gcdAction;
         }
         else
         {
-            BaseAction.OtherOption = CanUseOption.IgnoreClippingCheck;
-            if (Ability(Addle, out IAction ability, helpDefenseAOE, helpDefenseSingle)) return ability;
-            BaseAction.OtherOption = CanUseOption.None;
+            IBaseAction.IgnoreClipping = true;
+            if (Ability(AddlePvE, out var ability)) return ability;
+            IBaseAction.IgnoreClipping = false;
 
             return null;
         }
@@ -218,5 +195,5 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="remainTime"></param>
     /// <returns></returns>
-    protected virtual IAction CountDownAction(float remainTime) => null;
+    protected virtual IAction? CountDownAction(float remainTime) => null;
 }

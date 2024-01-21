@@ -82,9 +82,22 @@ public class BaseAction : IBaseAction
     }
 
     public bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipCombo = false, bool ignoreCastingCheck = false, 
-        bool isEmpty = false, bool onLastAbility = false, bool ignoreClippingCheck = false, byte gcdCountForAbility = 0)
+        bool isEmpty = false, bool onLastAbility = false, bool ignoreClippingCheck = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0)
     {
         act = this!;
+
+        if (IBaseAction.ActionPreview)
+        {
+            ignoreCastingCheck = ignoreClippingCheck = true;
+        }
+        if (IBaseAction.AllEmpty)
+        {
+            isEmpty = true;
+        }
+        if (IBaseAction.IgnoreClipping)
+        {
+            ignoreClippingCheck = true;
+        }
 
         if (!Info.BasicCheck(skipStatusProvideCheck, skipCombo, ignoreCastingCheck)) return false;
         if (!Cooldown.CooldownCheck(isEmpty, onLastAbility, ignoreClippingCheck, gcdCountForAbility)) return false;
@@ -92,7 +105,7 @@ public class BaseAction : IBaseAction
         if (DataCenter.CurrentMp < MPNeed) return false;
         if (Setting.IsFriendly && DataCenter.AverageTimeToKill < Config.TimeToKill) return false;
 
-        Target = TargetInfo.FindTarget();
+        Target = TargetInfo.FindTarget(skipAoeCheck);
         if (Target == null) return false;
         return true;
     }
@@ -120,5 +133,14 @@ public class BaseAction : IBaseAction
         {
             return ActionManager.Instance()->UseAction(ActionType.Action, adjustId, target.Target.ObjectId);
         }
+    }
+
+    public virtual IBaseAction Duplicate()
+    {
+        return = new BaseAction((ActionID)ID, Info.IsDutyAction)
+        {
+            Setting = Setting,
+            Config = Config
+        };
     }
 }

@@ -147,7 +147,7 @@ public abstract partial class CustomRotation
         .Where(i => i.FilterGroup == 8 && i.ItemSearchCategory.Row == 43)
         .Select(i => new HealPotionItem(i)).ToArray();
 
-    private static bool UseHealPotion(out IAction act)
+    private static bool UseHealPotion(out IAction? act)
     {
         var acts = from a in Potions
                    where a.CanUse(out _, true)

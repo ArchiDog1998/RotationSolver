@@ -8,9 +8,9 @@ public struct ActionSetting()
     public bool TargetStatusFromSelf { get; set; } = true;
     public StatusID[]? TargetStatus { get; set; } = null;
     public Func<GameObject, bool> CanTarget { get; set; } = t => true;
-    internal ActionID[]? ComboIdsNot { get; set; }
+    public ActionID[]? ComboIdsNot { get; set; }
 
-    internal ActionID[]? ComboIds { get; set; }
+    public ActionID[]? ComboIds { get; set; }
     /// <summary>
     /// Status that this action provides.
     /// </summary>
@@ -24,5 +24,13 @@ public struct ActionSetting()
     public Func<bool>? ActionCheck { get; set; } = null;
 
     public bool IsFriendly { get; set; }
-    public TargetType TargetType { get; set; } = TargetType.Big;
+
+    private TargetType _type = TargetType.Big;
+    public TargetType TargetType 
+    { 
+        readonly get => IBaseAction.TargetOverride ?? _type; 
+        set => _type = value; 
+    }
+
+    public EnemyPositional EnemyPositional { get; set; } = EnemyPositional.None;
 }

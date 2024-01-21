@@ -5,9 +5,14 @@
 /// </summary>
 public struct ActionConfig()
 {
-    public bool IsEnable { get; set; } = true;
+    private bool _isEnable = true;
+    public bool IsEnable 
+    {
+        readonly get => IBaseAction.ForceEnable || _isEnable;
+        set => _isEnable = value;
+    }
 
-    public uint StatusGcdCount { get; set; } = 2;
+    public byte StatusGcdCount { get; set; } = 2;
     public byte AoeCount { get; set; } = 3;
     public float TimeToKill { get; set; } = 0;
 

@@ -5,6 +5,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using RotationSolver.Basic.Configuration;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Actions;
@@ -138,7 +139,7 @@ public struct ActionTargetInfo(IBaseAction _action)
     /// Take a little long time..
     /// </summary>
     /// <returns></returns>
-    internal readonly TargetResult? FindTarget()
+    internal readonly TargetResult? FindTarget(bool skipAoeCheck)
     {
         var range = Range;
         var player = Player.Object;
@@ -156,7 +157,8 @@ public struct ActionTargetInfo(IBaseAction _action)
             return FindTargetArea(canTargets, canAffects, range, player);
         }
 
-        var targets = GetMostCanTargetObjects(canTargets, canAffects, _action.Config.AoeCount);
+        var targets = GetMostCanTargetObjects(canTargets, canAffects,
+            skipAoeCheck ? 0 : _action.Config.AoeCount);
         var target = FindTargetByType(targets, _action.Setting.TargetType);
         if (target == null) return null;
 
@@ -425,11 +427,13 @@ public struct ActionTargetInfo(IBaseAction _action)
         return type switch //Find the object.
         {
             TargetType.Provoke => FindProvokeTarget(),
-            TargetType.Weaken => FindWeakenPeople(),
+            TargetType.Dispel => FindWeakenTarget(),
             TargetType.Death => FindDeathPeople(),
             TargetType.Move => FindTargetForMoving(),
             TargetType.Heal => FindHealTarget(_action.Config.AutoHealRatio),
             TargetType.BeAttacked => FindBeAttackedTarget(),
+            TargetType.Interrupt => FindInterruptTarget(),
+            TargetType.Tank => FindTankTarget(),
             _ => FindHostile(),
         };
 
@@ -556,8 +560,11 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             if (!gameObjects.Any()) return null;
 
-            gameObjects = gameObjects.Where(o => o.GetHealthRatio() < healRatio);
-            
+            if (IBaseAction.AutoHealCheck)
+            {
+                gameObjects = gameObjects.Where(o => o.GetHealthRatio() < healRatio);
+            }
+
             var partyMembers = gameObjects.Where(ObjectHelper.IsParty);
 
             return GeneralHealTarget(partyMembers)
@@ -589,6 +596,12 @@ public struct ActionTargetInfo(IBaseAction _action)
             }
         }
 
+        GameObject? FindInterruptTarget()
+        {
+            gameObjects = gameObjects.Where(ObjectHelper.CanInterrupt);
+            return FindHostile();
+        }
+
         GameObject? FindHostile()
         {
             if (gameObjects == null || !gameObjects.Any()) return null;
@@ -612,6 +625,11 @@ public struct ActionTargetInfo(IBaseAction _action)
                 gameObjects = highPriority;
             }
 
+            return FindHostileRaw();
+        }
+
+        GameObject? FindHostileRaw()
+        {
             gameObjects = type switch
             {
                 TargetType.Small => gameObjects.OrderBy(p => p.HitboxRadius),
@@ -647,7 +665,7 @@ public struct ActionTargetInfo(IBaseAction _action)
             return attachedT.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();
         }
 
-        GameObject? FindWeakenPeople()
+        GameObject? FindWeakenTarget()
         {
             var weakenPeople = gameObjects.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
             var dyingPeople = weakenPeople.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
@@ -662,17 +680,27 @@ public struct ActionTargetInfo(IBaseAction _action)
             }
             return null;
         }
+
+        GameObject? FindTankTarget()
+        {
+            return TargetFilter.GetJobCategory(gameObjects, JobRole.Tank)?.FirstOrDefault()
+                ?? gameObjects.FirstOrDefault();
+        }
     }
     #endregion
 }
 
 public enum TargetType : byte
 {
+    Tank,
+
+    Interrupt,
+
     Provoke,
 
     Death,
 
-    Weaken,
+    Dispel,
 
     Move,
 

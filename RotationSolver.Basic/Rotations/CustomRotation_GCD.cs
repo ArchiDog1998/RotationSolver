@@ -5,64 +5,66 @@ namespace RotationSolver.Basic.Rotations;
 public abstract partial class CustomRotation
 {
     private static DateTime _nextTimeToHeal = DateTime.MinValue;
-    private IAction GCD(bool helpDefenseAOE, bool helpDefenseSingle)
+    private IAction? GCD()
     {
-        IAction act = DataCenter.CommandNextAction;
+        var act = DataCenter.CommandNextAction;
 
-        BaseAction.SkipDisable = true;
-        if (act is IBaseAction a && a != null && a.IsRealGCD && a.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return act;
-        BaseAction.SkipDisable = false;
+        IBaseAction.ForceEnable = true;
+        if (act is IBaseAction a && a != null && a.Info.IsRealGCD 
+            && a.CanUse(out _, isEmpty: true, skipAoeCheck: true)) return act;
+        IBaseAction.ForceEnable = false;
 
-        if (IsLimitBreak && UseLimitBreak(out act)) return act;
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.LimitBreak)
+            && UseLimitBreak(out act)) return act;
 
         if (EmergencyGCD(out act)) return act;
 
         if (RaiseSpell(out act, false)) return act;
 
-        if (IsMoveForward && MoveForwardGCD(out act))
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward)
+            && MoveForwardGCD(out act))
         {
-            if (act is IBaseAction b && ObjectHelper.DistanceToPlayer(b.Target) > 5) return act;
+            if (act is IBaseAction b && ObjectHelper.DistanceToPlayer(b.Target!.Value.Target) > 5) return act;
         }
 
-        //General Heal
-        if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer)
-            && (InCombat || Service.Config.GetValue(PluginConfigBool.HealOutOfCombat)))
-        {
-            if (IsHealArea)
-            {
-                if (HealAreaGCD(out act)) return act;
-            }
-            if (CanHealAreaSpell)
-            {
-                BaseAction.AutoHealCheck = true;
-                if (HealAreaGCD(out act)) return act;
-                BaseAction.AutoHealCheck = false;
-            }
-            if (IsHealSingle)
-            {
-                if (HealSingleGCD(out act)) return act;
-            }
-            if (CanHealSingleSpell)
-            {
-                BaseAction.AutoHealCheck = true;
-                if (HealSingleGCD(out act)) return act;
-                BaseAction.AutoHealCheck = false;
-            }
-        }
-        if (IsDefenseArea && DefenseAreaGCD(out act)) return act;
-        if (IsDefenseSingle && DefenseSingleGCD(out act)) return act;
+        IBaseAction.TargetOverride = TargetType.Heal;
 
-        //Auto Defense
-        if (DataCenter.SetAutoStatus(AutoStatus.DefenseArea, helpDefenseAOE) && DefenseAreaGCD(out act)) return act;
-        if (DataCenter.SetAutoStatus(AutoStatus.DefenseSingle, helpDefenseSingle) && DefenseSingleGCD(out act)) return act;
-
-        //Esuna
-        if (DataCenter.SetAutoStatus(AutoStatus.Esuna, (IsEsunaStanceNorth
-            || !HasHostilesInRange || Service.Config.GetValue(PluginConfigBool.EsunaAll) || (DataCenter.Territory?.IsPvpZone ?? false))
-            && WeakenPeople.Any() || DyingPeople.Any()))
+        if (DataCenter.CommandStatus.HasFlag(AutoStatus.HealAreaSpell))
         {
-            if (ClassJob.GetJobRole() == JobRole.Healer && EsunaAction(out act, CanUseOption.MustUse)) return act;
+            if (HealAreaGCD(out act)) return act;
         }
+        if (DataCenter.AutoStatus.HasFlag(AutoStatus.HealAreaSpell))
+        {
+            IBaseAction.AutoHealCheck = true;
+            if (HealAreaGCD(out act)) return act;
+            IBaseAction.AutoHealCheck = false;
+        }
+        if (DataCenter.CommandStatus.HasFlag(AutoStatus.HealSingleSpell))
+        {
+            if (HealSingleGCD(out act)) return act;
+        }
+        if (DataCenter.AutoStatus.HasFlag(AutoStatus.HealSingleSpell))
+        {
+            IBaseAction.AutoHealCheck = true;
+            if (HealSingleGCD(out act)) return act;
+            IBaseAction.AutoHealCheck = false;
+        }
+
+        IBaseAction.TargetOverride = null;
+
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.DefenseArea)
+            && DefenseAreaGCD(out act)) return act;
+
+        IBaseAction.TargetOverride = TargetType.BeAttacked;
+
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.DefenseSingle)
+            && DefenseSingleGCD(out act)) return act;
+
+        IBaseAction.TargetOverride = TargetType.Dispel;
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.Dispel)
+            && DispelGCD(out act)) return act;
+
+        IBaseAction.TargetOverride = null;
 
         if (GeneralGCD(out var action)) return action;
 
@@ -95,82 +97,92 @@ public abstract partial class CustomRotation
     private bool UseLimitBreak(out IAction act)
     {
         var role = ClassJob.GetJobRole();
-        act = null;
+        act = null!;
 
         return LimitBreakLevel switch
         {
             1 => role switch
             {
-                JobRole.Tank => ShieldWall.CanUse(out act, CanUseOption.MustUse),
-                JobRole.Healer => HealingWind.CanUse(out act, CanUseOption.MustUse),
-                JobRole.Melee => Braver.CanUse(out act, CanUseOption.MustUse),
-                JobRole.RangedPhysical => BigShot.CanUse(out act, CanUseOption.MustUse),
-                JobRole.RangedMagical => Skyshard.CanUse(out act, CanUseOption.MustUse),
+                JobRole.Tank => ShieldWallPvE.CanUse(out act, skipAoeCheck: true),
+                JobRole.Healer => HealingWindPvE.CanUse(out act, skipAoeCheck: true),
+                JobRole.Melee => BraverPvE.CanUse(out act, skipAoeCheck: true),
+                JobRole.RangedPhysical => BigShotPvE.CanUse(out act, skipAoeCheck: true),
+                JobRole.RangedMagical => SkyshardPvE.CanUse(out act, skipAoeCheck: true),
                 _ => false,
             },
             2 => role switch
             {
-                JobRole.Tank => Stronghold.CanUse(out act, CanUseOption.MustUse),
-                JobRole.Healer => BreathOfTheEarth.CanUse(out act, CanUseOption.MustUse),
-                JobRole.Melee => Bladedance.CanUse(out act, CanUseOption.MustUse),
-                JobRole.RangedPhysical => Desperado.CanUse(out act, CanUseOption.MustUse),
-                JobRole.RangedMagical => Starstorm.CanUse(out act, CanUseOption.MustUse),
+                JobRole.Tank => StrongholdPvE.CanUse(out act, skipAoeCheck: true),
+                JobRole.Healer => BreathOfTheEarthPvE.CanUse(out act, skipAoeCheck: true),
+                JobRole.Melee => BladedancePvE.CanUse(out act, skipAoeCheck: true),
+                JobRole.RangedPhysical => DesperadoPvE.CanUse(out act, skipAoeCheck: true),
+                JobRole.RangedMagical => StarstormPvE.CanUse(out act, skipAoeCheck: true),
                 _ => false,
             },
-            3 => LimitBreak?.CanUse(out act, CanUseOption.MustUse) ?? false,
+            3 => LimitBreak?.CanUse(out act, skipAoeCheck: true) ?? false,
             _ => false,
         };
     }
 
     private bool RaiseSpell(out IAction act, bool mustUse)
     {
-        act = null;
-        if (IsRaiseShirk && DataCenter.DeathPeopleAll.Any())
+        if (DataCenter.CommandStatus.HasFlag(AutoStatus.Raise))
         {
-            if (RaiseAction(out act)) return true;
+            if (RaiseGCD(out act) || RaiseAction(out act, false)) return true;
         }
 
-        if ((Service.Config.GetValue(PluginConfigBool.RaiseAll) ? DataCenter.DeathPeopleAll.Any() : DataCenter.DeathPeopleParty.Any())
-            && RaiseAction(out act, CanUseOption.IgnoreCastCheck))
+        act = null!;
+        if (!DataCenter.AutoStatus.HasFlag(AutoStatus.Raise)) return false;
+
+        if (RaiseGCD(out act)) return true;
+
+        if (RaiseAction(out act, true))
         {
             if (HasSwift)
             {
-                return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
+                return true;
             }
             else if (mustUse)
             {
                 var action = act;
-                if (Swiftcast.CanUse(out act))
+                if (SwiftcastPvE.CanUse(out act))
                 {
-                    return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
+                    return true;
                 }
                 else if (!IsMoving)
                 {
                     act = action;
-                    return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
+                    return true;
                 }
             }
-            else if (Service.Config.GetValue(PluginConfigBool.RaisePlayerBySwift) && !Swiftcast.IsCoolingDown
+            else if (Service.Config.GetValue(PluginConfigBool.RaisePlayerBySwift) && !SwiftcastPvE.IsCoolingDown
                 && NextAbilityToNextGCD > DataCenter.MinAnimationLock + Ping)
             {
-                return DataCenter.SetAutoStatus(AutoStatus.Raise, true);
+                return true;
             }
         }
-        return DataCenter.SetAutoStatus(AutoStatus.Raise, false);
+
+        return false;
+
+        bool RaiseAction(out IAction act, bool ignoreCastingCheck)
+        {
+            if (Player.CurrentMp > Service.Config.GetValue(PluginConfigInt.LessMPNoRaise) && (Raise?.CanUse(out act, ignoreCastingCheck: ignoreCastingCheck) ?? false)) return true;
+
+            act = null!;
+            return false;
+        }
     }
 
-    private bool RaiseAction(out IAction act, CanUseOption option = CanUseOption.None)
+    protected virtual bool RaiseGCD(out IAction act)
     {
-        if (VariantRaise.CanUse(out act, option)) return true;
-        if (VariantRaise2.CanUse(out act, option)) return true;
-        if (Player.CurrentMp > Service.Config.GetValue(PluginConfigInt.LessMPNoRaise) && (Raise?.CanUse(out act, option) ?? false)) return true;
-
+        //TODO, this may be fullfil with code generater.
+        act = null!;
         return false;
     }
 
-    private static bool EsunaAction(out IAction act, CanUseOption option = CanUseOption.None)
+    protected virtual bool DispelGCD(out IAction act)
     {
-        if (Esuna.CanUse(out act, option)) return true;
+        if (EsunaPvE.CanUse(out act)) return true;
 
         return false;
     }
@@ -183,17 +195,17 @@ public abstract partial class CustomRotation
     protected virtual bool EmergencyGCD(out IAction act)
     {
         #region Bozja
-        if (LostSpellforge.CanUse(out act)) return true;
-        if (LostSteelsting.CanUse(out act)) return true;
-        if (LostRampage.CanUse(out act)) return true;
-        if (LostBurst.CanUse(out act)) return true;
+        //if (LostSpellforge.CanUse(out act)) return true;
+        //if (LostSteelsting.CanUse(out act)) return true;
+        //if (LostRampage.CanUse(out act)) return true;
+        //if (LostBurst.CanUse(out act)) return true;
 
-        if (LostBravery.CanUse(out act)) return true;
-        if (LostBubble.CanUse(out act)) return true;
-        if (LostShell2.CanUse(out act)) return true;
-        if (LostShell.CanUse(out act)) return true;
-        if (LostProtect2.CanUse(out act)) return true;
-        if (LostProtect.CanUse(out act)) return true;
+        //if (LostBravery.CanUse(out act)) return true;
+        //if (LostBubble.CanUse(out act)) return true;
+        //if (LostShell2.CanUse(out act)) return true;
+        //if (LostShell.CanUse(out act)) return true;
+        //if (LostProtect2.CanUse(out act)) return true;
+        //if (LostProtect.CanUse(out act)) return true;
 
         //Add your own logic here.
         //if (LostFlarestar.CanUse(out act)) return true;
@@ -202,13 +214,14 @@ public abstract partial class CustomRotation
         #endregion
 
         #region PvP
-        if (PvP_Guard.CanUse(out act)
+        if (GuardPvP.CanUse(out act)
             && (Player.GetHealthRatio() <= Service.Config.GetValue(PluginConfigFloat.HealthForGuard)
             || IsRaiseShirk)) return true;
 
-        if (PvP_StandardIssueElixir.CanUse(out act)) return true;
+        
+        if (StandardissueElixirPvP.CanUse(out act)) return true;
         #endregion
-        act = null; return false;
+        act = null!; return false;
     }
 
     /// <summary>
@@ -219,7 +232,7 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.MoveForwardGCD)]
     protected virtual bool MoveForwardGCD(out IAction act)
     {
-        act = null; return false;
+        act = null!; return false;
     }
 
     /// <summary>
@@ -230,8 +243,8 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.HealSingleGCD)]
     protected virtual bool HealSingleGCD(out IAction act)
     {
-        if (VariantCure.CanUse(out act)) return true;
-        if (VariantCure2.CanUse(out act)) return true;
+        if (VariantCurePvE.CanUse(out act)) return true;
+        if (VariantCurePvE_33862.CanUse(out act)) return true;
         return false;
     }
 
@@ -243,7 +256,7 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.HealAreaGCD)]
     protected virtual bool HealAreaGCD(out IAction act)
     {
-        act = null; return false;
+        act = null!; return false;
     }
 
     /// <summary>
@@ -254,9 +267,10 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.DefenseSingleGCD)]
     protected virtual bool DefenseSingleGCD(out IAction act)
     {
-        if (LostStoneskin.CanUse(out act)) return true;
+        
+        if (LostStoneskinPvE.CanUse(out act)) return true;
 
-        act = null; return false;
+        act = null!; return false;
     }
 
     /// <summary>
@@ -267,9 +281,9 @@ public abstract partial class CustomRotation
     [RotationDesc(DescType.DefenseAreaGCD)]
     protected virtual bool DefenseAreaGCD(out IAction act)
     {
-        if (LostStoneskin2.CanUse(out act)) return true;
+        if (LostStoneskinIiPvE.CanUse(out act)) return true;
 
-        act = null; return false;
+        act = null!; return false;
     }
 
     /// <summary>
@@ -279,6 +293,6 @@ public abstract partial class CustomRotation
     /// <returns></returns>
     protected virtual bool GeneralGCD(out IAction act)
     {
-        act = null; return false;
+        act = null!; return false;
     }
 }

@@ -153,8 +153,10 @@ public static class ObjectHelper
     internal static unsafe uint FateId(this GameObject obj) => obj.Struct()->FateId;
 
     static readonly Dictionary<uint, bool> _effectRangeCheck = new();
-    internal static bool CanInterrupt(this BattleChara b)
+    internal static bool CanInterrupt(this GameObject o)
     {
+        if (o is not BattleChara b) return false;
+
         var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2;
 
         if (!baseCheck) return false;

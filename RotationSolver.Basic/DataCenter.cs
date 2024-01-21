@@ -63,7 +63,7 @@ internal static class DataCenter
     public const int HP_RECORD_TIME = 240;
     internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } = new(HP_RECORD_TIME + 1);
 
-    public static ICustomRotation RightNowRotation { get; internal set; }
+    public static ICustomRotation? RightNowRotation { get; internal set; }
 
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
         || !Service.Config.GetValue(PluginConfigBool.PoslockCasting)
@@ -102,19 +102,11 @@ internal static class DataCenter
     public static bool IsInHighEndDuty => ContentFinder?.HighEndDuty ?? false;
     public static TerritoryContentType TerritoryContentType => (TerritoryContentType)(ContentFinder?.ContentType?.Value?.RowId ?? 0);
 
-    public static AutoStatus AutoStatus { get; private set; } = AutoStatus.None;
-    public static bool SetAutoStatus(AutoStatus status, bool keep)
-    {
-        if (keep)
-        {
-            AutoStatus |= status;
-        }
-        else
-        {
-            AutoStatus &= ~status;
-        }
-        return keep;
-    }
+    public static AutoStatus MergedStatus => AutoStatus | CommandStatus;
+
+    public static AutoStatus AutoStatus { get; set; } = AutoStatus.None;
+    public static AutoStatus CommandStatus { get; set; } = AutoStatus.None;
+
     public static HashSet<uint> DisabledActionSequencer { get; set; } = new HashSet<uint>();
 
     private static List<NextAct> NextActs = new();
@@ -136,6 +128,8 @@ internal static class DataCenter
         }
     }
     public static Job Job { get; set; }
+
+    public static JobRole Role => Service.GetSheet<ClassJob>().GetRow((uint)Job)?.GetJobRole() ?? JobRole.None;
 
     internal static void AddCommandAction(IAction act, double time)
     {
@@ -266,6 +260,15 @@ internal static class DataCenter
 
     public static bool InCombat { get; set; }
 
+    static RandomDelay _notInCombatDelay = new(() =>
+    (Service.Config.GetValue(PluginConfigFloat.NotInCombatDelayMin),
+    Service.Config.GetValue(PluginConfigFloat.NotInCombatDelayMax)));
+
+    /// <summary>
+    /// Is out of combat.
+    /// </summary>
+    public static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
+
     internal static float CombatTimeRaw { get; set; }
 
     public static IEnumerable<BattleChara> PartyMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
@@ -337,22 +340,21 @@ internal static class DataCenter
             {
                 foreach (var burstInfo in StatusHelper.Burst2Mins)
                 {
-                    if (burstInfo.Jobs.Contains((Job)member.ClassJob.Id))
+                    if (!burstInfo.Jobs.Contains((Job)member.ClassJob.Id)) continue;
+
+                    if (member.Level >= burstInfo.Level)
                     {
-                        if (member.Level >= burstInfo.Level)
+                        var tar = burstInfo.IsOnHostile
+                            && Svc.Targets.Target is BattleChara b ? b
+                            : Player.Object;
+                        if (tar.HasStatus(false, burstInfo.Status)
+                            && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
                         {
-                            var tar = burstInfo.IsOnHostile
-                                && Svc.Targets.Target is BattleChara b ? b
-                                : Player.Object;
-                            if (tar.HasStatus(false, burstInfo.Status)
-                                && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
-                            {
-                                burst++;
-                            }
-                            count++;
+                            burst++;
                         }
-                        break;
+                        count++;
                     }
+                    break;
                 }
             }
             if (count == 0) return -1;

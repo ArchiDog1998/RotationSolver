@@ -35,14 +35,10 @@ public abstract partial class CustomRotation
     /// </summary>
     public static bool InCombat => DataCenter.InCombat;
 
-    static RandomDelay _notInCombatDelay = new(() =>
-        (Service.Config.GetValue(Configuration.PluginConfigFloat.NotInCombatDelayMin),
-        Service.Config.GetValue(Configuration.PluginConfigFloat.NotInCombatDelayMax)));
-
     /// <summary>
     /// Is out of combat.
     /// </summary>
-    public static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
+    public static bool NotInCombatDelay => DataCenter.NotInCombatDelay;
 
     /// <summary>
     /// Player's MP.
@@ -272,13 +268,7 @@ public abstract partial class CustomRotation
     /// </summary>
     public static bool IsLimitBreak => DataCenter.IsLimitBreak;
 
-    private bool CanUseHealAction =>
-        //PvP
-        DataCenter.Territory.IsPvpZone
-        //Job
-        || (ClassJob.GetJobRole() == JobRole.Healer || Service.Config.GetValue(Configuration.PluginConfigBool.UseHealWhenNotAHealer))
-        && Service.Config.GetValue(Configuration.PluginConfigBool.AutoHeal)
-        && IsLongerThan(Service.Config.GetValue(Configuration.PluginConfigFloat.AutoHealTimeToKill));
+
 
     /// <summary>
     /// 

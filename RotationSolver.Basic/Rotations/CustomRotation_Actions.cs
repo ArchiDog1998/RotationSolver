@@ -7,7 +7,7 @@ public abstract partial class CustomRotation
 {
     private static void LoadActionConfigAndSetting(ref IBaseAction action)
     {
-        //TODO: better target type check.
+        //TODO: better target type check. (NoNeed?)
         //TODO: better friendly check.
         //TODO: load the config from the configuration.
     }

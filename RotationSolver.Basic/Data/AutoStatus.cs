@@ -4,7 +4,7 @@
 /// The status of auto.
 /// </summary>
 [Flags]
-public enum AutoStatus : ushort
+public enum AutoStatus : uint
 {
     /// <summary>
     /// Nothing.
@@ -62,7 +62,47 @@ public enum AutoStatus : ushort
     Raise = 1 << 9,
 
     /// <summary>
-    /// Shall we esuna.
+    /// Shall we Dispel.
     /// </summary>
-    Esuna = 1 << 10,
+    Dispel = 1 << 10,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Positional = 1 << 11,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Shirk = 1 << 12,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    MoveForward = 1 << 13,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    MoveBack = 1 << 14,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    AntiKnockback = 1 << 15,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Burst = 1 << 16,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Speed = 1 << 17,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    LimitBreak = 1 << 18,
 }

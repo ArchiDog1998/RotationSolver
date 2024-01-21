@@ -152,18 +152,18 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.Spacing();
 
-        DrawCommandAction(rotation?.EsunaStanceNorthGCD, rotation?.EsunaStanceNorthAbility,
+        DrawCommandAction(rotation?.ActionDispelStancePositionalGCD, rotation?.ActionDispelStancePositionalAbility,
             SpecialCommandType.EsunaStanceNorth, ImGuiColors.ParsedGold);
 
         ImGui.SameLine();
 
-        DrawCommandAction(rotation?.RaiseShirkGCD, rotation?.RaiseShirkAbility,
+        DrawCommandAction(rotation?.ActionRaiseShirkGCD, rotation?.ActionRaiseShirkAbility,
             SpecialCommandType.RaiseShirk, ImGuiColors.ParsedBlue);
 
         ImGui.SameLine();
 
 
-        DrawCommandAction(rotation?.AntiKnockbackAbility,
+        DrawCommandAction(rotation?.ActionAntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);
 
         ImGui.SameLine();

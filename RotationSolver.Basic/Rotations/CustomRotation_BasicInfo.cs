@@ -43,39 +43,39 @@ public abstract partial class CustomRotation : ICustomRotation
 
     public virtual string Description { get; } = string.Empty;
 
-    public IAction ActionHealAreaGCD { get; private set; }
+    public IAction? ActionHealAreaGCD { get; private set; }
 
-    public IAction ActionHealAreaAbility { get; private set; }
+    public IAction? ActionHealAreaAbility { get; private set; }
 
-    public IAction ActionHealSingleGCD { get; private set; }
+    public IAction? ActionHealSingleGCD { get; private set; }
 
-    public IAction ActionHealSingleAbility { get; private set; }
+    public IAction? ActionHealSingleAbility { get; private set; }
 
-    public IAction ActionDefenseAreaGCD { get; private set; }
+    public IAction? ActionDefenseAreaGCD { get; private set; }
 
-    public IAction ActionDefenseAreaAbility { get; private set; }
+    public IAction? ActionDefenseAreaAbility { get; private set; }
 
-    public IAction ActionDefenseSingleGCD { get; private set; }
+    public IAction? ActionDefenseSingleGCD { get; private set; }
 
-    public IAction ActionDefenseSingleAbility { get; private set; }
+    public IAction? ActionDefenseSingleAbility { get; private set; }
 
-    public IAction ActionMoveForwardGCD { get; private set; }
+    public IAction? ActionMoveForwardGCD { get; private set; }
 
-    public IAction ActionMoveForwardAbility { get; private set; }
+    public IAction? ActionMoveForwardAbility { get; private set; }
 
-    public IAction ActionMoveBackAbility { get; private set; }
+    public IAction? ActionMoveBackAbility { get; private set; }
 
-    public IAction ActionSpeedAbility { get; private set; }
+    public IAction? ActionSpeedAbility { get; private set; }
 
-    public IAction EsunaStanceNorthGCD { get; private set; }
+    public IAction? ActionDispelStancePositionalGCD { get; private set; }
 
-    public IAction EsunaStanceNorthAbility { get; private set; }
+    public IAction? ActionDispelStancePositionalAbility { get; private set; }
 
-    public IAction RaiseShirkGCD { get; private set; }
+    public IAction? ActionRaiseShirkGCD { get; private set; }
 
-    public IAction RaiseShirkAbility { get; private set; }
+    public IAction? ActionRaiseShirkAbility { get; private set; }
 
-    public IAction AntiKnockbackAbility { get; private set; }
+    public IAction? ActionAntiKnockbackAbility { get; private set; }
 
     public bool IsValid { get; private set; } = true;
     public string WhyNotValid { get; private set; } = string.Empty;
@@ -90,7 +90,7 @@ public abstract partial class CustomRotation : ICustomRotation
 
     protected virtual IRotationConfigSet CreateConfiguration()
     {
-        return new RotationConfigSet(Jobs[0], GetType().FullName);
+        return new RotationConfigSet(Jobs[0], GetType().FullName ?? "No Name");
     }
 
     public override string ToString() => RotationName;

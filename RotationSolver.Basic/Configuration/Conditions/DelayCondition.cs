@@ -14,8 +14,10 @@ internal abstract class DelayCondition : ICondition
     [ThreadStatic]
     private static Stack<ICondition> _callingStack;
 
-    public bool IsTrue(ICustomRotation rotation)
+    public bool IsTrue(ICustomRotation? rotation)
     {
+        if (rotation == null) return false;
+
         _callingStack ??= new(64);
 
         if (_callingStack.Contains(this))
