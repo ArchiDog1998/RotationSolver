@@ -12,7 +12,7 @@ public struct ActionBasicInfo
         (uint)ActionID.BlastChargePvP,
     ];
 
-    private readonly IBaseActionNew _action;
+    private readonly IBaseAction _action;
     public readonly string Name => _action.Action.Name;
     public readonly uint ID => _action.Action.RowId;
     public readonly uint IconID => ID == (uint)ActionID.SprintPvE ? 104u : _action.Action.Icon;
@@ -52,7 +52,7 @@ public struct ActionBasicInfo
 
 
 
-    public ActionBasicInfo(IBaseActionNew action, bool isDutyAction)
+    public ActionBasicInfo(IBaseAction action, bool isDutyAction)
     {
         _action = action;
         IsGeneralGCD = _action.Action.IsGeneralGCD();

@@ -4,7 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Basic.Actions;
-public class BaseActionNew : IBaseActionNew
+public class BaseAction : IBaseAction
 {
     public TargetResult? Target { get; private set; } = null;
 
@@ -70,21 +70,14 @@ public class BaseActionNew : IBaseActionNew
 
     public ActionConfig Config { get; set; }
 
-    public BaseActionNew(ActionID actionID, bool isDutyAction)
+    public BaseAction(ActionID actionID, bool isDutyAction)
     {
         Action = Service.GetSheet<Action>().GetRow((uint)actionID)!;
         TargetInfo = new(this);
         Info = new(this, isDutyAction);
         Cooldown = new(this);
 
-        //TODO: better target type check.
-        //TODO: better friendly check.
-        Setting = new()
-        {
-            IsFriendly = Action.CanTargetFriendly,
-        };
-
-        //TODO: load the config from the 
+        Setting = new();
         Config = new();
     }
 

@@ -7,18 +7,30 @@ internal abstract class ActionRotationGetterBase(Lumina.GameData gameData)
         var name = GetName(item);
         var descName = GetDescName(item);
 
+        var isDuty = IsDutyAction(item);
+
+        if (isDuty)
+        {
+            descName += " Duty Action";
+        }
+
         return $$"""
         private readonly Lazy<IBaseAction> _{{name}}Creator = new(() => 
         {
-            IBaseAction action = new BaseAction(ActionID.{{name}});
-            Modify{{name}}(ref action);
+            IBaseAction action = new BaseAction(ActionID.{{name}}, {{isDuty.ToString().ToLower()}});
+            LoadActionConfigAndSetting(ref action);
+
+            var setting = action.Setting;
+            Modify{{name}}(ref setting);
+            action.Setting = setting;
+
             return action;
         });
 
         /// <summary>
-        /// Modify {{GetDescName(item)}}
+        /// Modify {{descName}}
         /// </summary>
-        static partial void Modify{{name}}(ref IBaseAction action);
+        static partial void Modify{{name}}(ref ActionSetting setting);
 
         /// <summary>
         /// {{descName}}
@@ -27,4 +39,6 @@ internal abstract class ActionRotationGetterBase(Lumina.GameData gameData)
         public IBaseAction {{name}} => _{{name}}Creator.Value;
         """;
     }
+
+    public abstract bool IsDutyAction(Lumina.Excel.GeneratedSheets.Action action);
 }

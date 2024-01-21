@@ -5,6 +5,7 @@
 /// </summary>
 public struct ActionSetting()
 {
+    public bool TargetStatusFromSelf { get; set; } = true;
     public StatusID[]? TargetStatus { get; set; } = null;
     public Func<GameObject, bool> CanTarget { get; set; } = t => true;
     internal ActionID[]? ComboIdsNot { get; set; }
@@ -23,5 +24,5 @@ public struct ActionSetting()
     public Func<bool>? ActionCheck { get; set; } = null;
 
     public bool IsFriendly { get; set; }
-    public TargetType Type { get; set; } = TargetType.Big;
+    public TargetType TargetType { get; set; } = TargetType.Big;
 }

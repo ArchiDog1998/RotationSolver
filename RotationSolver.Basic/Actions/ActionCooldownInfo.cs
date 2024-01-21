@@ -5,7 +5,7 @@ using static Dalamud.Interface.Utility.Raii.ImRaii;
 namespace RotationSolver.Basic.Actions;
 public readonly struct ActionCooldownInfo
 {
-    private readonly IBaseActionNew _action;
+    private readonly IBaseAction _action;
     public byte CoolDownGroup { get; }
 
     unsafe RecastDetail* CoolDownDetail => ActionManager.Instance()->GetRecastGroupDetail(CoolDownGroup - 1);
@@ -61,7 +61,7 @@ public readonly struct ActionCooldownInfo
     float RecastTimeElapsedOneChargeRaw => RecastTimeElapsedRaw % RecastTimeOneChargeRaw;
 
 
-    public ActionCooldownInfo(IBaseActionNew action)
+    public ActionCooldownInfo(IBaseAction action)
     {
         _action = action;
         CoolDownGroup = _action.Action.GetCoolDownGroup();

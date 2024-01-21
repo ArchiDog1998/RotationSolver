@@ -5,6 +5,11 @@ namespace RotationSolver.GameData.Getters.Actions;
 internal class ActionSingleRotationGetter(Lumina.GameData gameData, ClassJob job)
     : ActionRotationGetterBase(gameData)
 {
+    public override bool IsDutyAction(Lumina.Excel.GeneratedSheets.Action action)
+    {
+        return false;
+    }
+
     protected override bool AddToList(Lumina.Excel.GeneratedSheets.Action item)
     {
         if (!base.AddToList(item)) return false;
@@ -22,6 +27,11 @@ internal class ActionSingleRotationGetter(Lumina.GameData gameData, ClassJob job
 internal class ActionMultiRotationGetter(Lumina.GameData gameData)
     : ActionRotationGetterBase(gameData)
 {
+    public override bool IsDutyAction(Lumina.Excel.GeneratedSheets.Action action)
+    {
+        return !action.IsRoleAction && action.RowId is not 3;
+    }
+
     protected override bool AddToList(Lumina.Excel.GeneratedSheets.Action item)
     {
         if (!base.AddToList(item)) return false;

@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Actions;
 
-public struct ActionTargetInfo(IBaseActionNew _action)
+public struct ActionTargetInfo(IBaseAction _action)
 {
     public readonly bool TargetArea => _action.Action.TargetArea;
 
@@ -101,7 +101,8 @@ public struct ActionTargetInfo(IBaseActionNew _action)
     {
         if (_action.Setting.TargetStatus == null || !_action.Config.ShouldCheckStatus) return true;
 
-        return gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0, true, _action.Setting.TargetStatus);
+        return gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
+            _action.Setting.TargetStatusFromSelf, _action.Setting.TargetStatus);
     }
 
     private readonly bool CheckResistance(GameObject gameObject)
@@ -156,7 +157,7 @@ public struct ActionTargetInfo(IBaseActionNew _action)
         }
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects, _action.Config.AoeCount);
-        var target = FindTargetByType(targets, _action.Setting.Type);
+        var target = FindTargetByType(targets, _action.Setting.TargetType);
         if (target == null) return null;
 
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
@@ -165,7 +166,7 @@ public struct ActionTargetInfo(IBaseActionNew _action)
     private readonly TargetResult? FindTargetArea(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects,
         float range, PlayerCharacter player)
     {
-        if (_action.Setting.Type is TargetType.Move)
+        if (_action.Setting.TargetType is TargetType.Move)
         {
             return FindTargetAreaMove(range);
         }

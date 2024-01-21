@@ -13,13 +13,6 @@ internal static class ActionHelper
 
     internal static bool IsRealGCD(this Action action) => action.IsGeneralGCD() || action.AdditionalCooldownGroup == GCDCooldownGroup;
 
-    /// <summary>
-    /// TODO: should be in code generator!
-    /// </summary>
-    /// <param name="action"></param>
-    /// <returns></returns>
-    internal static bool IsDutyAction(this Action action) => !action.IsRoleAction && action.RowId is not 3;
-
     internal static byte GetCoolDownGroup(this Action action)
     {
         var group = action.IsGeneralGCD() ? action.AdditionalCooldownGroup : action.CooldownGroup;

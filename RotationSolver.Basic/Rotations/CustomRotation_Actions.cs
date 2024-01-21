@@ -5,6 +5,13 @@ namespace RotationSolver.Basic.Rotations;
 
 public abstract partial class CustomRotation
 {
+    private static void LoadActionConfigAndSetting(ref IBaseAction action)
+    {
+        //TODO: better target type check.
+        //TODO: better friendly check.
+        //TODO: load the config from the configuration.
+    }
+
     static partial void ModifyAddlePvE(ref IBaseAction action)
     {
         action.ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle);

@@ -135,7 +135,7 @@ public class BaseItem : IBaseItem
     /// <param name="row"></param>
     /// <param name="a4"></param>
     public unsafe BaseItem(uint row, uint a4 = 65535)
-        : this(Service.GetSheet<Item>().GetRow(row), a4)
+        : this(Service.GetSheet<Item>().GetRow(row)!, a4)
     {
     }
 
