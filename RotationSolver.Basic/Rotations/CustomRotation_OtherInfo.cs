@@ -7,7 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
-public abstract partial class CustomRotation
+partial class CustomRotation
 {
     #region Player
     /// <summary>
@@ -18,7 +18,7 @@ public abstract partial class CustomRotation
     /// <summary>
     /// Does player have swift cast, dual cast or triple cast.
     /// </summary>
-    public static bool HasSwift => Player?.HasStatus(true, Swiftcast.StatusProvide) ?? false;
+    public static bool HasSwift => Player?.HasStatus(true, StatusHelper.SwiftcastStatus) ?? false;
 
     /// <summary>
     /// 
@@ -273,22 +273,22 @@ public abstract partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    public virtual bool CanHealAreaAbility => DataCenter.CanHealAreaAbility && CanUseHealAction;
+    public virtual bool CanHealAreaAbility => true;
 
     /// <summary>
     /// 
     /// </summary>
-    public virtual bool CanHealAreaSpell => DataCenter.CanHealAreaSpell && CanUseHealAction;
+    public virtual bool CanHealAreaSpell => true;
 
     /// <summary>
     /// 
     /// </summary>
-    public virtual bool CanHealSingleAbility => DataCenter.CanHealSingleAbility && CanUseHealAction;
+    public virtual bool CanHealSingleAbility => true;
 
     /// <summary>
     /// 
     /// </summary>
-    public virtual bool CanHealSingleSpell => DataCenter.CanHealSingleSpell && CanUseHealAction;
+    public virtual bool CanHealSingleSpell => true;
 
     /// <summary>
     /// True for On, false for off.

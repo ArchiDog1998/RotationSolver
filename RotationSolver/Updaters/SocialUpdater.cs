@@ -7,6 +7,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Rotations;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -64,7 +65,7 @@ internal class SocialUpdater
         ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);
     }
 
-    static async void DutyState_DutyCompleted(object sender, ushort e)
+    static async void DutyState_DutyCompleted(object? sender, ushort e)
     {
         if (DataCenter.PartyMembers.Count() < 2) return;
 
@@ -78,6 +79,8 @@ internal class SocialUpdater
         }
     }
 
+
+    static Type[]? _dutyRotations = null;
     static void ClientState_TerritoryChanged(ushort id)
     {
         DataCenter.ResetAllRecords();
@@ -86,6 +89,13 @@ internal class SocialUpdater
         _canSaying = territory?.ContentFinderCondition?.Value?.RowId != 0;
 
         DataCenter.Territory = territory;
+
+        _dutyRotations ??= [..RotationUpdater.TryGetTypes(typeof(SocialUpdater).Assembly)
+            .Where(t => t.IsAssignableTo(typeof(DutyRotation)) && !t.IsAbstract)];
+
+        var nowRotationType = _dutyRotations.FirstOrDefault(r => r.GetCustomAttribute<DutyTerritoryAttribute>()?.TerritoryIds.Contains(id) ?? false);
+
+        DataCenter.RightNowDutyRotation = nowRotationType == null ? null : Activator.CreateInstance(nowRotationType) as DutyRotation;
 
         try
         {
@@ -97,7 +107,7 @@ internal class SocialUpdater
         }
     }
 
-    static void DutyState_DutyStarted(object sender, ushort e)
+    static void DutyState_DutyStarted(object? sender, ushort e)
     {
         if (!Player.Available) return;
         if (!Player.Object.IsJobCategory(JobRole.Tank) && !Player.Object.IsJobCategory(JobRole.Healer)) return;
@@ -109,7 +119,7 @@ internal class SocialUpdater
         }
     }
 
-    static void DutyState_DutyWiped(object sender, ushort e)
+    static void DutyState_DutyWiped(object? sender, ushort e)
     {
         if (!Player.Available) return;
         DataCenter.ResetAllRecords();

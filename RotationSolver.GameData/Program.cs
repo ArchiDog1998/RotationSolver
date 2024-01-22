@@ -25,7 +25,7 @@ res.AddResource("ContentType", new ContentTypeGetter(gameData).GetCode());
 res.AddResource("ActionId", new ActionIdGetter(gameData).GetCode());
 res.AddResource("ActionCategory", new ActionCategoryGetter(gameData).GetCode());
 
-var rotationBase = new ActionMultiRotationGetter(gameData);
+var rotationBase = new ActionRoleRotationGetter(gameData);
 var rotationCodes = rotationBase.GetCode();
 
 res.AddResource("Action", $$"""
@@ -37,7 +37,25 @@ res.AddResource("Action", $$"""
     /// The Custom Rotation.
     /// <br>Number of Actions: {{rotationBase.Count}}</br>
     /// </summary>
-    public partial class CustomRotation
+    public abstract partial class CustomRotation
+    {
+    {{rotationCodes.Table()}}
+    }
+    """);
+
+var dutyRotationBase = new ActionDutyRotationGetter(gameData);
+rotationCodes = dutyRotationBase.GetCode();
+
+res.AddResource("DutyAction", $$"""
+    using RotationSolver.Basic.Actions;
+    
+    namespace RotationSolver.Basic.Rotations;
+    
+    /// <summary>
+    /// The Custom Rotation.
+    /// <br>Number of Actions: {{dutyRotationBase.Count}}</br>
+    /// </summary>
+    public abstract partial class DutyRotation
     {
     {{rotationCodes.Table()}}
     }

@@ -3,7 +3,7 @@ using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations;
 
-public abstract partial class CustomRotation
+partial class CustomRotation
 {
     private static void LoadActionConfigAndSetting(ref IBaseAction action)
     {
@@ -20,12 +20,7 @@ public abstract partial class CustomRotation
     static partial void ModifySwiftcastPvE(ref IBaseAction action)
     {
         action.Option = ActionOption.Buff;
-        action.StatusProvide =
-        [
-            StatusID.Swiftcast,
-            StatusID.Triplecast,
-            StatusID.Dualcast,
-        ];
+        action.StatusProvide = StatusHelper.SwiftcastStatus;
     }
 
     static partial void ModifyEsunaPvE(ref IBaseAction action)

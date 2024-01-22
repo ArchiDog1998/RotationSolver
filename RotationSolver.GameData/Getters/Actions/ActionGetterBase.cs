@@ -25,6 +25,14 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
         if (!name.All(char.IsAscii)) return false;
         if (item.Icon == 0) return false;
 
+        if (item.ActionCategory.Row 
+            is 6 or 7 // No DoL or DoH Action
+            or 8 //No Event.
+            or 12 // No Mount,
+            or > 14 // No item manipulation and other thing.
+
+            ) return false;
+
         //No crafting or gathering.
         var category = item.ClassJobCategory.Value;
         if (category == null) return false;

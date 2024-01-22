@@ -112,6 +112,8 @@ public class BaseAction : IBaseAction
 
     public unsafe bool Use()
     {
+        ActionCate
+
         if (!Target.HasValue) return false;
 
         var target = Target.Value;
@@ -137,7 +139,7 @@ public class BaseAction : IBaseAction
 
     public virtual IBaseAction Duplicate()
     {
-        return = new BaseAction((ActionID)ID, Info.IsDutyAction)
+        return new BaseAction((ActionID)ID, Info.IsDutyAction)
         {
             Setting = Setting,
             Config = Config

@@ -1442,7 +1442,7 @@ public partial class RotationConfigWindow : Window
                         enable = action.IsInMistake;
                         if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_IsInMistake}##{action.Name}InMistake", ref enable))
                         {
-                            action.IsInMistake = enable;
+                            action.Config.IsInMistake = enable;
                         }
                     }
                     

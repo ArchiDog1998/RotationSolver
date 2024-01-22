@@ -5,10 +5,7 @@ namespace RotationSolver.GameData.Getters.Actions;
 internal class ActionSingleRotationGetter(Lumina.GameData gameData, ClassJob job)
     : ActionRotationGetterBase(gameData)
 {
-    public override bool IsDutyAction(Lumina.Excel.GeneratedSheets.Action action)
-    {
-        return false;
-    }
+    public override bool IsDutyAction => false;
 
     protected override bool AddToList(Lumina.Excel.GeneratedSheets.Action item)
     {
@@ -24,12 +21,14 @@ internal class ActionSingleRotationGetter(Lumina.GameData gameData, ClassJob job
     }
 }
 
-internal class ActionMultiRotationGetter(Lumina.GameData gameData)
+internal abstract class ActionMultiRotationGetter(Lumina.GameData gameData)
     : ActionRotationGetterBase(gameData)
 {
-    public override bool IsDutyAction(Lumina.Excel.GeneratedSheets.Action action)
+    protected static bool IsADutyAction(Lumina.Excel.GeneratedSheets.Action action)
     {
-        return !action.IsRoleAction && action.RowId is not 3;
+        return !action.IsRoleAction && !action.IsPvP && action.ActionCategory.Row 
+            is not 10 and not 11 // Not System
+            and not 9 and not 15; // Not LB.
     }
 
     protected override bool AddToList(Lumina.Excel.GeneratedSheets.Action item)
@@ -42,5 +41,30 @@ internal class ActionMultiRotationGetter(Lumina.GameData gameData)
         if (category.IsSingleJobForCombat()) return false;
 
         return true;
+    }
+}
+
+internal class ActionDutyRotationGetter(Lumina.GameData gameData)
+    : ActionMultiRotationGetter(gameData)
+{
+    public override bool IsDutyAction => true;
+
+    protected override bool AddToList(Lumina.Excel.GeneratedSheets.Action item)
+    {
+        if (!base.AddToList(item)) return false;
+        return IsADutyAction(item);
+    }
+}
+
+internal class ActionRoleRotationGetter(Lumina.GameData gameData)
+    : ActionMultiRotationGetter(gameData)
+{
+    public override bool IsDutyAction => false;
+
+
+    protected override bool AddToList(Lumina.Excel.GeneratedSheets.Action item)
+    {
+        if (!base.AddToList(item)) return false;
+        return !IsADutyAction(item);
     }
 }

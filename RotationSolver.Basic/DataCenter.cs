@@ -64,6 +64,7 @@ internal static class DataCenter
     internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } = new(HP_RECORD_TIME + 1);
 
     public static ICustomRotation? RightNowRotation { get; internal set; }
+    public static DutyRotation? RightNowDutyRotation { get; internal set; }
 
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
         || !Service.Config.GetValue(PluginConfigBool.PoslockCasting)

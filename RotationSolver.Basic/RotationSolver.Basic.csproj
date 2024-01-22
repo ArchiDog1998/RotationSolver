@@ -67,7 +67,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 	  </ProjectReference>
 
-	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj" OutputItemType="Analyzer"/>
+	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj" OutputItemType="Analyzer" />
 
 	  <None Include="..\COPYING.LESSER">
 		<Pack>True</Pack>

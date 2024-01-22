@@ -25,7 +25,7 @@ public class StaticCodeGenerator : IIncrementalGenerator
         GenerateActionID(context);
         GenerateContentType(context);
         GenerateActionCate(context);
-        GenerateActionFactory(context);
+        GenerateBaseRotation(context);
         GenerateRotations(context);
     }
 
@@ -113,14 +113,15 @@ public class StaticCodeGenerator : IIncrementalGenerator
         context.AddSource("ActionID.g.cs", code);
     }
 
-    private static void GenerateActionFactory(SourceProductionContext context)
+    private static void GenerateBaseRotation(SourceProductionContext context)
     {
         context.AddSource("CustomRotation.g.cs", Properties.Resources.Action);
+        context.AddSource("DutyRotation.g.cs", Properties.Resources.DutyAction);
     }
 
     private static void GenerateRotations(SourceProductionContext context)
     {
-        foreach (var pair in JsonConvert.DeserializeObject<Dictionary<string, string>>(Properties.Resources.Rotation))
+        foreach (var pair in JsonConvert.DeserializeObject<Dictionary<string, string>>(Properties.Resources.Rotation)!)
         {
             context.AddSource($"{pair.Key}.g.cs", pair.Value);
         }

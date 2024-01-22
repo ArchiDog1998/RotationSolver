@@ -7,7 +7,7 @@ internal abstract class ActionRotationGetterBase(Lumina.GameData gameData)
         var name = GetName(item);
         var descName = GetDescName(item);
 
-        var isDuty = IsDutyAction(item);
+        var isDuty = IsDutyAction;
 
         if (isDuty)
         {
@@ -40,5 +40,5 @@ internal abstract class ActionRotationGetterBase(Lumina.GameData gameData)
         """;
     }
 
-    public abstract bool IsDutyAction(Lumina.Excel.GeneratedSheets.Action action);
+    public abstract bool IsDutyAction { get; }
 }

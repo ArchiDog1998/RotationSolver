@@ -2,7 +2,7 @@
 
 namespace RotationSolver.Basic.Rotations;
 
-public abstract partial class CustomRotation
+partial class CustomRotation
 {
     #region Tincture
     /// <summary>

@@ -343,7 +343,7 @@ internal static class RotationUpdater
         LastRunTime = DateTime.Now;
     }
 
-    private static Type[] TryGetTypes(Assembly assembly)
+    public static Type[] TryGetTypes(Assembly assembly)
     {
         try
         {

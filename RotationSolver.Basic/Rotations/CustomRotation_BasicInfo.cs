@@ -3,10 +3,8 @@ using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Rotations;
 
-[RotationDesc(DescType.BurstActions)]
-public abstract partial class CustomRotation : ICustomRotation
+partial class CustomRotation : ICustomRotation
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public abstract CombatType Type { get; }
 
     public abstract Job[] Jobs { get; }

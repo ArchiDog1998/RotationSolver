@@ -50,8 +50,6 @@ public struct ActionBasicInfo
     public bool IsDutyAction { get; }
     public Aspect Aspect { get; }
 
-
-
     public ActionBasicInfo(IBaseAction action, bool isDutyAction)
     {
         _action = action;

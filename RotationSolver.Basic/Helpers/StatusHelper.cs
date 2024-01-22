@@ -37,6 +37,13 @@ public static class StatusHelper
         StatusID.Holmgang, StatusID.LivingDead, //StatusID.WalkingDead,
     ];
 
+    internal static StatusID[] SwiftcastStatus { get; } =
+    [
+        StatusID.Swiftcast,
+        StatusID.Triplecast,
+        StatusID.Dualcast,
+    ];
+
     internal record Burst2MinsInfo(StatusID Status, bool IsOnHostile, byte Level, params Job[] Jobs);
 
     internal static Burst2MinsInfo[] Burst2Mins { get; } =

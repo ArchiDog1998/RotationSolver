@@ -2,7 +2,7 @@
 
 namespace RotationSolver.Basic.Rotations;
 
-public abstract partial class CustomRotation
+partial class CustomRotation
 {
     private static DateTime _nextTimeToHeal = DateTime.MinValue;
     private IAction? GCD()
@@ -33,13 +33,15 @@ public abstract partial class CustomRotation
         {
             if (HealAreaGCD(out act)) return act;
         }
-        if (DataCenter.AutoStatus.HasFlag(AutoStatus.HealAreaSpell))
+        if (DataCenter.AutoStatus.HasFlag(AutoStatus.HealAreaSpell)
+            && CanHealAreaSpell)
         {
             IBaseAction.AutoHealCheck = true;
             if (HealAreaGCD(out act)) return act;
             IBaseAction.AutoHealCheck = false;
         }
-        if (DataCenter.CommandStatus.HasFlag(AutoStatus.HealSingleSpell))
+        if (DataCenter.CommandStatus.HasFlag(AutoStatus.HealSingleSpell)
+            && CanHealSingleSpell)
         {
             if (HealSingleGCD(out act)) return act;
         }
@@ -94,7 +96,7 @@ public abstract partial class CustomRotation
         return null;
     }
 
-    private bool UseLimitBreak(out IAction act)
+    private bool UseLimitBreak(out IAction? act)
     {
         var role = ClassJob.GetJobRole();
         act = null!;
@@ -124,14 +126,14 @@ public abstract partial class CustomRotation
         };
     }
 
-    private bool RaiseSpell(out IAction act, bool mustUse)
+    private bool RaiseSpell(out IAction? act, bool mustUse)
     {
         if (DataCenter.CommandStatus.HasFlag(AutoStatus.Raise))
         {
             if (RaiseGCD(out act) || RaiseAction(out act, false)) return true;
         }
 
-        act = null!;
+        act = null;
         if (!DataCenter.AutoStatus.HasFlag(AutoStatus.Raise)) return false;
 
         if (RaiseGCD(out act)) return true;
@@ -173,17 +175,17 @@ public abstract partial class CustomRotation
         }
     }
 
-    protected virtual bool RaiseGCD(out IAction act)
+    protected virtual bool RaiseGCD(out IAction? act)
     {
-        //TODO, this may be fullfil with code generater.
-        act = null!;
-        return false;
+        if (DataCenter.RightNowDutyRotation?.RaiseGCD(out act) ?? false) return true;
+
+        act = null; return false;
     }
 
-    protected virtual bool DispelGCD(out IAction act)
+    protected virtual bool DispelGCD(out IAction? act)
     {
         if (EsunaPvE.CanUse(out act)) return true;
-
+        if (DataCenter.RightNowDutyRotation?.DispelGCD(out act) ?? false) return true;
         return false;
     }
 
@@ -192,27 +194,8 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    protected virtual bool EmergencyGCD(out IAction act)
+    protected virtual bool EmergencyGCD(out IAction? act)
     {
-        #region Bozja
-        //if (LostSpellforge.CanUse(out act)) return true;
-        //if (LostSteelsting.CanUse(out act)) return true;
-        //if (LostRampage.CanUse(out act)) return true;
-        //if (LostBurst.CanUse(out act)) return true;
-
-        //if (LostBravery.CanUse(out act)) return true;
-        //if (LostBubble.CanUse(out act)) return true;
-        //if (LostShell2.CanUse(out act)) return true;
-        //if (LostShell.CanUse(out act)) return true;
-        //if (LostProtect2.CanUse(out act)) return true;
-        //if (LostProtect.CanUse(out act)) return true;
-
-        //Add your own logic here.
-        //if (LostFlarestar.CanUse(out act)) return true;
-        //if (LostSeraphStrike.CanUse(out act)) return true;
-
-        #endregion
-
         #region PvP
         if (GuardPvP.CanUse(out act)
             && (Player.GetHealthRatio() <= Service.Config.GetValue(PluginConfigFloat.HealthForGuard)
@@ -221,6 +204,9 @@ public abstract partial class CustomRotation
         
         if (StandardissueElixirPvP.CanUse(out act)) return true;
         #endregion
+
+        if (DataCenter.RightNowDutyRotation?.EmergencyGCD(out act) ?? false) return true;
+
         act = null!; return false;
     }
 
@@ -230,9 +216,10 @@ public abstract partial class CustomRotation
     /// <param name="act"></param>
     /// <returns></returns>
     [RotationDesc(DescType.MoveForwardGCD)]
-    protected virtual bool MoveForwardGCD(out IAction act)
+    protected virtual bool MoveForwardGCD(out IAction? act)
     {
-        act = null!; return false;
+        if (DataCenter.RightNowDutyRotation?.MoveForwardGCD(out act) ?? false) return true;
+        act = null; return false;
     }
 
     /// <summary>
@@ -241,11 +228,10 @@ public abstract partial class CustomRotation
     /// <param name="act"></param>
     /// <returns></returns>
     [RotationDesc(DescType.HealSingleGCD)]
-    protected virtual bool HealSingleGCD(out IAction act)
+    protected virtual bool HealSingleGCD(out IAction? act)
     {
-        if (VariantCurePvE.CanUse(out act)) return true;
-        if (VariantCurePvE_33862.CanUse(out act)) return true;
-        return false;
+        if (DataCenter.RightNowDutyRotation?.HealSingleGCD(out act) ?? false) return true;
+        act = null; return false;
     }
 
     /// <summary>
@@ -254,8 +240,9 @@ public abstract partial class CustomRotation
     /// <param name="act"></param>
     /// <returns></returns>
     [RotationDesc(DescType.HealAreaGCD)]
-    protected virtual bool HealAreaGCD(out IAction act)
+    protected virtual bool HealAreaGCD(out IAction? act)
     {
+        if (DataCenter.RightNowDutyRotation?.HealAreaGCD(out act) ?? false) return true;
         act = null!; return false;
     }
 
@@ -265,11 +252,9 @@ public abstract partial class CustomRotation
     /// <param name="act"></param>
     /// <returns></returns>
     [RotationDesc(DescType.DefenseSingleGCD)]
-    protected virtual bool DefenseSingleGCD(out IAction act)
+    protected virtual bool DefenseSingleGCD(out IAction? act)
     {
-        
-        if (LostStoneskinPvE.CanUse(out act)) return true;
-
+        if (DataCenter.RightNowDutyRotation?.DefenseSingleGCD(out act) ?? false) return true;
         act = null!; return false;
     }
 
@@ -279,11 +264,10 @@ public abstract partial class CustomRotation
     /// <param name="act"></param>
     /// <returns></returns>
     [RotationDesc(DescType.DefenseAreaGCD)]
-    protected virtual bool DefenseAreaGCD(out IAction act)
+    protected virtual bool DefenseAreaGCD(out IAction? act)
     {
-        if (LostStoneskinIiPvE.CanUse(out act)) return true;
-
-        act = null!; return false;
+        if (DataCenter.RightNowDutyRotation?.DefenseAreaGCD(out act) ?? false) return true;
+        act = null; return false;
     }
 
     /// <summary>
@@ -291,8 +275,9 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    protected virtual bool GeneralGCD(out IAction act)
+    protected virtual bool GeneralGCD(out IAction? act)
     {
-        act = null!; return false;
+        if (DataCenter.RightNowDutyRotation?.GeneralGCD(out act) ?? false) return true;
+        act = null; return false;
     }
 }

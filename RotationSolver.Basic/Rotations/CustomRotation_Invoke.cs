@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Basic.Rotations;
 
-public abstract partial class CustomRotation
+partial class CustomRotation
 {
     /// <inheritdoc/>
     public bool TryInvoke(out IAction? newAction, out IAction? gcdAction)

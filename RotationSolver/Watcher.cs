@@ -194,7 +194,7 @@ public static class Watcher
         {
             var type = set.Action.GetActionCate();
 
-            if (type is ActionCate.Spell or ActionCate.Weaponskill or ActionCate.Ability)
+            if (type is ActionCate.Spell or ActionCate.WeaponSkill or ActionCate.Ability)
             {
                 if (set.TargetEffects.Count(e =>
                     DataCenter.PartyMembers.Any(p => p.ObjectId == e.TargetID)
@@ -217,7 +217,7 @@ public static class Watcher
         if (set.Source.ObjectId != Player.Object.ObjectId) return;
         if (set.Header.ActionType != ActionType.Action && set.Header.ActionType != ActionType.Item) return;
         if (set.Action == null) return;
-        if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.Autoattack) return;
+        if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
 
         var id = set.Action.RowId;
         if (!set.Action.IsRealGCD() && (set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id)))

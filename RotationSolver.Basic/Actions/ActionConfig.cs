@@ -21,4 +21,5 @@ public struct ActionConfig()
 
     public bool IsEnabled { get; set; }
     public bool IsInCooldown { get; set; }
+    public bool IsInMistake { get; set; }
 }
