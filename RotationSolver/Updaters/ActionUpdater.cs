@@ -17,9 +17,9 @@ internal static class ActionUpdater
     (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin),
     Service.Config.GetValue(PluginConfigFloat.WeaponDelayMax)));
 
-    internal static IAction NextAction { get; set; }
-    internal static IBaseAction NextGCDAction { get; set; }
-    internal static IAction WrongAction { get; set; }
+    internal static IAction? NextAction { get; set; }
+    internal static IBaseAction? NextGCDAction { get; set; }
+    internal static IAction? WrongAction { get; set; }
     static readonly Random _wrongRandom = new();
 
     internal static void ClearNextAction()
@@ -45,9 +45,9 @@ internal static class ActionUpdater
                         if (a.ID == newAction?.ID) return false;
                         if (a is IBaseAction action)
                         {
-                            return !action.IsFriendly && action.IsInMistake
-                            && action.ChoiceTarget != TargetFilter.FindTargetForMoving
-                            && action.CanUse(out _, CanUseOption.MustUseEmpty | CanUseOption.IgnoreClippingCheck);
+                            return !action.Setting.IsFriendly && action.Config.IsInMistake
+                            && action.Setting.TargetType != TargetType.Move
+                            && action.CanUse(out _, isEmpty: true, skipStatusProvideCheck: true, ignoreClippingCheck: true, skipAoeCheck: true);
                         }
                         return false;
                     });

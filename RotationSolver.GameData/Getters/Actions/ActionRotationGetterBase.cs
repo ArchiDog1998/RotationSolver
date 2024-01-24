@@ -18,7 +18,7 @@ internal abstract class ActionRotationGetterBase(Lumina.GameData gameData)
         private readonly Lazy<IBaseAction> _{{name}}Creator = new(() => 
         {
             IBaseAction action = new BaseAction(ActionID.{{name}}, {{isDuty.ToString().ToLower()}});
-            LoadActionConfigAndSetting(ref action);
+            CustomRotation.LoadActionConfigAndSetting(ref action);
 
             var setting = action.Setting;
             Modify{{name}}(ref setting);
@@ -36,7 +36,7 @@ internal abstract class ActionRotationGetterBase(Lumina.GameData gameData)
         /// {{descName}}
         /// {{GetDesc(item)}}
         /// </summary>
-        public IBaseAction {{name}} => _{{name}}Creator.Value;
+        {{(item.ActionCategory.Row is 9 or 15 ? "private" : "public")}} IBaseAction {{name}} => _{{name}}Creator.Value;
         """;
     }
 

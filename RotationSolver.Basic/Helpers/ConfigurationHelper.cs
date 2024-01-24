@@ -6,19 +6,19 @@ internal static class ConfigurationHelper
 {
     public static readonly SortedList<ActionID, EnemyPositional> ActionPositional = new()
     {
-        {ActionID.FangAndClaw, EnemyPositional.Flank},
-        {ActionID.WheelingThrust, EnemyPositional.Rear},
-        {ActionID.ChaosThrust, EnemyPositional.Rear },
-        {ActionID.ChaoticSpring, EnemyPositional.Rear },
-        {ActionID.Demolish, EnemyPositional.Rear },
-        {ActionID.SnapPunch, EnemyPositional.Flank },
-        {ActionID.TrickAttack, EnemyPositional.Rear },
-        {ActionID.AeolianEdge,EnemyPositional.Rear },
-        {ActionID.ArmorCrush, EnemyPositional.Flank },
-        {ActionID.Gibbet, EnemyPositional.Flank},
-        {ActionID.Gallows, EnemyPositional.Rear },
-        {ActionID.Gekko, EnemyPositional.Rear},
-        {ActionID.Kasha, EnemyPositional.Flank },
+        {ActionID.FangAndClawPvE, EnemyPositional.Flank},
+        {ActionID.WheelingThrustPvE, EnemyPositional.Rear},
+        {ActionID.ChaosThrustPvE, EnemyPositional.Rear },
+        {ActionID.ChaoticSpringPvE, EnemyPositional.Rear },
+        {ActionID.DemolishPvE, EnemyPositional.Rear },
+        {ActionID.SnapPunchPvE, EnemyPositional.Flank },
+        {ActionID.TrickAttackPvE, EnemyPositional.Rear },
+        {ActionID.AeolianEdgePvE,EnemyPositional.Rear },
+        {ActionID.ArmorCrushPvE, EnemyPositional.Flank },
+        {ActionID.GibbetPvE, EnemyPositional.Flank},
+        {ActionID.GallowsPvE, EnemyPositional.Rear },
+        {ActionID.GekkoPvE, EnemyPositional.Rear},
+        {ActionID.KashaPvE, EnemyPositional.Flank },
     };
 
     public static readonly uint[] BadStatus = new uint[]

@@ -1,6 +1,5 @@
 ﻿using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using static Dalamud.Interface.Utility.Raii.ImRaii;
 
 namespace RotationSolver.Basic.Actions;
 public readonly struct ActionCooldownInfo
@@ -8,7 +7,7 @@ public readonly struct ActionCooldownInfo
     private readonly IBaseAction _action;
     public byte CoolDownGroup { get; }
 
-    unsafe RecastDetail* CoolDownDetail => ActionManager.Instance()->GetRecastGroupDetail(CoolDownGroup - 1);
+    unsafe RecastDetail* CoolDownDetail => ActionIdHelper.GetCoolDownDetail(CoolDownGroup);
 
     private unsafe float RecastTime => CoolDownDetail == null ? 0 : CoolDownDetail->Total;
 
@@ -25,7 +24,7 @@ public readonly struct ActionCooldownInfo
     /// <summary>
     /// 
     /// </summary>
-    public unsafe bool IsCoolingDown => CoolDownDetail != null && CoolDownDetail->IsActive != 0;
+    public unsafe bool IsCoolingDown => ActionIdHelper.IsCoolingDown(CoolDownGroup);
 
     private float RecastTimeRemain => RecastTime - RecastTimeElapsedRaw;
 

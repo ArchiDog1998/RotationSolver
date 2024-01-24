@@ -6,7 +6,9 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
+using Microsoft.VisualBasic.Logging;
 using RotationSolver.Basic.Configuration;
+using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -15,16 +17,40 @@ namespace RotationSolver.Basic.Helpers;
 /// </summary>
 public static class ObjectHelper
 {
-    static readonly EventHandlerType[] _eventType = new EventHandlerType[]
-    {
+    static readonly EventHandlerType[] _eventType =
+    [
         EventHandlerType.TreasureHuntDirector,
         EventHandlerType.Quest,
-    };
+    ];
 
-    internal static BNpcBase GetObjectNPC(this GameObject obj)
+    internal static BNpcBase? GetObjectNPC(this GameObject obj)
     {
         if (obj == null) return null;
         return Service.GetSheet<BNpcBase>().GetRow(obj.DataId);
+    }
+
+    public static bool CanProvoke(this GameObject target)
+    {
+        //Removed the listed names.
+        IEnumerable<string> names = Array.Empty<string>();
+        if (OtherConfiguration.NoProvokeNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
+            names = names.Union(ns1);
+
+        if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(target.Name.ToString()).Success)) return false;
+
+        //Target can move or two big and has a target
+        if ((target.GetObjectNPC()?.Unknown12 == 0 || target.HitboxRadius >= 5)
+        && (target.TargetObject?.IsValid() ?? false))
+        {
+            //the target is not a tank role
+            if (Svc.Objects.SearchById(target.TargetObjectId) is BattleChara battle
+                && !battle.IsJobCategory(JobRole.Tank)
+                && (Vector3.Distance(target.Position, Player.Object.Position) > 5))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /// <summary>

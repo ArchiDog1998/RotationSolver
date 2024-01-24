@@ -3,10 +3,11 @@
 /// <summary>
 /// Setting from the developer.
 /// </summary>
-public struct ActionSetting()
+public class ActionSetting()
 {
     public bool TargetStatusFromSelf { get; set; } = true;
-    public StatusID[]? TargetStatus { get; set; } = null;
+    public StatusID[]? TargetStatusProvide { get; set; } = null;
+    public StatusID[]? TargetStatusNeed { get; set; } = null;
     public Func<GameObject, bool> CanTarget { get; set; } = t => true;
     public ActionID[]? ComboIdsNot { get; set; }
 
@@ -28,7 +29,7 @@ public struct ActionSetting()
     private TargetType _type = TargetType.Big;
     public TargetType TargetType 
     { 
-        readonly get => IBaseAction.TargetOverride ?? _type; 
+        get => IBaseAction.TargetOverride ?? _type; 
         set => _type = value; 
     }
 

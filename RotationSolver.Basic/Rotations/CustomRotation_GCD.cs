@@ -1,4 +1,5 @@
-﻿using RotationSolver.Basic.Configuration;
+﻿using ECommons.LanguageHelpers;
+using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 
@@ -121,9 +122,21 @@ partial class CustomRotation
                 JobRole.RangedMagical => StarstormPvE.CanUse(out act, skipAoeCheck: true),
                 _ => false,
             },
-            3 => LimitBreak?.CanUse(out act, skipAoeCheck: true) ?? false,
+            3 => UseLimitBreak3(out act),
             _ => false,
         };
+
+        bool UseLimitBreak3(out IAction? act)
+        {
+            var lb = Jobs[0] switch
+            {
+                ECommons.ExcelServices.Job.AST => AstralStasisPvE,
+                _ => null,
+            };
+
+            act = null;
+            return lb?.CanUse(out act, skipAoeCheck: true) ?? false;
+        }
     }
 
     private bool RaiseSpell(out IAction? act, bool mustUse)
@@ -199,7 +212,7 @@ partial class CustomRotation
         #region PvP
         if (GuardPvP.CanUse(out act)
             && (Player.GetHealthRatio() <= Service.Config.GetValue(PluginConfigFloat.HealthForGuard)
-            || IsRaiseShirk)) return true;
+            || DataCenter.CommandStatus.HasFlag(AutoStatus.Raise | AutoStatus.Shirk))) return true;
 
         
         if (StandardissueElixirPvP.CanUse(out act)) return true;

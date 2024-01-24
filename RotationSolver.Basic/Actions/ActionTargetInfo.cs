@@ -1,11 +1,11 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using RotationSolver.Basic.Configuration;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Actions;
@@ -93,6 +93,12 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     private readonly bool GeneralCheck(GameObject gameObject)
     {
+        if (!Service.Config.GetValue(PluginConfigBool.TargetAllForFriendly)
+            && gameObject.IsAlliance() && !gameObject.IsParty())
+        {
+            return false;
+        }
+
         return CheckStatus(gameObject) 
             && CheckTimeToKill(gameObject)
             && CheckResistance(gameObject);
@@ -100,10 +106,21 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     private readonly bool CheckStatus(GameObject gameObject)
     {
-        if (_action.Setting.TargetStatus == null || !_action.Config.ShouldCheckStatus) return true;
+        if (!_action.Config.ShouldCheckStatus) return true;
 
-        return gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
-            _action.Setting.TargetStatusFromSelf, _action.Setting.TargetStatus);
+        if (_action.Setting.TargetStatusProvide != null)
+        {
+            if (!gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
+                _action.Setting.TargetStatusFromSelf, _action.Setting.TargetStatusProvide)) return false;
+        }
+
+        if (_action.Setting.TargetStatusNeed != null)
+        {
+            if (gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
+                _action.Setting.TargetStatusFromSelf, _action.Setting.TargetStatusNeed)) return false;
+        }
+
+        return true;
     }
 
     private readonly bool CheckResistance(GameObject gameObject)
@@ -159,7 +176,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
             skipAoeCheck ? 0 : _action.Config.AoeCount);
-        var target = FindTargetByType(targets, _action.Setting.TargetType);
+        var target = FindTargetByType(targets, _action.Setting.TargetType, _action.Config.AutoHealRatio);
         if (target == null) return null;
 
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
@@ -194,7 +211,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         return new(target, [..GetAffects(target, canAffects)], target.Position);
     }
 
-    private TargetResult? FindTargetAreaMove(float range)
+    private readonly TargetResult? FindTargetAreaMove(float range)
     {
         if (Service.Config.GetValue(PluginConfigBool.MoveAreaActionFarthest))
         {
@@ -220,7 +237,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         else
         {
             var availableCharas = DataCenter.AllTargets.Where(b => b.ObjectId != Player.Object.ObjectId);
-            var target = FindTargetByType(TargetFilter.GetObjectInRadius(availableCharas, range), TargetType.Move);
+            var target = FindTargetByType(TargetFilter.GetObjectInRadius(availableCharas, range), TargetType.Move, _action.Config.AutoHealRatio);
             if (target == null) return null;
             return new(target, [], target.Position);
         }
@@ -281,7 +298,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         else
         {
             var effectRange = EffectRange;
-            var attackT = FindTargetByType(DataCenter.AllianceMembers.GetObjectInRadius(range + effectRange), TargetType.BeAttacked);
+            var attackT = FindTargetByType(DataCenter.AllianceMembers.GetObjectInRadius(range + effectRange), TargetType.BeAttacked, _action.Config.AutoHealRatio);
 
             if (attackT == null)
             {
@@ -408,7 +425,7 @@ public struct ActionTargetInfo(IBaseAction _action)
     #endregion
 
     #region TargetFind
-    private readonly GameObject? FindTargetByType(IEnumerable<GameObject> gameObjects, TargetType type)
+    private static GameObject? FindTargetByType(IEnumerable<GameObject> gameObjects, TargetType type, float healRatio)
     {
         switch (type) // Filter the objects.
         {
@@ -430,40 +447,20 @@ public struct ActionTargetInfo(IBaseAction _action)
             TargetType.Dispel => FindWeakenTarget(),
             TargetType.Death => FindDeathPeople(),
             TargetType.Move => FindTargetForMoving(),
-            TargetType.Heal => FindHealTarget(_action.Config.AutoHealRatio),
+            TargetType.Heal => FindHealTarget(healRatio),
             TargetType.BeAttacked => FindBeAttackedTarget(),
             TargetType.Interrupt => FindInterruptTarget(),
             TargetType.Tank => FindTankTarget(),
+            TargetType.Melee => RandomMeleeTarget(gameObjects),
+            TargetType.Range => RandomRangeTarget(gameObjects),
+            TargetType.Magical => RandomMagicalTarget(gameObjects),
+            TargetType.Physical => RandomPhysicalTarget(gameObjects),
             _ => FindHostile(),
         };
 
         GameObject? FindProvokeTarget()
         {
-            var loc = Player.Object.Position;
-
-            return gameObjects.FirstOrDefault(target =>
-            {
-                //Removed the listed names.
-                IEnumerable<string> names = Array.Empty<string>();
-                if (OtherConfiguration.NoProvokeNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
-                    names = names.Union(ns1);
-
-                if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(target.Name.ToString()).Success)) return false;
-
-                //Target can move or two big and has a target
-                if ((target.GetObjectNPC()?.Unknown12 == 0 || target.HitboxRadius >= 5)
-                && (target.TargetObject?.IsValid() ?? false))
-                {
-                    //the target is not a tank role
-                    if (Svc.Objects.SearchById(target.TargetObjectId) is BattleChara battle
-                        && !battle.IsJobCategory(JobRole.Tank)
-                        && (Vector3.Distance(target.Position, loc) > 5))
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            });
+            return gameObjects.FirstOrDefault(ObjectHelper.CanProvoke);
         }
 
         GameObject? FindDeathPeople()
@@ -683,31 +680,67 @@ public struct ActionTargetInfo(IBaseAction _action)
 
         GameObject? FindTankTarget()
         {
-            return TargetFilter.GetJobCategory(gameObjects, JobRole.Tank)?.FirstOrDefault()
-                ?? gameObjects.FirstOrDefault();
+            return RandomPickByJobs(gameObjects, JobRole.Tank)
+                ?? RandomObject(gameObjects);
         }
     }
+
+    internal static GameObject? RandomPhysicalTarget(IEnumerable<GameObject> tars)
+    {
+        return RandomPickByJobs(tars, Job.WAR, Job.GNB, Job.MNK, Job.SAM, Job.DRG, Job.MCH, Job.DNC)
+            ?? RandomPickByJobs(tars, Job.PLD, Job.DRK, Job.NIN, Job.BRD, Job.RDM)
+            ?? RandomObject(tars);
+    }
+
+    internal static GameObject? RandomMagicalTarget(IEnumerable<GameObject> tars)
+    {
+        return RandomPickByJobs(tars, Job.SCH, Job.AST, Job.SGE, Job.BLM, Job.SMN)
+            ?? RandomPickByJobs(tars, Job.PLD, Job.DRK, Job.NIN, Job.BRD, Job.RDM)
+            ?? RandomObject(tars);
+    }
+
+    internal static GameObject? RandomRangeTarget(IEnumerable<GameObject> tars)
+    {
+        return RandomPickByJobs(tars, JobRole.RangedMagical, JobRole.RangedPhysical, JobRole.Melee)
+            ?? RandomPickByJobs(tars, JobRole.Tank, JobRole.Healer)
+            ?? RandomObject(tars);
+    }
+
+    internal static GameObject? RandomMeleeTarget(IEnumerable<GameObject> tars)
+    {
+        return RandomPickByJobs(tars, JobRole.Melee, JobRole.RangedMagical, JobRole.RangedPhysical)
+            ?? RandomPickByJobs(tars, JobRole.Tank, JobRole.Healer)
+            ?? RandomObject(tars);
+    }
+    private static GameObject? RandomPickByJobs(IEnumerable<GameObject> tars, params JobRole[] roles)
+    {
+        foreach (var role in roles)
+        {
+            var tar = RandomPickByJobs(tars, role.ToJobs());
+            if (tar != null) return tar;
+        }
+        return null;
+    }
+
+    private static GameObject? RandomPickByJobs(IEnumerable<GameObject> tars, params Job[] jobs)
+    {
+        var targets = tars.Where(t => t.IsJobs(jobs));
+        if (targets.Any()) return RandomObject(targets);
+
+        return null;
+    }
+
+    private static GameObject RandomObject(IEnumerable<GameObject> objs)
+    {
+        Random ran = new(DateTime.Now.Millisecond);
+        return objs.ElementAt(ran.Next(objs.Count()));
+    }
+
     #endregion
 }
 
 public enum TargetType : byte
 {
-    Tank,
-
-    Interrupt,
-
-    Provoke,
-
-    Death,
-
-    Dispel,
-
-    Move,
-
-    BeAttacked,
-
-    Heal,
-
     /// <summary>
     /// Find the target whose hit box is biggest.
     /// </summary>
@@ -737,6 +770,32 @@ public enum TargetType : byte
     /// Find the target whose max hp is lowest.
     /// </summary>
     LowMaxHP,
+
+
+    Interrupt,
+
+    Provoke,
+
+    Death,
+
+    Dispel,
+
+    Move,
+
+    BeAttacked,
+
+    Heal,
+
+    Tank,
+
+    Melee,
+
+    Range,
+    
+    Physical,
+    
+    Magical,
+
 }
 
 public readonly record struct TargetResult(GameObject Target, GameObject[] AffectedTargets, Vector3 Position);

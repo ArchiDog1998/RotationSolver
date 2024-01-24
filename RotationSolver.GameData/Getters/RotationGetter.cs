@@ -20,6 +20,8 @@ internal class RotationGetter(Lumina.GameData gameData, ClassJob job)
             jobs += $", Job.{job.ClassJobParent.Value?.Abbreviation ?? "ADV"}";
         }
 
+        var jobGauge = job.IsLimitedJob ? string.Empty : $"static {job.Abbreviation}Gauge JobGauge => Svc.Gauges.Get<{job.Abbreviation}Gauge>();";
+
         var rotationsGetter = new ActionSingleRotationGetter(gameData, job);
         var traitsGetter = new TraitRotationGetter(gameData, job);
 
@@ -27,13 +29,6 @@ internal class RotationGetter(Lumina.GameData gameData, ClassJob job)
         var traitsCode = traitsGetter.GetCode();
 
         return $$"""
-         using ECommons.DalamudServices;
-         using ECommons.ExcelServices;
-         using RotationSolver.Basic.Actions;
-         using RotationSolver.Basic.Traits;
-
-         namespace RotationSolver.Basic.Rotations.Basic;
-
          /// <summary>
          /// <see href="https://na.finalfantasyxiv.com/jobguide/{{jobName.Replace(" ", "").ToLower()}}"><strong>{{jobName}}</strong></see>
          /// <br>Number of Actions: {{rotationsGetter.Count}}</br>
@@ -42,7 +37,7 @@ internal class RotationGetter(Lumina.GameData gameData, ClassJob job)
          public abstract partial class {{GetName()}} : CustomRotation
          {
              public sealed override Job[] Jobs => new[] { {{jobs}} };
-             static {{job.Abbreviation}}Gauge JobGauge => Svc.Gauges.Get<{{job.Abbreviation}}Gauge>();
+             {{jobGauge}}
 
          #region Actions
          {{rotationsCode.Table()}}

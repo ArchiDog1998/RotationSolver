@@ -23,9 +23,10 @@ partial class CustomRotation
         try
         {
             UpdateInfo();
-            UpdateActions(ClassJob.GetJobRole());
 
-            if (Player.HasStatus(true, StatusID.Guard)) return false;
+            IBaseAction.ActionPreview = true;
+            UpdateActions(ClassJob.GetJobRole());
+            IBaseAction.ActionPreview = false;
 
             CountingOfLastUsing = CountingOfCombatTimeUsing = 0;
             newAction = Invoke(out gcdAction);
@@ -62,8 +63,6 @@ partial class CustomRotation
 
     private void UpdateActions(JobRole role)
     {
-        IBaseAction.ActionPreview = true;
-
         ActionMoveForwardGCD = MoveForwardGCD(out var act) ? act : null;
 
         if (!DataCenter.HPNotFull && role == JobRole.Healer)
@@ -102,7 +101,7 @@ partial class CustomRotation
         ActionDispelStancePositionalAbility = role switch
         {
             JobRole.Melee => TrueNorthPvE.CanUse(out act) ? act : null,
-            JobRole.Tank => TankStance.CanUse(out act) ? act : null,
+            JobRole.Tank => TankStance?.CanUse(out act) ?? false ? act : null,
             _ => null,
         };
 
@@ -119,7 +118,22 @@ partial class CustomRotation
         //TODO: that is too complex! 
         if (movingTarget && act is IBaseAction a)
         {
-            if (a.Target == null || a.Target?.Target == Player)
+            if(a.PreviewTarget.HasValue && a.PreviewTarget.Value.Target != Player)
+            {
+                var dir = Player.Position - a.PreviewTarget.Value.Position;
+                var length = dir.Length();
+                if (length != 0)
+                {
+                    dir /= length;
+
+                    MoveTarget = a.PreviewTarget.Value.Position + dir * MathF.Min(length, Player.HitboxRadius + a.PreviewTarget.Value.Target.HitboxRadius);
+                }
+                else
+                {
+                    MoveTarget = a.PreviewTarget.Value.Position;
+                }
+            }
+            else
             {
                 if ((ActionID)a.ID == ActionID.EnAvantPvE)
                 {
@@ -128,22 +142,7 @@ partial class CustomRotation
                 }
                 else
                 {
-                    MoveTarget = a.Target?.Position == a.Target?.Target.Position ? null : a.Target?.Position;
-                }
-            }
-            else
-            {
-                var dir = Player.Position - a.Target.Value.Position;
-                var length = dir.Length();
-                if (length != 0)
-                {
-                    dir /= length;
-
-                    MoveTarget = a.Target.Value.Position + dir * MathF.Min(length, Player.HitboxRadius + a.Target.Value.Target.HitboxRadius);
-                }
-                else
-                {
-                    MoveTarget = a.Target.Value.Position;
+                    MoveTarget = a.PreviewTarget?.Position == a.PreviewTarget?.Target.Position ? null : a.PreviewTarget?.Position;
                 }
             }
         }
@@ -154,8 +153,6 @@ partial class CustomRotation
 
         ActionMoveBackAbility = MoveBackAbility(out act) ? act : null;
         ActionSpeedAbility = SpeedAbility(out act) ? act : null;
-
-        IBaseAction.ActionPreview = false;
     }
 
     private IAction? Invoke(out IAction? gcdAction)

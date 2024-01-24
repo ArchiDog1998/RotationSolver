@@ -24,19 +24,18 @@ partial class AstrologianRotation
     /// </summary>
     protected static SealType[] Seals => JobGauge.Seals;
 
-    private sealed protected override IBaseAction Raise => AscendPvE;
-    private protected override IBaseAction LimitBreak => AstralStasisPvE;
+    private sealed protected override IBaseAction? Raise => AscendPvE;
 
     public AstrologianRotation()
     {
         //Combust_PvE.Option = ActionOption.Dot;
-        CombustPvE.TargetStatus =
-        [
-            StatusID.Combust,
-            StatusID.CombustIi,
-            StatusID.CombustIii,
-            StatusID.CombustIii_2041,
-        ];
+        //CombustPvE.TargetStatus =
+        //[
+        //    StatusID.Combust,
+        //    StatusID.CombustIi,
+        //    StatusID.CombustIii,
+        //    StatusID.CombustIii_2041,
+        //];
 
         //Benefic_PvE.Option = Helios_PvE.Option = ActionOption.Hot;
 
@@ -75,22 +74,66 @@ partial class AstrologianRotation
         //AstralStasis_PvE.ActionCheck = (b, m) => LimitBreakLevel == 3;
     }
 
+    static partial void ModifyTheArrowPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+        setting.TargetStatusFromSelf = false;
+        setting.ActionCheck = () => DrawnCard == CardType.ARROW;
+    }
+
+    static partial void ModifyTheBalancePvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+        setting.TargetStatusFromSelf = false;
+        setting.ActionCheck = () => DrawnCard == CardType.BALANCE;
+
+    }
+
+    static partial void ModifyTheBolePvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+        setting.TargetStatusFromSelf = false;
+        setting.ActionCheck = () => DrawnCard == CardType.BOLE;
+
+    }
+
+    static partial void ModifyTheEwerPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+        setting.TargetStatusFromSelf = false;
+        setting.ActionCheck = () => DrawnCard == CardType.EWER;
+    }
+
+    static partial void ModifyTheSpearPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+        setting.TargetStatusFromSelf = false;
+        setting.ActionCheck = () => DrawnCard == CardType.SPEAR;
+    }
+
+    static partial void ModifyTheSpirePvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+        setting.TargetStatusFromSelf = false;
+        setting.ActionCheck = () => DrawnCard == CardType.SPIRE;
+    }
+
     /// <summary>
     /// 
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
-    protected bool PlayCard(out IAction act)
+    protected bool PlayCard(out IAction? act)
     {
         act = null;
         if (!Seals.Contains(SealType.NONE)) return false;
 
-        if (TheBalancePvE.CanUse(out act, CanUseOption.OnLastAbility)) return true;
-        if (TheArrowPvE.CanUse(out act, CanUseOption.OnLastAbility)) return true;
-        if (TheSpearPvE.CanUse(out act, CanUseOption.OnLastAbility)) return true;
-        if (TheBolePvE.CanUse(out act, CanUseOption.OnLastAbility)) return true;
-        if (TheEwerPvE.CanUse(out act, CanUseOption.OnLastAbility)) return true;
-        if (TheSpirePvE.CanUse(out act, CanUseOption.OnLastAbility)) return true;
+        if (TheBalancePvE.CanUse(out act)) return true;
+        if (TheArrowPvE.CanUse(out act)) return true;
+        if (TheSpearPvE.CanUse(out act)) return true;
+        if (TheBolePvE.CanUse(out act)) return true;
+        if (TheEwerPvE.CanUse(out act)) return true;
+        if (TheSpirePvE.CanUse(out act)) return true;
 
         return false;
     }
@@ -113,6 +156,5 @@ partial class AstrologianRotation
     {
         ImGui.Text($"Card: {DrawnCard} : {GetCardSeal(DrawnCard)}");
         ImGui.Text(string.Join(", ", Seals.Select(i => i.ToString())));
-        ImGui.Text($"Redraw: {RedrawPvE.ActionCheck(null, false)}");
     }
 }

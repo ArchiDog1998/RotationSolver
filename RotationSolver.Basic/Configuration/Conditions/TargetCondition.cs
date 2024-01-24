@@ -22,13 +22,10 @@ internal class TargetCondition : DelayCondition
 
     protected override bool IsTrueInside(ICustomRotation rotation)
     {
-        BattleChara tar;
+        BattleChara? tar;
         if (_action != null)
         {
-            if (!_action.FindTarget(true, 0, out tar, out _))
-            {
-                tar = null;
-            }
+            tar = _action.TargetInfo.FindTarget(true)?.Target as BattleChara;
         }
         else
         {

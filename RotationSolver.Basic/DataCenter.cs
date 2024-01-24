@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
+using RotationSolver.Basic.Rotations.Duties;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 using CharacterManager = FFXIVClientStructs.FFXIV.Client.Game.Character.CharacterManager;
 
@@ -16,7 +17,7 @@ namespace RotationSolver.Basic;
 internal static class DataCenter
 {
     private static uint _hostileTargetId = GameObject.InvalidGameObjectId;
-    internal static BattleChara HostileTarget
+    internal static BattleChara? HostileTarget
     {
         get
         {
@@ -92,11 +93,11 @@ internal static class DataCenter
         return false;
     }
 
-    public static TerritoryType Territory { get; set; }
+    public static TerritoryType? Territory { get; set; }
 
     public static string TerritoryName => Territory?.PlaceName?.Value?.Name?.RawString ?? "Territory";
 
-    public static ContentFinderCondition ContentFinder => Territory?.ContentFinderCondition?.Value;
+    public static ContentFinderCondition? ContentFinder => Territory?.ContentFinderCondition?.Value;
 
     public static string ContentFinderName => ContentFinder?.Name?.RawString ?? "Duty";
 
@@ -235,19 +236,6 @@ internal static class DataCenter
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
     internal static SpecialCommandType SpecialType =>
          SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
-
-    public static bool IsHealArea => SpecialType == SpecialCommandType.HealArea || RightSet.HealAreaConditionSet.IsTrue(RightNowRotation);
-    public static bool IsHealSingle => SpecialType == SpecialCommandType.HealSingle || RightSet.HealSingleConditionSet.IsTrue(RightNowRotation);
-    public static bool IsDefenseArea => SpecialType == SpecialCommandType.DefenseArea || RightSet.DefenseAreaConditionSet.IsTrue(RightNowRotation);
-    public static bool IsDefenseSingle => SpecialType == SpecialCommandType.DefenseSingle || RightSet.DefenseSingleConditionSet.IsTrue(RightNowRotation);
-    public static bool IsEsunaStanceNorth => SpecialType == SpecialCommandType.EsunaStanceNorth || RightSet.EsunaStanceNorthConditionSet.IsTrue(RightNowRotation);
-    public static bool IsRaiseShirk => SpecialType == SpecialCommandType.RaiseShirk || RightSet.RaiseShirkConditionSet.IsTrue(RightNowRotation);
-    public static bool IsMoveForward => SpecialType == SpecialCommandType.MoveForward || RightSet.MoveForwardConditionSet.IsTrue(RightNowRotation);
-    public static bool IsMoveBack => SpecialType == SpecialCommandType.MoveBack || RightSet.MoveBackConditionSet.IsTrue(RightNowRotation);
-    public static bool IsAntiKnockback => SpecialType == SpecialCommandType.AntiKnockback || RightSet.AntiKnockbackConditionSet.IsTrue(RightNowRotation);
-    public static bool IsBurst => SpecialType == SpecialCommandType.Burst || Service.Config.GetValue(PluginConfigBool.AutoBurst);
-    public static bool IsSpeed => SpecialType == SpecialCommandType.Speed || RightSet.SpeedConditionSet.IsTrue(RightNowRotation);
-    public static bool IsLimitBreak => SpecialType == SpecialCommandType.LimitBreak || RightSet.LimitBreakConditionSet.IsTrue(RightNowRotation);
 
     public static bool State { get; set; } = false;
 

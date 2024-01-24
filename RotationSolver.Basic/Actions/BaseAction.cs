@@ -7,6 +7,7 @@ namespace RotationSolver.Basic.Actions;
 public class BaseAction : IBaseAction
 {
     public TargetResult? Target { get; private set; } = null;
+    public TargetResult? PreviewTarget { get; private set; } = null;
 
     public Action Action { get; }
 
@@ -70,7 +71,7 @@ public class BaseAction : IBaseAction
 
     public ActionConfig Config { get; set; }
 
-    public BaseAction(ActionID actionID, bool isDutyAction)
+    internal BaseAction(ActionID actionID, bool isDutyAction)
     {
         Action = Service.GetSheet<Action>().GetRow((uint)actionID)!;
         TargetInfo = new(this);
@@ -105,15 +106,18 @@ public class BaseAction : IBaseAction
         if (DataCenter.CurrentMp < MPNeed) return false;
         if (Setting.IsFriendly && DataCenter.AverageTimeToKill < Config.TimeToKill) return false;
 
-        Target = TargetInfo.FindTarget(skipAoeCheck);
-        if (Target == null) return false;
+        PreviewTarget = TargetInfo.FindTarget(skipAoeCheck);
+        if (PreviewTarget == null) return false;
+        if (!IBaseAction.ActionPreview)
+        {
+            Target = PreviewTarget;
+        }
+
         return true;
     }
 
     public unsafe bool Use()
     {
-        ActionCate
-
         if (!Target.HasValue) return false;
 
         var target = Target.Value;

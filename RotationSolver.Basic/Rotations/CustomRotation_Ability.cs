@@ -38,13 +38,14 @@ partial class CustomRotation
         IBaseAction.TargetOverride = null;
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.TankStance)
-            && TankStance.CanUse(out act)) return true;
+            && (TankStance?.CanUse(out act) ?? false)) return true;
 
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.AntiKnockback)
             && AntiKnockback(role, out act)) return true;
 
-        if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional) && role == JobRole.Melee)
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional) && role == JobRole.Melee
+            && !(Player?.HasStatus(false, StatusHelper.NoPositionalStatus) ?? true))
         {
             if (TrueNorthPvE.CanUse(out act)) return true;
         }
@@ -258,7 +259,7 @@ partial class CustomRotation
         #region PvP
         if (GuardPvP.CanUse(out act)
             && (Player.GetHealthRatio() <= Service.Config.GetValue(PluginConfigFloat.HealthForGuard)
-            || IsRaiseShirk)) return true;
+            || DataCenter.CommandStatus.HasFlag(AutoStatus.Raise | AutoStatus.Shirk))) return true;
         #endregion
 
         return false;

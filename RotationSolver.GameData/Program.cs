@@ -1,7 +1,6 @@
 ﻿using Lumina;
 using Lumina.Data;
 using Lumina.Excel.GeneratedSheets;
-using Newtonsoft.Json;
 using RotationSolver.GameData;
 using RotationSolver.GameData.Getters;
 using RotationSolver.GameData.Getters.Actions;
@@ -49,7 +48,7 @@ rotationCodes = dutyRotationBase.GetCode();
 res.AddResource("DutyAction", $$"""
     using RotationSolver.Basic.Actions;
     
-    namespace RotationSolver.Basic.Rotations;
+    namespace RotationSolver.Basic.Rotations.Duties;
     
     /// <summary>
     /// The Custom Rotation.
@@ -61,11 +60,20 @@ res.AddResource("DutyAction", $$"""
     }
     """);
 
+var header = """
+using ECommons.DalamudServices;
+using ECommons.ExcelServices;
+using RotationSolver.Basic.Actions;
+using RotationSolver.Basic.Traits;
+
+namespace RotationSolver.Basic.Rotations.Basic;
+
+""";
+
 var rotations = gameData.GetExcelSheet<ClassJob>()!
     .Where(job => job.JobIndex > 0)
-    .Select(job => new RotationGetter(gameData, job))
-    .ToDictionary(getter => getter.GetName(), getter => getter.GetCode());
-res.AddResource("Rotation", JsonConvert.SerializeObject(rotations, Formatting.Indented));
+    .Select(job => new RotationGetter(gameData, job).GetCode());
+res.AddResource("Rotation", header + string.Join("\n\n", rotations));
 
 res.Generate();
 

@@ -5,519 +5,113 @@ namespace RotationSolver.Basic.Rotations;
 
 partial class CustomRotation
 {
-    private static void LoadActionConfigAndSetting(ref IBaseAction action)
+    public static void LoadActionConfigAndSetting(ref IBaseAction action)
     {
         //TODO: better target type check. (NoNeed?)
         //TODO: better friendly check.
         //TODO: load the config from the configuration.
     }
 
-    static partial void ModifyAddlePvE(ref IBaseAction action)
+    #region Role Actions
+    static partial void ModifyAddlePvE(ref ActionSetting setting)
     {
-        action.ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Addle);
+        setting.TargetStatusProvide = [StatusID.Addle];
+        setting.TargetStatusFromSelf = false;
     }
 
-    static partial void ModifySwiftcastPvE(ref IBaseAction action)
+    static partial void ModifySwiftcastPvE(ref ActionSetting setting)
     {
-        action.Option = ActionOption.Buff;
-        action.StatusProvide = StatusHelper.SwiftcastStatus;
+        setting.StatusProvide = StatusHelper.SwiftcastStatus;
     }
 
-    static partial void ModifyEsunaPvE(ref IBaseAction action)
+    static partial void ModifyEsunaPvE(ref ActionSetting setting)
     {
-        action.ChoiceTarget = (tars, mustUse) =>
+        setting.TargetType = TargetType.Dispel;
+    }
+
+    static partial void ModifyLucidDreamingPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => Player.CurrentMp < 6000 && InCombat;
+    }
+
+    static partial void ModifySecondWindPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat;
+    }
+
+    static partial void ModifyRampartPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = StatusHelper.RampartStatus;
+    }
+
+    static partial void ModifyBloodbathPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat && HasHostilesInRange;
+    }
+
+    static partial void ModifyFeintPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusFromSelf = false;
+        setting.TargetStatusProvide = [StatusID.Feint];
+    }
+
+    static partial void ModifyLowBlowPvE(ref ActionSetting setting)
+    {
+        setting.CanTarget = o =>
         {
-            if (DyingPeople.Any())
-            {
-                return DyingPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
-            }
-            else if (WeakenPeople.Any())
-            {
-                return WeakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).First();
-            }
-            return null;
+            if (o is not BattleChara b) return false;
+
+            if (b.IsBossFromIcon() || IsMoving || b.CastActionId == 0) return false;
+
+            if (!b.IsCastInterruptible || ActionID.InterjectPvE.IsCoolingDown()) return true;
+            return false;
         };
     }
 
-    static partial void ModifyLucidDreamingPvE(ref IBaseAction action)
+    static partial void ModifyPelotonPvE(ref ActionSetting setting)
     {
-        action.ActionCheck = (b, m) => Player.CurrentMp < 6000 && InCombat;
+        setting.ActionCheck = () =>
+        {
+            if (!NotInCombatDelay) return false;
+            var players = PartyMembers.GetObjectInRadius(20);
+            if (players.Any(ObjectHelper.InCombat)) return false;
+            return players.Any(p => p.WillStatusEnd(3, false, StatusID.Peloton));
+        };
     }
 
-    static partial void ModifySecondWindPvE(ref IBaseAction action)
+    static partial void ModifyIsleSprintPvE(ref ActionSetting setting)
     {
-        action.ActionCheck = (b, m) => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat;
+        setting.StatusProvide = [StatusID.Dualcast];
+    }
+    #endregion
+
+    #region PvP
+
+    static partial void ModifyStandardissueElixirPvP(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => !HasHostilesInMaxRange
+            && (Player.CurrentMp <= Player.MaxMp / 3 || Player.CurrentHp <= Player.MaxHp / 3)
+            && !IsLastAction(ActionID.StandardissueElixirPvP);
     }
 
-    static partial void ModifyArmsLengthPvE(ref IBaseAction action)
+    static partial void ModifyRecuperatePvP(ref ActionSetting setting)
     {
-        action.Option = ActionOption.Defense | ActionOption.EndSpecial;
+        setting.ActionCheck = () => Player.MaxHp - Player.CurrentHp > 15000;
     }
 
-    static partial void ModifyRampartPvE(ref IBaseAction action)
+    static partial void ModifyPurifyPvP(ref ActionSetting setting)
     {
-        action.Option = ActionOption.Defense;
-        action.StatusProvide =
-        [
-            StatusID.Superbolide, StatusID.HallowedGround,
-            StatusID.Rampart, StatusID.Bulwark,
-            StatusID.Bloodwhetting,
-            StatusID.Vengeance,
-            StatusID.Sentinel,
-            StatusID.ShadowWall,
-            StatusID.Nebula,
-            .. StatusHelper.NoNeedHealingStatus,
-        ];
-        action.ActionCheck = BaseAction.TankDefenseSelf;
+        setting.TargetType = TargetType.Dispel;
     }
 
-    static partial void ModifyProvokePvE(ref IBaseAction action)
+    static partial void ModifySprintPvP(ref ActionSetting setting)
     {
-        action.FilterForHostiles = b => TargetFilter.ProvokeTarget(b);
+        setting.StatusProvide = [StatusID.Sprint_1342];
     }
 
-    static partial void ModifyShirkPvE(ref IBaseAction action)
-    {
-        action.ChoiceTarget = (friends, mustUse) => TargetFilter.GetJobCategory(friends, JobRole.Tank)?.FirstOrDefault();
-    }
-
-    static partial void ModifyBloodbathPvE(ref IBaseAction action)
-    {
-        action.ActionCheck = (t, m) => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat && HasHostilesInRange;
-    }
-
-    static partial void ModifyFeintPvE(ref IBaseAction action)
-    {
-        action.ActionCheck = (b, m) => !b.HasStatus(false, StatusID.Feint);
-    }
-
-    static partial void ModifyInterjectPvE(ref IBaseAction action)
-    {
-        action.FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt);
-    }
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LowBlow { get; } = new RoleAction(ActionID.LowBlow, new JobRole[] { JobRole.Tank })
-    //{
-    //    FilterForHostiles = bs => bs.Where((Func<BattleChara, bool>)(b =>
-    //    {
-    //        if (b.IsBossFromIcon() || IsMoving || b.CastActionId == 0) return false;
-
-    //        if (!b.IsCastInterruptible || Interject.IsCoolingDown) return true;
-    //        return false;
-    //    })),
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LegSweep { get; } = new RoleAction(ActionID.LegSweep, new JobRole[] { JobRole.Melee })
-    //{
-    //    FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction HeadGraze { get; } = new RoleAction(ActionID.HeadGraze, new JobRole[] { JobRole.RangedPhysical })
-    //{
-    //    FilterForHostiles = b => b.Where(ObjectHelper.CanInterrupt),
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction SureCast { get; } = new RoleAction(ActionID.Surecast,
-    //    new JobRole[] { JobRole.RangedMagical, JobRole.Healer }, ActionOption.Heal);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction TrueNorth { get; } = new RoleAction(ActionID.TrueNorth,
-    //    new JobRole[] { JobRole.Melee }, ActionOption.Heal)
-    //{
-    //    StatusProvide = new StatusID[] { StatusID.TrueNorth, StatusID.RightEye },
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Peloton { get; } = new RoleAction(ActionID.Peloton, new JobRole[] { JobRole.RangedPhysical }, ActionOption.Friendly)
-    //{
-    //    ActionCheck = (b, m) =>
-    //    {
-    //        if (!NotInCombatDelay) return false;
-    //        var players = PartyMembers.GetObjectInRadius(20);
-    //        if (players.Any(ObjectHelper.InCombat)) return false;
-    //        return players.Any(p => p.WillStatusEnd(3, false, StatusID.Peloton));
-    //    },
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Sprint { get; } = new BaseAction(ActionID.Sprint, ActionOption.Friendly)
-    //{
-    //    StatusProvide = new StatusID[] { StatusID.Dualcast },
-    //};
-
-    private protected virtual IBaseAction Raise => null;
-    private protected virtual IBaseAction LimitBreak => null;
-    private protected virtual IBaseAction TankStance => null;
-
-    //#endregion
-
-    //#region PvE Limitbreak
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction ShieldWall { get; } = new RoleAction(ActionID.ShieldWall, new JobRole[] { JobRole.Tank }, ActionOption.Defense)
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 1,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Stronghold { get; } = new RoleAction(ActionID.Stronghold, new JobRole[] { JobRole.Tank }, ActionOption.Defense)
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 2,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction HealingWind { get; } = new RoleAction(ActionID.HealingWind, new JobRole[] { JobRole.Healer }, ActionOption.Heal)
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 1,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction BreathOfTheEarth { get; } = new RoleAction(ActionID.BreathOfTheEarth, new JobRole[] { JobRole.Healer }, ActionOption.Heal)
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 2,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Braver { get; } = new RoleAction(ActionID.Braver, new JobRole[] { JobRole.Melee })
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 1,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Bladedance { get; } = new RoleAction(ActionID.Bladedance, new JobRole[] { JobRole.Melee })
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 2,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction BigShot { get; } = new RoleAction(ActionID.BigShot, new JobRole[] { JobRole.RangedPhysical })
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 1,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Desperado { get; } = new RoleAction(ActionID.Desperado, new JobRole[] { JobRole.RangedPhysical })
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 2,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Skyshard { get; } = new RoleAction(ActionID.Skyshard, new JobRole[] { JobRole.RangedMagical })
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 1,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction Starstorm { get; } = new RoleAction(ActionID.Starstorm, new JobRole[] { JobRole.RangedMagical })
-    //{
-    //    ActionCheck = (b, m) => LimitBreakLevel == 2,
-    //};
-    //#endregion
-
-    //#region Duty Action
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction VariantRaise { get; } = new RoleAction(ActionID.VariantRaise,
-    //    new JobRole[] { JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical, },
-    //    ActionOption.Friendly | ActionOption.DutyAction);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction VariantRaise2 { get; } = new RoleAction(ActionID.VariantRaiseIi,
-    //[JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical,],
-    //ActionOption.Friendly | ActionOption.DutyAction);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction VariantUltimatum { get; } = new BaseAction(ActionID.VariantUltimatum, ActionOption.DutyAction);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction VariantCure { get; } = new RoleAction(ActionID.VariantCure,
-    //    [JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical],
-    //    ActionOption.Heal | ActionOption.DutyAction | ActionOption.EndSpecial);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction VariantCure2 { get; } = new RoleAction(ActionID.VariantCure_33862,
-    //    [JobRole.Melee, JobRole.Tank, JobRole.RangedMagical, JobRole.RangedPhysical],
-    //    ActionOption.Heal | ActionOption.DutyAction | ActionOption.EndSpecial);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction VariantSpiritDart { get; } = new RoleAction(ActionID.VariantSpiritDart,
-    //    [JobRole.Healer, JobRole.Tank], ActionOption.Dot | ActionOption.DutyAction);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction VariantSpiritDart2 { get; } = new RoleAction(ActionID.VariantSpiritDart_33863,
-    //    [JobRole.Healer, JobRole.Tank], ActionOption.Dot | ActionOption.DutyAction);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction VariantRampart { get; } = new RoleAction(ActionID.VariantRampart,
-    //    [JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical,], ActionOption.Buff | ActionOption.DutyAction);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction VariantRampart2 { get; } = new RoleAction(ActionID.VariantRampart_33864,
-    //    [JobRole.Melee, JobRole.Healer, JobRole.RangedMagical, JobRole.RangedPhysical], ActionOption.Buff | ActionOption.DutyAction);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostSpellforge { get; } = new BaseAction(ActionID.LostSpellforge,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostSpellforge],
-    //    ActionCheck = (b, m) => LostSpellforge.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
-    //    ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
-    //    {
-    //        Job.WAR
-    //        or Job.GNB
-    //        or Job.MNK
-    //        or Job.SAM
-    //        or Job.DRG
-    //        or Job.MCH
-    //        or Job.DNC
-
-    //        or Job.PLD
-    //        or Job.DRK
-    //        or Job.NIN
-    //        or Job.BRD
-    //        or Job.RDM
-    //        => true,
-
-    //        _ => false,
-    //    }),
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostSteelsting { get; } = new BaseAction(ActionID.LostSteelsting,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostSteelsting],
-    //    ActionCheck = (b, m) => LostSteelsting.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
-    //    ChoiceTarget = (targets, mustUse) => targets.FirstOrDefault(t => (Job)t.ClassJob.Id switch
-    //    {
-    //        Job.WHM
-    //        or Job.SCH
-    //        or Job.AST
-    //        or Job.SGE
-    //        or Job.BLM
-    //        or Job.SMN
-
-    //        or Job.PLD
-    //        or Job.DRK
-    //        or Job.NIN
-    //        or Job.BRD
-    //        or Job.RDM
-    //        => true,
-
-    //        _ => false,
-    //    }),
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostRampage { get; } = new BaseAction(ActionID.LostRampage,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostRampage],
-    //    ActionCheck = (b, m) => LostRampage.Target?.HasStatus(false, StatusID.PhysicalAversion) ?? false,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostBurst { get; } = new BaseAction(ActionID.LostBurst,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostBurst],
-    //    ActionCheck = (b, m) => LostBurst.Target?.HasStatus(false, StatusID.MagicalAversion) ?? false,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostBravery { get; } = new BaseAction(ActionID.LostBravery,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostBravery],
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostProtect { get; } = new BaseAction(ActionID.LostProtect,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostProtect, StatusID.LostProtectIi],
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostShell { get; } = new BaseAction(ActionID.LostShell,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostShell, StatusID.LostShellIi],
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostProtect2 { get; } = new BaseAction(ActionID.LostProtectIi,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostProtectIi],
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostShell2 { get; } = new BaseAction(ActionID.LostShellIi,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostShellIi],
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostBubble { get; } = new BaseAction(ActionID.LostBubble,
-    //    ActionOption.DutyAction | ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.LostBubble],
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostStoneskin { get; } = new BaseAction(ActionID.LostStoneskin,
-    //    ActionOption.DutyAction | ActionOption.Defense)
-    //{
-    //    ChoiceTarget = TargetFilter.FindAttackedTarget,
-    //    StatusProvide = [StatusID.Stoneskin],
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostStoneskin2 { get; } = new BaseAction(ActionID.LostStoneskinIi,
-    //    ActionOption.DutyAction | ActionOption.Defense)
-    //{
-    //    StatusProvide = [StatusID.Stoneskin],
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostFlarestar { get; } = new BaseAction(ActionID.LostFlareStar,
-    //ActionOption.DutyAction)
-    //{
-    //    StatusProvide = [StatusID.LostFlareStar],
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction LostSeraphStrike { get; } = new BaseAction(ActionID.LostSeraphStrike,
-    //    ActionOption.DutyAction)
-    //{
-    //    StatusProvide = [StatusID.ClericStance_2484],
-    //};
-    //#endregion
-
-    //#region PvP
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction PvP_StandardIssueElixir { get; } = new BaseAction(ActionID.StandardissueElixir, ActionOption.Heal)
-    //{
-    //    ActionCheck = (t, m) => !HasHostilesInMaxRange
-    //        && (t.CurrentMp <= t.MaxMp / 3 || t.CurrentHp <= t.MaxHp / 3)
-    //        && !IsLastAction(ActionID.StandardissueElixir),
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction PvP_Recuperate { get; } = new BaseAction(ActionID.Recuperate, ActionOption.Heal)
-    //{
-    //    ActionCheck = (t, m) => t.MaxHp - t.CurrentHp > 15000,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction PvP_Purify { get; } = new BaseAction(ActionID.Purify_29056, ActionOption.Heal)
-    //{
-    //    ActionCheck = (t, m) => Player?.StatusList.Any(s => s.GameData.CanDispel) ?? false,
-    //};
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction PvP_Guard { get; } = new BaseAction(ActionID.Guard, ActionOption.Defense);
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public static IBaseAction PvP_Sprint { get; } = new BaseAction(ActionID.Sprint_29057, ActionOption.Friendly)
-    //{
-    //    StatusProvide = [StatusID.Sprint_1342],
-    //};
-    //#endregion
+    #endregion
+    private protected virtual IBaseAction? Raise => null;
+    private protected virtual IBaseAction? TankStance => null;
 
     IBaseAction[] _allBaseActions;
 
@@ -525,10 +119,10 @@ partial class CustomRotation
     public virtual IBaseAction[] AllBaseActions => _allBaseActions ??= GetBaseActions(GetType()).ToArray();
 
     IAction[] _allActions;
-    public IAction[] AllActions => _allActions ??= Array.Empty<IAction>().Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
+    public virtual IAction[] AllActions => _allActions ??= Array.Empty<IAction>().Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
 
     IBaseTrait[] _allTraits;
-    public IBaseTrait[] AllTraits => _allTraits ??= GetIEnoughLevel<IBaseTrait>(GetType()).ToArray();
+    public virtual IBaseTrait[] AllTraits => _allTraits ??= GetIEnoughLevel<IBaseTrait>(GetType()).ToArray();
 
     PropertyInfo[] _allBools;
     public PropertyInfo[] AllBools => _allBools ??= GetType().GetStaticProperties<bool>();
@@ -551,13 +145,13 @@ partial class CustomRotation
         return GetIEnoughLevel<IBaseItem>(type).Where(a => a is not MedicineItem medicine || medicine.InType(this)).Reverse();
     }
 
-    private IEnumerable<T> GetIEnoughLevel<T>(Type type) where T : IEnoughLevel
+    private IEnumerable<T> GetIEnoughLevel<T>(Type? type) where T : IEnoughLevel
     {
         if (type == null) return Array.Empty<T>();
 
         var acts = from prop in type.GetProperties()
                    where typeof(T).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)
-                   select (T)prop.GetValue(this) into act
+                   select (T)prop.GetValue(this)! into act
                    where act != null
                    orderby act.Level
                    select act;

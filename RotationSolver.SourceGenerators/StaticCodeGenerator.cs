@@ -1,7 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Newtonsoft.Json;
-using System.Collections.Immutable;
 
 namespace RotationSolver.SourceGenerators;
 
@@ -121,9 +119,6 @@ public class StaticCodeGenerator : IIncrementalGenerator
 
     private static void GenerateRotations(SourceProductionContext context)
     {
-        foreach (var pair in JsonConvert.DeserializeObject<Dictionary<string, string>>(Properties.Resources.Rotation)!)
-        {
-            context.AddSource($"{pair.Key}.g.cs", pair.Value);
-        }
+        context.AddSource($"BaseRotations.g.cs", Properties.Resources.Rotation);
     }
 }

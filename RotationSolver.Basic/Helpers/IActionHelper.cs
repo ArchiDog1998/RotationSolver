@@ -5,22 +5,22 @@
 /// </summary>
 public static class IActionHelper
 {
-    internal static ActionID[] MovingActions { get; } =
-    [
-        ActionID.EnAvant,
-        ActionID.Plunge,
-        ActionID.RoughDivide,
-        ActionID.Thunderclap,
-        ActionID.Shukuchi,
-        ActionID.Intervene,
-        //ActionID.CorpsACorps,
-        ActionID.HellsIngress,
-        ActionID.HissatsuGyoten,
-        ActionID.Icarus,
-        ActionID.Onslaught,
-        //ActionID.SpineShatterDive,
-        //ActionID.DragonFireDive,
-    ];
+    //internal static ActionID[] MovingActions { get; } =
+    //[
+    //    ActionID.EnAvant,
+    //    ActionID.Plunge,
+    //    ActionID.RoughDivide,
+    //    ActionID.Thunderclap,
+    //    ActionID.Shukuchi,
+    //    ActionID.Intervene,
+    //    //ActionID.CorpsACorps,
+    //    ActionID.HellsIngress,
+    //    ActionID.HissatsuGyoten,
+    //    ActionID.Icarus,
+    //    ActionID.Onslaught,
+    //    //ActionID.SpineShatterDive,
+    //    //ActionID.DragonFireDive,
+    //];
 
     internal static bool IsLastGCD(bool isAdjust, params IAction[] actions)
     {

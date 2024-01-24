@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="Lumina.Excel" Version="6.5.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="ResXResourceReader.NetStandard" Version="1.2.0" />
   </ItemGroup>
 </Project>

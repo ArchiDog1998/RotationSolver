@@ -386,26 +386,21 @@ internal static class RotationUpdater
     public static IEnumerable<IGrouping<string, IAction>> AllGroupedActions
         => GroupActions(DataCenter.RightNowRotation?.AllActions);
 
-    public static IEnumerable<IGrouping<string, IAction>> GroupActions(IEnumerable<IAction> actions)
+    public static IEnumerable<IGrouping<string, IAction>>? GroupActions(IEnumerable<IAction> actions)
        => actions?.GroupBy(a =>
        {
            if (a is IBaseAction act)
            {
-               if (!act.IsOnSlot) return string.Empty;
+               if (!act.Info.IsOnSlot) return string.Empty;
 
                string result;
 
-               if (act.IsLimitBreak)
+               if (act.Info.IsLimitBreak)
                {
                    return "Limit Break";
                }
 
-               if (act.IsDutyAction)
-               {
-                   return "Duty Action";
-               }
-
-               if (act.IsRealGCD)
+               if (act.Info.IsRealGCD)
                {
                    result = "GCD";
                }
@@ -414,22 +409,13 @@ internal static class RotationUpdater
                    result = LocalizationManager.RightLang.Action_Ability;
                }
 
-               if (act.IsFriendly)
+               if (act.Setting.IsFriendly)
                {
                    result += "-" + LocalizationManager.RightLang.Action_Friendly;
-                   if (act.IsEot)
-                   {
-                       result += "-Hot";
-                   }
                }
                else
                {
                    result += "-" + LocalizationManager.RightLang.Action_Attack;
-
-                   if (act.IsEot)
-                   {
-                       result += "-Dot";
-                   }
                }
                return result;
            }

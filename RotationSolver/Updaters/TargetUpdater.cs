@@ -157,7 +157,7 @@ internal static partial class TargetUpdater
         DataCenter.IsHostileCastingToTank = IsCastingTankVfx() || DataCenter.HostileTargets.Any(IsHostileCastingTank);
         DataCenter.IsHostileCastingAOE = IsCastingAreaVfx() || DataCenter.HostileTargets.Any(IsHostileCastingArea);
 
-        DataCenter.CanProvoke = _provokeDelay.Delay(TargetFilter.ProvokeTarget(DataCenter.HostileTargets, true).Count() != DataCenter.HostileTargets.Count());
+        DataCenter.CanProvoke = _provokeDelay.Delay(DataCenter.HostileTargets.Any(ObjectHelper.CanProvoke));
     }
 
     private static IEnumerable<BattleChara> GetHostileTargets(IEnumerable<BattleChara> allAttackableTargets)
@@ -318,9 +318,9 @@ internal static partial class TargetUpdater
         DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
         //DataCenter.HasPet = HasPet();
 
-        DataCenter.PartyTanks = DataCenter.PartyMembers.GetJobCategory(JobRole.Tank);
-        DataCenter.PartyHealers = DataCenter.PartyMembers.GetJobCategory(JobRole.Healer);
-        DataCenter.AllianceTanks = DataCenter.AllianceMembers.GetJobCategory(JobRole.Tank);
+        //DataCenter.PartyTanks = DataCenter.PartyMembers.GetJobCategory(JobRole.Tank);
+        //DataCenter.PartyHealers = DataCenter.PartyMembers.GetJobCategory(JobRole.Healer);
+        //DataCenter.AllianceTanks = DataCenter.AllianceMembers.GetJobCategory(JobRole.Tank);
 
         var deathAll = DataCenter.AllianceMembers.GetDeath();
         var deathParty = DataCenter.PartyMembers.GetDeath();
@@ -475,14 +475,14 @@ internal static partial class TargetUpdater
         }
 
         //Delay
-        DataCenter.CanHealSingleAbility = DataCenter.SetAutoStatus(AutoStatus.HealSingleAbility,
-            _healDelay1.Delay(DataCenter.CanHealSingleAbility));
-        DataCenter.CanHealSingleSpell = DataCenter.SetAutoStatus(AutoStatus.HealSingleSpell,
-            _healDelay2.Delay(DataCenter.CanHealSingleSpell));
-        DataCenter.CanHealAreaAbility = DataCenter.SetAutoStatus(AutoStatus.HealAreaAbility,
-            _healDelay3.Delay(DataCenter.CanHealAreaAbility));
-        DataCenter.CanHealAreaSpell = DataCenter.SetAutoStatus(AutoStatus.HealAreaSpell,
-            _healDelay4.Delay(DataCenter.CanHealAreaSpell));
+        DataCenter.CanHealSingleAbility = 
+            _healDelay1.Delay(DataCenter.CanHealSingleAbility);
+        DataCenter.CanHealSingleSpell =
+            _healDelay2.Delay(DataCenter.CanHealSingleSpell);
+        DataCenter.CanHealAreaAbility =
+            _healDelay3.Delay(DataCenter.CanHealAreaAbility);
+        DataCenter.CanHealAreaSpell = 
+            _healDelay4.Delay(DataCenter.CanHealAreaSpell);
 
         DataCenter.PartyMembersMinHP = DataCenter.PartyMembersHP.Any() ? DataCenter.PartyMembersHP.Min() : 0;
         DataCenter.HPNotFull = DataCenter.PartyMembersMinHP < 1;

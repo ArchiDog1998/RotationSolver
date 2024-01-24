@@ -3,12 +3,12 @@
 /// <summary>
 /// User config.
 /// </summary>
-public struct ActionConfig()
+public class ActionConfig()
 {
     private bool _isEnable = true;
     public bool IsEnable 
     {
-        readonly get => IBaseAction.ForceEnable || _isEnable;
+        get => IBaseAction.ForceEnable || _isEnable;
         set => _isEnable = value;
     }
 

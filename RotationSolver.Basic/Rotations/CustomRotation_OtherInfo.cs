@@ -131,7 +131,7 @@ partial class CustomRotation
     /// <summary>
     /// The last attacked hostile target.
     /// </summary>
-    protected static BattleChara HostileTarget => DataCenter.HostileTarget;
+    protected static BattleChara? HostileTarget => DataCenter.HostileTarget;
 
     /// <summary>
     /// Is there any hostile target in range? 25 for ranged jobs and healer, 3 for melee and tank.
@@ -207,69 +207,6 @@ partial class CustomRotation
     public static bool MobsTime => DataCenter.MobsTime;
     #endregion
 
-    #region Command
-    /// <summary>
-    /// Is in burst right now? Usually it used with team support actions.
-    /// </summary>
-    public static bool IsBurst => DataCenter.IsBurst;
-
-    /// <summary>
-    /// Is in the command heal area.
-    /// </summary>
-    public static bool IsHealArea => DataCenter.IsHealArea;
-
-    /// <summary>
-    /// Is in the command heal single.
-    /// </summary>
-    public static bool IsHealSingle => DataCenter.IsHealSingle;
-
-    /// <summary>
-    /// Is in the command defense area.
-    /// </summary>
-    public static bool IsDefenseArea => DataCenter.IsDefenseArea;
-
-    /// <summary>
-    /// Is in the command defense single.
-    /// </summary>
-    public static bool IsDefenseSingle => DataCenter.IsDefenseSingle;
-
-    /// <summary>
-    /// Is in the command Esuna Stance North.
-    /// </summary>
-    public static bool IsEsunaStanceNorth => DataCenter.IsEsunaStanceNorth;
-
-    /// <summary>
-    /// Is in the command Raise Shirk.
-    /// </summary>
-    public static bool IsRaiseShirk => DataCenter.IsRaiseShirk;
-
-    /// <summary>
-    /// Is in the command move forward.
-    /// </summary>
-    public static bool IsMoveForward => DataCenter.IsMoveForward;
-
-    /// <summary>
-    /// Is in the command move back.
-    /// </summary>
-    public static bool IsMoveBack => DataCenter.IsMoveBack;
-
-    /// <summary>
-    /// Is in the command anti knockback.
-    /// </summary>
-    public static bool IsAntiKnockback => DataCenter.IsAntiKnockback;
-
-    /// <summary>
-    /// Is in the command speed.
-    /// </summary>
-    public static bool IsSpeed => DataCenter.IsSpeed;
-
-    /// <summary>
-    /// Is in the command limit break.
-    /// </summary>
-    public static bool IsLimitBreak => DataCenter.IsLimitBreak;
-
-
-
     /// <summary>
     /// 
     /// </summary>
@@ -299,7 +236,6 @@ partial class CustomRotation
     /// Ture for Manual Target, false for Auto Target.
     /// </summary>
     public static bool IsManual => DataCenter.IsManual;
-    #endregion
 
     #region GCD
 
