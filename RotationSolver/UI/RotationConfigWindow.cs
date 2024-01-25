@@ -120,7 +120,7 @@ public partial class RotationConfigWindow : Window
         {
             ImGui.OpenPopup(popUpId);
         }
-        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_ConditionSetDesc);
+        ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ConfigWindow_ConditionSetDesc);
 
         using var popup = ImRaii.Popup(popUpId);
         if (popup.Success)
@@ -141,7 +141,7 @@ public partial class RotationConfigWindow : Window
                 else
                 {
                     var key = "Condition Set At " + i.ToString();
-                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, DeleteFile, ["Delete"]));
+                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager._rightLang.ConfigWindow_List_Remove, DeleteFile, ["Delete"]));
 
 
                     if (ImGui.Selectable(combos[i].Name))
@@ -169,7 +169,7 @@ public partial class RotationConfigWindow : Window
             }
 
             ImGui.PopFont();
-            ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Load);
+            ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ActionSequencer_Load);
         }
     }
 
@@ -348,7 +348,7 @@ public partial class RotationConfigWindow : Window
                     _activeTab = RotationConfigWindowTab.About;
                     _searchResults = [];
                 }
-                ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
+                ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ConfigWindow_About_Punchline);
 
                 var frame = Environment.TickCount / 34 % FRAME_COUNT;
                 if (frame <= 0) frame += FRAME_COUNT;
@@ -382,7 +382,7 @@ public partial class RotationConfigWindow : Window
 
             const string slash = " - ";
             var gameVersionSize = ImGui.CalcTextSize(slash + rotation.GameVersion).X + ImGui.GetStyle().ItemSpacing.X;
-            var gameVersion = LocalizationManager.RightLang.ConfigWindow_Helper_GameVersion + ": ";
+            var gameVersion = LocalizationManager._rightLang.ConfigWindow_Helper_GameVersion + ": ";
             var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rotation.GameVersion).X + iconSize + ImGui.GetStyle().ItemSpacing.X * 3 < wholeWidth;
             if (drawCenter) gameVersionSize += ImGui.CalcTextSize(gameVersion).X + ImGui.GetStyle().ItemSpacing.X;
 
@@ -507,12 +507,12 @@ public partial class RotationConfigWindow : Window
         }
 
         var warning = gameVersion + rotation.GameVersion;
-        if (!rotation.IsValid) warning += "\n" + string.Format(LocalizationManager.RightLang.ConfigWindow_Rotation_InvalidRotation,
+        if (!rotation.IsValid) warning += "\n" + string.Format(LocalizationManager._rightLang.ConfigWindow_Rotation_InvalidRotation,
                 rotation.GetType().Assembly.GetInfo().Author);
 
-        if (rotation.IsBeta()) warning += "\n" + LocalizationManager.RightLang.ConfigWindow_Rotation_BetaRotation;
+        if (rotation.IsBeta()) warning += "\n" + LocalizationManager._rightLang.ConfigWindow_Rotation_BetaRotation;
 
-        warning += "\n \n" + LocalizationManager.RightLang.ConfigWindow_Helper_SwitchRotation;
+        warning += "\n \n" + LocalizationManager._rightLang.ConfigWindow_Helper_SwitchRotation;
         ImguiTooltips.HoveredTooltip(warning);
     }
 
@@ -527,7 +527,7 @@ public partial class RotationConfigWindow : Window
                 using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(18)))
                 {
                     using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-                    ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Search_Result);
+                    ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Search_Result);
                 }
 
                 ImGui.Spacing();
@@ -592,8 +592,8 @@ public partial class RotationConfigWindow : Window
     #region About
     private static readonly SortedList<uint, string> CountStringPair = new()
     {
-        { 100_000, LocalizationManager.RightLang.ConfigWindow_About_Clicking100k },
-        { 500_000, LocalizationManager.RightLang.ConfigWindow_About_Clicking500k },
+        { 100_000, LocalizationManager._rightLang.ConfigWindow_About_Clicking100k },
+        { 500_000, LocalizationManager._rightLang.ConfigWindow_About_Clicking500k },
     };
 
     private static void DrawAbout()
@@ -601,17 +601,17 @@ public partial class RotationConfigWindow : Window
         using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(18)))
         {
             using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Punchline);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_About_Punchline);
         }
 
         ImGui.Spacing();
 
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Description);
+        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_About_Description);
 
         ImGui.Spacing();
         using (var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudOrange)))
         {
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Warning);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_About_Warning);
         }
 
         var width = ImGui.GetWindowWidth();
@@ -624,7 +624,7 @@ public partial class RotationConfigWindow : Window
         if (clickingCount > 0)
         {
             using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.6f, 0.95f, 1));
-            var countStr = string.Format(LocalizationManager.RightLang.ConfigWindow_About_ClickingCount,
+            var countStr = string.Format(LocalizationManager._rightLang.ConfigWindow_About_ClickingCount,
                 clickingCount);
             ImGuiHelper.DrawItemMiddle(() =>
             {
@@ -649,7 +649,7 @@ public partial class RotationConfigWindow : Window
         if (sayHelloCount > 0)
         {
             using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.8f, 0.95f, 1));
-            var countStr = string.Format(LocalizationManager.RightLang.ConfigWindow_About_SayHelloCount, sayHelloCount);
+            var countStr = string.Format(LocalizationManager._rightLang.ConfigWindow_About_SayHelloCount, sayHelloCount);
 
             ImGuiHelper.DrawItemMiddle(() =>
             {
@@ -662,10 +662,10 @@ public partial class RotationConfigWindow : Window
 
     private static readonly CollapsingHeaderGroup _aboutHeaders = new(new()
     {
-        { () => LocalizationManager.RightLang.ConfigWindow_About_Macros, DrawAboutMacros},
-        { () => LocalizationManager.RightLang.ConfigWindow_About_Compatibility, DrawAboutCompatibility},
-        { () => LocalizationManager.RightLang.ConfigWindow_About_Supporters, DrawAboutSupporters},
-        { () => LocalizationManager.RightLang.ConfigWindow_About_Links, DrawAboutLinks},
+        { () => LocalizationManager._rightLang.ConfigWindow_About_Macros, DrawAboutMacros},
+        { () => LocalizationManager._rightLang.ConfigWindow_About_Compatibility, DrawAboutCompatibility},
+        { () => LocalizationManager._rightLang.ConfigWindow_About_Supporters, DrawAboutSupporters},
+        { () => LocalizationManager._rightLang.ConfigWindow_About_Links, DrawAboutLinks},
     });
 
     private static void DrawAboutMacros()
@@ -678,7 +678,7 @@ public partial class RotationConfigWindow : Window
 
         StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
 
-        OtherCommandType.NextAction.DisplayCommandHelp(getHelp: i => LocalizationManager.RightLang.ConfigWindow_HelpItem_NextAction);
+        OtherCommandType.NextAction.DisplayCommandHelp(getHelp: i => LocalizationManager._rightLang.ConfigWindow_HelpItem_NextAction);
 
         ImGui.NewLine();
 
@@ -711,9 +711,9 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawAboutCompatibility()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Others);
+        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_About_Compatibility_Others);
 
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Description);
+        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_About_Compatibility_Description);
 
         ImGui.Spacing();
 
@@ -767,24 +767,24 @@ public partial class RotationConfigWindow : Window
                 if (item.Type.HasFlag(CompatibleType.Skill_Usage))
                 {
                     ImGui.TextColored(ImGuiColors.DalamudYellow, CompatibleType.Skill_Usage.ToString().Replace('_', ' '));
-                    ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Mistake);
+                    ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ConfigWindow_About_Compatibility_Mistake);
                 }
                 if (item.Type.HasFlag(CompatibleType.Skill_Selection))
                 {
                     ImGui.TextColored(ImGuiColors.DalamudOrange, CompatibleType.Skill_Selection.ToString().Replace('_', ' '));
-                    ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Mislead);
+                    ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ConfigWindow_About_Compatibility_Mislead);
                 }
                 if (item.Type.HasFlag(CompatibleType.Crash))
                 {
                     ImGui.TextColored(ImGuiColors.DalamudRed, CompatibleType.Crash.ToString().Replace('_', ' '));
-                    ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_About_Compatibility_Crash);
+                    ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ConfigWindow_About_Compatibility_Crash);
                 }
             }
         }
     }
     private static void DrawAboutSupporters()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_About_ThanksToSupporters);
+        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_About_ThanksToSupporters);
 
         var width = ImGui.GetWindowWidth();
         using var font = ImRaii.PushFont(ImGuiHelper.GetFont(12));
@@ -824,7 +824,7 @@ public partial class RotationConfigWindow : Window
         }, width, textWidth);
 
 
-        text = LocalizationManager.RightLang.ConfigWindow_About_OpenConfigFolder;
+        text = LocalizationManager._rightLang.ConfigWindow_About_OpenConfigFolder;
         textWidth = ImGuiHelpers.GetButtonSize(text).X;
         ImGuiHelper.DrawItemMiddle(() =>
         {
@@ -961,14 +961,14 @@ public partial class RotationConfigWindow : Window
 
     private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
     {
-        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Description, DrawRotationDescription },
+        { () => LocalizationManager._rightLang.ConfigWindow_Rotation_Description, DrawRotationDescription },
 
         { GetRotationStatusHead,  DrawRotationStatus },
 
-        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Configuration, DrawRotationConfiguration },
-        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Rating, DrawRotationRating },
+        { () => LocalizationManager._rightLang.ConfigWindow_Rotation_Configuration, DrawRotationConfiguration },
+        { () => LocalizationManager._rightLang.ConfigWindow_Rotation_Rating, DrawRotationRating },
 
-        { () => LocalizationManager.RightLang.ConfigWindow_Rotation_Information, DrawRotationInformation },
+        { () => LocalizationManager._rightLang.ConfigWindow_Rotation_Information, DrawRotationInformation },
     });
 
     private static void DrawRotationRating()
@@ -976,15 +976,15 @@ public partial class RotationConfigWindow : Window
         var rotation = DataCenter.RightNowRotation;
         if (rotation == null) return;
 
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Rotation_Rating_Description);
+        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Rotation_Rating_Description);
 
         if (DrawRating((float)rotation.AverageCountOfLastUsing, rotation.MaxCountOfLastUsing, 10))
         {
-            ImguiTooltips.ShowTooltip(LocalizationManager.RightLang.ConfigWindow_Rotation_Rating_CountOfLastUsing);
+            ImguiTooltips.ShowTooltip(LocalizationManager._rightLang.ConfigWindow_Rotation_Rating_CountOfLastUsing);
         }
         if (DrawRating((float)rotation.AverageCountOfCombatTimeUsing, rotation.MaxCountOfCombatTimeUsing, 20))
         {
-            ImguiTooltips.ShowTooltip(LocalizationManager.RightLang.ConfigWindow_Rotation_Rating_CountOfCombatTimeUsing);
+            ImguiTooltips.ShowTooltip(LocalizationManager._rightLang.ConfigWindow_Rotation_Rating_CountOfCombatTimeUsing);
         }
     }
 
@@ -1100,10 +1100,10 @@ public partial class RotationConfigWindow : Window
         var rotation = DataCenter.RightNowRotation;
         if (Service.Config.GetValue(PluginConfigBool.InDebug))
         {
-            return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
+            return LocalizationManager._rightLang.ConfigWindow_Rotation_Status;
         }
         if (rotation == null || !rotation.ShowStatus) return string.Empty;
-        return LocalizationManager.RightLang.ConfigWindow_Rotation_Status;
+        return LocalizationManager._rightLang.ConfigWindow_Rotation_Status;
     }
 
     private static void DrawRotationStatus()
@@ -1295,7 +1295,7 @@ public partial class RotationConfigWindow : Window
     #region Actions
     private static unsafe void DrawActions()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_Description);
+        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Actions_Description);
 
         using var table = ImRaii.Table("Rotation Solver Actions", 2, ImGuiTableFlags.Resizable);
 
@@ -1429,7 +1429,7 @@ public partial class RotationConfigWindow : Window
                 ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
 
                 enable = _activeAction.IsInCooldown;
-                if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_ShowOnCDWindow}##{_activeAction.Name}InCooldown", ref enable))
+                if (ImGui.Checkbox($"{LocalizationManager._rightLang.ConfigWindow_Actions_ShowOnCDWindow}##{_activeAction.Name}InCooldown", ref enable))
                 {
                     _activeAction.IsInCooldown = enable;
                 }
@@ -1440,7 +1440,7 @@ public partial class RotationConfigWindow : Window
                         && !action.IsFriendly && action.ChoiceTarget != TargetFilter.FindTargetForMoving)
                     {
                         enable = action.IsInMistake;
-                        if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Actions_IsInMistake}##{action.Name}InMistake", ref enable))
+                        if (ImGui.Checkbox($"{LocalizationManager._rightLang.ConfigWindow_Actions_IsInMistake}##{action.Name}InMistake", ref enable))
                         {
                             action.Config.IsInMistake = enable;
                         }
@@ -1450,7 +1450,7 @@ public partial class RotationConfigWindow : Window
 
                     var ttk = action.TimeToKill;
                     ImGui.SetNextItemWidth(Scale * 150);
-                    if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_TTK}##{action}",
+                    if (ImGui.DragFloat($"{LocalizationManager._rightLang.ConfigWindow_Actions_TTK}##{action}",
                         ref ttk, 0.1f, 0, 120, $"{ttk:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
                     {
                         action.TimeToKill = ttk;
@@ -1461,7 +1461,7 @@ public partial class RotationConfigWindow : Window
                     {
                         var aoeCount = (int)action.AOECount;
                         ImGui.SetNextItemWidth(Scale * 150);
-                        if (ImGui.DragInt($"{LocalizationManager.RightLang.ConfigWindow_Actions_AOECount}##{action}",
+                        if (ImGui.DragInt($"{LocalizationManager._rightLang.ConfigWindow_Actions_AOECount}##{action}",
                             ref aoeCount, 0.05f, 1, 10))
                         {
                             action.AOECount = (byte)aoeCount;
@@ -1472,7 +1472,7 @@ public partial class RotationConfigWindow : Window
                     {
                         var ratio = action.AutoHealRatio;
                         ImGui.SetNextItemWidth(Scale * 150);
-                        if (ImGui.DragFloat($"{LocalizationManager.RightLang.ConfigWindow_Actions_HealRatio}##{action}",
+                        if (ImGui.DragFloat($"{LocalizationManager._rightLang.ConfigWindow_Actions_HealRatio}##{action}",
                             ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
                         {
                             action.AutoHealRatio = ratio;
@@ -1485,7 +1485,7 @@ public partial class RotationConfigWindow : Window
                 ImGui.Separator();
             }
 
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_ConditionDescription);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Actions_ConditionDescription);
             _sequencerList?.Draw();
         }
     }
@@ -1499,9 +1499,9 @@ public partial class RotationConfigWindow : Window
 
     private static readonly CollapsingHeaderGroup _sequencerList = new(new()
     {
-        { () => LocalizationManager.RightLang.ConfigWindow_Actions_ForcedConditionSet, () =>
+        { () => LocalizationManager._rightLang.ConfigWindow_Actions_ForcedConditionSet, () =>
         {
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_ForcedConditionSet_Description);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Actions_ForcedConditionSet_Description);
 
             var rotation = DataCenter.RightNowRotation;
             var set = DataCenter.RightSet;
@@ -1510,9 +1510,9 @@ public partial class RotationConfigWindow : Window
             set.GetCondition(_activeAction.ID)?.DrawMain(rotation);
         } },
 
-        { () => LocalizationManager.RightLang.ConfigWindow_Actions_DisabledConditionSet, () =>
+        { () => LocalizationManager._rightLang.ConfigWindow_Actions_DisabledConditionSet, () =>
         {
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Actions_DisabledConditionSet_Description);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Actions_DisabledConditionSet_Description);
 
             var rotation = DataCenter.RightNowRotation;
             var set = DataCenter.RightSet;
@@ -1531,7 +1531,7 @@ public partial class RotationConfigWindow : Window
     {
         var width = ImGui.GetWindowWidth();
 
-        var text = LocalizationManager.RightLang.ConfigWindow_Rotations_Download;
+        var text = LocalizationManager._rightLang.ConfigWindow_Rotations_Download;
         var textWidth = ImGuiHelpers.GetButtonSize(text).X;
 
         ImGuiHelper.DrawItemMiddle(() =>
@@ -1545,7 +1545,7 @@ public partial class RotationConfigWindow : Window
             }
         }, width, textWidth);
 
-        text = LocalizationManager.RightLang.ConfigWindow_Rotations_Links;
+        text = LocalizationManager._rightLang.ConfigWindow_Rotations_Links;
         textWidth = ImGuiHelpers.GetButtonSize(text).X;
         ImGuiHelper.DrawItemMiddle(() =>
         {
@@ -1559,10 +1559,10 @@ public partial class RotationConfigWindow : Window
     }
     private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
     {
-        {() => LocalizationManager.RightLang.ConfigWindow_Rotations_Settings, DrawRotationsSettings},
-        {() => LocalizationManager.RightLang.ConfigWindow_Rotations_Loaded, DrawRotationsLoaded},
-        {() => LocalizationManager.RightLang.ConfigWindow_Rotations_GitHub, DrawRotationsGitHub},
-        {() => LocalizationManager.RightLang.ConfigWindow_Rotations_Libraries, DrawRotationsLibraries},
+        {() => LocalizationManager._rightLang.ConfigWindow_Rotations_Settings, DrawRotationsSettings},
+        {() => LocalizationManager._rightLang.ConfigWindow_Rotations_Loaded, DrawRotationsLoaded},
+        {() => LocalizationManager._rightLang.ConfigWindow_Rotations_GitHub, DrawRotationsGitHub},
+        {() => LocalizationManager._rightLang.ConfigWindow_Rotations_Libraries, DrawRotationsLibraries},
     });
 
     private static readonly CheckBoxSearchPlugin _updateRotation = new(PluginConfigBool.DownloadRotations,
@@ -1745,15 +1745,15 @@ public partial class RotationConfigWindow : Window
             width /= 3;
 
             ImGui.SetNextItemWidth(width);
-            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}UserName", LocalizationManager.RightLang.ConfigWindow_Rotations_UserName, ref userName, 1024);
+            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}UserName", LocalizationManager._rightLang.ConfigWindow_Rotations_UserName, ref userName, 1024);
             ImGui.SameLine();
 
             ImGui.SetNextItemWidth(width);
-            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}Repository", LocalizationManager.RightLang.ConfigWindow_Rotations_Repository, ref repository, 1024);
+            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}Repository", LocalizationManager._rightLang.ConfigWindow_Rotations_Repository, ref repository, 1024);
             ImGui.SameLine();
 
             ImGui.SetNextItemWidth(width);
-            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}FileName", LocalizationManager.RightLang.ConfigWindow_Rotations_FileName, ref fileName, 1024);
+            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}FileName", LocalizationManager._rightLang.ConfigWindow_Rotations_FileName, ref fileName, 1024);
             ImGui.SameLine();
 
             if (changed)
@@ -1789,7 +1789,7 @@ public partial class RotationConfigWindow : Window
         for (int i = 0; i < Service.Config.GlobalConfig.OtherLibs.Length; i++)
         {
             ImGui.SetNextItemWidth(width);
-            ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", LocalizationManager.RightLang.ConfigWindow_Rotations_Library, ref Service.Config.GlobalConfig.OtherLibs[i], 1024);
+            ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", LocalizationManager._rightLang.ConfigWindow_Rotations_Library, ref Service.Config.GlobalConfig.OtherLibs[i], 1024);
             ImGui.SameLine();
 
             if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
@@ -1830,19 +1830,19 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawList()
     {
-        ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_Description);
+        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_List_Description);
         _idsHeader?.Draw();
     }
     private static readonly CollapsingHeaderGroup _idsHeader = new(new()
     {
-        { () => LocalizationManager.RightLang.ConfigWindow_List_Statuses, DrawListStatuses},
-        { () => Service.Config.GetValue(PluginConfigBool.UseDefenseAbility) ? LocalizationManager.RightLang.ConfigWindow_List_Actions : string.Empty, DrawListActions},
-        { () => LocalizationManager.RightLang.ConfigWindow_List_Territories, DrawListTerritories},
+        { () => LocalizationManager._rightLang.ConfigWindow_List_Statuses, DrawListStatuses},
+        { () => Service.Config.GetValue(PluginConfigBool.UseDefenseAbility) ? LocalizationManager._rightLang.ConfigWindow_List_Actions : string.Empty, DrawListActions},
+        { () => LocalizationManager._rightLang.ConfigWindow_List_Territories, DrawListTerritories},
     });
     private static void DrawListStatuses()
     {
         ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
-        ImGui.InputTextWithHint("##Searching the action", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref _statusSearching, 128);
+        ImGui.InputTextWithHint("##Searching the action", LocalizationManager._rightLang.ConfigWindow_List_StatusNameOrId, ref _statusSearching, 128);
 
         using var table = ImRaii.Table("Rotation Solver List Statuses", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
         if (table)
@@ -1851,36 +1851,36 @@ public partial class RotationConfigWindow : Window
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_Invincibility);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_List_Invincibility);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_Priority);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_List_Priority);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatus);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_List_DangerousStatus);
 
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
 
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_InvincibilityDesc);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_List_InvincibilityDesc);
             DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, AllStatus);
 
             ImGui.TableNextColumn();
 
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_PriorityDesc);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_List_PriorityDesc);
             DrawStatusList(nameof(OtherConfiguration.PriorityStatus), OtherConfiguration.PriorityStatus, AllStatus);
 
             ImGui.TableNextColumn();
 
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_DangerousStatusDesc);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_List_DangerousStatusDesc);
             DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, AllDispelStatus);
         }
     }
 
     private static void FromClipBoardButton(HashSet<uint> items)
     {
-        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_Actions_Copy))
+        if (ImGui.Button(LocalizationManager._rightLang.ConfigWindow_Actions_Copy))
         {
             try
             {
@@ -1894,7 +1894,7 @@ public partial class RotationConfigWindow : Window
 
         ImGui.SameLine();
 
-        if (ImGui.Button(LocalizationManager.RightLang.ActionSequencer_FromClipboard))
+        if (ImGui.Button(LocalizationManager._rightLang.ActionSequencer_FromClipboard))
         {
             try
             {
@@ -1944,7 +1944,7 @@ public partial class RotationConfigWindow : Window
             {
                 if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
             }
-            ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_List_AddStatus);
+            ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ConfigWindow_List_AddStatus);
         }
 
         foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
@@ -1955,7 +1955,7 @@ public partial class RotationConfigWindow : Window
 
             var key = "Status" + status.RowId.ToString();
 
-            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, ["Delete"]));
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager._rightLang.ConfigWindow_List_Remove, Delete, ["Delete"]));
 
             if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
             {
@@ -1983,7 +1983,7 @@ public partial class RotationConfigWindow : Window
         if (popup)
         {
             ImGui.SetNextItemWidth(200 * Scale);
-            ImGui.InputTextWithHint("##Searching the status", LocalizationManager.RightLang.ConfigWindow_List_StatusNameOrId, ref searching, 128);
+            ImGui.InputTextWithHint("##Searching the status", LocalizationManager._rightLang.ConfigWindow_List_StatusNameOrId, ref searching, 128);
 
             ImGui.Spacing();
 
@@ -2022,7 +2022,7 @@ public partial class RotationConfigWindow : Window
     private static void DrawListActions()
     {
         ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
-        ImGui.InputTextWithHint("##Searching the action", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
+        ImGui.InputTextWithHint("##Searching the action", LocalizationManager._rightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
 
         using var table = ImRaii.Table("Rotation Solver List Actions", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
         if (table)
@@ -2031,15 +2031,15 @@ public partial class RotationConfigWindow : Window
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingTank);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_List_HostileCastingTank);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingArea);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_List_HostileCastingArea);
 
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingTankDesc);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_List_HostileCastingTankDesc);
             DrawActionsList(nameof(OtherConfiguration.HostileCastingTank), OtherConfiguration.HostileCastingTank);
 
             ImGui.TableNextColumn();
@@ -2047,7 +2047,7 @@ public partial class RotationConfigWindow : Window
             {
                 searchable?.Draw();
             }
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_HostileCastingAreaDesc);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_List_HostileCastingAreaDesc);
 
             DrawActionsList(nameof(OtherConfiguration.HostileCastingArea), OtherConfiguration.HostileCastingArea);
         }
@@ -2060,7 +2060,7 @@ public partial class RotationConfigWindow : Window
 
         var popupId = "Rotation Solver Action Popup" + name;
 
-        if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_List_AddAction + "##" + name))
+        if (ImGui.Button(LocalizationManager._rightLang.ConfigWindow_List_AddAction + "##" + name))
         {
             if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
         }
@@ -2078,7 +2078,7 @@ public partial class RotationConfigWindow : Window
 
             var key = "Action" + action.RowId.ToString();
 
-            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, ["Delete"]));
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager._rightLang.ConfigWindow_List_Remove, Reset, ["Delete"]));
 
             ImGui.Selectable($"{action.Name} ({action.RowId})");
 
@@ -2095,7 +2095,7 @@ public partial class RotationConfigWindow : Window
         if (popup)
         {
             ImGui.SetNextItemWidth(200 * Scale);
-            ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager.RightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
+            ImGui.InputTextWithHint("##Searching the action pop up", LocalizationManager._rightLang.ConfigWindow_List_ActionNameOrId, ref _actionSearching, 128);
 
             ImGui.Spacing();
 
@@ -2159,19 +2159,19 @@ public partial class RotationConfigWindow : Window
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_NoHostile);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_List_NoHostile);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_NoProvoke);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_List_NoProvoke);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_List_BeneficialPositions);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_List_BeneficialPositions);
 
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
 
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_NoHostileDesc);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_List_NoHostileDesc);
 
             var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
 
@@ -2190,7 +2190,7 @@ public partial class RotationConfigWindow : Window
             for (int i = 0; i < libs.Length; i++)
             {
                 ImGui.SetNextItemWidth(width);
-                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Target Name {i}", LocalizationManager.RightLang.ConfigWindow_List_NoHostilesName, ref libs[i], 1024))
+                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Target Name {i}", LocalizationManager._rightLang.ConfigWindow_List_NoHostilesName, ref libs[i], 1024))
                 {
                     OtherConfiguration.NoHostileNames[territoryId] = libs;
                     OtherConfiguration.SaveNoHostileNames();
@@ -2211,7 +2211,7 @@ public partial class RotationConfigWindow : Window
             }
             ImGui.TableNextColumn();
 
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_List_NoProvokeDesc);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_List_NoProvokeDesc);
 
             width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
 
@@ -2228,7 +2228,7 @@ public partial class RotationConfigWindow : Window
             for (int i = 0; i < libs.Length; i++)
             {
                 ImGui.SetNextItemWidth(width);
-                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Provoke Name {i}", LocalizationManager.RightLang.ConfigWindow_List_NoProvokeName, ref libs[i], 1024))
+                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Provoke Name {i}", LocalizationManager._rightLang.ConfigWindow_List_NoProvokeName, ref libs[i], 1024))
                 {
                     OtherConfiguration.NoProvokeNames[territoryId] = libs;
                     OtherConfiguration.SaveNoProvokeNames();
@@ -2255,7 +2255,7 @@ public partial class RotationConfigWindow : Window
                 OtherConfiguration.BeneficialPositions[territoryId] = pts = [];
             }
 
-            if (ImGui.Button(LocalizationManager.RightLang.ConfigWindow_List_AddPosition) && Player.Available) unsafe
+            if (ImGui.Button(LocalizationManager._rightLang.ConfigWindow_List_AddPosition) && Player.Available) unsafe
                 {
                     var point = Player.Object.Position;
                     int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
@@ -2280,7 +2280,7 @@ public partial class RotationConfigWindow : Window
 
                 var key = "Beneficial Positions" + i.ToString();
 
-                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager.RightLang.ConfigWindow_List_Remove, Reset, ["Delete"]));
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalizationManager._rightLang.ConfigWindow_List_Remove, Reset, ["Delete"]));
 
                 ImGui.Selectable(pts[i].ToString());
 

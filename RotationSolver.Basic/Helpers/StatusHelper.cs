@@ -77,21 +77,21 @@ public static class StatusHelper
         StatusID.RightEye,
     ];
 
-    internal record Burst2MinsInfo(StatusID Status, bool IsOnHostile, byte Level, params Job[] Jobs);
+    //internal record Burst2MinsInfo(StatusID Status, bool IsOnHostile, byte Level, params Job[] Jobs);
 
-    internal static Burst2MinsInfo[] Burst2Mins { get; } =
-    [
-        //new (StatusID.Divination, false, AstrologianRotation.Divination.Level, Job.AST),
-        //new (StatusID.ChainStratagem, true, SCH_Base.ChainStratagem.Level, Job.SCH),
-        //new (StatusID.Brotherhood, false, MNK_Base.Brotherhood.Level, Job.MNK),
-        //new (StatusID.BattleLitany, false, DRG_Base.BattleLitany.Level, Job.DRG),
-        //new (StatusID.ArcaneCircle, false, RPR_Base.ArcaneCircle.Level, Job.RPR),
-        //new (StatusID.BattleVoice, false, BRD_Base.BattleVoice.Level,Job.BRD ),
-        //new (StatusID.TechnicalFinish, false, DNC_Base.TechnicalStep.Level, Job.DNC),
-        //new (StatusID.SearingLight, false, SMN_Base.SearingLight.Level, Job.SMN),
-        //new (StatusID.Embolden, false, RDM_Base.Embolden.Level, Job.RDM),
-        //new (StatusID.Mug, true, NIN_Base.Mug.Level, Job.NIN, Job.ROG),
-    ];
+    //internal static Burst2MinsInfo[] Burst2Mins { get; } =
+    //[
+    //    new(StatusID.Divination, false, AstrologianRotation.Divination.Level, Job.AST),
+    //    new(StatusID.ChainStratagem, true, SCH_Base.ChainStratagem.Level, Job.SCH),
+    //    new(StatusID.Brotherhood, false, MNK_Base.Brotherhood.Level, Job.MNK),
+    //    new(StatusID.BattleLitany, false, DRG_Base.BattleLitany.Level, Job.DRG),
+    //    new(StatusID.ArcaneCircle, false, RPR_Base.ArcaneCircle.Level, Job.RPR),
+    //    new(StatusID.BattleVoice, false, BRD_Base.BattleVoice.Level, Job.BRD),
+    //    new(StatusID.TechnicalFinish, false, DNC_Base.TechnicalStep.Level, Job.DNC),
+    //    new(StatusID.SearingLight, false, SMN_Base.SearingLight.Level, Job.SMN),
+    //    new(StatusID.Embolden, false, RDM_Base.Embolden.Level, Job.RDM),
+    //    new(StatusID.Mug, true, NIN_Base.Mug.Level, Job.NIN, Job.ROG),
+    //];
 
     /// <summary>
     /// Check whether the target needs to be healing.

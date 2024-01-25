@@ -16,10 +16,9 @@ internal static partial class TargetUpdater
 {
     internal unsafe static void UpdateTarget()
     {
-        DataCenter.AllTargets = Svc.Objects.GetObjectInRadius(30);
-        var battles = DataCenter.AllTargets.OfType<BattleChara>();
-        UpdateHostileTargets(battles);
-        UpdateFriends(battles
+        DataCenter.AllTargets = Svc.Objects.GetObjectInRadius(30).OfType<BattleChara>();
+        UpdateHostileTargets(DataCenter.AllTargets);
+        UpdateFriends(DataCenter.AllTargets
             .Where(b => b.Character()->CharacterData.OnlineStatus != 15 //Removed the one watching cutscene.
             && b.IsTargetable //Removed the one can't target.
             ));

@@ -76,7 +76,7 @@ public static partial class RSCommands
     private static void DoSpecialCommandType(SpecialCommandType specialType, bool sayout = true) => DoOneCommandType(sayout ? EnumTranslations.ToSayout : (s, r) => string.Empty, role =>
     {
         _specialString = specialType.ToSpecialString(role);
-        DataCenter.SetSpecialType(specialType);
+        DataCenter.SpecialType = specialType;
         if (sayout) UpdateToast();
         return specialType;
     });

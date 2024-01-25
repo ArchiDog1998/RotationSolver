@@ -70,12 +70,12 @@ public static partial class RSCommands
         }
         else
         {
-            Svc.Chat.PrintError(LocalizationManager.RightLang.Commands_CannotFindConfig);
+            Svc.Chat.PrintError(LocalizationManager._rightLang.Commands_CannotFindConfig);
             return;
         }
 
         //Say out.
-        Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
+        Svc.Chat.Print(string.Format(LocalizationManager._rightLang.Commands_ChangeSettingsValue,
             strs.FirstOrDefault(), value));
     }
 
@@ -114,7 +114,7 @@ public static partial class RSCommands
 
                     if (Service.Config.GetValue(PluginConfigBool.ShowToastsAboutDoAction))
                     {
-                        Svc.Toasts.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
+                        Svc.Toasts.ShowQuest(string.Format(LocalizationManager._rightLang.Commands_InsertAction, time),
                             new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = iAct.IconID,
@@ -126,7 +126,7 @@ public static partial class RSCommands
             }
         }
 
-        Svc.Chat.PrintError(LocalizationManager.RightLang.Commands_InsertActionFailure);
+        Svc.Chat.PrintError(LocalizationManager._rightLang.Commands_InsertActionFailure);
     }
 
 
@@ -139,12 +139,12 @@ public static partial class RSCommands
             {
                 Svc.Chat.Print(config.GetType().FullName);
                 Svc.Chat.Print(str);
-                Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
+                Svc.Chat.Print(string.Format(LocalizationManager._rightLang.Commands_ChangeRotationConfig,
                     config.DisplayName, configs.GetDisplayString(config.Name)));
 
                 return;
             }
         }
-        Svc.Chat.PrintError(LocalizationManager.RightLang.Commands_CannotFindRotationConfig);
+        Svc.Chat.PrintError(LocalizationManager._rightLang.Commands_CannotFindRotationConfig);
     }
 }

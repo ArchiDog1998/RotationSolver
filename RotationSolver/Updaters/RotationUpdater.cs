@@ -406,16 +406,16 @@ internal static class RotationUpdater
                }
                else
                {
-                   result = LocalizationManager.RightLang.Action_Ability;
+                   result = LocalizationManager._rightLang.Action_Ability;
                }
 
                if (act.Setting.IsFriendly)
                {
-                   result += "-" + LocalizationManager.RightLang.Action_Friendly;
+                   result += "-" + LocalizationManager._rightLang.Action_Friendly;
                }
                else
                {
-                   result += "-" + LocalizationManager.RightLang.Action_Attack;
+                   result += "-" + LocalizationManager._rightLang.Action_Attack;
                }
                return result;
            }

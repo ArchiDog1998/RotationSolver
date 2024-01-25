@@ -1,4 +1,5 @@
-﻿using ECommons.GameHelpers;
+﻿using ECommons.ExcelServices;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 
@@ -36,9 +37,14 @@ public struct ActionBasicInfo
     {
         get
         {
+            if(_action.Action.ClassJob.Row == (uint)Job.BLU)
+            {
+                return DataCenter.BluSlots.Contains(ID);
+            }
+
             if (IsDutyAction)
             {
-                return DataCenter.DutyActions.Contains(AdjustedID);
+                return DataCenter.DutyActions.Contains(ID);
             }
 
             return IsPvP == DataCenter.Territory?.IsPvpZone;
@@ -55,7 +61,8 @@ public struct ActionBasicInfo
         _action = action;
         IsGeneralGCD = _action.Action.IsGeneralGCD();
         IsRealGCD = _action.Action.IsRealGCD();
-        IsLimitBreak = _action.Action.ActionCategory?.Value?.RowId == 9;
+        IsLimitBreak = (ActionCate?)_action.Action.ActionCategory?.Value?.RowId
+            is ActionCate.LimitBreak or ActionCate.LimitBreak_15;
         IsDutyAction = isDutyAction;
         Aspect = (Aspect)_action.Action.Aspect;
     }

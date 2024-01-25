@@ -20,7 +20,7 @@ public class PluginConfig : IPluginConfiguration
     }
 
     [JsonProperty]
-    private readonly Dictionary<Job, JobConfig> _jobsConfig = new();
+    private readonly Dictionary<Job, JobConfig> _jobsConfig = [];
     public GlobalConfig GlobalConfig { get; private set; } = new();
     public int Version { get; set; } = 7;
 
@@ -166,7 +166,7 @@ public class PluginConfig : IPluginConfiguration
         File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,
             JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings()
             {
-                TypeNameHandling = TypeNameHandling.None,
+                TypeNameHandling = TypeNameHandling.Objects,
             }));
     }
 }
@@ -383,7 +383,6 @@ public enum PluginConfigBool : byte
     [Default(false)] OnlyHealSelfWhenNoHealer,
 
     [Default(true)] ShowToggledActionInChat,
-
 }
 
 public enum PluginConfigFloat : byte

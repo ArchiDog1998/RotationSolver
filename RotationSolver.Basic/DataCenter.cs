@@ -6,6 +6,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using Lumina.Excel.GeneratedSheets;
+using Microsoft.CodeAnalysis;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Basic.Rotations.Duties;
@@ -42,7 +43,7 @@ internal static class DataCenter
         {
             if (ConditionSets == null || !ConditionSets.Any())
             {
-                ConditionSets = new MajorConditionSet[] { new MajorConditionSet() };
+                ConditionSets = [new MajorConditionSet()];
             }
 
             var index = Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex);
@@ -68,7 +69,7 @@ internal static class DataCenter
     public static DutyRotation? RightNowDutyRotation { get; internal set; }
 
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
-        || !Service.Config.GetValue(PluginConfigBool.PoslockCasting)
+        || !Service.Config.PoslockCasting
         //Key cancel.
         || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.GetValue(PluginConfigInt.PoslockModifier) % ConfigurationHelper.Keys.Length]]
         //Gamepad cancel.
@@ -109,11 +110,11 @@ internal static class DataCenter
     public static AutoStatus AutoStatus { get; set; } = AutoStatus.None;
     public static AutoStatus CommandStatus { get; set; } = AutoStatus.None;
 
-    public static HashSet<uint> DisabledActionSequencer { get; set; } = new HashSet<uint>();
+    public static HashSet<uint> DisabledActionSequencer { get; set; } = [];
 
-    private static List<NextAct> NextActs = new();
-    public static IAction ActionSequencerAction { private get; set; }
-    public static IAction CommandNextAction
+    private static List<NextAct> NextActs = [];
+    public static IAction? ActionSequencerAction { private get; set; }
+    public static IAction? CommandNextAction
     {
         get
         {
@@ -164,7 +165,7 @@ internal static class DataCenter
                 Service.Config.Save();
             }
 
-            return Service.Config.GlobalConfig.TargetingTypes[Service.Config.GetValue(Configuration.PluginConfigInt.TargetingIndex) % Service.Config.GlobalConfig.TargetingTypes.Count];
+            return Service.Config.GlobalConfig.TargetingTypes[Service.Config.GetValue(PluginConfigInt.TargetingIndex) % Service.Config.GlobalConfig.TargetingTypes.Count];
         }
     }
 
@@ -178,7 +179,7 @@ internal static class DataCenter
         {
             try
             {
-                if (Service.Config.GetValue(Configuration.PluginConfigBool.ChangeTargetForFate) && (IntPtr)FateManager.Instance() != IntPtr.Zero
+                if (Service.Config.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero
                     && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
                     && Player.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
                 {
@@ -187,7 +188,7 @@ internal static class DataCenter
             }
             catch (Exception ex)
             {
-                Svc.Log.Error(ex.StackTrace);
+                Svc.Log.Error(ex.StackTrace ?? ex.Message);
             }
             return 0;
         }
@@ -225,7 +226,10 @@ internal static class DataCenter
 
     public static float CastingTotal { get; internal set; }
     #endregion
+
+
     public static uint[] BluSlots { get; internal set; } = new uint[24];
+
     public static uint[] DutyActions { get; internal set; } = new uint[2];
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
@@ -234,18 +238,22 @@ internal static class DataCenter
         Math.Ceiling((Service.Config.GetValue(PluginConfigFloat.SpecialDuration) + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
 
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
-    internal static SpecialCommandType SpecialType =>
-         SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
+    internal static SpecialCommandType SpecialType
+    {
+        get
+        {
+            return SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
+        }
+        set
+        {
+            _specialType = value;
+            _specialStateStartTime = value == SpecialCommandType.EndSpecial ? DateTime.MinValue : DateTime.Now;
+        }
+    }
 
     public static bool State { get; set; } = false;
 
     public static bool IsManual { get; set; } = false;
-
-    public static void SetSpecialType(SpecialCommandType specialType)
-    {
-        _specialType = specialType;
-        _specialStateStartTime = specialType == SpecialCommandType.EndSpecial ? DateTime.MinValue : DateTime.Now;
-    }
 
     public static bool InCombat { get; set; }
 
@@ -260,44 +268,59 @@ internal static class DataCenter
 
     internal static float CombatTimeRaw { get; set; }
 
+    [Obsolete]
     public static IEnumerable<BattleChara> PartyMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
 
+    [Obsolete]
     public static IEnumerable<BattleChara> PartyTanks { get; internal set; } = Array.Empty<PlayerCharacter>();
 
+    [Obsolete]
     public static IEnumerable<BattleChara> PartyHealers { get; internal set; } = Array.Empty<PlayerCharacter>();
 
+    [Obsolete]
     public static IEnumerable<BattleChara> AllianceMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
 
+    [Obsolete]
     public static IEnumerable<BattleChara> AllianceTanks { get; internal set; } = Array.Empty<PlayerCharacter>();
 
+    [Obsolete]
     public static ObjectListDelay<BattleChara> DeathPeopleAll { get; } = new(
     () => (Service.Config.GetValue(PluginConfigFloat.DeathDelayMin),
     Service.Config.GetValue(PluginConfigFloat.DeathDelayMax)));
 
+    [Obsolete]
     public static ObjectListDelay<BattleChara> DeathPeopleParty { get; } = new(
     () => (Service.Config.GetValue(PluginConfigFloat.DeathDelayMin),
     Service.Config.GetValue(PluginConfigFloat.DeathDelayMax)));
 
+    [Obsolete]
     public static ObjectListDelay<BattleChara> WeakenPeople { get; } = new(
     () => (Service.Config.GetValue(PluginConfigFloat.WeakenDelayMin),
     Service.Config.GetValue(PluginConfigFloat.WeakenDelayMax)));
 
+    [Obsolete]
     public static IEnumerable<BattleChara> DyingPeople { get; internal set; } = Array.Empty<BattleChara>();
 
+    [Obsolete]
     public static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
     () => (Service.Config.GetValue(PluginConfigFloat.HostileDelayMin),
     Service.Config.GetValue(PluginConfigFloat.HostileDelayMax)));
 
+    [Obsolete]
     public static IEnumerable<BattleChara> AllHostileTargets { get; internal set; } = Array.Empty<BattleChara>();
 
+    [Obsolete]
     public static IEnumerable<BattleChara> TarOnMeTargets { get; internal set; } = Array.Empty<BattleChara>();
 
+
+    [Obsolete]
     public static ObjectListDelay<BattleChara> CanInterruptTargets { get; } = new ObjectListDelay<BattleChara>(
     () => (Service.Config.GetValue(PluginConfigFloat.InterruptDelayMin),
     Service.Config.GetValue(PluginConfigFloat.InterruptDelayMax)));
 
-    public static IEnumerable<GameObject> AllTargets { get; set; }
+    public static IEnumerable<BattleChara> AllTargets { get; set; }
 
+    [Obsolete]
     public static bool CanProvoke { get; set; } = false;
 
     public static uint[] TreasureCharas { get; internal set; } = [];
@@ -319,37 +342,37 @@ internal static class DataCenter
     public static unsafe bool HasCompanion => (IntPtr)Player.BattleChara != IntPtr.Zero
                                            && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Player.BattleChara) != IntPtr.Zero;
 
-    public static float RatioOfMembersIn2minsBurst
-    {
-        get
-        {
-            byte burst = 0, count = 0;
+    //public static float RatioOfMembersIn2minsBurst
+    //{
+    //    get
+    //    {
+    //        byte burst = 0, count = 0;
 
-            foreach (var member in PartyMembers)
-            {
-                foreach (var burstInfo in StatusHelper.Burst2Mins)
-                {
-                    if (!burstInfo.Jobs.Contains((Job)member.ClassJob.Id)) continue;
+    //        foreach (var member in PartyMembers)
+    //        {
+    //            foreach (var burstInfo in StatusHelper.Burst2Mins)
+    //            {
+    //                if (!burstInfo.Jobs.Contains((Job)member.ClassJob.Id)) continue;
 
-                    if (member.Level >= burstInfo.Level)
-                    {
-                        var tar = burstInfo.IsOnHostile
-                            && Svc.Targets.Target is BattleChara b ? b
-                            : Player.Object;
-                        if (tar.HasStatus(false, burstInfo.Status)
-                            && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
-                        {
-                            burst++;
-                        }
-                        count++;
-                    }
-                    break;
-                }
-            }
-            if (count == 0) return -1;
-            return (float)burst / count;
-        }
-    }
+    //                if (member.Level >= burstInfo.Level)
+    //                {
+    //                    var tar = burstInfo.IsOnHostile
+    //                        && Svc.Targets.Target is BattleChara b ? b
+    //                        : Player.Object;
+    //                    if (tar.HasStatus(false, burstInfo.Status)
+    //                        && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
+    //                    {
+    //                        burst++;
+    //                    }
+    //                    count++;
+    //                }
+    //                break;
+    //            }
+    //        }
+    //        if (count == 0) return -1;
+    //        return (float)burst / count;
+    //    }
+    //}
 
     #region HP
     public static Dictionary<uint, float> RefinedHP { get; internal set; } = new Dictionary<uint, float>();

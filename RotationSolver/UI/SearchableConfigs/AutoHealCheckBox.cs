@@ -54,14 +54,14 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
             ImGui.TableHeader("");
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Normal);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_Param_Normal);
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_HOT);
+            ImGui.TableHeader(LocalizationManager._rightLang.ConfigWindow_Param_HOT);
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility);
+            ImGui.Text(LocalizationManager._rightLang.ConfigWindow_Param_HealthAreaAbility);
 
             ImGui.TableNextColumn();
 
@@ -73,7 +73,7 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell);
+            ImGui.Text(LocalizationManager._rightLang.ConfigWindow_Param_HealthAreaSpell);
 
             ImGui.TableNextColumn();
 
@@ -86,7 +86,7 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility);
+            ImGui.Text(LocalizationManager._rightLang.ConfigWindow_Param_HealthSingleAbility);
 
             ImGui.TableNextColumn();
 
@@ -98,7 +98,7 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell);
+            ImGui.Text(LocalizationManager._rightLang.ConfigWindow_Param_HealthSingleSpell);
 
             ImGui.TableNextColumn();
 

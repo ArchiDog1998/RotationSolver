@@ -38,9 +38,9 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     private class CheckBoxDisable : CheckBoxConditionAbstract
     {
-        public override string Name => LocalizationManager.RightLang.ConfigWindow_Options_ForcedDisableCondition;
+        public override string Name => LocalizationManager._rightLang.ConfigWindow_Options_ForcedDisableCondition;
 
-        public override string Description => LocalizationManager.RightLang.ConfigWindow_Options_ForcedDisableConditionDesc;
+        public override string Description => LocalizationManager._rightLang.ConfigWindow_Options_ForcedDisableConditionDesc;
 
         protected override bool Value
         {
@@ -64,9 +64,9 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
     private class CheckBoxEnable : CheckBoxConditionAbstract
     {
-        public override string Name => LocalizationManager.RightLang.ConfigWindow_Options_ForcedEnableCondition;
+        public override string Name => LocalizationManager._rightLang.ConfigWindow_Options_ForcedEnableCondition;
 
-        public override string Description => LocalizationManager.RightLang.ConfigWindow_Options_ForcedEnableConditionDesc;
+        public override string Description => LocalizationManager._rightLang.ConfigWindow_Options_ForcedEnableConditionDesc;
 
         protected override bool Value 
         { 

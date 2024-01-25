@@ -21,16 +21,16 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
     private readonly WindowSystem windowSystem;
 
-    static RotationConfigWindow _rotationConfigWindow;
-    static ControlWindow _controlWindow;
-    static NextActionWindow _nextActionWindow;
-    static CooldownWindow _cooldownWindow;
+    static RotationConfigWindow? _rotationConfigWindow;
+    static ControlWindow? _controlWindow;
+    static NextActionWindow? _nextActionWindow;
+    static CooldownWindow? _cooldownWindow;
 
     static readonly List<IDisposable> _dis = new();
     public static string Name => "Rotation Solver";
 
-    public static DalamudLinkPayload OpenLinkPayload { get; private set; }
-    public static DalamudLinkPayload HideWarningLinkPayload { get; private set; }
+    public static DalamudLinkPayload? OpenLinkPayload { get; private set; }
+    public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
@@ -43,21 +43,17 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis.Add(new Service());
         try
         {
-            Service.Config = JsonConvert.DeserializeObject<PluginConfig>(
+            Service.Config = JsonConvert.DeserializeObject<ConfigsNew>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new JsonSerializerSettings()
                 {
-                    MissingMemberHandling = MissingMemberHandling.Error,
-                    Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
-                    {
-                        args.ErrorContext.Handled = true;
-                    }
+                    TypeNameHandling = TypeNameHandling.Objects,
                 })
-                ?? PluginConfig.Create();
+                ?? new ConfigsNew();
         }
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, "Failed to load config");
-            Service.Config = PluginConfig.Create(); ;
+            Service.Config = new ConfigsNew();
         }
 
         _rotationConfigWindow = new();
@@ -78,7 +74,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();
-        _dis.Add(new LocalizationManager());
+        LocalizationManager.InIt();
         ChangeUITranslation();
 
         OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
@@ -102,8 +98,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     internal static void ChangeUITranslation()
     {
-        _rotationConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
-            + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();
+        _rotationConfigWindow.WindowName = "ConfigWindowHeader".Local("Rotation Solver Settings v")
+            + typeof(RotationConfigWindow).Assembly.GetName().Version?.ToString() ?? "?.?.?";
 
         RSCommands.Disable();
         RSCommands.Enable();
@@ -123,6 +119,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         }
         _dis?.Clear();
 
+        LocalizationManager.Dispose();
         MajorUpdater.Dispose();
         PainterManager.Dispose();
         await OtherConfiguration.Save();

@@ -127,7 +127,7 @@ internal readonly struct JobFilter
         {
             var roleOrJob = string.Join("\n",
                 AllJobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
-            return string.Format(LocalizationManager.RightLang.ConfigWindow_NotInJob, roleOrJob);
+            return string.Format(LocalizationManager._rightLang.ConfigWindow_NotInJob, roleOrJob);
         }
     }
 }
@@ -232,7 +232,7 @@ internal abstract class Searchable : ISearchable
         if (IconSet.GetTexture(IconSet.GetJobIcon(DataCenter.Job, IconType.Framed), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
-            ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_Configs_JobConfigTip);
+            ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ConfigWindow_Configs_JobConfigTip);
         }
     }
 }

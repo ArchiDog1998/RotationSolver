@@ -2,12 +2,24 @@
 
 namespace RotationSolver.Localization;
 
-internal class LocalizationManager : IDisposable
+internal static class LocalizationManager
 {
-    public static Strings RightLang { get; private set; } = new Strings();
+    private static Dictionary<string, string> _rightLang = [];
 
-    private readonly Dictionary<string, Strings> _translations = new();
-    public LocalizationManager()
+    private static readonly Dictionary<string, Dictionary<string, string>> _translations = [];
+
+    public static string Local(this string key, string @default)
+    {
+        if (_rightLang.TryGetValue(key, out var value)) return value;
+
+#if DEBUG
+        _rightLang[key] = @default;
+#endif
+        return @default;
+    }
+
+
+    public static void InIt()
     {
         SetLanguage(Svc.PluginInterface.UiLanguage);
         Svc.PluginInterface.LanguageChanged += OnLanguageChange;
@@ -16,11 +28,11 @@ internal class LocalizationManager : IDisposable
 #endif
     }
 
-    private async void SetLanguage(string lang)
+    private static async void SetLanguage(string lang)
     {
         if (_translations.TryGetValue(lang, out var value))
         {
-            RightLang = value;
+            _rightLang = value;
         }
         else
         {
@@ -28,17 +40,17 @@ internal class LocalizationManager : IDisposable
             {
                 var url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/RotationSolver/Localization/{lang}.json";
                 using var client = new HttpClient();
-                RightLang = _translations[lang] = JsonConvert.DeserializeObject<Strings>(await client.GetStringAsync(url));
+                _rightLang = _translations[lang] = JsonConvert.DeserializeObject<Dictionary<string, string>>(await client.GetStringAsync(url))!;
             }
             catch (HttpRequestException ex) when (ex?.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 Svc.Log.Information(ex, $"No language {lang}");
-                RightLang = new Strings();
+                _rightLang = [];
             }
             catch (Exception ex)
             {
                 Svc.Log.Warning(ex, $"Failed to download the language {lang}");
-                RightLang = new Strings();
+                _rightLang = [];
             }
         }
 
@@ -57,12 +69,12 @@ internal class LocalizationManager : IDisposable
     }
 #endif
 
-    public void Dispose()
+    public static void Dispose()
     {
         Svc.PluginInterface.LanguageChanged -= OnLanguageChange;
     }
 
-    private void OnLanguageChange(string languageCode)
+    private static void OnLanguageChange(string languageCode)
     {
         try
         {

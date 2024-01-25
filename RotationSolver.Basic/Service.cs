@@ -38,7 +38,7 @@ internal class Service : IDisposable
     }
 
     public static float CountDownTime => Countdown.TimeRemaining;
-    public static PluginConfig Config { get; set; } = new PluginConfig();
+    public static ConfigsNew Config { get; set; } = new ConfigsNew();
 
     public Service()
     {

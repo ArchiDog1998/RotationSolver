@@ -60,8 +60,8 @@ internal class ControlWindow : CtrlWindow
         var value = Service.Config.GetValue(PluginConfigBool.IsControlWindowLock) ? 0 : 1;
         if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window", new string[]
         {
-            LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowNoMove,
-            LocalizationManager.RightLang.ConfigWindow_Control_IsInfoWindowMove,
+            LocalizationManager._rightLang.ConfigWindow_Control_IsInfoWindowNoMove,
+            LocalizationManager._rightLang.ConfigWindow_Control_IsInfoWindowMove,
         }, ref value))
         {
             Service.Config.SetBoolRaw(PluginConfigBool.IsControlWindowLock, value == 0);
@@ -186,9 +186,9 @@ internal class ControlWindow : CtrlWindow
             {
                 ImGui.Text(DataCenter.RightNowTargetToHostileType switch
                 {
-                    TargetHostileType.AllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType1,
-                    TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType2,
-                    TargetHostileType.TargetsHaveTarget => LocalizationManager.RightLang.ConfigWindow_Param_TargetToHostileType3,
+                    TargetHostileType.AllTargetsCanAttack => LocalizationManager._rightLang.ConfigWindow_Param_TargetToHostileType1,
+                    TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack => LocalizationManager._rightLang.ConfigWindow_Param_TargetToHostileType2,
+                    TargetHostileType.TargetsHaveTarget => LocalizationManager._rightLang.ConfigWindow_Param_TargetToHostileType3,
                     _ => string.Empty,
                 });
 

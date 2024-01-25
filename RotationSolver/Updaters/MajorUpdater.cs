@@ -136,11 +136,11 @@ internal static class MajorUpdater
 
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "Avarice"))
         {
-            LocalizationManager.RightLang.AvariceWarning.ShowWarning(0);
+            LocalizationManager._rightLang.AvariceWarning.ShowWarning(0);
         }
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "TextToTalk"))
         {
-            LocalizationManager.RightLang.TextToTalkWarning.ShowWarning(0);
+            LocalizationManager._rightLang.TextToTalkWarning.ShowWarning(0);
         }
     }
 
@@ -158,7 +158,7 @@ internal static class MajorUpdater
         var waitingTime = (DateTime.Now - _lastUpdatedWork).TotalMilliseconds;
         if (waitingTime > 100)
         {
-            Svc.Log.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
+            Svc.Log.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{LocalizationManager._rightLang.ConfigWindow_Param_UseWorkTask}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
         }
 
         if (!IsValid)

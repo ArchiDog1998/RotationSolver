@@ -45,7 +45,7 @@ public static partial class RSCommands
 
         if (wrong)
         {
-            Svc.Toasts.ShowError(string.Format(LocalizationManager.RightLang.ClickingMistakeMessage, nextAction));
+            Svc.Toasts.ShowError(string.Format(LocalizationManager._rightLang.ClickingMistakeMessage, nextAction));
             ControlWindow.Wrong = nextAction;
             ControlWindow.DidTime = DateTime.Now;
         }

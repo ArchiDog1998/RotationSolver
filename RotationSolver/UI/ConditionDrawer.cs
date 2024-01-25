@@ -37,7 +37,7 @@ internal static class ConditionDrawer
                     isNot = !isNot;
                 }
 
-                ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ActionSequencer_NotDescription, isNot));
+                ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager._rightLang.ActionSequencer_NotDescription, isNot));
             }
         }
         else
@@ -50,7 +50,7 @@ internal static class ConditionDrawer
                 {
                     isNot = !isNot;
                 }
-                ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager.RightLang.ActionSequencer_NotDescription, isNot));
+                ImguiTooltips.HoveredTooltip(string.Format(LocalizationManager._rightLang.ActionSequencer_NotDescription, isNot));
 
             }
         }
@@ -127,7 +127,7 @@ internal static class ConditionDrawer
 
     internal static void SearchItemsReflection<T>(string popId, string name, ref string searchTxt, T[] actions, Action<T> selectAction) where T : MemberInfo
     {
-        SearchItems(popId, name, ref searchTxt, actions, ImGuiHelper.GetMemberName, selectAction, LocalizationManager.RightLang.ConfigWindow_Actions_MemberName);
+        SearchItems(popId, name, ref searchTxt, actions, ImGuiHelper.GetMemberName, selectAction, LocalizationManager._rightLang.ConfigWindow_Actions_MemberName);
     }
 
     internal static void SearchItems<T>(string popId, string name, ref string searchTxt, T[] items, Func<T, string> getSearchName, Action<T> selectAction, string searchingHint)
@@ -142,7 +142,7 @@ internal static class ConditionDrawer
 
         if (items == null || items.Length == 0)
         {
-            ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager.RightLang.ConfigWindow_Condition_NoItemsWarning);
+            ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager._rightLang.ConfigWindow_Condition_NoItemsWarning);
             return;
         }
 
@@ -231,7 +231,7 @@ internal static class ConditionDrawer
     {
         if (rotation == null)
         {
-            ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager.RightLang.ConfigWindow_Condition_RotationNullWarning);
+            ImGui.TextColored(ImGuiColors.DalamudRed, LocalizationManager._rightLang.ConfigWindow_Condition_RotationNullWarning);
             return;
         }
 
@@ -257,7 +257,7 @@ internal static class ConditionDrawer
             condition.DelayMin = Math.Max(Math.Min(condition.DelayMin, condition.DelayMax), MIN);
             condition.DelayMax = Math.Min(Math.Max(condition.DelayMin, condition.DelayMax), MAX);
         }
-        ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ActionSequencer_Delay_Description +
+        ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ActionSequencer_Delay_Description +
             "\n" + ConfigUnitType.Seconds.ToDesc());
     }
 
@@ -309,7 +309,7 @@ internal static class ConditionDrawer
             DataCenter.RightSet.NamedConditions.Select(p => p.Name).ToArray(), i => i.ToString(), i =>
             {
                 namedCondition.ConditionName = i;
-            }, LocalizationManager.RightLang.ConfigWindow_Condition_ConditionName);
+            }, LocalizationManager._rightLang.ConfigWindow_Condition_ConditionName);
 
         ImGui.SameLine();
     }
@@ -371,7 +371,7 @@ internal static class ConditionDrawer
         var i = 0;
         ImGuiHelper.SelectableCombo($"##Category{traitCondition.GetHashCode()}", new string[]
         {
-            LocalizationManager.RightLang.ActionConditionType_EnoughLevel
+            LocalizationManager._rightLang.ActionConditionType_EnoughLevel
         }, ref i);
         ImGui.SameLine();
     }
@@ -418,7 +418,7 @@ internal static class ConditionDrawer
                 {
                     actionCondition.Param1 = Math.Max(0, actionCondition.Param1);
                 }
-                if (DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{actionCondition.GetHashCode()}", ref actionCondition.Param2))
+                if (DrawDragInt($"{LocalizationManager._rightLang.ActionSequencer_TimeOffset}##Ability{actionCondition.GetHashCode()}", ref actionCondition.Param2))
                 {
                     actionCondition.Param2 = Math.Max(0, actionCondition.Param2);
                 }
@@ -451,7 +451,7 @@ internal static class ConditionDrawer
                     }
                 }
 
-                if (DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_AOECount}##AOECount{actionCondition.GetHashCode()}", ref actionCondition.Param2))
+                if (DrawDragInt($"{LocalizationManager._rightLang.ActionSequencer_AOECount}##AOECount{actionCondition.GetHashCode()}", ref actionCondition.Param2))
                 {
                     actionCondition.Param2 = Math.Max(0, actionCondition.Param2);
                 }
@@ -461,7 +461,7 @@ internal static class ConditionDrawer
             case ActionConditionType.MaxCharges:
                 DrawCondition(actionCondition, ref actionCondition.Param2);
 
-                if (DrawDragInt($"{LocalizationManager.RightLang.ActionSequencer_Charges}##Charges{actionCondition.GetHashCode()}", ref actionCondition.Param1))
+                if (DrawDragInt($"{LocalizationManager._rightLang.ActionSequencer_Charges}##Charges{actionCondition.GetHashCode()}", ref actionCondition.Param1))
                 {
                     actionCondition.Param1 = Math.Max(0, actionCondition.Param1);
                 }
@@ -514,10 +514,10 @@ internal static class ConditionDrawer
             var key = $"Condition Pop Up: {condition.GetHashCode()}";
 
             ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                (LocalizationManager.RightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }),
-                (LocalizationManager.RightLang.ConfigWindow_Actions_MoveUp, Up, new string[] { "↑" }),
-                (LocalizationManager.RightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }),
-                (LocalizationManager.RightLang.ConfigWindow_Actions_Copy, Copy, new string[] { "Ctrl" }));
+                (LocalizationManager._rightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }),
+                (LocalizationManager._rightLang.ConfigWindow_Actions_MoveUp, Up, new string[] { "↑" }),
+                (LocalizationManager._rightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }),
+                (LocalizationManager._rightLang.ConfigWindow_Actions_Copy, Copy, new string[] { "Ctrl" }));
 
             if (condition is DelayCondition delay)
             {
@@ -551,14 +551,14 @@ internal static class ConditionDrawer
             using var popUp = ImRaii.Popup("Popup" + conditionSet.GetHashCode().ToString());
             if (popUp)
             {
-                AddOneCondition<ConditionSet>(LocalizationManager.RightLang.ActionSequencer_ConditionSet);
-                AddOneCondition<ActionCondition>(LocalizationManager.RightLang.ActionSequencer_ActionCondition);
-                AddOneCondition<TraitCondition>(LocalizationManager.RightLang.ActionSequencer_TraitCondition);
-                AddOneCondition<TargetCondition>(LocalizationManager.RightLang.ActionSequencer_TargetCondition);
-                AddOneCondition<RotationCondition>(LocalizationManager.RightLang.ActionSequencer_RotationCondition);
-                AddOneCondition<NamedCondition>(LocalizationManager.RightLang.ActionSequencer_NamedCondition);
-                AddOneCondition<TerritoryCondition>(LocalizationManager.RightLang.ActionSequencer_TerritoryCondition);
-                if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_FromClipboard))
+                AddOneCondition<ConditionSet>(LocalizationManager._rightLang.ActionSequencer_ConditionSet);
+                AddOneCondition<ActionCondition>(LocalizationManager._rightLang.ActionSequencer_ActionCondition);
+                AddOneCondition<TraitCondition>(LocalizationManager._rightLang.ActionSequencer_TraitCondition);
+                AddOneCondition<TargetCondition>(LocalizationManager._rightLang.ActionSequencer_TargetCondition);
+                AddOneCondition<RotationCondition>(LocalizationManager._rightLang.ActionSequencer_RotationCondition);
+                AddOneCondition<NamedCondition>(LocalizationManager._rightLang.ActionSequencer_NamedCondition);
+                AddOneCondition<TerritoryCondition>(LocalizationManager._rightLang.ActionSequencer_TerritoryCondition);
+                if (ImGui.Selectable(LocalizationManager._rightLang.ActionSequencer_FromClipboard))
                 {
                     var str = ImGui.GetClipboardText();
                     try
@@ -664,8 +664,8 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
                 ImGuiHelper.SelectableCombo($"##Adjust{rotationCondition.GetHashCode()}", new string[]
                 {
-                    LocalizationManager.RightLang.ActionSequencer_Original,
-                    LocalizationManager.RightLang.ActionSequencer_Adjusted,
+                    LocalizationManager._rightLang.ActionSequencer_Original,
+                    LocalizationManager._rightLang.ActionSequencer_Adjusted,
                 }, ref rotationCondition.Param1);
                 break;
         }
@@ -689,21 +689,21 @@ internal static class ConditionDrawer
 
         ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => targetCondition.ID = (ActionID)item.ID, () =>
         {
-            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_HostileTarget))
+            if (ImGui.Selectable(LocalizationManager._rightLang.ActionSequencer_HostileTarget))
             {
                 targetCondition._action = null;
                 targetCondition.ID = ActionID.None;
                 targetCondition.TargetType = TargetType.HostileTarget;
             }
 
-            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Target))
+            if (ImGui.Selectable(LocalizationManager._rightLang.ActionSequencer_Target))
             {
                 targetCondition._action = null;
                 targetCondition.ID = ActionID.None;
                 targetCondition.TargetType = TargetType.Target;
             }
 
-            if (ImGui.Selectable(LocalizationManager.RightLang.ActionSequencer_Player))
+            if (ImGui.Selectable(LocalizationManager._rightLang.ActionSequencer_Player))
             {
                 targetCondition._action = null;
                 targetCondition.ID = ActionID.None;
@@ -727,12 +727,12 @@ internal static class ConditionDrawer
             }
             ImGuiHelper.DrawActionOverlay(cursor, IconSize, 1);
 
-            var description = targetCondition._action != null ? string.Format(LocalizationManager.RightLang.ActionSequencer_ActionTarget, targetCondition._action.Name)
+            var description = targetCondition._action != null ? string.Format(LocalizationManager._rightLang.ActionSequencer_ActionTarget, targetCondition._action.Name)
                 : targetCondition.TargetType switch
                 {
-                    TargetType.Target => LocalizationManager.RightLang.ActionSequencer_Target,
-                    TargetType.HostileTarget => LocalizationManager.RightLang.ActionSequencer_HostileTarget,
-                    TargetType.Player => LocalizationManager.RightLang.ActionSequencer_Player,
+                    TargetType.Target => LocalizationManager._rightLang.ActionSequencer_Target,
+                    TargetType.HostileTarget => LocalizationManager._rightLang.ActionSequencer_HostileTarget,
+                    TargetType.Player => LocalizationManager._rightLang.ActionSequencer_Player,
                     _ => string.Empty,
                 };
             ImguiTooltips.HoveredTooltip(description);
@@ -773,8 +773,8 @@ internal static class ConditionDrawer
                 var check = targetCondition.FromSelf ? 1 : 0;
                 if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}", new string[]
                 {
-                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
-                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                    LocalizationManager._rightLang.ActionSequencer_StatusAll,
+                    LocalizationManager._rightLang.ActionSequencer_StatusSelf,
                 }, ref check))
                 {
                     targetCondition.FromSelf = check != 0;
@@ -790,8 +790,8 @@ internal static class ConditionDrawer
                 check = targetCondition.FromSelf ? 1 : 0;
                 if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}", new string[]
                 {
-                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
-                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                    LocalizationManager._rightLang.ActionSequencer_StatusAll,
+                    LocalizationManager._rightLang.ActionSequencer_StatusSelf,
                 }, ref check))
                 {
                     targetCondition.FromSelf = check != 0;
@@ -812,15 +812,15 @@ internal static class ConditionDrawer
                 check = targetCondition.FromSelf ? 1 : 0;
                 if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}", new string[]
                 {
-                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
-                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                    LocalizationManager._rightLang.ActionSequencer_StatusAll,
+                    LocalizationManager._rightLang.ActionSequencer_StatusSelf,
                 }, ref check))
                 {
                     targetCondition.FromSelf = check != 0;
                 }
 
                 DrawDragInt($"GCD##GCD{targetCondition.GetHashCode()}", ref targetCondition.GCD);
-                DrawDragFloat(ConfigUnitType.Seconds, $"{LocalizationManager.RightLang.ActionSequencer_TimeOffset}##Ability{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
+                DrawDragFloat(ConfigUnitType.Seconds, $"{LocalizationManager._rightLang.ActionSequencer_TimeOffset}##Ability{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
 
             case TargetConditionType.Distance:
@@ -896,8 +896,8 @@ internal static class ConditionDrawer
                 check = targetCondition.FromSelf ? 1 : 0;
                 if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}", new string[]
                 {
-                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
-                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                    LocalizationManager._rightLang.ActionSequencer_StatusAll,
+                    LocalizationManager._rightLang.ActionSequencer_StatusSelf,
                 }, ref check))
                 {
                     targetCondition.FromSelf = check != 0;
@@ -929,8 +929,8 @@ internal static class ConditionDrawer
                 check = targetCondition.FromSelf ? 1 : 0;
                 if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}", new string[]
                 {
-                    LocalizationManager.RightLang.ActionSequencer_StatusAll,
-                    LocalizationManager.RightLang.ActionSequencer_StatusSelf,
+                    LocalizationManager._rightLang.ActionSequencer_StatusAll,
+                    LocalizationManager._rightLang.ActionSequencer_StatusSelf,
                 }, ref check))
                 {
                     targetCondition.FromSelf = check != 0;
@@ -941,7 +941,7 @@ internal static class ConditionDrawer
         if (targetCondition._action == null && targetCondition.TargetType == TargetType.Target)
         {
             using var style = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
-            ImGui.TextWrapped(LocalizationManager.RightLang.ConfigWindow_Condition_TargetWarning);
+            ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Condition_TargetWarning);
         }
     }
 
@@ -975,7 +975,7 @@ internal static class ConditionDrawer
                 TerritoryNames, i => i.ToString(), i =>
                 {
                     territoryCondition.Name = i;
-                }, LocalizationManager.RightLang.ConfigWindow_Condition_TerritoryName);
+                }, LocalizationManager._rightLang.ConfigWindow_Condition_TerritoryName);
                 break;
 
             case TerritoryConditionType.DutyName:
@@ -985,7 +985,7 @@ internal static class ConditionDrawer
                 DutyNames, i => i.ToString(), i =>
                 {
                     territoryCondition.Name = i;
-                }, LocalizationManager.RightLang.ConfigWindow_Condition_DutyName);
+                }, LocalizationManager._rightLang.ConfigWindow_Condition_DutyName);
                 break;
 
             case TerritoryConditionType.MapEffect:

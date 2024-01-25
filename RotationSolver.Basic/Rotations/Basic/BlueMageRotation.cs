@@ -1,8 +1,40 @@
-﻿//using ECommons.DalamudServices;
-//using ECommons.ExcelServices;
-//using RotationSolver.Basic.Traits;
+﻿namespace RotationSolver.Basic.Rotations.Basic;
 
-//namespace RotationSolver.Basic.Rotations.Basic;
+partial class BlueMageRotation
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public override MedicineType MedicineType => MedicineType.Intelligence;
+
+    /// <summary>
+    /// Tye ID card for Blu.
+    /// </summary>
+    public enum BLUID : byte
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        Tank,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        Healer,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        DPS,
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected BLUID BlueId { get; set; } = BLUID.DPS;
+
+    private protected sealed override IBaseAction Raise => AngelWhisperPvE;
+}
 
 ///// <summary>
 ///// The BLU Action.
@@ -25,90 +57,8 @@
 ///// </summary>
 //public abstract class BLU_Base : CustomRotation
 //{
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public override MedicineType MedicineType => MedicineType.Intelligence;
 
-//    /// <summary>
-//    /// Tye ID card for Blu.
-//    /// </summary>
-//    public enum BLUID : byte
-//    {
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        Tank,
 
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        Healer,
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        DPS,
-//    }
-
-//    /// <summary>
-//    /// Attack Type.
-//    /// </summary>
-//    public enum BLUAttackType : byte
-//    {
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        Both,
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        Magical,
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        Physical,
-//    }
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public enum BLUActionType : byte
-//    {
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        None,
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        Magical,
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        Physical,
-//    }
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public sealed override Job[] Jobs => new Job[] { Job.BLU };
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    protected static BLUAttackType BluAttackType { get; set; } = BLUAttackType.Both;
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    protected static BLUID BlueId { get; set; } = BLUID.DPS;
-
-//    private protected sealed override IBaseAction Raise => AngelWhisper;
 
 //    /// <summary>
 //    /// 

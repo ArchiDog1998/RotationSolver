@@ -1,6 +1,4 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
-
-namespace RotationSolver.Basic.Rotations.Basic;
+﻿namespace RotationSolver.Basic.Rotations.Basic;
 
 
 partial class AstrologianRotation
@@ -26,40 +24,74 @@ partial class AstrologianRotation
 
     private sealed protected override IBaseAction? Raise => AscendPvE;
 
+    private static readonly StatusID[] CombustStatus = 
+    [
+        StatusID.Combust,
+        StatusID.CombustIi,
+        StatusID.CombustIii,
+        StatusID.CombustIii_2041,
+    ];
+
+
+    static partial void ModifyCombustPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = CombustStatus;
+    }
+
+    static partial void ModifyCombustIiPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = CombustStatus;
+    }
+
+    static partial void ModifyCombustIiiPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = CombustStatus;
+    }
+
+    static partial void ModifyCelestialIntersectionPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = [StatusID.Intersection];
+    }
+
+    static partial void ModifyExaltationPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = [StatusID.Exaltation];
+    }
+
+    static partial void ModifyCollectiveUnconsciousPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = [StatusID.CollectiveUnconscious];
+    }
+
+    static partial void ModifyAstrodynePvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => !Seals.Contains(SealType.NONE);
+    }
+
+    static partial void ModifyDrawPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => DrawnCard == CardType.NONE;
+    }
+
+    static partial void ModifyRedrawPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard));
+    }
+
+    static partial void ModifyMinorArcanaPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => InCombat;
+    }
+
+
     public AstrologianRotation()
     {
-        //Combust_PvE.Option = ActionOption.Dot;
-        //CombustPvE.TargetStatus =
-        //[
-        //    StatusID.Combust,
-        //    StatusID.CombustIi,
-        //    StatusID.CombustIii,
-        //    StatusID.CombustIii_2041,
-        //];
-
-        //Benefic_PvE.Option = Helios_PvE.Option = ActionOption.Hot;
-
-        //CelestialIntersection_PvE.Option = Exaltation_PvE.Option 
-        //   = CollectiveUnconscious_PvE.Option = ActionOption.Defense;
-
-        //CelestialIntersection_PvE.ChoiceTarget = Exaltation_PvE.ChoiceTarget = TargetFilter.FindAttackedTarget;
-
-        //CelestialIntersection_PvE.TargetStatus = [StatusID.Intersection];
-        //Exaltation_PvE.TargetStatus = [StatusID.Exaltation];
-        //CollectiveUnconscious_PvE.StatusProvide = [StatusID.CollectiveUnconscious];
-
         //Lightspeed_PvE.ActionCheck = Divination_PvE.ActionCheck = (b, m) => IsLongerThan(10);
         //NeutralSect_PvE.ActionCheck = (b, m) => IsLongerThan(15);
 
         //Astrodyne_PvE.Option = ActionOption.UseResources;
         //Astrodyne_PvE.ActionCheck = (b, m) => !Seals.Contains(SealType.NONE)
         //    && IsLongerThan(10);
-
-        //Draw_PvE.ActionCheck = (b, m) => DrawnCard == CardType.NONE;
-        //Redraw_PvE.ActionCheck = (b, m) => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard))
-        //&& !Astrodyne_PvE.ActionCheck(b, m);
-
-        //MinorArcana_PvE.ActionCheck = (b, m) => InCombat;
 
         //TheBalance_PvE.ChoiceTarget = TheArrow_PvE.ChoiceTarget = TheSpear_PvE.ChoiceTarget = TargetFilter.ASTMeleeTarget;
         //TheBole_PvE.ChoiceTarget = TheEwer_PvE.ChoiceTarget = TheSpire_PvE.ChoiceTarget = TargetFilter.ASTRangeTarget;
@@ -78,6 +110,7 @@ partial class AstrologianRotation
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
         setting.TargetStatusFromSelf = false;
+        setting.TargetType = TargetType.Melee;
         setting.ActionCheck = () => DrawnCard == CardType.ARROW;
     }
 
@@ -85,22 +118,23 @@ partial class AstrologianRotation
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
         setting.TargetStatusFromSelf = false;
+        setting.TargetType = TargetType.Melee;
         setting.ActionCheck = () => DrawnCard == CardType.BALANCE;
-
     }
 
     static partial void ModifyTheBolePvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
         setting.TargetStatusFromSelf = false;
+        setting.TargetType = TargetType.Range;
         setting.ActionCheck = () => DrawnCard == CardType.BOLE;
-
     }
 
     static partial void ModifyTheEwerPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
         setting.TargetStatusFromSelf = false;
+        setting.TargetType = TargetType.Range;
         setting.ActionCheck = () => DrawnCard == CardType.EWER;
     }
 
@@ -108,6 +142,7 @@ partial class AstrologianRotation
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
         setting.TargetStatusFromSelf = false;
+        setting.TargetType = TargetType.Melee;
         setting.ActionCheck = () => DrawnCard == CardType.SPEAR;
     }
 
@@ -115,6 +150,7 @@ partial class AstrologianRotation
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
         setting.TargetStatusFromSelf = false;
+        setting.TargetType = TargetType.Range;
         setting.ActionCheck = () => DrawnCard == CardType.SPIRE;
     }
 

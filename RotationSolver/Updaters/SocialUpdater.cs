@@ -114,7 +114,7 @@ internal class SocialUpdater
 
         if (DataCenter.IsInHighEndDuty)
         {
-            string.Format(LocalizationManager.RightLang.HighEndWarning,
+            string.Format(LocalizationManager._rightLang.HighEndWarning,
                 DataCenter.ContentFinderName).ShowWarning();
         }
     }
