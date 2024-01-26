@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Rotations;
+using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -19,8 +20,8 @@ namespace RotationSolver.Updaters;
 
 internal class SocialUpdater
 {
-    private static readonly List<string> _macroToAuthor = new()
-    {
+    private static readonly List<string> _macroToAuthor =
+    [
         "blush",
         "hug",
         "thumbsup",
@@ -28,13 +29,13 @@ internal class SocialUpdater
         "clap",
         "cheer",
         "stroke",
-    };
+    ];
 
-    private static readonly HashSet<string> saidAuthors = new();
+    private static readonly HashSet<string> saidAuthors = [];
 
     static bool _canSaying = false;
 
-    public static string GetDutyName(TerritoryType territory)
+    public static string? GetDutyName(TerritoryType territory)
     {
         return territory.ContentFinderCondition?.Value?.Name?.RawString;
     }
@@ -73,7 +74,7 @@ internal class SocialUpdater
 
         Service.Config.GlobalConfig.DutyEnd.AddMacro();
 
-        if (Service.Config.GetValue(PluginConfigBool.AutoOffWhenDutyCompleted))
+        if (Service.Config.AutoOffWhenDutyCompleted)
         {
             RSCommands.CancelState();
         }
@@ -114,7 +115,7 @@ internal class SocialUpdater
 
         if (DataCenter.IsInHighEndDuty)
         {
-            string.Format(LocalizationManager._rightLang.HighEndWarning,
+            string.Format("HighEndWarning".Local("Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!"),
                 DataCenter.ContentFinderName).ShowWarning();
         }
     }

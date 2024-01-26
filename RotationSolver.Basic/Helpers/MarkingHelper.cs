@@ -24,7 +24,7 @@ internal class MarkingHelper
         return charas.FirstOrDefault(item => item.ObjectId == id);
     }
 
-    internal unsafe static IEnumerable<GameObject> FilterStopCharaes(IEnumerable<GameObject> charas)
+    internal unsafe static IEnumerable<BattleChara> FilterStopCharaes(IEnumerable<BattleChara> charas)
     {
         var ids = new List<long>() { GetMarker(8), GetMarker(9) }.Where(id => id != 0xE0000000);
         return charas.Where(b => !ids.Contains(b.ObjectId));

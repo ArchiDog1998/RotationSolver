@@ -11,8 +11,8 @@ internal static class StateUpdater
         //PvP
         DataCenter.Territory.IsPvpZone
         //Job
-        || (DataCenter.Role == JobRole.Healer || Service.Config.GetValue(PluginConfigBool.UseHealWhenNotAHealer))
-        && Service.Config.GetValue(PluginConfigBool.AutoHeal)
+        || (DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
+        && Service.Config.AutoHeal
         && CustomRotation.IsLongerThan(Service.Config.GetValue(PluginConfigFloat.AutoHealTimeToKill));
 
     public static void UpdateState()
@@ -25,14 +25,13 @@ internal static class StateUpdater
     {
         AutoStatus status = AutoStatus.None;
 
-        if (Service.Config.GetValue(PluginConfigBool.RaiseAll)
-                ? DataCenter.DeathPeopleAll.Any() : DataCenter.DeathPeopleParty.Any())
+        if (DataCenter.DeathTarget is not null)
         {
             status |= AutoStatus.Raise;
         }
 
         if ((DataCenter.HPNotFull || DataCenter.Role != JobRole.Healer) && CanUseHealAction
-            && (DataCenter.InCombat || Service.Config.GetValue(PluginConfigBool.HealOutOfCombat)))
+            && (DataCenter.InCombat || Service.Config.HealOutOfCombat))
         {
             if (DataCenter.CanHealAreaAbility)
             {
@@ -54,7 +53,7 @@ internal static class StateUpdater
 
         if (DataCenter.InCombat)
         {
-            if (Service.Config.GetValue(PluginConfigBool.UseDefenseAbility))
+            if (Service.Config.UseDefenseAbility)
             {
                 if (DataCenter.IsHostileCastingAOE)
                 {
@@ -63,9 +62,9 @@ internal static class StateUpdater
 
                 if (DataCenter.Role == JobRole.Healer || DataCenter.Job == ECommons.ExcelServices.Job.PLD) // Help defense.
                 {
-                    if (DataCenter.PartyTanks.Any((tank) =>
+                    if (DataCenter.PartyMembers.Any((tank) =>
                     {
-                        var attackingTankObj = DataCenter.HostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
+                        var attackingTankObj = DataCenter.AllHostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
 
                         if (attackingTankObj.Count() != 1) return false;
 

@@ -11,11 +11,6 @@ public enum TargetHostileType : byte
     AllTargetsCanAttack,
 
     /// <summary>
-    /// Have target then all.
-    /// </summary>
-    TargetsHaveTargetOrAllTargetsCanAttack,
-
-    /// <summary>
     /// Have target.
     /// </summary>
     TargetsHaveTarget,

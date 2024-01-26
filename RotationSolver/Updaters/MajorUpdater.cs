@@ -26,7 +26,7 @@ internal static class MajorUpdater
         && Player.Available;
 
     static bool _showedWarning, _work;
-    static Exception _threadException;
+    static Exception? _threadException;
     static DateTime _lastUpdatedWork = DateTime.Now;
 
     private unsafe static void FrameworkUpdate(IFramework framework)
@@ -53,7 +53,7 @@ internal static class MajorUpdater
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
 
-            if (Service.Config.GetValue(PluginConfigBool.TeachingMode) && ActionUpdater.NextAction != null)
+            if (Service.Config.TeachingMode && ActionUpdater.NextAction != null)
             {
                 //Sprint action id is 3 however the id in hot bar is 4.
                 var id = ActionUpdater.NextAction.AdjustedID;
@@ -91,7 +91,7 @@ internal static class MajorUpdater
             _work = true;
             _lastUpdatedWork = DateTime.Now;
 
-            if (Service.Config.GetValue(PluginConfigBool.UseWorkTask))
+            if (Service.Config.UseWorkTask)
             {
                 Task.Run(UpdateWork);
             }
@@ -136,11 +136,11 @@ internal static class MajorUpdater
 
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "Avarice"))
         {
-            LocalizationManager._rightLang.AvariceWarning.ShowWarning(0);
+            "AvariceWarning".Local("Avarice addon was not detected, please install it if you want to get the positional indicators for Rotation Solver!").ShowWarning(0);
         }
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "TextToTalk"))
         {
-            LocalizationManager._rightLang.TextToTalkWarning.ShowWarning(0);
+            "TextToTalkWarning".Local("TextToTalk addon was not detected, please install it to make Rotation Solver give audio notifications!").ShowWarning(0);
         }
     }
 
@@ -152,7 +152,7 @@ internal static class MajorUpdater
         Svc.Framework.Update += FrameworkUpdate;
     }
 
-    static Exception _innerException;
+    static Exception? _innerException;
     private static void UpdateWork()
     {
         var waitingTime = (DateTime.Now - _lastUpdatedWork).TotalMilliseconds;
@@ -172,7 +172,7 @@ internal static class MajorUpdater
             TargetUpdater.UpdateTarget();
             StateUpdater.UpdateState();
 
-            if (Service.Config.GetValue(PluginConfigBool.AutoLoadCustomRotations))
+            if (Service.Config.AutoLoadCustomRotations)
             {
                 RotationUpdater.LocalRotationWatcher();
             }
@@ -230,7 +230,7 @@ internal static class MajorUpdater
     static uint _lastChest = 0;
     private unsafe static void OpenChest()
     {
-        if (!Service.Config.GetValue(PluginConfigBool.AutoOpenChest)) return;
+        if (!Service.Config.AutoOpenChest) return;
         var player = Player.Object;
 
         var treasure = Svc.Objects.FirstOrDefault(o =>
@@ -271,7 +271,7 @@ internal static class MajorUpdater
             Svc.Log.Error(ex, "Failed to open the chest!");
         }
 
-        if (!Service.Config.GetValue(PluginConfigBool.AutoCloseChestWindow)) return;
+        if (!Service.Config.AutoCloseChestWindow) return;
         _closeWindowTime = DateTime.Now.AddSeconds(0.5);
     }
 

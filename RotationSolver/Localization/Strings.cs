@@ -735,6 +735,7 @@ internal class Strings
         #endregion
     };
 
+    [Obsolete]
     public string HighEndWarning { get; set; } = "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!";
     public string TextToTalkWarning { get; set; } = "TextToTalk addon was not detected, please install it to make Rotation Solver give audio notifications!";
     public string AvariceWarning { get; set; } = "Avarice addon was not detected, please install it if you want to get the positional indicators for Rotation Solver!";

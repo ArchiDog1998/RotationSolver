@@ -237,7 +237,7 @@ public static class TargetFilter
     /// <param name="objects"></param>
     /// <param name="roles"></param>
     /// <returns></returns>
-    public static IEnumerable<GameObject> GetJobCategory(this IEnumerable<GameObject> objects, params JobRole[] roles)
+    public static IEnumerable<BattleChara> GetJobCategory(this IEnumerable<BattleChara> objects, params JobRole[] roles)
         => roles.SelectMany(role => objects.Where(obj => obj.IsJobCategory(role)));
 
     /// <summary>

@@ -268,60 +268,18 @@ internal static class DataCenter
 
     internal static float CombatTimeRaw { get; set; }
 
-    [Obsolete]
     public static IEnumerable<BattleChara> PartyMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
-
-    [Obsolete]
-    public static IEnumerable<BattleChara> PartyTanks { get; internal set; } = Array.Empty<PlayerCharacter>();
-
-    [Obsolete]
-    public static IEnumerable<BattleChara> PartyHealers { get; internal set; } = Array.Empty<PlayerCharacter>();
-
-    [Obsolete]
     public static IEnumerable<BattleChara> AllianceMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
 
-    [Obsolete]
-    public static IEnumerable<BattleChara> AllianceTanks { get; internal set; } = Array.Empty<PlayerCharacter>();
-
-    [Obsolete]
-    public static ObjectListDelay<BattleChara> DeathPeopleAll { get; } = new(
-    () => (Service.Config.GetValue(PluginConfigFloat.DeathDelayMin),
-    Service.Config.GetValue(PluginConfigFloat.DeathDelayMax)));
-
-    [Obsolete]
-    public static ObjectListDelay<BattleChara> DeathPeopleParty { get; } = new(
-    () => (Service.Config.GetValue(PluginConfigFloat.DeathDelayMin),
-    Service.Config.GetValue(PluginConfigFloat.DeathDelayMax)));
-
-    [Obsolete]
-    public static ObjectListDelay<BattleChara> WeakenPeople { get; } = new(
-    () => (Service.Config.GetValue(PluginConfigFloat.WeakenDelayMin),
-    Service.Config.GetValue(PluginConfigFloat.WeakenDelayMax)));
-
-    [Obsolete]
-    public static IEnumerable<BattleChara> DyingPeople { get; internal set; } = Array.Empty<BattleChara>();
-
-    [Obsolete]
-    public static ObjectListDelay<BattleChara> HostileTargets { get; } = new ObjectListDelay<BattleChara>(
-    () => (Service.Config.GetValue(PluginConfigFloat.HostileDelayMin),
-    Service.Config.GetValue(PluginConfigFloat.HostileDelayMax)));
-
-    [Obsolete]
     public static IEnumerable<BattleChara> AllHostileTargets { get; internal set; } = Array.Empty<BattleChara>();
 
-    [Obsolete]
-    public static IEnumerable<BattleChara> TarOnMeTargets { get; internal set; } = Array.Empty<BattleChara>();
+    public static BattleChara? InterruptTarget { get; internal set; }
 
+    public static BattleChara? ProvokeTarget { get; internal set; }
+    public static BattleChara? DeathTarget { get; internal set; }
+    public static BattleChara? DispelTarget { get; internal set; }
 
-    [Obsolete]
-    public static ObjectListDelay<BattleChara> CanInterruptTargets { get; } = new ObjectListDelay<BattleChara>(
-    () => (Service.Config.GetValue(PluginConfigFloat.InterruptDelayMin),
-    Service.Config.GetValue(PluginConfigFloat.InterruptDelayMax)));
-
-    public static IEnumerable<BattleChara> AllTargets { get; set; }
-
-    [Obsolete]
-    public static bool CanProvoke { get; set; } = false;
+    public static ObjectListDelay<BattleChara> AllTargets { get; } = new(() => (1, 3));
 
     public static uint[] TreasureCharas { get; internal set; } = [];
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
