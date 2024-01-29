@@ -6,6 +6,17 @@ internal partial class ConfigsNew : IPluginConfiguration
 {
     public int Version { get; set; } = 8;
 
+    public List<ActionEventInfo> Events { get; private set; } = [];
+
+    public string[] OtherLibs = [];
+
+    public string[] GitHubLibs = [];
+    public List<TargetingType> TargetingTypes { get; set; } = [];
+
+    public MacroInfo DutyStart { get; set; } = new MacroInfo();
+    public MacroInfo DutyEnd { get; set; } = new MacroInfo();
+
+
     [UI("Show RS logo animation")]
     public bool DrawIconAnimation { get; set; } = true;
 
@@ -346,6 +357,10 @@ internal partial class ConfigsNew : IPluginConfiguration
     [Range(0, 0.5f, ConfigUnitType.Seconds)]
     public float ActionAheadForLast0GCD { get; set; } = 0.06f;
 
+    [UI("This is the clipping time.\nGCD is over. However, RS forgets to click the next action.")]
+    [Range(0, 1, ConfigUnitType.Seconds)]
+    public Vector2 WeaponDelay { get; set; } = new(0, 0);
+
     [UI("The range of random delay for stopping casting when the target is dead or immune to damage.")]
     [Range(0, 3, ConfigUnitType.Seconds)]
     public Vector2 StopCastingDelay { get; set; } = new(0.5f, 1);
@@ -353,6 +368,10 @@ internal partial class ConfigsNew : IPluginConfiguration
     [UI("The range of random delay for interrupting hostile targets.")]
     [Range(0, 3, ConfigUnitType.Seconds)]
     public Vector2 InterruptDelay { get; set; } = new(0.5f, 1);
+
+    [UI("The delay of provoke.")]
+    [Range(0, 10, ConfigUnitType.Seconds)]
+    public Vector2 ProvokeDelay { get; set; } = new(0.5f, 1);
 
     [UI("The range of random delay for Not In Combat.")]
     [Range(0, 10, ConfigUnitType.Seconds)]
@@ -475,8 +494,29 @@ internal partial class ConfigsNew : IPluginConfiguration
     public Vector4 TTKTextColor { get; set; } = new(0f, 1f, 0.8f, 1f);
     #endregion
 
-    #region Jobs
+    #region Integer
 
+    public int ActionSequencerIndex { get; set; }
+    public int PoslockModifier { get; set; }
+
+    [Range(0, 10000, ConfigUnitType.None)]
+    public int LessMPNoRaise { get; set; }
+
+    [Range(0, 5, ConfigUnitType.None)]
+    public Vector2 KeyboardNoise { get; set; } = new Vector2(2, 3);
+
+    [Range(0, 10, ConfigUnitType.None)]
+    public int TargetingIndex { get; set; }
+
+    [Range(0, 10, ConfigUnitType.None)]
+    public int BeneficialAreaStrategy { get; set; }
+
+    [Range(1, 8, ConfigUnitType.None)]
+    public int AutoDefenseNumber { get; set; } = 2;
+
+    #endregion
+
+    #region Jobs
     [JobConfig, Range(0, 1, ConfigUnitType.Percent)]
     private readonly float _healthAreaAbilityHot = 0.55f;
 
@@ -512,5 +552,11 @@ internal partial class ConfigsNew : IPluginConfiguration
 
     [JobConfig]
     private readonly TargetHostileType _hostileType;
+
+    [JobConfig]
+    private readonly string _PvPRotationChoice = string.Empty;
+
+    [JobConfig]
+    private readonly string _RotationChoice = string.Empty;
     #endregion
 }

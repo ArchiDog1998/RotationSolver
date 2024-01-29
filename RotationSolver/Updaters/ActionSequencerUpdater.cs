@@ -4,7 +4,7 @@ namespace RotationSolver.Updaters;
 
 internal class ActionSequencerUpdater
 {
-    static string _actionSequencerFolder;
+    static string? _actionSequencerFolder;
 
     public static void UpdateActionSequencerAction()
     {
@@ -54,6 +54,7 @@ internal class ActionSequencerUpdater
 
     public static void SaveFiles()
     {
+        if (_actionSequencerFolder == null) return;
         try
         {
             Directory.Delete(_actionSequencerFolder);
@@ -71,6 +72,8 @@ internal class ActionSequencerUpdater
 
     public static void LoadFiles()
     {
+        if (_actionSequencerFolder == null) return;
+
         DataCenter.ConditionSets = MajorConditionSet.Read(_actionSequencerFolder);
     }
 
@@ -78,7 +81,7 @@ internal class ActionSequencerUpdater
     {
         if (!DataCenter.ConditionSets.Any(c => c.IsUnnamed))
         {
-            DataCenter.ConditionSets = DataCenter.ConditionSets.Append(new MajorConditionSet()).ToArray();
+            DataCenter.ConditionSets = [.. DataCenter.ConditionSets, new MajorConditionSet()];
         }
     }
 

@@ -342,14 +342,6 @@ internal static class DataCenter
 
     public static bool HPNotFull { get; internal set; }
 
-    public static bool CanHealAreaAbility { get; internal set; }
-
-    public static bool CanHealAreaSpell { get; internal set; }
-
-    public static bool CanHealSingleAbility { get; internal set; }
-
-    public static bool CanHealSingleSpell { get; internal set; }
-
     public static uint CurrentMp { get; internal set; }
     #endregion
     internal static Queue<MacroItem> Macros { get; } = new Queue<MacroItem>();

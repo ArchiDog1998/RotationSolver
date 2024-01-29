@@ -29,7 +29,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static readonly List<IDisposable> _dis = new();
     public static string Name => "Rotation Solver";
 
-    public static DalamudLinkPayload? OpenLinkPayload { get; private set; }
+    public static DalamudLinkPayload OpenLinkPayload { get; private set; } = null!;
     public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {

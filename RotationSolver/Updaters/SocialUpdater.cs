@@ -7,7 +7,6 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Rotations;
 using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;
@@ -72,7 +71,7 @@ internal class SocialUpdater
 
         await Task.Delay(new Random().Next(4000, 6000));
 
-        Service.Config.GlobalConfig.DutyEnd.AddMacro();
+        Service.Config.DutyEnd.AddMacro();
 
         if (Service.Config.AutoOffWhenDutyCompleted)
         {
@@ -141,7 +140,7 @@ internal class SocialUpdater
         if (_canSaying && socialDelay.Delay(CanSocial))
         {
             _canSaying = false;
-            Service.Config.GlobalConfig.DutyStart.AddMacro();
+            Service.Config.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
 
             SayHelloToUsers();
@@ -151,7 +150,7 @@ internal class SocialUpdater
     private static readonly ChatEntityComparer _comparer = new();
     private static async void SayHelloToUsers()
     {
-        if (!Service.Config.GetValue(PluginConfigBool.SayHelloToAll))
+        if (!Service.Config.SayHelloToAll)
         {
             return;
         }
@@ -178,7 +177,7 @@ internal class SocialUpdater
             .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
             .Select(p => new ContributorChatEntity(p.player)), _comparer);
 
-        if (Service.Config.GetValue(PluginConfigBool.SayHelloToUsers))
+        if (Service.Config.SayHelloToUsers)
         {
             entities = entities.Union(players
                 .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
@@ -217,7 +216,7 @@ internal class SocialUpdater
 
         try
         {
-            byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData.InternalName.ToString()
+            byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData!.InternalName.ToString()
     + " - " + player.Name.ToString() + "U6Wy.zCG");
 
             var tmpHash = MD5.HashData(inputByteArray);
@@ -231,9 +230,9 @@ internal class SocialUpdater
         }
     }
 
-    internal abstract class ChatEntity : IDisposable
+    internal abstract class ChatEntity(PlayerCharacter character) : IDisposable
     {
-        public readonly PlayerCharacter player;
+        public readonly PlayerCharacter player = character;
 
         public bool CanTarget
         {
@@ -264,11 +263,6 @@ internal class SocialUpdater
             UIForegroundPayload.UIForegroundOff,
             RawPayload.LinkTerminator);
 
-        public ChatEntity(PlayerCharacter character)
-        {
-            player = character;
-        }
-
         public abstract SeString GetMessage();
 
         public void Dispose()
@@ -276,7 +270,7 @@ internal class SocialUpdater
             OtherConfiguration.RotationSolverRecord.SayingHelloCount++;
             var hash = EncryptString(player);
             saidAuthors.Add(hash);
-            if (Service.Config.GetValue(PluginConfigBool.JustSayHelloOnce))
+            if (Service.Config.JustSayHelloOnce)
             {
                 OtherConfiguration.RotationSolverRecord.SaidUsers.Add(hash);
             }
@@ -285,20 +279,19 @@ internal class SocialUpdater
 
     internal class ChatEntityComparer : IEqualityComparer<ChatEntity>
     {
-        public bool Equals(ChatEntity x, ChatEntity y)
-            => x.player.Equals(y.player);
+        public bool Equals(ChatEntity? x, ChatEntity? y)
+        {
+            if(x == null || y == null) return false;
+            return x.player.Equals(y.player);
+        }
 
         public int GetHashCode([DisallowNull] ChatEntity obj)
             => obj.player.GetHashCode();
     }
 
-    internal class RotationAuthorChatEntity : ChatEntity
+    internal class RotationAuthorChatEntity(PlayerCharacter character, string nameDesc) : ChatEntity(character)
     {
-        private readonly string name;
-        public RotationAuthorChatEntity(PlayerCharacter character, string nameDesc) : base(character)
-        {
-            name = nameDesc;
-        }
+        private readonly string name = nameDesc;
 
         public override SeString GetMessage() =>
             Character
@@ -308,12 +301,9 @@ internal class SocialUpdater
     }
 
 
-    internal class ContributorChatEntity : ChatEntity
+    internal class ContributorChatEntity(PlayerCharacter character) 
+        : ChatEntity(character)
     {
-        public ContributorChatEntity(PlayerCharacter character) : base(character)
-        {
-        }
-
         public override SeString GetMessage() =>
             Character
             .Append(new SeString(new TextPayload($" is one of the contributors of ")))
@@ -321,13 +311,10 @@ internal class SocialUpdater
             .Append(new SeString(new TextPayload(". So say hello to them!")));
     }
 
-    internal class UserChatEntity : ChatEntity
+    internal class UserChatEntity(PlayerCharacter character) 
+        : ChatEntity(character)
     {
         public override BitmapFontIcon Icon => BitmapFontIcon.NewAdventurer;
-
-        public UserChatEntity(PlayerCharacter character) : base(character)
-        {
-        }
 
         public override SeString GetMessage() =>
             Character

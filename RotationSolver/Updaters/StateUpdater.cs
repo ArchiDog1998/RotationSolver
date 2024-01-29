@@ -1,19 +1,16 @@
 ﻿using ECommons.GameHelpers;
-using Lumina.Excel.GeneratedSheets2;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
-using System.Configuration;
 
 namespace RotationSolver.Updaters;
 internal static class StateUpdater
 {
     private static bool CanUseHealAction =>
         //PvP
-        DataCenter.Territory.IsPvpZone
+        DataCenter.Territory?.IsPvpZone ?? false
         //Job
         || (DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
         && Service.Config.AutoHeal
-        && CustomRotation.IsLongerThan(Service.Config.GetValue(PluginConfigFloat.AutoHealTimeToKill));
+        && CustomRotation.IsLongerThan(Service.Config.AutoHealTimeToKill);
 
     public static void UpdateState()
     {
@@ -33,19 +30,53 @@ internal static class StateUpdater
         if ((DataCenter.HPNotFull || DataCenter.Role != JobRole.Healer) && CanUseHealAction
             && (DataCenter.InCombat || Service.Config.HealOutOfCombat))
         {
-            if (DataCenter.CanHealAreaAbility)
+            var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,
+                Service.Config.HealthSingleAbility,
+                Service.Config.HealthSingleAbilityHot);
+
+            var singleSpell = ShouldHealSingle(StatusHelper.SingleHots,
+                Service.Config.HealthSingleSpell,
+                Service.Config.HealthSingleSpellHot);
+
+            var onlyHealSelf = Service.Config.OnlyHealSelfWhenNoHealer 
+                && DataCenter.Role != JobRole.Healer;
+
+            var canHealSingleAbility = onlyHealSelf ? ShouldHealSingle(Player.Object, StatusHelper.SingleHots,
+                Service.Config.HealthSingleAbility, Service.Config.HealthSingleAbilityHot)
+                : singleAbility > 0;
+
+            var canHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Player.Object, StatusHelper.SingleHots,         
+                Service.Config.HealthSingleSpell, Service.Config.HealthSingleSpellHot)
+                : singleSpell > 0;
+
+            var canHealAreaAbility = singleAbility > 2;
+            var canHealAreaSpell = singleSpell > 2;
+
+            if (DataCenter.PartyMembers.Count() > 2)
+            {
+                //TODO: Beneficial area status.
+                var ratio = GetHealingOfTimeRatio(Player.Object, StatusHelper.AreaHots);
+
+                if (!canHealAreaAbility)
+                    canHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < Lerp(Service.Config.HealthAreaAbility, Service.Config.HealthAreaAbilityHot, ratio);
+
+                if (!canHealAreaSpell)
+                    canHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && DataCenter.PartyMembersAverHP < Lerp(Service.Config.HealthAreaSpell, Service.Config.HealthAreaSpellHot, ratio);
+            }
+
+            if (canHealAreaAbility)
             {
                 status |= AutoStatus.HealAreaAbility;
             }
-            if (DataCenter.CanHealAreaSpell)
+            if (canHealAreaSpell)
             {
                 status |= AutoStatus.HealAreaSpell;
             }
-            if (DataCenter.CanHealSingleAbility)
+            if (canHealSingleAbility)
             {
                 status |= AutoStatus.HealSingleAbility;
             }
-            if (DataCenter.CanHealSingleSpell)
+            if (canHealSingleSpell)
             {
                 status |= AutoStatus.HealSingleSpell;
             }
@@ -78,14 +109,15 @@ internal static class StateUpdater
                 {
                     var movingHere = (float)DataCenter.NumberOfHostilesInRange / DataCenter.NumberOfHostilesInMaxRange > 0.3f;
 
-                    var tarOnMe = DataCenter.TarOnMeTargets.Where(t => t.DistanceToPlayer() <= 3);
+                    var tarOnMe = DataCenter.AllHostileTargets.Where(t => t.DistanceToPlayer() <= 3
+                    && t.TargetObject == Player.Object);
                     var tarOnMeCount = tarOnMe.Count();
                     var attackedCount = tarOnMe.Count(ObjectHelper.IsAttacked);
                     var attacked = (float)attackedCount / tarOnMeCount > 0.7f;
 
                     //A lot targets are targeting on me.
-                    if (tarOnMeCount >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber)
-                        && Player.Object.GetHealthRatio() <= Service.Config.GetValue(JobConfigFloat.HealthForAutoDefense)
+                    if (tarOnMeCount >= Service.Config.AutoDefenseNumber
+                        && Player.Object.GetHealthRatio() <= Service.Config.HealthForAutoDefense
                         && movingHere && attacked)
                     {
                         status |= AutoStatus.DefenseSingle;
@@ -101,41 +133,74 @@ internal static class StateUpdater
 
 
             if (DataCenter.Role == JobRole.Tank
-                && (Service.Config.GetValue(PluginConfigBool.AutoProvokeForTank) || DataCenter.AllianceTanks.Count() < 2)
-                && DataCenter.CanProvoke)
+                && (Service.Config.AutoProvokeForTank
+                || DataCenter.AllianceMembers.Count(o => o.IsJobCategory(JobRole.Tank)) < 2)
+                && DataCenter.ProvokeTarget != null)
             {
                 status |= AutoStatus.Provoke;
             }
         }
 
 
-        if ((!DataCenter.HasHostilesInRange || Service.Config.GetValue(PluginConfigBool.EsunaAll) || (DataCenter.Territory?.IsPvpZone ?? false))
-            && DataCenter.WeakenPeople.Any() || DataCenter.DyingPeople.Any())
+        if (DataCenter.DispelTarget != null)
         {
-            status |= AutoStatus.Dispel;
+            if (DataCenter.DispelTarget.StatusList.Any(StatusHelper.IsDangerous))
+            {
+                status |= AutoStatus.Dispel;
+            }
+            else if (!DataCenter.HasHostilesInRange || Service.Config.EsunaAll
+            || (DataCenter.Territory?.IsPvpZone ?? false))
+            {
+                status |= AutoStatus.Dispel;
+            }
         }
 
-        if (DataCenter.CanInterruptTargets.Any())
+        if (DataCenter.InterruptTarget != null)
         {
             status |= AutoStatus.Interrupt;
         }
 
-
-        if (Service.Config.GetValue(PluginConfigBool.AutoTankStance) && DataCenter.Role == JobRole.Tank
-            && !DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
+        if (Service.Config.AutoTankStance && DataCenter.Role == JobRole.Tank
+            && !DataCenter.AllianceMembers.Any(t => t.IsJobCategory(JobRole.Tank) && t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
             && !CustomRotation.HasTankStance)
         {
             status |= AutoStatus.TankStance;
         }
 
-        if (DataCenter.IsMoving && DataCenter.NotInCombatDelay && Service.Config.GetValue(PluginConfigBool.AutoSpeedOutOfCombat))
+        if (DataCenter.IsMoving && DataCenter.NotInCombatDelay && Service.Config.AutoSpeedOutOfCombat)
         {
             status |= AutoStatus.Speed;
         }
 
         return status;
     }
+    static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
+    {
+        const float buffWholeTime = 15;
 
+        var buffTime = target.StatusTime(false, statusIds);
+
+        return Math.Min(1, buffTime / buffWholeTime);
+    }
+
+    static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float healSingleHot) => DataCenter.PartyMembers.Count(p => ShouldHealSingle(p, hotStatus, healSingle, healSingleHot));
+
+    static bool ShouldHealSingle(BattleChara target, StatusID[] hotStatus, float healSingle, float healSingleHot)
+    {
+        if (target == null) return false;
+
+        var ratio = GetHealingOfTimeRatio(target, hotStatus);
+
+        var h = target.GetHealthRatio();
+        if (h == 0 || !target.NeedHealing()) return false;
+
+        return h < Lerp(healSingle, healSingleHot, ratio);
+    }
+
+    static float Lerp(float a, float b, float ratio)
+    {
+        return a + (b - a) * ratio;
+    }
 
     private static AutoStatus StatusFromCmdOrCondition()
     {
@@ -173,7 +238,7 @@ internal static class StateUpdater
         AddStatus(ref status, AutoStatus.MoveBack, DataCenter.RightSet.MoveBackConditionSet);
         AddStatus(ref status, AutoStatus.AntiKnockback, DataCenter.RightSet.AntiKnockbackConditionSet);
 
-        if (!status.HasFlag(AutoStatus.Burst) && Service.Config.GetValue(PluginConfigBool.AutoBurst))
+        if (!status.HasFlag(AutoStatus.Burst) && Service.Config.AutoBurst)
         {
             status |= AutoStatus.Burst;
         }

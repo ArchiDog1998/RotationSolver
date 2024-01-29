@@ -191,6 +191,11 @@ public static class ObjectHelper
         return false;
     }
 
+    public static bool IsTargetOnSelf(this BattleChara battleChara)
+    {
+        return battleChara.TargetObject?.TargetObject == battleChara;
+    }
+
     public static bool IsDeathToRaise(this GameObject obj)
     {
         if (obj == null) return false;
@@ -302,7 +307,7 @@ public static class ObjectHelper
         if (obj.IsDummy() && !Service.Config.ShowTargetTimeToKill) return true;
 
         //Fate
-        if (obj.GetTimeToKill(true) >= Service.Config.GetValue(Configuration.PluginConfigFloat.BossTimeToKill)) return true;
+        if (obj.GetTimeToKill(true) >= Service.Config.BossTimeToKill) return true;
 
         return false;
     }
@@ -333,7 +338,7 @@ public static class ObjectHelper
     {
         if (b == null) return false;
         if (b.IsDummy() && !Service.Config.ShowTargetTimeToKill) return false;
-        return b.GetTimeToKill() <= Service.Config.GetValue(Configuration.PluginConfigFloat.DyingTimeToKill) || b.GetHealthRatio() < 0.02f;
+        return b.GetTimeToKill() <= Service.Config.DyingTimeToKill || b.GetHealthRatio() < 0.02f;
     }
 
     /// <summary>

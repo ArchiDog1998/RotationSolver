@@ -3,11 +3,8 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Helpers;
-using System.Text.RegularExpressions;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Updaters;
@@ -73,6 +70,8 @@ internal static partial class TargetUpdater
         }
     }
 
+    private static RandomDelay _interruptDelay = new(() => Service.Config.InterruptDelay),
+        _provokeDelay = new(() => Service.Config.ProvokeDelay);
     private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
     {
         allTargets = allTargets.Where(b =>
@@ -109,7 +108,7 @@ internal static partial class TargetUpdater
         var timesToKill = DataCenter.AllHostileTargets.Select(b => b.GetTimeToKill()).Where(v => !float.IsNaN(v));
         DataCenter.AverageTimeToKill = timesToKill.Any() ? timesToKill.Average() : 0;
 
-        DataCenter.InterruptTarget = DataCenter.AllHostileTargets.FirstOrDefault(ObjectHelper.CanInterrupt);
+        DataCenter.InterruptTarget = _interruptDelay.Delay(DataCenter.AllHostileTargets.FirstOrDefault(ObjectHelper.CanInterrupt));
 
         DataCenter.NumberOfHostilesInRange = DataCenter.AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
 
@@ -120,12 +119,12 @@ internal static partial class TargetUpdater
         DataCenter.NumberOfAllHostilesInMaxRange = DataCenter.AllHostileTargets.Count(o => o.DistanceToPlayer() <= 25);
 
         DataCenter.MobsTime = DataCenter.AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
-            >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber);
+            >= Service.Config.AutoDefenseNumber;
 
         DataCenter.IsHostileCastingToTank = IsCastingTankVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingTank);
         DataCenter.IsHostileCastingAOE = IsCastingAreaVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingArea);
 
-        DataCenter.ProvokeTarget = DataCenter.AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke);
+        DataCenter.ProvokeTarget = _provokeDelay.Delay(DataCenter.AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke));
     }
 
     private static bool IsCastingTankVfx()
@@ -235,7 +234,8 @@ internal static partial class TargetUpdater
             DataCenter.PartyMembersAverHP = DataCenter.PartyMembersDifferHP = 0;
         }
 
-        UpdateCanHeal(Player.Object);
+        DataCenter.PartyMembersMinHP = DataCenter.PartyMembersHP.Any() ? DataCenter.PartyMembersHP.Min() : 0;
+        DataCenter.HPNotFull = DataCenter.PartyMembersMinHP < 1;
 
         _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
 
@@ -314,86 +314,6 @@ internal static partial class TargetUpdater
         }
         return (float)member.CurrentHp / member.MaxHp;
     }
-
-
-    static void UpdateCanHeal(PlayerCharacter player)
-    {
-        var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,
-            Service.Config.GetValue(JobConfigFloat.HealthSingleAbility),
-            Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot));
-
-        var singleSpell = ShouldHealSingle(StatusHelper.SingleHots,
-            Service.Config.GetValue(JobConfigFloat.HealthSingleSpell),
-            Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot));
-
-        var onlyHealSelf = Service.Config.GetValue(PluginConfigBool.OnlyHealSelfWhenNoHealer) && player.ClassJob.GameData?.GetJobRole() != JobRole.Healer;
-
-        DataCenter.CanHealSingleAbility = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots,
-            Service.Config.GetValue(JobConfigFloat.HealthSingleAbility),
-            Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot))
-            : singleAbility > 0;
-
-        DataCenter.CanHealSingleSpell = onlyHealSelf ? ShouldHealSingle(Svc.ClientState.LocalPlayer, StatusHelper.SingleHots, Service.Config.GetValue(JobConfigFloat.HealthSingleSpell),
-           Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot))
-            : singleSpell > 0;
-
-        DataCenter.CanHealAreaAbility = singleAbility > 2;
-        DataCenter.CanHealAreaSpell = singleSpell > 2;
-
-        if (DataCenter.PartyMembers.Count() > 2)
-        {
-            //TODO:少了所有罩子类技能
-            var ratio = GetHealingOfTimeRatio(player, StatusHelper.AreaHots);
-
-            if (!DataCenter.CanHealAreaAbility)
-                DataCenter.CanHealAreaAbility = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(Service.Config.GetValue(JobConfigFloat.HealthAreaAbility), Service.Config.GetValue(JobConfigFloat.HealthAreaAbilityHot), ratio);
-
-            if (!DataCenter.CanHealAreaSpell)
-                DataCenter.CanHealAreaSpell = DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && DataCenter.PartyMembersAverHP < Lerp(Service.Config.GetValue(JobConfigFloat.HealthAreaSpell), Service.Config.GetValue(JobConfigFloat.HealthAreaSpellHot), ratio);
-        }
-
-        //Delay
-        DataCenter.CanHealSingleAbility = 
-            _healDelay1.Delay(DataCenter.CanHealSingleAbility);
-        DataCenter.CanHealSingleSpell =
-            _healDelay2.Delay(DataCenter.CanHealSingleSpell);
-        DataCenter.CanHealAreaAbility =
-            _healDelay3.Delay(DataCenter.CanHealAreaAbility);
-        DataCenter.CanHealAreaSpell = 
-            _healDelay4.Delay(DataCenter.CanHealAreaSpell);
-
-        DataCenter.PartyMembersMinHP = DataCenter.PartyMembersHP.Any() ? DataCenter.PartyMembersHP.Min() : 0;
-        DataCenter.HPNotFull = DataCenter.PartyMembersMinHP < 1;
-    }
-
-    static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
-    {
-        const float buffWholeTime = 15;
-
-        var buffTime = target.StatusTime(false, statusIds);
-
-        return Math.Min(1, buffTime / buffWholeTime);
-    }
-
-    static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float healSingleHot) => DataCenter.PartyMembers.Count(p => ShouldHealSingle(p, hotStatus, healSingle, healSingleHot));
-
-    static bool ShouldHealSingle(BattleChara target, StatusID[] hotStatus, float healSingle, float healSingleHot)
-    {
-        if (target == null) return false;
-
-        var ratio = GetHealingOfTimeRatio(target, hotStatus);
-
-        var h = target.GetHealthRatio();
-        if (h == 0 || !target.NeedHealing()) return false;
-
-        return h < Lerp(healSingle, healSingleHot, ratio);
-    }
-
-    static float Lerp(float a, float b, float ratio)
-    {
-        return a + (b - a) * ratio;
-    }
-
     #endregion
 
     private static void UpdateNamePlate(IEnumerable<BattleChara> allTargets)

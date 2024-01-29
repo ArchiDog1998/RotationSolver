@@ -17,16 +17,16 @@ public static class Watcher
 {
 #if DEBUG
     private unsafe delegate bool OnUseAction(ActionManager* manager, ActionType actionType, uint actionID, ulong targetID, uint a4, uint a5, uint a6, void* a7);
-    private static Hook<OnUseAction> _useActionHook;
+    private static Hook<OnUseAction>? _useActionHook;
 #endif
 
     private unsafe delegate long ProcessObjectEffect(GameObject* a1, ushort a2, ushort a3, long a4);
-    private static Hook<ProcessObjectEffect> _processObjectEffectHook;
+    private static Hook<ProcessObjectEffect>? _processObjectEffectHook;
 
     private delegate IntPtr ActorVfxCreate(string path, IntPtr a2, IntPtr a3, float a4, char a5, ushort a6, char a7);
-    private static Hook<ActorVfxCreate> _actorVfxCreateHook;
+    private static Hook<ActorVfxCreate>? _actorVfxCreateHook;
 
-    private static ICallGateSubscriber<object, object> IpcSubscriber;
+    private static ICallGateSubscriber<object, object>? IpcSubscriber;
 
     public static void Enable()
     {
@@ -70,7 +70,7 @@ public static class Watcher
         _useActionHook?.Dispose();
 #endif
         _processObjectEffectHook?.Disable();
-        IpcSubscriber.Unsubscribe(UpdateRTTDetour);
+        IpcSubscriber?.Unsubscribe(UpdateRTTDetour);
         MapEffect.Dispose();
         ActionEffect.ActionEffectEvent -= ActionFromEnemy;
         ActionEffect.ActionEffectEvent -= ActionFromSelf;
@@ -100,7 +100,7 @@ public static class Watcher
             Svc.Log.Warning(e, "Failed to load the vfx value!");
         }
 
-        return _actorVfxCreateHook.Original(path, a2, a3, a4, a5, a6, a7);
+        return _actorVfxCreateHook!.Original(path, a2, a3, a4, a5, a6, a7);
     }
 
     private static unsafe long ProcessObjectEffectDetour(GameObject* a1, ushort a2, ushort a3, long a4)
@@ -124,7 +124,7 @@ public static class Watcher
         {
             Svc.Log.Warning(e, "Failed to execute the object effect!");
         }
-        return _processObjectEffectHook.Original(a1, a2, a3, a4);
+        return _processObjectEffectHook!.Original(a1, a2, a3, a4);
     }
 
 #if DEBUG
@@ -138,7 +138,7 @@ public static class Watcher
         {
             Svc.Log.Warning(e, "Failed to detour actions");
         }
-        return _useActionHook.Original(manager, actionType, actionID, targetID, a4, a5, a6, a7);
+        return _useActionHook!.Original(manager, actionType, actionID, targetID, a4, a5, a6, a7);
     }
 #endif
 
@@ -194,7 +194,7 @@ public static class Watcher
         {
             var type = set.Action.GetActionCate();
 
-            if (type is ActionCate.Spell or ActionCate.WeaponSkill or ActionCate.Ability)
+            if (type is ActionCate.Spell or ActionCate.Weaponskill or ActionCate.Ability)
             {
                 if (set.TargetEffects.Count(e =>
                     DataCenter.PartyMembers.Any(p => p.ObjectId == e.TargetID)
@@ -202,7 +202,7 @@ public static class Watcher
                     && (effect.value > 0 || (effect.param0 & 6) == 6))
                     == DataCenter.PartyMembers.Count())
                 {
-                    if (Service.Config.GetValue(PluginConfigBool.RecordCastingArea))
+                    if (Service.Config.RecordCastingArea)
                     {
                         OtherConfiguration.HostileCastingArea.Add(set.Action.RowId);
                         OtherConfiguration.SaveHostileCastingArea();
@@ -217,7 +217,7 @@ public static class Watcher
         if (set.Source.ObjectId != Player.Object.ObjectId) return;
         if (set.Header.ActionType != ActionType.Action && set.Header.ActionType != ActionType.Item) return;
         if (set.Action == null) return;
-        if ((ActionCate)set.Action.ActionCategory.Value.RowId == ActionCate.AutoAttack) return;
+        if ((ActionCate)set.Action.ActionCategory.Value!.RowId == ActionCate.Autoattack) return;
 
         var id = set.Action.RowId;
         if (!set.Action.IsRealGCD() && (set.Action.ClassJob.Row > 0 || Enum.IsDefined((ActionID)id)))
@@ -260,7 +260,7 @@ public static class Watcher
         }
 
         //Macro
-        foreach (var item in Service.Config.GlobalConfig.Events)
+        foreach (var item in Service.Config.Events)
         {
             if (!new Regex(item.Name).Match(action.Name).Success) continue;
             if (item.AddMacro(tar)) break;

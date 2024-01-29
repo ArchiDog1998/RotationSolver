@@ -19,11 +19,11 @@ internal static class PreviewUpdater
         UpdateCancelCast();
     }
 
-    static DtrBarEntry _dtrEntry;
+    static DtrBarEntry? _dtrEntry;
     private static void UpdateEntry()
     {
         var showStr = RSCommands.EntryString;
-        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowInfoOnDtr)
+        if (Service.Config.ShowInfoOnDtr
             && !string.IsNullOrEmpty(showStr))
         {
             try
@@ -48,12 +48,11 @@ internal static class PreviewUpdater
         }
     }
 
-    static RandomDelay _tarStopCastDelay = new(() =>
-    (Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.StopCastingDelayMin),
-    Service.Config.GetValue(Basic.Configuration.PluginConfigFloat.StopCastingDelayMax)));
+    static RandomDelay _tarStopCastDelay = new(() =>Service.Config.StopCastingDelay); 
+
     private static unsafe void UpdateCancelCast()
     {
-        var tarDead = Service.Config.GetValue(Basic.Configuration.PluginConfigBool.UseStopCasting)
+        var tarDead = Service.Config.UseStopCasting
             && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
             && b.IsEnemy() && b.CurrentHp == 0;
 
@@ -98,7 +97,8 @@ internal static class PreviewUpdater
             var actionBar = (AddonActionBarBase*)intPtr;
             var hotBar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBarsSpan[hotBarIndex];
             var slotIndex = 0;
-            foreach (var slot in actionBar->Slot)
+
+            foreach (var slot in actionBar->ActionBarSlotVector.Span)
             {
                 var highLightId = 0x53550000 + index;
 

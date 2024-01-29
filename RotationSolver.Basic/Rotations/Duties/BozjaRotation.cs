@@ -90,7 +90,7 @@ partial class DutyRotation
 }
 
 [DutyTerritory] //TODO: the bozja territory ids!
-internal class BozjaRotation : DutyRotation
+public class BozjaRotation : DutyRotation
 {
     public override bool ProvokeAbility(out IAction? act)
     {

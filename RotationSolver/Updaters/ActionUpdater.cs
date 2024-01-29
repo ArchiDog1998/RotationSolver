@@ -13,9 +13,7 @@ internal static class ActionUpdater
 {
     internal static DateTime AutoCancelTime { get; set; } = DateTime.MinValue;
 
-    static RandomDelay _GCDDelay = new(() =>
-    (Service.Config.GetValue(PluginConfigFloat.WeaponDelayMin),
-    Service.Config.GetValue(PluginConfigFloat.WeaponDelayMax)));
+    static RandomDelay _GCDDelay = new(() => Service.Config.WeaponDelay);
 
     internal static IAction? NextAction { get; set; }
     internal static IBaseAction? NextGCDAction { get; set; }
@@ -38,7 +36,7 @@ internal static class ActionUpdater
             if (localPlayer != null && customRotation != null
                 && customRotation.TryInvoke(out var newAction, out var gcdAction))
             {
-                if (Service.Config.GetValue(PluginConfigFloat.MistakeRatio) > 0)
+                if (Service.Config.MistakeRatio > 0)
                 {
                     var actions = customRotation.AllActions.Where(a =>
                     {
@@ -136,9 +134,9 @@ internal static class ActionUpdater
         {
             _startCombatTime = DateTime.MinValue;
 
-            if (Service.Config.GetValue(PluginConfigBool.AutoOffAfterCombat))
+            if (Service.Config.AutoOffAfterCombat)
             {
-                AutoCancelTime = DateTime.Now.AddSeconds(Service.Config.GetValue(PluginConfigFloat.AutoOffAfterCombatTime));
+                AutoCancelTime = DateTime.Now.AddSeconds(Service.Config.AutoOffAfterCombatTime);
             }
         }
 
@@ -216,7 +214,7 @@ internal static class ActionUpdater
             || Player.Object.CurrentHp == 0) return false;
 
         var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
-        var ahead = Math.Min(maxAhead, Service.Config.GetValue(JobConfigFloat.ActionAhead));
+        var ahead = Math.Min(maxAhead, Service.Config.ActionAhead);
 
         //GCD
         var canUseGCD = DataCenter.WeaponRemain <= ahead;
@@ -242,7 +240,7 @@ internal static class ActionUpdater
         if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock > DataCenter.WeaponRemain)
         {
             if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + DataCenter.Ping +
-                Math.Max(ahead, Service.Config.GetValue(PluginConfigFloat.MinLastAbilityAdvanced))) return false;
+                Math.Max(ahead, Service.Config.MinLastAbilityAdvanced)) return false;
 
             return RSCommands.CanDoAnAction(false);
         }

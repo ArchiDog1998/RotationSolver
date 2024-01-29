@@ -85,7 +85,7 @@ internal static class MajorUpdater
         try
         {
             if (_work) return;
-            if (DateTime.Now - _lastUpdatedWork < TimeSpan.FromSeconds(Service.Config.GetValue(PluginConfigFloat.MinUpdatingTime)))
+            if (DateTime.Now - _lastUpdatedWork < TimeSpan.FromSeconds(Service.Config.MinUpdatingTime))
                 return;
 
             _work = true;
@@ -158,7 +158,7 @@ internal static class MajorUpdater
         var waitingTime = (DateTime.Now - _lastUpdatedWork).TotalMilliseconds;
         if (waitingTime > 100)
         {
-            Svc.Log.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{LocalizationManager._rightLang.ConfigWindow_Param_UseWorkTask}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
+            Svc.Log.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{"UseWorkTask"}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
         }
 
         if (!IsValid)
