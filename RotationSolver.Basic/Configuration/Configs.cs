@@ -172,7 +172,6 @@ public class PluginConfig : IPluginConfiguration
 }
 
 #region Job Config
-[Serializable]
 public class JobConfig
 {
     public string RotationChoice { get; set; }
@@ -500,28 +499,9 @@ public class DefaultAttribute : Attribute
     }
 }
 
-public enum ConfigUnitType : byte
-{
-    None,
-    Seconds,
-    Degree,
-    Yalms,
-    Percent,
-    Pixels,
-}
 
-[AttributeUsage(AttributeTargets.Field)]
-public class UnitAttribute : Attribute
-{
-    public ConfigUnitType UnitType { get; set; }
 
-    public UnitAttribute(ConfigUnitType unitType)
-    {
-        UnitType = unitType;
-    }
-}
 
-[Serializable]
 public class DictionConfig<TConfig, TValue> where TConfig : struct, Enum
 {
     [JsonProperty]

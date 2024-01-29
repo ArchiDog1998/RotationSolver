@@ -316,12 +316,6 @@ internal static partial class TargetUpdater
     }
 
 
-    static (float min, float max) GetHealRange() => (Service.Config.GetValue(PluginConfigFloat.HealDelayMin), Service.Config.GetValue(PluginConfigFloat.HealDelayMax));
-
-    static RandomDelay _healDelay1 = new(GetHealRange),
-                       _healDelay2 = new(GetHealRange),
-                       _healDelay3 = new(GetHealRange),
-                       _healDelay4 = new(GetHealRange);
     static void UpdateCanHeal(PlayerCharacter player)
     {
         var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,

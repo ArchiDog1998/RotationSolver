@@ -89,16 +89,24 @@ internal class Strings
     [Obsolete]
     public string ConfigWindow_Param_UseOverlayWindowDesc { get; set; } = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.";
 
+    [Obsolete]
     public string ConfigWindow_Param_ActionAhead { get; set; } = "The time before an oGCD is avaliable to start trying using it";
+
+    [Obsolete]
     public string ConfigWindow_Param_MinLastAbilityAdvanced { get; set; } = "The time ahead of the last oGCD before the next GCD being avaliable to start trying using it (may affect skill weaving)";
 
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "The starting when abilities will be used before finishing the countdown";
+    [Obsolete]
     public string ConfigWindow_Param_SpecialDuration { get; set; } = "The duration of special windows set by commands";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "The number of GCDs in advance for DOT refreshing";
+
+    [Obsolete]
     public string ConfigWindow_Param_MaxPing { get; set; } = "The max ping that RS can get to before skipping to the next action.";
 
     [Obsolete]
     public string ConfigWindow_Param_AutoOffBetweenArea { get; set; } = "Auto turn off when player is moving between areas.";
+
+    [Obsolete]
     public string ConfigWindow_Param_AutoOffAfterCombat { get; set; } = "Auto turn off RS when combat is over more for more then...";
 
     [Obsolete]
@@ -117,19 +125,25 @@ internal class Strings
     [Obsolete]
     public string ConfigWindow_Param_ToggleAuto { get; set; } = "Make /rotation Auto as a toggle command.";
 
-    public string ConfigWindow_Param_WeaponDelay { get; set; } = "The range of random delay for GCD usage.";
-    public string ConfigWindow_Param_DeathDelay { get; set; } = "The range of random delay for using revival abilities.";
-    public string ConfigWindow_Param_HostileDelay { get; set; } = "The range of random delay for targeting.";
+
+    [Obsolete]
     public string ConfigWindow_Param_InterruptDelay { get; set; } = "The range of random delay for interrupting hostile targets.";
     public string ConfigWindow_Param_WeakenDelay { get; set; } = "The range of random delay for cleansing dispellable debuffs.";
 
     public string ConfigWindow_Param_HealDelay { get; set; } = "The range of random delay for healing.";
 
     public string ConfigWindow_Param_CountdownDelay { get; set; } = "The random delay between which auto mode activation on countdown varies.";
+
+    [Obsolete]
     public string ConfigWindow_Param_NotInCombatDelay { get; set; } = "The range of random delay for Not In Combat.";
 
+    [Obsolete]
     public string ConfigWindow_Param_ClickingDelay { get; set; } = "The range of random delay for clicking actions.";
+
+    [Obsolete]
     public string ConfigWindow_Param_StopCastingDelay { get; set; } = "The range of random delay for stopping casting when the target is dead or immune to damage.";
+
+    [Obsolete]
     public string ConfigWindow_Param_ClickMistake { get; set; } = "How likely is it that RS will click the wrong action.";
     [Obsolete]
     public string ConfigWindow_Param_PoslockCasting { get; set; } = "Lock the movement when casting or when doing some actions.";
@@ -144,6 +158,7 @@ internal class Strings
     [Obsolete]
     public string ConfigWindow_Param_ShowTargetTimeToKill { get; set; } = "Show the target's time to kill.";
 
+    [Obsolete]
     public string ConfigWindow_Param_BossTimeToKill { get; set; } = "If target's time until death is higher than this, regard it as boss.";
 
     public string ConfigWindow_Param_DyingTimeToKill { get; set; } = "If target's time until death is lower than this, regard it is dying.";
@@ -151,11 +166,22 @@ internal class Strings
     public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
     [Obsolete]
     public string ConfigWindow_Param_TeachingMode { get; set; } = "Teaching mode";
+
+    [Obsolete]
     public string ConfigWindow_Param_TeachingModeColor { get; set; } = "Prompt box color of teaching mode";
+
+    [Obsolete]
     public string ConfigWindow_Param_MovingTargetColor { get; set; } = "Prompt box color of moving target";
+
+    [Obsolete]
     public string ConfigWindow_Param_TargetColor { get; set; } = "Target color";
+
+    [Obsolete]
     public string ConfigWindow_Param_SubTargetColor { get; set; } = "Sub-target color";
+
+    [Obsolete]
     public string ConfigWindow_Param_DrawingHeight { get; set; } = "The height of the drawing things.";
+    [Obsolete]
     public string ConfigWindow_Param_SampleLength { get; set; } = "Drawing smoothness.";
     [Obsolete]
     public string ConfigWindow_Param_KeyBoardNoise { get; set; } = "Simulate the effect of pressing abilities";
@@ -166,6 +192,7 @@ internal class Strings
     public string ConfigWindow_Param_ShowMoveTarget { get; set; } = "Show the target of the move action";
     [Obsolete]
     public string ConfigWindow_Param_ShowTarget { get; set; } = "Show Target";
+    [Obsolete]
     public string ConfigWindow_Param_TargetIconSize { get; set; } = "The size of the next ability that will be used icon.";
     [Obsolete]
     public string ConfigWindow_Param_SayOutStateChanged { get; set; } = "Audio notification for when the status changes";
@@ -245,7 +272,7 @@ internal class Strings
     public string ConfigWindow_Param_BeneficialAreaOnCalculated { get; set; } = "On the calculated location";
 
 
-
+    [Obsolete]
     public string ConfigWindow_Param_HealthDifference { get; set; } = "HP for standard deviation for using AoE heal.";
     public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP for AoE healing oGCDs";
 
@@ -258,20 +285,26 @@ internal class Strings
 
     public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "HP for ST healing GCDs";
 
+    [Obsolete]
     public string ConfigWindow_Param_HealthHealerRatio { get; set; } = "Heal healer first if its HP is lower than this.";
 
+    [Obsolete]
     public string ConfigWindow_Param_HealthTankRatio { get; set; } = "Heal tank first if its HP is lower than this.";
-
+    [Obsolete]
     public string ConfigWindow_Param_DistanceForMoving { get; set; } = "Use gapcloser as a damage ability if the distance to your target is less then this.";
     [Obsolete]
     public string ConfigWindow_Param_HealWhenNothingTodo { get; set; } = "Healing the members with GCD if there is nothing to do in combat.";
 
+    [Obsolete]
     public string ConfigWindow_Param_HealWhenNothingTodoBelow { get; set; } = "When their minimum HP is lower than this.";
+
+    [Obsolete]
     public string ConfigWindow_Param_HealWhenNothingTodoDelay { get; set; } = "The delay of this type of healing.";
 
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "The HP for tank to use invulnerability";
+    [Obsolete]
     public string ConfigWindow_Param_HealthForGuard { get; set; } = "The HP for using Guard.";
-
+    [Obsolete]
     public string ConfigWindow_Param_MeleeRangeOffset { get; set; } = "Melee Range action using offset";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
     public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets that are in range for any abilities";
@@ -344,13 +377,23 @@ internal class Strings
     public string ConfigWindow_Control_ShowGCDCooldown { get; set; } = "Show GCD' Cooldown";
     [Obsolete]
     public string ConfigWindow_Control_UseOriginalCooldown { get; set; } = "Show Original Cooldown";
+    [Obsolete]
     public string ConfigWindow_Control_CooldownFontSize { get; set; } = "Change the cooldown font size.";
+
+    [Obsolete]
     public string ConfigWindow_Control_UnlockBackgroundColor { get; set; } = "Unlocked Control Window's Background";
+
+    [Obsolete]
     public string ConfigWindow_Control_LockBackgroundColor { get; set; } = "Locked Control Window's Background";
+
+    [Obsolete]
     public string ConfigWindow_Control_InfoWindowBg { get; set; } = "Info Window's Background";
+    [Obsolete]
     public string ConfigWindow_Control_ControlWindowGCDSize { get; set; } = "GCD icon size";
+    [Obsolete]
     public string ConfigWindow_Control_ControlWindow0GCDSize { get; set; } = "oGCD icon size";
     public string ConfigWindow_Control_CooldownWindowIconSize { get; set; } = "Cooldown icon size";
+    [Obsolete]
     public string ConfigWindow_Control_ControlWindowNextSizeRatio { get; set; } = "Next Action Size Ratio";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
 
@@ -830,7 +873,11 @@ internal class Strings
     public string ConfigWindow_UI_DrawIconAnimation { get; set; } = "Show RS logo animation";
     [Obsolete]
     public string ConfigWindow_UI_ShowBeneficialPosition { get; set; } = "Show beneficial AoE locations.";
+
+    [Obsolete]
     public string ConfigWindow_UI_BeneficialPositionColor { get; set; } = "The color of beneficial AoE positions";
+
+    [Obsolete]
     public string ConfigWindow_UI_HoveredBeneficialPositionColor { get; set; } = "The color of the hovered beneficial position";
 
     public string ConfigWindow_Tab_Actions { get; set; } = "The abilities and custom conditions that your selected job has.";
@@ -860,14 +907,23 @@ internal class Strings
     public string ConfigWindow_Basic_WeaponDelay { get; set; } = "This is the clipping time.\nGCD is over. However, RS forgets to click the next action.";
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
     public string ConfigWindow_About_SayHelloCount { get; set; } = "You have said hello to other users {0:N0} times!";
+
+    [Obsolete]
     public string ConfigWindow_Auto_AutoHealTimeToKill { get; set; } = "Stop healing when time to kill is lower then...";
 
     [Obsolete]
     public string ConfigWindow_UI_ShowHostiles { get; set; } = "Show the hostile target icon";
+
+    [Obsolete]
     public string ConfigWindow_UI_HostileIconHeight { get; set; } = "Hostile Icon height from position";
+
+    [Obsolete]
     public string ConfigWindow_UI_HostileIconSize { get; set; } = "Hostile Icon size";
 
+    [Obsolete]
     public string ConfigWindow_UI_StateIconHeight { get; set; } = "State icon height";
+
+    [Obsolete]
     public string ConfigWindow_UI_StateIconSize { get; set; } = "State icon size";
 
     [Obsolete]
@@ -878,11 +934,16 @@ internal class Strings
     public string ConfigWindow_Auto_AutoDefenseNumber { get; set; } = "The number hostile targets attacking you. If it's larger than this RS uses personal mitigation abilities.";
     [Obsolete]
     public string ConfigWindow_Target_OnlyAttackInVisionCone { get; set; } = "Only attack the targets in vision cone";
+
+    [Obsolete]
     public string ConfigWindow_Target_VisionCone { get; set; } = "The angle of your vision cone";
 
     public string ConfigWindow_Auto_ProvokeDelay { get; set; } = "The delay of provoke.";
 
+    [Obsolete]
     public string ConfigWindow_UI_TTKTextColor { get; set; } = "The text color of the time to kill indicator.";
+
+    [Obsolete]
     public string ConfigWindow_Basic_MinUpdatingTime { get; set; } = "The minimum time between updating RS information.";
 
     public string ConfigWindow_Actions_AOECount { get; set; } = "How many targets are needed to use this action.";
