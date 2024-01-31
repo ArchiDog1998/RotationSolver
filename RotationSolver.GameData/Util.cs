@@ -14,7 +14,7 @@ internal static partial class Util
 
     public static string Table(this string str) => "    " + str.Replace("\n", "\n    ");
 
-    public static string OnlyAscii(this string input) => new string(input.Where(char.IsAscii).ToArray());
+    public static string OnlyAscii(this string input) => new(input.Where(char.IsAscii).ToArray());
 
     public  static string ToPascalCase(this string input)
     {
@@ -46,4 +46,64 @@ internal static partial class Util
     private static partial Regex LowerCaseNextToNumber();
     [GeneratedRegex("(?<=[A-Z])[A-Z]+?((?=[A-Z][a-z])|(?=[0-9]))")]
     private static partial Regex UpperCaseInside();
+
+    public static string ArrayNames(string propertyName, string propertyType, string modifier, params string[] items)
+    {
+        var thisItems = $"""
+            [
+                {string.Join(", ", items)}
+            ]
+            """;
+        return $$"""
+        private {{propertyType}}[]? _{{propertyName}} = null;
+
+        /// <inheritdoc/>
+        {{modifier}} {{propertyType}}[] {{propertyName}} => _{{propertyName}} ??= 
+        {{(modifier.Contains("override") ? $"base.{propertyName}.Concat({thisItems}).ToArray()" : thisItems)}};
+        """;
+    }
+
+    public static string ToCode(this Lumina.Excel.GeneratedSheets.Action item,
+        string actionName, string actionDescName, string desc, bool isDuty)
+    {
+        if (isDuty)
+        {
+            actionDescName += " Duty Action";
+        }
+
+        return $$"""
+        private readonly Lazy<IBaseAction> _{{actionName}}Creator = new(() => 
+        {
+            IBaseAction action = new BaseAction((ActionID){{item.RowId}}, {{isDuty.ToString().ToLower()}});
+            CustomRotation.LoadActionConfigAndSetting(ref action);
+
+            var setting = action.Setting;
+            Modify{{actionName}}(ref setting);
+            action.Setting = setting;
+
+            return action;
+        });
+
+        /// <summary>
+        /// Modify {{actionDescName}}
+        /// </summary>
+        static partial void Modify{{actionName}}(ref ActionSetting setting);
+
+        /// <summary>
+        /// {{actionDescName}}
+        /// {{desc}}
+        /// </summary>
+        {{(item.ActionCategory.Row is 9 or 15 ? "private" : "public")}} IBaseAction {{actionName}} => _{{actionName}}Creator.Value;
+        """;
+    }
+
+    public static string GetDescName(this Lumina.Excel.GeneratedSheets.Action action)
+    {
+        var jobs = action.ClassJobCategory.Value?.Name.RawString;
+        jobs = string.IsNullOrEmpty(jobs) ? string.Empty : $" ({jobs})";
+
+        var cate = action.IsPvP ? " <i>PvP</i>" : " <i>PvE</i>";
+
+        return $"<see href=\"https://garlandtools.org/db/#action/{action.RowId}\"><strong>{action.Name.RawString}</strong></see>{cate}{jobs} [{action.RowId}] [{action.ActionCategory.Value?.Name.RawString ?? string.Empty}]";
+    }
 }

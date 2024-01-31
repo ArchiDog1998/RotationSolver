@@ -11,7 +11,7 @@ internal class ActionIdGetter(Lumina.GameData gameData)
 
         return $"""
         /// <summary>
-        /// {GetDescName(item)}
+        /// {item.GetDescName()}
         /// {GetDesc(item)}
         /// </summary>
         {name} = {item.RowId},

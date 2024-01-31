@@ -39,6 +39,9 @@ res.AddResource("Action", $$"""
     public abstract partial class CustomRotation
     {
     {{rotationCodes.Table()}}
+
+    {{Util.ArrayNames("AllBaseActions", "IBaseAction",
+    "public virtual", [.. rotationBase.AddedNames]).Table()}}
     }
     """);
 

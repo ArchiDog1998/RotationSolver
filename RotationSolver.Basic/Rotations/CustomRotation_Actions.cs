@@ -113,16 +113,15 @@ partial class CustomRotation
     private protected virtual IBaseAction? Raise => null;
     private protected virtual IBaseAction? TankStance => null;
 
-    IBaseAction[] _allBaseActions;
+    private protected virtual IBaseAction? LimitBreak1 => null;
+    private protected virtual IBaseAction? LimitBreak2 => null;
+    private protected virtual IBaseAction? LimitBreak3 => null;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public virtual IBaseAction[] AllBaseActions => _allBaseActions ??= GetBaseActions(GetType()).ToArray();
-
     IAction[] _allActions;
     public virtual IAction[] AllActions => _allActions ??= Array.Empty<IAction>().Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
 
-    IBaseTrait[] _allTraits;
-    public virtual IBaseTrait[] AllTraits => _allTraits ??= GetIEnoughLevel<IBaseTrait>(GetType()).ToArray();
+    public virtual IBaseTrait[] AllTraits { get; } = [];
 
     PropertyInfo[] _allBools;
     public PropertyInfo[] AllBools => _allBools ??= GetType().GetStaticProperties<bool>();

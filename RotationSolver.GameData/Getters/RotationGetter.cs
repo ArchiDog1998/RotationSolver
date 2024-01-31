@@ -41,12 +41,54 @@ internal class RotationGetter(Lumina.GameData gameData, ClassJob job)
 
          #region Actions
          {{rotationsCode.Table()}}
+
+         {{Util.ArrayNames("AllBaseActions", "IBaseAction",
+         "public override", [.. rotationsGetter.AddedNames]).Table()}}
+
+         {{GetLBInRotation(job.LimitBreak1.Value, 1)}}
+         {{GetLBInRotation(job.LimitBreak2.Value, 2)}}
+         {{GetLBInRotation(job.LimitBreak3.Value, 3)}}
+
          #endregion
 
          #region Traits
          {{traitsCode.Table()}}
+
+         {{Util.ArrayNames("AllTraits", "IBaseTrait",
+         "public override", [..traitsGetter.AddedNames]).Table()}}
          #endregion
          }
          """;
+    }
+
+    private string GetLBInRotation(Lumina.Excel.GeneratedSheets.Action? action, int index)
+    {
+        if (action == null) return string.Empty;
+        if (action.RowId == 0) return string.Empty;
+
+        var code = GetLB(action, out var name);
+
+        return code + "\n" + $"""
+            /// <summary>
+            /// {action.GetDescName()}
+            /// {GetDesc(action)}
+            /// </summary>
+            private sealed protected override IBaseAction? LimitBreak{index} => {name};
+            """;
+    }
+
+    private string GetLB(Lumina.Excel.GeneratedSheets.Action action, out string name)
+    {
+        name = action.Name.RawString.ToPascalCase() + $"PvE";
+        var descName = action.GetDescName();
+
+        return action.ToCode(name, descName, GetDesc(action), false);
+    }
+
+    private string GetDesc(Lumina.Excel.GeneratedSheets.Action item)
+    {
+        var desc = gameData.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description.RawString ?? string.Empty;
+
+        return $"<para>{desc.Replace("\n", "</para>\n/// <para>")}</para>";
     }
 }

@@ -4,11 +4,11 @@ namespace RotationSolver.GameData.Getters;
 internal class TraitRotationGetter(Lumina.GameData gameData, ClassJob job)
     : ExcelRowGetter<Trait>(gameData)
 {
-    private readonly List<string> _addedNames = [];
+    public List<string> AddedNames { get; } = [];
 
     protected override void BeforeCreating()
     {
-        _addedNames.Clear();
+        AddedNames.Clear();
         base.BeforeCreating();
     }
 
@@ -30,13 +30,13 @@ internal class TraitRotationGetter(Lumina.GameData gameData, ClassJob job)
     {
         var name = item.Name.RawString.ToPascalCase() + "Trait";
 
-        if (_addedNames.Contains(name))
+        if (AddedNames.Contains(name))
         {
             name += "_" + item.RowId.ToString();
         }
         else
         {
-            _addedNames.Add(name);
+            AddedNames.Add(name);
         }
 
         return $$"""

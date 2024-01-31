@@ -99,44 +99,15 @@ partial class CustomRotation
 
     private bool UseLimitBreak(out IAction? act)
     {
-        var role = ClassJob.GetJobRole();
-        act = null!;
+        act = null;
 
         return LimitBreakLevel switch
         {
-            1 => role switch
-            {
-                JobRole.Tank => ShieldWallPvE.CanUse(out act, skipAoeCheck: true),
-                JobRole.Healer => HealingWindPvE.CanUse(out act, skipAoeCheck: true),
-                JobRole.Melee => BraverPvE.CanUse(out act, skipAoeCheck: true),
-                JobRole.RangedPhysical => BigShotPvE.CanUse(out act, skipAoeCheck: true),
-                JobRole.RangedMagical => SkyshardPvE.CanUse(out act, skipAoeCheck: true),
-                _ => false,
-            },
-            2 => role switch
-            {
-                JobRole.Tank => StrongholdPvE.CanUse(out act, skipAoeCheck: true),
-                JobRole.Healer => BreathOfTheEarthPvE.CanUse(out act, skipAoeCheck: true),
-                JobRole.Melee => BladedancePvE.CanUse(out act, skipAoeCheck: true),
-                JobRole.RangedPhysical => DesperadoPvE.CanUse(out act, skipAoeCheck: true),
-                JobRole.RangedMagical => StarstormPvE.CanUse(out act, skipAoeCheck: true),
-                _ => false,
-            },
-            3 => UseLimitBreak3(out act),
+            1 => LimitBreak1?.CanUse(out act, skipAoeCheck: true) ?? false,
+            2 => LimitBreak2?.CanUse(out act, skipAoeCheck: true) ?? false,
+            3 => LimitBreak3?.CanUse(out act, skipAoeCheck: true) ?? false,
             _ => false,
         };
-
-        bool UseLimitBreak3(out IAction? act)
-        {
-            var lb = Jobs[0] switch
-            {
-                ECommons.ExcelServices.Job.AST => AstralStasisPvE,
-                _ => null,
-            };
-
-            act = null;
-            return lb?.CanUse(out act, skipAoeCheck: true) ?? false;
-        }
     }
 
     private bool RaiseSpell(out IAction? act, bool mustUse)

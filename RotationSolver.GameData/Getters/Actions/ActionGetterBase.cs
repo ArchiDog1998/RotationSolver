@@ -5,11 +5,11 @@ namespace RotationSolver.GameData.Getters.Actions;
 internal abstract class ActionGetterBase(Lumina.GameData gameData)
     : ExcelRowGetter<Action>(gameData)
 {
-    private readonly List<string> _addedNames = [];
+    public List<string> AddedNames { get; } = [];
     private string[] _notCombatJobs = [];
     protected override void BeforeCreating()
     {
-        _addedNames.Clear();
+        AddedNames.Clear();
         _notCombatJobs = [.. gameData.GetExcelSheet<ClassJob>()!.Where(c =>
         {
             return c.ClassJobCategory.Row is 32 or 33;
@@ -30,7 +30,7 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
             or 8 //No Event.
             or 12 // No Mount,
             or > 14 // No item manipulation and other thing.
-
+            or 9 or 15 //No LB,
             ) return false;
 
         //No crafting or gathering.
@@ -55,25 +55,15 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
         var name = item.Name.RawString.ToPascalCase()
             + (item.IsPvP ? "PvP" : "PvE");
 
-        if (_addedNames.Contains(name))
+        if (AddedNames.Contains(name))
         {
             name += "_" + item.RowId.ToString();
         }
         else
         {
-            _addedNames.Add(name);
+            AddedNames.Add(name);
         }
         return name;
-    }
-
-    protected static string GetDescName(Action item)
-    {
-        var jobs = item.ClassJobCategory.Value?.Name.RawString;
-        jobs = string.IsNullOrEmpty(jobs) ? string.Empty : $" ({jobs})";
-
-        var cate = item.IsPvP ? " <i>PvP</i>" : " <i>PvE</i>";
-
-        return $"<see href=\"https://garlandtools.org/db/#action/{item.RowId}\"><strong>{item.Name.RawString}</strong></see>{cate}{jobs} [{item.RowId}] [{item.ActionCategory.Value?.Name.RawString ?? string.Empty}]";
     }
 
     protected string GetDesc(Action item)
