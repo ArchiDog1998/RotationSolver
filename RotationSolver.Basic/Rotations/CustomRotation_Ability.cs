@@ -127,11 +127,13 @@ partial class CustomRotation
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.HealSingleAbility))
         {
-            if (UseHealPotion(out act)) return true;
+            if (UseHpPotion(out act)) return true;
         }
 
         if (HasHostilesInRange && AttackAbility(out act)) return true;
         if (GeneralAbility(out act)) return true;
+
+        if (UseMpPotion(out act)) return true;
 
         //Run!
         if (DataCenter.AutoStatus.HasFlag(AutoStatus.Speed))

@@ -86,7 +86,6 @@ partial class AstrologianRotation
 
     public AstrologianRotation()
     {
-        this.AllBaseActions
         //Lightspeed_PvE.ActionCheck = Divination_PvE.ActionCheck = (b, m) => IsLongerThan(10);
         //NeutralSect_PvE.ActionCheck = (b, m) => IsLongerThan(15);
 

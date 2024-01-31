@@ -51,15 +51,15 @@ internal static partial class Util
     {
         var thisItems = $"""
             [
-                {string.Join(", ", items)}
+                {string.Join(", ", items)},
+                {(modifier.Contains("override") ? $"..base.{propertyName}," : string.Empty)}
             ]
             """;
         return $$"""
         private {{propertyType}}[]? _{{propertyName}} = null;
 
         /// <inheritdoc/>
-        {{modifier}} {{propertyType}}[] {{propertyName}} => _{{propertyName}} ??= 
-        {{(modifier.Contains("override") ? $"base.{propertyName}.Concat({thisItems}).ToArray()" : thisItems)}};
+        {{modifier}} {{propertyType}}[] {{propertyName}} => _{{propertyName}} ??= {{thisItems}};
         """;
     }
 
@@ -75,7 +75,7 @@ internal static partial class Util
         private readonly Lazy<IBaseAction> _{{actionName}}Creator = new(() => 
         {
             IBaseAction action = new BaseAction((ActionID){{item.RowId}}, {{isDuty.ToString().ToLower()}});
-            CustomRotation.LoadActionConfigAndSetting(ref action);
+            CustomRotation.LoadActionSetting(ref action);
 
             var setting = action.Setting;
             Modify{{actionName}}(ref setting);

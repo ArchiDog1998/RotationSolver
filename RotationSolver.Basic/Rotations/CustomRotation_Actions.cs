@@ -1,11 +1,10 @@
-﻿using ECommons.ExcelServices;
-using RotationSolver.Basic.Traits;
+﻿using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Rotations;
 
 partial class CustomRotation
 {
-    public static void LoadActionConfigAndSetting(ref IBaseAction action)
+    internal static void LoadActionSetting(ref IBaseAction action)
     {
         //TODO: better target type check. (NoNeed?)
         //TODO: better friendly check.
@@ -117,9 +116,14 @@ partial class CustomRotation
     private protected virtual IBaseAction? LimitBreak2 => null;
     private protected virtual IBaseAction? LimitBreak3 => null;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    IAction[] _allActions;
-    public virtual IAction[] AllActions => _allActions ??= Array.Empty<IAction>().Union(GetBaseItems(GetType())).Union(AllBaseActions).ToArray();
+    public virtual IAction[] AllActions => 
+    [
+        .. AllBaseActions,
+        .. Medicines,
+        .. MpPotions,
+        .. HpPotions,
+        .. AllItems,
+    ];
 
     public virtual IBaseTrait[] AllTraits { get; } = [];
 
@@ -131,30 +135,4 @@ partial class CustomRotation
 
     PropertyInfo[] _allFloats;
     public PropertyInfo[] AllFloats => _allFloats ??= GetType().GetStaticProperties<float>();
-
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-    private IEnumerable<IBaseAction> GetBaseActions(Type type)
-    {
-        return GetIEnoughLevel<IBaseAction>(type);
-    }
-
-    private IEnumerable<IBaseItem> GetBaseItems(Type type)
-    {
-        return GetIEnoughLevel<IBaseItem>(type).Where(a => a is not MedicineItem medicine || medicine.InType(this)).Reverse();
-    }
-
-    private IEnumerable<T> GetIEnoughLevel<T>(Type? type) where T : IEnoughLevel
-    {
-        if (type == null) return Array.Empty<T>();
-
-        var acts = from prop in type.GetProperties()
-                   where typeof(T).IsAssignableFrom(prop.PropertyType) && !(prop.GetMethod?.IsPrivate ?? true)
-                   select (T)prop.GetValue(this)! into act
-                   where act != null
-                   orderby act.Level
-                   select act;
-
-        return acts.Union(GetIEnoughLevel<T>(type.BaseType));
-    }
 }

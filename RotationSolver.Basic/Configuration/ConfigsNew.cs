@@ -78,8 +78,11 @@ internal partial class ConfigsNew : IPluginConfiguration
     [UI("Use Tinctures")]
     public bool  UseTinctures { get; set; } = false;
 
-    [UI("Use Heal Potions")]
-    public bool  UseHealPotions { get; set; } = false;
+    [UI("Use HP Potions")]
+    public bool  UseHpPotions { get; set; } = false;
+
+    [UI("Use MP Potions")]
+    public bool UseMpPotions { get; set; } = false;
 
     [UI("Draw the offset of melee on the screen")]
     public bool DrawMeleeOffset { get; set; } = true;

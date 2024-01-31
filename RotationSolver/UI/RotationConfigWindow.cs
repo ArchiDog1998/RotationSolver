@@ -1403,9 +1403,9 @@ public partial class RotationConfigWindow : Window
                         ImGui.Text("remain: " + remain.ToString());
                         ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
 
-                        if (item is HealPotionItem healPotionItem)
+                        if (item is HpPotionItem healPotionItem)
                         {
-                            ImGui.Text("MaxHP:" + healPotionItem.MaxHealHp.ToString());
+                            ImGui.Text("MaxHP:" + healPotionItem.MaxHp.ToString());
                         }
                     }
                     catch

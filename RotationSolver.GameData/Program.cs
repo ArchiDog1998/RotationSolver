@@ -26,6 +26,8 @@ res.AddResource("ActionCategory", new ActionCategoryGetter(gameData).GetCode());
 
 var rotationBase = new ActionRoleRotationGetter(gameData);
 var rotationCodes = rotationBase.GetCode();
+var rotationItems = new ItemGetter(gameData);
+var rotationItemCodes = rotationItems.GetCode();
 
 res.AddResource("Action", $$"""
     using RotationSolver.Basic.Actions;
@@ -38,10 +40,19 @@ res.AddResource("Action", $$"""
     /// </summary>
     public abstract partial class CustomRotation
     {
+    #region Actions
     {{rotationCodes.Table()}}
 
     {{Util.ArrayNames("AllBaseActions", "IBaseAction",
     "public virtual", [.. rotationBase.AddedNames]).Table()}}
+    #endregion
+
+    #region Items
+    {{rotationItemCodes.Table()}}
+
+    {{Util.ArrayNames("AllItems", "IBaseItem",
+    "public ", [.. rotationItems.AddedNames]).Table()}}
+    #endregion
     }
     """);
 

@@ -10,7 +10,9 @@ namespace RotationSolver.Basic.Actions;
 public class BaseItem : IBaseItem
 {
     private protected readonly Item _item;
-    private uint A4 { get; } = 0;
+
+    /// <inheritdoc/>
+    public uint A4 { get; set; } = 0;
 
     /// <summary>
     /// Item Id.
@@ -26,8 +28,10 @@ public class BaseItem : IBaseItem
     /// The check about this item.
     /// </summary>
     public Func<bool>? ItemCheck { get; set; }
-    private unsafe bool HasIt => InventoryManager.Instance()->GetInventoryItemCount(ID, false) > 0 ||
-            InventoryManager.Instance()->GetInventoryItemCount(ID, true) > 0;
+
+    /// <inheritdoc/>
+    public unsafe bool HasIt => InventoryManager.Instance()->GetInventoryItemCount(ID, false) > 0
+        || InventoryManager.Instance()->GetInventoryItemCount(ID, true) > 0;
 
     /// <summary>
     /// Icon Id.
@@ -127,9 +131,8 @@ public class BaseItem : IBaseItem
     /// Create by row.
     /// </summary>
     /// <param name="row"></param>
-    /// <param name="a4"></param>
-    public unsafe BaseItem(uint row, uint a4 = 65535)
-        : this(Service.GetSheet<Item>().GetRow(row)!, a4)
+    public unsafe BaseItem(uint row)
+        : this(Service.GetSheet<Item>().GetRow(row)!)
     {
     }
 
@@ -137,12 +140,15 @@ public class BaseItem : IBaseItem
     /// Create by item.
     /// </summary>
     /// <param name="item"></param>
-    /// <param name="a4"></param>
-    public unsafe BaseItem(Item item, uint a4 = 65535)
+    public unsafe BaseItem(Item item)
     {
         _item = item;
         IconID = _item.Icon;
-        A4 = a4;
+        A4 = item.RowId switch
+        {
+            36109 => 196625,
+            _ => 65535, //TODO: better A4!
+        };
         SortKey = (uint)ActionManager.Instance()->GetRecastGroup((int)ActionType.Item, ID);
     }
 
