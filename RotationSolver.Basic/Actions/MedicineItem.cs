@@ -26,16 +26,11 @@ public enum MedicineType : byte
     Mind,
 }
 
-internal class MedicineItem : BaseItem
+internal class MedicineItem(uint row, MedicineType type, uint a4 = 65535) : BaseItem(row, a4)
 {
-    private readonly MedicineType _type;
+    private readonly MedicineType _type = type;
 
-    protected override bool CanUseThis => Service.Config.GetValue(Configuration.PluginConfigBool.UseTinctures);
-
-    public MedicineItem(uint row, MedicineType type, uint a4 = 65535) : base(row, a4)
-    {
-        _type = type;
-    }
+    protected override bool CanUseThis => Service.Config.UseTinctures;
 
     internal bool InType(ICustomRotation rotation) => rotation.MedicineType == _type;
 }

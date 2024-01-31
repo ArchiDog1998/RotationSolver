@@ -84,13 +84,13 @@ partial class CustomRotation
 
         ActionDispelStancePositionalGCD = role switch
         {
-            JobRole.Healer => DataCenter.WeakenPeople.Any() && DispelGCD(out act) ? act : null,
+            JobRole.Healer => DataCenter.DispelTarget != null && DispelGCD(out act) ? act : null,
             _ => null,
         };
 
         ActionRaiseShirkGCD = role switch
         {
-            JobRole.Healer => DataCenter.DeathPeopleAll.Any() && RaiseSpell(out act, true) ? act : null,
+            JobRole.Healer => DataCenter.DeathTarget != null && RaiseSpell(out act, true) ? act : null,
             _ => null,
         };
 

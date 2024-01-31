@@ -8,7 +8,7 @@ public class ActionSetting()
     public bool TargetStatusFromSelf { get; set; } = true;
     public StatusID[]? TargetStatusProvide { get; set; } = null;
     public StatusID[]? TargetStatusNeed { get; set; } = null;
-    public Func<GameObject, bool> CanTarget { get; set; } = t => true;
+    public Func<BattleChara, bool> CanTarget { get; set; } = t => true;
     public ActionID[]? ComboIdsNot { get; set; }
 
     public ActionID[]? ComboIds { get; set; }

@@ -1,7 +1,5 @@
-﻿using ECommons.ExcelServices;
-using ECommons.GameHelpers;
+﻿using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -19,20 +17,20 @@ internal class HealPotionItem : BaseItem
         }
     }
 
-    protected override bool CanUseThis => Service.Config.GetValue(Configuration.PluginConfigBool.UseHealPotions);
+    protected override bool CanUseThis => Service.Config.UseHealPotions;
 
     public HealPotionItem(Item item, uint a4 = 65535) : base(item, a4)
     {
-        var data = _item.ItemAction.Value.DataHQ;
+        var data = _item.ItemAction.Value!.DataHQ;
         _percent = data[0] / 100f;
         _maxHp = data[1];
     }
 
     public override bool CanUse(out IAction item, bool clippingCheck)
     {
-        item = null;
+        item = this;
         if (!Player.Available) return false;
-        if (Player.Object.GetHealthRatio() > Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot)) return false;
+        if (Player.Object.GetHealthRatio() > Service.Config.HealthSingleAbilityHot) return false;
         if (Player.Object.MaxHp - Player.Object.CurrentHp < MaxHealHp) return false;
         return base.CanUse(out item, clippingCheck);
     }

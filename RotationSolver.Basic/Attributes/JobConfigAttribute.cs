@@ -4,3 +4,8 @@
 internal class JobConfigAttribute : Attribute
 {
 }
+
+[AttributeUsage(AttributeTargets.Field)]
+internal class JobChoiceConfigAttribute : Attribute
+{
+}

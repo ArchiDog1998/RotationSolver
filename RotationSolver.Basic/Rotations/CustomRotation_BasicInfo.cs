@@ -11,7 +11,7 @@ partial class CustomRotation : ICustomRotation
 
     public abstract string GameVersion { get; }
 
-    public ClassJob ClassJob => Service.GetSheet<ClassJob>().GetRow((uint)Jobs[0]);
+    public ClassJob ClassJob => Service.GetSheet<ClassJob>().GetRow((uint)Jobs[0])!;
 
     public string Name => ClassJob.Abbreviation + " - " + ClassJob.Name;
 
@@ -19,16 +19,16 @@ partial class CustomRotation : ICustomRotation
 
     public bool IsEnabled
     {
-        get => !Service.Config.GlobalConfig.DisabledJobs.Contains(Jobs.FirstOrDefault());
+        get => !Service.Config.DisabledJobs.Contains(Jobs.FirstOrDefault());
         set
         {
             if (value)
             {
-                Service.Config.GlobalConfig.DisabledJobs.Remove(Jobs.FirstOrDefault());
+                Service.Config.DisabledJobs.Remove(Jobs.FirstOrDefault());
             }
             else
             {
-                Service.Config.GlobalConfig.DisabledJobs.Add(Jobs.FirstOrDefault());
+                Service.Config.DisabledJobs.Add(Jobs.FirstOrDefault());
             }
         }
     }
@@ -88,7 +88,7 @@ partial class CustomRotation : ICustomRotation
 
     protected virtual IRotationConfigSet CreateConfiguration()
     {
-        return new RotationConfigSet(Jobs[0], GetType().FullName ?? "No Name");
+        return new RotationConfigSet();
     }
 
     public override string ToString() => RotationName;

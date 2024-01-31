@@ -1,43 +1,27 @@
-﻿using ECommons.ExcelServices;
+﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
 
-namespace RotationSolver.Basic.Configuration.RotationConfig;
-
-internal abstract class RotationConfigBase : IRotationConfig
+internal abstract class RotationConfigBase(string name, string value, string displayName, CombatType type) 
+    : IRotationConfig
 {
-    public string Name { get; }
-    public string DefaultValue { get; }
-    public string DisplayName { get; }
-    public CombatType Type { get; }
+    public string Name { get; } = name;
+    public string DefaultValue { get; } = value;
+    public string DisplayName { get; } = displayName;
+    public CombatType Type { get; } = type;
 
-    public RotationConfigBase(string name, string value, string displayName, CombatType type)
+    public string Value 
     {
-        Name = name;
-        DefaultValue = value;
-        DisplayName = displayName;
-        Type = type;
-    }
-
-    public string GetValue(Job job, string rotationName)
-    {
-        var jobDict = Service.Config.GetJobConfig(job).RotationsConfigurations;
-        if (!jobDict.TryGetValue(rotationName, out var configDict)) return DefaultValue;
-        if (!configDict.TryGetValue(Name, out var config)) return DefaultValue;
-        return config;
-    }
-
-    public virtual string GetDisplayValue(Job job, string rotationName) => GetValue(job, rotationName);
-
-    public void SetValue(Job job, string rotationName, string value)
-    {
-        var jobDict = Service.Config.GetJobConfig(job).RotationsConfigurations;
-
-        if (!jobDict.TryGetValue(rotationName, out var configDict))
+        get
         {
-            configDict = jobDict[rotationName] = new Dictionary<string, string>();
+            if (!Service.Config.RotationsConfigurations.TryGetValue(Name, out var config)) return DefaultValue;
+            return config;
         }
-
-        configDict[Name] = value;
+        set
+        {
+            Service.Config.RotationsConfigurations[Name] = value;
+        }
     }
 
     public virtual bool DoCommand(IRotationConfigSet set, string str) => str.StartsWith(Name);
+
+    public override string ToString() => Value;
 }

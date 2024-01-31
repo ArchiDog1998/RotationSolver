@@ -38,8 +38,8 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     #region Target Finder.
     //The delay of finding the targets.
-    private readonly ObjectListDelay<GameObject> _canTargets = new (() => (1, 3));
-    public readonly IEnumerable<GameObject> CanTargets
+    private readonly ObjectListDelay<BattleChara> _canTargets = new (() => (1, 3));
+    public readonly IEnumerable<BattleChara> CanTargets
     {
         get
         {
@@ -61,7 +61,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         }
     }
 
-    private static bool InViewTarget(GameObject gameObject)
+    private static bool InViewTarget(BattleChara gameObject)
     {
         if (Service.Config.OnlyAttackInView)
         {
@@ -72,7 +72,7 @@ public struct ActionTargetInfo(IBaseAction _action)
             Vector3 dir = gameObject.Position - Player.Object.Position;
             Vector2 dirVec = new(dir.Z, dir.X);
             double angle = Player.Object.GetFaceVector().AngleTo(dirVec);
-            if (angle > Math.PI * Service.Config.GetValue(PluginConfigFloat.AngleOfVisionCone) / 360)
+            if (angle > Math.PI * Service.Config.AngleOfVisionCone / 360)
             {
                 return false;
             }
@@ -189,7 +189,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
     }
 
-    private readonly TargetResult? FindTargetArea(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects,
+    private readonly TargetResult? FindTargetArea(IEnumerable<BattleChara> canTargets, IEnumerable<BattleChara> canAffects,
         float range, PlayerCharacter player)
     {
         if (_action.Setting.TargetType is TargetType.Move)
@@ -198,8 +198,8 @@ public struct ActionTargetInfo(IBaseAction _action)
         }
         else if (_action.Setting.IsFriendly)
         {
-            if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbility)) return null;
-            if (!Service.Config.GetValue(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving) && DataCenter.IsMoving) return null;
+            if (!Service.Config.UseGroundBeneficialAbility) return null;
+            if (!Service.Config.UseGroundBeneficialAbilityWhenMoving && DataCenter.IsMoving) return null;
 
             return FindTargetAreaFriend(range, canAffects, player);
         }
@@ -210,7 +210,7 @@ public struct ActionTargetInfo(IBaseAction _action)
     }
 
 
-    private readonly TargetResult? FindTargetAreaHostile(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects, int aoeCount)
+    private readonly TargetResult? FindTargetAreaHostile(IEnumerable<BattleChara> canTargets, IEnumerable<BattleChara> canAffects, int aoeCount)
     {
         var target = GetMostCanTargetObjects(canTargets, canAffects, aoeCount)
             .OrderByDescending(ObjectHelper.GetHealthRatio).FirstOrDefault();
@@ -220,10 +220,10 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     private readonly TargetResult? FindTargetAreaMove(float range)
     {
-        if (Service.Config.GetValue(PluginConfigBool.MoveAreaActionFarthest))
+        if (Service.Config.MoveAreaActionFarthest)
         {
             Vector3 pPosition = Player.Object.Position;
-            if (Service.Config.GetValue(PluginConfigBool.MoveTowardsScreenCenter)) unsafe
+            if (Service.Config.MoveTowardsScreenCenter) unsafe
                 {
                     var camera = CameraManager.Instance()->CurrentCamera;
                     var tar = camera->LookAtVector - camera->Object.Position;
@@ -251,9 +251,9 @@ public struct ActionTargetInfo(IBaseAction _action)
     }
 
 
-    private readonly TargetResult? FindTargetAreaFriend(float range, IEnumerable<GameObject> canAffects, PlayerCharacter player)
+    private readonly TargetResult? FindTargetAreaFriend(float range, IEnumerable<BattleChara> canAffects, PlayerCharacter player)
     {
-        var strategy = Service.Config.GetValue(PluginConfigInt.BeneficialAreaStrategy);
+        var strategy = Service.Config.BeneficialAreaStrategy;
         switch (strategy)
         {
             case 0: // Find from list
@@ -330,7 +330,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         }
     }
 
-    private readonly IEnumerable<GameObject> GetAffects(Vector3 point, IEnumerable<GameObject> canAffects)
+    private readonly IEnumerable<BattleChara> GetAffects(Vector3 point, IEnumerable<BattleChara> canAffects)
     {
         foreach (var t in canAffects)
         {
@@ -341,7 +341,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         }
     }
 
-    private readonly IEnumerable<GameObject> GetAffects(GameObject tar, IEnumerable<GameObject> canAffects)
+    private readonly IEnumerable<BattleChara> GetAffects(BattleChara tar, IEnumerable<BattleChara> canAffects)
     {
         foreach (var t in canAffects)
         {
@@ -353,12 +353,12 @@ public struct ActionTargetInfo(IBaseAction _action)
     }
 
     #region Get Most Target
-    private readonly IEnumerable<GameObject> GetMostCanTargetObjects(IEnumerable<GameObject> canTargets, IEnumerable<GameObject> canAffects, int aoeCount)
+    private readonly IEnumerable<BattleChara> GetMostCanTargetObjects(IEnumerable<BattleChara> canTargets, IEnumerable<BattleChara> canAffects, int aoeCount)
     {
         if (IsSingleTarget || EffectRange <= 0) return canTargets;
         if (!_action.Setting.IsFriendly && NoAOE) return [];
 
-        List<GameObject> objectMax = new(canTargets.Count());
+        List<BattleChara> objectMax = new(canTargets.Count());
 
         foreach (var t in canTargets)
         {
@@ -385,7 +385,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             if (target != t && !CanGetTarget(target, t)) continue;
 
-            if (Service.Config.GetValue(PluginConfigBool.NoNewHostiles)
+            if (Service.Config.NoNewHostiles
                 && t.TargetObject == null)
             {
                 return 0;
@@ -507,7 +507,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
                     if (dir.Y > 0) return false;
 
-                    return Math.Abs(dir.X / dir.Y) <= Math.Tan(Math.PI * Service.Config.GetValue(PluginConfigFloat.MoveTargetAngle) / 360);
+                    return Math.Abs(dir.X / dir.Y) <= Math.Tan(Math.PI * Service.Config.MoveTargetAngle / 360);
                 }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 
                 return tars.FirstOrDefault();
@@ -525,7 +525,7 @@ public struct ActionTargetInfo(IBaseAction _action)
                     Vector3 dir = t.Position - pPosition;
                     Vector2 dirVec = new(dir.Z, dir.X);
                     double angle = faceVec.AngleTo(dirVec);
-                    return angle <= Math.PI * Service.Config.GetValue(PluginConfigFloat.MoveTargetAngle) / 360;
+                    return angle <= Math.PI * Service.Config.MoveTargetAngle / 360;
                 }).OrderByDescending(ObjectHelper.DistanceToPlayer);
 
                 return tars.FirstOrDefault();
@@ -558,11 +558,11 @@ public struct ActionTargetInfo(IBaseAction _action)
                 var tankTars = objs.GetJobCategory(JobRole.Tank);
 
                 var healerTar = healerTars.FirstOrDefault();
-                if (healerTar != null && healerTar.GetHealthRatio() < Service.Config.GetValue(PluginConfigFloat.HealthHealerRatio))
+                if (healerTar != null && healerTar.GetHealthRatio() < Service.Config.HealthHealerRatio)
                     return healerTar;
 
                 var tankTar = tankTars.FirstOrDefault();
-                if (tankTar != null && tankTar.GetHealthRatio() < Service.Config.GetValue(PluginConfigFloat.HealthTankRatio))
+                if (tankTar != null && tankTar.GetHealthRatio() < Service.Config.HealthTankRatio)
                     return tankTar;
 
                 var tar = objs.FirstOrDefault();

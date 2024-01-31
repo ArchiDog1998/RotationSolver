@@ -1,18 +1,13 @@
-﻿using ECommons.ExcelServices;
+﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
 
-namespace RotationSolver.Basic.Configuration.RotationConfig;
-
-internal class RotationConfigCombo : RotationConfigBase
+internal class RotationConfigCombo(string name, int value, string displayName, string[] items, CombatType type) 
+    : RotationConfigBase(name, value.ToString(), displayName, type)
 {
-    public string[] Items { get; set; }
-    public RotationConfigCombo(string name, int value, string displayName, string[] items, CombatType type) : base(name, value.ToString(), displayName, type)
-    {
-        Items = items;
-    }
+    public string[] Items { get; set; } = items;
 
-    public override string GetDisplayValue(Job job, string rotationName)
+    public override string ToString()
     {
-        var indexStr = base.GetDisplayValue(job, rotationName);
+        var indexStr = base.ToString();
         if (!int.TryParse(indexStr, out var index)) return Items[0];
         return Items[index];
     }

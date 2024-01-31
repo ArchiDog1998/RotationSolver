@@ -46,18 +46,17 @@ internal static class DataCenter
                 ConditionSets = [new MajorConditionSet()];
             }
 
-            var index = Service.Config.GetValue(PluginConfigInt.ActionSequencerIndex);
+            var index = Service.Config.ActionSequencerIndex;
             if (index < 0 || index >= ConditionSets.Length)
             {
-                index = 0;
-                Service.Config.SetValue(PluginConfigInt.ActionSequencerIndex, index);
+                Service.Config.ActionSequencerIndex = index = 0;
             }
 
             return ConditionSets[index];
         }
     }
 
-    internal static MajorConditionSet[] ConditionSets { get; set; } = Array.Empty<MajorConditionSet>();
+    internal static MajorConditionSet[] ConditionSets { get; set; } = [];
 
     /// <summary>
     /// Only recorded 15s hps.
@@ -71,7 +70,7 @@ internal static class DataCenter
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
         || !Service.Config.PoslockCasting
         //Key cancel.
-        || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.GetValue(PluginConfigInt.PoslockModifier) % ConfigurationHelper.Keys.Length]]
+        || Svc.KeyState[ConfigurationHelper.Keys[Service.Config.PoslockModifier % ConfigurationHelper.Keys.Length]]
         //Gamepad cancel.
         || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L2) >= 0.5f;
 
@@ -82,8 +81,8 @@ internal static class DataCenter
     internal static Queue<(ulong id, DateTime time)> AttackedTargets { get; } = new(ATTACKED_TARGETS_COUNT);
 
     internal static bool InEffectTime => DateTime.Now >= EffectTime && DateTime.Now <= EffectEndTime;
-    internal static Dictionary<ulong, uint> HealHP { get; set; } = new Dictionary<ulong, uint>();
-    internal static Dictionary<ulong, uint> ApplyStatus { get; set; } = new Dictionary<ulong, uint>();
+    internal static Dictionary<ulong, uint> HealHP { get; set; } = [];
+    internal static Dictionary<ulong, uint> ApplyStatus { get; set; } = [];
     internal static uint MPGain { get; set; }
     internal static bool HasApplyStatus(uint id, StatusID[] ids)
     {
@@ -146,11 +145,10 @@ internal static class DataCenter
         {
             NextActs[index] = newItem;
         }
-        NextActs = NextActs.OrderBy(i => i.DeadTime).ToList();
+        NextActs = [.. NextActs.OrderBy(i => i.DeadTime)];
     }
 
-    public static TargetHostileType RightNowTargetToHostileType
-        => (TargetHostileType)Service.Config.GetValue(JobConfigInt.HostileType);
+    public static TargetHostileType RightNowTargetToHostileType => Service.Config.HostileType;
 
     public static unsafe ActionID LastComboAction => (ActionID)ActionManager.Instance()->Combo.Action;
     public static unsafe float ComboTime => ActionManager.Instance()->Combo.Timer;
@@ -158,14 +156,14 @@ internal static class DataCenter
     {
         get
         {
-            if (Service.Config.GlobalConfig.TargetingTypes.Count == 0)
+            if (Service.Config.TargetingTypes.Count == 0)
             {
-                Service.Config.GlobalConfig.TargetingTypes.Add(TargetingType.Big);
-                Service.Config.GlobalConfig.TargetingTypes.Add(TargetingType.Small);
+                Service.Config.TargetingTypes.Add(TargetingType.Big);
+                Service.Config.TargetingTypes.Add(TargetingType.Small);
                 Service.Config.Save();
             }
 
-            return Service.Config.GlobalConfig.TargetingTypes[Service.Config.GetValue(PluginConfigInt.TargetingIndex) % Service.Config.GlobalConfig.TargetingTypes.Count];
+            return Service.Config.TargetingTypes[Service.Config.TargetingIndex % Service.Config.TargetingTypes.Count];
         }
     }
 
@@ -234,8 +232,8 @@ internal static class DataCenter
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
     private static double SpecialTimeElapsed => (DateTime.Now - _specialStateStartTime).TotalSeconds;
-    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.GetValue(PluginConfigFloat.SpecialDuration) - SpecialTimeElapsed :
-        Math.Ceiling((Service.Config.GetValue(PluginConfigFloat.SpecialDuration) + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
+    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.SpecialDuration - SpecialTimeElapsed :
+        Math.Ceiling((Service.Config.SpecialDuration + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
 
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
     internal static SpecialCommandType SpecialType
@@ -257,9 +255,7 @@ internal static class DataCenter
 
     public static bool InCombat { get; set; }
 
-    static RandomDelay _notInCombatDelay = new(() =>
-    (Service.Config.GetValue(PluginConfigFloat.NotInCombatDelayMin),
-    Service.Config.GetValue(PluginConfigFloat.NotInCombatDelayMax)));
+    static RandomDelay _notInCombatDelay = new(() => Service.Config.NotInCombatDelay);
 
     /// <summary>
     /// Is out of combat.
@@ -300,42 +296,10 @@ internal static class DataCenter
     public static unsafe bool HasCompanion => (IntPtr)Player.BattleChara != IntPtr.Zero
                                            && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Player.BattleChara) != IntPtr.Zero;
 
-    //public static float RatioOfMembersIn2minsBurst
-    //{
-    //    get
-    //    {
-    //        byte burst = 0, count = 0;
-
-    //        foreach (var member in PartyMembers)
-    //        {
-    //            foreach (var burstInfo in StatusHelper.Burst2Mins)
-    //            {
-    //                if (!burstInfo.Jobs.Contains((Job)member.ClassJob.Id)) continue;
-
-    //                if (member.Level >= burstInfo.Level)
-    //                {
-    //                    var tar = burstInfo.IsOnHostile
-    //                        && Svc.Targets.Target is BattleChara b ? b
-    //                        : Player.Object;
-    //                    if (tar.HasStatus(false, burstInfo.Status)
-    //                        && !tar.WillStatusEndGCD(0, 0, false, burstInfo.Status))
-    //                    {
-    //                        burst++;
-    //                    }
-    //                    count++;
-    //                }
-    //                break;
-    //            }
-    //        }
-    //        if (count == 0) return -1;
-    //        return (float)burst / count;
-    //    }
-    //}
-
     #region HP
-    public static Dictionary<uint, float> RefinedHP { get; internal set; } = new Dictionary<uint, float>();
+    public static Dictionary<uint, float> RefinedHP { get; internal set; } = [];
 
-    public static IEnumerable<float> PartyMembersHP { get; internal set; }
+    public static IEnumerable<float> PartyMembersHP { get; internal set; } = [];
     public static float PartyMembersMinHP { get; internal set; }
     public static float PartyMembersAverHP { get; internal set; }
     public static float PartyMembersDifferHP { get; internal set; }
@@ -383,7 +347,7 @@ internal static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Math.Min(Math.Min(RTT, FetchTime), Service.Config.GetValue(Configuration.PluginConfigFloat.MaxPing));
+    public static float Ping => Math.Min(Math.Min(RTT, FetchTime), Service.Config.MaxPing);
     public static float RTT { get; internal set; } = 0.1f;
     public static float FetchTime { get; private set; } = 0.1f;
 

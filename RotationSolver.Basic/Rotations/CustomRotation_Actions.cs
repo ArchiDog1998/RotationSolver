@@ -36,7 +36,7 @@ partial class CustomRotation
 
     static partial void ModifySecondWindPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat;
+        setting.ActionCheck = () => Player?.GetHealthRatio() < Service.Config.HealthSingleAbility && InCombat;
     }
 
     static partial void ModifyRampartPvE(ref ActionSetting setting)
@@ -46,7 +46,7 @@ partial class CustomRotation
 
     static partial void ModifyBloodbathPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Player?.GetHealthRatio() < Service.Config.GetValue(Configuration.JobConfigFloat.HealthSingleAbility) && InCombat && HasHostilesInRange;
+        setting.ActionCheck = () => Player?.GetHealthRatio() < Service.Config.HealthSingleAbility && InCombat && HasHostilesInRange;
     }
 
     static partial void ModifyFeintPvE(ref ActionSetting setting)

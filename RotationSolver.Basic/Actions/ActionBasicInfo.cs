@@ -69,7 +69,7 @@ public struct ActionBasicInfo
 
     internal readonly bool BasicCheck(bool skipStatusProvideCheck, bool skipCombo, bool ignoreCastingCheck)
     {
-        if (!_action.Config.IsEnable || !IsOnSlot) return false;
+        if (!_action.Config.IsEnabled || !IsOnSlot) return false;
 
         //Disabled.
         if (DataCenter.DisabledActionSequencer?.Contains(ID) ?? false) return false;

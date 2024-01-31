@@ -71,28 +71,28 @@ partial class CustomRotation
 
         if (GeneralGCD(out var action)) return action;
 
-        if (Service.Config.GetValue(PluginConfigBool.HealWhenNothingTodo) && InCombat)
+        if (Service.Config.HealWhenNothingTodo && InCombat)
         {
             // Please don't tell me someone's fps is less than 1!!
             if (DateTime.Now - _nextTimeToHeal > TimeSpan.FromSeconds(1))
             {
-                var min = Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoMin);
-                var max = Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoMax);
+                var min = Service.Config.HealWhenNothingTodoDelay.X;
+                var max = Service.Config.HealWhenNothingTodoDelay.Y;
                 _nextTimeToHeal = DateTime.Now + TimeSpan.FromSeconds(new Random().NextDouble() * (max - min) + min);
             }
             else if (_nextTimeToHeal < DateTime.Now)
             {
                 _nextTimeToHeal = DateTime.Now;
 
-                if (PartyMembersMinHP < Service.Config.GetValue(PluginConfigFloat.HealWhenNothingTodoBelow))
+                if (PartyMembersMinHP < Service.Config.HealWhenNothingTodoBelow)
                 {
-                    if (DataCenter.PartyMembersDifferHP < Service.Config.GetValue(PluginConfigFloat.HealthDifference) && HealAreaGCD(out act)) return act;
+                    if (DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && HealAreaGCD(out act)) return act;
                     if (HealSingleGCD(out act)) return act;
                 }
             }
         }
 
-        if (Service.Config.GetValue(PluginConfigBool.RaisePlayerByCasting) && RaiseSpell(out act, true)) return act;
+        if (Service.Config.RaisePlayerByCasting && RaiseSpell(out act, true)) return act;
 
         return null;
     }
@@ -170,7 +170,7 @@ partial class CustomRotation
                     return true;
                 }
             }
-            else if (Service.Config.GetValue(PluginConfigBool.RaisePlayerBySwift) && !SwiftcastPvE.IsCoolingDown
+            else if (Service.Config.RaisePlayerBySwift && !SwiftcastPvE.IsCoolingDown
                 && NextAbilityToNextGCD > DataCenter.MinAnimationLock + Ping)
             {
                 return true;
@@ -181,7 +181,7 @@ partial class CustomRotation
 
         bool RaiseAction(out IAction act, bool ignoreCastingCheck)
         {
-            if (Player.CurrentMp > Service.Config.GetValue(PluginConfigInt.LessMPNoRaise) && (Raise?.CanUse(out act, ignoreCastingCheck: ignoreCastingCheck) ?? false)) return true;
+            if (Player.CurrentMp > Service.Config.LessMPNoRaise && (Raise?.CanUse(out act, ignoreCastingCheck: ignoreCastingCheck) ?? false)) return true;
 
             act = null!;
             return false;
@@ -211,7 +211,7 @@ partial class CustomRotation
     {
         #region PvP
         if (GuardPvP.CanUse(out act)
-            && (Player.GetHealthRatio() <= Service.Config.GetValue(PluginConfigFloat.HealthForGuard)
+            && (Player.GetHealthRatio() <= Service.Config.HealthForGuard
             || DataCenter.CommandStatus.HasFlag(AutoStatus.Raise | AutoStatus.Shirk))) return true;
 
         

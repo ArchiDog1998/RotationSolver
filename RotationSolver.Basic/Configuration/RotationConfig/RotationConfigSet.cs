@@ -1,19 +1,10 @@
-﻿using ECommons.ExcelServices;
-using System.Collections;
+﻿using System.Collections;
 
 namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 internal class RotationConfigSet : IRotationConfigSet
 {
-    readonly Job _job;
-    readonly string _rotationName;
     public HashSet<IRotationConfig> Configs { get; } = new HashSet<IRotationConfig>(new RotationConfigComparer());
-
-    public RotationConfigSet(Job job, string rotationName)
-    {
-        _job = job;
-        _rotationName = rotationName;
-    }
 
     public IRotationConfigSet SetFloat(ConfigUnitType unit, CombatType type, string name, float value, string displayName, float min = 0, float max = 1, float speed = 0.002f)
     {
@@ -49,7 +40,7 @@ internal class RotationConfigSet : IRotationConfigSet
     {
         var config = Configs.FirstOrDefault(config => config.Name == name);
         if (config == null) return;
-        config.SetValue(_job, _rotationName, value);
+        config.Value = value;
     }
 
     #region Get
@@ -77,7 +68,7 @@ internal class RotationConfigSet : IRotationConfigSet
     public string GetString(string name)
     {
         var config = GetConfig(name);
-        return config?.GetValue(_job, _rotationName);
+        return config?.Value ?? string.Empty;
     }
 
     public int GetInt(string name)
@@ -90,16 +81,13 @@ internal class RotationConfigSet : IRotationConfigSet
     public string GetDisplayString(string name)
     {
         var config = GetConfig(name);
-        return config?.GetDisplayValue(_job, _rotationName);
+        return config?.ToString() ?? string.Empty;
     }
 
-    private IRotationConfig GetConfig(string name) => Configs.FirstOrDefault(config => config.Name == name);
+    private IRotationConfig? GetConfig(string name) => Configs.FirstOrDefault(config => config.Name == name);
     #endregion
-
 
     public IEnumerator<IRotationConfig> GetEnumerator() => Configs.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => Configs.GetEnumerator();
-
-
 }

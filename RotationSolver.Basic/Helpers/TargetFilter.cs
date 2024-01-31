@@ -15,7 +15,7 @@ public static class TargetFilter
 {
     #region Find one target
     internal static IEnumerable<BattleChara> MeleeRangeTargetFilter(IEnumerable<BattleChara> availableCharas)
-        => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.GetValue(PluginConfigFloat.MeleeRangeOffset));
+        => availableCharas.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.MeleeRangeOffset);
 
     //internal static BattleChara DefaultChooseFriend(IEnumerable<BattleChara> availableCharas, bool _)
     //{
@@ -224,7 +224,7 @@ public static class TargetFilter
 
             if (item.HasStatus(false, StatusID.Raise)) return false;
 
-            if (!Service.Config.GetValue(PluginConfigBool.RaiseBrinkOfDeath) && item.HasStatus(false, StatusID.BrinkOfDeath)) return false;
+            if (!Service.Config.RaiseBrinkOfDeath && item.HasStatus(false, StatusID.BrinkOfDeath)) return false;
 
             if (DataCenter.AllianceMembers.Any(c => c.CastTargetObjectId == item.ObjectId)) return false;
 
@@ -264,9 +264,6 @@ public static class TargetFilter
         if(obj is not BattleChara b) return false;
         return validJobs.Contains((byte?)b.ClassJob.GameData?.RowId ?? 0);
     }
-
-
-
     #endregion
 
     /// <summary>
@@ -278,21 +275,4 @@ public static class TargetFilter
     /// <returns></returns>
     public static IEnumerable<T> GetObjectInRadius<T>(this IEnumerable<T> objects, float radius) where T : GameObject
         => objects.Where(o => o.DistanceToPlayer() <= radius);
-
-    private static IEnumerable<BattleChara> DefaultTargetingType(IEnumerable<BattleChara> charas)
-    {
-        if (DataCenter.Territory?.IsPvpZone ?? false)
-        {
-            return charas.OrderBy(p => p.CurrentHp);
-        }
-        return DataCenter.TargetingType switch
-        {
-            TargetingType.Small => charas.OrderBy(p => p.HitboxRadius),
-            TargetingType.HighHP => charas.OrderByDescending(p => p.CurrentHp),
-            TargetingType.LowHP => charas.OrderBy(p => p.CurrentHp),
-            TargetingType.HighMaxHP => charas.OrderByDescending(p => p.MaxHp),
-            TargetingType.LowMaxHP => charas.OrderBy(p => p.MaxHp),
-            _ => charas.OrderByDescending(p => p.HitboxRadius),
-        };
-    }
 }

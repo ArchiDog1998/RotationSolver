@@ -1,4 +1,5 @@
 ﻿using Dalamud.Configuration;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 
 namespace RotationSolver.Basic.Configuration;
@@ -7,10 +8,11 @@ internal partial class ConfigsNew : IPluginConfiguration
     public int Version { get; set; } = 8;
 
     public List<ActionEventInfo> Events { get; private set; } = [];
+    public SortedSet<Job> DisabledJobs { get; private set; } = [];
 
-    public string[] OtherLibs = [];
+    public string[] OtherLibs { get; private set; } = [];
 
-    public string[] GitHubLibs = [];
+    public string[] GitHubLibs { get; private set; } = [];
     public List<TargetingType> TargetingTypes { get; set; } = [];
 
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
@@ -557,6 +559,27 @@ internal partial class ConfigsNew : IPluginConfiguration
     private readonly string _PvPRotationChoice = string.Empty;
 
     [JobConfig]
-    private readonly string _RotationChoice = string.Empty;
+    private readonly string _rotationChoice = string.Empty;
     #endregion
+
+    [JobChoiceConfig]
+    private readonly Dictionary<uint, ActionConfig> _rotationActionConfig = [];
+
+    [JobChoiceConfig]
+    private readonly Dictionary<uint, ItemConfig> _rotationItemConfig = [];
+
+    [JobChoiceConfig]
+    private readonly Dictionary<string, string> _rotationsConfigurations = [];
+
+    public void Save()
+    {
+#if DEBUG
+        Svc.Log.Information("Saved configurations.");
+#endif
+        File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,
+            JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+            }));
+    }
 }

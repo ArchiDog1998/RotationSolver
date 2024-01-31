@@ -1,17 +1,20 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text;
 
 namespace RotationSolver.SourceGenerators;
 
 [Generator(LanguageNames.CSharp)]
-public class JobConfigGenerator : IIncrementalGenerator
+
+public class JobChoiceConfigGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var provider = context.SyntaxProvider.ForAttributeWithMetadataName
-            ("RotationSolver.Basic.Attributes.JobConfigAttribute",
+            ("RotationSolver.Basic.Attributes.JobChoiceConfigAttribute",
             static (node, _) => node is VariableDeclaratorSyntax { Parent: VariableDeclarationSyntax { Parent: FieldDeclarationSyntax { Parent: ClassDeclarationSyntax or StructDeclarationSyntax } } },
             static (n, ct) => ((VariableDeclaratorSyntax)n.TargetNode, n.SemanticModel))
             .Where(m => m.Item1 != null);
@@ -74,7 +77,7 @@ public class JobConfigGenerator : IIncrementalGenerator
                 var attributeStr = names.Count == 0 ? "" : $"[{string.Join(", ", names)}]";
                 var propertyCode = $$"""
                         [JsonProperty]
-                        private Dictionary<Job, {{fieldStr}}> {{variableName}}Dict = [];
+                        private Dictionary<Job, Dictionary<string, {{fieldStr}}>> {{variableName}}Dict = [];
 
                         [JsonIgnore]
                         {{attributeStr}}
@@ -82,12 +85,15 @@ public class JobConfigGenerator : IIncrementalGenerator
                         {
                             get
                             {
-                                if ({{variableName}}Dict.TryGetValue(DataCenter.Job, out var value)) return value;
-                                return {{variableName}};
+                                if (!{{variableName}}Dict.TryGetValue(DataCenter.Job, out var dict)) return {{variableName}};
+                                
+                                if (!dict.TryGetValue(RotationChoice, out var value)) return {{variableName}};
+
+                                return value;
                             }
                             set
                             {
-                                {{variableName}}Dict[DataCenter.Job] = value;
+                                {{variableName}}Dict[DataCenter.Job][RotationChoice] = value;
                             }
                         }
                 """;
@@ -114,4 +120,5 @@ public class JobConfigGenerator : IIncrementalGenerator
             context.AddSource($"{nameSpace}_{className}.g.cs", code);
         }
     }
+
 }

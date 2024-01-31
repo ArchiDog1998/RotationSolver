@@ -37,23 +37,13 @@ public class BaseAction : IBaseAction
     public byte Level => Info.Level;
     public bool IsEnabled 
     { 
-        get => Config.IsEnable; 
-        set
-        {
-            var config = Config;
-            config.IsEnable = value;
-            Config = config;
-        }
+        get => Config.IsEnabled; 
+        set => Config.IsEnabled = value;
     }
     public bool IsInCooldown
     {
         get => Config.IsInCooldown;
-        set
-        {
-            var config = Config;
-            config.IsInCooldown = value;
-            Config = config;
-        }
+        set => Config.IsInCooldown = value;
     }
 
     public bool EnoughLevel => Info.EnoughLevel;
@@ -69,7 +59,17 @@ public class BaseAction : IBaseAction
 
     public ActionSetting Setting { get; set; }
 
-    public ActionConfig Config { get; set; }
+    public ActionConfig Config
+    {
+        get
+        {
+            if(!Service.Config.RotationActionConfig.TryGetValue(ID, out var value))
+            {
+                Service.Config.RotationActionConfig[ID] = value = new();
+            }
+            return value;
+        }
+    }
 
     internal BaseAction(ActionID actionID, bool isDutyAction)
     {
@@ -79,7 +79,6 @@ public class BaseAction : IBaseAction
         Cooldown = new(this);
 
         Setting = new();
-        Config = new();
     }
 
     public bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipCombo = false, bool ignoreCastingCheck = false, 
@@ -139,14 +138,5 @@ public class BaseAction : IBaseAction
         {
             return ActionManager.Instance()->UseAction(ActionType.Action, adjustId, target.Target.ObjectId);
         }
-    }
-
-    public virtual IBaseAction Duplicate()
-    {
-        return new BaseAction((ActionID)ID, Info.IsDutyAction)
-        {
-            Setting = Setting,
-            Config = Config
-        };
     }
 }

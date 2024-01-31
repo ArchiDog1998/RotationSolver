@@ -5,7 +5,7 @@
 
 ![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/RotationSolver/latest/total.svg?style=for-the-badge)
 ![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/RotationSolver/total.svg?style=for-the-badge)
-![Github Lines](https://img.shields.io/tokei/lines/github/ArchiDog1998/RotationSolver?style=for-the-badge)
+![](https://img.shields.io/codefactor/grade/github/ArchiDog1998/RotationSolver?longCache=true&style=for-the-badge)
 ![Github License](https://img.shields.io/github/license/ArchiDog1998/RotationSolver.svg?label=License&style=for-the-badge)
 ![Github Commits](https://img.shields.io/github/commits-since/ArchiDog1998/RotationSolver/latest/main?style=for-the-badge)
 

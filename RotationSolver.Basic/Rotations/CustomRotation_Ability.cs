@@ -15,8 +15,7 @@ partial class CustomRotation
 
         if (act is IBaseItem i && i.CanUse(out _, true)) return true;
 
-        if (!Service.Config.GetValue(PluginConfigBool.UseAbility)
-            || Player.TotalCastTime > 0)
+        if (!Service.Config.UseAbility || Player.TotalCastTime > 0)
         {
             act = null!;
             return false;
@@ -86,7 +85,7 @@ partial class CustomRotation
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.Provoke))
         {
-            if (!HasTankStance && TankStance.CanUse(out act)) return true;
+            if (!HasTankStance && (TankStance?.CanUse(out act) ?? false)) return true;
 
             IBaseAction.TargetOverride = TargetType.Provoke;
 
@@ -162,6 +161,11 @@ partial class CustomRotation
         return InterruptAbility(out act);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     protected virtual bool InterruptAbility(out IAction? act)
     {
         if (DataCenter.RightNowDutyRotation?.InterruptAbility(out act) ?? false) return true;
@@ -189,12 +193,22 @@ partial class CustomRotation
         return AntiKnockbackAbility(out act);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     protected virtual bool AntiKnockbackAbility(out IAction? act)
     {
         if (DataCenter.RightNowDutyRotation?.AntiKnockbackAbility(out act) ?? false) return true;
         act = null; return false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
     protected virtual bool ProvokeAbility(out IAction? act)
     {
         if (DataCenter.RightNowDutyRotation?.ProvokeAbility(out act) ?? false) return true;
@@ -243,7 +257,7 @@ partial class CustomRotation
             if (ClassJob.GetJobRole() is JobRole.Healer or JobRole.RangedMagical &&
             action.Info.CastTime >= 5 && SwiftcastPvE.CanUse(out act)) return true;
 
-            if (Service.Config.GetValue(PluginConfigBool.AutoUseTrueNorth)
+            if (Service.Config.AutoUseTrueNorth
                 && action.Setting.EnemyPositional != EnemyPositional.None && action.Target != null)
             {
                 if (action.Setting.EnemyPositional != action.Target?.Target.FindEnemyPositional() && (action.Target?.Target.HasPositional() ?? false))
@@ -258,7 +272,7 @@ partial class CustomRotation
 
         #region PvP
         if (GuardPvP.CanUse(out act)
-            && (Player.GetHealthRatio() <= Service.Config.GetValue(PluginConfigFloat.HealthForGuard)
+            && (Player.GetHealthRatio() <= Service.Config.HealthForGuard
             || DataCenter.CommandStatus.HasFlag(AutoStatus.Raise | AutoStatus.Shirk))) return true;
         #endregion
 

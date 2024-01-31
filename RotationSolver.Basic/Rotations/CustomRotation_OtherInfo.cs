@@ -64,40 +64,9 @@ partial class CustomRotation
     protected static IEnumerable<BattleChara> PartyMembers => DataCenter.PartyMembers;
 
     /// <summary>
-    /// Party tanks.
-    /// </summary>
-    protected static IEnumerable<BattleChara> PartyTanks => DataCenter.PartyTanks;
-
-    /// <summary>
-    /// Party healers.
-    /// </summary>
-    protected static IEnumerable<BattleChara> PartyHealers => DataCenter.PartyHealers;
-
-    /// <summary>
     /// Alliance members.
     /// </summary>
     protected static IEnumerable<BattleChara> AllianceMembers => DataCenter.AllianceMembers;
-
-    /// <summary>
-    /// Alliance Tanks.
-    /// </summary>
-    protected static IEnumerable<BattleChara> AllianceTanks => DataCenter.AllianceTanks;
-
-    /// <summary>
-    /// Weaken People
-    /// </summary>
-    protected static IEnumerable<BattleChara> WeakenPeople => DataCenter.WeakenPeople;
-
-    /// <summary>
-    /// The people is dying.
-    /// </summary>
-    protected static IEnumerable<BattleChara> DyingPeople => DataCenter.DyingPeople;
-
-    /// <summary>
-    /// The ratio of members that in burst 2min.
-    /// </summary>
-    public static float RatioOfMembersIn2minsBurst => DataCenter.RatioOfMembersIn2minsBurst;
-
 
     /// <summary>
     /// Whether the number of party members is 8.
@@ -123,7 +92,7 @@ partial class CustomRotation
     #region Target
     /// <summary>
     /// The player's target.
-    /// <br>WARNING: You'd better not use it. Because this target isn't the action's target. Try to use <see cref="IBaseAction.Target"/> or <seealso cref="HostileTarget"/> instead after using <seealso cref="IBaseAction.CanUse(out IAction, CanUseOption, byte, byte)"/></br>
+    /// <br>WARNING: You'd better not use it. Because this target isn't the action's target. Try to use <see cref="IBaseAction.Target"/> or <seealso cref="HostileTarget"/> instead after using <seealso cref="IBaseAction.CanUse(out IAction, bool, bool, bool, bool, bool, bool, bool, byte)"/></br>
     /// </summary>
     [Obsolete("You'd better not use it. More information in summary.")]
     protected static BattleChara Target => Svc.Targets.Target is BattleChara b ? b : Player;
@@ -152,11 +121,6 @@ partial class CustomRotation
     /// How many hostile targets in max range (25 yalms) regardless of job
     /// </summary>
     public static int NumberOfHostilesInMaxRange => DataCenter.NumberOfHostilesInMaxRange;
-
-    /// <summary>
-    /// All hostile Targets.
-    /// </summary>
-    protected static IEnumerable<BattleChara> HostileTargets => DataCenter.HostileTargets;
 
     /// <summary>
     /// How many hostile targets in range? 25 for ranged jobs and healer, 3 for melee and tank. This is all can attack.
@@ -494,51 +458,51 @@ partial class CustomRotation
     /// <summary>
     /// The count down ahead.
     /// </summary>
-    public static float CountDownAhead => Service.Config.GetValue(PluginConfigFloat.CountDownAhead);
+    public static float CountDownAhead => Service.Config.CountDownAhead;
 
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthAreaAbility => Service.Config.GetValue(JobConfigFloat.HealthAreaAbility);
+    public static float HealthAreaAbility => Service.Config.HealthAreaAbility;
 
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthAreaSpell => Service.Config.GetValue(JobConfigFloat.HealthAreaSpell);
+    public static float HealthAreaSpell => Service.Config.HealthAreaSpell;
 
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthAreaAbilityHot => Service.Config.GetValue(JobConfigFloat.HealthAreaAbilityHot);
+    public static float HealthAreaAbilityHot => Service.Config.HealthAreaAbilityHot;
 
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthAreaSpellHot => Service.Config.GetValue(JobConfigFloat.HealthAreaSpellHot);
+    public static float HealthAreaSpellHot => Service.Config.HealthAreaSpellHot;
 
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthSingleAbility => Service.Config.GetValue(JobConfigFloat.HealthSingleAbility);
+    public static float HealthSingleAbility => Service.Config.HealthSingleAbility;
 
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthSingleSpell => Service.Config.GetValue(JobConfigFloat.HealthSingleSpell);
+    public static float HealthSingleSpell => Service.Config.HealthSingleSpell;
 
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthSingleAbilityHot => Service.Config.GetValue(JobConfigFloat.HealthSingleAbilityHot);
+    public static float HealthSingleAbilityHot => Service.Config.HealthSingleAbilityHot;
 
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthSingleSpellHot => Service.Config.GetValue(JobConfigFloat.HealthSingleSpellHot);
+    public static float HealthSingleSpellHot => Service.Config.HealthSingleSpellHot;
 
     /// <summary>
     /// 
     /// </summary>
-    public static float HealthForDyingTanks => Service.Config.GetValue(JobConfigFloat.HealthForDyingTanks);
+    public static float HealthForDyingTanks => Service.Config.HealthForDyingTanks;
     #endregion
 }

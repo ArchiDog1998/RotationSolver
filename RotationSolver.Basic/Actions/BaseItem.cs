@@ -9,7 +9,7 @@ namespace RotationSolver.Basic.Actions;
 /// </summary>
 public class BaseItem : IBaseItem
 {
-    private protected readonly Item _item = null;
+    private protected readonly Item _item;
     private uint A4 { get; } = 0;
 
     /// <summary>
@@ -25,7 +25,7 @@ public class BaseItem : IBaseItem
     /// <summary>
     /// The check about this item.
     /// </summary>
-    public Func<bool> ItemCheck { get; set; }
+    public Func<bool>? ItemCheck { get; set; }
     private unsafe bool HasIt => InventoryManager.Instance()->GetInventoryItemCount(ID, false) > 0 ||
             InventoryManager.Instance()->GetInventoryItemCount(ID, true) > 0;
 
@@ -39,42 +39,36 @@ public class BaseItem : IBaseItem
     /// </summary>
     public string Name => _item.Name;
 
+    public ItemConfig Config
+    {
+        get
+        {
+            if (!Service.Config.RotationItemConfig.TryGetValue(ID, out var value))
+            {
+                Service.Config.RotationItemConfig[ID] = value = new();
+            }
+            return value;
+        }
+    }
+
     /// <summary>
     /// Is item enabled.
     /// </summary>
+
     public bool IsEnabled
     {
-        get => !Service.Config.GlobalConfig.DisabledItems.Contains(ID);
-        set
-        {
-            if (value)
-            {
-                Service.Config.GlobalConfig.DisabledItems.Remove(ID);
-            }
-            else
-            {
-                Service.Config.GlobalConfig.DisabledItems.Add(ID);
-            }
-        }
+        get => Config.IsEnabled;
+        set => Config.IsEnabled = value;
     }
 
     /// <summary>
     /// Is the item in the cd window.
     /// </summary>
+
     public bool IsInCooldown
     {
-        get => !Service.Config.GlobalConfig.NotInCoolDownItems.Contains(ID);
-        set
-        {
-            if (value)
-            {
-                Service.Config.GlobalConfig.NotInCoolDownItems.Remove(ID);
-            }
-            else
-            {
-                Service.Config.GlobalConfig.NotInCoolDownItems.Add(ID);
-            }
-        }
+        get => Config.IsInCooldown;
+        set => Config.IsInCooldown = value;
     }
 
     /// <summary>

@@ -18,10 +18,8 @@ public interface IBaseAction : IAction
     ActionBasicInfo Info { get; }
     ActionCooldownInfo Cooldown { get; }
     ActionSetting Setting { get; set; }
-    internal ActionConfig Config { get; set; }   
+    internal ActionConfig Config { get; }   
 
     bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipCombo = false, bool ignoreCastingCheck = false,
         bool isEmpty = false, bool onLastAbility = false, bool ignoreClippingCheck = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0);
-
-    public IBaseAction Duplicate();
 }

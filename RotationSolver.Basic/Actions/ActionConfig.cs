@@ -6,7 +6,7 @@
 public class ActionConfig()
 {
     private bool _isEnable = true;
-    public bool IsEnable 
+    public bool IsEnabled 
     {
         get => IBaseAction.ForceEnable || _isEnable;
         set => _isEnable = value;
@@ -19,7 +19,6 @@ public class ActionConfig()
     public bool ShouldCheckStatus { get; set; } = true;
     public float AutoHealRatio { get; set; } = 0.8f;
 
-    public bool IsEnabled { get; set; }
     public bool IsInCooldown { get; set; }
     public bool IsInMistake { get; set; }
 }
