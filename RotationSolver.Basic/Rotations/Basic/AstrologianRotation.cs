@@ -1,6 +1,5 @@
 ﻿namespace RotationSolver.Basic.Rotations.Basic;
 
-
 partial class AstrologianRotation
 {
     /// <summary>
@@ -12,6 +11,7 @@ partial class AstrologianRotation
     /// 
     /// </summary>
     protected static CardType DrawnCard => JobGauge.DrawnCard;
+
     /// <summary>
     /// 
     /// </summary>
@@ -31,7 +31,6 @@ partial class AstrologianRotation
         StatusID.CombustIii,
         StatusID.CombustIii_2041,
     ];
-
 
     static partial void ModifyCombustPvE(ref ActionSetting setting)
     {
@@ -81,29 +80,6 @@ partial class AstrologianRotation
     static partial void ModifyMinorArcanaPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InCombat;
-    }
-
-
-    public AstrologianRotation()
-    {
-        //Lightspeed_PvE.ActionCheck = Divination_PvE.ActionCheck = (b, m) => IsLongerThan(10);
-        //NeutralSect_PvE.ActionCheck = (b, m) => IsLongerThan(15);
-
-        //Astrodyne_PvE.Option = ActionOption.UseResources;
-        //Astrodyne_PvE.ActionCheck = (b, m) => !Seals.Contains(SealType.NONE)
-        //    && IsLongerThan(10);
-
-        //TheBalance_PvE.ChoiceTarget = TheArrow_PvE.ChoiceTarget = TheSpear_PvE.ChoiceTarget = TargetFilter.ASTMeleeTarget;
-        //TheBole_PvE.ChoiceTarget = TheEwer_PvE.ChoiceTarget = TheSpire_PvE.ChoiceTarget = TargetFilter.ASTRangeTarget;
-
-        //TheBalance_PvE.ActionCheck = (b, m) => DrawnCard == CardType.BALANCE;
-        //TheArrow_PvE.ActionCheck = (b, m) => DrawnCard == CardType.ARROW;
-        //TheSpear_PvE.ActionCheck = (b, m) => DrawnCard == CardType.SPEAR;
-        //TheBole_PvE.ActionCheck = (b, m) => DrawnCard == CardType.BOLE;
-        //TheEwer_PvE.ActionCheck = (b, m) => DrawnCard == CardType.EWER;
-        //TheSpire_PvE.ActionCheck = (b, m) => DrawnCard == CardType.SPIRE;
-
-        //AstralStasis_PvE.ActionCheck = (b, m) => LimitBreakLevel == 3;
     }
 
     static partial void ModifyTheArrowPvE(ref ActionSetting setting)

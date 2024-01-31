@@ -1,7 +1,6 @@
 ﻿using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using ECommons.ExcelServices;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
@@ -18,7 +17,7 @@ internal class CheckBoxSearchPlugin : CheckBoxSearch
 
         public override string Command => string.Empty;
 
-        public override LinkDescription[] Tooltips => null;
+        public override LinkDescription[]? Tooltips => null;
 
         public override string ID => _config.ToString() + Name;
 
@@ -141,7 +140,7 @@ internal abstract class CheckBoxSearch : Searchable
 
     public ActionID Action { get; init; } = ActionID.None;
 
-    public Action AdditionalDraw { get; set; } = null;
+    public Action? AdditionalDraw { get; set; } = null;
 
     public virtual bool AlwaysShowChildren => false;
 
@@ -184,7 +183,7 @@ internal abstract class CheckBoxSearch : Searchable
         var hasChild = Children != null && Children.Any(c => c.ShowInChild);
         var hasAdditional = AdditionalDraw != null;
         var hasSub = hasChild || hasAdditional;
-        IDalamudTextureWrap texture = null;
+        IDalamudTextureWrap? texture = null;
         var hasIcon = Action != ActionID.None && IconSet.GetTexture(Action, out texture);
 
         var enable = Value;
@@ -202,7 +201,7 @@ internal abstract class CheckBoxSearch : Searchable
             ImGui.BeginGroup();
             var cursor = ImGui.GetCursorPos();
             var size = ImGuiHelpers.GlobalScale * 32;
-            if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size, ID))
+            if (ImGuiHelper.NoPaddingNoColorImageButton(texture!.ImGuiHandle, Vector2.One * size, ID))
             {
                 Value = enable;
             }

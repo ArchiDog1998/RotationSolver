@@ -25,7 +25,7 @@ public static class WarningHelper
 
     public static void ShowWarning(this string message, int times = 3, DalamudLinkPayload link = null)
     {
-        if (Service.Config.GetValue(Configuration.PluginConfigBool.HideWarning)) return;
+        if (Service.Config.HideWarning) return;
 
         var seString = RS_String.Append(link == null
             ? new SeString(new TextPayload(message))

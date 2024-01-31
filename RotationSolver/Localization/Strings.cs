@@ -568,8 +568,6 @@ internal class Strings
     public string ConfigWindow_Actions_ShowOnCDWindow { get; set; } = "Show on CD window";
     public string ConfigWindow_Actions_IsInMistake { get; set; } = "Can be used by mistake";
 
-    public string ConfigWindow_Configs_JobConfigTip { get; set; } = "This config is job specific";
-
     public string ConfigWindow_Rotations_Settings { get; set; } = "Settings";
     public string ConfigWindow_Rotations_Loaded { get; set; } = "Loaded";
     public string ConfigWindow_Rotations_GitHub { get; set; } = "GitHub";
@@ -630,7 +628,6 @@ internal class Strings
     public string ConfigWindow_Actions_MoveUp { get; set; } = "Move Up";
     public string ConfigWindow_Actions_MoveDown { get; set; } = "Move Down";
     public string ConfigWindow_Actions_Copy { get; set; } = "Copy to Clipboard";
-    public string ConfigWindow_NotInJob { get; set; } = "This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}";
 
     public string ConfigWindow_Searching { get; set; } = "Search...";
     public string ConfigWindow_Auto_BeneficialAreaStrategy { get; set; } = "Beneficial AoE strategy";

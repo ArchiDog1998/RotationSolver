@@ -60,12 +60,17 @@ internal static class LocalizationManager
 #if DEBUG
     private static void ExportLocalization()
     {
+        //TODO: related path.
         var directory = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\RotationSolver\Localization";
         if (!Directory.Exists(directory)) return;
 
+        if (Svc.PluginInterface.UiLanguage != "en") return;
+
         //Default values.
         var path = Path.Combine(directory, "Localization.json");
-        File.WriteAllText(path, JsonConvert.SerializeObject(new Strings(), Formatting.Indented));
+        File.WriteAllText(path, JsonConvert.SerializeObject(_rightLang, Formatting.Indented));
+
+        Svc.Log.Info("Exported the json file");
     }
 #endif
 

@@ -12,77 +12,77 @@ internal readonly struct JobFilter
     public static readonly JobFilter
         NoJob = new()
         {
-            JobRoles = Array.Empty<JobRole>(),
+            JobRoles = [],
         },
 
         NoHealer = new()
         {
-            JobRoles = new JobRole[]
-            {
+            JobRoles =
+            [
                 JobRole.Tank,
                 JobRole.Melee,
                 JobRole.RangedMagical,
                 JobRole.RangedPhysical,
-            }
+            ]
         },
 
         Healer = new()
         {
-            JobRoles = new JobRole[]
-            {
+            JobRoles =
+            [
                 JobRole.Healer,
-            }
+            ]
         },
 
         Raise = new()
         {
-            JobRoles = new JobRole[]
-            {
+            JobRoles =
+            [
                 JobRole.Healer,
-            },
-            Jobs = new Job[]
-            {
+            ],
+            Jobs =
+            [
                 Job.RDM,
                 Job.SMN,
-            },
+            ],
         },
 
         Interrupt = new()
         {
-            JobRoles = new JobRole[]
-            {
+            JobRoles =
+            [
                 JobRole.Tank,
                 JobRole.Melee,
                 JobRole.RangedPhysical,
-            },
+            ],
         },
 
         Esuna = new()
         {
-            JobRoles = new JobRole[]
-            {
+            JobRoles =
+            [
                 JobRole.Healer,
-            },
-            Jobs = new Job[]
-            {
+            ],
+            Jobs =
+            [
                 Job.BRD,
-            },
+            ],
         },
 
         Tank = new()
         {
-            JobRoles = new JobRole[]
-            {
+            JobRoles =
+            [
                 JobRole.Tank,
-            }
+            ]
         },
 
         Melee = new()
         {
-            JobRoles = new JobRole[]
-            {
+            JobRoles =
+            [
                 JobRole.Melee,
-            }
+            ]
         };
 
 
@@ -119,7 +119,7 @@ internal readonly struct JobFilter
         }
     }
 
-    public Job[] AllJobs => JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? Array.Empty<Job>()).ToArray();
+    public Job[] AllJobs => JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? []).ToArray();
 
     public string Description
     {
@@ -127,7 +127,7 @@ internal readonly struct JobFilter
         {
             var roleOrJob = string.Join("\n",
                 AllJobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
-            return string.Format(LocalizationManager._rightLang.ConfigWindow_NotInJob, roleOrJob);
+            return string.Format("NotInJob".Local("This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}"), roleOrJob);
         }
     }
 }
@@ -136,13 +136,13 @@ internal abstract class Searchable : ISearchable
 {
     public const float DRAG_WIDTH = 150;
     protected static float Scale => ImGuiHelpers.GlobalScale;
-    public CheckBoxSearch Parent { get; set; }
+    public CheckBoxSearch? Parent { get; set; } = null;
 
     public virtual string SearchingKeys => Name + " " + Description;
     public abstract string Name { get; }
     public abstract string Description { get; }
     public abstract string Command { get; }
-    public abstract LinkDescription[] Tooltips { get; }
+    public abstract LinkDescription[]? Tooltips { get; }
     public abstract string ID { get; }
     private string Popup_Key => "Rotation Solver RightClicking: " + ID;
     protected virtual bool IsJob => false;
@@ -232,7 +232,7 @@ internal abstract class Searchable : ISearchable
         if (IconSet.GetTexture(IconSet.GetJobIcon(DataCenter.Job, IconType.Framed), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
-            ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ConfigWindow_Configs_JobConfigTip);
+            ImguiTooltips.HoveredTooltip("JobConfigTip".Local("This config is job specific"));
         }
     }
 }

@@ -58,92 +58,7 @@ partial class BlueMageRotation
 //public abstract class BLU_Base : CustomRotation
 //{
 
-
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public class BLUAction : BaseAction, IBLUAction
-//    {
-//        static readonly StatusID[] NoPhysic =
-//        [
-//            StatusID.IceSpikes,
-//        ];
-
-//        static readonly StatusID[] NoMagic =
-//        [
-//            StatusID.RepellingSpray_556,
-//            StatusID.MagitekField_2166,
-//        ];
-
-//        /// <summary>
-//        /// Description about the action.
-//        /// </summary>
-//        public override string Description => $"Type: {Type}\nAspect: {Aspect}";
-
-//        /// <summary>
-//        /// The Type
-//        /// </summary>
-//        public BLUActionType Type { get; init; }
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        public bool RightType
-//        {
-//            get
-//            {
-//                if (Type == BLUActionType.None) return true;
-//                if (BluAttackType == BLUAttackType.Physical && Type == BLUActionType.Magical) return false;
-//                if (BluAttackType == BLUAttackType.Magical && Type == BLUActionType.Physical) return false;
-
-//                try
-//                {
-//                    if (Target.HasStatus(false, NoPhysic) && Type == BLUActionType.Physical) return false;
-//                    if (Target.HasStatus(false, NoMagic) && Type == BLUActionType.Magical) return false;
-//                }
-//                catch (Exception ex)
-//                {
-//                    Svc.Log.Warning(ex, "Failed for checking target status.");
-//                }
-//                return true;
-//            }
-//        }
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        public unsafe bool OnSlot => DataCenter.BluSlots.Any(i => AdjustedID == Service.GetAdjustedActionId(i));
-
-//        internal BLUAction(ActionID actionID, ActionOption option = ActionOption.None)
-//            : base(actionID, option)
-//        {
-//            Type = AttackType != AttackType.Magic ? BLUActionType.Physical : Aspect == Aspect.Piercing ? BLUActionType.None : BLUActionType.Magical;
-//            ActionCheck = (t, m) => OnSlot && RightType;
-//        }
-
-//        /// <summary>
-//        /// Can this action be used.
-//        /// </summary>
-//        /// <param name="act"></param>
-//        /// <param name="option"></param>
-//        /// <param name="aoeCount"></param>
-//        /// <param name="gcdCountForAbility"></param>
-//        /// <returns></returns>
-//        public override bool CanUse(out IAction act, CanUseOption option = CanUseOption.None, byte aoeCount = 0, byte gcdCountForAbility = 0)
-//        {
-//            act = null;
-
-//            if (!OnSlot) return false;
-//            return base.CanUse(out act, option | CanUseOption.IgnoreClippingCheck, gcdCountForAbility);
-//        }
-//    }
-
 //    #region Magical Single
-//    /// <summary>
-//    /// <see href="https://ffxiv.consolegameswiki.com/wiki/Water_Cannon"/>
-//    /// </summary>
-//    public static IBLUAction WaterCannon { get; } = new BLUAction(ActionID.WaterCannon);
 
 //    /// <summary>
 //    /// 
@@ -888,38 +803,6 @@ partial class BlueMageRotation
 //        },
 //    };
 
-//    #endregion
-
-//    #region Traits
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseTrait Learning { get; } = new BaseTrait(219);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseTrait MaimAndMend { get; } = new BaseTrait(220);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseTrait MaimAndMend2 { get; } = new BaseTrait(221);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseTrait MaimAndMend3 { get; } = new BaseTrait(222);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseTrait MaimAndMend4 { get; } = new BaseTrait(223);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseTrait MaimAndMend5 { get; } = new BaseTrait(224);
 //    #endregion
 
 //    /// <summary>

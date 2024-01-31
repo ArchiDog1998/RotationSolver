@@ -362,6 +362,10 @@ internal partial class ConfigsNew : IPluginConfiguration
     [Range(0, 0.5f, ConfigUnitType.Seconds)]
     public float ActionAheadForLast0GCD { get; set; } = 0.06f;
 
+    [UI("This is the delay time.")]
+    [Range(0, 3, ConfigUnitType.Seconds)]
+    public Vector2 TargetDelay { get; set; } = new(0, 0);
+
     [UI("This is the clipping time.\nGCD is over. However, RS forgets to click the next action.")]
     [Range(0, 1, ConfigUnitType.Seconds)]
     public Vector2 WeaponDelay { get; set; } = new(0, 0);

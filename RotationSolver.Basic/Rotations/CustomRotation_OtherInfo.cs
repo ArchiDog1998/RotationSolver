@@ -505,4 +505,10 @@ partial class CustomRotation
     /// </summary>
     public static float HealthForDyingTanks => Service.Config.HealthForDyingTanks;
     #endregion
+
+    public static bool IsBurst => MergedStatus.HasFlag(AutoStatus.Burst);
+
+    public static AutoStatus MergedStatus => DataCenter.MergedStatus;
+    public static AutoStatus AutoStatus => DataCenter.AutoStatus;
+    public static AutoStatus CommandStatus => DataCenter.CommandStatus;
 }

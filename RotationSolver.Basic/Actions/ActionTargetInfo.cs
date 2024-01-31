@@ -38,7 +38,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     #region Target Finder.
     //The delay of finding the targets.
-    private readonly ObjectListDelay<BattleChara> _canTargets = new (() => (1, 3));
+    private readonly ObjectListDelay<BattleChara> _canTargets = new (() => Service.Config.TargetDelay);
     public readonly IEnumerable<BattleChara> CanTargets
     {
         get
@@ -113,6 +113,8 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     private readonly bool CheckStatus(GameObject gameObject)
     {
+
+
         if (!_action.Config.ShouldCheckStatus) return true;
 
         if (_action.Setting.TargetStatusProvide != null)
@@ -132,16 +134,23 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     private readonly bool CheckResistance(GameObject gameObject)
     {
-        if (_action.Info.AttackType == AttackType.Magic) //TODO: special attack type resistance.
+        if (_action.Info.AttackType == AttackType.Magic)
         {
-            if (gameObject.HasStatus(false, StatusID.MagicResistance))
+            if (gameObject.HasStatus(false, StatusHelper.MagicResistance))
+            {
+                return false;
+            }
+        }
+        else if(_action.Info.Aspect != Aspect.Piercing) // Physic
+        {
+            if (gameObject.HasStatus(false, StatusHelper.PhysicResistancec))
             {
                 return false;
             }
         }
         if (Range >= 20) // Range
         {
-            if(gameObject.HasStatus(false, StatusID.RangedResistance, StatusID.EnergyField))
+            if (gameObject.HasStatus(false, StatusID.RangedResistance, StatusID.EnergyField))
             {
                 return false;
             }

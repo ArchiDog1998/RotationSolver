@@ -37,7 +37,7 @@ public struct ActionBasicInfo
     {
         get
         {
-            if(_action.Action.ClassJob.Row == (uint)Job.BLU)
+            if (_action.Action.ClassJob.Row == (uint)Job.BLU)
             {
                 return DataCenter.BluSlots.Contains(ID);
             }
@@ -127,7 +127,6 @@ public struct ActionBasicInfo
         var comboActions = (_action.Action.ActionCombo?.Row ?? 0) != 0
             ? new ActionID[] { (ActionID)_action.Action.ActionCombo!.Row }
             : [];
-
 
         if (_action.Setting.ComboIds != null) comboActions = [.. comboActions, .. _action.Setting.ComboIds];
 

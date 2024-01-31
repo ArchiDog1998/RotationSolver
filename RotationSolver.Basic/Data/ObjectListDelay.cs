@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Drawing;
 
 namespace RotationSolver.Basic.Data;
 
@@ -17,6 +18,16 @@ public class ObjectListDelay<T>(Func<(float min, float max)> getRange)
     readonly Func<(float min, float max)> _getRange = getRange;
     SortedList<uint, DateTime> _revealTime = [];
     readonly Random _ran = new(DateTime.Now.Millisecond);
+
+    public ObjectListDelay(Func<Vector2> getRange)
+        : this(() =>
+        {
+            var vec = getRange();
+            return (vec.X, vec.Y);
+        })
+    {
+        
+    }
 
     /// <summary>
     /// The delayed list.

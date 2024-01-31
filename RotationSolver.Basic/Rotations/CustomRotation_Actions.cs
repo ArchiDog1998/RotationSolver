@@ -8,7 +8,6 @@ partial class CustomRotation
     {
         //TODO: better target type check. (NoNeed?)
         //TODO: better friendly check.
-        //TODO: load the config from the configuration.
     }
 
     #region Role Actions
