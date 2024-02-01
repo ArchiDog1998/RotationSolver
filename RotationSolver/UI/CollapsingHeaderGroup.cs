@@ -3,19 +3,14 @@ using ECommons.DalamudServices;
 
 namespace RotationSolver.UI;
 
-internal class CollapsingHeaderGroup
+internal class CollapsingHeaderGroup()
 {
-    private readonly Dictionary<Func<string>, Action> _headers = new Dictionary<Func<string>, Action>();
+    private readonly Dictionary<Func<string>, Action> _headers = [];
     private int _openedIndex = -1;
 
     public float HeaderSize { get; set; } = 24;
 
-    public CollapsingHeaderGroup()
-    {
-
-    }
-
-    public CollapsingHeaderGroup(Dictionary<Func<string>, Action> headers)
+    public CollapsingHeaderGroup(Dictionary<Func<string>, Action> headers) : this()
     {
         _headers = headers;
     }

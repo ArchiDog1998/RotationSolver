@@ -16,17 +16,17 @@ internal class CooldownWindow : CtrlWindow
     {
         if (DataCenter.RightNowRotation != null)
         {
-            var width = Service.Config.GetValue(PluginConfigFloat.CooldownWindowIconSize);
+            var width = Service.Config.CooldownWindowIconSize;
             var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (width * (1 + 6 / 82) + ImGui.GetStyle().ItemSpacing.X)));
 
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
                 var showItems = pair.OrderBy(a => a.SortKey).Where(a => a.IsInCooldown 
-                    && (a is not IBaseAction b || !b.IsLimitBreak));
-                if (!Service.Config.GetValue(PluginConfigBool.ShowGCDCooldown)) showItems = showItems.Where(i => !(i is IBaseAction a && a.IsGeneralGCD));
+                    && (a is not IBaseAction b || !b.Info.IsLimitBreak));
+                if (!Service.Config.ShowGcdCooldown) showItems = showItems.Where(i => !(i is IBaseAction a && a.Info.IsGeneralGCD));
 
                 if (!showItems.Any()) continue;
-                if (!Service.Config.GetValue(PluginConfigBool.ShowItemsCooldown) && showItems.Any(i => i is IBaseItem)) continue;
+                if (!Service.Config.ShowItemsCooldown && showItems.Any(i => i is IBaseItem)) continue;
 
                 ImGui.Text(pair.Key);
 
@@ -57,7 +57,7 @@ internal class CooldownWindow : CtrlWindow
         var winPos = ImGui.GetWindowPos();
 
         var r = -1f;
-        if (Service.Config.GetValue(PluginConfigBool.UseOriginalCooldown))
+        if (Service.Config.UseOriginalCooldown)
         {
             r = !act.EnoughLevel ? 0 : recast == 0 || !act.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
         }
@@ -67,7 +67,7 @@ internal class CooldownWindow : CtrlWindow
 
         if (!act.EnoughLevel)
         {
-            if (!Service.Config.GetValue(PluginConfigBool.UseOriginalCooldown))
+            if (!Service.Config.UseOriginalCooldown)
             {
                 ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X, pos.Y) + winPos,
                     new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, progressCol);
@@ -75,7 +75,7 @@ internal class CooldownWindow : CtrlWindow
         }
         else if (act.IsCoolingDown && !shouldSkip)
         {
-            if (!Service.Config.GetValue(PluginConfigBool.UseOriginalCooldown))
+            if (!Service.Config.UseOriginalCooldown)
             {
                 var ratio = recast == 0 || !act.EnoughLevel ? 0 : elapsed % recast / recast;
                 var startPos = new Vector2(pos.X + size.X * ratio, pos.Y) + winPos;
@@ -85,7 +85,7 @@ internal class CooldownWindow : CtrlWindow
                 ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), black);
             }
 
-            using var font = ImRaii.PushFont(ImGuiHelper.GetFont(Service.Config.GetValue(PluginConfigFloat.CooldownFontSize)));
+            using var font = ImRaii.PushFont(ImGuiHelper.GetFont(Service.Config.CooldownFontSize));
             string time = recast == 0 ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;

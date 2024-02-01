@@ -85,7 +85,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             if (id == 1)
             {
-                Service.Config.SetBoolRaw(PluginConfigBool.HideWarning, true);
+                Service.Config.HideWarning = true;
                 Svc.Chat.Print("Warning has been hidden.");
             }
         });
@@ -98,7 +98,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     internal static void ChangeUITranslation()
     {
-        _rotationConfigWindow.WindowName = "ConfigWindowHeader".Local("Rotation Solver Settings v")
+        _rotationConfigWindow!.WindowName = "ConfigWindowHeader".Local("Rotation Solver Settings v")
             + typeof(RotationConfigWindow).Assembly.GetName().Version?.ToString() ?? "?.?.?";
 
         RSCommands.Disable();
@@ -131,12 +131,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     private void OnOpenConfigUi()
     {
-        _rotationConfigWindow.IsOpen = true;
+        _rotationConfigWindow!.IsOpen = true;
     }
 
     internal static void OpenConfigWindow()
     {
-        _rotationConfigWindow.Toggle();
+        _rotationConfigWindow?.Toggle();
     }
 
     static RandomDelay validDelay = new(() => (0.2f, 0.2f));
@@ -151,13 +151,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             && (!Svc.Condition[ConditionFlag.UsingParasol] || Player.Object.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.WeaponOut))
             && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
-        _nextActionWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowNextActionWindow);
+        _nextActionWindow!.IsOpen = isValid && Service.Config.ShowNextActionWindow;
 
-        isValid &= !Service.Config.GetValue(PluginConfigBool.OnlyShowWithHostileOrInDuty)
+        isValid &= !Service.Config.OnlyShowWithHostileOrInDuty
                 || Svc.Condition[ConditionFlag.BoundByDuty]
                 || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25);
 
-        _controlWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowControlWindow);
-        _cooldownWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowCooldownWindow);
+        _controlWindow!.IsOpen = isValid && Service.Config.ShowControlWindow;
+        _cooldownWindow!.IsOpen = isValid && Service.Config.ShowCooldownWindow;
     }
 }

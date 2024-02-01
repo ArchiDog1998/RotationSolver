@@ -14,7 +14,7 @@ public static partial class RSCommands
 
     private static void UpdateToast()
     {
-        if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowInfoOnToast)) return;
+        if (!Service.Config.ShowInfoOnToast) return;
 
         Svc.Toasts.ShowQuest(" " + EntryString, new Dalamud.Game.Gui.Toast.QuestToastOptions()
         {
@@ -27,13 +27,13 @@ public static partial class RSCommands
         if (DataCenter.State)
         {
             if (DataCenter.IsManual && stateType == StateCommandType.Manual
-                && Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ToggleManual))
+                && Service.Config.ToggleManual)
             {
                 stateType = StateCommandType.Cancel;
             }
             else if (stateType == StateCommandType.Auto)
             {
-                if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ToggleAuto))
+                if (Service.Config.ToggleAuto)
                 {
                     stateType = StateCommandType.Cancel;
                 }
@@ -41,10 +41,10 @@ public static partial class RSCommands
                 {
                     if (index == -1)
                     {
-                        index = Service.Config.GetValue(Basic.Configuration.PluginConfigInt.TargetingIndex) + 1;
+                        index = Service.Config.TargetingIndex + 1;
                     }
-                    index %= Service.Config.GlobalConfig.TargetingTypes.Count;
-                    Service.Config.SetValue(Basic.Configuration.PluginConfigInt.TargetingIndex, index);
+                    index %= Service.Config.TargetingTypes.Count;
+                    Service.Config.TargetingIndex = index;
                 }
             }
         }
@@ -92,6 +92,6 @@ public static partial class RSCommands
         T type = doingSomething(role);
 
         //Saying out.
-        if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.SayOutStateChanged)) SpeechHelper.Speak(sayout(type, role));
+        if (Service.Config.SayOutStateChanged) SpeechHelper.Speak(sayout(type, role));
     }
 }

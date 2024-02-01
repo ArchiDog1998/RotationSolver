@@ -6,10 +6,10 @@ namespace RotationSolver.Basic.Helpers;
 
 public static class WarningHelper
 {
-    private static Queue<string> _showWarnings = new Queue<string>();
+    private static readonly Queue<string> _showWarnings = new();
     private static bool _run = false;
 
-    public static SeString RS_String => new SeString(new IconPayload(BitmapFontIcon.DPS),
+    public static SeString RS_String => new(new IconPayload(BitmapFontIcon.DPS),
               RotationSolverPlugin.OpenLinkPayload,
               new UIForegroundPayload(31),
               new TextPayload("Rotation Solver"),
@@ -17,13 +17,13 @@ public static class WarningHelper
               RawPayload.LinkTerminator,
               new TextPayload(": "));
 
-    public static SeString Close_String => new SeString(new IconPayload(BitmapFontIcon.DoNotDisturb), RotationSolverPlugin.HideWarningLinkPayload,
+    public static SeString Close_String => new (new IconPayload(BitmapFontIcon.DoNotDisturb), RotationSolverPlugin.HideWarningLinkPayload!,
               new UIForegroundPayload(2),
               new TextPayload("(Hide Warning)"),
               UIForegroundPayload.UIForegroundOff,
               RawPayload.LinkTerminator);
 
-    public static void ShowWarning(this string message, int times = 3, DalamudLinkPayload link = null)
+    public static void ShowWarning(this string message, int times = 3, DalamudLinkPayload? link = null)
     {
         if (Service.Config.HideWarning) return;
 

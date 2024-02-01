@@ -7,15 +7,12 @@ using System.Runtime.Loader;
 
 namespace RotationSolver.Helpers;
 
-internal class RotationLoadContext : AssemblyLoadContext
+internal class RotationLoadContext(DirectoryInfo directoryInfo) 
+    : AssemblyLoadContext(true)
 {
-    readonly DirectoryInfo _directory;
+    readonly DirectoryInfo _directory = directoryInfo;
 
-    private static readonly Dictionary<string, Assembly> _handledAssemblies = new();
-    public RotationLoadContext(DirectoryInfo directoryInfo) : base(true)
-    {
-        _directory = directoryInfo;
-    }
+    private static readonly Dictionary<string, Assembly> _handledAssemblies = [];
 
     static RotationLoadContext()
     {

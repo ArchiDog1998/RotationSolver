@@ -16,16 +16,17 @@ internal class NextActionWindow : Window
         : base(nameof(NextActionWindow), BaseFlags)
     {
     }
+
     public override void PreDraw()
     {
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.GetValue(PluginConfigVector4.InfoWindowBg));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.InfoWindowBg);
 
         Flags = BaseFlags;
-        if (Service.Config.GetValue(PluginConfigBool.IsInfoWindowNoInputs))
+        if (Service.Config.IsInfoWindowNoInputs)
         {
             Flags |= ImGuiWindowFlags.NoInputs;
         }
-        if (Service.Config.GetValue(PluginConfigBool.IsInfoWindowNoMove))
+        if (Service.Config.IsInfoWindowNoMove)
         {
             Flags |= ImGuiWindowFlags.NoMove;
         }
@@ -42,8 +43,8 @@ internal class NextActionWindow : Window
 
     public override void Draw()
     {
-        var width = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize)
-            * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
+        var width = Service.Config.ControlWindowGCDSize
+            * Service.Config.ControlWindowNextSizeRatio;
         DrawGcdCooldown(width, false);
         ControlWindow.DrawIAction(ActionUpdater.NextAction, width, 1);
     }
@@ -62,7 +63,7 @@ internal class NextActionWindow : Window
         }
 
         var cursor = ImGui.GetCursorPos() + ImGui.GetWindowPos();
-        var height = Service.Config.GetValue(PluginConfigFloat.ControlProgressHeight);
+        var height = Service.Config.ControlProgressHeight   ;
 
         ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);
 

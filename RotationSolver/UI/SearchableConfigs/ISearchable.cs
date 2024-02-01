@@ -1,6 +1,4 @@
-﻿using ECommons.ExcelServices;
-
-namespace RotationSolver.UI.SearchableSettings;
+﻿namespace RotationSolver.UI.SearchableSettings;
 
 internal interface ISearchable
 {

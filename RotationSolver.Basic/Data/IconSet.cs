@@ -139,7 +139,7 @@ public static class IconSet
     /// <param name="texture"></param>
     /// <param name="isAdjust"></param>
     /// <returns></returns>
-    public static bool GetTexture(this IAction action, out IDalamudTextureWrap texture, bool isAdjust = true)
+    public static bool GetTexture(this IAction? action, out IDalamudTextureWrap texture, bool isAdjust = true)
     {
         uint iconId = 0;
         if (action != null)

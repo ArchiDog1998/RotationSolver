@@ -4,17 +4,7 @@
 internal class Strings
 {
     #region Commands
-    public string Commands_Rotation { get; set; } = "Open config window.";
-    public string Commands_ChangeSettingsValue { get; set; } = "Modify {0} to {1}";
-    public string Commands_ChangeRotationConfig { get; set; } = "Modify {0} to {1}";
-    public string Commands_CannotFindRotationConfig { get; set; } = "Failed to find the config in this rotation, please check it.";
-
     public string Commands_CannotFindConfig { get; set; } = "Failed to find the config, please check it.";
-
-    public string Commands_InsertAction { get; set; } = "Will use it within {0}s";
-
-    public string Commands_InsertActionFailure { get; set; } = "Can not find the action, please check the action name.";
-
 
     #endregion
 
@@ -133,9 +123,6 @@ internal class Strings
 
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "The HP for tank to use invulnerability";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
-    public string ConfigWindow_Param_TargetToHostileType1 { get; set; } = "All targets that are in range for any abilities";
-    public string ConfigWindow_Param_TargetToHostileType2 { get; set; } = "Previously engaged targets or all targets that are in range\n(engages on countdown timer and resets when out of combat)";
-    public string ConfigWindow_Param_TargetToHostileType3 { get; set; } = "Previously engaged targets (engages on countdown timer)";
     public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemy list to the hostile targets.";
     public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will reach the marked target.";
     public string ConfigWindow_Param_MoveTargetAngle { get; set; } = "The size of the sector angle that can be selected as the moveable target";
@@ -147,8 +134,6 @@ internal class Strings
 
     public string ConfigWindow_Param_HostileDesc { get; set; } = "You can The logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.";
     public string ConfigWindow_Param_HostileCondition { get; set; } = "Hostile target selection condition";
-    public string ConfigWindow_Control_IsInfoWindowMove { get; set; } = "Move";
-
     public string ConfigWindow_Control_CooldownWindowIconSize { get; set; } = "Cooldown icon size";
     public string ConfigWindow_Rotation_BetaRotation { get; set; } = "Beta Rotation!";
 
@@ -661,12 +646,6 @@ internal class Strings
     public string ConfigWindow_About_ThanksToSupporters { get; set; } = "Many thanks to the sponsors.";
     public string ConfigWindow_Rotations_Download { get; set; } = "Download Rotations";
     public string ConfigWindow_Rotations_Links { get; set; } = "Links of the rotations online";
-    public string ConfigWindow_Options_ForcedEnableCondition { get; set; } = "Use Forced Enable Condition";
-    public string ConfigWindow_Options_ForcedEnableConditionDesc { get; set; } = "The conditions of forced to make it true.";
-
-    public string ConfigWindow_Options_ForcedDisableCondition { get; set; } = "Use Forced Disable Condition";
-    public string ConfigWindow_Options_ForcedDisableConditionDesc { get; set; } = "The conditions of forced to make it false.";
-
     public string ConfigWindow_Auto_HealAreaConditionSet { get; set; } = "Heal Area Forced Condition";
     public string ConfigWindow_Auto_HealSingleConditionSet { get; set; } = "Heal Single Forced Condition";
     public string ConfigWindow_Auto_DefenseAreaConditionSet { get; set; } = "Defense Area Forced Condition";

@@ -19,19 +19,21 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     public readonly bool IsSingleTarget => _action.Action.CastType == 1;
 
+    public readonly bool IsTargetArea => _action.Action.TargetArea;
+
     private static bool NoAOE
     {
         get
         {
-            if (!Service.Config.UseAOEAction) return true;
+            if (!Service.Config.UseAoeAction) return true;
 
             if (DataCenter.IsManual)
             {
-                if (!Service.Config.UseAOEWhenManual) return true;
+                if (!Service.Config.UseAoeWhenManual) return true;
             }
 
             return Service.Config.ChooseAttackMark
-                && !Service.Config.CanAttackMarkAOE
+                && !Service.Config.CanAttackMarkAoe
                 && MarkingHelper.HaveAttackChara(DataCenter.AllHostileTargets);
         }
     }
@@ -185,7 +187,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         var canTargets = CanTargets;
         var canAffects = CanAffects;
 
-        if (_action.Action.TargetArea)
+        if (IsTargetArea)
         {
             return FindTargetArea(canTargets, canAffects, range, player);
         }
@@ -300,7 +302,7 @@ public struct ActionTargetInfo(IBaseAction _action)
             case 2: // Target
                 if (Svc.Targets.Target != null && Svc.Targets.Target.DistanceToPlayer() < range)
                 {
-                    var target = Svc.Targets.Target;
+                    var target = Svc.Targets.Target as BattleChara;
                     return new(target, [.. GetAffects(target.Position, canAffects)], target.Position);
                 }
                 break;
@@ -778,4 +780,4 @@ public enum TargetType : byte
 
 }
 
-public readonly record struct TargetResult(GameObject Target, GameObject[] AffectedTargets, Vector3 Position);
+public readonly record struct TargetResult(BattleChara Target, BattleChara[] AffectedTargets, Vector3 Position);

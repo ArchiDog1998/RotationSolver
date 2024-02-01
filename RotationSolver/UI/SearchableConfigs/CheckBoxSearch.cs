@@ -1,142 +1,132 @@
 ﻿using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
-using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 
 namespace RotationSolver.UI.SearchableSettings;
 
-internal class CheckBoxSearchPlugin : CheckBoxSearch
+internal class CheckBoxSearchPlugin(PropertyInfo property, params ISearchable[] children) 
+    : CheckBoxSearch(property, 
+    [
+        new CheckBoxEnable(property),
+        new CheckBoxDisable(property),
+        .. children,
+    ])
 {
     private abstract class CheckBoxConditionAbstract : CheckBoxSearch
     {
-        protected readonly PluginConfigBool _config;
-
+        protected readonly ConditionBoolean _condition;
         public override string SearchingKeys => string.Empty;
 
         public override string Command => string.Empty;
 
         public override LinkDescription[]? Tooltips => null;
 
-        public override string ID => _config.ToString() + Name;
+        public override string ID => base.ID + Name;
 
-        public override bool ShowInChild => Service.Config.GetValue(PluginConfigBool.UseAdditionalConditions);
+        public override bool ShowInChild => Service.Config.UseAdditionalConditions;
 
-        public CheckBoxConditionAbstract(PluginConfigBool config) : base()
+        public CheckBoxConditionAbstract(PropertyInfo property) : base(property)
         {
-            _config = config;
+            _condition = (ConditionBoolean)property.GetValue(Service.Config)!;
             AdditionalDraw = () =>
             {
-                GetCondition(DataCenter.Job)?.DrawMain(DataCenter.RightNowRotation);
+                if (DataCenter.RightNowRotation == null) return;
+                GetCondition()?.DrawMain(DataCenter.RightNowRotation);
             };
         }
 
-        protected abstract ConditionSet GetCondition(Job job);
+        protected abstract ConditionSet GetCondition();
+
+        public override void ResetToDefault()
+        {
+            Value = false;
+        }
     }
 
-    private class CheckBoxDisable : CheckBoxConditionAbstract
+    private class CheckBoxDisable(PropertyInfo property) : CheckBoxConditionAbstract(property)
     {
-        public override string Name => LocalizationManager._rightLang.ConfigWindow_Options_ForcedDisableCondition;
+        public override string Name => "ForcedDisableCondition".Local("Use Forced Disable Condition");
 
-        public override string Description => LocalizationManager._rightLang.ConfigWindow_Options_ForcedDisableConditionDesc;
+        public override string Description => "ForcedEnableConditionDesc ".Local("The conditions of forced to make it true."); 
 
         protected override bool Value
         {
-            get => Service.Config.GetDisableBoolRaw(_config);
-            set => Service.Config.SetDisableBoolRaw(_config, value);
+            get => _condition.Disable;
+            set => _condition.Disable = value;
         }
 
-        public CheckBoxDisable(PluginConfigBool config) : base(config)
-        {
-        }
-        public override void ResetToDefault()
-        {
-            Service.Config.SetDisableBoolRaw(_config, false);
-        }
 
-        protected override ConditionSet GetCondition(Job job)
+        protected override ConditionSet GetCondition()
         {
-            return DataCenter.RightSet.GetDisableCondition(_config);
+            return DataCenter.RightSet.GetDisableCondition(_condition.Key);
         }
     }
 
-    private class CheckBoxEnable : CheckBoxConditionAbstract
+    private class CheckBoxEnable(PropertyInfo property) : CheckBoxConditionAbstract(property)
     {
-        public override string Name => LocalizationManager._rightLang.ConfigWindow_Options_ForcedEnableCondition;
+        public override string Name => "ForcedEnableCondition".Local("Use Forced Enable Condition");
 
-        public override string Description => LocalizationManager._rightLang.ConfigWindow_Options_ForcedEnableConditionDesc;
+        public override string Description => "ForcedEnableConditionDesc".Local("The conditions of forced to make it true.");
 
         protected override bool Value 
-        { 
-            get => Service.Config.GetEnableBoolRaw(_config);
-            set => Service.Config.SetEnableBoolRaw(_config, value);
+        {
+            get => _condition.Enable;
+            set => _condition.Enable = value;
         }
 
-        public CheckBoxEnable(PluginConfigBool config) : base(config)
+        protected override ConditionSet GetCondition()
         {
-        }
-
-        public override void ResetToDefault()
-        {
-            Service.Config.SetEnableBoolRaw(_config, false);
-        }
-
-        protected override ConditionSet GetCondition(Job job)
-        {
-            return DataCenter.RightSet.GetEnableCondition(_config);
+            return DataCenter.RightSet.GetEnableCondition(_condition.Key);
         }
     }
 
+    private ConditionBoolean Condition => (ConditionBoolean)_property.GetValue(Service.Config)!;
 
-    private readonly PluginConfigBool _config;
-    public override string ID => _config.ToString();
-
-    public override string Name => _config.ToName();
-
-    public override string Description => Action == ActionID.None ? _config.ToDescription() : Action.ToString();
-
-    public override LinkDescription[] Tooltips => _config.ToAction();
-
-    public override string Command => _config.ToCommand();
-
-    public override bool AlwaysShowChildren => Service.Config.GetValue(PluginConfigBool.UseAdditionalConditions);
+    public override bool AlwaysShowChildren => Service.Config.UseAdditionalConditions;
 
     protected override bool Value
     {
-        get => Service.Config.GetBoolRaw(_config);
-        set => Service.Config.SetBoolRaw(_config, value);
-    }
-
-    public CheckBoxSearchPlugin(PluginConfigBool config, params ISearchable[] children)
-        : base(config == PluginConfigBool.UseAdditionalConditions ? children
-            : new ISearchable[]
-        {
-            new CheckBoxEnable(config), new CheckBoxDisable(config),
-        }.Concat(children).ToArray())
-    {
-        _config = config;
+        get => Condition.Value;
+        set => Condition.Value = value;
     }
 
     public override void ResetToDefault()
     {
-        Service.Config.SetBoolRaw(_config, Service.Config.GetBoolRawDefault(_config));
+        Condition.ResetValue();
     }
 
     protected override void DrawMiddle()
     {
-        if (Service.Config.GetValue(PluginConfigBool.UseAdditionalConditions))
+        if (AlwaysShowChildren)
         {
-            ConditionDrawer.DrawCondition(Service.Config.GetValue(_config));
+            ConditionDrawer.DrawCondition(Condition);
             ImGui.SameLine();
         }
         base.DrawMiddle();
     }
 }
 
+
+internal class CheckBoxSearchNoCondition(PropertyInfo property, params ISearchable[] children)
+    : CheckBoxSearch(property, children)
+{
+    protected override bool Value 
+    {
+        get => (bool)_property.GetValue(Service.Config)!; 
+        set => _property.SetValue(Service.Config, value);
+    }
+
+    public override void ResetToDefault()
+    {
+        _property.SetValue(Service.Config, false);
+    }
+}
+
 internal abstract class CheckBoxSearch : Searchable
 {
-    public ISearchable[] Children { get; protected set; }
+    public List<ISearchable> Children { get; }
 
     public ActionID Action { get; init; } = ActionID.None;
 
@@ -144,9 +134,12 @@ internal abstract class CheckBoxSearch : Searchable
 
     public virtual bool AlwaysShowChildren => false;
 
-    public CheckBoxSearch(params ISearchable[] children)
+    public override string Description => Action == ActionID.None ? base.Description : Action.ToString();
+
+    public CheckBoxSearch(PropertyInfo property, params ISearchable[] children)
+        :base(property)
     {
-        Children = children;
+        Children = [..children];
         foreach (var child in Children)
         {
             child.Parent = this;

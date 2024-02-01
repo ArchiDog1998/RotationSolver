@@ -34,4 +34,7 @@ public class ActionSetting()
     }
 
     public EnemyPositional EnemyPositional { get; set; } = EnemyPositional.None;
+
+    public bool EndSpecial { get; set; }
+
 }

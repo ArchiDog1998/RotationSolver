@@ -59,7 +59,6 @@ public readonly struct ActionCooldownInfo
 
     float RecastTimeElapsedOneChargeRaw => RecastTimeElapsedRaw % RecastTimeOneChargeRaw;
 
-
     public ActionCooldownInfo(IBaseAction action)
     {
         _action = action;

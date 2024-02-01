@@ -6,7 +6,6 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;

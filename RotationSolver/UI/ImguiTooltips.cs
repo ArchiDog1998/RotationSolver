@@ -32,7 +32,7 @@ internal static class ImguiTooltips
     public static void ShowTooltip(Action act)
     {
         if (act == null) return;
-        if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowTooltips)) return;
+        if (!Service.Config.ShowTooltips) return;
 
         ImGui.SetNextWindowBgAlpha(1);
 

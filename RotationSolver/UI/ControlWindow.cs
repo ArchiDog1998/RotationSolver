@@ -1,17 +1,20 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility.Raii;
+using Dalamud.Utility;
 using ECommons.DalamudServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using RotationSolver.Helpers;
+using System.ComponentModel;
 
 namespace RotationSolver.UI;
 
 internal class ControlWindow : CtrlWindow
 {
-    public static IAction Wrong { get; set; }
+    public static IAction? Wrong { get; set; }
     public static DateTime DidTime { get; set; }
 
     public ControlWindow()
@@ -24,10 +27,10 @@ internal class ControlWindow : CtrlWindow
     public override unsafe void Draw()
     {
         ImGui.Columns(3, "Control Bolder", false);
-        var gcd = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize)
-            * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
-        var ability = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize)
-            * Service.Config.GetValue(PluginConfigFloat.ControlWindowNextSizeRatio);
+        var gcd = Service.Config.ControlWindowGCDSize
+            * Service.Config.ControlWindowNextSizeRatio;
+        var ability = Service.Config.ControlWindow0GCDSize
+            * Service.Config.ControlWindowNextSizeRatio;
         var width = gcd + ability + ImGui.GetStyle().ItemSpacing.X;
 
         ImGui.SetColumnWidth(1, 8);
@@ -57,14 +60,14 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.ToName());
 
-        var value = Service.Config.GetValue(PluginConfigBool.IsControlWindowLock) ? 0 : 1;
-        if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window", new string[]
+        var value = Service.Config.IsControlWindowLock ? 0 : 1;
+        if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window",
+        [
+            "InfoWindowNoMove".Local("No Move"),
+            "InfoWindowMove".Local("Move"),
+        ], ref value))
         {
-            LocalizationManager._rightLang.ConfigWindow_Control_IsInfoWindowNoMove,
-            LocalizationManager._rightLang.ConfigWindow_Control_IsInfoWindowMove,
-        }, ref value))
-        {
-            Service.Config.SetBoolRaw(PluginConfigBool.IsControlWindowLock, value == 0);
+            Service.Config.IsControlWindowLock = value == 0;
         }
 
         ImGui.EndGroup();
@@ -75,25 +78,25 @@ internal class ControlWindow : CtrlWindow
 
         var color = *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
 
-        var isAoe = Service.Config.GetValue(PluginConfigBool.UseAOEAction)
+        var isAoe = Service.Config.UseAoeAction
             && (!DataCenter.IsManual
-            || Service.Config.GetValue(PluginConfigBool.UseAOEWhenManual));
+            || Service.Config.UseAoeWhenManual);
 
         if (!isAoe) ImGui.PushStyleColor(ImGuiCol.Text, color);
         if (ImGuiHelper.SelectableButton("AOE"))
         {
-            Service.Config.SetBoolRaw(PluginConfigBool.UseAOEAction, !isAoe);
-            Service.Config.SetBoolRaw(PluginConfigBool.UseAOEWhenManual, !isAoe);
+            Service.Config.UseAoeAction.Value = !isAoe;
+            Service.Config.UseAoeWhenManual.Value = !isAoe;
         }
         if (!isAoe) ImGui.PopStyleColor();
 
         ImGui.SameLine();
 
-        var isBurst = Service.Config.GetValue(PluginConfigBool.AutoBurst);
+        var isBurst = Service.Config.AutoBurst;
         if (!isBurst) ImGui.PushStyleColor(ImGuiCol.Text, color);
         if (ImGuiHelper.SelectableButton("Burst"))
         {
-            Service.Config.SetBoolRaw(PluginConfigBool.AutoBurst, !isBurst);
+            Service.Config.AutoBurst.Value = !isBurst;
         }
         if (!isBurst) ImGui.PopStyleColor();
         ImGui.SameLine();
@@ -176,7 +179,7 @@ internal class ControlWindow : CtrlWindow
         ImGui.Text("CMD:");
         ImGui.SameLine();
 
-        DrawIAction(DataCenter.CommandNextAction, Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize), 1);
+        DrawIAction(DataCenter.CommandNextAction, Service.Config.ControlWindow0GCDSize, 1);
 
         ImGui.SameLine();
 
@@ -184,33 +187,26 @@ internal class ControlWindow : CtrlWindow
         {
             if (group)
             {
-                ImGui.Text(DataCenter.RightNowTargetToHostileType switch
-                {
-                    TargetHostileType.AllTargetsCanAttack => LocalizationManager._rightLang.ConfigWindow_Param_TargetToHostileType1,
-                    TargetHostileType.TargetsHaveTargetOrAllTargetsCanAttack => LocalizationManager._rightLang.ConfigWindow_Param_TargetToHostileType2,
-                    TargetHostileType.TargetsHaveTarget => LocalizationManager._rightLang.ConfigWindow_Param_TargetToHostileType3,
-                    _ => string.Empty,
-                });
-
+                ImGui.Text(DataCenter.RightNowTargetToHostileType.GetName());
                 ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
             }
         }
 
-        if (Service.Config.GetValue(PluginConfigFloat.MistakeRatio) > 0)
+        if (Service.Config.MistakeRatio > 0)
         {
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.DPSRed, "    | Mistake | \n    | Mistake | ");
             ImGui.SameLine();
 
             DrawIAction(DateTime.Now - DidTime < TimeSpan.FromSeconds(5) ? Wrong : null,
-                Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize), 1);
+                Service.Config.ControlWindowGCDSize, 1);
         }
     }
 
-    static void DrawCommandAction(IAction gcd, IAction ability, SpecialCommandType command, Vector4 color)
+    static void DrawCommandAction(IAction? gcd, IAction? ability, SpecialCommandType command, Vector4 color)
     {
-        var gcdW = Service.Config.GetValue(PluginConfigFloat.ControlWindowGCDSize);
-        var abilityW = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize);
+        var gcdW = Service.Config.ControlWindowGCDSize;
+        var abilityW = Service.Config.ControlWindow0GCDSize;
         var width = gcdW + abilityW + ImGui.GetStyle().ItemSpacing.X + ImGui.GetStyle().ItemInnerSpacing.X * 4;
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
@@ -271,7 +267,7 @@ internal class ControlWindow : CtrlWindow
             ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudGrey), 5, ImDrawFlags.RoundCornersAll, thickness);
     }
 
-    static void DrawCommandAction(IAction ability, SpecialCommandType command, Vector4 color)
+    static void DrawCommandAction(IAction? ability, SpecialCommandType command, Vector4 color)
     {
         if (ability.GetTexture(out var texture)) DrawCommandAction(texture, command, color);
     }
@@ -283,7 +279,7 @@ internal class ControlWindow : CtrlWindow
 
     static void DrawCommandAction(IDalamudTextureWrap texture, SpecialCommandType command, Vector4 color)
     {
-        var abilityW = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize);
+        var abilityW = Service.Config.ControlWindow0GCDSize;
         var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
@@ -327,7 +323,7 @@ internal class ControlWindow : CtrlWindow
 
     static void DrawCommandAction(uint iconId, StateCommandType command, Vector4 color)
     {
-        var abilityW = Service.Config.GetValue(PluginConfigFloat.ControlWindow0GCDSize);
+        var abilityW = Service.Config.ControlWindow0GCDSize;
         var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
@@ -394,7 +390,7 @@ internal class ControlWindow : CtrlWindow
         ImguiTooltips.HoveredTooltip(help);
     }
 
-    internal static (Vector2, Vector2) DrawIAction(IAction action, float width, float percent, bool isAdjust = true)
+    internal static (Vector2, Vector2) DrawIAction(IAction? action, float width, float percent, bool isAdjust = true)
     {
         if (!action.GetTexture(out var texture, isAdjust)) return (default, default);
 
@@ -408,17 +404,17 @@ internal class ControlWindow : CtrlWindow
                 bool canDoIt = false;
                 if (action is IBaseAction act)
                 {
-                    BaseAction.SkipDisable = true;
-                    canDoIt = act.CanUse(out _, CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo | CanUseOption.IgnoreClippingCheck);
-                    BaseAction.SkipDisable = false;
+                    IBaseAction.ForceEnable = true;
+                    canDoIt = act.CanUse(out _, isEmpty: true, ignoreClippingCheck: true, skipAoeCheck: true);
+                    IBaseAction.ForceEnable = false;
                 }
                 else if (action is IBaseItem item)
                 {
                     canDoIt = item.CanUse(out _, true);
                 }
-                if (canDoIt) action.Use();
+                if (canDoIt) action?.Use();
             }
-            else
+            else if(action != null)
             {
                 DataCenter.AddCommandAction(action, 5);
             }

@@ -279,7 +279,7 @@ internal static class ConfigTranslation
     public static string ToCommand(this PluginConfigInt config) => ToCommandStr(config, "1");
     public static string ToCommand(this PluginConfigBool config) => ToCommandStr(config);
     public static string ToCommand(this PluginConfigFloat config) => ToCommandStr(config, "0");
-    private static string ToCommandStr(object obj, string extra = "")
+    public static string ToCommandStr(object obj, string extra = "")
     {
         var result = Service.COMMAND + " " + OtherCommandType.Settings.ToString() + " " + obj.ToString();
         if (!string.IsNullOrEmpty(extra)) result += " " + extra;

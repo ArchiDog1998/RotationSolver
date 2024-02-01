@@ -30,6 +30,7 @@ partial class CustomRotation
             && MyInterruptAbility(role, out act)) return true;
 
         IBaseAction.TargetOverride = TargetType.Tank;
+        IBaseAction.ShouldEndSpecial = true;
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.Shirk)
             && ShirkPvE.CanUse(out act)) return true;
@@ -123,12 +124,13 @@ partial class CustomRotation
                 && MoveBackAbility(out act)) return true;
         IBaseAction.AllEmpty = false;
 
-        if (GeneralUsingAbility(role, out act)) return true;
-
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.HealSingleAbility))
         {
             if (UseHpPotion(out act)) return true;
         }
+        IBaseAction.ShouldEndSpecial = false;
+
+        if (GeneralUsingAbility(role, out act)) return true;
 
         if (HasHostilesInRange && AttackAbility(out act)) return true;
         if (GeneralAbility(out act)) return true;

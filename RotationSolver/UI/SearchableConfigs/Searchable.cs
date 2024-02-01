@@ -132,20 +132,23 @@ internal readonly struct JobFilter
     }
 }
 
-internal abstract class Searchable : ISearchable
+internal abstract class Searchable(PropertyInfo property) : ISearchable
 {
+    protected readonly PropertyInfo _property = property;
+
     public const float DRAG_WIDTH = 150;
     protected static float Scale => ImGuiHelpers.GlobalScale;
     public CheckBoxSearch? Parent { get; set; } = null;
 
     public virtual string SearchingKeys => Name + " " + Description;
-    public abstract string Name { get; }
-    public abstract string Description { get; }
-    public abstract string Command { get; }
-    public abstract LinkDescription[]? Tooltips { get; }
-    public abstract string ID { get; }
+    public virtual string Name => _property.GetCustomAttribute<UIAttribute>()?.Name ?? _property.Name;
+    public virtual string Description => _property.GetCustomAttribute<UIAttribute>()?.Description ?? Name;
+    public virtual string Command => ConfigTranslation.ToCommandStr(_property.Name);
+    public virtual LinkDescription[]? Tooltips => [.. _property.GetCustomAttributes<LinkDescriptionAttribute>().Select(l => l.LinkDescription)];
+    public virtual string ID => _property.Name;
     private string Popup_Key => "Rotation Solver RightClicking: " + ID;
-    protected virtual bool IsJob => false;
+    protected bool IsJob => _property.GetCustomAttribute<JobConfigAttribute>() != null
+        || _property.GetCustomAttribute<JobChoiceConfigAttribute>() != null;
 
     public uint Color { get; set; } = 0;
 
@@ -196,7 +199,6 @@ internal abstract class Searchable : ISearchable
 
     protected abstract void DrawMain();
 
-    public abstract void ResetToDefault();
 
     protected void ShowTooltip(bool showHand = true)
     {
@@ -234,5 +236,11 @@ internal abstract class Searchable : ISearchable
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
             ImguiTooltips.HoveredTooltip("JobConfigTip".Local("This config is job specific"));
         }
+    }
+
+    public virtual void ResetToDefault()
+    {
+        var v = _property.GetValue(Service.ConfigDefault);
+        _property.SetValue(Service.Config, v);
     }
 }

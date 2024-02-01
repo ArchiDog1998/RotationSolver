@@ -9,7 +9,7 @@ public static partial class RSCommands
     internal static void Enable()
         => Svc.Commands.AddHandler(Service.COMMAND, new CommandInfo(OnCommand)
         {
-            HelpMessage = LocalizationManager._rightLang.Commands_Rotation,
+            HelpMessage = "Commands_Rotation".Local("Open config window."),
             ShowInHelp = true,
         });
 

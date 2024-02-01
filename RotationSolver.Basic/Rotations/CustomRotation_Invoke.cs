@@ -157,6 +157,7 @@ partial class CustomRotation
 
     private IAction? Invoke(out IAction? gcdAction)
     {
+        IBaseAction.ShouldEndSpecial = false;
         IBaseAction.IgnoreClipping = true;
         IBaseAction.TargetOverride = TargetType.BeAttacked;
         var countDown = Service.CountDownTime;

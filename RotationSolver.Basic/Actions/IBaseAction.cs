@@ -9,6 +9,7 @@ public interface IBaseAction : IAction
     internal static bool ActionPreview { get; set; } = false;
     internal static bool IgnoreClipping { get; set; } = false;
     internal static bool AllEmpty { get; set; } = false;
+    internal static bool ShouldEndSpecial { get; set; } = false;
 
     Action Action { get; }
     TargetResult? Target { get; }

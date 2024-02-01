@@ -1,6 +1,4 @@
-﻿using ECommons.ExcelServices;
-using RotationSolver.Basic.Configuration;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 
 namespace RotationSolver.UI.SearchableConfigs;

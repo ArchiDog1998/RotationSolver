@@ -26,16 +26,6 @@ public interface IAction : ITexture, IEnoughLevel
     uint SortKey { get; }
 
     /// <summary>
-    /// Is action cooling down.
-    /// </summary>
-    bool IsCoolingDown { get; }
-
-    /// <summary>
-    /// Is in the cd window.
-    /// </summary>
-    bool IsInCooldown { get; set; }
-
-    /// <summary>
     /// How to use.
     /// </summary>
     /// <returns></returns>

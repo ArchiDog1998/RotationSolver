@@ -1,42 +1,12 @@
-﻿using RotationSolver.Basic.Configuration;
-using RotationSolver.Localization;
+﻿namespace RotationSolver.UI.SearchableConfigs;
 
-namespace RotationSolver.UI.SearchableConfigs;
-
-internal class ColorEditSearchPlugin : ColorEditSearch
+internal class ColorEditSearch(PropertyInfo property) : Searchable(property)
 {
-    private readonly PluginConfigVector4 _config;
-
-    public override string ID => _config.ToString();
-
-    public override string Name => _config.ToName();
-
-    public override string Description => _config.ToDescription();
-
-    public override LinkDescription[] Tooltips => _config.ToAction();
-
-    public override string Command => "";
-
-    protected override Vector4 Value
+    protected Vector4 Value 
     {
-        get => Service.Config.GetValue(_config);
-        set => Service.Config.SetValue(_config, value);
+        get => (Vector4)_property.GetValue(Service.Config)!;
+        set => _property.SetValue(Service.Config, value);
     }
-
-    public ColorEditSearchPlugin(PluginConfigVector4 config)
-    {
-        _config = config;
-    }
-
-    public override void ResetToDefault()
-    {
-        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
-    }
-}
-
-internal abstract class ColorEditSearch : Searchable
-{
-    protected abstract Vector4 Value { get; set; }
 
     protected override void DrawMain()
     {

@@ -1,7 +1,4 @@
-﻿using ECommons.LanguageHelpers;
-using RotationSolver.Basic.Configuration;
-
-namespace RotationSolver.Basic.Rotations;
+﻿namespace RotationSolver.Basic.Rotations;
 
 partial class CustomRotation
 {
@@ -15,10 +12,16 @@ partial class CustomRotation
             && a.CanUse(out _, isEmpty: true, skipAoeCheck: true)) return act;
         IBaseAction.ForceEnable = false;
 
+        IBaseAction.ShouldEndSpecial = true;
+
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.LimitBreak)
             && UseLimitBreak(out act)) return act;
 
+        IBaseAction.ShouldEndSpecial = false;
+
         if (EmergencyGCD(out act)) return act;
+
+        IBaseAction.ShouldEndSpecial = true;
 
         if (RaiseSpell(out act, false)) return act;
 
@@ -67,6 +70,7 @@ partial class CustomRotation
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.Dispel)
             && DispelGCD(out act)) return act;
 
+        IBaseAction.ShouldEndSpecial = false;
         IBaseAction.TargetOverride = null;
 
         if (GeneralGCD(out var action)) return action;

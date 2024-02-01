@@ -1,20 +1,18 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Text;
+using System.Security.Cryptography;
 
 namespace RotationSolver.SourceGenerators;
 
 [Generator(LanguageNames.CSharp)]
 
-public class JobChoiceConfigGenerator : IIncrementalGenerator
+public class ConditionBoolGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var provider = context.SyntaxProvider.ForAttributeWithMetadataName
-            ("RotationSolver.Basic.Attributes.JobChoiceConfigAttribute",
+            ("RotationSolver.Basic.Attributes.ConditionBoolAttribute",
             static (node, _) => node is VariableDeclaratorSyntax { Parent: VariableDeclarationSyntax { Parent: FieldDeclarationSyntax { Parent: ClassDeclarationSyntax or StructDeclarationSyntax } } },
             static (n, ct) => ((VariableDeclaratorSyntax)n.TargetNode, n.SemanticModel))
             .Where(m => m.Item1 != null);
@@ -56,7 +54,13 @@ public class JobChoiceConfigGenerator : IIncrementalGenerator
 
                 var fieldTypeStr = field.Declaration.Type;
                 var fieldType = model.GetTypeInfo(fieldTypeStr).Type!;
-                var fieldStr = fieldTypeStr.ToString();
+
+                if(fieldType.GetFullMetadataName() != "System.Boolean")
+                {
+                    var diag = new DiagnosticDescriptor("a", "aa", "aaa", "1", DiagnosticSeverity.Warning, true);
+                    context.ReportDiagnostic(Diagnostic.Create(diag, variableInfo.GetLocation()));
+                    continue;
+                }
 
                 var names = new List<string>();
                 foreach (var attrSet in field.AttributeLists)
@@ -77,26 +81,8 @@ public class JobChoiceConfigGenerator : IIncrementalGenerator
 
                 var attributeStr = names.Count == 0 ? "" : $"[{string.Join(", ", names)}]";
                 var propertyCode = $$"""
-                        [JsonProperty]
-                        private Dictionary<Job, Dictionary<string, {{fieldStr}}>> {{variableName}}Dict = [];
-
-                        [JsonIgnore]
                         {{attributeStr}}
-                        public {{fieldStr}} {{propertyName}}
-                        {
-                            get
-                            {
-                                if (!{{variableName}}Dict.TryGetValue(DataCenter.Job, out var dict)) return {{variableName}};
-                                
-                                if (!dict.TryGetValue(RotationChoice, out var value)) return {{variableName}};
-
-                                return value;
-                            }
-                            set
-                            {
-                                {{variableName}}Dict[DataCenter.Job][RotationChoice] = value;
-                            }
-                        }
+                        public ConditionBoolean {{propertyName}} { get; private set; } = new({{variableName}}, "{{propertyName}}");
                 """;
 
                 propertyCodes.Add(propertyCode);
@@ -105,7 +91,7 @@ public class JobChoiceConfigGenerator : IIncrementalGenerator
             if (propertyCodes.Count == 0) continue;
 
             var code = $$"""
-             using ECommons.ExcelServices;
+             using RotationSolver.Basic.Data;
 
              namespace {{nameSpace}}
              {
@@ -121,5 +107,4 @@ public class JobChoiceConfigGenerator : IIncrementalGenerator
             context.AddSource($"{nameSpace}_{className}.g.cs", code);
         }
     }
-
 }
