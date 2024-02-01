@@ -2,7 +2,7 @@
 
 internal class ActionCondition : DelayCondition
 {
-    internal IBaseAction _action;
+    internal IBaseAction _action = null!;
 
     public ActionID ID { get; set; } = ActionID.None;
 
@@ -40,7 +40,7 @@ internal class ActionCondition : DelayCondition
                 return _action.EnoughLevel;
 
             case ActionConditionType.IsCoolDown:
-                return _action.IsCoolingDown;
+                return _action.Cooldown.IsCoolingDown;
 
             case ActionConditionType.CurrentCharges:
                 switch (Param2)

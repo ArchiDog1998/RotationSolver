@@ -6,6 +6,7 @@ public class UIAttribute(string name) : Attribute
     public string Name => name;
     public string Description { get; set; } = "";
     public string Parent { get; set; } = "";
+    public string Searchable { get; set; } = "";
 }
 
 [AttributeUsage(AttributeTargets.Field)]
@@ -19,6 +20,6 @@ internal class JobChoiceConfigAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Field)]
-internal class ConditionBoolAttribute: Attribute, iattribute
+internal class ConditionBoolAttribute: Attribute
 {
 }

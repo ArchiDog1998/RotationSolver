@@ -1,23 +1,18 @@
 ﻿using Dalamud.Interface.Utility.Raii;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
 
-internal class CooldownWindow : CtrlWindow
+internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
 {
-    public CooldownWindow()
-        : base(nameof(CooldownWindow))
-    {
-
-    }
-
     public override void Draw()
     {
         if (DataCenter.RightNowRotation != null)
         {
             var width = Service.Config.CooldownWindowIconSize;
             var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (width * (1 + 6 / 82) + ImGui.GetStyle().ItemSpacing.X)));
+
+            if (RotationUpdater.AllGroupedActions == null) return;
 
             foreach (var pair in RotationUpdater.AllGroupedActions)
             {
@@ -47,9 +42,9 @@ internal class CooldownWindow : CtrlWindow
 
     private static void DrawActionCooldown(IAction act, float width)
     {
-        var recast = act.RecastTimeOneChargeRaw;
-        var elapsed = act.RecastTimeElapsedRaw;
-        var shouldSkip = recast < 3 && act is IBaseAction a && !a.IsRealGCD;
+        var recast = act.Cooldown.RecastTimeOneChargeRaw;
+        var elapsed = act.Cooldown.RecastTimeElapsedRaw;
+        var shouldSkip = recast < 3 && act is IBaseAction a && !a.Info.IsRealGCD;
 
         using var group = ImRaii.Group();
         if (!group) return;
@@ -59,7 +54,7 @@ internal class CooldownWindow : CtrlWindow
         var r = -1f;
         if (Service.Config.UseOriginalCooldown)
         {
-            r = !act.EnoughLevel ? 0 : recast == 0 || !act.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
+            r = !act.EnoughLevel ? 0 : recast == 0 || !act.Cooldown.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
         }
         var pair = ControlWindow.DrawIAction(act, width, r, false);
         var pos = pair.Item1;
@@ -73,7 +68,7 @@ internal class CooldownWindow : CtrlWindow
                     new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, progressCol);
             }
         }
-        else if (act.IsCoolingDown && !shouldSkip)
+        else if (act.Cooldown.IsCoolingDown && !shouldSkip)
         {
             if (!Service.Config.UseOriginalCooldown)
             {
@@ -93,9 +88,9 @@ internal class CooldownWindow : CtrlWindow
             TextShade(fontPos, time);
         }
 
-        if (act.EnoughLevel && act is IBaseAction bAct && bAct.MaxCharges > 1)
+        if (act.EnoughLevel && act is IBaseAction bAct && bAct.Cooldown.MaxCharges > 1)
         {
-            for (int i = 0; i < bAct.CurrentCharges; i++)
+            for (int i = 0; i < bAct.Cooldown.CurrentCharges; i++)
             {
                 ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + (i + 0.5f) * new Vector2(width / 5, 0), width / 12, white);
             }

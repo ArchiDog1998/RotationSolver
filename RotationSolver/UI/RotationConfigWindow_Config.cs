@@ -15,7 +15,7 @@ namespace RotationSolver.UI;
 
 public partial class RotationConfigWindow
 {
-    private static char[] _splitChar = new char[] { ' ', ',', '、', '.', '。' };
+    private static char[] _splitChar = [' ', ',', '、', '.', '。'];
     internal static float Similarity(string text, string key)
     {
         if (string.IsNullOrEmpty(text)) return 0;
@@ -31,7 +31,7 @@ public partial class RotationConfigWindow
     }
 
     private string _searchText = string.Empty;
-    private ISearchable[] _searchResults = Array.Empty<ISearchable>();
+    private ISearchable[] _searchResults = [];
     private void SearchingBox()
     {
         if (ImGui.InputTextWithHint("##Rotation Solver Search Box", LocalizationManager._rightLang.ConfigWindow_Searching, ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))

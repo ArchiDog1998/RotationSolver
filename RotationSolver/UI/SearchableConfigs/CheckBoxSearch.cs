@@ -126,7 +126,7 @@ internal class CheckBoxSearchNoCondition(PropertyInfo property, params ISearchab
 
 internal abstract class CheckBoxSearch : Searchable
 {
-    public List<ISearchable> Children { get; }
+    public List<ISearchable> Children { get; } = [];
 
     public ActionID Action { get; init; } = ActionID.None;
 
@@ -136,14 +136,19 @@ internal abstract class CheckBoxSearch : Searchable
 
     public override string Description => Action == ActionID.None ? base.Description : Action.ToString();
 
-    public CheckBoxSearch(PropertyInfo property, params ISearchable[] children)
+    internal CheckBoxSearch(PropertyInfo property, params ISearchable[] children)
         :base(property)
     {
-        Children = [..children];
         foreach (var child in Children)
         {
-            child.Parent = this;
+            AddChild(child);
         }
+    }
+
+    public void AddChild(ISearchable child)
+    {
+        child.Parent = this;
+        Children.Add(child);
     }
 
     protected abstract bool Value { get; set; }

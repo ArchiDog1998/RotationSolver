@@ -2,7 +2,7 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace RotationSolver.Basic.Actions;
-public readonly struct ActionCooldownInfo
+public readonly struct ActionCooldownInfo : ICooldown
 {
     private readonly IBaseAction _action;
     public byte CoolDownGroup { get; }
@@ -20,7 +20,7 @@ public readonly struct ActionCooldownInfo
     /// 
     /// </summary>
     unsafe float RecastTimeElapsedRaw => CoolDownDetail == null ? 0 : CoolDownDetail->Elapsed;
-
+    float ICooldown.RecastTimeElapsedRaw => RecastTimeElapsedRaw;
     /// <summary>
     /// 
     /// </summary>
@@ -43,7 +43,9 @@ public readonly struct ActionCooldownInfo
     /// </summary>
     public ushort CurrentCharges => IsCoolingDown ? (ushort)(RecastTimeElapsedRaw / RecastTimeOneChargeRaw) : MaxCharges;
 
-    private float RecastTimeOneChargeRaw => ActionManager.GetAdjustedRecastTime(ActionType.Action, _action.Info.AdjustedID) / 1000f;
+    float RecastTimeOneChargeRaw => ActionManager.GetAdjustedRecastTime(ActionType.Action, _action.Info.AdjustedID) / 1000f;
+
+    float ICooldown.RecastTimeOneChargeRaw => RecastTimeOneChargeRaw;
 
     /// <summary>
     /// 

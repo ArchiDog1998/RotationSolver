@@ -17,6 +17,8 @@ public class BaseAction : IBaseAction
 
     public ActionCooldownInfo Cooldown { get; }
 
+    ICooldown IAction.Cooldown => Cooldown;
+
     public uint ID => Info.ID;
 
     public uint AdjustedID => Info.AdjustedID;

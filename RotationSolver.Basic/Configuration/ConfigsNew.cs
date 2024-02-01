@@ -56,7 +56,7 @@ internal partial class ConfigsNew : IPluginConfiguration
     private static readonly bool _raiseAll = false;
 
     [ConditionBool, UI("Lock the movement when casting or when doing some actions.")]
-    public bool  _poslockCasting = false;
+    private static readonly bool _poslockCasting = false;
     public bool  PosPassageOfArms { get; set; } = false;
     public bool PosTenChiJin { get; set; } = true;
     public bool  PosFlameThrower { get; set; } = false;
@@ -156,7 +156,7 @@ internal partial class ConfigsNew : IPluginConfiguration
     private static readonly bool _onlyHotOnTanks = false;
 
     [ConditionBool, UI("Debug Mode")]
-    public bool  _inDebug = false;
+    private static readonly bool _inDebug = false;
     public bool AutoUpdateLibs { get; set; } = true;
 
     [ConditionBool, UI("Auto Download Rotations")]
@@ -223,7 +223,7 @@ internal partial class ConfigsNew : IPluginConfiguration
     [ConditionBool, UI("Automatically trigger dps burst phase")]
     private static readonly bool _autoBurst = true;
 
-    [ConditionBool, UI("Automatic Heal")]
+    [ConditionBool, UI("Automatic Heal", Searchable = "AutoHealCheckBox")]
     private static readonly bool _autoHeal = true;
 
     [ConditionBool, UI("Auto-use abilities")]
@@ -251,10 +251,10 @@ internal partial class ConfigsNew : IPluginConfiguration
     private static readonly bool _useGroundBeneficialAbility = true;
 
     [ConditionBool, UI("Use beneficial AoE actions when moving.")]
-    public bool  _useGroundBeneficialAbilityWhenMoving = false;
+    private static readonly bool _useGroundBeneficialAbilityWhenMoving = false;
 
     [ConditionBool, UI("Target all for friendly actions (include passerby)")]
-    public bool  _targetAllForFriendly = false;
+    private static readonly bool _targetAllForFriendly = false;
 
     [ConditionBool, UI("Show Cooldown Window")]
     private static readonly bool _showCooldownWindow = false;

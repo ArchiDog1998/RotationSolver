@@ -108,19 +108,6 @@ internal class Strings
     public string ConfigWindow_Param_BeneficialAreaOnCalculated { get; set; } = "On the calculated location";
 
 
-    public string ConfigWindow_Param_HealthAreaAbility { get; set; } = "HP for AoE healing oGCDs";
-
-    public string ConfigWindow_Param_HealthAreaSpell { get; set; } = "HP for AoE healing GCDs";
-
-    public string ConfigWindow_Param_Normal { get; set; } = "Normal Targets";
-    public string ConfigWindow_Param_HOT { get; set; } = "Targets with HOT";
-
-    public string ConfigWindow_Param_HealthSingleAbility { get; set; } = "HP for ST healing oGCDs";
-
-    public string ConfigWindow_Param_HealthSingleSpell { get; set; } = "HP for ST healing GCDs";
-
-
-
     public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "The HP for tank to use invulnerability";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
     public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemy list to the hostile targets.";

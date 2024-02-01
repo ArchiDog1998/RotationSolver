@@ -17,7 +17,7 @@ public interface IBaseAction : IAction
     ActionTargetInfo TargetInfo { get; }
 
     ActionBasicInfo Info { get; }
-    ActionCooldownInfo Cooldown { get; }
+    new ActionCooldownInfo Cooldown { get; }
     ActionSetting Setting { get; set; }
     internal ActionConfig Config { get; }   
 

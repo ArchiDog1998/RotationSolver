@@ -141,8 +141,26 @@ internal abstract class Searchable(PropertyInfo property) : ISearchable
     public CheckBoxSearch? Parent { get; set; } = null;
 
     public virtual string SearchingKeys => Name + " " + Description;
-    public virtual string Name => _property.GetCustomAttribute<UIAttribute>()?.Name ?? _property.Name;
-    public virtual string Description => _property.GetCustomAttribute<UIAttribute>()?.Description ?? Name;
+    public virtual string Name
+    {
+        get
+        {
+            var ui = _property.GetCustomAttribute<UIAttribute>();
+            if (ui == null) return string.Empty;
+
+            return (_property.Name + "Name").Local(ui.Name);
+        }
+    }
+    public virtual string Description
+    {
+        get
+        {
+            var ui = _property.GetCustomAttribute<UIAttribute>();
+            if (ui == null) return string.Empty;
+
+            return (_property.Name + "Description").Local(ui.Description);
+        }
+    }
     public virtual string Command => ConfigTranslation.ToCommandStr(_property.Name);
     public virtual LinkDescription[]? Tooltips => [.. _property.GetCustomAttributes<LinkDescriptionAttribute>().Select(l => l.LinkDescription)];
     public virtual string ID => _property.Name;

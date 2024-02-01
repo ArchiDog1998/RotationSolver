@@ -1,7 +1,7 @@
 ﻿namespace RotationSolver.Basic.Attributes;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public class RangeAttribute(float minValue, float maxValue, ConfigUnitType unitType, float speed = 0.001f) : Attribute
+public class RangeAttribute(float minValue, float maxValue, ConfigUnitType unitType, float speed = 0.005f) : Attribute
 {
     public float MinValue => minValue;
     public float MaxValue => maxValue;
