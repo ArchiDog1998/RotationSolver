@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
@@ -139,7 +140,7 @@ internal abstract class CheckBoxSearch : Searchable
     internal CheckBoxSearch(PropertyInfo property, params ISearchable[] children)
         :base(property)
     {
-        foreach (var child in Children)
+        foreach (var child in children)
         {
             AddChild(child);
         }

@@ -55,7 +55,8 @@ internal partial class ConfigsNew : IPluginConfiguration
     [ConditionBool, UI("Raise any player in range (even if they are not in your party)")]
     private static readonly bool _raiseAll = false;
 
-    [ConditionBool, UI("Lock the movement when casting or when doing some actions.")]
+    [ConditionBool, UI("Lock the movement when casting or when doing some actions.",
+        Description = "LT is for gamepad player")]
     private static readonly bool _poslockCasting = false;
     public bool  PosPassageOfArms { get; set; } = false;
     public bool PosTenChiJin { get; set; } = true;
@@ -176,7 +177,10 @@ internal partial class ConfigsNew : IPluginConfiguration
 
     [ConditionBool, UI("Show Control Window")]
     private static readonly bool _showControlWindow = false;
-    public bool  IsControlWindowLock { get; set; } = false;
+
+    [ConditionBool, UI("Is Control Window Lock")]
+
+    private static readonly bool _isControlWindowLock = false;
 
     [ConditionBool, UI("Show Next Action Window")]
     private static readonly bool _showNextActionWindow = true;
@@ -278,7 +282,7 @@ internal partial class ConfigsNew : IPluginConfiguration
     private static readonly bool _showBeneficialPositions = true;
 
     [ConditionBool, UI("Hide all warnings")]
-    private static readonly bool _sideWarning = false;
+    private static readonly bool _hideWarning = false;
 
     [ConditionBool, UI("Healing the members with GCD if there is nothing to do in combat.")]
     private static readonly bool _healWhenNothingTodo = true;
@@ -509,18 +513,23 @@ internal partial class ConfigsNew : IPluginConfiguration
     #region Integer
 
     public int ActionSequencerIndex { get; set; }
+
+    [UI("The modifier key to unlock the movement temporary")]
     public int PoslockModifier { get; set; }
 
     [Range(0, 10000, ConfigUnitType.None)]
+    [UI("Never raise player if MP is less than the set value")]
     public int LessMPNoRaise { get; set; }
 
     [Range(0, 5, ConfigUnitType.None)]
+    [UI("Effect times")]
     public Vector2Int KeyboardNoise { get; set; } = new (2, 3);
 
     [Range(0, 10, ConfigUnitType.None)]
     public int TargetingIndex { get; set; }
 
     [Range(0, 10, ConfigUnitType.None)]
+    [UI("Beneficial AoE strategy")]
     public int BeneficialAreaStrategy { get; set; }
 
     [Range(1, 8, ConfigUnitType.None)]
@@ -554,15 +563,20 @@ internal partial class ConfigsNew : IPluginConfiguration
     private readonly float _healthSingleSpell = 0.55f;
 
     [JobConfig, Range(0, 1, ConfigUnitType.Percent)]
+    [UI("The HP%% for tank to use invulnerability")]
     private readonly float _healthForDyingTanks = 0.15f;
 
     [JobConfig, Range(0, 1, ConfigUnitType.Percent)]
+    [UI("HP%% about defense single of Tanks")]
     private readonly float _healthForAutoDefense = 1;
 
+    [LinkDescription($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/HowAndWhenToClick.svg",
+        "This plugin helps you to use the right action during the combat. Here is a guide about the different options.")]
     [JobConfig, Range(0, 0.5f, ConfigUnitType.Seconds)]
+    [UI("Action Ahead")]
     private readonly float _actionAhead = 0.08f;
 
-    [JobConfig]
+    [JobConfig, UI("Engage settings")]
     private readonly TargetHostileType _hostileType;
 
     [JobConfig]

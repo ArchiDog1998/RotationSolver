@@ -244,22 +244,57 @@ internal enum TargetType : byte
 
 internal enum TargetConditionType : byte
 {
+    [Description("Is Null")]
     IsNull,
+
+    [Description("Has status")]
     HasStatus,
+
+    [Description("Is Dying")]
     IsDying,
+
+    [Description("Is Boss From TTK")]
     IsBossFromTTK,
+
+    [Description("Is Boss From Icon")]
     IsBossFromIcon,
+
+    [Description("In Combat")]
     InCombat,
+
+    [Description("Distance")]
     Distance,
+
+    [Description("Status end")]
     StatusEnd,
+
+    [Description("Status End GCD")]
     StatusEndGCD,
+
+    [Description("Casting Action")]
     CastingAction,
+
+    [Description("Casting Action Time Until")]
     CastingActionTime,
+
+    [Description("Time To Kill")]
     TimeToKill,
+
+    [Description("HP")]
     HP,
+
+    [Description("HP%")]
     HPRatio,
+
+    [Description("MP")]
     MP,
+
+    [Description("Target Name")]
     TargetName,
+
+    [Description("Object Effect")]
     ObjectEffect,
+
+    [Description("Vfx")]
     Vfx,
 }

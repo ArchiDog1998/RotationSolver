@@ -592,7 +592,7 @@ internal static class ConditionDrawer
         {
             case ComboConditionType.Bool:
                 ImGui.SameLine();
-                SearchItemsReflection($"##Comparation{rotationCondition.GetHashCode()}", rotationCondition._prop.GetMemberName(), ref searchTxt, rotation.AllBools, i =>
+                SearchItemsReflection($"##Comparation{rotationCondition.GetHashCode()}", rotationCondition._prop.Local(), ref searchTxt, rotation.AllBools, i =>
                 {
                     rotationCondition._prop = i;
                     rotationCondition.PropertyName = i.Name;
@@ -602,7 +602,7 @@ internal static class ConditionDrawer
 
             case ComboConditionType.Integer:
                 ImGui.SameLine();
-                SearchItemsReflection($"##ByteChoice{rotationCondition.GetHashCode()}", rotationCondition._prop.GetMemberName(), ref searchTxt, rotation.AllBytesOrInt, i =>
+                SearchItemsReflection($"##ByteChoice{rotationCondition.GetHashCode()}", rotationCondition._prop.Local(), ref searchTxt, rotation.AllBytesOrInt, i =>
                 {
                     rotationCondition._prop = i;
                     rotationCondition.PropertyName = i.Name;
@@ -616,7 +616,7 @@ internal static class ConditionDrawer
 
             case ComboConditionType.Float:
                 ImGui.SameLine();
-                SearchItemsReflection($"##FloatChoice{rotationCondition.GetHashCode()}", rotationCondition._prop.GetMemberName(), ref searchTxt, rotation.AllFloats, i =>
+                SearchItemsReflection($"##FloatChoice{rotationCondition.GetHashCode()}", rotationCondition._prop.Local(), ref searchTxt, rotation.AllFloats, i =>
                 {
                     rotationCondition._prop = i;
                     rotationCondition.PropertyName = i.Name;

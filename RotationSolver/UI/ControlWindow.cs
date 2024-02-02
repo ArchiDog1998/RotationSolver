@@ -156,7 +156,7 @@ internal class ControlWindow : CtrlWindow
         ImGui.Spacing();
 
         DrawCommandAction(rotation?.ActionDispelStancePositionalGCD, rotation?.ActionDispelStancePositionalAbility,
-            SpecialCommandType.EsunaStanceNorth, ImGuiColors.ParsedGold);
+            SpecialCommandType.DispelStancePositional, ImGuiColors.ParsedGold);
 
         ImGui.SameLine();
 
@@ -187,7 +187,7 @@ internal class ControlWindow : CtrlWindow
         {
             if (group)
             {
-                ImGui.Text(DataCenter.RightNowTargetToHostileType.GetName());
+                ImGui.Text(DataCenter.RightNowTargetToHostileType.Local());
                 ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
             }
         }
@@ -223,7 +223,7 @@ internal class ControlWindow : CtrlWindow
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
                 ImGui.TextColored(color, str);
 
-                var help = command.ToHelp();
+                var help = command.Local();
                 string baseId = "ImgButton" + command.ToString();
 
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
@@ -296,7 +296,7 @@ internal class ControlWindow : CtrlWindow
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
                 ImGui.TextColored(color, str);
 
-                var help = command.ToHelp();
+                var help = command.Local();
                 string baseId = "ImgButton" + command.ToString();
 
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
@@ -337,7 +337,7 @@ internal class ControlWindow : CtrlWindow
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
                 ImGui.TextColored(color, str);
 
-                var help = command.ToHelp();
+                var help = command.Local();
                 string baseId = "ImgButton" + command.ToString();
 
                 if (IconSet.GetTexture(iconId, out var texture))

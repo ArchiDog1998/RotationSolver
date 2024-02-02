@@ -19,15 +19,6 @@ internal static class ImGuiHelper
         ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X + 30 * ImGuiHelpers.GlobalScale));
     }
 
-    public static string GetMemberName(this MemberInfo info)
-    {
-        if (info == null) return "Not Chosen";
-
-        if (LocalizationManager._rightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
-
-        return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? info.Name;
-    }
-
     const float INDENT_WIDTH = 180;
 
     internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string> getHelp = null, bool sameLine = true) where T : struct, Enum

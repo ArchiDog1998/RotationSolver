@@ -34,7 +34,7 @@ public partial class RotationConfigWindow
     private ISearchable[] _searchResults = [];
     private void SearchingBox()
     {
-        if (ImGui.InputTextWithHint("##Rotation Solver Search Box", LocalizationManager._rightLang.ConfigWindow_Searching, ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))
+        if (ImGui.InputTextWithHint("##Rotation Solver Search Box", "ConfigWindow_Searching".Local("Search... "), ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))
         {
             if (!string.IsNullOrEmpty(_searchText))
             {
@@ -44,7 +44,7 @@ public partial class RotationConfigWindow
 
                 var enumerator = GetType().GetRuntimeFields()
                     .Where(f => f.FieldType == typeof(ISearchable[]) && f.IsInitOnly)
-                    .SelectMany(f => (ISearchable[])f.GetValue(this))
+                    .SelectMany(f => (ISearchable[])f.GetValue(this)!) //Todo better way to get searchable.
                     .SelectMany(GetChildren)
                     .OrderByDescending(i => Similarity(i.SearchingKeys, _searchText))
                     .Select(GetParent).GetEnumerator();
@@ -58,7 +58,7 @@ public partial class RotationConfigWindow
             }
             else
             {
-                _searchResults = Array.Empty<ISearchable>();
+                _searchResults = [];
             }
         }
     }
@@ -75,7 +75,6 @@ public partial class RotationConfigWindow
 
     private static ISearchable GetParent(ISearchable searchable)
     {
-        if (searchable == null) return null;
         if (searchable.Parent == null) return searchable;
         return GetParent(searchable.Parent);
     }
@@ -561,14 +560,15 @@ public partial class RotationConfigWindow
     #region Auto
     private static void DrawAuto()
     {
-        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Auto_Description);
+        ImGui.TextWrapped("ConfigWindow_Auto_Description".Local("Change the way that RS atomatically uses actions."));
         _autoHeader?.Draw();
     }
+
     private static readonly CollapsingHeaderGroup _autoHeader = new(new()
     {
-        { () => LocalizationManager._rightLang.ConfigWindow_Auto_ActionUsage, () =>
+        { () => "ConfigWindow_Auto_ActionUsage".Local("Action Usage"), () =>
             {
-                ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Auto_ActionUsage_Description);
+                ImGui.TextWrapped("ConfigWindow_Auto_ActionUsage_Description".Local("Which actions Rotation Solver can use."));
                 ImGui.Separator();
 
                 foreach (var searchable in _autoActionUsageSearchable)
@@ -580,6 +580,71 @@ public partial class RotationConfigWindow
         { () => LocalizationManager._rightLang.ConfigWindow_Auto_ActionCondition, DrawAutoActionCondition },
         { () => LocalizationManager._rightLang.ConfigWindow_Auto_StateCondition, () => _autoState?.Draw() },
     });
+
+    private static readonly ISearchable[] _autoActionUsageSearchable = new ISearchable[]
+{
+        new CheckBoxSearchPlugin(PluginConfigBool.UseAOEAction, new ISearchable[]
+        {
+            new CheckBoxSearchPlugin(PluginConfigBool.UseAOEWhenManual),
+            new CheckBoxSearchPlugin(PluginConfigBool.NoNewHostiles),
+        }),
+
+        new CheckBoxSearchPlugin(PluginConfigBool.UseTinctures),
+        new CheckBoxSearchPlugin(PluginConfigBool.UseHealPotions),
+        new CheckBoxSearchPlugin(PluginConfigBool.UseResourcesAction),
+
+        new DragIntSearchPlugin(PluginConfigInt.LessMPNoRaise, 200)
+        {
+            PvEFilter = JobFilter.Raise,
+        },
+
+        new CheckBoxSearchPlugin(PluginConfigBool.UseAbility, new ISearchable[]
+        {
+            new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility,
+                new DragIntSearchPlugin(PluginConfigInt.AutoDefenseNumber, 0.05f)
+                {
+                    PvEFilter = JobFilter.Tank,
+                },
+
+                new DragFloatSearchJob(JobConfigFloat.HealthForAutoDefense, 0.02f)
+                {
+                    PvEFilter = JobFilter.Tank,
+                }),
+
+            new CheckBoxSearchPlugin(PluginConfigBool.AutoTankStance)
+            {
+                PvEFilter = JobFilter.Tank,
+            },
+
+            new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank,
+                new DragFloatRangeSearchPlugin(PluginConfigFloat.ProvokeDelayMin, PluginConfigFloat.ProvokeDelayMax, 0.05f))
+            {
+                PvEFilter = JobFilter.Tank,
+            },
+
+            new CheckBoxSearchPlugin(PluginConfigBool.AutoUseTrueNorth)
+            {
+                PvEFilter = JobFilter.Melee,
+            },
+            new CheckBoxSearchPlugin(PluginConfigBool.RaisePlayerBySwift)
+            {
+                 PvEFilter = JobFilter.Healer,
+            },
+            new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbility,
+            new DragIntSearchPlugin(PluginConfigInt.BeneficialAreaStrategy, () => new string[]{
+                LocalizationManager._rightLang.ConfigWindow_Param_BeneficialAreaOnLocations,
+                LocalizationManager._rightLang.ConfigWindow_Param_BeneficialAreaOnlyOnLocations,
+                LocalizationManager._rightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
+                LocalizationManager._rightLang.ConfigWindow_Param_BeneficialAreaOnCalculated }),
+             new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving))
+            {
+                PvEFilter = JobFilter.Healer,
+            },
+
+            new CheckBoxSearchPlugin(PluginConfigBool.AutoSpeedOutOfCombat),
+        }),
+};
+
 
     private static readonly CollapsingHeaderGroup _autoState = new(new()
     {
@@ -772,69 +837,6 @@ public partial class RotationConfigWindow
         },
     };
 
-    private static readonly ISearchable[] _autoActionUsageSearchable = new ISearchable[]
-    {
-        new CheckBoxSearchPlugin(PluginConfigBool.UseAOEAction, new ISearchable[]
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.UseAOEWhenManual),
-            new CheckBoxSearchPlugin(PluginConfigBool.NoNewHostiles),
-        }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.UseTinctures),
-        new CheckBoxSearchPlugin(PluginConfigBool.UseHealPotions),
-        new CheckBoxSearchPlugin(PluginConfigBool.UseResourcesAction),
-
-        new DragIntSearchPlugin(PluginConfigInt.LessMPNoRaise, 200)
-        {
-            PvEFilter = JobFilter.Raise,
-        },
-
-        new CheckBoxSearchPlugin(PluginConfigBool.UseAbility, new ISearchable[]
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.UseDefenseAbility,
-                new DragIntSearchPlugin(PluginConfigInt.AutoDefenseNumber, 0.05f)
-                {
-                    PvEFilter = JobFilter.Tank,
-                },
-
-                new DragFloatSearchJob(JobConfigFloat.HealthForAutoDefense, 0.02f)
-                {
-                    PvEFilter = JobFilter.Tank,
-                }),
-
-            new CheckBoxSearchPlugin(PluginConfigBool.AutoTankStance)
-            {
-                PvEFilter = JobFilter.Tank,
-            },
-
-            new CheckBoxSearchPlugin(PluginConfigBool.AutoProvokeForTank,
-                new DragFloatRangeSearchPlugin(PluginConfigFloat.ProvokeDelayMin, PluginConfigFloat.ProvokeDelayMax, 0.05f))
-            {
-                PvEFilter = JobFilter.Tank,
-            },
-
-            new CheckBoxSearchPlugin(PluginConfigBool.AutoUseTrueNorth)
-            {
-                PvEFilter = JobFilter.Melee,
-            },
-            new CheckBoxSearchPlugin(PluginConfigBool.RaisePlayerBySwift)
-            {
-                 PvEFilter = JobFilter.Healer,
-            },
-            new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbility,
-            new DragIntSearchPlugin(PluginConfigInt.BeneficialAreaStrategy, () => new string[]{
-                LocalizationManager._rightLang.ConfigWindow_Param_BeneficialAreaOnLocations,
-                LocalizationManager._rightLang.ConfigWindow_Param_BeneficialAreaOnlyOnLocations,
-                LocalizationManager._rightLang.ConfigWindow_Param_BeneficialAreaOnTarget,
-                LocalizationManager._rightLang.ConfigWindow_Param_BeneficialAreaOnCalculated }),
-             new CheckBoxSearchPlugin(PluginConfigBool.UseGroundBeneficialAbilityWhenMoving))
-            {
-                PvEFilter = JobFilter.Healer,
-            },
-
-            new CheckBoxSearchPlugin(PluginConfigBool.AutoSpeedOutOfCombat),
-        }),
-    };
     #endregion
 
     #region Target

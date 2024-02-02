@@ -75,9 +75,11 @@ partial class CustomRotation : ICustomRotation
 
     public IAction? ActionAntiKnockbackAbility { get; private set; }
 
+    [Description("Is this rotation valid")]
     public bool IsValid { get; private set; } = true;
     public string WhyNotValid { get; private set; } = string.Empty;
 
+    [Description("Show the status")]
     public virtual bool ShowStatus => false;
 
     private protected CustomRotation()
@@ -92,7 +94,6 @@ partial class CustomRotation : ICustomRotation
     }
 
     public override string ToString() => RotationName;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     /// <summary>
     /// Update your customized field.

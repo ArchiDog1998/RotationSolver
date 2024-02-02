@@ -247,7 +247,7 @@ public partial class RotationConfigWindow : Window
                     }, Math.Max(Scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
 
                     var desc = item.ToString();
-                    var addition = item.ToDescription();
+                    var addition = item.Local();
                     if (!string.IsNullOrEmpty(addition)) desc += "\n \n" + addition;
                     ImguiTooltips.HoveredTooltip(desc);
                 }
@@ -261,7 +261,7 @@ public partial class RotationConfigWindow : Window
                     if (ImGui.IsItemHovered())
                     {
                         ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-                        var desc = item.ToDescription();
+                        var desc = item.Local();
                         if (!string.IsNullOrEmpty(desc)) ImguiTooltips.ShowTooltip(desc);
                     }
                 }
@@ -672,41 +672,41 @@ public partial class RotationConfigWindow : Window
     {
         using var style = ImRaii.PushStyle(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-        StateCommandType.Auto.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        StateCommandType.Auto.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        StateCommandType.Manual.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        StateCommandType.Manual.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        StateCommandType.Cancel.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
         OtherCommandType.NextAction.DisplayCommandHelp(getHelp: i => LocalizationManager._rightLang.ConfigWindow_HelpItem_NextAction);
 
         ImGui.NewLine();
 
-        SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.HealArea.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.HealArea.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.HealSingle.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.HealSingle.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.DefenseArea.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.DefenseArea.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.DefenseSingle.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.DefenseSingle.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.MoveForward.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.MoveForward.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.Speed.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.Speed.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.EsunaStanceNorth.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.DispelStancePositional.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.Burst.DisplayCommandHelp(getHelp: EnumTranslations.Local);
 
-        SpecialCommandType.LimitBreak.DisplayCommandHelp(getHelp: EnumTranslations.ToHelp);
+        SpecialCommandType.LimitBreak.DisplayCommandHelp(getHelp: EnumTranslations.Local);
     }
 
     private static void DrawAboutCompatibility()
@@ -1084,7 +1084,7 @@ public partial class RotationConfigWindow : Window
             Util.OpenLink(link.Url);
         }
 
-        ImGui.TextWrapped(link.Description);
+        ImGui.TextWrapped(link.Description.Local(link.Description));
 
         if (drawQuestion && !hasTexture && !string.IsNullOrEmpty(link.Url))
         {

@@ -212,7 +212,7 @@ internal static class StateUpdater
                                 | AutoStatus.HealSingleAbility,
             SpecialCommandType.DefenseArea => AutoStatus.DefenseArea,
             SpecialCommandType.DefenseSingle => AutoStatus.DefenseSingle,
-            SpecialCommandType.EsunaStanceNorth => AutoStatus.Dispel
+            SpecialCommandType.DispelStancePositional => AutoStatus.Dispel
                                 | AutoStatus.TankStance
                                 | AutoStatus.Positional,
             SpecialCommandType.RaiseShirk => AutoStatus.Raise

@@ -104,8 +104,15 @@ internal class RotationCondition : DelayCondition
 
 internal enum ComboConditionType : byte
 {
+    [Description("Boolean")]
     Bool,
+
+    [Description("Byte")]
     Integer,
+
+    [Description("Float")]
     Float,
+
+    [Description("Last")]
     Last,
 }

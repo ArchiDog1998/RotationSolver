@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Basic.Data;
+﻿namespace RotationSolver.Basic.Configuration;
 internal class ConditionBoolean(bool defaultValue, string key)
 {
     public bool Value { get; set; }
@@ -25,4 +25,6 @@ internal class ConditionBoolean(bool defaultValue, string key)
         }
         return condition.Value;
     }
+
+    public override string ToString() => Value.ToString();
 }

@@ -48,8 +48,15 @@ internal class TerritoryCondition : DelayCondition
 
 internal enum TerritoryConditionType : byte
 {
+    [Description("Territory Content Type")]
     TerritoryContentType,
+
+    [Description("Territory Name")]
     TerritoryName,
+
+    [Description("Duty Name")]
     DutyName,
+
+    [Description("Map Effect")]
     MapEffect,
 }

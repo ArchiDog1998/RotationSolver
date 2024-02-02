@@ -72,13 +72,30 @@ internal class ActionCondition : DelayCondition
 
 internal enum ActionConditionType : byte
 {
+    [Description("Elapsed")]
     Elapsed,
+
+    [Description("Elapsed GCD")]
     ElapsedGCD,
+
+    [Description("Remain Time")]
     Remain,
+
+    [Description("Remain Time GCD")]
     RemainGCD,
+
+    [Description("Can Use")]
     CanUse,
+
+    [Description("Enough Level")]
     EnoughLevel,
+
+    [Description("Is CoolDown")]
     IsCoolDown,
+
+    [Description("Current Charges")]
     CurrentCharges,
+
+    [Description("Max Charges")]
     MaxCharges,
 }

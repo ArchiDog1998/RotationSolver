@@ -12,54 +12,9 @@ internal class Strings
     public string ConfigWindow_Header { get; set; } = "Rotation Solver Settings v";
     public string ConfigWindow_EventItem { get; set; } = "Event";
 
-    public string ConfigWindow_HelpItem_AttackAuto { get; set; }
-        = "Start the addon in Auto mode. When out of combat or when combat starts, switches the target according to the set condition.";
-
-    public string ConfigWindow_HelpItem_AttackManual { get; set; }
-        = "Start the addon in Manual mode. You need to choose the target manually. This will bypass any engage settings that you have set up and will start attacking immediately once something is targeted.";
-
     public string ConfigWindow_HelpItem_NextAction { get; set; } = "Do the next action";
 
-    public string ConfigWindow_HelpItem_AttackCancel { get; set; }
-        = "Stop the addon. Always remember to turn it off when it is not in use!";
 
-    public string ConfigWindow_HelpItem_HealArea { get; set; }
-        = "Open a window to use AoE heal.";
-
-    public string ConfigWindow_HelpItem_HealSingle { get; set; }
-        = "Open a window to use single heal.";
-
-    public string ConfigWindow_HelpItem_DefenseArea { get; set; }
-        = "Open a window to use AoE defense.";
-
-    public string ConfigWindow_HelpItem_DefenseSingle { get; set; }
-        = "Open a window to use single defense.";
-
-    public string ConfigWindow_HelpItem_Esuna { get; set; }
-        = "Open a window to use Esuna, tank stance actions or True North.";
-
-    public string ConfigWindow_HelpItem_RaiseShirk { get; set; }
-        = "Open a window to use Raise or Shirk.";
-
-    public string ConfigWindow_HelpItem_AntiKnockback { get; set; }
-        = "Open a window to use knockback immunity actions.";
-
-    public string ConfigWindow_HelpItem_Burst { get; set; }
-        = "Open a window to burst.";
-
-    public string ConfigWindow_HelpItem_MoveForward { get; set; }
-        = "Open a window to move forward.";
-
-    public string ConfigWindow_HelpItem_MoveBack { get; set; }
-        = "Open a window to move back.";
-    public string ConfigWindow_HelpItem_Speed { get; set; }
-        = "Open a window to speed up.";
-
-    public string ConfigWindow_HelpItem_LimitBreak { get; set; }
-    = "Open a window to use limit break.";
-
-    public string ConfigWindow_HelpItem_EndSpecial { get; set; }
-        = "To end this special duration before the set time.";
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch rotations";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game";
     public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
@@ -89,12 +44,7 @@ internal class Strings
 
 
     public string ConfigWindow_Param_DyingTimeToKill { get; set; } = "If target's time until death is lower than this, regard it is dying.";
-    public string ConfigWindow_Param_PoslockModifier { get; set; } = "The modifier key to unlock the movement temporary";
-    public string ConfigWindow_Param_PoslockDescription { get; set; } = "LT is for gamepad player";
 
-
-
-    public string ConfigWindow_Param_KeyBoardNoiseTimes { get; set; } = "Effect times";
 
 
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
@@ -107,8 +57,6 @@ internal class Strings
 
     public string ConfigWindow_Param_BeneficialAreaOnCalculated { get; set; } = "On the calculated location";
 
-
-    public string ConfigWindow_Param_HealthForDyingTank { get; set; } = "The HP for tank to use invulnerability";
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
     public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemy list to the hostile targets.";
     public string ConfigWindow_Param_AttackMarkAOEDesc { get; set; } = "Attention: Checking this option , AA will attack as many hostile targets as possible, while ignoring whether the attack will reach the marked target.";
@@ -184,77 +132,6 @@ internal class Strings
     public string Action_Attack { get; set; } = "Attack";
     #endregion
 
-    #region ComboConditionType
-    public string ComboConditionType_Bool { get; set; } = "Boolean";
-    public string ComboConditionType_Byte { get; set; } = "Byte";
-    public string ComboConditionType_Float { get; set; } = "Float";
-    public string ComboConditionType_Last { get; set; } = "Last";
-    #endregion
-
-    #region TargetingType
-    public string TargetingType_Big { get; set; } = "Big";
-    public string TargetingType_Small { get; set; } = "Small";
-    public string TargetingType_HighHP { get; set; } = "High HP";
-    public string TargetingType_LowHP { get; set; } = "Low HP";
-    public string TargetingType_HighMaxHP { get; set; } = "High Max HP";
-    public string TargetingType_LowMaxHP { get; set; } = "Low Max HP";
-    #endregion
-
-    #region SpecialCommandTypeSayout
-    public string SpecialCommandType_Start { get; set; } = "Start ";
-
-    public string SpecialCommandType_HealArea { get; set; } = "Heal Area";
-    public string SpecialCommandType_HealSingle { get; set; } = "Heal Single";
-    public string SpecialCommandType_DefenseArea { get; set; } = "Defense Area";
-    public string SpecialCommandType_DefenseSingle { get; set; } = "Defense Single";
-    public string SpecialCommandType_TankStance { get; set; } = "Tank Stance";
-    public string SpecialCommandType_MoveForward { get; set; } = "Move Forward";
-    public string SpecialCommandType_MoveBack { get; set; } = "Move Back";
-    public string SpecialCommandType_AntiKnockback { get; set; } = "Anti-Knockback";
-    public string SpecialCommandType_Burst { get; set; } = "Burst";
-    public string SpecialCommandType_EndSpecial { get; set; } = "End Special";
-    public string SpecialCommandType_Speed { get; set; } = "Speed";
-    public string SpecialCommandType_LimitBreak { get; set; } = "Limit Break";
-    public string SpecialCommandType_Smart { get; set; } = "Auto Target ";
-    public string SpecialCommandType_Manual { get; set; } = "Manual Target";
-    public string SpecialCommandType_Cancel { get; set; } = "Cancel";
-    public string SpecialCommandType_Off { get; set; } = "Off";
-    #endregion
-
-    #region ActionConditionType
-    public string ActionConditionType_Elapsed { get; set; } = "Elapsed";
-    public string ActionConditionType_ElapsedGCD { get; set; } = "Elapsed GCD";
-    public string ActionConditionType_Remain { get; set; } = "Remain Time";
-    public string ActionConditionType_RemainGCD { get; set; } = "Remain GCD";
-    public string ActionConditionType_ShouldUse { get; set; } = "Can Use";
-    public string ActionConditionType_EnoughLevel { get; set; } = "Enough Level";
-    public string ActionConditionType_IsCoolDown { get; set; } = "Is CoolDown";
-    public string ActionConditionType_CurrentCharges { get; set; } = "Current Charges";
-    public string ActionConditionType_MaxCharges { get; set; } = "Max Charges";
-    #endregion
-
-    #region TargetConditionType
-    public string TargetConditionType_HasStatus { get; set; } = "Has Status";
-    public string TargetConditionType_IsDying { get; set; } = "Is Dying";
-    public string TargetConditionType_IsBossFromTTK { get; set; } = "Is Boss From TTK";
-    public string TargetConditionType_IsBossFromIcon { get; set; } = "Is Boss From Icon";
-    public string TargetConditionType_InCombat { get; set; } = "In Combat";
-    public string TargetConditionType_Distance { get; set; } = "Distance";
-    public string TargetConditionType_StatusEnd { get; set; } = "Status End";
-    public string TargetConditionType_TimeToKill { get; set; } = "Time To Kill";
-    public string TargetConditionType_StatusEndGCD { get; set; } = "Status End GCD";
-    public string TargetConditionType_CastingAction { get; set; } = "Casting Action";
-    public string TargetConditionType_CastingActionTimeUntil { get; set; } = "Casting Action Time Until";
-    public string TargetConditionType_HP { get; set; } = "HP";
-    public string TargetConditionType_HPRatio { get; set; } = "HP%";
-    public string TargetConditionType_MP { get; set; } = "MP";
-    public string TargetConditionType_TargetName { get; set; } = "Target Name";
-    public string TargetConditionType_ObjectEffect { get; set; } = "Object Effect";
-    public string TargetConditionType_Vfx { get; set; } = "Vfx";
-    public string TargetConditionType_IsNull { get; set; } = "Is Null";
-
-    #endregion
-
     #region COnfigUnitType
     public string ConfigUnitType_Seconds { get; set; } = "Time Unit, in seconds.";
     public string ConfigUnitType_Degree { get; set; } = "Angle Unit, in degrees.";
@@ -264,105 +141,8 @@ internal class Strings
 
     #endregion
 
-    #region TerritoryConditionType
-    public string TerritoryConditionType_TerritoryContentType { get; set; } = "Territory Content Type";
-    public string TerritoryConditionType_TerritoryName { get; set; } = "Territory Name";
-    public string TerritoryConditionType_DutyName { get; set; } = "Duty Name";
-    public string TerritoryConditionType_MapEffect { get; set; } = "Map Effect";
-    #endregion
-
-    #region DescType
-    public string DescType_BurstActions { get; set; } = "Burst Actions";
-    public string DescType_MoveForwardGCD { get; set; } = "Move Forward GCD";
-    public string DescType_HealAreaGCD { get; set; } = "Area Healing GCD";
-    public string DescType_HealSingleGCD { get; set; } = "Single Healing GCD";
-    public string DescType_DefenseAreaGCD { get; set; } = "Area Defense GCD";
-    public string DescType_DefenseSingleGCD { get; set; } = "Single Defense GCD";
-
-    public string DescType_HealAreaAbility { get; set; } = "Area Healing Ability";
-    public string DescType_HealSingleAbility { get; set; } = "Single Healing Ability";
-    public string DescType_DefenseAreaAbility { get; set; } = "Area Defense Ability";
-    public string DescType_DefenseSingleAbility { get; set; } = "Single Defense Ability";
-    public string DescType_MoveForwardAbility { get; set; } = "Move Forward Ability";
-    public string DescType_MoveBackAbility { get; set; } = "Move Back Ability";
-    public string DescType_SpeedAbility { get; set; } = "Speed Ability";
-
-    #endregion
-
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
     {
-        #region Rotation
-        { nameof(CustomRotation.IsMoving), "Is Moving or Jumping"},
-        { nameof(CustomRotation.HasSwift), "Has Swift"},
-        { nameof(CustomRotation.HasTankStance), "Has tank stance"},
-        { nameof(CustomRotation.InCombat), "In Combat"},
-        { nameof(CustomRotation.NotInCombatDelay), "Not In Combat Delay"},
-        { nameof(CustomRotation.CurrentMp), "Player's MP"},
-        { nameof(CustomRotation.HasCompanion), "Has companion"},
-        { nameof(CustomRotation.RatioOfMembersIn2minsBurst), "Raito of members that in 2 mins burst."},
-        { nameof(CustomRotation.IsFullParty), "Is Full Party"},
-        { nameof(CustomRotation.PartyMembersMinHP), "Min HP in party members."},
-        { nameof(CustomRotation.PartyMembersAverHP), "Average HP in party members."},
-        { nameof(CustomRotation.HasHostilesInRange), "Has hostiles in Range"},
-        { nameof(CustomRotation.HasHostilesInMaxRange), "Has hostiles in 25 yalms"},
-        { nameof(CustomRotation.NumberOfHostilesInRange), "The number of hostiles in Range"},
-        { nameof(CustomRotation.NumberOfHostilesInMaxRange), "The number of hostiles in max Range"},
-        { nameof(CustomRotation.NumberOfAllHostilesInRange), "The number of all hostiles in Range"},
-        { nameof(CustomRotation.NumberOfAllHostilesInMaxRange), "The number of all hostiles in max Range"},
-        { nameof(CustomRotation.IsBurst), "Is burst"},
-        { nameof(CustomRotation.IsHealArea), "Is Heal Area"},
-        { nameof(CustomRotation.IsHealSingle), "Is Heal Single"},
-        { nameof(CustomRotation.IsDefenseArea), "Is Defense Area"},
-        { nameof(CustomRotation.IsDefenseSingle), "Is Defense Single"},
-        { nameof(CustomRotation.IsEsunaStanceNorth), "Is Esuna Stance North"},
-        { nameof(CustomRotation.IsRaiseShirk), "Is Raise Shirk"},
-        { nameof(CustomRotation.IsMoveForward), "Is Move Forward"},
-        { nameof(CustomRotation.IsMoveBack), "Is Move Back"},
-        { nameof(CustomRotation.IsAntiKnockback), "Is Anti Knockback"},
-        { nameof(CustomRotation.IsSpeed), "Is Speed"},
-        { nameof(CustomRotation.IsLimitBreak), "Is Limit Break"},
-
-        { nameof(CustomRotation.CanHealAreaAbility), "Can heal area ability"},
-        { nameof(CustomRotation.CanHealAreaSpell), "Can heal area spell"},
-        { nameof(CustomRotation.CanHealSingleAbility), "Can heal single ability"},
-        { nameof(CustomRotation.CanHealSingleSpell), "Can heal single area"},
-
-        { nameof(CustomRotation.AutoState), "The state of auto. True for on."},
-        { nameof(CustomRotation.IsManual), "The state of manual. True for manual."},
-
-        { nameof(CustomRotation.IsInHighEndDuty), "Is in the high-end duty"},
-        { nameof(CustomRotation.IsInDuty), "Is player in duty"},
-        { nameof(CustomRotation.Ping), "Your ping"},
-        { nameof(CustomRotation.NextAbilityToNextGCD), "Time from next ability to next GCD"},
-
-        { nameof(CustomRotation.IsLastGCD), "Just used GCD"},
-        { nameof(CustomRotation.IsLastAbility), "Just used Ability"},
-        { nameof(CustomRotation.IsLastAction), "Just used Action"},
-
-        { nameof(CustomRotation.CombatTime), "Combat time"},
-        { nameof(CustomRotation.StopMovingTime), "Stop moving time"},
-        { nameof(CustomRotation.CountDownAhead), "Count Down ahead"},
-        { nameof(CustomRotation.HealthAreaAbility), "Health of Area Ability"},
-        { nameof(CustomRotation.HealthAreaSpell), "Health of Area spell"},
-        { nameof(CustomRotation.HealthAreaAbilityHot), "Health of Area Ability Hot"},
-        { nameof(CustomRotation.HealthAreaSpellHot), "Health of Area spell Hot"},
-        { nameof(CustomRotation.HealthSingleAbility), "Health of single ability"},
-        { nameof(CustomRotation.HealthSingleSpell), "Health of single spell"},
-        { nameof(CustomRotation.HealthSingleAbilityHot), "Health of single ability Hot"},
-        { nameof(CustomRotation.HealthSingleSpellHot), "Health of single spell Hot"},
-        { nameof(CustomRotation.HealthForDyingTanks), "Health of dying tank"},
-
-        { nameof(CustomRotation.IsValid), "Is this rotation valid"},
-        { nameof(CustomRotation.ShowStatus), "Show the status"},
-        { nameof(CustomRotation.AverageTimeToKill), "Average time to kill"},
-        { nameof(CustomRotation.LimitBreakLevel), "Limit Break Level"},
-
-        { nameof(CustomRotation.MobsTime), "Mobs Time"},
-        #endregion
-
-        #region AST
-        #endregion
-
         #region BLM
         { nameof(BLM_Base.UmbralIceStacks), "Umbral Ice Stacks" },
         { nameof(BLM_Base.AstralFireStacks), "Astral Fire Stacks" },
@@ -575,34 +355,18 @@ internal class Strings
     public string ConfigWindow_UI_Windows { get; set; } = "Windows";
     public string ConfigWindow_UI_Overlay { get; set; } = "Overlay";
     public string ConfigWindow_UI_Information { get; set; } = "Information";
-    public string ConfigWindow_Auto_ActionUsage { get; set; } = "Action Usage";
-    public string ConfigWindow_Auto_ActionUsage_Description { get; set; } = "Which actions Rotation Solver can use.";
     public string ConfigWindow_Extra_Others { get; set; } = "Others";
     public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focuses on the rotation itself. These are side features. If there are some other plugins can do that, these features will be deleted.";
-    public string ConfigWindow_Auto_Description { get; set; } = "Change the way that RS atomatically uses actions.";
     public string ConfigWindow_Auto_ActionCondition { get; set; } = "Action Condition";
     public string ConfigWindow_Auto_StateCondition { get; set; } = "State Condition";
     public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the way that Rotation Solver uses actions.";
     public string ConfigWindow_Target_Config { get; set; } = "Configuration";
     public string ConfigWindow_Search_Result { get; set; } = "Search Result";
-
-
-
-    public string ConfigWindow_Tab_Actions { get; set; } = "The abilities and custom conditions that your selected job has.";
-    public string ConfigWindow_Tab_Rotations { get; set; } = "All rotations that RS has loaded.";
-    public string ConfigWindow_Tab_List { get; set; } = "Some things that have to be lists.";
-    public string ConfigWindow_Tab_Basic { get; set; } = "Basic settings.";
-    public string ConfigWindow_Tab_UI { get; set; } = "Settings about the user interface.";
-    public string ConfigWindow_Tab_Auto { get; set; } = "About some general actions usage and conditions.";
-    public string ConfigWindow_Tab_Target { get; set; } = "The way to find the targets, hostiles or friends.";
-    public string ConfigWindow_Tab_Extra { get; set; } = "Some features that shouldn't be included in RS but help you.";
     public string ConfigWindow_List_AddPosition { get; set; } = "Add beneficial AoE location";
     public string ConfigWindow_Actions_MoveUp { get; set; } = "Move Up";
     public string ConfigWindow_Actions_MoveDown { get; set; } = "Move Down";
     public string ConfigWindow_Actions_Copy { get; set; } = "Copy to Clipboard";
 
-    public string ConfigWindow_Searching { get; set; } = "Search...";
-    public string ConfigWindow_Auto_BeneficialAreaStrategy { get; set; } = "Beneficial AoE strategy";
     public string ConfigWindow_About_OpenConfigFolder { get; set; } = "Open Config Folder";
     public string ConfigWindow_Basic_AnimationLockTime { get; set; } = "The Animation lock time from individual actions. Here is 0.6s for example.";
     public string ConfigWindow_Basic_Ping { get; set; } = "The ping time.\nIn RS, it means the time from sending the action request to receiving the using success message from the server.";
@@ -623,7 +387,6 @@ internal class Strings
     public string ConfigWindow_Actions_HealRatio { get; set; } = "The HP ratio to auto heal";
     public string ConfigWindow_Actions_ConditionDescription { get; set; } = "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.";
 
-    public string ConfigWindow_Auto_HealthForAutoDefense { get; set; } = "HP Ratio about defense single of Tanks";
     public string ConfigWindow_Basic_SayHelloToUsers { get; set; } = "Say hello to the users of Rotation Solver.";
 
 

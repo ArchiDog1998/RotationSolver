@@ -161,7 +161,16 @@ internal abstract class Searchable(PropertyInfo property) : ISearchable
             return (_property.Name + "Description").Local(ui.Description);
         }
     }
-    public virtual string Command => ConfigTranslation.ToCommandStr(_property.Name);
+    public virtual string Command
+    {
+        get
+        {
+            var result = Service.COMMAND + " " + OtherCommandType.Settings.ToString() + " " + _property.Name;
+            var extra = _property.GetValue(Service.ConfigDefault)?.ToString();
+            if (!string.IsNullOrEmpty(extra)) result += " " + extra;
+            return result;
+        }
+    }
     public virtual LinkDescription[]? Tooltips => [.. _property.GetCustomAttributes<LinkDescriptionAttribute>().Select(l => l.LinkDescription)];
     public virtual string ID => _property.Name;
     private string Popup_Key => "Rotation Solver RightClicking: " + ID;

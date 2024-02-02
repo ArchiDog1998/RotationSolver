@@ -18,31 +18,37 @@ partial class CustomRotation
     /// <summary>
     /// Does player have swift cast, dual cast or triple cast.
     /// </summary>
+    [Description("Has Swift")]
     public static bool HasSwift => Player?.HasStatus(true, StatusHelper.SwiftcastStatus) ?? false;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Has tank stance")]
     public static bool HasTankStance => Player?.HasStatus(true, StatusHelper.TankStanceStatus) ?? false;
 
     /// <summary>
     /// Check the player is moving, such as running, walking or jumping.
     /// </summary>
+    [Description("Is Moving or Jumping")]
     public static bool IsMoving => DataCenter.IsMoving;
 
     /// <summary>
     /// Is in combat.
     /// </summary>
+    [Description("In Combat")]
     public static bool InCombat => DataCenter.InCombat;
 
     /// <summary>
     /// Is out of combat.
     /// </summary>
+    [Description("Not In Combat Delay")]
     public static bool NotInCombatDelay => DataCenter.NotInCombatDelay;
 
     /// <summary>
     /// Player's MP.
     /// </summary>
+    [Description("Player's MP")]
     public static uint CurrentMp => DataCenter.CurrentMp;
 
     /// <summary>
@@ -56,6 +62,7 @@ partial class CustomRotation
     /// <summary>
     /// Has the comapnion now.
     /// </summary>
+    [Description("Has companion")]
     public static bool HasCompanion => DataCenter.HasCompanion;
 
     /// <summary>
@@ -71,6 +78,7 @@ partial class CustomRotation
     /// <summary>
     /// Whether the number of party members is 8.
     /// </summary>
+    [Description("Is Full Party")]
     public static bool IsFullParty => PartyMembers.Count() is 8;
 
     /// <summary>
@@ -81,11 +89,13 @@ partial class CustomRotation
     /// <summary>
     /// Min HP in party members.
     /// </summary>
+    [Description("Min HP in party members.")]
     public static float PartyMembersMinHP => DataCenter.PartyMembersMinHP;
 
     /// <summary>
     /// Average HP in party members.
     /// </summary>
+    [Description("Average HP in party members.")]
     public static float PartyMembersAverHP => DataCenter.PartyMembersAverHP;
     #endregion
 
@@ -105,31 +115,37 @@ partial class CustomRotation
     /// <summary>
     /// Is there any hostile target in range? 25 for ranged jobs and healer, 3 for melee and tank.
     /// </summary>
+    [Description("Has hostiles in Range")]
     public static bool HasHostilesInRange => DataCenter.HasHostilesInRange;
 
     /// <summary>
     /// Is there any hostile target in 25 yalms?
     /// </summary>
+    [Description("Has hostiles in 25 yalms")]
     public static bool HasHostilesInMaxRange => DataCenter.HasHostilesInMaxRange;
 
     /// <summary>
     /// How many hostile targets in range? 25 for ranged jobs and healer, 3 for melee and tank.
     /// </summary>
+    [Description("The number of hostiles in Range")]
     public static int NumberOfHostilesInRange => DataCenter.NumberOfHostilesInRange;
 
     /// <summary>
     /// How many hostile targets in max range (25 yalms) regardless of job
     /// </summary>
+    [Description("The number of hostiles in max Range")]
     public static int NumberOfHostilesInMaxRange => DataCenter.NumberOfHostilesInMaxRange;
 
     /// <summary>
     /// How many hostile targets in range? 25 for ranged jobs and healer, 3 for melee and tank. This is all can attack.
     /// </summary>
+    [Description("The number of all hostiles in Range")]
     public static int NumberOfAllHostilesInRange => DataCenter.NumberOfAllHostilesInRange;
 
     /// <summary>
     /// How many hostile targets in max range (25 yalms) regardless of job. This is all can attack.
     /// </summary>
+    [Description("The number of all hostiles in max Range")]
     public static int NumberOfAllHostilesInMaxRange => DataCenter.NumberOfAllHostilesInMaxRange;
 
     /// <summary>
@@ -140,11 +156,13 @@ partial class CustomRotation
     /// <summary>
     /// Average dead time of hostiles.
     /// </summary>
+    [Description("Average time to kill")]
     public static float AverageTimeToKill => DataCenter.AverageTimeToKill;
 
     /// <summary>
     /// The level of LB.
     /// </summary>
+    [Description("Limit Break Level")]
     public unsafe static byte LimitBreakLevel
     {
         get
@@ -168,37 +186,44 @@ partial class CustomRotation
     /// <summary>
     /// Now, it is attacking the mobs!
     /// </summary>
+    [Description("Mobs Time")]
     public static bool MobsTime => DataCenter.MobsTime;
     #endregion
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Can heal area ability")]
     public virtual bool CanHealAreaAbility => true;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Can heal area spell")]
     public virtual bool CanHealAreaSpell => true;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Can heal single ability")]
     public virtual bool CanHealSingleAbility => true;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Can heal single area")]
     public virtual bool CanHealSingleSpell => true;
 
     /// <summary>
     /// True for On, false for off.
     /// </summary>
+    [Description("The state of auto. True for on.")]
     public static bool AutoState => DataCenter.State;
 
     /// <summary>
     /// Ture for Manual Target, false for Auto Target.
     /// </summary>
+    [Description("The state of manual. True for manual.")]
     public static bool IsManual => DataCenter.IsManual;
 
     #region GCD
@@ -232,21 +257,25 @@ partial class CustomRotation
     /// <summary>
     /// Is player in high-end duty.
     /// </summary>
+    [Description("Is in the high-end duty")]
     public static bool IsInHighEndDuty => DataCenter.IsInHighEndDuty;
 
     /// <summary>
     /// Is player in duty.
     /// </summary>
+    [Description("Is player in duty")]
     public static bool IsInDuty => Svc.Condition[ConditionFlag.BoundByDuty];
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Your ping")]
     public static float Ping => DataCenter.Ping;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Time from next ability to next GCD")]
     public static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
 
     /// <summary>
@@ -321,6 +350,7 @@ partial class CustomRotation
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
     /// <returns></returns>
+    [Description("Just used GCD")]
     public static bool IsLastGCD(bool isAdjust, params IAction[] actions)
     {
         CountingOfLastUsing++;
@@ -346,6 +376,7 @@ partial class CustomRotation
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
     /// <returns></returns>
+    [Description("Just used Ability")]
     public static bool IsLastAbility(bool isAdjust, params IAction[] actions)
     {
         CountingOfLastUsing++;
@@ -371,6 +402,7 @@ partial class CustomRotation
     /// <param name="isAdjust">Check for adjust id not raw id.</param>
     /// <param name="actions">True if any of this is matched.</param>
     /// <returns></returns>
+    [Description("Just used Action")]
     public static bool IsLastAction(bool isAdjust, params IAction[] actions)
     {
         CountingOfLastUsing++;
@@ -416,6 +448,7 @@ partial class CustomRotation
     /// The combat time.
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
+    [Description("Combat time")]
     public static float CombatTime
     {
         get
@@ -443,6 +476,7 @@ partial class CustomRotation
     /// The time of stopping moving.
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
+    [Description("Stop moving time")]
     public static float StopMovingTime => IsMoving ? 0 : DataCenter.StopMovingRaw + DataCenter.WeaponRemain;
 
     /// <summary>
@@ -458,57 +492,82 @@ partial class CustomRotation
     /// <summary>
     /// The count down ahead.
     /// </summary>
+    [Description("Count Down ahead")]
     public static float CountDownAhead => Service.Config.CountDownAhead;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Health of Area Ability")]
     public static float HealthAreaAbility => Service.Config.HealthAreaAbility;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Health of Area spell")]
     public static float HealthAreaSpell => Service.Config.HealthAreaSpell;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Health of Area Ability Hot")]
     public static float HealthAreaAbilityHot => Service.Config.HealthAreaAbilityHot;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Health of Area spell Hot")]
     public static float HealthAreaSpellHot => Service.Config.HealthAreaSpellHot;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Health of single ability")]
     public static float HealthSingleAbility => Service.Config.HealthSingleAbility;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Health of single spell")]
     public static float HealthSingleSpell => Service.Config.HealthSingleSpell;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Health of single ability Hot")]
     public static float HealthSingleAbilityHot => Service.Config.HealthSingleAbilityHot;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Health of single spell Hot")]
     public static float HealthSingleSpellHot => Service.Config.HealthSingleSpellHot;
 
     /// <summary>
     /// 
     /// </summary>
+    [Description("Health of dying tank")]
     public static float HealthForDyingTanks => Service.Config.HealthForDyingTanks;
     #endregion
 
+    /// <summary>
+    /// In in the burst status.
+    /// </summary>
+    [Description("Is burst")]
     public static bool IsBurst => MergedStatus.HasFlag(AutoStatus.Burst);
 
+    /// <summary>
+    /// The merged status, which contains <see cref="AutoState"/> and <see cref="CommandStatus"/>.
+    /// </summary>
     public static AutoStatus MergedStatus => DataCenter.MergedStatus;
+
+    /// <summary>
+    /// The automatic status, which is checked from RS.
+    /// </summary>
     public static AutoStatus AutoStatus => DataCenter.AutoStatus;
+
+    /// <summary>
+    /// The CMD status, which is checked from the player.
+    /// </summary>
     public static AutoStatus CommandStatus => DataCenter.CommandStatus;
 }
