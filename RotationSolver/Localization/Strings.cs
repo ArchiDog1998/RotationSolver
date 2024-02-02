@@ -5,7 +5,6 @@ internal class Strings
 {
     #region Commands
     public string Commands_CannotFindConfig { get; set; } = "Failed to find the config, please check it.";
-
     #endregion
 
     #region ConfigWindow
@@ -14,23 +13,15 @@ internal class Strings
 
     public string ConfigWindow_HelpItem_NextAction { get; set; } = "Do the next action";
 
-
     public string ConfigWindow_Helper_SwitchRotation { get; set; } = "Click to switch rotations";
     public string ConfigWindow_Helper_GameVersion { get; set; } = "Game";
-    public string ConfigWindow_Helper_RunCommand { get; set; } = "Click to execute the command";
-    public string ConfigWindow_Helper_CopyCommand { get; set; } = "Right-click to copy the command";
 
     public string ConfigWindow_Events_AddEvent { get; set; } = "AddEvents";
     public string ConfigWindow_Events_Description { get; set; } = "In this window, you can set what macro will be trigger after using an action.";
     public string ConfigWindow_Events_ActionName { get; set; } = "Action Name";
-    public string ConfigWindow_Events_MacroIndex { get; set; } = "Macro No.";
-    public string ConfigWindow_Events_ShareMacro { get; set; } = "Is Shared";
     public string ConfigWindow_Events_RemoveEvent { get; set; } = "Delete Event";
     public string ConfigWindow_Events_DutyStart { get; set; } = "Duty Start: ";
     public string ConfigWindow_Events_DutyEnd { get; set; } = "Duty End: ";
-
-
-
 
     public string ConfigWindow_Param_CountDownAhead { get; set; } = "The starting when abilities will be used before finishing the countdown";
     public string ConfigWindow_Param_AddDotGCDCount { get; set; } = "The number of GCDs in advance for DOT refreshing";
@@ -49,13 +40,6 @@ internal class Strings
 
     public string ConfigWindow_Param_LessMPNoRaise { get; set; } = "Never raise player if MP is less than the set value";
     public string ConfigWindow_Param_InterruptibleMoreCheck { get; set; } = "Use interrupt abilities if possible.";
-
-
-    public string ConfigWindow_Param_BeneficialAreaOnLocations { get; set; } = "On predefined location";
-    public string ConfigWindow_Param_BeneficialAreaOnlyOnLocations { get; set; } = "Only on predefined location";
-    public string ConfigWindow_Param_BeneficialAreaOnTarget { get; set; } = "On target";
-
-    public string ConfigWindow_Param_BeneficialAreaOnCalculated { get; set; } = "On the calculated location";
 
     public string ConfigWindow_Param_RightNowTargetToHostileType { get; set; } = "Engage settings";
     public string ConfigWindow_Param_AddEnemyListToHostile { get; set; } = "Add enemy list to the hostile targets.";
@@ -130,15 +114,6 @@ internal class Strings
     public string Action_Friendly { get; set; } = "Support";
     public string Action_Ability { get; set; } = "0GCD";
     public string Action_Attack { get; set; } = "Attack";
-    #endregion
-
-    #region COnfigUnitType
-    public string ConfigUnitType_Seconds { get; set; } = "Time Unit, in seconds.";
-    public string ConfigUnitType_Degree { get; set; } = "Angle Unit, in degrees.";
-    public string ConfigUnitType_Pixels { get; set; } = "Display Unit, in pixels.";
-    public string ConfigUnitType_Yalms { get; set; } = "Distance Unit, in yalms.";
-    public string ConfigUnitType_Ratio { get; set; } = "Ratio Unit, as percentage.";
-
     #endregion
 
     public Dictionary<string, string> MemberInfoName { get; set; } = new Dictionary<string, string>()
@@ -347,19 +322,9 @@ internal class Strings
     public string ConfigWindow_List_NoHostilesName { get; set; } = "The name of the enemy that you don't want to be targeted";
     public string ConfigWindow_List_NoProvokeName { get; set; } = "The name of the enemy that you don't want to be provoked";
 
-    public string ConfigWindow_Basic_AutoSwitch { get; set; } = "Auto Switch";
-    public string ConfigWindow_Basic_NamedConditions { get; set; } = "Named Conditions";
-    public string ConfigWindow_Basic_Others { get; set; } = "Others";
-
     public string ConfigWindow_Basic_Timer { get; set; } = "Timer";
-    public string ConfigWindow_UI_Windows { get; set; } = "Windows";
-    public string ConfigWindow_UI_Overlay { get; set; } = "Overlay";
-    public string ConfigWindow_UI_Information { get; set; } = "Information";
     public string ConfigWindow_Extra_Others { get; set; } = "Others";
     public string ConfigWindow_Extra_Description { get; set; } = "Rotation Solver focuses on the rotation itself. These are side features. If there are some other plugins can do that, these features will be deleted.";
-    public string ConfigWindow_Auto_ActionCondition { get; set; } = "Action Condition";
-    public string ConfigWindow_Auto_StateCondition { get; set; } = "State Condition";
-    public string ConfigWindow_Auto_ActionCondition_Description { get; set; } = "This will change the way that Rotation Solver uses actions.";
     public string ConfigWindow_Target_Config { get; set; } = "Configuration";
     public string ConfigWindow_Search_Result { get; set; } = "Search Result";
     public string ConfigWindow_List_AddPosition { get; set; } = "Add beneficial AoE location";
@@ -368,11 +333,6 @@ internal class Strings
     public string ConfigWindow_Actions_Copy { get; set; } = "Copy to Clipboard";
 
     public string ConfigWindow_About_OpenConfigFolder { get; set; } = "Open Config Folder";
-    public string ConfigWindow_Basic_AnimationLockTime { get; set; } = "The Animation lock time from individual actions. Here is 0.6s for example.";
-    public string ConfigWindow_Basic_Ping { get; set; } = "The ping time.\nIn RS, it means the time from sending the action request to receiving the using success message from the server.";
-    public string ConfigWindow_Basic_IdealClickingTime { get; set; } = "The ideal click time.";
-    public string ConfigWindow_Basic_RealClickingTime { get; set; } = "The real click time.";
-    public string ConfigWindow_Basic_ClickingDuration { get; set; } = "The clicking duration, RS will try to click at this moment.";
     public string ConfigWindow_About_ClickingCount { get; set; } = "Rotation Solver helped you by clicking actions {0:N0} times.";
     public string ConfigWindow_About_SayHelloCount { get; set; } = "You have said hello to other users {0:N0} times!";
 
@@ -396,21 +356,7 @@ internal class Strings
     public string ConfigWindow_About_ThanksToSupporters { get; set; } = "Many thanks to the sponsors.";
     public string ConfigWindow_Rotations_Download { get; set; } = "Download Rotations";
     public string ConfigWindow_Rotations_Links { get; set; } = "Links of the rotations online";
-    public string ConfigWindow_Auto_HealAreaConditionSet { get; set; } = "Heal Area Forced Condition";
-    public string ConfigWindow_Auto_HealSingleConditionSet { get; set; } = "Heal Single Forced Condition";
-    public string ConfigWindow_Auto_DefenseAreaConditionSet { get; set; } = "Defense Area Forced Condition";
-    public string ConfigWindow_Auto_DefenseSingleConditionSet { get; set; } = "Defense Single Forced Condition";
-    public string ConfigWindow_Auto_EsunaStanceNorthConditionSet { get; set; } = "Esuna Stance North Forced Condition";
-    public string ConfigWindow_Auto_RaiseShirkConditionSet { get; set; } = "Raise Shirk Forced Condition";
-    public string ConfigWindow_Auto_MoveForwardConditionSet { get; set; } = "Move Forward Forced Condition";
-    public string ConfigWindow_Auto_MoveBackConditionSet { get; set; } = "Move Back Forced Condition";
-    public string ConfigWindow_Auto_AntiKnockbackConditionSet { get; set; } = "Anti Knockback Forced Condition";
-    public string ConfigWindow_Auto_SpeedConditionSet { get; set; } = "Speed Forced Condition";
-    public string ConfigWindow_Auto_LimitBreakConditionSet { get; set; } = "Limit Break Condition";
     public string ConfigWindow_ConditionSetDesc { get; set; } = "The Condition set you chose, click to modify.";
-    public string ConfigWindow_Basic_SwitchCancelConditionSet { get; set; } = "Auto turn off conditions";
-    public string ConfigWindow_Basic_SwitchManualConditionSet { get; set; } = "Auto turn manual conditions";
-    public string ConfigWindow_Basic_SwitchAutoConditionSet { get; set; } = "Auto turn auto conditions";
 
     public string ConfigWindow_Condition_RotationNullWarning { get; set; } = "Rotation is null, please login or switch the job!";
 

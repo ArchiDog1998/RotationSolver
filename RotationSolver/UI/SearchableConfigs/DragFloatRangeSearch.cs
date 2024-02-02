@@ -14,11 +14,11 @@ internal class DragFloatRangeSearch : Searchable
             var baseDesc = base.Description;
             if (!string.IsNullOrEmpty(baseDesc))
             {
-                return baseDesc + "\n" + Unit.ToDesc();
+                return baseDesc + "\n" + Unit.Local();
             }
             else
             {
-                return Unit.ToDesc();
+                return Unit.Local();
             }
         }
     }

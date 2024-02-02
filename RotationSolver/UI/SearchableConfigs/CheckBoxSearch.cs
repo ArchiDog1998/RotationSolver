@@ -7,7 +7,7 @@ using RotationSolver.UI.SearchableConfigs;
 
 namespace RotationSolver.UI.SearchableSettings;
 
-internal class CheckBoxSearchPlugin(PropertyInfo property, params ISearchable[] children) 
+internal class CheckBoxSearchCondition(PropertyInfo property, params ISearchable[] children) 
     : CheckBoxSearch(property, 
     [
         new CheckBoxEnable(property),

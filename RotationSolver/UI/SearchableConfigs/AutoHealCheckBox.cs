@@ -5,7 +5,7 @@ using RotationSolver.UI.SearchableSettings;
 namespace RotationSolver.UI.SearchableConfigs;
 
 internal class AutoHealCheckBox(PropertyInfo property, params ISearchable[] otherChildren) 
-    : CheckBoxSearchPlugin(property, otherChildren.Union(new ISearchable[]
+    : CheckBoxSearchCondition(property, otherChildren.Union(new ISearchable[]
         {
             _healthAreaAbility,
             _healthAreaAbilityHot,

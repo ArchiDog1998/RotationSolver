@@ -267,8 +267,8 @@ public struct ActionTargetInfo(IBaseAction _action)
         var strategy = Service.Config.BeneficialAreaStrategy;
         switch (strategy)
         {
-            case 0: // Find from list
-            case 1: // Only the list
+            case BeneficialAreaStrategy.OnLocations: // Find from list
+            case BeneficialAreaStrategy.OnlyOnLocations: // Only the list
                 OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts);
 
                 pts ??= [];
@@ -296,10 +296,10 @@ public struct ActionTargetInfo(IBaseAction _action)
                     }
                 }
 
-                if (strategy == 1) return null;
+                if (strategy == BeneficialAreaStrategy.OnlyOnLocations) return null;
                 break;
 
-            case 2: // Target
+            case BeneficialAreaStrategy.OnTarget: // Target
                 if (Svc.Targets.Target != null && Svc.Targets.Target.DistanceToPlayer() < range)
                 {
                     var target = Svc.Targets.Target as BattleChara;

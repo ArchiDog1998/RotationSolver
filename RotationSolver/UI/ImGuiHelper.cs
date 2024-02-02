@@ -8,6 +8,8 @@ using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Localization;
+using RotationSolver.UI.SearchableConfigs;
+using RotationSolver.UI.SearchableSettings;
 using System.ComponentModel;
 
 namespace RotationSolver.UI;
@@ -21,7 +23,7 @@ internal static class ImGuiHelper
 
     const float INDENT_WIDTH = 180;
 
-    internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string> getHelp = null, bool sameLine = true) where T : struct, Enum
+    internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string>? getHelp = null, bool sameLine = true) where T : struct, Enum
     {
         var cmdStr = command.GetCommandStr(extraCommand);
 
@@ -31,7 +33,7 @@ internal static class ImGuiHelper
         }
         if (ImGui.IsItemHovered())
         {
-            ImguiTooltips.ShowTooltip($"{LocalizationManager._rightLang.ConfigWindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager._rightLang.ConfigWindow_Helper_CopyCommand}: {cmdStr}");
+            ImguiTooltips.ShowTooltip($"{"ConfigWindow_Helper_RunCommand".Local("Click to execute the command")}: {cmdStr}\n{"ConfigWindow_Helper_CopyCommand".Local("Right-click to copy the command")}: {cmdStr}");
 
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
             {
@@ -61,7 +63,7 @@ internal static class ImGuiHelper
     public static void DisplayMacro(this MacroInfo info)
     {
         ImGui.SetNextItemWidth(50);
-        if (ImGui.DragInt($"{LocalizationManager._rightLang.ConfigWindow_Events_MacroIndex}##MacroIndex{info.GetHashCode()}",
+        if (ImGui.DragInt($"{"ConfigWindow_Events_MacroIndex".Local("Macro No.")}##MacroIndex{info.GetHashCode()}",
             ref info.MacroIndex, 1, -1, 99))
         {
             Service.Config.Save();
@@ -69,7 +71,7 @@ internal static class ImGuiHelper
 
         ImGui.SameLine();
 
-        if (ImGui.Checkbox($"{LocalizationManager._rightLang.ConfigWindow_Events_ShareMacro}##ShareMacro{info.GetHashCode()}",
+        if (ImGui.Checkbox($"{"ConfigWindow_Events_ShareMacro".Local("Is Shared")}##ShareMacro{info.GetHashCode()}",
             ref info.IsShared))
         {
             Service.Config.Save();
@@ -78,7 +80,7 @@ internal static class ImGuiHelper
 
     public static void DisplayEvent(this ActionEventInfo info)
     {
-        if (ImGui.InputText($"{LocalizationManager._rightLang.ConfigWindow_Events_ActionName}##ActionName{info.GetHashCode()}",
+        if (ImGui.InputText($"{"ConfigWindow_Events_ActionName".Local("Action Name")}##ActionName{info.GetHashCode()}",
             ref info.Name, 100))
         {
             Service.Config.Save();
@@ -369,7 +371,7 @@ internal static class ImGuiHelper
         Notify.Success($"\"{command}\" copied to clipboard.");
     }
 
-    private static readonly SortedList<string, bool> _lastChecked = new();
+    private static readonly SortedList<string, bool> _lastChecked = [];
     private static void ExecuteHotKeys(Action action, params VirtualKey[] keys)
     {
         if (action == null) return;
@@ -419,16 +421,6 @@ internal static class ImGuiHelper
         _ => string.Empty,
     };
 
-    public static string ToDesc(this ConfigUnitType unit) => unit switch
-    {
-        ConfigUnitType.Seconds => LocalizationManager._rightLang.ConfigUnitType_Seconds,
-        ConfigUnitType.Degree => LocalizationManager._rightLang.ConfigUnitType_Degree,
-        ConfigUnitType.Pixels => LocalizationManager._rightLang.ConfigUnitType_Pixels,
-        ConfigUnitType.Yalms => LocalizationManager._rightLang.ConfigUnitType_Yalms,
-        ConfigUnitType.Percent => LocalizationManager._rightLang.ConfigUnitType_Ratio,
-        _ => string.Empty,
-    };
-
     public static void Draw(this CombatType type)
     {
         if (type.HasFlag(CombatType.PvE))
@@ -441,7 +433,7 @@ internal static class ImGuiHelper
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.TankBlue, " PvP");
         }
-        if(type == CombatType.None)
+        if (type == CombatType.None)
         {
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.DalamudRed, " None of PvE or PvP!");

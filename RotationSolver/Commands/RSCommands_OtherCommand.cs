@@ -46,10 +46,25 @@ public static partial class RSCommands
         {
             if (!str.StartsWith(property.Name, StringComparison.OrdinalIgnoreCase)) continue;
 
-            var v = Convert.ChangeType(value, property.PropertyType);
-            if (v == null && property.PropertyType == typeof(bool))
+            var type = property.PropertyType;
+
+            if (type == typeof(ConditionBoolean))
+            {
+                type = typeof(bool);
+            }
+
+            var v = Convert.ChangeType(value, type);
+
+            if (v == null && type == typeof(bool))
             {
                 v = !(bool)property.GetValue(Service.Config)!;
+            }
+
+            if (property.PropertyType == typeof(ConditionBoolean))
+            {
+                var relay = (ConditionBoolean)property.GetValue(Service.Config)!;
+                relay.Value = (bool)v!;
+                v = relay;
             }
 
             if (v == null)

@@ -9,92 +9,88 @@ namespace RotationSolver.UI.SearchableConfigs;
 
 internal readonly struct JobFilter
 {
-    public static readonly JobFilter
-        NoJob = new()
+    public JobFilter(JobFilterType type)
+    {
+        switch (type)
         {
-            JobRoles = [],
-        },
+            case JobFilterType.NoJob:
+                JobRoles = [];
+                break;
 
-        NoHealer = new()
-        {
-            JobRoles =
-            [
-                JobRole.Tank,
-                JobRole.Melee,
-                JobRole.RangedMagical,
-                JobRole.RangedPhysical,
-            ]
-        },
+            case JobFilterType.NoHealer:
+                JobRoles =
+                [
+                    JobRole.Tank,
+                    JobRole.Melee,
+                    JobRole.RangedMagical,
+                    JobRole.RangedPhysical,
+                ];
+                break;
 
-        Healer = new()
-        {
-            JobRoles =
-            [
-                JobRole.Healer,
-            ]
-        },
+            case JobFilterType.Healer:
+                JobRoles =
+                [
+                    JobRole.Healer,
+                ];
+                break;
 
-        Raise = new()
-        {
-            JobRoles =
-            [
-                JobRole.Healer,
-            ],
-            Jobs =
-            [
-                Job.RDM,
-                Job.SMN,
-            ],
-        },
+            case JobFilterType.Raise:
+                JobRoles =
+                [
+                    JobRole.Healer,
+                ];
+                Jobs =
+                [
+                    Job.RDM,
+                    Job.SMN,
+                ];
+                break;
 
-        Interrupt = new()
-        {
-            JobRoles =
-            [
-                JobRole.Tank,
-                JobRole.Melee,
-                JobRole.RangedPhysical,
-            ],
-        },
+            case JobFilterType.Interrupt:
+                JobRoles =
+                [
+                    JobRole.Tank,
+                    JobRole.Melee,
+                    JobRole.RangedPhysical,
+                ];
+                break;
 
-        Esuna = new()
-        {
-            JobRoles =
-            [
-                JobRole.Healer,
-            ],
-            Jobs =
-            [
-                Job.BRD,
-            ],
-        },
+            case JobFilterType.Esuna:
+                JobRoles =
+                [
+                    JobRole.Healer,
+                ];
+                Jobs =
+                [
+                    Job.BRD,
+                ];
+                break;
 
-        Tank = new()
-        {
-            JobRoles =
-            [
-                JobRole.Tank,
-            ]
-        },
+            case JobFilterType.Tank:
+                JobRoles =
+                [
+                    JobRole.Tank,
+                ];
+                break;
 
-        Melee = new()
-        {
-            JobRoles =
-            [
-                JobRole.Melee,
-            ]
-        };
-
+            case JobFilterType.Melee:
+                JobRoles =
+                [
+                    JobRole.Melee,
+                ];
+                break;
+        }
+    }
 
     /// <summary>
     /// Only these job roles can get this setting.
     /// </summary>
-    public JobRole[] JobRoles { get; init; }
+    public JobRole[]? JobRoles { get; init; }
 
     /// <summary>
     /// Or these jobs.
     /// </summary>
-    public Job[] Jobs { get; init; }
+    public Job[]? Jobs { get; init; }
 
     public bool CanDraw
     {
@@ -119,7 +115,7 @@ internal readonly struct JobFilter
         }
     }
 
-    public Job[] AllJobs => JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? []).ToArray();
+    public Job[] AllJobs => (JobRoles ?? []).SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? []).ToArray();
 
     public string Description
     {

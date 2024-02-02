@@ -12,9 +12,19 @@ public class RangeAttribute(float minValue, float maxValue, ConfigUnitType unitT
 public enum ConfigUnitType : byte
 {
     None,
+
+    [Description("Time Unit, in seconds.")]
     Seconds,
+
+    [Description("Angle Unit, in degrees.")]
     Degree,
+
+    [Description("Distance Unit, in yalms.")]
     Yalms,
+
+    [Description("Ratio Unit, as percentage.")]
     Percent,
+
+    [Description("Display Unit, in pixels.")]
     Pixels,
 }

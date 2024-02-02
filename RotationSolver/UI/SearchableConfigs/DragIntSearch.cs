@@ -1,7 +1,6 @@
 ﻿namespace RotationSolver.UI.SearchableConfigs;
 
-
-internal abstract class DragIntSearch : Searchable
+internal class DragIntSearch : Searchable
 {
     public int Min { get; }
     public int Max { get; }

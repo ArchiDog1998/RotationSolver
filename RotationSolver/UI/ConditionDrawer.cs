@@ -15,9 +15,10 @@ namespace RotationSolver.UI;
 
 internal static class ConditionDrawer
 {
-    internal static void DrawMain(this ConditionSet conditionSet, ICustomRotation rotation)
+    internal static void DrawMain(this ConditionSet? conditionSet, ICustomRotation? rotation)
     {
         if (conditionSet == null) return;
+        if (rotation == null) return;
 
         DrawCondition(conditionSet.IsTrue(rotation), conditionSet.GetHashCode().ToString(), ref conditionSet.Not);
         ImGui.SameLine();
@@ -105,7 +106,7 @@ internal static class ConditionDrawer
         ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(show).X));
         var result = type == ConfigUnitType.Percent ? ImGui.SliderFloat(name, ref value, 0, 1, show) 
             : ImGui.DragFloat(name, ref value, 0.1f, 0, 0, show);
-        ImguiTooltips.HoveredTooltip(type.ToDesc());
+        ImguiTooltips.HoveredTooltip(type.Local());
 
         return result;
     }
@@ -257,7 +258,7 @@ internal static class ConditionDrawer
             condition.DelayMax = Math.Min(Math.Max(condition.DelayMin, condition.DelayMax), MAX);
         }
         ImguiTooltips.HoveredTooltip(LocalizationManager._rightLang.ActionSequencer_Delay_Description +
-            "\n" + ConfigUnitType.Seconds.ToDesc());
+            "\n" + ConfigUnitType.Seconds.Local());
     }
 
     private static void DrawBefore(this ICondition condition)

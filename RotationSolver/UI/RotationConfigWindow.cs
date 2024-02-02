@@ -1198,7 +1198,7 @@ public partial class RotationConfigWindow : Window
                         set.SetValue(config.Name, val.ToString());
                     }
                 }
-                ImguiTooltips.HoveredTooltip(f.UnitType.ToDesc());
+                ImguiTooltips.HoveredTooltip(f.UnitType.Local());
 
                 ImGuiHelper.ReactPopup(key, command, Reset);
             }
@@ -1455,7 +1455,7 @@ public partial class RotationConfigWindow : Window
                     {
                         action.TimeToKill = ttk;
                     }
-                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.ToDesc());
+                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
 
                     if (!action.IsSingleTarget)
                     {
@@ -1477,7 +1477,7 @@ public partial class RotationConfigWindow : Window
                         {
                             action.AutoHealRatio = ratio;
                         }
-                        ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.ToDesc());
+                        ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.Local());
 
                     }
                 }
@@ -1565,10 +1565,10 @@ public partial class RotationConfigWindow : Window
         {() => LocalizationManager._rightLang.ConfigWindow_Rotations_Libraries, DrawRotationsLibraries},
     });
 
-    private static readonly CheckBoxSearchPlugin _updateRotation = new(PluginConfigBool.DownloadRotations,
+    private static readonly CheckBoxSearchCondition _updateRotation = new(PluginConfigBool.DownloadRotations,
         new CheckBoxSearchPlugin(PluginConfigBool.AutoUpdateRotations));
 
-    private static readonly CheckBoxSearchPlugin _autoLoadRotations = new(PluginConfigBool.AutoLoadCustomRotations);
+    private static readonly CheckBoxSearchCondition _autoLoadRotations = new(PluginConfigBool.AutoLoadCustomRotations);
 
     private static void DrawRotationsSettings()
     {

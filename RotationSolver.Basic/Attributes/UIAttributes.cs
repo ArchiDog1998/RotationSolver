@@ -6,7 +6,24 @@ public class UIAttribute(string name) : Attribute
     public string Name => name;
     public string Description { get; set; } = "";
     public string Parent { get; set; } = "";
-    public string Searchable { get; set; } = "";
+    public string Filter { get; set; } = "";
+    public byte Order { get; set; } = 0;
+    public byte Section { get; set; } = 0;
+
+    public JobFilterType PvPFilter { get; set; }
+    public JobFilterType PvEFilter { get; set; }
+}
+
+public enum JobFilterType : byte
+{
+    NoJob,
+    NoHealer,
+    Healer,
+    Raise,
+    Interrupt,
+    Esuna,
+    Tank, 
+    Melee,
 }
 
 [AttributeUsage(AttributeTargets.Field)]
