@@ -123,7 +123,7 @@ internal readonly struct JobFilter
         {
             var roleOrJob = string.Join("\n",
                 AllJobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
-            return string.Format("NotInJob".Local("This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}"), roleOrJob);
+            return string.Format(UiString.NotInJob.Local(), roleOrJob);
         }
     }
 }
@@ -257,7 +257,7 @@ internal abstract class Searchable(PropertyInfo property) : ISearchable
         if (IconSet.GetTexture(IconSet.GetJobIcon(DataCenter.Job, IconType.Framed), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
-            ImguiTooltips.HoveredTooltip("JobConfigTip".Local("This config is job specific"));
+            ImguiTooltips.HoveredTooltip(UiString.JobConfigTip.Local());
         }
     }
 

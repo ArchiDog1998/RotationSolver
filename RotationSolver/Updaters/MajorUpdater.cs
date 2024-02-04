@@ -136,11 +136,11 @@ internal static class MajorUpdater
 
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "Avarice"))
         {
-            "AvariceWarning".Local("Avarice addon was not detected, please install it if you want to get the positional indicators for Rotation Solver!").ShowWarning(0);
+            UiString.AvariceWarning.Local().ShowWarning(0);
         }
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "TextToTalk"))
         {
-            "TextToTalkWarning".Local("TextToTalk addon was not detected, please install it to make Rotation Solver give audio notifications!").ShowWarning(0);
+            UiString.TextToTalkWarning.Local().ShowWarning(0);
         }
     }
 

@@ -38,8 +38,8 @@ internal class Service : IDisposable
     }
 
     public static float CountDownTime => Countdown.TimeRemaining;
-    public static ConfigsNew Config { get; set; } = null!;
-    public static ConfigsNew ConfigDefault { get; set; } = new ConfigsNew();
+    public static Configs Config { get; set; } = null!;
+    public static Configs ConfigDefault { get; set; } = new Configs();
 
     public Service()
     {

@@ -409,16 +409,16 @@ internal static class RotationUpdater
                }
                else
                {
-                   result = "ActionAbility".Local("Ability"); 
+                   result = UiString.ActionAbility.Local(); 
                }
 
                if (act.Setting.IsFriendly)
                {
-                   result += "-" + "ActionFriendly".Local("Friendly");
+                   result += "-" + UiString.ActionFriendly.Local();
                }
                else
                {
-                   result += "-" + "ActionAttack".Local("Attack");
+                   result += "-" + UiString.ActionAttack.Local();
                }
                return result;
            }

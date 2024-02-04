@@ -41,7 +41,7 @@ public static partial class RSCommands
         var strs = str.Split(' ');
         var value = strs.LastOrDefault();
 
-        foreach (var property in typeof(ConfigsNew).GetRuntimeProperties()
+        foreach (var property in typeof(Configs).GetRuntimeProperties()
             .Where(p => (p.GetMethod?.IsPublic ?? false) && (p.SetMethod?.IsPublic ?? false)))
         {
             if (!str.StartsWith(property.Name, StringComparison.OrdinalIgnoreCase)) continue;
@@ -79,13 +79,13 @@ public static partial class RSCommands
             value = v.ToString();   
 
             //Say out.
-            Svc.Chat.Print(string.Format( "CommandsChangeSettingsValue".Local("Modify {0} to {1}"), property.Name, value));
+            Svc.Chat.Print(string.Format(UiString.CommandsChangeSettingsValue.Local(), property.Name, value));
 
             return;
 
         }
 
-        Svc.Chat.PrintError("CommandsCannotFindConfig".Local("Failed to find the config in this rotation, please check it."));
+        Svc.Chat.PrintError(UiString.CommandsCannotFindConfig.Local());
     }
 
     private static void ToggleActionCommand(string str)
@@ -123,7 +123,7 @@ public static partial class RSCommands
 
                     if (Service.Config.ShowToastsAboutDoAction)
                     {
-                        Svc.Toasts.ShowQuest(string.Format("CommandsInsertAction".Local("Will use it within {0}s"), time),
+                        Svc.Toasts.ShowQuest(string.Format(UiString.CommandsInsertAction.Local(), time),
                             new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = iAct.IconID,
@@ -135,7 +135,7 @@ public static partial class RSCommands
             }
         }
 
-        Svc.Chat.PrintError("CommandsInsertActionFailure".Local("Can not find the action, please check the action name."));
+        Svc.Chat.PrintError(UiString.CommandsInsertActionFailure.Local());
     }
 
 
@@ -146,13 +146,13 @@ public static partial class RSCommands
         {
             if (config.DoCommand(configs, str))
             {
-                Svc.Chat.Print(string.Format("CommandsChangeSettingsValue".Local("Modify {0} to {1}"),
+                Svc.Chat.Print(string.Format(UiString.CommandsInsertAction.Local(),
                     config.DisplayName, configs.GetDisplayString(config.Name)));
 
                 return;
             }
         }
 
-        Svc.Chat.PrintError("CommandsCannotFindConfig".Local("Failed to find the config, please check it."));
+        Svc.Chat.PrintError(UiString.CommandsInsertActionFailure.Local());
     }
 }

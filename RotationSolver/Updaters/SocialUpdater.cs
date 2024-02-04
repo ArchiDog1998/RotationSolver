@@ -114,7 +114,7 @@ internal class SocialUpdater
 
         if (DataCenter.IsInHighEndDuty)
         {
-            string.Format("HighEndWarning".Local("Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!"),
+            string.Format(UiString.HighEndWarning.Local(),
                 DataCenter.ContentFinderName).ShowWarning();
         }
     }

@@ -43,7 +43,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis.Add(new Service());
         try
         {
-            Service.Config = JsonConvert.DeserializeObject<ConfigsNew>(
+            Service.Config = JsonConvert.DeserializeObject<Configs>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new JsonSerializerSettings()
                 {
                     TypeNameHandling = TypeNameHandling.Objects,
@@ -53,12 +53,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
                         args.ErrorContext.Handled = true;
                     }!,
                 })
-                ?? new ConfigsNew();
+                ?? new Configs();
         }
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, "Failed to load config");
-            Service.Config = new ConfigsNew();
+            Service.Config = new Configs();
         }
 
         _rotationConfigWindow = new();
@@ -103,7 +103,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     internal static void ChangeUITranslation()
     {
-        _rotationConfigWindow!.WindowName = "ConfigWindowHeader".Local("Rotation Solver Settings v")
+        _rotationConfigWindow!.WindowName = UiString.ConfigWindowHeader.Local()
             + typeof(RotationConfigWindow).Assembly.GetName().Version?.ToString() ?? "?.?.?";
 
         RSCommands.Disable();

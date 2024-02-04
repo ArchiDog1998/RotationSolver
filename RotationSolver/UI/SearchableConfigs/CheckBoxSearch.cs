@@ -48,9 +48,9 @@ internal class CheckBoxSearchCondition(PropertyInfo property, params ISearchable
 
     private class CheckBoxDisable(PropertyInfo property) : CheckBoxConditionAbstract(property)
     {
-        public override string Name => "ForcedDisableCondition".Local("Use Forced Disable Condition");
+        public override string Name => UiString.ForcedDisableCondition.Local();
 
-        public override string Description => "ForcedEnableConditionDesc ".Local("The conditions of forced to make it true."); 
+        public override string Description => UiString.ForcedDisableConditionDesc.Local(); 
 
         protected override bool Value
         {
@@ -67,9 +67,9 @@ internal class CheckBoxSearchCondition(PropertyInfo property, params ISearchable
 
     private class CheckBoxEnable(PropertyInfo property) : CheckBoxConditionAbstract(property)
     {
-        public override string Name => "ForcedEnableCondition".Local("Use Forced Enable Condition");
+        public override string Name => UiString.ForcedEnableCondition.Local();
 
-        public override string Description => "ForcedEnableConditionDesc".Local("The conditions of forced to make it true.");
+        public override string Description => UiString.ForcedEnableConditionDesc.Local();
 
         protected override bool Value 
         {

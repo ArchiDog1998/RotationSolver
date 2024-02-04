@@ -50,7 +50,7 @@ internal abstract class DelayCondition : ICondition
         return Player.Available;
     }
 
-    internal static bool CheckBaseAction(ICustomRotation rotation, ActionID id, ref IBaseAction action)
+    internal static bool CheckBaseAction(ICustomRotation rotation, ActionID id, ref IBaseAction? action)
     {
         if (id != ActionID.None && (action == null || (ActionID)action.ID != id))
         {

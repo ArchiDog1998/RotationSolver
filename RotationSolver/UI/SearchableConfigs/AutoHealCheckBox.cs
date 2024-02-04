@@ -20,14 +20,14 @@ internal class AutoHealCheckBox(PropertyInfo property, params ISearchable[] othe
     private readonly ISearchable[] _otherChildren = otherChildren;
 
     private static readonly DragFloatSearch
-        _healthAreaAbility = new(typeof(ConfigsNew).GetRuntimeProperty(nameof(ConfigsNew.HealthAreaAbility))!),
-        _healthAreaAbilityHot = new(typeof(ConfigsNew).GetRuntimeProperty(nameof(ConfigsNew.HealthAreaAbilityHot))!),
-        _healthAreaSpell = new(typeof(ConfigsNew).GetRuntimeProperty(nameof(ConfigsNew.HealthAreaSpell))!),
-        _healthAreaSpellHot =  new (typeof(ConfigsNew).GetRuntimeProperty(nameof(ConfigsNew.HealthAreaSpellHot))!),
-        _healthSingleAbility =  new (typeof(ConfigsNew).GetRuntimeProperty(nameof(ConfigsNew.HealthSingleAbility))!),
-        _healthSingleAbilityHot =  new (typeof(ConfigsNew).GetRuntimeProperty(nameof(ConfigsNew.HealthSingleAbilityHot))!),
-        _healthSingleSpell =  new (typeof(ConfigsNew).GetRuntimeProperty(nameof(ConfigsNew.HealthSingleSpell))!),
-        _healthSingleSpellHot =  new (typeof(ConfigsNew).GetRuntimeProperty(nameof(ConfigsNew.HealthSingleSpellHot))!);
+        _healthAreaAbility = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaAbility))!),
+        _healthAreaAbilityHot = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaAbilityHot))!),
+        _healthAreaSpell = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaSpell))!),
+        _healthAreaSpellHot =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaSpellHot))!),
+        _healthSingleAbility =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleAbility))!),
+        _healthSingleAbilityHot =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleAbilityHot))!),
+        _healthSingleSpell =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleSpell))!),
+        _healthSingleSpellHot =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleSpellHot))!);
 
     protected override void DrawChildren()
     {
@@ -47,14 +47,14 @@ internal class AutoHealCheckBox(PropertyInfo property, params ISearchable[] othe
             ImGui.TableHeader("");
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader("NormalTargets".Local("Normal Targets"));
+            ImGui.TableHeader(UiString.NormalTargets.Local());
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader("HotTargets".Local("Targets with HOT"));
+            ImGui.TableHeader(UiString.HotTargets.Local());
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text("HpAoe0Gcd".Local("HP for AoE healing oGCDs"));
+            ImGui.Text(UiString.HpAoe0Gcd.Local());
 
             ImGui.TableNextColumn();
 
@@ -66,7 +66,7 @@ internal class AutoHealCheckBox(PropertyInfo property, params ISearchable[] othe
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text("HpAoeGcd".Local("HP for AoE healing GCDs"));
+            ImGui.Text(UiString.HpAoeGcd.Local());
 
             ImGui.TableNextColumn();
 
@@ -79,7 +79,7 @@ internal class AutoHealCheckBox(PropertyInfo property, params ISearchable[] othe
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text("HpSingle0Gcd".Local("HP for ST healing oGCDs"));
+            ImGui.Text(UiString.HpSingle0Gcd.Local());
 
             ImGui.TableNextColumn();
 
@@ -91,7 +91,7 @@ internal class AutoHealCheckBox(PropertyInfo property, params ISearchable[] othe
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text("HpSingleGcd".Local("HP for ST healing GCDs"));
+            ImGui.Text(UiString.HpSingleGcd.Local());
 
             ImGui.TableNextColumn();
 

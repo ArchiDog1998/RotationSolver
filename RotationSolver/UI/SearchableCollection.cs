@@ -12,7 +12,7 @@ internal class SearchableCollection
 
     public SearchableCollection()
     {
-        var properties = typeof(ConfigsNew).GetRuntimeProperties();
+        var properties = typeof(Configs).GetRuntimeProperties();
         var count = properties.Count();
         var pairs = new List<SearchPair>(count);
         var parents = new Dictionary<string, CheckBoxSearch>(count);
@@ -50,7 +50,7 @@ internal class SearchableCollection
         {
             var type = property.PropertyType;
 
-            if (property.Name == nameof(ConfigsNew.AutoHeal))
+            if (property.Name == nameof(Configs.AutoHeal))
             {
                 return new AutoHealCheckBox(property);
             }

@@ -33,7 +33,7 @@ internal static class ImGuiHelper
         }
         if (ImGui.IsItemHovered())
         {
-            ImguiTooltips.ShowTooltip($"{"ConfigWindow_Helper_RunCommand".Local("Click to execute the command")}: {cmdStr}\n{"ConfigWindow_Helper_CopyCommand".Local("Right-click to copy the command")}: {cmdStr}");
+            ImguiTooltips.ShowTooltip($"{UiString.ConfigWindow_Helper_RunCommand.Local()}: {cmdStr}\n{UiString.ConfigWindow_Helper_CopyCommand.Local()}: {cmdStr}");
 
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
             {
@@ -63,7 +63,7 @@ internal static class ImGuiHelper
     public static void DisplayMacro(this MacroInfo info)
     {
         ImGui.SetNextItemWidth(50);
-        if (ImGui.DragInt($"{"ConfigWindow_Events_MacroIndex".Local("Macro No.")}##MacroIndex{info.GetHashCode()}",
+        if (ImGui.DragInt($"{UiString.ConfigWindow_Events_MacroIndex.Local()}##MacroIndex{info.GetHashCode()}",
             ref info.MacroIndex, 1, -1, 99))
         {
             Service.Config.Save();
@@ -71,7 +71,7 @@ internal static class ImGuiHelper
 
         ImGui.SameLine();
 
-        if (ImGui.Checkbox($"{"ConfigWindow_Events_ShareMacro".Local("Is Shared")}##ShareMacro{info.GetHashCode()}",
+        if (ImGui.Checkbox($"{UiString.ConfigWindow_Events_ShareMacro.Local()}##ShareMacro{info.GetHashCode()}",
             ref info.IsShared))
         {
             Service.Config.Save();
@@ -80,7 +80,7 @@ internal static class ImGuiHelper
 
     public static void DisplayEvent(this ActionEventInfo info)
     {
-        if (ImGui.InputText($"{"ConfigWindow_Events_ActionName".Local("Action Name")}##ActionName{info.GetHashCode()}",
+        if (ImGui.InputText($"{UiString.ConfigWindow_Events_ActionName.Local()}##ActionName{info.GetHashCode()}",
             ref info.Name, 100))
         {
             Service.Config.Save();

@@ -232,7 +232,7 @@ internal static class StateUpdater
         AddStatus(ref status, AutoStatus.DefenseSingle, DataCenter.RightSet.DefenseSingleConditionSet);
 
         AddStatus(ref status, AutoStatus.Dispel | AutoStatus.TankStance | AutoStatus.Positional,
-            DataCenter.RightSet.EsunaStanceNorthConditionSet);
+            DataCenter.RightSet.DispelStancePositionalConditionSet);
         AddStatus(ref status, AutoStatus.Raise | AutoStatus.Shirk, DataCenter.RightSet.RaiseShirkConditionSet);
         AddStatus(ref status, AutoStatus.MoveForward, DataCenter.RightSet.MoveForwardConditionSet);
         AddStatus(ref status, AutoStatus.MoveBack, DataCenter.RightSet.MoveBackConditionSet);

@@ -63,8 +63,8 @@ internal class ControlWindow : CtrlWindow
         var value = Service.Config.IsControlWindowLock ? 0 : 1;
         if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window",
         [
-            "InfoWindowNoMove".Local("No Move"),
-            "InfoWindowMove".Local("Move"),
+            UiString.InfoWindowNoMove.Local(),
+            UiString.InfoWindowMove.Local(),
         ], ref value))
         {
             Service.Config.IsControlWindowLock.Value = value == 0;

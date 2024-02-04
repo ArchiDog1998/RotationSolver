@@ -45,7 +45,7 @@ public static partial class RSCommands
 
         if (wrong)
         {
-            Svc.Toasts.ShowError(string.Format("ClickingMistakeMessage".Local("OOOps! RS clicked the wrong action ({0})!"), nextAction));
+            Svc.Toasts.ShowError(string.Format(UiString.ClickingMistakeMessage.Local(), nextAction));
             ControlWindow.Wrong = nextAction;
             ControlWindow.DidTime = DateTime.Now;
         }

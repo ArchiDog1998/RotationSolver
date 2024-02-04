@@ -5,49 +5,49 @@ internal static class EnumTranslations
     internal static string ToSayout(this SpecialCommandType type, JobRole role) => type switch
     {
         SpecialCommandType.EndSpecial => type.ToSpecialString(role),
-        _ => "SpecialCommandType_Start".Local("Start ") + type.ToSpecialString(role),
+        _ => UiString.SpecialCommandType_Start.Local() + type.ToSpecialString(role),
     };
 
     internal static string ToSayout(this StateCommandType type, JobRole role) => type switch
     {
-        StateCommandType.Cancel => "SpecialCommandType_Cancel".Local("Cancel"),
+        StateCommandType.Cancel => UiString.SpecialCommandType_Cancel.Local(),
         _ => type.ToStateString(role),
     };
 
     internal static string ToSpecialString(this SpecialCommandType type, JobRole role) => type switch
     {
-        SpecialCommandType.HealArea => "SpecialCommandType_HealArea".Local("Heal Area"),
-        SpecialCommandType.HealSingle => "SpecialCommandType_HealSingle".Local("Heal Single"),
-        SpecialCommandType.DefenseArea => "SpecialCommandType_DefenseArea".Local("Defense Area"),
-        SpecialCommandType.DefenseSingle => "SpecialCommandType_DefenseSingle".Local("Defense Single"),
+        SpecialCommandType.HealArea => UiString.SpecialCommandType_HealArea.Local(),
+        SpecialCommandType.HealSingle => UiString.SpecialCommandType_HealSingle.Local(),
+        SpecialCommandType.DefenseArea => UiString.SpecialCommandType_DefenseArea.Local(),
+        SpecialCommandType.DefenseSingle => UiString.SpecialCommandType_DefenseSingle.Local(),
         SpecialCommandType.DispelStancePositional => role switch
         {
-            JobRole.Tank => "SpecialCommandType_TankStance".Local("Tank Stance"),
-            JobRole.Healer => "SpecialCommandType_Dispel".Local("Dispel"),
-            JobRole.Melee => "SpecialCommandType_Positional".Local("Positional"),
+            JobRole.Tank => UiString.SpecialCommandType_TankStance.Local(),
+            JobRole.Healer => UiString.SpecialCommandType_Dispel.Local(),
+            JobRole.Melee => UiString.SpecialCommandType_Positional.Local(),
             _ => nameof(SpecialCommandType.DispelStancePositional),
         },
         SpecialCommandType.RaiseShirk => role switch
         {
-            JobRole.Tank => "SpecialCommandType_Shirk".Local("Shirk"),
-            JobRole.Healer => "SpecialCommandType_Raise".Local("Raise"),
+            JobRole.Tank => UiString.SpecialCommandType_Shirk.Local(),
+            JobRole.Healer => UiString.SpecialCommandType_Raise.Local(),
             _ => nameof(SpecialCommandType.RaiseShirk),
         },
-        SpecialCommandType.MoveForward => "SpecialCommandType_MoveForward".Local("Move Forward"),
-        SpecialCommandType.MoveBack => "SpecialCommandType_MoveBack".Local("Move Back"),
-        SpecialCommandType.AntiKnockback => "SpecialCommandType_AntiKnockback".Local("Anti Knockback"),
-        SpecialCommandType.Burst => "SpecialCommandType_Burst".Local("Burst"),
-        SpecialCommandType.EndSpecial => "SpecialCommandType_EndSpecial".Local("End Special"),
-        SpecialCommandType.Speed => "SpecialCommandType_Speed".Local("Speed"),
-        SpecialCommandType.LimitBreak => "SpecialCommandType_LimitBreak".Local("Limit Break"),
+        SpecialCommandType.MoveForward => UiString.SpecialCommandType_MoveForward.Local(),
+        SpecialCommandType.MoveBack => UiString.SpecialCommandType_MoveBack.Local(),
+        SpecialCommandType.AntiKnockback => UiString.SpecialCommandType_AntiKnockback.Local(),
+        SpecialCommandType.Burst => UiString.SpecialCommandType_Burst.Local(),
+        SpecialCommandType.EndSpecial => UiString.SpecialCommandType_EndSpecial.Local(),
+        SpecialCommandType.Speed => UiString.SpecialCommandType_Speed.Local(),
+        SpecialCommandType.LimitBreak => UiString.SpecialCommandType_LimitBreak.Local(),
         _ => string.Empty,
     };
 
     internal static string ToStateString(this StateCommandType type, JobRole _) => type switch
     {
-        StateCommandType.Auto => "SpecialCommandType_Smart".Local("Auto Target ") + DataCenter.TargetingType.Local(),
-        StateCommandType.Manual => "SpecialCommandType_Manual".Local("Manual Target"),
-        StateCommandType.Cancel => "SpecialCommandType_Off".Local("Off"),
+        StateCommandType.Auto => UiString.SpecialCommandType_Smart.Local() + DataCenter.TargetingType.Local(),
+        StateCommandType.Manual => UiString.SpecialCommandType_Manual.Local(),
+        StateCommandType.Cancel => UiString.SpecialCommandType_Off.Local(),
         _ => string.Empty,
     };
 }
