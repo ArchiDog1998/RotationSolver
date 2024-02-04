@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace RotationSolver.Basic.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class RotationAttribute : Attribute
+public class RotationAttribute(string name) : Attribute
 {
-    public string? Name {  get; set; }
+    public string Name => name;
     public string? Description {  get; set; }
     public CombatType Type { get; set; } = CombatType.None;
 

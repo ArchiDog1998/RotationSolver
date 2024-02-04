@@ -735,6 +735,8 @@ internal partial class Configs : IPluginConfiguration
     [JobChoiceConfig]
     private readonly Dictionary<string, string> _rotationsConfigurations = [];
 
+    public Dictionary<uint, string> DutyRotationChoice { get; set; } = [];
+
     public void Save()
     {
 #if DEBUG

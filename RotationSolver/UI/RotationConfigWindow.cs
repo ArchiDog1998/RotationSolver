@@ -11,8 +11,6 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
@@ -20,7 +18,6 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
-using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 using System.Diagnostics;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
@@ -113,6 +110,41 @@ public partial class RotationConfigWindow : Window
         }
     }
 
+    private void DrawDutyRotation()
+    {
+        var dutyRotation = DataCenter.RightNowDutyRotation;
+        if (dutyRotation == null) return;
+
+        var rot = dutyRotation.GetType().GetCustomAttribute<RotationAttribute>();
+        if (rot == null) return;
+
+        if (!RotationUpdater.DutyRotations.TryGetValue(Svc.ClientState.TerritoryType, out var rotations)) return;
+
+        if (rotations == null) return;
+
+        const string popUpId = "Right Duty Rotation Popup";
+        if (ImGui.Selectable(rot.Name, false, ImGuiSelectableFlags.None, new Vector2(0, 20)))
+        {
+            ImGui.OpenPopup(popUpId);
+        }
+        ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_DutyRotationDesc.Local());
+
+        using var popup = ImRaii.Popup(popUpId);
+        if (popup)
+        {
+            foreach (var type in rotations)
+            {
+                var r = type.GetCustomAttribute<RotationAttribute>();
+                if (r == null) continue;
+
+                if (ImGui.Selectable(r.Name) && !string.IsNullOrEmpty(type.FullName))
+                {
+                    Service.Config.DutyRotationChoice[Svc.ClientState.TerritoryType] = type.FullName;
+                }
+            }
+        }
+    }
+
     private void DrawConditionSet()
     {
         var set = DataCenter.RightSet;
@@ -125,7 +157,7 @@ public partial class RotationConfigWindow : Window
         ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_ConditionSetDesc.Local());
 
         using var popup = ImRaii.Popup(popUpId);
-        if (popup.Success)
+        if (popup)
         {
             var combos = DataCenter.ConditionSets;
             for (int i = 0; i < combos.Length; i++)
@@ -191,6 +223,7 @@ public partial class RotationConfigWindow : Window
 
             if (wholeWidth > JOB_ICON_WIDTH * Scale)
             {
+                DrawDutyRotation();
                 DrawConditionSet();
 
                 ImGui.Separator();

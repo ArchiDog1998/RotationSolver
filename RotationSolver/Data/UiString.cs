@@ -3,8 +3,11 @@
 namespace RotationSolver.Data;
 internal enum UiString
 {
-    [Description("The Condition set you chose, click to modify.")]
+    [Description("The condition set you chose, click to modify.")]
     ConfigWindow_ConditionSetDesc,
+
+    [Description("The duty rotation you chose, click to modify.")]
+    ConfigWindow_DutyRotationDesc,
 
     [Description("Remove")]
     ConfigWindow_List_Remove,

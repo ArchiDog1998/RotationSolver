@@ -6,6 +6,7 @@ using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using System.Runtime.InteropServices;
 
 namespace RotationSolver.Updaters;
 
@@ -16,7 +17,7 @@ internal static class RotationUpdater
 
     internal static SortedList<string, string> AuthorHashes { get; private set; } = [];
     internal static CustomRotationGroup[] CustomRotations { get; set; } = [];
-    internal static DutyRotation[] DutyRotations { get; set; } = []; // TODO: Dynamic loading the rotations.
+    internal static SortedList<uint, Type[]> DutyRotations { get; set; } = []; // TODO: Dynamic loading the rotations.
 
     public static IAction[] RightRotationActions { get; private set; } = [];
 
@@ -128,6 +129,7 @@ internal static class RotationUpdater
             }
         }
 
+        DutyRotations = LoadDutyRotationGroup(assemblies);
         CustomRotations = LoadCustomRotationGroup(assemblies);
         var customRotationsGroupedByJobRole = new Dictionary<JobRole, List<CustomRotationGroup>>();
         foreach (var customRotationGroup in CustomRotations)
@@ -151,6 +153,42 @@ internal static class RotationUpdater
             var sortedCustomRotationGroups = customRotationGroups.OrderBy(crg => crg.JobId).ToArray();
             CustomRotationsDict[jobRole] = sortedCustomRotationGroups;
         }
+    }
+
+    private static SortedList<uint, Type[]> LoadDutyRotationGroup(List<Assembly> assemblies)
+    {
+        var rotationList = new List<Type>();
+        foreach (var assembly in assemblies)
+        {
+            foreach (var type in TryGetTypes(assembly))
+            {
+                if (type.IsAssignableTo(typeof(DutyRotation))
+                    && !type.IsAbstract && type.GetConstructor([]) != null)
+                {
+                    rotationList.Add(type);
+                }
+            }
+        }
+
+        var result = new Dictionary<uint, List<Type>>();
+        foreach (var type in rotationList)
+        {
+            var territories = type.GetCustomAttribute<DutyTerritoryAttribute>()?.TerritoryIds ?? [];
+
+            foreach (var id in territories)
+            {
+                if (result.TryGetValue(id, out var list))
+                {
+                    list.Add(type);
+                }
+                else
+                {
+                    result[id] = [type];
+                }
+            }
+        }
+
+        return new(result.ToDictionary(i => i.Key, i => i.Value.ToArray()));
     }
 
     private static CustomRotationGroup[] LoadCustomRotationGroup(List<Assembly> assemblies)
@@ -365,11 +403,12 @@ internal static class RotationUpdater
         }
     }
 
-
     public static IEnumerable<IGrouping<string, IAction>>? AllGroupedActions
-        => GroupActions(DataCenter.RightNowRotation?.AllActions);
+        => GroupActions([
+            .. DataCenter.RightNowRotation?.AllActions ?? [],
+            .. DataCenter.RightNowDutyRotation?.AllActions ?? []]);
 
-    public static IEnumerable<IGrouping<string, IAction>>? GroupActions(IEnumerable<IAction>? actions)
+    public static IEnumerable<IGrouping<string, IAction>>? GroupActions(IEnumerable<IAction> actions)
        => actions?.GroupBy(a =>
        {
            if (a is IBaseAction act)
@@ -381,6 +420,10 @@ internal static class RotationUpdater
                if (act.Info.IsLimitBreak)
                {
                    return "Limit Break";
+               }
+               else if (act.Info.IsDutyAction)
+               {
+                   return "Duty Action";
                }
 
                if (act.Info.IsRealGCD)
@@ -411,6 +454,39 @@ internal static class RotationUpdater
        }).Where(g => !string.IsNullOrEmpty(g.Key)).OrderBy(g => g.Key);
 
     public static void UpdateRotation()
+    {
+        UpdateCustomRotation();
+        UpdateDutyRotation();
+    }
+
+    private static void UpdateDutyRotation()
+    {
+        var rotations = DutyRotations[Svc.ClientState.TerritoryType];
+        Service.Config.DutyRotationChoice.TryGetValue(Svc.ClientState.TerritoryType, out var value);
+        var name = value ?? string.Empty;
+        var type = GetChosenType(rotations, name);
+        if (type != DataCenter.RightNowDutyRotation?.GetType())
+        {
+            var instance = GetRotation(type);
+            DataCenter.RightNowDutyRotation = instance;
+        }
+
+        static DutyRotation? GetRotation(Type? t)
+        {
+            if (t == null) return null;
+            try
+            {
+                return (DutyRotation?)Activator.CreateInstance(t);
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Error(ex, $"Failed to create the rotation: {t.Name}");
+                return null;
+            }
+        }
+    }
+
+    private static void UpdateCustomRotation()
     {
         var nowJob = (Job)Player.Object.ClassJob.Id;
 
@@ -444,7 +520,7 @@ internal static class RotationUpdater
             }
             catch (Exception ex)
             {
-                Svc.Log.Error(ex, $"Failed to load the rotation: {t.Name}");
+                Svc.Log.Error(ex, $"Failed to create the rotation: {t.Name}");
                 return null;
             }
         }
@@ -464,16 +540,20 @@ internal static class RotationUpdater
                 });
 
             var name = isPvP ? Service.Config.PvPRotationChoice : Service.Config.RotationChoice;
-
-            var rotation = rotations.FirstOrDefault(r => r.GetType().FullName == name);
-
-            rotation ??= rotations.FirstOrDefault(r => r.GetType().Assembly.FullName!.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
-
-            rotation ??= rotations.FirstOrDefault(r => r.GetType().Assembly.FullName!.Contains("DefaultRotations", StringComparison.OrdinalIgnoreCase));
-
-            rotation ??= rotations.FirstOrDefault();
-
-            return rotation;
+            return GetChosenType(rotations, name);
         }
+    }
+
+    private static Type? GetChosenType(IEnumerable<Type> types, string name)
+    {
+        var rotation = types.FirstOrDefault(r => r.GetType().FullName == name);
+
+        rotation ??= types.FirstOrDefault(r => r.GetType().Assembly.FullName!.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
+
+        rotation ??= types.FirstOrDefault(r => r.GetType().Assembly.FullName!.Contains("DefaultRotations", StringComparison.OrdinalIgnoreCase));
+
+        rotation ??= types.FirstOrDefault();
+
+        return rotation;
     }
 }

@@ -1,11 +1,5 @@
 ﻿namespace RotationSolver.Basic.Rotations.Duties;
 
-[AttributeUsage(AttributeTargets.Class)]
-public class DutyTerritoryAttribute(params uint[] territoryIds) : Attribute
-{
-    public uint[] TerritoryIds => territoryIds;
-}
-
 partial class DutyRotation
 {
     #region GCD
@@ -122,4 +116,15 @@ partial class DutyRotation
         act = null; return false;
     }
     #endregion
+
+    internal IAction[] AllActions
+    {
+        get
+        {
+            var properties = this.GetType().GetAllPropertyInfo()
+                .Where(p => DataCenter.DutyActions.Contains(p.GetCustomAttribute<IDAttribute>()?.ID ?? 0));
+
+            return [.. properties.Select(p => (IAction)p.GetValue(this)!)];
+        }
+    }
 }
