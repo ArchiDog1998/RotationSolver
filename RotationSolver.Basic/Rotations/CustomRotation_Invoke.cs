@@ -25,7 +25,7 @@ partial class CustomRotation
             UpdateInfo();
 
             IBaseAction.ActionPreview = true;
-            UpdateActions(ClassJob.GetJobRole());
+            UpdateActions(Role);
             IBaseAction.ActionPreview = false;
 
             CountingOfLastUsing = CountingOfCombatTimeUsing = 0;

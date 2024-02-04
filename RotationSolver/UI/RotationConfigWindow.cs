@@ -11,6 +11,7 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
@@ -364,65 +365,68 @@ public partial class RotationConfigWindow : Window
         }
 
         var rotation = DataCenter.RightNowRotation;
-        if (rotation != null)
+        if (rotation == null) return;
+
+        var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? [];
+
+        var rot = rotation.GetType().GetCustomAttribute<RotationAttribute>();
+
+        if (rot == null) return;
+
+        if (DataCenter.Territory?.IsPvpZone ?? false)
         {
-            var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? [];
+            rotations = rotations.Where(r => r.GetType().GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvP) ?? false).ToArray();
+        }
+        else
+        {
+            rotations = rotations.Where(r => r.GetType().GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvE) ?? false).ToArray();
+        }
 
-            if (DataCenter.Territory?.IsPvpZone ?? false)
+        var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH));
+        var comboSize = ImGui.CalcTextSize(rot.Name).X;
+
+        const string slash = " - ";
+        var gameVersionSize = ImGui.CalcTextSize(slash + rot.GameVersion).X + ImGui.GetStyle().ItemSpacing.X;
+        var gameVersion = UiString.ConfigWindow_Helper_GameVersion.Local() + ": ";
+        var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rot.GameVersion).X + iconSize + ImGui.GetStyle().ItemSpacing.X * 3 < wholeWidth;
+        if (drawCenter) gameVersionSize += ImGui.CalcTextSize(gameVersion).X + ImGui.GetStyle().ItemSpacing.X;
+
+        var horizonalWholeWidth = Math.Max(comboSize, gameVersionSize) + iconSize + ImGui.GetStyle().ItemSpacing.X;
+
+        if (horizonalWholeWidth > wholeWidth)
+        {
+            ImGuiHelper.DrawItemMiddle(() =>
             {
-                rotations = rotations.Where(r => r.Type.HasFlag(CombatType.PvP)).ToArray();
+                DrawRotationIcon(rotation, iconSize);
+            }, wholeWidth, iconSize);
+
+            if (Scale * JOB_ICON_WIDTH < wholeWidth)
+            {
+                DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
             }
-            else
+        }
+        else
+        {
+            ImGuiHelper.DrawItemMiddle(() =>
             {
-                rotations = rotations.Where(r => r.Type.HasFlag(CombatType.PvE)).ToArray();
-            }
+                DrawRotationIcon(rotation, iconSize);
 
-            var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH));
-            var comboSize = ImGui.CalcTextSize(rotation.RotationName).X;
+                ImGui.SameLine();
 
-            const string slash = " - ";
-            var gameVersionSize = ImGui.CalcTextSize(slash + rotation.GameVersion).X + ImGui.GetStyle().ItemSpacing.X;
-            var gameVersion = UiString.ConfigWindow_Helper_GameVersion.Local() + ": ";
-            var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rotation.GameVersion).X + iconSize + ImGui.GetStyle().ItemSpacing.X * 3 < wholeWidth;
-            if (drawCenter) gameVersionSize += ImGui.CalcTextSize(gameVersion).X + ImGui.GetStyle().ItemSpacing.X;
+                using var group = ImRaii.Group();
 
-            var horizonalWholeWidth = Math.Max(comboSize, gameVersionSize) + iconSize + ImGui.GetStyle().ItemSpacing.X;
+                DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
+                ImGui.TextDisabled(slash);
+                ImGui.SameLine();
 
-            if (horizonalWholeWidth > wholeWidth)
-            {
-                ImGuiHelper.DrawItemMiddle(() =>
+                if (drawCenter)
                 {
-                    DrawRotationIcon(rotation, iconSize);
-                }, wholeWidth, iconSize);
-
-                if (Scale * JOB_ICON_WIDTH < wholeWidth)
-                {
-                    DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
+                    ImGui.TextDisabled(gameVersion);
+                    ImGui.SameLine();
                 }
-            }
-            else
-            {
-                ImGuiHelper.DrawItemMiddle(() =>
-                {
-                    DrawRotationIcon(rotation, iconSize);
+                ImGui.Text(rot.GameVersion);
 
-                    ImGui.SameLine();
-
-                    using var group = ImRaii.Group();
-
-                    DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
-                    ImGui.TextDisabled(slash);
-                    ImGui.SameLine();
-
-                    if (drawCenter)
-                    {
-                        ImGui.TextDisabled(gameVersion);
-                        ImGui.SameLine();
-                    }
-                    ImGui.Text(rotation.GameVersion);
-
-                }, wholeWidth, horizonalWholeWidth);
-            }
+            }, wholeWidth, horizonalWholeWidth);
         }
     }
 
@@ -439,7 +443,7 @@ public partial class RotationConfigWindow : Window
         {
             ImguiTooltips.ShowTooltip(() =>
             {
-                ImGui.Text(rotation.Name + $" ({rotation.RotationName})");
+                ImGui.Text(rotation.Name + $" ({rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Name})");
                 rotation.Type.Draw();
                 if (!string.IsNullOrEmpty(rotation.Description))
                 {
@@ -456,14 +460,16 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private static void DrawRotationCombo(float comboSize, ICustomRotation[] rotations, ICustomRotation rotation, string gameVersion)
+    private static void DrawRotationCombo(float comboSize, Type[] rotations, ICustomRotation rotation, string gameVersion)
     {
         ImGui.SetNextItemWidth(comboSize);
         const string popUp = "Rotation Solver Select Rotation";
 
+        var rot = rotation.GetType().GetCustomAttribute<RotationAttribute>()!;
+
         using (var color = ImRaii.PushColor(ImGuiCol.Text, rotation.GetColor()))
         {
-            if (ImGui.Selectable(rotation.RotationName + "##RotationName:" + rotation.Name))
+            if (ImGui.Selectable(rot.Name + "##RotationName:" + rotation.Name))
             {
                 if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
             }
@@ -475,7 +481,9 @@ public partial class RotationConfigWindow : Window
             {
                 foreach (var r in rotations)
                 {
-                    if (IconSet.GetTexture(r.Type.GetIcon(), out var texture))
+                    var rAttr = r.GetType().GetCustomAttribute<RotationAttribute>()!;
+
+                    if (IconSet.GetTexture(rAttr.Type.GetIcon(), out var texture))
                     {
                         ImGui.Image(texture.ImGuiHandle, Vector2.One * 20 * Scale);
                         if (ImGui.IsItemHovered())
@@ -487,8 +495,9 @@ public partial class RotationConfigWindow : Window
                         }
                     }
                     ImGui.SameLine();
-                    ImGui.PushStyleColor(ImGuiCol.Text, r.GetColor());
-                    if (ImGui.Selectable(r.RotationName))
+                    ImGui.PushStyleColor(ImGuiCol.Text, r.GetCustomAttribute<BetaRotationAttribute>() == null
+                        ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudOrange);
+                    if (ImGui.Selectable(rAttr.Name))
                     {
                         if( DataCenter.Territory?.IsPvpZone ?? false)
                         {
@@ -499,13 +508,13 @@ public partial class RotationConfigWindow : Window
                             Service.Config.RotationChoice = r.GetType().FullName;
                         }
                     }
-                    ImguiTooltips.HoveredTooltip(r.Description);
+                    ImguiTooltips.HoveredTooltip(rAttr.Description);
                     ImGui.PopStyleColor();
                 }
             }
         }
 
-        var warning = gameVersion + rotation.GameVersion;
+        var warning = gameVersion + rot.GameVersion;
         if (!rotation.IsValid) warning += "\n" + string.Format(UiString.ConfigWindow_Rotation_InvalidRotation
             .Local(),
                 rotation.GetType().Assembly.GetInfo().Author);
@@ -1616,13 +1625,13 @@ public partial class RotationConfigWindow : Window
                 ImGui.TableNextColumn();
 
                 var lastRole = JobRole.None;
-                foreach (var jobs in grp.GroupBy(r => r.IconID))
+                foreach (var jobs in grp.GroupBy(r => r.GetCustomAttribute<JobsAttribute>()!.Jobs[0]))
                 {
-                    var role = jobs.First().ClassJob.GetJobRole();
+                    var role = Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)jobs.Key)!.GetJobRole();
                     if (lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
                     lastRole = role;
 
-                    if (IconSet.GetTexture(IconSet.GetJobIcon(jobs.First(), IconType.Framed), out var texture, 62574))
+                    if (IconSet.GetTexture(IconSet.GetJobIcon(jobs.Key, IconType.Framed), out var texture, 62574))
                         ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
 
                     ImguiTooltips.HoveredTooltip(string.Join('\n', jobs));
@@ -2422,7 +2431,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawNextAction()
     {
-        ImGui.Text(DataCenter.RightNowRotation?.RotationName);
+        ImGui.Text(DataCenter.RightNowRotation?.GetType().GetCustomAttribute<RotationAttribute>()!.Name);
         ImGui.Text(DataCenter.SpecialType.ToString());
 
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());

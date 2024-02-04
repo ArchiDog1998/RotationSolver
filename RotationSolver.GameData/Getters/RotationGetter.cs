@@ -34,9 +34,9 @@ internal class RotationGetter(Lumina.GameData gameData, ClassJob job)
          /// <br>Number of Actions: {{rotationsGetter.Count}}</br>
          /// <br>Number of Traits: {{traitsGetter.Count}}</br>
          /// </summary>
+         [Jobs({{jobs}})]
          public abstract partial class {{GetName()}} : CustomRotation
          {
-             public sealed override Job[] Jobs => new[] { {{jobs}} };
              {{jobGauge}}
 
          #region Actions

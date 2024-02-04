@@ -50,24 +50,14 @@ public interface ICustomRotation : ITexture
     string WhyNotValid { get; }
 
     /// <summary>
-    /// The class job about this rotation.
+    /// Job
     /// </summary>
-    ClassJob ClassJob { get; }
+    Job Job { get; }
 
     /// <summary>
-    /// All jobs.
+    /// 
     /// </summary>
-    Job[] Jobs { get; }
-
-    /// <summary>
-    /// The game version in writing.
-    /// </summary>
-    string GameVersion { get; }
-
-    /// <summary>
-    /// The name of this rotation.
-    /// </summary>
-    string RotationName { get; }
+    JobRole Role { get; }
 
     /// <summary>
     /// Configurations about this rotation.

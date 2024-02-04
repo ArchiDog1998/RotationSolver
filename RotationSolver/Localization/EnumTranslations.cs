@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Localization;
+﻿using RotationSolver.Data;
+
+namespace RotationSolver.Localization;
 
 internal static class EnumTranslations
 {

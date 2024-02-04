@@ -2,6 +2,7 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 
@@ -100,7 +101,7 @@ internal readonly struct JobFilter
 
             if (JobRoles != null)
             {
-                var role = DataCenter.RightNowRotation?.ClassJob?.GetJobRole();
+                var role = DataCenter.RightNowRotation?.Role;
                 if (role.HasValue)
                 {
                     canDraw = JobRoles.Contains(role.Value);

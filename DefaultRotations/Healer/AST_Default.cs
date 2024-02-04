@@ -1,14 +1,11 @@
 namespace DefaultRotations.Healer;
 
+[Rotation(Name = "Default", GameVersion ="6.28")]
 [RotationDesc(ActionID.DivinationPvE)]
 [SourceCode(Path = "main/DefaultRotations/Healer/AST_Default.cs")]
 public sealed class AST_Default : AstrologianRotation
 {
     public override CombatType Type => CombatType.PvE;
-
-    public override string GameVersion => "6.28";
-
-    public override string RotationName => "Default";
 
     protected override IRotationConfigSet CreateConfiguration()
         => base.CreateConfiguration()

@@ -8,6 +8,7 @@ using ECommons.ImGuiMethods;
 using ECommons.LanguageHelpers;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Conditions;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using Action = System.Action;

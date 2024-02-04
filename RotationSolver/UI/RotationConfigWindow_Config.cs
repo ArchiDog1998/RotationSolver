@@ -5,6 +5,7 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;

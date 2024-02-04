@@ -236,7 +236,7 @@ partial class CustomRotation
 
             case JobRole.Healer:
             case JobRole.RangedMagical:
-                if (Jobs[0] == ECommons.ExcelServices.Job.BLM) break;
+                if (Job == ECommons.ExcelServices.Job.BLM) break;
                 if (LucidDreamingPvE.CanUse(out act)) return true;
                 break;
 
@@ -258,7 +258,7 @@ partial class CustomRotation
     {
         if (nextGCD is BaseAction action)
         {
-            if (ClassJob.GetJobRole() is JobRole.Healer or JobRole.RangedMagical &&
+            if (Role is JobRole.Healer or JobRole.RangedMagical &&
             action.Info.CastTime >= 5 && SwiftcastPvE.CanUse(out act)) return true;
 
             if (Service.Config.AutoUseTrueNorth

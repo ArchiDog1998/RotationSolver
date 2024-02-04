@@ -296,59 +296,11 @@ public static class IconSet
     /// <summary>
     /// Get job Icon from rotation.
     /// </summary>
-    /// <param name="rotation"></param>
-    /// <returns></returns>
-    public static uint GetJobIcon(ICustomRotation rotation)
-    {
-        IconType type = IconType.Gold;
-        switch (rotation.ClassJob.GetJobRole())
-        {
-            case JobRole.Tank:
-                type = IconType.Blue;
-                break;
-            case JobRole.RangedPhysical:
-            case JobRole.RangedMagical:
-            case JobRole.Melee:
-                type = IconType.Red;
-                break;
-            case JobRole.Healer:
-                type = IconType.Green;
-                break;
-        }
-        return GetJobIcon(rotation, type);
-    }
-
-    /// <summary>
-    /// Get Job Icon from specific type.
-    /// </summary>
-    /// <param name="combo"></param>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public static uint GetJobIcon(ICustomRotation combo, IconType type)
-    {
-        return _icons[type][(uint)combo.Jobs[0] - 1];
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
     /// <param name="job"></param>
     /// <returns></returns>
-    public static uint GetJobIcon(Job job)
-    {
-        return GetJobIcon(job, Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.GetJobRole() ?? JobRole.None);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="job"></param>
-    /// <param name="role"></param>
-    /// <returns></returns>
-    public static uint GetJobIcon(Job job, JobRole role)
+    public static uint GetJobIcon(JobRole role, Job job)
     {
         IconType type = IconType.Gold;
-
         switch (role)
         {
             case JobRole.Tank:
@@ -363,8 +315,17 @@ public static class IconSet
                 type = IconType.Green;
                 break;
         }
-
         return GetJobIcon(job, type);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="job"></param>
+    /// <returns></returns>
+    public static uint GetJobIcon(Job job)
+    {
+        return GetJobIcon(Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.GetJobRole() ?? JobRole.None, job);
     }
 
     /// <summary>

@@ -2,6 +2,7 @@
 using Dalamud.Interface.Utility;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 

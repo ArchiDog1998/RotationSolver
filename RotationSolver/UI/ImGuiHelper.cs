@@ -7,6 +7,7 @@ using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;

@@ -9,6 +9,7 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Commands;
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Diagnostics.CodeAnalysis;

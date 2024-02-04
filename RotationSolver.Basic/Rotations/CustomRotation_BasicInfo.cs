@@ -1,34 +1,44 @@
-﻿using ECommons.ExcelServices;
+﻿using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Rotations;
 
+[Jobs()]
 partial class CustomRotation : ICustomRotation
 {
     public abstract CombatType Type { get; }
 
-    public abstract Job[] Jobs { get; }
+    private Job? _job = null;
+    public Job Job => _job ??= this.GetType().GetCustomAttribute<JobsAttribute>()?.Jobs[0] ?? Job.ADV;
 
-    public abstract string GameVersion { get; }
+    private JobRole? _role = null;
+    public JobRole Role  => _role ??= Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)Job)!.GetJobRole();
+    private string? _name = null;
+    public string Name
+    {
+        get
+        {
+            if (_name != null) return _name;
 
-    public ClassJob ClassJob => Service.GetSheet<ClassJob>().GetRow((uint)Jobs[0])!;
+            var classJob = Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)Job)!;
 
-    public string Name => ClassJob.Abbreviation + " - " + ClassJob.Name;
-
-    public abstract string RotationName { get; }
+            return _name = classJob.Abbreviation + " - " + classJob.Name;
+        }
+    }
 
     public bool IsEnabled
     {
-        get => !Service.Config.DisabledJobs.Contains(Jobs.FirstOrDefault());
+        get => !Service.Config.DisabledJobs.Contains(Job);
         set
         {
             if (value)
             {
-                Service.Config.DisabledJobs.Remove(Jobs.FirstOrDefault());
+                Service.Config.DisabledJobs.Remove(Job);
             }
             else
             {
-                Service.Config.DisabledJobs.Add(Jobs.FirstOrDefault());
+                Service.Config.DisabledJobs.Add(Job);
             }
         }
     }
@@ -84,7 +94,7 @@ partial class CustomRotation : ICustomRotation
 
     private protected CustomRotation()
     {
-        IconID = IconSet.GetJobIcon(this);
+        IconID = IconSet.GetJobIcon(this.Job);
         Configs = CreateConfiguration();
     }
 
@@ -93,7 +103,7 @@ partial class CustomRotation : ICustomRotation
         return new RotationConfigSet();
     }
 
-    public override string ToString() => RotationName;
+    public override string ToString() => this.GetType().GetCustomAttribute<RotationAttribute>()?.Name ?? this.GetType().Name;
 
     /// <summary>
     /// Update your customized field.
