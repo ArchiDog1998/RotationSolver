@@ -57,7 +57,7 @@ internal static class PainterManager
 
             if (!Service.Config.ShowHostilesIcons) return;
 
-            List<IDrawing3D> subItems = new List<IDrawing3D>();
+            List<IDrawing3D> subItems = [];
 
             if (IconSet.GetTexture(61510, out var hostileIcon))
             {
@@ -126,11 +126,11 @@ internal static class PainterManager
                 subItems.Add(_target);
             }
 
-            if (DataCenter.AllHostileTargets.Contains(act.Target?.Target) || act.Target?.Target == Player.Object && !act.Setting.IsFriendly)
+            if (act.Target.HasValue && (DataCenter.AllHostileTargets.Contains(act.Target?.Target) || act.Target?.Target == Player.Object && !act.Setting.IsFriendly))
             {
                 var SColor = ImGui.GetColorU32(Service.Config.SubTargetColor);
 
-                foreach (var t in act.Target?.AffectedTargets)
+                foreach (var t in act.Target!.Value.AffectedTargets)
                 {
                     if (t == act.Target?.Target) continue;
                     subItems.Add(new Drawing3DCircularSector(t.Position, targetRadius * ratio, SColor, 3)
@@ -140,7 +140,7 @@ internal static class PainterManager
                 }
             }
 
-            SubItems = subItems.ToArray();
+            SubItems = [.. subItems];
 
             base.UpdateOnFrame(painter);
         }
@@ -215,8 +215,10 @@ internal static class PainterManager
 
         HighlightColor = Service.Config.TeachingModeColor;
 
-        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2);
-        annulus.InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f));
+        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2)
+        {
+            InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f))
+        };
 
         annulus.UpdateEveryFrame = () =>
         {
@@ -258,6 +260,7 @@ internal static class PainterManager
             UpdateEveryFrame = () =>
             {
                 if (!Player.Available) return;
+                if (_stateImage == null) return;
 
                 unsafe
                 {

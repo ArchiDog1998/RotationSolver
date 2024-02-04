@@ -5,6 +5,10 @@ namespace RotationSolver.Helpers;
 
 public static class DownloadHelper
 {
+    /// <summary>
+    /// <see href="https://garlandtools.org/db/#status/1093"><strong>HP and MP Boost</strong></see> ↑ (All Classes)
+    /// <para>Maximum HP and MP are increased.</para>
+    /// </summary>
     public static string[] LinkLibraries { get; private set; } = [];
     public static string[] ContributorsHash { get; private set; } = [];
     public static string[] UsersHash { get; private set; } = [];

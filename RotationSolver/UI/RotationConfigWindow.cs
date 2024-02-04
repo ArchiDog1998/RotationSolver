@@ -331,7 +331,7 @@ public partial class RotationConfigWindow : Window
             });
         }
 
-        return _logosWrap.TryGetValue(name, out texture);
+        return _logosWrap.TryGetValue(name, out texture!);
     }
 
     private void DrawHeader(float wholeWidth)
@@ -1006,7 +1006,7 @@ public partial class RotationConfigWindow : Window
         var wholeWidth = ImGui.GetWindowWidth();
         var type = rotation.GetType();
 
-        var attrs = new List<RotationDescAttribute> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
+        var attrs = new List<RotationDescAttribute?> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
 
         foreach (var m in type.GetAllMethodInfo())
         {
@@ -1271,7 +1271,11 @@ public partial class RotationConfigWindow : Window
             {
                 var userName = info.GitHubUserName;
                 var repository = info.GitHubRepository;
-                DrawGitHubBadge(userName, repository, link.Path, $"https://github.com/{userName}/{repository}/blob/{link.Path}", center: true);
+
+                if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(repository) && !string.IsNullOrEmpty(link.Path))
+                {
+                    DrawGitHubBadge(userName, repository, link.Path, $"https://github.com/{userName}/{repository}/blob/{link.Path}", center: true);
+                }
             }
             ImGui.NewLine();
 
@@ -1391,7 +1395,7 @@ public partial class RotationConfigWindow : Window
                         ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, ignoreCastingCheck : true).ToString());
                         if (action.Target != null)
                         {
-                            ImGui.Text("Target Name: " + action.Target.Value.Target.Name);
+                            ImGui.Text("Target Name: " + action.Target.Value.Target?.Name ?? string.Empty);
                         }
                     }
                     catch
@@ -1639,11 +1643,14 @@ public partial class RotationConfigWindow : Window
 
                 ImGui.TableNextColumn();
 
-                DrawGitHubBadge(info.GitHubUserName, info.GitHubRepository, info.FilePath);
+                if(!string.IsNullOrEmpty(info.GitHubUserName) && !string.IsNullOrEmpty(info.GitHubRepository) && !string.IsNullOrEmpty(info.FilePath))
+                {
+                    DrawGitHubBadge(info.GitHubUserName, info.GitHubRepository, info.FilePath);
+                }
 
                 if (!string.IsNullOrEmpty(info.DonateLink)
                     && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon)
-                    && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height / icon.Width) * MathF.Min(250, icon.Width) * Scale, info.FilePath))
+                    && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height / icon.Width) * MathF.Min(250, icon.Width) * Scale, info.FilePath ?? string.Empty))
                 {
                     Util.OpenLink(info.DonateLink);
                 }

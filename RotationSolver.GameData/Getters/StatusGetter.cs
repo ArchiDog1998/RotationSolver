@@ -48,7 +48,7 @@ internal class StatusGetter(Lumina.GameData gameData)
 
         return $"""
         /// <summary>
-        /// <see href="https://garlandtools.org/db/#status/{item.RowId}"><strong>{item.Name.RawString}</strong></see>{cate}{jobs}
+        /// <see href="https://garlandtools.org/db/#status/{item.RowId}"><strong>{item.Name.RawString.Replace("&", "and")}</strong></see>{cate}{jobs}
         /// <para>{desc.Replace("\n", "</para>\n/// <para>")}</para>
         /// </summary>
         {name} = {item.RowId},

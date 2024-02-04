@@ -56,7 +56,7 @@ internal static partial class Util
             ]
             """;
         return $$"""
-        private {{propertyType}}[]? _{{propertyName}} = null;
+        private {{propertyType}}[] _{{propertyName}} = null;
 
         /// <inheritdoc/>
         {{modifier}} {{propertyType}}[] {{propertyName}} => _{{propertyName}} ??= {{thisItems}};

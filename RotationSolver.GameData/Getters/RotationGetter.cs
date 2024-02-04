@@ -73,7 +73,7 @@ internal class RotationGetter(Lumina.GameData gameData, ClassJob job)
             /// {action.GetDescName()}
             /// {GetDesc(action)}
             /// </summary>
-            private sealed protected override IBaseAction? LimitBreak{index} => {name};
+            private sealed protected override IBaseAction LimitBreak{index} => {name};
             """;
     }
 

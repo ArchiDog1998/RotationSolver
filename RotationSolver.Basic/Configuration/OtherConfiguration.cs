@@ -223,7 +223,7 @@ public class OtherConfiguration
         {
             try
             {
-                value = JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
+                value = JsonConvert.DeserializeObject<T>(File.ReadAllText(path))!;
             }
             catch (Exception ex)
             {
@@ -244,8 +244,8 @@ public class OtherConfiguration
                     Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
                     {
                         args.ErrorContext.Handled = true;
-                    }
-                });
+                    }!
+                })!;
             }
             catch
             {

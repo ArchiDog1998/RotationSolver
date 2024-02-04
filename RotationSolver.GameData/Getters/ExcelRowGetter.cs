@@ -3,6 +3,7 @@
 namespace RotationSolver.GameData.Getters;
 internal abstract class ExcelRowGetter<T>(Lumina.GameData gameData) where T : ExcelRow
 {
+    protected Lumina.GameData _gameData = gameData;
     public int Count { get; private set; } = 0;
 
     protected abstract bool AddToList(T item);
@@ -13,7 +14,7 @@ internal abstract class ExcelRowGetter<T>(Lumina.GameData gameData) where T : Ex
 
     public string GetCode()
     {
-        var items = gameData.GetExcelSheet<T>();
+        var items = _gameData.GetExcelSheet<T>();
 
         if (items == null) return string.Empty;
         BeforeCreating();

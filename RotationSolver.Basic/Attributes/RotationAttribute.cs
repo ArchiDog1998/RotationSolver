@@ -9,9 +9,9 @@ namespace RotationSolver.Basic.Attributes;
 [AttributeUsage(AttributeTargets.Class)]
 public class RotationAttribute : Attribute
 {
-    public string Name {  get; set; }
-    public string Description {  get; set; }
-    public CombatType Type {  get; set; }
+    public string? Name {  get; set; }
+    public string? Description {  get; set; }
+    public CombatType Type { get; set; } = CombatType.None;
 
-    public string GameVersion { get; set; }
+    public string? GameVersion { get; set; }
 }

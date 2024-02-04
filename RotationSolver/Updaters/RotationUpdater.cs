@@ -108,6 +108,8 @@ internal static class RotationUpdater
                 if (authorHashAttribute != null)
                 {
                     var key = authorHashAttribute.Hash;
+                    if (string.IsNullOrEmpty(key)) continue;
+
                     var value = $"{assembly.GetInfo().Author} - {assembly.GetInfo().Name}";
 
                     if (AuthorHashes.ContainsKey(key))
@@ -456,8 +458,9 @@ internal static class RotationUpdater
                 {
                     var rot = r.GetCustomAttribute<RotationAttribute>();
                     if (rot == null) return false;
+                    var type = rot.Type;
 
-                    return isPvP ? rot.Type.HasFlag(CombatType.PvP) : rot.Type.HasFlag(CombatType.PvE);
+                    return isPvP ? type.HasFlag(CombatType.PvP) : type.HasFlag(CombatType.PvE);
                 });
 
             var name = isPvP ? Service.Config.PvPRotationChoice : Service.Config.RotationChoice;

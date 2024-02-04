@@ -426,9 +426,9 @@ public static class ObjectHelper
     }
 
     /// <summary>
-    /// Get the <paramref name="b"/>'s current HP percentage.
+    /// Get the <paramref name="g"/>'s current HP percentage.
     /// </summary>
-    /// <param name="b"></param>
+    /// <param name="g"></param>
     /// <returns></returns>
     public static float GetHealthRatio(this GameObject g)
     {
@@ -479,7 +479,7 @@ public static class ObjectHelper
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static float DistanceToPlayer(this GameObject obj)
+    public static float DistanceToPlayer(this GameObject? obj)
     {
         if (obj == null) return float.MaxValue;
         var player = Player.Object;

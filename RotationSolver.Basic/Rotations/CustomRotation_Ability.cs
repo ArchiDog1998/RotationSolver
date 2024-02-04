@@ -264,7 +264,7 @@ partial class CustomRotation
             if (Service.Config.AutoUseTrueNorth
                 && action.Setting.EnemyPositional != EnemyPositional.None && action.Target != null)
             {
-                if (action.Setting.EnemyPositional != action.Target?.Target.FindEnemyPositional() && (action.Target?.Target.HasPositional() ?? false))
+                if (action.Setting.EnemyPositional != action.Target?.Target?.FindEnemyPositional() && (action.Target?.Target?.HasPositional() ?? false))
                 {
                     if (TrueNorthPvE.CanUse(out act, isEmpty: true, onLastAbility: true)) return true;
                 }

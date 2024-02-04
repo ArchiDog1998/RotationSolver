@@ -60,7 +60,7 @@ internal class Service : IDisposable
             .Where(ptr => ptr != IntPtr.Zero);
     }
 
-    public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => Svc.Data.GetExcelSheet<T>();
+    public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => Svc.Data.GetExcelSheet<T>()!;
 
     public void Dispose()
     {

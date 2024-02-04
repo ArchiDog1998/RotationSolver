@@ -59,7 +59,7 @@ internal class TraitRotationGetter(Lumina.GameData gameData, ClassJob job)
 
     private string GetDesc(Trait item)
     {
-        var desc = gameData.GetExcelSheet<TraitTransient>()?.GetRow(item.RowId)?.Description.RawString ?? string.Empty;
+        var desc = _gameData.GetExcelSheet<TraitTransient>()?.GetRow(item.RowId)?.Description.RawString ?? string.Empty;
 
         return $"<para>{desc.Replace("\n", "</para>\n/// <para>")}</para>";
     }

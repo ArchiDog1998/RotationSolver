@@ -99,7 +99,7 @@ public sealed class AST_Default : AstrologianRotation
     {
         if (AspectedBeneficPvE.CanUse(out act)
             && (IsMoving
-            || AspectedBeneficPvE.Target!.Value.Target.GetHealthRatio() > 0.4)) return true;
+            || AspectedBeneficPvE.Target!.Value.Target?.GetHealthRatio() > 0.4)) return true;
 
         if (BeneficIiPvE.CanUse(out act)) return true;
         if (BeneficPvE.CanUse(out act)) return true;
@@ -166,7 +166,7 @@ public sealed class AST_Default : AstrologianRotation
     }
 
     [RotationDesc(ActionID.CelestialOppositionPvE, ActionID.EarthlyStarPvE, ActionID.HoroscopePvE)]
-    protected override bool HealAreaAbility(out IAction act)
+    protected override bool HealAreaAbility(out IAction? act)
     {
         if (CelestialOppositionPvE.CanUse(out act)) return true;
 

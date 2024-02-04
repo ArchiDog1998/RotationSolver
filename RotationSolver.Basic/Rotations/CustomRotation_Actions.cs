@@ -126,12 +126,12 @@ partial class CustomRotation
 
     public virtual IBaseTrait[] AllTraits { get; } = [];
 
-    PropertyInfo[] _allBools;
+    PropertyInfo[]? _allBools;
     public PropertyInfo[] AllBools => _allBools ??= GetType().GetStaticProperties<bool>();
 
-    PropertyInfo[] _allBytes;
+    PropertyInfo[]? _allBytes;
     public PropertyInfo[] AllBytesOrInt => _allBytes ??= GetType().GetStaticProperties<byte>().Union(GetType().GetStaticProperties<int>()).ToArray();
 
-    PropertyInfo[] _allFloats;
+    PropertyInfo[]? _allFloats;
     public PropertyInfo[] AllFloats => _allFloats ??= GetType().GetStaticProperties<float>();
 }

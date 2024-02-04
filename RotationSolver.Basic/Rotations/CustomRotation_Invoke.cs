@@ -118,15 +118,16 @@ partial class CustomRotation
         //TODO: that is too complex! 
         if (movingTarget && act is IBaseAction a)
         {
-            if(a.PreviewTarget.HasValue && a.PreviewTarget.Value.Target != Player)
+            if(a.PreviewTarget.HasValue && a.PreviewTarget.Value.Target != Player
+                && a.PreviewTarget.Value.Target != null)
             {
                 var dir = Player.Position - a.PreviewTarget.Value.Position;
-                var length = dir.Length();
-                if (length != 0)
+                var length = dir?.Length() ?? 0;
+                if (length != 0 && dir.HasValue)
                 {
-                    dir /= length;
+                    var d = dir.Value / length;
 
-                    MoveTarget = a.PreviewTarget.Value.Position + dir * MathF.Min(length, Player.HitboxRadius + a.PreviewTarget.Value.Target.HitboxRadius);
+                    MoveTarget = a.PreviewTarget.Value.Position + d * MathF.Min(length, Player.HitboxRadius + a.PreviewTarget.Value.Target.HitboxRadius);
                 }
                 else
                 {
@@ -142,7 +143,7 @@ partial class CustomRotation
                 }
                 else
                 {
-                    MoveTarget = a.PreviewTarget?.Position == a.PreviewTarget?.Target.Position ? null : a.PreviewTarget?.Position;
+                    MoveTarget = a.PreviewTarget?.Position == a.PreviewTarget?.Target?.Position ? null : a.PreviewTarget?.Position;
                 }
             }
         }

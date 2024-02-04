@@ -125,7 +125,7 @@ public static class StatusHelper
     /// <returns></returns>
     public static bool WillStatusEnd(this GameObject obj, float time, bool isFromSelf = true, params StatusID[] statusIDs)
     {
-        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return false;
+        if (DataCenter.HasApplyStatus(obj.ObjectId, statusIDs)) return false;
         var remain = obj.StatusTime(isFromSelf, statusIDs);
         if (remain < 0 && obj.HasStatus(isFromSelf, statusIDs)) return false;
         return remain <= time;
@@ -142,7 +142,7 @@ public static class StatusHelper
     {
         try
         {
-            if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return float.MaxValue;
+            if (DataCenter.HasApplyStatus(obj.ObjectId, statusIDs)) return float.MaxValue;
             var times = obj.StatusTimes(isFromSelf, statusIDs);
             if (times == null || !times.Any()) return 0;
             return Math.Max(0, times.Min() - DataCenter.WeaponRemain);
@@ -167,7 +167,7 @@ public static class StatusHelper
     /// <returns></returns>
     public static byte StatusStack(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return byte.MaxValue;
+        if (DataCenter.HasApplyStatus(obj.ObjectId, statusIDs)) return byte.MaxValue;
         var stacks = obj.StatusStacks(isFromSelf, statusIDs);
         if (stacks == null || !stacks.Any()) return 0;
         return stacks.Min();
@@ -187,7 +187,7 @@ public static class StatusHelper
     /// <returns></returns>
     public static bool HasStatus(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return true;
+        if (DataCenter.HasApplyStatus(obj.ObjectId, statusIDs)) return true;
         return obj.GetStatus(isFromSelf, statusIDs).Any();
     }
 
@@ -203,7 +203,7 @@ public static class StatusHelper
 
     internal static string GetStatusName(StatusID id)
     {
-        return Service.GetSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id).Name.ToString();
+        return Service.GetSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id)!.Name.ToString();
     }
 
     private static IEnumerable<Status> GetStatus(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)

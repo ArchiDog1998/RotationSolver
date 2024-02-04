@@ -3,7 +3,7 @@
 [Description("Action Condition")]
 internal class ActionCondition : DelayCondition
 {
-    internal IBaseAction _action = null!;
+    internal IBaseAction? _action = null;
 
     public ActionID ID { get; set; } = ActionID.None;
 
@@ -20,6 +20,8 @@ internal class ActionCondition : DelayCondition
 
     protected override bool IsTrueInside(ICustomRotation rotation)
     {
+        if (_action == null) return false;
+
         switch (ActionConditionType)
         {
             case ActionConditionType.Elapsed:

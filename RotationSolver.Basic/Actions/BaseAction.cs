@@ -119,18 +119,19 @@ public class BaseAction : IBaseAction
         if (TargetInfo.TargetArea)
         {
             if (adjustId != ID) return false;
+            if (!target.Position.HasValue) return false;
 
             var loc = (FFXIVClientStructs.FFXIV.Common.Math.Vector3)target.Position;
 
             return ActionManager.Instance()->UseActionLocation(ActionType.Action, ID, Player.Object.ObjectId, &loc);
         }
-        else if (Svc.Objects.SearchById(target.Target.ObjectId) == null)
+        else if (Svc.Objects.SearchById(target.Target?.ObjectId ?? GameObject.InvalidGameObjectId) == null)
         {
             return false;
         }
         else
         {
-            return ActionManager.Instance()->UseAction(ActionType.Action, adjustId, target.Target.ObjectId);
+            return ActionManager.Instance()->UseAction(ActionType.Action, adjustId, target.Target?.ObjectId ?? GameObject.InvalidGameObjectId);
         }
     }
 }

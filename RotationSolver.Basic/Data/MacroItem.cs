@@ -7,31 +7,25 @@ namespace RotationSolver.Basic.Data;
 /// <summary>
 /// The class to handle the event of macro.
 /// </summary>
-public unsafe class MacroItem
+/// <remarks>
+/// Constructer
+/// </remarks>
+/// <param name="target"></param>
+/// <param name="macro"></param>
+public unsafe class MacroItem(GameObject? target, RaptureMacroModule.Macro* macro)
 {
-    private GameObject _lastTarget;
-    RaptureMacroModule.Macro* _macro;
+    private GameObject? _lastTarget;
+    readonly RaptureMacroModule.Macro* _macro = macro;
 
     /// <summary>
     /// The target of this macro.
     /// </summary>
-    public GameObject Target { get; }
+    public GameObject? Target { get; } = target;
 
     /// <summary>
     /// Is macro running.
     /// </summary>
     public bool IsRunning { get; private set; }
-
-    /// <summary>
-    /// Constructer
-    /// </summary>
-    /// <param name="target"></param>
-    /// <param name="macro"></param>
-    public MacroItem(GameObject target, RaptureMacroModule.Macro* macro)
-    {
-        _macro = macro;
-        Target = target;
-    }
 
     /// <summary>
     /// Start running the macro.

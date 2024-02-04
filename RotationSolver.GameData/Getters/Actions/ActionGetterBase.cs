@@ -10,7 +10,7 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
     protected override void BeforeCreating()
     {
         AddedNames.Clear();
-        _notCombatJobs = [.. gameData.GetExcelSheet<ClassJob>()!.Where(c =>
+        _notCombatJobs = [.. _gameData.GetExcelSheet<ClassJob>()!.Where(c =>
         {
             return c.ClassJobCategory.Row is 32 or 33;
         }).Select(c => c.Abbreviation.RawString)];
@@ -68,7 +68,7 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
 
     protected string GetDesc(Action item)
     {
-        var desc = gameData.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description.RawString ?? string.Empty;
+        var desc = _gameData.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description.RawString ?? string.Empty;
 
         return $"<para>{desc.Replace("\n", "</para>\n/// <para>")}</para>";
     }

@@ -149,8 +149,8 @@ public static class IconSet
             if (!_actionIcons.TryGetValue(id, out iconId))
             {
                 iconId = id == action.ID ? action.IconID : action is IBaseAction
-                    ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
-                    : Service.GetSheet<Item>().GetRow(id).Icon;
+                    ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id)!.Icon
+                    : Service.GetSheet<Item>().GetRow(id)!.Icon;
 
                 _actionIcons[id] = iconId;
             }
@@ -172,8 +172,8 @@ public static class IconSet
         if (!_actionIcons.TryGetValue(id, out var iconId))
         {
             iconId = isAction
-                ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id).Icon
-                : Service.GetSheet<Item>().GetRow(id).Icon;
+                ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id)!.Icon
+                : Service.GetSheet<Item>().GetRow(id)!.Icon;
 
             _actionIcons[id] = iconId;
         }
@@ -296,6 +296,7 @@ public static class IconSet
     /// <summary>
     /// Get job Icon from rotation.
     /// </summary>
+    /// <param name="role"></param>
     /// <param name="job"></param>
     /// <returns></returns>
     public static uint GetJobIcon(JobRole role, Job job)

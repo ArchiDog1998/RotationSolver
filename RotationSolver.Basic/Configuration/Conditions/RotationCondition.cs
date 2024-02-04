@@ -86,7 +86,7 @@ internal class RotationCondition : DelayCondition
             case ComboConditionType.Last:
                 try
                 {
-                    if (_method?.Invoke(rotation, new object[] { Param1 > 0, new IAction[] { _action } }) is bool boo)
+                    if (_method?.Invoke(rotation, new object[] { Param1 > 0, new IAction?[] { _action } }) is bool boo)
                     {
                         return boo;
                     }

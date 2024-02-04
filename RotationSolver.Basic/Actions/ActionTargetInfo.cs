@@ -303,7 +303,7 @@ public struct ActionTargetInfo(IBaseAction _action)
                 if (Svc.Targets.Target != null && Svc.Targets.Target.DistanceToPlayer() < range)
                 {
                     var target = Svc.Targets.Target as BattleChara;
-                    return new(target, [.. GetAffects(target.Position, canAffects)], target.Position);
+                    return new(target, [.. GetAffects(target?.Position, canAffects)], target?.Position);
                 }
                 break;
         }
@@ -341,11 +341,12 @@ public struct ActionTargetInfo(IBaseAction _action)
         }
     }
 
-    private readonly IEnumerable<BattleChara> GetAffects(Vector3 point, IEnumerable<BattleChara> canAffects)
+    private readonly IEnumerable<BattleChara> GetAffects(Vector3? point, IEnumerable<BattleChara> canAffects)
     {
+        if (point == null) yield break;
         foreach (var t in canAffects)
         {
-            if (Vector3.Distance(point, t.Position) - t.HitboxRadius <= EffectRange)
+            if (Vector3.Distance(point.Value, t.Position) - t.HitboxRadius <= EffectRange)
             {
                 yield return t;
             }
@@ -780,4 +781,4 @@ public enum TargetType : byte
 
 }
 
-public readonly record struct TargetResult(BattleChara Target, BattleChara[] AffectedTargets, Vector3 Position);
+public readonly record struct TargetResult(BattleChara? Target, BattleChara[] AffectedTargets, Vector3? Position);
