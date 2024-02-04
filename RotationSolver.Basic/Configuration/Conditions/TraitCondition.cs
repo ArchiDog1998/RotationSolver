@@ -3,10 +3,11 @@ using RotationSolver.Basic.Traits;
 
 namespace RotationSolver.Basic.Configuration.Conditions;
 
+[Description("Trait Condition")]
 internal class TraitCondition : DelayCondition
 {
     public uint TraitID { get; set; } = 0;
-    internal IBaseTrait _trait;
+    internal IBaseTrait? _trait;
 
     public override bool CheckBefore(ICustomRotation rotation)
     {

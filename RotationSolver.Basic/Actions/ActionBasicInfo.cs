@@ -33,6 +33,16 @@ public struct ActionBasicInfo
     /// </summary>
     public readonly unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Action, AdjustedID) / 1000f;
 
+    public readonly unsafe uint MPNeed
+    {
+        get
+        {
+            var mp = (uint)ActionManager.GetActionCost(ActionType.Action, AdjustedID, 0, 0, 0, 0);
+            if (mp < 100) return 0;
+            return mp;
+        }
+    }
+
     public readonly bool IsOnSlot
     {
         get
@@ -75,6 +85,7 @@ public struct ActionBasicInfo
         if (DataCenter.DisabledActionSequencer?.Contains(ID) ?? false) return false;
 
         if (!EnoughLevel) return false;
+        if (DataCenter.CurrentMp < MPNeed) return false;
 
         var player = Player.Object;
 

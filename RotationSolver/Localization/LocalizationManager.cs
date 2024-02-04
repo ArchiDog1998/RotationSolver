@@ -19,6 +19,11 @@ internal static class LocalizationManager
         return (member.DeclaringType?.FullName ?? string.Empty + "." + member.ToString()).Local(member.GetCustomAttribute<DescriptionAttribute>()?.Description ?? member.ToString()!);
     }
 
+    public static string Local(this Type type)
+    {
+        return (type.FullName ?? type.Name).Local(type.GetCustomAttribute<DescriptionAttribute>()?.Description ?? type.ToString()!);
+    }
+
     public static string Local(this string key, string @default)
     {
         if (_rightLang.TryGetValue(key, out var value)) return value;

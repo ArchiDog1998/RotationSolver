@@ -49,15 +49,7 @@ public class BaseAction : IBaseAction
     }
 
     public bool EnoughLevel => Info.EnoughLevel;
-    public virtual unsafe uint MPNeed
-    {
-        get
-        {
-            var mp = (uint)ActionManager.GetActionCost(ActionType.Action, AdjustedID, 0, 0, 0, 0);
-            if (mp < 100) return 0;
-            return mp;
-        }
-    }
+
 
     public ActionSetting Setting { get; set; }
 
@@ -105,7 +97,6 @@ public class BaseAction : IBaseAction
         if (!Info.BasicCheck(skipStatusProvideCheck, skipCombo, ignoreCastingCheck)) return false;
         if (!Cooldown.CooldownCheck(isEmpty, onLastAbility, ignoreClippingCheck, gcdCountForAbility)) return false;
 
-        if (DataCenter.CurrentMp < MPNeed) return false;
         if (Setting.IsFriendly && DataCenter.AverageTimeToKill < Config.TimeToKill) return false;
 
         PreviewTarget = TargetInfo.FindTarget(skipAoeCheck);

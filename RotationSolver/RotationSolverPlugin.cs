@@ -47,6 +47,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new JsonSerializerSettings()
                 {
                     TypeNameHandling = TypeNameHandling.Objects,
+                    MissingMemberHandling = MissingMemberHandling.Error,
+                    Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
+                    {
+                        args.ErrorContext.Handled = true;
+                    }!,
                 })
                 ?? new ConfigsNew();
         }
@@ -85,7 +90,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             if (id == 1)
             {
-                Service.Config.HideWarning = true;
+                Service.Config.HideWarning.Value = true;
                 Svc.Chat.Print("Warning has been hidden.");
             }
         });

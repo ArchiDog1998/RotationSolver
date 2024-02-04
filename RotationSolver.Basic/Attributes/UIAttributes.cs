@@ -10,6 +10,8 @@ public class UIAttribute(string name) : Attribute
     public byte Order { get; set; } = 0;
     public byte Section { get; set; } = 0;
 
+    public ActionID Action { get; set; }
+
     public JobFilterType PvPFilter { get; set; }
     public JobFilterType PvEFilter { get; set; }
 }
@@ -21,7 +23,7 @@ public enum JobFilterType : byte
     Healer,
     Raise,
     Interrupt,
-    Esuna,
+    Dispel,
     Tank, 
     Melee,
 }

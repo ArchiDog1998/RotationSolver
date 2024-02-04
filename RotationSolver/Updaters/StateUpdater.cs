@@ -148,7 +148,7 @@ internal static class StateUpdater
             {
                 status |= AutoStatus.Dispel;
             }
-            else if (!DataCenter.HasHostilesInRange || Service.Config.EsunaAll
+            else if (!DataCenter.HasHostilesInRange || Service.Config.DispelAll
             || (DataCenter.Territory?.IsPvpZone ?? false))
             {
                 status |= AutoStatus.Dispel;

@@ -23,7 +23,7 @@ internal static class ImGuiHelper
 
     const float INDENT_WIDTH = 180;
 
-    internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string>? getHelp = null, bool sameLine = true) where T : struct, Enum
+    internal static void DisplayCommandHelp(this Enum command, string extraCommand = "", Func<Enum, string>? getHelp = null, bool sameLine = true)
     {
         var cmdStr = command.GetCommandStr(extraCommand);
 

@@ -55,7 +55,7 @@ internal readonly struct JobFilter
                 ];
                 break;
 
-            case JobFilterType.Esuna:
+            case JobFilterType.Dispel:
                 JobRoles =
                 [
                     JobRole.Healer,

@@ -1,5 +1,6 @@
 ﻿namespace RotationSolver.Basic.Configuration.Conditions;
 
+[Description("Territory Condition")]
 internal class TerritoryCondition : DelayCondition
 {
     public TerritoryConditionType TerritoryConditionType = TerritoryConditionType.TerritoryContentType;

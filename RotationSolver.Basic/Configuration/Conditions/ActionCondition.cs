@@ -1,5 +1,6 @@
 ﻿namespace RotationSolver.Basic.Configuration.Conditions;
 
+[Description("Action Condition")]
 internal class ActionCondition : DelayCondition
 {
     internal IBaseAction _action = null!;

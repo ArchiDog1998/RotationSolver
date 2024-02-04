@@ -3,13 +3,13 @@
 internal class RotationCondition : DelayCondition
 {
     public ComboConditionType ComboConditionType = ComboConditionType.Float;
-    internal PropertyInfo _prop;
+    internal PropertyInfo? _prop;
     public string PropertyName = "Not Chosen";
 
-    MethodInfo _method;
+    MethodInfo? _method;
     public string MethodName = "Not Chosen";
 
-    internal IBaseAction _action;
+    internal IBaseAction? _action;
     public ActionID ID { get; set; } = ActionID.None;
 
     public int Condition;

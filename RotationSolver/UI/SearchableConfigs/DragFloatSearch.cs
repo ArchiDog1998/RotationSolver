@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.UI.SearchableConfigs;
+﻿using RotationSolver.Localization;
+
+namespace RotationSolver.UI.SearchableConfigs;
 
 internal class DragFloatSearch : Searchable
 {

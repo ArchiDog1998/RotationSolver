@@ -60,7 +60,7 @@ internal abstract class DelayCondition : ICondition
         return true;
     }
 
-    internal static bool CheckMemberInfo<T>(ICustomRotation rotation, ref string name, ref T value) where T : MemberInfo
+    internal static bool CheckMemberInfo<T>(ICustomRotation? rotation, ref string name, ref T value) where T : MemberInfo
     {
         if (rotation == null) return false;
 

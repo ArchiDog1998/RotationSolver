@@ -19,7 +19,7 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <summary>
     /// 
     /// </summary>
-    unsafe float RecastTimeElapsedRaw => CoolDownDetail == null ? 0 : CoolDownDetail->Elapsed;
+    internal unsafe float RecastTimeElapsedRaw => CoolDownDetail == null ? 0 : CoolDownDetail->Elapsed;
     float ICooldown.RecastTimeElapsedRaw => RecastTimeElapsedRaw;
     /// <summary>
     /// 
@@ -43,7 +43,7 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// </summary>
     public ushort CurrentCharges => IsCoolingDown ? (ushort)(RecastTimeElapsedRaw / RecastTimeOneChargeRaw) : MaxCharges;
 
-    float RecastTimeOneChargeRaw => ActionManager.GetAdjustedRecastTime(ActionType.Action, _action.Info.AdjustedID) / 1000f;
+    internal float RecastTimeOneChargeRaw => ActionManager.GetAdjustedRecastTime(ActionType.Action, _action.Info.AdjustedID) / 1000f;
 
     float ICooldown.RecastTimeOneChargeRaw => RecastTimeOneChargeRaw;
 

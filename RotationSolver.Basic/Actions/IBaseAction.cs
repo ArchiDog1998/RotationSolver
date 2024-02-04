@@ -15,7 +15,6 @@ public interface IBaseAction : IAction
     TargetResult? Target { get; }
     TargetResult? PreviewTarget { get; }
     ActionTargetInfo TargetInfo { get; }
-
     ActionBasicInfo Info { get; }
     new ActionCooldownInfo Cooldown { get; }
     ActionSetting Setting { get; set; }

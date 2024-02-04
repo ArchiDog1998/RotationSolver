@@ -28,7 +28,7 @@ public interface IAction : ITexture, IEnoughLevel
     /// <summary>
     /// Is in cd window.
     /// </summary>
-    bool IsInCooldown { get; }
+    bool IsInCooldown { get; set; }
 
     /// <summary>
     /// The cd information.

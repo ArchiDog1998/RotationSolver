@@ -140,6 +140,7 @@ internal abstract class CheckBoxSearch : Searchable
     internal CheckBoxSearch(PropertyInfo property, params ISearchable[] children)
         :base(property)
     {
+        Action = property.GetCustomAttribute<UIAttribute>()?.Action ?? ActionID.None;
         foreach (var child in children)
         {
             AddChild(child);

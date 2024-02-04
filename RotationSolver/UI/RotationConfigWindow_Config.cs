@@ -403,153 +403,8 @@ public partial class RotationConfigWindow
         ImGui.TextWrapped("ConfigWindow_Auto_ActionCondition_Description".Local("This will change the way that Rotation Solver uses actions."));
         ImGui.Separator();
 
-        foreach (var searchable in _autoActionConditionSearchable_General)
-        {
-            searchable?.Draw();
-        }
-
-        ImGui.Separator();
-
-        foreach (var searchable in _autoActionConditionSearchable_Heal)
-        {
-            searchable?.Draw();
-        }
-
-        ImGui.Separator();
-
-        foreach (var searchable in _autoActionConditionSearchable_Raise)
-        {
-            searchable?.Draw();
-        }
-
-        ImGui.Separator();
-
-        foreach (var searchable in _autoActionConditionSearchable_Others)
-        {
-            searchable?.Draw();
-        }
+        _allSearchables.DrawItems(ConfigsNew.AutoActionCondition);
     }
-
-    private static readonly ISearchable[] _autoActionConditionSearchable_General = new ISearchable[]
-    {
-        new CheckBoxSearchPlugin(PluginConfigBool.AutoBurst),
-
-        new DragIntSearchJob(JobConfigInt.AddDotGCDCount, 0.01f),
-    };
-
-    private static readonly ISearchable[] _autoActionConditionSearchable_Heal = new ISearchable[]
-    {
-        new AutoHealCheckBox(
-            new CheckBoxSearchPlugin(PluginConfigBool.UseHealWhenNotAHealer)
-            {
-                PvEFilter = JobFilter.NoHealer,
-                PvPFilter = JobFilter.NoJob,
-            },
-
-            new DragFloatSearchPlugin(PluginConfigFloat.AutoHealTimeToKill, 0.02f),
-            new DragFloatSearchPlugin(PluginConfigFloat.HealthDifference, 0.02f)),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHealSelfWhenNoHealer)
-        {
-            PvEFilter = JobFilter.NoHealer,
-            PvPFilter = JobFilter.NoHealer,
-        },
-
-        new CheckBoxSearchPlugin(PluginConfigBool.OnlyHotOnTanks)
-        {
-            PvEFilter = JobFilter.Healer,
-            PvPFilter = JobFilter.Healer,
-        },
-
-        new CheckBoxSearchPlugin(PluginConfigBool.HealOutOfCombat),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.HealWhenNothingTodo,
-            new DragFloatSearchPlugin(PluginConfigFloat.HealWhenNothingTodoBelow, 0.002f),
-            new DragFloatRangeSearchPlugin(PluginConfigFloat.HealWhenNothingTodoMin,
-                PluginConfigFloat.HealWhenNothingTodoMax, 0.05f)),
-
-        new DragFloatSearchPlugin(PluginConfigFloat.HealthHealerRatio, 0.02f)
-            {
-                PvEFilter = JobFilter.Healer,
-                PvPFilter = JobFilter.Healer,
-            },
-        new DragFloatSearchPlugin(PluginConfigFloat.HealthTankRatio, 0.02f)
-            {
-                PvEFilter = JobFilter.Healer,
-                PvPFilter = JobFilter.Healer,
-            },
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.HealDelayMin, PluginConfigFloat.HealDelayMax, 0.002f),
-    };
-
-    private static readonly ISearchable[] _autoActionConditionSearchable_Raise = new ISearchable[]
-    {
-        new CheckBoxSearchPlugin(PluginConfigBool.RaisePlayerByCasting)
-            {
-                PvEFilter = JobFilter.Raise,
-                PvPFilter = JobFilter.NoJob,
-            },
-        new CheckBoxSearchPlugin(PluginConfigBool.RaiseAll)
-            {
-                PvEFilter = JobFilter.Raise,
-                PvPFilter = JobFilter.NoJob,
-            },
-        new CheckBoxSearchPlugin(PluginConfigBool.RaiseBrinkOfDeath)
-            {
-                PvEFilter = JobFilter.Raise,
-                PvPFilter = JobFilter.NoJob,
-            },
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.DeathDelayMin, PluginConfigFloat.DeathDelayMax, 0.002f)
-            {
-                PvEFilter = JobFilter.Raise,
-                PvPFilter = JobFilter.NoJob,
-            },
-    };
-
-    private static readonly ISearchable[] _autoActionConditionSearchable_Others = new ISearchable[]
-    {
-        new CheckBoxSearchPlugin(PluginConfigBool.InterruptibleMoreCheck)
-            {
-                PvEFilter = JobFilter.Interrupt,
-                PvPFilter = JobFilter.NoJob,
-            },
-
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.InterruptDelayMin, PluginConfigFloat.InterruptDelayMax, 0.002f)
-            {
-                PvEFilter = JobFilter.Interrupt,
-                PvPFilter = JobFilter.NoJob,
-            },
-
-
-        new CheckBoxSearchPlugin(PluginConfigBool.EsunaAll)
-            {
-                PvEFilter = JobFilter.Esuna,
-                PvPFilter = JobFilter.NoJob,
-            },
-
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.WeakenDelayMin, PluginConfigFloat.WeakenDelayMax, 0.002f)
-            {
-                PvEFilter = JobFilter.Esuna,
-            },
-
-
-        new DragFloatSearchJob(JobConfigFloat.HealthForDyingTanks, 0.02f)
-            {
-                PvEFilter = JobFilter.Tank,
-                PvPFilter = JobFilter.NoJob,
-            },
-
-        new DragFloatSearchPlugin(PluginConfigFloat.HealthForGuard, 0.02f)
-            {
-                PvEFilter = JobFilter.NoJob,
-            },
-
-        new DragFloatSearchPlugin(PluginConfigFloat.MeleeRangeOffset, 0.02f)
-        {
-            PvEFilter = JobFilter.Melee,
-            PvPFilter = JobFilter.NoJob,
-        },
-    };
-
     #endregion
 
     #region Target
@@ -560,132 +415,64 @@ public partial class RotationConfigWindow
 
     private static readonly CollapsingHeaderGroup _targetHeader = new(new()
     {
-        { () => LocalizationManager._rightLang.ConfigWindow_Target_Config, DrawTargetConfig },
-        { () => LocalizationManager._rightLang.ConfigWindow_List_Hostile, DrawTargetHostile },
+        { () => "ConfigWindow_Target_Config".Local( "Configuration"), DrawTargetConfig },
+        { () => "ConfigWindow_List_Hostile".Local( "Hostile"), DrawTargetHostile },
     });
 
     private static void DrawTargetConfig()
     {
-        foreach (var searchable in _targetHostileSearchable)
-        {
-            searchable?.Draw();
-        }
-        ImGui.Separator();
-        foreach (var searchable in _targetHostileSelectSearchable)
-        {
-            searchable?.Draw();
-        }
-        ImGui.Separator();
-        foreach (var searchable in _targetMovingSearchable)
-        {
-            searchable?.Draw();
-        }
-        ImGui.Separator();
-        foreach (var searchable in _targetOtherSearchable)
-        {
-            searchable?.Draw();
-        }
+        _allSearchables.DrawItems(ConfigsNew.TargetConfig);
     }
-
-    private static readonly ISearchable[] _targetHostileSearchable = new ISearchable[]
-    {
-        new DragIntSearchJob(JobConfigInt.HostileType, () => new string []{
-            LocalizationManager._rightLang.ConfigWindow_Param_TargetToHostileType1,
-            LocalizationManager._rightLang.ConfigWindow_Param_TargetToHostileType2,
-            LocalizationManager._rightLang.ConfigWindow_Param_TargetToHostileType3
-        })
-        {
-            PvPFilter = JobFilter.NoJob,
-        },
-
-        new CheckBoxSearchPlugin(PluginConfigBool.AddEnemyListToHostile, new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInEnemyList)),
-        new CheckBoxSearchPlugin(PluginConfigBool.FilterStopMark),
-        new CheckBoxSearchPlugin(PluginConfigBool.ChooseAttackMark, new ISearchable[]
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.CanAttackMarkAOE),
-        }),
-
-        new DragFloatRangeSearchPlugin(PluginConfigFloat.HostileDelayMin, PluginConfigFloat.HostileDelayMax, 0.002f),
-    };
-
-    private static readonly ISearchable[] _targetHostileSelectSearchable = new ISearchable[]
-    {
-        new DragFloatSearchPlugin(PluginConfigFloat.BossTimeToKill, 0.02f),
-        new DragFloatSearchPlugin(PluginConfigFloat.DyingTimeToKill, 0.02f),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInView),
-        new CheckBoxSearchPlugin(PluginConfigBool.OnlyAttackInVisionCone,
-            new DragFloatSearchPlugin(PluginConfigFloat.AngleOfVisionCone, 0.02f)),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.ChangeTargetForFate),
-        new CheckBoxSearchPlugin(PluginConfigBool.TargetFatePriority),
-        new CheckBoxSearchPlugin(PluginConfigBool.TargetHuntingRelicLevePriority),
-        new CheckBoxSearchPlugin(PluginConfigBool.TargetQuestPriority),
-    };
-
-    private static readonly ISearchable[] _targetMovingSearchable = new ISearchable[]
-    {
-        new CheckBoxSearchPlugin(PluginConfigBool.MoveTowardsScreenCenter),
-        new CheckBoxSearchPlugin(PluginConfigBool.MoveAreaActionFarthest),
-        new DragFloatSearchPlugin(PluginConfigFloat.MoveTargetAngle, 0.02f),
-        new DragFloatSearchPlugin(PluginConfigFloat.DistanceForMoving, 1f),
-    };
-
-    private static readonly ISearchable[] _targetOtherSearchable = new ISearchable[]
-    {
-        new CheckBoxSearchPlugin(PluginConfigBool.TargetAllForFriendly),
-        new CheckBoxSearchPlugin(PluginConfigBool.SwitchTargetFriendly),
-    };
 
     private static void DrawTargetHostile()
     {
         if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "Add Hostile"))
         {
-            Service.Config.GlobalConfig.TargetingTypes.Add(TargetingType.Big);
+            Service.Config.TargetingTypes.Add(TargetingType.Big);
         }
         ImGui.SameLine();
-        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Param_HostileDesc);
+        ImGui.TextWrapped("ConfigWindow_Param_HostileDesc".Local("You can The logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle."));
 
-        for (int i = 0; i < Service.Config.GlobalConfig.TargetingTypes.Count; i++)
+        for (int i = 0; i < Service.Config.TargetingTypes.Count; i++)
         {
-            var targetType = Service.Config.GlobalConfig.TargetingTypes[i];
+            var targetType = Service.Config.TargetingTypes[i];
 
             void Delete()
             {
-                Service.Config.GlobalConfig.TargetingTypes.RemoveAt(i);
+                Service.Config.TargetingTypes.RemoveAt(i);
             };
 
             void Up()
             {
-                Service.Config.GlobalConfig.TargetingTypes.RemoveAt(i);
-                Service.Config.GlobalConfig.TargetingTypes.Insert(Math.Max(0, i - 1), targetType);
+                Service.Config.TargetingTypes.RemoveAt(i);
+                Service.Config.TargetingTypes.Insert(Math.Max(0, i - 1), targetType);
             };
             void Down()
             {
-                Service.Config.GlobalConfig.TargetingTypes.RemoveAt(i);
-                Service.Config.GlobalConfig.TargetingTypes.Insert(Math.Min(Service.Config.GlobalConfig.TargetingTypes.Count - 1, i + 1), targetType);
+                Service.Config.TargetingTypes.RemoveAt(i);
+                Service.Config.TargetingTypes.Insert(Math.Min(Service.Config.TargetingTypes.Count - 1, i + 1), targetType);
             }
 
             var key = $"Targeting Type Pop Up: {i}";
 
             ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                (LocalizationManager._rightLang.ConfigWindow_List_Remove, Delete, new string[] { "Delete" }),
-                (LocalizationManager._rightLang.ConfigWindow_Actions_MoveUp, Up, new string[] { "↑" }),
-                (LocalizationManager._rightLang.ConfigWindow_Actions_MoveDown, Down, new string[] { "↓" }));
+                ("ConfigWindow_List_Remove".Local("Remove"), Delete, ["Delete"]),
+                ("ConfigWindow_Actions_MoveUp".Local("Move Up"), Up, ["↑"]),
+                ("ConfigWindow_Actions_MoveDown".Local("Move Down"), Down, ["↓"]));
 
             var names = Enum.GetNames(typeof(TargetingType));
-            var targingType = (int)Service.Config.GlobalConfig.TargetingTypes[i];
-            var text = LocalizationManager._rightLang.ConfigWindow_Param_HostileCondition;
+            var targingType = (int)Service.Config.TargetingTypes[i];
+            var text = "ConfigWindow_Param_HostileCondition".Local("Hostile target selection condition");
             ImGui.SetNextItemWidth(ImGui.CalcTextSize(text).X + 30 * Scale);
             if (ImGui.Combo(text + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
             {
-                Service.Config.GlobalConfig.TargetingTypes[i] = (TargetingType)targingType;
+                Service.Config.TargetingTypes[i] = (TargetingType)targingType;
             }
 
             ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
-                (Delete, new VirtualKey[] { VirtualKey.DELETE }),
-                (Up, new VirtualKey[] { VirtualKey.UP }),
-                (Down, new VirtualKey[] { VirtualKey.DOWN }));
+                (Delete, [VirtualKey.DELETE]),
+                (Up, [VirtualKey.UP]),
+                (Down, [VirtualKey.DOWN]));
         }
     }
     #endregion
@@ -693,82 +480,47 @@ public partial class RotationConfigWindow
     #region Extra
     private static void DrawExtra()
     {
-        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Extra_Description);
+        ImGui.TextWrapped("ConfigWindow_Extra_Description".Local("Rotation Solver focuses on the rotation itself. These are side features. If there are some other plugins can do that, these features will be deleted."));
         _extraHeader?.Draw();
     }
     private static readonly CollapsingHeaderGroup _extraHeader = new(new()
     {
-        { () => LocalizationManager._rightLang.ConfigWindow_EventItem, DrawEventTab },
+        { () => "ConfigWindow_EventItem".Local("Event"), DrawEventTab },
 
-        { () => LocalizationManager._rightLang.ConfigWindow_Extra_Others, () =>
-            {
-                foreach (var searchable in _extraSearchable)
-                {
-                    searchable?.Draw();
-                }
-            }
+        { 
+            () => "ConfigWindow_Extra_Others".Local("Others"), 
+            () => _allSearchables.DrawItems(ConfigsNew.Extra)
         },
     });
 
-    private static readonly ISearchable[] _extraSearchable = new ISearchable[]
-    {
-        new CheckBoxSearchPlugin(PluginConfigBool.PoslockCasting,
-        new DragIntSearchPlugin(PluginConfigInt.PoslockModifier, () => new string[]{ "CTRL", "SHIFT", "ALT" }),
-        new CheckBoxSearchPlugin(PluginConfigBool.PosPassageOfArms)
-        {
-            Action = ActionID.PassageOfArms
-        },
-        new CheckBoxSearchPlugin(PluginConfigBool.PosTenChiJin)
-        {
-            Action = ActionID.TenChiJin
-        },
-        new CheckBoxSearchPlugin(PluginConfigBool.PosFlameThrower)
-        {
-            Action = ActionID.FlameThrower
-        },
-        new CheckBoxSearchPlugin(PluginConfigBool.PosImprovisation)
-        {
-            Action = ActionID.Improvisation
-        }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.UseStopCasting,new ISearchable[]
-        {
-            new DragFloatRangeSearchPlugin(PluginConfigFloat.StopCastingDelayMin, PluginConfigFloat.StopCastingDelayMax, 0.002f)
-        }),
-
-        new CheckBoxSearchPlugin(PluginConfigBool.AutoOpenChest, new ISearchable[]
-        {
-            new CheckBoxSearchPlugin(PluginConfigBool.AutoCloseChestWindow),
-        }),
-    };
     private static void DrawEventTab()
     {
-        if (ImGui.Button(LocalizationManager._rightLang.ConfigWindow_Events_AddEvent))
+        if (ImGui.Button("ConfigWindow_Events_AddEvent".Local("Add Events")))
         {
-            Service.Config.GlobalConfig.Events.Add(new ActionEventInfo());
+            Service.Config.Events.Add(new ActionEventInfo());
         }
         ImGui.SameLine();
 
-        ImGui.TextWrapped(LocalizationManager._rightLang.ConfigWindow_Events_Description);
+        ImGui.TextWrapped("ConfigWindow_Events_Description".Local("In this window, you can set what macro will be trigger after using an action."));
 
-        ImGui.Text(LocalizationManager._rightLang.ConfigWindow_Events_DutyStart);
+        ImGui.Text("ConfigWindow_Events_DutyStart".Local("Duty Start: "));
         ImGui.SameLine();
-        Service.Config.GlobalConfig.DutyStart.DisplayMacro();
+        Service.Config.DutyStart.DisplayMacro();
 
-        ImGui.Text(LocalizationManager._rightLang.ConfigWindow_Events_DutyEnd);
+        ImGui.Text("ConfigWindow_Events_DutyEnd".Local("Duty End: "));
         ImGui.SameLine();
-        Service.Config.GlobalConfig.DutyEnd.DisplayMacro();
+        Service.Config.DutyEnd.DisplayMacro();
 
         ImGui.Separator();
 
-        ActionEventInfo remove = null;
-        foreach (var eve in Service.Config.GlobalConfig.Events)
+        ActionEventInfo? remove = null;
+        foreach (var eve in Service.Config.Events)
         {
             eve.DisplayEvent();
 
             ImGui.SameLine();
 
-            if (ImGui.Button($"{LocalizationManager._rightLang.ConfigWindow_Events_RemoveEvent}##RemoveEvent{eve.GetHashCode()}"))
+            if (ImGui.Button($"{"ConfigWindow_Events_RemoveEvent".Local("Delete Event")}##RemoveEvent{eve.GetHashCode()}"))
             {
                 remove = eve;
             }
@@ -776,7 +528,7 @@ public partial class RotationConfigWindow
         }
         if (remove != null)
         {
-            Service.Config.GlobalConfig.Events.Remove(remove);
+            Service.Config.Events.Remove(remove);
         }
     }
     #endregion

@@ -135,19 +135,6 @@ internal class SearchableCollection
 
         return results;
 
-        static float Similarity(string text, string key)
-        {
-            if (string.IsNullOrEmpty(text)) return 0;
-
-            var chars = text.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
-            var keys = key.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
-
-            var startWithCount = chars.Count(i => keys.Any(k => i.StartsWith(k, StringComparison.OrdinalIgnoreCase)));
-
-            var containCount = chars.Count(i => keys.Any(k => i.Contains(k, StringComparison.OrdinalIgnoreCase)));
-
-            return startWithCount * 3 + containCount;
-        }
 
         static IEnumerable<ISearchable> GetChildren(ISearchable searchable)
         {
@@ -165,4 +152,19 @@ internal class SearchableCollection
             return GetParent(searchable.Parent);
         }
     }
+
+    public static float Similarity(string text, string key)
+    {
+        if (string.IsNullOrEmpty(text)) return 0;
+
+        var chars = text.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
+        var keys = key.Split(_splitChar, StringSplitOptions.RemoveEmptyEntries);
+
+        var startWithCount = chars.Count(i => keys.Any(k => i.StartsWith(k, StringComparison.OrdinalIgnoreCase)));
+
+        var containCount = chars.Count(i => keys.Any(k => i.Contains(k, StringComparison.OrdinalIgnoreCase)));
+
+        return startWithCount * 3 + containCount;
+    }
+
 }

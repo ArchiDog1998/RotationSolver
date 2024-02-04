@@ -56,8 +56,7 @@ public static partial class RSCommands
         }
     }
 
-    internal static string GetCommandStr<T>(this T command, string extraCommand = "")
-        where T : struct, Enum
+    internal static string GetCommandStr(this Enum command, string extraCommand = "")
     {
         var cmdStr = Service.COMMAND + " " + command.ToString();
         if (!string.IsNullOrEmpty(extraCommand))

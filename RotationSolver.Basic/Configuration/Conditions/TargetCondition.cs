@@ -4,13 +4,14 @@ using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Configuration.Conditions;
 
+[Description("Target Condition")]
 internal class TargetCondition : DelayCondition
 {
-    internal IBaseAction _action;
+    internal IBaseAction? _action;
     public ActionID ID { get; set; } = ActionID.None;
 
     public bool FromSelf;
-    internal Status Status;
+    internal Status? Status;
     public StatusID StatusId { get; set; }
     public TargetType TargetType;
     public TargetConditionType TargetConditionType;
@@ -237,8 +238,13 @@ internal class TargetCondition : DelayCondition
 
 internal enum TargetType : byte
 {
+    [Description("Hostile Target")]
     HostileTarget,
+
+    [Description("Player")]
     Player,
+
+    [Description("Target")]
     Target,
 }
 
