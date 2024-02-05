@@ -122,13 +122,13 @@ public struct ActionTargetInfo(IBaseAction _action)
         if (_action.Setting.TargetStatusProvide != null)
         {
             if (!gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
-                _action.Setting.TargetStatusFromSelf, _action.Setting.TargetStatusProvide)) return false;
+                _action.Setting.StatusFromSelf, _action.Setting.TargetStatusProvide)) return false;
         }
 
         if (_action.Setting.TargetStatusNeed != null)
         {
             if (gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
-                _action.Setting.TargetStatusFromSelf, _action.Setting.TargetStatusNeed)) return false;
+                _action.Setting.StatusFromSelf, _action.Setting.TargetStatusNeed)) return false;
         }
 
         return true;

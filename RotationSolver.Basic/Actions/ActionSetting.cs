@@ -5,7 +5,7 @@
 /// </summary>
 public class ActionSetting()
 {
-    public bool TargetStatusFromSelf { get; set; } = true;
+    public bool StatusFromSelf { get; set; } = true;
     public StatusID[]? TargetStatusProvide { get; set; } = null;
     public StatusID[]? TargetStatusNeed { get; set; } = null;
     public Func<BattleChara, bool> CanTarget { get; set; } = t => true;
@@ -23,6 +23,9 @@ public class ActionSetting()
     public StatusID[]? StatusNeed { get; set; } = null;
 
     public Func<bool>? ActionCheck { get; set; } = null;
+
+    public Func<ActionConfig>? CreateConfig { get; set; } = null;
+
 
     public bool IsFriendly { get; set; }
 

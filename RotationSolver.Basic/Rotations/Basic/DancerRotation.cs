@@ -1,26 +1,13 @@
-﻿//using ECommons.DalamudServices;
-//using ECommons.ExcelServices;
-//using RotationSolver.Basic.Traits;
+﻿//using RotationSolver.Basic.Traits;
 
 //namespace RotationSolver.Basic.Rotations.Basic;
 
-///// <summary>
-///// The base class of Dancer.
-///// </summary>
-//public abstract class DNC_Base : CustomRotation
+//partial class DancerRotation
 //{
 //    /// <summary>
 //    /// 
 //    /// </summary>
 //    public override MedicineType MedicineType => MedicineType.Dexterity;
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public sealed override Job[] Jobs => new[] { Job.DNC };
-
-//    #region Job Gauge
-//    static DNCGauge JobGauge => Svc.Gauges.Get<DNCGauge>();
 
 //    /// <summary>
 //    /// 
@@ -41,161 +28,107 @@
 //    /// 
 //    /// </summary>
 //    public static byte CompletedSteps => JobGauge.CompletedSteps;
-//    #endregion
 
-//    #region Attack Single
-//    /// <summary>
-//    /// 1
-//    /// </summary>
-//    public static IBaseAction Cascade { get; } = new BaseAction(ActionID.Cascade)
+//    static partial void ModifyCascadePvE(ref ActionSetting setting)
 //    {
-//        StatusProvide = new[] { StatusID.SilkenSymmetry }
-//    };
+//        setting.StatusProvide = [StatusID.SilkenSymmetry];
+//    }
 
-//    /// <summary>
-//    /// 2
-//    /// </summary>
-//    public static IBaseAction Fountain { get; } = new BaseAction(ActionID.Fountain)
+//    static partial void ModifyFountainPvE(ref ActionSetting setting)
 //    {
-//        StatusProvide = new[] { StatusID.SilkenFlow }
-//    };
+//        setting.StatusProvide = [StatusID.SilkenFlow];
+//    }
 
-//    /// <summary>
-//    /// 3
-//    /// </summary>
-//    public static IBaseAction ReverseCascade { get; } = new BaseAction(ActionID.ReverseCascade)
+//    static partial void ModifyReverseCascadePvE(ref ActionSetting setting)
 //    {
-//        StatusNeed = new[] { StatusID.SilkenSymmetry, StatusID.FlourishingSymmetry },
-//    };
+//        setting.StatusNeed = [StatusID.SilkenSymmetry, StatusID.FlourishingSymmetry];
+//    }
 
-//    /// <summary>
-//    /// 4
-//    /// </summary>
-//    public static IBaseAction FountainFall { get; } = new BaseAction(ActionID.Fountainfall)
+//    static partial void ModifyFountainfallPvE(ref ActionSetting setting)
 //    {
-//        StatusNeed = new[] { StatusID.SilkenFlow, StatusID.FlourishingFlow }
-//    };
+//        setting.StatusNeed = [StatusID.SilkenFlow, StatusID.FlourishingFlow];
+//    }
 
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction FanDance { get; } = new BaseAction(ActionID.FanDance, ActionOption.UseResources)
+//    static partial void ModifyFanDancePvE(ref ActionSetting setting)
 //    {
-//        ActionCheck = (b, m) => Feathers > 0,
-//        StatusProvide = new[] { StatusID.ThreefoldFanDance },
-//    };
-//    #endregion
+//        setting.ActionCheck = () => Feathers > 0;
+//        setting.StatusProvide = [StatusID.ThreefoldFanDance];
+//    }
 
-//    #region Attack Area
-//    /// <summary>
-//    /// 1
-//    /// </summary>
-//    public static IBaseAction Windmill { get; } = new BaseAction(ActionID.Windmill)
+//    static partial void ModifyWindmillPvE(ref ActionSetting setting)
 //    {
-//        StatusProvide = Cascade.StatusProvide,
-//    };
+//        setting.StatusProvide = [StatusID.SilkenSymmetry];
+//    }
 
-//    /// <summary>
-//    /// 2
-//    /// </summary>
-//    public static IBaseAction BladeShower { get; } = new BaseAction(ActionID.Bladeshower)
+//    static partial void ModifyBladeshowerPvE(ref ActionSetting setting)
 //    {
-//        StatusProvide = Fountain.StatusProvide,
-//    };
+//        setting.StatusProvide = [StatusID.SilkenFlow];
+//    }
 
-//    /// <summary>
-//    /// 3
-//    /// </summary>
-//    public static IBaseAction RisingWindmill { get; } = new BaseAction(ActionID.RisingWindmill)
+//    static partial void ModifyRisingWindmillPvE(ref ActionSetting setting)
 //    {
-//        StatusNeed = ReverseCascade.StatusNeed,
-//    };
+//        setting.StatusNeed = [StatusID.SilkenSymmetry, StatusID.FlourishingSymmetry];
+//    }
 
-//    /// <summary>
-//    /// 4
-//    /// </summary>
-//    public static IBaseAction BloodShower { get; } = new BaseAction(ActionID.Bloodshower)
+//    static partial void ModifyBloodshowerPvE(ref ActionSetting setting)
 //    {
-//        StatusNeed = FountainFall.StatusNeed,
-//    };
+//        setting.StatusNeed = [StatusID.SilkenFlow, StatusID.FlourishingFlow];
+//    }
 
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction FanDance2 { get; } = new BaseAction(ActionID.FanDanceIi, ActionOption.UseResources)
+//    static partial void ModifyFanDanceIiPvE(ref ActionSetting setting)
 //    {
-//        ActionCheck = (b, m) => Feathers > 0,
-//        StatusProvide = new[] { StatusID.ThreefoldFanDance },
-//    };
+//        setting.ActionCheck = () => Feathers > 0;
+//        setting.StatusProvide = [StatusID.ThreefoldFanDance];
+//    }
 
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction FanDance3 { get; } = new BaseAction(ActionID.FanDanceIii)
+//    static partial void ModifyFanDanceIiiPvE(ref ActionSetting setting)
 //    {
-//        StatusNeed = FanDance2.StatusProvide,
-//    };
+//        setting.StatusNeed = [StatusID.ThreefoldFanDance];
+//    }
 
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction FanDance4 { get; } = new BaseAction(ActionID.FanDanceIv)
+//    static partial void ModifyFanDanceIvPvE(ref ActionSetting setting)
 //    {
-//        StatusNeed = new[] { StatusID.FourfoldFanDance },
-//    };
+//        setting.StatusNeed = [StatusID.FourfoldFanDance];
+//    }
 
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction SaberDance { get; } = new BaseAction(ActionID.SaberDance, ActionOption.UseResources)
+//    static partial void ModifySaberDancePvE(ref ActionSetting setting)
 //    {
-//        ActionCheck = (b, m) => Esprit >= 50,
-//    };
+//        setting.ActionCheck = () => Esprit >= 50;
+//    }
 
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction StarFallDance { get; } = new BaseAction(ActionID.StarfallDance)
+//    static partial void ModifyStarfallDancePvE(ref ActionSetting setting)
 //    {
-//        StatusNeed = new[] { StatusID.FlourishingStarfall },
-//    };
+//        setting.StatusNeed = [StatusID.FlourishingStarfall];
+//    }
 
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction Tillana { get; } = new BaseAction(ActionID.Tillana)
+//    static partial void ModifyTillanaPvE(ref ActionSetting setting)
 //    {
-//        StatusNeed = new[] { StatusID.FlourishingFinish },
-//    };
-//    #endregion
+//        setting.StatusNeed = [StatusID.FlourishingFinish];
+//    }
 
+//    static partial void ModifyEnAvantPvE(ref ActionSetting setting)
+//    {
+//        setting.IsFriendly = true;
+//    }
+
+//    static partial void ModifyShieldSambaPvE(ref ActionSetting setting)
+//    {
+//        setting.StatusFromSelf = false;
+//        setting.StatusProvide = StatusHelper.RangePhysicalDefense;
+//    }
+
+//    static partial void ModifyClosedPositionPvE(ref ActionSetting setting)
+//    {
+//        setting.TargetType = TargetType.Melee;
+//    }
+//}
+
+///// <summary>
+///// The base class of Dancer.
+///// </summary>
+//public abstract class DdRotation : CustomRotation
+//{
 //    #region Support
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction EnAvant { get; } = new BaseAction(ActionID.EnAvant, ActionOption.Friendly | ActionOption.EndSpecial);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction ShieldSamba { get; } = new BaseAction(ActionID.ShieldSamba, ActionOption.Defense)
-//    {
-//        ActionCheck = (b, m) => !Player.HasStatus(false, StatusID.Troubadour,
-//            StatusID.Tactician_1951,
-//            StatusID.Tactician_2177,
-//            StatusID.ShieldSamba),
-//    };
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction CuringWaltz { get; } = new BaseAction(ActionID.CuringWaltz, ActionOption.Heal);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction Improvisation { get; } = new BaseAction(ActionID.Improvisation, ActionOption.Heal);
-
 //    /// <summary>
 //    /// 
 //    /// </summary>

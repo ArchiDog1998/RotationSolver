@@ -2,7 +2,7 @@
 
 namespace DefaultRotations.Duty;
 
-[Rotation("Bozja Default")]
+[Rotation("Bozja Default",  CombatType.PvE)]
 internal class BozjaDefault : BozjaRotation
 {
     public override bool ProvokeAbility(out IAction? act)

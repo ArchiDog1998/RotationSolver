@@ -1,7 +1,9 @@
 ﻿namespace RotationSolver.Basic.Configuration;
+
 internal class ConditionBoolean(bool defaultValue, string key)
 {
-    public bool Value { get; set; }
+    private readonly bool _defaultValue = defaultValue;
+    public bool Value { get; set; } = defaultValue;
     public bool Enable { get; set; }
     public bool Disable { get; set; }
 
@@ -10,7 +12,7 @@ internal class ConditionBoolean(bool defaultValue, string key)
 
     public void ResetValue()
     {
-        Value = defaultValue;
+        Value = _defaultValue;
     }
 
     public static implicit operator bool(ConditionBoolean condition)

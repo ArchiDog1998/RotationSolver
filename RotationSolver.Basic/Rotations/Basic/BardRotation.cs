@@ -107,26 +107,21 @@ partial class BardRotation
         setting.ActionCheck = () => JobGauge.Coda.Any(s => s != Song.NONE);
     }
 
+    static partial void ModifyTroubadourPvE(ref ActionSetting setting)
+    {
+        setting.StatusFromSelf = false;
+        setting.StatusProvide = StatusHelper.RangePhysicalDefense;
+    }
+
+    /// <inheritdoc/>
+    [RotationDesc(ActionID.TheWardensPaeanPvE)]
     protected override bool DispelGCD(out IAction? act)
     {
         if (TheWardensPaeanPvE.CanUse(out act)) return true;
         return base.DispelGCD(out act);
     }
 
-    static partial void ModifyTroubadourPvE(ref ActionSetting setting)
-    {
-        setting.TargetStatusFromSelf = false;
-        setting.StatusProvide = [StatusID.Troubadour,
-            StatusID.Tactician_1951,
-            StatusID.Tactician_2177,
-            StatusID.ShieldSamba];
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.NaturesMinnePvE)]
     protected sealed override bool HealSingleAbility(out IAction? act)
     {
@@ -134,11 +129,7 @@ partial class BardRotation
         return base.HealSingleAbility(out act);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     [RotationDesc(ActionID.TroubadourPvE)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {

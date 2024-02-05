@@ -57,9 +57,10 @@ public class BaseAction : IBaseAction
     {
         get
         {
-            if(!Service.Config.RotationActionConfig.TryGetValue(ID, out var value))
+            if (!Service.Config.RotationActionConfig.TryGetValue(ID, out var value))
             {
-                Service.Config.RotationActionConfig[ID] = value = new();
+                Service.Config.RotationActionConfig[ID] = value 
+                    = Setting.CreateConfig?.Invoke() ?? new();
             }
             return value;
         }

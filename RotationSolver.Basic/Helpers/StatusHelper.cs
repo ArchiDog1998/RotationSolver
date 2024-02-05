@@ -14,6 +14,17 @@ public static class StatusHelper
     /// <summary>
     /// 
     /// </summary>
+    public static StatusID[] RangePhysicalDefense { get;  } =
+    [
+        StatusID.Troubadour,
+        StatusID.Tactician_1951,
+        StatusID.Tactician_2177,
+        StatusID.ShieldSamba,
+    ];
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static StatusID[] PhysicResistancec { get; } =
     [
         StatusID.IceSpikes_1720,

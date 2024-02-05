@@ -10,7 +10,7 @@ partial class DutyRotation
     static partial void ModifyLostSpellforgePvE(ref ActionSetting setting)
     {
         setting.TargetType = TargetType.Physical;
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusNeed = [StatusID.MagicalAversion];
         setting.TargetStatusProvide = [StatusID.LostSpellforge, StatusID.LostSteelsting];
     }
@@ -18,21 +18,21 @@ partial class DutyRotation
     static partial void ModifyLostSteelstingPvE(ref ActionSetting setting)
     {
         setting.TargetType = TargetType.Magical;
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusNeed = [StatusID.PhysicalAversion];
         setting.TargetStatusProvide = [StatusID.LostSpellforge, StatusID.LostSteelsting];
     }
 
     static partial void ModifyLostRampagePvE(ref ActionSetting setting)
     {
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusNeed = [StatusID.PhysicalAversion];
         setting.StatusProvide = [StatusID.LostRampage];
     }
 
     static partial void ModifyLostBurstPvE(ref ActionSetting setting)
     {
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusNeed = [StatusID.MagicalAversion];
         setting.StatusProvide = [StatusID.LostBurst];
     }
@@ -44,31 +44,31 @@ partial class DutyRotation
 
     static partial void ModifyLostProtectPvE(ref ActionSetting setting)
     {
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusProvide = [StatusID.LostProtect, StatusID.LostProtectIi];
     }
 
     static partial void ModifyLostProtectIiPvE(ref ActionSetting setting)
     {
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusProvide = [StatusID.LostProtectIi];
     }
 
     static partial void ModifyLostShellPvE(ref ActionSetting setting)
     {
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusProvide = [StatusID.LostShell, StatusID.LostShellIi];
     }
 
     static partial void ModifyLostShellIiPvE(ref ActionSetting setting)
     {
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusProvide = [StatusID.LostShellIi];
     }
 
     static partial void ModifyLostBubblePvE(ref ActionSetting setting)
     {
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusProvide = [StatusID.LostBubble];
     }
 

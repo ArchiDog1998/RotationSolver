@@ -124,10 +124,7 @@ internal class MajorConditionSet(string name = MajorConditionSet.conditionName)
 
             try
             {
-                return JsonConvert.DeserializeObject<MajorConditionSet>(str, new JsonSerializerSettings()
-                {
-                    TypeNameHandling = TypeNameHandling.Objects,
-                });
+                return JsonConvert.DeserializeObject<MajorConditionSet>(str, new IConditionConverter());
             }
             catch (Exception ex)
             {

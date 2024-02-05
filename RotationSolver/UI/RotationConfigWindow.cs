@@ -1617,7 +1617,7 @@ public partial class RotationConfigWindow : Window
         var assemblyGrps = RotationUpdater.CustomRotationsDict
             .SelectMany(d => d.Value)
             .SelectMany(g => g.Rotations)
-            .GroupBy(r => r.GetType().Assembly);
+            .GroupBy(r => r.Assembly);
 
         using var table = ImRaii.Table("Rotation Solver AssemblyTable", 3, ImGuiTableFlags.BordersInner
             | ImGuiTableFlags.Resizable
@@ -1671,7 +1671,7 @@ public partial class RotationConfigWindow : Window
                     if (IconSet.GetTexture(IconSet.GetJobIcon(jobs.Key, IconType.Framed), out var texture, 62574))
                         ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
 
-                    ImguiTooltips.HoveredTooltip(string.Join('\n', jobs));
+                    ImguiTooltips.HoveredTooltip(string.Join('\n', jobs.Select(t => t.GetCustomAttribute<UIAttribute>()?.Name ?? t.Name)));
                 }
 
                 ImGui.TableNextColumn();

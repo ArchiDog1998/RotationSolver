@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RotationSolver.Basic.Attributes;
+﻿namespace RotationSolver.Basic.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class RotationAttribute(string name) : Attribute
+public class RotationAttribute(string name, CombatType type) : Attribute
 {
     public string Name => name;
+    public CombatType Type => type;
+
     public string? Description {  get; set; }
-    public CombatType Type { get; set; } = CombatType.None;
 
     public string? GameVersion { get; set; }
 }

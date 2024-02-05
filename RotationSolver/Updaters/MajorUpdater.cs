@@ -24,6 +24,7 @@ internal static class MajorUpdater
     public static bool IsValid => Svc.Condition.Any()
         && !Svc.Condition[ConditionFlag.BetweenAreas]
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
+        && !Svc.Condition[ConditionFlag.LoggingOut]
         && Player.Available;
 
     static bool _showedWarning, _work;

@@ -54,7 +54,7 @@ internal static class RotationUpdater
                 var assemblies = CustomRotationsDict
                     .SelectMany(d => d.Value)
                     .SelectMany(g => g.Rotations)
-                    .Select(r => r.GetType().Assembly.FullName ?? string.Empty)
+                    .Select(r => r.Assembly.FullName ?? string.Empty)
                     .Distinct()
                     .ToList();
 
@@ -417,7 +417,15 @@ internal static class RotationUpdater
 
                string result;
 
-               if (act.Info.IsLimitBreak)
+               if (act.Action.ActionCategory.Row is 10 or 11)
+               {
+                   return "System Action";
+               }
+               else if (act.Action.IsRoleAction)
+               {
+                   return "Role Action";
+               }
+               else if (act.Info.IsLimitBreak)
                {
                    return "Limit Break";
                }
@@ -461,7 +469,8 @@ internal static class RotationUpdater
 
     private static void UpdateDutyRotation()
     {
-        var rotations = DutyRotations[Svc.ClientState.TerritoryType];
+        if (!DutyRotations.TryGetValue(Svc.ClientState.TerritoryType, out var rotations)) return;
+
         Service.Config.DutyRotationChoice.TryGetValue(Svc.ClientState.TerritoryType, out var value);
         var name = value ?? string.Empty;
         var type = GetChosenType(rotations, name);

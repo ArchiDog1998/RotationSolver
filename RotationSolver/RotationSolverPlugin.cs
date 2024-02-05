@@ -44,15 +44,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         try
         {
             Service.Config = JsonConvert.DeserializeObject<Configs>(
-                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new JsonSerializerSettings()
-                {
-                    TypeNameHandling = TypeNameHandling.Objects,
-                    MissingMemberHandling = MissingMemberHandling.Error,
-                    Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
-                    {
-                        args.ErrorContext.Handled = true;
-                    }!,
-                })
+                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName))
                 ?? new Configs();
         }
         catch (Exception ex)

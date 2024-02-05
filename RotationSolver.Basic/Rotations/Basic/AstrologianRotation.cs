@@ -85,7 +85,7 @@ partial class AstrologianRotation
     static partial void ModifyTheArrowPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetType = TargetType.Melee;
         setting.ActionCheck = () => DrawnCard == CardType.ARROW;
     }
@@ -93,7 +93,7 @@ partial class AstrologianRotation
     static partial void ModifyTheBalancePvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetType = TargetType.Melee;
         setting.ActionCheck = () => DrawnCard == CardType.BALANCE;
     }
@@ -101,7 +101,7 @@ partial class AstrologianRotation
     static partial void ModifyTheBolePvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetType = TargetType.Range;
         setting.ActionCheck = () => DrawnCard == CardType.BOLE;
     }
@@ -109,7 +109,7 @@ partial class AstrologianRotation
     static partial void ModifyTheEwerPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetType = TargetType.Range;
         setting.ActionCheck = () => DrawnCard == CardType.EWER;
     }
@@ -117,7 +117,7 @@ partial class AstrologianRotation
     static partial void ModifyTheSpearPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetType = TargetType.Melee;
         setting.ActionCheck = () => DrawnCard == CardType.SPEAR;
     }
@@ -125,7 +125,7 @@ partial class AstrologianRotation
     static partial void ModifyTheSpirePvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetType = TargetType.Range;
         setting.ActionCheck = () => DrawnCard == CardType.SPIRE;
     }

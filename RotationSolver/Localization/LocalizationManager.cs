@@ -11,12 +11,14 @@ internal static class LocalizationManager
     private static readonly Dictionary<string, Dictionary<string, string>> _translations = [];
     public static string Local(this Enum @enum)
     {
-        return (@enum.GetType().FullName ?? string.Empty + "." + @enum.ToString()).Local(@enum.GetAttribute<DescriptionAttribute>()?.Description ?? @enum.ToString());
+        var key = (@enum.GetType().FullName ?? string.Empty) + "." + @enum.ToString();
+        return key.Local(@enum.GetAttribute<DescriptionAttribute>()?.Description ?? @enum.ToString());
     }
 
     public static string Local(this MemberInfo member)
     {
-        return (member.DeclaringType?.FullName ?? string.Empty + "." + member.ToString()).Local(member.GetCustomAttribute<DescriptionAttribute>()?.Description ?? member.ToString()!);
+        var key = (member.DeclaringType?.FullName ?? string.Empty) + "." + member.ToString();
+        return key.Local(member.GetCustomAttribute<DescriptionAttribute>()?.Description ?? member.ToString()!);
     }
 
     public static string Local(this Type type)
@@ -39,9 +41,6 @@ internal static class LocalizationManager
     {
         SetLanguage(Svc.PluginInterface.UiLanguage);
         Svc.PluginInterface.LanguageChanged += OnLanguageChange;
-#if DEBUG
-        ExportLocalization();
-#endif
     }
 
     private static async void SetLanguage(string lang)
@@ -76,8 +75,11 @@ internal static class LocalizationManager
 #if DEBUG
     private static void ExportLocalization()
     {
-        //TODO: related path.
-        var directory = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\RotationSolver\Localization";
+        var dirInfo = new DirectoryInfo(typeof(LocalizationManager).Assembly.Location);
+        dirInfo = dirInfo.Parent!.Parent!.Parent!.Parent!;
+
+
+        var directory = dirInfo.FullName + @"\Localization";
         if (!Directory.Exists(directory)) return;
 
         if (Svc.PluginInterface.UiLanguage != "en") return;
@@ -93,6 +95,9 @@ internal static class LocalizationManager
     public static void Dispose()
     {
         Svc.PluginInterface.LanguageChanged -= OnLanguageChange;
+#if DEBUG
+        ExportLocalization();
+#endif
     }
 
     private static void OnLanguageChange(string languageCode)

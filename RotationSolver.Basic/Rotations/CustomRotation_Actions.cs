@@ -14,7 +14,7 @@ partial class CustomRotation
     static partial void ModifyAddlePvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = [StatusID.Addle];
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
     }
 
     static partial void ModifySwiftcastPvE(ref ActionSetting setting)
@@ -49,7 +49,7 @@ partial class CustomRotation
 
     static partial void ModifyFeintPvE(ref ActionSetting setting)
     {
-        setting.TargetStatusFromSelf = false;
+        setting.StatusFromSelf = false;
         setting.TargetStatusProvide = [StatusID.Feint];
     }
 
@@ -117,11 +117,20 @@ partial class CustomRotation
 
     public virtual IAction[] AllActions => 
     [
-        .. AllBaseActions,
-        .. Medicines,
-        .. MpPotions,
-        .. HpPotions,
-        .. AllItems,
+        .. AllBaseActions.Where(i =>
+        {
+            var cate = i.Action.ClassJobCategory.Value;
+            if (cate != null)
+            {
+                var inJob = (bool?)cate.GetType().GetProperty(DataCenter.Job.ToString())?.GetValue(cate);
+                if (inJob.HasValue && !inJob.Value) return false;
+            }
+            return true;
+        }),
+        .. Medicines.Where(i => i.HasIt),
+        .. MpPotions.Where(i => i.HasIt),
+        .. HpPotions.Where(i => i.HasIt),
+        .. AllItems.Where(i => i.HasIt),
     ];
 
     public virtual IBaseTrait[] AllTraits { get; } = [];
