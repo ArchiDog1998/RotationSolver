@@ -31,12 +31,15 @@ public struct ActionBasicInfo
     /// <summary>
     /// Casting time.
     /// </summary>
-    public readonly unsafe float CastTime => ActionManager.GetAdjustedCastTime(ActionType.Action, AdjustedID) / 1000f;
+    public readonly unsafe float CastTime => ((ActionID)AdjustedID).GetCastTime();
 
     public readonly unsafe uint MPNeed
     {
         get
         {
+            var mpOver = _action.Setting.MPOverride?.Invoke();
+            if (mpOver.HasValue) return mpOver.Value;
+
             var mp = (uint)ActionManager.GetActionCost(ActionType.Action, AdjustedID, 0, 0, 0, 0);
             if (mp < 100) return 0;
             return mp;
@@ -97,6 +100,11 @@ public struct ActionBasicInfo
         if (_action.Setting.StatusProvide != null && !skipStatusProvideCheck)
         {
             if (player.HasStatus(true, _action.Setting.StatusProvide)) return false;
+        }
+
+        if(_action.Action.ActionCategory.Row == 15)
+        {
+            if (CustomRotation.LimitBreakLevel <= 1) return false;
         }
 
         if(!skipCombo && IsGeneralGCD)

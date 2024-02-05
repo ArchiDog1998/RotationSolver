@@ -5,6 +5,9 @@
 /// </summary>
 public class ActionSetting()
 {
+    public ActionID[]? Ninjutsu { get; set; } = null;
+    public Func<uint?>? MPOverride { get; set; } = null;
+    public bool IsMeleeRange { get; set; } = false;
     public bool StatusFromSelf { get; set; } = true;
     public StatusID[]? TargetStatusProvide { get; set; } = null;
     public StatusID[]? TargetStatusNeed { get; set; } = null;

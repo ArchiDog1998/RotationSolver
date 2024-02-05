@@ -30,7 +30,7 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
             or 8 //No Event.
             or 12 // No Mount,
             or > 14 // No item manipulation and other thing.
-            or 9 or 15 //No LB,
+            or 9 //No LB,
             ) return false;
 
         //No crafting or gathering.

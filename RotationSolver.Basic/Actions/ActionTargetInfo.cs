@@ -194,7 +194,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
             skipAoeCheck ? 0 : _action.Config.AoeCount);
-        var target = FindTargetByType(targets, _action.Setting.TargetType, _action.Config.AutoHealRatio);
+        var target = FindTargetByType(targets, _action.Setting.TargetType, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
         if (target == null) return null;
 
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
@@ -255,7 +255,8 @@ public struct ActionTargetInfo(IBaseAction _action)
         else
         {
             var availableCharas = DataCenter.AllTargets.Where(b => b.ObjectId != Player.Object.ObjectId);
-            var target = FindTargetByType(TargetFilter.GetObjectInRadius(availableCharas, range), TargetType.Move, _action.Config.AutoHealRatio);
+            var target = FindTargetByType(TargetFilter.GetObjectInRadius(availableCharas, range),
+                TargetType.Move, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
             if (target == null) return null;
             return new(target, [], target.Position);
         }
@@ -316,7 +317,8 @@ public struct ActionTargetInfo(IBaseAction _action)
         else
         {
             var effectRange = EffectRange;
-            var attackT = FindTargetByType(DataCenter.AllianceMembers.GetObjectInRadius(range + effectRange), TargetType.BeAttacked, _action.Config.AutoHealRatio);
+            var attackT = FindTargetByType(DataCenter.AllianceMembers.GetObjectInRadius(range + effectRange),
+                TargetType.BeAttacked, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
 
             if (attackT == null)
             {
@@ -444,8 +446,15 @@ public struct ActionTargetInfo(IBaseAction _action)
     #endregion
 
     #region TargetFind
-    private static BattleChara? FindTargetByType(IEnumerable<BattleChara> gameObjects, TargetType type, float healRatio)
+    private static BattleChara? FindTargetByType(IEnumerable<BattleChara> gameObjects, TargetType type, float healRatio, bool isMeleeRange)
     {
+        if (type == TargetType.Self) return Player.Object;
+
+        if (isMeleeRange)
+        {
+            gameObjects = gameObjects.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.MeleeRangeOffset);
+        }
+
         switch (type) // Filter the objects.
         {
             case TargetType.Death:
@@ -695,6 +704,7 @@ public struct ActionTargetInfo(IBaseAction _action)
             ?? RandomPickByJobs(tars, JobRole.Tank, JobRole.Healer)
             ?? RandomObject(tars);
     }
+
     private static BattleChara? RandomPickByJobs(IEnumerable<BattleChara> tars, params JobRole[] roles)
     {
         foreach (var role in roles)
@@ -779,6 +789,7 @@ public enum TargetType : byte
     
     Magical,
 
+    Self,
 }
 
 public readonly record struct TargetResult(BattleChara? Target, BattleChara[] AffectedTargets, Vector3? Position);

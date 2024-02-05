@@ -116,6 +116,8 @@ partial class CustomRotation
 
         IBaseAction.AllEmpty = true;
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward)
+            && Player != null
+            && !Player.HasStatus(true, StatusID.Bind)
             && MoveForwardAbility(out act)) return true;
 
         IBaseAction.TargetOverride = null;

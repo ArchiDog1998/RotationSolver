@@ -6,6 +6,7 @@ internal static partial class Util
 {
     public static bool IsSingleJobForCombat(this ClassJobCategory jobCategory)
     {
+        if (jobCategory.RowId == 68) return true; // ACN SMN SCH 
         var str = jobCategory.Name.RawString.Replace(" ", "");
         if (!str.All(char.IsUpper)) return false;
         if (str.Length is not 3 and not 6) return false;

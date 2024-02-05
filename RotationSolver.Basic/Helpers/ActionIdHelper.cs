@@ -23,4 +23,9 @@ public static  class ActionIdHelper
     {
         return Svc.Data.GetExcelSheet<Action>()!.GetRow((uint)actionID)!;
     }
+
+    public unsafe static float GetCastTime(this ActionID actionID)
+    {
+        return ActionManager.GetAdjustedCastTime(ActionType.Action, (uint)actionID) / 1000f; ;
+    }
 }

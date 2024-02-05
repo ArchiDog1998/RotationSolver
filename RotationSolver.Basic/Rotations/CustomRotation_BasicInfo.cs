@@ -49,7 +49,7 @@ partial class CustomRotation : ICustomRotation
 
     public static Vector3? MoveTarget { get; internal set; }
 
-    public virtual string Description { get; } = string.Empty;
+    public string Description => this.GetType().GetCustomAttribute<RotationAttribute>()?.Description ?? string.Empty;
 
     public IAction? ActionHealAreaGCD { get; private set; }
 

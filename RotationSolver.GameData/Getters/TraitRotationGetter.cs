@@ -40,12 +40,11 @@ internal class TraitRotationGetter(Lumina.GameData gameData, ClassJob job)
         }
 
         return $$"""
-        private readonly Lazy<IBaseTrait> _{{name}}Creator = new(() => new BaseTrait({{item.RowId}}));
         /// <summary>
         /// {{GetDescName(item)}}
         /// {{GetDesc(item)}}
         /// </summary>
-        public IBaseTrait {{name}} => _{{name}}Creator.Value;
+        public static IBaseTrait {{name}} { get; } = new BaseTrait({{item.RowId}});
         """;
     }
 
