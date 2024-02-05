@@ -86,9 +86,15 @@ public class JobChoiceConfigGenerator : IIncrementalGenerator
                         {
                             get
                             {
-                                if (!{{variableName}}Dict.TryGetValue(DataCenter.Job, out var dict)) return {{variableName}};
+                                if (!{{variableName}}Dict.TryGetValue(DataCenter.Job, out var dict))
+                                {
+                                    dict = {{variableName}}Dict[DataCenter.Job] = new();
+                                }
                                 
-                                if (!dict.TryGetValue(RotationChoice, out var value)) return {{variableName}};
+                                if (!dict.TryGetValue(RotationChoice, out var value))
+                                {
+                                    value = dict[RotationChoice] = {{variableName}};
+                                }
 
                                 return value;
                             }

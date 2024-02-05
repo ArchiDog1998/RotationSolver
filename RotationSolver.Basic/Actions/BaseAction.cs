@@ -51,7 +51,6 @@ public class BaseAction : IBaseAction
 
     public bool EnoughLevel => Info.EnoughLevel;
 
-
     public ActionSetting Setting { get; set; }
 
     public ActionConfig Config

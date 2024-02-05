@@ -1609,7 +1609,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawRotationsSettings()
     {
-        _allSearchables.DrawItems(Configs.Rotations);
+        _allSearchable.DrawItems(Configs.Rotations);
     }
 
     private static void DrawRotationsLoaded()
@@ -2078,7 +2078,7 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TableNextColumn();
 
-            _allSearchables.DrawItems(Configs.List);
+            _allSearchable.DrawItems(Configs.List);
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingAreaDesc.Local());
 
@@ -2338,7 +2338,7 @@ public partial class RotationConfigWindow : Window
     #region Debug
     private static void DrawDebug()
     {
-        _allSearchables.DrawItems(Configs.Debug);
+        _allSearchable.DrawItems(Configs.Debug);
 
         if (!Player.Available || !Service.Config.InDebug) return;
 

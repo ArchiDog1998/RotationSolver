@@ -36,7 +36,7 @@ internal partial class Configs : IPluginConfiguration
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
     [ConditionBool, UI("Show RS logo animation",
-        Filter =UiWindows)]
+        Filter = UiWindows)]
     private static readonly bool _drawIconAnimation = true;
 
     [ConditionBool, UI("Auto turn off when player is moving between areas.",
@@ -79,8 +79,6 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Display plugin status on toast",
         Filter =UiInformation)]
     private static readonly bool _showInfoOnToast = true;
-
-
 
     [ConditionBool, UI("Lock the movement when casting or when doing some actions.",
         Description = "LT is for gamepad player", Filter = Extra)]

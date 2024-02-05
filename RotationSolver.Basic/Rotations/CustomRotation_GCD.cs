@@ -166,7 +166,6 @@ partial class CustomRotation
     protected virtual bool RaiseGCD(out IAction? act)
     {
         if (DataCenter.RightNowDutyRotation?.RaiseGCD(out act) ?? false) return true;
-
         act = null; return false;
     }
 
