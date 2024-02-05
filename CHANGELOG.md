@@ -1,5 +1,39 @@
 # Changelog
 
+## [4.0.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.6...v4.0.0) (2024-02-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* merged and changed the cofigs and ui.
+* changed some framework.
+* replaced the base action.
+
+### Features
+
+* add code generator! ([a454f1c](https://github.com/ArchiDog1998/RotationSolver/commit/a454f1c8de44255ee7755e4a5624bc922b40632a))
+* add content type code generator. ([69184dc](https://github.com/ArchiDog1998/RotationSolver/commit/69184dc414e8f7a4449076ca7ec459f326f6ac8e))
+* add duty action choice. ([008550d](https://github.com/ArchiDog1998/RotationSolver/commit/008550d397136054c492f25b97136a1684910bef))
+* add duty rotations. ([481749e](https://github.com/ArchiDog1998/RotationSolver/commit/481749ec355f7633bf5858e90e736cfdc653d908))
+* add setting and config for acion. ([5a83808](https://github.com/ArchiDog1998/RotationSolver/commit/5a83808ce8fa04c2998b969daa8acaa4980d38b6))
+* added all base rotations, one more time. ([c064353](https://github.com/ArchiDog1998/RotationSolver/commit/c0643530c3e2d27123c2677509f44b199cc7ac4f))
+* merged and changed the cofigs and ui. ([2442b35](https://github.com/ArchiDog1998/RotationSolver/commit/2442b357ac4e0d671464c4701d9db2284f0515b1))
+
+
+### Bug Fixes
+
+* add back the rotations. ([c97be9e](https://github.com/ArchiDog1998/RotationSolver/commit/c97be9ec5185bc4dc1548d9636a8fa8515b2218c))
+* fixed `IsFriendly`. ([05aecc6](https://github.com/ArchiDog1998/RotationSolver/commit/05aecc6da5bf1ec30b261b6b227b4750c0892389))
+* fixed loading and translation bugs. ([8e0db8f](https://github.com/ArchiDog1998/RotationSolver/commit/8e0db8fd6c9ff12bd98dd5ef9d7553bb4888d1df))
+* fixed some rotation and the major file. ([cb79bc6](https://github.com/ArchiDog1998/RotationSolver/commit/cb79bc6791d11e27098036067bfd2b1d3769c4d8))
+* replaced the action id. ([501c272](https://github.com/ArchiDog1998/RotationSolver/commit/501c272588e3881c0a21d4a9461eca786ca463b8))
+
+
+### Code Refactoring
+
+* changed some framework. ([5d8eb10](https://github.com/ArchiDog1998/RotationSolver/commit/5d8eb1099f4c296de06a8f99b7cd86888aac8c00))
+* replaced the base action. ([15311ec](https://github.com/ArchiDog1998/RotationSolver/commit/15311ec2744b8f6106f930c3134ee186c6a7f0a5))
+
 ## [3.5.6](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.5...v3.5.6) (2023-11-23)
 
 
