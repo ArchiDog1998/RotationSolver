@@ -25,10 +25,10 @@ public class ActionSetting()
     /// </summary>
     public StatusID[]? StatusNeed { get; set; } = null;
 
-    public Func<bool>? ActionCheck { get; set; } = null;
+    public Func<bool>? RotationCheck { get; set; } = null;
+    internal Func<bool>? ActionCheck { get; set; } = null;
 
-    public Func<ActionConfig>? CreateConfig { get; set; } = null;
-
+    internal Func<ActionConfig>? CreateConfig { get; set; } = null;
 
     public bool IsFriendly { get; set; }
 

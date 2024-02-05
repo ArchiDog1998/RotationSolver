@@ -408,11 +408,11 @@ public partial class RotationConfigWindow : Window
 
         if (DataCenter.Territory?.IsPvpZone ?? false)
         {
-            rotations = rotations.Where(r => r.GetType().GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvP) ?? false).ToArray();
+            rotations = rotations.Where(r => r.GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvP) ?? false).ToArray();
         }
         else
         {
-            rotations = rotations.Where(r => r.GetType().GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvE) ?? false).ToArray();
+            rotations = rotations.Where(r => r.GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvE) ?? false).ToArray();
         }
 
         var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH));
@@ -477,7 +477,7 @@ public partial class RotationConfigWindow : Window
             ImguiTooltips.ShowTooltip(() =>
             {
                 ImGui.Text(rotation.Name + $" ({rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Name})");
-                rotation.Type.Draw();
+                rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.Draw();
                 if (!string.IsNullOrEmpty(rotation.Description))
                 {
                     ImGui.Text(rotation.Description);
@@ -485,7 +485,7 @@ public partial class RotationConfigWindow : Window
             });
         }
 
-        if (IconSet.GetTexture(rotation.Type.GetIcon(), out var texture))
+        if (IconSet.GetTexture(rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.GetIcon(), out var texture))
         {
             ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
 
@@ -514,7 +514,7 @@ public partial class RotationConfigWindow : Window
             {
                 foreach (var r in rotations)
                 {
-                    var rAttr = r.GetType().GetCustomAttribute<RotationAttribute>()!;
+                    var rAttr = r.GetCustomAttribute<RotationAttribute>()!;
 
                     if (IconSet.GetTexture(rAttr.Type.GetIcon(), out var texture))
                     {
@@ -523,7 +523,7 @@ public partial class RotationConfigWindow : Window
                         {
                             ImguiTooltips.ShowTooltip(() =>
                             {
-                                rotation.Type.Draw();
+                                rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.Draw();
                             });
                         }
                     }

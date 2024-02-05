@@ -132,6 +132,7 @@ public struct ActionBasicInfo
             && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;
 
         if (!(_action.Setting.ActionCheck?.Invoke() ?? true)) return false;
+        if (!(_action.Setting.RotationCheck?.Invoke() ?? true)) return false;
 
         return true;
     }
