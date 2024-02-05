@@ -17,13 +17,13 @@ internal static class ImguiTooltips
 
     const string TOOLTIP_ID = "RotationSolver Tooltips";
 
-    public static void HoveredTooltip(string text)
+    public static void HoveredTooltip(string? text)
     {
         if (!ImGui.IsItemHovered()) return;
         ShowTooltip(text);
     }
 
-    public static void ShowTooltip(string text)
+    public static void ShowTooltip(string? text)
     {
         if (string.IsNullOrEmpty(text)) return;
         ShowTooltip(() => ImGui.Text(text));
@@ -32,7 +32,7 @@ internal static class ImguiTooltips
     public static void ShowTooltip(Action act)
     {
         if (act == null) return;
-        if (!Service.Config.GetValue(Basic.Configuration.PluginConfigBool.ShowTooltips)) return;
+        if (!Service.Config.ShowTooltips) return;
 
         ImGui.SetNextWindowBgAlpha(1);
 

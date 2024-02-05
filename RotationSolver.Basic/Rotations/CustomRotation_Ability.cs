@@ -2,196 +2,101 @@
 
 namespace RotationSolver.Basic.Rotations;
 
-public abstract partial class CustomRotation
+partial class CustomRotation
 {
-    private bool Ability(IAction nextGCD, out IAction act, bool helpDefenseAOE, bool helpDefenseSingle)
+    private bool Ability(IAction nextGCD, out IAction? act)
     {
         act = DataCenter.CommandNextAction;
 
-        BaseAction.SkipDisable = true;
-        if (act is IBaseAction a && a != null && !a.IsRealGCD && a.CanUse(out _,
-            CanUseOption.MustUse | CanUseOption.EmptyOrSkipCombo)) return true;
-        BaseAction.SkipDisable = false;
+        IBaseAction.ForceEnable = true;
+        if (act is IBaseAction a && a != null && !a.Info.IsRealGCD && a.CanUse(out _,
+            isEmpty: true, skipAoeCheck: true)) return true;
+        IBaseAction.ForceEnable = false;
 
         if (act is IBaseItem i && i.CanUse(out _, true)) return true;
 
-        if (!Service.Config.GetValue(PluginConfigBool.UseAbility)
-            || Player.TotalCastTime > 0)
+        if (!Service.Config.UseAbility || Player.TotalCastTime > 0)
         {
-            act = null;
+            act = null!;
             return false;
         }
 
         if (EmergencyAbility(nextGCD, out act)) return true;
-        var role = ClassJob.GetJobRole();
+        var role = DataCenter.Role;
 
-        if (InterruptAbility(role, out act)) return true;
-        if (PvP_Purify.CanUse(out act)) return true;
+        IBaseAction.TargetOverride = TargetType.Interrupt;
 
-        if (ShirkOrShield(role, out act)) return true;
-        if (DataCenter.IsAntiKnockback && AntiKnockback(role, out act)) return true;
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.Interrupt)
+            && MyInterruptAbility(role, out act)) return true;
 
-        if (DataCenter.IsEsunaStanceNorth && role == JobRole.Melee)
+        IBaseAction.TargetOverride = TargetType.Tank;
+        IBaseAction.ShouldEndSpecial = true;
+
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.Shirk)
+            && ShirkPvE.CanUse(out act)) return true;
+
+        IBaseAction.TargetOverride = null;
+
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.TankStance)
+            && (TankStance?.CanUse(out act) ?? false)) return true;
+
+
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.AntiKnockback)
+            && AntiKnockback(role, out act)) return true;
+
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional) && role == JobRole.Melee
+            && !(Player?.HasStatus(false, StatusHelper.NoPositionalStatus) ?? true))
         {
-            if (TrueNorth.CanUse(out act)) return true;
+            if (TrueNorthPvE.CanUse(out act)) return true;
         }
 
-        if (GeneralHealAbility(out act)) return true;
-        if (DataCenter.IsSpeed && SpeedAbility(out act)) return true;
+        IBaseAction.TargetOverride = TargetType.Heal;
 
-        if (AutoDefense(role, helpDefenseAOE, helpDefenseSingle, out act)) return true;
-
-        BaseAction.OtherOption |= CanUseOption.EmptyOrSkipCombo;
-        if (MovingAbility(out act)) return true;
-        BaseAction.OtherOption &= ~CanUseOption.EmptyOrSkipCombo;
-
-        if (GeneralUsingAbility(role, out act)) return true;
-
-        if (DataCenter.HPNotFull && InCombat)
+        if (DataCenter.CommandStatus.HasFlag(AutoStatus.HealAreaAbility))
         {
-            if (DataCenter.IsHealSingle || CanHealSingleAbility)
-            {
-                if (UseHealPotion(out act)) return true;
-            }
+            IBaseAction.AllEmpty = true;
+            if (HealAreaAbility(out act)) return true;
+            IBaseAction.AllEmpty = false;
+        }
+        if (DataCenter.AutoStatus.HasFlag(AutoStatus.HealAreaAbility)
+            && CanHealAreaAbility)
+        {
+            IBaseAction.AutoHealCheck = true;
+            if (HealAreaAbility(out act)) return true;
+            IBaseAction.AutoHealCheck = false;
+        }
+        if (DataCenter.CommandStatus.HasFlag(AutoStatus.HealSingleAbility))
+        {
+            IBaseAction.AllEmpty = true;
+            if (HealSingleAbility(out act)) return true;
+            IBaseAction.AllEmpty = false;
+        }
+        if (DataCenter.AutoStatus.HasFlag(AutoStatus.HealSingleAbility)
+            && CanHealSingleAbility)
+        {
+            IBaseAction.AutoHealCheck = true;
+            if (HealSingleAbility(out act)) return true;
+            IBaseAction.AutoHealCheck = false;
         }
 
-        if (HasHostilesInRange && AttackAbility(out act)) return true;
-        if (GeneralAbility(out act)) return true;
+        IBaseAction.TargetOverride = null;
 
-        //Run!
-        if (IsMoving && NotInCombatDelay && Service.Config.GetValue(PluginConfigBool.AutoSpeedOutOfCombat)
+        if (DataCenter.CommandStatus.HasFlag(AutoStatus.Speed)
             && SpeedAbility(out act)) return true;
 
-        return false;
-    }
-
-    private static bool InterruptAbility(JobRole role, out IAction act)
-    {
-        act = null;
-        if (!DataCenter.SetAutoStatus(AutoStatus.Interrupt, DataCenter.CanInterruptTargets.Any()))
-            return false;
-
-
-        switch (role)
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.Provoke))
         {
-            case JobRole.Tank:
-                if (Interject.CanUse(out act)) return true;
-                break;
+            if (!HasTankStance && (TankStance?.CanUse(out act) ?? false)) return true;
 
-            case JobRole.Melee:
-                if (LegSweep.CanUse(out act)) return true;
-                break;
+            IBaseAction.TargetOverride = TargetType.Provoke;
 
-            case JobRole.RangedPhysical:
-                if (HeadGraze.CanUse(out act)) return true;
-                break;
-        }
-        return false;
-    }
-
-    private bool ShirkOrShield(JobRole role, out IAction act)
-    {
-        act = null;
-        if (role != JobRole.Tank)
-        {
-            return DataCenter.SetAutoStatus(AutoStatus.TankStance, false);
+            if (ProvokePvE.CanUse(out act)) return true;
+            if (ProvokeAbility(out act)) return true;
         }
 
-        if (DataCenter.IsRaiseShirk && Shirk.CanUse(out act)) return true;
-        if (DataCenter.IsEsunaStanceNorth && TankStance.CanUse(out act)) return true;
+        IBaseAction.TargetOverride = TargetType.BeAttacked;
 
-        if (DataCenter.SetAutoStatus(AutoStatus.TankStance, Service.Config.GetValue(PluginConfigBool.AutoTankStance)
-            && !DataCenter.AllianceTanks.Any(t => t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
-            && !HasTankStance && TankStance.CanUse(out act, CanUseOption.IgnoreClippingCheck)))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    private static bool AntiKnockback(JobRole role, out IAction act)
-    {
-        act = null;
-        switch (role)
-        {
-            case JobRole.Tank:
-            case JobRole.Melee:
-                if (ArmsLength.CanUse(out act)) return true;
-                break;
-            case JobRole.Healer:
-                if (SureCast.CanUse(out act)) return true;
-                break;
-            case JobRole.RangedPhysical:
-                if (ArmsLength.CanUse(out act)) return true;
-                break;
-            case JobRole.RangedMagical:
-                if (SureCast.CanUse(out act)) return true;
-                break;
-        }
-
-        return false;
-    }
-
-    private bool GeneralHealAbility(out IAction act)
-    {
-        act = null;
-
-        BaseAction.OtherOption |= CanUseOption.MustUse;
-        if (DataCenter.IsDefenseArea && DefenseAreaAbility(out act)) return true;
-        if (DataCenter.IsDefenseSingle && DefenseSingleAbility(out act)) return true;
-
-        BaseAction.OtherOption &= ~CanUseOption.MustUse;
-
-        if ((DataCenter.HPNotFull || ClassJob.GetJobRole() != JobRole.Healer) && InCombat)
-        {
-            if (DataCenter.IsHealArea)
-            {
-                if (HealAreaAbility(out act)) return true;
-            }
-            if (CanHealAreaAbility)
-            {
-                BaseAction.AutoHealCheck = true;
-                if (HealAreaAbility(out act)) return true;
-                BaseAction.AutoHealCheck = false;
-            }
-            if (DataCenter.IsHealSingle)
-            {
-                if (HealSingleAbility(out act)) return true;
-            }
-            if (CanHealSingleAbility)
-            {
-                BaseAction.AutoHealCheck = true;
-                if (HealSingleAbility(out act)) return true;
-                BaseAction.AutoHealCheck = false;
-            }
-        }
-        return false;
-    }
-
-    private bool AutoDefense(JobRole role, bool helpDefenseAOE, bool helpDefenseSingle, out IAction act)
-    {
-        act = null;
-        if (!InCombat || !HasHostilesInRange)
-        {
-            DataCenter.SetAutoStatus(AutoStatus.Provoke, false);
-            return false;
-        }
-
-        //Auto Provoke
-        if (DataCenter.SetAutoStatus(AutoStatus.Provoke, role == JobRole.Tank
-            && (Service.Config.GetValue(PluginConfigBool.AutoProvokeForTank) || DataCenter.AllianceTanks.Count() < 2)
-            && DataCenter.CanProvoke))
-        {
-            if (!HasTankStance && TankStance.CanUse(out act)) return true;
-            if (Provoke.CanUse(out act, CanUseOption.MustUse)) return true;
-            if (VariantUltimatum.CanUse(out act, CanUseOption.MustUse)) return true;
-        }
-
-        //No using defense abilities.
-        if (!Service.Config.GetValue(PluginConfigBool.UseDefenseAbility)) return false;
-
-        if (helpDefenseAOE)
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.DefenseArea))
         {
             if (DefenseAreaAbility(out act)) return true;
             if (role is JobRole.Melee or JobRole.RangedPhysical or JobRole.RangedMagical)
@@ -200,67 +105,145 @@ public abstract partial class CustomRotation
             }
         }
 
-        //Defense himself.
-        if (role == JobRole.Tank)
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.DefenseSingle))
         {
-            var movingHere = (float)NumberOfHostilesInRange / NumberOfHostilesInMaxRange > 0.3f;
-
-            var tarOnMe = DataCenter.TarOnMeTargets.Where(t => t.DistanceToPlayer() <= 3);
-            var tarOnMeCount = tarOnMe.Count();
-            var attackedCount = tarOnMe.Count(ObjectHelper.IsAttacked);
-            var attacked = (float)attackedCount / tarOnMeCount > 0.7f;
-
-            //A lot targets are targeting on me.
-            if (tarOnMeCount >= Service.Config.GetValue(PluginConfigInt.AutoDefenseNumber)
-                && Player.GetHealthRatio() <= Service.Config.GetValue(JobConfigFloat.HealthForAutoDefense)
-                && movingHere && attacked)
-            {
-                if (DefenseSingleAbility(out act)) return true;
-                if (ArmsLength.CanUse(out act)) return true;
-            }
-
-            //Big damage casting action.
-            if (DataCenter.IsHostileCastingToTank)
-            {
-                if (DefenseSingleAbility(out act)) return true;
-            }
+            if (DefenseSingleAbility(out act)) return true;
+            if (!DataCenter.IsHostileCastingToTank
+                && ArmsLengthPvE.CanUse(out act)) return true;
         }
 
-        if (helpDefenseSingle && DefenseSingleAbility(out act)) return true;
+        IBaseAction.TargetOverride = TargetType.Move;
+
+        IBaseAction.AllEmpty = true;
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward)
+            && Player != null
+            && !Player.HasStatus(true, StatusID.Bind)
+            && MoveForwardAbility(out act)) return true;
+
+        IBaseAction.TargetOverride = null;
+
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveBack)
+                && MoveBackAbility(out act)) return true;
+        IBaseAction.AllEmpty = false;
+
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.HealSingleAbility))
+        {
+            if (UseHpPotion(out act)) return true;
+        }
+        IBaseAction.ShouldEndSpecial = false;
+
+        if (GeneralUsingAbility(role, out act)) return true;
+
+        if (HasHostilesInRange && AttackAbility(out act)) return true;
+        if (GeneralAbility(out act)) return true;
+
+        if (UseMpPotion(out act)) return true;
+
+        //Run!
+        if (DataCenter.AutoStatus.HasFlag(AutoStatus.Speed))
+        {
+            if (SpeedAbility(out act)) return true;
+        }
 
         return false;
     }
 
-    private bool MovingAbility(out IAction act)
+    private bool MyInterruptAbility(JobRole role, out IAction? act)
     {
-        act = null;
-        if (DataCenter.IsMoveForward && MoveForwardAbility(out act)) return true;
-        else if (DataCenter.IsMoveBack && MoveBackAbility(out act)) return true;
-        return false;
+        switch (role)
+        {
+            case JobRole.Tank:
+                if (InterjectPvE.CanUse(out act)) return true;
+                break;
+
+            case JobRole.Melee:
+                if (LegSweepPvE.CanUse(out act)) return true;
+                break;
+
+            case JobRole.RangedPhysical:
+                if (HeadGrazePvE.CanUse(out act)) return true;
+                break;
+        }
+        return InterruptAbility(out act);
     }
 
-    private bool GeneralUsingAbility(JobRole role, out IAction act)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    protected virtual bool InterruptAbility(out IAction? act)
+    {
+        if (DataCenter.RightNowDutyRotation?.InterruptAbility(out act) ?? false) return true;
+        act = null; return false;
+    }
+
+
+    private bool AntiKnockback(JobRole role, out IAction? act)
+    {
+        switch (role)
+        {
+            case JobRole.Tank:
+            case JobRole.Melee:
+                if (ArmsLengthPvE.CanUse(out act)) return true;
+                break;
+            case JobRole.Healer:
+            case JobRole.RangedMagical:
+                if (SurecastPvE.CanUse(out act)) return true;
+                break;
+            case JobRole.RangedPhysical:
+                if (ArmsLengthPvE.CanUse(out act)) return true;
+                break;
+        }
+
+        return AntiKnockbackAbility(out act);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    protected virtual bool AntiKnockbackAbility(out IAction? act)
+    {
+        if (DataCenter.RightNowDutyRotation?.AntiKnockbackAbility(out act) ?? false) return true;
+        act = null; return false;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    protected virtual bool ProvokeAbility(out IAction? act)
+    {
+        if (DataCenter.RightNowDutyRotation?.ProvokeAbility(out act) ?? false) return true;
+        act = null; return false;
+    }
+
+
+    private bool GeneralUsingAbility(JobRole role, out IAction? act)
     {
         act = null;
         switch (role)
         {
             case JobRole.Tank:
-                if (LowBlow.CanUse(out act)) return true;
+                if (LowBlowPvE.CanUse(out act)) return true;
                 break;
 
             case JobRole.Melee:
-                if (SecondWind.CanUse(out act)) return true;
-                if (Bloodbath.CanUse(out act)) return true;
+                if (SecondWindPvE.CanUse(out act)) return true;
+                if (BloodbathPvE.CanUse(out act)) return true;
                 break;
 
             case JobRole.Healer:
             case JobRole.RangedMagical:
-                if (Jobs[0] == ECommons.ExcelServices.Job.BLM) break;
-                if (LucidDreaming.CanUse(out act)) return true;
+                if (Job == ECommons.ExcelServices.Job.BLM) break;
+                if (LucidDreamingPvE.CanUse(out act)) return true;
                 break;
 
             case JobRole.RangedPhysical:
-                if (SecondWind.CanUse(out act)) return true;
+                if (SecondWindPvE.CanUse(out act)) return true;
                 break;
         }
         return false;
@@ -273,27 +256,30 @@ public abstract partial class CustomRotation
     /// <param name="nextGCD">The next gcd action.</param>
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
-    protected virtual bool EmergencyAbility(IAction nextGCD, out IAction act)
+    protected virtual bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {
         if (nextGCD is BaseAction action)
         {
-            if (ClassJob.GetJobRole() is JobRole.Healer or JobRole.RangedMagical &&
-            action.CastTime >= 5 && Swiftcast.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+            if (Role is JobRole.Healer or JobRole.RangedMagical &&
+            action.Info.CastTime >= 5 && SwiftcastPvE.CanUse(out act)) return true;
 
-            if (Service.Config.GetValue(PluginConfigBool.AutoUseTrueNorth)
-                && action.EnemyPositional != EnemyPositional.None && action.Target != null)
+            if (Service.Config.AutoUseTrueNorth
+                && action.Setting.EnemyPositional != EnemyPositional.None && action.Target != null)
             {
-                if (action.EnemyPositional != action.Target.FindEnemyPositional() && action.Target.HasPositional())
+                if (action.Setting.EnemyPositional != action.Target?.Target?.FindEnemyPositional() && (action.Target?.Target?.HasPositional() ?? false))
                 {
-                    if (TrueNorth.CanUse(out act, CanUseOption.EmptyOrSkipCombo | CanUseOption.OnLastAbility)) return true;
+                    if (TrueNorthPvE.CanUse(out act, isEmpty: true, onLastAbility: true)) return true;
                 }
             }
         }
 
+        if (DataCenter.RightNowDutyRotation?.EmergencyAbility(nextGCD, out act) ?? false) return true;
+
+
         #region PvP
-        if (PvP_Guard.CanUse(out act)
-            && (Player.GetHealthRatio() <= Service.Config.GetValue(PluginConfigFloat.HealthForGuard)
-            || IsRaiseShirk)) return true;
+        if (GuardPvP.CanUse(out act)
+            && (Player.GetHealthRatio() <= Service.Config.HealthForGuard
+            || DataCenter.CommandStatus.HasFlag(AutoStatus.Raise | AutoStatus.Shirk))) return true;
         #endregion
 
         return false;
@@ -305,8 +291,9 @@ public abstract partial class CustomRotation
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.MoveForwardAbility)]
-    protected virtual bool MoveForwardAbility(out IAction act)
+    protected virtual bool MoveForwardAbility(out IAction? act)
     {
+        if (DataCenter.RightNowDutyRotation?.MoveForwardAbility(out act) ?? false) return true;
         act = null; return false;
     }
 
@@ -316,8 +303,9 @@ public abstract partial class CustomRotation
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.MoveBackAbility)]
-    protected virtual bool MoveBackAbility(out IAction act)
+    protected virtual bool MoveBackAbility(out IAction? act)
     {
+        if (DataCenter.RightNowDutyRotation?.MoveBackAbility(out act) ?? false) return true;
         act = null; return false;
     }
 
@@ -327,9 +315,10 @@ public abstract partial class CustomRotation
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.HealSingleAbility)]
-    protected virtual bool HealSingleAbility(out IAction act)
+    protected virtual bool HealSingleAbility(out IAction? act)
     {
-        if (PvP_Recuperate.CanUse(out act)) return true;
+        if (RecuperatePvP.CanUse(out act)) return true;
+        if (DataCenter.RightNowDutyRotation?.HealSingleAbility(out act) ?? false) return true;
         act = null; return false;
     }
 
@@ -339,8 +328,9 @@ public abstract partial class CustomRotation
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.HealAreaAbility)]
-    protected virtual bool HealAreaAbility(out IAction act)
+    protected virtual bool HealAreaAbility(out IAction? act)
     {
+        if (DataCenter.RightNowDutyRotation?.HealAreaAbility(out act) ?? false) return true;
         act = null; return false;
     }
 
@@ -350,8 +340,9 @@ public abstract partial class CustomRotation
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
     [RotationDesc(DescType.DefenseSingleAbility)]
-    protected virtual bool DefenseSingleAbility(out IAction act)
+    protected virtual bool DefenseSingleAbility(out IAction? act)
     {
+        if (DataCenter.RightNowDutyRotation?.DefenseSingleAbility(out act) ?? false) return true;
         act = null; return false;
     }
 
@@ -362,8 +353,9 @@ public abstract partial class CustomRotation
     /// <returns>Can we use it.</returns>
 
     [RotationDesc(DescType.DefenseAreaAbility)]
-    protected virtual bool DefenseAreaAbility(out IAction act)
+    protected virtual bool DefenseAreaAbility(out IAction? act)
     {
+        if (DataCenter.RightNowDutyRotation?.DefenseAreaAbility(out act) ?? false) return true;
         act = null; return false;
     }
 
@@ -374,13 +366,15 @@ public abstract partial class CustomRotation
     /// <returns>Can we use it.</returns>
 
     [RotationDesc(DescType.SpeedAbility)]
-    [RotationDesc(ActionID.Sprint)]
-    protected virtual bool SpeedAbility(out IAction act)
+    [RotationDesc(ActionID.SprintPvE)]
+    protected virtual bool SpeedAbility(out IAction? act)
     {
-        if (PvP_Sprint.CanUse(out act)) return true;
+        if (SprintPvP.CanUse(out act)) return true;
 
-        if (Peloton.CanUse(out act, CanUseOption.MustUse)) return true;
-        if (Sprint.CanUse(out act, CanUseOption.MustUse)) return true;
+        if (PelotonPvE.CanUse(out act, skipAoeCheck: true)) return true;
+        if (SprintPvE.CanUse(out act)) return true;
+
+        if (DataCenter.RightNowDutyRotation?.SpeedAbility(out act) ?? false) return true;
         return false;
     }
 
@@ -390,8 +384,9 @@ public abstract partial class CustomRotation
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
 
-    protected virtual bool GeneralAbility(out IAction act)
+    protected virtual bool GeneralAbility(out IAction? act)
     {
+        if (DataCenter.RightNowDutyRotation?.GeneralAbility(out act) ?? false) return true;
         act = null; return false;
     }
 
@@ -400,12 +395,9 @@ public abstract partial class CustomRotation
     /// </summary>
     /// <param name="act">Result action.</param>
     /// <returns>Can we use it.</returns>
-    protected virtual bool AttackAbility(out IAction act)
+    protected virtual bool AttackAbility(out IAction? act)
     {
-        if (VariantSpiritDart.CanUse(out act, CanUseOption.MustUse)) return true;
-        if (VariantSpiritDart2.CanUse(out act, CanUseOption.MustUse)) return true;
-        if (VariantRampart.CanUse(out act)) return true;
-        if (VariantRampart2.CanUse(out act)) return true;
-        return false;
+        if (DataCenter.RightNowDutyRotation?.AttackAbility(out act) ?? false) return true;
+        act = null; return false;
     }
 }

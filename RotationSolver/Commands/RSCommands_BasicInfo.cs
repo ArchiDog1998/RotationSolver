@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.Command;
 using ECommons.DalamudServices;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 
 namespace RotationSolver.Commands;
@@ -9,7 +10,7 @@ public static partial class RSCommands
     internal static void Enable()
         => Svc.Commands.AddHandler(Service.COMMAND, new CommandInfo(OnCommand)
         {
-            HelpMessage = LocalizationManager.RightLang.Commands_Rotation,
+            HelpMessage = UiString.Commands_Rotation.Local(),
             ShowInHelp = true,
         });
 
@@ -56,8 +57,7 @@ public static partial class RSCommands
         }
     }
 
-    internal static string GetCommandStr<T>(this T command, string extraCommand = "")
-        where T : struct, Enum
+    internal static string GetCommandStr(this Enum command, string extraCommand = "")
     {
         var cmdStr = Service.COMMAND + " " + command.ToString();
         if (!string.IsNullOrEmpty(extraCommand))

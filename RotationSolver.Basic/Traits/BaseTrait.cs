@@ -2,13 +2,12 @@
 using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Traits;
-
 /// <summary>
 /// The trait thing.
 /// </summary>
 public class BaseTrait : IBaseTrait
 {
-    private Trait _trait;
+    private readonly Trait? _trait;
 
     /// <summary>
     /// Has enough level.
@@ -18,7 +17,7 @@ public class BaseTrait : IBaseTrait
     /// <summary>
     /// The level of this trait.
     /// </summary>
-    public byte Level => _trait.Level;
+    public byte Level => _trait?.Level ?? 1;
 
     /// <summary>
     /// 
@@ -52,7 +51,7 @@ public class BaseTrait : IBaseTrait
     public BaseTrait(uint traitId)
     {
         ID = traitId;
-        _trait = Service.GetSheet<Trait>().GetRow(traitId);
+        _trait = Service.GetSheet<Trait>().GetRow(traitId)!;
         Name = _trait?.Name ?? string.Empty;
         IconID = (uint)(_trait?.Icon ?? 0);
     }

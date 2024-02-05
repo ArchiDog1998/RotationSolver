@@ -1,16 +1,12 @@
-﻿using ECommons.ExcelServices;
-using RotationSolver.Basic.Configuration;
+﻿using RotationSolver.Basic.Configuration;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 
 namespace RotationSolver.UI.SearchableConfigs;
 
-internal class AutoHealCheckBox : CheckBoxSearchPlugin
-{
-    private readonly ISearchable[] _otherChildren;
-
-    public AutoHealCheckBox(params ISearchable[] otherChildren)
-        : base(PluginConfigBool.AutoHeal, otherChildren.Union(new ISearchable[]
+internal class AutoHealCheckBox(PropertyInfo property, params ISearchable[] otherChildren) 
+    : CheckBoxSearchCondition(property, otherChildren.Union(new ISearchable[]
         {
             _healthAreaAbility,
             _healthAreaAbilityHot,
@@ -21,20 +17,18 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
             _healthSingleSpell ,
             _healthSingleSpellHot ,
         }).ToArray())
-    {
-        _otherChildren = otherChildren;
-    }
-    private const float speed = 0.005f;
+{
+    private readonly ISearchable[] _otherChildren = otherChildren;
 
-    private static readonly DragFloatSearchJob
-        _healthAreaAbility = new(JobConfigFloat.HealthAreaAbility, speed),
-        _healthAreaAbilityHot = new(JobConfigFloat.HealthAreaAbilityHot, speed),
-        _healthAreaSpell = new(JobConfigFloat.HealthAreaSpell, speed),
-        _healthAreaSpellHot = new(JobConfigFloat.HealthAreaSpellHot, speed),
-        _healthSingleAbility = new(JobConfigFloat.HealthSingleAbility, speed),
-        _healthSingleAbilityHot = new(JobConfigFloat.HealthSingleAbilityHot, speed),
-        _healthSingleSpell = new(JobConfigFloat.HealthSingleSpell, speed),
-        _healthSingleSpellHot = new(JobConfigFloat.HealthSingleSpellHot, speed);
+    private static readonly DragFloatSearch
+        _healthAreaAbility = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaAbility))!),
+        _healthAreaAbilityHot = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaAbilityHot))!),
+        _healthAreaSpell = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaSpell))!),
+        _healthAreaSpellHot =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaSpellHot))!),
+        _healthSingleAbility =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleAbility))!),
+        _healthSingleAbilityHot =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleAbilityHot))!),
+        _healthSingleSpell =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleSpell))!),
+        _healthSingleSpellHot =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleSpellHot))!);
 
     protected override void DrawChildren()
     {
@@ -44,8 +38,8 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
         }
 
         if (ImGui.BeginTable("Healing things", 3, ImGuiTableFlags.Borders
-    | ImGuiTableFlags.Resizable
-    | ImGuiTableFlags.SizingStretchProp))
+            | ImGuiTableFlags.Resizable
+            | ImGuiTableFlags.SizingStretchProp))
         {
             ImGui.TableSetupScrollFreeze(0, 1);
             ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
@@ -54,14 +48,14 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
             ImGui.TableHeader("");
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_Normal);
+            ImGui.TableHeader(UiString.NormalTargets.Local());
 
             ImGui.TableNextColumn();
-            ImGui.TableHeader(LocalizationManager.RightLang.ConfigWindow_Param_HOT);
+            ImGui.TableHeader(UiString.HotTargets.Local());
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaAbility);
+            ImGui.Text(UiString.HpAoe0Gcd.Local());
 
             ImGui.TableNextColumn();
 
@@ -73,7 +67,7 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthAreaSpell);
+            ImGui.Text(UiString.HpAoeGcd.Local());
 
             ImGui.TableNextColumn();
 
@@ -86,7 +80,7 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleAbility);
+            ImGui.Text(UiString.HpSingle0Gcd.Local());
 
             ImGui.TableNextColumn();
 
@@ -98,7 +92,7 @@ internal class AutoHealCheckBox : CheckBoxSearchPlugin
 
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
-            ImGui.Text(LocalizationManager.RightLang.ConfigWindow_Param_HealthSingleSpell);
+            ImGui.Text(UiString.HpSingleGcd.Local());
 
             ImGui.TableNextColumn();
 

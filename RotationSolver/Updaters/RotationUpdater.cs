@@ -1,21 +1,25 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
-using RotationSolver.Basic.Configuration;
+using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
+using System.Runtime.InteropServices;
 
 namespace RotationSolver.Updaters;
 
 internal static class RotationUpdater
 {
-    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = new SortedList<JobRole, CustomRotationGroup[]>();
+    internal record CustomRotationGroup(Job JobId, Job[] ClassJobIds, Type[] Rotations);
+    internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = [];
 
-    internal static SortedList<string, string> AuthorHashes { get; private set; } = new SortedList<string, string>();
-    internal static CustomRotationGroup[] CustomRotations { get; set; } = Array.Empty<CustomRotationGroup>();
+    internal static SortedList<string, string> AuthorHashes { get; private set; } = [];
+    internal static CustomRotationGroup[] CustomRotations { get; set; } = [];
+    internal static SortedList<uint, Type[]> DutyRotations { get; set; } = []; // TODO: Dynamic loading the rotations.
 
-    public static IAction[] RightRotationActions { get; private set; } = Array.Empty<IAction>();
+    public static IAction[] RightRotationActions { get; private set; } = [];
 
     private static DateTime LastRunTime;
 
@@ -42,7 +46,7 @@ internal static class RotationUpdater
                 LoadRotationsFromLocal(relayFolder);
             }
 
-            if (option.HasFlag(DownloadOption.Download) && Service.Config.GetValue(PluginConfigBool.DownloadRotations))
+            if (option.HasFlag(DownloadOption.Download) && Service.Config.DownloadRotations)
                 await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
 
             if (option.HasFlag(DownloadOption.ShowList))
@@ -50,7 +54,7 @@ internal static class RotationUpdater
                 var assemblies = CustomRotationsDict
                     .SelectMany(d => d.Value)
                     .SelectMany(g => g.Rotations)
-                    .Select(r => r.GetType().Assembly.FullName)
+                    .Select(r => r.Assembly.FullName ?? string.Empty)
                     .Distinct()
                     .ToList();
 
@@ -74,7 +78,7 @@ internal static class RotationUpdater
     /// <param name="relayFolder"></param>
     private static void LoadRotationsFromLocal(string relayFolder)
     {
-        var directories = Service.Config.GlobalConfig.OtherLibs
+        var directories = Service.Config.OtherLibs
             .Append(relayFolder)
             .Where(Directory.Exists);
 
@@ -96,7 +100,7 @@ internal static class RotationUpdater
             }
         }
 
-        AuthorHashes = new SortedList<string, string>();
+        AuthorHashes = [];
         foreach (var assembly in assemblies)
         {
             try
@@ -105,6 +109,8 @@ internal static class RotationUpdater
                 if (authorHashAttribute != null)
                 {
                     var key = authorHashAttribute.Hash;
+                    if (string.IsNullOrEmpty(key)) continue;
+
                     var value = $"{assembly.GetInfo().Author} - {assembly.GetInfo().Name}";
 
                     if (AuthorHashes.ContainsKey(key))
@@ -123,19 +129,24 @@ internal static class RotationUpdater
             }
         }
 
+        DutyRotations = LoadDutyRotationGroup(assemblies);
         CustomRotations = LoadCustomRotationGroup(assemblies);
         var customRotationsGroupedByJobRole = new Dictionary<JobRole, List<CustomRotationGroup>>();
         foreach (var customRotationGroup in CustomRotations)
         {
-            var jobRole = customRotationGroup.Rotations[0].ClassJob.GetJobRole();
-            if (!customRotationsGroupedByJobRole.ContainsKey(jobRole))
+            var job = customRotationGroup.Rotations[0].GetType().GetCustomAttribute<JobsAttribute>()?.Jobs[0] ?? Job.ADV;
+
+            var jobRole = Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)job)!.GetJobRole();
+            if (!customRotationsGroupedByJobRole.TryGetValue(jobRole, out var value))
             {
-                customRotationsGroupedByJobRole[jobRole] = new List<CustomRotationGroup>();
+                value = [];
+                customRotationsGroupedByJobRole[jobRole] = value;
             }
-            customRotationsGroupedByJobRole[jobRole].Add(customRotationGroup);
+
+            value.Add(customRotationGroup);
         }
 
-        CustomRotationsDict = new SortedList<JobRole, CustomRotationGroup[]>();
+        CustomRotationsDict = [];
         foreach (var jobRole in customRotationsGroupedByJobRole.Keys)
         {
             var customRotationGroups = customRotationsGroupedByJobRole[jobRole];
@@ -144,34 +155,71 @@ internal static class RotationUpdater
         }
     }
 
+    private static SortedList<uint, Type[]> LoadDutyRotationGroup(List<Assembly> assemblies)
+    {
+        var rotationList = new List<Type>();
+        foreach (var assembly in assemblies)
+        {
+            foreach (var type in TryGetTypes(assembly))
+            {
+                if (type.IsAssignableTo(typeof(DutyRotation))
+                    && !type.IsAbstract && type.GetConstructor([]) != null)
+                {
+                    rotationList.Add(type);
+                }
+            }
+        }
+
+        var result = new Dictionary<uint, List<Type>>();
+        foreach (var type in rotationList)
+        {
+            var territories = type.GetCustomAttribute<DutyTerritoryAttribute>()?.TerritoryIds ?? [];
+
+            foreach (var id in territories)
+            {
+                if (result.TryGetValue(id, out var list))
+                {
+                    list.Add(type);
+                }
+                else
+                {
+                    result[id] = [type];
+                }
+            }
+        }
+
+        return new(result.ToDictionary(i => i.Key, i => i.Value.ToArray()));
+    }
+
     private static CustomRotationGroup[] LoadCustomRotationGroup(List<Assembly> assemblies)
     {
-        var rotationList = new List<ICustomRotation>();
+        var rotationList = new List<Type>();
         foreach (var assembly in assemblies)
         {
             foreach (var type in TryGetTypes(assembly))
             {
                 if (type.GetInterfaces().Contains(typeof(ICustomRotation))
-                    && !type.IsAbstract && !type.IsInterface)
+                    && !type.IsAbstract && !type.IsInterface && type.GetConstructor([]) != null)
                 {
-                    var rotation = GetRotation(type);
-                    if (rotation != null)
-                    {
-                        rotationList.Add(rotation);
-                    }
+                    rotationList.Add(type);
                 }
             }
         }
 
-        var rotationGroups = new Dictionary<Job, List<ICustomRotation>>();
+        var rotationGroups = new Dictionary<Job, List<Type>>();
         foreach (var rotation in rotationList)
         {
-            var jobId = rotation.Jobs[0];
-            if (!rotationGroups.ContainsKey(jobId))
+            var attr = rotation.GetCustomAttribute<JobsAttribute>();
+            if (attr == null) continue;
+
+            var jobId = attr.Jobs[0];
+            if (!rotationGroups.TryGetValue(jobId, out var value))
             {
-                rotationGroups.Add(jobId, new List<ICustomRotation>());
+                value = [];
+                rotationGroups.Add(jobId, value);
             }
-            rotationGroups[jobId].Add(rotation);
+
+            value.Add(rotation);
         }
 
         var result = new List<CustomRotationGroup>();
@@ -179,11 +227,12 @@ internal static class RotationUpdater
         {
             var jobId = kvp.Key;
             var rotations = kvp.Value.ToArray();
-            result.Add(new CustomRotationGroup(jobId, rotations[0].Jobs, CreateRotationSet(rotations)));
+
+            result.Add(new CustomRotationGroup(jobId, rotations[0].GetCustomAttribute<JobsAttribute>()!.Jobs,
+                rotations));
         }
 
-
-        return result.ToArray();
+        return [.. result];
     }
 
 
@@ -200,11 +249,11 @@ internal static class RotationUpdater
         // Code to download rotations from remote server
         bool hasDownload = false;
 
-        var GitHubLinks = Service.Config.GlobalConfig.GitHubLibs.Union(DownloadHelper.LinkLibraries ?? Array.Empty<string>());
+        var GitHubLinks = Service.Config.GitHubLibs.Union(DownloadHelper.LinkLibraries ?? []);
 
         using (var client = new HttpClient())
         {
-            foreach (var url in Service.Config.GlobalConfig.OtherLibs.Union(GitHubLinks.Select(Convert)))
+            foreach (var url in Service.Config.OtherLibs.Union(GitHubLinks.Select(Convert)))
             {
                 hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
                 var pdbUrl = Path.ChangeExtension(url, ".pdb");
@@ -243,7 +292,7 @@ internal static class RotationUpdater
             if (string.IsNullOrEmpty(fileName)) return false;
             //if (Path.GetExtension(fileName) != ".dll") continue;
             var filePath = Path.Combine(relayFolder, fileName);
-            if (!Service.Config.GetValue(PluginConfigBool.AutoUpdateRotations) && File.Exists(filePath)) return false;
+            if (!Service.Config.AutoUpdateRotations && File.Exists(filePath)) return false;
 
             //Download
             using (HttpResponseMessage response = await client.GetAsync(url))
@@ -275,15 +324,17 @@ internal static class RotationUpdater
         return false;
     }
 
-    private static void PrintLoadedAssemblies(IEnumerable<string> assemblies)
+    private static void PrintLoadedAssemblies(IEnumerable<string>? assemblies)
     {
+        if (assemblies == null) return;
+
         foreach (var assembly in assemblies)
         {
             Svc.Chat.Print("Loaded: " + assembly);
         }
     }
 
-    private static Assembly LoadOne(string filePath)
+    private static Assembly? LoadOne(string filePath)
     {
         try
         {
@@ -308,7 +359,7 @@ internal static class RotationUpdater
             return;
         }
 
-        var dirs = Service.Config.GlobalConfig.OtherLibs;
+        var dirs = Service.Config.OtherLibs;
 
         foreach (var dir in dirs)
         {
@@ -339,7 +390,7 @@ internal static class RotationUpdater
         LastRunTime = DateTime.Now;
     }
 
-    private static Type[] TryGetTypes(Assembly assembly)
+    public static Type[] TryGetTypes(Assembly assembly)
     {
         try
         {
@@ -348,84 +399,57 @@ internal static class RotationUpdater
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, $"Failed to load the types from {assembly.FullName}");
-            return Array.Empty<Type>();
+            return [];
         }
     }
 
-    private static ICustomRotation GetRotation(Type t)
-    {
-        try
-        {
-            return (ICustomRotation)Activator.CreateInstance(t);
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Error(ex, $"Failed to load the rotation: {t.Name}");
-            return null;
-        }
-    }
+    public static IEnumerable<IGrouping<string, IAction>>? AllGroupedActions
+        => GroupActions([
+            .. DataCenter.RightNowRotation?.AllActions ?? [],
+            .. DataCenter.RightNowDutyRotation?.AllActions ?? []]);
 
-    private static ICustomRotation[] CreateRotationSet(ICustomRotation[] combos)
-    {
-        var result = new List<ICustomRotation>(combos.Length);
-
-        foreach (var combo in combos)
-        {
-            if (!result.Any(c => c.RotationName == combo.RotationName))
-            {
-                result.Add(combo);
-            }
-        }
-        return result.ToArray();
-    }
-
-    public static IEnumerable<IGrouping<string, IAction>> AllGroupedActions
-        => GroupActions(DataCenter.RightNowRotation?.AllActions);
-
-    public static IEnumerable<IGrouping<string, IAction>> GroupActions(IEnumerable<IAction> actions)
+    public static IEnumerable<IGrouping<string, IAction>>? GroupActions(IEnumerable<IAction> actions)
        => actions?.GroupBy(a =>
        {
            if (a is IBaseAction act)
            {
-               if (!act.IsOnSlot) return string.Empty;
+               if (!act.Info.IsOnSlot) return string.Empty;
 
                string result;
 
-               if (act.IsLimitBreak)
+               if (act.Action.ActionCategory.Row is 10 or 11)
+               {
+                   return "System Action";
+               }
+               else if (act.Action.IsRoleAction)
+               {
+                   return "Role Action";
+               }
+               else if (act.Info.IsLimitBreak)
                {
                    return "Limit Break";
                }
-
-               if (act.IsDutyAction)
+               else if (act.Info.IsDutyAction)
                {
                    return "Duty Action";
                }
 
-               if (act.IsRealGCD)
+               if (act.Info.IsRealGCD)
                {
                    result = "GCD";
                }
                else
                {
-                   result = LocalizationManager.RightLang.Action_Ability;
+                   result = UiString.ActionAbility.Local(); 
                }
 
-               if (act.IsFriendly)
+               if (act.Setting.IsFriendly)
                {
-                   result += "-" + LocalizationManager.RightLang.Action_Friendly;
-                   if (act.IsEot)
-                   {
-                       result += "-Hot";
-                   }
+                   result += "-" + UiString.ActionFriendly.Local();
                }
                else
                {
-                   result += "-" + LocalizationManager.RightLang.Action_Attack;
-
-                   if (act.IsEot)
-                   {
-                       result += "-Dot";
-                   }
+                   result += "-" + UiString.ActionAttack.Local();
                }
                return result;
            }
@@ -439,6 +463,40 @@ internal static class RotationUpdater
 
     public static void UpdateRotation()
     {
+        UpdateCustomRotation();
+        UpdateDutyRotation();
+    }
+
+    private static void UpdateDutyRotation()
+    {
+        if (!DutyRotations.TryGetValue(Svc.ClientState.TerritoryType, out var rotations)) return;
+
+        Service.Config.DutyRotationChoice.TryGetValue(Svc.ClientState.TerritoryType, out var value);
+        var name = value ?? string.Empty;
+        var type = GetChosenType(rotations, name);
+        if (type != DataCenter.RightNowDutyRotation?.GetType())
+        {
+            var instance = GetRotation(type);
+            DataCenter.RightNowDutyRotation = instance;
+        }
+
+        static DutyRotation? GetRotation(Type? t)
+        {
+            if (t == null) return null;
+            try
+            {
+                return (DutyRotation?)Activator.CreateInstance(t);
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Error(ex, $"Failed to create the rotation: {t.Name}");
+                return null;
+            }
+        }
+    }
+
+    private static void UpdateCustomRotation()
+    {
         var nowJob = (Job)Player.Object.ClassJob.Id;
 
         foreach (var group in CustomRotations)
@@ -446,37 +504,64 @@ internal static class RotationUpdater
             if (!group.ClassJobIds.Contains(nowJob)) continue;
 
             var rotation = GetChosenRotation(group);
-            if (rotation != DataCenter.RightNowRotation)
+            if (rotation != DataCenter.RightNowRotation?.GetType())
             {
-                rotation?.OnTerritoryChanged();
+                var instance = GetRotation(rotation);
+                instance?.OnTerritoryChanged();
+                DataCenter.RightNowRotation = instance;
             }
-            DataCenter.RightNowRotation = rotation;
-            RightRotationActions = DataCenter.RightNowRotation?.AllActions ?? Array.Empty<IAction>();
-            DataCenter.Job = DataCenter.RightNowRotation?.Jobs[0] ?? Job.ADV;
+            RightRotationActions = DataCenter.RightNowRotation?.AllActions ?? [];
+            DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
             return;
         }
 
         CustomRotation.MoveTarget = null;
         DataCenter.RightNowRotation = null;
-        RightRotationActions = Array.Empty<IAction>();
-        DataCenter.Job = DataCenter.RightNowRotation?.Jobs[0] ?? Job.ADV;
+        RightRotationActions = [];
+        DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
+
+        static ICustomRotation? GetRotation(Type? t)
+        {
+            if (t == null) return null;
+            try
+            {
+                return (ICustomRotation?)Activator.CreateInstance(t);
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Error(ex, $"Failed to create the rotation: {t.Name}");
+                return null;
+            }
+        }
+
+        static Type? GetChosenRotation(CustomRotationGroup group)
+        {
+            var isPvP = DataCenter.Territory?.IsPvpZone ?? false;
+
+            var rotations = group.Rotations
+                .Where(r =>
+                {
+                    var rot = r.GetCustomAttribute<RotationAttribute>();
+                    if (rot == null) return false;
+                    var type = rot.Type;
+
+                    return isPvP ? type.HasFlag(CombatType.PvP) : type.HasFlag(CombatType.PvE);
+                });
+
+            var name = isPvP ? Service.Config.PvPRotationChoice : Service.Config.RotationChoice;
+            return GetChosenType(rotations, name);
+        }
     }
 
-    internal static ICustomRotation GetChosenRotation(CustomRotationGroup group)
+    private static Type? GetChosenType(IEnumerable<Type> types, string name)
     {
-        var isPvP = DataCenter.Territory?.IsPvpZone ?? false;
+        var rotation = types.FirstOrDefault(r => r.GetType().FullName == name);
 
-        var rotations =  group.Rotations.Where(r => isPvP ? r.Type.HasFlag(CombatType.PvP)
-        : r.Type.HasFlag(CombatType.PvE));
-        var name = isPvP ? Service.Config.GetJobConfig(group.JobId).PvPRotationChoice
-            : Service.Config.GetJobConfig(group.JobId).RotationChoice;
+        rotation ??= types.FirstOrDefault(r => r.GetType().Assembly.FullName!.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
 
-        var rotation = rotations.FirstOrDefault(r => r.GetType().FullName == name);
-        rotation ??= rotations.FirstOrDefault(r => r.GetType().Assembly.FullName.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
+        rotation ??= types.FirstOrDefault(r => r.GetType().Assembly.FullName!.Contains("DefaultRotations", StringComparison.OrdinalIgnoreCase));
 
-        rotation ??= rotations.FirstOrDefault(r => r.GetType().Assembly.FullName.Contains("DefaultRotations", StringComparison.OrdinalIgnoreCase));
-
-        rotation ??= rotations.FirstOrDefault();
+        rotation ??= types.FirstOrDefault();
 
         return rotation;
     }

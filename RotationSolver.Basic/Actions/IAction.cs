@@ -26,26 +26,14 @@ public interface IAction : ITexture, IEnoughLevel
     uint SortKey { get; }
 
     /// <summary>
-    /// Please don't use it.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal float RecastTimeElapsedRaw { get; }
-
-    /// <summary>
-    /// Please don't use it.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal float RecastTimeOneChargeRaw { get; }
-
-    /// <summary>
-    /// Is action cooling down.
-    /// </summary>
-    bool IsCoolingDown { get; }
-
-    /// <summary>
-    /// Is in the cd window.
+    /// Is in cd window.
     /// </summary>
     bool IsInCooldown { get; set; }
+
+    /// <summary>
+    /// The cd information.
+    /// </summary>
+    ICooldown Cooldown { get; }
 
     /// <summary>
     /// How to use.

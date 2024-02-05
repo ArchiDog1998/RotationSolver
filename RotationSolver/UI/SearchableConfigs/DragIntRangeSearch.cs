@@ -1,100 +1,64 @@
-﻿using Dalamud.Utility;
-using ECommons.ExcelServices;
-using RotationSolver.Basic.Configuration;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 
 namespace RotationSolver.UI.SearchableConfigs;
 
-internal class DragIntRangeSearchJob : DragIntRangeSearch
+internal class DragIntRangeSearch : Searchable
 {
-    private readonly JobConfigInt _configMin, _configMax;
+    public int Min { get; }
+    public int Max { get; }
+    public float Speed { get; }
+    public ConfigUnitType Unit { get; }
 
-    public override string ID => _configMin.ToString();
-
-    public override string Name => _configMin.ToName();
-
-    public override string Description => _configMin.ToDescription();
-
-    public override LinkDescription[] Tooltips => _configMin.ToAction();
-    protected override bool IsJob => true;
-    protected override int MinValue
+    public override string Description
     {
-        get => Service.Config.GetValue(_configMin);
-        set => Service.Config.SetValue(_configMin, value);
+        get
+        {
+            var baseDesc = base.Description;
+            if (!string.IsNullOrEmpty(baseDesc))
+            {
+                return baseDesc + "\n" + Unit.Local();
+            }
+            else
+            {
+                return Unit.Local();
+            }
+        }
     }
 
-    protected override int MaxValue
+    protected Vector2Int Value
     {
-        get => Service.Config.GetValue(_configMax);
-        set => Service.Config.SetValue(_configMax, value);
+        get => (Vector2Int)_property.GetValue(Service.Config)!;
+        set => _property.SetValue(Service.Config, value);
     }
 
-    public DragIntRangeSearchJob(JobConfigInt configMin, JobConfigInt configMax, float speed)
-    : base((int)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
+    protected int MinValue
     {
-        _configMin = configMin;
-        _configMax = configMax;
+        get => Value.X;
+        set
+        {
+            var v = Value;
+            v.X = value;
+            Value = v;
+        }
+    }
+    protected int MaxValue
+    {
+        get => Value.Y;
+        set
+        {
+            var v = Value;
+            v.Y = value;
+            Value = v;
+        }
     }
 
-    public override void ResetToDefault()
+    public DragIntRangeSearch(PropertyInfo property) : base(property)
     {
-        Service.Config.SetValue(_configMin, Service.Config.GetDefault(_configMin));
-        Service.Config.SetValue(_configMax, Service.Config.GetDefault(_configMax));
-    }
-}
-
-
-internal class DragIntRangeSearchPlugin : DragIntRangeSearch
-{
-    private readonly PluginConfigInt _configMin, _configMax;
-
-    public override string ID => _configMin.ToString();
-
-    public override string Name => _configMin.ToName();
-
-    public override string Description => _configMin.ToDescription();
-
-    public override LinkDescription[] Tooltips => _configMin.ToAction();
-
-    protected override int MinValue
-    {
-        get => Service.Config.GetValue(_configMin);
-        set => Service.Config.SetValue(_configMin, value);
-    }
-
-    protected override int MaxValue
-    {
-        get => Service.Config.GetValue(_configMax);
-        set => Service.Config.SetValue(_configMax, value);
-    }
-
-    public DragIntRangeSearchPlugin(PluginConfigInt configMin, PluginConfigInt configMax, float speed)
-        : base((int)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0), (int)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1), speed)
-    {
-        _configMin = configMin;
-        _configMax = configMax;
-    }
-
-    public override void ResetToDefault()
-    {
-        Service.Config.SetValue(_configMin, Service.Config.GetDefault(_configMin));
-        Service.Config.SetValue(_configMax, Service.Config.GetDefault(_configMax));
-    }
-}
-
-internal abstract class DragIntRangeSearch : Searchable
-{
-    public int Min { get; init; }
-    public int Max { get; init; }
-    public float Speed { get; init; }
-
-    public sealed override string Command => "";
-    protected abstract int MinValue { get; set; }
-    protected abstract int MaxValue { get; set; }
-    public DragIntRangeSearch(int min, int max, float speed)
-    {
-        Min = min; Max = max;
-        Speed = speed;
+        var range = _property.GetCustomAttribute<RangeAttribute>();
+        Min = (int?)range?.MinValue ?? 0;
+        Max = (int?)range?.MaxValue ?? 1;
+        Speed = range?.Speed ?? 0.001f;
+        Unit = range?.UnitType ?? ConfigUnitType.None;
     }
 
     protected override void DrawMain()

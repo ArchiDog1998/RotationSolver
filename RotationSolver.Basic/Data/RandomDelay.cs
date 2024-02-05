@@ -3,7 +3,11 @@
 /// <summary>
 /// Random delay the bool.
 /// </summary>
-public struct RandomDelay
+/// <remarks>
+/// Constructer.
+/// </remarks>
+/// <param name="getRange"></param>
+public struct RandomDelay(Func<(float min, float max)> getRange)
 {
     DateTime _startDelayTime = DateTime.Now;
     float _delayTime = -1;
@@ -14,15 +18,16 @@ public struct RandomDelay
     /// <summary>
     /// 
     /// </summary>
-    public Func<(float min, float max)> GetRange { get; init; } = null;
+    public readonly Func<(float min, float max)> GetRange => getRange;
 
-    /// <summary>
-    /// Constructer.
-    /// </summary>
-    /// <param name="getRange"></param>
-    public RandomDelay(Func<(float min, float max)> getRange)
+    public RandomDelay(Func<Vector2> getRange)
+        : this(() =>
+        {
+            var vec = getRange();
+            return (vec.X, vec.Y);
+        })
     {
-        GetRange = getRange;
+        
     }
 
     /// <summary>
@@ -59,5 +64,19 @@ public struct RandomDelay
         }
 
         return false;
+    }
+
+    public T? Delay<T>(T? originData) where T : class
+    {
+        var b = originData != null;
+
+        if (Delay(b))
+        {
+            return originData;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

@@ -7,15 +7,12 @@ using System.Runtime.Loader;
 
 namespace RotationSolver.Helpers;
 
-internal class RotationLoadContext : AssemblyLoadContext
+internal class RotationLoadContext(DirectoryInfo? directoryInfo) 
+    : AssemblyLoadContext(true)
 {
-    readonly DirectoryInfo _directory;
+    readonly DirectoryInfo? _directory = directoryInfo;
 
-    private static readonly Dictionary<string, Assembly> _handledAssemblies = new();
-    public RotationLoadContext(DirectoryInfo directoryInfo) : base(true)
-    {
-        _directory = directoryInfo;
-    }
+    private static readonly Dictionary<string, Assembly> _handledAssemblies = [];
 
     static RotationLoadContext()
     {
@@ -31,18 +28,18 @@ internal class RotationLoadContext : AssemblyLoadContext
 
         foreach (var assembly in assemblies)
         {
-            _handledAssemblies.Add(assembly.GetName().Name, assembly);
+            _handledAssemblies.Add(assembly.GetName().Name ?? string.Empty, assembly);
         }
     }
 
-    protected override Assembly Load(AssemblyName assemblyName)
+    protected override Assembly? Load(AssemblyName assemblyName)
     {
-        if (assemblyName.Name != null && _handledAssemblies.TryGetValue(assemblyName.Name, out Assembly value))
+        if (assemblyName.Name != null && _handledAssemblies.TryGetValue(assemblyName.Name, out var value))
         {
             return value;
         }
 
-        var file = Path.Join(_directory.FullName, $"{assemblyName.Name}.dll");
+        var file = Path.Join(_directory?.FullName ?? string.Empty, $"{assemblyName.Name}.dll");
         if (File.Exists(file))
         {
             try

@@ -4,13 +4,14 @@ using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Configuration.Conditions;
 
+[Description("Target Condition")]
 internal class TargetCondition : DelayCondition
 {
-    internal IBaseAction _action;
+    internal IBaseAction? _action;
     public ActionID ID { get; set; } = ActionID.None;
 
     public bool FromSelf;
-    internal Status Status;
+    internal Status? Status;
     public StatusID StatusId { get; set; }
     public TargetType TargetType;
     public TargetConditionType TargetConditionType;
@@ -22,13 +23,10 @@ internal class TargetCondition : DelayCondition
 
     protected override bool IsTrueInside(ICustomRotation rotation)
     {
-        BattleChara tar;
+        BattleChara? tar;
         if (_action != null)
         {
-            if (!_action.FindTarget(true, 0, out tar, out _))
-            {
-                tar = null;
-            }
+            tar = _action.TargetInfo.FindTarget(true)?.Target as BattleChara;
         }
         else
         {
@@ -240,29 +238,69 @@ internal class TargetCondition : DelayCondition
 
 internal enum TargetType : byte
 {
+    [Description("Hostile Target")]
     HostileTarget,
+
+    [Description("Player")]
     Player,
+
+    [Description("Target")]
     Target,
 }
 
 internal enum TargetConditionType : byte
 {
+    [Description("Is Null")]
     IsNull,
+
+    [Description("Has status")]
     HasStatus,
+
+    [Description("Is Dying")]
     IsDying,
+
+    [Description("Is Boss From TTK")]
     IsBossFromTTK,
+
+    [Description("Is Boss From Icon")]
     IsBossFromIcon,
+
+    [Description("In Combat")]
     InCombat,
+
+    [Description("Distance")]
     Distance,
+
+    [Description("Status end")]
     StatusEnd,
+
+    [Description("Status End GCD")]
     StatusEndGCD,
+
+    [Description("Casting Action")]
     CastingAction,
+
+    [Description("Casting Action Time Until")]
     CastingActionTime,
+
+    [Description("Time To Kill")]
     TimeToKill,
+
+    [Description("HP")]
     HP,
+
+    [Description("HP%")]
     HPRatio,
+
+    [Description("MP")]
     MP,
+
+    [Description("Target Name")]
     TargetName,
+
+    [Description("Object Effect")]
     ObjectEffect,
+
+    [Description("Vfx")]
     Vfx,
 }

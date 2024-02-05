@@ -38,7 +38,8 @@ internal class Service : IDisposable
     }
 
     public static float CountDownTime => Countdown.TimeRemaining;
-    public static PluginConfig Config { get; set; } = new PluginConfig();
+    public static Configs Config { get; set; } = null!;
+    public static Configs ConfigDefault { get; set; } = new Configs();
 
     public Service()
     {
@@ -59,7 +60,7 @@ internal class Service : IDisposable
             .Where(ptr => ptr != IntPtr.Zero);
     }
 
-    public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => Svc.Data.GetExcelSheet<T>();
+    public static ExcelSheet<T> GetSheet<T>() where T : ExcelRow => Svc.Data.GetExcelSheet<T>()!;
 
     public void Dispose()
     {

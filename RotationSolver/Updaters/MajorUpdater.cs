@@ -12,6 +12,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using System.Runtime.InteropServices;
@@ -23,10 +24,11 @@ internal static class MajorUpdater
     public static bool IsValid => Svc.Condition.Any()
         && !Svc.Condition[ConditionFlag.BetweenAreas]
         && !Svc.Condition[ConditionFlag.BetweenAreas51]
+        && !Svc.Condition[ConditionFlag.LoggingOut]
         && Player.Available;
 
     static bool _showedWarning, _work;
-    static Exception _threadException;
+    static Exception? _threadException;
     static DateTime _lastUpdatedWork = DateTime.Now;
 
     private unsafe static void FrameworkUpdate(IFramework framework)
@@ -53,11 +55,11 @@ internal static class MajorUpdater
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
 
-            if (Service.Config.GetValue(PluginConfigBool.TeachingMode) && ActionUpdater.NextAction != null)
+            if (Service.Config.TeachingMode && ActionUpdater.NextAction != null)
             {
                 //Sprint action id is 3 however the id in hot bar is 4.
                 var id = ActionUpdater.NextAction.AdjustedID;
-                PainterManager.ActionIds.Add(id == (uint)ActionID.Sprint ? 4 : id);
+                PainterManager.ActionIds.Add(id == (uint)ActionID.SprintPvE ? 4 : id);
             }
             ActionUpdater.UpdateActionInfo();
 
@@ -85,13 +87,13 @@ internal static class MajorUpdater
         try
         {
             if (_work) return;
-            if (DateTime.Now - _lastUpdatedWork < TimeSpan.FromSeconds(Service.Config.GetValue(PluginConfigFloat.MinUpdatingTime)))
+            if (DateTime.Now - _lastUpdatedWork < TimeSpan.FromSeconds(Service.Config.MinUpdatingTime))
                 return;
 
             _work = true;
             _lastUpdatedWork = DateTime.Now;
 
-            if (Service.Config.GetValue(PluginConfigBool.UseWorkTask))
+            if (Service.Config.UseWorkTask)
             {
                 Task.Run(UpdateWork);
             }
@@ -136,11 +138,11 @@ internal static class MajorUpdater
 
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "Avarice"))
         {
-            LocalizationManager.RightLang.AvariceWarning.ShowWarning(0);
+            UiString.AvariceWarning.Local().ShowWarning(0);
         }
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "TextToTalk"))
         {
-            LocalizationManager.RightLang.TextToTalkWarning.ShowWarning(0);
+            UiString.TextToTalkWarning.Local().ShowWarning(0);
         }
     }
 
@@ -152,13 +154,13 @@ internal static class MajorUpdater
         Svc.Framework.Update += FrameworkUpdate;
     }
 
-    static Exception _innerException;
+    static Exception? _innerException;
     private static void UpdateWork()
     {
         var waitingTime = (DateTime.Now - _lastUpdatedWork).TotalMilliseconds;
         if (waitingTime > 100)
         {
-            Svc.Log.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{LocalizationManager.RightLang.ConfigWindow_Param_UseWorkTask}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
+            Svc.Log.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{"UseWorkTask"}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
         }
 
         if (!IsValid)
@@ -170,8 +172,9 @@ internal static class MajorUpdater
         try
         {
             TargetUpdater.UpdateTarget();
+            StateUpdater.UpdateState();
 
-            if (Service.Config.GetValue(PluginConfigBool.AutoLoadCustomRotations))
+            if (Service.Config.AutoLoadCustomRotations)
             {
                 RotationUpdater.LocalRotationWatcher();
             }
@@ -229,7 +232,7 @@ internal static class MajorUpdater
     static uint _lastChest = 0;
     private unsafe static void OpenChest()
     {
-        if (!Service.Config.GetValue(PluginConfigBool.AutoOpenChest)) return;
+        if (!Service.Config.AutoOpenChest) return;
         var player = Player.Object;
 
         var treasure = Svc.Objects.FirstOrDefault(o =>
@@ -270,7 +273,7 @@ internal static class MajorUpdater
             Svc.Log.Error(ex, "Failed to open the chest!");
         }
 
-        if (!Service.Config.GetValue(PluginConfigBool.AutoCloseChestWindow)) return;
+        if (!Service.Config.AutoCloseChestWindow) return;
         _closeWindowTime = DateTime.Now.AddSeconds(0.5);
     }
 

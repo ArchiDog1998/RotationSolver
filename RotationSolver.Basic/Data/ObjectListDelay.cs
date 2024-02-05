@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Drawing;
 
 namespace RotationSolver.Basic.Data;
 
@@ -6,20 +7,26 @@ namespace RotationSolver.Basic.Data;
 /// A class to delay the object list checking.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class ObjectListDelay<T> : IEnumerable<T> where T : GameObject
+/// <remarks>
+/// Constructer.
+/// </remarks>
+/// <param name="getRange"></param>
+public class ObjectListDelay<T>(Func<(float min, float max)> getRange) 
+    : IEnumerable<T> where T : GameObject
 {
     IEnumerable<T> _list = Array.Empty<T>();
-    readonly Func<(float min, float max)> _getRange;
-    SortedList<uint, DateTime> _revealTime = new();
+    readonly Func<(float min, float max)> _getRange = getRange;
+    SortedList<uint, DateTime> _revealTime = [];
     readonly Random _ran = new(DateTime.Now.Millisecond);
 
-    /// <summary>
-    /// Constructer.
-    /// </summary>
-    /// <param name="getRange"></param>
-    public ObjectListDelay(Func<(float min, float max)> getRange)
+    public ObjectListDelay(Func<Vector2> getRange)
+        : this(() =>
+        {
+            var vec = getRange();
+            return (vec.X, vec.Y);
+        })
     {
-        _getRange = getRange;
+        
     }
 
     /// <summary>

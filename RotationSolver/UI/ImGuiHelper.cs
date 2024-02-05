@@ -7,7 +7,10 @@ using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Data;
 using RotationSolver.Localization;
+using RotationSolver.UI.SearchableConfigs;
+using RotationSolver.UI.SearchableSettings;
 using System.ComponentModel;
 
 namespace RotationSolver.UI;
@@ -19,18 +22,9 @@ internal static class ImGuiHelper
         ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X + 30 * ImGuiHelpers.GlobalScale));
     }
 
-    public static string GetMemberName(this MemberInfo info)
-    {
-        if (info == null) return "Not Chosen";
-
-        if (LocalizationManager.RightLang.MemberInfoName.TryGetValue(info.Name, out var memberName)) return memberName;
-
-        return info.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? info.Name;
-    }
-
     const float INDENT_WIDTH = 180;
 
-    internal static void DisplayCommandHelp<T>(this T command, string extraCommand = "", Func<T, string> getHelp = null, bool sameLine = true) where T : struct, Enum
+    internal static void DisplayCommandHelp(this Enum command, string extraCommand = "", Func<Enum, string>? getHelp = null, bool sameLine = true)
     {
         var cmdStr = command.GetCommandStr(extraCommand);
 
@@ -40,7 +34,7 @@ internal static class ImGuiHelper
         }
         if (ImGui.IsItemHovered())
         {
-            ImguiTooltips.ShowTooltip($"{LocalizationManager.RightLang.ConfigWindow_Helper_RunCommand}: {cmdStr}\n{LocalizationManager.RightLang.ConfigWindow_Helper_CopyCommand}: {cmdStr}");
+            ImguiTooltips.ShowTooltip($"{UiString.ConfigWindow_Helper_RunCommand.Local()}: {cmdStr}\n{UiString.ConfigWindow_Helper_CopyCommand.Local()}: {cmdStr}");
 
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
             {
@@ -70,7 +64,7 @@ internal static class ImGuiHelper
     public static void DisplayMacro(this MacroInfo info)
     {
         ImGui.SetNextItemWidth(50);
-        if (ImGui.DragInt($"{LocalizationManager.RightLang.ConfigWindow_Events_MacroIndex}##MacroIndex{info.GetHashCode()}",
+        if (ImGui.DragInt($"{UiString.ConfigWindow_Events_MacroIndex.Local()}##MacroIndex{info.GetHashCode()}",
             ref info.MacroIndex, 1, -1, 99))
         {
             Service.Config.Save();
@@ -78,7 +72,7 @@ internal static class ImGuiHelper
 
         ImGui.SameLine();
 
-        if (ImGui.Checkbox($"{LocalizationManager.RightLang.ConfigWindow_Events_ShareMacro}##ShareMacro{info.GetHashCode()}",
+        if (ImGui.Checkbox($"{UiString.ConfigWindow_Events_ShareMacro.Local()}##ShareMacro{info.GetHashCode()}",
             ref info.IsShared))
         {
             Service.Config.Save();
@@ -87,7 +81,7 @@ internal static class ImGuiHelper
 
     public static void DisplayEvent(this ActionEventInfo info)
     {
-        if (ImGui.InputText($"{LocalizationManager.RightLang.ConfigWindow_Events_ActionName}##ActionName{info.GetHashCode()}",
+        if (ImGui.InputText($"{UiString.ConfigWindow_Events_ActionName.Local()}##ActionName{info.GetHashCode()}",
             ref info.Name, 100))
         {
             Service.Config.Save();
@@ -378,7 +372,7 @@ internal static class ImGuiHelper
         Notify.Success($"\"{command}\" copied to clipboard.");
     }
 
-    private static readonly SortedList<string, bool> _lastChecked = new();
+    private static readonly SortedList<string, bool> _lastChecked = [];
     private static void ExecuteHotKeys(Action action, params VirtualKey[] keys)
     {
         if (action == null) return;
@@ -428,16 +422,6 @@ internal static class ImGuiHelper
         _ => string.Empty,
     };
 
-    public static string ToDesc(this ConfigUnitType unit) => unit switch
-    {
-        ConfigUnitType.Seconds => LocalizationManager.RightLang.ConfigUnitType_Seconds,
-        ConfigUnitType.Degree => LocalizationManager.RightLang.ConfigUnitType_Degree,
-        ConfigUnitType.Pixels => LocalizationManager.RightLang.ConfigUnitType_Pixels,
-        ConfigUnitType.Yalms => LocalizationManager.RightLang.ConfigUnitType_Yalms,
-        ConfigUnitType.Percent => LocalizationManager.RightLang.ConfigUnitType_Ratio,
-        _ => string.Empty,
-    };
-
     public static void Draw(this CombatType type)
     {
         if (type.HasFlag(CombatType.PvE))
@@ -450,7 +434,7 @@ internal static class ImGuiHelper
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.TankBlue, " PvP");
         }
-        if(type == CombatType.None)
+        if (type == CombatType.None)
         {
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.DalamudRed, " None of PvE or PvP!");

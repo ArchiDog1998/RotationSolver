@@ -45,11 +45,6 @@ jobs:
         run: |
           invoke-expression 'dotnet build --no-restore --configuration Release RotationSolver'
            
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: .\RotationSolver\bin\Release\net7.0-windows\RotationSolver\
-
       - name: publish on version change
         id: publish_nuget
         uses: alirezanet/publish-nuget@v3.0.4
@@ -57,31 +52,3 @@ jobs:
           PROJECT_FILE_PATH: RotationSolver.Basic/RotationSolver.Basic.csproj
           VERSION_FILE_PATH: Directory.Build.props
           NUGET_KEY: ${{secrets.nuget_api_key}}
-
-  release:
-    name: release
-    needs: [release-please, build]
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v3
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.release-please.outputs.upload_url }}
-          asset_path: artifact/latest.zip
-          asset_name: latest.zip
-          asset_content_type: application/zip
-
-      - name: Trigger Repo Update
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.PAT }}
-          repository: ${{ github.repository_owner }}/Dalamud_Plugins
-          event-type: new-release

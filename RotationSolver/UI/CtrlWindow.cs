@@ -1,31 +1,25 @@
 ﻿using Dalamud.Interface.Windowing;
-using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.UI;
 
-internal abstract class CtrlWindow : Window
+internal abstract class CtrlWindow(string name) : Window(name, BaseFlags)
 {
     public const ImGuiWindowFlags BaseFlags = ImGuiWindowFlags.NoScrollbar
                         | ImGuiWindowFlags.NoCollapse
                         | ImGuiWindowFlags.NoTitleBar
                         | ImGuiWindowFlags.NoNav
                         | ImGuiWindowFlags.NoScrollWithMouse;
-    public CtrlWindow(string name)
-                : base(name, BaseFlags)
-    {
-
-    }
 
     public override void PreDraw()
     {
-        Vector4 bgColor = Service.Config.GetValue(PluginConfigBool.IsControlWindowLock)
-            ? Service.Config.GetValue(PluginConfigVector4.ControlWindowLockBg)
-            : Service.Config.GetValue(PluginConfigVector4.ControlWindowUnlockBg);
+        Vector4 bgColor = Service.Config.IsControlWindowLock
+            ? Service.Config.ControlWindowLockBg
+            : Service.Config.ControlWindowUnlockBg;
         ImGui.PushStyleColor(ImGuiCol.WindowBg, bgColor);
 
         Flags = BaseFlags;
 
-        if (Service.Config.GetValue(PluginConfigBool.IsControlWindowLock))
+        if (Service.Config.IsControlWindowLock)
         {
             Flags |= ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
         }

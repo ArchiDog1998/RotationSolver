@@ -9,5 +9,5 @@ public class SourceCodeAttribute : Attribute
     /// <summary>
     /// The link to the source code.
     /// </summary>
-    public string Path { get; set; }
+    public string? Path { get; set; }
 }

@@ -3,13 +3,13 @@
 internal class RotationCondition : DelayCondition
 {
     public ComboConditionType ComboConditionType = ComboConditionType.Float;
-    internal PropertyInfo _prop;
+    internal PropertyInfo? _prop;
     public string PropertyName = "Not Chosen";
 
-    MethodInfo _method;
+    MethodInfo? _method;
     public string MethodName = "Not Chosen";
 
-    internal IBaseAction _action;
+    internal IBaseAction? _action;
     public ActionID ID { get; set; } = ActionID.None;
 
     public int Condition;
@@ -86,7 +86,7 @@ internal class RotationCondition : DelayCondition
             case ComboConditionType.Last:
                 try
                 {
-                    if (_method?.Invoke(rotation, new object[] { Param1 > 0, new IAction[] { _action } }) is bool boo)
+                    if (_method?.Invoke(rotation, new object[] { Param1 > 0, new IAction?[] { _action } }) is bool boo)
                     {
                         return boo;
                     }
@@ -104,8 +104,15 @@ internal class RotationCondition : DelayCondition
 
 internal enum ComboConditionType : byte
 {
+    [Description("Boolean")]
     Bool,
+
+    [Description("Byte")]
     Integer,
+
+    [Description("Float")]
     Float,
+
+    [Description("Last")]
     Last,
 }

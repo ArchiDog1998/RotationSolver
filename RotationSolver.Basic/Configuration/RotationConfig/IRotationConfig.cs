@@ -28,28 +28,9 @@ public interface IRotationConfig
     CombatType Type { get; }
 
     /// <summary>
-    /// Get the value of this.
+    /// The value.
     /// </summary>
-    /// <param name="job"></param>
-    /// <param name="rotationName"></param>
-    /// <returns></returns>
-    string GetValue(Job job, string rotationName);
-
-    /// <summary>
-    /// Get the showing value of this config.
-    /// </summary>
-    /// <param name="job"></param>
-    /// <param name="rotationName"></param>
-    /// <returns></returns>
-    string GetDisplayValue(Job job, string rotationName);
-
-    /// <summary>
-    /// Set this value.
-    /// </summary>
-    /// <param name="job"></param>
-    /// <param name="rotationName"></param>
-    /// <param name="value"></param>
-    void SetValue(Job job, string rotationName, string value);
+    string Value { get; set; }
 
     /// <summary>
     /// Happend when it is on the command.

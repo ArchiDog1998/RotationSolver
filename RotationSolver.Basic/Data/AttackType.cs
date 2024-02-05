@@ -1,7 +1,7 @@
 ﻿namespace RotationSolver.Basic.Data;
 
 /// <summary>
-/// 
+/// TODO: Check the BLU actions.
 /// </summary>
 public enum AttackType : byte
 {

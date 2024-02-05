@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
@@ -28,10 +29,10 @@ public static partial class RSCommands
 
         //Do not click the button in random time.
         if (DateTime.Now - _lastClickTime < TimeSpan.FromMilliseconds(new Random().Next(
-            (int)(Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin) * 1000), (int)(Service.Config.GetValue(PluginConfigFloat.ClickingDelayMax) * 1000)))) return false;
+            (int)(Service.Config.ClickingDelay.X * 1000), (int)(Service.Config.ClickingDelay.Y * 1000)))) return false;
         _lastClickTime = DateTime.Now;
 
-        if (!isGCD && ActionUpdater.NextAction is IBaseAction act1 && act1.IsRealGCD) return false;
+        if (!isGCD && ActionUpdater.NextAction is IBaseAction act1 && act1.Info.IsRealGCD) return false;
 
         return true;
     }
@@ -39,20 +40,20 @@ public static partial class RSCommands
     internal static uint _lastActionID;
     public static void DoAction()
     {
-        var wrong = new Random().NextDouble() < Service.Config.GetValue(PluginConfigFloat.MistakeRatio) && ActionUpdater.WrongAction != null;
+        var wrong = new Random().NextDouble() < Service.Config.MistakeRatio && ActionUpdater.WrongAction != null;
         var nextAction = wrong ? ActionUpdater.WrongAction : ActionUpdater.NextAction;
         if (nextAction == null) return;
 
         if (wrong)
         {
-            Svc.Toasts.ShowError(string.Format(LocalizationManager.RightLang.ClickingMistakeMessage, nextAction));
+            Svc.Toasts.ShowError(string.Format(UiString.ClickingMistakeMessage.Local(), nextAction));
             ControlWindow.Wrong = nextAction;
             ControlWindow.DidTime = DateTime.Now;
         }
 
-        if (nextAction is BaseAction act1 && act1.IsPvP && !act1.IsFriendly
-            && !act1.IsTargetArea
-            && act1.Target is PlayerCharacter p/* && p != Player.Object*/)
+        if (nextAction is BaseAction act1 && act1.Info.IsPvP && !act1.Setting.IsFriendly
+            && act1.TargetInfo.IsSingleTarget
+            && act1.Target?.Target is PlayerCharacter p/* && p != Player.Object*/)
         {
             var hash = SocialUpdater.EncryptString(p);
 
@@ -70,7 +71,7 @@ public static partial class RSCommands
             Svc.Log.Debug($"Will Do {acti}");
 #endif
 
-        if (Service.Config.GetValue(PluginConfigBool.KeyBoardNoise))
+        if (Service.Config.KeyBoardNoise)
         {
             PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
         }
@@ -84,27 +85,27 @@ public static partial class RSCommands
 
             if (nextAction is BaseAction act)
             {
-                if (Service.Config.GetValue(PluginConfigBool.KeyBoardNoise))
+                if (Service.Config.KeyBoardNoise)
                     Task.Run(() => PulseSimulation(nextAction.AdjustedID));
 
-                if (act.ShouldEndSpecial) ResetSpecial();
+                if (act.Setting.EndSpecial) ResetSpecial();
 #if DEBUG
                 Svc.Chat.Print(act.Name);
-                Svc.Chat.Print(act.Target?.Name.TextValue ?? string.Empty);
-                foreach (var item in act.AffectedTargets)
-                {
-                    Svc.Chat.Print(item?.Name.TextValue ?? string.Empty);
-                }
+                Svc.Chat.Print(act.Target?.Target?.Name.TextValue ?? string.Empty);
+                //foreach (var item in act.AffectedTargets)
+                //{
+                //    Svc.Chat.Print(item?.Name.TextValue ?? string.Empty);
+                //}
 #endif
                 //Change Target
-                var tar = (act.Target == null || act.Target == Player.Object)
-                    ? act.AffectedTargets.FirstOrDefault() : act.Target;
+                var tar = (act.Target == null || act.Target?.Target == Player.Object)
+                    ? act.Target?.AffectedTargets.FirstOrDefault() : act.Target?.Target;
 
                 if (tar != null && tar != Player.Object && tar.IsEnemy())
                 {
                     DataCenter.HostileTarget = tar;
                     if (!DataCenter.IsManual
-                        && (Service.Config.GetValue(PluginConfigBool.SwitchTargetFriendly) || ((Svc.Targets.Target?.IsEnemy() ?? true)
+                        && (Service.Config.SwitchTargetFriendly || ((Svc.Targets.Target?.IsEnemy() ?? true)
                         || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)))
                     {
                         Svc.Targets.Target = tar;
@@ -121,12 +122,12 @@ public static partial class RSCommands
         started = true;
         try
         {
-            for (int i = 0; i < new Random().Next(Service.Config.GetValue(PluginConfigInt.KeyBoardNoiseMin),
-                Service.Config.GetValue(PluginConfigInt.KeyBoardNoiseMax)); i++)
+            for (int i = 0; i < new Random().Next((int)Service.Config.KeyboardNoise.X,
+                (int)Service.Config.KeyboardNoise.Y); i++)
             {
                 PreviewUpdater.PulseActionBar(id);
-                var time = Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin) +
-                    new Random().NextDouble() * (Service.Config.GetValue(PluginConfigFloat.ClickingDelayMax) - Service.Config.GetValue(PluginConfigFloat.ClickingDelayMin));
+                var time = Service.Config.ClickingDelay.X +
+                    new Random().NextDouble() * (Service.Config.ClickingDelay.Y - Service.Config.ClickingDelay.X);
                 await Task.Delay((int)(time * 1000));
             }
         }
@@ -162,18 +163,18 @@ public static partial class RSCommands
         {
             CancelState();
         }
-        else if (Service.Config.GetValue(PluginConfigBool.AutoOffWhenDead)
+        else if (Service.Config.AutoOffWhenDead
             && Player.Available
             && Player.Object.CurrentHp == 0)
         {
             CancelState();
         }
-        else if (Service.Config.GetValue(PluginConfigBool.AutoOffCutScene)
+        else if (Service.Config.AutoOffCutScene
             && Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent])
         {
             CancelState();
         }
-        else if (Service.Config.GetValue(PluginConfigBool.AutoOffBetweenArea)
+        else if (Service.Config.AutoOffBetweenArea
             && (Svc.Condition[ConditionFlag.BetweenAreas]
             || Svc.Condition[ConditionFlag.BetweenAreas51]))
         {
@@ -186,7 +187,7 @@ public static partial class RSCommands
             CancelState();
         }
         //Auto manual on being attacked by someone.
-        else if (Service.Config.GetValue(PluginConfigBool.StartOnAttackedBySomeone)
+        else if (Service.Config.StartOnAttackedBySomeone
             && target != null
             && !target.IsDummy())
         {
@@ -196,7 +197,7 @@ public static partial class RSCommands
             }
         }
         //Auto start at count Down.
-        else if (Service.Config.GetValue(PluginConfigBool.StartOnCountdown)
+        else if (Service.Config.StartOnCountdown
             && Service.CountDownTime > 0)
         {
             _lastCountdownTime = Service.CountDownTime;

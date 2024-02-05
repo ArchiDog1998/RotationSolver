@@ -3,7 +3,7 @@ using ECommons.ExcelServices;
 
 namespace RotationSolver.Basic.Configuration.Conditions;
 
-internal class MajorConditionSet
+internal class MajorConditionSet(string name = MajorConditionSet.conditionName)
 {
     const string conditionName = "Unnamed";
 
@@ -13,7 +13,7 @@ internal class MajorConditionSet
     /// <summary>
     /// Key for action id.
     /// </summary>
-    public Dictionary<Job, Dictionary<uint, ConditionSet>> Conditions { get; } = new();
+    public Dictionary<Job, Dictionary<uint, ConditionSet>> Conditions { get; } = [];
 
     [JsonIgnore]
     public Dictionary<uint, ConditionSet> ConditionDict
@@ -22,13 +22,13 @@ internal class MajorConditionSet
         {
             if (!Conditions.TryGetValue(DataCenter.Job, out var dict))
             {
-                dict = Conditions[DataCenter.Job] = new();
+                dict = Conditions[DataCenter.Job] = [];
             }
             return dict;
         }
     }
 
-    public Dictionary<Job, Dictionary<uint, ConditionSet>> DisabledConditions { get; } = new();
+    public Dictionary<Job, Dictionary<uint, ConditionSet>> DisabledConditions { get; } = [];
 
     [JsonIgnore]
     public Dictionary<uint, ConditionSet> DisableConditionDict
@@ -37,23 +37,23 @@ internal class MajorConditionSet
         {
             if (!DisabledConditions.TryGetValue(DataCenter.Job, out var dict))
             {
-                dict = DisabledConditions[DataCenter.Job] = new();
+                dict = DisabledConditions[DataCenter.Job] = [];
             }
             return dict;
         }
     }
 
-    public Dictionary<PluginConfigBool, ConditionSet> ForceEnableConditions { get; private set; }
-        = new();
+    public Dictionary<string, ConditionSet> ForceEnableConditions { get; private set; }
+        = [];
 
-    public Dictionary<PluginConfigBool, ConditionSet> ForceDisableConditions { get; private set; }
-        = new();
+    public Dictionary<string, ConditionSet> ForceDisableConditions { get; private set; }
+        = [];
 
     public ConditionSet HealAreaConditionSet { get; set; } = new();
     public ConditionSet HealSingleConditionSet { get; set; } = new();
     public ConditionSet DefenseAreaConditionSet { get; set; } = new();
     public ConditionSet DefenseSingleConditionSet { get; set; } = new();
-    public ConditionSet EsunaStanceNorthConditionSet { get; set; } = new();
+    public ConditionSet DispelStancePositionalConditionSet { get; set; } = new();
     public ConditionSet RaiseShirkConditionSet { get; set; } = new();
     public ConditionSet MoveForwardConditionSet { get; set; } = new();
     public ConditionSet MoveBackConditionSet { get; set; } = new();
@@ -67,7 +67,7 @@ internal class MajorConditionSet
     public (string Name, ConditionSet Condition)[] NamedConditions { get; set; }
         = Array.Empty<(string, ConditionSet)>();
 
-    public string Name;
+    public string Name = name;
 
     public ConditionSet GetCondition(uint id)
     {
@@ -87,7 +87,7 @@ internal class MajorConditionSet
         return conditionSet;
     }
 
-    public ConditionSet GetEnableCondition(PluginConfigBool config)
+    public ConditionSet GetEnableCondition(string config)
     {
         if (!ForceEnableConditions.TryGetValue(config, out var conditionSet))
         {
@@ -96,18 +96,13 @@ internal class MajorConditionSet
         return conditionSet;
     }
 
-    public ConditionSet GetDisableCondition(PluginConfigBool config)
+    public ConditionSet GetDisableCondition(string config)
     {
         if (!ForceDisableConditions.TryGetValue(config, out var conditionSet))
         {
             conditionSet = ForceDisableConditions[config] = new ConditionSet();
         }
         return conditionSet;
-    }
-
-    public MajorConditionSet(string name = conditionName)
-    {
-        Name = name;
     }
 
     public void Save(string folder)
@@ -121,7 +116,7 @@ internal class MajorConditionSet
 
     public static MajorConditionSet[] Read(string folder)
     {
-        if (!Directory.Exists(folder)) return Array.Empty<MajorConditionSet>();
+        if (!Directory.Exists(folder)) return [];
 
         return Directory.EnumerateFiles(folder, "*.json").Select(p =>
         {
@@ -129,15 +124,7 @@ internal class MajorConditionSet
 
             try
             {
-                return JsonConvert.DeserializeObject<MajorConditionSet>(str, new JsonSerializerSettings()
-                {
-                    MissingMemberHandling = MissingMemberHandling.Error,
-                    Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
-                    {
-                        args.ErrorContext.Handled = true;
-                    },
-                    Converters = new List<JsonConverter>() { new IConditionConverter() }
-                });
+                return JsonConvert.DeserializeObject<MajorConditionSet>(str, new IConditionConverter());
             }
             catch (Exception ex)
             {
@@ -145,6 +132,6 @@ internal class MajorConditionSet
                 Svc.Chat.Print($"Failed to load the ConditionSet from {p}");
                 return null;
             }
-        }).Where(set => set != null && !string.IsNullOrEmpty(set.Name)).ToArray();
+        }).OfType<MajorConditionSet>().Where(set => !string.IsNullOrEmpty(set.Name)).ToArray();
     }
 }

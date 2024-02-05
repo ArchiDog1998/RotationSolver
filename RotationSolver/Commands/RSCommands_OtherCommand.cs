@@ -1,5 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 
@@ -40,43 +41,52 @@ public static partial class RSCommands
     {
         var strs = str.Split(' ');
         var value = strs.LastOrDefault();
-        if (TryGetOneEnum<PluginConfigBool>(str, out var b))
-        {
-            var v = !Service.Config.GetValue(b);
-            Service.Config.SetBoolRaw(b, v);
-            value = Service.Config.GetValue(b).ToString();
-        }
-        else if (TryGetOneEnum<PluginConfigFloat>(str, out var f) && float.TryParse(value, out var f1))
-        {
-            Service.Config.SetValue(f, f1);
-            value = Service.Config.GetValue(f).ToString();
-        }
-        else if (TryGetOneEnum<PluginConfigInt>(str, out var i) && int.TryParse(value, out var i1))
-        {
-            Service.Config.SetValue(i, i1);
-            value = Service.Config.GetValue(i).ToString();
 
-        }
-        else if (TryGetOneEnum<JobConfigFloat>(str, out var f2) && float.TryParse(value, out f1))
+        foreach (var property in typeof(Configs).GetRuntimeProperties()
+            .Where(p => (p.GetMethod?.IsPublic ?? false) && (p.SetMethod?.IsPublic ?? false)))
         {
-            Service.Config.SetValue(f2, f1);
-            value = Service.Config.GetValue(f2).ToString();
+            if (!str.StartsWith(property.Name, StringComparison.OrdinalIgnoreCase)) continue;
 
-        }
-        else if (TryGetOneEnum<JobConfigInt>(str, out var i2) && int.TryParse(value, out i1))
-        {
-            Service.Config.SetValue(i2, i1);
-            value = Service.Config.GetValue(i2).ToString();
-        }
-        else
-        {
-            Svc.Chat.PrintError(LocalizationManager.RightLang.Commands_CannotFindConfig);
+            var type = property.PropertyType;
+
+            if (type == typeof(ConditionBoolean))
+            {
+                type = typeof(bool);
+            }
+
+            var v = Convert.ChangeType(value, type);
+
+            if (v == null && type == typeof(bool))
+            {
+                v = !(bool)property.GetValue(Service.Config)!;
+            }
+
+            if (property.PropertyType == typeof(ConditionBoolean))
+            {
+                var relay = (ConditionBoolean)property.GetValue(Service.Config)!;
+                relay.Value = (bool)v!;
+                v = relay;
+            }
+
+            if (v == null)
+            {
+#if DEBUG
+                Svc.Chat.Print("Failed to get the value.");
+#endif
+                continue;
+            }
+
+            property.SetValue(Service.Config, v);
+            value = v.ToString();   
+
+            //Say out.
+            Svc.Chat.Print(string.Format(UiString.CommandsChangeSettingsValue.Local(), property.Name, value));
+
             return;
+
         }
 
-        //Say out.
-        Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeSettingsValue,
-            strs.FirstOrDefault(), value));
+        Svc.Chat.PrintError(UiString.CommandsCannotFindConfig.Local());
     }
 
     private static void ToggleActionCommand(string str)
@@ -89,7 +99,7 @@ public static partial class RSCommands
 
                 act.IsEnabled = bool.TryParse(flag, out var parse) ? parse : !act.IsEnabled;
 
-                if (Service.Config.GetValue(PluginConfigBool.ShowToggledActionInChat))
+                if (Service.Config.ShowToggledActionInChat)
                 {
                     Svc.Chat.Print($"Toggled {act.Name} : {act.IsEnabled}");
                 }
@@ -112,9 +122,9 @@ public static partial class RSCommands
                 {
                     DataCenter.AddCommandAction(iAct, time);
 
-                    if (Service.Config.GetValue(PluginConfigBool.ShowToastsAboutDoAction))
+                    if (Service.Config.ShowToastsAboutDoAction)
                     {
-                        Svc.Toasts.ShowQuest(string.Format(LocalizationManager.RightLang.Commands_InsertAction, time),
+                        Svc.Toasts.ShowQuest(string.Format(UiString.CommandsInsertAction.Local(), time),
                             new Dalamud.Game.Gui.Toast.QuestToastOptions()
                             {
                                 IconId = iAct.IconID,
@@ -126,7 +136,7 @@ public static partial class RSCommands
             }
         }
 
-        Svc.Chat.PrintError(LocalizationManager.RightLang.Commands_InsertActionFailure);
+        Svc.Chat.PrintError(UiString.CommandsInsertActionFailure.Local());
     }
 
 
@@ -137,14 +147,13 @@ public static partial class RSCommands
         {
             if (config.DoCommand(configs, str))
             {
-                Svc.Chat.Print(config.GetType().FullName);
-                Svc.Chat.Print(str);
-                Svc.Chat.Print(string.Format(LocalizationManager.RightLang.Commands_ChangeRotationConfig,
+                Svc.Chat.Print(string.Format(UiString.CommandsInsertAction.Local(),
                     config.DisplayName, configs.GetDisplayString(config.Name)));
 
                 return;
             }
         }
-        Svc.Chat.PrintError(LocalizationManager.RightLang.Commands_CannotFindRotationConfig);
+
+        Svc.Chat.PrintError(UiString.CommandsInsertActionFailure.Local());
     }
 }

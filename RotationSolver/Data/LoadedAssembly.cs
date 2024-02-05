@@ -1,6 +1,5 @@
-﻿namespace RotationSolver.Data
-{
-    internal record LoadedAssembly(
-        string FilePath,
-        string LastModified);
-}
+﻿namespace RotationSolver.Data;
+
+internal record LoadedAssembly(
+    string FilePath,
+    string LastModified);

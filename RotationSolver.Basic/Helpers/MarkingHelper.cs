@@ -8,7 +8,7 @@ internal class MarkingHelper
 
     internal static bool HaveAttackChara(IEnumerable<BattleChara> charas) => GetAttackMarkChara(charas) != null;
 
-    internal static BattleChara GetAttackMarkChara(IEnumerable<BattleChara> charas)
+    internal static BattleChara? GetAttackMarkChara(IEnumerable<BattleChara> charas)
     {
         for (uint i = 0; i < 5; i++)
         {
@@ -18,9 +18,9 @@ internal class MarkingHelper
         return null;
     }
 
-    private static BattleChara GetChara(IEnumerable<BattleChara> charas, long id)
+    private static BattleChara? GetChara(IEnumerable<BattleChara> charas, long id)
     {
-        if (id == 0xE0000000) return null;
+        if (id == GameObject.InvalidGameObjectId) return null;
         return charas.FirstOrDefault(item => item.ObjectId == id);
     }
 

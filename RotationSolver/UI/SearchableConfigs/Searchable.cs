@@ -2,6 +2,7 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
 
@@ -9,92 +10,88 @@ namespace RotationSolver.UI.SearchableConfigs;
 
 internal readonly struct JobFilter
 {
-    public static readonly JobFilter
-        NoJob = new()
+    public JobFilter(JobFilterType type)
+    {
+        switch (type)
         {
-            JobRoles = Array.Empty<JobRole>(),
-        },
+            case JobFilterType.NoJob:
+                JobRoles = [];
+                break;
 
-        NoHealer = new()
-        {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Tank,
-                JobRole.Melee,
-                JobRole.RangedMagical,
-                JobRole.RangedPhysical,
-            }
-        },
+            case JobFilterType.NoHealer:
+                JobRoles =
+                [
+                    JobRole.Tank,
+                    JobRole.Melee,
+                    JobRole.RangedMagical,
+                    JobRole.RangedPhysical,
+                ];
+                break;
 
-        Healer = new()
-        {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Healer,
-            }
-        },
+            case JobFilterType.Healer:
+                JobRoles =
+                [
+                    JobRole.Healer,
+                ];
+                break;
 
-        Raise = new()
-        {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Healer,
-            },
-            Jobs = new Job[]
-            {
-                Job.RDM,
-                Job.SMN,
-            },
-        },
+            case JobFilterType.Raise:
+                JobRoles =
+                [
+                    JobRole.Healer,
+                ];
+                Jobs =
+                [
+                    Job.RDM,
+                    Job.SMN,
+                ];
+                break;
 
-        Interrupt = new()
-        {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Tank,
-                JobRole.Melee,
-                JobRole.RangedPhysical,
-            },
-        },
+            case JobFilterType.Interrupt:
+                JobRoles =
+                [
+                    JobRole.Tank,
+                    JobRole.Melee,
+                    JobRole.RangedPhysical,
+                ];
+                break;
 
-        Esuna = new()
-        {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Healer,
-            },
-            Jobs = new Job[]
-            {
-                Job.BRD,
-            },
-        },
+            case JobFilterType.Dispel:
+                JobRoles =
+                [
+                    JobRole.Healer,
+                ];
+                Jobs =
+                [
+                    Job.BRD,
+                ];
+                break;
 
-        Tank = new()
-        {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Tank,
-            }
-        },
+            case JobFilterType.Tank:
+                JobRoles =
+                [
+                    JobRole.Tank,
+                ];
+                break;
 
-        Melee = new()
-        {
-            JobRoles = new JobRole[]
-            {
-                JobRole.Melee,
-            }
-        };
-
+            case JobFilterType.Melee:
+                JobRoles =
+                [
+                    JobRole.Melee,
+                ];
+                break;
+        }
+    }
 
     /// <summary>
     /// Only these job roles can get this setting.
     /// </summary>
-    public JobRole[] JobRoles { get; init; }
+    public JobRole[]? JobRoles { get; init; }
 
     /// <summary>
     /// Or these jobs.
     /// </summary>
-    public Job[] Jobs { get; init; }
+    public Job[]? Jobs { get; init; }
 
     public bool CanDraw
     {
@@ -104,7 +101,7 @@ internal readonly struct JobFilter
 
             if (JobRoles != null)
             {
-                var role = DataCenter.RightNowRotation?.ClassJob?.GetJobRole();
+                var role = DataCenter.RightNowRotation?.Role;
                 if (role.HasValue)
                 {
                     canDraw = JobRoles.Contains(role.Value);
@@ -119,7 +116,7 @@ internal readonly struct JobFilter
         }
     }
 
-    public Job[] AllJobs => JobRoles.SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? Array.Empty<Job>()).ToArray();
+    public Job[] AllJobs => (JobRoles ?? []).SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? []).ToArray();
 
     public string Description
     {
@@ -127,25 +124,55 @@ internal readonly struct JobFilter
         {
             var roleOrJob = string.Join("\n",
                 AllJobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
-            return string.Format(LocalizationManager.RightLang.ConfigWindow_NotInJob, roleOrJob);
+            return string.Format(UiString.NotInJob.Local(), roleOrJob);
         }
     }
 }
 
-internal abstract class Searchable : ISearchable
+internal abstract class Searchable(PropertyInfo property) : ISearchable
 {
+    protected readonly PropertyInfo _property = property;
+
     public const float DRAG_WIDTH = 150;
     protected static float Scale => ImGuiHelpers.GlobalScale;
-    public CheckBoxSearch Parent { get; set; }
+    public CheckBoxSearch? Parent { get; set; } = null;
 
     public virtual string SearchingKeys => Name + " " + Description;
-    public abstract string Name { get; }
-    public abstract string Description { get; }
-    public abstract string Command { get; }
-    public abstract LinkDescription[] Tooltips { get; }
-    public abstract string ID { get; }
+    public virtual string Name
+    {
+        get
+        {
+            var ui = _property.GetCustomAttribute<UIAttribute>();
+            if (ui == null) return string.Empty;
+
+            return (_property.Name + "Name").Local(ui.Name);
+        }
+    }
+    public virtual string Description
+    {
+        get
+        {
+            var ui = _property.GetCustomAttribute<UIAttribute>();
+            if (ui == null) return string.Empty;
+
+            return (_property.Name + "Description").Local(ui.Description);
+        }
+    }
+    public virtual string Command
+    {
+        get
+        {
+            var result = Service.COMMAND + " " + OtherCommandType.Settings.ToString() + " " + _property.Name;
+            var extra = _property.GetValue(Service.ConfigDefault)?.ToString();
+            if (!string.IsNullOrEmpty(extra)) result += " " + extra;
+            return result;
+        }
+    }
+    public virtual LinkDescription[]? Tooltips => [.. _property.GetCustomAttributes<LinkDescriptionAttribute>().Select(l => l.LinkDescription)];
+    public virtual string ID => _property.Name;
     private string Popup_Key => "Rotation Solver RightClicking: " + ID;
-    protected virtual bool IsJob => false;
+    protected bool IsJob => _property.GetCustomAttribute<JobConfigAttribute>() != null
+        || _property.GetCustomAttribute<JobChoiceConfigAttribute>() != null;
 
     public uint Color { get; set; } = 0;
 
@@ -196,7 +223,6 @@ internal abstract class Searchable : ISearchable
 
     protected abstract void DrawMain();
 
-    public abstract void ResetToDefault();
 
     protected void ShowTooltip(bool showHand = true)
     {
@@ -232,7 +258,13 @@ internal abstract class Searchable : ISearchable
         if (IconSet.GetTexture(IconSet.GetJobIcon(DataCenter.Job, IconType.Framed), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
-            ImguiTooltips.HoveredTooltip(LocalizationManager.RightLang.ConfigWindow_Configs_JobConfigTip);
+            ImguiTooltips.HoveredTooltip(UiString.JobConfigTip.Local());
         }
+    }
+
+    public virtual void ResetToDefault()
+    {
+        var v = _property.GetValue(Service.ConfigDefault);
+        _property.SetValue(Service.Config, v);
     }
 }

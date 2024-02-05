@@ -89,14 +89,14 @@ public class RotationDescAttribute : Attribute
 
     }
 
-    internal static IEnumerable<RotationDescAttribute[]> Merge(IEnumerable<RotationDescAttribute> rotationDescAttributes)
+    internal static IEnumerable<RotationDescAttribute[]> Merge(IEnumerable<RotationDescAttribute?> rotationDescAttributes)
         => from r in rotationDescAttributes
            where r is not null
            group r by r.Type into gr
            orderby gr.Key
            select gr.ToArray();
 
-    internal static RotationDescAttribute MergeToOne(IEnumerable<RotationDescAttribute> rotationDescAttributes)
+    internal static RotationDescAttribute? MergeToOne(IEnumerable<RotationDescAttribute> rotationDescAttributes)
     {
         var result = new RotationDescAttribute();
         foreach (var attr in rotationDescAttributes)

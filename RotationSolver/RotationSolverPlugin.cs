@@ -21,16 +21,16 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
     private readonly WindowSystem windowSystem;
 
-    static RotationConfigWindow _rotationConfigWindow;
-    static ControlWindow _controlWindow;
-    static NextActionWindow _nextActionWindow;
-    static CooldownWindow _cooldownWindow;
+    static RotationConfigWindow? _rotationConfigWindow;
+    static ControlWindow? _controlWindow;
+    static NextActionWindow? _nextActionWindow;
+    static CooldownWindow? _cooldownWindow;
 
-    static readonly List<IDisposable> _dis = new();
+    static readonly List<IDisposable> _dis = [];
     public static string Name => "Rotation Solver";
 
-    public static DalamudLinkPayload OpenLinkPayload { get; private set; }
-    public static DalamudLinkPayload HideWarningLinkPayload { get; private set; }
+    public static DalamudLinkPayload OpenLinkPayload { get; private set; } = null!;
+    public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
@@ -43,21 +43,14 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis.Add(new Service());
         try
         {
-            Service.Config = JsonConvert.DeserializeObject<PluginConfig>(
-                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new JsonSerializerSettings()
-                {
-                    MissingMemberHandling = MissingMemberHandling.Error,
-                    Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
-                    {
-                        args.ErrorContext.Handled = true;
-                    }
-                })
-                ?? PluginConfig.Create();
+            Service.Config = JsonConvert.DeserializeObject<Configs>(
+                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName))
+                ?? new Configs();
         }
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, "Failed to load config");
-            Service.Config = PluginConfig.Create(); ;
+            Service.Config = new Configs();
         }
 
         _rotationConfigWindow = new();
@@ -78,7 +71,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();
-        _dis.Add(new LocalizationManager());
+        LocalizationManager.InIt();
         ChangeUITranslation();
 
         OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
@@ -89,7 +82,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             if (id == 1)
             {
-                Service.Config.SetBoolRaw(PluginConfigBool.HideWarning, true);
+                Service.Config.HideWarning.Value = true;
                 Svc.Chat.Print("Warning has been hidden.");
             }
         });
@@ -102,8 +95,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     internal static void ChangeUITranslation()
     {
-        _rotationConfigWindow.WindowName = LocalizationManager.RightLang.ConfigWindow_Header
-            + typeof(RotationConfigWindow).Assembly.GetName().Version.ToString();
+        _rotationConfigWindow!.WindowName = UiString.ConfigWindowHeader.Local()
+            + typeof(RotationConfigWindow).Assembly.GetName().Version?.ToString() ?? "?.?.?";
 
         RSCommands.Disable();
         RSCommands.Enable();
@@ -123,6 +116,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         }
         _dis?.Clear();
 
+        LocalizationManager.Dispose();
         MajorUpdater.Dispose();
         PainterManager.Dispose();
         await OtherConfiguration.Save();
@@ -134,12 +128,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     private void OnOpenConfigUi()
     {
-        _rotationConfigWindow.IsOpen = true;
+        _rotationConfigWindow!.IsOpen = true;
     }
 
     internal static void OpenConfigWindow()
     {
-        _rotationConfigWindow.Toggle();
+        _rotationConfigWindow?.Toggle();
     }
 
     static RandomDelay validDelay = new(() => (0.2f, 0.2f));
@@ -154,13 +148,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             && (!Svc.Condition[ConditionFlag.UsingParasol] || Player.Object.StatusFlags.HasFlag(Dalamud.Game.ClientState.Objects.Enums.StatusFlags.WeaponOut))
             && !Svc.Condition[ConditionFlag.OccupiedInQuestEvent]);
 
-        _nextActionWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowNextActionWindow);
+        _nextActionWindow!.IsOpen = isValid && Service.Config.ShowNextActionWindow;
 
-        isValid &= !Service.Config.GetValue(PluginConfigBool.OnlyShowWithHostileOrInDuty)
+        isValid &= !Service.Config.OnlyShowWithHostileOrInDuty
                 || Svc.Condition[ConditionFlag.BoundByDuty]
                 || DataCenter.AllHostileTargets.Any(o => o.DistanceToPlayer() <= 25);
 
-        _controlWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowControlWindow);
-        _cooldownWindow.IsOpen = isValid && Service.Config.GetValue(PluginConfigBool.ShowCooldownWindow);
+        _controlWindow!.IsOpen = isValid && Service.Config.ShowControlWindow;
+        _cooldownWindow!.IsOpen = isValid && Service.Config.ShowCooldownWindow;
     }
 }

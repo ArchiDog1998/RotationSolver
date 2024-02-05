@@ -39,9 +39,4 @@ public enum Aspect : byte
     /// 
     /// </summary>
     Piercing = 7,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    None = 7,
 }

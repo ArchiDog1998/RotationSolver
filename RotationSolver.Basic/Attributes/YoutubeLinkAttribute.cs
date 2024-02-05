@@ -9,5 +9,5 @@ public class YoutubeLinkAttribute : Attribute
     /// <summary>
     /// The youtube link Id
     /// </summary>
-    public string ID { get; set; }
+    public string? ID { get; set; }
 }

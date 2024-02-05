@@ -90,7 +90,7 @@ internal static class RotationHelper
         return assembly;
     }
 
-    private static Assembly GetAssemblyFromPath(string filePath)
+    private static Assembly? GetAssemblyFromPath(string filePath)
     {
         foreach (var asm in _assemblyInfos)
         {
@@ -102,9 +102,9 @@ internal static class RotationHelper
         return null;
     }
 
-    private static string GetAuthor(string filePath, string assemblyName)
+    private static string GetAuthor(string filePath, string? assemblyName)
     {
         var fileVersionInfo = FileVersionInfo.GetVersionInfo(filePath);
-        return string.IsNullOrWhiteSpace(fileVersionInfo.CompanyName) ? assemblyName : fileVersionInfo.CompanyName;
+        return string.IsNullOrWhiteSpace(fileVersionInfo.CompanyName) ? assemblyName ?? string.Empty : fileVersionInfo.CompanyName;
     }
 }

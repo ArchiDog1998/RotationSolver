@@ -8,10 +8,10 @@ namespace RotationSolver.Helpers;
 
 internal static class SpeechHelper
 {
-    static IDalamudPlugin _textToTalk = null;
-    static MethodInfo _say = null;
-    static object _manager = null;
-    static MethodInfo _stop = null;
+    static IDalamudPlugin? _textToTalk = null;
+    static MethodInfo? _say = null;
+    static object? _manager = null;
+    static MethodInfo? _stop = null;
 
     internal static void Speak(string text)
     {
@@ -24,19 +24,19 @@ internal static class SpeechHelper
         }
 
         _say ??= _textToTalk?.GetType().GetRuntimeMethods().FirstOrDefault(m => m.Name == "Say");
-        _manager ??= _textToTalk?.GetType().GetRuntimeFields().FirstOrDefault(m => m.Name == "backendManager").GetValue(_textToTalk);
+        _manager ??= _textToTalk?.GetType().GetRuntimeFields().FirstOrDefault(m => m.Name == "backendManager")?.GetValue(_textToTalk);
         _stop ??= _manager?.GetType().GetRuntimeMethods().FirstOrDefault(m => m.Name == "CancelAllSpeech");
 
         try
         {
-            _stop?.Invoke(_manager, Array.Empty<object>());
+            _stop?.Invoke(_manager, []);
             try
             {
-                _say?.Invoke(_textToTalk, new object[] { null, text, 1 });
+                _say?.Invoke(_textToTalk, [null, text, 1]);
             }
             catch
             {
-                _say?.Invoke(_textToTalk, new object[] { null, new SeString(new TextPayload("Rotation Solver")), text, 1 });
+                _say?.Invoke(_textToTalk, [null, new SeString(new TextPayload("Rotation Solver")), text, 1]);
             }
         }
         catch (Exception ex)

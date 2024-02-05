@@ -3,46 +3,14 @@
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Authors>ArchiTed</Authors>
-		<Version>3.5.6</Version>
+		<Version>4.0.0</Version>
 		<PlatformTarget>x64</PlatformTarget>
 		<Platforms>AnyCPU</Platforms>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
 
-		<DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
     </PropertyGroup>
     <ItemGroup>
-        	<Reference Include="Dalamud">
-			<HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="ImGui.NET">
-			<HintPath>$(DalamudLibPath)ImGui.NET.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="ImGuiScene">
-			<HintPath>$(DalamudLibPath)ImGuiScene.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Lumina">
-			<HintPath>$(DalamudLibPath)Lumina.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Lumina.Excel">
-			<HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="FFXIVClientStructs">
-			<HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Newtonsoft.Json">
-			<HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-
-		<Using Include="Dalamud.Game.ClientState.JobGauge.Enums" />
-		<Using Include="Dalamud.Interface" />
-		<Using Include="ImGuiNET" />
-		<Using Include="Newtonsoft.Json" />
 		<Using Include="System.Numerics" />
 		<Using Include="System.Reflection" />
     </ItemGroup>

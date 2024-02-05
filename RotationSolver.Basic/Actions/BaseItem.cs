@@ -9,8 +9,23 @@ namespace RotationSolver.Basic.Actions;
 /// </summary>
 public class BaseItem : IBaseItem
 {
-    private protected readonly Item _item = null;
-    private uint A4 { get; } = 0;
+    readonly struct ItemCooldown(uint id) : ICooldown
+    {
+        unsafe float ICooldown.RecastTimeOneChargeRaw => ActionManager.Instance()->GetRecastTime(ActionType.Item, id);
+
+        unsafe float ICooldown.RecastTimeElapsedRaw => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, id);
+
+        unsafe bool ICooldown.IsCoolingDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Item, id);
+
+        ushort ICooldown.MaxCharges => 0;
+
+        ushort ICooldown.CurrentCharges => 0;
+    }
+
+    private protected readonly Item _item;
+
+    /// <inheritdoc/>
+    public uint A4 { get; set; } = 0;
 
     /// <summary>
     /// Item Id.
@@ -25,9 +40,11 @@ public class BaseItem : IBaseItem
     /// <summary>
     /// The check about this item.
     /// </summary>
-    public Func<bool> ItemCheck { get; set; }
-    private unsafe bool HasIt => InventoryManager.Instance()->GetInventoryItemCount(ID, false) > 0 ||
-            InventoryManager.Instance()->GetInventoryItemCount(ID, true) > 0;
+    public Func<bool>? ItemCheck { get; set; }
+
+    /// <inheritdoc/>
+    public unsafe bool HasIt => InventoryManager.Instance()->GetInventoryItemCount(ID, false) > 0
+        || InventoryManager.Instance()->GetInventoryItemCount(ID, true) > 0;
 
     /// <summary>
     /// Icon Id.
@@ -39,42 +56,36 @@ public class BaseItem : IBaseItem
     /// </summary>
     public string Name => _item.Name;
 
+    public ItemConfig Config
+    {
+        get
+        {
+            if (!Service.Config.RotationItemConfig.TryGetValue(ID, out var value))
+            {
+                Service.Config.RotationItemConfig[ID] = value = new();
+            }
+            return value;
+        }
+    }
+
     /// <summary>
     /// Is item enabled.
     /// </summary>
+
     public bool IsEnabled
     {
-        get => !Service.Config.GlobalConfig.DisabledItems.Contains(ID);
-        set
-        {
-            if (value)
-            {
-                Service.Config.GlobalConfig.DisabledItems.Remove(ID);
-            }
-            else
-            {
-                Service.Config.GlobalConfig.DisabledItems.Add(ID);
-            }
-        }
+        get => Config.IsEnabled;
+        set => Config.IsEnabled = value;
     }
 
     /// <summary>
     /// Is the item in the cd window.
     /// </summary>
+
     public bool IsInCooldown
     {
-        get => !Service.Config.GlobalConfig.NotInCoolDownItems.Contains(ID);
-        set
-        {
-            if (value)
-            {
-                Service.Config.GlobalConfig.NotInCoolDownItems.Remove(ID);
-            }
-            else
-            {
-                Service.Config.GlobalConfig.NotInCoolDownItems.Add(ID);
-            }
-        }
+        get => Config.IsInCooldown;
+        set => Config.IsInCooldown = value;
     }
 
     /// <summary>
@@ -82,17 +93,6 @@ public class BaseItem : IBaseItem
     /// </summary>
     public string Description => string.Empty;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public unsafe float RecastTimeOneChargeRaw => ActionManager.Instance()->GetRecastTime(ActionType.Item, ID);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public unsafe float RecastTimeElapsedRaw => ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, ID);
 
     /// <summary>
     /// Get the enough level for using this item.
@@ -103,11 +103,6 @@ public class BaseItem : IBaseItem
     /// The level to use this item.
     /// </summary>
     public byte Level => 0;
-
-    /// <summary>
-    /// Is Item cooling down.
-    /// </summary>
-    public unsafe bool IsCoolingDown => ActionManager.Instance()->IsRecastTimerActive(ActionType.Item, ID);
 
     /// <summary>
     /// Sort the item key.
@@ -129,13 +124,14 @@ public class BaseItem : IBaseItem
     /// </summary>
     protected virtual bool CanUseThis => true;
 
+    public ICooldown Cooldown => throw new NotImplementedException();
+
     /// <summary>
     /// Create by row.
     /// </summary>
     /// <param name="row"></param>
-    /// <param name="a4"></param>
-    public unsafe BaseItem(uint row, uint a4 = 65535)
-        : this(Service.GetSheet<Item>().GetRow(row), a4)
+    public unsafe BaseItem(uint row)
+        : this(Service.GetSheet<Item>().GetRow(row)!)
     {
     }
 
@@ -143,12 +139,15 @@ public class BaseItem : IBaseItem
     /// Create by item.
     /// </summary>
     /// <param name="item"></param>
-    /// <param name="a4"></param>
-    public unsafe BaseItem(Item item, uint a4 = 65535)
+    public unsafe BaseItem(Item item)
     {
         _item = item;
         IconID = _item.Icon;
-        A4 = a4;
+        A4 = item.RowId switch
+        {
+            36109 => 196625,
+            _ => 65535, //TODO: better A4!
+        };
         SortKey = (uint)ActionManager.Instance()->GetRecastGroup((int)ActionType.Item, ID);
     }
 
@@ -169,7 +168,7 @@ public class BaseItem : IBaseItem
         if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID))
             && ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Item, ID + 1000000))) return false;
 
-        var remain = RecastTimeOneChargeRaw - RecastTimeElapsedRaw;
+        var remain = Cooldown.RecastTimeOneChargeRaw - Cooldown.RecastTimeElapsedRaw;
 
         if (remain > DataCenter.ActionRemain) return false;
 

@@ -3,7 +3,7 @@
 /// <summary>
 /// The link to a image or web about your rotation.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
 public class LinkDescriptionAttribute : Attribute
 {
     /// <summary>
@@ -25,7 +25,7 @@ public class LinkDescriptionAttribute : Attribute
 /// <summary>
 /// Link description itself.
 /// </summary>
-public struct LinkDescription
+public readonly record struct LinkDescription
 {
     /// <summary>
     /// Description.

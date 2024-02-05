@@ -1,8 +1,9 @@
 ﻿namespace RotationSolver.Basic.Configuration.Conditions;
 
+[Description("Condition Set")]
 internal class ConditionSet : DelayCondition
 {
-    public List<ICondition> Conditions { get; set; } = new List<ICondition>();
+    public List<ICondition> Conditions { get; set; } = [];
 
     public LogicalType Type;
 
@@ -21,6 +22,9 @@ internal class ConditionSet : DelayCondition
 
 internal enum LogicalType : byte
 {
+    [Description("&&")]
     And,
+
+    [Description(" | | ")]
     Or,
 }

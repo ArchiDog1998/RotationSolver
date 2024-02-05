@@ -10,5 +10,5 @@ public class AuthorHashAttribute : Attribute
     /// <summary>
     /// The hash of your character.
     /// </summary>
-    public string Hash { get; set; }
+    public string? Hash { get; set; }
 }

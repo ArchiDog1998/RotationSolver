@@ -1,132 +1,62 @@
-﻿using Dalamud.Utility;
-using ECommons.Configuration;
-using ECommons.ExcelServices;
-using RotationSolver.Basic.Configuration;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 
 namespace RotationSolver.UI.SearchableConfigs;
-internal class DragFloatRangeSearchJob : DragFloatRangeSearch
+
+internal class DragFloatRangeSearch : Searchable
 {
-    private readonly JobConfigFloat _configMin, _configMax;
-
-    public override string ID => _configMin.ToString();
-
-    public override string Name => _configMin.ToName();
+    public float Min { get; }
+    public float Max { get; }
+    public float Speed { get; }
+    public ConfigUnitType Unit { get; }
 
     public override string Description
     {
         get
         {
-            var baseDesc = _configMin.ToDescription();
+            var baseDesc = base.Description;
             if (!string.IsNullOrEmpty(baseDesc))
             {
-                return baseDesc + "\n" + Unit.ToDesc();
+                return baseDesc + "\n" + Unit.Local();
             }
             else
             {
-                return Unit.ToDesc();
+                return Unit.Local();
             }
         }
     }
-    public override LinkDescription[] Tooltips => _configMin.ToAction();
 
-    protected override bool IsJob => true;
-
-    protected override float MinValue
+    protected Vector2 Value
     {
-        get => Service.Config.GetValue(_configMin);
-        set => Service.Config.SetValue(_configMin, value);
+        get => (Vector2)_property.GetValue(Service.Config)!;
+        set => _property.SetValue(Service.Config, value);
     }
-
-    protected override float MaxValue
+    protected float MinValue 
     {
-        get => Service.Config.GetValue(_configMax);
-        set => Service.Config.SetValue(_configMax, value);
-    }
-
-    public DragFloatRangeSearchJob(JobConfigFloat configMin, JobConfigFloat configMax, float speed)
-        : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed,
-          configMin.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
-    {
-        _configMin = configMin;
-        _configMax = configMax;
-    }
-
-    public override void ResetToDefault()
-    {
-        Service.Config.SetValue(_configMin, Service.Config.GetDefault(_configMin));
-        Service.Config.SetValue(_configMax, Service.Config.GetDefault(_configMax));
-    }
-}
-
-internal class DragFloatRangeSearchPlugin : DragFloatRangeSearch
-{
-    private readonly PluginConfigFloat _configMin, _configMax;
-
-    public override string ID => _configMin.ToString();
-
-    public override string Name => _configMin.ToName();
-
-    public override string Description
-    {
-        get
+        get => Value.X;
+        set
         {
-            var baseDesc = _configMin.ToDescription();
-            if (!string.IsNullOrEmpty(baseDesc))
-            {
-                return baseDesc + "\n" + Unit.ToDesc();
-            }
-            else
-            {
-                return Unit.ToDesc();
-            }
+            var v = Value;
+            v.X = value;
+            Value = v;
         }
     }
-
-    public override LinkDescription[] Tooltips => _configMin.ToAction();
-
-    protected override float MinValue
+    protected float MaxValue
     {
-        get => Service.Config.GetValue(_configMin);
-        set => Service.Config.SetValue(_configMin, value);
+        get => Value.Y;
+        set
+        {
+            var v = Value;
+            v.Y = value;
+            Value = v;
+        }
     }
-
-    protected override float MaxValue
+    public DragFloatRangeSearch(PropertyInfo property) : base(property)
     {
-        get => Service.Config.GetValue(_configMax);
-        set => Service.Config.SetValue(_configMax, value);
-    }
-
-    public DragFloatRangeSearchPlugin(PluginConfigFloat configMin, PluginConfigFloat configMax, float speed, uint color = 0)
-    : base((float)(configMin.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(configMin.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed, configMin.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
-    {
-        _configMin = configMin;
-        _configMax = configMax;
-        Color = color;
-    }
-
-    public override void ResetToDefault()
-    {
-        Service.Config.SetValue(_configMin, Service.Config.GetDefault(_configMin));
-        Service.Config.SetValue(_configMax, Service.Config.GetDefault(_configMax));
-    }
-}
-
-internal abstract class DragFloatRangeSearch : Searchable
-{
-    public float Min { get; init; }
-    public float Max { get; init; }
-    public float Speed { get; init; }
-    public ConfigUnitType Unit { get; init; }
-
-    public sealed override string Command => "";
-    protected abstract float MinValue { get; set; }
-    protected abstract float MaxValue { get; set; }
-    public DragFloatRangeSearch(float min, float max, float speed, ConfigUnitType unit)
-    {
-        Min = min; Max = max;
-        Speed = speed;
-        Unit = unit;
+        var range = _property.GetCustomAttribute<RangeAttribute>();
+        Min = range?.MinValue ?? 0f;
+        Max = range?.MaxValue ?? 1f;
+        Speed = range?.Speed ?? 0.001f;
+        Unit = range?.UnitType ?? ConfigUnitType.None;
     }
 
     protected override void DrawMain()

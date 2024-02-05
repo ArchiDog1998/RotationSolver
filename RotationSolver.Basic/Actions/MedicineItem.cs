@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Actions;
+﻿using Lumina.Excel.GeneratedSheets;
+
+namespace RotationSolver.Basic.Actions;
 
 /// <summary>
 /// The type of the medicine
@@ -8,12 +10,22 @@ public enum MedicineType : byte
     /// <summary>
     /// 
     /// </summary>
+    None,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Strength,
 
     /// <summary>
     /// 
     /// </summary>
     Dexterity,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Vitality,
 
     /// <summary>
     /// 
@@ -28,14 +40,20 @@ public enum MedicineType : byte
 
 internal class MedicineItem : BaseItem
 {
-    private readonly MedicineType _type;
+    public MedicineType Type { get; }
 
-    protected override bool CanUseThis => Service.Config.GetValue(Configuration.PluginConfigBool.UseTinctures);
-
-    public MedicineItem(uint row, MedicineType type, uint a4 = 65535) : base(row, a4)
+    public MedicineItem(Item item) : base(item)
     {
-        _type = type;
+         Type = _item.Unknown19 switch
+         {
+             10120 => MedicineType.Strength,
+             10140 => MedicineType.Dexterity,
+             10160 => MedicineType.Vitality,
+             10180 => MedicineType.Intelligence,
+             10200 => MedicineType.Mind,
+             _ => MedicineType.None,
+         };
     }
 
-    internal bool InType(ICustomRotation rotation) => rotation.MedicineType == _type;
+    protected override bool CanUseThis => Service.Config.UseTinctures;
 }

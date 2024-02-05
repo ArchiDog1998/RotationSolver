@@ -1,120 +1,43 @@
-﻿using Dalamud.Utility;
-using RotationSolver.Basic.Configuration;
-using RotationSolver.Localization;
+﻿using RotationSolver.Localization;
 
 namespace RotationSolver.UI.SearchableConfigs;
 
-internal class DragFloatSearchJob : DragFloatSearch
+internal class DragFloatSearch : Searchable
 {
-    private readonly JobConfigFloat _config;
-
-    public override string ID => _config.ToString();
-
-    public override string Name => _config.ToName();
+    public float Min { get; }
+    public float Max { get; }
+    public float Speed { get; }
+    public ConfigUnitType Unit { get; }
 
     public override string Description
     {
         get
         {
-            var baseDesc = _config.ToDescription();
+            var baseDesc = base.Description;
             if (!string.IsNullOrEmpty(baseDesc))
             {
-                return baseDesc + "\n" + Unit.ToDesc();
+                return baseDesc + "\n" + Unit.Local();
             }
             else
             {
-                return Unit.ToDesc();
+                return Unit.Local();
             }
         }
     }
-    public override LinkDescription[] Tooltips => _config.ToAction();
-
-    public override string Command => _config.ToCommand();
-    protected override bool IsJob => true;
-
-    protected override float Value
+    public DragFloatSearch(PropertyInfo property) : base(property)
     {
-        get => Service.Config.GetValue(_config);
-        set => Service.Config.SetValue(_config, value);
+        var range = _property.GetCustomAttribute<RangeAttribute>();
+        Min = range?.MinValue ?? 0f;
+        Max = range?.MaxValue ?? 1f;
+        Speed = range?.Speed ?? 0.001f;
+        Unit = range?.UnitType ?? ConfigUnitType.None;
     }
 
-    public DragFloatSearchJob(JobConfigFloat config, float speed)
-          : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed,
-          config.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
+    protected float Value
     {
-        _config = config;
+        get => (float)_property.GetValue(Service.Config)!;
+        set => _property.SetValue(Service.Config, value);
     }
-
-    public override void ResetToDefault()
-    {
-        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
-    }
-}
-
-internal class DragFloatSearchPlugin : DragFloatSearch
-{
-    private readonly PluginConfigFloat _config;
-
-    public override string ID => _config.ToString();
-
-    public override string Name => _config.ToName();
-
-    public override string Description
-    {
-        get
-        {
-            var baseDesc = _config.ToDescription();
-            if (!string.IsNullOrEmpty(baseDesc))
-            {
-                return baseDesc + "\n" + Unit.ToDesc();
-            }
-            else
-            {
-                return Unit.ToDesc();
-            }
-        }
-    }
-
-    public override LinkDescription[] Tooltips => _config.ToAction();
-
-    public override string Command => _config.ToCommand();
-
-    protected override float Value
-    { 
-        get => Service.Config.GetValue(_config);
-        set => Service.Config.SetValue(_config, value); 
-    }
-
-    public DragFloatSearchPlugin(PluginConfigFloat config, float speed, uint color = 0)
-        : base((float)(config.GetAttribute<DefaultAttribute>()?.Min ?? 0f), (float)(config.GetAttribute<DefaultAttribute>()?.Max ?? 1f), speed,
-          config.GetAttribute<UnitAttribute>()?.UnitType ?? ConfigUnitType.None)
-    {
-        _config = config;
-        Color = color;
-    }
-
-    public override void ResetToDefault()
-    {
-        Service.Config.SetValue(_config, Service.Config.GetDefault(_config));
-    }
-}
-
-
-internal abstract class DragFloatSearch : Searchable
-{
-    public float Min { get; init; }
-    public float Max { get; init; }
-    public float Speed { get; init; }
-    public ConfigUnitType Unit { get; init; }
-    public DragFloatSearch(float min, float max, float speed, ConfigUnitType unit)
-    {
-        Min = min; Max = max;
-        Speed = speed;
-        Unit = unit;
-    }
-
-    protected abstract float Value { get; set; }
-
     protected override void DrawMain()
     {
         var value = Value;

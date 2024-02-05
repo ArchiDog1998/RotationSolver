@@ -14,51 +14,105 @@ public static class StatusHelper
     /// <summary>
     /// 
     /// </summary>
-    public static StatusID[] AreaHots { get; } = new StatusID[]
-    {
-        StatusID.AspectedHelios, StatusID.Medica2, StatusID.TrueMedica2
-    };
+    public static StatusID[] RangePhysicalDefense { get;  } =
+    [
+        StatusID.Troubadour,
+        StatusID.Tactician_1951,
+        StatusID.Tactician_2177,
+        StatusID.ShieldSamba,
+    ];
 
     /// <summary>
     /// 
     /// </summary>
-    public static StatusID[] SingleHots { get; } = new StatusID[]
-    {
-        StatusID.AspectedBenefic, StatusID.Regen1, StatusID.Regen2, StatusID.Regen3
-    };
+    public static StatusID[] PhysicResistancec { get; } =
+    [
+        StatusID.IceSpikes_1720,
+    ];
 
-    internal static StatusID[] TankStanceStatus { get; } = new StatusID[]
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    public static StatusID[] MagicResistance { get; } =
+    [
+        StatusID.MagicResistance,
+        StatusID.RepellingSpray_556,
+        StatusID.MagitekField_2166,
+    ];
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static StatusID[] AreaHots { get; } =
+    [
+        StatusID.AspectedHelios, StatusID.MedicaIi, StatusID.TrueMedicaIi
+    ];
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static StatusID[] SingleHots { get; } =
+    [
+        StatusID.AspectedBenefic, StatusID.Regen, StatusID.Regen_897, StatusID.Regen_1330
+    ];
+
+    internal static StatusID[] TankStanceStatus { get; } =
+    [
         StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance
-    };
+    ];
 
-    internal static StatusID[] NoNeedHealingStatus { get; } = new StatusID[]
-    {
+    internal static StatusID[] NoNeedHealingStatus { get; } =
+    [
         StatusID.Holmgang, StatusID.LivingDead, //StatusID.WalkingDead,
-    };
+    ];
 
-    internal record Burst2MinsInfo(StatusID Status, bool IsOnHostile, byte Level, params Job[] Jobs);
+    internal static StatusID[] SwiftcastStatus { get; } =
+    [
+        StatusID.Swiftcast,
+        StatusID.Triplecast,
+        StatusID.Dualcast,
+    ];
 
-    internal static Burst2MinsInfo[] Burst2Mins { get; } = new Burst2MinsInfo[]
-    {
-        new Burst2MinsInfo(StatusID.Divination, false, AST_Base.Divination.Level, Job.AST),
-        new Burst2MinsInfo(StatusID.ChainStratagem, true, SCH_Base.ChainStratagem.Level, Job.SCH),
-        new Burst2MinsInfo(StatusID.Brotherhood, false, MNK_Base.Brotherhood.Level, Job.MNK),
-        new Burst2MinsInfo(StatusID.BattleLitany, false, DRG_Base.BattleLitany.Level, Job.DRG),
-        new Burst2MinsInfo(StatusID.ArcaneCircle, false, RPR_Base.ArcaneCircle.Level, Job.RPR),
-        new Burst2MinsInfo(StatusID.BattleVoice, false, BRD_Base.BattleVoice.Level,Job.BRD ),
-        new Burst2MinsInfo(StatusID.TechnicalFinish, false, DNC_Base.TechnicalStep.Level, Job.DNC),
-        new Burst2MinsInfo(StatusID.SearingLight, false, SMN_Base.SearingLight.Level, Job.SMN),
-        new Burst2MinsInfo(StatusID.Embolden, false, RDM_Base.Embolden.Level, Job.RDM),
-        new Burst2MinsInfo(StatusID.Mug, true, NIN_Base.Mug.Level, Job.NIN, Job.ROG),
-    };
+    internal static StatusID[] AstCardStatus { get; } =
+    [
+        StatusID.TheArrow,
+        StatusID.TheBalance,
+        StatusID.TheBole,
+        StatusID.TheEwer,
+        StatusID.TheSpear,
+        StatusID.TheSpire,
+
+        StatusID.Weakness,
+        StatusID.BrinkOfDeath,
+    ];
+
+    internal static StatusID[] RampartStatus { get; } =
+    [
+        StatusID.Superbolide,
+        StatusID.HallowedGround,
+        StatusID.Rampart,
+        StatusID.Bulwark,
+        StatusID.Bloodwhetting,
+        StatusID.Vengeance,
+        StatusID.Sentinel,
+        StatusID.ShadowWall,
+        StatusID.Nebula,
+        .. NoNeedHealingStatus,
+    ];
+
+    internal static StatusID[] NoPositionalStatus { get; } =
+    [
+        StatusID.TrueNorth,
+        StatusID.RightEye,
+    ];
 
     /// <summary>
     /// Check whether the target needs to be healing.
     /// </summary>
     /// <param name="p"></param>
     /// <returns></returns>
-    public static bool NeedHealing(this BattleChara p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
+    public static bool NeedHealing(this GameObject p) => p.WillStatusEndGCD(2, 0, false, NoNeedHealingStatus);
 
     /// <summary>
     /// Will any of <paramref name="statusIDs"/> be end after <paramref name="gcdCount"/> gcds add <paramref name="offset"/> seconds?
@@ -69,9 +123,8 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    public static bool WillStatusEndGCD(this BattleChara obj, uint gcdCount = 0, float offset = 0, bool isFromSelf = true, params StatusID[] statusIDs)
+    public static bool WillStatusEndGCD(this GameObject obj, uint gcdCount = 0, float offset = 0, bool isFromSelf = true, params StatusID[] statusIDs)
         => WillStatusEnd(obj, DataCenter.GCDTime(gcdCount, offset), isFromSelf, statusIDs);
-
 
     /// <summary>
     /// Will any of <paramref name="statusIDs"/> be end after <paramref name="time"/> seconds?
@@ -81,9 +134,9 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    public static bool WillStatusEnd(this BattleChara obj, float time, bool isFromSelf = true, params StatusID[] statusIDs)
+    public static bool WillStatusEnd(this GameObject obj, float time, bool isFromSelf = true, params StatusID[] statusIDs)
     {
-        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return false;
+        if (DataCenter.HasApplyStatus(obj.ObjectId, statusIDs)) return false;
         var remain = obj.StatusTime(isFromSelf, statusIDs);
         if (remain < 0 && obj.HasStatus(isFromSelf, statusIDs)) return false;
         return remain <= time;
@@ -96,11 +149,11 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    internal static float StatusTime(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    internal static float StatusTime(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         try
         {
-            if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return float.MaxValue;
+            if (DataCenter.HasApplyStatus(obj.ObjectId, statusIDs)) return float.MaxValue;
             var times = obj.StatusTimes(isFromSelf, statusIDs);
             if (times == null || !times.Any()) return 0;
             return Math.Max(0, times.Min() - DataCenter.WeaponRemain);
@@ -111,7 +164,7 @@ public static class StatusHelper
         }
     }
 
-    private static IEnumerable<float> StatusTimes(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    private static IEnumerable<float> StatusTimes(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         return obj.GetStatus(isFromSelf, statusIDs).Select(status => status.RemainingTime == 0 ? float.MaxValue : status.RemainingTime);
     }
@@ -123,15 +176,15 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    public static byte StatusStack(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    public static byte StatusStack(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return byte.MaxValue;
+        if (DataCenter.HasApplyStatus(obj.ObjectId, statusIDs)) return byte.MaxValue;
         var stacks = obj.StatusStacks(isFromSelf, statusIDs);
         if (stacks == null || !stacks.Any()) return 0;
         return stacks.Min();
     }
 
-    private static IEnumerable<byte> StatusStacks(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    private static IEnumerable<byte> StatusStacks(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         return obj.GetStatus(isFromSelf, statusIDs).Select(status => status.StackCount == 0 ? byte.MaxValue : status.StackCount);
     }
@@ -143,9 +196,9 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    public static bool HasStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    public static bool HasStatus(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
-        if (DataCenter.HasApplyStatus(obj?.ObjectId ?? 0, statusIDs)) return true;
+        if (DataCenter.HasApplyStatus(obj.ObjectId, statusIDs)) return true;
         return obj.GetStatus(isFromSelf, statusIDs).Any();
     }
 
@@ -161,20 +214,20 @@ public static class StatusHelper
 
     internal static string GetStatusName(StatusID id)
     {
-        return Service.GetSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id).Name.ToString();
+        return Service.GetSheet<Lumina.Excel.GeneratedSheets.Status>().GetRow((uint)id)!.Name.ToString();
     }
 
-    private static IEnumerable<Status> GetStatus(this BattleChara obj, bool isFromSelf, params StatusID[] statusIDs)
+    private static IEnumerable<Status> GetStatus(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         var newEffects = statusIDs.Select(a => (uint)a);
         return obj.GetAllStatus(isFromSelf).Where(status => newEffects.Contains(status.StatusId));
     }
 
-    private static IEnumerable<Status> GetAllStatus(this BattleChara obj, bool isFromSelf)
+    private static IEnumerable<Status> GetAllStatus(this GameObject obj, bool isFromSelf)
     {
-        if (obj == null) return Array.Empty<Status>();
+        if (obj is not BattleChara b) return [];
 
-        return obj.StatusList.Where(status => !isFromSelf
+        return b.StatusList.Where(status => !isFromSelf
                                               || status.SourceId == Player.Object.ObjectId
                                               || status.SourceObject?.OwnerId == Player.Object.ObjectId);
     }

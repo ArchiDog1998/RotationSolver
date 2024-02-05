@@ -1,13 +1,8 @@
 ﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
 
-internal class RotationConfigBoolean : RotationConfigBase
+internal class RotationConfigBoolean(string name, bool value, string displayName, CombatType type)
+    : RotationConfigBase(name, value.ToString(), displayName, type)
 {
-
-    public RotationConfigBoolean(string name, bool value, string displayName, CombatType type)
-        : base(name, value.ToString(), displayName, type)
-    {
-    }
-
     public override bool DoCommand(IRotationConfigSet set, string str)
     {
         if (!base.DoCommand(set, str)) return false;

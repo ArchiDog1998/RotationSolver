@@ -18,7 +18,7 @@ internal static class MovingUpdater
         //Casting the action in list.
         else if (Svc.Condition[ConditionFlag.Casting] && Player.Available)
         {
-            Service.CanMove = BaseAction.ActionsNoNeedCasting.Contains(Player.Object.CastActionId);
+            Service.CanMove = ActionBasicInfo.ActionsNoNeedCasting.Contains(Player.Object.CastActionId);
         }
         //Special actions.
         else
@@ -26,25 +26,25 @@ internal static class MovingUpdater
             var statusList = new List<StatusID>(4);
             var actionList = new List<ActionID>(4);
 
-            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.PosFlameThrower))
+            if (Service.Config.PosFlameThrower)
             {
                 statusList.Add(StatusID.Flamethrower);
-                actionList.Add(ActionID.FlameThrower);
+                actionList.Add(ActionID.FlameThrowerPvE);
             }
-            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.PosTenChiJin))
+            if (Service.Config.PosTenChiJin)
             {
                 statusList.Add(StatusID.TenChiJin);
-                actionList.Add(ActionID.TenChiJin);
+                actionList.Add(ActionID.TenChiJinPvE);
             }
-            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.PosPassageOfArms))
+            if (Service.Config.PosPassageOfArms)
             {
                 statusList.Add(StatusID.PassageOfArms);
-                actionList.Add(ActionID.PassageOfArms);
+                actionList.Add(ActionID.PassageOfArmsPvE);
             }
-            if (Service.Config.GetValue(Basic.Configuration.PluginConfigBool.PosImprovisation))
+            if (Service.Config.PosImprovisation)
             {
                 statusList.Add(StatusID.Improvisation);
-                actionList.Add(ActionID.Improvisation);
+                actionList.Add(ActionID.ImprovisationPvE);
             }
 
             //Action
@@ -56,7 +56,7 @@ internal static class MovingUpdater
                 || actionList.Any(id => Service.GetAdjustedActionId(id) == action);
 
             //Status
-            var specialStatus = Player.Object.HasStatus(true, statusList.ToArray());
+            var specialStatus = Player.Object.HasStatus(true, [.. statusList]);
 
             Service.CanMove = !specialStatus && !specialActions;
         }

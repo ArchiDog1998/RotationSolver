@@ -1,0 +1,114 @@
+﻿namespace RotationSolver.Basic.Rotations.Basic;
+
+partial class WarriorRotation
+{
+    /// <inheritdoc/>
+    public override MedicineType MedicineType => MedicineType.Strength;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static byte BeastGauge => JobGauge.BeastGauge;
+
+    static partial void ModifyStormsEyePvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            StatusGcdCount = 9,
+        };
+        setting.StatusProvide = [StatusID.SurgingTempest];
+    }
+
+    static partial void ModifyInnerBeastPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease);
+    }
+
+    static partial void ModifyTomahawkPvE(ref ActionSetting setting)
+    {
+        setting.IsMeleeRange = true;
+    }
+
+    static partial void ModifyUpheavalPvE(ref ActionSetting setting)
+    {
+        //TODO: Why is that status?
+        setting.StatusNeed = [StatusID.SurgingTempest];
+    }
+
+    static partial void ModifySteelCyclonePvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease);
+    }
+
+    static partial void ModifyPrimalRendPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.PrimalRendReady];
+    }
+    private sealed protected override IBaseAction TankStance => DefiancePvE;
+
+    static partial void ModifyInfuriatePvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.NascentChaos];
+        setting.ActionCheck = () => HasHostilesInRange && BeastGauge <= 50 && InCombat && IsLongerThan(5);
+    }
+
+    static partial void ModifyInnerReleasePvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => IsLongerThan(10);
+    }
+
+    static partial void ModifyBerserkPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => HasHostilesInRange && !ActionID.InnerReleasePvE.IsCoolingDown() && IsLongerThan(10);
+    }
+
+    static partial void ModifyVengeancePvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = StatusHelper.RampartStatus;
+        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+    }
+
+    static partial void ModifyRawIntuitionPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+    }
+
+    static partial void ModifyHolmgangPvE(ref ActionSetting setting)
+    {
+        setting.TargetType = TargetType.Self;
+    }
+
+    static partial void ModifyFellCleavePvP(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.InnerRelease_1303];
+    }
+
+    static partial void ModifyChaoticCyclonePvP(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.NascentChaos_1992];
+    }
+    /// <inheritdoc/>
+    protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
+    {
+        if (HolmgangPvE.CanUse(out act)
+            && Player.GetHealthRatio() <= Service.Config.HealthForDyingTanks) return true;
+        return base.EmergencyAbility(nextGCD, out act);
+    }
+
+    /// <inheritdoc/>
+    [RotationDesc(ActionID.OnslaughtPvE)]
+    protected sealed override bool MoveForwardAbility(out IAction? act)
+    {
+        if (OnslaughtPvE.CanUse(out act)) return true;
+        return base.MoveForwardAbility(out act);
+    }
+
+    /// <inheritdoc/>
+    [RotationDesc(ActionID.PrimalRendPvE)]
+    protected sealed override bool MoveForwardGCD(out IAction? act)
+    {
+        if (PrimalRendPvE.CanUse(out act, skipAoeCheck: true)) return true;
+        return base.MoveForwardGCD(out act);
+    }
+}
