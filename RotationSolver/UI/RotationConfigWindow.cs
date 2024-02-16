@@ -1187,8 +1187,8 @@ public partial class RotationConfigWindow : Window
                 if (!config.Type.HasFlag(CombatType.PvE)) continue;
             }
 
-            var key = config.Name;
-            var name = $"##{config.GetHashCode()}_{config.Name}";
+            var key = rotation.GetType().FullName ?? rotation.GetType().Name + "." + config.Name;
+            var name = $"##{config.GetHashCode()}_{(key + ".Name").Local(config.Name)}";
             string command = ToCommandStr(OtherCommandType.Rotations, config.Name, config.DefaultValue);
             void Reset() => set.SetValue(config.Name, config.DefaultValue);
 
@@ -1270,7 +1270,7 @@ public partial class RotationConfigWindow : Window
             else continue;
 
             ImGui.SameLine();
-            ImGui.TextWrapped(config.DisplayName);
+            ImGui.TextWrapped((key + ".DisplayName").Local(config.DisplayName));
             ImGuiHelper.ReactPopup(key, command, Reset, false);
         }
     }
