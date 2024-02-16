@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.0.1](https://github.com/ArchiDog1998/RotationSolver/compare/v4.0.0...v4.0.1) (2024-02-16)
+
+
+### Bug Fixes
+
+* add localization for rotation configs. ([d225d24](https://github.com/ArchiDog1998/RotationSolver/commit/d225d24bb3f7f8248bbad983bcf5234c3e935b25))
+* code generator thing. ([40c987b](https://github.com/ArchiDog1998/RotationSolver/commit/40c987beb461094af462845519aa8430e19f2f0c))
+* fixed rotation type displaying. ([beffdf2](https://github.com/ArchiDog1998/RotationSolver/commit/beffdf2dd27ce4a874d222d66c6cd097ec5ccb5c))
+* fixed settings and the drawing. ([28ad9fd](https://github.com/ArchiDog1998/RotationSolver/commit/28ad9fd6bbdafcaa4a44a96433d2bbab2868730f))
+* fixed the ui issues. ([abc4be8](https://github.com/ArchiDog1998/RotationSolver/commit/abc4be8b121d54619e1fb4d0490d0adede039f7a))
+* manual fix. ([a2254e1](https://github.com/ArchiDog1998/RotationSolver/commit/a2254e1578fb0688f6504980cc53a702a09bee62))
+* nin actions. ([634856a](https://github.com/ArchiDog1998/RotationSolver/commit/634856ad1c68fb0b772fa6e91f9d1bc1c5d738b8))
+
 ## [4.0.0](https://github.com/ArchiDog1998/RotationSolver/compare/v3.5.6...v4.0.0) (2024-02-05)
 
 
