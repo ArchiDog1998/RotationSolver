@@ -191,6 +191,29 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             return FindTargetArea(canTargets, canAffects, range, player);
         }
+        else if (DataCenter.IsManual)
+        {
+            var t = Svc.Targets.Target as BattleChara;
+
+            if (t == null) return null;
+
+            if (IsSingleTarget)
+            {
+                if (canTargets.Contains(Svc.Targets.Target))
+                {
+                    return new(t, [.. GetAffects(t, canAffects)], t.Position);
+                }
+            }
+            else
+            {
+                var effects = GetAffects(t, canAffects).ToArray();
+                if(effects.Length >= _action.Config.AoeCount)
+                {
+                    return new(t, effects, t.Position);
+                }
+            }
+            return null;
+        }
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
             skipAoeCheck ? 0 : _action.Config.AoeCount);
