@@ -751,10 +751,12 @@ public struct ActionTargetInfo(IBaseAction _action)
         return null;
     }
 
-    private static BattleChara RandomObject(IEnumerable<BattleChara> objs)
+    private static BattleChara? RandomObject(IEnumerable<BattleChara> objs)
     {
         Random ran = new(DateTime.Now.Millisecond);
-        return objs.ElementAt(ran.Next(objs.Count()));
+        var count = objs.Count();
+        if (count == 0) return null;
+        return objs.ElementAt(ran.Next(count));
     }
 
     #endregion

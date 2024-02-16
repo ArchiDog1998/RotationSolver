@@ -5,7 +5,7 @@ internal class EnumSearch(PropertyInfo property) : Searchable(property)
     protected int Value
     {
         get => Convert.ToInt32(_property.GetValue(Service.Config));
-        set => _property.SetValue(Service.Config, value);
+        set => _property.SetValue(Service.Config, Enum.ToObject(_property.PropertyType, value));
     }
 
     protected override void DrawMain()
