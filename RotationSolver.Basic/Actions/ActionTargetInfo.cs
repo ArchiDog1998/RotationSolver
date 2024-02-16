@@ -81,10 +81,15 @@ public struct ActionTargetInfo(IBaseAction _action)
         }
         return true;
     }
+
     private readonly unsafe bool CanUseTo(GameObject tar)
     {
         if (tar == null || !Player.Available) return false;
+        if (tar.ObjectId == GameObject.InvalidGameObjectId) return false;
+        if (tar.ObjectId == 0) return false;
+
         var tarAddress = tar.Struct();
+        if (tarAddress == null) return false;
 
         if ((ActionID)_action.Info.ID != ActionID.AethericMimicryPvE
             && !ActionManager.CanUseActionOnTarget(_action.Info.AdjustedID, tarAddress)) return false;

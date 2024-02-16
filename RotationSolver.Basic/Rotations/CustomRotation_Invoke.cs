@@ -11,15 +11,6 @@ partial class CustomRotation
             return false;
         }
 
-        //if (DataCenter.Territory?.IsPvpZone ?? false)
-        //{
-        //    if (!Type.HasFlag(CombatType.PvP)) return false;
-        //}
-        //else
-        //{
-        //    if (!Type.HasFlag(CombatType.PvE)) return false;
-        //}
-
         try
         {
             UpdateInfo();
@@ -78,9 +69,10 @@ partial class CustomRotation
             ActionHealSingleAbility = HealSingleAbility(out act) ? act : null;
         }
 
+        IBaseAction.TargetOverride = TargetType.BeAttacked;
         ActionDefenseAreaGCD = DefenseAreaGCD(out act) ? act : null;
-
         ActionDefenseSingleGCD = DefenseSingleGCD(out act) ? act : null;
+        IBaseAction.TargetOverride = null;
 
         ActionDispelStancePositionalGCD = role switch
         {
@@ -94,9 +86,10 @@ partial class CustomRotation
             _ => null,
         };
 
+        IBaseAction.TargetOverride = TargetType.BeAttacked;
         ActionDefenseAreaAbility = DefenseAreaAbility(out act) ? act : null;
-
         ActionDefenseSingleAbility = DefenseSingleAbility(out act) ? act : null;
+        IBaseAction.TargetOverride = null;
 
         ActionDispelStancePositionalAbility = role switch
         {
@@ -112,7 +105,9 @@ partial class CustomRotation
         };
         ActionAntiKnockbackAbility = AntiKnockback(role, out act) ? act : null;
 
+        IBaseAction.TargetOverride = TargetType.Move;
         var movingTarget = MoveForwardAbility(out act);
+        IBaseAction.TargetOverride = null;
         ActionMoveForwardAbility = movingTarget ? act : null;
 
         //TODO: that is too complex! 
