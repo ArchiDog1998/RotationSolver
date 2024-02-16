@@ -217,7 +217,12 @@ public struct ActionTargetInfo(IBaseAction _action)
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
             skipAoeCheck ? 0 : _action.Config.AoeCount);
-        var target = FindTargetByType(targets, _action.Setting.TargetType, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
+        var type = _action.Setting.TargetType;
+        if (type == TargetType.BeAttacked && !_action.Setting.IsFriendly)
+        {
+            type = TargetType.Big;
+        }
+        var target = FindTargetByType(targets, type, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
         if (target == null) return null;
 
         return new(target, [.. GetAffects(target, canAffects)], target.Position);

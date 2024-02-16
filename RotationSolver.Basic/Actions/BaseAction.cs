@@ -65,7 +65,7 @@ public class BaseAction : IBaseAction
         }
     }
 
-    internal BaseAction(ActionID actionID, bool isDutyAction)
+    public BaseAction(ActionID actionID, bool isDutyAction)
     {
         Action = Service.GetSheet<Action>().GetRow((uint)actionID)!;
         TargetInfo = new(this);
