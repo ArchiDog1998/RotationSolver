@@ -1,32 +1,35 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using System;
 
 namespace RotationSolver.Basic.Helpers;
 
 internal class MarkingHelper
 {
-    private unsafe static long GetMarker(uint index) => MarkingController.Instance()->MarkerArray[index];
+    internal unsafe static long GetMarker(uint index) => MarkingController.Instance()->MarkerArray[index];
 
-    internal static bool HaveAttackChara(IEnumerable<BattleChara> charas) => GetAttackMarkChara(charas) != null;
+    internal static bool HaveAttackChara => AttackSignTargets.Any(id => id != GameObject.InvalidGameObjectId);
 
-    internal static BattleChara? GetAttackMarkChara(IEnumerable<BattleChara> charas)
-    {
-        for (uint i = 0; i < 5; i++)
-        {
-            var b = GetChara(charas, GetMarker(i));
-            if (b?.IsEnemy() ?? false) return b;
-        }
-        return null;
-    }
+    internal static long[] AttackSignTargets => 
+    [
+        GetMarker(0),
+        GetMarker(1),
+        GetMarker(2),
+        GetMarker(3),
+        GetMarker(4),
+        GetMarker(14),
+        GetMarker(15),
+        GetMarker(16),
+    ];
 
-    private static BattleChara? GetChara(IEnumerable<BattleChara> charas, long id)
-    {
-        if (id == GameObject.InvalidGameObjectId) return null;
-        return charas.FirstOrDefault(item => item.ObjectId == id);
-    }
+    internal static long[] StopTargets =>
+    [
+        GetMarker(8),
+        GetMarker(9),
+    ];
 
     internal unsafe static IEnumerable<BattleChara> FilterStopCharaes(IEnumerable<BattleChara> charas)
     {
-        var ids = new List<long>() { GetMarker(8), GetMarker(9) }.Where(id => id != 0xE0000000);
+        var ids = StopTargets.Where(id => id != GameObject.InvalidGameObjectId);
         return charas.Where(b => !ids.Contains(b.ObjectId));
     }
 }

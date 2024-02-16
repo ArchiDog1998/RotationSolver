@@ -34,7 +34,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
             return Service.Config.ChooseAttackMark
                 && !Service.Config.CanAttackMarkAoe
-                && MarkingHelper.HaveAttackChara(DataCenter.AllHostileTargets);
+                && MarkingHelper.HaveAttackChara;
         }
     }
 

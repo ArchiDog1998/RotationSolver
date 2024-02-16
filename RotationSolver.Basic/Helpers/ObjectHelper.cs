@@ -9,7 +9,6 @@ using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using System.Text.RegularExpressions;
-using static Dalamud.Interface.Utility.Raii.ImRaii;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -252,6 +251,8 @@ public static class ObjectHelper
            || obj.GetEventType() is EventHandlerType.Quest)) return true;
 
         if (obj is BattleChara b && b.StatusList.Any(StatusHelper.IsPriority)) return true;
+
+        if (Service.Config.ChooseAttackMark && MarkingHelper.AttackSignTargets.Contains(obj.ObjectId)) return true;
 
         return false;
     }
