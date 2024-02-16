@@ -1,7 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using static Dalamud.Interface.Utility.Raii.ImRaii;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Basic.Actions;
@@ -51,7 +50,6 @@ public class BaseAction : IBaseAction
 
     public bool EnoughLevel => Info.EnoughLevel;
 
-
     public ActionSetting Setting { get; set; }
 
     public ActionConfig Config
@@ -67,7 +65,7 @@ public class BaseAction : IBaseAction
         }
     }
 
-    internal BaseAction(ActionID actionID, bool isDutyAction)
+    public BaseAction(ActionID actionID, bool isDutyAction = false)
     {
         Action = Service.GetSheet<Action>().GetRow((uint)actionID)!;
         TargetInfo = new(this);

@@ -7,8 +7,6 @@ namespace RotationSolver.Basic.Rotations;
 [Jobs()]
 partial class CustomRotation : ICustomRotation
 {
-    public abstract CombatType Type { get; }
-
     private Job? _job = null;
     public Job Job => _job ??= this.GetType().GetCustomAttribute<JobsAttribute>()?.Jobs[0] ?? Job.ADV;
 

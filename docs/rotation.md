@@ -17,7 +17,7 @@ The code that defines these methods is [here](https://github.com/ArchiDog1998/Ro
 This is a method with the highest priority, even higher than raise, heal and defense. So it is rarely used. I only use it on RDM. Because I don't want to use `Verraise` when I am burst with Scorch, etc.
 
 ```c#
-    private protected override bool EmergencyGCD(out IAction act)
+    private protected override bool EmergencyGCD(out IAction? act)
     {
         act = null; return false;
     }
@@ -28,7 +28,7 @@ This is a method with the highest priority, even higher than raise, heal and def
 Only use when player input the macro with `Move Forward`.
 
 ``` c#
-    private protected override bool MoveGCD(out IAction act)
+    private protected override bool MoveGCD(out IAction? act)
     {
         act = null; return false;
     }
@@ -39,7 +39,7 @@ Only use when player input the macro with `Move Forward`.
 When need to use spell to heal one player. 
 
 ``` c#
-    private protected override bool HealSingleGCD(out IAction act)
+    private protected override bool HealSingleGCD(out IAction? act)
     {
         act = null; return false;
     }
@@ -50,7 +50,7 @@ When need to use spell to heal one player.
 When need to use spell to heal multiple players. 
 
 ``` c#
-    private protected override bool HealAreaGCD(out IAction act)
+    private protected override bool HealAreaGCD(out IAction? act)
     {
         act = null; return false;
     }
@@ -61,7 +61,7 @@ When need to use spell to heal multiple players.
 When need to use spell to defense for one player.
 
 ``` c#
-    private protected override bool DefenseSingleGCD(out IAction act)
+    private protected override bool DefenseSingleGCD(out IAction? act)
     {
         act = null; return false;
     }
@@ -72,7 +72,7 @@ When need to use spell to defense for one player.
 When need to use spell to defense for multiple players.
 
 ``` c#
-    private protected override bool DefenseAreaGCD(out IAction act)
+    private protected override bool DefenseAreaGCD(out IAction? act)
     {
         act = null; return false;
     }
@@ -83,7 +83,7 @@ When need to use spell to defense for multiple players.
 Just normal GCD. Always for attack.
 
 ``` c#
-    private protected override bool GeneralGCD(out IAction act)
+    private protected override bool GeneralGCD(out IAction? act)
     {
         act = null; return false;
     }
@@ -104,7 +104,7 @@ The code that defines these methods is [here](https://github.com/ArchiDog1998/Ro
 This is a method with the highest priority. And only this method has `nextGCD` parameter.  The logic `before` is there. You may want to use `IsTheSameTo` method to check what is the next action.
 
 ``` c#
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
@@ -113,7 +113,7 @@ This is a method with the highest priority. And only this method has `nextGCD` p
 Here is the example for MCH.
 
 ``` c#
-    private protected override bool EmergencyAbility(byte abilitiesRemaining, IAction nextGCD, out IAction act)
+    private protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {
         if (nextGCD.IsTheSameTo(true, ChainSaw))
         {
@@ -128,7 +128,7 @@ Here is the example for MCH.
 Only use when player input the macro with `Move Forward`.
 
 ``` c#
-    private protected override bool MoveForwardAbility(byte abilitiesRemaining, out IAction act)
+    private protected override bool MoveForwardAbility(out IAction? act)
     {
         act = null; return false;
     }
@@ -139,7 +139,7 @@ Only use when player input the macro with `Move Forward`.
 Only use when player input the macro with `Move Back`.
 
 ``` c#
-    private protected override bool MoveBackAbility(byte abilitiesRemaining, out IAction act)
+    private protected override bool MoveBackAbility(out IAction? act)
     {
         act = null; return false;
     }
@@ -150,7 +150,7 @@ Only use when player input the macro with `Move Back`.
 When need to use ability to heal one player. 
 
 ``` c#
-    private protected override bool HealSingleAbility(byte abilitiesRemaining, out IAction act)
+    private protected override bool HealSingleAbility(out IAction? act)
     {
         act = null; return false;
     }
@@ -161,7 +161,7 @@ When need to use ability to heal one player.
 When need to use ability to heal multiple players. 
 
 ``` c#
-    private protected override bool HealAreaAbility(byte abilitiesRemaining, out IAction act)
+    private protected override bool HealAreaAbility(out IAction? act)
     {
         act = null; return false;
     }
@@ -172,7 +172,7 @@ When need to use ability to heal multiple players.
 When need to use ability to defense for one player. 
 
 ``` c#
-    private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+    private protected override bool DefenceSingleAbility(out IAction? act)
     {
         act = null; return false;
     }
@@ -183,7 +183,7 @@ When need to use ability to defense for one player.
 When need to use ability to defense for multiple players. 
 
 ``` c#
-    private protected override bool DefenceAreaAbility(byte abilitiesRemaining, out IAction act)
+    private protected override bool DefenceAreaAbility(out IAction? act)
     {
         act = null; return false;
     }
@@ -194,7 +194,7 @@ When need to use ability to defense for multiple players.
 Just normal abilities. No need for hostile target.
 
 ``` c#
-    private protected override bool GeneralAbility(byte abilitiesRemaining, out IAction act)
+    private protected override bool GeneralAbility(out IAction? act)
     {
         act = null; return false;
     }
@@ -205,7 +205,7 @@ Just normal abilities. No need for hostile target.
 Need for hostile target in attack range. Ranged roles are 25, others are 3.
 
 ``` c#
-    private protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    private protected override bool AttackAbility(out IAction? act)
     {
         act = null; return false;
     }

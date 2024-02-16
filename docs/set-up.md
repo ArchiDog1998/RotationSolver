@@ -43,23 +43,18 @@ namespace RotationTest.Tank
 {
     [LinkDescription("$Your link description here, it is better to link to a png! this attribute can be multiple! $")]
     [SourceCode("$If your rotation is open source, please write the link to this attribute! $")]
-
+	[Rotation("WAR_Test", CombatType.PvE, GameVersion = "6.35")]
     // Change this base class to your job's base class. It is named like XXX_Base.
-    public class WAR_Test : AST_Base
+    public class WAR_Test : WarriorRotation
     {
-        //Change this to the game version right now.
-        public override string GameVersion => "6.35";
-
-        public override string RotationName => "WAR_Test";
-
         //GCD actions here.
-        protected override bool GeneralGCD(out IAction act)
+        protected override bool GeneralGCD(out IAction? act)
         {
             throw new NotImplementedException();
         }
 
         //0GCD actions here.
-        protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+        protected override bool AttackAbility(out IAction? act)
         {
             throw new NotImplementedException();
         }
@@ -84,27 +79,22 @@ namespace RotationTest.Tank;
 
 [LinkDescription("$Your link description here, it is better to link to a png! this attribute can be multiple! $")]
 [SourceCode("$If your rotation is open source, please write the link to this attribute! $")]
-
+[Rotation("WAR_Test", CombatType.PvE, GameVersion = "6.35")]
 // Change this base class to your job's base class. It is named like XXX_Base.
-public class WAR_Test : WAR_Base
+public class WAR_Test : WarriorRotation
 {
-    //Change this to the game version right now.
-    public override string GameVersion => "6.38";
-
-    public override string RotationName => "Test";
-
     //GCD actions here.
-    protected override bool GeneralGCD(out IAction act)
+    protected override bool GeneralGCD(out IAction? act)
     {
-        if (StormsEye.CanUse(out act)) return true;
-        if (StormsPath.CanUse(out act)) return true;
-        if (Maim.CanUse(out act)) return true;
-        if (HeavySwing.CanUse(out act)) return true;
+        if (StormsEyePvE.CanUse(out act)) return true;
+        if (StormsPathPvE.CanUse(out act)) return true;
+        if (MaimPvE.CanUse(out act)) return true;
+        if (HeavySwingPvE.CanUse(out act)) return true;
         return false;
     }
 
     //0GCD actions here.
-    protected override bool AttackAbility(byte abilitiesRemaining, out IAction act)
+    protected override bool AttackAbility(out IAction? act)
     {
         act = null;
         return false;

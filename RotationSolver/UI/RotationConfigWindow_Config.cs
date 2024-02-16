@@ -8,7 +8,6 @@ using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 using RotationSolver.Updaters;
 
@@ -19,13 +18,13 @@ public partial class RotationConfigWindow
     private string _searchText = string.Empty;
     private ISearchable[] _searchResults = [];
 
-    private static SearchableCollection _allSearchables = new();
+    private static SearchableCollection _allSearchable = new();
 
     private void SearchingBox()
     {
         if (ImGui.InputTextWithHint("##Rotation Solver Search Box", UiString.ConfigWindow_Searching.Local(), ref _searchText, 128, ImGuiInputTextFlags.AutoSelectAll))
         {
-            _searchResults = _allSearchables.SearchItems(_searchText);
+            _searchResults = _allSearchable.SearchItems(_searchText);
         }
     }
 
@@ -189,7 +188,7 @@ public partial class RotationConfigWindow
 
         ImGui.Spacing();
 
-        _allSearchables.DrawItems(Configs.BasicTimer);
+        _allSearchable.DrawItems(Configs.BasicTimer);
     }
 
     private static readonly CollapsingHeaderGroup _autoSwitch = new(new()
@@ -212,7 +211,7 @@ public partial class RotationConfigWindow
     };
     private static void DrawBasicAutoSwitch()
     {
-        _allSearchables.DrawItems(Configs.BasicAutoSwitch);
+        _allSearchable.DrawItems(Configs.BasicAutoSwitch);
         _autoSwitch?.Draw();
     }
 
@@ -268,7 +267,7 @@ public partial class RotationConfigWindow
 
     private static void DrawBasicOthers()
     {
-        _allSearchables.DrawItems(Configs.BasicParams);
+        _allSearchable.DrawItems(Configs.BasicParams);
 
         if (Service.Config.SayHelloToAll)
         {
@@ -305,15 +304,15 @@ public partial class RotationConfigWindow
     {
         { 
             UiString.ConfigWindow_UI_Information.Local,
-            () => _allSearchables.DrawItems(Configs.UiInformation)
+            () => _allSearchable.DrawItems(Configs.UiInformation)
         },
         {
             UiString.ConfigWindow_UI_Overlay.Local,
-            () =>_allSearchables.DrawItems(Configs.UiOverlay)
+            () =>_allSearchable.DrawItems(Configs.UiOverlay)
         },
         {
             UiString.ConfigWindow_UI_Windows.Local,
-            () =>_allSearchables.DrawItems(Configs.UiWindows)
+            () =>_allSearchable.DrawItems(Configs.UiWindows)
         },
     });
 
@@ -334,7 +333,7 @@ public partial class RotationConfigWindow
                     .Local());
                 ImGui.Separator();
 
-                _allSearchables.DrawItems(Configs.AutoActionUsage);
+                _allSearchable.DrawItems(Configs.AutoActionUsage);
             }
         },
         { UiString.ConfigWindow_Auto_ActionCondition.Local, DrawAutoActionCondition },
@@ -408,7 +407,7 @@ public partial class RotationConfigWindow
         ImGui.TextWrapped(UiString.ConfigWindow_Auto_ActionCondition_Description.Local());
         ImGui.Separator();
 
-        _allSearchables.DrawItems(Configs.AutoActionCondition);
+        _allSearchable.DrawItems(Configs.AutoActionCondition);
     }
     #endregion
 
@@ -426,7 +425,7 @@ public partial class RotationConfigWindow
 
     private static void DrawTargetConfig()
     {
-        _allSearchables.DrawItems(Configs.TargetConfig);
+        _allSearchable.DrawItems(Configs.TargetConfig);
     }
 
     private static void DrawTargetHostile()
@@ -494,7 +493,7 @@ public partial class RotationConfigWindow
 
         {
             UiString.ConfigWindow_Extra_Others.Local, 
-            () => _allSearchables.DrawItems(Configs.Extra)
+            () => _allSearchable.DrawItems(Configs.Extra)
         },
     });
 

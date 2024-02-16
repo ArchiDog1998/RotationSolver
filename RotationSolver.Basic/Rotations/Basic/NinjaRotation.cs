@@ -101,36 +101,27 @@ partial class NinjaRotation
         setting.StatusProvide = [StatusID.Kassatsu, StatusID.TenChiJin];
     }
 
-    static partial void ModifyFumaShurikenPvE(ref ActionSetting setting)
-    {
-        setting.Ninjutsu = [ActionID.TenPvE];
-    }
-
-    static partial void ModifyKatonPvE(ref ActionSetting setting)
-    {
-        setting.Ninjutsu = [ActionID.ChiPvE, ActionID.TenPvE];
-    }
-
-    static partial void ModifyRaitonPvE(ref ActionSetting setting)
-    {
-        setting.Ninjutsu = [ActionID.TenPvE, ActionID.ChiPvE];
-    }
-
-    static partial void ModifyHyotonPvE(ref ActionSetting setting)
-    {
-        setting.Ninjutsu = [ActionID.TenPvE, ActionID.JinPvE];
-    }
-
     static partial void ModifyHutonPvE(ref ActionSetting setting)
     {
-        setting.Ninjutsu = [ActionID.JinPvE, ActionID.ChiPvE, ActionID.TenPvE];
         setting.ActionCheck = () => HutonEndAfterGCD();
     }
 
     static partial void ModifyDotonPvE(ref ActionSetting setting)
     {
-        setting.Ninjutsu = [ActionID.JinPvE, ActionID.TenPvE, ActionID.ChiPvE];
         setting.StatusProvide = [StatusID.Doton];
+    }
+
+    public NinjaRotation()
+    {
+        FumaShurikenPvE.Setting.Ninjutsu = [TenPvE];
+        KatonPvE.Setting.Ninjutsu = [ChiPvE, TenPvE];
+        RaitonPvE.Setting.Ninjutsu = [TenPvE, ChiPvE];
+        HyotonPvE.Setting.Ninjutsu = [TenPvE, JinPvE];
+        HutonPvE.Setting.Ninjutsu = [JinPvE, ChiPvE, TenPvE];
+        DotonPvE.Setting.Ninjutsu = [JinPvE, TenPvE, ChiPvE];
+        SuitonPvE.Setting.Ninjutsu = [TenPvE, ChiPvE, JinPvE];
+        GokaMekkyakuPvE.Setting.Ninjutsu = [ChiPvE, TenPvE];
+        HyoshoRanryuPvE.Setting.Ninjutsu = [TenPvE, JinPvE];
     }
 
     /// <inheritdoc/>
@@ -159,18 +150,7 @@ partial class NinjaRotation
 
     static partial void ModifySuitonPvE(ref ActionSetting setting)
     {
-        setting.Ninjutsu = [ActionID.TenPvE, ActionID.ChiPvE, ActionID.JinPvE];
         setting.StatusProvide = [StatusID.Suiton];
-    }
-
-    static partial void ModifyGokaMekkyakuPvE(ref ActionSetting setting)
-    {
-        setting.Ninjutsu = [ActionID.ChiPvE, ActionID.TenPvE];
-    }
-
-    static partial void ModifyHyoshoRanryuPvE(ref ActionSetting setting)
-    {
-        setting.Ninjutsu = [ActionID.TenPvE, ActionID.JinPvE];
     }
 
     static partial void ModifyFleetingRaijuPvE(ref ActionSetting setting)
@@ -183,60 +163,3 @@ partial class NinjaRotation
         setting.StatusNeed = [StatusID.RaijuReady];
     }
 }
-
-
-///// <summary>
-///// The base class of Nin.
-///// </summary>
-//public abstract class NIN_Base : CustomRotation
-//{
-//    #region Ninjutsu
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction FumaShurikenTen { get; } = new BaseAction(ActionID.FumaShuriken_18873);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction FumaShurikenJin { get; } = new BaseAction(ActionID.FumaShuriken_18875);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction KatonTen { get; } = new BaseAction(ActionID.Katon_18876);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction RaitonChi { get; } = new BaseAction(ActionID.Raiton_18877);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction DotonChi { get; } = new BaseAction(ActionID.Doton_18880);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public static IBaseAction SuitonJin { get; } = new BaseAction(ActionID.Suiton_18881);
-
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public class NinAction : BaseAction, INinAction
-//    {
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        public IBaseAction[] Ninjutsu { get; }
-
-//        internal NinAction(ActionID actionID, params IBaseAction[] ninjutsu)
-//            : base(actionID)
-//        {
-//            Ninjutsu = ninjutsu;
-//        }
-//    }
-//    #endregion
-//}

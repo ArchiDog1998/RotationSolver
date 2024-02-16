@@ -71,11 +71,15 @@ partial class BardRotation
 
     static partial void ModifyIronJawsPvE(ref ActionSetting setting)
     {
-        setting.TargetStatusNeed = setting.TargetStatusProvide = 
-            [StatusID.VenomousBite, StatusID.CausticBite,
-            StatusID.Windbite, StatusID.Stormbite];
+        setting.TargetStatusProvide = [StatusID.VenomousBite, StatusID.CausticBite, StatusID.Windbite, StatusID.Stormbite];
+        setting.CanTarget = t =>
+        {
+            if (t.WillStatusEndGCD(0, 0, true, StatusID.VenomousBite, StatusID.CausticBite)) return false;
+            if (t.WillStatusEndGCD(0, 0, true, StatusID.Windbite, StatusID.Stormbite)) return false;
+            return true;
+        };
     }
-
+    
     static partial void ModifyPitchPerfectPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Song == Song.WANDERER && Repertoire > 0;

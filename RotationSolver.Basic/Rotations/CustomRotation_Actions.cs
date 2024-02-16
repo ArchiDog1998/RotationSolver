@@ -6,8 +6,12 @@ partial class CustomRotation
 {
     internal static void LoadActionSetting(ref IBaseAction action)
     {
+        var a = action.Action;
+        if(!a.CanTargetFriendly && !a.CanTargetHostile)
+        {
+            action.Setting.IsFriendly = a.EffectRange > 5;
+        }
         //TODO: better target type check. (NoNeed?)
-        //TODO: better friendly check.
     }
 
     #region Role Actions

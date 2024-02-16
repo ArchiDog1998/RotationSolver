@@ -408,11 +408,11 @@ public partial class RotationConfigWindow : Window
 
         if (DataCenter.Territory?.IsPvpZone ?? false)
         {
-            rotations = rotations.Where(r => r.GetType().GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvP) ?? false).ToArray();
+            rotations = rotations.Where(r => r.GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvP) ?? false).ToArray();
         }
         else
         {
-            rotations = rotations.Where(r => r.GetType().GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvE) ?? false).ToArray();
+            rotations = rotations.Where(r => r.GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvE) ?? false).ToArray();
         }
 
         var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH));
@@ -477,7 +477,7 @@ public partial class RotationConfigWindow : Window
             ImguiTooltips.ShowTooltip(() =>
             {
                 ImGui.Text(rotation.Name + $" ({rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Name})");
-                rotation.Type.Draw();
+                rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.Draw();
                 if (!string.IsNullOrEmpty(rotation.Description))
                 {
                     ImGui.Text(rotation.Description);
@@ -485,7 +485,7 @@ public partial class RotationConfigWindow : Window
             });
         }
 
-        if (IconSet.GetTexture(rotation.Type.GetIcon(), out var texture))
+        if (IconSet.GetTexture(rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.GetIcon(), out var texture))
         {
             ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
 
@@ -514,7 +514,7 @@ public partial class RotationConfigWindow : Window
             {
                 foreach (var r in rotations)
                 {
-                    var rAttr = r.GetType().GetCustomAttribute<RotationAttribute>()!;
+                    var rAttr = r.GetCustomAttribute<RotationAttribute>()!;
 
                     if (IconSet.GetTexture(rAttr.Type.GetIcon(), out var texture))
                     {
@@ -523,7 +523,7 @@ public partial class RotationConfigWindow : Window
                         {
                             ImguiTooltips.ShowTooltip(() =>
                             {
-                                rotation.Type.Draw();
+                                rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.Draw();
                             });
                         }
                     }
@@ -1187,8 +1187,8 @@ public partial class RotationConfigWindow : Window
                 if (!config.Type.HasFlag(CombatType.PvE)) continue;
             }
 
-            var key = config.Name;
-            var name = $"##{config.GetHashCode()}_{config.Name}";
+            var key = rotation.GetType().FullName ?? rotation.GetType().Name + "." + config.Name;
+            var name = $"##{config.GetHashCode()}_{(key + ".Name").Local(config.Name)}";
             string command = ToCommandStr(OtherCommandType.Rotations, config.Name, config.DefaultValue);
             void Reset() => set.SetValue(config.Name, config.DefaultValue);
 
@@ -1270,7 +1270,7 @@ public partial class RotationConfigWindow : Window
             else continue;
 
             ImGui.SameLine();
-            ImGui.TextWrapped(config.DisplayName);
+            ImGui.TextWrapped((key + ".DisplayName").Local(config.DisplayName));
             ImGuiHelper.ReactPopup(key, command, Reset, false);
         }
     }
@@ -1609,7 +1609,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawRotationsSettings()
     {
-        _allSearchables.DrawItems(Configs.Rotations);
+        _allSearchable.DrawItems(Configs.Rotations);
     }
 
     private static void DrawRotationsLoaded()
@@ -1662,7 +1662,7 @@ public partial class RotationConfigWindow : Window
                 ImGui.TableNextColumn();
 
                 var lastRole = JobRole.None;
-                foreach (var jobs in grp.GroupBy(r => r.GetCustomAttribute<JobsAttribute>()!.Jobs[0]))
+                foreach (var jobs in grp.GroupBy(r => r.GetCustomAttribute<JobsAttribute>()!.Jobs[0]).OrderBy(g => Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)g.Key)!.GetJobRole()))
                 {
                     var role = Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)jobs.Key)!.GetJobRole();
                     if (lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
@@ -2078,7 +2078,7 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TableNextColumn();
 
-            _allSearchables.DrawItems(Configs.List);
+            _allSearchable.DrawItems(Configs.List);
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingAreaDesc.Local());
 
@@ -2338,7 +2338,7 @@ public partial class RotationConfigWindow : Window
     #region Debug
     private static void DrawDebug()
     {
-        _allSearchables.DrawItems(Configs.Debug);
+        _allSearchable.DrawItems(Configs.Debug);
 
         if (!Player.Available || !Service.Config.InDebug) return;
 

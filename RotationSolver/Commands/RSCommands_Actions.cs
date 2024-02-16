@@ -90,11 +90,15 @@ public static partial class RSCommands
 
                 if (act.Setting.EndSpecial) ResetSpecial();
 #if DEBUG
-                Svc.Chat.Print(act.Name);
-                Svc.Chat.Print(act.Target?.Target?.Name.TextValue ?? string.Empty);
-                //foreach (var item in act.AffectedTargets)
+                //Svc.Chat.Print(act.Name);
+
+                //if(act.Target != null)
                 //{
-                //    Svc.Chat.Print(item?.Name.TextValue ?? string.Empty);
+                //    Svc.Chat.Print(act.Target.Value.Target?.Name.TextValue ?? string.Empty);
+                //    foreach (var item in act.Target.Value.AffectedTargets)
+                //    {
+                //        Svc.Chat.Print(item?.Name.TextValue ?? string.Empty);
+                //    }
                 //}
 #endif
                 //Change Target

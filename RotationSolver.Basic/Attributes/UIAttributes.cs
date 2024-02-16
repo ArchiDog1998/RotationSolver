@@ -18,6 +18,7 @@ public class UIAttribute(string name) : Attribute
 
 public enum JobFilterType : byte
 {
+    None,
     NoJob,
     NoHealer,
     Healer,
@@ -28,12 +29,12 @@ public enum JobFilterType : byte
     Melee,
 }
 
-[AttributeUsage(AttributeTargets.Field)]
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 internal class JobConfigAttribute : Attribute
 {
 }
 
-[AttributeUsage(AttributeTargets.Field)]
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 internal class JobChoiceConfigAttribute : Attribute
 {
 }

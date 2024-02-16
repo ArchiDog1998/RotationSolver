@@ -33,7 +33,7 @@ public interface IRotationConfig
     string Value { get; set; }
 
     /// <summary>
-    /// Happend when it is on the command.
+    /// Happened when it is on the command.
     /// </summary>
     /// <param name="set"></param>
     /// <param name="str"></param>

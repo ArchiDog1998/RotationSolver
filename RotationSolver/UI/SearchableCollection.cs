@@ -25,6 +25,9 @@ internal class SearchableCollection
             var item = CreateSearchable(property);
             if (item == null) continue;
 
+            item.PvEFilter = new(ui.PvEFilter);
+            item.PvPFilter = new(ui.PvPFilter);
+
             pairs.Add(new(ui, item));
 
             if (item is not CheckBoxSearch search) continue;

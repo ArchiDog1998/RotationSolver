@@ -68,6 +68,7 @@ public class JobChoiceConfigGenerator : IIncrementalGenerator
                             is "RotationSolver.Basic.Attributes.UIAttribute"
                             or "RotationSolver.Basic.Attributes.UnitAttribute"
                             or "RotationSolver.Basic.Attributes.RangeAttribute"
+                            or "RotationSolver.Basic.Attributes.JobChoiceConfigAttribute"
                             or "RotationSolver.Basic.Attributes.LinkDescriptionAttribute")
                         {
                             names.Add(attr.ToString());
@@ -86,9 +87,15 @@ public class JobChoiceConfigGenerator : IIncrementalGenerator
                         {
                             get
                             {
-                                if (!{{variableName}}Dict.TryGetValue(DataCenter.Job, out var dict)) return {{variableName}};
+                                if (!{{variableName}}Dict.TryGetValue(DataCenter.Job, out var dict))
+                                {
+                                    dict = {{variableName}}Dict[DataCenter.Job] = new();
+                                }
                                 
-                                if (!dict.TryGetValue(RotationChoice, out var value)) return {{variableName}};
+                                if (!dict.TryGetValue(RotationChoice, out var value))
+                                {
+                                    value = dict[RotationChoice] = {{variableName}};
+                                }
 
                                 return value;
                             }

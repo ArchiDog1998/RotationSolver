@@ -191,10 +191,38 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             return FindTargetArea(canTargets, canAffects, range, player);
         }
+        else if (DataCenter.IsManual)
+        {
+            var t = Svc.Targets.Target as BattleChara;
+
+            if (t == null) return null;
+
+            if (IsSingleTarget)
+            {
+                if (canTargets.Contains(Svc.Targets.Target))
+                {
+                    return new(t, [.. GetAffects(t, canAffects)], t.Position);
+                }
+            }
+            else
+            {
+                var effects = GetAffects(t, canAffects).ToArray();
+                if(effects.Length >= _action.Config.AoeCount)
+                {
+                    return new(t, effects, t.Position);
+                }
+            }
+            return null;
+        }
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
             skipAoeCheck ? 0 : _action.Config.AoeCount);
-        var target = FindTargetByType(targets, _action.Setting.TargetType, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
+        var type = _action.Setting.TargetType;
+        if (type == TargetType.BeAttacked && !_action.Setting.IsFriendly)
+        {
+            type = TargetType.Big;
+        }
+        var target = FindTargetByType(targets, type, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
         if (target == null) return null;
 
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
@@ -723,10 +751,12 @@ public struct ActionTargetInfo(IBaseAction _action)
         return null;
     }
 
-    private static BattleChara RandomObject(IEnumerable<BattleChara> objs)
+    private static BattleChara? RandomObject(IEnumerable<BattleChara> objs)
     {
         Random ran = new(DateTime.Now.Millisecond);
-        return objs.ElementAt(ran.Next(objs.Count()));
+        var count = objs.Count();
+        if (count == 0) return null;
+        return objs.ElementAt(ran.Next(count));
     }
 
     #endregion

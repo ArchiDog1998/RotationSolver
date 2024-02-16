@@ -5,7 +5,7 @@
 /// </summary>
 public class ActionSetting()
 {
-    public ActionID[]? Ninjutsu { get; set; } = null;
+    public IBaseAction[]? Ninjutsu { get; set; } = null;
     public Func<uint?>? MPOverride { get; set; } = null;
     public bool IsMeleeRange { get; set; } = false;
     public bool StatusFromSelf { get; set; } = true;
@@ -25,16 +25,16 @@ public class ActionSetting()
     /// </summary>
     public StatusID[]? StatusNeed { get; set; } = null;
 
-    public Func<bool>? ActionCheck { get; set; } = null;
+    public Func<bool>? RotationCheck { get; set; } = null;
+    internal Func<bool>? ActionCheck { get; set; } = null;
 
-    public Func<ActionConfig>? CreateConfig { get; set; } = null;
-
+    internal Func<ActionConfig>? CreateConfig { get; set; } = null;
 
     public bool IsFriendly { get; set; }
 
     private TargetType _type = TargetType.Big;
     public TargetType TargetType 
-    { 
+    {
         get => IBaseAction.TargetOverride ?? _type; 
         set => _type = value; 
     }

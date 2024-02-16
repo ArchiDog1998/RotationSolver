@@ -36,7 +36,7 @@ internal partial class Configs : IPluginConfiguration
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
     [ConditionBool, UI("Show RS logo animation",
-        Filter =UiWindows)]
+        Filter = UiWindows)]
     private static readonly bool _drawIconAnimation = true;
 
     [ConditionBool, UI("Auto turn off when player is moving between areas.",
@@ -79,8 +79,6 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Display plugin status on toast",
         Filter =UiInformation)]
     private static readonly bool _showInfoOnToast = true;
-
-
 
     [ConditionBool, UI("Lock the movement when casting or when doing some actions.",
         Description = "LT is for gamepad player", Filter = Extra)]
@@ -314,7 +312,7 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Automatically trigger dps burst phase", Filter = AutoActionCondition)]
     private static readonly bool _autoBurst = true;
 
-    [ConditionBool, UI("Automatic Heal")]
+    [ConditionBool, UI("Automatic Heal", Filter = AutoActionCondition)]
     private static readonly bool _autoHeal = true;
 
     [ConditionBool, UI("Auto-use abilities", Filter = AutoActionUsage)]
@@ -713,11 +711,11 @@ internal partial class Configs : IPluginConfiguration
     [LinkDescription($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/HowAndWhenToClick.svg",
         "This plugin helps you to use the right action during the combat. Here is a guide about the different options.")]
     [JobConfig, Range(0, 0.5f, ConfigUnitType.Seconds)]
-    [UI("Action Ahead")]
+    [UI("Action Ahead", Filter = BasicTimer)]
     private readonly float _actionAhead = 0.08f;
 
     [JobConfig, UI("Engage settings", Filter = TargetConfig, PvPFilter = JobFilterType.NoJob)]
-    private readonly TargetHostileType _hostileType;
+    private readonly TargetHostileType _hostileType = TargetHostileType.TargetsHaveTarget;
 
     [JobConfig]
     private readonly string _PvPRotationChoice = string.Empty;

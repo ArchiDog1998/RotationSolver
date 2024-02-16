@@ -36,11 +36,11 @@ var time = Configs.GetFloat("WANDTime");
 Sometimes, for saving the resource. We want to save the value to the field. But when to update these value? In  method `UpdateInfo`.
 
 ``` c#
-    private protected override void UpdateInfo() 
-    {
-        //Set your value to field here.
-        base.UpdateInfo();
-    }
+private protected override void UpdateInfo() 
+{
+    //Set your value to field here.
+    base.UpdateInfo();
+}
 ```
 
 
@@ -52,7 +52,7 @@ More description about your rotation? Override the `Description`.
 Here is an example AST:
 
 ``` c#
-    public override string Description => "Here is an Example Description.";
+public override string Description => "Here is an Example Description.";
 ```
 
 And for the macro special duration. You can use attribute called `RotationDesc` to describe it. 
@@ -61,7 +61,7 @@ Burst Info should be attached on the class.
 
 ``` c#
 [RotationDesc("This is a burst info", ActionID.Divination)]
-internal sealed class AST_Default : AST_Base
+public sealed class AST_Default : AstrologianRotation
 {
     //...
 }
@@ -72,7 +72,7 @@ You can also separate it to describe, or just write one.
 ``` c#
 [RotationDesc("Defence Single Description...\n Please use new line manually..")]
 [RotationDesc(ActionID.CelestialIntersection, ActionID.Exaltation)]
-private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction act)
+private protected override bool DefenceSingleAbility(byte abilitiesRemaining, out IAction? act)
 {
     //...
 }
@@ -93,7 +93,7 @@ Here is an example in SCH:
 ``` c#
     public SCH_Default()
     {
-        SummonSeraph.RotationCheck = b => WhisperingDawn.ElapsedAfterGCD(1) || FeyIllumination.ElapsedAfterGCD(1) || FeyBlessing.ElapsedAfterGCD(1);
+        SummonSeraphPvE.Setting.RotationCheck = b => WhisperingDawnPvE.Cooldown.ElapsedAfterGCD(1) || FeyIlluminationPvE.Cooldown.ElapsedAfterGCD(1) || FeyBlessingPvE.Cooldown.ElapsedAfterGCD(1);
     }
 ```
 
@@ -114,12 +114,6 @@ Here is a simplified example in SCH:
         return base.CreateConfiguration().SetBool("GCDHeal", false, "Aut use GCD to heal");
     }
 ```
-
-
-
-## Localization
-
-If you want your UI and description to support multiple languages, Add your custom Properties to the file located in `Localization\Strings_Rotation`. And use it like `LocalizationManager.RightLang.%PropertyName%`.
 
 
 
