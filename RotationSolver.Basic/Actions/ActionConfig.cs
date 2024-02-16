@@ -19,6 +19,6 @@ public class ActionConfig()
     public bool ShouldCheckStatus { get; set; } = true;
     public float AutoHealRatio { get; set; } = 0.8f;
 
-    public bool IsInCooldown { get; set; }
+    public bool IsInCooldown { get; set; } = true;
     public bool IsInMistake { get; set; }
 }

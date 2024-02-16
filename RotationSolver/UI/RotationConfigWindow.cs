@@ -1662,7 +1662,7 @@ public partial class RotationConfigWindow : Window
                 ImGui.TableNextColumn();
 
                 var lastRole = JobRole.None;
-                foreach (var jobs in grp.GroupBy(r => r.GetCustomAttribute<JobsAttribute>()!.Jobs[0]))
+                foreach (var jobs in grp.GroupBy(r => r.GetCustomAttribute<JobsAttribute>()!.Jobs[0]).OrderBy(g => Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)g.Key)!.GetJobRole()))
                 {
                     var role = Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)jobs.Key)!.GetJobRole();
                     if (lastRole == role && lastRole != JobRole.None) ImGui.SameLine();

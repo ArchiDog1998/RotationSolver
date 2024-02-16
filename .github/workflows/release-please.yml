@@ -17,38 +17,3 @@ jobs:
           release-type: node
           package-name: release-please-action
           default-branch: release
-  
-  build:
-    name : build
-    needs: release-please
-    if: ${{ needs.release-please.outputs.released }}
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v1
-        with:
-            dotnet-version: 7.0.x
-             
-      - name: Restore Dependencies
-        run: dotnet restore
-          
-      - name: Download Dalamud
-        run: |
-          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
-          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev"
-                               
-      - name: Build Plugin
-        run: |
-          invoke-expression 'dotnet build --no-restore --configuration Release RotationSolver'
-           
-      - name: publish on version change
-        id: publish_nuget
-        uses: alirezanet/publish-nuget@v3.0.4
-        with:
-          PROJECT_FILE_PATH: RotationSolver.Basic/RotationSolver.Basic.csproj
-          VERSION_FILE_PATH: Directory.Build.props
-          NUGET_KEY: ${{secrets.nuget_api_key}}
