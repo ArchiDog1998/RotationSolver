@@ -34,7 +34,7 @@ partial class PaladinRotation
 
     static partial void ModifyAtonementPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.SwordOath];
+        setting.StatusNeed = [StatusID.SwordOath_1902];
     }
 
     static partial void ModifyShieldBashPvE(ref ActionSetting setting)

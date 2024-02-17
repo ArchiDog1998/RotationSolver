@@ -27,6 +27,17 @@ internal static class StateUpdater
             status |= AutoStatus.Raise;
         }
 
+        if (DataCenter.Role is JobRole.Melee && ActionUpdater.NextGCDAction != null
+            && Service.Config.AutoUseTrueNorth)
+        {
+            var id = ActionUpdater.NextGCDAction.ID;
+            if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)id, out var positional)
+                && positional != ActionUpdater.NextGCDAction.Target?.Target?.FindEnemyPositional())
+            {
+                status |= AutoStatus.Positional;
+            }
+        }
+
         if ((DataCenter.HPNotFull || DataCenter.Role != JobRole.Healer) && CanUseHealAction
             && (DataCenter.InCombat || Service.Config.HealOutOfCombat))
         {
@@ -131,7 +142,6 @@ internal static class StateUpdater
                 }
             }
 
-
             if (DataCenter.Role == JobRole.Tank
                 && (Service.Config.AutoProvokeForTank
                 || DataCenter.AllianceMembers.Count(o => o.IsJobCategory(JobRole.Tank)) < 2)
@@ -140,7 +150,6 @@ internal static class StateUpdater
                 status |= AutoStatus.Provoke;
             }
         }
-
 
         if (DataCenter.DispelTarget != null)
         {

@@ -59,7 +59,7 @@ public static class StatusHelper
 
     internal static StatusID[] TankStanceStatus { get; } =
     [
-        StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance
+        StatusID.Grit, StatusID.RoyalGuard_1833, StatusID.IronWill, StatusID.Defiance
     ];
 
     internal static StatusID[] NoNeedHealingStatus { get; } =

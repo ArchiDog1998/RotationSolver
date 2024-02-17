@@ -252,7 +252,7 @@ public static class ObjectHelper
 
         if (obj is BattleChara b && b.StatusList.Any(StatusHelper.IsPriority)) return true;
 
-        if (Service.Config.ChooseAttackMark && MarkingHelper.AttackSignTargets.Contains(obj.ObjectId)) return true;
+        if (Service.Config.ChooseAttackMark && MarkingHelper.AttackSignTargets.FirstOrDefault(id => id != GameObject.InvalidGameObjectId) == obj.ObjectId) return true;
 
         return false;
     }

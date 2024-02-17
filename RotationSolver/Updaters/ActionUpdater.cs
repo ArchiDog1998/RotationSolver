@@ -4,7 +4,6 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
@@ -74,7 +73,8 @@ internal static class ActionUpdater
         WrongAction = NextAction = NextGCDAction = null;
     }
 
-    private static void SetAction(uint id) => Svc.PluginInterface.GetOrCreateData("Avarice.ActionOverride", () => new List<uint>() { id })[0] = id;
+    private static void SetAction(uint id) => Svc.PluginInterface.GetOrCreateData("Avarice.ActionOverride", 
+        () => new List<uint>() { id })[0] = id;
 
     internal unsafe static void UpdateActionInfo()
     {

@@ -1,6 +1,7 @@
 ﻿using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Basic.Actions;
+
 public interface IBaseAction : IAction
 {
     internal static TargetType? TargetOverride { get; set; } = null;

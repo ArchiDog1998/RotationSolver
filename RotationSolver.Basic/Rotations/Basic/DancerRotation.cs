@@ -142,10 +142,14 @@ partial class DancerRotation
         setting.StatusProvide = [StatusID.StandardStep, StatusID.TechnicalStep];
     }
 
+    static partial void ModifyTechnicalStepPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.StandardFinish];
+    }
+
     static partial void ModifyDoubleTechnicalFinishPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.StandardStep, StatusID.TechnicalStep];
-        setting.StatusNeed = [StatusID.StandardFinish];
         setting.CreateConfig = () => new()
         {
             TimeToKill = 20,
@@ -195,7 +199,7 @@ partial class DancerRotation
     {
         if (Player.HasStatus(true, StatusID.StandardStep) && CompletedSteps == 2)
         {
-            if (StandardFinishPvE.CanUse(out act, skipAoeCheck: true))
+            if (DoubleStandardFinishPvE.CanUse(out act, skipAoeCheck: true))
             {
                 return true;
             }
@@ -209,7 +213,7 @@ partial class DancerRotation
 
         if (Player.HasStatus(true, StatusID.TechnicalStep) && CompletedSteps == 4)
         {
-            if (TechnicalFinishPvE.CanUse(out act, skipAoeCheck: true))
+            if (QuadrupleTechnicalFinishPvE.CanUse(out act, skipAoeCheck: true))
             {
                 return true;
             }

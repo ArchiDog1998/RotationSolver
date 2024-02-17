@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
+
 public struct ActionBasicInfo
 {
     internal static readonly uint[] ActionsNoNeedCasting =

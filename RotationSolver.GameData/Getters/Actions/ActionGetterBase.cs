@@ -2,6 +2,7 @@
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.GameData.Getters.Actions;
+
 internal abstract class ActionGetterBase(Lumina.GameData gameData)
     : ExcelRowGetter<Action>(gameData)
 {
@@ -19,11 +20,12 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
 
     protected override bool AddToList(Action item)
     {
+        if (item.RowId is 3 or 120) return true; //Sprint and cure.
         if (item.ClassJobCategory.Row == 0) return false;
         var name = item.Name.RawString;
         if (string.IsNullOrEmpty(name)) return false;
         if (!name.All(char.IsAscii)) return false;
-        if (item.Icon == 0) return false;
+        if (item.Icon is 0 or 405) return false;
 
         if (item.ActionCategory.Row 
             is 6 or 7 // No DoL or DoH Action

@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+﻿using static Dalamud.Interface.Utility.Raii.ImRaii;
+
+namespace RotationSolver.Basic.Rotations.Basic;
 
 partial class DarkKnightRotation
 {
@@ -87,6 +89,11 @@ partial class DarkKnightRotation
     static partial void ModifyStalwartSoulPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.SaltedEarth];
+    }
+
+    static partial void ModifySaltAndDarknessPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => Service.GetAdjustedActionId(ActionID.SaltedEarthPvE) == ActionID.SaltAndDarknessPvE;
     }
 
     static partial void ModifyShadowbringerPvE(ref ActionSetting setting)

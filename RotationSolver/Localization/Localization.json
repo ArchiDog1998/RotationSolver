@@ -4,7 +4,7 @@
   "RotationSolver.Basic.Data.StateCommandType.Manual": "Start the addon in Manual mode. You need to choose the target manually. This will bypass any engage settings that you have set up and will start attacking immediately once something is targeted.",
   "RotationSolver.Basic.Data.StateCommandType.Cancel": "Stop the addon. Always remember to turn it off when it is not in use!",
   "RotationSolver.Basic.Data.StateCommandType.Auto": "Start the addon in Auto mode. When out of combat or when combat starts, switches the target according to the set condition.",
-  "RotationSolver.Basic.Data.TargetingType.Small": "Small",
+  "RotationSolver.Basic.Data.TargetingType.Big": "Big",
   "RotationSolver.Data.UiString.InfoWindowNoMove": "No Move",
   "RotationSolver.Data.UiString.InfoWindowMove": "Move",
   "RotationSolver.Basic.Data.SpecialCommandType.HealArea": "Open a window to use AoE heal.",
@@ -19,8 +19,11 @@
   "RotationSolver.Basic.Data.SpecialCommandType.RaiseShirk": "Open a window to use Raise or Shirk.",
   "RotationSolver.Basic.Data.SpecialCommandType.AntiKnockback": "Open a window to use knockback immunity actions.",
   "RotationSolver.Basic.Data.SpecialCommandType.Speed": "Open a window to speed up.",
-  "RotationSolver.Basic.Data.TargetHostileType.AllTargetsCanAttack": "All targets that are in range for any abilities",
+  "RotationSolver.Basic.Data.TargetHostileType.TargetsHaveTarget": "Previously engaged targets (engages on countdown timer)",
   "RotationSolver.Data.UiString.ActionAttack": "Attack",
   "RotationSolver.Data.UiString.ActionAbility": "Ability",
-  "RotationSolver.Data.UiString.ActionFriendly": "Friendly"
+  "RotationSolver.Data.UiString.ActionFriendly": "Friendly",
+  "RotationSolver.Data.UiString.SpecialCommandType_Smart": "Auto Target ",
+  "RotationSolver.Data.UiString.SpecialCommandType_Off": "Off",
+  "RotationSolver.Data.UiString.SpecialCommandType_Cancel": "Cancel"
 }
