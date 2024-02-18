@@ -175,9 +175,8 @@ public static class ObjectHelper
     /// <param name="obj"></param>
     /// <returns></returns>
     public static unsafe bool IsAlliance(this GameObject obj)
-        => obj != null
-        && (ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct())
-        || ActionManager.CanUseActionOnTarget((uint)ActionID.RaisePvE, obj.Struct()));
+        => obj != null && obj.ObjectId is not 0 and not GameObject.InvalidGameObjectId
+        && ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct());
 
     public static bool IsParty(this GameObject gameObject)
     {

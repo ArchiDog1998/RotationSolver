@@ -282,7 +282,10 @@ internal static class PainterManager
             },
         };
 
-        _painter.AddDrawings(_highLight, _stateImage, annulus, movingTarget, new TargetDrawing(), new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing());
+        _painter.AddDrawings(
+            _highLight, _stateImage,new TargetDrawing(), annulus, movingTarget,
+            new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing()
+            );
     }
 
     public static void UpdateSettings()
