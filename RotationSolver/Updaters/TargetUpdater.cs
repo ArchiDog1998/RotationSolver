@@ -103,7 +103,7 @@ internal static partial class TargetUpdater
                 if (DownloadHelper.ContributorsHash.Contains(hash)) return false;
             }
             return true;
-        });
+        }).ToArray();
 
         var timesToKill = DataCenter.AllHostileTargets.Select(b => b.GetTimeToKill()).Where(v => !float.IsNaN(v));
         DataCenter.AverageTimeToKill = timesToKill.Any() ? timesToKill.Average() : 0;
@@ -204,8 +204,8 @@ internal static partial class TargetUpdater
     private static uint _lastMp = 0;
     private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
     {
-        DataCenter.AllianceMembers = allTargets.Where(ObjectHelper.IsAlliance);
-        DataCenter.PartyMembers = DataCenter.AllianceMembers.Where(ObjectHelper.IsParty);
+        DataCenter.AllianceMembers = allTargets.Where(ObjectHelper.IsAlliance).ToArray();
+        DataCenter.PartyMembers = DataCenter.AllianceMembers.Where(ObjectHelper.IsParty).ToArray();
 
         var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.ObjectId);
         DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);

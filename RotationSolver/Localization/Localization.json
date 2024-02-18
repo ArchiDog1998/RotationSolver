@@ -21,9 +21,6 @@
   "RotationSolver.Basic.Data.SpecialCommandType.Speed": "Open a window to speed up.",
   "RotationSolver.Basic.Data.TargetHostileType.TargetsHaveTarget": "Previously engaged targets (engages on countdown timer)",
   "RotationSolver.Data.UiString.ActionAttack": "Attack",
-  "RotationSolver.Data.UiString.ActionAbility": "Ability",
   "RotationSolver.Data.UiString.ActionFriendly": "Friendly",
-  "RotationSolver.Data.UiString.SpecialCommandType_Smart": "Auto Target ",
-  "RotationSolver.Data.UiString.SpecialCommandType_Off": "Off",
-  "RotationSolver.Data.UiString.SpecialCommandType_Cancel": "Cancel"
+  "RotationSolver.Data.UiString.ActionAbility": "Ability"
 }

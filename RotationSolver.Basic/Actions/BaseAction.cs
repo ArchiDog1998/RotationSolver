@@ -79,6 +79,7 @@ public class BaseAction : IBaseAction
         bool isEmpty = false, bool onLastAbility = false, bool ignoreClippingCheck = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0)
     {
         act = this!;
+
         Setting.EndSpecial = IBaseAction.ShouldEndSpecial;
 
         if (IBaseAction.ActionPreview)

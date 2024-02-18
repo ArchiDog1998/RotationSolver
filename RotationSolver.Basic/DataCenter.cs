@@ -262,10 +262,9 @@ internal static class DataCenter
 
     internal static float CombatTimeRaw { get; set; }
 
-    public static IEnumerable<BattleChara> PartyMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
-    public static IEnumerable<BattleChara> AllianceMembers { get; internal set; } = Array.Empty<PlayerCharacter>();
-
-    public static IEnumerable<BattleChara> AllHostileTargets { get; internal set; } = Array.Empty<BattleChara>();
+    public static BattleChara[] PartyMembers { get; internal set; } = [];
+    public static BattleChara[] AllianceMembers { get; internal set; } = [];
+    public static BattleChara[] AllHostileTargets { get; internal set; } = [];
 
     public static BattleChara? InterruptTarget { get; internal set; }
 

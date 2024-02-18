@@ -103,14 +103,19 @@ public struct ActionBasicInfo
             if (player.HasStatus(true, _action.Setting.StatusProvide)) return false;
         }
 
-        if(_action.Action.ActionCategory.Row == 15)
+        if (_action.Action.ActionCategory.Row == 15)
         {
             if (CustomRotation.LimitBreakLevel <= 1) return false;
         }
 
-        if(!skipCombo && IsGeneralGCD)
+        if (!skipCombo && IsGeneralGCD)
         {
             if (!CheckForCombo()) return false;
+        }
+
+        if (_action.Action.IsRoleAction)
+        {
+            if (!_action.Action.ClassJobCategory.Value?.IsJobInCategory(DataCenter.Job) ?? false) return false;
         }
 
         //Need casting.
@@ -133,7 +138,7 @@ public struct ActionBasicInfo
             && DataCenter.TimeSinceLastAction.TotalSeconds < 3) return false;
 
         if (!(_action.Setting.ActionCheck?.Invoke() ?? true)) return false;
-        if (!(_action.Setting.RotationCheck?.Invoke() ?? true)) return false;
+        if (!IBaseAction.ForceEnable && !(_action.Setting.RotationCheck?.Invoke() ?? true)) return false;
 
         return true;
     }
