@@ -204,7 +204,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
             if (IsSingleTarget)
             {
-                if (canTargets.Contains(Svc.Targets.Target))
+                if (CanUseTo(t) && t.DistanceToPlayer() <= range)
                 {
                     return new(t, [.. GetAffects(t, canAffects)], t.Position);
                 }

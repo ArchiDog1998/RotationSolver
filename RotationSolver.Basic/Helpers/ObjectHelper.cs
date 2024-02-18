@@ -133,15 +133,12 @@ public static class ObjectHelper
 
         if (Service.CountDownTime > 0 || (DataCenter.Territory?.IsPvpZone ?? false)) return true;
 
-        switch (DataCenter.RightNowTargetToHostileType)
+        return DataCenter.RightNowTargetToHostileType switch
         {
-            case TargetHostileType.AllTargetsCanAttack:
-                return true;
-
-            case TargetHostileType.TargetsHaveTarget:
-                return battleChara.TargetObject is BattleChara;
-        }
-        return true;
+            TargetHostileType.AllTargetsCanAttack => true,
+            TargetHostileType.TargetsHaveTarget => battleChara.TargetObject is BattleChara,
+            _ => true,
+        };
     }
 
     public static unsafe bool IsInEnemiesList(this BattleChara battleChara)
