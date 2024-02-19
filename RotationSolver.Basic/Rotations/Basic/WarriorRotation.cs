@@ -66,12 +66,12 @@ partial class WarriorRotation
     static partial void ModifyVengeancePvE(ref ActionSetting setting)
     {
         setting.StatusProvide = StatusHelper.RampartStatus;
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyRawIntuitionPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyHolmgangPvE(ref ActionSetting setting)

@@ -262,6 +262,7 @@ public static class StatusHelper
     {
         if (!status.CanDispel()) return false;
         if (status.StackCount > 2) return true;
+        if (status.RemainingTime > 20) return true;
         return OtherConfiguration.DangerousStatus.Any(id => id == status.StatusId);
     }
 

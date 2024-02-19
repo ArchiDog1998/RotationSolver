@@ -83,6 +83,10 @@ partial class AstrologianRotation
         setting.ActionCheck = () => InCombat;
     }
 
+    static partial void ModifyAspectedHeliosPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.AspectedHelios];
+    }
     static partial void ModifyTheArrowPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;

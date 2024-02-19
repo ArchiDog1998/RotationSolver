@@ -106,12 +106,12 @@ partial class DarkKnightRotation
     static partial void ModifyShadowWallPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = StatusHelper.RampartStatus;
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyDarkMindPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyOblationPvE(ref ActionSetting setting)

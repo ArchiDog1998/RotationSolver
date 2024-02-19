@@ -683,7 +683,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         BattleChara? FindBeAttackedTarget()
         {
             if (!gameObjects.Any()) return null;
-            var attachedT = gameObjects.Where(tank => tank.TargetObject?.TargetObject == tank);
+            var attachedT = gameObjects.Where(ObjectHelper.IsTargetOnSelf);
 
             if (!attachedT.Any())
             {

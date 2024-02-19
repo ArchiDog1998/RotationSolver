@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
@@ -176,7 +177,9 @@ public static class ObjectHelper
     /// <returns></returns>
     public static unsafe bool IsAlliance(this GameObject obj)
         => obj != null && obj.ObjectId is not 0 and not GameObject.InvalidGameObjectId
-        && ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct());
+        && ((DataCenter.Territory?.IsPvpZone ?? false)
+        ? ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct())
+        : obj is PlayerCharacter);
 
     public static bool IsParty(this GameObject gameObject)
     {

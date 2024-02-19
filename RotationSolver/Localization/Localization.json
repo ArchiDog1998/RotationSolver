@@ -1,4 +1,24 @@
 {
   "RotationSolver.Data.UiString.ConfigWindowHeader": "Rotation Solver Settings v",
-  "RotationSolver.Data.UiString.Commands_Rotation": "Open config window."
+  "RotationSolver.Data.UiString.Commands_Rotation": "Open config window.",
+  "RotationSolver.Data.UiString.ConfigWindow_About_Punchline": "Analyses PvE combat information in every frame and finds the best action.",
+  "RotationSolver.Data.UiString.ConfigWindow_About_Clicking100k": "Well, you must be a lazy player!",
+  "RotationSolver.Data.UiString.ConfigWindow_About_Clicking500k": "You're tiring RS out, give it a break!",
+  "RotationSolver.Data.UiString.ConfigWindow_ConditionSetDesc": "The condition set you chose, click to modify.",
+  "RotationSolver.Data.UiString.ConfigWindow_Searching": "Search... ",
+  "RotationSolver.Data.UiString.ConfigWindow_About_Description": "This means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.\n\nThen, it will highlight the best action on the hot bar, or help you to click on it.",
+  "RotationSolver.Data.UiString.ConfigWindow_About_Warning": "It is designed for GENERAL COMBAT, not for savage or ultimate. Use it carefully.",
+  "RotationSolver.Data.UiString.ConfigWindow_About_ClickingCount": "Rotation Solver helped you by clicking actions {0:N0} times.",
+  "RotationSolver.Data.UiString.ConfigWindow_About_SayHelloCount": "You have said hello to other users {0:N0} times!",
+  "RotationSolver.Data.UiString.ConfigWindow_About_Macros": "Macro",
+  "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility": "Compatibility",
+  "RotationSolver.Data.UiString.ConfigWindow_About_Supporters": "Supporters",
+  "RotationSolver.Data.UiString.ConfigWindow_About_Links": "Links",
+  "RotationSolver.UI.RotationConfigWindowTab.Debug": "Debug",
+  "InDebugName": "Debug Mode",
+  "InDebugDescription": "",
+  "RotationSolver.UI.RotationConfigWindowTab.Basic": "Basic settings",
+  "RotationSolver.UI.RotationConfigWindowTab.Rotations": "All rotations that RS has loaded.",
+  "RotationSolver.UI.RotationConfigWindowTab.Target": "The way to find the targets, hostiles or friends.",
+  "RotationSolver.UI.RotationConfigWindowTab.UI": "Settings about the user interface."
 }
