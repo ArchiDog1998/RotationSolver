@@ -1,4 +1,5 @@
-﻿using ECommons.GameHelpers;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration.Conditions;
 
 namespace RotationSolver.Updaters;
@@ -6,7 +7,7 @@ internal static class StateUpdater
 {
     private static bool CanUseHealAction =>
         //PvP
-        DataCenter.Territory?.IsPvpZone ?? false
+        (DataCenter.Territory?.IsPvpZone ?? false)
         //Job
         || (DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
         && Service.Config.AutoHeal

@@ -74,6 +74,7 @@ partial class AstrologianRotation
 
     static partial void ModifyRedrawPvE(ref ActionSetting setting)
     {
+        setting.StatusNeed = [StatusID.ClarifyingDraw];
         setting.ActionCheck = () => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard));
     }
 
@@ -97,7 +98,7 @@ partial class AstrologianRotation
         setting.TargetType = TargetType.Melee;
         setting.ActionCheck = () => DrawnCard == CardType.BALANCE;
     }
-
+    
     static partial void ModifyTheBolePvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
