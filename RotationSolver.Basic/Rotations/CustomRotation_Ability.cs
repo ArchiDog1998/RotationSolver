@@ -110,15 +110,13 @@ partial class CustomRotation
                 && ArmsLengthPvE.CanUse(out act)) return true;
         }
 
-        IBaseAction.TargetOverride = TargetType.Move;
+        IBaseAction.TargetOverride = null;
 
         IBaseAction.AllEmpty = true;
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward)
             && Player != null
             && !Player.HasStatus(true, StatusID.Bind)
             && MoveForwardAbility(out act)) return true;
-
-        IBaseAction.TargetOverride = null;
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveBack)
                 && MoveBackAbility(out act)) return true;

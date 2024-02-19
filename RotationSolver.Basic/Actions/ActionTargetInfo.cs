@@ -535,6 +535,13 @@ public struct ActionTargetInfo(IBaseAction _action)
 
         BattleChara? FindTargetForMoving()
         {
+            if (!IBaseAction.ActionPreview && !DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward))
+            {
+                var o = gameObjects.MinBy(b => b.DistanceToPlayer());
+                if (o.DistanceToPlayer() < 1) return o;
+                return null;
+            }
+
             const float DISTANCE_TO_MOVE = 3;
 
             if (Service.Config.MoveTowardsScreenCenter)

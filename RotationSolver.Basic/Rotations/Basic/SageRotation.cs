@@ -112,6 +112,10 @@ partial class SageRotation
         };
     }
 
+    static partial void ModifyIcarusPvE(ref ActionSetting setting)
+    {
+        setting.TargetType = TargetType.Move;
+    }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.IcarusPvE)]

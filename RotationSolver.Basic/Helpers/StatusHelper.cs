@@ -76,12 +76,12 @@ public static class StatusHelper
 
     internal static StatusID[] AstCardStatus { get; } =
     [
-        StatusID.TheArrow,
-        StatusID.TheBalance,
-        StatusID.TheBole,
-        StatusID.TheEwer,
-        StatusID.TheSpear,
-        StatusID.TheSpire,
+        StatusID.TheArrow_1884,
+        StatusID.TheBalance_1882,
+        StatusID.TheBole_1883,
+        StatusID.TheEwer_1886,
+        StatusID.TheSpear_1885,
+        StatusID.TheSpire_1887,
 
         StatusID.Weakness,
         StatusID.BrinkOfDeath,
