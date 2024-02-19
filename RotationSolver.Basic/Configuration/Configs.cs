@@ -452,7 +452,7 @@ internal partial class Configs : IPluginConfiguration
 
     [UI("The size of the next ability that will be used icon.",
         Parent =nameof(ShowTarget))]
-    [Range(0, 1, ConfigUnitType.Pixels, 0.002f)]
+    [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
     public float TargetIconSize { get; set; } = 0.3f;
 
     [UI("How likely is it that RS will click the wrong action.",
@@ -590,16 +590,16 @@ internal partial class Configs : IPluginConfiguration
     public float HostileIconHeight { get; set; } = 0.5f;
 
     [UI("Hostile Icon size", Parent = nameof(ShowHostilesIcons))]
-    [Range(0.1f, 10, ConfigUnitType.Percent, 0.002f)]
-    public float HostileIconSize { get; set; } = 1;
+    [Range(0.1f, 5, ConfigUnitType.Percent, 0.002f)]
+    public float HostileIconSize { get; set; } = 0.5f;
 
     [UI("State icon height", Parent =nameof(ShowStateIcon))]
     [Range(0, 3, ConfigUnitType.Pixels, 0.002f)]
     public float StateIconHeight { get; set; } = 1;
 
     [UI("State icon size", Parent = nameof(ShowStateIcon))]
-    [Range(0.2f, 10, ConfigUnitType.Percent, 0.002f)]
-    public float StateIconSize { get; set; } = 1;
+    [Range(0.1f, 5, ConfigUnitType.Percent, 0.002f)]
+    public float StateIconSize { get; set; } = 0.5f;
 
     [UI("The minimum time between updating RS information.",
         Filter = BasicTimer)]
