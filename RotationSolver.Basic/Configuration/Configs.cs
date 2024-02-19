@@ -137,7 +137,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _showMoveTarget = true;
 
     [ConditionBool, UI("Show Target",
-        Parent =UiOverlay)]
+        Filter = UiOverlay)]
     private static readonly bool _showTarget = true;
 
     [ConditionBool, UI("Show the target's time to kill.",

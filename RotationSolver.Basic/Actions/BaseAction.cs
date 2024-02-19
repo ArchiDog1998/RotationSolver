@@ -29,8 +29,7 @@ public class BaseAction : IBaseAction
 
     public bool IsCoolingDown => Cooldown.IsCoolingDown;
 
-
-    public uint IconID => Info.IconID;
+    public uint IconID => ID == 3 ? 104 : Info.IconID;
 
     public string Name => Info.Name;
 
