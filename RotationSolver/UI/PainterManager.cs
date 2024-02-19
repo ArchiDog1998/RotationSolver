@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
@@ -83,7 +84,7 @@ internal static class PainterManager
     {
         readonly Drawing3DCircularSector _target;
         readonly Drawing3DImage _targetImage;
-
+        DateTime _time = DateTime.Now;
         public TargetDrawing()
         {
             var TColor = ImGui.GetColorU32(Service.Config.TargetColor);
@@ -114,9 +115,25 @@ internal static class PainterManager
 
             if (Service.Config.TargetIconSize > 0)
             {
-                _targetImage.Position = act.Target?.Position ?? Player.Object.Position;
-                if (act.GetTexture(out var texture, true)) _targetImage.SetTexture(texture, Service.Config.TargetIconSize);
-                subItems.Add(_targetImage);
+                var canDraw = !Svc.Condition[ConditionFlag.BetweenAreas]
+                    && !Svc.Condition[ConditionFlag.BetweenAreas51]
+                    && !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent];
+
+                if (!canDraw)
+                {
+                    _time = DateTime.Now;
+                }
+
+                if (canDraw && DateTime.Now - _time > TimeSpan.FromSeconds(5)) 
+                    // why crashing? why? the handle of the texture is fine.
+                {
+                    _targetImage.Position = act.Target?.Position ?? Player.Object.Position;
+                    if (act.GetTexture(out var texture, true))
+                    {
+                        _targetImage.SetTexture(texture, Service.Config.TargetIconSize);
+                        subItems.Add(_targetImage);
+                    }
+                }
             }
             else
             {
@@ -283,7 +300,7 @@ internal static class PainterManager
         };
 
         _painter.AddDrawings(
-            _highLight, _stateImage,new TargetDrawing(), annulus, movingTarget,
+            _highLight, _stateImage, new TargetDrawing(), annulus, movingTarget,
             new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing()
             );
     }
