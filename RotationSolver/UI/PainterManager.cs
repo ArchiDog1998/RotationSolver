@@ -2,11 +2,13 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Element3D;
 using XIVPainter.ElementSpecial;
+using static Dalamud.Interface.Utility.Raii.ImRaii;
 
 namespace RotationSolver.UI;
 
@@ -125,7 +127,8 @@ internal static class PainterManager
                 }
 
                 if (canDraw && DateTime.Now - _time > TimeSpan.FromSeconds(5)) 
-                    // why crashing? why? the handle of the texture is fine.
+                    // why crashing? why? the handle of the texture is not valid in the dalamud get icon.
+                    //TODO: want to remove this.
                 {
                     _targetImage.Position = act.Target?.Position ?? Player.Object.Position;
                     if (act.GetTexture(out var texture, true))

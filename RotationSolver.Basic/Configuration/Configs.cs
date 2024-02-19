@@ -137,7 +137,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _showMoveTarget = true;
 
     [ConditionBool, UI("Show Target",
-        Parent =UiOverlay)]
+        Filter = UiOverlay)]
     private static readonly bool _showTarget = true;
 
     [ConditionBool, UI("Show the target's time to kill.",
@@ -450,9 +450,9 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
     public float HealWhenNothingTodoBelow { get; set; } = 0.8f;
 
-    [UI("The size of the next ability that will be used icon.",
-        Parent =nameof(ShowTarget))]
-    [Range(0, 1, ConfigUnitType.Pixels, 0.002f)]
+    [UI("The target icon size multiply.",
+        Parent = nameof(ShowTarget))]
+    [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
     public float TargetIconSize { get; set; } = 0.6f;
 
     [UI("How likely is it that RS will click the wrong action.",
