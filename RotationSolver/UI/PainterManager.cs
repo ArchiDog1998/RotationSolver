@@ -84,7 +84,6 @@ internal static class PainterManager
     {
         readonly Drawing3DCircularSector _target;
         readonly Drawing3DImage _targetImage;
-        DateTime _time = DateTime.Now;
         public TargetDrawing()
         {
             var TColor = ImGui.GetColorU32(Service.Config.TargetColor);
@@ -115,24 +114,12 @@ internal static class PainterManager
 
             if (Service.Config.TargetIconSize > 0)
             {
-                var canDraw = !Svc.Condition[ConditionFlag.BetweenAreas]
-                    && !Svc.Condition[ConditionFlag.BetweenAreas51]
-                    && !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent];
-
-                if (!canDraw)
+                _targetImage.Position = act.Target?.Position ?? Player.Object.Position;
+                if (act.GetTexture(out var texture, true))
                 {
-                    _time = DateTime.Now;
-                }
-
-                if (canDraw && DateTime.Now - _time > TimeSpan.FromSeconds(5)) 
-                    // why crashing? why? the handle of the texture is fine.
-                {
-                    _targetImage.Position = act.Target?.Position ?? Player.Object.Position;
-                    if (act.GetTexture(out var texture, true))
-                    {
-                        _targetImage.SetTexture(texture, Service.Config.TargetIconSize);
-                        subItems.Add(_targetImage);
-                    }
+                    _targetImage.Image = texture;
+                    _targetImage.Size = Service.Config.TargetIconSize;
+                    subItems.Add(_targetImage);
                 }
             }
             else
@@ -289,12 +276,13 @@ internal static class PainterManager
                 {
                     if (IconSet.GetTexture(61516, out var texture))
                     {
-                        _stateImage.SetTexture(texture, Service.Config.StateIconSize);
+                        _stateImage.Image = texture;
+                        _stateImage.Size = Service.Config.StateIconSize;
                     }
                 }
                 else
                 {
-                    _stateImage.SetTexture(null, 0);
+                    _stateImage.Size = 0;
                 }
             },
         };

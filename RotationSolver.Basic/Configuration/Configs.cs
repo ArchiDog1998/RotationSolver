@@ -453,7 +453,7 @@ internal partial class Configs : IPluginConfiguration
     [UI("The size of the next ability that will be used icon.",
         Parent =nameof(ShowTarget))]
     [Range(0, 1, ConfigUnitType.Pixels, 0.002f)]
-    public float TargetIconSize { get; set; } = 0.6f;
+    public float TargetIconSize { get; set; } = 0.3f;
 
     [UI("How likely is it that RS will click the wrong action.",
         Filter = BasicParams)]

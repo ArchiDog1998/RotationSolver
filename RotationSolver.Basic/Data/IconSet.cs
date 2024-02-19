@@ -114,9 +114,9 @@ public static class IconSet
     /// <param name="default"></param>
     /// <returns></returns>
     public static bool GetTexture(uint id, out IDalamudTextureWrap texture, uint @default = 0)
-        => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, false, out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture);
+        => ThreadLoadImageHandler.TryGetIconTextureWrap(id, true, out texture)
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, true, out texture)
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(0, true, out texture);
 
     /// <summary>
     /// 
