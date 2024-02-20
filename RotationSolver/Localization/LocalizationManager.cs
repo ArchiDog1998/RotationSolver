@@ -39,7 +39,27 @@ internal static class LocalizationManager
 
     public static void InIt()
     {
+#if DEBUG
+        var dirInfo = new DirectoryInfo(typeof(LocalizationManager).Assembly.Location);
+        dirInfo = dirInfo.Parent!.Parent!.Parent!.Parent!;
+
+
+        var directory = dirInfo.FullName + @"\Localization";
+        if (!Directory.Exists(directory)) return;
+
+        if (Svc.PluginInterface.UiLanguage != "en") return;
+
+        //Default values.
+        var path = Path.Combine(directory, "Localization.json");
+        _rightLang = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(path)) ?? [];
+
+        if( _rightLang == null)
+        {
+            Svc.Log.Error("Load translations failed");
+        }
+#else
         SetLanguage(Svc.PluginInterface.UiLanguage);
+#endif
         Svc.PluginInterface.LanguageChanged += OnLanguageChange;
     }
 
@@ -102,6 +122,8 @@ internal static class LocalizationManager
 
     private static void OnLanguageChange(string languageCode)
     {
+#if DEBUG
+#else
         try
         {
             Svc.Log.Information($"Loading Localization for {languageCode}");
@@ -111,5 +133,6 @@ internal static class LocalizationManager
         {
             Svc.Log.Error(ex, "Unable to Load Localization");
         }
+#endif
     }
 }
