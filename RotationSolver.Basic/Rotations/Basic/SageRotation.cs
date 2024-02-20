@@ -46,6 +46,11 @@ partial class SageRotation
     #endregion
     private protected sealed override IBaseAction Raise => EgeiroPvE;
 
+    static partial void ModifyEukrasianDiagnosisPvE(ref ActionSetting setting)
+    {
+        setting.TargetType = TargetType.BeAttacked;
+    }
+
     static partial void ModifyEukrasianDosisPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide =

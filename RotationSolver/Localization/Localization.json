@@ -16,9 +16,9 @@
   "RotationSolver.Data.UiString.ConfigWindow_About_Links": "Links",
   "RotationSolver.UI.RotationConfigWindowTab.Debug": "Debug",
   "InDebugName": "Debug Mode",
-  "InDebugDescription": "",
-  "RotationSolver.UI.RotationConfigWindowTab.Basic": "Basic settings",
-  "RotationSolver.UI.RotationConfigWindowTab.Rotations": "All rotations that RS has loaded.",
+  "RotationSolver.UI.RotationConfigWindowTab.Extra": "Some features that shouldn't be included in RS but help you.",
   "RotationSolver.UI.RotationConfigWindowTab.Target": "The way to find the targets, hostiles or friends.",
-  "RotationSolver.UI.RotationConfigWindowTab.UI": "Settings about the user interface."
+  "RotationSolver.UI.RotationConfigWindowTab.UI": "Settings about the user interface.",
+  "RotationSolver.UI.RotationConfigWindowTab.Basic": "Basic settings",
+  "RotationSolver.UI.RotationConfigWindowTab.Auto": "About some general actions usage and conditions."
 }

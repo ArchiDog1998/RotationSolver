@@ -177,9 +177,8 @@ public static class ObjectHelper
     /// <returns></returns>
     public static unsafe bool IsAlliance(this GameObject obj)
         => obj != null && obj.ObjectId is not 0 and not GameObject.InvalidGameObjectId
-        && ((DataCenter.Territory?.IsPvpZone ?? false)
-        ? ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct())
-        : obj is PlayerCharacter);
+        && (!(DataCenter.Territory?.IsPvpZone ?? false) && obj is PlayerCharacter 
+        || ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct()));
 
     public static bool IsParty(this GameObject gameObject)
     {
