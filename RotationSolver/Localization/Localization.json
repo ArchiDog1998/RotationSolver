@@ -41,5 +41,11 @@
   "RotationSolver.UI.RotationConfigWindowTab.Extra": "Some features that shouldn't be included in RS but help you.",
   "RotationSolver.UI.RotationConfigWindowTab.Debug": "Debug",
   "InDebugName": "Debug Mode",
-  "RotationSolver.UI.RotationConfigWindowTab.Target": "The way to find the targets, hostiles or friends."
+  "RotationSolver.UI.RotationConfigWindowTab.Target": "The way to find the targets, hostiles or friends.",
+  "RotationSolver.Data.UiString.SpecialCommandType_Smart": "Auto Target ",
+  "RotationSolver.Data.UiString.SpecialCommandType_Off": "Off",
+  "RotationSolver.Data.UiString.SpecialCommandType_Cancel": "Cancel",
+  "RotationSolver.Data.UiString.SpecialCommandType_EndSpecial": "End Special",
+  "RotationSolver.Data.UiString.SpecialCommandType_MoveForward": "Move Forward",
+  "RotationSolver.Data.UiString.SpecialCommandType_Start": "Start "
 }
