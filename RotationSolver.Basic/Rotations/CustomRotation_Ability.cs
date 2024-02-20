@@ -1,6 +1,4 @@
-﻿using RotationSolver.Basic.Configuration;
-
-namespace RotationSolver.Basic.Rotations;
+﻿namespace RotationSolver.Basic.Rotations;
 
 partial class CustomRotation
 {
@@ -47,7 +45,7 @@ partial class CustomRotation
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional) && role == JobRole.Melee
             && !(Player?.HasStatus(false, StatusHelper.NoPositionalStatus) ?? true))
         {
-            if (TrueNorthPvE.CanUse(out act)) return true;
+            if (TrueNorthPvE.CanUse(out act, isEmpty: true)) return true;
         }
 
         IBaseAction.TargetOverride = TargetType.Heal;
@@ -112,15 +110,13 @@ partial class CustomRotation
                 && ArmsLengthPvE.CanUse(out act)) return true;
         }
 
-        IBaseAction.TargetOverride = TargetType.Move;
+        IBaseAction.TargetOverride = null;
 
         IBaseAction.AllEmpty = true;
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward)
             && Player != null
             && !Player.HasStatus(true, StatusID.Bind)
             && MoveForwardAbility(out act)) return true;
-
-        IBaseAction.TargetOverride = null;
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveBack)
                 && MoveBackAbility(out act)) return true;

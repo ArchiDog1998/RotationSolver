@@ -114,9 +114,9 @@ public static class IconSet
     /// <param name="default"></param>
     /// <returns></returns>
     public static bool GetTexture(uint id, out IDalamudTextureWrap texture, uint @default = 0)
-        => ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, false, out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture);
+        => ThreadLoadImageHandler.TryGetIconTextureWrap(id, true, out texture)
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, true, out texture)
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(0, true, out texture);
 
     /// <summary>
     /// 
@@ -130,7 +130,7 @@ public static class IconSet
         || loadingIcon && ThreadLoadImageHandler.TryGetTextureWrap("ui/uld/image2.tex", out texture)
         || ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture); // loading pics.
 
-    private static readonly Dictionary<uint, uint> _actionIcons = new();
+    private static readonly Dictionary<ActionID, uint> _actionIcons = [];
 
     /// <summary>
     /// 
@@ -141,21 +141,14 @@ public static class IconSet
     /// <returns></returns>
     public static bool GetTexture(this IAction? action, out IDalamudTextureWrap texture, bool isAdjust = true)
     {
-        uint iconId = 0;
-        if (action != null)
+        if (isAdjust)
         {
-            var id = isAdjust ? action.AdjustedID : action.ID;
-
-            if (!_actionIcons.TryGetValue(id, out iconId))
-            {
-                iconId = id == action.ID ? action.IconID : action is IBaseAction
-                    ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id)!.Icon
-                    : Service.GetSheet<Item>().GetRow(id)!.Icon;
-
-                _actionIcons[id] = iconId;
-            }
+            return GetTexture((ActionID)(action?.AdjustedID ?? 0), out texture);
         }
-        return GetTexture(iconId, out texture);
+        else
+        {
+            return GetTexture(action?.IconID ?? 0, out texture, 0);
+        }
     }
 
     /// <summary>
@@ -163,19 +156,23 @@ public static class IconSet
     /// </summary>
     /// <param name="actionID"></param>
     /// <param name="texture"></param>
-    /// <param name="isAction"></param>
     /// <returns></returns>
-    public static bool GetTexture(this ActionID actionID, out IDalamudTextureWrap texture, bool isAction = true)
+    public static bool GetTexture(this ActionID actionID, out IDalamudTextureWrap texture)
     {
-        var id = (uint)actionID;
-
-        if (!_actionIcons.TryGetValue(id, out var iconId))
+        if (actionID == ActionID.None)
         {
-            iconId = isAction
-                ? Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(id)!.Icon
-                : Service.GetSheet<Item>().GetRow(id)!.Icon;
+            return GetTexture(0, out texture, 0);
+        }
+        if(actionID == ActionID.SprintPvE)
+        {
+            return GetTexture(104, out texture, 0);
+        }
 
-            _actionIcons[id] = iconId;
+        if (!_actionIcons.TryGetValue(actionID, out var iconId))
+        {
+            iconId = Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow((uint)actionID)?.Icon ?? 0;
+
+            _actionIcons[actionID] = iconId;
         }
         return GetTexture(iconId, out texture);
     }

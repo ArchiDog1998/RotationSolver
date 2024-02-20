@@ -34,7 +34,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
             return Service.Config.ChooseAttackMark
                 && !Service.Config.CanAttackMarkAoe
-                && MarkingHelper.HaveAttackChara(DataCenter.AllHostileTargets);
+                && MarkingHelper.HaveAttackChara;
         }
     }
 
@@ -81,10 +81,15 @@ public struct ActionTargetInfo(IBaseAction _action)
         }
         return true;
     }
+
     private readonly unsafe bool CanUseTo(GameObject tar)
     {
         if (tar == null || !Player.Available) return false;
+        if (tar.ObjectId == GameObject.InvalidGameObjectId) return false;
+        if (tar.ObjectId == 0) return false;
+
         var tarAddress = tar.Struct();
+        if (tarAddress == null) return false;
 
         if ((ActionID)_action.Info.ID != ActionID.AethericMimicryPvE
             && !ActionManager.CanUseActionOnTarget(_action.Info.AdjustedID, tarAddress)) return false;
@@ -199,7 +204,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
             if (IsSingleTarget)
             {
-                if (canTargets.Contains(Svc.Targets.Target))
+                if (CanUseTo(t) && t.DistanceToPlayer() <= range)
                 {
                     return new(t, [.. GetAffects(t, canAffects)], t.Position);
                 }
@@ -530,6 +535,13 @@ public struct ActionTargetInfo(IBaseAction _action)
 
         BattleChara? FindTargetForMoving()
         {
+            if (!IBaseAction.ActionPreview && !DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward))
+            {
+                var o = gameObjects.MinBy(b => b.DistanceToPlayer());
+                if (o.DistanceToPlayer() < 1) return o;
+                return null;
+            }
+
             const float DISTANCE_TO_MOVE = 3;
 
             if (Service.Config.MoveTowardsScreenCenter)
@@ -671,7 +683,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         BattleChara? FindBeAttackedTarget()
         {
             if (!gameObjects.Any()) return null;
-            var attachedT = gameObjects.Where(tank => tank.TargetObject?.TargetObject == tank);
+            var attachedT = gameObjects.Where(ObjectHelper.IsTargetOnSelf);
 
             if (!attachedT.Any())
             {

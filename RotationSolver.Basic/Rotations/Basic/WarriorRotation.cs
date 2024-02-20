@@ -66,12 +66,12 @@ partial class WarriorRotation
     static partial void ModifyVengeancePvE(ref ActionSetting setting)
     {
         setting.StatusProvide = StatusHelper.RampartStatus;
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyRawIntuitionPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyHolmgangPvE(ref ActionSetting setting)
@@ -88,6 +88,12 @@ partial class WarriorRotation
     {
         setting.StatusNeed = [StatusID.NascentChaos_1992];
     }
+
+    static partial void ModifyOnslaughtPvE(ref ActionSetting setting)
+    {
+        setting.TargetType = TargetType.Move;
+    }
+
     /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {

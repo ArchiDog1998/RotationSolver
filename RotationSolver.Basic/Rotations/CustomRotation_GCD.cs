@@ -23,7 +23,11 @@ partial class CustomRotation
 
         IBaseAction.ShouldEndSpecial = true;
 
+        IBaseAction.TargetOverride = TargetType.Death;
+
         if (RaiseSpell(out act, false)) return act;
+
+        IBaseAction.TargetOverride = null;
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward)
             && MoveForwardGCD(out act))
@@ -96,7 +100,11 @@ partial class CustomRotation
             }
         }
 
+        IBaseAction.TargetOverride = TargetType.Death;
+
         if (Service.Config.RaisePlayerByCasting && RaiseSpell(out act, true)) return act;
+
+        IBaseAction.TargetOverride = null;
 
         return null;
     }

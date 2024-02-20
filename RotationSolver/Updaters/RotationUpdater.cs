@@ -6,7 +6,6 @@ using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
-using System.Runtime.InteropServices;
 
 namespace RotationSolver.Updaters;
 
@@ -17,7 +16,7 @@ internal static class RotationUpdater
 
     internal static SortedList<string, string> AuthorHashes { get; private set; } = [];
     internal static CustomRotationGroup[] CustomRotations { get; set; } = [];
-    internal static SortedList<uint, Type[]> DutyRotations { get; set; } = []; // TODO: Dynamic loading the rotations.
+    internal static SortedList<uint, Type[]> DutyRotations { get; set; } = [];
 
     public static IAction[] RightRotationActions { get; private set; } = [];
 
@@ -92,7 +91,7 @@ internal static class RotationUpdater
                 {
                     var assembly = LoadOne(dll);
 
-                    if (assembly != null)
+                    if (assembly != null && !assemblies.Any(a => a.FullName == assembly.FullName))
                     {
                         assemblies.Add(assembly);
                     }

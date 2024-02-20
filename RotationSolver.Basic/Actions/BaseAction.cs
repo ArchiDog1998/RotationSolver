@@ -6,7 +6,7 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 namespace RotationSolver.Basic.Actions;
 public class BaseAction : IBaseAction
 {
-    public TargetResult? Target { get; private set; } = null;
+    public TargetResult? Target { get; set; } = null;
     public TargetResult? PreviewTarget { get; private set; } = null;
 
     public Action Action { get; }
@@ -29,8 +29,7 @@ public class BaseAction : IBaseAction
 
     public bool IsCoolingDown => Cooldown.IsCoolingDown;
 
-
-    public uint IconID => Info.IconID;
+    public uint IconID => ID == 3 ? 104 : Info.IconID;
 
     public string Name => Info.Name;
 
@@ -79,6 +78,7 @@ public class BaseAction : IBaseAction
         bool isEmpty = false, bool onLastAbility = false, bool ignoreClippingCheck = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0)
     {
         act = this!;
+
         Setting.EndSpecial = IBaseAction.ShouldEndSpecial;
 
         if (IBaseAction.ActionPreview)

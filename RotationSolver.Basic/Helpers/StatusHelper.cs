@@ -59,7 +59,7 @@ public static class StatusHelper
 
     internal static StatusID[] TankStanceStatus { get; } =
     [
-        StatusID.Grit, StatusID.RoyalGuard, StatusID.IronWill, StatusID.Defiance
+        StatusID.Grit, StatusID.RoyalGuard_1833, StatusID.IronWill, StatusID.Defiance
     ];
 
     internal static StatusID[] NoNeedHealingStatus { get; } =
@@ -76,12 +76,12 @@ public static class StatusHelper
 
     internal static StatusID[] AstCardStatus { get; } =
     [
-        StatusID.TheArrow,
-        StatusID.TheBalance,
-        StatusID.TheBole,
-        StatusID.TheEwer,
-        StatusID.TheSpear,
-        StatusID.TheSpire,
+        StatusID.TheArrow_1884,
+        StatusID.TheBalance_1882,
+        StatusID.TheBole_1883,
+        StatusID.TheEwer_1886,
+        StatusID.TheSpear_1885,
+        StatusID.TheSpire_1887,
 
         StatusID.Weakness,
         StatusID.BrinkOfDeath,
@@ -262,6 +262,7 @@ public static class StatusHelper
     {
         if (!status.CanDispel()) return false;
         if (status.StackCount > 2) return true;
+        if (status.RemainingTime > 20) return true;
         return OtherConfiguration.DangerousStatus.Any(id => id == status.StatusId);
     }
 

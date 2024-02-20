@@ -46,6 +46,11 @@ partial class SageRotation
     #endregion
     private protected sealed override IBaseAction Raise => EgeiroPvE;
 
+    static partial void ModifyEukrasianDiagnosisPvE(ref ActionSetting setting)
+    {
+        setting.TargetType = TargetType.BeAttacked;
+    }
+
     static partial void ModifyEukrasianDosisPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide =
@@ -68,8 +73,7 @@ partial class SageRotation
 
     static partial void ModifyKardiaPvE(ref ActionSetting setting)
     {
-        setting.TargetType = TargetType.BeAttacked;
-
+        setting.TargetType = TargetType.Tank;
         setting.ActionCheck = () => !DataCenter.AllianceMembers.Any(m => m.HasStatus(true, StatusID.Kardion));
     }
 
@@ -112,6 +116,10 @@ partial class SageRotation
         };
     }
 
+    static partial void ModifyIcarusPvE(ref ActionSetting setting)
+    {
+        setting.TargetType = TargetType.Move;
+    }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.IcarusPvE)]

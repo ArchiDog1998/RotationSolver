@@ -6,11 +6,12 @@ internal static class StateUpdater
 {
     private static bool CanUseHealAction =>
         //PvP
-        DataCenter.Territory?.IsPvpZone ?? false
+        (DataCenter.Territory?.IsPvpZone ?? false)
         //Job
         || (DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
         && Service.Config.AutoHeal
-        && CustomRotation.IsLongerThan(Service.Config.AutoHealTimeToKill);
+        && (DataCenter.InCombat && CustomRotation.IsLongerThan(Service.Config.AutoHealTimeToKill)
+            || Service.Config.HealOutOfCombat);
 
     public static void UpdateState()
     {
@@ -27,8 +28,18 @@ internal static class StateUpdater
             status |= AutoStatus.Raise;
         }
 
-        if ((DataCenter.HPNotFull || DataCenter.Role != JobRole.Healer) && CanUseHealAction
-            && (DataCenter.InCombat || Service.Config.HealOutOfCombat))
+        if (DataCenter.Role is JobRole.Melee && ActionUpdater.NextGCDAction != null
+            && Service.Config.AutoUseTrueNorth)
+        {
+            var id = ActionUpdater.NextGCDAction.ID;
+            if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)id, out var positional)
+                && positional != ActionUpdater.NextGCDAction.Target?.Target?.FindEnemyPositional())
+            {
+                status |= AutoStatus.Positional;
+            }
+        }
+
+        if (DataCenter.HPNotFull && CanUseHealAction)
         {
             var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,
                 Service.Config.HealthSingleAbility,
@@ -131,7 +142,6 @@ internal static class StateUpdater
                 }
             }
 
-
             if (DataCenter.Role == JobRole.Tank
                 && (Service.Config.AutoProvokeForTank
                 || DataCenter.AllianceMembers.Count(o => o.IsJobCategory(JobRole.Tank)) < 2)
@@ -140,7 +150,6 @@ internal static class StateUpdater
                 status |= AutoStatus.Provoke;
             }
         }
-
 
         if (DataCenter.DispelTarget != null)
         {

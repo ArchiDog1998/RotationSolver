@@ -142,7 +142,7 @@ partial class SummonerRotation
     static RandomDelay _carbuncleDelay = new (() => (2, 2));
     static partial void ModifySummonCarbunclePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => _carbuncleDelay.Delay(!DataCenter.HasPet && AttunmentTimeRaw == 0 && SummonTimeRaw == 0);
+        setting.ActionCheck = () => _carbuncleDelay.Delay(!DataCenter.HasPet && AttunmentTimeRaw == 0 && SummonTimeRaw == 0) && DataCenter.LastGCD is not ActionID.SummonCarbunclePvE;
     }
 
     static partial void ModifyGemshinePvE(ref ActionSetting setting)

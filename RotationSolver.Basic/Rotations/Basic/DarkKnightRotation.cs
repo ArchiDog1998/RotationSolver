@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+﻿using static Dalamud.Interface.Utility.Raii.ImRaii;
+
+namespace RotationSolver.Basic.Rotations.Basic;
 
 partial class DarkKnightRotation
 {
@@ -89,6 +91,11 @@ partial class DarkKnightRotation
         setting.StatusNeed = [StatusID.SaltedEarth];
     }
 
+    static partial void ModifySaltAndDarknessPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => Service.GetAdjustedActionId(ActionID.SaltedEarthPvE) == ActionID.SaltAndDarknessPvE;
+    }
+
     static partial void ModifyShadowbringerPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => !DarkSideEndAfterGCD();
@@ -99,12 +106,12 @@ partial class DarkKnightRotation
     static partial void ModifyShadowWallPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = StatusHelper.RampartStatus;
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyDarkMindPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyOblationPvE(ref ActionSetting setting)

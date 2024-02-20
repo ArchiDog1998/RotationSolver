@@ -34,7 +34,7 @@ partial class PaladinRotation
 
     static partial void ModifyAtonementPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.SwordOath];
+        setting.StatusNeed = [StatusID.SwordOath_1902];
     }
 
     static partial void ModifyShieldBashPvE(ref ActionSetting setting)
@@ -78,13 +78,13 @@ partial class PaladinRotation
     static partial void ModifySentinelPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = StatusHelper.RampartStatus;
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyBulwarkPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = StatusHelper.RampartStatus;
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyCoverPvE(ref ActionSetting setting)
@@ -99,7 +99,7 @@ partial class PaladinRotation
 
     static partial void ModifyHolySheltronPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => OathGauge >= 50 && Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = () => OathGauge >= 50 && Player.IsTargetOnSelf();
     }
 
 

@@ -1,11 +1,14 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Element3D;
 using XIVPainter.ElementSpecial;
+using static Dalamud.Interface.Utility.Raii.ImRaii;
 
 namespace RotationSolver.UI;
 
@@ -83,7 +86,6 @@ internal static class PainterManager
     {
         readonly Drawing3DCircularSector _target;
         readonly Drawing3DImage _targetImage;
-
         public TargetDrawing()
         {
             var TColor = ImGui.GetColorU32(Service.Config.TargetColor);
@@ -115,8 +117,12 @@ internal static class PainterManager
             if (Service.Config.TargetIconSize > 0)
             {
                 _targetImage.Position = act.Target?.Position ?? Player.Object.Position;
-                if (act.GetTexture(out var texture, true)) _targetImage.SetTexture(texture, Service.Config.TargetIconSize);
-                subItems.Add(_targetImage);
+                if (act.GetTexture(out var texture, true))
+                {
+                    _targetImage.Image = texture;
+                    _targetImage.Size = Service.Config.TargetIconSize;
+                    subItems.Add(_targetImage);
+                }
             }
             else
             {
@@ -272,17 +278,21 @@ internal static class PainterManager
                 {
                     if (IconSet.GetTexture(61516, out var texture))
                     {
-                        _stateImage.SetTexture(texture, Service.Config.StateIconSize);
+                        _stateImage.Image = texture;
+                        _stateImage.Size = Service.Config.StateIconSize;
                     }
                 }
                 else
                 {
-                    _stateImage.SetTexture(null, 0);
+                    _stateImage.Size = 0;
                 }
             },
         };
 
-        _painter.AddDrawings(_highLight, _stateImage, annulus, movingTarget, new TargetDrawing(), new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing());
+        _painter.AddDrawings(
+            _highLight, _stateImage, new TargetDrawing(), annulus, movingTarget,
+            new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing()
+            );
     }
 
     public static void UpdateSettings()
@@ -290,7 +300,7 @@ internal static class PainterManager
         if (_painter == null) return;
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
-        _painter.Enable = Service.Config.UseOverlayWindow;
+        _painter.Enable = !Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
     }
 
     public static void Dispose()

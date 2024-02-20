@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
@@ -9,7 +10,6 @@ using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using System.Text.RegularExpressions;
-using static Dalamud.Interface.Utility.Raii.ImRaii;
 
 namespace RotationSolver.Basic.Helpers;
 
@@ -134,15 +134,12 @@ public static class ObjectHelper
 
         if (Service.CountDownTime > 0 || (DataCenter.Territory?.IsPvpZone ?? false)) return true;
 
-        switch (DataCenter.RightNowTargetToHostileType)
+        return DataCenter.RightNowTargetToHostileType switch
         {
-            case TargetHostileType.AllTargetsCanAttack:
-                return true;
-
-            case TargetHostileType.TargetsHaveTarget:
-                return battleChara.TargetObject is BattleChara;
-        }
-        return true;
+            TargetHostileType.AllTargetsCanAttack => true,
+            TargetHostileType.TargetsHaveTarget => battleChara.TargetObject is BattleChara,
+            _ => true,
+        };
     }
 
     public static unsafe bool IsInEnemiesList(this BattleChara battleChara)
@@ -179,9 +176,9 @@ public static class ObjectHelper
     /// <param name="obj"></param>
     /// <returns></returns>
     public static unsafe bool IsAlliance(this GameObject obj)
-        => obj != null
-        && (ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct())
-        || ActionManager.CanUseActionOnTarget((uint)ActionID.RaisePvE, obj.Struct()));
+        => obj != null && obj.ObjectId is not 0 and not GameObject.InvalidGameObjectId
+        && (!(DataCenter.Territory?.IsPvpZone ?? false) && obj is PlayerCharacter 
+        || ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct()));
 
     public static bool IsParty(this GameObject gameObject)
     {
@@ -252,6 +249,8 @@ public static class ObjectHelper
            || obj.GetEventType() is EventHandlerType.Quest)) return true;
 
         if (obj is BattleChara b && b.StatusList.Any(StatusHelper.IsPriority)) return true;
+
+        if (Service.Config.ChooseAttackMark && MarkingHelper.AttackSignTargets.FirstOrDefault(id => id != GameObject.InvalidGameObjectId) == obj.ObjectId) return true;
 
         return false;
     }

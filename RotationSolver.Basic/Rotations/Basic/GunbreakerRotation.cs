@@ -96,12 +96,12 @@ partial class GunbreakerRotation
     static partial void ModifyNebulaPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = StatusHelper.RampartStatus;
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     static partial void ModifyCamouflagePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Player.TargetObject?.TargetObject == Player;
+        setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
     private protected sealed override IBaseAction TankStance => RoyalGuardPvE;
@@ -125,6 +125,11 @@ partial class GunbreakerRotation
         if (SuperbolidePvE.CanUse(out act)
             && Player.GetHealthRatio() <= Service.Config.HealthForDyingTanks) return true;
         return base.EmergencyAbility(nextGCD, out act);
+    }
+
+    static partial void ModifyRoughDividePvE(ref ActionSetting setting)
+    {
+        setting.TargetType = TargetType.Move;
     }
 
     /// <inheritdoc/>

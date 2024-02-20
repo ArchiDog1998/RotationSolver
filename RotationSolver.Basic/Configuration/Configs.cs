@@ -97,17 +97,17 @@ internal partial class Configs : IPluginConfiguration
     public bool  PosImprovisation { get; set; } = false;
 
     [ConditionBool, UI("Raise player while swiftcast is on cooldown",
-        Parent = AutoActionUsage, Section = 2,
+        Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raisePlayerByCasting = true;
 
     [ConditionBool, UI("Raise any player in range (even if they are not in your party)",
-        Parent = AutoActionUsage, Section = 2,
+        Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raiseAll = false;
 
     [ConditionBool, UI("Raise players that even have Brink of Death debuff",
-        Parent = AutoActionUsage, Section = 2,
+        Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raiseBrinkOfDeath = true;
 
@@ -137,7 +137,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _showMoveTarget = true;
 
     [ConditionBool, UI("Show Target",
-        Parent =UiOverlay)]
+        Filter = UiOverlay)]
     private static readonly bool _showTarget = true;
 
     [ConditionBool, UI("Show the target's time to kill.",
@@ -452,8 +452,8 @@ internal partial class Configs : IPluginConfiguration
 
     [UI("The size of the next ability that will be used icon.",
         Parent =nameof(ShowTarget))]
-    [Range(0, 1, ConfigUnitType.Pixels, 0.002f)]
-    public float TargetIconSize { get; set; } = 0.6f;
+    [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
+    public float TargetIconSize { get; set; } = 0.3f;
 
     [UI("How likely is it that RS will click the wrong action.",
         Filter = BasicParams)]
@@ -590,16 +590,16 @@ internal partial class Configs : IPluginConfiguration
     public float HostileIconHeight { get; set; } = 0.5f;
 
     [UI("Hostile Icon size", Parent = nameof(ShowHostilesIcons))]
-    [Range(0.1f, 10, ConfigUnitType.Percent, 0.002f)]
-    public float HostileIconSize { get; set; } = 1;
+    [Range(0.1f, 5, ConfigUnitType.Percent, 0.002f)]
+    public float HostileIconSize { get; set; } = 0.5f;
 
     [UI("State icon height", Parent =nameof(ShowStateIcon))]
     [Range(0, 3, ConfigUnitType.Pixels, 0.002f)]
     public float StateIconHeight { get; set; } = 1;
 
     [UI("State icon size", Parent = nameof(ShowStateIcon))]
-    [Range(0.2f, 10, ConfigUnitType.Percent, 0.002f)]
-    public float StateIconSize { get; set; } = 1;
+    [Range(0.1f, 5, ConfigUnitType.Percent, 0.002f)]
+    public float StateIconSize { get; set; } = 0.5f;
 
     [UI("The minimum time between updating RS information.",
         Filter = BasicTimer)]

@@ -132,6 +132,11 @@ partial class RedMageRotation
         return base.HealSingleGCD(out act);
     }
 
+    static partial void ModifyCorpsacorpsPvE(ref ActionSetting setting)
+    {
+        setting.TargetType = TargetType.Move;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.CorpsacorpsPvE)]
     protected sealed override bool MoveForwardAbility(out IAction? act)

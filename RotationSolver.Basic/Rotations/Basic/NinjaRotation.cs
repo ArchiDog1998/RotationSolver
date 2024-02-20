@@ -124,6 +124,11 @@ partial class NinjaRotation
         HyoshoRanryuPvE.Setting.Ninjutsu = [TenPvE, JinPvE];
     }
 
+    static partial void ModifyShukuchiPvE(ref ActionSetting setting)
+    {
+        setting.TargetType = TargetType.Move;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.ShukuchiPvE)]
     protected sealed override bool MoveForwardAbility(out IAction? act)
