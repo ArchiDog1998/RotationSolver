@@ -10,7 +10,8 @@ internal static class StateUpdater
         //Job
         || (DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
         && Service.Config.AutoHeal
-        && CustomRotation.IsLongerThan(Service.Config.AutoHealTimeToKill);
+        && (DataCenter.InCombat && CustomRotation.IsLongerThan(Service.Config.AutoHealTimeToKill)
+            || Service.Config.HealOutOfCombat);
 
     public static void UpdateState()
     {
@@ -38,8 +39,7 @@ internal static class StateUpdater
             }
         }
 
-        if ((DataCenter.HPNotFull || DataCenter.Role != JobRole.Healer) && CanUseHealAction
-            && (DataCenter.InCombat || Service.Config.HealOutOfCombat))
+        if (DataCenter.HPNotFull && CanUseHealAction)
         {
             var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,
                 Service.Config.HealthSingleAbility,

@@ -73,8 +73,7 @@ partial class SageRotation
 
     static partial void ModifyKardiaPvE(ref ActionSetting setting)
     {
-        setting.TargetType = TargetType.BeAttacked;
-
+        setting.TargetType = TargetType.Tank;
         setting.ActionCheck = () => !DataCenter.AllianceMembers.Any(m => m.HasStatus(true, StatusID.Kardion));
     }
 

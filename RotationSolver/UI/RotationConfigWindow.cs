@@ -2357,7 +2357,6 @@ public partial class RotationConfigWindow : Window
             {
                 ImGui.Text(Watcher.ShowStrSelf);
                 ImGui.Separator();
-                ImGui.Text(Watcher.ShowStrEnemy);
                 ImGui.Text(DataCenter.Role.ToString());
             } },
         });

@@ -6,7 +6,7 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 namespace RotationSolver.Basic.Actions;
 public class BaseAction : IBaseAction
 {
-    public TargetResult? Target { get; private set; } = null;
+    public TargetResult? Target { get; set; } = null;
     public TargetResult? PreviewTarget { get; private set; } = null;
 
     public Action Action { get; }

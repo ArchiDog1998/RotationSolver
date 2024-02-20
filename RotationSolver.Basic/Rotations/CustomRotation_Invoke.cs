@@ -79,6 +79,7 @@ partial class CustomRotation
             JobRole.Healer => DataCenter.DispelTarget != null && DispelGCD(out act) ? act : null,
             _ => null,
         };
+        IBaseAction.TargetOverride = TargetType.Death;
 
         ActionRaiseShirkGCD = role switch
         {

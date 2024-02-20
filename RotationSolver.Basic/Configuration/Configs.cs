@@ -97,17 +97,17 @@ internal partial class Configs : IPluginConfiguration
     public bool  PosImprovisation { get; set; } = false;
 
     [ConditionBool, UI("Raise player while swiftcast is on cooldown",
-        Parent = AutoActionUsage, Section = 2,
+        Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raisePlayerByCasting = true;
 
     [ConditionBool, UI("Raise any player in range (even if they are not in your party)",
-        Parent = AutoActionUsage, Section = 2,
+        Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raiseAll = false;
 
     [ConditionBool, UI("Raise players that even have Brink of Death debuff",
-        Parent = AutoActionUsage, Section = 2,
+        Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raiseBrinkOfDeath = true;
 
