@@ -120,8 +120,6 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     private readonly bool CheckStatus(GameObject gameObject)
     {
-
-
         if (!_action.Config.ShouldCheckStatus) return true;
 
         if (_action.Setting.TargetStatusProvide != null)
@@ -204,7 +202,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
             if (IsSingleTarget)
             {
-                if (CanUseTo(t) && t.DistanceToPlayer() <= range)
+                if (CanUseTo(t) && CheckStatus(t) && t.DistanceToPlayer() <= range)
                 {
                     return new(t, [.. GetAffects(t, canAffects)], t.Position);
                 }
@@ -712,8 +710,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
         BattleChara? FindTankTarget()
         {
-            return RandomPickByJobs(gameObjects, JobRole.Tank)
-                ?? RandomObject(gameObjects);
+            return RandomPickByJobs(gameObjects, JobRole.Tank);
         }
     }
 
@@ -765,10 +762,11 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     private static BattleChara? RandomObject(IEnumerable<BattleChara> objs)
     {
-        Random ran = new(DateTime.Now.Millisecond);
-        var count = objs.Count();
-        if (count == 0) return null;
-        return objs.ElementAt(ran.Next(count));
+        return objs.FirstOrDefault();
+        //Random ran = new(DateTime.Now.Millisecond);
+        //var count = objs.Count();
+        //if (count == 0) return null;
+        //return objs.ElementAt(ran.Next(count));
     }
 
     #endregion

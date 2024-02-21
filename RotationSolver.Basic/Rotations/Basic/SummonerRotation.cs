@@ -197,7 +197,7 @@ partial class SummonerRotation
 
     static partial void ModifyRuinIvPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.FurtherRuin];
+        setting.StatusNeed = [StatusID.FurtherRuin_2701];
     }
 
     static partial void ModifySearingLightPvE(ref ActionSetting setting)

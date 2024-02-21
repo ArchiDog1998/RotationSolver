@@ -13,7 +13,7 @@ public interface IBaseAction : IAction
     internal static bool ShouldEndSpecial { get; set; } = false;
 
     Action Action { get; }
-    TargetResult? Target { get; }
+    TargetResult? Target { get; set; }
     TargetResult? PreviewTarget { get; }
     ActionTargetInfo TargetInfo { get; }
     ActionBasicInfo Info { get; }

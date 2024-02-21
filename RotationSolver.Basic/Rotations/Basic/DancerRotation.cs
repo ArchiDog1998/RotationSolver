@@ -118,8 +118,7 @@ partial class DancerRotation
     static partial void ModifyClosedPositionPvE(ref ActionSetting setting)
     {
         setting.TargetType = TargetType.Melee;
-        setting.TargetStatusProvide = [StatusID.ClosedPosition_2026];
-        setting.ActionCheck = () => AllianceMembers.Any(b => b.HasStatus(true, StatusID.ClosedPosition_2026));
+        setting.ActionCheck = () => !AllianceMembers.Any(b => b.HasStatus(true, StatusID.ClosedPosition_2026));
     }
 
     static partial void ModifyDevilmentPvE(ref ActionSetting setting)

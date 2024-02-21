@@ -56,6 +56,16 @@ partial class WhiteMageRotation
         ];
     }
 
+    static partial void ModifyHolyPvE(ref ActionSetting setting)
+    {
+        setting.IsFriendly = false;
+    }
+
+    static partial void ModifyHolyIiiPvE(ref ActionSetting setting)
+    {
+        setting.IsFriendly = false;
+    }
+
     static partial void ModifyAfflatusSolacePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Lily > 0;
