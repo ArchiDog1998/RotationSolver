@@ -525,6 +525,11 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 3, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 CountdownDelay { get; set; } = new(0.5f, 1);
 
+    [UI("The random delay between for the heal delay",
+    Parent = nameof(AutoHeal))]
+    [Range(0, 3, ConfigUnitType.Seconds, 0.002f)]
+    public Vector2 HealDelay { get; set; } = new(0.5f, 1);
+
     [UI("The starting when abilities will be used before finishing the countdown",
         Filter =BasicTimer, Section = 1, PvPFilter = JobFilterType.NoJob)]
     [Range(0, 0.7f, ConfigUnitType.Seconds, 0.002f)]

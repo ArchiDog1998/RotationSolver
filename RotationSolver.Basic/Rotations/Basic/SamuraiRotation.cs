@@ -98,8 +98,8 @@ partial class SamuraiRotation
     static partial void ModifyTenkaGokenPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => !IsMoving && SenCount == 2;
+        setting.IsFriendly = false;
     }
-
     static partial void ModifyMidareSetsugekkaPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => !IsMoving && SenCount == 3;
@@ -108,6 +108,7 @@ partial class SamuraiRotation
     static partial void ModifyKaeshiGokenPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Kaeshi == Kaeshi.GOKEN;
+        setting.IsFriendly = false;
     }
 
     static partial void ModifyKaeshiSetsugekkaPvE(ref ActionSetting setting)
