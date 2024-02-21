@@ -125,5 +125,11 @@
   "RotationSolver.Data.UiString.ConfigWindow_Basic_Timer": "Timer",
   "RotationSolver.Data.UiString.ConfigWindow_Basic_AutoSwitch": "Auto Switch",
   "RotationSolver.Data.UiString.ConfigWindow_Basic_NamedConditions": "Named Conditions",
-  "RotationSolver.Data.UiString.ConfigWindow_Basic_Others": "Others"
+  "RotationSolver.Data.UiString.ConfigWindow_Basic_Others": "Others",
+  "RotationSolver.Basic.Data.TargetHostileType.AllTargetsCanAttack": "All targets that are in range for any abilities",
+  "RotationSolver.Data.UiString.ConfigWindow_Rotation_Description": "Description",
+  "RotationSolver.Data.UiString.ConfigWindow_Rotation_Status": "Status",
+  "RotationSolver.Data.UiString.ConfigWindow_Rotation_Configuration": "Configuration",
+  "RotationSolver.Data.UiString.ConfigWindow_Rotation_Rating": "Rating",
+  "RotationSolver.Data.UiString.ConfigWindow_Rotation_Information": "Information"
 }
