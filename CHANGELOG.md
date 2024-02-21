@@ -1,5 +1,27 @@
 # Changelog
 
+## [4.0.2](https://github.com/ArchiDog1998/RotationSolver/compare/v4.0.1...v4.0.2) (2024-02-20)
+
+
+### Bug Fixes
+
+* add sage shield status. ([b51e1ae](https://github.com/ArchiDog1998/RotationSolver/commit/b51e1ae0bb68311a33263646518f9b64ad2c60b9))
+* carding and the move target. ([4aa9e7a](https://github.com/ArchiDog1998/RotationSolver/commit/4aa9e7a25a608004ba9fedda9608830adc992f2c))
+* dalamud icon getting bug. ([daeefdd](https://github.com/ArchiDog1998/RotationSolver/commit/daeefddb5c695afee0765562b52a9debe144def9))
+* fixed all rotations. ([b713a6a](https://github.com/ArchiDog1998/RotationSolver/commit/b713a6a7b5b2560b5ce04e7755c00e7ee56d62ba))
+* fixed drawing. ([521be06](https://github.com/ArchiDog1998/RotationSolver/commit/521be068670a70bacdbafcf5778291c2f99d84e7))
+* fixed localization. ([b4199b5](https://github.com/ArchiDog1998/RotationSolver/commit/b4199b53ba76af99f6d0bfd20683fa88215d51f4))
+* fixed moving marker away when watching cutscene! ([4b7b457](https://github.com/ArchiDog1998/RotationSolver/commit/4b7b4571c7913c1930550d740b07768c09d229bc))
+* fixed raising issue. ([eb86c34](https://github.com/ArchiDog1998/RotationSolver/commit/eb86c349768e4fecec117ae4ef81c56e28f88f9c))
+* fixed some dungeon  enter crash. ([4365fc8](https://github.com/ArchiDog1998/RotationSolver/commit/4365fc848ef645ee22a25e9c181b876e9372bf9a))
+* fixed targeting issue. ([60542c3](https://github.com/ArchiDog1998/RotationSolver/commit/60542c31fb111609a638b631a2704a547ca3d25f))
+* fixed the pic drawing crash. ([24a44de](https://github.com/ArchiDog1998/RotationSolver/commit/24a44de2e8a2808f3f3df633cf5bb83d5c2b9e0a))
+* healer fix. ([f3e0422](https://github.com/ArchiDog1998/RotationSolver/commit/f3e04223306e87623325f412210777d1e82a7d66))
+* raise target thing. ([e289393](https://github.com/ArchiDog1998/RotationSolver/commit/e2893933179a64090db4fedeb2b22251012f0d2f))
+* role action role check. ([f264523](https://github.com/ArchiDog1998/RotationSolver/commit/f2645235a3374714d720448258e40544e43762a9))
+* the crashing. ([a93fff8](https://github.com/ArchiDog1998/RotationSolver/commit/a93fff83749151eec8e1128ca18dcc565a2eb5d9))
+* update the default value. ([1c278c8](https://github.com/ArchiDog1998/RotationSolver/commit/1c278c84e03e21bdff018626bf98566ab06a051c))
+
 ## [4.0.1](https://github.com/ArchiDog1998/RotationSolver/compare/v4.0.0...v4.0.1) (2024-02-16)
 
 
