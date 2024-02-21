@@ -206,5 +206,6 @@
   "RotationSolver.Data.UiString.ConfigWindow_List_Description": "In this window, you can set the parameters that can be customised using lists.",
   "RotationSolver.Data.UiString.ConfigWindow_List_Statuses": "Statuses",
   "RotationSolver.Data.UiString.ConfigWindow_List_Actions": "Actions",
-  "RotationSolver.Data.UiString.ConfigWindow_List_Territories": "Map specific settings"
+  "RotationSolver.Data.UiString.ConfigWindow_List_Territories": "Map specific settings",
+  "RotationSolver.Data.UiString.ConfigWindow_Rotation_BetaRotation": "Beta Rotation!"
 }
