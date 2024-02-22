@@ -65,6 +65,10 @@ partial class AstrologianRotation
     static partial void ModifyAstrodynePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => !Seals.Contains(SealType.NONE);
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     static partial void ModifyDrawPvE(ref ActionSetting setting)
@@ -87,6 +91,28 @@ partial class AstrologianRotation
     {
         setting.StatusProvide = [StatusID.AspectedHelios];
     }
+
+    static partial void ModifyAspectedBeneficPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.AspectedBenefic];
+    }
+
+    static partial void ModifyDivinationPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+    }
+
+    static partial void ModifyEarthlyStarPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+    }
+
     static partial void ModifyTheArrowPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;

@@ -208,5 +208,7 @@
   "RotationSolver.Data.UiString.SpecialCommandType_HealSingle": "Heal Single",
   "RotationSolver.Data.UiString.SpecialCommandType_HealArea": "Heal Area",
   "RotationSolver.Data.UiString.SpecialCommandType_DefenseSingle": "Defense Single",
-  "RotationSolver.Data.UiString.ConfigWindow_Actions_GcdCount": "How many gcds are needed to add the status."
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_GcdCount": "How many gcds are needed to add the status.",
+  "InDebugDescription": "",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_AoeCount": "How many targets are needed to use this action."
 }
