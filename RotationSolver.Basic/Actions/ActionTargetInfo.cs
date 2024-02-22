@@ -41,26 +41,38 @@ public struct ActionTargetInfo(IBaseAction _action)
     #region Target Finder.
     //The delay of finding the targets.
     private readonly ObjectListDelay<BattleChara> _canTargets = new (() => Service.Config.TargetDelay);
-    public readonly IEnumerable<BattleChara> CanTargets
+    public readonly IEnumerable<BattleChara> GetCanTargets(bool skipStatusProvideCheck)
     {
-        get
+        var items = TargetFilter.GetObjectInRadius(DataCenter.AllTargets, Range);
+        var objs = new List<BattleChara>(items.Count());
+
+        foreach (var obj in items)
         {
-            _canTargets.Delay(TargetFilter.GetObjectInRadius(DataCenter.AllTargets, Range)
-                .Where(GeneralCheck).Where(CanUseTo).Where(InViewTarget).Where(_action.Setting.CanTarget));
-            return _canTargets;
+            if (!GeneralCheck(obj, skipStatusProvideCheck)) continue;
+            objs.Add(obj);
         }
+
+        _canTargets.Delay(objs.Where(CanUseTo).Where(InViewTarget).Where(_action.Setting.CanTarget));
+        return _canTargets;
     }
 
-    public readonly IEnumerable<BattleChara> CanAffects
+    public readonly IEnumerable<BattleChara> GetCanAffects(bool skipStatusProvideCheck)
     {
-        get
+        if (EffectRange == 0) return [];
+
+        var items = TargetFilter.GetObjectInRadius(_action.Setting.IsFriendly
+            ? DataCenter.PartyMembers
+            : DataCenter.AllHostileTargets,
+            Range + EffectRange);
+        var objs = new List<BattleChara>(items.Count());
+
+        foreach (var obj in items)
         {
-            if (EffectRange == 0) return [];
-            return TargetFilter.GetObjectInRadius(_action.Setting.IsFriendly
-                ? DataCenter.PartyMembers
-                : DataCenter.AllHostileTargets,
-                Range + EffectRange).Where(GeneralCheck);
+            if (!GeneralCheck(obj, skipStatusProvideCheck)) continue;
+            objs.Add(obj);
         }
+
+        return objs;
     }
 
     private static bool InViewTarget(BattleChara gameObject)
@@ -97,7 +109,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         return tar.CanSee();
     }
 
-    private readonly bool GeneralCheck(BattleChara gameObject)
+    private readonly bool GeneralCheck(BattleChara gameObject, bool skipStatusProvideCheck)
     {
         if (!gameObject.IsTargetable) return false;
 
@@ -113,25 +125,25 @@ public struct ActionTargetInfo(IBaseAction _action)
             if (!gameObject.IsAttackable()) return false;
         }
 
-        return CheckStatus(gameObject) 
+        return CheckStatus(gameObject, skipStatusProvideCheck) 
             && CheckTimeToKill(gameObject)
             && CheckResistance(gameObject);
     }
 
-    private readonly bool CheckStatus(GameObject gameObject)
+    private readonly bool CheckStatus(GameObject gameObject, bool skipStatusProvideCheck)
     {
         if (!_action.Config.ShouldCheckStatus) return true;
 
-        if (_action.Setting.TargetStatusProvide != null)
+        if (_action.Setting.TargetStatusNeed != null)
+        {
+            if (gameObject.WillStatusEndGCD(0, 0,
+                _action.Setting.StatusFromSelf, _action.Setting.TargetStatusNeed)) return false;
+        }
+
+        if (_action.Setting.TargetStatusProvide != null && !skipStatusProvideCheck)
         {
             if (!gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
                 _action.Setting.StatusFromSelf, _action.Setting.TargetStatusProvide)) return false;
-        }
-
-        if (_action.Setting.TargetStatusNeed != null)
-        {
-            if (gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
-                _action.Setting.StatusFromSelf, _action.Setting.TargetStatusNeed)) return false;
         }
 
         return true;
@@ -177,7 +189,7 @@ public struct ActionTargetInfo(IBaseAction _action)
     /// Take a little long time..
     /// </summary>
     /// <returns></returns>
-    internal readonly TargetResult? FindTarget(bool skipAoeCheck)
+    internal readonly TargetResult? FindTarget(bool skipAoeCheck, bool skipStatusProvideCheck)
     {
         var range = Range;
         var player = Player.Object;
@@ -187,8 +199,8 @@ public struct ActionTargetInfo(IBaseAction _action)
             return new(player, [], player.Position);
         }
 
-        var canTargets = CanTargets;
-        var canAffects = CanAffects;
+        var canTargets = GetCanTargets(skipStatusProvideCheck);
+        var canAffects = GetCanAffects(skipStatusProvideCheck);
 
         if (IsTargetArea)
         {
@@ -202,7 +214,7 @@ public struct ActionTargetInfo(IBaseAction _action)
 
             if (IsSingleTarget)
             {
-                if (CanUseTo(t) && CheckStatus(t) && t.DistanceToPlayer() <= range)
+                if (CanUseTo(t) && CheckStatus(t, skipStatusProvideCheck) && t.DistanceToPlayer() <= range)
                 {
                     return new(t, [.. GetAffects(t, canAffects)], t.Position);
                 }

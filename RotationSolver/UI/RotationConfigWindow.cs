@@ -1503,6 +1503,17 @@ public partial class RotationConfigWindow : Window
                     }
                     ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
 
+                    if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
+                    {
+                        var statusGcdCount = (int)config.StatusGcdCount;
+                        ImGui.SetNextItemWidth(Scale * 150);
+                        if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_GcdCount.Local()}##{a}",
+                            ref statusGcdCount, 0.05f, 1, 10))
+                        {
+                            config.StatusGcdCount = (byte)statusGcdCount;
+                        }
+                    }
+
                     if (!a.TargetInfo.IsSingleTarget)
                     {
                         var aoeCount = (int)config.AoeCount;

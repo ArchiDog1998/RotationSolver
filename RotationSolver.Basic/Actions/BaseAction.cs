@@ -100,7 +100,7 @@ public class BaseAction : IBaseAction
         if (Setting.IsMeleeRange && IActionHelper.IsLastAction(IActionHelper.MovingActions)) return false; //No range actions after moving.
         if (Setting.IsFriendly && DataCenter.AverageTimeToKill < Config.TimeToKill) return false;
 
-        PreviewTarget = TargetInfo.FindTarget(skipAoeCheck);
+        PreviewTarget = TargetInfo.FindTarget(skipAoeCheck, skipStatusProvideCheck);
         if (PreviewTarget == null) return false;
         if (!IBaseAction.ActionPreview)
         {

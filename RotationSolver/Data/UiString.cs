@@ -123,6 +123,9 @@ internal enum UiString
     [Description("How many targets are needed to use this action.")]
     ConfigWindow_Actions_AoeCount,
 
+    [Description("How many gcds are needed to add the status.")]
+    ConfigWindow_Actions_GcdCount,
+
     [Description("The HP ratio to auto heal")]
     ConfigWindow_Actions_HealRatio,
 
