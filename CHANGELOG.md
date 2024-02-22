@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.0.3](https://github.com/ArchiDog1998/RotationSolver/compare/v4.0.2...v4.0.3) (2024-02-22)
+
+
+### Bug Fixes
+
+* ast ttk. ([9b33092](https://github.com/ArchiDog1998/RotationSolver/commit/9b3309263c9259a1e335c910119c9acf6d44ad62))
+* changed the key for unlock movement. ([5c05e2f](https://github.com/ArchiDog1998/RotationSolver/commit/5c05e2fcb300901b7b3670271196e67cc786c1d4))
+* fixed some healing but. ([e8431e8](https://github.com/ArchiDog1998/RotationSolver/commit/e8431e8f0a24f9e93ce22ed7b4ef97834332b269))
+* fixed the status count issue. ([fe20c87](https://github.com/ArchiDog1998/RotationSolver/commit/fe20c87a4bd679365f8d32d6144a63a47ccc40a3))
+
 ## [4.0.2](https://github.com/ArchiDog1998/RotationSolver/compare/v4.0.1...v4.0.2) (2024-02-20)
 
 
