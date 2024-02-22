@@ -49,6 +49,7 @@ partial class CustomRotation
         }
 
         IBaseAction.TargetOverride = TargetType.Heal;
+        IBaseAction.ShouldEndSpecial = false;
 
         if (DataCenter.CommandStatus.HasFlag(AutoStatus.HealAreaAbility))
         {
@@ -78,6 +79,7 @@ partial class CustomRotation
         }
 
         IBaseAction.TargetOverride = null;
+        IBaseAction.ShouldEndSpecial = true;
 
         if (DataCenter.CommandStatus.HasFlag(AutoStatus.Speed)
             && SpeedAbility(out act)) return true;

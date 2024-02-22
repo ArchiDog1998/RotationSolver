@@ -19,10 +19,11 @@ internal static class StateUpdater
         DataCenter.AutoStatus = StatusFromAutomatic();
     }
 
-    static readonly RandomDelay _healDelay1 = new(() => Service.Config.HealDelay),
-         _healDelay2 = new(() => Service.Config.HealDelay),
-         _healDelay3 = new(() => Service.Config.HealDelay),
-         _healDelay4 = new(() => Service.Config.HealDelay);
+    static RandomDelay 
+        _healDelay1 = new(() => Service.Config.HealDelay),
+        _healDelay2 = new(() => Service.Config.HealDelay),
+        _healDelay3 = new(() => Service.Config.HealDelay),
+        _healDelay4 = new(() => Service.Config.HealDelay);
 
     private static AutoStatus StatusFromAutomatic()
     {
@@ -44,7 +45,7 @@ internal static class StateUpdater
             }
         }
 
-        if (DataCenter.HPNotFull && CanUseHealAction)
+        if (DataCenter.HPNotFull /*&& CanUseHealAction*/)
         {
             var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,
                 Service.Config.HealthSingleAbility,

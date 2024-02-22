@@ -7,7 +7,15 @@ partial class CustomRotation
     internal static void LoadActionSetting(ref IBaseAction action)
     {
         var a = action.Action;
-        if(!a.CanTargetFriendly && !a.CanTargetHostile)
+        if(a.CanTargetFriendly || a.CanTargetParty)
+        {
+            action.Setting.IsFriendly = true;
+        }
+        else if (a.CanTargetHostile)
+        {
+            action.Setting.IsFriendly = false;
+        }
+        else
         {
             action.Setting.IsFriendly = a.EffectRange > 5;
         }

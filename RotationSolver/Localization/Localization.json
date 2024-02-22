@@ -204,5 +204,9 @@
   "RotationSolver.Data.UiString.ConfigWindow_List_Statuses": "Statuses",
   "RotationSolver.Data.UiString.ConfigWindow_List_Actions": "Actions",
   "RotationSolver.Data.UiString.ConfigWindow_List_Territories": "Map specific settings",
-  "RotationSolver.Data.UiString.ConfigWindow_Rotation_BetaRotation": "Beta Rotation!"
+  "RotationSolver.Data.UiString.ConfigWindow_Rotation_BetaRotation": "Beta Rotation!",
+  "RotationSolver.Data.UiString.SpecialCommandType_HealSingle": "Heal Single",
+  "RotationSolver.Data.UiString.SpecialCommandType_HealArea": "Heal Area",
+  "RotationSolver.Data.UiString.SpecialCommandType_DefenseSingle": "Defense Single",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_GcdCount": "How many gcds are needed to add the status."
 }

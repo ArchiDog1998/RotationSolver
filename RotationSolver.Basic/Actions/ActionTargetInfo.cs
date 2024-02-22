@@ -695,19 +695,22 @@ public struct ActionTargetInfo(IBaseAction _action)
             if (!gameObjects.Any()) return null;
             var attachedT = gameObjects.Where(ObjectHelper.IsTargetOnSelf);
 
-            if (!attachedT.Any())
+            if (!DataCenter.AutoStatus.HasFlag(AutoStatus.DefenseSingle))
             {
-                attachedT = gameObjects.Where(tank => tank.HasStatus(false, StatusHelper.TankStanceStatus));
-            }
+                if (!attachedT.Any())
+                {
+                    attachedT = gameObjects.Where(tank => tank.HasStatus(false, StatusHelper.TankStanceStatus));
+                }
 
-            if (!attachedT.Any())
-            {
-                attachedT = gameObjects.GetJobCategory(JobRole.Tank);
-            }
+                if (!attachedT.Any())
+                {
+                    attachedT = gameObjects.GetJobCategory(JobRole.Tank);
+                }
 
-            if (!attachedT.Any())
-            {
-                attachedT = gameObjects;
+                if (!attachedT.Any())
+                {
+                    attachedT = gameObjects;
+                }
             }
 
             return attachedT.OrderBy(ObjectHelper.GetHealthRatio).FirstOrDefault();

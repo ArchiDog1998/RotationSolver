@@ -1424,8 +1424,8 @@ public partial class RotationConfigWindow : Window
                         ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
                         ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
 
-                        ImGui.Text($"Can Use: {action.CanUse(out _)} ");
-                        ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, ignoreCastingCheck : true).ToString());
+                        ImGui.Text($"Can Use: {action.CanUse(out _, ignoreClippingCheck: true)} ");
+                        ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, ignoreClippingCheck: true, ignoreCastingCheck : true).ToString());
                         if (action.Target != null)
                         {
                             ImGui.Text("Target Name: " + action.Target.Value.Target?.Name ?? string.Empty);
