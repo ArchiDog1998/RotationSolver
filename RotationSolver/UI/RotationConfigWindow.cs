@@ -110,7 +110,7 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private void DrawDutyRotation()
+    private static void DrawDutyRotation()
     {
         var dutyRotation = DataCenter.RightNowDutyRotation;
         if (dutyRotation == null) return;
@@ -1424,8 +1424,8 @@ public partial class RotationConfigWindow : Window
                         ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
                         ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
 
-                        ImGui.Text($"Can Use: {action.CanUse(out _)} ");
-                        ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, ignoreCastingCheck : true).ToString());
+                        ImGui.Text($"Can Use: {action.CanUse(out _, ignoreClippingCheck: true)} ");
+                        ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, ignoreClippingCheck: true, ignoreCastingCheck : true).ToString());
                         if (action.Target != null)
                         {
                             ImGui.Text("Target Name: " + action.Target.Value.Target?.Name ?? string.Empty);
@@ -1502,6 +1502,17 @@ public partial class RotationConfigWindow : Window
                         config.TimeToKill = ttk;
                     }
                     ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
+
+                    if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
+                    {
+                        var statusGcdCount = (int)config.StatusGcdCount;
+                        ImGui.SetNextItemWidth(Scale * 150);
+                        if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_GcdCount.Local()}##{a}",
+                            ref statusGcdCount, 0.05f, 1, 10))
+                        {
+                            config.StatusGcdCount = (byte)statusGcdCount;
+                        }
+                    }
 
                     if (!a.TargetInfo.IsSingleTarget)
                     {

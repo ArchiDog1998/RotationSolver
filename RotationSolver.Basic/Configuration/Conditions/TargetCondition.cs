@@ -26,7 +26,7 @@ internal class TargetCondition : DelayCondition
         BattleChara? tar;
         if (_action != null)
         {
-            tar = _action.TargetInfo.FindTarget(true)?.Target as BattleChara;
+            tar = _action.TargetInfo.FindTarget(true, false)?.Target;
         }
         else
         {

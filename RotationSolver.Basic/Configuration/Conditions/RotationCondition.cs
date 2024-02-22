@@ -1,5 +1,6 @@
 ﻿namespace RotationSolver.Basic.Configuration.Conditions;
 
+[Description("Rotation Condition")]
 internal class RotationCondition : DelayCondition
 {
     public ComboConditionType ComboConditionType = ComboConditionType.Float;

@@ -72,7 +72,7 @@ internal partial class Configs : IPluginConfiguration
         Filter =UiInformation)]
     private static readonly bool _showInfoOnDtr = true;
 
-    [ConditionBool, UI("Heal party members outside of combat.",
+    [ConditionBool, UI("Heal members outside of combat.",
         Filter = AutoActionCondition, Section =1)]
     private static readonly bool _healOutOfCombat = false;
 
@@ -80,8 +80,7 @@ internal partial class Configs : IPluginConfiguration
         Filter =UiInformation)]
     private static readonly bool _showInfoOnToast = true;
 
-    [ConditionBool, UI("Lock the movement when casting or when doing some actions.",
-        Description = "LT is for gamepad player", Filter = Extra)]
+    [ConditionBool, UI("Lock the movement when casting or when doing some actions.", Filter = Extra)]
     private static readonly bool _poslockCasting = false;
 
     [UI("", Action = ActionID.PassageOfArmsPvE, Parent = nameof(PoslockCasting))]
@@ -652,7 +651,7 @@ internal partial class Configs : IPluginConfiguration
 
     public int ActionSequencerIndex { get; set; }
 
-    [UI("The modifier key to unlock the movement temporary", Parent = nameof(PoslockCasting))]
+    [UI("The modifier key to unlock the movement temporary", Description = "LB is for gamepad player", Parent = nameof(PoslockCasting))]
     public ConsoleModifiers PoslockModifier { get; set; }
 
     [Range(0, 10000, ConfigUnitType.None, 200)]

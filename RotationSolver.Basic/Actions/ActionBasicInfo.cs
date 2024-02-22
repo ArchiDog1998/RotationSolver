@@ -95,12 +95,14 @@ public struct ActionBasicInfo
 
         if (_action.Setting.StatusNeed != null)
         {
-            if (!player.HasStatus(true, _action.Setting.StatusNeed)) return false;
+            if (player.WillStatusEndGCD(0, 0,
+                _action.Setting.StatusFromSelf, _action.Setting.StatusNeed)) return false;
         }
 
         if (_action.Setting.StatusProvide != null && !skipStatusProvideCheck)
         {
-            if (player.HasStatus(true, _action.Setting.StatusProvide)) return false;
+            if (!player.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
+                _action.Setting.StatusFromSelf, _action.Setting.StatusProvide)) return false;
         }
 
         if (_action.Action.ActionCategory.Row == 15)
