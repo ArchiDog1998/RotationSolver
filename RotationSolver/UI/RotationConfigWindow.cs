@@ -110,7 +110,7 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private void DrawDutyRotation()
+    private static void DrawDutyRotation()
     {
         var dutyRotation = DataCenter.RightNowDutyRotation;
         if (dutyRotation == null) return;

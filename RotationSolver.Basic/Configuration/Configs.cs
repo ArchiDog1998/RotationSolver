@@ -72,7 +72,7 @@ internal partial class Configs : IPluginConfiguration
         Filter =UiInformation)]
     private static readonly bool _showInfoOnDtr = true;
 
-    [ConditionBool, UI("Heal party members outside of combat.",
+    [ConditionBool, UI("Heal members outside of combat.",
         Filter = AutoActionCondition, Section =1)]
     private static readonly bool _healOutOfCombat = false;
 

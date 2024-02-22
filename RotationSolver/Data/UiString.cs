@@ -372,7 +372,7 @@ internal enum UiString
     [Description("Defense Single Forced Condition")]
     ConfigWindow_Auto_DefenseSingleConditionSet,
 
-    [Description("Esuna Stance North Forced Condition")]
+    [Description("Dispel Stance Positional Forced Condition")]
     ConfigWindow_Auto_DispelStancePositionalConditionSet,
 
     [Description("Raise Shirk Forced Condition")]
@@ -390,7 +390,7 @@ internal enum UiString
     [Description("Speed Forced Condition")]
     ConfigWindow_Auto_SpeedConditionSet,
 
-    [Description("Limit Break Condition")]
+    [Description("Limit Break Forced Condition")]
     ConfigWindow_Auto_LimitBreakConditionSet,
 
     [Description("This will change the way that Rotation Solver uses actions.")]
