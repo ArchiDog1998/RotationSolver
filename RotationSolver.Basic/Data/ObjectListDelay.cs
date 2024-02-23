@@ -47,7 +47,7 @@ public class ObjectListDelay<T>(Func<(float min, float max)> getRange)
                 var delaySecond = min + (float)_ran.NextDouble() * (max - min);
                 time = now + new TimeSpan(0, 0, 0, 0, (int)(delaySecond * 1000));
             }
-            revealTime.Add(item.ObjectId, time);
+            revealTime[item.ObjectId] = time;
 
             if (now > time)
             {
