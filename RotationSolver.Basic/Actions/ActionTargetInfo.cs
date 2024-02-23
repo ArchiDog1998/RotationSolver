@@ -222,7 +222,7 @@ public struct ActionTargetInfo(IBaseAction _action)
             else
             {
                 var effects = GetAffects(t, canAffects).ToArray();
-                if(effects.Length >= _action.Config.AoeCount)
+                if (effects.Length >= _action.Config.AoeCount || skipAoeCheck)
                 {
                     return new(t, effects, t.Position);
                 }
