@@ -42016,10 +42016,59 @@ private IBaseAction LastBastionPvE =&gt; _LastBastionPvECreator.Value;
 /// &lt;para&gt;Duration: 12s&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; LastBastionPvE;
+private readonly Lazy&lt;IBaseAction&gt; _PhalanxPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29069, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyPhalanxPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29069"&gt;&lt;strong&gt;Phalanx&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29069] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyPhalanxPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29069"&gt;&lt;strong&gt;Phalanx&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29069] [Limit Break]
+/// &lt;para&gt;Grants the effect of Hallowed Ground to self and Phalanx to nearby party members.&lt;/para&gt;
+/// &lt;para&gt;Hallowed Ground Effect: Renders you impervious to most attacks&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Phalanx Effect: Reduces damage taken by 33%&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Blade of Faith Ready&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 120s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Blade of Faith upon execution.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction PhalanxPvP =&gt; _PhalanxPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29069"&gt;&lt;strong&gt;Phalanx&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29069] [Limit Break]
+/// &lt;para&gt;Grants the effect of Hallowed Ground to self and Phalanx to nearby party members.&lt;/para&gt;
+/// &lt;para&gt;Hallowed Ground Effect: Renders you impervious to most attacks&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Phalanx Effect: Reduces damage taken by 33%&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Blade of Faith Ready&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 120s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Blade of Faith upon execution.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; PhalanxPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50207"&gt;&lt;strong&gt;Divine Magic Mastery&lt;/strong&gt;&lt;/see&gt; (PLD) [207]
     /// &lt;para&gt;Halves MP cost for all spells while preventing casting interruptions via damage taken. Grants the following effects after successfully completing a combo with Royal Authority:&lt;/para&gt;
@@ -43449,10 +43498,55 @@ private IBaseAction FinalHeavenPvE =&gt; _FinalHeavenPvECreator.Value;
 /// &lt;para&gt;Delivers an attack with a potency of 9,000.&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; FinalHeavenPvE;
+private readonly Lazy&lt;IBaseAction&gt; _MeteodrivePvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29485, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyMeteodrivePvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29485"&gt;&lt;strong&gt;Meteodrive&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (MNK) [29485] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyMeteodrivePvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29485"&gt;&lt;strong&gt;Meteodrive&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (MNK) [29485] [Limit Break]
+/// &lt;para&gt;Rushes target and delivers an attack with a potency of 12,000.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Removes target's Guard&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Afflicts target with Meteodrive, rendering them unable to move&lt;/para&gt;
+/// &lt;para&gt;Duration: 3s&lt;/para&gt;
+/// &lt;para&gt;If target does not have an active Guard effect, deals additional damage with a potency of 12,000.&lt;/para&gt;
+/// &lt;para&gt;Effect cannot be applied to players riding machina or non-player combatants.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 75s&lt;/para&gt;
+/// &lt;para&gt;Cannot be executed while bound.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction MeteodrivePvP =&gt; _MeteodrivePvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29485"&gt;&lt;strong&gt;Meteodrive&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (MNK) [29485] [Limit Break]
+/// &lt;para&gt;Rushes target and delivers an attack with a potency of 12,000.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Removes target's Guard&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Afflicts target with Meteodrive, rendering them unable to move&lt;/para&gt;
+/// &lt;para&gt;Duration: 3s&lt;/para&gt;
+/// &lt;para&gt;If target does not have an active Guard effect, deals additional damage with a potency of 12,000.&lt;/para&gt;
+/// &lt;para&gt;Effect cannot be applied to players riding machina or non-player combatants.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 75s&lt;/para&gt;
+/// &lt;para&gt;Cannot be executed while bound.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; MeteodrivePvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50160"&gt;&lt;strong&gt;Deep Meditation&lt;/strong&gt;&lt;/see&gt; (MNK) [160]
     /// &lt;para&gt;Grants an 80% chance that a chakra will open upon dealing critical damage with a weaponskill.&lt;/para&gt;
@@ -44711,10 +44805,61 @@ private IBaseAction LandWakerPvE =&gt; _LandWakerPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; LandWakerPvE;
+private readonly Lazy&lt;IBaseAction&gt; _PrimalScreamPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29083, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyPrimalScreamPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29083"&gt;&lt;strong&gt;Primal Scream&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (WAR) [29083] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyPrimalScreamPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29083"&gt;&lt;strong&gt;Primal Scream&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (WAR) [29083] [Limit Break]
+/// &lt;para&gt;Let out a bloodcurdling cry in a cone before you, rendering enemies unable to use Guard.&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Inner Release and Thrill of Battle&lt;/para&gt;
+/// &lt;para&gt;Inner Release Effect: Increases the potency of Primal Rend and Chaotic Cyclone, while also increasing movement speed by 25%, and granting immunity to Stun, Heavy, Bind, Silence, Half-asleep, Sleep, Deep Freeze, and knockback and draw-in effects&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Cannot execute Guard while under the effect of Inner Release.&lt;/para&gt;
+/// &lt;para&gt;Thrill of Battle Effect: Increases maximum HP by 20% and restores the amount increased&lt;/para&gt;
+/// &lt;para&gt;Duration: 30s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Storm's Path Combo changes to Fell Cleave while under the effect of Inner Release.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction PrimalScreamPvP =&gt; _PrimalScreamPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29083"&gt;&lt;strong&gt;Primal Scream&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (WAR) [29083] [Limit Break]
+/// &lt;para&gt;Let out a bloodcurdling cry in a cone before you, rendering enemies unable to use Guard.&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Inner Release and Thrill of Battle&lt;/para&gt;
+/// &lt;para&gt;Inner Release Effect: Increases the potency of Primal Rend and Chaotic Cyclone, while also increasing movement speed by 25%, and granting immunity to Stun, Heavy, Bind, Silence, Half-asleep, Sleep, Deep Freeze, and knockback and draw-in effects&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Cannot execute Guard while under the effect of Inner Release.&lt;/para&gt;
+/// &lt;para&gt;Thrill of Battle Effect: Increases maximum HP by 20% and restores the amount increased&lt;/para&gt;
+/// &lt;para&gt;Duration: 30s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Storm's Path Combo changes to Fell Cleave while under the effect of Inner Release.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; PrimalScreamPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50157"&gt;&lt;strong&gt;Enhanced Infuriate&lt;/strong&gt;&lt;/see&gt; (WAR) [157]
     /// &lt;para&gt;Reduces Infuriate recast time by 5 seconds upon landing Inner Beast, Steel Cyclone, Fell Cleave, or Decimate on most targets.&lt;/para&gt;
@@ -45963,10 +46108,53 @@ private IBaseAction DragonsongDivePvE =&gt; _DragonsongDivePvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; DragonsongDivePvE;
+private readonly Lazy&lt;IBaseAction&gt; _SkyHighPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29497, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifySkyHighPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29497"&gt;&lt;strong&gt;Sky High&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (DRG) [29497] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifySkyHighPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29497"&gt;&lt;strong&gt;Sky High&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (DRG) [29497] [Limit Break]
+/// &lt;para&gt;Jump high into the air, preventing enemies from targeting you. Movement is still possible before landing.&lt;/para&gt;
+/// &lt;para&gt;Duration: 5s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Removes Heavy, Bind, and Half-asleep&lt;/para&gt;
+/// &lt;para&gt;Executes Sky Shatter automatically when effect duration expires.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Sky Shatter upon execution.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction SkyHighPvP =&gt; _SkyHighPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29497"&gt;&lt;strong&gt;Sky High&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (DRG) [29497] [Limit Break]
+/// &lt;para&gt;Jump high into the air, preventing enemies from targeting you. Movement is still possible before landing.&lt;/para&gt;
+/// &lt;para&gt;Duration: 5s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Removes Heavy, Bind, and Half-asleep&lt;/para&gt;
+/// &lt;para&gt;Executes Sky Shatter automatically when effect duration expires.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Sky Shatter upon execution.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; SkyHighPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50162"&gt;&lt;strong&gt;Lance Mastery&lt;/strong&gt;&lt;/see&gt; (DRG) [162]
     /// &lt;para&gt;Allows for immediate execution of Wheeling Thrust after landing Fang and Claw, or Fang and Claw after landing Wheeling Thrust, increasing potency by 100.&lt;/para&gt;
@@ -47201,10 +47389,49 @@ private IBaseAction SagittariusArrowPvE =&gt; _SagittariusArrowPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; SagittariusArrowPvE;
+private readonly Lazy&lt;IBaseAction&gt; _FinalFantasiaPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29401, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyFinalFantasiaPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29401"&gt;&lt;strong&gt;Final Fantasia&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (BRD) [29401] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyFinalFantasiaPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29401"&gt;&lt;strong&gt;Final Fantasia&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (BRD) [29401] [Limit Break]
+/// &lt;para&gt;Reduces your weaponskill cast time and recast time by 10% while also increasing movement speed by 25%.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Increases damage dealt by self and all party members within a radius of 30 yalms by 10% while also gradually filling the limit gauge&lt;/para&gt;
+/// &lt;para&gt;Duration: 30s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 120s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed while in combat.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction FinalFantasiaPvP =&gt; _FinalFantasiaPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29401"&gt;&lt;strong&gt;Final Fantasia&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (BRD) [29401] [Limit Break]
+/// &lt;para&gt;Reduces your weaponskill cast time and recast time by 10% while also increasing movement speed by 25%.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Increases damage dealt by self and all party members within a radius of 30 yalms by 10% while also gradually filling the limit gauge&lt;/para&gt;
+/// &lt;para&gt;Duration: 30s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 120s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed while in combat.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; FinalFantasiaPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50017"&gt;&lt;strong&gt;Heavier Shot&lt;/strong&gt;&lt;/see&gt; (ARC BRD) [17]
     /// &lt;para&gt;Adds to Heavy Shot a 20% chance that you will become Straight Shot Ready.&lt;/para&gt;
@@ -48421,10 +48648,55 @@ private IBaseAction PulseOfLifePvE =&gt; _PulseOfLifePvECreator.Value;
 /// &lt;para&gt;Restores 100% of own HP and the HP of all nearby party members, including ones KO'd.&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; PulseOfLifePvE;
+private readonly Lazy&lt;IBaseAction&gt; _AfflatusPurgationPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29230, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyAfflatusPurgationPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29230"&gt;&lt;strong&gt;Afflatus Purgation&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (WHM) [29230] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyAfflatusPurgationPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29230"&gt;&lt;strong&gt;Afflatus Purgation&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (WHM) [29230] [Limit Break]
+/// &lt;para&gt;Deals unaspected damage with a potency of 18,000 to all enemies in a straight line before you.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Stun&lt;/para&gt;
+/// &lt;para&gt;Duration: 2s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Temperance&lt;/para&gt;
+/// &lt;para&gt;Temperance Effect: Increases damage dealt and healing potency by 10%, and grants Regen to self and nearby party members within 30 yalms&lt;/para&gt;
+/// &lt;para&gt;Cure Potency: 3,000&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 60s&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction AfflatusPurgationPvP =&gt; _AfflatusPurgationPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29230"&gt;&lt;strong&gt;Afflatus Purgation&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (WHM) [29230] [Limit Break]
+/// &lt;para&gt;Deals unaspected damage with a potency of 18,000 to all enemies in a straight line before you.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Stun&lt;/para&gt;
+/// &lt;para&gt;Duration: 2s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Temperance&lt;/para&gt;
+/// &lt;para&gt;Temperance Effect: Increases damage dealt and healing potency by 10%, and grants Regen to self and nearby party members within 30 yalms&lt;/para&gt;
+/// &lt;para&gt;Cure Potency: 3,000&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 60s&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; AfflatusPurgationPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50023"&gt;&lt;strong&gt;Maim and Mend&lt;/strong&gt;&lt;/see&gt; (CNJ WHM) [23]
     /// &lt;para&gt;Increases base action damage and HP restoration by 10%.&lt;/para&gt;
@@ -49849,10 +50121,57 @@ private IBaseAction MeteorPvE =&gt; _MeteorPvECreator.Value;
 /// &lt;para&gt;Deals unaspected damage with a potency of 6,150 to all enemies near point of impact.&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; MeteorPvE;
+private readonly Lazy&lt;IBaseAction&gt; _SoulResonancePvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29662, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifySoulResonancePvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29662"&gt;&lt;strong&gt;Soul Resonance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (BLM) [29662] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifySoulResonancePvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29662"&gt;&lt;strong&gt;Soul Resonance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (BLM) [29662] [Limit Break]
+/// &lt;para&gt;Grants 6 stacks of Soul Resonance, upgrading Fire to Flare and Blizzard to Freeze.&lt;/para&gt;
+/// &lt;para&gt;Duration: 30s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Polyglot and Apocatastasis&lt;/para&gt;
+/// &lt;para&gt;Polyglot Effect: Action changes to Foul&lt;/para&gt;
+/// &lt;para&gt;Duration: 60s&lt;/para&gt;
+/// &lt;para&gt;Apocatastasis Effect: Reduces damage taken by 10%&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Reduces the recast time of Superflare by 15 seconds&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 60s&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction SoulResonancePvP =&gt; _SoulResonancePvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29662"&gt;&lt;strong&gt;Soul Resonance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (BLM) [29662] [Limit Break]
+/// &lt;para&gt;Grants 6 stacks of Soul Resonance, upgrading Fire to Flare and Blizzard to Freeze.&lt;/para&gt;
+/// &lt;para&gt;Duration: 30s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Polyglot and Apocatastasis&lt;/para&gt;
+/// &lt;para&gt;Polyglot Effect: Action changes to Foul&lt;/para&gt;
+/// &lt;para&gt;Duration: 60s&lt;/para&gt;
+/// &lt;para&gt;Apocatastasis Effect: Reduces damage taken by 10%&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Reduces the recast time of Superflare by 15 seconds&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 60s&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; SoulResonancePvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50029"&gt;&lt;strong&gt;Maim and Mend&lt;/strong&gt;&lt;/see&gt; (THM BLM) [29]
     /// &lt;para&gt;Increases base action damage and HP restoration by 10%.&lt;/para&gt;
@@ -52399,10 +52718,53 @@ private IBaseAction TeraflarePvE =&gt; _TeraflarePvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; TeraflarePvE;
+private readonly Lazy&lt;IBaseAction&gt; _SummonBahamutPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29673, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifySummonBahamutPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29673"&gt;&lt;strong&gt;Summon Bahamut&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SMN) [29673] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifySummonBahamutPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29673"&gt;&lt;strong&gt;Summon Bahamut&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SMN) [29673] [Limit Break]
+/// &lt;para&gt;Enters Dreadwyrm Trance and summons Demi-Bahamut to fight at a designated location.&lt;/para&gt;
+/// &lt;para&gt;Duration: 20s&lt;/para&gt;
+/// &lt;para&gt;Demi-Bahamut will execute Megaflare upon being summoned, then execute Wyrmwave automatically, prioritizing targets with the lowest HP within 30 yalms.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Enkindle Bahamut upon execution.&lt;/para&gt;
+/// &lt;para&gt;※Ruin III changes to Astral Impulse while under the effect of Dreadwyrm Trance.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction SummonBahamutPvP =&gt; _SummonBahamutPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29673"&gt;&lt;strong&gt;Summon Bahamut&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SMN) [29673] [Limit Break]
+/// &lt;para&gt;Enters Dreadwyrm Trance and summons Demi-Bahamut to fight at a designated location.&lt;/para&gt;
+/// &lt;para&gt;Duration: 20s&lt;/para&gt;
+/// &lt;para&gt;Demi-Bahamut will execute Megaflare upon being summoned, then execute Wyrmwave automatically, prioritizing targets with the lowest HP within 30 yalms.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Enkindle Bahamut upon execution.&lt;/para&gt;
+/// &lt;para&gt;※Ruin III changes to Astral Impulse while under the effect of Dreadwyrm Trance.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; SummonBahamutPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50066"&gt;&lt;strong&gt;Maim and Mend&lt;/strong&gt;&lt;/see&gt; (ACN SMN SCH) [66]
     /// &lt;para&gt;Increases base action damage and HP restoration by 10%. Also increases base damage and HP restoration of your pet by 10%.&lt;/para&gt;
@@ -54062,10 +54424,57 @@ private IBaseAction AngelFeathersPvE =&gt; _AngelFeathersPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; AngelFeathersPvE;
+private readonly Lazy&lt;IBaseAction&gt; _SummonSeraphPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29237, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifySummonSeraphPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29237"&gt;&lt;strong&gt;Summon Seraph&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SCH) [29237] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifySummonSeraphPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29237"&gt;&lt;strong&gt;Summon Seraph&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SCH) [29237] [Limit Break]
+/// &lt;para&gt;Summons Seraph to fight at a designated location.&lt;/para&gt;
+/// &lt;para&gt;Seraph will execute Seraph Flight immediately after being summoned.&lt;/para&gt;
+/// &lt;para&gt;Automatically casts Seraphic Veil on party members who suffer damage.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Recitation&lt;/para&gt;
+/// &lt;para&gt;Recitation Effect: Increases the potency of Galvanize, Biolysis, and Biolytic effects&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Consolation upon execution.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction SummonSeraphPvP =&gt; _SummonSeraphPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29237"&gt;&lt;strong&gt;Summon Seraph&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SCH) [29237] [Limit Break]
+/// &lt;para&gt;Summons Seraph to fight at a designated location.&lt;/para&gt;
+/// &lt;para&gt;Seraph will execute Seraph Flight immediately after being summoned.&lt;/para&gt;
+/// &lt;para&gt;Automatically casts Seraphic Veil on party members who suffer damage.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Recitation&lt;/para&gt;
+/// &lt;para&gt;Recitation Effect: Increases the potency of Galvanize, Biolysis, and Biolytic effects&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Consolation upon execution.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; SummonSeraphPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50066"&gt;&lt;strong&gt;Maim and Mend&lt;/strong&gt;&lt;/see&gt; (ACN SMN SCH) [66]
     /// &lt;para&gt;Increases base action damage and HP restoration by 10%. Also increases base damage and HP restoration of your pet by 10%.&lt;/para&gt;
@@ -56063,10 +56472,57 @@ private IBaseAction ChimatsuriPvE =&gt; _ChimatsuriPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; ChimatsuriPvE;
+private readonly Lazy&lt;IBaseAction&gt; _SeitonTenchuPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29515, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifySeitonTenchuPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29515"&gt;&lt;strong&gt;Seiton Tenchu&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (NIN) [29515] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifySeitonTenchuPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29515"&gt;&lt;strong&gt;Seiton Tenchu&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (NIN) [29515] [Limit Break]
+/// &lt;para&gt;Rushes target and delivers an attack with a potency of 12,000, incapacitating foes whose HP is below 50%.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Afflicts target with Death Link&lt;/para&gt;
+/// &lt;para&gt;Duration: 4s&lt;/para&gt;
+/// &lt;para&gt;Defeating an enemy with this action, or one under the effect of Death Link, will grant Unsealed Seiton Tenchu, allowing a second execution of this action.&lt;/para&gt;
+/// &lt;para&gt;Duration: 8s&lt;/para&gt;
+/// &lt;para&gt;Effect duration is reduced by 1s each time it is applied to a target with a minimum duration of 4s.&lt;/para&gt;
+/// &lt;para&gt;Effect cannot be applied to players riding machina or non-player combatants.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full or while under the effect of Unsealed Seiton Tenchu.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 105s&lt;/para&gt;
+/// &lt;para&gt;Cannot be executed while bound.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction SeitonTenchuPvP =&gt; _SeitonTenchuPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29515"&gt;&lt;strong&gt;Seiton Tenchu&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (NIN) [29515] [Limit Break]
+/// &lt;para&gt;Rushes target and delivers an attack with a potency of 12,000, incapacitating foes whose HP is below 50%.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Afflicts target with Death Link&lt;/para&gt;
+/// &lt;para&gt;Duration: 4s&lt;/para&gt;
+/// &lt;para&gt;Defeating an enemy with this action, or one under the effect of Death Link, will grant Unsealed Seiton Tenchu, allowing a second execution of this action.&lt;/para&gt;
+/// &lt;para&gt;Duration: 8s&lt;/para&gt;
+/// &lt;para&gt;Effect duration is reduced by 1s each time it is applied to a target with a minimum duration of 4s.&lt;/para&gt;
+/// &lt;para&gt;Effect cannot be applied to players riding machina or non-player combatants.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full or while under the effect of Unsealed Seiton Tenchu.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 105s&lt;/para&gt;
+/// &lt;para&gt;Cannot be executed while bound.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; SeitonTenchuPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50090"&gt;&lt;strong&gt;All Fours&lt;/strong&gt;&lt;/see&gt; (ROG NIN) [90]
     /// &lt;para&gt;Reduces damage taken when falling.&lt;/para&gt;
@@ -57462,10 +57918,43 @@ private IBaseAction SatelliteBeamPvE =&gt; _SatelliteBeamPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; SatelliteBeamPvE;
+private readonly Lazy&lt;IBaseAction&gt; _MarksmansSpitePvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29415, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyMarksmansSpitePvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29415"&gt;&lt;strong&gt;Marksman's Spite&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (MCH) [29415] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyMarksmansSpitePvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29415"&gt;&lt;strong&gt;Marksman's Spite&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (MCH) [29415] [Limit Break]
+/// &lt;para&gt;Delivers a ranged attack with a potency of 36,000.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction MarksmansSpitePvP =&gt; _MarksmansSpitePvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29415"&gt;&lt;strong&gt;Marksman's Spite&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (MCH) [29415] [Limit Break]
+/// &lt;para&gt;Delivers a ranged attack with a potency of 36,000.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; MarksmansSpitePvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50117"&gt;&lt;strong&gt;Increased Action Damage&lt;/strong&gt;&lt;/see&gt; (MCH) [117]
     /// &lt;para&gt;Increases base action damage and autoturret damage by 10%.&lt;/para&gt;
@@ -58693,10 +59182,61 @@ private IBaseAction DarkForcePvE =&gt; _DarkForcePvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; DarkForcePvE;
+private readonly Lazy&lt;IBaseAction&gt; _EventidePvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29097, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyEventidePvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29097"&gt;&lt;strong&gt;Eventide&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (DRK) [29097] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyEventidePvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29097"&gt;&lt;strong&gt;Eventide&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (DRK) [29097] [Limit Break]
+/// &lt;para&gt;Delivers an attack with a potency of 6,000 to all enemies in a straight line before and behind you.&lt;/para&gt;
+/// &lt;para&gt;Potency increases up to 24,000 as HP nears maximum.&lt;/para&gt;
+/// &lt;para&gt;HP is reduced to 1 upon execution.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Undead Redemption&lt;/para&gt;
+/// &lt;para&gt;Undead Redemption Effect: Most attacks cannot reduce your HP to less than 1, and you absorb 100% of weaponskill damage dealt as HP&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Blackblood&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 105s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Souleater Combo changes to Bloodspiller while under the effect of Blackblood.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction EventidePvP =&gt; _EventidePvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29097"&gt;&lt;strong&gt;Eventide&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (DRK) [29097] [Limit Break]
+/// &lt;para&gt;Delivers an attack with a potency of 6,000 to all enemies in a straight line before and behind you.&lt;/para&gt;
+/// &lt;para&gt;Potency increases up to 24,000 as HP nears maximum.&lt;/para&gt;
+/// &lt;para&gt;HP is reduced to 1 upon execution.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Undead Redemption&lt;/para&gt;
+/// &lt;para&gt;Undead Redemption Effect: Most attacks cannot reduce your HP to less than 1, and you absorb 100% of weaponskill damage dealt as HP&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Blackblood&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 105s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Souleater Combo changes to Bloodspiller while under the effect of Blackblood.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; EventidePvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50158"&gt;&lt;strong&gt;Blackblood&lt;/strong&gt;&lt;/see&gt; (DRK) [158]
     /// &lt;para&gt;Allows for Blood Gauge accumulation upon the landing of certain actions.&lt;/para&gt;
@@ -60367,10 +60907,49 @@ private IBaseAction AstralStasisPvE =&gt; _AstralStasisPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; AstralStasisPvE;
+private readonly Lazy&lt;IBaseAction&gt; _CelestialRiverPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29255, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyCelestialRiverPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29255"&gt;&lt;strong&gt;Celestial River&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (AST) [29255] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyCelestialRiverPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29255"&gt;&lt;strong&gt;Celestial River&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (AST) [29255] [Limit Break]
+/// &lt;para&gt;Reduces damage dealt by nearby enemies by 30%. Effect is reduced by 10% every 5 seconds.&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Increases damage dealt by self and nearby party members by 30%. Effect is reduced by 10% every 5s.&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 105s&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction CelestialRiverPvP =&gt; _CelestialRiverPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29255"&gt;&lt;strong&gt;Celestial River&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (AST) [29255] [Limit Break]
+/// &lt;para&gt;Reduces damage dealt by nearby enemies by 30%. Effect is reduced by 10% every 5 seconds.&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Increases damage dealt by self and nearby party members by 30%. Effect is reduced by 10% every 5s.&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 105s&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; CelestialRiverPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50122"&gt;&lt;strong&gt;Maim and Mend&lt;/strong&gt;&lt;/see&gt; (AST) [122]
     /// &lt;para&gt;Increases base action damage and HP restoration by 10%.&lt;/para&gt;
@@ -61839,10 +62418,51 @@ private IBaseAction DoomOfTheLivingPvE =&gt; _DoomOfTheLivingPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; DoomOfTheLivingPvE;
+private readonly Lazy&lt;IBaseAction&gt; _ZantetsukenPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29537, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyZantetsukenPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29537"&gt;&lt;strong&gt;Zantetsuken&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SAM) [29537] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyZantetsukenPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29537"&gt;&lt;strong&gt;Zantetsuken&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SAM) [29537] [Limit Break]
+/// &lt;para&gt;Swiftly charges forward, dealing damage to target and all enemies nearby it with a potency of 24,000.&lt;/para&gt;
+/// &lt;para&gt;If target is afflicted with Kuzushi, deals damage equal to 100% of their maximum HP.&lt;/para&gt;
+/// &lt;para&gt;Ignores the effects of Guard when dealing damage.&lt;/para&gt;
+/// &lt;para&gt;The additional effect of Kuzushi cannot be applied to players riding machina and non-player combatants.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 120s&lt;/para&gt;
+/// &lt;para&gt;Cannot be executed while bound.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction ZantetsukenPvP =&gt; _ZantetsukenPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29537"&gt;&lt;strong&gt;Zantetsuken&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SAM) [29537] [Limit Break]
+/// &lt;para&gt;Swiftly charges forward, dealing damage to target and all enemies nearby it with a potency of 24,000.&lt;/para&gt;
+/// &lt;para&gt;If target is afflicted with Kuzushi, deals damage equal to 100% of their maximum HP.&lt;/para&gt;
+/// &lt;para&gt;Ignores the effects of Guard when dealing damage.&lt;/para&gt;
+/// &lt;para&gt;The additional effect of Kuzushi cannot be applied to players riding machina and non-player combatants.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 120s&lt;/para&gt;
+/// &lt;para&gt;Cannot be executed while bound.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; ZantetsukenPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50208"&gt;&lt;strong&gt;Kenki Mastery II&lt;/strong&gt;&lt;/see&gt; (SAM) [208]
     /// &lt;para&gt;Increases Kenki Gauge when landing all weaponskills excluding Iaijutsu.&lt;/para&gt;
@@ -63556,10 +64176,53 @@ private IBaseAction VermilionScourgePvE =&gt; _VermilionScourgePvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; VermilionScourgePvE;
+private readonly Lazy&lt;IBaseAction&gt; _SouthernCrossPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29704, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifySouthernCrossPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29704"&gt;&lt;strong&gt;Southern Cross&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (RDM) [29704] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifySouthernCrossPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29704"&gt;&lt;strong&gt;Southern Cross&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (RDM) [29704] [Limit Break]
+/// &lt;para&gt;Emblazons a grand cross on the ground beneath a party member or enemy, restoring HP of party members within range while damaging enemies.&lt;/para&gt;
+/// &lt;para&gt;Cure Potency: 8,000&lt;/para&gt;
+/// &lt;para&gt;Damage Potency: 8,000&lt;/para&gt;
+/// &lt;para&gt;White Shift Effect: Cure potency is increased by 50%&lt;/para&gt;
+/// &lt;para&gt;Black Shift Effect: Damage potency is increased by 50%&lt;/para&gt;
+/// &lt;para&gt;Targets standing at the cross's center will receive the effects of this action twice.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction SouthernCrossPvP =&gt; _SouthernCrossPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29704"&gt;&lt;strong&gt;Southern Cross&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (RDM) [29704] [Limit Break]
+/// &lt;para&gt;Emblazons a grand cross on the ground beneath a party member or enemy, restoring HP of party members within range while damaging enemies.&lt;/para&gt;
+/// &lt;para&gt;Cure Potency: 8,000&lt;/para&gt;
+/// &lt;para&gt;Damage Potency: 8,000&lt;/para&gt;
+/// &lt;para&gt;White Shift Effect: Cure potency is increased by 50%&lt;/para&gt;
+/// &lt;para&gt;Black Shift Effect: Damage potency is increased by 50%&lt;/para&gt;
+/// &lt;para&gt;Targets standing at the cross's center will receive the effects of this action twice.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; SouthernCrossPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50195"&gt;&lt;strong&gt;Enhanced Jolt&lt;/strong&gt;&lt;/see&gt; (RDM) [195]
     /// &lt;para&gt;Upgrades Jolt to Jolt II. Also increases the potency of Verthunder and Veraero to 360, and the potency of Verfire and Verstone to 300.&lt;/para&gt;
@@ -66984,9 +67647,11 @@ public abstract partial class BlueMageRotation : CustomRotation
 
 
 
+
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50219"&gt;&lt;strong&gt;Learning&lt;/strong&gt;&lt;/see&gt; (BLU) [219]
     /// &lt;para&gt;Infrequently grants the ability to discern the secrets of enemy actions wielded in battle and make them your own.&lt;/para&gt;
@@ -68886,10 +69551,59 @@ private IBaseAction GunmetalSoulPvE =&gt; _GunmetalSoulPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; GunmetalSoulPvE;
+private readonly Lazy&lt;IBaseAction&gt; _RelentlessRushPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29130, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyRelentlessRushPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29130"&gt;&lt;strong&gt;Relentless Rush&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (GNB) [29130] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyRelentlessRushPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29130"&gt;&lt;strong&gt;Relentless Rush&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (GNB) [29130] [Limit Break]
+/// &lt;para&gt;Unleashes a flurry of blade strikes on nearby enemies, dealing damage over time with a potency of 4,000 and reducing damage taken by 25% until effect expires.&lt;/para&gt;
+/// &lt;para&gt;Duration: 4s&lt;/para&gt;
+/// &lt;para&gt;Activates Terminal Trigger when effect duration expires.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Afflicts target with Relentless Shrapnel, reducing damage dealt by 4% while increasing damage taken by 4% per stack&lt;/para&gt;
+/// &lt;para&gt;Duration: 5s&lt;/para&gt;
+/// &lt;para&gt;Maximum Stacks: 5&lt;/para&gt;
+/// &lt;para&gt;Can be executed while moving.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 60s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Terminal Trigger upon execution.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction RelentlessRushPvP =&gt; _RelentlessRushPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29130"&gt;&lt;strong&gt;Relentless Rush&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (GNB) [29130] [Limit Break]
+/// &lt;para&gt;Unleashes a flurry of blade strikes on nearby enemies, dealing damage over time with a potency of 4,000 and reducing damage taken by 25% until effect expires.&lt;/para&gt;
+/// &lt;para&gt;Duration: 4s&lt;/para&gt;
+/// &lt;para&gt;Activates Terminal Trigger when effect duration expires.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Afflicts target with Relentless Shrapnel, reducing damage dealt by 4% while increasing damage taken by 4% per stack&lt;/para&gt;
+/// &lt;para&gt;Duration: 5s&lt;/para&gt;
+/// &lt;para&gt;Maximum Stacks: 5&lt;/para&gt;
+/// &lt;para&gt;Can be executed while moving.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 60s&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Terminal Trigger upon execution.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; RelentlessRushPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50257"&gt;&lt;strong&gt;Cartridge Charge&lt;/strong&gt;&lt;/see&gt; (GNB) [257]
     /// &lt;para&gt;Stores a Cartridge in your Powder Gauge after successfully completing a combo with Solid Barrel.&lt;/para&gt;
@@ -70666,10 +71380,47 @@ private IBaseAction CrimsonLotusPvE =&gt; _CrimsonLotusPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; CrimsonLotusPvE;
+private readonly Lazy&lt;IBaseAction&gt; _ContradancePvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29432, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyContradancePvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29432"&gt;&lt;strong&gt;Contradance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (DNC) [29432] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyContradancePvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29432"&gt;&lt;strong&gt;Contradance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (DNC) [29432] [Limit Break]
+/// &lt;para&gt;Charms nearby enemies.&lt;/para&gt;
+/// &lt;para&gt;Duration: 2s&lt;/para&gt;
+/// &lt;para&gt;Damage you deal to charmed enemies will extend the effect duration by 2s. This effect can only be extended once.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction ContradancePvP =&gt; _ContradancePvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29432"&gt;&lt;strong&gt;Contradance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (DNC) [29432] [Limit Break]
+/// &lt;para&gt;Charms nearby enemies.&lt;/para&gt;
+/// &lt;para&gt;Duration: 2s&lt;/para&gt;
+/// &lt;para&gt;Damage you deal to charmed enemies will extend the effect duration by 2s. This effect can only be extended once.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 90s&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; ContradancePvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50251"&gt;&lt;strong&gt;Increased Action Damage&lt;/strong&gt;&lt;/see&gt; (DNC) [251]
     /// &lt;para&gt;Increases base action damage by 10%.&lt;/para&gt;
@@ -72210,10 +72961,61 @@ private IBaseAction TheEndPvE =&gt; _TheEndPvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; TheEndPvE;
+private readonly Lazy&lt;IBaseAction&gt; _TenebraeLemurumPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29553, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyTenebraeLemurumPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29553"&gt;&lt;strong&gt;Tenebrae Lemurum&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (RPR) [29553] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyTenebraeLemurumPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29553"&gt;&lt;strong&gt;Tenebrae Lemurum&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (RPR) [29553] [Limit Break]
+/// &lt;para&gt;Offers your flesh as a vessel to your avatar, gaining 5 stacks of Enshrouded.&lt;/para&gt;
+/// &lt;para&gt;Duration: 20s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Afflicts nearby enemies with Hysteria&lt;/para&gt;
+/// &lt;para&gt;Hysteria Effect: Afflicted enemies are unable to act of their own free will&lt;/para&gt;
+/// &lt;para&gt;Duration: 2s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 75s&lt;/para&gt;
+/// &lt;para&gt;Has no effect on players riding machina or non-player combatants.&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Communio while under the effect of Enshrouded.&lt;/para&gt;
+/// &lt;para&gt;※Grim Swathe changes to Lemure's Slice while under the effect of Enshrouded.&lt;/para&gt;
+/// &lt;para&gt;※Infernal Slice Combo changes to Void Reaping while under the effect of Enshrouded.&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction TenebraeLemurumPvP =&gt; _TenebraeLemurumPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29553"&gt;&lt;strong&gt;Tenebrae Lemurum&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (RPR) [29553] [Limit Break]
+/// &lt;para&gt;Offers your flesh as a vessel to your avatar, gaining 5 stacks of Enshrouded.&lt;/para&gt;
+/// &lt;para&gt;Duration: 20s&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Afflicts nearby enemies with Hysteria&lt;/para&gt;
+/// &lt;para&gt;Hysteria Effect: Afflicted enemies are unable to act of their own free will&lt;/para&gt;
+/// &lt;para&gt;Duration: 2s&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 75s&lt;/para&gt;
+/// &lt;para&gt;Has no effect on players riding machina or non-player combatants.&lt;/para&gt;
+/// &lt;para&gt;&lt;/para&gt;
+/// &lt;para&gt;※Action changes to Communio while under the effect of Enshrouded.&lt;/para&gt;
+/// &lt;para&gt;※Grim Swathe changes to Lemure's Slice while under the effect of Enshrouded.&lt;/para&gt;
+/// &lt;para&gt;※Infernal Slice Combo changes to Void Reaping while under the effect of Enshrouded.&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; TenebraeLemurumPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50379"&gt;&lt;strong&gt;Soul Gauge&lt;/strong&gt;&lt;/see&gt; (RPR) [379]
     /// &lt;para&gt;Allows for Soul Gauge accumulation upon the landing of certain actions, or defeating enemies under the effect of Death's Design.&lt;/para&gt;
@@ -73579,10 +74381,57 @@ private IBaseAction TechneMakrePvE =&gt; _TechneMakrePvECreator.Value;
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 private sealed protected override IBaseAction LimitBreak3 =&gt; TechneMakrePvE;
+private readonly Lazy&lt;IBaseAction&gt; _MesotesPvPCreator = new(() =&gt; 
+{
+    IBaseAction action = new BaseAction((ActionID)29266, false);
+    CustomRotation.LoadActionSetting(ref action);
+
+    var setting = action.Setting;
+    ModifyMesotesPvP(ref setting);
+    action.Setting = setting;
+
+    return action;
+});
+
+/// &lt;summary&gt;
+/// Modify &lt;see href="https://garlandtools.org/db/#action/29266"&gt;&lt;strong&gt;Mesotes&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SGE) [29266] [Limit Break]
+/// &lt;/summary&gt;
+static partial void ModifyMesotesPvP(ref ActionSetting setting);
+
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29266"&gt;&lt;strong&gt;Mesotes&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SGE) [29266] [Limit Break]
+/// &lt;para&gt;Erects a magicked barrier at a select location, granting party members the effect of Mesotes and afflicting enemies with the effect of Lype when standing inside.&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Mesotes Effect: Negates all damage from enemies who are not under the effect of Lype&lt;/para&gt;
+/// &lt;para&gt;Duration: 5s&lt;/para&gt;
+/// &lt;para&gt;Lype Effect: Damage over time&lt;/para&gt;
+/// &lt;para&gt;Potency: 8,000&lt;/para&gt;
+/// &lt;para&gt;Duration: 5s&lt;/para&gt;
+/// &lt;para&gt;The barrier can be relocated once before its effect expires, but the effect duration will not be reset.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 120s&lt;/para&gt;
+/// &lt;/summary&gt;
+
+private IBaseAction MesotesPvP =&gt; _MesotesPvPCreator.Value;
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/29266"&gt;&lt;strong&gt;Mesotes&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (SGE) [29266] [Limit Break]
+/// &lt;para&gt;Erects a magicked barrier at a select location, granting party members the effect of Mesotes and afflicting enemies with the effect of Lype when standing inside.&lt;/para&gt;
+/// &lt;para&gt;Duration: 15s&lt;/para&gt;
+/// &lt;para&gt;Mesotes Effect: Negates all damage from enemies who are not under the effect of Lype&lt;/para&gt;
+/// &lt;para&gt;Duration: 5s&lt;/para&gt;
+/// &lt;para&gt;Lype Effect: Damage over time&lt;/para&gt;
+/// &lt;para&gt;Potency: 8,000&lt;/para&gt;
+/// &lt;para&gt;Duration: 5s&lt;/para&gt;
+/// &lt;para&gt;The barrier can be relocated once before its effect expires, but the effect duration will not be reset.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed when the limit gauge is full.&lt;/para&gt;
+/// &lt;para&gt;Gauge Charge Time: 120s&lt;/para&gt;
+/// &lt;/summary&gt;
+private sealed protected override IBaseAction LimitBreakPvP =&gt; MesotesPvP;
 
 #endregion
 
 #region Traits
+
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/50368"&gt;&lt;strong&gt;Maim and Mend&lt;/strong&gt;&lt;/see&gt; (SGE) [368]
     /// &lt;para&gt;Increases base action damage and HP restoration by 10%.&lt;/para&gt;

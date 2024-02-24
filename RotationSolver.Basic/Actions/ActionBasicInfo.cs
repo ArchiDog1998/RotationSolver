@@ -85,6 +85,8 @@ public struct ActionBasicInfo
     {
         if (!_action.Config.IsEnabled || !IsOnSlot) return false;
 
+        if (IsLimitBreak) return true;
+
         //Disabled.
         if (DataCenter.DisabledActionSequencer?.Contains(ID) ?? false) return false;
 

@@ -95,7 +95,9 @@ public class BaseAction : IBaseAction
         }
 
         if (!Info.BasicCheck(skipStatusProvideCheck, skipCombo, ignoreCastingCheck)) return false;
+
         if (!Cooldown.CooldownCheck(isEmpty, onLastAbility, ignoreClippingCheck, gcdCountForAbility)) return false;
+
 
         if (Setting.IsMeleeRange && IActionHelper.IsLastAction(IActionHelper.MovingActions)) return false; //No range actions after moving.
         if (Setting.IsFriendly && DataCenter.AverageTimeToKill < Config.TimeToKill) return false;

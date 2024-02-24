@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Rotations;
 
 partial class CustomRotation
 {
@@ -121,7 +123,9 @@ partial class CustomRotation
 
         return LimitBreakLevel switch
         {
-            1 => LimitBreak1?.CanUse(out act, skipAoeCheck: true) ?? false,
+            1 => ((DataCenter.Territory?.IsPvpZone ?? false) 
+                ? LimitBreakPvP?.CanUse(out act, skipAoeCheck: true)
+                : LimitBreak1?.CanUse(out act, skipAoeCheck: true)) ?? false,
             2 => LimitBreak2?.CanUse(out act, skipAoeCheck: true) ?? false,
             3 => LimitBreak3?.CanUse(out act, skipAoeCheck: true) ?? false,
             _ => false,

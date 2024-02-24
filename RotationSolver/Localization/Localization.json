@@ -254,5 +254,6 @@
   "RotationSolver.Data.UiString.SpecialCommandType_Raise": "Raise",
   "DownloadRotationsName": "Auto Download Rotations",
   "AutoLoadCustomRotationsName": "Auto load rotations",
-  "RotationSolver.Data.UiString.ConfigWindow_Rotations_Library": "The folder contains rotation libs or the download url about rotation lib."
+  "RotationSolver.Data.UiString.ConfigWindow_Rotations_Library": "The folder contains rotation libs or the download url about rotation lib.",
+  "RotationSolver.Data.UiString.SpecialCommandType_LimitBreak": "Limit Break"
 }

@@ -53,12 +53,12 @@ public static partial class RSCommands
 
         if (nextAction is BaseAction act1 && act1.Info.IsPvP && !act1.Setting.IsFriendly
             && act1.TargetInfo.IsSingleTarget
-            && act1.Target?.Target is PlayerCharacter p/* && p != Player.Object*/)
+            && act1.Target?.Target is PlayerCharacter p && p != Player.Object)
         {
             var hash = SocialUpdater.EncryptString(p);
 
             //Don't attack authors and contributors!!
-            if (!act1.Setting.IsFriendly && (RotationUpdater.AuthorHashes.ContainsKey(hash)
+            if ((RotationUpdater.AuthorHashes.ContainsKey(hash)
                 || DownloadHelper.ContributorsHash.Contains(hash)))
             {
                 Svc.Chat.PrintError($"Please don't attack RS developers with RS by {act1}!");
