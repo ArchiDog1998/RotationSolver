@@ -4,7 +4,10 @@ namespace RotationSolver.Basic.Actions;
 
 public interface IBaseAction : IAction
 {
-    internal static TargetType? TargetOverride { get; set; } = null;
+    /// <summary>
+    /// The target override.
+    /// </summary>
+    public static TargetType? TargetOverride { get; set; } = null;
     internal static bool ForceEnable { get; set; } = false;
     internal static bool AutoHealCheck { get; set; } = false;
     internal static bool ActionPreview { get; set; } = false;

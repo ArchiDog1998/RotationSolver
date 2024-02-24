@@ -229,5 +229,7 @@
   "PosFlameThrowerName": "",
   "PosImprovisationName": "",
   "PoslockModifierName": "The modifier key to unlock the movement temporary",
-  "PoslockModifierDescription": ""
+  "PoslockModifierDescription": "",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_ForcedConditionSet_Description": "Conditions for forced automatic use of action.",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_DisabledConditionSet_Description": "Conditions for automatic use of action being disabled."
 }

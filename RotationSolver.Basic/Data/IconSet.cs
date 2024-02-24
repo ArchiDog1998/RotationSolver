@@ -115,7 +115,9 @@ public static class IconSet
     /// <returns></returns>
     public static bool GetTexture(uint id, out IDalamudTextureWrap texture, uint @default = 0)
         => ThreadLoadImageHandler.TryGetIconTextureWrap(id, true, out texture)
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out texture)
         || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, true, out texture)
+        || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, false, out texture)
         || ThreadLoadImageHandler.TryGetIconTextureWrap(0, true, out texture);
 
     /// <summary>
@@ -141,7 +143,7 @@ public static class IconSet
     /// <returns></returns>
     public static bool GetTexture(this IAction? action, out IDalamudTextureWrap texture, bool isAdjust = true)
     {
-        if (isAdjust)
+        if (isAdjust && action is IBaseAction)
         {
             return GetTexture((ActionID)(action?.AdjustedID ?? 0), out texture);
         }
