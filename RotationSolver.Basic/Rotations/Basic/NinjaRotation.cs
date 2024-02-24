@@ -165,10 +165,10 @@ partial class NinjaRotation
         return base.DefenseSingleAbility(out act);
     }
 
-    static partial void ModifySuitonPvE(ref ActionSetting setting)
-    {
-        setting.StatusProvide = [StatusID.Suiton];
-    }
+    //static partial void ModifySuitonPvE(ref ActionSetting setting)
+    //{
+    //    setting.StatusProvide = [StatusID.Suiton];
+    //}
 
     static partial void ModifyFleetingRaijuPvE(ref ActionSetting setting)
     {

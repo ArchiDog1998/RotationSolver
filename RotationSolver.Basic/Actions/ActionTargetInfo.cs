@@ -221,7 +221,11 @@ public struct ActionTargetInfo(IBaseAction _action)
 
             if (t == null) return null;
 
-            if (IsSingleTarget)
+            if (type == TargetType.Move)
+            {
+                return null;
+            }
+            else if (IsSingleTarget)
             {
                 if (CanUseTo(t) && CheckStatus(t, skipStatusProvideCheck) && t.DistanceToPlayer() <= range)
                 {

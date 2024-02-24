@@ -156,8 +156,10 @@ partial class CustomRotation
     {
         IBaseAction.ShouldEndSpecial = false;
         IBaseAction.IgnoreClipping = true;
-        IBaseAction.TargetOverride = TargetType.BeAttacked;
+
         var countDown = Service.CountDownTime;
+        IBaseAction.TargetOverride = countDown < 1 
+            ? TargetType.Move : TargetType.BeAttacked;
         if (countDown > 0)
         {
             gcdAction = null;

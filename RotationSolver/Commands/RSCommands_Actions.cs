@@ -58,8 +58,8 @@ public static partial class RSCommands
             var hash = SocialUpdater.EncryptString(p);
 
             //Don't attack authors and contributors!!
-            if (RotationUpdater.AuthorHashes.ContainsKey(hash)
-                || DownloadHelper.ContributorsHash.Contains(hash))
+            if (!act1.Setting.IsFriendly && (RotationUpdater.AuthorHashes.ContainsKey(hash)
+                || DownloadHelper.ContributorsHash.Contains(hash)))
             {
                 Svc.Chat.PrintError($"Please don't attack RS developers with RS by {act1}!");
                 return;

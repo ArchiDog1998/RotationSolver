@@ -148,11 +148,6 @@ partial class DancerRotation
         setting.ActionCheck = () => InCombat;
     }
 
-    static partial void ModifyStandardStepPvE(ref ActionSetting setting)
-    {
-        setting.StatusProvide = [StatusID.StandardStep, StatusID.TechnicalStep];
-    }
-
     static partial void ModifyTechnicalStepPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.StandardFinish];

@@ -79,7 +79,27 @@ partial class BardRotation
             return true;
         };
     }
-    
+
+    static partial void ModifyPitchPerfectPvP(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Repertoire];
+    }
+
+    static partial void ModifySilentNocturnePvP(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.Repertoire];
+    }
+
+    static partial void ModifyTheWardensPaeanPvP(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.Repertoire];
+    }
+
+    static partial void ModifyBlastArrowPvP(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.BlastArrowReady_3142];
+    }
+
     static partial void ModifyPitchPerfectPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Song == Song.WANDERER && Repertoire > 0;

@@ -102,21 +102,25 @@ partial class CustomRotation
         setting.ActionCheck = () => !HasHostilesInMaxRange
             && (Player.CurrentMp <= Player.MaxMp / 3 || Player.CurrentHp <= Player.MaxHp / 3)
             && !IsLastAction(ActionID.StandardissueElixirPvP);
+        setting.IsFriendly = true;
     }
 
     static partial void ModifyRecuperatePvP(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Player.MaxHp - Player.CurrentHp > 15000;
+        setting.IsFriendly = true;
     }
 
     static partial void ModifyPurifyPvP(ref ActionSetting setting)
     {
         setting.TargetType = TargetType.Dispel;
+        setting.IsFriendly = true;
     }
 
     static partial void ModifySprintPvP(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.Sprint_1342];
+        setting.IsFriendly = true;
     }
 
     #endregion
