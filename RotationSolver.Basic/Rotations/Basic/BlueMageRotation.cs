@@ -34,6 +34,22 @@ partial class BlueMageRotation
     protected BLUID BlueId { get; set; } = BLUID.DPS;
 
     private protected sealed override IBaseAction Raise => AngelWhisperPvE;
+
+    static partial void ModifyFeatherRainPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyEruptionPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
 }
 
 ///// <summary>

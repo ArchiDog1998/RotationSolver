@@ -98,7 +98,11 @@ partial class WhiteMageRotation
 
     static partial void ModifyPresenceOfMindPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => !IsMoving && IsLongerThan(10);
+        setting.ActionCheck = () => !IsMoving;
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     static partial void ModifyCureIiiPvP(ref ActionSetting setting)

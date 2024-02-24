@@ -203,7 +203,11 @@ partial class SummonerRotation
     static partial void ModifySearingLightPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.SearingLight];
-        setting.ActionCheck = () => InCombat && IsLongerThan(15);
+        setting.ActionCheck = () => InCombat;
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 15,
+        };
     }
 
     static partial void ModifyRadiantAegisPvE(ref ActionSetting setting)

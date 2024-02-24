@@ -61,11 +61,19 @@ partial class DancerRotation
     static partial void ModifyBladeshowerPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.SilkenFlow];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyRisingWindmillPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.SilkenSymmetry, StatusID.FlourishingSymmetry];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyBloodshowerPvE(ref ActionSetting setting)
@@ -77,6 +85,10 @@ partial class DancerRotation
     {
         setting.ActionCheck = () => Feathers > 0;
         setting.StatusProvide = [StatusID.ThreefoldFanDance];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyFanDanceIiiPvE(ref ActionSetting setting)

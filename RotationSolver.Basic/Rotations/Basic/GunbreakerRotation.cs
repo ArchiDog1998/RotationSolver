@@ -119,6 +119,22 @@ partial class GunbreakerRotation
         setting.ActionCheck = () => MaxAmmo - Ammo > 1;
     }
 
+    static partial void ModifyDemonSlicePvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
+    }
+
+    static partial void ModifyDemonSlaughterPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
+    }
+
     /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {

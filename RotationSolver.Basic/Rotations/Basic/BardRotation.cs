@@ -88,11 +88,19 @@ partial class BardRotation
     static partial void ModifyQuickNockPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.ShadowbiteReady];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyShadowbitePvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.ShadowbiteReady];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyApexArrowPvE(ref ActionSetting setting)
@@ -106,15 +114,43 @@ partial class BardRotation
         setting.StatusNeed = [StatusID.BlastArrowReady];
     }
 
+    static partial void ModifyRainOfDeathPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
+    }
+
     static partial void ModifyRadiantFinalePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => JobGauge.Coda.Any(s => s != Song.NONE);
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+    }
+
+    static partial void ModifyRagingStrikesPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     static partial void ModifyTroubadourPvE(ref ActionSetting setting)
     {
         setting.StatusFromSelf = false;
         setting.StatusProvide = StatusHelper.RangePhysicalDefense;
+    }
+
+    static partial void ModifyBattleVoicePvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     /// <inheritdoc/>
