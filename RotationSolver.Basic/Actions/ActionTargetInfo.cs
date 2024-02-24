@@ -41,13 +41,15 @@ public struct ActionTargetInfo(IBaseAction _action)
     #region Target Finder.
     //The delay of finding the targets.
     private readonly ObjectListDelay<BattleChara> _canTargets = new (() => Service.Config.TargetDelay);
-    public readonly IEnumerable<BattleChara> GetCanTargets(bool skipStatusProvideCheck)
+    public readonly IEnumerable<BattleChara> GetCanTargets(bool skipStatusProvideCheck, TargetType type)
     {
         var items = TargetFilter.GetObjectInRadius(DataCenter.AllTargets, Range);
         var objs = new List<BattleChara>(items.Count());
 
         foreach (var obj in items)
         {
+            if (type == TargetType.Heal && obj.GetHealthRatio() == 1) continue;
+
             if (!GeneralCheck(obj, skipStatusProvideCheck)) continue;
             objs.Add(obj);
         }
@@ -56,7 +58,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         return _canTargets;
     }
 
-    public readonly IEnumerable<BattleChara> GetCanAffects(bool skipStatusProvideCheck)
+    public readonly IEnumerable<BattleChara> GetCanAffects(bool skipStatusProvideCheck, TargetType type)
     {
         if (EffectRange == 0) return [];
 
@@ -64,6 +66,12 @@ public struct ActionTargetInfo(IBaseAction _action)
             ? DataCenter.PartyMembers
             : DataCenter.AllHostileTargets,
             Range + EffectRange);
+
+        if (type == TargetType.Heal)
+        {
+            items = items.Where(i => i.GetHealthRatio() < 1);
+        }
+
         var objs = new List<BattleChara>(items.Count());
 
         foreach (var obj in items)
@@ -198,9 +206,10 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             return new(player, [], player.Position);
         }
+        var type = _action.Setting.TargetType;
 
-        var canTargets = GetCanTargets(skipStatusProvideCheck);
-        var canAffects = GetCanAffects(skipStatusProvideCheck);
+        var canTargets = GetCanTargets(skipStatusProvideCheck, type);
+        var canAffects = GetCanAffects(skipStatusProvideCheck, type);
 
         if (IsTargetArea)
         {
@@ -232,7 +241,6 @@ public struct ActionTargetInfo(IBaseAction _action)
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
             skipAoeCheck ? 0 : _action.Config.AoeCount);
-        var type = _action.Setting.TargetType;
         if (type == TargetType.BeAttacked && !_action.Setting.IsFriendly)
         {
             type = TargetType.Big;

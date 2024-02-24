@@ -94,8 +94,14 @@ partial class CustomRotation
 
                 if (PartyMembersMinHP < Service.Config.HealWhenNothingTodoBelow)
                 {
-                    if (DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && HealAreaGCD(out act)) return act;
+                    IBaseAction.TargetOverride =  TargetType.Heal;
+
+                    if (DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference 
+                        && DataCenter.PartyMembersHP.Count(i => i < 1) > 2
+                        && HealAreaGCD(out act)) return act;
                     if (HealSingleGCD(out act)) return act;
+
+                    IBaseAction.TargetOverride = null;
                 }
             }
         }
