@@ -153,7 +153,7 @@ internal abstract class Searchable(PropertyInfo property) : ISearchable
         get
         {
             var ui = _property.GetCustomAttribute<UIAttribute>();
-            if (ui == null) return string.Empty;
+            if (ui == null || string.IsNullOrEmpty(ui.Description)) return string.Empty;
 
             return (_property.Name + "Description").Local(ui.Description);
         }
