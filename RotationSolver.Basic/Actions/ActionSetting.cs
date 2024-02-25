@@ -35,7 +35,24 @@ public class ActionSetting()
     private TargetType _type = TargetType.Big;
     public TargetType TargetType 
     {
-        get => IBaseAction.TargetOverride ?? _type; 
+        get
+        {
+            var type = IBaseAction.TargetOverride ?? _type;
+            if (IsFriendly)
+            {
+
+            }
+            else
+            {
+                switch (type)
+                {
+                    case TargetType.BeAttacked:
+                        return _type;
+                }
+            }
+
+            return type;
+        }
         set => _type = value; 
     }
 

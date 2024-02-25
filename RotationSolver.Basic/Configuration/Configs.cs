@@ -140,7 +140,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _showTarget = true;
 
     [ConditionBool, UI("Show the target's time to kill.",
-        Parent = UiOverlay)]
+        Parent = nameof(ShowTarget))]
     private static readonly bool _showTargetTimeToKill = false;
 
     [ConditionBool, UI("Priority attack targets with attack markers",

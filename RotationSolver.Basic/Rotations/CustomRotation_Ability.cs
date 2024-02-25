@@ -45,7 +45,7 @@ partial class CustomRotation
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional) && role == JobRole.Melee
             && !(Player?.HasStatus(false, StatusHelper.NoPositionalStatus) ?? true))
         {
-            if (TrueNorthPvE.CanUse(out act, isEmpty: true)) return true;
+            if (TrueNorthPvE.CanUse(out act, isEmpty: true, onLastAbility: true)) return true;
         }
 
         IBaseAction.TargetOverride = TargetType.Heal;
