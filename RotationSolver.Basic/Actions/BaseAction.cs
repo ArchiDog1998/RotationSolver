@@ -59,6 +59,10 @@ public class BaseAction : IBaseAction
             {
                 Service.Config.RotationActionConfig[ID] = value 
                     = Setting.CreateConfig?.Invoke() ?? new();
+                if (Setting.TargetStatusProvide != null)
+                {
+                    value.TimeToKill = 10;
+                }
             }
             return value;
         }
@@ -100,7 +104,7 @@ public class BaseAction : IBaseAction
 
 
         if (Setting.IsMeleeRange && IActionHelper.IsLastAction(IActionHelper.MovingActions)) return false; //No range actions after moving.
-        if (Setting.IsFriendly && DataCenter.AverageTimeToKill < Config.TimeToKill) return false;
+        if (DataCenter.AverageTimeToKill < Config.TimeToKill) return false;
 
         PreviewTarget = TargetInfo.FindTarget(skipAoeCheck, skipStatusProvideCheck);
         if (PreviewTarget == null) return false;

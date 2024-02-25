@@ -219,7 +219,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             var t = Svc.Targets.Target as BattleChara;
 
-            if (t == null) return null;
+            if (t == null || !_action.Setting.CanTarget(t)) return null;
 
             if (type == TargetType.Move)
             {
