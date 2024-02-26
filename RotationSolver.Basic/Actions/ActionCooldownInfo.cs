@@ -50,7 +50,7 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <summary>
     /// 
     /// </summary>
-    public float RecastTimeRemainOneCharge => RecastTimeRemainOneChargeRaw - DataCenter.WeaponRemain;
+    public float RecastTimeRemainOneCharge => RecastTimeRemainOneChargeRaw + DataCenter.WeaponRemain;
 
     float RecastTimeRemainOneChargeRaw => RecastTimeRemain % RecastTimeOneChargeRaw;
 

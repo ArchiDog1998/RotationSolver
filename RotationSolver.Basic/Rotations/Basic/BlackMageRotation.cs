@@ -56,7 +56,7 @@ partial class BlackMageRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float EnochianTime => EnochianTimeRaw - DataCenter.WeaponRemain;
+    public static float EnochianTime => EnochianTimeRaw + DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
@@ -79,7 +79,7 @@ partial class BlackMageRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static float ElementTime => ElementTimeRaw - DataCenter.WeaponRemain;
+    protected static float ElementTime => ElementTimeRaw + DataCenter.WeaponRemain;
 
     /// <summary>
     /// 
