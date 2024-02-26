@@ -424,7 +424,10 @@ internal partial class Configs : IPluginConfiguration
 
     [UI("Drawing smoothness.", Parent = nameof(UseOverlayWindow))]
     [Range(0.005f, 0.05f, ConfigUnitType.Yalms, 0.001f)]
-    public float SampleLength { get; set; } = 0.2f;
+    public float SampleLength { get; set; } = 1;
+
+    [ConditionBool, UI("Use tasks for making the overlay window faster.", Parent = nameof(UseOverlayWindow))]
+    private static readonly bool _useTasksForOverlay = false;
 
     [UI("The angle of your vision cone", Parent = nameof(OnlyAttackInVisionCone))]
     [Range(0, 90, ConfigUnitType.Degree, 0.02f)]

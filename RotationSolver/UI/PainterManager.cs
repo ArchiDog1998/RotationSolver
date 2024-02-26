@@ -300,7 +300,8 @@ internal static class PainterManager
         if (_painter == null) return;
         _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
-        _painter.Enable = !Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
+        _painter.UseTaskToAccelerate = Service.Config.UseTasksForOverlay;
+        _painter.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
     }
 
     public static void Dispose()

@@ -262,6 +262,8 @@ internal static class ConditionDrawer
         ImguiTooltips.HoveredTooltip(UiString.ActionSequencer_Delay_Description.Local() +
             "\n" + ConfigUnitType.Seconds.Local());
 
+        ImGui.SameLine();
+
         ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
         ImGui.DragFloat($"##Offset Delay {condition.GetHashCode()}", ref condition.DelayOffset, 0.1f, MIN, MAX,
             $"{condition.DelayOffset:F1}{ConfigUnitType.Seconds.ToSymbol()}");
