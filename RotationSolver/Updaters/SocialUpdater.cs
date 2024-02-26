@@ -134,7 +134,7 @@ internal class SocialUpdater
         Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
-    static RandomDelay socialDelay = new(() => (3, 5));
+    static RandomDelay socialDelay = new(() => (5, 8));
     internal static async void UpdateSocial()
     {
         if (DataCenter.InCombat) return;
