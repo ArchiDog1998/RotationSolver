@@ -255,5 +255,14 @@
   "DownloadRotationsName": "Auto Download Rotations",
   "AutoLoadCustomRotationsName": "Auto load rotations",
   "RotationSolver.Data.UiString.ConfigWindow_Rotations_Library": "The folder contains rotation libs or the download url about rotation lib.",
-  "RotationSolver.Data.UiString.SpecialCommandType_LimitBreak": "Limit Break"
+  "RotationSolver.Data.UiString.SpecialCommandType_LimitBreak": "Limit Break",
+  "UseOverlayWindowDescription": "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.",
+  "DrawingHeightName": "The height of the drawing things.",
+  "SampleLengthName": "Drawing smoothness.",
+  "BeneficialPositionColorName": "The color of beneficial AoE positions",
+  "HoveredBeneficialPositionColorName": "The color of the hovered beneficial position",
+  "StateIconHeightName": "State icon height",
+  "StateIconSizeName": "State icon size",
+  "TargetIconSizeName": "The size of the next ability that will be used icon.",
+  "ShowTargetTimeToKillName": "Show the target's time to kill."
 }
