@@ -250,7 +250,7 @@ internal static class ConditionDrawer
 
     private static void DrawDelay(this DelayCondition condition)
     {
-        const float MIN = 0, MAX = 60;
+        const float MIN = 0, MAX = 600;
 
         ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
         if (ImGui.DragFloatRange2($"##Random Delay {condition.GetHashCode()}", ref condition.DelayMin, ref condition.DelayMax, 0.1f, MIN, MAX,
@@ -261,6 +261,13 @@ internal static class ConditionDrawer
         }
         ImguiTooltips.HoveredTooltip(UiString.ActionSequencer_Delay_Description.Local() +
             "\n" + ConfigUnitType.Seconds.Local());
+
+        ImGui.SetNextItemWidth(40 * ImGuiHelpers.GlobalScale);
+        ImGui.DragFloat($"##Offset Delay {condition.GetHashCode()}", ref condition.DelayOffset, 0.1f, MIN, MAX,
+            $"{condition.DelayOffset:F1}{ConfigUnitType.Seconds.ToSymbol()}");
+
+        ImguiTooltips.HoveredTooltip(UiString.ActionSequencer_Offset_Description.Local() +
+    "\n" + ConfigUnitType.Seconds.Local());
     }
 
     private static void DrawBefore(this ICondition condition)

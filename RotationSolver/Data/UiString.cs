@@ -450,6 +450,9 @@ internal enum UiString
     [Description("Delay its turning to true.")]
     ActionSequencer_Delay_Description,
 
+    [Description("Delay its turning.")]
+    ActionSequencer_Offset_Description,
+
     [Description("Enought Level")]
     ActionConditionType_EnoughLevel,
 

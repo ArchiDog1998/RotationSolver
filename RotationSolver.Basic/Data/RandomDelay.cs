@@ -31,7 +31,7 @@ public struct RandomDelay(Func<(float min, float max)> getRange)
     }
 
     /// <summary>
-    /// Delay the bool.
+    /// Delay the bool to be true.
     /// </summary>
     /// <param name="originData"></param>
     /// <returns></returns>
