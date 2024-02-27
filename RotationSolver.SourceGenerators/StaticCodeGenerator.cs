@@ -25,6 +25,28 @@ public class StaticCodeGenerator : IIncrementalGenerator
         GenerateActionCate(context);
         GenerateBaseRotation(context);
         GenerateRotations(context);
+        GenerateOpCode(context);
+    }
+
+    private static async void GenerateOpCode(SourceProductionContext context)
+    {
+        var code = $$"""
+            namespace RotationSolver.Basic.Data;
+
+            /// <summary>
+            /// The opcode
+            /// </summary>
+            public enum OpCode : ushort
+            {
+                /// <summary>
+                /// 
+                /// </summary>
+                None = 0,
+            {{Properties.Resources.OpCode.Table()}}
+            }
+            """;
+
+        context.AddSource("OpCode.g.cs", code);
     }
 
     private static void GenerateStatus(SourceProductionContext context)

@@ -190,7 +190,7 @@ public static class Watcher
             }
         }
 
-        if (set.Header.ActionType == ActionType.Action && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
+        if (set.Header.ActionType == ActionType.Action && DataCenter.PartyMembers.Length >= 4 && set.Action.Cast100ms > 0)
         {
             var type = set.Action.GetActionCate();
 
@@ -200,7 +200,7 @@ public static class Watcher
                     DataCenter.PartyMembers.Any(p => p.ObjectId == e.TargetID)
                     && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
                     && (effect.value > 0 || (effect.param0 & 6) == 6))
-                    == DataCenter.PartyMembers.Count())
+                    == DataCenter.PartyMembers.Length)
                 {
                     if (Service.Config.RecordCastingArea)
                     {

@@ -74506,4 +74506,446 @@ private sealed protected override IBaseAction LimitBreakPvP =&gt; MesotesPvP;
 #endregion
 }</value>
   </data>
+  <data name="OpCode" xml:space="preserve">
+    <value>/// &lt;summary&gt;
+///Actor Control Target
+/// &lt;/summary&gt;
+[Description("Actor Control Target")]
+ActorControlTarget = 973,
+/// &lt;summary&gt;
+///Actor Control Self
+/// &lt;/summary&gt;
+[Description("Actor Control Self")]
+ActorControlSelf = 813,
+/// &lt;summary&gt;
+///Airship Timers
+/// &lt;/summary&gt;
+[Description("Airship Timers")]
+AirshipTimers = 370,
+/// &lt;summary&gt;
+///Actor Gauge
+/// &lt;/summary&gt;
+[Description("Actor Gauge")]
+ActorGauge = 431,
+/// &lt;summary&gt;
+///Actor Move
+/// &lt;/summary&gt;
+[Description("Actor Move")]
+ActorMove = 845,
+/// &lt;summary&gt;
+///Airship Status
+/// &lt;/summary&gt;
+[Description("Airship Status")]
+AirshipStatus = 471,
+/// &lt;summary&gt;
+///Airship Exploration Result
+/// &lt;/summary&gt;
+[Description("Airship Exploration Result")]
+AirshipExplorationResult = 286,
+/// &lt;summary&gt;
+///Airship Status List
+/// &lt;/summary&gt;
+[Description("Airship Status List")]
+AirshipStatusList = 517,
+/// &lt;summary&gt;
+///Actor Set Pos
+/// &lt;/summary&gt;
+[Description("Actor Set Pos")]
+ActorSetPos = 174,
+/// &lt;summary&gt;
+///Actor Control
+/// &lt;/summary&gt;
+[Description("Actor Control")]
+ActorControl = 717,
+/// &lt;summary&gt;
+///Actor Cast
+/// &lt;/summary&gt;
+[Description("Actor Cast")]
+ActorCast = 421,
+/// &lt;summary&gt;
+///CFNotify
+/// &lt;/summary&gt;
+[Description("CFNotify")]
+CFNotify = 556,
+/// &lt;summary&gt;
+///Currency Crystal Info
+/// &lt;/summary&gt;
+[Description("Currency Crystal Info")]
+CurrencyCrystalInfo = 390,
+/// &lt;summary&gt;
+///Container Info
+/// &lt;/summary&gt;
+[Description("Container Info")]
+ContainerInfo = 849,
+/// &lt;summary&gt;
+///Desynth Result
+/// &lt;/summary&gt;
+[Description("Desynth Result")]
+DesynthResult = 967,
+/// &lt;summary&gt;
+///Event Play 8
+/// &lt;/summary&gt;
+[Description("Event Play 8")]
+EventPlay8 = 805,
+/// &lt;summary&gt;
+///Effect Result Basic
+/// &lt;/summary&gt;
+[Description("Effect Result Basic")]
+EffectResultBasic = 507,
+/// &lt;summary&gt;
+///Event Play 128
+/// &lt;/summary&gt;
+[Description("Event Play 128")]
+EventPlay128 = 790,
+/// &lt;summary&gt;
+///Event Play 16
+/// &lt;/summary&gt;
+[Description("Event Play 16")]
+EventPlay16 = 577,
+/// &lt;summary&gt;
+///Event Play
+/// &lt;/summary&gt;
+[Description("Event Play")]
+EventPlay = 423,
+/// &lt;summary&gt;
+///Event Play 32
+/// &lt;/summary&gt;
+[Description("Event Play 32")]
+EventPlay32 = 799,
+/// &lt;summary&gt;
+///Examine Search Info
+/// &lt;/summary&gt;
+[Description("Examine Search Info")]
+ExamineSearchInfo = 410,
+/// &lt;summary&gt;
+///Effect Result
+/// &lt;/summary&gt;
+[Description("Effect Result")]
+EffectResult = 898,
+/// &lt;summary&gt;
+///Environment Control
+/// &lt;/summary&gt;
+[Description("Environment Control")]
+EnvironmentControl = 141,
+/// &lt;summary&gt;
+///Event Play 4
+/// &lt;/summary&gt;
+[Description("Event Play 4")]
+EventPlay4 = 955,
+/// &lt;summary&gt;
+///Event Play 255
+/// &lt;/summary&gt;
+[Description("Event Play 255")]
+EventPlay255 = 936,
+/// &lt;summary&gt;
+///Event Finish
+/// &lt;/summary&gt;
+[Description("Event Finish")]
+EventFinish = 267,
+/// &lt;summary&gt;
+///Event Play 64
+/// &lt;/summary&gt;
+[Description("Event Play 64")]
+EventPlay64 = 894,
+/// &lt;summary&gt;
+///Event Start
+/// &lt;/summary&gt;
+[Description("Event Start")]
+EventStart = 709,
+/// &lt;summary&gt;
+///Examine
+/// &lt;/summary&gt;
+[Description("Examine")]
+Examine = 862,
+/// &lt;summary&gt;
+///Effect
+/// &lt;/summary&gt;
+[Description("Effect")]
+Effect = 316,
+/// &lt;summary&gt;
+///Free Company Dialog
+/// &lt;/summary&gt;
+[Description("Free Company Dialog")]
+FreeCompanyDialog = 644,
+/// &lt;summary&gt;
+///Free Company Info
+/// &lt;/summary&gt;
+[Description("Free Company Info")]
+FreeCompanyInfo = 354,
+/// &lt;summary&gt;
+///Inventory Action Ack
+/// &lt;/summary&gt;
+[Description("Inventory Action Ack")]
+InventoryActionAck = 522,
+/// &lt;summary&gt;
+///Init Zone
+/// &lt;/summary&gt;
+[Description("Init Zone")]
+InitZone = 560,
+/// &lt;summary&gt;
+///Inventory Transaction
+/// &lt;/summary&gt;
+[Description("Inventory Transaction")]
+InventoryTransaction = 196,
+/// &lt;summary&gt;
+///Inventory Transaction Finish
+/// &lt;/summary&gt;
+[Description("Inventory Transaction Finish")]
+InventoryTransactionFinish = 781,
+/// &lt;summary&gt;
+///Item Market Board Info
+/// &lt;/summary&gt;
+[Description("Item Market Board Info")]
+ItemMarketBoardInfo = 596,
+/// &lt;summary&gt;
+///Item Info
+/// &lt;/summary&gt;
+[Description("Item Info")]
+ItemInfo = 810,
+/// &lt;summary&gt;
+///Island Workshop Supply Demand
+/// &lt;/summary&gt;
+[Description("Island Workshop Supply Demand")]
+IslandWorkshopSupplyDemand = 358,
+/// &lt;summary&gt;
+///Logout
+/// &lt;/summary&gt;
+[Description("Logout")]
+Logout = 435,
+/// &lt;summary&gt;
+///Market Board Search Result
+/// &lt;/summary&gt;
+[Description("Market Board Search Result")]
+MarketBoardSearchResult = 773,
+/// &lt;summary&gt;
+///Market Board Item Listing
+/// &lt;/summary&gt;
+[Description("Market Board Item Listing")]
+MarketBoardItemListing = 567,
+/// &lt;summary&gt;
+///Market Board Item Listing History
+/// &lt;/summary&gt;
+[Description("Market Board Item Listing History")]
+MarketBoardItemListingHistory = 330,
+/// &lt;summary&gt;
+///Market Board Item Listing Count
+/// &lt;/summary&gt;
+[Description("Market Board Item Listing Count")]
+MarketBoardItemListingCount = 510,
+/// &lt;summary&gt;
+///Market Board Purchase
+/// &lt;/summary&gt;
+[Description("Market Board Purchase")]
+MarketBoardPurchase = 374,
+/// &lt;summary&gt;
+///Npc Spawn
+/// &lt;/summary&gt;
+[Description("Npc Spawn")]
+NpcSpawn = 636,
+/// &lt;summary&gt;
+///Object Spawn
+/// &lt;/summary&gt;
+[Description("Object Spawn")]
+ObjectSpawn = 658,
+/// &lt;summary&gt;
+///Player Stats
+/// &lt;/summary&gt;
+[Description("Player Stats")]
+PlayerStats = 692,
+/// &lt;summary&gt;
+///Playtime
+/// &lt;/summary&gt;
+[Description("Playtime")]
+Playtime = 938,
+/// &lt;summary&gt;
+///Player Setup
+/// &lt;/summary&gt;
+[Description("Player Setup")]
+PlayerSetup = 607,
+/// &lt;summary&gt;
+///Player Spawn
+/// &lt;/summary&gt;
+[Description("Player Spawn")]
+PlayerSpawn = 221,
+/// &lt;summary&gt;
+///Place Field Marker Preset
+/// &lt;/summary&gt;
+[Description("Place Field Marker Preset")]
+PlaceFieldMarkerPreset = 307,
+/// &lt;summary&gt;
+///Place Field Marker
+/// &lt;/summary&gt;
+[Description("Place Field Marker")]
+PlaceFieldMarker = 539,
+/// &lt;summary&gt;
+///Prepare Zoning
+/// &lt;/summary&gt;
+[Description("Prepare Zoning")]
+PrepareZoning = 819,
+/// &lt;summary&gt;
+///Result Dialog
+/// &lt;/summary&gt;
+[Description("Result Dialog")]
+ResultDialog = 169,
+/// &lt;summary&gt;
+///Retainer Information
+/// &lt;/summary&gt;
+[Description("Retainer Information")]
+RetainerInformation = 830,
+/// &lt;summary&gt;
+///Submarine Timers
+/// &lt;/summary&gt;
+[Description("Submarine Timers")]
+SubmarineTimers = 797,
+/// &lt;summary&gt;
+///System Log Message
+/// &lt;/summary&gt;
+[Description("System Log Message")]
+SystemLogMessage = 313,
+/// &lt;summary&gt;
+///Submarine Progression Status
+/// &lt;/summary&gt;
+[Description("Submarine Progression Status")]
+SubmarineProgressionStatus = 968,
+/// &lt;summary&gt;
+///Status Effect List 2
+/// &lt;/summary&gt;
+[Description("Status Effect List 2")]
+StatusEffectList2 = 878,
+/// &lt;summary&gt;
+///Submarine Status List
+/// &lt;/summary&gt;
+[Description("Submarine Status List")]
+SubmarineStatusList = 292,
+/// &lt;summary&gt;
+///Status Effect List 3
+/// &lt;/summary&gt;
+[Description("Status Effect List 3")]
+StatusEffectList3 = 741,
+/// &lt;summary&gt;
+///Status Effect List
+/// &lt;/summary&gt;
+[Description("Status Effect List")]
+StatusEffectList = 649,
+/// &lt;summary&gt;
+///Submarine Exploration Result
+/// &lt;/summary&gt;
+[Description("Submarine Exploration Result")]
+SubmarineExplorationResult = 119,
+/// &lt;summary&gt;
+///Update Class Info
+/// &lt;/summary&gt;
+[Description("Update Class Info")]
+UpdateClassInfo = 234,
+/// &lt;summary&gt;
+///Update Hp Mp Tp
+/// &lt;/summary&gt;
+[Description("Update Hp Mp Tp")]
+UpdateHpMpTp = 920,
+/// &lt;summary&gt;
+///Update Search Info
+/// &lt;/summary&gt;
+[Description("Update Search Info")]
+UpdateSearchInfo = 574,
+/// &lt;summary&gt;
+///Update Inventory Slot
+/// &lt;/summary&gt;
+[Description("Update Inventory Slot")]
+UpdateInventorySlot = 548,
+/// &lt;summary&gt;
+///Weather Change
+/// &lt;/summary&gt;
+[Description("Weather Change")]
+WeatherChange = 127,
+/// &lt;summary&gt;
+///Client Trigger
+/// &lt;/summary&gt;
+[Description("Client Trigger")]
+ClientTrigger = 716,
+/// &lt;summary&gt;
+///Inventory Modify Handler
+/// &lt;/summary&gt;
+[Description("Inventory Modify Handler")]
+InventoryModifyHandler = 553,
+/// &lt;summary&gt;
+///Market Board Purchase Handler
+/// &lt;/summary&gt;
+[Description("Market Board Purchase Handler")]
+MarketBoardPurchaseHandler = 631,
+/// &lt;summary&gt;
+///Set Search Info Handler
+/// &lt;/summary&gt;
+[Description("Set Search Info Handler")]
+SetSearchInfoHandler = 689,
+/// &lt;summary&gt;
+///Update Position Handler
+/// &lt;/summary&gt;
+[Description("Update Position Handler")]
+UpdatePositionHandler = 417,
+/// &lt;summary&gt;
+///Update Position Instance
+/// &lt;/summary&gt;
+[Description("Update Position Instance")]
+UpdatePositionInstance = 608,
+/// &lt;summary&gt;
+///Lobby Error
+/// &lt;/summary&gt;
+[Description("Lobby Error")]
+LobbyError = 2,
+/// &lt;summary&gt;
+///Lobby Service Account List
+/// &lt;/summary&gt;
+[Description("Lobby Service Account List")]
+LobbyServiceAccountList = 12,
+/// &lt;summary&gt;
+///Lobby Char List
+/// &lt;/summary&gt;
+[Description("Lobby Char List")]
+LobbyCharList = 13,
+/// &lt;summary&gt;
+///Lobby Char Create
+/// &lt;/summary&gt;
+[Description("Lobby Char Create")]
+LobbyCharCreate = 14,
+/// &lt;summary&gt;
+///Lobby Enter World
+/// &lt;/summary&gt;
+[Description("Lobby Enter World")]
+LobbyEnterWorld = 15,
+/// &lt;summary&gt;
+///Lobby Server List
+/// &lt;/summary&gt;
+[Description("Lobby Server List")]
+LobbyServerList = 21,
+/// &lt;summary&gt;
+///Lobby Retainer List
+/// &lt;/summary&gt;
+[Description("Lobby Retainer List")]
+LobbyRetainerList = 23,
+/// &lt;summary&gt;
+///Client Version Info
+/// &lt;/summary&gt;
+[Description("Client Version Info")]
+ClientVersionInfo = 5,
+/// &lt;summary&gt;
+///Req Char List
+/// &lt;/summary&gt;
+[Description("Req Char List")]
+ReqCharList = 3,
+/// &lt;summary&gt;
+///Req Enter World
+/// &lt;/summary&gt;
+[Description("Req Enter World")]
+ReqEnterWorld = 4,
+/// &lt;summary&gt;
+///Req Char Delete
+/// &lt;/summary&gt;
+[Description("Req Char Delete")]
+ReqCharDelete = 10,
+/// &lt;summary&gt;
+///Req Char Create
+/// &lt;/summary&gt;
+[Description("Req Char Create")]
+ReqCharCreate = 11,</value>
+  </data>
 </root>

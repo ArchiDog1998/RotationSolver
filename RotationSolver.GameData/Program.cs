@@ -1,9 +1,11 @@
 ﻿using Lumina;
 using Lumina.Data;
 using Lumina.Excel.GeneratedSheets;
+using Newtonsoft.Json.Linq;
 using RotationSolver.GameData;
 using RotationSolver.GameData.Getters;
 using RotationSolver.GameData.Getters.Actions;
+using System.Net;
 using System.Resources.NetStandard;
 
 var gameData = new GameData("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack", new LuminaOptions
@@ -88,6 +90,30 @@ var rotations = gameData.GetExcelSheet<ClassJob>()!
     .Where(job => job.JobIndex > 0)
     .Select(job => new RotationGetter(gameData, job).GetCode());
 res.AddResource("Rotation", header + string.Join("\n\n", rotations));
+
+using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
+using var result = await client.GetAsync("https://raw.githubusercontent.com/karashiiro/FFXIVOpcodes/master/opcodes.json");
+
+if (result.StatusCode != HttpStatusCode.OK) return;
+var responseStream = await result.Content.ReadAsStringAsync();
+
+
+var strs = JToken.Parse(responseStream)[0]!["lists"]!.Children()
+    .SelectMany(i => i.Children()).SelectMany(i => i.Children()).Cast<JObject>()
+    .Select(i =>
+    {
+        var name = ((JValue)i["name"]!).Value as string;
+        var description = name!.Space();
+
+        return $$"""
+        /// <summary>
+        ///{{description}}
+        /// </summary>
+        [Description("{{description}}")]
+        {{name}} = {{((JValue)i["opcode"]!).Value}},
+        """;
+    });
+res.AddResource("OpCode", string.Join("\n", strs));
 
 res.Generate();
 
