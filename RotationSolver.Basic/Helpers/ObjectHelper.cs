@@ -262,7 +262,12 @@ public static class ObjectHelper
 
     internal static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
 
-    internal static bool IsBossFromTTK(this BattleChara obj)
+    /// <summary>
+    /// Is target a boss depends on the ttk.
+    /// </summary>
+    /// <param name="obj">the object.</param>
+    /// <returns></returns>
+    public static bool IsBossFromTTK(this BattleChara obj)
     {
         if (obj == null) return false;
 
@@ -273,8 +278,12 @@ public static class ObjectHelper
 
         return false;
     }
-
-    internal static bool IsBossFromIcon(this BattleChara obj)
+    /// <summary>
+    /// Is target a boss depends on the icon.
+    /// </summary>
+    /// <param name="obj">the object.</param>
+    /// <returns></returns>
+    public static bool IsBossFromIcon(this BattleChara obj)
     {
         if (obj == null) return false;
 
@@ -286,7 +295,12 @@ public static class ObjectHelper
         return false;
     }
 
-    internal static bool IsDying(this BattleChara b)
+    /// <summary>
+    /// Is object dying.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static bool IsDying(this BattleChara b)
     {
         if (b == null) return false;
         if (b.IsDummy() && !Service.Config.ShowTargetTimeToKill) return false;
