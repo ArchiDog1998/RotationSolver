@@ -1,5 +1,8 @@
 ﻿namespace RotationSolver.Basic.Rotations.Duties;
 
+/// <summary>
+/// The bozja action.
+/// </summary>
 [DutyTerritory] //TODO: the bozja territory ids!
 public abstract class BozjaRotation : DutyRotation
 {

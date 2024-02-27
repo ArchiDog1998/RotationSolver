@@ -5,16 +5,51 @@
 /// </summary>
 public class ActionSetting()
 {
+    /// <summary>
+    /// The Ninjutsu action of this action.
+    /// </summary>
     public IBaseAction[]? Ninjutsu { get; set; } = null;
+
+    /// <summary>
+    /// The override of the <see cref="ActionBasicInfo.MPNeed"/>.
+    /// </summary>
     public Func<uint?>? MPOverride { get; set; } = null;
+
+    /// <summary>
+    /// Is this action in the melee range.
+    /// </summary>
     public bool IsMeleeRange { get; set; } = false;
+
+    /// <summary>
+    /// Is this status is added by the plyer.
+    /// </summary>
     public bool StatusFromSelf { get; set; } = true;
+    
+    /// <summary>
+    /// The status that it provides to the target.
+    /// </summary>
     public StatusID[]? TargetStatusProvide { get; set; } = null;
+
+    /// <summary>
+    /// The status that it needs on the target.
+    /// </summary>
     public StatusID[]? TargetStatusNeed { get; set; } = null;
+
+    /// <summary>
+    /// Can the target be targeted.
+    /// </summary>
     public Func<BattleChara, bool> CanTarget { get; set; } = t => true;
+
+    /// <summary>
+    /// The additional not combo ids.
+    /// </summary>
     public ActionID[]? ComboIdsNot { get; set; }
 
+    /// <summary>
+    /// The additional combo ids.
+    /// </summary>
     public ActionID[]? ComboIds { get; set; }
+
     /// <summary>
     /// Status that this action provides.
     /// </summary>
@@ -25,14 +60,25 @@ public class ActionSetting()
     /// </summary>
     public StatusID[]? StatusNeed { get; set; } = null;
 
+    /// <summary>
+    /// Your custom rotation check for your rotation.
+    /// </summary>
     public Func<bool>? RotationCheck { get; set; } = null;
+
     internal Func<bool>? ActionCheck { get; set; } = null;
 
     internal Func<ActionConfig>? CreateConfig { get; set; } = null;
 
+    /// <summary>
+    /// Is this action friendly.
+    /// </summary>
     public bool IsFriendly { get; set; }
 
     private TargetType _type = TargetType.Big;
+
+    /// <summary>
+    /// The strategy to target the target.
+    /// </summary>
     public TargetType TargetType 
     {
         get
@@ -56,8 +102,14 @@ public class ActionSetting()
         set => _type = value; 
     }
 
+    /// <summary>
+    /// The enemy positional for this action.
+    /// </summary>
     public EnemyPositional EnemyPositional { get; set; } = EnemyPositional.None;
 
+    /// <summary>
+    /// Should end the special.
+    /// </summary>
     public bool EndSpecial { get; set; }
 
 }

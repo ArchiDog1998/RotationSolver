@@ -2,6 +2,7 @@
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
+using Dalamud.Interface.Utility.Table;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
@@ -1405,105 +1406,76 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TableNextColumn();
 
-            if (Service.Config.InDebug)
+            DrawConfigsOfAction();
+            DrawActionDebug();
+
+            ImGui.TextWrapped(UiString.ConfigWindow_Actions_ConditionDescription.Local());
+            _sequencerList?.Draw();
+        }
+
+        static void DrawConfigsOfAction()
+        {
+            if (_activeAction == null) return;
+
+            var enable = _activeAction.IsEnabled;
+            if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
             {
-                if (_activeAction is IBaseAction action)
-                {
-
-                    try
-                    {
-#if DEBUG
-                        ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
-                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
-                        ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
-                        ImGui.Text("MP: " + action.Info.MPNeed.ToString());
-#endif
-                        ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
-                        ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
-                        ImGui.Text("Has One:" + action.Cooldown.HasOneCharge.ToString());
-                        ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
-                        ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
-
-                        ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
-                        ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck : true).ToString());
-                        if (action.Target != null)
-                        {
-                            ImGui.Text("Target Name: " + action.Target.Value.Target?.Name ?? string.Empty);
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                }
-                else if (_activeAction is IBaseItem item)
-                {
-                    try
-                    {
-                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID).ToString());
-                        ImGui.Text("Status HQ: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID + 1000000).ToString());
-                        var remain = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTime(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID) - FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTimeElapsed(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID);
-                        ImGui.Text("remain: " + remain.ToString());
-                        ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
-
-                        if (item is HpPotionItem healPotionItem)
-                        {
-                            ImGui.Text("MaxHP:" + healPotionItem.MaxHp.ToString());
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                }
+                _activeAction.IsEnabled = enable;
             }
 
-            if (_activeAction != null)
+            const string key = "Action Enable Popup";
+            var cmd = ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString()!);
+            ImGuiHelper.DrawHotKeysPopup(key, cmd);
+            ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
+
+            enable = _activeAction.IsInCooldown;
+            if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_ShowOnCDWindow.Local()}##{_activeAction.Name}InCooldown", ref enable))
             {
-                var enable = _activeAction.IsEnabled;
-                if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
+                _activeAction.IsInCooldown = enable;
+            }
+
+            if (_activeAction is IBaseAction a)
+            {
+                DrawConfigsOfBaseAction(a);
+            }
+
+            ImGui.Separator();
+
+            static void DrawConfigsOfBaseAction(IBaseAction a)
+            {
+                var config = a.Config;
+
+                if (Service.Config.MistakeRatio > 0
+                    && !a.Setting.IsFriendly
+                    && a.Setting.TargetType != TargetType.Move)
                 {
-                    _activeAction.IsEnabled = enable;
+                    var enable = config.IsInMistake;
+                    if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_IsInMistake.Local()}##{a.Name}InMistake", ref enable))
+                    {
+                        config.IsInMistake = enable;
+                    }
                 }
 
-                const string key = "Action Enable Popup";
-                var cmd = ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString()!);
-                ImGuiHelper.DrawHotKeysPopup(key, cmd);
-                ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
+                ImGui.Separator();
 
-                enable = _activeAction.IsInCooldown;
-                if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_ShowOnCDWindow.Local()}##{_activeAction.Name}InCooldown", ref enable))
+                var ttk = config.TimeToKill;
+                ImGui.SetNextItemWidth(Scale * 150);
+                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTK.Local()}##{a}",
+                    ref ttk, 0.1f, 0, 120, $"{ttk:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
                 {
-                    _activeAction.IsInCooldown = enable;
+                    config.TimeToKill = ttk;
                 }
+                ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
 
-                if (_activeAction is IBaseAction a)
+                if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
                 {
-                    var config = a.Config;
-
-                    if (Service.Config.MistakeRatio > 0
-                        && !a.Setting.IsFriendly 
-                        && a.Setting.TargetType != TargetType.Move)
+                    var shouldStatus = config.ShouldCheckStatus;
+                    if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_CheckStatus.Local()}##{a}", ref shouldStatus))
                     {
-                        enable = config.IsInMistake;
-                        if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_IsInMistake.Local()}##{a.Name}InMistake", ref enable))
-                        {
-                            config.IsInMistake = enable;
-                        }
+                        config.ShouldCheckStatus = shouldStatus;
                     }
-                    
-                    ImGui.Separator();
 
-                    var ttk = config.TimeToKill;
-                    ImGui.SetNextItemWidth(Scale * 150);
-                    if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTK.Local()}##{a}",
-                        ref ttk, 0.1f, 0, 120, $"{ttk:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
-                    {
-                        config.TimeToKill = ttk;
-                    }
-                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
-
-                    if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
+                    if (shouldStatus)
                     {
                         var statusGcdCount = (int)config.StatusGcdCount;
                         ImGui.SetNextItemWidth(Scale * 150);
@@ -1513,33 +1485,84 @@ public partial class RotationConfigWindow : Window
                             config.StatusGcdCount = (byte)statusGcdCount;
                         }
                     }
-
-                    if (!a.TargetInfo.IsSingleTarget)
-                    {
-                        var aoeCount = (int)config.AoeCount;
-                        ImGui.SetNextItemWidth(Scale * 150);
-                        if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_AoeCount.Local()}##{a}",
-                            ref aoeCount, 0.05f, 1, 10))
-                        {
-                            config.AoeCount = (byte)aoeCount;
-                        }
-                    }
-
-                    var ratio = config.AutoHealRatio;
-                    ImGui.SetNextItemWidth(Scale * 150);
-                    if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_HealRatio.Local()}##{a}",
-                        ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
-                    {
-                        config.AutoHealRatio = ratio;
-                    }
-                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.Local());
                 }
 
-                ImGui.Separator();
-            }
+                if (!a.TargetInfo.IsSingleTarget)
+                {
+                    var aoeCount = (int)config.AoeCount;
+                    ImGui.SetNextItemWidth(Scale * 150);
+                    if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_AoeCount.Local()}##{a}",
+                        ref aoeCount, 0.05f, 1, 10))
+                    {
+                        config.AoeCount = (byte)aoeCount;
+                    }
+                }
 
-            ImGui.TextWrapped(UiString.ConfigWindow_Actions_ConditionDescription.Local());
-            _sequencerList?.Draw();
+                var ratio = config.AutoHealRatio;
+                ImGui.SetNextItemWidth(Scale * 150);
+                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_HealRatio.Local()}##{a}",
+                    ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
+                {
+                    config.AutoHealRatio = ratio;
+                }
+                ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.Local());
+
+            }
+        }
+
+        static void DrawActionDebug()
+        {
+            if (!Service.Config.InDebug) return;
+
+            if (_activeAction is IBaseAction action)
+            {
+
+                try
+                {
+#if DEBUG
+                        ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
+                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
+                        ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
+                        ImGui.Text("MP: " + action.Info.MPNeed.ToString());
+#endif
+                    ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
+                    ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
+                    ImGui.Text("Has One:" + action.Cooldown.HasOneCharge.ToString());
+                    ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
+                    ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
+
+                    ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
+                    ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
+                    if (action.Target != null)
+                    {
+                        ImGui.Text("Target Name: " + action.Target.Value.Target?.Name ?? string.Empty);
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+            else if (_activeAction is IBaseItem item)
+            {
+                try
+                {
+                    ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID).ToString());
+                    ImGui.Text("Status HQ: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID + 1000000).ToString());
+                    var remain = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTime(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID) - FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTimeElapsed(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID);
+                    ImGui.Text("remain: " + remain.ToString());
+                    ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
+
+                    if (item is HpPotionItem healPotionItem)
+                    {
+                        ImGui.Text("MaxHP:" + healPotionItem.MaxHp.ToString());
+                    }
+                }
+                catch
+                {
+
+                }
+            }
         }
     }
 

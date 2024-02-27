@@ -9,17 +9,31 @@ using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
-public struct ActionTargetInfo(IBaseAction _action)
+/// <summary>
+/// The target info
+/// </summary>
+/// <param name="action">the input action.</param>
+public struct ActionTargetInfo(IBaseAction action)
 {
-    public readonly bool TargetArea => _action.Action.TargetArea;
+    /// <summary>
+    /// The range of this action.
+    /// </summary>
+    public readonly float Range => ActionManager.GetActionRange(action.Info.ID);
 
-    public readonly float Range => ActionManager.GetActionRange(_action.Info.ID);
+    /// <summary>
+    /// The effect range of this action.
+    /// </summary>
+    public readonly float EffectRange => (ActionID)action.Info.ID == ActionID.LiturgyOfTheBellPvE ? 20 : action.Action.EffectRange;
 
-    public readonly float EffectRange => (ActionID)_action.Info.ID == ActionID.LiturgyOfTheBellPvE ? 20 : _action.Action.EffectRange;
+    /// <summary>
+    /// Is this action single target.
+    /// </summary>
+    public readonly bool IsSingleTarget => action.Action.CastType == 1;
+    /// <summary>
+    /// Is this action target are.
+    /// </summary>
 
-    public readonly bool IsSingleTarget => _action.Action.CastType == 1;
-
-    public readonly bool IsTargetArea => _action.Action.TargetArea;
+    public readonly bool IsTargetArea => action.Action.TargetArea;
 
     private static bool NoAOE
     {
@@ -41,7 +55,7 @@ public struct ActionTargetInfo(IBaseAction _action)
     #region Target Finder.
     //The delay of finding the targets.
     private readonly ObjectListDelay<BattleChara> _canTargets = new (() => Service.Config.TargetDelay);
-    public readonly IEnumerable<BattleChara> GetCanTargets(bool skipStatusProvideCheck, TargetType type)
+    private readonly IEnumerable<BattleChara> GetCanTargets(bool skipStatusProvideCheck, TargetType type)
     {
         var items = TargetFilter.GetObjectInRadius(DataCenter.AllTargets, Range);
         var objs = new List<BattleChara>(items.Count());
@@ -54,15 +68,15 @@ public struct ActionTargetInfo(IBaseAction _action)
             objs.Add(obj);
         }
 
-        _canTargets.Delay(objs.Where(CanUseTo).Where(InViewTarget).Where(_action.Setting.CanTarget));
+        _canTargets.Delay(objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget));
         return _canTargets;
     }
 
-    public readonly IEnumerable<BattleChara> GetCanAffects(bool skipStatusProvideCheck, TargetType type)
+    private readonly IEnumerable<BattleChara> GetCanAffects(bool skipStatusProvideCheck, TargetType type)
     {
         if (EffectRange == 0) return [];
 
-        var items = TargetFilter.GetObjectInRadius(_action.Setting.IsFriendly
+        var items = TargetFilter.GetObjectInRadius(action.Setting.IsFriendly
             ? DataCenter.PartyMembers
             : DataCenter.AllHostileTargets,
             Range + EffectRange);
@@ -111,8 +125,8 @@ public struct ActionTargetInfo(IBaseAction _action)
         var tarAddress = tar.Struct();
         if (tarAddress == null) return false;
 
-        if ((ActionID)_action.Info.ID != ActionID.AethericMimicryPvE
-            && !ActionManager.CanUseActionOnTarget(_action.Info.AdjustedID, tarAddress)) return false;
+        if ((ActionID)action.Info.ID != ActionID.AethericMimicryPvE
+            && !ActionManager.CanUseActionOnTarget(action.Info.AdjustedID, tarAddress)) return false;
 
         return tar.CanSee();
     }
@@ -140,18 +154,18 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     private readonly bool CheckStatus(GameObject gameObject, bool skipStatusProvideCheck)
     {
-        if (!_action.Config.ShouldCheckStatus) return true;
+        if (!action.Config.ShouldCheckStatus) return true;
 
-        if (_action.Setting.TargetStatusNeed != null)
+        if (action.Setting.TargetStatusNeed != null)
         {
             if (gameObject.WillStatusEndGCD(0, 0,
-                _action.Setting.StatusFromSelf, _action.Setting.TargetStatusNeed)) return false;
+                action.Setting.StatusFromSelf, action.Setting.TargetStatusNeed)) return false;
         }
 
-        if (_action.Setting.TargetStatusProvide != null && !skipStatusProvideCheck)
+        if (action.Setting.TargetStatusProvide != null && !skipStatusProvideCheck)
         {
-            if (!gameObject.WillStatusEndGCD(_action.Config.StatusGcdCount, 0,
-                _action.Setting.StatusFromSelf, _action.Setting.TargetStatusProvide)) return false;
+            if (!gameObject.WillStatusEndGCD(action.Config.StatusGcdCount, 0,
+                action.Setting.StatusFromSelf, action.Setting.TargetStatusProvide)) return false;
         }
 
         return true;
@@ -159,14 +173,14 @@ public struct ActionTargetInfo(IBaseAction _action)
 
     private readonly bool CheckResistance(GameObject gameObject)
     {
-        if (_action.Info.AttackType == AttackType.Magic)
+        if (action.Info.AttackType == AttackType.Magic)
         {
             if (gameObject.HasStatus(false, StatusHelper.MagicResistance))
             {
                 return false;
             }
         }
-        else if(_action.Info.Aspect != Aspect.Piercing) // Physic
+        else if(action.Info.Aspect != Aspect.Piercing) // Physic
         {
             if (gameObject.HasStatus(false, StatusHelper.PhysicResistancec))
             {
@@ -188,7 +202,7 @@ public struct ActionTargetInfo(IBaseAction _action)
     {
         if (gameObject is not BattleChara b) return false;
         var time = b.GetTimeToKill();
-        return float.IsNaN(time) || time >= _action.Config.TimeToKill;
+        return float.IsNaN(time) || time >= action.Config.TimeToKill;
     }
 
     #endregion
@@ -206,7 +220,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             return new(player, [], player.Position);
         }
-        var type = _action.Setting.TargetType;
+        var type = action.Setting.TargetType;
 
         var canTargets = GetCanTargets(skipStatusProvideCheck, type);
         var canAffects = GetCanAffects(skipStatusProvideCheck, type);
@@ -219,7 +233,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             var t = Svc.Targets.Target as BattleChara;
 
-            if (t == null || !_action.Setting.CanTarget(t)) return null;
+            if (t == null || !action.Setting.CanTarget(t)) return null;
 
             if (type == TargetType.Move)
             {
@@ -235,7 +249,7 @@ public struct ActionTargetInfo(IBaseAction _action)
             else
             {
                 var effects = GetAffects(t, canAffects).ToArray();
-                if (effects.Length >= _action.Config.AoeCount || skipAoeCheck)
+                if (effects.Length >= action.Config.AoeCount || skipAoeCheck)
                 {
                     return new(t, effects, t.Position);
                 }
@@ -244,12 +258,12 @@ public struct ActionTargetInfo(IBaseAction _action)
         }
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
-            skipAoeCheck ? 0 : _action.Config.AoeCount);
-        if (type == TargetType.BeAttacked && !_action.Setting.IsFriendly)
+            skipAoeCheck ? 0 : action.Config.AoeCount);
+        if (type == TargetType.BeAttacked && !action.Setting.IsFriendly)
         {
             type = TargetType.Big;
         }
-        var target = FindTargetByType(targets, type, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
+        var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.IsMeleeRange);
         if (target == null) return null;
 
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
@@ -258,11 +272,11 @@ public struct ActionTargetInfo(IBaseAction _action)
     private readonly TargetResult? FindTargetArea(IEnumerable<BattleChara> canTargets, IEnumerable<BattleChara> canAffects,
         float range, PlayerCharacter player)
     {
-        if (_action.Setting.TargetType is TargetType.Move)
+        if (action.Setting.TargetType is TargetType.Move)
         {
             return FindTargetAreaMove(range);
         }
-        else if (_action.Setting.IsFriendly)
+        else if (action.Setting.IsFriendly)
         {
             if (!Service.Config.UseGroundBeneficialAbility) return null;
             if (!Service.Config.UseGroundBeneficialAbilityWhenMoving && DataCenter.IsMoving) return null;
@@ -271,7 +285,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         }
         else
         {
-            return FindTargetAreaHostile(canTargets, canAffects, _action.Config.AoeCount);
+            return FindTargetAreaHostile(canTargets, canAffects, action.Config.AoeCount);
         }
     }
 
@@ -311,7 +325,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             var availableCharas = DataCenter.AllTargets.Where(b => b.ObjectId != Player.Object.ObjectId);
             var target = FindTargetByType(TargetFilter.GetObjectInRadius(availableCharas, range),
-                TargetType.Move, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
+                TargetType.Move, action.Config.AutoHealRatio, action.Setting.IsMeleeRange);
             if (target == null) return null;
             return new(target, [], target.Position);
         }
@@ -335,7 +349,7 @@ public struct ActionTargetInfo(IBaseAction _action)
                         DataCenter.TerritoryContentType == TerritoryContentType.Raids
                         && DataCenter.AllianceMembers.Count(p => p is PlayerCharacter) == 8)
                     {
-                        pts = pts.Union(new Vector3[] { Vector3.Zero, new(100, 0, 100) }).ToArray();
+                        pts = pts.Union([Vector3.Zero, new(100, 0, 100)]).ToArray();
                     }
                 }
 
@@ -373,7 +387,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         {
             var effectRange = EffectRange;
             var attackT = FindTargetByType(DataCenter.AllianceMembers.GetObjectInRadius(range + effectRange),
-                TargetType.BeAttacked, _action.Config.AutoHealRatio, _action.Setting.IsMeleeRange);
+                TargetType.BeAttacked, action.Config.AutoHealRatio, action.Setting.IsMeleeRange);
 
             if (attackT == null)
             {
@@ -425,7 +439,7 @@ public struct ActionTargetInfo(IBaseAction _action)
     private readonly IEnumerable<BattleChara> GetMostCanTargetObjects(IEnumerable<BattleChara> canTargets, IEnumerable<BattleChara> canAffects, int aoeCount)
     {
         if (IsSingleTarget || EffectRange <= 0) return canTargets;
-        if (!_action.Setting.IsFriendly && NoAOE) return [];
+        if (!action.Setting.IsFriendly && NoAOE) return [];
 
         List<BattleChara> objectMax = new(canTargets.Count());
 
@@ -474,7 +488,7 @@ public struct ActionTargetInfo(IBaseAction _action)
         Vector3 dir = target.Position - pPos;
         Vector3 tdir = subTarget.Position - pPos;
 
-        switch (_action.Action.CastType)
+        switch (action.Action.CastType)
         {
             case 2: // Circle
                 return Vector3.Distance(target.Position, subTarget.Position) - subTarget.HitboxRadius <= EffectRange;
@@ -495,7 +509,7 @@ public struct ActionTargetInfo(IBaseAction _action)
                 return dis <= EffectRange && dis >= 8;
         }
 
-        Svc.Log.Debug(_action.Action.Name.RawString + "'s CastType is not valid! The value is " + _action.Action.CastType.ToString());
+        Svc.Log.Debug(action.Action.Name.RawString + "'s CastType is not valid! The value is " + action.Action.CastType.ToString());
         return false;
     }
     #endregion
@@ -799,64 +813,35 @@ public struct ActionTargetInfo(IBaseAction _action)
     #endregion
 }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public enum TargetType : byte
 {
-    /// <summary>
-    /// Find the target whose hit box is biggest.
-    /// </summary>
     Big,
-
-    /// <summary>
-    /// Find the target whose hit box is smallest.
-    /// </summary>
     Small,
-
-    /// <summary>
-    /// Find the target whose hp is highest.
-    /// </summary>
     HighHP,
-
-    /// <summary>
-    /// Find the target whose hp is lowest.
-    /// </summary>
     LowHP,
-
-    /// <summary>
-    /// Find the target whose max hp is highest.
-    /// </summary>
     HighMaxHP,
-
-    /// <summary>
-    /// Find the target whose max hp is lowest.
-    /// </summary>
     LowMaxHP,
-
-
     Interrupt,
-
     Provoke,
-
     Death,
-
     Dispel,
-
     Move,
-
     BeAttacked,
-
     Heal,
-
     Tank,
-
     Melee,
-
     Range,
-    
     Physical,
-    
     Magical,
-
     Self,
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+/// <summary>
+/// The target result
+/// </summary>
+/// <param name="Target">the target.</param>
+/// <param name="AffectedTargets">the targets that be affected by this action.</param>
+/// <param name="Position">the position to use this action.</param>
 public readonly record struct TargetResult(BattleChara? Target, BattleChara[] AffectedTargets, Vector3? Position);

@@ -27,7 +27,7 @@ public enum CanUseOption : byte
     /// Skip Combo Check
     /// </summary>
     [Description("Skip Combo Check")]
-    SkipCombo = 1 << 1,
+    SkipComboCheck = 1 << 1,
 
     /// <summary>
     /// Skip Casting and Moving Check

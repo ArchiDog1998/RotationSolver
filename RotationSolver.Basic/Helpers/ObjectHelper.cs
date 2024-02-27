@@ -30,10 +30,10 @@ public static class ObjectHelper
         return Service.GetSheet<BNpcBase>().GetRow(obj.DataId);
     }
 
-    public static bool CanProvoke(this GameObject target)
+    internal static bool CanProvoke(this GameObject target)
     {
         //Removed the listed names.
-        IEnumerable<string> names = Array.Empty<string>();
+        IEnumerable<string> names = [];
         if (OtherConfiguration.NoProvokeNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
             names = names.Union(ns1);
 
@@ -54,23 +54,13 @@ public static class ObjectHelper
         return false;
     }
 
-    /// <summary>
-    /// Is the target have positional.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static bool HasPositional(this GameObject obj)
+    internal static bool HasPositional(this GameObject obj)
     {
         if (obj == null) return false;
         return !(obj.GetObjectNPC()?.Unknown10 ?? false);
     }
 
-    /// <summary>
-    /// Is this target belongs to other players.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static unsafe bool IsOthersPlayers(this GameObject obj)
+    internal static unsafe bool IsOthersPlayers(this GameObject obj)
     {
         //SpecialType but no NamePlateIcon
         if (_eventType.Contains(obj.GetEventType()))
@@ -80,7 +70,7 @@ public static class ObjectHelper
         return false;
     }
 
-    public static bool IsAttackable(this BattleChara battleChara)
+    internal static bool IsAttackable(this BattleChara battleChara)
     {
         //Dead.
         if (battleChara.CurrentHp <= 1) return false;
@@ -90,7 +80,7 @@ public static class ObjectHelper
         if (Svc.ClientState == null) return false;
 
         //In No Hostiles Names
-        IEnumerable<string> names = Array.Empty<string>();
+        IEnumerable<string> names = [];
         if (OtherConfiguration.NoHostileNames.TryGetValue(Svc.ClientState.TerritoryType, out var ns1))
             names = names.Union(ns1);
 
@@ -142,7 +132,7 @@ public static class ObjectHelper
         };
     }
 
-    public static unsafe bool IsInEnemiesList(this BattleChara battleChara)
+    internal static unsafe bool IsInEnemiesList(this BattleChara battleChara)
     {
         var addons = Service.GetAddons<AddonEnemyList>();
 
@@ -161,26 +151,16 @@ public static class ObjectHelper
         return false;
     }
 
-    /// <summary>
-    /// Is this target an enemy (can be attacked).
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static unsafe bool IsEnemy(this GameObject obj)
+    internal static unsafe bool IsEnemy(this GameObject obj)
     => obj != null
     && ActionManager.CanUseActionOnTarget((uint)ActionID.BlizzardPvE, obj.Struct());
 
-    /// <summary>
-    /// Is alliance (can be healed).
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static unsafe bool IsAlliance(this GameObject obj)
+    internal static unsafe bool IsAlliance(this GameObject obj)
         => obj != null && obj.ObjectId is not 0 and not GameObject.InvalidGameObjectId
         && (!(DataCenter.Territory?.IsPvpZone ?? false) && obj is PlayerCharacter 
         || ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct()));
 
-    public static bool IsParty(this GameObject gameObject)
+    internal static bool IsParty(this GameObject gameObject)
     {
         if (gameObject.ObjectId == Player.Object.ObjectId) return true;
         if (Svc.Party.Any(p => p.GameObject?.ObjectId == gameObject.ObjectId)) return true;
@@ -188,12 +168,12 @@ public static class ObjectHelper
         return false;
     }
 
-    public static bool IsTargetOnSelf(this BattleChara battleChara)
+    internal static bool IsTargetOnSelf(this BattleChara battleChara)
     {
         return battleChara.TargetObject?.TargetObject == battleChara;
     }
 
-    public static bool IsDeathToRaise(this GameObject obj)
+    internal static bool IsDeathToRaise(this GameObject obj)
     {
         if (obj == null) return false;
         if (!obj.IsDead) return false;
@@ -210,12 +190,10 @@ public static class ObjectHelper
         return true;
     }
 
-    public static bool IsAlive(this GameObject obj)
+    internal static bool IsAlive(this GameObject obj)
     {
         if (obj is BattleChara b && b.CurrentHp <= 1) return false;
-
         if (!obj.IsTargetable) return false;
-
         return true;
     }
 
@@ -258,16 +236,11 @@ public static class ObjectHelper
     internal static unsafe uint GetNamePlateIcon(this GameObject obj) => obj.Struct()->NamePlateIconId;
     internal static unsafe EventHandlerType GetEventType(this GameObject obj) => obj.Struct()->EventId.Type;
 
-    /// <summary>
-    /// The sub kind of the target.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static unsafe BattleNpcSubKind GetBattleNPCSubKind(this GameObject obj) => (BattleNpcSubKind)obj.Struct()->SubKind;
+    internal static unsafe BattleNpcSubKind GetBattleNPCSubKind(this GameObject obj) => (BattleNpcSubKind)obj.Struct()->SubKind;
 
     internal static unsafe uint FateId(this GameObject obj) => obj.Struct()->FateId;
 
-    static readonly Dictionary<uint, bool> _effectRangeCheck = new();
+    static readonly Dictionary<uint, bool> _effectRangeCheck = [];
     internal static bool CanInterrupt(this GameObject o)
     {
         if (o is not BattleChara b) return false;
@@ -287,19 +260,9 @@ public static class ObjectHelper
         return _effectRangeCheck[id] = true;
     }
 
-    /// <summary>
-    /// Is object a dummy.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
+    internal static bool IsDummy(this BattleChara obj) => obj?.NameId == 541;
 
-    /// <summary>
-    /// Is character a boss? Calculate from ttk.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static bool IsBossFromTTK(this BattleChara obj)
+    internal static bool IsBossFromTTK(this BattleChara obj)
     {
         if (obj == null) return false;
 
@@ -311,12 +274,7 @@ public static class ObjectHelper
         return false;
     }
 
-    /// <summary>
-    /// Is character a boss? Calculated from the icon.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static bool IsBossFromIcon(this BattleChara obj)
+    internal static bool IsBossFromIcon(this BattleChara obj)
     {
         if (obj == null) return false;
 
@@ -328,37 +286,21 @@ public static class ObjectHelper
         return false;
     }
 
-    /// <summary>
-    /// Is character a dying? Current HP is below a certain amount. It is for running out of resources.
-    /// </summary>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static bool IsDying(this BattleChara b)
+    internal static bool IsDying(this BattleChara b)
     {
         if (b == null) return false;
         if (b.IsDummy() && !Service.Config.ShowTargetTimeToKill) return false;
         return b.GetTimeToKill() <= Service.Config.DyingTimeToKill || b.GetHealthRatio() < 0.02f;
     }
 
-    /// <summary>
-    /// Whether the character is in combat.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static unsafe bool InCombat(this BattleChara obj)
+    internal static unsafe bool InCombat(this BattleChara obj)
     {
         return obj.Struct()->Character.InCombat;
     }
 
     private static readonly TimeSpan CheckSpan = TimeSpan.FromSeconds(2.5);
 
-    /// <summary>
-    /// How many seconds will the target die.
-    /// </summary>
-    /// <param name="b"></param>
-    /// <param name="wholeTime">whole time to die.</param>
-    /// <returns></returns>
-    public static float GetTimeToKill(this BattleChara b, bool wholeTime = false)
+    internal static float GetTimeToKill(this BattleChara b, bool wholeTime = false)
     {
         if (b == null) return float.NaN;
         if (b.IsDummy()) return 999.99f;
@@ -388,12 +330,7 @@ public static class ObjectHelper
         return (float)timespan.TotalSeconds / ratioReduce * (wholeTime ? 1 : ratioNow);
     }
 
-    /// <summary>
-    /// Whether the target is attacked.
-    /// </summary>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static bool IsAttacked(this BattleChara b)
+    internal static bool IsAttacked(this BattleChara b)
     {
         foreach (var (id, time) in DataCenter.AttackedTargets)
         {
@@ -405,12 +342,7 @@ public static class ObjectHelper
         return false;
     }
 
-    /// <summary>
-    /// Can the player see the object.
-    /// </summary>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static unsafe bool CanSee(this GameObject b)
+    internal static unsafe bool CanSee(this GameObject b)
     {
         var point = Player.Object.Position + Vector3.UnitY * Player.GameObject->Height;
         var tarPt = b.Position + Vector3.UnitY * b.Struct()->Height;
@@ -451,24 +383,13 @@ public static class ObjectHelper
         return EnemyPositional.Flank;
     }
 
-    /// <summary>
-    /// Get the face vector
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static Vector2 GetFaceVector(this GameObject obj)
+    internal static Vector2 GetFaceVector(this GameObject obj)
     {
         float rotation = obj.Rotation;
         return new((float)Math.Cos(rotation), (float)Math.Sin(rotation));
     }
 
-    /// <summary>
-    /// Get two vector's angle
-    /// </summary>
-    /// <param name="vec1"></param>
-    /// <param name="vec2"></param>
-    /// <returns></returns>
-    public static double AngleTo(this Vector2 vec1, Vector2 vec2)
+    internal static double AngleTo(this Vector2 vec1, Vector2 vec2)
     {
         return Math.Acos(Vector2.Dot(vec1, vec2) / vec1.Length() / vec2.Length());
     }

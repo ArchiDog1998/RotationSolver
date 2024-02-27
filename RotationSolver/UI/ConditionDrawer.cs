@@ -82,7 +82,7 @@ internal static class ConditionDrawer
 
     private static IEnumerable<MemberInfo> GetAllMethods(this Type? type, Func<Type, IEnumerable<MemberInfo>> getFunc)
     {
-        if (type == null || getFunc == null) return Array.Empty<MemberInfo>();
+        if (type == null || getFunc == null) return [];
 
         var methods = getFunc(type);
         return methods.Union(type.BaseType.GetAllMethods(getFunc));

@@ -181,12 +181,22 @@ partial class CustomRotation
         }
     }
 
+    /// <summary>
+    /// The gcd for raising.
+    /// </summary>
+    /// <param name="act">the action.</param>
+    /// <returns></returns>
     protected virtual bool RaiseGCD(out IAction? act)
     {
         if (DataCenter.RightNowDutyRotation?.RaiseGCD(out act) ?? false) return true;
         act = null; return false;
     }
 
+    /// <summary>
+    /// The gcd for dispeling.
+    /// </summary>
+    /// <param name="act">the action.</param>
+    /// <returns></returns>
     protected virtual bool DispelGCD(out IAction? act)
     {
         if (EsunaPvE.CanUse(out act)) return true;

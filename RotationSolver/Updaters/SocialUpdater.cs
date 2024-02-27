@@ -20,6 +20,9 @@ namespace RotationSolver.Updaters;
 
 internal class SocialUpdater
 {
+#if DEBUG
+#else
+
     private static readonly List<string> _macroToAuthor =
     [
         "blush",
@@ -30,6 +33,7 @@ internal class SocialUpdater
         "cheer",
         "stroke",
     ];
+#endif
 
     private static readonly HashSet<string> saidAuthors = [];
 
@@ -68,7 +72,7 @@ internal class SocialUpdater
 
     static async void DutyState_DutyCompleted(object? sender, ushort e)
     {
-        if (DataCenter.PartyMembers.Count() < 2) return;
+        if (DataCenter.PartyMembers.Length < 2) return;
 
         await Task.Delay(new Random().Next(4000, 6000));
 
@@ -90,6 +94,10 @@ internal class SocialUpdater
         _canSaying = territory?.ContentFinderCondition?.Value?.RowId != 0;
 
         DataCenter.Territory = territory;
+
+#if DEBUG
+        Svc.Log.Debug($"Move to {DataCenter.TerritoryName} ({id})");
+#endif
 
         _dutyRotations ??= [..RotationUpdater.TryGetTypes(typeof(SocialUpdater).Assembly)
             .Where(t => t.IsAssignableTo(typeof(DutyRotation)) && !t.IsAbstract)];

@@ -115,6 +115,9 @@ partial class NinjaRotation
         setting.StatusProvide = [StatusID.Doton];
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public NinjaRotation()
     {
         FumaShurikenPvE.Setting.Ninjutsu = [TenPvE];

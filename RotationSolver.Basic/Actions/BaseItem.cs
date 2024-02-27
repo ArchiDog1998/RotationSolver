@@ -56,6 +56,9 @@ public class BaseItem : IBaseItem
     /// </summary>
     public string Name => _item.Name;
 
+    /// <summary>
+    /// The item configs.
+    /// </summary>
     public ItemConfig Config
     {
         get
@@ -124,7 +127,8 @@ public class BaseItem : IBaseItem
     /// </summary>
     protected virtual bool CanUseThis => true;
 
-    public ICooldown Cooldown => throw new NotImplementedException();
+    /// <inheritdoc/>
+    public ICooldown Cooldown { get; }
 
     /// <summary>
     /// Create by row.
@@ -149,6 +153,7 @@ public class BaseItem : IBaseItem
             _ => 65535, //TODO: better A4!
         };
         SortKey = (uint)ActionManager.Instance()->GetRecastGroup((int)ActionType.Item, ID);
+        Cooldown = new ItemCooldown(ID);
     }
 
     /// <summary>

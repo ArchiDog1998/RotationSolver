@@ -20,6 +20,10 @@ public struct RandomDelay(Func<(float min, float max)> getRange)
     /// </summary>
     public readonly Func<(float min, float max)> GetRange => getRange;
 
+    /// <summary>
+    /// The constructor for the config.
+    /// </summary>
+    /// <param name="getRange">The way to get the config.</param>
     public RandomDelay(Func<Vector2> getRange)
         : this(() =>
         {
@@ -66,6 +70,12 @@ public struct RandomDelay(Func<(float min, float max)> getRange)
         return false;
     }
 
+    /// <summary>
+    /// The delay to get the item.
+    /// </summary>
+    /// <typeparam name="T">the type of anything.</typeparam>
+    /// <param name="originData">original data.</param>
+    /// <returns>the value.</returns>
     public T? Delay<T>(T? originData) where T : class
     {
         var b = originData != null;

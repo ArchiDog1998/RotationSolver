@@ -4,6 +4,10 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Basic.Actions;
+
+/// <summary>
+/// The base action for all actions.
+/// </summary>
 public class BaseAction : IBaseAction
 {
     /// <inheritdoc/>
@@ -39,7 +43,7 @@ public class BaseAction : IBaseAction
     public uint SortKey => Cooldown.CoolDownGroup;
 
     /// <inheritdoc/>
-    public uint IconID => ID == 3 ? 104 : Info.IconID;
+    public uint IconID => Info.IconID;
 
     /// <inheritdoc/>
     public string Name => Info.Name;
@@ -105,7 +109,7 @@ public class BaseAction : IBaseAction
     }
 
     /// <inheritdoc/>
-    public bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipCombo = false, bool skipCastingCheck = false, 
+    public bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipComboCheck = false, bool skipCastingCheck = false, 
         bool usedUp = false, bool onLastAbility = false, bool skipClippingCheck = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0)
     {
         act = this!;
@@ -125,7 +129,7 @@ public class BaseAction : IBaseAction
             skipClippingCheck = true;
         }
 
-        if (!Info.BasicCheck(skipStatusProvideCheck, skipCombo, skipCastingCheck)) return false;
+        if (!Info.BasicCheck(skipStatusProvideCheck, skipComboCheck, skipCastingCheck)) return false;
 
         if (!Cooldown.CooldownCheck(usedUp, onLastAbility, skipClippingCheck, gcdCountForAbility)) return false;
 
@@ -148,7 +152,7 @@ public class BaseAction : IBaseAction
     {
         return CanUse(out act, 
             option.HasFlag(CanUseOption.SkipStatusProvideCheck),
-            option.HasFlag(CanUseOption.SkipCombo),
+            option.HasFlag(CanUseOption.SkipComboCheck),
             option.HasFlag(CanUseOption.SkipCastingCheck),
             option.HasFlag(CanUseOption.UsedUp),
             option.HasFlag(CanUseOption.OnLastAbility),
@@ -165,7 +169,7 @@ public class BaseAction : IBaseAction
         var target = Target.Value;
 
         var adjustId = AdjustedID;
-        if (TargetInfo.TargetArea)
+        if (TargetInfo.IsTargetArea)
         {
             if (adjustId != ID) return false;
             if (!target.Position.HasValue) return false;

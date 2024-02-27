@@ -60,11 +60,18 @@ public static class TargetFilter
         return obj.IsJobs(validJobs);
     }
 
+    /// <summary>
+    /// Is the target in the jobs.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="validJobs"></param>
+    /// <returns></returns>
     public static bool IsJobs(this GameObject obj, params Job[] validJobs)
     {
         return obj.IsJobs(new SortedSet<byte>( validJobs.Select(j => (byte)(uint)j)));
     }
-    public static bool IsJobs(this GameObject obj, SortedSet<byte> validJobs)
+
+    private static bool IsJobs(this GameObject obj, SortedSet<byte> validJobs)
     {
         if(obj is not BattleChara b) return false;
         return validJobs.Contains((byte?)b.ClassJob.GameData?.RowId ?? 0);

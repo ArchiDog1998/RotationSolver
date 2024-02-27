@@ -123,6 +123,9 @@ internal enum UiString
     [Description("How many targets are needed to use this action.")]
     ConfigWindow_Actions_AoeCount,
 
+    [Description("Should this action check the stauts.")]
+    ConfigWindow_Actions_CheckStatus,
+
     [Description("How many gcds are needed to add the status.")]
     ConfigWindow_Actions_GcdCount,
 
