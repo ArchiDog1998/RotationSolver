@@ -44,7 +44,7 @@ internal static class ActionUpdater
                         {
                             return !action.Setting.IsFriendly && action.Config.IsInMistake
                             && action.Setting.TargetType != TargetType.Move
-                            && action.CanUse(out _, isEmpty: true, skipStatusProvideCheck: true, ignoreClippingCheck: true, skipAoeCheck: true);
+                            && action.CanUse(out _, usedUp: true, skipStatusProvideCheck: true, skipClippingCheck: true, skipAoeCheck: true);
                         }
                         return false;
                     });

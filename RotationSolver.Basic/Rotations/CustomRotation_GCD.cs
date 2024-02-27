@@ -11,7 +11,7 @@ partial class CustomRotation
 
         IBaseAction.ForceEnable = true;
         if (act is IBaseAction a && a != null && a.Info.IsRealGCD 
-            && a.CanUse(out _, isEmpty: true, skipAoeCheck: true)) return act;
+            && a.CanUse(out _, usedUp: true, skipAoeCheck: true)) return act;
         IBaseAction.ForceEnable = false;
 
         IBaseAction.ShouldEndSpecial = true;
@@ -174,7 +174,7 @@ partial class CustomRotation
 
         bool RaiseAction(out IAction act, bool ignoreCastingCheck)
         {
-            if (Player.CurrentMp > Service.Config.LessMPNoRaise && (Raise?.CanUse(out act, ignoreCastingCheck: ignoreCastingCheck) ?? false)) return true;
+            if (Player.CurrentMp > Service.Config.LessMPNoRaise && (Raise?.CanUse(out act, skipCastingCheck: ignoreCastingCheck) ?? false)) return true;
 
             act = null!;
             return false;

@@ -435,37 +435,32 @@ internal static class ConditionDrawer
                 }
                 break;
 
-            case ActionConditionType.CanUse: //TODO: canuse
-                //var popUpId = "Can Use Id" + actionCondition.GetHashCode().ToString();
-                //var option = (CanUseOption)actionCondition.Param1;
+            case ActionConditionType.CanUse:
+                var popUpId = "Can Use Id" + actionCondition.GetHashCode().ToString();
+                var option = (CanUseOption)actionCondition.Param1;
 
-                //if (ImGui.Selectable($"{option}##CanUse{actionCondition.GetHashCode()}"))
-                //{
-                //    if (!ImGui.IsPopupOpen(popUpId)) ImGui.OpenPopup(popUpId);
-                //}
+                if (ImGui.Selectable($"{option}##CanUse{actionCondition.GetHashCode()}"))
+                {
+                    if (!ImGui.IsPopupOpen(popUpId)) ImGui.OpenPopup(popUpId);
+                }
 
-                //using (var popUp = ImRaii.Popup(popUpId))
-                //{
-                //    if (popUp.Success)
-                //    {
-                //        var showedValues = Enum.GetValues<CanUseOption>().Where(i => i.GetAttribute<JsonIgnoreAttribute>() == null);
+                using (var popUp = ImRaii.Popup(popUpId))
+                {
+                    if (popUp.Success)
+                    {
+                        var showedValues = Enum.GetValues<CanUseOption>().Where(i => i.GetAttribute<JsonIgnoreAttribute>() == null);
 
-                //        foreach (var value in showedValues)
-                //        {
-                //            var b = option.HasFlag(value);
-                //            if (ImGui.Checkbox(value.ToString(), ref b))
-                //            {
-                //                option ^= value;
-                //                actionCondition.Param1 = (int)option;
-                //            }
-                //        }
-                //    }
-                //}
-
-                //if (DrawDragInt($"{LocalizationManager._rightLang.ActionSequencer_AOECount}##AOECount{actionCondition.GetHashCode()}", ref actionCondition.Param2))
-                //{
-                //    actionCondition.Param2 = Math.Max(0, actionCondition.Param2);
-                //}
+                        foreach (var value in showedValues)
+                        {
+                            var b = option.HasFlag(value);
+                            if (ImGui.Checkbox(value.Local(), ref b))
+                            {
+                                option ^= value;
+                                actionCondition.Param1 = (int)option;
+                            }
+                        }
+                    }
+                }
                 break;
 
             case ActionConditionType.CurrentCharges:

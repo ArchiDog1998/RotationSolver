@@ -21,6 +21,8 @@ public interface IBaseAction : IAction
     ActionSetting Setting { get; set; }
     internal ActionConfig Config { get; }   
 
-    bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipCombo = false, bool ignoreCastingCheck = false,
-        bool isEmpty = false, bool onLastAbility = false, bool ignoreClippingCheck = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0);
+    bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipCombo = false, bool skipCastingCheck = false,
+        bool usedUp = false, bool onLastAbility = false, bool skipClippingCheck = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0);
+
+    bool CanUse(out IAction act, CanUseOption option, byte gcdCountForAbility = 0);
 }

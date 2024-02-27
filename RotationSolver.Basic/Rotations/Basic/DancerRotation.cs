@@ -265,7 +265,7 @@ partial class DancerRotation
     [RotationDesc(ActionID.EnAvantPvE)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (EnAvantPvE.CanUse(out act, isEmpty:true)) return true;
+        if (EnAvantPvE.CanUse(out act, usedUp:true)) return true;
         return false;
     }
 
@@ -277,8 +277,8 @@ partial class DancerRotation
     [RotationDesc(ActionID.CuringWaltzPvE, ActionID.ImprovisationPvE)]
     protected sealed override bool HealAreaAbility(out IAction act)
     {
-        if (CuringWaltzPvE.CanUse(out act, isEmpty: true)) return true;
-        if (ImprovisationPvE.CanUse(out act, isEmpty: true)) return true;
+        if (CuringWaltzPvE.CanUse(out act, usedUp: true)) return true;
+        if (ImprovisationPvE.CanUse(out act, usedUp: true)) return true;
         return false;
     }
 
@@ -290,7 +290,7 @@ partial class DancerRotation
     [RotationDesc(ActionID.ShieldSambaPvE)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
-        if (ShieldSambaPvE.CanUse(out act, isEmpty: true)) return true;
+        if (ShieldSambaPvE.CanUse(out act, usedUp: true)) return true;
         return false;
     }
 }

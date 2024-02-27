@@ -145,7 +145,7 @@ partial class DragoonRotation
     [RotationDesc(ActionID.ElusiveJumpPvE)]
     protected override bool MoveBackAbility(out IAction? act)
     {
-        if (ElusiveJumpPvE.CanUse(out act, ignoreClippingCheck: true)) return true;
+        if (ElusiveJumpPvE.CanUse(out act, skipClippingCheck: true)) return true;
         return base.MoveBackAbility(out act);
     }
 }

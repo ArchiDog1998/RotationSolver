@@ -145,7 +145,7 @@ partial class ScholarRotation
     [RotationDesc(ActionID.ExpedientPvE)]
     protected override bool SpeedAbility(out IAction? act)
     {
-        if (InCombat && ExpedientPvE.CanUse(out act, isEmpty: true)) return true;
+        if (InCombat && ExpedientPvE.CanUse(out act, usedUp: true)) return true;
         return base.SpeedAbility(out act);
     }
 }
