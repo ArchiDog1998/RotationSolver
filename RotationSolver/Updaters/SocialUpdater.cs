@@ -22,7 +22,6 @@ internal class SocialUpdater
 {
 #if DEBUG
 #else
-
     private static readonly List<string> _macroToAuthor =
     [
         "blush",

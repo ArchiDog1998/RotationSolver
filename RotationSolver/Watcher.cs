@@ -62,7 +62,21 @@ public static class Watcher
             Svc.Log.Debug(effect.ToString());
 #endif
         });
+
+        //Svc.GameNetwork.NetworkMessage += GameNetwork_NetworkMessage;
     }
+
+//    private static void GameNetwork_NetworkMessage(nint dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, Dalamud.Game.Network.NetworkMessageDirection direction)
+//    {
+//        if (direction != Dalamud.Game.Network.NetworkMessageDirection.ZoneDown) return;
+//        OpCode op = (OpCode)opCode;
+
+//#if DEBUG
+//        var source = Svc.Objects.SearchById(sourceActorId)?.Name.TextValue;
+//        var target = Svc.Objects.SearchById(targetActorId)?.Name.TextValue;
+//        Svc.Log.Debug($"From {source} to {target} by {op}.");
+//#endif
+//    }
 
     public static void Disable()
     {
@@ -74,6 +88,7 @@ public static class Watcher
         MapEffect.Dispose();
         ActionEffect.ActionEffectEvent -= ActionFromEnemy;
         ActionEffect.ActionEffectEvent -= ActionFromSelf;
+        //Svc.GameNetwork.NetworkMessage -= GameNetwork_NetworkMessage;
     }
 
     private static IntPtr ActorVfxNewHandler(string path, IntPtr a2, IntPtr a3, float a4, char a5, ushort a6, char a7)
@@ -153,6 +168,15 @@ public static class Watcher
 
     private static void ActionFromEnemy(ActionEffectSet set)
     {
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (!item.IsIdMatched(set.Action?.RowId ?? 0)) continue;
+
+            DataCenter.RaidTimeOffset = item.Time - DataCenter.CombatTimeRaw;
+            Svc.Log.Debug($"Reset the {nameof(DataCenter.RaidTimeOffset)} to {DataCenter.RaidTimeOffset} by the action {set.Action}");
+            break;
+        }
+
         //Check Source.
         var source = set.Source;
         if (source == null) return;
@@ -173,7 +197,6 @@ public static class Watcher
         DataCenter.AddDamageRec(damageRatio);
 
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
-
 
         foreach (var effect in set.TargetEffects)
         {

@@ -1,6 +1,4 @@
-﻿using ECommons.DalamudServices;
-
-namespace RotationSolver.Basic.Rotations.Duties;
+﻿namespace RotationSolver.Basic.Rotations.Duties;
 
 /// <summary>
 /// The bozja action.

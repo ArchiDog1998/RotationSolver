@@ -173,7 +173,9 @@ partial class CustomRotation
         get
         {
             var controller = UIState.Instance()->LimitBreakController;
-            return (byte)(controller.CurrentValue / *(ushort*)&controller.BarValue);
+            var barValue = *(ushort*)&controller.BarValue;
+            if (barValue == 0) return 0;
+            return (byte)(controller.CurrentValue / barValue);
         }
     }
 

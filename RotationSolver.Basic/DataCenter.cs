@@ -261,6 +261,10 @@ internal static class DataCenter
     public static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
 
     internal static float CombatTimeRaw { get; set; }
+    internal static float RaidTimeOffset { get; set; } = 0;
+    internal static float RaidTimeRaw => CombatTimeRaw + RaidTimeOffset;
+
+    internal static TimelineItem[] TimelineItems { get; set; } = [];
 
     public static BattleChara[] PartyMembers { get; internal set; } = [];
     public static BattleChara[] AllianceMembers { get; internal set; } = [];

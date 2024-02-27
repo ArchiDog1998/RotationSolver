@@ -187,4 +187,7 @@ public class BaseAction : IBaseAction
             return ActionManager.Instance()->UseAction(ActionType.Action, adjustId, target.Target?.ObjectId ?? GameObject.InvalidGameObjectId);
         }
     }
+
+    /// <inheritdoc/>
+    public override string ToString() => Name;
 }

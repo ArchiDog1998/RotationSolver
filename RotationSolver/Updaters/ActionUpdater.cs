@@ -143,6 +143,7 @@ internal static class ActionUpdater
         if (_startCombatTime == DateTime.MinValue)
         {
             DataCenter.CombatTimeRaw = 0;
+            DataCenter.RaidTimeOffset = 0;
         }
         else
         {

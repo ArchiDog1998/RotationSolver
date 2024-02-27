@@ -349,7 +349,7 @@ public struct ActionTargetInfo(IBaseAction action)
                         DataCenter.TerritoryContentType == TerritoryContentType.Raids
                         && DataCenter.AllianceMembers.Count(p => p is PlayerCharacter) == 8)
                     {
-                        pts = pts.Union([Vector3.Zero, new(100, 0, 100)]).ToArray();
+                        pts = [.. pts, Vector3.Zero, new(100, 0, 100)];
                     }
                 }
 

@@ -38,7 +38,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         IconSet.InIt();
 
         //Init!
-        Clipper.InflatePaths(new PathsD(new PathD[] { Clipper.MakePath(new double[] { 0, 0, 1, 1 }) }), 0, JoinType.Round, EndType.Joined);
+        Clipper.InflatePaths(new PathsD([Clipper.MakePath(new double[] { 0, 0, 1, 1 })]), 0, JoinType.Round, EndType.Joined);
 
         _dis.Add(new Service());
         try

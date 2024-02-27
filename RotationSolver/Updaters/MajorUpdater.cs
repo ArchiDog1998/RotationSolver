@@ -119,7 +119,7 @@ internal static class MajorUpdater
                 {
                     if (id == 2)
                     {
-                        Util.OpenLink("http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=EyT0BfZWCVq8v2yiMjSqcb4lEqYuaF_P&authKey=UJFoVZ3OljlBhSilXpeLKIIzofI4ZUjJfjuqCgr%2BiaT3Y6HmQFVbXZ5xBOlSv5yZ&noverify=0&group_code=552689154");
+                        Util.OpenLink("https://discord.gg/w2DPwRRZuT");
                     }
                 }),
                 new UIForegroundPayload(31),
@@ -149,6 +149,7 @@ internal static class MajorUpdater
     {
         ActionSequencerUpdater.Enable(Svc.PluginInterface.ConfigDirectory.FullName + "\\Conditions");
         SocialUpdater.Enable();
+        RaidTimeUpdater.Enable();
 
         Svc.Framework.Update += FrameworkUpdate;
     }
@@ -283,5 +284,6 @@ internal static class MajorUpdater
         ActionSequencerUpdater.SaveFiles();
         SocialUpdater.Disable();
         ActionUpdater.ClearNextAction();
+        RaidTimeUpdater.Disable();
     }
 }

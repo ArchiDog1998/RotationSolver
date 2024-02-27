@@ -2,7 +2,6 @@
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
-using Dalamud.Interface.Utility.Table;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
@@ -2386,7 +2385,7 @@ public partial class RotationConfigWindow : Window
         {() =>"Target Data", DrawTargetData },
         {() =>"Next Action", DrawNextAction },
         {() =>"Last Action", DrawLastAction },
-        {() =>"Icon", DrawIcon },
+        {() =>"Others", DrawOthers },
         {() =>"Effect",  () =>
             {
                 ImGui.Text(Watcher.ShowStrSelf);
@@ -2512,7 +2511,6 @@ public partial class RotationConfigWindow : Window
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
         ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
         ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
-        ImGui.Text("Time: " + (DataCenter.CombatTimeRaw + DataCenter.WeaponRemain).ToString());
     }
 
     private static void DrawLastAction()
@@ -2523,23 +2521,11 @@ public partial class RotationConfigWindow : Window
         DrawAction(DataCenter.LastComboAction, nameof(DataCenter.LastComboAction));
     }
 
-    private static unsafe void DrawIcon()
+    private static unsafe void DrawOthers()
     {
-        //ImGui.Text("Hate");
-        //foreach (var hate in UIState.Instance()->Hate.HateArraySpan)
-        //{
-        //    var name = Svc.Objects.SearchById(hate.ObjectId)?.Name ?? "Unknown";
-        //    ImGui.Text($"{name} : {hate.Enmity}");
-        //}
-        //ImGui.Spacing();
-        //ImGui.Text("Hater");
-        //foreach (var hater in UIState.Instance()->Hater.HaterArraySpan)
-        //{
-        //    var name = Svc.Objects.SearchById(hater.ObjectId)?.Name ?? "Unknown";
-        //    ImGui.Text($"{name} : {hater.Enmity}");
-        //}
-
-        ImGui.Text(CustomRotation.LimitBreakLevel.ToString());
+        ImGui.Text("Combat Time: " + (DataCenter.CombatTimeRaw).ToString());
+        ImGui.Text("Raid Time: " + (DataCenter.RaidTimeRaw).ToString());
+        ImGui.Text("Limit Break: " + CustomRotation.LimitBreakLevel.ToString());
     }
 
     private static void DrawAction(ActionID id, string type)
