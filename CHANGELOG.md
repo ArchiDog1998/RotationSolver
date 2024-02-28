@@ -1,5 +1,39 @@
 # Changelog
 
+## [4.1.0](https://github.com/ArchiDog1998/RotationSolver/compare/v4.0.3...v4.1.0) (2024-02-28)
+
+
+### Features
+
+* add a thing to check the timeline. ([57ad3f8](https://github.com/ArchiDog1998/RotationSolver/commit/57ad3f81d1468fc27b41f4435eb76c68b3e88244))
+* add a ttu for all actions. ([635cf32](https://github.com/ArchiDog1998/RotationSolver/commit/635cf32d8aad80d03db80b001770fbfb23c7952f))
+* add offset delay. ([b8a5f9a](https://github.com/ArchiDog1998/RotationSolver/commit/b8a5f9ad48351a925287d9f8f2e88882e58be1ff))
+* add timeline ui stuff. ([4cda9b1](https://github.com/ArchiDog1998/RotationSolver/commit/4cda9b1b49b92846c1265934f1668b6a45180775))
+
+
+### Bug Fixes
+
+* action condition can use fix. ([7924c55](https://github.com/ArchiDog1998/RotationSolver/commit/7924c557b65c725ccaaae2129cd047d30141097c))
+* add lb things. ([8635306](https://github.com/ArchiDog1998/RotationSolver/commit/86353061eccbf3ca23296ae0355983f8397b7c7f))
+* add more thing to sync the raid time. ([d13d846](https://github.com/ArchiDog1998/RotationSolver/commit/d13d8469f3cceefba131650e4607eacf6d7f0331))
+* add opcode. ([3016cef](https://github.com/ArchiDog1998/RotationSolver/commit/3016cefad9bb13655fb733be1c8f239a86a29add))
+* add raise delay. ([de75e3c](https://github.com/ArchiDog1998/RotationSolver/commit/de75e3ce3d51b921e7de3d3a71f4bc944f88f1d9))
+* add some default configs. ([083b25b](https://github.com/ArchiDog1998/RotationSolver/commit/083b25b17aa089efbd5c426596bf3ae050a55ea6))
+* default ttu. ([6146e87](https://github.com/ArchiDog1998/RotationSolver/commit/6146e87d27bbeefb36d096b91a572c769d780863))
+* delay bug. ([e76e968](https://github.com/ArchiDog1998/RotationSolver/commit/e76e9687b2eb2e1bee2513ca692574330e759dad))
+* desc fix. ([405242f](https://github.com/ArchiDog1998/RotationSolver/commit/405242f53dbcb46344b4d7596c1d45b4309862d0))
+* feint target. ([9b04b04](https://github.com/ArchiDog1998/RotationSolver/commit/9b04b049d8947aeed110fe2711afe67713f4e95b))
+* fixed manual target thing. ([6a5998c](https://github.com/ArchiDog1998/RotationSolver/commit/6a5998c6b351fe9128ad3f0e30a634d228509d5e))
+* fixed some rotations. ([8aa60a2](https://github.com/ArchiDog1998/RotationSolver/commit/8aa60a29da10eb31a762f6f5945ae53302615804))
+* fixed some things about the timeline. ([858d2fb](https://github.com/ArchiDog1998/RotationSolver/commit/858d2fb07d93d4f88df0435131a8c568f17ad72d))
+* heal when nothing todo aoe fix. ([b3c648a](https://github.com/ArchiDog1998/RotationSolver/commit/b3c648a1d3a7744df9cfc70a8d97ca24e71090f5))
+* icon drawing. ([1a2b060](https://github.com/ArchiDog1998/RotationSolver/commit/1a2b0603a121438af1af18b40685d1f1dc103bf0))
+* longer delay for social. ([9c060b1](https://github.com/ArchiDog1998/RotationSolver/commit/9c060b1d76e1e4712a2fb294e515c1566c3ec3dd))
+* make drawing faster. ([ad5c209](https://github.com/ArchiDog1998/RotationSolver/commit/ad5c20973436e5dfff8b446778a5dd3b97a25eaa))
+* make some methods public. ([3bafba6](https://github.com/ArchiDog1998/RotationSolver/commit/3bafba6f4f4e4de6924e68efd574e2e6efbdec1e))
+* manual aoe check fixed. ([731f4ba](https://github.com/ArchiDog1998/RotationSolver/commit/731f4ba12a6c8ace6bb9cea1d1cd4e55998637f1))
+* time fixed. ([01fbd83](https://github.com/ArchiDog1998/RotationSolver/commit/01fbd836c7fe75bc47a37f07e31760e7f7bfe5df))
+
 ## [4.0.3](https://github.com/ArchiDog1998/RotationSolver/compare/v4.0.2...v4.0.3) (2024-02-22)
 
 
