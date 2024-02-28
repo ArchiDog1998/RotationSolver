@@ -95,6 +95,8 @@ internal static class DataCenter
 
     public static string TerritoryName => Territory?.PlaceName?.Value?.Name?.RawString ?? "Territory";
 
+    public static bool IsPvP => Territory?.IsPvpZone ?? false;
+
     public static ContentFinderCondition? ContentFinder => Territory?.ContentFinderCondition?.Value;
 
     public static string ContentFinderName => ContentFinder?.Name?.RawString ?? "Duty";
@@ -276,7 +278,7 @@ internal static class DataCenter
     public static BattleChara? DeathTarget { get; internal set; }
     public static BattleChara? DispelTarget { get; internal set; }
 
-    public static ObjectListDelay<BattleChara> AllTargets { get; } = new(() => (1, 3));
+    public static ObjectListDelay<BattleChara> AllTargets { get; } = new(() => Service.Config.TargetDelay);
 
     public static uint[] TreasureCharas { get; internal set; } = [];
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;

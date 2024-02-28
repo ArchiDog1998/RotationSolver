@@ -11,6 +11,9 @@ namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {
+    static readonly ObjectListDelay<BattleChara> 
+        _raisePartyTargets = new(() => Service.Config.RaiseDelay),
+        _raiseAllTargets = new(() => Service.Config.RaiseDelay);
     internal unsafe static void UpdateTarget()
     {
         DataCenter.AllTargets.Delay(Svc.Objects.GetObjectInRadius(30).OfType<BattleChara>());
@@ -47,7 +50,6 @@ internal static partial class TargetUpdater
         = empty;
 
         DataCenter.InterruptTarget = DataCenter.ProvokeTarget = null;
-
         DataCenter.AllTargets.Delay(empty);
     }
 
@@ -210,9 +212,9 @@ internal static partial class TargetUpdater
         var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.ObjectId);
         DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
 
-        var deathAll = DataCenter.AllianceMembers.GetDeath();
-        var deathParty = DataCenter.PartyMembers.GetDeath();
-        DataCenter.DeathTarget = GetDeathTarget(deathAll, deathParty);
+        _raiseAllTargets.Delay(DataCenter.AllianceMembers.GetDeath());
+        _raisePartyTargets.Delay(DataCenter.PartyMembers.GetDeath());
+        DataCenter.DeathTarget = GetDeathTarget(_raiseAllTargets, _raisePartyTargets);
 
         var weakenPeople = DataCenter.PartyMembers.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
         var dyingPeople = weakenPeople.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
@@ -326,6 +328,6 @@ internal static partial class TargetUpdater
             if (b == null || b.CurrentHp == 0) continue;
             charas.Add(b.ObjectId);
         }
-        DataCenter.TreasureCharas = charas.ToArray();
+        DataCenter.TreasureCharas = [.. charas];
     }
 }

@@ -6,7 +6,7 @@ internal static class StateUpdater
 {
     private static bool CanUseHealAction =>
         //PvP
-        (DataCenter.Territory?.IsPvpZone ?? false)
+        (DataCenter.IsPvP)
         //Job
         || (DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
         && Service.Config.AutoHeal
@@ -164,7 +164,7 @@ internal static class StateUpdater
                 status |= AutoStatus.Dispel;
             }
             else if (!DataCenter.HasHostilesInRange || Service.Config.DispelAll
-            || (DataCenter.Territory?.IsPvpZone ?? false))
+            || (DataCenter.IsPvP))
             {
                 status |= AutoStatus.Dispel;
             }

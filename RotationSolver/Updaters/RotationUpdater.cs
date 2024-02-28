@@ -535,7 +535,7 @@ internal static class RotationUpdater
 
         static Type? GetChosenRotation(CustomRotationGroup group)
         {
-            var isPvP = DataCenter.Territory?.IsPvpZone ?? false;
+            var isPvP = DataCenter.IsPvP;
 
             var rotations = group.Rotations
                 .Where(r =>

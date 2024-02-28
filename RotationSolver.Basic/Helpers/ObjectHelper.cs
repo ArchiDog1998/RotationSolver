@@ -122,7 +122,7 @@ public static class ObjectHelper
 
         if (battleChara.IsTopPriorityHostile()) return true;
 
-        if (Service.CountDownTime > 0 || (DataCenter.Territory?.IsPvpZone ?? false)) return true;
+        if (Service.CountDownTime > 0 || DataCenter.IsPvP) return true;
 
         return DataCenter.RightNowTargetToHostileType switch
         {
@@ -157,7 +157,7 @@ public static class ObjectHelper
 
     internal static unsafe bool IsAlliance(this GameObject obj)
         => obj != null && obj.ObjectId is not 0 and not GameObject.InvalidGameObjectId
-        && (!(DataCenter.Territory?.IsPvpZone ?? false) && obj is PlayerCharacter 
+        && (!(DataCenter.IsPvP) && obj is PlayerCharacter 
         || ActionManager.CanUseActionOnTarget((uint)ActionID.CurePvE, obj.Struct()));
 
     internal static bool IsParty(this GameObject gameObject)

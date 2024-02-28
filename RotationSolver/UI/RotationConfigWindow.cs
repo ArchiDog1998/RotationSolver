@@ -406,7 +406,7 @@ public partial class RotationConfigWindow : Window
 
         if (rot == null) return;
 
-        if (DataCenter.Territory?.IsPvpZone ?? false)
+        if (DataCenter.IsPvP)
         {
             rotations = rotations.Where(r => r.GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvP) ?? false).ToArray();
         }
@@ -532,7 +532,7 @@ public partial class RotationConfigWindow : Window
                         ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudOrange);
                     if (ImGui.Selectable(rAttr.Name))
                     {
-                        if( DataCenter.Territory?.IsPvpZone ?? false)
+                        if( DataCenter.IsPvP)
                         {
                             Service.Config.PvPRotationChoice = r.GetType().FullName;
                         }
@@ -1178,7 +1178,7 @@ public partial class RotationConfigWindow : Window
 
         foreach (var config in set.Configs)
         {
-            if (DataCenter.Territory?.IsPvpZone ?? false)
+            if (DataCenter.IsPvP)
             {
                 if (!config.Type.HasFlag(CombatType.PvP)) continue;
             }

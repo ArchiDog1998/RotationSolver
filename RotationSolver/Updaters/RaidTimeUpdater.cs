@@ -32,7 +32,11 @@ internal static partial class RaidTimeUpdater
         using var client = new HttpClient();
         var message = await client.GetAsync("https://raw.githubusercontent.com/OverlayPlugin/cactbot/main/ui/raidboss/data/" + path);
 
-        if (!message.IsSuccessStatusCode) return;
+        if (!message.IsSuccessStatusCode)
+        {
+            DataCenter.TimelineItems = [];
+            return;
+        }
 
         var str = await message.Content.ReadAsStringAsync();
 

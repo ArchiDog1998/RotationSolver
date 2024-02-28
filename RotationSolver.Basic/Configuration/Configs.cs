@@ -110,6 +110,12 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raiseBrinkOfDeath = true;
 
+    [UI("The random delay between for raising.",
+        Filter = AutoActionUsage, Section = 2,
+        PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
+    [Range(0, 10, ConfigUnitType.Seconds, 0.002f)]
+    public Vector2 RaiseDelay { get; set; } = new(1, 2);
+
     [ConditionBool, UI("Add enemy list to the hostile targets.",
         Filter = TargetConfig)]
     private static readonly bool _addEnemyListToHostile = true;
@@ -484,9 +490,9 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 0.5f, ConfigUnitType.Seconds, 0.002f)]
     public float ActionAheadForLast0GCD { get; set; } = 0.06f;
 
-    [UI("This is the delay time.")]
+    [UI("The range of random delay for finding a target.", Filter =TargetConfig)]
     [Range(0, 3, ConfigUnitType.Seconds)]
-    public Vector2 TargetDelay { get; set; } = new(0, 0);
+    public Vector2 TargetDelay { get; set; } = new(1, 2);
 
     [UI("This is the clipping time.\nGCD is over. However, RS forgets to click the next action.",
         Filter = BasicTimer)]

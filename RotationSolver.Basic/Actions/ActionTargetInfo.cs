@@ -53,8 +53,6 @@ public struct ActionTargetInfo(IBaseAction action)
     }
 
     #region Target Finder.
-    //The delay of finding the targets.
-    private readonly ObjectListDelay<BattleChara> _canTargets = new (() => Service.Config.TargetDelay);
     private readonly IEnumerable<BattleChara> GetCanTargets(bool skipStatusProvideCheck, TargetType type)
     {
         var items = TargetFilter.GetObjectInRadius(DataCenter.AllTargets, Range);
@@ -68,8 +66,7 @@ public struct ActionTargetInfo(IBaseAction action)
             objs.Add(obj);
         }
 
-        _canTargets.Delay(objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget));
-        return _canTargets;
+        return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget);
     }
 
     private readonly IEnumerable<BattleChara> GetCanAffects(bool skipStatusProvideCheck, TargetType type)

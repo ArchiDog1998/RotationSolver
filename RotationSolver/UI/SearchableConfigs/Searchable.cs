@@ -183,7 +183,7 @@ internal abstract class Searchable(PropertyInfo property) : ISearchable
 
     public unsafe void Draw()
     {
-        var filter = (DataCenter.Territory?.IsPvpZone ?? false) ? PvPFilter : PvEFilter;
+        var filter = (DataCenter.IsPvP) ? PvPFilter : PvEFilter;
 
         if (!filter.CanDraw)
         {

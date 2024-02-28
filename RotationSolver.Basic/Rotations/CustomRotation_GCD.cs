@@ -123,7 +123,7 @@ partial class CustomRotation
 
         return LimitBreakLevel switch
         {
-            1 => ((DataCenter.Territory?.IsPvpZone ?? false) 
+            1 => ((DataCenter.IsPvP) 
                 ? LimitBreakPvP?.CanUse(out act, skipAoeCheck: true)
                 : LimitBreak1?.CanUse(out act, skipAoeCheck: true)) ?? false,
             2 => LimitBreak2?.CanUse(out act, skipAoeCheck: true) ?? false,
