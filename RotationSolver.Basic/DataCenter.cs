@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
@@ -95,6 +94,8 @@ internal static class DataCenter
 
     public static string TerritoryName => Territory?.PlaceName?.Value?.Name?.RawString ?? "Territory";
 
+    public static bool IsPvP => Territory?.IsPvpZone ?? false;
+
     public static ContentFinderCondition? ContentFinder => Territory?.ContentFinderCondition?.Value;
 
     public static string ContentFinderName => ContentFinder?.Name?.RawString ?? "Duty";
@@ -115,8 +116,6 @@ internal static class DataCenter
     {
         get
         {
-            if (ActionSequencerAction != null) return ActionSequencerAction;
-
             var next = NextActs.FirstOrDefault();
 
             while (next != null && NextActs.Count > 0 && (next.DeadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.Act)))
@@ -124,7 +123,7 @@ internal static class DataCenter
                 NextActs.RemoveAt(0);
                 next = NextActs.FirstOrDefault();
             }
-            return next?.Act;
+            return next?.Act ?? ActionSequencerAction;
         }
     }
     public static Job Job { get; set; }
@@ -261,6 +260,28 @@ internal static class DataCenter
     public static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
 
     internal static float CombatTimeRaw { get; set; }
+    private static DateTime _startRaidTime = DateTime.MinValue;
+    internal static float RaidTimeRaw
+    {
+        get
+        {
+            if (_startRaidTime == DateTime.MinValue) return 0;
+            return (float)(DateTime.Now - _startRaidTime).TotalSeconds;    
+        }
+        set
+        {
+            if (value < 0)
+            {
+                _startRaidTime = DateTime.MinValue;
+            }
+            else
+            {
+                _startRaidTime = DateTime.Now - TimeSpan.FromSeconds(value);
+            }
+        }
+    }
+
+    internal static TimelineItem[] TimelineItems { get; set; } = [];
 
     public static BattleChara[] PartyMembers { get; internal set; } = [];
     public static BattleChara[] AllianceMembers { get; internal set; } = [];
@@ -272,7 +293,7 @@ internal static class DataCenter
     public static BattleChara? DeathTarget { get; internal set; }
     public static BattleChara? DispelTarget { get; internal set; }
 
-    public static ObjectListDelay<BattleChara> AllTargets { get; } = new(() => (1, 3));
+    public static ObjectListDelay<BattleChara> AllTargets { get; } = new(() => Service.Config.TargetDelay);
 
     public static uint[] TreasureCharas { get; internal set; } = [];
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
@@ -282,7 +303,30 @@ internal static class DataCenter
     public static int NumberOfAllHostilesInRange { get; internal set; }
     public static int NumberOfAllHostilesInMaxRange { get; internal set; }
     public static bool MobsTime { get; internal set; }
-    public static float AverageTimeToKill { get; internal set; }
+
+    private static float _averageTimeToKill;
+    public static float AverageTimeToKill 
+    {
+        get => _averageTimeToKill;
+        internal set
+        {
+            _averageTimeToKill = value;
+
+            foreach (var item in TimelineItems)
+            {
+                if (item.Time < RaidTimeRaw) continue;
+                if (item.Name is not "--untargetable--") continue;
+
+                var time = item.Time - RaidTimeRaw;
+                TimeToUntargetable = MathF.Min(time, _averageTimeToKill);
+                return;
+            }
+
+            TimeToUntargetable = _averageTimeToKill;
+        }
+    }
+
+    public static float TimeToUntargetable { get; private set; }
 
     public static bool IsHostileCastingAOE { get; internal set; }
 
@@ -417,4 +461,7 @@ internal static class DataCenter
     internal static DateTime KnockbackFinished { get; set; } = DateTime.MinValue;
     internal static DateTime KnockbackStart { get; set; } = DateTime.MinValue;
     #endregion
+
+    internal static SortedList<string, string> AuthorHashes { get; set; } = [];
+    internal static string[] ContributorsHash { get; set; } = [];
 }

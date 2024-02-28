@@ -103,13 +103,22 @@ internal static class ImGuiHelper
         return font;
     }
 
-    public static unsafe bool SelectableCombo(string popUp, string[] items, ref int index)
+    public static unsafe bool SelectableCombo(string popUp, string[] items, ref int index, ImFontPtr? font = null, Vector4? color = null)
     {
         var count = items.Length;
         var name = items[index % count] + "##" + popUp;
 
         var result = false;
 
+        List<IDisposable> disposables = new(2);
+        if (font != null)
+        {
+            disposables.Add(ImRaii.PushFont(font.Value));
+        }
+        if(color != null)
+        {
+            disposables.Add(ImRaii.PushColor(ImGuiCol.Text, color.Value));
+        }
         if (SelectableButton(name))
         {
             if (count < 3)
@@ -121,6 +130,10 @@ internal static class ImGuiHelper
             {
                 if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
             }
+        }
+        foreach (var item in disposables)
+        {
+            item.Dispose();
         }
 
         if (ImGui.IsItemHovered())

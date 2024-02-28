@@ -74,6 +74,10 @@ partial class NinjaRotation
     static partial void ModifyMugPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => JobGauge.Ninki <= 60 && IsLongerThan(10);
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     static partial void ModifyTrickAttackPvE(ref ActionSetting setting)
@@ -111,6 +115,9 @@ partial class NinjaRotation
         setting.StatusProvide = [StatusID.Doton];
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public NinjaRotation()
     {
         FumaShurikenPvE.Setting.Ninjutsu = [TenPvE];
@@ -122,6 +129,14 @@ partial class NinjaRotation
         SuitonPvE.Setting.Ninjutsu = [TenPvE, ChiPvE, JinPvE];
         GokaMekkyakuPvE.Setting.Ninjutsu = [ChiPvE, TenPvE];
         HyoshoRanryuPvE.Setting.Ninjutsu = [TenPvE, JinPvE];
+    }
+
+    static partial void ModifyKatonPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyShukuchiPvE(ref ActionSetting setting)
@@ -153,10 +168,10 @@ partial class NinjaRotation
         return base.DefenseSingleAbility(out act);
     }
 
-    static partial void ModifySuitonPvE(ref ActionSetting setting)
-    {
-        setting.StatusProvide = [StatusID.Suiton];
-    }
+    //static partial void ModifySuitonPvE(ref ActionSetting setting)
+    //{
+    //    setting.StatusProvide = [StatusID.Suiton];
+    //}
 
     static partial void ModifyFleetingRaijuPvE(ref ActionSetting setting)
     {

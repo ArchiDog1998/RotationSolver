@@ -40,6 +40,9 @@ internal enum RotationConfigWindowTab : byte
     [Description("The way to find the targets, hostiles or friends.")]
     [TabIcon(Icon = 16)] Target,
 
+    [Description("Your custom time line about the specific duty.")]
+    [TabIcon(Icon = 73)] Timeline,
+
     [Description("Some features that shouldn't be included in RS but help you.")]
     [TabIcon(Icon = 51)] Extra,
 

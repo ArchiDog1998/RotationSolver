@@ -5,7 +5,10 @@ using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Actions;
 
-public struct ActionBasicInfo
+/// <summary>
+/// The action info for the <see cref="Lumina.Excel.GeneratedSheets.Action"/>.
+/// </summary>
+public readonly struct ActionBasicInfo
 {
     internal static readonly uint[] ActionsNoNeedCasting =
     [
@@ -15,25 +18,65 @@ public struct ActionBasicInfo
     ];
 
     private readonly IBaseAction _action;
+
+    /// <summary>
+    /// The name of the action.
+    /// </summary>
     public readonly string Name => _action.Action.Name;
+
+    /// <summary>
+    /// The ID of the action.
+    /// </summary>
     public readonly uint ID => _action.Action.RowId;
+
+    /// <summary>
+    /// The icon of the action.
+    /// </summary>
     public readonly uint IconID => ID == (uint)ActionID.SprintPvE ? 104u : _action.Action.Icon;
 
+    /// <summary>
+    /// The adjust id of this action.
+    /// </summary>
     public readonly uint AdjustedID => (uint)Service.GetAdjustedActionId((ActionID)ID);
 
+    /// <summary>
+    /// The attack type of this action.
+    /// </summary>
     public readonly AttackType AttackType => (AttackType)(_action.Action.AttackType.Value?.RowId ?? byte.MaxValue);
 
+    /// <summary>
+    /// The aspect of this action.
+    /// </summary>
+    public Aspect Aspect { get; }
+
+    /// <summary>
+    /// The animation lock time of this action.
+    /// </summary>
     public readonly float AnimationLockTime => OtherConfiguration.AnimationLockTime?.TryGetValue(AdjustedID, out var time) ?? false ? time : 0.6f;
 
+    /// <summary>
+    /// The level of this action.
+    /// </summary>
     public readonly byte Level => _action.Action.ClassJobLevel;
+
+    /// <summary>
+    /// If this action is enough level to use.
+    /// </summary>
     public readonly bool EnoughLevel => Player.Level >= Level;
 
+    /// <summary>
+    /// If this action a pvp action.
+    /// </summary>
     public readonly bool IsPvP => _action.Action.IsPvP;
+
     /// <summary>
     /// Casting time.
     /// </summary>
     public readonly unsafe float CastTime => ((ActionID)AdjustedID).GetCastTime();
 
+    /// <summary>
+    /// How many mp does this action needs.
+    /// </summary>
     public readonly unsafe uint MPNeed
     {
         get
@@ -47,6 +90,9 @@ public struct ActionBasicInfo
         }
     }
 
+    /// <summary>
+    /// Is thia action on the slot.
+    /// </summary>
     public readonly bool IsOnSlot
     {
         get
@@ -64,12 +110,32 @@ public struct ActionBasicInfo
             return IsPvP == DataCenter.Territory?.IsPvpZone;
         }
     }
-    public bool IsLimitBreak { get; }
-    public bool IsGeneralGCD { get; }
-    public bool IsRealGCD { get; }
-    public bool IsDutyAction { get; }
-    public Aspect Aspect { get; }
 
+    /// <summary>
+    /// Is this action is a lb action.
+    /// </summary>
+    public bool IsLimitBreak { get; }
+
+    /// <summary>
+    /// Is this action a general gcd.
+    /// </summary>
+    public bool IsGeneralGCD { get; }
+
+    /// <summary>
+    /// Is this action a real gcd.
+    /// </summary>
+    public bool IsRealGCD { get; }
+
+    /// <summary>
+    /// Is this action a duty action.
+    /// </summary>
+    public bool IsDutyAction { get; }
+
+    /// <summary>
+    /// The basic way to create a basic info
+    /// </summary>
+    /// <param name="action">the action</param>
+    /// <param name="isDutyAction">if it is a duty action.</param>
     public ActionBasicInfo(IBaseAction action, bool isDutyAction)
     {
         _action = action;
@@ -81,9 +147,11 @@ public struct ActionBasicInfo
         Aspect = (Aspect)_action.Action.Aspect;
     }
 
-    internal readonly bool BasicCheck(bool skipStatusProvideCheck, bool skipCombo, bool ignoreCastingCheck)
+    internal readonly bool BasicCheck(bool skipStatusProvideCheck, bool skipComboCheck, bool skipCastingCheck)
     {
         if (!_action.Config.IsEnabled || !IsOnSlot) return false;
+
+        if (IsLimitBreak) return true;
 
         //Disabled.
         if (DataCenter.DisabledActionSequencer?.Contains(ID) ?? false) return false;
@@ -110,7 +178,7 @@ public struct ActionBasicInfo
             if (CustomRotation.LimitBreakLevel <= 1) return false;
         }
 
-        if (!skipCombo && IsGeneralGCD)
+        if (!skipComboCheck && IsGeneralGCD)
         {
             if (!CheckForCombo()) return false;
         }
@@ -132,7 +200,7 @@ public struct ActionBasicInfo
             //Is knocking back.
             if (DateTime.Now > DataCenter.KnockbackStart && DateTime.Now < DataCenter.KnockbackFinished) return false;
 
-            if (DataCenter.NoPoslock && DataCenter.IsMoving && !ignoreCastingCheck) return false;
+            if (DataCenter.NoPoslock && DataCenter.IsMoving && !skipCastingCheck) return false;
         }
 
         if (IsGeneralGCD && _action.Setting.StatusProvide?.Length > 0 && _action.Setting.IsFriendly

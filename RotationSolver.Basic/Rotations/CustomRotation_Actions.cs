@@ -7,7 +7,7 @@ partial class CustomRotation
     internal static void LoadActionSetting(ref IBaseAction action)
     {
         var a = action.Action;
-        if(a.CanTargetFriendly || a.CanTargetParty)
+        if (a.CanTargetFriendly || a.CanTargetParty)
         {
             action.Setting.IsFriendly = true;
         }
@@ -102,21 +102,25 @@ partial class CustomRotation
         setting.ActionCheck = () => !HasHostilesInMaxRange
             && (Player.CurrentMp <= Player.MaxMp / 3 || Player.CurrentHp <= Player.MaxHp / 3)
             && !IsLastAction(ActionID.StandardissueElixirPvP);
+        setting.IsFriendly = true;
     }
 
     static partial void ModifyRecuperatePvP(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Player.MaxHp - Player.CurrentHp > 15000;
+        setting.IsFriendly = true;
     }
 
     static partial void ModifyPurifyPvP(ref ActionSetting setting)
     {
         setting.TargetType = TargetType.Dispel;
+        setting.IsFriendly = true;
     }
 
     static partial void ModifySprintPvP(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.Sprint_1342];
+        setting.IsFriendly = true;
     }
 
     #endregion
@@ -126,7 +130,11 @@ partial class CustomRotation
     private protected virtual IBaseAction? LimitBreak1 => null;
     private protected virtual IBaseAction? LimitBreak2 => null;
     private protected virtual IBaseAction? LimitBreak3 => null;
+    private protected virtual IBaseAction? LimitBreakPvP => null;
 
+    /// <summary>
+    /// All actions of this rotation.
+    /// </summary>
     public virtual IAction[] AllActions => 
     [
         .. AllBaseActions.Where(i =>
@@ -145,14 +153,29 @@ partial class CustomRotation
         .. AllItems.Where(i => i.HasIt),
     ];
 
+    /// <summary>
+    /// All traits of this action.
+    /// </summary>
     public virtual IBaseTrait[] AllTraits { get; } = [];
 
     PropertyInfo[]? _allBools;
+
+    /// <summary>
+    /// All bools of this rotation.
+    /// </summary>
     public PropertyInfo[] AllBools => _allBools ??= GetType().GetStaticProperties<bool>();
 
     PropertyInfo[]? _allBytes;
+
+    /// <summary>
+    /// All bytes or integers of this rotation.
+    /// </summary>
     public PropertyInfo[] AllBytesOrInt => _allBytes ??= GetType().GetStaticProperties<byte>().Union(GetType().GetStaticProperties<int>()).ToArray();
 
     PropertyInfo[]? _allFloats;
+
+    /// <summary>
+    /// All floats of this rotation.
+    /// </summary>
     public PropertyInfo[] AllFloats => _allFloats ??= GetType().GetStaticProperties<float>();
 }

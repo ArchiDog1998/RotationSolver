@@ -2,9 +2,17 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace RotationSolver.Basic.Actions;
+
+/// <summary>
+/// The action cooldown information.
+/// </summary>
 public readonly struct ActionCooldownInfo : ICooldown
 {
     private readonly IBaseAction _action;
+
+    /// <summary>
+    /// The cd group.
+    /// </summary>
     public byte CoolDownGroup { get; }
 
     unsafe RecastDetail* CoolDownDetail => ActionIdHelper.GetCoolDownDetail(CoolDownGroup);
@@ -61,6 +69,10 @@ public readonly struct ActionCooldownInfo : ICooldown
 
     float RecastTimeElapsedOneChargeRaw => RecastTimeElapsedRaw % RecastTimeOneChargeRaw;
 
+    /// <summary>
+    /// The default constructor.
+    /// </summary>
+    /// <param name="action">the action.</param>
     public ActionCooldownInfo(IBaseAction action)
     {
         _action = action;
@@ -117,6 +129,17 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <returns></returns>
     public bool WillHaveOneCharge(float remain)
         => HasOneCharge || RecastTimeRemainOneCharge <= remain;
+
+    /// <summary>
+    /// Is this action used after several time.
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    public bool JustUsedAfter(float time)
+    {
+        var elapsed = RecastTimeElapsedRaw % RecastTimeOneChargeRaw;
+        return elapsed + DataCenter.WeaponRemain < time;
+    }
 
     internal bool CooldownCheck(bool isEmpty, bool onLastAbility, bool ignoreClippingCheck, byte gcdCountForAbility)
     {

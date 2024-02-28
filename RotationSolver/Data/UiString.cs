@@ -120,8 +120,14 @@ internal enum UiString
     [Description("TTK that this action needs the target be.")]
     ConfigWindow_Actions_TTK,
 
+    [Description("Time to untargetable that this action needs the timeline be.")]
+    ConfigWindow_Actions_TTU,
+
     [Description("How many targets are needed to use this action.")]
     ConfigWindow_Actions_AoeCount,
+
+    [Description("Should this action check the stauts.")]
+    ConfigWindow_Actions_CheckStatus,
 
     [Description("How many gcds are needed to add the status.")]
     ConfigWindow_Actions_GcdCount,
@@ -449,6 +455,9 @@ internal enum UiString
 
     [Description("Delay its turning to true.")]
     ActionSequencer_Delay_Description,
+
+    [Description("Delay its turning.")]
+    ActionSequencer_Offset_Description,
 
     [Description("Enought Level")]
     ActionConditionType_EnoughLevel,

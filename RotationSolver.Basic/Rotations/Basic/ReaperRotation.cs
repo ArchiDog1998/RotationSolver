@@ -77,6 +77,10 @@ partial class ReaperRotation
     {
         setting.ActionCheck = () => !HasSoulReaver;
         setting.TargetStatusProvide = [StatusID.DeathsDesign];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifySoulScythePvE(ref ActionSetting setting)
@@ -120,7 +124,10 @@ partial class ReaperRotation
     static partial void ModifyArcaneCirclePvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.BloodsownCircle_2972];
-        setting.ActionCheck = () => IsLongerThan(10);
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     static partial void ModifyPlentifulHarvestPvE(ref ActionSetting setting)

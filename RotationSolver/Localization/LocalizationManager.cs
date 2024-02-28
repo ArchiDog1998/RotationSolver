@@ -28,10 +28,10 @@ internal static class LocalizationManager
 
     internal static string Local(this string key, string @default)
     {
-        if (_rightLang.TryGetValue(key, out var value)) return value;
-
 #if DEBUG
         _rightLang[key] = @default;
+#else
+        if (_rightLang.TryGetValue(key, out var value)) return value;
 #endif
         return @default;
     }

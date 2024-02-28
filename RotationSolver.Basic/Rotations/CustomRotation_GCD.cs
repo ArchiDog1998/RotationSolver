@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Rotations;
 
 partial class CustomRotation
 {
@@ -9,7 +11,7 @@ partial class CustomRotation
 
         IBaseAction.ForceEnable = true;
         if (act is IBaseAction a && a != null && a.Info.IsRealGCD 
-            && a.CanUse(out _, isEmpty: true, skipAoeCheck: true)) return act;
+            && a.CanUse(out _, usedUp: true, skipAoeCheck: true)) return act;
         IBaseAction.ForceEnable = false;
 
         IBaseAction.ShouldEndSpecial = true;
@@ -94,8 +96,14 @@ partial class CustomRotation
 
                 if (PartyMembersMinHP < Service.Config.HealWhenNothingTodoBelow)
                 {
-                    if (DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference && HealAreaGCD(out act)) return act;
+                    IBaseAction.TargetOverride =  TargetType.Heal;
+
+                    if (DataCenter.PartyMembersDifferHP < Service.Config.HealthDifference 
+                        && DataCenter.PartyMembersHP.Count(i => i < 1) > 2
+                        && HealAreaGCD(out act)) return act;
                     if (HealSingleGCD(out act)) return act;
+
+                    IBaseAction.TargetOverride = null;
                 }
             }
         }
@@ -115,7 +123,9 @@ partial class CustomRotation
 
         return LimitBreakLevel switch
         {
-            1 => LimitBreak1?.CanUse(out act, skipAoeCheck: true) ?? false,
+            1 => ((DataCenter.IsPvP) 
+                ? LimitBreakPvP?.CanUse(out act, skipAoeCheck: true)
+                : LimitBreak1?.CanUse(out act, skipAoeCheck: true)) ?? false,
             2 => LimitBreak2?.CanUse(out act, skipAoeCheck: true) ?? false,
             3 => LimitBreak3?.CanUse(out act, skipAoeCheck: true) ?? false,
             _ => false,
@@ -164,19 +174,29 @@ partial class CustomRotation
 
         bool RaiseAction(out IAction act, bool ignoreCastingCheck)
         {
-            if (Player.CurrentMp > Service.Config.LessMPNoRaise && (Raise?.CanUse(out act, ignoreCastingCheck: ignoreCastingCheck) ?? false)) return true;
+            if (Player.CurrentMp > Service.Config.LessMPNoRaise && (Raise?.CanUse(out act, skipCastingCheck: ignoreCastingCheck) ?? false)) return true;
 
             act = null!;
             return false;
         }
     }
 
+    /// <summary>
+    /// The gcd for raising.
+    /// </summary>
+    /// <param name="act">the action.</param>
+    /// <returns></returns>
     protected virtual bool RaiseGCD(out IAction? act)
     {
         if (DataCenter.RightNowDutyRotation?.RaiseGCD(out act) ?? false) return true;
         act = null; return false;
     }
 
+    /// <summary>
+    /// The gcd for dispeling.
+    /// </summary>
+    /// <param name="act">the action.</param>
+    /// <returns></returns>
     protected virtual bool DispelGCD(out IAction? act)
     {
         if (EsunaPvE.CanUse(out act)) return true;

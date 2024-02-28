@@ -8,7 +8,9 @@ using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using static Dalamud.Interface.Utility.Raii.ImRaii;
 using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace RotationSolver;
@@ -62,6 +64,119 @@ public static class Watcher
             Svc.Log.Debug(effect.ToString());
 #endif
         });
+
+        Svc.GameNetwork.NetworkMessage += GameNetwork_NetworkMessage;
+        Svc.Chat.ChatMessage += Chat_ChatMessage;
+    }
+
+    private static void Chat_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)
+    {
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.GameLog) continue;
+
+            var typeString = ((uint)type).ToString("X4");
+            if (!new Regex(item["code"]).IsMatch(typeString)) continue;
+
+            //TODO: multi language.
+            if (!new Regex(item["line"]).IsMatch(message.TextValue)) continue;
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
+
+    private static void GameNetwork_NetworkMessage(nint dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, Dalamud.Game.Network.NetworkMessageDirection direction)
+    {
+        if (direction != Dalamud.Game.Network.NetworkMessageDirection.ZoneDown) return;
+        OpCode op = (OpCode)opCode;
+
+        switch (op)
+        {
+            case OpCode.SystemLogMessage:
+                OnSystemLogMessage(dataPtr);
+                break;
+            //case OpCode.ActorControlTarget:
+            //    var bytes = new byte[32];
+            //    Marshal.Copy(dataPtr, bytes, 0, 32);
+            //    Svc.Log.Debug("ActorControlTarget: " + HexString(bytes));
+            //    break;
+            //case OpCode.ActorControlSelf:
+            //    bytes = new byte[32];
+            //    Marshal.Copy(dataPtr, bytes, 0, 32);
+            //    Svc.Log.Debug("ActorControlSelf: " + HexString(bytes));
+            //    break;
+            //case OpCode.ActorControl:
+            //    OnActorControl(dataPtr);
+            //    break;
+        }
+    }
+
+    //private static void OnActorControl(IntPtr dataPtr)
+    //{
+    //    foreach (var item in DataCenter.TimelineItems)
+    //    {
+    //        if (item.Time < DataCenter.RaidTimeRaw) continue;
+    //        if (item.Type is not TimelineType.ActorControl) continue;
+    //        //if (!item.IsIdMatched(ReadNumber(dataPtr, 4))) continue;
+
+    //        //var param1 = item["param1"];
+    //        //if (!string.IsNullOrEmpty(param1))
+    //        //{
+    //        //    if (!new Regex(param1).IsMatch(ReadNumber(dataPtr, 12).ToString("X")))
+    //        //    {
+    //        //        continue;
+    //        //    }
+    //        //}
+    //        //item.UpdateRaidTimeOffset();
+    //        break;
+    //    }
+
+    //    var bytes = new byte[32];
+    //    Marshal.Copy(dataPtr, bytes, 0, 32);
+    //    Svc.Log.Debug("ActorControl: " + HexString(bytes));
+    //}
+
+    private static void OnSystemLogMessage(IntPtr dataPtr)
+    {
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.SystemLogMessage) continue;
+            if (!item.IsIdMatched(ReadNumber(dataPtr, 4))) continue;
+
+            var param1 = item["param1"];
+            if (!string.IsNullOrEmpty(param1))
+            {
+                if(!new Regex(param1).IsMatch(ReadNumber(dataPtr, 12).ToString("X")))
+                {
+                    continue;
+                }
+            }
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
+
+    private unsafe static uint ReadNumber(IntPtr dataPtr, int offset)
+    {
+        return *(uint*)(dataPtr + offset);
+    }
+
+    private static string HexString(byte[] bytes)
+    {
+        var str = Convert.ToHexString(bytes);
+
+        string result = string.Empty;
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (i % 4 == 0)
+            {
+                result += " ";
+            }
+            result += str[i];
+        }
+        return result;
     }
 
     public static void Disable()
@@ -74,6 +189,8 @@ public static class Watcher
         MapEffect.Dispose();
         ActionEffect.ActionEffectEvent -= ActionFromEnemy;
         ActionEffect.ActionEffectEvent -= ActionFromSelf;
+        Svc.GameNetwork.NetworkMessage -= GameNetwork_NetworkMessage;
+        Svc.Chat.ChatMessage -= Chat_ChatMessage;
     }
 
     private static IntPtr ActorVfxNewHandler(string path, IntPtr a2, IntPtr a3, float a4, char a5, ushort a6, char a7)
@@ -153,6 +270,16 @@ public static class Watcher
 
     private static void ActionFromEnemy(ActionEffectSet set)
     {
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.Ability) continue;
+            if (!item.IsIdMatched(set.Action?.RowId ?? 0)) continue;
+
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+
         //Check Source.
         var source = set.Source;
         if (source == null) return;
@@ -174,7 +301,6 @@ public static class Watcher
 
         ShowStrEnemy = $"Damage Ratio: {damageRatio}\n{set}";
 
-
         foreach (var effect in set.TargetEffects)
         {
             if (effect.TargetID != Player.Object.ObjectId) continue;
@@ -190,7 +316,7 @@ public static class Watcher
             }
         }
 
-        if (set.Header.ActionType == ActionType.Action && DataCenter.PartyMembers.Count() >= 4 && set.Action.Cast100ms > 0)
+        if (set.Header.ActionType == ActionType.Action && DataCenter.PartyMembers.Length >= 4 && set.Action?.Cast100ms > 0)
         {
             var type = set.Action.GetActionCate();
 
@@ -200,7 +326,7 @@ public static class Watcher
                     DataCenter.PartyMembers.Any(p => p.ObjectId == e.TargetID)
                     && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
                     && (effect.value > 0 || (effect.param0 & 6) == 6))
-                    == DataCenter.PartyMembers.Count())
+                    == DataCenter.PartyMembers.Length)
                 {
                     if (Service.Config.RecordCastingArea)
                     {

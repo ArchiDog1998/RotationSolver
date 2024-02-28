@@ -113,6 +113,14 @@ partial class AstrologianRotation
         };
     }
 
+    static partial void ModifyGravityPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
+    }
+
     static partial void ModifyTheArrowPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = StatusHelper.AstCardStatus;
@@ -159,6 +167,22 @@ partial class AstrologianRotation
         setting.StatusFromSelf = false;
         setting.TargetType = TargetType.Range;
         setting.ActionCheck = () => DrawnCard == CardType.SPIRE;
+    }
+
+    static partial void ModifyLightspeedPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+    }
+
+    static partial void ModifyNeutralSectPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 15,
+        };
     }
 
     /// <summary>

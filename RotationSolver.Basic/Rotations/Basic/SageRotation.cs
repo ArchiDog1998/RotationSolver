@@ -61,6 +61,14 @@ partial class SageRotation
         ];
     }
 
+    static partial void ModifyDyskrasiaPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
+    }
+
     static partial void ModifyToxikonPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Addersting > 0;

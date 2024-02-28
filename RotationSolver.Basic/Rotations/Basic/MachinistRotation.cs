@@ -63,6 +63,10 @@ partial class MachinistRotation
     static partial void ModifyAutoCrossbowPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => IsOverheated && !OverheatedEndAfterGCD();
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyRookAutoturretPvE(ref ActionSetting setting)
@@ -98,6 +102,14 @@ partial class MachinistRotation
         setting.CreateConfig = () => new()
         {
             TimeToKill = 8,
+        };
+    }
+
+    static partial void ModifySpreadShotPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
         };
     }
 

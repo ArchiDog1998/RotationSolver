@@ -110,7 +110,7 @@ partial class CustomRotation
     /// <summary>
     /// The player's target, or null if no valid target. (null clears the target)
     /// </summary>
-    protected static BattleChara CurrentTarget => Svc.Targets.Target is BattleChara b ? b : null;
+    protected static BattleChara? CurrentTarget => Svc.Targets.Target is BattleChara b ? b : null;
 
     /// <summary>
     /// The last attacked hostile target.
@@ -173,7 +173,9 @@ partial class CustomRotation
         get
         {
             var controller = UIState.Instance()->LimitBreakController;
-            return (byte)(controller.CurrentValue / *(ushort*)&controller.BarValue);
+            var barValue = *(ushort*)&controller.BarValue;
+            if (barValue == 0) return 0;
+            return (byte)(controller.CurrentValue / barValue);
         }
     }
 

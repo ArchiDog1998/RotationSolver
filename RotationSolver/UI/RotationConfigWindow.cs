@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface.Colors;
+﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -14,6 +15,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -21,6 +23,7 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System.Diagnostics;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
+using TargetType = RotationSolver.Basic.Actions.TargetType;
 
 namespace RotationSolver.UI;
 
@@ -406,7 +409,7 @@ public partial class RotationConfigWindow : Window
 
         if (rot == null) return;
 
-        if (DataCenter.Territory?.IsPvpZone ?? false)
+        if (DataCenter.IsPvP)
         {
             rotations = rotations.Where(r => r.GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvP) ?? false).ToArray();
         }
@@ -532,7 +535,7 @@ public partial class RotationConfigWindow : Window
                         ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudOrange);
                     if (ImGui.Selectable(rAttr.Name))
                     {
-                        if( DataCenter.Territory?.IsPvpZone ?? false)
+                        if( DataCenter.IsPvP)
                         {
                             Service.Config.PvPRotationChoice = r.GetType().FullName;
                         }
@@ -619,6 +622,10 @@ public partial class RotationConfigWindow : Window
                         DrawTarget();
                         break;
 
+                    case RotationConfigWindowTab.Timeline:
+                        DrawTimeline();
+                        break;
+
                     case RotationConfigWindowTab.Extra:
                         DrawExtra();
                         break;
@@ -630,6 +637,194 @@ public partial class RotationConfigWindow : Window
             }
         }
     }
+
+    #region Timeline
+    private static int _territoryIndex = 0;
+    private static readonly CollapsingHeaderGroup _timelineGroup = new()
+    {
+        HeaderSize = 12,
+    };
+    private static readonly CollapsingHeaderGroup _timelineActionsList = new()
+    {
+        HeaderSize = 12,
+    };
+    private static void DrawTimeline()
+    {
+        var territory = Svc.Data.GetExcelSheet<TerritoryType>();
+        if (territory == null) return;
+
+        var ids = RaidTimeUpdater._pathForRaids.Keys.ToArray();
+        var territories = ids.Select(territory.GetRow).ToArray();
+
+        var names = territories.Select(t => t?.ContentFinderCondition?.Value?.Name?.RawString ?? "Unnamed Duty").ToArray();
+
+        var imFont = ImGuiHelper.GetFont(21);
+        float width = 0;
+        using (var font = ImRaii.PushFont(imFont))
+        {
+            width = ImGui.CalcTextSize(names[_territoryIndex]).X + ImGui.GetStyle().ItemSpacing.X * 2;
+        }
+
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            ImGuiHelper.SelectableCombo("##Choice the specific dungeon", names, ref _territoryIndex,
+                imFont, ImGuiColors.DalamudYellow);
+        }, ImGui.GetWindowWidth(), width);
+
+        DrawContentFinder(territories[_territoryIndex]?.ContentFinderCondition.Value);
+
+        if (_timelineGroup == null) return;
+
+        var id = ids[_territoryIndex];
+        if (!Service.Config.Timeline.TryGetValue(id, out var timeLine))
+        {
+            Service.Config.Timeline[id] = timeLine = [];
+        }
+
+        ImGui.Separator();
+
+        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
+        {
+            var str = JsonConvert.SerializeObject(timeLine, Formatting.Indented);
+            ImGui.SetClipboardText(str);
+        }
+
+        ImGui.SameLine();
+
+        if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
+        {
+            var str = ImGui.GetClipboardText();
+            try
+            {
+                var set = JsonConvert.DeserializeObject<Dictionary<float, List<ITimelineItem>>>(str, new ITimelineItemConverter())!;
+                Service.Config.Timeline[id] = timeLine = set;
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Warning(ex, "Failed to load the condition.");
+            }
+        }
+
+        _timelineGroup.ClearCollapsingHeader();
+
+        foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)id))
+        {
+            if (!item.IsShown) continue;
+
+            _timelineGroup.AddCollapsingHeader(() =>$"{item.Name} ({item.Time} s)" , () =>
+            {
+                if(!timeLine.TryGetValue(item.Time, out var timeLineItems))
+                {
+                    timeLine[item.Time] = timeLineItems = [];
+                }
+                AddButton();
+
+                for (int i = 0; i < timeLineItems.Count; i++)
+                {
+                    var timeLineItem = timeLineItems[i];
+
+                    void Delete()
+                    {
+                        timeLineItems.RemoveAt(i);
+                    };
+
+                    void Up()
+                    {
+                        timeLineItems.RemoveAt(i);
+                        timeLineItems.Insert(Math.Max(0, i - 1), timeLineItem);
+                    };
+
+                    void Down()
+                    {
+                        timeLineItems.RemoveAt(i);
+                        timeLineItems.Insert(Math.Min(timeLineItems.Count, i + 1), timeLineItem);
+                    }
+
+                    var key = $"TimelineItem Pop Up: {timeLineItem.GetHashCode()}";
+
+                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
+                        (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
+                        (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
+                        (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]));
+
+                    ConditionDrawer.DrawCondition(timeLineItem.InPeriod(item));
+
+                    ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+                        (Delete, [VirtualKey.DELETE]),
+                        (Up, [VirtualKey.UP]),
+                        (Down, [VirtualKey.DOWN]));
+
+                    var time = timeLineItem.Time;
+                    if(ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"Time##Time{timeLineItem.GetHashCode()}", ref time))
+                    {
+                        timeLineItem.Time = time;
+                    }
+
+                    time = timeLineItem.Duration;
+                    if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"Duration##Duration{timeLineItem.GetHashCode()}", ref time))
+                    {
+                        timeLineItem.Duration = time;
+                    }
+
+                    if (timeLineItem is ActionTimelineItem actionItem)
+                    {
+                        if(DataCenter.RightNowRotation != null)
+                        {
+                            var popUpKey = $"Action Finder{timeLineItem.GetHashCode()}";
+                            ConditionDrawer.ActionSelectorPopUp(popUpKey, _timelineActionsList, DataCenter.RightNowRotation, item => actionItem.ID = (ActionID)item.ID);
+
+                            if (actionItem.ID.GetTexture(out var icon) || IconSet.GetTexture(4, out icon))
+                            {
+                                ImGui.SameLine();
+                                var cursor = ImGui.GetCursorPos();
+                                if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, timeLineItem.GetHashCode().ToString()))
+                                {
+                                    if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
+                                }
+                                ImGuiHelper.DrawActionOverlay(cursor, ConditionDrawer.IconSize, 1);
+                            }
+                        }
+                    }
+                    else if (timeLineItem is StateTimelineItem stateItem)
+                    {
+                        var state = stateItem.State;
+                        ImGui.SameLine();
+                        if (ConditionDrawer.DrawByteEnum($"##AutoStatus{timeLineItem.GetHashCode()}", ref state))
+                        {
+                            stateItem.State = state;
+                        }
+                    }
+                }
+
+                void AddButton()
+                {
+                    if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddTimelineButton" + item.Name))
+                    {
+                        ImGui.OpenPopup("PopupTimelineButton" + item.Name);
+                    }
+
+                    using var popUp = ImRaii.Popup("PopupTimelineButton" + item.Name);
+                    if (popUp)
+                    {
+                        AddOneCondition<ActionTimelineItem>();
+                        AddOneCondition<StateTimelineItem>();
+                    }
+
+                    void AddOneCondition<T>() where T : ITimelineItem
+                    {
+                        if (ImGui.Selectable(typeof(T).Local()))
+                        {
+                            timeLineItems.Add(Activator.CreateInstance<T>());
+                            ImGui.CloseCurrentPopup();
+                        }
+                    }
+                }
+            });
+        }
+        using var child = ImRaii.Child("Timeline Items Body", -Vector2.One);
+        _timelineGroup.Draw();
+    }
+    #endregion
 
     #region About
     private static readonly SortedList<uint, string> CountStringPair = new()
@@ -1178,7 +1373,7 @@ public partial class RotationConfigWindow : Window
 
         foreach (var config in set.Configs)
         {
-            if (DataCenter.Territory?.IsPvpZone ?? false)
+            if (DataCenter.IsPvP)
             {
                 if (!config.Type.HasFlag(CombatType.PvP)) continue;
             }
@@ -1405,105 +1600,85 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TableNextColumn();
 
-            if (Service.Config.InDebug)
+            DrawConfigsOfAction();
+            DrawActionDebug();
+
+            ImGui.TextWrapped(UiString.ConfigWindow_Actions_ConditionDescription.Local());
+            _sequencerList?.Draw();
+        }
+
+        static void DrawConfigsOfAction()
+        {
+            if (_activeAction == null) return;
+
+            var enable = _activeAction.IsEnabled;
+            if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
             {
-                if (_activeAction is IBaseAction action)
-                {
-
-                    try
-                    {
-#if DEBUG
-                        ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
-                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
-                        ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
-                        ImGui.Text("MP: " + action.Info.MPNeed.ToString());
-#endif
-                        ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
-                        ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
-                        ImGui.Text("Has One:" + action.Cooldown.HasOneCharge.ToString());
-                        ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
-                        ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
-
-                        ImGui.Text($"Can Use: {action.CanUse(out _, ignoreClippingCheck: true)} ");
-                        ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, ignoreClippingCheck: true, ignoreCastingCheck : true).ToString());
-                        if (action.Target != null)
-                        {
-                            ImGui.Text("Target Name: " + action.Target.Value.Target?.Name ?? string.Empty);
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                }
-                else if (_activeAction is IBaseItem item)
-                {
-                    try
-                    {
-                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID).ToString());
-                        ImGui.Text("Status HQ: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID + 1000000).ToString());
-                        var remain = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTime(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID) - FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTimeElapsed(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID);
-                        ImGui.Text("remain: " + remain.ToString());
-                        ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
-
-                        if (item is HpPotionItem healPotionItem)
-                        {
-                            ImGui.Text("MaxHP:" + healPotionItem.MaxHp.ToString());
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                }
+                _activeAction.IsEnabled = enable;
             }
 
-            if (_activeAction != null)
+            const string key = "Action Enable Popup";
+            var cmd = ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString()!);
+            ImGuiHelper.DrawHotKeysPopup(key, cmd);
+            ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
+
+            enable = _activeAction.IsInCooldown;
+            if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_ShowOnCDWindow.Local()}##{_activeAction.Name}InCooldown", ref enable))
             {
-                var enable = _activeAction.IsEnabled;
-                if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
+                _activeAction.IsInCooldown = enable;
+            }
+
+            if (_activeAction is IBaseAction a)
+            {
+                DrawConfigsOfBaseAction(a);
+            }
+
+            ImGui.Separator();
+
+            static void DrawConfigsOfBaseAction(IBaseAction a)
+            {
+                var config = a.Config;
+
+                if (Service.Config.MistakeRatio > 0
+                    && !a.Setting.IsFriendly
+                    && a.Setting.TargetType != TargetType.Move)
                 {
-                    _activeAction.IsEnabled = enable;
+                    var enable = config.IsInMistake;
+                    if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_IsInMistake.Local()}##{a.Name}InMistake", ref enable))
+                    {
+                        config.IsInMistake = enable;
+                    }
                 }
 
-                const string key = "Action Enable Popup";
-                var cmd = ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString()!);
-                ImGuiHelper.DrawHotKeysPopup(key, cmd);
-                ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
+                ImGui.Separator();
 
-                enable = _activeAction.IsInCooldown;
-                if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_ShowOnCDWindow.Local()}##{_activeAction.Name}InCooldown", ref enable))
+                var ttk = config.TimeToKill;
+                ImGui.SetNextItemWidth(Scale * 150);
+                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTK.Local()}##{a}",
+                    ref ttk, 0.1f, 0, 120, $"{ttk:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
                 {
-                    _activeAction.IsInCooldown = enable;
+                    config.TimeToKill = ttk;
                 }
+                ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
 
-                if (_activeAction is IBaseAction a)
+                var ttu = config.TimeToUntargetable;
+                ImGui.SetNextItemWidth(Scale * 150);
+                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTU.Local()}##{a}",
+                    ref ttu, 0.1f, 0, 120, $"{ttu:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
                 {
-                    var config = a.Config;
+                    config.TimeToUntargetable = ttu;
+                }
+                ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
 
-                    if (Service.Config.MistakeRatio > 0
-                        && !a.Setting.IsFriendly 
-                        && a.Setting.TargetType != TargetType.Move)
+                if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
+                {
+                    var shouldStatus = config.ShouldCheckStatus;
+                    if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_CheckStatus.Local()}##{a}", ref shouldStatus))
                     {
-                        enable = config.IsInMistake;
-                        if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_IsInMistake.Local()}##{a.Name}InMistake", ref enable))
-                        {
-                            config.IsInMistake = enable;
-                        }
+                        config.ShouldCheckStatus = shouldStatus;
                     }
-                    
-                    ImGui.Separator();
 
-                    var ttk = config.TimeToKill;
-                    ImGui.SetNextItemWidth(Scale * 150);
-                    if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTK.Local()}##{a}",
-                        ref ttk, 0.1f, 0, 120, $"{ttk:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
-                    {
-                        config.TimeToKill = ttk;
-                    }
-                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
-
-                    if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
+                    if (shouldStatus)
                     {
                         var statusGcdCount = (int)config.StatusGcdCount;
                         ImGui.SetNextItemWidth(Scale * 150);
@@ -1513,33 +1688,84 @@ public partial class RotationConfigWindow : Window
                             config.StatusGcdCount = (byte)statusGcdCount;
                         }
                     }
-
-                    if (!a.TargetInfo.IsSingleTarget)
-                    {
-                        var aoeCount = (int)config.AoeCount;
-                        ImGui.SetNextItemWidth(Scale * 150);
-                        if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_AoeCount.Local()}##{a}",
-                            ref aoeCount, 0.05f, 1, 10))
-                        {
-                            config.AoeCount = (byte)aoeCount;
-                        }
-                    }
-
-                    var ratio = config.AutoHealRatio;
-                    ImGui.SetNextItemWidth(Scale * 150);
-                    if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_HealRatio.Local()}##{a}",
-                        ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
-                    {
-                        config.AutoHealRatio = ratio;
-                    }
-                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.Local());
                 }
 
-                ImGui.Separator();
-            }
+                if (!a.TargetInfo.IsSingleTarget)
+                {
+                    var aoeCount = (int)config.AoeCount;
+                    ImGui.SetNextItemWidth(Scale * 150);
+                    if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_AoeCount.Local()}##{a}",
+                        ref aoeCount, 0.05f, 1, 10))
+                    {
+                        config.AoeCount = (byte)aoeCount;
+                    }
+                }
 
-            ImGui.TextWrapped(UiString.ConfigWindow_Actions_ConditionDescription.Local());
-            _sequencerList?.Draw();
+                var ratio = config.AutoHealRatio;
+                ImGui.SetNextItemWidth(Scale * 150);
+                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_HealRatio.Local()}##{a}",
+                    ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
+                {
+                    config.AutoHealRatio = ratio;
+                }
+                ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.Local());
+
+            }
+        }
+
+        static void DrawActionDebug()
+        {
+            if (!Service.Config.InDebug) return;
+
+            if (_activeAction is IBaseAction action)
+            {
+
+                try
+                {
+#if DEBUG
+                        ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
+                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
+                        ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
+                        ImGui.Text("MP: " + action.Info.MPNeed.ToString());
+#endif
+                    ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
+                    ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
+                    ImGui.Text("Has One:" + action.Cooldown.HasOneCharge.ToString());
+                    ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
+                    ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
+
+                    ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
+                    ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
+                    if (action.Target != null)
+                    {
+                        ImGui.Text("Target Name: " + action.Target.Value.Target?.Name ?? string.Empty);
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+            else if (_activeAction is IBaseItem item)
+            {
+                try
+                {
+                    ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID).ToString());
+                    ImGui.Text("Status HQ: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID + 1000000).ToString());
+                    var remain = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTime(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID) - FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTimeElapsed(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID);
+                    ImGui.Text("remain: " + remain.ToString());
+                    ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
+
+                    if (item is HpPotionItem healPotionItem)
+                    {
+                        ImGui.Text("MaxHP:" + healPotionItem.MaxHp.ToString());
+                    }
+                }
+                catch
+                {
+
+                }
+            }
         }
     }
 
@@ -2196,6 +2422,8 @@ public partial class RotationConfigWindow : Window
             }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
         }
 
+        DrawContentFinder(DataCenter.ContentFinder);
+
         using var table = ImRaii.Table("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
         if (table)
         {
@@ -2346,6 +2574,22 @@ public partial class RotationConfigWindow : Window
     }
     #endregion
 
+    private static void DrawContentFinder(ContentFinderCondition? content)
+    {
+        var badge = content?.Image;
+        if (badge != null && badge.Value != 0
+            && IconSet.GetTexture(badge.Value, out var badgeTexture))
+        {
+            var wholeWidth = ImGui.GetWindowWidth();
+            var size = new Vector2(badgeTexture.Width, badgeTexture.Height) * MathF.Min(1, MathF.Min(480, wholeWidth) / badgeTexture.Width);
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.Image(badgeTexture.ImGuiHandle, size);
+            }, wholeWidth, size.X);
+        }
+    }
+
     #region Debug
     private static void DrawDebug()
     {
@@ -2363,7 +2607,7 @@ public partial class RotationConfigWindow : Window
         {() =>"Target Data", DrawTargetData },
         {() =>"Next Action", DrawNextAction },
         {() =>"Last Action", DrawLastAction },
-        {() =>"Icon", DrawIcon },
+        {() =>"Others", DrawOthers },
         {() =>"Effect",  () =>
             {
                 ImGui.Text(Watcher.ShowStrSelf);
@@ -2410,8 +2654,8 @@ public partial class RotationConfigWindow : Window
     }
     private static unsafe void DrawParty()
     {
-        ImGui.Text("Party: " + DataCenter.PartyMembers.Count().ToString());
-        ImGui.Text("Alliance: " + DataCenter.AllianceMembers.Count().ToString());
+        ImGui.Text("Party: " + DataCenter.PartyMembers.Length.ToString());
+        ImGui.Text("Alliance: " + DataCenter.AllianceMembers.Length.ToString());
 
         ImGui.Text("PartyMembersAverHP: " + DataCenter.PartyMembersAverHP.ToString());
 
@@ -2473,7 +2717,7 @@ public partial class RotationConfigWindow : Window
         }
 
         ImGui.Text("All: " + DataCenter.AllTargets.Count().ToString());
-        ImGui.Text("Hostile: " + DataCenter.AllHostileTargets.Count().ToString());
+        ImGui.Text("Hostile: " + DataCenter.AllHostileTargets.Length.ToString());
         foreach (var item in DataCenter.AllHostileTargets)
         {
             ImGui.Text(item.Name.ToString());
@@ -2489,7 +2733,6 @@ public partial class RotationConfigWindow : Window
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
         ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
         ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
-        ImGui.Text("Time: " + (DataCenter.CombatTimeRaw + DataCenter.WeaponRemain).ToString());
     }
 
     private static void DrawLastAction()
@@ -2500,23 +2743,11 @@ public partial class RotationConfigWindow : Window
         DrawAction(DataCenter.LastComboAction, nameof(DataCenter.LastComboAction));
     }
 
-    private static unsafe void DrawIcon()
+    private static unsafe void DrawOthers()
     {
-        //ImGui.Text("Hate");
-        //foreach (var hate in UIState.Instance()->Hate.HateArraySpan)
-        //{
-        //    var name = Svc.Objects.SearchById(hate.ObjectId)?.Name ?? "Unknown";
-        //    ImGui.Text($"{name} : {hate.Enmity}");
-        //}
-        //ImGui.Spacing();
-        //ImGui.Text("Hater");
-        //foreach (var hater in UIState.Instance()->Hater.HaterArraySpan)
-        //{
-        //    var name = Svc.Objects.SearchById(hater.ObjectId)?.Name ?? "Unknown";
-        //    ImGui.Text($"{name} : {hater.Enmity}");
-        //}
-
-        ImGui.Text(CustomRotation.LimitBreakLevel.ToString());
+        ImGui.Text("Combat Time: " + (DataCenter.CombatTimeRaw).ToString());
+        ImGui.Text("Raid Time: " + (DataCenter.RaidTimeRaw).ToString());
+        ImGui.Text("Limit Break: " + CustomRotation.LimitBreakLevel.ToString());
     }
 
     private static void DrawAction(ActionID id, string type)

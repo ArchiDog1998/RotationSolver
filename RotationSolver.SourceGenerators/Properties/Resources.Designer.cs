@@ -67,18 +67,18 @@ namespace RotationSolver.SourceGenerators.Properties {
         ///
         ////// &lt;summary&gt;
         ////// The Custom Rotation.
-        ////// &lt;br&gt;Number of Actions: 609&lt;/br&gt;
+        ////// &lt;br&gt;Number of Actions: 48&lt;/br&gt;
         ////// &lt;/summary&gt;
-        ///public partial class CustomRotation
+        ///public abstract partial class CustomRotation
         ///{
-        ///    private readonly Lazy&lt;IBaseAction&gt; _KeyItemPvECreator = new(() =&gt; 
+        ///#region Actions
+        ///    private readonly Lazy&lt;IBaseAction&gt; _SprintPvECreator = new(() =&gt; 
         ///    {
-        ///        IBaseAction action = new BaseAction(ActionID.KeyItemPvE, true);
-        ///        LoadActionConfigAndSetting(ref action);
+        ///        IBaseAction action = new BaseAction((ActionID)3, false);
+        ///        CustomRotation.LoadActionSetting(ref action);
         ///    
         ///        var setting = action.Setting;
-        ///        ModifyKeyItemPvE(ref setting);
-        ///         [rest of string was truncated]&quot;;.
+        ///        ModifySprintPvE(r [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Action {
             get {
@@ -137,17 +137,17 @@ namespace RotationSolver.SourceGenerators.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to /// &lt;summary&gt;
-        ////// &lt;see href=&quot;https://garlandtools.org/db/#action/1&quot;&gt;&lt;strong&gt;Key Item&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [1] [Event]
+        ////// &lt;see href=&quot;https://garlandtools.org/db/#action/3&quot;&gt;&lt;strong&gt;Sprint&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [3] [System]
         ////// &lt;para&gt;&lt;/para&gt;
         ////// &lt;/summary&gt;
-        ///KeyItemPvE = 1,
+        ///SprintPvE = 3,
         ////// &lt;summary&gt;
-        ////// &lt;see href=&quot;https://garlandtools.org/db/#action/2&quot;&gt;&lt;strong&gt;Interaction&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [2] [Event]
+        ////// &lt;see href=&quot;https://garlandtools.org/db/#action/5&quot;&gt;&lt;strong&gt;Teleport&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [5] [System]
         ////// &lt;para&gt;&lt;/para&gt;
         ////// &lt;/summary&gt;
-        ///InteractionPvE = 2,
+        ///TeleportPvE = 5,
         ////// &lt;summary&gt;
-        ////// &lt;see href=&quot;https://garlandtools.org/db/#action/3&quot;&gt;&lt;strong&gt;Sprint&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [ [rest of string was truncated]&quot;;.
+        ////// &lt;see href=&quot;https://garlandtools.org/db/#action/6&quot;&gt;&lt;strong&gt;Return&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [6] [Sys [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ActionId {
             get {
@@ -204,7 +204,23 @@ namespace RotationSolver.SourceGenerators.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to using RotationSolver.Basic.Actions;
+        ///
+        ///namespace RotationSolver.Basic.Rotations.Duties;
+        ///
+        ////// &lt;summary&gt;
+        ////// The Custom Rotation.
+        ////// &lt;br&gt;Number of Actions: 388&lt;/br&gt;
+        ////// &lt;/summary&gt;
+        ///public abstract partial class DutyRotation
+        ///{
+        ///    private readonly Lazy&lt;IBaseAction&gt; _MagitekCannonPvECreator = new(() =&gt; 
+        ///    {
+        ///        IBaseAction action = new BaseAction((ActionID)1128, true);
+        ///        CustomRotation.LoadActionSetting(ref action);
+        ///    
+        ///        var setting = action.Setting;
+        ///        ModifyMagitekCannon [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DutyAction {
             get {
@@ -213,8 +229,30 @@ namespace RotationSolver.SourceGenerators.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {
-        ///  &quot;PaladinRotation&quot;: &quot;using ECommons.DalamudServices;\r\nusing ECommons.ExcelServices;\r\nusing RotationSolver.Basic.Actions;\r\nusing RotationSolver.Basic.Traits;\r\n\r\nnamespace RotationSolver.Basic.Rotations.Basic;\r\n\r\n/// &lt;summary&gt;\r\n/// &lt;see href=\&quot;https://na.finalfantasyxiv.com/jobguide/paladin\&quot;&gt;&lt;strong&gt;Paladin&lt;/strong&gt;&lt;/see&gt;\r\n/// &lt;br&gt;Number of Actions: 47&lt;/br&gt;\r\n/// &lt;br&gt;Number of Traits: 15&lt;/br&gt;\r\n/// &lt;/summary&gt;\r\npublic abstract partial class PaladinRotation : CustomRotation\r\n{\r\n   [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string OpCode {
+            get {
+                return ResourceManager.GetString("OpCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to using ECommons.DalamudServices;
+        ///using ECommons.ExcelServices;
+        ///using RotationSolver.Basic.Actions;
+        ///using RotationSolver.Basic.Traits;
+        ///
+        ///namespace RotationSolver.Basic.Rotations.Basic;
+        ////// &lt;summary&gt;
+        ////// &lt;see href=&quot;https://na.finalfantasyxiv.com/jobguide/paladin&quot;&gt;&lt;strong&gt;Paladin&lt;/strong&gt;&lt;/see&gt;
+        ////// &lt;br&gt;Number of Actions: 46&lt;/br&gt;
+        ////// &lt;br&gt;Number of Traits: 15&lt;/br&gt;
+        ////// &lt;/summary&gt;
+        ///[Jobs(Job.PLD, Job.GLA)]
+        ///public abstract partial class PaladinRotation : CustomRotation
+        ///{
+        ///    static PLDGauge JobGauge =&gt; S [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Rotation {
             get {

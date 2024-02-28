@@ -121,7 +121,19 @@ partial class ScholarRotation
 
     static partial void ModifyChainStratagemPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => InCombat && IsLongerThan(10);
+        setting.ActionCheck = () => InCombat;
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+    }
+
+    static partial void ModifyArtOfWarPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyDeploymentTacticsPvE(ref ActionSetting setting)
@@ -133,7 +145,7 @@ partial class ScholarRotation
     [RotationDesc(ActionID.ExpedientPvE)]
     protected override bool SpeedAbility(out IAction? act)
     {
-        if (InCombat && ExpedientPvE.CanUse(out act, isEmpty: true)) return true;
+        if (InCombat && ExpedientPvE.CanUse(out act, usedUp: true)) return true;
         return base.SpeedAbility(out act);
     }
 }

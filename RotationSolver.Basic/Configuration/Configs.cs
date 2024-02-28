@@ -1,6 +1,7 @@
 ﻿using Dalamud.Configuration;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using RotationSolver.Basic.Configuration.Timeline;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -110,6 +111,12 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raiseBrinkOfDeath = true;
 
+    [UI("The random delay between for raising.",
+        Filter = AutoActionUsage, Section = 2,
+        PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
+    [Range(0, 10, ConfigUnitType.Seconds, 0.002f)]
+    public Vector2 RaiseDelay { get; set; } = new(1, 2);
+
     [ConditionBool, UI("Add enemy list to the hostile targets.",
         Filter = TargetConfig)]
     private static readonly bool _addEnemyListToHostile = true;
@@ -140,7 +147,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _showTarget = true;
 
     [ConditionBool, UI("Show the target's time to kill.",
-        Parent = UiOverlay)]
+        Parent = nameof(ShowTarget))]
     private static readonly bool _showTargetTimeToKill = false;
 
     [ConditionBool, UI("Priority attack targets with attack markers",
@@ -424,7 +431,10 @@ internal partial class Configs : IPluginConfiguration
 
     [UI("Drawing smoothness.", Parent = nameof(UseOverlayWindow))]
     [Range(0.005f, 0.05f, ConfigUnitType.Yalms, 0.001f)]
-    public float SampleLength { get; set; } = 0.2f;
+    public float SampleLength { get; set; } = 1;
+
+    [ConditionBool, UI("Use tasks for making the overlay window faster.", Parent = nameof(UseOverlayWindow))]
+    private static readonly bool _useTasksForOverlay = false;
 
     [UI("The angle of your vision cone", Parent = nameof(OnlyAttackInVisionCone))]
     [Range(0, 90, ConfigUnitType.Degree, 0.02f)]
@@ -481,9 +491,9 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 0.5f, ConfigUnitType.Seconds, 0.002f)]
     public float ActionAheadForLast0GCD { get; set; } = 0.06f;
 
-    [UI("This is the delay time.")]
+    [UI("The range of random delay for finding a target.", Filter =TargetConfig)]
     [Range(0, 3, ConfigUnitType.Seconds)]
-    public Vector2 TargetDelay { get; set; } = new(0, 0);
+    public Vector2 TargetDelay { get; set; } = new(1, 2);
 
     [UI("This is the clipping time.\nGCD is over. However, RS forgets to click the next action.",
         Filter = BasicTimer)]
@@ -738,6 +748,8 @@ internal partial class Configs : IPluginConfiguration
     private readonly Dictionary<string, string> _rotationsConfigurations = [];
 
     public Dictionary<uint, string> DutyRotationChoice { get; set; } = [];
+
+    public Dictionary<uint, Dictionary<float, List<ITimelineItem>>> Timeline { get; set; } = [];
 
     public void Save()
     {

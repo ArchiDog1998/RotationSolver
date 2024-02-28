@@ -8,7 +8,7 @@ partial class CustomRotation
 
         IBaseAction.ForceEnable = true;
         if (act is IBaseAction a && a != null && !a.Info.IsRealGCD && a.CanUse(out _,
-            isEmpty: true, skipAoeCheck: true)) return true;
+            usedUp: true, skipAoeCheck: true)) return true;
         IBaseAction.ForceEnable = false;
 
         if (act is IBaseItem i && i.CanUse(out _, true)) return true;
@@ -45,7 +45,7 @@ partial class CustomRotation
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional) && role == JobRole.Melee
             && !(Player?.HasStatus(false, StatusHelper.NoPositionalStatus) ?? true))
         {
-            if (TrueNorthPvE.CanUse(out act, isEmpty: true)) return true;
+            if (TrueNorthPvE.CanUse(out act, usedUp: true, onLastAbility: true)) return true;
         }
 
         IBaseAction.TargetOverride = TargetType.Heal;
@@ -266,7 +266,7 @@ partial class CustomRotation
             {
                 if (action.Setting.EnemyPositional != action.Target?.Target?.FindEnemyPositional() && (action.Target?.Target?.HasPositional() ?? false))
                 {
-                    if (TrueNorthPvE.CanUse(out act, isEmpty: true, onLastAbility: true)) return true;
+                    if (TrueNorthPvE.CanUse(out act, usedUp: true, onLastAbility: true)) return true;
                 }
             }
         }

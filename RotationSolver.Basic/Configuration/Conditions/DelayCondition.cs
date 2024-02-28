@@ -6,8 +6,10 @@ internal abstract class DelayCondition : ICondition
 {
     public float DelayMin = 0;
     public float DelayMax = 0;
+    public float DelayOffset = 0;
 
     RandomDelay _delay = default;
+    OffsetDelay _offsetDelay = default;
 
     public bool Not = false;
 
@@ -31,13 +33,18 @@ internal abstract class DelayCondition : ICondition
             _delay = new(() => (DelayMin, DelayMax));
         }
 
+        if(_offsetDelay.GetDelay == null)
+        {
+            _offsetDelay = new(() => DelayOffset);
+        }
+
         _callingStack.Push(this);
         var value = CheckBefore(rotation) && IsTrueInside(rotation);
         if (Not)
         {
             value = !value;
         }
-        var result = _delay.Delay(value);
+        var result = _delay.Delay(_offsetDelay.Delay(value));
         _callingStack.Pop();
 
         return result;

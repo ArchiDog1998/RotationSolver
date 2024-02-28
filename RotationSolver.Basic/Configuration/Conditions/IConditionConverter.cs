@@ -4,7 +4,7 @@ namespace RotationSolver.Basic.Configuration.Conditions;
 
 internal class IConditionConverter : JsonCreationConverter<ICondition>
 {
-    protected override ICondition Create(JObject jObject)
+    protected override ICondition? Create(JObject jObject)
     {
         if (FieldExists(nameof(ConditionSet.Conditions), jObject))
         {
@@ -39,16 +39,11 @@ internal class IConditionConverter : JsonCreationConverter<ICondition>
             return null;
         }
     }
-
-    private static bool FieldExists(string fieldName, JObject jObject)
-    {
-        return jObject[fieldName] != null;
-    }
 }
 
 internal abstract class JsonCreationConverter<T> : JsonConverter
 {
-    protected abstract T Create(JObject jObject);
+    protected abstract T? Create(JObject jObject);
 
     public override bool CanConvert(Type objectType)
     {
@@ -57,21 +52,29 @@ internal abstract class JsonCreationConverter<T> : JsonConverter
 
     public override bool CanWrite => false;
 
-    public sealed override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
     }
 
-    public sealed override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
     {
         // Load JObject from stream
         JObject jObject = JObject.Load(reader);
 
         // Create target object based on JObject
-        T target = Create(jObject);
+        var target = Create(jObject);
 
         // Populate the object properties
-        serializer.Populate(jObject.CreateReader(), target);
+        if (target != null)
+        {
+            serializer.Populate(jObject.CreateReader(), target);
+        }
 
         return target;
+    }
+
+    protected static bool FieldExists(string fieldName, JObject jObject)
+    {
+        return jObject[fieldName] != null;
     }
 }

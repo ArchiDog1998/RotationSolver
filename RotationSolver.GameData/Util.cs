@@ -15,6 +15,25 @@ internal static partial class Util
 
     public static string Table(this string str) => "    " + str.Replace("\n", "\n    ");
 
+    public static string Space(this string str)
+    {
+        string result = string.Empty;
+
+        bool lower = false;
+        foreach (var c in str)
+        {
+            var isLower = char.IsLower(c);
+            if (lower && !isLower)
+            {
+                result += ' ';
+            }
+            lower = isLower;
+            result += c;
+        }
+
+        return result;
+    }
+
     public static string OnlyAscii(this string input) => new(input.Where(char.IsAscii).ToArray());
 
     public  static string ToPascalCase(this string input)

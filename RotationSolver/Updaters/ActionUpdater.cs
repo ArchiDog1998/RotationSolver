@@ -5,6 +5,8 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Commands;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace RotationSolver.Updaters;
 
@@ -44,7 +46,7 @@ internal static class ActionUpdater
                         {
                             return !action.Setting.IsFriendly && action.Config.IsInMistake
                             && action.Setting.TargetType != TargetType.Move
-                            && action.CanUse(out _, isEmpty: true, skipStatusProvideCheck: true, ignoreClippingCheck: true, skipAoeCheck: true);
+                            && action.CanUse(out _, usedUp: true, skipStatusProvideCheck: true, skipClippingCheck: true, skipAoeCheck: true);
                         }
                         return false;
                     });
@@ -146,6 +148,17 @@ internal static class ActionUpdater
         }
         else
         {
+            if (DataCenter.CombatTimeRaw == 0)
+            {
+                foreach (var item in DataCenter.TimelineItems)
+                {
+                    if (item.Time < DataCenter.RaidTimeRaw) continue;
+                    if (item.Type is not TimelineType.InCombat) continue;
+
+                    item.UpdateRaidTimeOffset();
+                    break;
+                }
+            }
             DataCenter.CombatTimeRaw = (float)(DateTime.Now - _startCombatTime).TotalSeconds;
         }
     }

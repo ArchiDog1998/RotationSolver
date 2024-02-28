@@ -1,12 +1,14 @@
-﻿using ECommons.GameHelpers;
+﻿using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration.Conditions;
+using RotationSolver.Basic.Configuration.Timeline;
 
 namespace RotationSolver.Updaters;
 internal static class StateUpdater
 {
     private static bool CanUseHealAction =>
         //PvP
-        (DataCenter.Territory?.IsPvpZone ?? false)
+        (DataCenter.IsPvP)
         //Job
         || (DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
         && Service.Config.AutoHeal
@@ -16,7 +18,7 @@ internal static class StateUpdater
     public static void UpdateState()
     {
         DataCenter.CommandStatus = StatusFromCmdOrCondition();
-        DataCenter.AutoStatus = StatusFromAutomatic();
+        DataCenter.AutoStatus = StatusFromAutomatic() | StatusFromTimeline();
     }
 
     static RandomDelay 
@@ -24,6 +26,30 @@ internal static class StateUpdater
         _healDelay2 = new(() => Service.Config.HealDelay),
         _healDelay3 = new(() => Service.Config.HealDelay),
         _healDelay4 = new(() => Service.Config.HealDelay);
+
+    private static AutoStatus StatusFromTimeline()
+    {
+        AutoStatus status = AutoStatus.None;
+
+        if (!Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)) return status;
+
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            var time = item.Time - DataCenter.RaidTimeRaw;
+
+            if (time < 0) continue;
+            if (!timeline.TryGetValue(item.Time, out var items)) continue;
+
+            foreach (var item2 in items.OfType<StateTimelineItem>())
+            {
+                if (!item2.InPeriod(item)) continue;
+
+                status |= item2.State;
+            }
+        }
+
+        return status;
+    }
 
     private static AutoStatus StatusFromAutomatic()
     {
@@ -69,7 +95,7 @@ internal static class StateUpdater
             var canHealAreaAbility = singleAbility > 2;
             var canHealAreaSpell = singleSpell > 2;
 
-            if (DataCenter.PartyMembers.Count() > 2)
+            if (DataCenter.PartyMembers.Length > 2)
             {
                 //TODO: Beneficial area status.
                 var ratio = GetHealingOfTimeRatio(Player.Object, StatusHelper.AreaHots);
@@ -164,7 +190,7 @@ internal static class StateUpdater
                 status |= AutoStatus.Dispel;
             }
             else if (!DataCenter.HasHostilesInRange || Service.Config.DispelAll
-            || (DataCenter.Territory?.IsPvpZone ?? false))
+            || (DataCenter.IsPvP))
             {
                 status |= AutoStatus.Dispel;
             }

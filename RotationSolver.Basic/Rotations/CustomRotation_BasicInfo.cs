@@ -4,15 +4,20 @@ using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Rotations;
 
-[Jobs()]
 partial class CustomRotation : ICustomRotation
 {
     private Job? _job = null;
+
+    /// <inheritdoc/>
     public Job Job => _job ??= this.GetType().GetCustomAttribute<JobsAttribute>()?.Jobs[0] ?? Job.ADV;
 
     private JobRole? _role = null;
+
+    /// <inheritdoc/>
     public JobRole Role  => _role ??= Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)Job)!.GetJobRole();
     private string? _name = null;
+
+    /// <inheritdoc/>
     public string Name
     {
         get
@@ -25,6 +30,7 @@ partial class CustomRotation : ICustomRotation
         }
     }
 
+    /// <inheritdoc/>
     public bool IsEnabled
     {
         get => !Service.Config.DisabledJobs.Contains(Job);
@@ -41,52 +47,83 @@ partial class CustomRotation : ICustomRotation
         }
     }
 
+    /// <inheritdoc/>
     public uint IconID { get; }
 
+    /// <inheritdoc/>
     public IRotationConfigSet Configs { get; }
 
+    /// <inheritdoc/>
     public static Vector3? MoveTarget { get; internal set; }
 
+    /// <inheritdoc/>
     public string Description => this.GetType().GetCustomAttribute<RotationAttribute>()?.Description ?? string.Empty;
 
+    /// <inheritdoc/>
     public IAction? ActionHealAreaGCD { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionHealAreaAbility { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionHealSingleGCD { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionHealSingleAbility { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionDefenseAreaGCD { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionDefenseAreaAbility { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionDefenseSingleGCD { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionDefenseSingleAbility { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionMoveForwardGCD { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionMoveForwardAbility { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionMoveBackAbility { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionSpeedAbility { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionDispelStancePositionalGCD { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionDispelStancePositionalAbility { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionRaiseShirkGCD { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionRaiseShirkAbility { get; private set; }
 
+    /// <inheritdoc/>
     public IAction? ActionAntiKnockbackAbility { get; private set; }
 
+    /// <summary>
+    /// Is this action valid.
+    /// </summary>
     [Description("Is this rotation valid")]
     public bool IsValid { get; private set; } = true;
+
+    /// <summary>
+    /// Why this action is not valid.
+    /// </summary>
     public string WhyNotValid { get; private set; } = string.Empty;
 
+    /// <summary>
+    /// Should show the status to the users.
+    /// </summary>
     [Description("Show the status")]
     public virtual bool ShowStatus => false;
 
@@ -96,11 +133,16 @@ partial class CustomRotation : ICustomRotation
         Configs = CreateConfiguration();
     }
 
+    /// <summary>
+    /// The way to create the configurations.
+    /// </summary>
+    /// <returns></returns>
     protected virtual IRotationConfigSet CreateConfiguration()
     {
         return new RotationConfigSet();
     }
 
+    /// <inheritdoc/>
     public override string ToString() => this.GetType().GetCustomAttribute<RotationAttribute>()?.Name ?? this.GetType().Name;
 
     /// <summary>

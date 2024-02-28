@@ -13,13 +13,13 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace RotationSolver.Updaters;
 
 internal class SocialUpdater
 {
+#if DEBUG
+#else
     private static readonly List<string> _macroToAuthor =
     [
         "blush",
@@ -30,6 +30,7 @@ internal class SocialUpdater
         "cheer",
         "stroke",
     ];
+#endif
 
     private static readonly HashSet<string> saidAuthors = [];
 
@@ -68,7 +69,7 @@ internal class SocialUpdater
 
     static async void DutyState_DutyCompleted(object? sender, ushort e)
     {
-        if (DataCenter.PartyMembers.Count() < 2) return;
+        if (DataCenter.PartyMembers.Length < 2) return;
 
         await Task.Delay(new Random().Next(4000, 6000));
 
@@ -80,8 +81,6 @@ internal class SocialUpdater
         }
     }
 
-
-    static Type[]? _dutyRotations = null;
     static void ClientState_TerritoryChanged(ushort id)
     {
         DataCenter.ResetAllRecords();
@@ -91,12 +90,9 @@ internal class SocialUpdater
 
         DataCenter.Territory = territory;
 
-        _dutyRotations ??= [..RotationUpdater.TryGetTypes(typeof(SocialUpdater).Assembly)
-            .Where(t => t.IsAssignableTo(typeof(DutyRotation)) && !t.IsAbstract)];
-
-        var nowRotationType = _dutyRotations.FirstOrDefault(r => r.GetCustomAttribute<DutyTerritoryAttribute>()?.TerritoryIds.Contains(id) ?? false);
-
-        DataCenter.RightNowDutyRotation = nowRotationType == null ? null : Activator.CreateInstance(nowRotationType) as DutyRotation;
+#if DEBUG
+        Svc.Log.Debug($"Move to {DataCenter.TerritoryName} ({id})");
+#endif
 
         try
         {
@@ -134,7 +130,7 @@ internal class SocialUpdater
         Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
-    static RandomDelay socialDelay = new(() => (3, 5));
+    static RandomDelay socialDelay = new(() => (5, 8));
     internal static async void UpdateSocial()
     {
         if (DataCenter.InCombat) return;
@@ -161,21 +157,21 @@ internal class SocialUpdater
 #else
             .Where(c => c.ObjectId != Player.Object.ObjectId)
 #endif
-            .Select(player => (player, EncryptString(player)))
+            .Select(player => (player, player.EncryptString()))
             .Where(pair => !saidAuthors.Contains(pair.Item2)
                 && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(pair.Item2));
 
         IEnumerable<ChatEntity> entities = players
             .Select(c =>
             {
-                if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
+                if (!DataCenter.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
                 return (c.player, nameDesc);
             })
             .Where(p => !string.IsNullOrEmpty(p.nameDesc))
             .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc));
 
         entities = entities.Union(players
-            .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
+            .Where(p => DataCenter.ContributorsHash.Contains(p.Item2))
             .Select(p => new ContributorChatEntity(p.player)), _comparer);
 
         if (Service.Config.SayHelloToUsers)
@@ -211,25 +207,6 @@ internal class SocialUpdater
         }
     }
 
-    internal static string EncryptString(PlayerCharacter player)
-    {
-        if (player == null) return string.Empty;
-
-        try
-        {
-            byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData!.InternalName.ToString()
-    + " - " + player.Name.ToString() + "U6Wy.zCG");
-
-            var tmpHash = MD5.HashData(inputByteArray);
-            var retB = Convert.ToBase64String(tmpHash);
-            return retB;
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Warning(ex, "Failed to read the player's name and world.");
-            return string.Empty;
-        }
-    }
 
     internal abstract class ChatEntity(PlayerCharacter character) : IDisposable
     {
@@ -269,7 +246,7 @@ internal class SocialUpdater
         public void Dispose()
         {
             OtherConfiguration.RotationSolverRecord.SayingHelloCount++;
-            var hash = EncryptString(player);
+            var hash = player.EncryptString();
             saidAuthors.Add(hash);
             if (Service.Config.JustSayHelloOnce)
             {

@@ -61,11 +61,19 @@ partial class DancerRotation
     static partial void ModifyBladeshowerPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.SilkenFlow];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyRisingWindmillPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.SilkenSymmetry, StatusID.FlourishingSymmetry];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyBloodshowerPvE(ref ActionSetting setting)
@@ -77,6 +85,10 @@ partial class DancerRotation
     {
         setting.ActionCheck = () => Feathers > 0;
         setting.StatusProvide = [StatusID.ThreefoldFanDance];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyFanDanceIiiPvE(ref ActionSetting setting)
@@ -134,11 +146,6 @@ partial class DancerRotation
         setting.StatusNeed = [StatusID.StandardFinish];
         setting.StatusProvide = [StatusID.ThreefoldFanDance, StatusID.FourfoldFanDance];
         setting.ActionCheck = () => InCombat;
-    }
-
-    static partial void ModifyStandardStepPvE(ref ActionSetting setting)
-    {
-        setting.StatusProvide = [StatusID.StandardStep, StatusID.TechnicalStep];
     }
 
     static partial void ModifyTechnicalStepPvE(ref ActionSetting setting)
@@ -258,7 +265,7 @@ partial class DancerRotation
     [RotationDesc(ActionID.EnAvantPvE)]
     protected sealed override bool MoveForwardAbility(out IAction act)
     {
-        if (EnAvantPvE.CanUse(out act, isEmpty:true)) return true;
+        if (EnAvantPvE.CanUse(out act, usedUp:true)) return true;
         return false;
     }
 
@@ -270,8 +277,8 @@ partial class DancerRotation
     [RotationDesc(ActionID.CuringWaltzPvE, ActionID.ImprovisationPvE)]
     protected sealed override bool HealAreaAbility(out IAction act)
     {
-        if (CuringWaltzPvE.CanUse(out act, isEmpty: true)) return true;
-        if (ImprovisationPvE.CanUse(out act, isEmpty: true)) return true;
+        if (CuringWaltzPvE.CanUse(out act, usedUp: true)) return true;
+        if (ImprovisationPvE.CanUse(out act, usedUp: true)) return true;
         return false;
     }
 
@@ -283,7 +290,7 @@ partial class DancerRotation
     [RotationDesc(ActionID.ShieldSambaPvE)]
     protected sealed override bool DefenseAreaAbility(out IAction act)
     {
-        if (ShieldSambaPvE.CanUse(out act, isEmpty: true)) return true;
+        if (ShieldSambaPvE.CanUse(out act, usedUp: true)) return true;
         return false;
     }
 }

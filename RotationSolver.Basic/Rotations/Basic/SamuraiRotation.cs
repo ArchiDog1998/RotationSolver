@@ -124,7 +124,10 @@ partial class SamuraiRotation
     static partial void ModifyMeikyoShisuiPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.MeikyoShisui];
-        setting.ActionCheck = () => IsLongerThan(8); 
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 8,
+        };
     }
 
     static partial void ModifyHagakurePvE(ref ActionSetting setting)

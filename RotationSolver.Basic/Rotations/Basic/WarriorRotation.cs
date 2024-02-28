@@ -39,6 +39,10 @@ partial class WarriorRotation
     static partial void ModifySteelCyclonePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease);
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyPrimalRendPvE(ref ActionSetting setting)
@@ -50,17 +54,44 @@ partial class WarriorRotation
     static partial void ModifyInfuriatePvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.NascentChaos];
-        setting.ActionCheck = () => HasHostilesInRange && BeastGauge <= 50 && InCombat && IsLongerThan(5);
+        setting.ActionCheck = () => HasHostilesInRange && BeastGauge <= 50 && InCombat;
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 5,
+        };
     }
 
     static partial void ModifyInnerReleasePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => IsLongerThan(10);
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     static partial void ModifyBerserkPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => HasHostilesInRange && !ActionID.InnerReleasePvE.IsCoolingDown() && IsLongerThan(10);
+        setting.ActionCheck = () => HasHostilesInRange && !ActionID.InnerReleasePvE.IsCoolingDown();
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+    }
+
+    static partial void ModifyOverpowerPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
+    }
+
+    static partial void ModifyMythrilTempestPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyVengeancePvE(ref ActionSetting setting)

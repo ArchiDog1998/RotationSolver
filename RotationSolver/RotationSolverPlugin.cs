@@ -8,6 +8,7 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -38,13 +39,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         IconSet.InIt();
 
         //Init!
-        Clipper.InflatePaths(new PathsD(new PathD[] { Clipper.MakePath(new double[] { 0, 0, 1, 1 }) }), 0, JoinType.Round, EndType.Joined);
+        Clipper.InflatePaths(new PathsD([Clipper.MakePath(new double[] { 0, 0, 1, 1 })]), 0, JoinType.Round, EndType.Joined);
 
         _dis.Add(new Service());
         try
         {
             Service.Config = JsonConvert.DeserializeObject<Configs>(
-                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName))
+                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new ITimelineItemConverter())
                 ?? new Configs();
         }
         catch (Exception ex)

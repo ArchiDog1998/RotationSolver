@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Drawing;
 
 namespace RotationSolver.Basic.Data;
 
@@ -14,11 +13,15 @@ namespace RotationSolver.Basic.Data;
 public class ObjectListDelay<T>(Func<(float min, float max)> getRange) 
     : IEnumerable<T> where T : GameObject
 {
-    IEnumerable<T> _list = Array.Empty<T>();
+    IEnumerable<T> _list = [];
     readonly Func<(float min, float max)> _getRange = getRange;
     SortedList<uint, DateTime> _revealTime = [];
     readonly Random _ran = new(DateTime.Now.Millisecond);
 
+    /// <summary>
+    /// The default creator from the config.
+    /// </summary>
+    /// <param name="getRange">the way to get the config.</param>
     public ObjectListDelay(Func<Vector2> getRange)
         : this(() =>
         {
@@ -47,7 +50,7 @@ public class ObjectListDelay<T>(Func<(float min, float max)> getRange)
                 var delaySecond = min + (float)_ran.NextDouble() * (max - min);
                 time = now + new TimeSpan(0, 0, 0, 0, (int)(delaySecond * 1000));
             }
-            revealTime.Add(item.ObjectId, time);
+            revealTime[item.ObjectId] = time;
 
             if (now > time)
             {

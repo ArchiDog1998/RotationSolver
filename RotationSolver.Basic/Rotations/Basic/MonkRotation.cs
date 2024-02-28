@@ -131,7 +131,7 @@ partial class MonkRotation
     [RotationDesc(ActionID.RiddleOfEarthPvE)]
     protected sealed override bool DefenseSingleAbility(out IAction? act)
     {
-        if (RiddleOfEarthPvE.CanUse(out act, isEmpty: true)) return true;
+        if (RiddleOfEarthPvE.CanUse(out act, usedUp: true)) return true;
         return base.DefenseSingleAbility(out act);
     }
 }

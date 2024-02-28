@@ -76,6 +76,10 @@ partial class RedMageRotation
     static partial void ModifyScatterPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = SwiftcastStatus;
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyVerthunderIiPvE(ref ActionSetting setting)
@@ -120,8 +124,13 @@ partial class RedMageRotation
 
     static partial void ModifyManaficationPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0 && IsLongerThan(10);
+        setting.ActionCheck = () => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0;
         setting.ComboIdsNot = [ActionID.RipostePvE, ActionID.ZwerchhauPvE, ActionID.ScorchPvE, ActionID.VerflarePvE, ActionID.VerholyPvE];
+
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     /// <inheritdoc/>

@@ -11,15 +11,47 @@ namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {
+    static readonly ObjectListDelay<BattleChara> 
+        _raisePartyTargets = new(() => Service.Config.RaiseDelay),
+        _raiseAllTargets = new(() => Service.Config.RaiseDelay);
     internal unsafe static void UpdateTarget()
     {
-        DataCenter.AllTargets.Delay(Svc.Objects.GetObjectInRadius(30).OfType<BattleChara>());
+        var battles = Svc.Objects.OfType<BattleChara>();
+
+        DataCenter.AllTargets.Delay(battles.GetObjectInRadius(30));
         UpdateHostileTargets(DataCenter.AllTargets);
         UpdateFriends(DataCenter.AllTargets
             .Where(b => b.Character()->CharacterData.OnlineStatus != 15 //Removed the one watching cutscene.
             && b.IsTargetable //Removed the one can't target.
             ));
-        UpdateNamePlate(Svc.Objects.OfType<BattleChara>());
+        UpdateNamePlate(battles);
+    }
+
+    static readonly Dictionary<uint, bool> _castingTargets = [];
+    private static void UpdateCastingRefine(IEnumerable<BattleChara> allTargets)
+    {
+        foreach (BattleChara b in allTargets)
+        {
+            if (!_castingTargets.TryGetValue(b.ObjectId, out var isLastCasting)) continue;
+            if (isLastCasting) continue;
+
+            if (!b.IsCasting) continue;
+
+            foreach (var item in DataCenter.TimelineItems)
+            {
+                if (item.Time < DataCenter.RaidTimeRaw) continue;
+                if (item.Type is not TimelineType.StartsUsing) continue;
+                if (!item.IsIdMatched(b.CastActionId)) continue;
+
+                item.UpdateRaidTimeOffset();
+                break;
+            }
+        }
+
+        foreach (BattleChara b in allTargets)
+        {
+            _castingTargets[b.ObjectId] = b.IsCasting;
+        }
     }
 
     private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;
@@ -47,7 +79,6 @@ internal static partial class TargetUpdater
         = empty;
 
         DataCenter.InterruptTarget = DataCenter.ProvokeTarget = null;
-
         DataCenter.AllTargets.Delay(empty);
     }
 
@@ -94,13 +125,13 @@ internal static partial class TargetUpdater
 
             if (b is PlayerCharacter p)
             {
-                var hash = SocialUpdater.EncryptString(p);
+                var hash = p.EncryptString();
 
                 //Don't attack authors!!
-                if (RotationUpdater.AuthorHashes.ContainsKey(hash)) return false;
+                if (DataCenter.AuthorHashes.ContainsKey(hash)) return false;
 
                 //Don't attack contributors!!
-                if (DownloadHelper.ContributorsHash.Contains(hash)) return false;
+                if (DataCenter.ContributorsHash.Contains(hash)) return false;
             }
             return true;
         }).ToArray();
@@ -210,9 +241,9 @@ internal static partial class TargetUpdater
         var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.ObjectId);
         DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
 
-        var deathAll = DataCenter.AllianceMembers.GetDeath();
-        var deathParty = DataCenter.PartyMembers.GetDeath();
-        DataCenter.DeathTarget = GetDeathTarget(deathAll, deathParty);
+        _raiseAllTargets.Delay(DataCenter.AllianceMembers.GetDeath());
+        _raisePartyTargets.Delay(DataCenter.PartyMembers.GetDeath());
+        DataCenter.DeathTarget = GetDeathTarget(_raiseAllTargets, _raisePartyTargets);
 
         var weakenPeople = DataCenter.PartyMembers.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
         var dyingPeople = weakenPeople.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
@@ -326,6 +357,6 @@ internal static partial class TargetUpdater
             if (b == null || b.CurrentHp == 0) continue;
             charas.Add(b.ObjectId);
         }
-        DataCenter.TreasureCharas = charas.ToArray();
+        DataCenter.TreasureCharas = [.. charas];
     }
 }
