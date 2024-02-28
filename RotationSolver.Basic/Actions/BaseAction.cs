@@ -88,6 +88,10 @@ public class BaseAction : IBaseAction
                 {
                     value.TimeToKill = 10;
                 }
+                if (value.TimeToUntargetable == 0)
+                {
+                    value.TimeToUntargetable = value.TimeToKill;
+                }
             }
             return value;
         }

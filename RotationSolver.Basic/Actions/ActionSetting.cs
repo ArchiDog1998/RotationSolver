@@ -111,5 +111,4 @@ public class ActionSetting()
     /// Should end the special.
     /// </summary>
     public bool EndSpecial { get; set; }
-
 }
