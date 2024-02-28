@@ -749,7 +749,7 @@ internal partial class Configs : IPluginConfiguration
 
     public Dictionary<uint, string> DutyRotationChoice { get; set; } = [];
 
-    public Dictionary<uint, Dictionary<string, List<ITimelineItem>>> Timeline { get; set; } = [];
+    public Dictionary<uint, Dictionary<float, List<ITimelineItem>>> Timeline { get; set; } = [];
 
     public void Save()
     {

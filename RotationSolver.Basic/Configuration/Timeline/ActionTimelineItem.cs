@@ -1,4 +1,6 @@
 ﻿namespace RotationSolver.Basic.Configuration.Timeline;
+
+[Description("Action Timeline")]
 internal class ActionTimelineItem : ITimelineItem
 {
     public ActionID ID { get; set; } = ActionID.None;

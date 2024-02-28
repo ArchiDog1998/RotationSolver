@@ -81,8 +81,6 @@ internal class SocialUpdater
         }
     }
 
-
-    static Type[]? _dutyRotations = null;
     static void ClientState_TerritoryChanged(ushort id)
     {
         DataCenter.ResetAllRecords();
@@ -95,13 +93,6 @@ internal class SocialUpdater
 #if DEBUG
         Svc.Log.Debug($"Move to {DataCenter.TerritoryName} ({id})");
 #endif
-
-        _dutyRotations ??= [..RotationUpdater.TryGetTypes(typeof(SocialUpdater).Assembly)
-            .Where(t => t.IsAssignableTo(typeof(DutyRotation)) && !t.IsAbstract)];
-
-        var nowRotationType = _dutyRotations.FirstOrDefault(r => r.GetCustomAttribute<DutyTerritoryAttribute>()?.TerritoryIds.Contains(id) ?? false);
-
-        DataCenter.RightNowDutyRotation = nowRotationType == null ? null : Activator.CreateInstance(nowRotationType) as DutyRotation;
 
         try
         {

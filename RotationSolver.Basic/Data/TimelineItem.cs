@@ -24,7 +24,7 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
 
     public string Name => name;
 
-    public bool IsShown => name is not "--Reset--" and not "--sync--";
+    public bool IsShown => Name is not "--Reset--" and not "--sync--";
 
     public string this[string propertyName] => Object?[propertyName]?.ToString() ?? string.Empty;
 
@@ -50,6 +50,7 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
             case "GameLog":
                 return TimelineType.GameLog;
 
+            case "#Ability":
             case "Ability":
                 return TimelineType.Ability;
 
@@ -57,18 +58,28 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
                 return TimelineType.StartsUsing;
 
             case "SystemLogMessage":
-                return TimelineType.SystemLogMessage; //TODO: a6s for testing
+                return TimelineType.SystemLogMessage;
 
             default:
+#if DEBUG
                 Svc.Log.Warning($"New timelinetype: {type}");
+#endif
                 return TimelineType.Unknown;
         }
     }
 
     public void UpdateRaidTimeOffset()
     {
-        DataCenter.RaidTimeRaw = Time;
-        Svc.Log.Debug($"Reset the {nameof(DataCenter.RaidTimeRaw)} to {DataCenter.RaidTimeRaw}.");
+        if (Name == "--Reset--")
+        {
+            DataCenter.RaidTimeRaw = -1;
+            Svc.Log.Debug($"Reset the {nameof(DataCenter.RaidTimeRaw)}.");
+        }
+        else
+        {
+            DataCenter.RaidTimeRaw = Time;
+            Svc.Log.Debug($"Reset the {nameof(DataCenter.RaidTimeRaw)} to {DataCenter.RaidTimeRaw}.");
+        }
     }
 
     public bool IsIdMatched(uint id)

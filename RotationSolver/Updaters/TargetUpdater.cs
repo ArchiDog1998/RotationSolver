@@ -39,6 +39,7 @@ internal static partial class TargetUpdater
 
             foreach (var item in DataCenter.TimelineItems)
             {
+                if (item.Time < DataCenter.RaidTimeRaw) continue;
                 if (item.Type is not TimelineType.StartsUsing) continue;
                 if (!item.IsIdMatched(b.CastActionId)) continue;
 

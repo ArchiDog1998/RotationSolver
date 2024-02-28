@@ -8,6 +8,11 @@ internal static partial class RaidTimeUpdater
 {
     internal static readonly Dictionary<uint, string> _pathForRaids = new()
     {
+#if DEBUG
+        { 296, "02-arr/trial/titan-ex.txt" },
+        { 530, "03-hw/raid/a6s.txt" }, //For System log
+        { 748, "04-sb/raid/o5n.txt" }, //For Actor Control
+#endif
         { 1148, "06-ew/raid/p9s.txt" },
         { 1150, "06-ew/raid/p10s.txt" },
         { 1152, "06-ew/raid/p11s.txt" },
@@ -32,7 +37,7 @@ internal static partial class RaidTimeUpdater
             var time = item.Time - DataCenter.RaidTimeRaw;
 
             if (time < 0) continue;
-            if (!timeline.TryGetValue(item.Name, out var items)) continue;
+            if (!timeline.TryGetValue(item.Time, out var items)) continue;
 
             foreach (var item2 in items.OfType<ActionTimelineItem>()
                 .Where(i => !_addedItems.Any(added => added.Item2 == i)))
@@ -57,11 +62,20 @@ internal static partial class RaidTimeUpdater
     {
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);
+        Svc.DutyState.DutyWiped += DutyState_DutyWiped;
+        Svc.DutyState.DutyCompleted += DutyState_DutyWiped;
+    }
+
+    private static void DutyState_DutyWiped(object? sender, ushort e)
+    {
+        DataCenter.RaidTimeRaw = -1;
     }
 
     internal static void Disable() 
     {
         Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+        Svc.DutyState.DutyWiped -= DutyState_DutyWiped;
+        Svc.DutyState.DutyCompleted -= DutyState_DutyWiped;
     }
 
     private static async void ClientState_TerritoryChanged(ushort id)
@@ -76,12 +90,29 @@ internal static partial class RaidTimeUpdater
         }
     }
 
+    private static List<ushort> _downloading = [];
+    public static TimelineItem[] GetRaidTime(ushort id)
+    {
+        if (_savedTimeLines.TryGetValue(id, out var value)) return value;
+        if (!_pathForRaids.TryGetValue(id, out var path)) return [];
+        if (_downloading.Contains(id)) return [];
+
+        _downloading.Add(id);
+        Task.Run(async () =>
+        {
+            _savedTimeLines[id] = await DownloadRaidTimeAsync(path);
+            _downloading.Remove(id);
+        });
+
+        return [];
+    }
+
     static async Task<TimelineItem[]> GetRaidTimeAsync(ushort id)
     {
         if (_savedTimeLines.TryGetValue(id, out var value)) return value;
         if (_pathForRaids.TryGetValue(id, out var path))
         {
-            return await DownloadRaidTimeAsync(path);
+            return _savedTimeLines[id] = await DownloadRaidTimeAsync(path);
         }
         return [];
     }
@@ -104,15 +135,22 @@ internal static partial class RaidTimeUpdater
             try
             {
                 var timeline = timelineItem.Value;
+
                 var header = TimeHeader().Match(timeline).Value;
+
+                if (string.IsNullOrEmpty(header)) continue;
+
                 var time = float.Parse(Time().Match(header).Value);
                 var name = Name().Match(header).Value[1..^1];
 
-                var item = JObject.Parse(ActionGetter().Match(timeline).Value);
+                var timelineStr = ActionGetter().Match(timeline).Value;
 
+                JObject? item = null;
                 string[] ids = [];
-                if (item != null)
+                if (!string.IsNullOrEmpty(timelineStr))
                 {
+                    item = JObject.Parse(timelineStr);
+
                     var id = item["id"];
                     if (id is JArray array)
                     {
@@ -125,7 +163,11 @@ internal static partial class RaidTimeUpdater
                 }
 
                 var rest = timeline[header.Length..];
-                var type = Type().Match(rest)?.Value[1..^1] ?? string.Empty;
+                var type = Type().Match(rest)?.Value ?? string.Empty;
+                if (type.Length > 3)
+                {
+                    type = type[1..^2].Split(' ').LastOrDefault() ?? string.Empty;
+                }
 
                 result.Add(new (time, name, type, ids, item));
             }
@@ -144,19 +186,19 @@ internal static partial class RaidTimeUpdater
         return [..result];
     }
 
-    [GeneratedRegex(" .*? ")]
+    [GeneratedRegex(" .*? {")]
     private static partial Regex Type();
 
-    [GeneratedRegex("\\d+\\.\\d.*")]
+    [GeneratedRegex("[\\d\\.]+.*")]
     private static partial Regex TimeLineItem();
 
-    [GeneratedRegex("^\\d+\\.\\d")]
+    [GeneratedRegex("^[\\d\\.]+")]
     private static partial Regex Time();
 
     [GeneratedRegex("\".*?\"")]
     private static partial Regex Name();
 
-    [GeneratedRegex("^\\d+\\.\\d \".*?\"")]
+    [GeneratedRegex("^[\\d\\.]+ \".*?\"")]
     private static partial Regex TimeHeader();
 
     [GeneratedRegex("{.*}")]

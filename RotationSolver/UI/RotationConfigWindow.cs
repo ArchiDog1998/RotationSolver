@@ -15,7 +15,6 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -23,7 +22,6 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System.Diagnostics;
-using System.Xml.Linq;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
 
@@ -644,7 +642,7 @@ public partial class RotationConfigWindow : Window
     private static int _territoryIndex = 0;
     private static readonly CollapsingHeaderGroup _timelineGroup = new()
     {
-        HeaderSize = 18,
+        HeaderSize = 12,
     };
     private static readonly CollapsingHeaderGroup _timelineActionsList = new()
     {
@@ -657,28 +655,35 @@ public partial class RotationConfigWindow : Window
 
         var ids = RaidTimeUpdater._pathForRaids.Keys.ToArray();
         var territories = ids.Select(territory.GetRow).ToArray();
-       
-        using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(21)))
-        {
-            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-            var names = territories.Select(t => t?.ContentFinderCondition?.Value?.Name?.RawString ?? "Unnamed Duty").ToArray();
 
-            ImGuiHelper.DrawItemMiddle(() =>
-            {
-                ImGuiHelper.SelectableCombo("##Choice the specific dungeon", names, ref _territoryIndex);
-            }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(names[_territoryIndex]).X + ImGui.GetStyle().ItemSpacing.X  * 2);
+        var names = territories.Select(t => t?.ContentFinderCondition?.Value?.Name?.RawString ?? "Unnamed Duty").ToArray();
+
+        var imFont = ImGuiHelper.GetFont(21);
+        float width = 0;
+        using (var font = ImRaii.PushFont(imFont))
+        {
+            width = ImGui.CalcTextSize(names[_territoryIndex]).X + ImGui.GetStyle().ItemSpacing.X * 2;
         }
+
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            ImGuiHelper.SelectableCombo("##Choice the specific dungeon", names, ref _territoryIndex,
+                imFont, ImGuiColors.DalamudYellow);
+        }, ImGui.GetWindowWidth(), width);
 
         DrawContentFinder(territories[_territoryIndex]?.ContentFinderCondition.Value);
 
         if (_timelineGroup == null) return;
 
         var id = ids[_territoryIndex];
-        if (!Service.Config.Timeline.TryGetValue(id, out var timeLine)) return;
+        if (!Service.Config.Timeline.TryGetValue(id, out var timeLine))
+        {
+            Service.Config.Timeline[id] = timeLine = [];
+        }
 
         ImGui.Separator();
 
-        if (ImGui.Selectable(UiString.ConfigWindow_Actions_Copy.Local()))
+        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
         {
             var str = JsonConvert.SerializeObject(timeLine, Formatting.Indented);
             ImGui.SetClipboardText(str);
@@ -686,12 +691,12 @@ public partial class RotationConfigWindow : Window
 
         ImGui.SameLine();
 
-        if (ImGui.Selectable(UiString.ActionSequencer_FromClipboard.Local()))
+        if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
         {
             var str = ImGui.GetClipboardText();
             try
             {
-                var set = JsonConvert.DeserializeObject<Dictionary<string, List<ITimelineItem>>>(str, new ITimelineItemConverter())!;
+                var set = JsonConvert.DeserializeObject<Dictionary<float, List<ITimelineItem>>>(str, new ITimelineItemConverter())!;
                 Service.Config.Timeline[id] = timeLine = set;
             }
             catch (Exception ex)
@@ -702,13 +707,15 @@ public partial class RotationConfigWindow : Window
 
         _timelineGroup.ClearCollapsingHeader();
 
-        foreach (var item in DataCenter.TimelineItems)
+        foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)id))
         {
-            _timelineGroup.AddCollapsingHeader(() => item.Name, () =>
+            if (!item.IsShown) continue;
+
+            _timelineGroup.AddCollapsingHeader(() =>$"{item.Name} ({item.Time} s)" , () =>
             {
-                if(!timeLine.TryGetValue(item.Name, out var timeLineItems))
+                if(!timeLine.TryGetValue(item.Time, out var timeLineItems))
                 {
-                    timeLine[item.Name] = timeLineItems = [];
+                    timeLine[item.Time] = timeLineItems = [];
                 }
                 AddButton();
 
@@ -781,6 +788,7 @@ public partial class RotationConfigWindow : Window
                     else if (timeLineItem is StateTimelineItem stateItem)
                     {
                         var state = stateItem.State;
+                        ImGui.SameLine();
                         if (ConditionDrawer.DrawByteEnum($"##AutoStatus{timeLineItem.GetHashCode()}", ref state))
                         {
                             stateItem.State = state;
@@ -813,7 +821,7 @@ public partial class RotationConfigWindow : Window
                 }
             });
         }
-
+        using var child = ImRaii.Child("Timeline Items Body", -Vector2.One);
         _timelineGroup.Draw();
     }
     #endregion
@@ -2573,7 +2581,7 @@ public partial class RotationConfigWindow : Window
             && IconSet.GetTexture(badge.Value, out var badgeTexture))
         {
             var wholeWidth = ImGui.GetWindowWidth();
-            var size = new Vector2(badgeTexture.Width, badgeTexture.Height) * MathF.Min(1, MathF.Min(320, wholeWidth) / badgeTexture.Width);
+            var size = new Vector2(badgeTexture.Width, badgeTexture.Height) * MathF.Min(1, MathF.Min(480, wholeWidth) / badgeTexture.Width);
 
             ImGuiHelper.DrawItemMiddle(() =>
             {

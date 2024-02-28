@@ -270,7 +270,14 @@ internal static class DataCenter
         }
         set
         {
-            _startRaidTime = DateTime.Now - TimeSpan.FromSeconds(value);
+            if (value < 0)
+            {
+                _startRaidTime = DateTime.MinValue;
+            }
+            else
+            {
+                _startRaidTime = DateTime.Now - TimeSpan.FromSeconds(value);
+            }
         }
     }
 

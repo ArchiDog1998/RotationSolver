@@ -10,6 +10,7 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using static Dalamud.Interface.Utility.Raii.ImRaii;
 using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace RotationSolver;
@@ -72,6 +73,7 @@ public static class Watcher
     {
         foreach (var item in DataCenter.TimelineItems)
         {
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.GameLog) continue;
 
             var typeString = ((uint)type).ToString("X4");
@@ -94,42 +96,87 @@ public static class Watcher
             case OpCode.SystemLogMessage:
                 OnSystemLogMessage(dataPtr);
                 break;
-
-            case OpCode.ActorControl:
-                OnActorControl(dataPtr);
-                break;
+            //case OpCode.ActorControlTarget:
+            //    var bytes = new byte[32];
+            //    Marshal.Copy(dataPtr, bytes, 0, 32);
+            //    Svc.Log.Debug("ActorControlTarget: " + HexString(bytes));
+            //    break;
+            //case OpCode.ActorControlSelf:
+            //    bytes = new byte[32];
+            //    Marshal.Copy(dataPtr, bytes, 0, 32);
+            //    Svc.Log.Debug("ActorControlSelf: " + HexString(bytes));
+            //    break;
+            //case OpCode.ActorControl:
+            //    OnActorControl(dataPtr);
+            //    break;
         }
-
-//#if DEBUG
-//        var source = Svc.Objects.SearchById(sourceActorId)?.Name.TextValue;
-//        var target = Svc.Objects.SearchById(targetActorId)?.Name.TextValue;
-//        Svc.Log.Debug($"From {source} to {target} by {op}.");
-//#endif
     }
 
-    private static void OnActorControl(IntPtr dataPtr)
-    {
-        var bytes = new byte[32];
-        Marshal.Copy(dataPtr, bytes, 0, 32);
-        Svc.Log.Debug("ActorControl: " + Convert.ToHexString(bytes));
+    //private static void OnActorControl(IntPtr dataPtr)
+    //{
+    //    foreach (var item in DataCenter.TimelineItems)
+    //    {
+    //        if (item.Time < DataCenter.RaidTimeRaw) continue;
+    //        if (item.Type is not TimelineType.ActorControl) continue;
+    //        //if (!item.IsIdMatched(ReadNumber(dataPtr, 4))) continue;
 
-        //TODO: the refine to the raidtime.
-    }
+    //        //var param1 = item["param1"];
+    //        //if (!string.IsNullOrEmpty(param1))
+    //        //{
+    //        //    if (!new Regex(param1).IsMatch(ReadNumber(dataPtr, 12).ToString("X")))
+    //        //    {
+    //        //        continue;
+    //        //    }
+    //        //}
+    //        //item.UpdateRaidTimeOffset();
+    //        break;
+    //    }
+
+    //    var bytes = new byte[32];
+    //    Marshal.Copy(dataPtr, bytes, 0, 32);
+    //    Svc.Log.Debug("ActorControl: " + HexString(bytes));
+    //}
 
     private static void OnSystemLogMessage(IntPtr dataPtr)
     {
-        var bytes = new byte[32];
-        Marshal.Copy(dataPtr, bytes, 0, 32);
-        Svc.Log.Debug("SystemLogMessage: " + Convert.ToHexString(bytes));
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.SystemLogMessage) continue;
+            if (!item.IsIdMatched(ReadNumber(dataPtr, 4))) continue;
 
-        //TODO: the refine to the raidtime.
+            var param1 = item["param1"];
+            if (!string.IsNullOrEmpty(param1))
+            {
+                if(!new Regex(param1).IsMatch(ReadNumber(dataPtr, 12).ToString("X")))
+                {
+                    continue;
+                }
+            }
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
 
-        //if (logId == DataIds.SystemLogPomanderUsed)
-        //    OnPomanderUsed((Pomander)Marshal.ReadByte(dataPtr, 16));
-        //else if (logId == DataIds.SystemLogDutyEnded)
-        //    ExitDeepDungeon();
-        //else if (logId == DataIds.SystemLogTransferenceInitiated)
-        //    nextFloorTransfer = true;
+    private unsafe static uint ReadNumber(IntPtr dataPtr, int offset)
+    {
+        return *(uint*)(dataPtr + offset);
+    }
+
+    private static string HexString(byte[] bytes)
+    {
+        var str = Convert.ToHexString(bytes);
+
+        string result = string.Empty;
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (i % 4 == 0)
+            {
+                result += " ";
+            }
+            result += str[i];
+        }
+        return result;
     }
 
     public static void Disable()
@@ -225,6 +272,7 @@ public static class Watcher
     {
         foreach (var item in DataCenter.TimelineItems)
         {
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.Ability) continue;
             if (!item.IsIdMatched(set.Action?.RowId ?? 0)) continue;
 

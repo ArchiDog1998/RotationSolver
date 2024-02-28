@@ -38,7 +38,7 @@ internal static class StateUpdater
             var time = item.Time - DataCenter.RaidTimeRaw;
 
             if (time < 0) continue;
-            if (!timeline.TryGetValue(item.Name, out var items)) continue;
+            if (!timeline.TryGetValue(item.Time, out var items)) continue;
 
             foreach (var item2 in items.OfType<StateTimelineItem>())
             {

@@ -1,5 +1,6 @@
 ﻿namespace RotationSolver.Basic.Configuration.Timeline;
 
+[Description("State Timeline")]
 internal class StateTimelineItem : ITimelineItem
 {
     public AutoStatus State { get; set; }
