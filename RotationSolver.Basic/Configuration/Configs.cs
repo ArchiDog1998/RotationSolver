@@ -1,6 +1,7 @@
 ﻿using Dalamud.Configuration;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using RotationSolver.Basic.Configuration.Timeline;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -747,6 +748,8 @@ internal partial class Configs : IPluginConfiguration
     private readonly Dictionary<string, string> _rotationsConfigurations = [];
 
     public Dictionary<uint, string> DutyRotationChoice { get; set; } = [];
+
+    public Dictionary<uint, Dictionary<string, List<ITimelineItem>>> Timeline { get; set; } = [];
 
     public void Save()
     {

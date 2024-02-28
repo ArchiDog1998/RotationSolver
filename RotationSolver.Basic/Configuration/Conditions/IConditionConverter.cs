@@ -39,11 +39,6 @@ internal class IConditionConverter : JsonCreationConverter<ICondition>
             return null;
         }
     }
-
-    private static bool FieldExists(string fieldName, JObject jObject)
-    {
-        return jObject[fieldName] != null;
-    }
 }
 
 internal abstract class JsonCreationConverter<T> : JsonConverter
@@ -76,5 +71,10 @@ internal abstract class JsonCreationConverter<T> : JsonConverter
         }
 
         return target;
+    }
+
+    protected static bool FieldExists(string fieldName, JObject jObject)
+    {
+        return jObject[fieldName] != null;
     }
 }

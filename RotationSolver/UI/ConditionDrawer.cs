@@ -88,7 +88,7 @@ internal static class ConditionDrawer
         return methods.Union(type.BaseType.GetAllMethods(getFunc));
     }
 
-    public static void DrawByteEnum<T>(string name, ref T value) where T : struct, Enum
+    public static bool DrawByteEnum<T>(string name, ref T value) where T : struct, Enum
     {
         var values = Enum.GetValues<T>().Where(i => i.GetAttribute<ObsoleteAttribute>() == null).ToHashSet().ToArray();
         var index = Array.IndexOf(values, value);
@@ -97,7 +97,9 @@ internal static class ConditionDrawer
         if (ImGuiHelper.SelectableCombo(name, names, ref index))
         {
             value = values[index];
+            return true;
         }
+        return false;
     }
 
     public static bool DrawDragFloat(ConfigUnitType type, string name, ref float value)
@@ -401,7 +403,7 @@ internal static class ConditionDrawer
 
         ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => actionCondition.ID = (ActionID)item.ID);
 
-        if (actionCondition._action?.GetTexture(out var icon) ?? false || IconSet.GetTexture(4, out icon))
+        if ((actionCondition._action?.GetTexture(out var icon) ?? false) || IconSet.GetTexture(4, out icon))
         {
             var cursor = ImGui.GetCursorPos();
             if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, actionCondition.GetHashCode().ToString()))

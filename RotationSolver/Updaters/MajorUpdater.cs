@@ -181,6 +181,7 @@ internal static class MajorUpdater
 
             RotationUpdater.UpdateRotation();
 
+            RaidTimeUpdater.UpdateTimeline();
             ActionSequencerUpdater.UpdateActionSequencerAction();
             ActionUpdater.UpdateNextAction();
 

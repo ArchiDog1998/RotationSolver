@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
@@ -117,8 +116,6 @@ internal static class DataCenter
     {
         get
         {
-            if (ActionSequencerAction != null) return ActionSequencerAction;
-
             var next = NextActs.FirstOrDefault();
 
             while (next != null && NextActs.Count > 0 && (next.DeadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.Act)))
@@ -126,7 +123,7 @@ internal static class DataCenter
                 NextActs.RemoveAt(0);
                 next = NextActs.FirstOrDefault();
             }
-            return next?.Act;
+            return next?.Act ?? ActionSequencerAction;
         }
     }
     public static Job Job { get; set; }

@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface.Colors;
+﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -14,13 +15,17 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Conditions;
+using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using System.Xml.Linq;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
+using TargetType = RotationSolver.Basic.Actions.TargetType;
 
 namespace RotationSolver.UI;
 
@@ -619,6 +624,10 @@ public partial class RotationConfigWindow : Window
                         DrawTarget();
                         break;
 
+                    case RotationConfigWindowTab.Timeline:
+                        DrawTimeline();
+                        break;
+
                     case RotationConfigWindowTab.Extra:
                         DrawExtra();
                         break;
@@ -630,6 +639,184 @@ public partial class RotationConfigWindow : Window
             }
         }
     }
+
+    #region Timeline
+    private static int _territoryIndex = 0;
+    private static readonly CollapsingHeaderGroup _timelineGroup = new()
+    {
+        HeaderSize = 18,
+    };
+    private static readonly CollapsingHeaderGroup _timelineActionsList = new()
+    {
+        HeaderSize = 12,
+    };
+    private static void DrawTimeline()
+    {
+        var territory = Svc.Data.GetExcelSheet<TerritoryType>();
+        if (territory == null) return;
+
+        var ids = RaidTimeUpdater._pathForRaids.Keys.ToArray();
+        var territories = ids.Select(territory.GetRow).ToArray();
+       
+        using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(21)))
+        {
+            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+            var names = territories.Select(t => t?.ContentFinderCondition?.Value?.Name?.RawString ?? "Unnamed Duty").ToArray();
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGuiHelper.SelectableCombo("##Choice the specific dungeon", names, ref _territoryIndex);
+            }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(names[_territoryIndex]).X + ImGui.GetStyle().ItemSpacing.X  * 2);
+        }
+
+        DrawContentFinder(territories[_territoryIndex]?.ContentFinderCondition.Value);
+
+        if (_timelineGroup == null) return;
+
+        var id = ids[_territoryIndex];
+        if (!Service.Config.Timeline.TryGetValue(id, out var timeLine)) return;
+
+        ImGui.Separator();
+
+        if (ImGui.Selectable(UiString.ConfigWindow_Actions_Copy.Local()))
+        {
+            var str = JsonConvert.SerializeObject(timeLine, Formatting.Indented);
+            ImGui.SetClipboardText(str);
+        }
+
+        ImGui.SameLine();
+
+        if (ImGui.Selectable(UiString.ActionSequencer_FromClipboard.Local()))
+        {
+            var str = ImGui.GetClipboardText();
+            try
+            {
+                var set = JsonConvert.DeserializeObject<Dictionary<string, List<ITimelineItem>>>(str, new ITimelineItemConverter())!;
+                Service.Config.Timeline[id] = timeLine = set;
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Warning(ex, "Failed to load the condition.");
+            }
+        }
+
+        _timelineGroup.ClearCollapsingHeader();
+
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            _timelineGroup.AddCollapsingHeader(() => item.Name, () =>
+            {
+                if(!timeLine.TryGetValue(item.Name, out var timeLineItems))
+                {
+                    timeLine[item.Name] = timeLineItems = [];
+                }
+                AddButton();
+
+                for (int i = 0; i < timeLineItems.Count; i++)
+                {
+                    var timeLineItem = timeLineItems[i];
+
+                    void Delete()
+                    {
+                        timeLineItems.RemoveAt(i);
+                    };
+
+                    void Up()
+                    {
+                        timeLineItems.RemoveAt(i);
+                        timeLineItems.Insert(Math.Max(0, i - 1), timeLineItem);
+                    };
+
+                    void Down()
+                    {
+                        timeLineItems.RemoveAt(i);
+                        timeLineItems.Insert(Math.Min(timeLineItems.Count, i + 1), timeLineItem);
+                    }
+
+                    var key = $"TimelineItem Pop Up: {timeLineItem.GetHashCode()}";
+
+                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
+                        (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
+                        (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
+                        (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]));
+
+                    ConditionDrawer.DrawCondition(timeLineItem.InPeriod(item));
+
+                    ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+                        (Delete, [VirtualKey.DELETE]),
+                        (Up, [VirtualKey.UP]),
+                        (Down, [VirtualKey.DOWN]));
+
+                    var time = timeLineItem.Time;
+                    if(ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"Time##Time{timeLineItem.GetHashCode()}", ref time))
+                    {
+                        timeLineItem.Time = time;
+                    }
+
+                    time = timeLineItem.Duration;
+                    if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"Duration##Duration{timeLineItem.GetHashCode()}", ref time))
+                    {
+                        timeLineItem.Duration = time;
+                    }
+
+                    if (timeLineItem is ActionTimelineItem actionItem)
+                    {
+                        if(DataCenter.RightNowRotation != null)
+                        {
+                            var popUpKey = $"Action Finder{timeLineItem.GetHashCode()}";
+                            ConditionDrawer.ActionSelectorPopUp(popUpKey, _timelineActionsList, DataCenter.RightNowRotation, item => actionItem.ID = (ActionID)item.ID);
+
+                            if (actionItem.ID.GetTexture(out var icon) || IconSet.GetTexture(4, out icon))
+                            {
+                                ImGui.SameLine();
+                                var cursor = ImGui.GetCursorPos();
+                                if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, timeLineItem.GetHashCode().ToString()))
+                                {
+                                    if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
+                                }
+                                ImGuiHelper.DrawActionOverlay(cursor, ConditionDrawer.IconSize, 1);
+                            }
+                        }
+                    }
+                    else if (timeLineItem is StateTimelineItem stateItem)
+                    {
+                        var state = stateItem.State;
+                        if (ConditionDrawer.DrawByteEnum($"##AutoStatus{timeLineItem.GetHashCode()}", ref state))
+                        {
+                            stateItem.State = state;
+                        }
+                    }
+                }
+
+                void AddButton()
+                {
+                    if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddTimelineButton" + item.Name))
+                    {
+                        ImGui.OpenPopup("PopupTimelineButton" + item.Name);
+                    }
+
+                    using var popUp = ImRaii.Popup("PopupTimelineButton" + item.Name);
+                    if (popUp)
+                    {
+                        AddOneCondition<ActionTimelineItem>();
+                        AddOneCondition<StateTimelineItem>();
+                    }
+
+                    void AddOneCondition<T>() where T : ITimelineItem
+                    {
+                        if (ImGui.Selectable(typeof(T).Local()))
+                        {
+                            timeLineItems.Add(Activator.CreateInstance<T>());
+                            ImGui.CloseCurrentPopup();
+                        }
+                    }
+                }
+            });
+        }
+
+        _timelineGroup.Draw();
+    }
+    #endregion
 
     #region About
     private static readonly SortedList<uint, string> CountStringPair = new()
@@ -2227,6 +2414,8 @@ public partial class RotationConfigWindow : Window
             }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
         }
 
+        DrawContentFinder(DataCenter.ContentFinder);
+
         using var table = ImRaii.Table("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
         if (table)
         {
@@ -2376,6 +2565,22 @@ public partial class RotationConfigWindow : Window
         }
     }
     #endregion
+
+    private static void DrawContentFinder(ContentFinderCondition? content)
+    {
+        var badge = content?.Image;
+        if (badge != null && badge.Value != 0
+            && IconSet.GetTexture(badge.Value, out var badgeTexture))
+        {
+            var wholeWidth = ImGui.GetWindowWidth();
+            var size = new Vector2(badgeTexture.Width, badgeTexture.Height) * MathF.Min(1, MathF.Min(320, wholeWidth) / badgeTexture.Width);
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.Image(badgeTexture.ImGuiHandle, size);
+            }, wholeWidth, size.X);
+        }
+    }
 
     #region Debug
     private static void DrawDebug()
