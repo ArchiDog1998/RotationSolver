@@ -299,7 +299,30 @@ internal static class DataCenter
     public static int NumberOfAllHostilesInRange { get; internal set; }
     public static int NumberOfAllHostilesInMaxRange { get; internal set; }
     public static bool MobsTime { get; internal set; }
-    public static float AverageTimeToKill { get; internal set; }
+
+    private static float _averageTimeToKill;
+    public static float AverageTimeToKill 
+    {
+        get => _averageTimeToKill;
+        internal set
+        {
+            _averageTimeToKill = value;
+
+            foreach (var item in TimelineItems)
+            {
+                if (item.Time < RaidTimeRaw) continue;
+                if (item.Name is not "--untargetable--") continue;
+
+                var time = item.Time - RaidTimeRaw;
+                TimeToUntargetable = MathF.Min(time, _averageTimeToKill);
+                return;
+            }
+
+            TimeToUntargetable = _averageTimeToKill;
+        }
+    }
+
+    public static float TimeToUntargetable { get; private set; }
 
     public static bool IsHostileCastingAOE { get; internal set; }
 

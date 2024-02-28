@@ -1466,6 +1466,15 @@ public partial class RotationConfigWindow : Window
                 }
                 ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
 
+                var ttu = config.TimeToUntargetable;
+                ImGui.SetNextItemWidth(Scale * 150);
+                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTU.Local()}##{a}",
+                    ref ttu, 0.1f, 0, 120, $"{ttu:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
+                {
+                    config.TimeToUntargetable = ttu;
+                }
+                ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
+
                 if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
                 {
                     var shouldStatus = config.ShouldCheckStatus;

@@ -94,6 +94,10 @@ public static class Watcher
             case OpCode.SystemLogMessage:
                 OnSystemLogMessage(dataPtr);
                 break;
+
+            case OpCode.ActorControl:
+                OnActorControl(dataPtr);
+                break;
         }
 
 //#if DEBUG
@@ -101,6 +105,15 @@ public static class Watcher
 //        var target = Svc.Objects.SearchById(targetActorId)?.Name.TextValue;
 //        Svc.Log.Debug($"From {source} to {target} by {op}.");
 //#endif
+    }
+
+    private static void OnActorControl(IntPtr dataPtr)
+    {
+        var bytes = new byte[32];
+        Marshal.Copy(dataPtr, bytes, 0, 32);
+        Svc.Log.Debug("ActorControl: " + Convert.ToHexString(bytes));
+
+        //TODO: the refine to the raidtime.
     }
 
     private static void OnSystemLogMessage(IntPtr dataPtr)
@@ -117,7 +130,6 @@ public static class Watcher
         //    ExitDeepDungeon();
         //else if (logId == DataIds.SystemLogTransferenceInitiated)
         //    nextFloorTransfer = true;
-
     }
 
     public static void Disable()

@@ -120,6 +120,9 @@ internal enum UiString
     [Description("TTK that this action needs the target be.")]
     ConfigWindow_Actions_TTK,
 
+    [Description("Time to untargetable that this action needs the timeline be.")]
+    ConfigWindow_Actions_TTU,
+
     [Description("How many targets are needed to use this action.")]
     ConfigWindow_Actions_AoeCount,
 

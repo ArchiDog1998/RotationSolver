@@ -37,6 +37,11 @@ public class ActionConfig()
     public float TimeToKill { get; set; } = 0;
 
     /// <summary>
+    /// How many ttu should this action use.
+    /// </summary>
+    public float TimeToUntargetable { get; set; } = 0;
+
+    /// <summary>
     /// The heal ratio for the auto heal.
     /// </summary>
     public float AutoHealRatio { get; set; } = 0.8f;

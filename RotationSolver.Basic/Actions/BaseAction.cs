@@ -136,6 +136,7 @@ public class BaseAction : IBaseAction
 
         if (Setting.IsMeleeRange && IActionHelper.IsLastAction(IActionHelper.MovingActions)) return false; //No range actions after moving.
         if (DataCenter.AverageTimeToKill < Config.TimeToKill) return false;
+        if (DataCenter.TimeToUntargetable < Config.TimeToUntargetable) return false;
 
         PreviewTarget = TargetInfo.FindTarget(skipAoeCheck, skipStatusProvideCheck);
         if (PreviewTarget == null) return false;
