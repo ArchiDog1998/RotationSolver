@@ -263,8 +263,19 @@ internal static class DataCenter
     public static bool NotInCombatDelay => _notInCombatDelay.Delay(!InCombat);
 
     internal static float CombatTimeRaw { get; set; }
-    internal static float RaidTimeOffset { get; set; } = 0;
-    internal static float RaidTimeRaw => CombatTimeRaw + RaidTimeOffset;
+    private static DateTime _startRaidTime = DateTime.MinValue;
+    internal static float RaidTimeRaw
+    {
+        get
+        {
+            if (_startRaidTime == DateTime.MinValue) return 0;
+            return (float)(DateTime.Now - _startRaidTime).TotalSeconds;    
+        }
+        set
+        {
+            _startRaidTime = DateTime.Now - TimeSpan.FromSeconds(value);
+        }
+    }
 
     internal static TimelineItem[] TimelineItems { get; set; } = [];
 
@@ -423,4 +434,7 @@ internal static class DataCenter
     internal static DateTime KnockbackFinished { get; set; } = DateTime.MinValue;
     internal static DateTime KnockbackStart { get; set; } = DateTime.MinValue;
     #endregion
+
+    internal static SortedList<string, string> AuthorHashes { get; set; } = [];
+    internal static string[] ContributorsHash { get; set; } = [];
 }

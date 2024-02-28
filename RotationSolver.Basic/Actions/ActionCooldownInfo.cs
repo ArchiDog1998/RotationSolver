@@ -58,7 +58,7 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <summary>
     /// 
     /// </summary>
-    public float RecastTimeRemainOneCharge => RecastTimeRemainOneChargeRaw + DataCenter.WeaponRemain;
+    public float RecastTimeRemainOneCharge => RecastTimeRemainOneChargeRaw - DataCenter.WeaponRemain;
 
     float RecastTimeRemainOneChargeRaw => RecastTimeRemain % RecastTimeOneChargeRaw;
 
@@ -129,6 +129,17 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <returns></returns>
     public bool WillHaveOneCharge(float remain)
         => HasOneCharge || RecastTimeRemainOneCharge <= remain;
+
+    /// <summary>
+    /// Is this action used after several time.
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    public bool JustUsedAfter(float time)
+    {
+        var elapsed = RecastTimeElapsedRaw % RecastTimeOneChargeRaw;
+        return elapsed + DataCenter.WeaponRemain < time;
+    }
 
     internal bool CooldownCheck(bool isEmpty, bool onLastAbility, bool ignoreClippingCheck, byte gcdCountForAbility)
     {

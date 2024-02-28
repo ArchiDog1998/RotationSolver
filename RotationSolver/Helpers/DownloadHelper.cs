@@ -10,7 +10,6 @@ public static class DownloadHelper
     /// <para>Maximum HP and MP are increased.</para>
     /// </summary>
     public static string[] LinkLibraries { get; private set; } = [];
-    public static string[] ContributorsHash { get; private set; } = [];
     public static string[] UsersHash { get; private set; } = [];
     public static string[] Supporters { get; private set; } = [];
     public static IncompatiblePlugin[] IncompatiblePlugins { get; private set; } = [];
@@ -20,7 +19,7 @@ public static class DownloadHelper
         LinkLibraries = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/downloadList.json") ?? [];
         IncompatiblePlugins = await DownloadOneAsync<IncompatiblePlugin[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/IncompatiblePlugins.json") ?? [];
 
-        ContributorsHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/ContributorsHash.json") ?? [];
+        DataCenter.ContributorsHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/ContributorsHash.json") ?? [];
 
         UsersHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/UsersHash.json") ?? [];
 

@@ -16,13 +16,41 @@ internal static partial class TargetUpdater
         _raiseAllTargets = new(() => Service.Config.RaiseDelay);
     internal unsafe static void UpdateTarget()
     {
-        DataCenter.AllTargets.Delay(Svc.Objects.GetObjectInRadius(30).OfType<BattleChara>());
+        var battles = Svc.Objects.OfType<BattleChara>();
+
+        DataCenter.AllTargets.Delay(battles.GetObjectInRadius(30));
         UpdateHostileTargets(DataCenter.AllTargets);
         UpdateFriends(DataCenter.AllTargets
             .Where(b => b.Character()->CharacterData.OnlineStatus != 15 //Removed the one watching cutscene.
             && b.IsTargetable //Removed the one can't target.
             ));
-        UpdateNamePlate(Svc.Objects.OfType<BattleChara>());
+        UpdateNamePlate(battles);
+    }
+
+    static readonly Dictionary<uint, bool> _castingTargets = [];
+    private static void UpdateCastingRefine(IEnumerable<BattleChara> allTargets)
+    {
+        foreach (BattleChara b in allTargets)
+        {
+            if (!_castingTargets.TryGetValue(b.ObjectId, out var isLastCasting)) continue;
+            if (isLastCasting) continue;
+
+            if (!b.IsCasting) continue;
+
+            foreach (var item in DataCenter.TimelineItems)
+            {
+                if (item.Type is not TimelineType.StartsUsing) continue;
+                if (!item.IsIdMatched(b.CastActionId)) continue;
+
+                item.UpdateRaidTimeOffset();
+                break;
+            }
+        }
+
+        foreach (BattleChara b in allTargets)
+        {
+            _castingTargets[b.ObjectId] = b.IsCasting;
+        }
     }
 
     private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;
@@ -96,13 +124,13 @@ internal static partial class TargetUpdater
 
             if (b is PlayerCharacter p)
             {
-                var hash = SocialUpdater.EncryptString(p);
+                var hash = p.EncryptString();
 
                 //Don't attack authors!!
-                if (RotationUpdater.AuthorHashes.ContainsKey(hash)) return false;
+                if (DataCenter.AuthorHashes.ContainsKey(hash)) return false;
 
                 //Don't attack contributors!!
-                if (DownloadHelper.ContributorsHash.Contains(hash)) return false;
+                if (DataCenter.ContributorsHash.Contains(hash)) return false;
             }
             return true;
         }).ToArray();

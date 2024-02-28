@@ -9,6 +9,8 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Helpers;
@@ -87,17 +89,16 @@ public static class ObjectHelper
         if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(battleChara.Name.TextValue).Success)) return false;
 
 
-        //if (gameObject is PlayerCharacter p)
-        //{
-        //    var hash = SocialUpdater.EncryptString(p);
+        if (battleChara is PlayerCharacter p)
+        {
+            var hash = EncryptString(p);
 
-        //    //Don't attack authors!!
-        //    if (RotationUpdater.AuthorHashes.ContainsKey(hash)) return false;
+            //Don't attack authors!!
+            if (DataCenter.AuthorHashes.ContainsKey(hash)) return false;
 
-        //    //Don't attack contributors!!
-        //    if (DownloadHelper.ContributorsHash.Contains(hash)) return false;
-        //}
-
+            //Don't attack contributors!!
+            if (DataCenter.ContributorsHash.Contains(hash)) return false;
+        }
 
         //Fate
         if (DataCenter.TerritoryContentType != TerritoryContentType.Eureka)
@@ -130,6 +131,27 @@ public static class ObjectHelper
             TargetHostileType.TargetsHaveTarget => battleChara.TargetObject is BattleChara,
             _ => true,
         };
+    }
+
+
+    internal static string EncryptString(this PlayerCharacter player)
+    {
+        if (player == null) return string.Empty;
+
+        try
+        {
+            byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData!.InternalName.ToString()
+    + " - " + player.Name.ToString() + "U6Wy.zCG");
+
+            var tmpHash = MD5.HashData(inputByteArray);
+            var retB = Convert.ToBase64String(tmpHash);
+            return retB;
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Warning(ex, "Failed to read the player's name and world.");
+            return string.Empty;
+        }
     }
 
     internal static unsafe bool IsInEnemiesList(this BattleChara battleChara)

@@ -5,6 +5,8 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Commands;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace RotationSolver.Updaters;
 
@@ -143,10 +145,19 @@ internal static class ActionUpdater
         if (_startCombatTime == DateTime.MinValue)
         {
             DataCenter.CombatTimeRaw = 0;
-            DataCenter.RaidTimeOffset = 0;
         }
         else
         {
+            if (DataCenter.CombatTimeRaw == 0)
+            {
+                foreach (var item in DataCenter.TimelineItems)
+                {
+                    if (item.Type is not TimelineType.InCombat) continue;
+
+                    item.UpdateRaidTimeOffset();
+                    break;
+                }
+            }
             DataCenter.CombatTimeRaw = (float)(DateTime.Now - _startCombatTime).TotalSeconds;
         }
     }

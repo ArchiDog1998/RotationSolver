@@ -8,6 +8,7 @@ using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
@@ -63,20 +64,61 @@ public static class Watcher
 #endif
         });
 
-        //Svc.GameNetwork.NetworkMessage += GameNetwork_NetworkMessage;
+        Svc.GameNetwork.NetworkMessage += GameNetwork_NetworkMessage;
+        Svc.Chat.ChatMessage += Chat_ChatMessage;
     }
 
-//    private static void GameNetwork_NetworkMessage(nint dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, Dalamud.Game.Network.NetworkMessageDirection direction)
-//    {
-//        if (direction != Dalamud.Game.Network.NetworkMessageDirection.ZoneDown) return;
-//        OpCode op = (OpCode)opCode;
+    private static void Chat_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)
+    {
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.Type is not TimelineType.GameLog) continue;
+
+            var typeString = ((uint)type).ToString("X4");
+            if (!new Regex(item["code"]).IsMatch(typeString)) continue;
+
+            //TODO: multi language.
+            if (!new Regex(item["line"]).IsMatch(message.TextValue)) continue;
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
+
+    private static void GameNetwork_NetworkMessage(nint dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, Dalamud.Game.Network.NetworkMessageDirection direction)
+    {
+        if (direction != Dalamud.Game.Network.NetworkMessageDirection.ZoneDown) return;
+        OpCode op = (OpCode)opCode;
+
+        switch (op)
+        {
+            case OpCode.SystemLogMessage:
+                OnSystemLogMessage(dataPtr);
+                break;
+        }
 
 //#if DEBUG
 //        var source = Svc.Objects.SearchById(sourceActorId)?.Name.TextValue;
 //        var target = Svc.Objects.SearchById(targetActorId)?.Name.TextValue;
 //        Svc.Log.Debug($"From {source} to {target} by {op}.");
 //#endif
-//    }
+    }
+
+    private static void OnSystemLogMessage(IntPtr dataPtr)
+    {
+        var bytes = new byte[32];
+        Marshal.Copy(dataPtr, bytes, 0, 32);
+        Svc.Log.Debug("SystemLogMessage: " + Convert.ToHexString(bytes));
+
+        //TODO: the refine to the raidtime.
+
+        //if (logId == DataIds.SystemLogPomanderUsed)
+        //    OnPomanderUsed((Pomander)Marshal.ReadByte(dataPtr, 16));
+        //else if (logId == DataIds.SystemLogDutyEnded)
+        //    ExitDeepDungeon();
+        //else if (logId == DataIds.SystemLogTransferenceInitiated)
+        //    nextFloorTransfer = true;
+
+    }
 
     public static void Disable()
     {
@@ -88,7 +130,8 @@ public static class Watcher
         MapEffect.Dispose();
         ActionEffect.ActionEffectEvent -= ActionFromEnemy;
         ActionEffect.ActionEffectEvent -= ActionFromSelf;
-        //Svc.GameNetwork.NetworkMessage -= GameNetwork_NetworkMessage;
+        Svc.GameNetwork.NetworkMessage -= GameNetwork_NetworkMessage;
+        Svc.Chat.ChatMessage -= Chat_ChatMessage;
     }
 
     private static IntPtr ActorVfxNewHandler(string path, IntPtr a2, IntPtr a3, float a4, char a5, ushort a6, char a7)
@@ -170,10 +213,10 @@ public static class Watcher
     {
         foreach (var item in DataCenter.TimelineItems)
         {
+            if (item.Type is not TimelineType.Ability) continue;
             if (!item.IsIdMatched(set.Action?.RowId ?? 0)) continue;
 
-            DataCenter.RaidTimeOffset = item.Time - DataCenter.CombatTimeRaw;
-            Svc.Log.Debug($"Reset the {nameof(DataCenter.RaidTimeOffset)} to {DataCenter.RaidTimeOffset} by the action {set.Action}");
+            item.UpdateRaidTimeOffset();
             break;
         }
 
@@ -213,7 +256,7 @@ public static class Watcher
             }
         }
 
-        if (set.Header.ActionType == ActionType.Action && DataCenter.PartyMembers.Length >= 4 && set.Action.Cast100ms > 0)
+        if (set.Header.ActionType == ActionType.Action && DataCenter.PartyMembers.Length >= 4 && set.Action?.Cast100ms > 0)
         {
             var type = set.Action.GetActionCate();
 

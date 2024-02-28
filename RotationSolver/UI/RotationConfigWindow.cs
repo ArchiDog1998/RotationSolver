@@ -2432,8 +2432,8 @@ public partial class RotationConfigWindow : Window
     }
     private static unsafe void DrawParty()
     {
-        ImGui.Text("Party: " + DataCenter.PartyMembers.Count().ToString());
-        ImGui.Text("Alliance: " + DataCenter.AllianceMembers.Count().ToString());
+        ImGui.Text("Party: " + DataCenter.PartyMembers.Length.ToString());
+        ImGui.Text("Alliance: " + DataCenter.AllianceMembers.Length.ToString());
 
         ImGui.Text("PartyMembersAverHP: " + DataCenter.PartyMembersAverHP.ToString());
 
@@ -2495,7 +2495,7 @@ public partial class RotationConfigWindow : Window
         }
 
         ImGui.Text("All: " + DataCenter.AllTargets.Count().ToString());
-        ImGui.Text("Hostile: " + DataCenter.AllHostileTargets.Count().ToString());
+        ImGui.Text("Hostile: " + DataCenter.AllHostileTargets.Length.ToString());
         foreach (var item in DataCenter.AllHostileTargets)
         {
             ImGui.Text(item.Name.ToString());

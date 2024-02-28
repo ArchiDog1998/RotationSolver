@@ -55,11 +55,11 @@ public static partial class RSCommands
             && act1.TargetInfo.IsSingleTarget
             && act1.Target?.Target is PlayerCharacter p && p != Player.Object)
         {
-            var hash = SocialUpdater.EncryptString(p);
+            var hash = p.EncryptString();
 
             //Don't attack authors and contributors!!
-            if ((RotationUpdater.AuthorHashes.ContainsKey(hash)
-                || DownloadHelper.ContributorsHash.Contains(hash)))
+            if ((DataCenter.AuthorHashes.ContainsKey(hash)
+                || DataCenter.ContributorsHash.Contains(hash)))
             {
                 Svc.Chat.PrintError($"Please don't attack RS developers with RS by {act1}!");
                 return;

@@ -16,26 +16,25 @@ internal static partial class RaidTimeUpdater
         Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
     }
 
-    private static void ClientState_TerritoryChanged(ushort obj)
+    private static async void ClientState_TerritoryChanged(ushort obj)
     {
         try
         {
-            UpdateRaidTime("06-ew/raid/p9s.txt");
+            DataCenter.TimelineItems = await UpdateRaidTime("06-ew/raid/p9s.txt");
         }
         catch (Exception e)
         {
             Svc.Log.Warning(e, "Failed to update the raid timeline!");
         }
     }
-    static async void UpdateRaidTime(string path)
+    static async Task<TimelineItem[]> UpdateRaidTime(string path)
     {
         using var client = new HttpClient();
         var message = await client.GetAsync("https://raw.githubusercontent.com/OverlayPlugin/cactbot/main/ui/raidboss/data/" + path);
 
         if (!message.IsSuccessStatusCode)
         {
-            DataCenter.TimelineItems = [];
-            return;
+            return [];
         }
 
         var str = await message.Content.ReadAsStringAsync();
@@ -45,32 +44,51 @@ internal static partial class RaidTimeUpdater
         {
             try
             {
-                var header = TimeHeader().Match(timelineItem.Value);
-                var action = JObject.Parse(ActionGetter().Match(timelineItem.Value).Value)["id"];
-                var time = float.Parse(Time().Match(header.Value).Value);
-                var name = Name().Match(header.Value).Value[1..^1];
+                var timeline = timelineItem.Value;
+                var header = TimeHeader().Match(timeline).Value;
+                var time = float.Parse(Time().Match(header).Value);
+                var name = Name().Match(header).Value[1..^1];
+
+                var item = JObject.Parse(ActionGetter().Match(timeline).Value);
 
                 string[] ids = [];
-                if (action is JArray array)
+                if (item != null)
                 {
-                    ids = [..array.Select(i => i.ToString())];
-                }
-                else
-                {
-                    ids = [action?.ToString() ?? string.Empty];
+                    var id = item["id"];
+                    if (id is JArray array)
+                    {
+                        ids = [.. array.Select(i => i.ToString())];
+                    }
+                    else
+                    {
+                        ids = [id?.ToString() ?? string.Empty];
+                    }
                 }
 
-                result.Add(new (time, name, ids));
+                var rest = timeline[header.Length..];
+                var type = Type().Match(rest)?.Value[1..^1] ?? string.Empty;
+
+                result.Add(new (time, name, type, ids, item));
             }
             catch (Exception ex)
             {
                 Svc.Log.Warning(ex, "sth wrong with matching!");
             }
         }
-        DataCenter.TimelineItems = [..result];
+
+#if DEBUG
+        foreach (var item in result)
+        {
+            Svc.Log.Debug(item.ToString());
+        }
+#endif
+        return [..result];
     }
 
-    [GeneratedRegex("\\d+\\.\\d.*Ability.*")]
+    [GeneratedRegex(" .*? ")]
+    private static partial Regex Type();
+
+    [GeneratedRegex("\\d+\\.\\d.*")]
     private static partial Regex TimeLineItem();
 
     [GeneratedRegex("^\\d+\\.\\d")]

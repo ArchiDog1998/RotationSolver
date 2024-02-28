@@ -14,7 +14,6 @@ internal static class RotationUpdater
     internal record CustomRotationGroup(Job JobId, Job[] ClassJobIds, Type[] Rotations);
     internal static SortedList<JobRole, CustomRotationGroup[]> CustomRotationsDict { get; private set; } = [];
 
-    internal static SortedList<string, string> AuthorHashes { get; private set; } = [];
     internal static CustomRotationGroup[] CustomRotations { get; set; } = [];
     internal static SortedList<uint, Type[]> DutyRotations { get; set; } = [];
 
@@ -99,7 +98,7 @@ internal static class RotationUpdater
             }
         }
 
-        AuthorHashes = [];
+        DataCenter.AuthorHashes = [];
         foreach (var assembly in assemblies)
         {
             try
@@ -112,13 +111,13 @@ internal static class RotationUpdater
 
                     var value = $"{assembly.GetInfo().Author} - {assembly.GetInfo().Name}";
 
-                    if (AuthorHashes.ContainsKey(key))
+                    if (DataCenter.AuthorHashes.ContainsKey(key))
                     {
-                        AuthorHashes[key] += $", {value}";
+                        DataCenter.AuthorHashes[key] += $", {value}";
                     }
                     else
                     {
-                        AuthorHashes.Add(key, value);
+                        DataCenter.AuthorHashes.Add(key, value);
                     }
                 }
             }

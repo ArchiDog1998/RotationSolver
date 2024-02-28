@@ -13,8 +13,6 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace RotationSolver.Updaters;
 
@@ -168,21 +166,21 @@ internal class SocialUpdater
 #else
             .Where(c => c.ObjectId != Player.Object.ObjectId)
 #endif
-            .Select(player => (player, EncryptString(player)))
+            .Select(player => (player, player.EncryptString()))
             .Where(pair => !saidAuthors.Contains(pair.Item2)
                 && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(pair.Item2));
 
         IEnumerable<ChatEntity> entities = players
             .Select(c =>
             {
-                if (!RotationUpdater.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
+                if (!DataCenter.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
                 return (c.player, nameDesc);
             })
             .Where(p => !string.IsNullOrEmpty(p.nameDesc))
             .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc));
 
         entities = entities.Union(players
-            .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
+            .Where(p => DataCenter.ContributorsHash.Contains(p.Item2))
             .Select(p => new ContributorChatEntity(p.player)), _comparer);
 
         if (Service.Config.SayHelloToUsers)
@@ -218,25 +216,6 @@ internal class SocialUpdater
         }
     }
 
-    internal static string EncryptString(PlayerCharacter player)
-    {
-        if (player == null) return string.Empty;
-
-        try
-        {
-            byte[] inputByteArray = Encoding.UTF8.GetBytes(player.HomeWorld.GameData!.InternalName.ToString()
-    + " - " + player.Name.ToString() + "U6Wy.zCG");
-
-            var tmpHash = MD5.HashData(inputByteArray);
-            var retB = Convert.ToBase64String(tmpHash);
-            return retB;
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Warning(ex, "Failed to read the player's name and world.");
-            return string.Empty;
-        }
-    }
 
     internal abstract class ChatEntity(PlayerCharacter character) : IDisposable
     {
@@ -276,7 +255,7 @@ internal class SocialUpdater
         public void Dispose()
         {
             OtherConfiguration.RotationSolverRecord.SayingHelloCount++;
-            var hash = EncryptString(player);
+            var hash = player.EncryptString();
             saidAuthors.Add(hash);
             if (Service.Config.JustSayHelloOnce)
             {

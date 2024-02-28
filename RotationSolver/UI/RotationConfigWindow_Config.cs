@@ -220,7 +220,7 @@ public partial class RotationConfigWindow
     {
         if (!DataCenter.RightSet.NamedConditions.Any(c => string.IsNullOrEmpty(c.Name)))
         {
-            DataCenter.RightSet.NamedConditions = DataCenter.RightSet.NamedConditions.Append((string.Empty, new ConditionSet())).ToArray();
+            DataCenter.RightSet.NamedConditions = [.. DataCenter.RightSet.NamedConditions, (string.Empty, new ConditionSet())];
         }
 
         ImGui.Spacing();
@@ -271,13 +271,13 @@ public partial class RotationConfigWindow
 
         if (Service.Config.SayHelloToAll)
         {
-            var str = SocialUpdater.EncryptString(Player.Object);
+            var str = Player.Object.EncryptString();
             ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
             ImGui.InputText("That is your HASH:", ref str, 100);
 
-            if (!DownloadHelper.ContributorsHash.Contains(str)
+            if (!DataCenter.ContributorsHash.Contains(str)
                 && !DownloadHelper.UsersHash.Contains(str)
-                && !RotationUpdater.AuthorHashes.ContainsKey(str))
+                && !DataCenter.AuthorHashes.ContainsKey(str))
             {
                 if (ImGui.Button("DM your Hash to ArchiTed for being greeted."))
                 {

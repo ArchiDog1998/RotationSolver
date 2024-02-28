@@ -69,7 +69,7 @@ internal static class StateUpdater
             var canHealAreaAbility = singleAbility > 2;
             var canHealAreaSpell = singleSpell > 2;
 
-            if (DataCenter.PartyMembers.Count() > 2)
+            if (DataCenter.PartyMembers.Length > 2)
             {
                 //TODO: Beneficial area status.
                 var ratio = GetHealingOfTimeRatio(Player.Object, StatusHelper.AreaHots);
