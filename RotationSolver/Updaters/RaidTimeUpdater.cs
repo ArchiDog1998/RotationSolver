@@ -81,6 +81,20 @@ internal static partial class RaidTimeUpdater
 
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);
+
+        Svc.GameNetwork.NetworkMessage += GameNetwork_NetworkMessage;
+        Svc.Chat.ChatMessage += Chat_ChatMessage;
+
+    }
+
+
+    internal static void Disable() 
+    {
+        Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
+        Svc.DutyState.DutyWiped -= DutyState_DutyWiped;
+        Svc.DutyState.DutyCompleted -= DutyState_DutyWiped;
+        Svc.GameNetwork.NetworkMessage -= GameNetwork_NetworkMessage;
+        Svc.Chat.ChatMessage -= Chat_ChatMessage;
     }
 
     private static void DutyState_DutyWiped(object? sender, ushort e)
@@ -88,11 +102,193 @@ internal static partial class RaidTimeUpdater
         DataCenter.RaidTimeRaw = -1;
     }
 
-    internal static void Disable() 
+    private static void Chat_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)
     {
-        Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
-        Svc.DutyState.DutyWiped -= DutyState_DutyWiped;
-        Svc.DutyState.DutyCompleted -= DutyState_DutyWiped;
+#if DEBUG
+        //Svc.Log.Debug(sender.TextValue.ToString());
+#endif
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.IsShown) continue;
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.GameLog) continue;
+
+            var typeString = ((uint)type).ToString("X4");
+            if (!new Regex(item["code"]).IsMatch(typeString)) continue;
+
+            //if (!new Regex(item["name"]).IsMatch(sender.TextValue)) continue;
+
+            if (!new Regex(item["line"]).IsMatch(message.TextValue)) continue;
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
+
+    private static void GameNetwork_NetworkMessage(nint dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, Dalamud.Game.Network.NetworkMessageDirection direction)
+    {
+        if (direction != Dalamud.Game.Network.NetworkMessageDirection.ZoneDown) return;
+        OpCode op = (OpCode)opCode;
+
+        switch (op)
+        {
+            case OpCode.SystemLogMessage:
+                OnSystemLogMessage(dataPtr);
+                break;
+            case OpCode.ActorControlTarget:
+            case OpCode.ActorControlSelf:
+            case OpCode.ActorControl:
+                OnActorControl(dataPtr);
+                break;
+
+            case OpCode.Effect:
+                OnEffect(dataPtr, targetActorId);
+                break;
+
+            case OpCode.ActorCast:
+                OnCast(dataPtr, targetActorId);
+                break;
+        }
+    }
+
+    private static void OnCast(IntPtr dataPtr, uint targetActorId)
+    {
+        var name = Svc.Objects.SearchById(targetActorId)?.Name.TextValue ?? string.Empty;
+
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.IsShown) continue;
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.StartsUsing) continue;
+            if (!item.IsIdMatched(ReadUshort(dataPtr, 0))) continue;
+            if (!new Regex(item["source"]).IsMatch(name) && item.IsShown) continue; //Maybe this is not correct.
+
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
+
+    private static void OnEffect(IntPtr dataPtr, uint targetActorId)
+    {
+        var name = Svc.Objects.SearchById(targetActorId)?.Name.TextValue ?? string.Empty;
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.Ability) continue;
+
+            if (!item.IsIdMatched(ReadUint(dataPtr, 28))) continue;
+            if (!new Regex(item["source"]).IsMatch(name) && item.IsShown) continue; //Maybe this is not correct.
+
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
+
+    private static void OnActorControl(IntPtr dataPtr)
+    {
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.IsShown) continue;
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.ActorControl) continue;
+
+            var command = item["command"];
+            if (!string.IsNullOrEmpty(command))
+            {
+                if (!new Regex(command).IsMatch(ReadUint(dataPtr, 8).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var data0 = item["data0"];
+            if (!string.IsNullOrEmpty(data0))
+            {
+                if (!new Regex(data0).IsMatch(ReadUshort(dataPtr, 12).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var data1 = item["data1"];
+            if (!string.IsNullOrEmpty(data1))
+            {
+                if (!new Regex(data1).IsMatch(ReadUshort(dataPtr, 14).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var data2 = item["data2"];
+            if (!string.IsNullOrEmpty(data2))
+            {
+                if (!new Regex(data2).IsMatch(ReadUshort(dataPtr, 16).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var data3 = item["data3"];
+            if (!string.IsNullOrEmpty(data3))
+            {
+                if (!new Regex(data3).IsMatch(ReadUshort(dataPtr, 18).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
+
+    private static void OnSystemLogMessage(IntPtr dataPtr)
+    {
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.IsShown) continue;
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.SystemLogMessage) continue;
+            if (!item.IsIdMatched(ReadUint(dataPtr, 4))) continue;
+
+            var param0 = item["param0"];
+            if (!string.IsNullOrEmpty(param0))
+            {
+                if (!new Regex(param0).IsMatch(ReadUint(dataPtr, 8).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var param1 = item["param1"];
+            if (!string.IsNullOrEmpty(param1))
+            {
+                if (!new Regex(param1).IsMatch(ReadUint(dataPtr, 12).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var param2 = item["param2"];
+            if (!string.IsNullOrEmpty(param2))
+            {
+                if (!new Regex(param2).IsMatch(ReadUint(dataPtr, 16).ToString("X")))
+                {
+                    continue;
+                }
+            }
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
+
+    private unsafe static ushort ReadUshort(IntPtr dataPtr, int offset)
+    {
+        return *(ushort*)(dataPtr + offset);
+    }
+
+    private unsafe static uint ReadUint(IntPtr dataPtr, int offset)
+    {
+        return *(uint*)(dataPtr + offset);
     }
 
     private static async void ClientState_TerritoryChanged(ushort id)

@@ -4,7 +4,6 @@ using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Helpers;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Updaters;
@@ -25,34 +24,6 @@ internal static partial class TargetUpdater
             && b.IsTargetable //Removed the one can't target.
             ));
         UpdateNamePlate(battles);
-    }
-
-    static readonly Dictionary<uint, bool> _castingTargets = [];
-    private static void UpdateCastingRefine(IEnumerable<BattleChara> allTargets)
-    {
-        foreach (BattleChara b in allTargets)
-        {
-            if (!_castingTargets.TryGetValue(b.ObjectId, out var isLastCasting)) continue;
-            if (isLastCasting) continue;
-
-            if (!b.IsCasting) continue;
-
-            foreach (var item in DataCenter.TimelineItems)
-            {
-                if (item.IsShown) continue;
-                if (item.Time < DataCenter.RaidTimeRaw) continue;
-                if (item.Type is not TimelineType.StartsUsing) continue;
-                if (!item.IsIdMatched(b.CastActionId)) continue;
-
-                item.UpdateRaidTimeOffset();
-                break;
-            }
-        }
-
-        foreach (BattleChara b in allTargets)
-        {
-            _castingTargets[b.ObjectId] = b.IsCasting;
-        }
     }
 
     private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;
