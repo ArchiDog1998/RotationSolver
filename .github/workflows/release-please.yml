@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: rp
-        uses: google-github-actions/release-please-action@v4
+        uses: google-github-actions/release-please-action@v3
