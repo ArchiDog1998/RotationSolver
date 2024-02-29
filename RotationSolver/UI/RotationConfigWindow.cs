@@ -774,7 +774,7 @@ public partial class RotationConfigWindow : Window
                         (Down, [VirtualKey.DOWN]));
 
                     var time = timeLineItem.Time;
-                    if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"Time##Time{timeLineItem.GetHashCode()}", ref time))
+                    if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $" ##Time{timeLineItem.GetHashCode()}", ref time))
                     {
                         timeLineItem.Time = time;
                     }

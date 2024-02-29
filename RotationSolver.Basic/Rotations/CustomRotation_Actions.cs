@@ -137,16 +137,7 @@ partial class CustomRotation
     /// </summary>
     public virtual IAction[] AllActions => 
     [
-        .. AllBaseActions.Where(i =>
-        {
-            var cate = i.Action.ClassJobCategory.Value;
-            if (cate != null)
-            {
-                var inJob = (bool?)cate.GetType().GetProperty(DataCenter.Job.ToString())?.GetValue(cate);
-                if (inJob.HasValue && !inJob.Value) return false;
-            }
-            return true;
-        }),
+        .. AllBaseActions.Where(i => i.Action.IsInJob()),
         .. Medicines.Where(i => i.HasIt),
         .. MpPotions.Where(i => i.HasIt),
         .. HpPotions.Where(i => i.HasIt),

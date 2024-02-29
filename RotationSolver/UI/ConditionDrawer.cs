@@ -148,7 +148,7 @@ internal static class ConditionDrawer
 
         group.ClearCollapsingHeader();
 
-        foreach (var pair in RotationUpdater.GroupActions(rotation.AllBaseActions)!)
+        foreach (var pair in RotationUpdater.GroupActions(rotation.AllBaseActions.Where(i => i.Action.IsInJob()))!)
         {
             group.AddCollapsingHeader(() => pair.Key, () =>
             {
