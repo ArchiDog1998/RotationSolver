@@ -67,8 +67,8 @@ public static partial class RSCommands
         }
 
 #if DEBUG
-        if (nextAction is BaseAction acti)
-            Svc.Log.Debug($"Will Do {acti}");
+        //if (nextAction is BaseAction acti)
+        //    Svc.Log.Debug($"Will Do {acti}");
 #endif
 
         if (Service.Config.KeyBoardNoise)

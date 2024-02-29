@@ -8,6 +8,7 @@ using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
@@ -74,6 +75,7 @@ public static class Watcher
 #endif
         foreach (var item in DataCenter.TimelineItems)
         {
+            if (item.IsShown) continue;
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.GameLog) continue;
 
@@ -103,6 +105,26 @@ public static class Watcher
             case OpCode.ActorControl:
                 OnActorControl(dataPtr);
                 break;
+
+            case OpCode.Effect:
+                OnEffect(dataPtr, targetActorId);
+                break;
+        }
+    }
+
+    private static void OnEffect(IntPtr dataPtr, uint targetActorId)
+    {
+        var name = Svc.Objects.SearchById(targetActorId)?.Name.TextValue ?? string.Empty;
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.Ability) continue;
+
+            if (!item.IsIdMatched(ReadUint(dataPtr, 28))) continue;
+            if (!new Regex(item["source"]).IsMatch(name) && item.IsShown) continue; //Maybe this is not correct.
+
+            item.UpdateRaidTimeOffset();
+            break;
         }
     }
 
@@ -110,6 +132,7 @@ public static class Watcher
     {
         foreach (var item in DataCenter.TimelineItems)
         {
+            if (item.IsShown) continue;
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.ActorControl) continue;
 
@@ -167,6 +190,7 @@ public static class Watcher
     {
         foreach (var item in DataCenter.TimelineItems)
         {
+            if (item.IsShown) continue;
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.SystemLogMessage) continue;
             if (!item.IsIdMatched(ReadUint(dataPtr, 4))) continue;
@@ -303,17 +327,6 @@ public static class Watcher
 
     private static void ActionFromEnemy(ActionEffectSet set)
     {
-        foreach (var item in DataCenter.TimelineItems)
-        {
-            if (item.Time < DataCenter.RaidTimeRaw) continue;
-            if (item.Type is not TimelineType.Ability) continue;
-            if (!item.IsIdMatched(set.Action?.RowId ?? 0)) continue;
-            //if (!new Regex(item["source"]).IsMatch(set.Source?.Name.TextValue ?? string.Empty)) continue;
-
-            item.UpdateRaidTimeOffset();
-            break;
-        }
-
         //Check Source.
         var source = set.Source;
         if (source == null) return;

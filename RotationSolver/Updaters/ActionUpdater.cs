@@ -152,6 +152,7 @@ internal static class ActionUpdater
             {
                 foreach (var item in DataCenter.TimelineItems)
                 {
+                    if (item.IsShown) continue;
                     if (item.Time < DataCenter.RaidTimeRaw) continue;
                     if (item.Type is not TimelineType.InCombat) continue;
 

@@ -108,13 +108,18 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
     {
         if (Name == "--Reset--")
         {
-            DataCenter.RaidTimeRaw = -1;
+#if DEBUG
             Svc.Log.Debug($"Reset the {nameof(DataCenter.RaidTimeRaw)}.");
+#endif
+            DataCenter.RaidTimeRaw = -1;
         }
         else
         {
+#if DEBUG
+            var timeOffset = Time - DataCenter.RaidTimeRaw;
+            Svc.Log.Debug($"Set the {nameof(DataCenter.RaidTimeRaw)} to {Time}, added {timeOffset}s");
+#endif
             DataCenter.RaidTimeRaw = Time;
-            Svc.Log.Debug($"Reset the {nameof(DataCenter.RaidTimeRaw)} to {DataCenter.RaidTimeRaw}.");
         }
     }
 

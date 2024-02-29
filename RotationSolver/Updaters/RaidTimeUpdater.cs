@@ -12,6 +12,12 @@ internal static partial class RaidTimeUpdater
     private static readonly Dictionary<uint, TimelineItem[]> _savedTimeLines = [];
     private static readonly Queue<(DateTime, ActionTimelineItem)> _addedItems = new();
 
+    public static string GetLink(uint id)
+    {
+        if (!PathForRaids.TryGetValue(id, out var path)) return string.Empty;
+        return "https://github.com/xpdota/event-trigger/tree/master/timelines/src/main/resources/timeline/" + path;
+    }
+
     internal static void UpdateTimeline()
     {
         if (!Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)) return;
@@ -219,7 +225,7 @@ internal static partial class RaidTimeUpdater
             Svc.Log.Debug(item.ToString());
         }
 #endif
-        return [..result];
+        return [..result.OrderBy(i => i.Time)];
     }
 
     [GeneratedRegex(" .*? {")]

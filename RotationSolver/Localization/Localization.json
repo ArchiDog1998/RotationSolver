@@ -339,5 +339,6 @@
   "RotationSolver.Basic.Data.AutoStatus.Burst": "Burst",
   "RotationSolver.Basic.Data.AutoStatus.Speed": "Speed",
   "RotationSolver.Basic.Data.AutoStatus.LimitBreak": "LimitBreak",
-  "RotationSolver.Data.UiString.ConfigWindow_Condition_DutyName": "Duty Name"
+  "RotationSolver.Data.UiString.ConfigWindow_Condition_DutyName": "Duty Name",
+  "RotationSolver.Data.UiString.Timeline_OpenLink": "Open the timeline link."
 }

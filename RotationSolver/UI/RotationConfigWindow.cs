@@ -714,6 +714,16 @@ public partial class RotationConfigWindow : Window
             }
         }
 
+        var link = RaidTimeUpdater.GetLink(_territoryId);
+        if (!string.IsNullOrEmpty(link))
+        {
+            ImGui.SameLine();
+            if (ImGui.Button(UiString.Timeline_OpenLink.Local()))
+            {
+                Util.OpenLink(link);
+            }
+        }
+
         _timelineGroup.ClearCollapsingHeader();
 
         foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)_territoryId))
