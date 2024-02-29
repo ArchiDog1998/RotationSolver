@@ -6,7 +6,7 @@ name: release-please
 jobs:
   release-please:
     name : releasePlz
-    if : ${{ startsWith(github.event.head_commit.message, 'chore:') }}
+    if : ${{ startsWith(github.event.head_commit.message, 'chore:') || startsWith(github.event.head_commit.message, 'Merge pull request')}}
     runs-on: ubuntu-latest
     steps:
       - id: rp
