@@ -1,11 +1,12 @@
 on:
   push:
     branches:
-      - release
+      - main
 name: release-please
 jobs:
   release-please:
     name : releasePlz
+    if : ${{ startsWith(${{ github.event.head_commit.message }}, 'chore:') }}
     runs-on: ubuntu-latest
     outputs:
       released: ${{ steps.rp.outputs.releases_created }}
