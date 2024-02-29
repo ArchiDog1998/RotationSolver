@@ -84,13 +84,13 @@ public class BaseAction : IBaseAction
             {
                 Service.Config.RotationActionConfig[ID] = value 
                     = Setting.CreateConfig?.Invoke() ?? new();
-                if (Setting.TargetStatusProvide != null)
-                {
-                    value.TimeToKill = 10;
-                }
                 if (value.TimeToUntargetable == 0)
                 {
                     value.TimeToUntargetable = value.TimeToKill;
+                }
+                if (Setting.TargetStatusProvide != null)
+                {
+                    value.TimeToKill = 10;
                 }
             }
             return value;

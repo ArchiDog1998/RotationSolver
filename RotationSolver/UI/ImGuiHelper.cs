@@ -5,13 +5,11 @@ using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
+using ECommons.LanguageHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
-using RotationSolver.UI.SearchableConfigs;
-using RotationSolver.UI.SearchableSettings;
-using System.ComponentModel;
 
 namespace RotationSolver.UI;
 
@@ -103,6 +101,56 @@ internal static class ImGuiHelper
         return font;
     }
 
+    public static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] items, Func<T, string> getSearchName, Action<T> selectAction, string searchingHint, ImFontPtr? font = null, Vector4? color = null)
+    {
+        if (SelectableButton(name + "##" + popId, font, color))
+        {
+            if (!ImGui.IsPopupOpen(popId)) ImGui.OpenPopup(popId);
+        }
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+        }
+
+        using var popUp = ImRaii.Popup(popId);
+        if (!popUp.Success) return;
+
+        if (items == null || items.Length == 0)
+        {
+            ImGui.TextColored(ImGuiColors.DalamudRed, "ConfigWindow_Condition_NoItemsWarning".Loc("There are no items!"));
+            return;
+        }
+
+        var searchingKey = searchTxt;
+
+        var members = items.Select(m => (m, getSearchName(m)))
+            .OrderByDescending(s => SearchableCollection.Similarity(s.Item2, searchingKey));
+
+        ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
+        ImGui.InputTextWithHint("##Searching the member", searchingHint, ref searchTxt, 128);
+
+        ImGui.Spacing();
+
+        ImRaii.IEndObject? child = null;
+        if (members.Count() >= 15)
+        {
+            ImGui.SetNextWindowSizeConstraints(new Vector2(0, 300), new Vector2(500, 300));
+            child = ImRaii.Child(popId);
+            if (!child) return;
+        }
+
+        foreach (var member in members)
+        {
+            if (ImGui.Selectable(member.Item2))
+            {
+                selectAction?.Invoke(member.m);
+                ImGui.CloseCurrentPopup();
+            }
+        }
+        child?.Dispose();
+    }
+
     public static unsafe bool SelectableCombo(string popUp, string[] items, ref int index, ImFontPtr? font = null, Vector4? color = null)
     {
         var count = items.Length;
@@ -110,16 +158,7 @@ internal static class ImGuiHelper
 
         var result = false;
 
-        List<IDisposable> disposables = new(2);
-        if (font != null)
-        {
-            disposables.Add(ImRaii.PushFont(font.Value));
-        }
-        if(color != null)
-        {
-            disposables.Add(ImRaii.PushColor(ImGuiCol.Text, color.Value));
-        }
-        if (SelectableButton(name))
+        if (SelectableButton(name, font, color))
         {
             if (count < 3)
             {
@@ -130,10 +169,6 @@ internal static class ImGuiHelper
             {
                 if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
             }
-        }
-        foreach (var item in disposables)
-        {
-            item.Dispose();
         }
 
         if (ImGui.IsItemHovered())
@@ -157,13 +192,27 @@ internal static class ImGuiHelper
         return result;
     }
 
-    public static unsafe bool SelectableButton(string name)
+    public static unsafe bool SelectableButton(string name, ImFontPtr? font = null, Vector4? color = null)
     {
+        List<IDisposable> disposables = new(2);
+        if (font != null)
+        {
+            disposables.Add(ImRaii.PushFont(font.Value));
+        }
+        if (color != null)
+        {
+            disposables.Add(ImRaii.PushColor(ImGuiCol.Text, color.Value));
+        }
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderActive)));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderHovered)));
         ImGui.PushStyleColor(ImGuiCol.Button, 0);
         var result = ImGui.Button(name);
         ImGui.PopStyleColor(3);
+        foreach (var item in disposables)
+        {
+            item.Dispose();
+        }
+
         return result;
     }
 

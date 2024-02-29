@@ -639,7 +639,6 @@ public partial class RotationConfigWindow : Window
     }
 
     #region Timeline
-    private static int _territoryIndex = 0;
     private static readonly CollapsingHeaderGroup _timelineGroup = new()
     {
         HeaderSize = 12,
@@ -648,37 +647,49 @@ public partial class RotationConfigWindow : Window
     {
         HeaderSize = 12,
     };
+    private static uint _territoryId = 0;
+    private static string _territorySearch = string.Empty;
     private static void DrawTimeline()
     {
+        static string GetName(TerritoryType? territory)
+        {
+            var str = territory?.ContentFinderCondition?.Value?.Name?.RawString;
+            if (str == null ||string.IsNullOrEmpty(str)) return "Unnamed Duty";
+            return str;
+        }
+
         var territory = Svc.Data.GetExcelSheet<TerritoryType>();
         if (territory == null) return;
 
-        var ids = RaidTimeUpdater._pathForRaids.Keys.ToArray();
-        var territories = ids.Select(territory.GetRow).ToArray();
+        var territories = RaidTimeUpdater.PathForRaids.Keys.Select(territory.GetRow).ToArray();
 
-        var names = territories.Select(t => t?.ContentFinderCondition?.Value?.Name?.RawString ?? "Unnamed Duty").ToArray();
+        var names = territories.Select(GetName).ToArray();
+
+        var rightTerritory = territory?.GetRow(_territoryId);
+        var name = GetName(rightTerritory);
 
         var imFont = ImGuiHelper.GetFont(21);
         float width = 0;
         using (var font = ImRaii.PushFont(imFont))
         {
-            width = ImGui.CalcTextSize(names[_territoryIndex]).X + ImGui.GetStyle().ItemSpacing.X * 2;
+            width = ImGui.CalcTextSize(name).X + ImGui.GetStyle().ItemSpacing.X * 2;
         }
 
         ImGuiHelper.DrawItemMiddle(() =>
         {
-            ImGuiHelper.SelectableCombo("##Choice the specific dungeon", names, ref _territoryIndex,
-                imFont, ImGuiColors.DalamudYellow);
+            ImGuiHelper.SearchCombo("##Choice the specific dungeon", name, ref _territorySearch, territories, GetName, t =>
+            {
+                _territoryId = t?.RowId ?? 0;
+            }, UiString.ConfigWindow_Condition_DutyName.Local(), imFont, ImGuiColors.DalamudYellow);
         }, ImGui.GetWindowWidth(), width);
 
-        DrawContentFinder(territories[_territoryIndex]?.ContentFinderCondition.Value);
+        DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
 
         if (_timelineGroup == null) return;
 
-        var id = ids[_territoryIndex];
-        if (!Service.Config.Timeline.TryGetValue(id, out var timeLine))
+        if (!Service.Config.Timeline.TryGetValue(_territoryId, out var timeLine))
         {
-            Service.Config.Timeline[id] = timeLine = [];
+            Service.Config.Timeline[_territoryId] = timeLine = [];
         }
 
         ImGui.Separator();
@@ -697,7 +708,7 @@ public partial class RotationConfigWindow : Window
             try
             {
                 var set = JsonConvert.DeserializeObject<Dictionary<float, List<ITimelineItem>>>(str, new ITimelineItemConverter())!;
-                Service.Config.Timeline[id] = timeLine = set;
+                Service.Config.Timeline[_territoryId] = timeLine = set;
             }
             catch (Exception ex)
             {
@@ -707,7 +718,7 @@ public partial class RotationConfigWindow : Window
 
         _timelineGroup.ClearCollapsingHeader();
 
-        foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)id))
+        foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)_territoryId))
         {
             if (!item.IsShown) continue;
 

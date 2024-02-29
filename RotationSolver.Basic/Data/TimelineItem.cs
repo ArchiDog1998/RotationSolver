@@ -14,22 +14,58 @@ internal enum TimelineType : byte
     ActorControl,
 }
 
-internal readonly struct TimelineItem(float time, string name, TimelineType type, string[] ids, JObject? obj)
+internal readonly struct TimelineItem(float time, string name, TimelineType type, string[] ids, JObject? obj, RaidLangs langs)
 {
+    private RaidLangs.Lang Lang
+    {
+        get
+        {
+            var key = Svc.ClientState.ClientLanguage switch
+            {
+                Dalamud.ClientLanguage.English => "",
+                Dalamud.ClientLanguage.Japanese => "ja",
+                Dalamud.ClientLanguage.German => "de",
+                Dalamud.ClientLanguage.French => "fr",
+                (Dalamud.ClientLanguage)4 => "cn", 
+                _ => "ko",
+            };
+
+            if (langs.langs.TryGetValue(key, out var lang)) return lang;
+            return new RaidLangs.Lang();
+        }
+    }
     public TimelineType Type => type;
 
     public float Time => time;
 
     public JObject? Object => obj;
 
-    public string Name => name;
+    public string Name
+    {
+        get
+        {
+            if (Lang.replaceText.TryGetValue(name, out var lang)) return lang;
+            return name;
+        }
+    }
 
     public bool IsShown => Name is not "--Reset--" and not "--sync--";
 
-    public string this[string propertyName] => Object?[propertyName]?.ToString() ?? string.Empty;
+    public string this[string propertyName]
+    {
+        get
+        {
+            var prop = Object?[propertyName]?.ToString() ?? string.Empty;
+            foreach (var pair in Lang.replaceSync)
+            {
+                prop = prop.Replace(pair.Key, pair.Value);
+            }
+            return prop;
+        }
+    }
 
-    public TimelineItem(float time, string name, string type, string[] ids, JObject? obj)
-        : this(time, name, GetTypeFromName(type), ids, obj)
+    public TimelineItem(float time, string name, string type, string[] ids, JObject? obj, RaidLangs langs)
+        : this(time, name, GetTypeFromName(type), ids, obj, langs)
     {
         
     }

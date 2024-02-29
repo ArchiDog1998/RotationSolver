@@ -149,7 +149,7 @@ internal static class MajorUpdater
     {
         ActionSequencerUpdater.Enable(Svc.PluginInterface.ConfigDirectory.FullName + "\\Conditions");
         SocialUpdater.Enable();
-        RaidTimeUpdater.Enable();
+        RaidTimeUpdater.EnableAsync();
 
         Svc.Framework.Update += FrameworkUpdate;
     }

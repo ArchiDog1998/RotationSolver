@@ -131,52 +131,7 @@ internal static class ConditionDrawer
 
     internal static void SearchItemsReflection(string popId, string name, ref string searchTxt, MemberInfo[] actions, Action<MemberInfo> selectAction)
     {
-        SearchItems(popId, name, ref searchTxt, actions, LocalizationManager.Local, selectAction, UiString.ConfigWindow_Actions_MemberName.Local());
-    }
-
-    internal static void SearchItems<T>(string popId, string name, ref string searchTxt, T[] items, Func<T, string> getSearchName, Action<T> selectAction, string searchingHint)
-    {
-        if (ImGuiHelper.SelectableButton(name + "##" + popId))
-        {
-            if (!ImGui.IsPopupOpen(popId)) ImGui.OpenPopup(popId);
-        }
-
-        using var popUp = ImRaii.Popup(popId);
-        if (!popUp.Success) return;
-
-        if (items == null || items.Length == 0)
-        {
-            ImGui.TextColored(ImGuiColors.DalamudRed, "ConfigWindow_Condition_NoItemsWarning".Loc("There are no items!"));
-            return;
-        }
-
-        var searchingKey = searchTxt;
-
-        var members = items.Select(m => (m, getSearchName(m)))
-            .OrderByDescending(s => SearchableCollection.Similarity(s.Item2, searchingKey));
-
-        ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
-        ImGui.InputTextWithHint("##Searching the member", searchingHint, ref searchTxt, 128);
-
-        ImGui.Spacing();
-
-        ImRaii.IEndObject? child = null;
-        if (members.Count() >= 15)
-        {
-            ImGui.SetNextWindowSizeConstraints(new Vector2(0, 300), new Vector2(500, 300));
-            child = ImRaii.Child(popId);
-            if (!child) return;
-        }
-
-        foreach (var member in members)
-        {
-            if (ImGui.Selectable(member.Item2))
-            {
-                selectAction?.Invoke(member.m);
-                ImGui.CloseCurrentPopup();
-            }
-        }
-        child?.Dispose();
+        ImGuiHelper.SearchCombo(popId, name, ref searchTxt, actions, LocalizationManager.Local, selectAction, UiString.ConfigWindow_Actions_MemberName.Local());
     }
 
     public static float IconSizeRaw => ImGuiHelpers.GetButtonSize("H").Y;
@@ -318,7 +273,7 @@ internal static class ConditionDrawer
 
     private static void DrawAfter(this NamedCondition namedCondition, ICustomRotation _)
     {
-        SearchItems($"##Comparation{namedCondition.GetHashCode()}", namedCondition.ConditionName, ref searchTxt,
+        ImGuiHelper.SearchCombo($"##Comparation{namedCondition.GetHashCode()}", namedCondition.ConditionName, ref searchTxt,
             DataCenter.RightSet.NamedConditions.Select(p => p.Name).ToArray(), i => i.ToString(), i =>
             {
                 namedCondition.ConditionName = i;
@@ -968,7 +923,7 @@ internal static class ConditionDrawer
             case TerritoryConditionType.TerritoryName:
                 ImGui.SameLine();
 
-                SearchItems($"##TerritoryName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
+                ImGuiHelper.SearchCombo($"##TerritoryName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
                 TerritoryNames, i => i.ToString(), i =>
                 {
                     territoryCondition.Name = i;
@@ -978,7 +933,7 @@ internal static class ConditionDrawer
             case TerritoryConditionType.DutyName:
                 ImGui.SameLine();
 
-                SearchItems($"##DutyName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
+                ImGuiHelper.SearchCombo($"##DutyName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
                 DutyNames, i => i.ToString(), i =>
                 {
                     territoryCondition.Name = i;

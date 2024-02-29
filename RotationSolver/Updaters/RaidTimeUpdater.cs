@@ -6,18 +6,7 @@ using System.Text.RegularExpressions;
 namespace RotationSolver.Updaters;
 internal static partial class RaidTimeUpdater
 {
-    internal static readonly Dictionary<uint, string> _pathForRaids = new()
-    {
-#if DEBUG
-        { 296, "02-arr/trial/titan-ex.txt" },
-        { 530, "03-hw/raid/a6s.txt" }, //For System log
-        { 748, "04-sb/raid/o5n.txt" }, //For Actor Control
-#endif
-        { 1148, "06-ew/raid/p9s.txt" },
-        { 1150, "06-ew/raid/p10s.txt" },
-        { 1152, "06-ew/raid/p11s.txt" },
-        { 1154, "06-ew/raid/p12s.txt" },
-    };
+    internal static readonly Dictionary<uint, string> PathForRaids = [];
 
     private static readonly Dictionary<uint, TimelineItem[]> _savedTimeLines = [];
     private static readonly Queue<(DateTime, ActionTimelineItem)> _addedItems = new();
@@ -58,12 +47,32 @@ internal static partial class RaidTimeUpdater
         }
     }
 
-    internal static void Enable()
+    internal static async Task EnableAsync()
     {
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);
         Svc.DutyState.DutyWiped += DutyState_DutyWiped;
         Svc.DutyState.DutyCompleted += DutyState_DutyWiped;
+
+        using var client = new HttpClient();
+        var message = await client.GetAsync("https://raw.githubusercontent.com/xpdota/event-trigger/master/timelines/src/main/resources/timelines.csv");
+
+        if (!message.IsSuccessStatusCode)
+        {
+            return;
+        }
+
+        var str = await message.Content.ReadAsStringAsync();
+
+        foreach (var pair in str.Split('\n'))
+        {
+            var items = pair.Split(',');
+            if (items.Length < 2) continue;
+
+            if (!uint.TryParse(items[0], out var id)) continue;
+            var name = items[1][1..^1];
+            PathForRaids[id] = name;
+        }
     }
 
     private static void DutyState_DutyWiped(object? sender, ushort e)
@@ -82,7 +91,7 @@ internal static partial class RaidTimeUpdater
     {
         try
         {
-            DataCenter.TimelineItems = await GetRaidTimeAsync(id);
+            DataCenter.TimelineItems = await GetRaidAsync(id) ?? [];
         }
         catch (Exception e)
         {
@@ -90,37 +99,58 @@ internal static partial class RaidTimeUpdater
         }
     }
 
-    private static List<ushort> _downloading = [];
-    public static TimelineItem[] GetRaidTime(ushort id)
+    private static readonly List<ushort> _downloading = [];
+    internal static TimelineItem[] GetRaidTime(ushort id)
     {
         if (_savedTimeLines.TryGetValue(id, out var value)) return value;
-        if (!_pathForRaids.TryGetValue(id, out var path)) return [];
+        if (!PathForRaids.TryGetValue(id, out var path)) return [];
         if (_downloading.Contains(id)) return [];
 
         _downloading.Add(id);
         Task.Run(async () =>
         {
-            _savedTimeLines[id] = await DownloadRaidTimeAsync(path);
+            _savedTimeLines[id] = await DownloadRaidAsync(path);
             _downloading.Remove(id);
         });
 
         return [];
     }
 
-    static async Task<TimelineItem[]> GetRaidTimeAsync(ushort id)
+    static async Task<TimelineItem[]> DownloadRaidAsync(string path)
+    {
+        var langs = await DownloadRaidLangsAsync(path);
+
+        return await DownloadRaidTimeAsync(path, langs);
+    }
+    static async Task<TimelineItem[]> GetRaidAsync(ushort id)
     {
         if (_savedTimeLines.TryGetValue(id, out var value)) return value;
-        if (_pathForRaids.TryGetValue(id, out var path))
+        if (PathForRaids.TryGetValue(id, out var path))
         {
-            return _savedTimeLines[id] = await DownloadRaidTimeAsync(path);
+            return _savedTimeLines[id] = await DownloadRaidAsync(path);
         }
-        return [];
+        return null;
     }
 
-    static async Task<TimelineItem[]> DownloadRaidTimeAsync(string path)
+    static async Task<RaidLangs> DownloadRaidLangsAsync(string path)
     {
         using var client = new HttpClient();
-        var message = await client.GetAsync("https://raw.githubusercontent.com/OverlayPlugin/cactbot/main/ui/raidboss/data/" + path);
+        var message = await client.GetAsync("https://raw.githubusercontent.com/xpdota/event-trigger/master/timelines/src/main/resources/timeline/translations/" + path + ".json");
+
+        if (!message.IsSuccessStatusCode)
+        {
+            return new();
+        }
+
+        var str = await message.Content.ReadAsStringAsync();
+
+        return JsonConvert.DeserializeObject<RaidLangs>(str) ?? new();
+    }
+
+    static async Task<TimelineItem[]> DownloadRaidTimeAsync(string path, RaidLangs lang)
+    {
+        using var client = new HttpClient();
+        var message = await client.GetAsync("https://raw.githubusercontent.com/xpdota/event-trigger/master/timelines/src/main/resources/timeline/" + path);
 
         if (!message.IsSuccessStatusCode)
         {
@@ -169,7 +199,7 @@ internal static partial class RaidTimeUpdater
                     type = type[1..^2].Split(' ').LastOrDefault() ?? string.Empty;
                 }
 
-                result.Add(new (time, name, type, ids, item));
+                result.Add(new (time, name, type, ids, item, lang));
             }
             catch (Exception ex)
             {
