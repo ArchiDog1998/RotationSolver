@@ -1,15 +1,11 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility.Raii;
-using Dalamud.Utility;
 using ECommons.DalamudServices;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using RotationSolver.Helpers;
-using System.ComponentModel;
-using RotationSolver.Data;
 
 namespace RotationSolver.UI;
 
