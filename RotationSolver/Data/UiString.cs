@@ -219,7 +219,7 @@ internal enum UiString
     [Description("From Clipboard")]
     ActionSequencer_FromClipboard,
 
-    [Description("Open the timeline link.")]
+    [Description("Open the timeline link")]
     Timeline_OpenLink,
 
     [Description("Add Status")]

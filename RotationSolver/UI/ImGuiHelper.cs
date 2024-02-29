@@ -154,7 +154,8 @@ internal static class ImGuiHelper
     public static unsafe bool SelectableCombo(string popUp, string[] items, ref int index, ImFontPtr? font = null, Vector4? color = null)
     {
         var count = items.Length;
-        var name = items[index % count] + "##" + popUp;
+        index = Math.Max(0, index) % count;
+        var name = items[index] + "##" + popUp;
 
         var result = false;
 

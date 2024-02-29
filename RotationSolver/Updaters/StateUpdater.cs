@@ -18,7 +18,7 @@ internal static class StateUpdater
     public static void UpdateState()
     {
         DataCenter.CommandStatus = StatusFromCmdOrCondition();
-        DataCenter.AutoStatus = StatusFromAutomatic() | StatusFromTimeline();
+        DataCenter.AutoStatus = StatusFromAutomatic();
     }
 
     static RandomDelay 
@@ -26,30 +26,6 @@ internal static class StateUpdater
         _healDelay2 = new(() => Service.Config.HealDelay),
         _healDelay3 = new(() => Service.Config.HealDelay),
         _healDelay4 = new(() => Service.Config.HealDelay);
-
-    private static AutoStatus StatusFromTimeline()
-    {
-        AutoStatus status = AutoStatus.None;
-
-        if (!Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)) return status;
-
-        foreach (var item in DataCenter.TimelineItems)
-        {
-            var time = item.Time - DataCenter.RaidTimeRaw;
-
-            if (time < 0) continue;
-            if (!timeline.TryGetValue(item.Time, out var items)) continue;
-
-            foreach (var item2 in items.OfType<StateTimelineItem>())
-            {
-                if (!item2.InPeriod(item)) continue;
-
-                status |= item2.State;
-            }
-        }
-
-        return status;
-    }
 
     private static AutoStatus StatusFromAutomatic()
     {

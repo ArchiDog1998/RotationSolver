@@ -10,7 +10,7 @@ internal static partial class RaidTimeUpdater
     internal static readonly Dictionary<uint, string> PathForRaids = [];
 
     private static readonly Dictionary<uint, TimelineItem[]> _savedTimeLines = [];
-    private static readonly Queue<(DateTime, ActionTimelineItem)> _addedItems = new();
+    private static readonly Queue<(DateTime, ITimelineItem)> _addedItems = new();
 
     public static string GetLink(uint id)
     {
@@ -35,20 +35,30 @@ internal static partial class RaidTimeUpdater
             if (time < 0) continue;
             if (!timeline.TryGetValue(item.Time, out var items)) continue;
 
-            foreach (var item2 in items.OfType<ActionTimelineItem>()
-                .Where(i => !_addedItems.Any(added => added.Item2 == i)))
-            {
-                if (!item2.InPeriod(item)) continue;
 
+            var validItems = items.Where(i => !_addedItems.Any(added => added.Item2 == i) && i.InPeriod(item));
+
+            foreach (var item2 in validItems.OfType<ActionTimelineItem>())
+            {
                 var act = DataCenter.RightNowRotation?.AllBaseActions.FirstOrDefault(a => (ActionID)a.ID == item2.ID);
 
                 if (act == null) continue;
 
-                DataCenter.AddCommandAction(act, item2.Duration);
+                DataCenter.AddCommandAction(act, Service.Config.SpecialDuration);
                 _addedItems.Enqueue((DateTime.Now, item2));
 
 #if DEBUG
-                Svc.Log.Debug($"Added the action{act} to timeline.");
+                Svc.Log.Debug($"Added the action {act} to timeline.");
+#endif
+            }
+
+            foreach (var item2 in validItems.OfType<StateTimelineItem>())
+            {
+                DataCenter.SpecialType = item2.State;
+
+                _addedItems.Enqueue((DateTime.Now, item2));
+#if DEBUG
+                Svc.Log.Debug($"Added the state {item2.State} to timeline.");
 #endif
             }
         }
@@ -160,7 +170,7 @@ internal static partial class RaidTimeUpdater
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.StartsUsing) continue;
             if (!item.IsIdMatched(ReadUshort(dataPtr, 0))) continue;
-            if (!new Regex(item["source"]).IsMatch(name) && item.IsShown) continue; //Maybe this is not correct.
+            if (!new Regex(item["source"]).IsMatch(name)) continue;
 
             item.UpdateRaidTimeOffset();
             break;
