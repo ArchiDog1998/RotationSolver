@@ -8,9 +8,7 @@ using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using static Dalamud.Interface.Utility.Raii.ImRaii;
 using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace RotationSolver;
@@ -71,6 +69,9 @@ public static class Watcher
 
     private static void Chat_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)
     {
+#if DEBUG
+        //Svc.Log.Debug(sender.TextValue.ToString());
+#endif
         foreach (var item in DataCenter.TimelineItems)
         {
             if (item.Time < DataCenter.RaidTimeRaw) continue;
@@ -79,7 +80,8 @@ public static class Watcher
             var typeString = ((uint)type).ToString("X4");
             if (!new Regex(item["code"]).IsMatch(typeString)) continue;
 
-            //TODO: multi language.
+            //if (!new Regex(item["name"]).IsMatch(sender.TextValue)) continue;
+
             if (!new Regex(item["line"]).IsMatch(message.TextValue)) continue;
             item.UpdateRaidTimeOffset();
             break;
@@ -96,46 +98,70 @@ public static class Watcher
             case OpCode.SystemLogMessage:
                 OnSystemLogMessage(dataPtr);
                 break;
-            //case OpCode.ActorControlTarget:
-            //    var bytes = new byte[32];
-            //    Marshal.Copy(dataPtr, bytes, 0, 32);
-            //    Svc.Log.Debug("ActorControlTarget: " + HexString(bytes));
-            //    break;
-            //case OpCode.ActorControlSelf:
-            //    bytes = new byte[32];
-            //    Marshal.Copy(dataPtr, bytes, 0, 32);
-            //    Svc.Log.Debug("ActorControlSelf: " + HexString(bytes));
-            //    break;
-            //case OpCode.ActorControl:
-            //    OnActorControl(dataPtr);
-            //    break;
+            case OpCode.ActorControlTarget:
+            case OpCode.ActorControlSelf:
+            case OpCode.ActorControl:
+                OnActorControl(dataPtr);
+                break;
         }
     }
 
-    //private static void OnActorControl(IntPtr dataPtr)
-    //{
-    //    foreach (var item in DataCenter.TimelineItems)
-    //    {
-    //        if (item.Time < DataCenter.RaidTimeRaw) continue;
-    //        if (item.Type is not TimelineType.ActorControl) continue;
-    //        //if (!item.IsIdMatched(ReadNumber(dataPtr, 4))) continue;
+    private static void OnActorControl(IntPtr dataPtr)
+    {
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (item.Type is not TimelineType.ActorControl) continue;
 
-    //        //var param1 = item["param1"];
-    //        //if (!string.IsNullOrEmpty(param1))
-    //        //{
-    //        //    if (!new Regex(param1).IsMatch(ReadNumber(dataPtr, 12).ToString("X")))
-    //        //    {
-    //        //        continue;
-    //        //    }
-    //        //}
-    //        //item.UpdateRaidTimeOffset();
-    //        break;
-    //    }
+            var command = item["command"];
+            if (!string.IsNullOrEmpty(command))
+            {
+                if (!new Regex(command).IsMatch(ReadUint(dataPtr, 8).ToString("X")))
+                {
+                    continue;
+                }
+            }
 
-    //    var bytes = new byte[32];
-    //    Marshal.Copy(dataPtr, bytes, 0, 32);
-    //    Svc.Log.Debug("ActorControl: " + HexString(bytes));
-    //}
+            var data0 = item["data0"];
+            if (!string.IsNullOrEmpty(data0))
+            {
+                if (!new Regex(data0).IsMatch(ReadUshort(dataPtr, 12).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var data1 = item["data1"];
+            if (!string.IsNullOrEmpty(data1))
+            {
+                if (!new Regex(data1).IsMatch(ReadUshort(dataPtr, 14).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var data2 = item["data2"];
+            if (!string.IsNullOrEmpty(data2))
+            {
+                if (!new Regex(data2).IsMatch(ReadUshort(dataPtr, 16).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var data3 = item["data3"];
+            if (!string.IsNullOrEmpty(data3))
+            {
+                if (!new Regex(data3).IsMatch(ReadUshort(dataPtr, 18).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            item.UpdateRaidTimeOffset();
+            break;
+        }
+    }
 
     private static void OnSystemLogMessage(IntPtr dataPtr)
     {
@@ -143,12 +169,30 @@ public static class Watcher
         {
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.SystemLogMessage) continue;
-            if (!item.IsIdMatched(ReadNumber(dataPtr, 4))) continue;
+            if (!item.IsIdMatched(ReadUint(dataPtr, 4))) continue;
+
+            var param0 = item["param0"];
+            if (!string.IsNullOrEmpty(param0))
+            {
+                if (!new Regex(param0).IsMatch(ReadUint(dataPtr, 8).ToString("X")))
+                {
+                    continue;
+                }
+            }
 
             var param1 = item["param1"];
             if (!string.IsNullOrEmpty(param1))
             {
-                if(!new Regex(param1).IsMatch(ReadNumber(dataPtr, 12).ToString("X")))
+                if(!new Regex(param1).IsMatch(ReadUint(dataPtr, 12).ToString("X")))
+                {
+                    continue;
+                }
+            }
+
+            var param2 = item["param2"];
+            if (!string.IsNullOrEmpty(param2))
+            {
+                if (!new Regex(param2).IsMatch(ReadUint(dataPtr, 16).ToString("X")))
                 {
                     continue;
                 }
@@ -158,25 +202,14 @@ public static class Watcher
         }
     }
 
-    private unsafe static uint ReadNumber(IntPtr dataPtr, int offset)
+    private unsafe static ushort ReadUshort(IntPtr dataPtr, int offset)
     {
-        return *(uint*)(dataPtr + offset);
+        return *(ushort*)(dataPtr + offset);
     }
 
-    private static string HexString(byte[] bytes)
+    private unsafe static uint ReadUint(IntPtr dataPtr, int offset)
     {
-        var str = Convert.ToHexString(bytes);
-
-        string result = string.Empty;
-        for (int i = 0; i < str.Length; i++)
-        {
-            if (i % 4 == 0)
-            {
-                result += " ";
-            }
-            result += str[i];
-        }
-        return result;
+        return *(uint*)(dataPtr + offset);
     }
 
     public static void Disable()
@@ -275,6 +308,7 @@ public static class Watcher
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.Ability) continue;
             if (!item.IsIdMatched(set.Action?.RowId ?? 0)) continue;
+            //if (!new Regex(item["source"]).IsMatch(set.Source?.Name.TextValue ?? string.Empty)) continue;
 
             item.UpdateRaidTimeOffset();
             break;

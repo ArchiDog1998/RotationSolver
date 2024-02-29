@@ -1,6 +1,7 @@
 ﻿using ECommons.DalamudServices;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
+using RotationSolver.UI;
 using System.Text.RegularExpressions;
 
 namespace RotationSolver.Updaters;
@@ -47,10 +48,8 @@ internal static partial class RaidTimeUpdater
         }
     }
 
-    internal static async Task EnableAsync()
+    internal static async void EnableAsync()
     {
-        Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
-        ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);
         Svc.DutyState.DutyWiped += DutyState_DutyWiped;
         Svc.DutyState.DutyCompleted += DutyState_DutyWiped;
 
@@ -73,6 +72,9 @@ internal static partial class RaidTimeUpdater
             var name = items[1][1..^1];
             PathForRaids[id] = name;
         }
+
+        Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
+        ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);
     }
 
     private static void DutyState_DutyWiped(object? sender, ushort e)
@@ -89,6 +91,10 @@ internal static partial class RaidTimeUpdater
 
     private static async void ClientState_TerritoryChanged(ushort id)
     {
+        if (PathForRaids.ContainsKey(id))
+        {
+            RotationConfigWindow._territoryId = id;
+        }
         try
         {
             DataCenter.TimelineItems = await GetRaidAsync(id) ?? [];
@@ -129,7 +135,7 @@ internal static partial class RaidTimeUpdater
         {
             return _savedTimeLines[id] = await DownloadRaidAsync(path);
         }
-        return null;
+        return [];
     }
 
     static async Task<RaidLangs> DownloadRaidLangsAsync(string path)

@@ -647,7 +647,7 @@ public partial class RotationConfigWindow : Window
     {
         HeaderSize = 12,
     };
-    private static uint _territoryId = 0;
+    internal static uint _territoryId = 0;
     private static string _territorySearch = string.Empty;
     private static void DrawTimeline()
     {
@@ -661,9 +661,7 @@ public partial class RotationConfigWindow : Window
         var territory = Svc.Data.GetExcelSheet<TerritoryType>();
         if (territory == null) return;
 
-        var territories = RaidTimeUpdater.PathForRaids.Keys.Select(territory.GetRow).ToArray();
-
-        var names = territories.Select(GetName).ToArray();
+        var territories = RaidTimeUpdater.PathForRaids.Keys.OrderByDescending(i => i).Select(territory.GetRow).ToArray();
 
         var rightTerritory = territory?.GetRow(_territoryId);
         var name = GetName(rightTerritory);

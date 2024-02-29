@@ -749,7 +749,8 @@ internal partial class Configs : IPluginConfiguration
 
     public Dictionary<uint, string> DutyRotationChoice { get; set; } = [];
 
-    public Dictionary<uint, Dictionary<float, List<ITimelineItem>>> Timeline { get; set; } = [];
+    [JobConfig]
+    private readonly Dictionary<uint, Dictionary<float, List<ITimelineItem>>> _timeline = [];
 
     public void Save()
     {

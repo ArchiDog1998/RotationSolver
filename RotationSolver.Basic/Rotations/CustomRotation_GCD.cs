@@ -1,6 +1,4 @@
-﻿using ECommons.DalamudServices;
-
-namespace RotationSolver.Basic.Rotations;
+﻿namespace RotationSolver.Basic.Rotations;
 
 partial class CustomRotation
 {

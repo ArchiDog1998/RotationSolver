@@ -22,12 +22,12 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
         {
             var key = Svc.ClientState.ClientLanguage switch
             {
-                Dalamud.ClientLanguage.English => "",
                 Dalamud.ClientLanguage.Japanese => "ja",
                 Dalamud.ClientLanguage.German => "de",
                 Dalamud.ClientLanguage.French => "fr",
                 (Dalamud.ClientLanguage)4 => "cn", 
-                _ => "ko",
+                (Dalamud.ClientLanguage)5 => "ko",
+                _ => "",
             };
 
             if (langs.langs.TryGetValue(key, out var lang)) return lang;

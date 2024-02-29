@@ -53,7 +53,7 @@ public class JobConfigGenerator : IIncrementalGenerator
 
                 var fieldTypeStr = field.Declaration.Type;
                 var fieldType = model.GetTypeInfo(fieldTypeStr).Type!;
-                var fieldStr = fieldTypeStr.ToString();
+                var fieldStr = fieldType.GetFullMetadataName();
 
                 var names = new List<string>();
                 foreach (var attrSet in field.AttributeLists)
