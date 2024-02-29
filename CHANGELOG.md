@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.1.1](https://github.com/ArchiDog1998/RotationSolver/compare/v4.1.0...v4.1.1) (2024-02-29)
+
+
+### Bug Fixes
+
+* add actor control watcher and make timeline as jobs. ([388d131](https://github.com/ArchiDog1998/RotationSolver/commit/388d131f21e7d4226d53c87091227eb36429f370))
+* add multi lang for the raid. ([071c14b](https://github.com/ArchiDog1998/RotationSolver/commit/071c14bc11c167f31ef497fce3771b5289dd112b))
+* add package name. ([b286d20](https://github.com/ArchiDog1998/RotationSolver/commit/b286d20795f30f569b3da97d3bb8b08b9b58033b))
+* add package. ([ab0174e](https://github.com/ArchiDog1998/RotationSolver/commit/ab0174e892de2df943413c93ce91cb4781513d6f))
+* change workflow. ([0daaa0d](https://github.com/ArchiDog1998/RotationSolver/commit/0daaa0d2c2b6478497f9c69a85c9f83172257911))
+* changed the action. ([34794ea](https://github.com/ArchiDog1998/RotationSolver/commit/34794ea17acd74c1918f874b3bd69a1ae0bdada5))
+* plz! ([5688f45](https://github.com/ArchiDog1998/RotationSolver/commit/5688f4542d6b54bc825fd6fe56e3b12cdbcad646))
+* rp fix. ([59ca899](https://github.com/ArchiDog1998/RotationSolver/commit/59ca89919987ba145c25be721a7070184d98da79))
+* the older the better, maybe. ([2ce218c](https://github.com/ArchiDog1998/RotationSolver/commit/2ce218c4acdde2e2f20331a46b5d0f31d08a1edb))
+* workflow fix. ([b5324e0](https://github.com/ArchiDog1998/RotationSolver/commit/b5324e00da8511e6c95e369569068b94d0dd2a8b))
+
 ## [4.1.0](https://github.com/ArchiDog1998/RotationSolver/compare/v4.0.3...v4.1.0) (2024-02-28)
 
 
