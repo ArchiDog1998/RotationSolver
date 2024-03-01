@@ -1,8 +1,11 @@
 ﻿using ECommons.DalamudServices;
+using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.UI;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace RotationSolver.Updaters;
 internal static partial class RaidTimeUpdater
@@ -114,9 +117,12 @@ internal static partial class RaidTimeUpdater
 
     private static void Chat_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)
     {
+        var name = GetNameFromObjectId(senderId);
+
 #if DEBUG
         //Svc.Log.Debug(sender.TextValue.ToString());
 #endif
+
         foreach (var item in DataCenter.TimelineItems)
         {
             if (item.IsShown) continue;
@@ -124,11 +130,10 @@ internal static partial class RaidTimeUpdater
             if (item.Type is not TimelineType.GameLog) continue;
 
             var typeString = ((uint)type).ToString("X4");
-            if (!new Regex(item["code"]).IsMatch(typeString)) continue;
+            if (!item["code", typeString]) continue;
+            if (!item["name", name]) continue;
+            if (!item["line", message.TextValue]) continue;
 
-            //if (!new Regex(item["name"]).IsMatch(sender.TextValue)) continue;
-
-            if (!new Regex(item["line"]).IsMatch(message.TextValue)) continue;
             item.UpdateRaidTimeOffset();
             break;
         }
@@ -162,15 +167,16 @@ internal static partial class RaidTimeUpdater
 
     private static void OnCast(IntPtr dataPtr, uint targetActorId)
     {
-        var name = Svc.Objects.SearchById(targetActorId)?.Name.TextValue ?? string.Empty;
+        var name = GetNameFromObjectId(targetActorId);
 
         foreach (var item in DataCenter.TimelineItems)
         {
             if (item.IsShown) continue;
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.StartsUsing) continue;
-            if (!item.IsIdMatched(ReadUshort(dataPtr, 0))) continue;
-            if (!new Regex(item["source"]).IsMatch(name)) continue;
+
+            if (!item["id", ReadUshort(dataPtr, 0)]) continue;
+            if (!item["source", name]) continue;
 
             item.UpdateRaidTimeOffset();
             break;
@@ -179,14 +185,16 @@ internal static partial class RaidTimeUpdater
 
     private static void OnEffect(IntPtr dataPtr, uint targetActorId)
     {
-        var name = Svc.Objects.SearchById(targetActorId)?.Name.TextValue ?? string.Empty;
+        var name = GetNameFromObjectId(targetActorId);
+
         foreach (var item in DataCenter.TimelineItems)
         {
+            if (item.IsShown) continue;
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.Ability) continue;
 
-            if (!item.IsIdMatched(ReadUint(dataPtr, 28))) continue;
-            if (!new Regex(item["source"]).IsMatch(name) && item.IsShown) continue; //Maybe this is not correct.
+            if (!item["id", ReadUint(dataPtr, 28)]) continue;
+            if (!item["source", name]) continue;
 
             item.UpdateRaidTimeOffset();
             break;
@@ -201,50 +209,11 @@ internal static partial class RaidTimeUpdater
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.ActorControl) continue;
 
-            var command = item["command"];
-            if (!string.IsNullOrEmpty(command))
-            {
-                if (!new Regex(command).IsMatch(ReadUint(dataPtr, 8).ToString("X")))
-                {
-                    continue;
-                }
-            }
-
-            var data0 = item["data0"];
-            if (!string.IsNullOrEmpty(data0))
-            {
-                if (!new Regex(data0).IsMatch(ReadUshort(dataPtr, 12).ToString("X")))
-                {
-                    continue;
-                }
-            }
-
-            var data1 = item["data1"];
-            if (!string.IsNullOrEmpty(data1))
-            {
-                if (!new Regex(data1).IsMatch(ReadUshort(dataPtr, 14).ToString("X")))
-                {
-                    continue;
-                }
-            }
-
-            var data2 = item["data2"];
-            if (!string.IsNullOrEmpty(data2))
-            {
-                if (!new Regex(data2).IsMatch(ReadUshort(dataPtr, 16).ToString("X")))
-                {
-                    continue;
-                }
-            }
-
-            var data3 = item["data3"];
-            if (!string.IsNullOrEmpty(data3))
-            {
-                if (!new Regex(data3).IsMatch(ReadUshort(dataPtr, 18).ToString("X")))
-                {
-                    continue;
-                }
-            }
+            if (!item["command", ReadUint(dataPtr, 8)]) continue;
+            if (!item["data0", ReadUshort(dataPtr, 12)]) continue;
+            if (!item["data1", ReadUshort(dataPtr, 14)]) continue;
+            if (!item["data2", ReadUshort(dataPtr, 16)]) continue;
+            if (!item["data3", ReadUshort(dataPtr, 18)]) continue;
 
             item.UpdateRaidTimeOffset();
             break;
@@ -258,34 +227,12 @@ internal static partial class RaidTimeUpdater
             if (item.IsShown) continue;
             if (item.Time < DataCenter.RaidTimeRaw) continue;
             if (item.Type is not TimelineType.SystemLogMessage) continue;
-            if (!item.IsIdMatched(ReadUint(dataPtr, 4))) continue;
 
-            var param0 = item["param0"];
-            if (!string.IsNullOrEmpty(param0))
-            {
-                if (!new Regex(param0).IsMatch(ReadUint(dataPtr, 8).ToString("X")))
-                {
-                    continue;
-                }
-            }
+            if (!item["id", ReadUint(dataPtr, 4)]) continue;
+            if (!item["param0", ReadUint(dataPtr, 8)]) continue;
+            if (!item["param1", ReadUint(dataPtr, 12)]) continue;
+            if (!item["param2", ReadUint(dataPtr, 16)]) continue;
 
-            var param1 = item["param1"];
-            if (!string.IsNullOrEmpty(param1))
-            {
-                if (!new Regex(param1).IsMatch(ReadUint(dataPtr, 12).ToString("X")))
-                {
-                    continue;
-                }
-            }
-
-            var param2 = item["param2"];
-            if (!string.IsNullOrEmpty(param2))
-            {
-                if (!new Regex(param2).IsMatch(ReadUint(dataPtr, 16).ToString("X")))
-                {
-                    continue;
-                }
-            }
             item.UpdateRaidTimeOffset();
             break;
         }
@@ -299,6 +246,21 @@ internal static partial class RaidTimeUpdater
     private unsafe static uint ReadUint(IntPtr dataPtr, int offset)
     {
         return *(uint*)(dataPtr + offset);
+    }
+
+    private static string GetNameFromObjectId(uint id)
+    {
+        var obj = Svc.Objects.SearchById(id);
+        var nameId = obj is BattleChara battle ? battle.NameId : 0;
+        var name = Svc.Data.GetExcelSheet<BNpcName>()?.GetRow(nameId)?.Singular.RawString;
+
+        if (!string.IsNullOrEmpty(name)) return name;
+
+#if DEBUG
+        return "Failed to find the NPC name!";
+#else
+        return obj?.Name.TextValue ?? string.Empty;
+#endif
     }
 
     private static async void ClientState_TerritoryChanged(ushort id)
@@ -393,22 +355,7 @@ internal static partial class RaidTimeUpdater
 
                 var timelineStr = ActionGetter().Match(timeline).Value;
 
-                JObject? item = null;
-                string[] ids = [];
-                if (!string.IsNullOrEmpty(timelineStr))
-                {
-                    item = JObject.Parse(timelineStr);
-
-                    var id = item["id"];
-                    if (id is JArray array)
-                    {
-                        ids = [.. array.Select(i => i.ToString())];
-                    }
-                    else
-                    {
-                        ids = [id?.ToString() ?? string.Empty];
-                    }
-                }
+                var item = string.IsNullOrEmpty(timelineStr) ? null : JObject.Parse(timelineStr);
 
                 var rest = timeline[header.Length..];
                 var type = Type().Match(rest)?.Value ?? string.Empty;
@@ -417,7 +364,7 @@ internal static partial class RaidTimeUpdater
                     type = type[1..^2].Split(' ').LastOrDefault() ?? string.Empty;
                 }
 
-                result.Add(new (time, name, type, ids, item, lang));
+                result.Add(new (time, name, type, item, lang));
             }
             catch (Exception ex)
             {

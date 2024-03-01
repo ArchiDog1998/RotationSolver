@@ -253,7 +253,7 @@ partial class CustomRotation
     /// </summary>
     /// <param name="nextGCD">The next gcd action.</param>
     /// <param name="act">Result action.</param>
-    /// <returns>Can we use it.</returns>
+    //<returns>Can we use it.</returns>
     protected virtual bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {
         if (nextGCD is BaseAction action)

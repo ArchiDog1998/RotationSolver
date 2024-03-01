@@ -1,6 +1,7 @@
 ﻿using ECommons.DalamudServices;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
+using static Dalamud.Interface.Utility.Raii.ImRaii;
 
 namespace RotationSolver.Basic.Data;
 internal enum TimelineType : byte
@@ -14,7 +15,7 @@ internal enum TimelineType : byte
     ActorControl,
 }
 
-internal readonly struct TimelineItem(float time, string name, TimelineType type, string[] ids, JObject? obj, RaidLangs langs)
+internal readonly struct TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs)
 {
     private RaidLangs.Lang Lang
     {
@@ -51,21 +52,64 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
 
     public bool IsShown => Name is not "--Reset--" and not "--sync--";
 
-    public string this[string propertyName]
+    public bool this[string propertyName, uint matchValue]
+        => this[propertyName, matchValue.ToString("X")];
+
+    public bool this[string propertyName, string matchString]
     {
         get
         {
-            var prop = Object?[propertyName]?.ToString() ?? string.Empty;
-            foreach (var pair in Lang.replaceSync)
+            foreach (var str in this[propertyName])
             {
-                prop = prop.Replace(pair.Key, pair.Value);
+                var prop = str;
+                if (new Regex(prop).IsMatch(matchString))
+                {
+                    return true;
+                }
             }
-            return prop;
+
+            return false;
         }
     }
 
-    public TimelineItem(float time, string name, string type, string[] ids, JObject? obj, RaidLangs langs)
-        : this(time, name, GetTypeFromName(type), ids, obj, langs)
+    public string[] this[string propertyName]
+    {
+        get
+        {
+            string[] strings = [];
+
+            var strRelay = Object?[propertyName];
+
+            if (strRelay == null) return [];
+
+            if (strRelay is JArray array)
+            {
+                strings = [.. array.Select(i => i.ToString())];
+            }
+            else
+            {
+                strings = [strRelay?.ToString() ?? string.Empty];
+            }
+
+            var list = new List<string>(strings.Length);
+            foreach (var str in strings)
+            {
+                if (string.IsNullOrEmpty(str)) continue;
+
+                var prop = str;
+
+                foreach (var pair in Lang.replaceSync)
+                {
+                    prop = prop.Replace(pair.Key, pair.Value);
+                }
+                list.Add(prop);
+            }
+            return [.. list];
+        }
+    }
+
+    public TimelineItem(float time, string name, string type, JObject? obj, RaidLangs langs)
+        : this(time, name, GetTypeFromName(type), obj, langs)
     {
         
     }
@@ -123,11 +167,6 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
         }
     }
 
-    public bool IsIdMatched(uint id)
-    {
-        return ids.Any(i => new Regex(i).IsMatch(id.ToString("X")));
-    }
-
     public override string ToString()
     {
         return $"""
@@ -135,7 +174,7 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
             Time: {Time},
             Name: {Name},
             Type: {Type},
-            Ids: {string.Join(", ", ids)}
+            Ids: {string.Join(", ", this["id"])}
             """;
     }
 }
