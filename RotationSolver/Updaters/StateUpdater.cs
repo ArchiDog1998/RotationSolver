@@ -107,7 +107,11 @@ internal static class StateUpdater
             {
                 if (DataCenter.IsHostileCastingAOE)
                 {
-                    status |= AutoStatus.DefenseArea;
+                    if (!Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)
+                        || !timeline.Any(p => p.Value.Any(i => i is StateTimelineItem item && item.State == SpecialCommandType.DefenseArea)))
+                    {
+                        status |= AutoStatus.DefenseArea;
+                    }
                 }
 
                 if (DataCenter.Role == JobRole.Healer || DataCenter.Job == ECommons.ExcelServices.Job.PLD) // Help defense.
