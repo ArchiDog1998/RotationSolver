@@ -64,7 +64,7 @@ public static class StatusHelper
 
     internal static StatusID[] NoNeedHealingStatus { get; } =
     [
-        StatusID.Holmgang, StatusID.LivingDead, //StatusID.WalkingDead,
+        StatusID.Holmgang_409, StatusID.LivingDead, //StatusID.WalkingDead,
     ];
 
     internal static StatusID[] SwiftcastStatus { get; } =

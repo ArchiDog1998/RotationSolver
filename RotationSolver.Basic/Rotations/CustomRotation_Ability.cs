@@ -42,8 +42,7 @@ partial class CustomRotation
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.AntiKnockback)
             && AntiKnockback(role, out act)) return true;
 
-        if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional) && role == JobRole.Melee
-            && !(Player?.HasStatus(false, StatusHelper.NoPositionalStatus) ?? true))
+        if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional))
         {
             if (TrueNorthPvE.CanUse(out act, usedUp: true, onLastAbility: true)) return true;
         }
@@ -260,19 +259,9 @@ partial class CustomRotation
         {
             if (Role is JobRole.Healer or JobRole.RangedMagical &&
             action.Info.CastTime >= 5 && SwiftcastPvE.CanUse(out act)) return true;
-
-            if (Service.Config.AutoUseTrueNorth
-                && action.Setting.EnemyPositional != EnemyPositional.None && action.Target != null)
-            {
-                if (action.Setting.EnemyPositional != action.Target?.Target?.FindEnemyPositional() && (action.Target?.Target?.HasPositional() ?? false))
-                {
-                    if (TrueNorthPvE.CanUse(out act, usedUp: true, onLastAbility: true)) return true;
-                }
-            }
         }
 
         if (DataCenter.RightNowDutyRotation?.EmergencyAbility(nextGCD, out act) ?? false) return true;
-
 
         #region PvP
         if (GuardPvP.CanUse(out act)

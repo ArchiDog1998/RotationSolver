@@ -340,5 +340,7 @@
   "RotationSolver.Data.UiString.ConfigWindow_List_DangerousStatusDesc": "Dispellable debuffs list",
   "RotationSolver.Data.UiString.ConfigWindow_Timeline_Time": "Time",
   "RotationSolver.Data.UiString.ConfigWindow_Timeline_Name": "Name",
-  "RotationSolver.Data.UiString.ConfigWindow_Timeline_Actions": "Actions"
+  "RotationSolver.Data.UiString.ConfigWindow_Timeline_Actions": "Actions",
+  "RotationSolver.Data.UiString.ForcedEnableConditionDesc": "The conditions of forced to make it true.",
+  "RotationSolver.Data.UiString.ForcedDisableConditionDesc": "The conditions of forced to make it false."
 }

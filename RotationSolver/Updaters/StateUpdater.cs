@@ -29,6 +29,9 @@ internal static class StateUpdater
 
     private static AutoStatus StatusFromAutomatic()
     {
+        var hasTimeline = Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)
+            && timeline.Any(p => p.Value.Any());
+
         AutoStatus status = AutoStatus.None;
 
         if (DataCenter.DeathTarget is not null)
@@ -41,13 +44,15 @@ internal static class StateUpdater
         {
             var id = ActionUpdater.NextGCDAction.ID;
             if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)id, out var positional)
-                && positional != ActionUpdater.NextGCDAction.Target?.Target?.FindEnemyPositional())
+                && positional != ActionUpdater.NextGCDAction.Target?.Target?.FindEnemyPositional()
+                && (ActionUpdater.NextGCDAction.Target?.Target?.HasPositional() ?? false))
             {
                 status |= AutoStatus.Positional;
             }
         }
 
-        if (DataCenter.HPNotFull && CanUseHealAction)
+        var noHeal = DataCenter.Role is JobRole.Healer && hasTimeline;
+        if (DataCenter.HPNotFull && CanUseHealAction && !noHeal)
         {
             var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,
                 Service.Config.HealthSingleAbility,
@@ -105,13 +110,9 @@ internal static class StateUpdater
         {
             if (Service.Config.UseDefenseAbility)
             {
-                if (DataCenter.IsHostileCastingAOE)
+                if (DataCenter.IsHostileCastingAOE && !hasTimeline)
                 {
-                    if (!Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)
-                        || !timeline.Any(p => p.Value.Any(i => i is StateTimelineItem item && item.State == SpecialCommandType.DefenseArea)))
-                    {
-                        status |= AutoStatus.DefenseArea;
-                    }
+                    status |= AutoStatus.DefenseArea;
                 }
 
                 if (DataCenter.Role == JobRole.Healer || DataCenter.Job == ECommons.ExcelServices.Job.PLD) // Help defense.
