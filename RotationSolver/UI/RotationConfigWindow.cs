@@ -753,7 +753,7 @@ public partial class RotationConfigWindow : Window
                 AddButton();
                 ImGui.SameLine();
 
-                ImGui.Text(item.Name);
+                ImGui.TextWrapped(item.Name);
 
                 ImGui.TableNextColumn();
 
@@ -976,6 +976,8 @@ public partial class RotationConfigWindow : Window
         SpecialCommandType.Burst.DisplayCommandHelp(getHelp: LocalizationManager.Local);
 
         SpecialCommandType.LimitBreak.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+
+        SpecialCommandType.NoCasting.DisplayCommandHelp(getHelp: LocalizationManager.Local);
     }
 
     private static void DrawAboutCompatibility()

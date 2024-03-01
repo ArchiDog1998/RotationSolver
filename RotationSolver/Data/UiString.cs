@@ -606,6 +606,9 @@ internal enum UiString
     [Description("Limit Break")]
     SpecialCommandType_LimitBreak,
 
+    [Description("No Casting")]
+    SpecialCommandType_NoCasting,
+
     [Description("Auto Target ")]
     SpecialCommandType_Smart,
 

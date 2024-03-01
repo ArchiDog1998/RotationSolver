@@ -197,6 +197,9 @@ public readonly struct ActionBasicInfo
             ])
             && !ActionsNoNeedCasting.Contains(ID))
         {
+            //No casting.
+            if(DataCenter.SpecialType == SpecialCommandType.NoCasting) return false;
+
             //Is knocking back.
             if (DateTime.Now > DataCenter.KnockbackStart && DateTime.Now < DataCenter.KnockbackFinished) return false;
 

@@ -82,6 +82,12 @@ public enum SpecialCommandType : byte
     /// </summary>
     [Description("Open a window to use limit break.")]
     LimitBreak,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Description("Open a window to do not use the casting action.")]
+    NoCasting,
 }
 
 /// <summary>

@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Statuses;
 using ECommons.Automation;
-using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 

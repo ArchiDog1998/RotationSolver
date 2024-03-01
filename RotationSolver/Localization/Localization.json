@@ -342,5 +342,7 @@
   "RotationSolver.Data.UiString.ConfigWindow_Timeline_Name": "Name",
   "RotationSolver.Data.UiString.ConfigWindow_Timeline_Actions": "Actions",
   "RotationSolver.Data.UiString.ForcedEnableConditionDesc": "The conditions of forced to make it true.",
-  "RotationSolver.Data.UiString.ForcedDisableConditionDesc": "The conditions of forced to make it false."
+  "RotationSolver.Data.UiString.ForcedDisableConditionDesc": "The conditions of forced to make it false.",
+  "RotationSolver.Basic.Data.SpecialCommandType.NoCasting": "Open a window to do not use the casting action.",
+  "RotationSolver.Data.UiString.SpecialCommandType_NoCasting": "No Casting"
 }

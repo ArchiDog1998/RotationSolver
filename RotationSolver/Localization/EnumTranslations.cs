@@ -42,6 +42,7 @@ internal static class EnumTranslations
         SpecialCommandType.EndSpecial => UiString.SpecialCommandType_EndSpecial.Local(),
         SpecialCommandType.Speed => UiString.SpecialCommandType_Speed.Local(),
         SpecialCommandType.LimitBreak => UiString.SpecialCommandType_LimitBreak.Local(),
+        SpecialCommandType.NoCasting => UiString.SpecialCommandType_NoCasting.Local(),
         _ => string.Empty,
     };
 
