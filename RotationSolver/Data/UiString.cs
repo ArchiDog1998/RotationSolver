@@ -267,6 +267,15 @@ internal enum UiString
     [Description("Add beneficial AoE location")]
     ConfigWindow_List_AddPosition,
 
+    [Description("Time")]
+    ConfigWindow_Timeline_Time,
+
+    [Description("Name")]
+    ConfigWindow_Timeline_Name,
+
+    [Description("Actions")]
+    ConfigWindow_Timeline_Actions,
+
     [Description("OOOps! RS clicked the wrong action ({0})!")]
     ClickingMistakeMessage,
 

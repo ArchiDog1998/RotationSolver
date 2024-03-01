@@ -97,9 +97,7 @@ internal static partial class RaidTimeUpdater
 
         Svc.GameNetwork.NetworkMessage += GameNetwork_NetworkMessage;
         Svc.Chat.ChatMessage += Chat_ChatMessage;
-
     }
-
 
     internal static void Disable() 
     {
@@ -183,6 +181,7 @@ internal static partial class RaidTimeUpdater
         }
     }
 
+    static DateTime _actionUpdateTime = DateTime.MinValue;
     private static void OnEffect(IntPtr dataPtr, uint targetActorId)
     {
         var name = GetNameFromObjectId(targetActorId);
@@ -196,7 +195,10 @@ internal static partial class RaidTimeUpdater
             if (!item["id", ReadUint(dataPtr, 28)]) continue;
             if (!item["source", name]) continue;
 
+            if (DateTime.Now - _actionUpdateTime < TimeSpan.FromSeconds(2)) continue;
+
             item.UpdateRaidTimeOffset();
+            _actionUpdateTime = DateTime.Now;
             break;
         }
     }

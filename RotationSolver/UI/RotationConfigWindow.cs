@@ -21,6 +21,7 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
+using System;
 using System.Diagnostics;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
@@ -639,10 +640,6 @@ public partial class RotationConfigWindow : Window
     }
 
     #region Timeline
-    private static readonly CollapsingHeaderGroup _timelineGroup = new()
-    {
-        HeaderSize = 12,
-    };
     private static readonly CollapsingHeaderGroup _timelineActionsList = new()
     {
         HeaderSize = 12,
@@ -683,8 +680,6 @@ public partial class RotationConfigWindow : Window
 
         DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
 
-        if (_timelineGroup == null) return;
-
         if (!Service.Config.Timeline.TryGetValue(_territoryId, out var timeLine))
         {
             Service.Config.Timeline[_territoryId] = timeLine = [];
@@ -724,19 +719,43 @@ public partial class RotationConfigWindow : Window
             }
         }
 
-        _timelineGroup.ClearCollapsingHeader();
-
-        foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)_territoryId))
+        using var table = ImRaii.Table("Rotation Solver List Timeline", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
+        if (table)
         {
-            if (!item.IsShown) continue;
+            ImGui.TableSetupScrollFreeze(0, 1);
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
 
-            _timelineGroup.AddCollapsingHeader(() =>$"{item.Name} ({item.Time} s)" , () =>
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(UiString.ConfigWindow_Timeline_Time.Local());
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(UiString.ConfigWindow_Timeline_Name.Local());
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(UiString.ConfigWindow_Timeline_Actions.Local());
+
+            ImGui.TableNextRow();
+
+            foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)_territoryId))
             {
-                if(!timeLine.TryGetValue(item.Time, out var timeLineItems))
+                if (!item.IsShown) continue;
+
+                if (!timeLine.TryGetValue(item.Time, out var timeLineItems))
                 {
                     timeLine[item.Time] = timeLineItems = [];
                 }
+
+                ImGui.TableNextColumn();
+
+                ImGui.Text(TimeSpan.FromSeconds(item.Time).ToString("mm\\:ss\\.f"));
+
+                ImGui.TableNextColumn();
                 AddButton();
+                ImGui.SameLine();
+
+                ImGui.Text(item.Name);
+
+                ImGui.TableNextColumn();
 
                 for (int i = 0; i < timeLineItems.Count; i++)
                 {
@@ -781,7 +800,7 @@ public partial class RotationConfigWindow : Window
 
                     if (timeLineItem is ActionTimelineItem actionItem)
                     {
-                        if(DataCenter.RightNowRotation != null)
+                        if (DataCenter.RightNowRotation != null)
                         {
                             var popUpKey = $"Action Finder{timeLineItem.GetHashCode()}";
                             ConditionDrawer.ActionSelectorPopUp(popUpKey, _timelineActionsList, DataCenter.RightNowRotation, item => actionItem.ID = (ActionID)item.ID);
@@ -809,14 +828,16 @@ public partial class RotationConfigWindow : Window
                     }
                 }
 
+                ImGui.TableNextRow();
+
                 void AddButton()
                 {
-                    if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddTimelineButton" + item.Name))
+                    if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddTimelineButton" + item.Time))
                     {
-                        ImGui.OpenPopup("PopupTimelineButton" + item.Name);
+                        ImGui.OpenPopup("PopupTimelineButton" + item.Time);
                     }
 
-                    using var popUp = ImRaii.Popup("PopupTimelineButton" + item.Name);
+                    using var popUp = ImRaii.Popup("PopupTimelineButton" + item.Time);
                     if (popUp)
                     {
                         AddOneCondition<ActionTimelineItem>();
@@ -832,10 +853,8 @@ public partial class RotationConfigWindow : Window
                         }
                     }
                 }
-            });
+            }
         }
-        using var child = ImRaii.Child("Timeline Items Body", -Vector2.One);
-        _timelineGroup.Draw();
     }
     #endregion
 

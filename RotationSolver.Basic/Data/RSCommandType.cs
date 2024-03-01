@@ -82,11 +82,6 @@ public enum SpecialCommandType : byte
     /// </summary>
     [Description("Open a window to use limit break.")]
     LimitBreak,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    None,
 }
 
 /// <summary>
@@ -111,11 +106,6 @@ public enum StateCommandType : byte
     /// </summary>
     [Description("Start the addon in Manual mode. You need to choose the target manually. This will bypass any engage settings that you have set up and will start attacking immediately once something is targeted.")]
     Manual,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    None,
 }
 
 /// <summary>
@@ -148,121 +138,4 @@ public enum OtherCommandType : byte
     /// </summary>
     [Description("Do the next action")]
     NextAction,
-}
-
-/// <summary>
-/// Some settings that can be used in command.
-/// </summary>
-public enum SettingsCommand : byte
-{
-    /// <summary>
-    /// 
-    /// </summary>
-    AutoBurst,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    AutoHeal,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    UseAbility,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    UseDefenseAbility,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    AutoTankStance,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    AutoProvokeForTank,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    AutoUseTrueNorth,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    RaisePlayerBySwift,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    UseGroundBeneficialAbility,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    UseAOEAction,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    UseAOEWhenManual,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    PreventActions,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    PreventActionsDuty,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    AutoLoadCustomRotations,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    AutoSpeedOutOfCombat,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    TargetAllForFriendly,
-}
-
-/// <summary>
-/// Extension
-/// </summary>
-public static class SettingsCommandExtension
-{
-    /// <summary>
-    /// Get the default value of the command.
-    /// </summary>
-    /// <param name="command"></param>
-    /// <returns></returns>
-    public static bool GetDefault(this SettingsCommand command) => command switch
-    {
-        SettingsCommand.AutoBurst => true,
-        SettingsCommand.AutoHeal => true,
-        SettingsCommand.UseAbility => true,
-        SettingsCommand.UseDefenseAbility => true,
-        SettingsCommand.AutoTankStance => true,
-        SettingsCommand.AutoProvokeForTank => true,
-        SettingsCommand.AutoUseTrueNorth => true,
-        SettingsCommand.RaisePlayerBySwift => true,
-        SettingsCommand.UseGroundBeneficialAbility => true,
-        SettingsCommand.UseAOEAction => true,
-        SettingsCommand.UseAOEWhenManual => false,
-        SettingsCommand.PreventActions => false,
-        SettingsCommand.PreventActionsDuty => false,
-        SettingsCommand.AutoSpeedOutOfCombat => true,
-        SettingsCommand.TargetAllForFriendly => false,
-        _ => false,
-    };
 }
