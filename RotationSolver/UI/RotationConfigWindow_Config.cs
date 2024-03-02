@@ -9,7 +9,6 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
-using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;
 

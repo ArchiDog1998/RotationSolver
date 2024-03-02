@@ -471,7 +471,7 @@ internal enum UiString
     [Description("Delay its turning.")]
     ActionSequencer_Offset_Description,
 
-    [Description("Enought Level")]
+    [Description("Enough Level")]
     ActionConditionType_EnoughLevel,
 
     [Description("Time Offset")]

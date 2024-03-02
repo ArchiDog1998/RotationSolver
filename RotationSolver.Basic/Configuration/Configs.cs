@@ -661,7 +661,7 @@ internal partial class Configs : IPluginConfiguration
 
     public int ActionSequencerIndex { get; set; }
 
-    [UI("The modifier key to unlock the movement temporary", Description = "LB is for gamepad player", Parent = nameof(PoslockCasting))]
+    [UI("The modifier key to unlock the movement temporary", Description = "RB is for gamepad player", Parent = nameof(PoslockCasting))]
     public ConsoleModifiers PoslockModifier { get; set; }
 
     [Range(0, 10000, ConfigUnitType.None, 200)]

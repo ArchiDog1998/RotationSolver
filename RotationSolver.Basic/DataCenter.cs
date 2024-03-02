@@ -69,7 +69,7 @@ internal static class DataCenter
         //Key cancel.
         || Svc.KeyState[Service.Config.PoslockModifier.ToVirtual()]
         //Gamepad cancel.
-        || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.L1) >= 0.5f;
+        || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.R1) >= 0.5f;
 
     internal static DateTime EffectTime { private get; set; } = DateTime.Now;
     internal static DateTime EffectEndTime { private get; set; } = DateTime.Now;
