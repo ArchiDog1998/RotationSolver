@@ -236,7 +236,7 @@ internal static partial class RaidTimeUpdater
             if (!item["id", ReadUint(dataPtr, 28)]) continue;
             if (!item["source", name]) continue;
 
-            if (DateTime.Now - _actionUpdateTime < TimeSpan.FromSeconds(2)) continue;
+            if (DateTime.Now - _actionUpdateTime < TimeSpan.FromSeconds(0.5)) continue;
 
             item.UpdateRaidTimeOffset();
             _actionUpdateTime = DateTime.Now;

@@ -39,6 +39,8 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
 
     public float Time => time;
 
+    public float WindowMin => windowMin;
+    public float WindowMax => windowMax;
     public JObject? Object => obj;
 
     public string Name
@@ -50,7 +52,7 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
         }
     }
 
-    public bool IsInWindow => DataCenter.RaidTimeRaw >= Time - windowMin && DataCenter.RaidTimeRaw <= Time + windowMax;
+    public bool IsInWindow => DataCenter.RaidTimeRaw >= Time - WindowMin && DataCenter.RaidTimeRaw <= Time + WindowMax;
 
     public bool IsShown => Name is not "--Reset--" and not "--sync--";
 

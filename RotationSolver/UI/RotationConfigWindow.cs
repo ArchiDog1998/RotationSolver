@@ -719,6 +719,12 @@ public partial class RotationConfigWindow : Window
             }
         }
 
+
+#if DEBUG
+        ImGui.SameLine();
+        ImGui.Text("Raid Time: " + TimeSpan.FromSeconds(DataCenter.RaidTimeRaw).ToString("hh\\:mm\\:ss\\.f"));
+#endif
+
         using var table = ImRaii.Table("Rotation Solver List Timeline", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)
         {
@@ -747,21 +753,21 @@ public partial class RotationConfigWindow : Window
 
                 ImGui.TableNextColumn();
 
-                var str = TimeSpan.FromSeconds(item.Time).ToString("hh\\:mm\\:ss\\.f");
-                if(DataCenter.RaidTimeRaw < item.Time && DataCenter.RaidTimeRaw > item.Time - 3)
-                {
-                    ImGui.TextColored(ImGuiColors.HealerGreen, str);
-                }
-                else
-                {
-                    ImGui.Text(str);
-                }
+                IDisposable? color = item.IsInWindow ? ImRaii.PushColor(ImGuiCol.Text,
+                    ImGuiColors.HealerGreen) : null;
+
+                ImGui.Text(TimeSpan.FromSeconds(item.Time).ToString("hh\\:mm\\:ss\\.f"));
 
                 ImGui.TableNextColumn();
                 AddButton();
                 ImGui.SameLine();
 
-                ImGui.TextWrapped(item.Name);
+                var itemName = item.Name;
+#if DEBUG
+                itemName += $" ({item.WindowMin}, {item.WindowMax})";
+#endif
+                ImGui.TextWrapped(itemName);
+                color?.Dispose();
 
                 ImGui.TableNextColumn();
 
@@ -2788,7 +2794,6 @@ public partial class RotationConfigWindow : Window
     private static unsafe void DrawOthers()
     {
         ImGui.Text("Combat Time: " + (DataCenter.CombatTimeRaw).ToString());
-        ImGui.Text("Raid Time: " + (DataCenter.RaidTimeRaw).ToString());
         ImGui.Text("Limit Break: " + CustomRotation.LimitBreakLevel.ToString());
     }
 
