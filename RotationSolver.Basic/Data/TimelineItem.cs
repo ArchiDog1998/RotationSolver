@@ -12,6 +12,7 @@ internal enum TimelineType : byte
     StartsUsing,
     SystemLogMessage,
     ActorControl,
+    AddedCombatant,
 }
 
 internal readonly struct TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
@@ -140,6 +141,9 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
 
             case "SystemLogMessage":
                 return TimelineType.SystemLogMessage;
+
+            case "AddedCombatant":
+                return TimelineType.AddedCombatant;
 
             default:
 #if DEBUG

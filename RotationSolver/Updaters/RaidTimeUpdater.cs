@@ -1,9 +1,12 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using ECommons.DalamudServices;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.UI;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace RotationSolver.Updaters;
@@ -21,6 +24,42 @@ internal static partial class RaidTimeUpdater
     }
 
     internal static void UpdateTimeline()
+    {
+        UpdateTimelineEvent();
+        UpdateTimelineAddCombat();
+    }
+
+    static readonly Dictionary<uint, bool> _isInCombat = [];
+    private static void UpdateTimelineAddCombat()
+    {
+        if (DataCenter.TimelineItems.Length == 0) return;
+        foreach (var obj in Svc.Objects.OfType<BattleChara>())
+        {
+            if (obj is PlayerCharacter) continue;
+            var id = obj.ObjectId;
+            var newInCombat = obj.InCombat();
+
+            if (_isInCombat.TryGetValue(id, out var inCombat)
+                && !inCombat && newInCombat)
+            {
+                var name = GetNameFromObjectId(id);
+
+                foreach (var item in DataCenter.TimelineItems)
+                {
+                    if (!item.IsInWindow) continue;
+                    if (item.Type is not TimelineType.AddedCombatant) continue;
+
+                    if (!item["name", name]) continue;
+
+                    item.UpdateRaidTimeOffset();
+                    break;
+                }
+            }
+            _isInCombat[id] = newInCombat;
+        }
+    }
+
+    private static void UpdateTimelineEvent()
     {
         if (!Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)) return;
 
@@ -64,6 +103,7 @@ internal static partial class RaidTimeUpdater
 #endif
             }
         }
+
     }
 
     internal static async void EnableAsync()
@@ -269,6 +309,7 @@ internal static partial class RaidTimeUpdater
 
     private static async void ClientState_TerritoryChanged(ushort id)
     {
+        _isInCombat.Clear();
         if (PathForRaids.ContainsKey(id))
         {
             RotationConfigWindow._territoryId = id;
@@ -344,7 +385,7 @@ internal static partial class RaidTimeUpdater
         var str = await message.Content.ReadAsStringAsync();
 
         var result = new List<TimelineItem>();
-        var matches = TimeLineItem().Matches(str).Cast<Match>();
+        var matches = str.Split('\n').Select(s => TimeLineItem().Match(s)).Cast<Match>();
         var dict = new Dictionary<string, float>();
 
         foreach (var timelineItem in matches)
@@ -449,7 +490,7 @@ internal static partial class RaidTimeUpdater
     [GeneratedRegex(" .*? {")]
     private static partial Regex Type();
 
-    [GeneratedRegex("[\\d\\.]+.*")]
+    [GeneratedRegex("^[\\d\\.]+.*")]
     private static partial Regex TimeLineItem();
 
     [GeneratedRegex("^[\\d\\.]+")]
