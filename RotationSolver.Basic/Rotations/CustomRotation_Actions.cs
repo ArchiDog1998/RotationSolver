@@ -17,7 +17,7 @@ partial class CustomRotation
         }
         else
         {
-            action.Setting.IsFriendly = a.EffectRange > 5;
+            action.Setting.IsFriendly = action.TargetInfo.EffectRange > 5;
         }
         //TODO: better target type check. (NoNeed?)
     }

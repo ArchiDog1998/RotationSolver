@@ -5,9 +5,6 @@ using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.UI;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace RotationSolver.Updaters;
 internal static partial class RaidTimeUpdater
@@ -267,6 +264,7 @@ internal static partial class RaidTimeUpdater
 
     private static void OnSystemLogMessage(IntPtr dataPtr)
     {
+        Svc.Log.Debug($"Message: {ReadUint(dataPtr, 4):X}, {ReadUint(dataPtr, 8):X}, {ReadUint(dataPtr, 12):X}, {ReadUint(dataPtr, 16):X}");
         foreach (var item in DataCenter.TimelineItems)
         {
             if (!item.IsInWindow) continue;

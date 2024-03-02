@@ -50,7 +50,7 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
         }
     }
 
-    public bool IsInWindow => DataCenter.RaidTimeRaw >= Time - windowMin && DataCenter.RaidTimeRaw <= Time - windowMax;
+    public bool IsInWindow => DataCenter.RaidTimeRaw >= Time - windowMin && DataCenter.RaidTimeRaw <= Time + windowMax;
 
     public bool IsShown => Name is not "--Reset--" and not "--sync--";
 
@@ -61,7 +61,11 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
     {
         get
         {
-            foreach (var str in this[propertyName])
+            var properties = this[propertyName];
+
+            if (properties.Length == 0) return true;
+
+            foreach (var str in properties)
             {
                 var prop = str;
                 if (new Regex(prop).IsMatch(matchString))

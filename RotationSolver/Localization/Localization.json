@@ -344,5 +344,16 @@
   "RotationSolver.Data.UiString.ForcedEnableConditionDesc": "The conditions of forced to make it true.",
   "RotationSolver.Data.UiString.ForcedDisableConditionDesc": "The conditions of forced to make it false.",
   "RotationSolver.Basic.Data.SpecialCommandType.NoCasting": "Open a window to do not use the casting action.",
-  "RotationSolver.Data.UiString.SpecialCommandType_NoCasting": "No Casting"
+  "RotationSolver.Data.UiString.SpecialCommandType_NoCasting": "No Casting",
+  "RaiseDelayName": "The random delay between for raising.",
+  "UseDefenseAbilityName": "Use defensive abilities",
+  "AutoTankStanceName": "Automatically activate tank stance",
+  "AutoProvokeForTankName": "Auto provoke non-tank attacking targets",
+  "AutoUseTrueNorthName": "Auto TrueNorth (Melee)",
+  "RaisePlayerBySwiftName": "Raise player by using swiftcast if avaliable",
+  "AutoSpeedOutOfCombatName": "Use movement speed increase abilities when out of combat.",
+  "UseGroundBeneficialAbilityName": "Use beneficial ground-targeted actions",
+  "UseDefenseAbilityDescription": "It is recommended to check this option if you are playing Raids or you can plan the heal and defense ability usage by yourself.",
+  "BeneficialAreaStrategyName": "Beneficial AoE strategy",
+  "UseGroundBeneficialAbilityWhenMovingName": "Use beneficial AoE actions when moving."
 }
