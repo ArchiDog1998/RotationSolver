@@ -2,13 +2,11 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Element3D;
 using XIVPainter.ElementSpecial;
-using static Dalamud.Interface.Utility.Raii.ImRaii;
 
 namespace RotationSolver.UI;
 

@@ -1,7 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
-using static Dalamud.Interface.Utility.Raii.ImRaii;
 
 namespace RotationSolver.Basic.Data;
 internal enum TimelineType : byte
@@ -15,7 +14,7 @@ internal enum TimelineType : byte
     ActorControl,
 }
 
-internal readonly struct TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs)
+internal readonly struct TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
 {
     private RaidLangs.Lang Lang
     {
@@ -49,6 +48,8 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
             return name;
         }
     }
+
+    public bool IsInWindow => DataCenter.RaidTimeRaw >= Time - windowMin && DataCenter.RaidTimeRaw <= Time - windowMax;
 
     public bool IsShown => Name is not "--Reset--" and not "--sync--";
 
@@ -108,8 +109,8 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
         }
     }
 
-    public TimelineItem(float time, string name, string type, JObject? obj, RaidLangs langs)
-        : this(time, name, GetTypeFromName(type), obj, langs)
+    public TimelineItem(float time, string name, string type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
+        : this(time, name, GetTypeFromName(type), obj, langs, jumpTime, windowMin, windowMax)
     {
         
     }
@@ -163,7 +164,7 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
             var timeOffset = Time - DataCenter.RaidTimeRaw;
             Svc.Log.Debug($"Set the {nameof(DataCenter.RaidTimeRaw)} to {Time}, added {timeOffset}s");
 #endif
-            DataCenter.RaidTimeRaw = Time;
+            DataCenter.RaidTimeRaw = jumpTime ?? Time;
         }
     }
 
@@ -171,9 +172,9 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
     {
         return $"""
             IsShown: {IsShown},
-            Time: {Time},
-            Name: {Name},
-            Type: {Type},
+            Time: {Time}, JumpTime: {jumpTime ?? -1},
+            Name: {Name}, Type: {Type},
+            Window: {windowMin}, {windowMax},
             Ids: {string.Join(", ", this["id"])}
             """;
     }

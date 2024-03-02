@@ -4,8 +4,7 @@ using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.UI;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace RotationSolver.Updaters;
 internal static partial class RaidTimeUpdater
@@ -72,25 +71,33 @@ internal static partial class RaidTimeUpdater
         Svc.DutyState.DutyWiped += DutyState_DutyWiped;
         Svc.DutyState.DutyCompleted += DutyState_DutyWiped;
 
-        using var client = new HttpClient();
-        var message = await client.GetAsync("https://raw.githubusercontent.com/xpdota/event-trigger/master/timelines/src/main/resources/timelines.csv");
-
-        if (!message.IsSuccessStatusCode)
+        try
         {
-            return;
+            using var client = new HttpClient();
+            var message = await client.GetAsync("https://raw.githubusercontent.com/xpdota/event-trigger/master/timelines/src/main/resources/timelines.csv");
+
+            if (!message.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            var str = await message.Content.ReadAsStringAsync();
+
+            foreach (var pair in str.Split('\n'))
+            {
+                var items = pair.Split(',');
+                if (items.Length < 2) continue;
+
+                if (!uint.TryParse(items[0], out var id)) continue;
+                var name = items[1][1..^1];
+                PathForRaids[id] = name;
+            }
+        }
+        catch(Exception ex)
+        {
+            Svc.Log.Warning(ex, "Failed to download the timelines!");
         }
 
-        var str = await message.Content.ReadAsStringAsync();
-
-        foreach (var pair in str.Split('\n'))
-        {
-            var items = pair.Split(',');
-            if (items.Length < 2) continue;
-
-            if (!uint.TryParse(items[0], out var id)) continue;
-            var name = items[1][1..^1];
-            PathForRaids[id] = name;
-        }
 
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);
@@ -108,7 +115,7 @@ internal static partial class RaidTimeUpdater
         Svc.Chat.ChatMessage -= Chat_ChatMessage;
     }
 
-    private static void DutyState_DutyWiped(object? sender, ushort e)
+    private static void DutyState_DutyWiped(object? _, ushort e)
     {
         DataCenter.RaidTimeRaw = -1;
     }
@@ -123,8 +130,7 @@ internal static partial class RaidTimeUpdater
 
         foreach (var item in DataCenter.TimelineItems)
         {
-            if (item.IsShown) continue;
-            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (!item.IsInWindow) continue;
             if (item.Type is not TimelineType.GameLog) continue;
 
             var typeString = ((uint)type).ToString("X4");
@@ -169,8 +175,7 @@ internal static partial class RaidTimeUpdater
 
         foreach (var item in DataCenter.TimelineItems)
         {
-            if (item.IsShown) continue;
-            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (!item.IsInWindow) continue;
             if (item.Type is not TimelineType.StartsUsing) continue;
 
             if (!item["id", ReadUshort(dataPtr, 0)]) continue;
@@ -188,8 +193,7 @@ internal static partial class RaidTimeUpdater
 
         foreach (var item in DataCenter.TimelineItems)
         {
-            if (item.IsShown) continue;
-            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (!item.IsInWindow) continue;
             if (item.Type is not TimelineType.Ability) continue;
 
             if (!item["id", ReadUint(dataPtr, 28)]) continue;
@@ -207,8 +211,7 @@ internal static partial class RaidTimeUpdater
     {
         foreach (var item in DataCenter.TimelineItems)
         {
-            if (item.IsShown) continue;
-            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (!item.IsInWindow) continue;
             if (item.Type is not TimelineType.ActorControl) continue;
 
             if (!item["command", ReadUint(dataPtr, 8)]) continue;
@@ -226,8 +229,7 @@ internal static partial class RaidTimeUpdater
     {
         foreach (var item in DataCenter.TimelineItems)
         {
-            if (item.IsShown) continue;
-            if (item.Time < DataCenter.RaidTimeRaw) continue;
+            if (!item.IsInWindow) continue;
             if (item.Type is not TimelineType.SystemLogMessage) continue;
 
             if (!item["id", ReadUint(dataPtr, 4)]) continue;
@@ -342,7 +344,28 @@ internal static partial class RaidTimeUpdater
         var str = await message.Content.ReadAsStringAsync();
 
         var result = new List<TimelineItem>();
-        foreach (var timelineItem in TimeLineItem().Matches(str).Cast<Match>())
+        var matches = TimeLineItem().Matches(str).Cast<Match>();
+        var dict = new Dictionary<string, float>();
+
+        foreach (var timelineItem in matches)
+        {
+            try
+            {
+                var timeline = timelineItem.Value;
+                if (!LabelHeader().IsMatch(timeline)) continue;
+
+                var time = float.Parse(Time().Match(timeline).Value);
+                var name = Name().Match(timeline).Value[1..^1];
+
+                dict[name] = time;
+            }
+            catch (Exception e)
+            {
+                Svc.Log.Warning(e, "Failed to get the time label");
+            }
+        }
+
+        foreach (var timelineItem in matches)
         {
             try
             {
@@ -366,7 +389,38 @@ internal static partial class RaidTimeUpdater
                     type = type[1..^2].Split(' ').LastOrDefault() ?? string.Empty;
                 }
 
-                result.Add(new (time, name, type, item, lang));
+                var jumpTimeStr = JumpTime().Match(timeline).Value;
+                float? jumpTime = null;
+                if (jumpTimeStr.Length > 5)
+                {
+                    jumpTime = float.Parse(jumpTimeStr[5..]);
+                }
+                else
+                {
+                    jumpTimeStr = JumpName().Match(timeline).Value;
+                    if (jumpTimeStr.Length > 7)
+                    {
+                        if (dict.TryGetValue(jumpTimeStr[6..^1], out var t))
+                        {
+                            jumpTime = t;
+                        }
+                        else
+                        {
+                            Svc.Log.Warning($"Failed to parse the jump: {jumpTimeStr}");
+                        }
+                    }
+                }
+
+                var windowStr = WindowTime().Match(timeline).Value;
+                float windowMin = 2.5f, windowMax = 2.5f;
+                if (windowStr.Length > 7)
+                {
+                    var windowStrs = windowStr[7..].Split(',');
+                    windowMin = float.Parse(windowStrs.First());
+                    windowMax = float.Parse(windowStrs.Last());
+                }
+
+                result.Add(new (time, name, type, item, lang, jumpTime, windowMin, windowMax));
             }
             catch (Exception ex)
             {
@@ -383,6 +437,15 @@ internal static partial class RaidTimeUpdater
         return [..result.OrderBy(i => i.Time)];
     }
 
+    [GeneratedRegex("jump [\\d\\.]+")]
+    private static partial Regex JumpTime();
+
+    [GeneratedRegex("jump \".*?\"")]
+    private static partial Regex JumpName();
+
+    [GeneratedRegex("window [\\d\\.,]+")]
+    private static partial Regex WindowTime();
+
     [GeneratedRegex(" .*? {")]
     private static partial Regex Type();
 
@@ -397,6 +460,9 @@ internal static partial class RaidTimeUpdater
 
     [GeneratedRegex("^[\\d\\.]+ \".*?\"")]
     private static partial Regex TimeHeader();
+
+    [GeneratedRegex("^[\\d\\.]+ label \".*?\"")]
+    private static partial Regex LabelHeader();
 
     [GeneratedRegex("{.*}")]
     private static partial Regex ActionGetter();

@@ -747,7 +747,15 @@ public partial class RotationConfigWindow : Window
 
                 ImGui.TableNextColumn();
 
-                ImGui.Text(TimeSpan.FromSeconds(item.Time).ToString("mm\\:ss\\.f"));
+                var str = TimeSpan.FromSeconds(item.Time).ToString("hh\\:mm\\:ss\\.f");
+                if(DataCenter.RaidTimeRaw < item.Time && DataCenter.RaidTimeRaw > item.Time - 3)
+                {
+                    ImGui.TextColored(ImGuiColors.HealerGreen, str);
+                }
+                else
+                {
+                    ImGui.Text(str);
+                }
 
                 ImGui.TableNextColumn();
                 AddButton();

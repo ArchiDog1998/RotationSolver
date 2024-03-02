@@ -41,7 +41,7 @@ public static class Watcher
 
             //From https://github.com/0ceal0t/Dalamud-VFXEditor/blob/main/VFXEditor/Interop/Constants.cs#L12C48-L12C206
             _staticVfxCreateHook = Svc.Hook.HookFromSignature<StaticVfxCreateDelegate>("E8 ?? ?? ?? ?? F3 0F 10 35 ?? ?? ?? ?? 48 89 43 08", StaticVfxNewHandler);
-            _staticVfxCreateHook.Enable();
+            //_staticVfxCreateHook.Enable();
 #endif
             //From https://github.com/PunishXIV/Splatoon/blob/main/Splatoon/Memory/ObjectEffectProcessor.cs#L14
             _processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B7 FA", ProcessObjectEffectDetour);
