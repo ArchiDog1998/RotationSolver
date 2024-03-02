@@ -144,7 +144,7 @@ internal static partial class TargetUpdater
 
     private static bool IsCastingAreaVfx()
     {
-        return IsCastingVfx(s => s.Path.StartsWith("vfx/lockon/eff/com_share"));
+        return IsCastingVfx(s => s.Path.StartsWith("vfx/lockon/eff/coshare"));
     }
 
     private static bool IsCastingVfx(Func<VfxNewData, bool> isVfx)

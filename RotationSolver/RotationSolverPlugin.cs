@@ -92,6 +92,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             await DownloadHelper.DownloadAsync();
             await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
         });
+        //VfxManager.OnGround("vfx/monster/m0095/eff/m0095sp_07c4m.avfx", false);
+        VfxManager.Remove();
+        var obj = VfxManager.OnGround("vfx/omen/eff/general_1bf.avfx", false);
+        //VfxManager.UpdateScale(obj, Vector3.One * 5);
+        //VfxManager.Test(obj);
     }
 
     internal static void ChangeUITranslation()
