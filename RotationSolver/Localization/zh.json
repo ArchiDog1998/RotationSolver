@@ -355,5 +355,7 @@
   "UseGroundBeneficialAbilityName": "Use beneficial ground-targeted actions",
   "UseDefenseAbilityDescription": "It is recommended to check this option if you are playing Raids or you can plan the heal and defense ability usage by yourself.",
   "BeneficialAreaStrategyName": "Beneficial AoE strategy",
-  "UseGroundBeneficialAbilityWhenMovingName": "Use beneficial AoE actions when moving."
+  "UseGroundBeneficialAbilityWhenMovingName": "Use beneficial AoE actions when moving.",
+  "RotationSolver.Data.UiString.SpecialCommandType_TankStance": "Tank Stance",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_TTU": "Time to untargetable that this action needs the timeline be."
 }
