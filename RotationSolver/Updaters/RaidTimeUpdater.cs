@@ -231,6 +231,8 @@ internal static partial class RaidTimeUpdater
 
     private static void OmenCastingAction(IntPtr dataPtr, uint targetActorId, ushort actionId)
     {
+        if (!Service.Config.ShowOmen) return;
+
         var tar = DataCenter.AllHostileTargets.FirstOrDefault(t => t.ObjectId == targetActorId);
         if (tar == null) return;
 

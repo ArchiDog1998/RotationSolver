@@ -99,10 +99,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         if (Player.Available)
         {
-            _ = new ActorVfx(Player.Object, Player.Object,
-                "vfx/ws/2rp_ws_s06/eff/2rp_ws06c0h.avfx")
-            {
-            };
+            //_ = new ActorVfx(Player.Object, Player.Object,
+            //    "vfx/ws/2rp_ws_s06/eff/2rp_ws06c0h.avfx")
+            //{
+            //};
             //_ = new StaticVfx("vfx/lockon/eff/com_share0c.avfx", Player.Object, Vector3.One)
             //{
             //    //DeadTime = DateTime.Now.AddSeconds(5),

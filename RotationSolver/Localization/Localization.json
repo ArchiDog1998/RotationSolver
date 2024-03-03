@@ -358,5 +358,7 @@
   "UseGroundBeneficialAbilityWhenMovingName": "Use beneficial AoE actions when moving.",
   "RotationSolver.Data.UiString.SpecialCommandType_TankStance": "Tank Stance",
   "RotationSolver.Data.UiString.ConfigWindow_Actions_TTU": "Time to untargetable that this action needs the timeline be.",
-  "TargetDelayName": "The range of random delay for finding a target."
+  "TargetDelayName": "The range of random delay for finding a target.",
+  "ShowOmenName": "Show The Omen things.",
+  "AutoCloseChestWindowName": "Auto close the loot window when auto opened the chest."
 }

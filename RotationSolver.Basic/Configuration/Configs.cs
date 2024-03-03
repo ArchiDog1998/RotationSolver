@@ -392,8 +392,8 @@ internal partial class Configs : IPluginConfiguration
         Filter = AutoActionCondition, Section = 1)]
     private static readonly bool _healWhenNothingTodo = true;
 
-    //[ConditionBool, UI("Use actions that use resources", Filter = AutoActionUsage)]
-    //private static readonly bool _useResourcesAction = true;
+    [ConditionBool, UI("Show The Omen things.", Filter = Extra)]
+    private static readonly bool _showOmen = false;
 
     [ConditionBool, UI("Say hello to all users of Rotation Solver.",
         Filter =BasicParams)]
