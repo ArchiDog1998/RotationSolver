@@ -425,10 +425,6 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 600, ConfigUnitType.Seconds)]
     public float AutoOffAfterCombatTime { get; set; } = 30;
 
-    [UI("The height of the drawing things.", Parent =nameof(UseOverlayWindow))]
-    [Range(0, 8, ConfigUnitType.Yalms, 0.02f)]
-    public float DrawingHeight { get; set; } = 3;
-
     [UI("Drawing smoothness.", Parent = nameof(UseOverlayWindow))]
     [Range(0.005f, 0.05f, ConfigUnitType.Yalms, 0.001f)]
     public float SampleLength { get; set; } = 1;
@@ -634,9 +630,6 @@ internal partial class Configs : IPluginConfiguration
 
     [UI("Target color", Parent =nameof(TargetColor))]
     public Vector4 TargetColor { get; set; } = new(1f, 0.2f, 0f, 0.8f);
-
-    [UI("Sub-target color", Parent = nameof(TargetColor))]
-    public Vector4 SubTargetColor { get; set; } = new(1f, 0.9f, 0f, 0.8f);
 
     [UI("The color of beneficial AoE positions", Parent =nameof(ShowBeneficialPositions))]
     public Vector4 BeneficialPositionColor { get; set; } = new(0.5f, 0.9f, 0.1f, 0.7f);

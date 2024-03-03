@@ -9,9 +9,9 @@ using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
+using XIVPainter.Enum;
+using XIVPainter.Vfx;
 using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace RotationSolver;
@@ -21,13 +21,6 @@ public static class Watcher
 #if DEBUG
     private unsafe delegate bool OnUseAction(ActionManager* manager, ActionType actionType, uint actionID, ulong targetID, uint a4, uint a5, uint a6, void* a7);
     private static Hook<OnUseAction>? _useActionHook;
-
-    private unsafe delegate void* GetResourceSyncPrototype(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown);
-
-    private unsafe delegate void* GetResourceAsyncPrototype(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown, bool isUnknown);
-
-    static Hook<GetResourceSyncPrototype>? _getResourceSyncHook;
-    static Hook<GetResourceAsyncPrototype>? _getResourceAsyncHook;
 #endif
 
     private unsafe delegate long ProcessObjectEffect(GameObject* a1, ushort a2, ushort a3, long a4);
@@ -45,12 +38,6 @@ public static class Watcher
 #if DEBUG
             _useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? EB 64 B1 01", UseActionDetour);
             //_useActionHook.Enable();
-
-            _getResourceSyncHook = Svc.Hook.HookFromSignature<GetResourceSyncPrototype>("E8 ?? ?? ?? ?? 48 8D 8F ?? ?? ?? ?? 48 89 87 ?? ?? ?? ?? 48 8D 54 24", GetResourceSyncDetour);
-            _getResourceSyncHook.Enable();
-
-            _getResourceAsyncHook = Svc.Hook.HookFromSignature<GetResourceAsyncPrototype>("E8 ?? ?? ?? ?? 48 8B D8 EB 07 F0 FF 83", GetResourceAsyncDetour);
-            _getResourceAsyncHook.Enable();
 #endif
             //From https://github.com/PunishXIV/Splatoon/blob/main/Splatoon/Memory/ObjectEffectProcessor.cs#L14
             _processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B7 FA", ProcessObjectEffectDetour);
@@ -75,7 +62,7 @@ public static class Watcher
             var effect = new MapEffectData(position, param1, param2);
             DataCenter.MapEffects.Enqueue(effect);
 #if DEBUG
-            Svc.Log.Debug(effect.ToString());
+            //Svc.Log.Debug(effect.ToString());
 #endif
         });
     }
@@ -84,8 +71,6 @@ public static class Watcher
     {
 #if DEBUG
         _useActionHook?.Dispose();
-        _getResourceAsyncHook?.Dispose();
-        _getResourceSyncHook?.Dispose();
 #endif
         _processObjectEffectHook?.Dispose();
         _actorVfxCreateHook?.Dispose();
@@ -111,7 +96,10 @@ public static class Watcher
                 var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
                 DataCenter.VfxNewData.Enqueue(effect);
 #if DEBUG
-                Svc.Log.Debug($"On Object {obj?.Name ?? "No Body"}, path: {effect}");
+                if (!Enum.GetValues<ObjectOmenType>().Any(i => i.GetAttribute<VfxPathAttribute>()?.Path == path))
+                {
+                    Svc.Log.Debug("Object: " + path);
+                }
 #endif
             }
         }
@@ -159,60 +147,6 @@ public static class Watcher
         }
         return _useActionHook!.Original(manager, actionType, actionID, targetID, a4, a5, a6, a7);
     }
-
-    private unsafe static void* GetResourceSyncDetour(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown)
-    {
-        return ResourceDetour(true, pFileManager, pCategoryId, pResourceType, pResourceHash, pPath, pUnknown, false);
-    }
-
-    private unsafe static void* GetResourceAsyncDetour(IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown, bool isUnknown)
-    {
-        return ResourceDetour(false, pFileManager, pCategoryId, pResourceType, pResourceHash, pPath, pUnknown, isUnknown);
-    }
-
-    private unsafe static void* ResourceDetour(bool isSync, IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown, bool isUnknown)
-    {
-        var ret = CallOriginalResourceHandler(isSync, pFileManager, pCategoryId, pResourceType, pResourceHash, pPath, pUnknown, isUnknown);
-
-        var path = ReadTerminatedString((byte*)pPath);
-
-        if (path.EndsWith("avfx") && path.StartsWith("vfx/omen/eff/"))
-        {
-            Svc.Log.Debug(path);
-        }
-
-        return ret;
-    }
-
-    private static unsafe byte[] ReadTerminatedBytes(byte* ptr)
-    {
-        if (ptr == null)
-        {
-            return new byte[0];
-        }
-
-        var bytes = new List<byte>();
-        while (*ptr != 0)
-        {
-            bytes.Add(*ptr);
-            ptr += 1;
-        }
-
-        return bytes.ToArray();
-    }
-
-    internal static unsafe string ReadTerminatedString(byte* ptr)
-    {
-        return Encoding.UTF8.GetString(ReadTerminatedBytes(ptr));
-    }
-
-    private unsafe static void* CallOriginalResourceHandler(bool isSync, IntPtr pFileManager, uint* pCategoryId, char* pResourceType, uint* pResourceHash, char* pPath, void* pUnknown, bool isUnknown)
-    {
-        return isSync
-            ? _getResourceSyncHook!.Original(pFileManager, pCategoryId, pResourceType, pResourceHash, pPath, pUnknown)
-            : _getResourceAsyncHook!.Original(pFileManager, pCategoryId, pResourceType, pResourceHash, pPath, pUnknown, isUnknown);
-    }
-
 #endif
 
     private static void UpdateRTTDetour(dynamic obj)

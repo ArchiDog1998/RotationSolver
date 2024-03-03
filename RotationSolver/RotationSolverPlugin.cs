@@ -15,6 +15,9 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
+using System.Runtime.InteropServices;
+using XIVPainter.Enum;
+using XIVPainter.Vfx;
 
 namespace RotationSolver;
 
@@ -92,11 +95,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             await DownloadHelper.DownloadAsync();
             await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
         });
-        //VfxManager.OnGround("vfx/monster/m0095/eff/m0095sp_07c4m.avfx", false);
-        VfxManager.Remove();
-        var obj = VfxManager.OnGround("vfx/omen/eff/general_1bf.avfx", false);
-        //VfxManager.UpdateScale(obj, Vector3.One * 5);
-        //VfxManager.Test(obj);
+        //var vfx = new StaticVfx(GroundOmenFriendly.Rectangle02, Player.Object, Vector3.One);
     }
 
     internal static void ChangeUITranslation()

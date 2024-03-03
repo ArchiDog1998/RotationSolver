@@ -130,20 +130,6 @@ internal static class PainterManager
                 subItems.Add(_target);
             }
 
-            if (act.Target.HasValue && (DataCenter.AllHostileTargets.Contains(act.Target?.Target) || act.Target?.Target == Player.Object && !act.Setting.IsFriendly))
-            {
-                var SColor = ImGui.GetColorU32(Service.Config.SubTargetColor);
-
-                foreach (var t in act.Target!.Value.AffectedTargets)
-                {
-                    if (t == act.Target?.Target) continue;
-                    subItems.Add(new Drawing3DCircularSector(t.Position, targetRadius * ratio, SColor, 3)
-                    {
-                        IsFill = false,
-                    });
-                }
-            }
-
             SubItems = [.. subItems];
 
             base.UpdateOnFrame(painter);
@@ -296,7 +282,6 @@ internal static class PainterManager
     public static void UpdateSettings()
     {
         if (_painter == null) return;
-        _painter.DrawingHeight = Service.Config.DrawingHeight;
         _painter.SampleLength = Service.Config.SampleLength;
         _painter.UseTaskToAccelerate = Service.Config.UseTasksForOverlay;
         _painter.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;

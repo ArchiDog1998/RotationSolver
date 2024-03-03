@@ -2,11 +2,14 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using ExCSS;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Commands;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using XIVPainter.Enum;
+using XIVPainter.Vfx;
 
 namespace RotationSolver.Updaters;
 
@@ -17,7 +20,72 @@ internal static class ActionUpdater
     static RandomDelay _GCDDelay = new(() => Service.Config.WeaponDelay);
 
     internal static IAction? NextAction { get; set; }
-    internal static IBaseAction? NextGCDAction { get; set; }
+
+    //private static StaticVfx? circle, sector, rectangle;
+    private static StaticVfx? drawer;
+    private static IBaseAction? _nextGCDAction;
+    const float gcdHeight = 5;
+    internal static IBaseAction? NextGCDAction 
+    {
+        get => _nextGCDAction;
+        set
+        {
+            if (_nextGCDAction == value) return;
+            _nextGCDAction = value;
+
+
+            drawer?.Dispose();
+            if (!Service.Config.ShowTarget) return;
+
+            var player = Player.Object;
+            if (player == null) return;
+
+            //circle ??= new(GroundOmenFriendly.Circle1, player, new Vector3(0, gcdHeight, 0));
+            //sector ??= new(GroundOmenFriendly.CircularSector120, player, new Vector3(0, gcdHeight, 0));
+            //rectangle ??= new(GroundOmenType.Rectangle02, player, new Vector3(0, gcdHeight, 0));
+
+            //circle.Enable = sector.Enable = rectangle.Enable = false;
+            //circle.Owner = sector.Owner = rectangle.Owner = player;
+
+            if (value == null) return;
+            var target = value.Target?.Target;
+            if (target == null) return;
+
+            var range = value.Action.EffectRange;
+            var size = new Vector3(range, gcdHeight, range);
+            switch(value.Action.CastType)
+            {
+                //ase 1:
+                case 2:
+                    drawer = new(GroundOmenFriendly.Circle1, target, size);
+                    //circle.Owner = target;
+                    //circle.UpdateScale(size);
+                    //circle.Enable = true;
+                    break;
+
+                case 3:
+                    drawer = new(GroundOmenFriendly.CircularSector120, player, size)
+                    {
+                        Target = target
+                    };
+                    //sector.Target = target;
+                    //sector.UpdateScale(size);
+                    //sector.Enable = true;
+                    break;
+
+                case 4:
+                    size.X = 2;
+                    drawer = new(GroundOmenFriendly.Rectangle02, player, size)
+                    {
+                        Target = target
+                    };
+                    //rectangle.Target = target;
+                    //rectangle.UpdateScale(size);
+                    //rectangle.Enable = true;
+                    break;
+            }
+        }
+    }
     internal static IAction? WrongAction { get; set; }
     static readonly Random _wrongRandom = new();
 
