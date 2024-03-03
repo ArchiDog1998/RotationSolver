@@ -91,14 +91,24 @@ internal static class ImGuiHelper
     public unsafe static ImFontPtr GetFont(float size)
     {
         var style = new Dalamud.Interface.GameFonts.GameFontStyle(Dalamud.Interface.GameFonts.GameFontStyle.GetRecommendedFamilyAndSize(Dalamud.Interface.GameFonts.GameFontFamily.Axis, size));
-        var font = Svc.PluginInterface.UiBuilder.GetGameFontHandle(style).ImFont;
 
-        if ((IntPtr)font.NativePtr == IntPtr.Zero)
+        var handle = Svc.PluginInterface.UiBuilder.FontAtlas.NewGameFontHandle(style);
+
+        try
+        {
+            var font = handle.Lock().ImFont;
+
+            if ((IntPtr)font.NativePtr == IntPtr.Zero)
+            {
+                return ImGui.GetFont();
+            }
+            font.Scale = size / style.BaseSizePt;
+            return font;
+        }
+        catch
         {
             return ImGui.GetFont();
         }
-        font.Scale = size / style.BaseSizePt;
-        return font;
     }
 
     public static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] items, Func<T, string> getSearchName, Action<T> selectAction, string searchingHint, ImFontPtr? font = null, Vector4? color = null)

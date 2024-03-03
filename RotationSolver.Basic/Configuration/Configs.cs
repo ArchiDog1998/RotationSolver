@@ -82,7 +82,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _showInfoOnToast = true;
 
     [ConditionBool, UI("Lock the movement when casting or when doing some actions.", Filter = Extra)]
-    private static readonly bool _poslockCasting = false;
+    private static readonly bool _poslockCasting = true;
 
     [UI("", Action = ActionID.PassageOfArmsPvE, Parent = nameof(PoslockCasting))]
     public bool  PosPassageOfArms { get; set; } = false;

@@ -1,10 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.UI;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using XIVPainter.Vfx;
 
 namespace RotationSolver.Updaters;
 internal static partial class RaidTimeUpdater
@@ -182,7 +185,7 @@ internal static partial class RaidTimeUpdater
 
     private static void GameNetwork_NetworkMessage(nint dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, Dalamud.Game.Network.NetworkMessageDirection direction)
     {
-        if (direction != Dalamud.Game.Network.NetworkMessageDirection.ZoneDown) return;
+        //if (direction != Dalamud.Game.Network.NetworkMessageDirection.ZoneDown) return;
         OpCode op = (OpCode)opCode;
 
         switch (op)
@@ -209,17 +212,56 @@ internal static partial class RaidTimeUpdater
     private static void OnCast(IntPtr dataPtr, uint targetActorId)
     {
         var name = GetNameFromObjectId(targetActorId);
+        var actionId = ReadUshort(dataPtr, 0);
 
         foreach (var item in DataCenter.TimelineItems)
         {
             if (!item.IsInWindow) continue;
             if (item.Type is not TimelineType.StartsUsing) continue;
 
-            if (!item["id", ReadUshort(dataPtr, 0)]) continue;
+            if (!item["id", actionId]) continue;
             if (!item["source", name]) continue;
 
             item.UpdateRaidTimeOffset();
             break;
+        }
+
+        OmenCastingAction(dataPtr, targetActorId, actionId);
+    }
+
+    private static void OmenCastingAction(IntPtr dataPtr, uint targetActorId, ushort actionId)
+    {
+        var tar = DataCenter.AllHostileTargets.FirstOrDefault(t => t.ObjectId == targetActorId);
+        if (tar == null) return;
+
+        var castingTime = ReadFloat(dataPtr, 0x08);
+        var action = Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.GetRow(actionId);
+        var omenStr = action?.Omen.Value?.Path.RawString;
+        if (action != null && !string.IsNullOrEmpty(omenStr))
+        {
+            //Unknown30 May be that the action should be used.
+            Svc.Log.Debug($"{action.RowId} {action.Name.RawString} {omenStr}");
+
+            if (action.TargetArea)
+            {
+                //Target Area??
+            }
+            else
+            {
+                var x = action.XAxisModifier > 0 ? action.XAxisModifier / 2 : action.EffectRange;
+                var scale = new Vector3(x, 10, action.EffectRange);
+                _ = new StaticVfx($"vfx/omen/eff/{omenStr}.avfx", tar, scale)
+                {
+                    DeadTime = DateTime.Now.AddSeconds(castingTime),
+                    RotateAddition = action.AnimationStart.Row switch
+                    {
+                        10 => MathF.PI / 2,
+                        11 => -MathF.PI / 2,
+                        _ => 0,
+                    }
+                    //TODO: The casting target, maybe. for some special type of actions.
+                };
+            }
         }
     }
 
@@ -290,6 +332,11 @@ internal static partial class RaidTimeUpdater
         return *(uint*)(dataPtr + offset);
     }
 
+    private unsafe static float ReadFloat(IntPtr dataPtr, int offset)
+    {
+        return *(float*)(dataPtr + offset);
+    }
+
     private static string GetNameFromObjectId(uint id)
     {
         var obj = Svc.Objects.SearchById(id);
@@ -298,11 +345,7 @@ internal static partial class RaidTimeUpdater
 
         if (!string.IsNullOrEmpty(name)) return name;
 
-#if DEBUG
-        return "Failed to find the NPC name!";
-#else
         return obj?.Name.TextValue ?? string.Empty;
-#endif
     }
 
     private static async void ClientState_TerritoryChanged(ushort id)

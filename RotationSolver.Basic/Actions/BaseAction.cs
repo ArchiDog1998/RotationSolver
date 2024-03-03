@@ -84,6 +84,10 @@ public class BaseAction : IBaseAction
             {
                 Service.Config.RotationActionConfig[ID] = value 
                     = Setting.CreateConfig?.Invoke() ?? new();
+                if (Action.ClassJob.Value?.GetJobRole() == JobRole.Tank)
+                {
+                    value.AoeCount = 2;
+                }
                 if (value.TimeToUntargetable == 0)
                 {
                     value.TimeToUntargetable = value.TimeToKill;
