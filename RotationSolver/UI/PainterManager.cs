@@ -7,6 +7,7 @@ using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Element3D;
 using XIVPainter.ElementSpecial;
+using XIVPainter.Vfx;
 
 namespace RotationSolver.UI;
 
@@ -15,7 +16,7 @@ internal static class PainterManager
     class BeneficialPositionDrawing : Drawing3DPoly
     {
         const float beneficialRadius = 0.6f;
-        public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        protected override void UpdateOnFrame()
         {
             SubItems = [];
 
@@ -28,7 +29,7 @@ internal static class PainterManager
 
             var d = DateTime.Now.Millisecond / 1000f;
             var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
-            List<IDrawing3D> subItems = [];
+            List<Drawing3D> subItems = [];
 
             var color = ImGui.GetColorU32(Service.Config.BeneficialPositionColor);
             var hColor = ImGui.GetColorU32(Service.Config.HoveredBeneficialPositionColor);
@@ -45,38 +46,53 @@ internal static class PainterManager
 
             SubItems = [.. subItems];
 
-            base.UpdateOnFrame(painter);
+            base.UpdateOnFrame();
         }
-
     }
 
     class TargetsDrawing : Drawing3DPoly
     {
-        public override unsafe void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        public TargetsDrawing()
         {
-            SubItems = [];
+            SubItems = new Drawing3D[64];
 
-            if (!Service.Config.ShowHostilesIcons) return;
-
-            List<IDrawing3D> subItems = [];
-
-            if (IconSet.GetTexture(61510, out var hostileIcon))
+            for (int i = 0; i < SubItems.Length; i++)
             {
-                foreach (var hostile in DataCenter.AllHostileTargets)
+                SubItems[i] = new Drawing3DImage(null, Vector3.Zero)
                 {
-                    subItems.Add(new Drawing3DImage(hostileIcon, hostile.Position + new Vector3(0,
-                        Service.Config.HostileIconHeight, 0),
-                        Service.Config.HostileIconSize)
-                    {
-                        DrawWithHeight = false,
-                        MustInViewRange = true,
-                    });
+                    Enable = false,
+                    MustInViewRange = true,
+                };
+            }
+        }
+
+        protected override unsafe void UpdateOnFrame()
+        {
+            if (!Service.Config.ShowHostilesIcons)
+            {
+                foreach (var item in SubItems)
+                {
+                    item.Enable = false;
                 }
+                return;
             }
 
-            SubItems = [.. subItems];
+            if (!IconSet.GetTexture(61510, out var hostileIcon)) return;
 
-            base.UpdateOnFrame(painter);
+            for (int i = 0; i < Math.Min(SubItems.Length, DataCenter.AllHostileTargets.Length); i++)
+            {
+                if (SubItems[i] is not Drawing3DImage item) continue;
+
+                var ojb = DataCenter.AllHostileTargets[i];
+
+                item.Enable = true;
+                item.Image = hostileIcon;
+                item.Position = ojb.Position + new Vector3(0,
+                        Service.Config.HostileIconHeight, 0);
+                item.Size = Service.Config.HostileIconSize;
+            }
+
+            base.UpdateOnFrame();
         }
     }
 
@@ -90,18 +106,19 @@ internal static class PainterManager
             _target = new Drawing3DCircularSector(default, 0, TColor, 3)
             {
                 IsFill = false,
+                Enable = false,
             };
             _targetImage = new Drawing3DImage(null, default, 0)
             {
                 MustInViewRange = true,
+                Enable = false,
             };
         }
 
         const float targetRadius = 0.15f;
-        public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        protected override void UpdateOnFrame()
         {
-            SubItems = [];
-
+            _target.Enable = _targetImage.Enable = false;
             if (!Service.Config.ShowTarget) return;
 
             if (ActionUpdater.NextAction is not BaseAction act) return;
@@ -110,29 +127,26 @@ internal static class PainterManager
 
             var d = DateTime.Now.Millisecond / 1000f;
             var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
-            List<IDrawing3D> subItems = [];
 
             if (Service.Config.TargetIconSize > 0)
             {
+                _targetImage.Enable = true;
                 _targetImage.Position = act.Target?.Position ?? Player.Object.Position;
                 if (act.GetTexture(out var texture, true))
                 {
                     _targetImage.Image = texture;
                     _targetImage.Size = Service.Config.TargetIconSize;
-                    subItems.Add(_targetImage);
                 }
             }
             else
             {
+                _target.Enable = true;
                 _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
                 _target.Center = act.Target?.Position ?? Player.Object.Position;
                 _target.Radius = targetRadius * ratio;
-                subItems.Add(_target);
             }
 
-            SubItems = [.. subItems];
-
-            base.UpdateOnFrame(painter);
+            base.UpdateOnFrame();
         }
     }
 
@@ -142,14 +156,14 @@ internal static class PainterManager
 
         public TargetText()
         {
-            SubItems = new IDrawing3D[ItemsCount];
+            SubItems = new Drawing3D[ItemsCount];
             for (int i = 0; i < ItemsCount; i++)
             {
                 SubItems[i] = new Drawing3DText(string.Empty, default);
             }
         }
 
-        public override void UpdateOnFrame(XIVPainter.XIVPainter painter)
+        protected override void UpdateOnFrame()
         {
             for (int i = 0; i < ItemsCount; i++)
             {
@@ -181,24 +195,27 @@ internal static class PainterManager
 
                 if (index >= ItemsCount) break;
             }
-            base.UpdateOnFrame(painter);
+            base.UpdateOnFrame();
         }
     }
 
-    static XIVPainter.XIVPainter? _painter;
-    static DrawingHighlightHotbar _highLight = new();
+    static DrawingHighlightHotbar? _highLight;
     static Drawing3DImage? _stateImage;
-    public static HashSet<uint> ActionIds => _highLight.ActionIds;
+    public static HashSet<uint> ActionIds => _highLight?.ActionIds ?? [];
 
     public static Vector4 HighlightColor
     {
-        get => _highLight.Color;
-        set => _highLight.Color = value;
+        get => _highLight?.Color ?? Vector4.One;
+        set
+        {
+            if (_highLight == null) return;
+            _highLight.Color = value;
+        }
     }
 
     public static void Init()
     {
-        _painter = XIVPainter.XIVPainter.Create(Svc.PluginInterface, "RotationSolverOverlay");
+        XIVPainterMain.Init(Svc.PluginInterface, "RotationSolverOverlay");
 
         _highLight = new();
         UpdateSettings();
@@ -223,30 +240,29 @@ internal static class PainterManager
             }
         };
 
-        var color = ImGui.GetColorU32(Service.Config.MovingTargetColor);
-        var movingTarget = new Drawing3DHighlightLine(default, default, 0, color, 3);
+        var movingTarget = new VfxHighlightLine(default, default, 0);
         movingTarget.UpdateEveryFrame = () =>
         {
             var tar = CustomRotation.MoveTarget;
 
-            if (!Service.Config.ShowMoveTarget || !Player.Available || !tar.HasValue || Vector3.Distance(tar.Value, Player.Object.Position) < 0.01f)
+            var playerPos = Player.Object?.Position ?? default;
+
+            movingTarget.From = playerPos;
+
+            if (!Service.Config.ShowMoveTarget || !Player.Available || !tar.HasValue || Vector3.Distance(tar.Value, playerPos) < 0.01f)
             {
                 movingTarget.Radius = 0;
+                movingTarget.To = playerPos;
                 return;
             }
 
             movingTarget.Radius = 0.5f;
-
-            movingTarget.Color = ImGui.GetColorU32(Service.Config.MovingTargetColor);
-
-            movingTarget.From = Player.Object.Position;
             movingTarget.To = tar.Value;
         };
 
         _stateImage = new Drawing3DImage(null, default, 0)
         {
             MustInViewRange = true,
-            DrawWithHeight = false,
             UpdateEveryFrame = () =>
             {
                 if (!Player.Available) return;
@@ -273,22 +289,21 @@ internal static class PainterManager
             },
         };
 
-        _painter.AddDrawings(
-            _highLight, _stateImage, new TargetDrawing(), annulus, movingTarget,
-            new TargetsDrawing(), new TargetText(), new BeneficialPositionDrawing()
-            );
+        _ = new TargetDrawing();
+        _ = new TargetsDrawing();
+        _ = new TargetText();
+        _ = new BeneficialPositionDrawing();
     }
 
     public static void UpdateSettings()
     {
-        if (_painter == null) return;
-        _painter.SampleLength = Service.Config.SampleLength;
-        _painter.UseTaskToAccelerate = Service.Config.UseTasksForOverlay;
-        _painter.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
+        XIVPainterMain.SampleLength = Service.Config.SampleLength;
+        XIVPainterMain.UseTaskToAccelerate = Service.Config.UseTasksForOverlay;
+        XIVPainterMain.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
     }
 
     public static void Dispose()
     {
-        _painter?.Dispose();
+        XIVPainterMain.Dispose();
     }
 }

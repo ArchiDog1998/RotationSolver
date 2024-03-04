@@ -360,5 +360,6 @@
   "RotationSolver.Data.UiString.ConfigWindow_Actions_TTU": "Time to untargetable that this action needs the timeline be.",
   "TargetDelayName": "The range of random delay for finding a target.",
   "ShowOmenName": "Show The Omen things.",
-  "AutoCloseChestWindowName": "Auto close the loot window when auto opened the chest."
+  "AutoCloseChestWindowName": "Auto close the loot window when auto opened the chest.",
+  "RotationSolver.Data.UiString.ConfigWindow_About_OpenConfigFolder": "Open Config Folder"
 }

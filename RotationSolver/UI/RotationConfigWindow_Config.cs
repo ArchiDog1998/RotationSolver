@@ -9,6 +9,7 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
+using XIVPainter;
 
 namespace RotationSolver.UI;
 
@@ -104,7 +105,7 @@ public partial class RotationConfigWindow
         var wholeWidth = ImGui.GetWindowWidth();
         var ping = DataCenter.Ping;
 
-        ImGui.PushFont(ImGuiHelper.GetFont(14));
+        ImGui.PushFont(DrawingExtensions.GetFont(14));
         ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
         var infoText = $"GCD: {gcdTime:F2}s Ping: {ping:F2}s";
         var infoSize = ImGui.CalcTextSize(infoText);
@@ -145,7 +146,7 @@ public partial class RotationConfigWindow
         drawList.AddLine(lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, -spacingHeight), lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime,
             pingHeight * 2 + spacingHeight), IDEAL_CLICK_TIME_COLOR, 2);
 
-        ImGui.PushFont(ImGuiHelper.GetFont(20));
+        ImGui.PushFont(DrawingExtensions.GetFont(20));
         const string gcdText = "GCD";
         var size = ImGui.CalcTextSize(gcdText);
         ImGui.SetCursorPos(startCursorPt + new Vector2(sizePerTime * actionAhead + (gcdSize - size.X) / 2, (gcdSize - size.Y) / 2));
@@ -154,7 +155,7 @@ public partial class RotationConfigWindow
         ImGui.Text(gcdText);
         ImGui.PopFont();
 
-        ImGui.PushFont(ImGuiHelper.GetFont(14));
+        ImGui.PushFont(DrawingExtensions.GetFont(14));
         const string ogcdText = "Off-\nGCD";
         size = ImGui.CalcTextSize(ogcdText);
         ImGui.PopFont();
@@ -172,7 +173,7 @@ public partial class RotationConfigWindow
             ImGuiHelper.DrawActionOverlay(startCursorPt + new Vector2(sizePerTime * (actionAhead + time), 0), ogcdSize, 0);
             ImGui.SetCursorPos(startCursorPt + new Vector2(sizePerTime * (actionAhead + time) + (ogcdSize - size.X) / 2, (ogcdSize - size.Y) / 2));
 
-            ImGui.PushFont(ImGuiHelper.GetFont(14));
+            ImGui.PushFont(DrawingExtensions.GetFont(14));
             ImGui.Text(ogcdText);
             ImGui.PopFont();
 

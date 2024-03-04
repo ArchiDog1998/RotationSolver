@@ -1,6 +1,7 @@
 ﻿using Dalamud.Configuration;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using RotationSolver.Basic.Configuration.Omens;
 using RotationSolver.Basic.Configuration.Timeline;
 
 namespace RotationSolver.Basic.Configuration;
@@ -625,9 +626,6 @@ internal partial class Configs : IPluginConfiguration
     [UI("Prompt box color of teaching mode", Parent =nameof(TeachingMode))]
     public Vector4 TeachingModeColor { get; set; } = new(0f, 1f, 0.8f, 1f);
 
-    [UI("Prompt box color of moving target", Parent =nameof(ShowMoveTarget))]
-    public Vector4 MovingTargetColor { get; set; } = new(0f, 1f, 0.8f, 0.6f);
-
     [UI("Target color", Parent =nameof(TargetColor))]
     public Vector4 TargetColor { get; set; } = new(1f, 0.2f, 0f, 0.8f);
 
@@ -744,6 +742,8 @@ internal partial class Configs : IPluginConfiguration
 
     [JobConfig]
     private readonly Dictionary<uint, Dictionary<float, List<ITimelineItem>>> _timeline = [];
+
+    public Dictionary<uint, CastingOmenConfig> OmenCastingConfig { get; set; } = [];
 
     public void Save()
     {

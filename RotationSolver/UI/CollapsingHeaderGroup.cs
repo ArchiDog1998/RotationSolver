@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
+using XIVPainter;
 
 namespace RotationSolver.UI;
 
@@ -49,7 +50,7 @@ internal class CollapsingHeaderGroup()
                 ImGui.Separator();
                 var selected = index == _openedIndex;
                 var changed = false;
-                using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(HeaderSize)))
+                using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(HeaderSize)))
                 {
                     changed = ImGui.Selectable(name, selected, ImGuiSelectableFlags.DontClosePopups);
                 }

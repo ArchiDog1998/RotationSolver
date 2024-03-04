@@ -7,6 +7,8 @@ using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.GeneratedSheets2;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Commands;
@@ -15,7 +17,6 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
-using System.Runtime.InteropServices;
 using XIVPainter.Enum;
 using XIVPainter.Vfx;
 
@@ -99,14 +100,43 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         if (Player.Available)
         {
-            //_ = new ActorVfx(Player.Object, Player.Object,
-            //    "vfx/ws/2rp_ws_s06/eff/2rp_ws06c0h.avfx")
+            //_ = new StaticVfx(GroundOmenFriendly.Circle1, Player.Object, new Vector3(1, 1, 3));
+
+            _ = new ActorVfx(Player.Object, Player.Object, "vfx/lockon/eff/m0618trg_a0k1.avfx");
+
+            //Task.Run(async () =>
             //{
-            //};
-            //_ = new StaticVfx("vfx/lockon/eff/com_share0c.avfx", Player.Object, Vector3.One)
-            //{
-            //    //DeadTime = DateTime.Now.AddSeconds(5),
-            //};
+            //    var allLockOn = Svc.Data.GetExcelSheet<Lockon>()!.ToArray();
+            //    allLockOn = allLockOn[460..];
+            //    Svc.Log.Error(DateTime.Now.AddSeconds(allLockOn.Length * 5).ToLongTimeString());
+
+            //    foreach (var item in allLockOn)
+            //    {
+            //        if (item == null) continue;
+
+            //        var name = item.Unknown0.RawString;
+
+            //        if (string.IsNullOrEmpty(name)) continue;
+
+            //        var path = $"vfx/lockon/eff/{name}.avfx";
+            //        var vfx2 = new ActorVfx(Player.Object, Player.Object,
+            //            path);
+
+            //        Svc.Toasts.ShowError(name);
+
+            //        await Task.Delay(4500);
+
+            //        vfx2.Dispose();
+
+            //        await Task.Delay(500);
+            //    }
+
+            //    Svc.Toasts.ShowQuest("That's All Lock On", new Dalamud.Game.Gui.Toast.QuestToastOptions()
+            //    {
+            //        DisplayCheckmark = true,
+            //        PlaySound = true,
+            //    });
+            //});
         }
 #endif
     }

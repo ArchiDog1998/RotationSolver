@@ -2,21 +2,14 @@
 
 namespace RotationSolver.Basic.Data;
 
-internal readonly struct VfxNewData
+internal readonly struct VfxNewData(uint objectId, string path)
 {
-    public readonly uint ObjectId;
-    public readonly string Path;
+    public readonly uint ObjectId = objectId;
+    public readonly string Path = path;
 
-    public readonly DateTime Time;
+    public readonly DateTime Time = DateTime.Now;
 
     public readonly TimeSpan TimeDuration => DateTime.Now - Time;
-
-    public VfxNewData(uint objectId, string path)
-    {
-        Time = DateTime.Now;
-        ObjectId = objectId;
-        Path = path;
-    }
 
     public override string ToString() => $"Object Effect: {Svc.Objects.SearchById(ObjectId)?.Name ?? "Object"}: {Path}";
 }

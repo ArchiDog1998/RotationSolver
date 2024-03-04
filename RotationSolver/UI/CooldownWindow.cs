@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Utility.Raii;
 using RotationSolver.Updaters;
+using XIVPainter;
 
 namespace RotationSolver.UI;
 
@@ -79,7 +80,7 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
                 ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), black);
             }
 
-            using var font = ImRaii.PushFont(ImGuiHelper.GetFont(Service.Config.CooldownFontSize));
+            using var font = ImRaii.PushFont(DrawingExtensions.GetFont(Service.Config.CooldownFontSize));
             string time = recast == 0 ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
             var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;

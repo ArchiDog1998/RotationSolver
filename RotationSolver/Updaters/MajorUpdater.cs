@@ -14,6 +14,7 @@ using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI;
+using RotationSolver.Updaters.Omens;
 using System.Runtime.InteropServices;
 
 namespace RotationSolver.Updaters;
@@ -150,6 +151,7 @@ internal static class MajorUpdater
         ActionSequencerUpdater.Enable(Svc.PluginInterface.ConfigDirectory.FullName + "\\Conditions");
         SocialUpdater.Enable();
         RaidTimeUpdater.EnableAsync();
+        OmenMain.Init();
 
         Svc.Framework.Update += FrameworkUpdate;
     }
@@ -182,6 +184,7 @@ internal static class MajorUpdater
             RotationUpdater.UpdateRotation();
 
             RaidTimeUpdater.UpdateTimeline();
+            OmenMain.Update();
             ActionSequencerUpdater.UpdateActionSequencerAction();
             ActionUpdater.UpdateNextAction();
 
@@ -286,5 +289,6 @@ internal static class MajorUpdater
         SocialUpdater.Disable();
         ActionUpdater.ClearNextAction();
         RaidTimeUpdater.Disable();
+        OmenMain.Dispose();
     }
 }

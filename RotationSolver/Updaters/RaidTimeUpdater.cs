@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json.Linq;
@@ -185,7 +186,7 @@ internal static partial class RaidTimeUpdater
 
     private static void GameNetwork_NetworkMessage(nint dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, Dalamud.Game.Network.NetworkMessageDirection direction)
     {
-        //if (direction != Dalamud.Game.Network.NetworkMessageDirection.ZoneDown) return;
+        if (direction != Dalamud.Game.Network.NetworkMessageDirection.ZoneDown) return;
         OpCode op = (OpCode)opCode;
 
         switch (op)
@@ -225,48 +226,36 @@ internal static partial class RaidTimeUpdater
             item.UpdateRaidTimeOffset();
             break;
         }
-
-        OmenCastingAction(dataPtr, targetActorId, actionId);
     }
-
-    private static void OmenCastingAction(IntPtr dataPtr, uint targetActorId, ushort actionId)
+#if DEBUG
+    private static unsafe int[] DataIndex<T>(IntPtr dataPtr, T subData, int size, Func<T, T, bool> equal)
+        where T : unmanaged
     {
-        if (!Service.Config.ShowOmen) return;
+        var length = sizeof(T);
 
-        var tar = DataCenter.AllHostileTargets.FirstOrDefault(t => t.ObjectId == targetActorId);
-        if (tar == null) return;
-
-        var castingTime = ReadFloat(dataPtr, 0x08);
-        var action = Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.GetRow(actionId);
-        var omenStr = action?.Omen.Value?.Path.RawString;
-        if (action != null && !string.IsNullOrEmpty(omenStr))
+        List<int> indexes = [];
+        for (int i = 0; i < size - length; i++)
         {
-            //Unknown30 May be that the action should be used.
-            Svc.Log.Debug($"{action.RowId} {action.Name.RawString} {omenStr}");
-
-            if (action.TargetArea)
+            var v = *(T*)(dataPtr + i);
+            if(equal(v, subData))
             {
-                //Target Area??
-            }
-            else
-            {
-                var x = action.XAxisModifier > 0 ? action.XAxisModifier / 2 : action.EffectRange;
-                var scale = new Vector3(x, 10, action.EffectRange);
-                _ = new StaticVfx($"vfx/omen/eff/{omenStr}.avfx", tar, scale)
-                {
-                    DeadTime = DateTime.Now.AddSeconds(castingTime),
-                    RotateAddition = action.AnimationStart.Row switch
-                    {
-                        10 => MathF.PI / 2,
-                        11 => -MathF.PI / 2,
-                        _ => 0,
-                    }
-                    //TODO: The casting target, maybe. for some special type of actions.
-                };
+                indexes.Add(i);
             }
         }
+        return [..indexes];
     }
 
+    private static bool IsTheSame(byte[] a, byte[] b)
+    {
+        if (a.Length != b.Length) return false;
+
+        for (int i = 0; i < a.Length; i++)
+        {
+            if (a[i] != b[i]) return false;
+        }
+        return true;
+    }
+#endif
     static DateTime _actionUpdateTime = DateTime.MinValue;
     private static void OnEffect(IntPtr dataPtr, uint targetActorId)
     {
@@ -286,7 +275,10 @@ internal static partial class RaidTimeUpdater
             _actionUpdateTime = DateTime.Now;
             break;
         }
+
     }
+
+
 
     private static void OnActorControl(IntPtr dataPtr)
     {
