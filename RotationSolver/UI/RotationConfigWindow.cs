@@ -701,7 +701,7 @@ public partial class RotationConfigWindow : Window
             var str = ImGui.GetClipboardText();
             try
             {
-                var set = JsonConvert.DeserializeObject<Dictionary<float, List<ITimelineItem>>>(str, new ITimelineItemConverter())!;
+                var set = JsonConvert.DeserializeObject<Dictionary<float, List<BaseTimelineItem>>>(str, new ITimelineItemConverter())!;
                 Service.Config.Timeline[_territoryId] = timeLine = set;
             }
             catch (Exception ex)
@@ -841,6 +841,10 @@ public partial class RotationConfigWindow : Window
                             stateItem.State = state;
                         }
                     }
+                    else if(timeLineItem is DrawingTimeline drawingItem)
+                    {
+                        //TODO: the drawing thing in the config window.
+                    }
                 }
 
                 ImGui.TableNextRow();
@@ -857,9 +861,10 @@ public partial class RotationConfigWindow : Window
                     {
                         AddOneCondition<ActionTimelineItem>();
                         AddOneCondition<StateTimelineItem>();
+                        AddOneCondition<DrawingTimeline>();
                     }
 
-                    void AddOneCondition<T>() where T : ITimelineItem
+                    void AddOneCondition<T>() where T : BaseTimelineItem
                     {
                         if (ImGui.Selectable(typeof(T).Local()))
                         {

@@ -1,4 +1,3 @@
-using Clipper2Lib;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
@@ -7,8 +6,6 @@ using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
-using Lumina.Excel.GeneratedSheets;
-using Lumina.Excel.GeneratedSheets2;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Commands;
@@ -17,8 +14,8 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
-using XIVPainter.Enum;
-using XIVPainter.Vfx;
+using XIVPainter;
+using XIVPainter.Element;
 
 namespace RotationSolver;
 
@@ -41,9 +38,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, true, out _);
         IconSet.InIt();
-
-        //Init!
-        Clipper.InflatePaths(new PathsD([Clipper.MakePath(new double[] { 0, 0, 1, 1 })]), 0, JoinType.Round, EndType.Joined);
 
         _dis.Add(new Service());
         try
@@ -100,42 +94,20 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         if (Player.Available)
         {
-            //_ = new StaticVfx(GroundOmenFriendly.Circle1, Player.Object, new Vector3(1, 1, 3));
-
-            _ = new ActorVfx(Player.Object, Player.Object, "vfx/lockon/eff/m0618trg_a0k1.avfx");
+            _ = XIVPainterMain.ShowOff();
+            //_ = new StaticVfx($"vfx/omen/eff/{GroundOmenFriendly.Circle}.avfx", Player.Object, new Vector3(1, 1, 3))
+            //{
+            //    RotateAddition = MathF.PI / 4,
+            //    LocationOffset = new Vector3(1, 0, 2),
+            //};
 
             //Task.Run(async () =>
             //{
-            //    var allLockOn = Svc.Data.GetExcelSheet<Lockon>()!.ToArray();
-            //    allLockOn = allLockOn[460..];
-            //    Svc.Log.Error(DateTime.Now.AddSeconds(allLockOn.Length * 5).ToLongTimeString());
-
-            //    foreach (var item in allLockOn)
+            //    while(true)
             //    {
-            //        if (item == null) continue;
-
-            //        var name = item.Unknown0.RawString;
-
-            //        if (string.IsNullOrEmpty(name)) continue;
-
-            //        var path = $"vfx/lockon/eff/{name}.avfx";
-            //        var vfx2 = new ActorVfx(Player.Object, Player.Object,
-            //            path);
-
-            //        Svc.Toasts.ShowError(name);
-
-            //        await Task.Delay(4500);
-
-            //        vfx2.Dispose();
-
-            //        await Task.Delay(500);
+            //        new Share2(Player.Object, 3);
+            //        await Task.Delay(6000);
             //    }
-
-            //    Svc.Toasts.ShowQuest("That's All Lock On", new Dalamud.Game.Gui.Toast.QuestToastOptions()
-            //    {
-            //        DisplayCheckmark = true,
-            //        PlaySound = true,
-            //    });
             //});
         }
 #endif

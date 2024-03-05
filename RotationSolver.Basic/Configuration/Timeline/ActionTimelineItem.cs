@@ -1,11 +1,12 @@
-﻿namespace RotationSolver.Basic.Configuration.Timeline;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Configuration.Timeline;
 
 [Description("Action Timeline")]
-internal class ActionTimelineItem : ITimelineItem
+internal class ActionTimelineItem : BaseTimelineItem
 {
     public ActionID ID { get; set; } = ActionID.None;
-    public float Time { get; set; } = 3;
-    public bool InPeriod(TimelineItem item)
+    public override bool InPeriod(TimelineItem item)
     {
         var time = item.Time - DataCenter.RaidTimeRaw;
 
@@ -13,5 +14,19 @@ internal class ActionTimelineItem : ITimelineItem
 
         if (time > Time || Time - time > 3) return false;
         return true;
+    }
+
+    protected override void OnEnable()
+    {
+        var act = DataCenter.RightNowRotation?.AllBaseActions.FirstOrDefault(a => (ActionID)a.ID == ID);
+
+        if (act == null) return;
+
+        DataCenter.AddCommandAction(act, Service.Config.SpecialDuration);
+
+#if DEBUG
+        Svc.Log.Debug($"Added the action {act} to timeline.");
+#endif
+        base.OnEnable();
     }
 }

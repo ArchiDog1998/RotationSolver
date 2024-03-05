@@ -1,7 +1,6 @@
 ﻿using Dalamud.Configuration;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
-using RotationSolver.Basic.Configuration.Omens;
 using RotationSolver.Basic.Configuration.Timeline;
 
 namespace RotationSolver.Basic.Configuration;
@@ -393,9 +392,6 @@ internal partial class Configs : IPluginConfiguration
         Filter = AutoActionCondition, Section = 1)]
     private static readonly bool _healWhenNothingTodo = true;
 
-    [ConditionBool, UI("Show The Omen things.", Filter = Extra)]
-    private static readonly bool _showOmen = false;
-
     [ConditionBool, UI("Say hello to all users of Rotation Solver.",
         Filter =BasicParams)]
     private static readonly bool _sayHelloToAll = true;
@@ -741,9 +737,7 @@ internal partial class Configs : IPluginConfiguration
     public Dictionary<uint, string> DutyRotationChoice { get; set; } = [];
 
     [JobConfig]
-    private readonly Dictionary<uint, Dictionary<float, List<ITimelineItem>>> _timeline = [];
-
-    public Dictionary<uint, CastingOmenConfig> OmenCastingConfig { get; set; } = [];
+    private readonly Dictionary<uint, Dictionary<float, List<BaseTimelineItem>>> _timeline = [];
 
     public void Save()
     {

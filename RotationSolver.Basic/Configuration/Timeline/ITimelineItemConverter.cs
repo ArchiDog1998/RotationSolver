@@ -3,9 +3,9 @@ using RotationSolver.Basic.Configuration.Conditions;
 
 namespace RotationSolver.Basic.Configuration.Timeline;
 
-internal class ITimelineItemConverter : JsonCreationConverter<ITimelineItem>
+internal class ITimelineItemConverter : JsonCreationConverter<BaseTimelineItem>
 {
-    protected override ITimelineItem? Create(JObject jObject)
+    protected override BaseTimelineItem? Create(JObject jObject)
     {
         if (FieldExists(nameof(ActionTimelineItem.ID), jObject))
         {
@@ -15,6 +15,11 @@ internal class ITimelineItemConverter : JsonCreationConverter<ITimelineItem>
         {
             return new StateTimelineItem();
         }
+        else if (FieldExists(nameof(DrawingTimeline.Condition), jObject))
+        {
+            return new DrawingTimeline();
+        }
+
         return null;
     }
 }

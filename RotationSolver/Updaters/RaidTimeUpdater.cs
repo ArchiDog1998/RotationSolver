@@ -16,7 +16,6 @@ internal static partial class RaidTimeUpdater
     internal static readonly Dictionary<uint, string> PathForRaids = [];
 
     private static readonly Dictionary<uint, TimelineItem[]> _savedTimeLines = [];
-    private static readonly Queue<(DateTime, ITimelineItem)> _addedItems = new();
 
     public static string GetLink(uint id)
     {
@@ -64,12 +63,6 @@ internal static partial class RaidTimeUpdater
     {
         if (!Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)) return;
 
-        while (_addedItems.TryPeek(out var addedItem))
-        {
-            if (DateTime.Now - addedItem.Item1 < TimeSpan.FromSeconds(5)) break;
-            _addedItems.Dequeue();
-        }
-
         foreach (var item in DataCenter.TimelineItems)
         {
             var time = item.Time - DataCenter.RaidTimeRaw;
@@ -77,34 +70,11 @@ internal static partial class RaidTimeUpdater
             if (time < 0) continue;
             if (!timeline.TryGetValue(item.Time, out var items)) continue;
 
-
-            var validItems = items.Where(i => !_addedItems.Any(added => added.Item2 == i) && i.InPeriod(item));
-
-            foreach (var item2 in validItems.OfType<ActionTimelineItem>())
+            foreach (var i in items)
             {
-                var act = DataCenter.RightNowRotation?.AllBaseActions.FirstOrDefault(a => (ActionID)a.ID == item2.ID);
-
-                if (act == null) continue;
-
-                DataCenter.AddCommandAction(act, Service.Config.SpecialDuration);
-                _addedItems.Enqueue((DateTime.Now, item2));
-
-#if DEBUG
-                Svc.Log.Debug($"Added the action {act} to timeline.");
-#endif
-            }
-
-            foreach (var item2 in validItems.OfType<StateTimelineItem>())
-            {
-                DataCenter.SpecialType = item2.State;
-
-                _addedItems.Enqueue((DateTime.Now, item2));
-#if DEBUG
-                Svc.Log.Debug($"Added the state {item2.State} to timeline.");
-#endif
+                i.Enable = i.InPeriod(item);
             }
         }
-
     }
 
     internal static async void EnableAsync()

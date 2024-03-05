@@ -37,9 +37,10 @@ internal static class ActionUpdater
             var player = Player.Object;
             if (player == null) return;
 
-            circle ??= new(GroundOmenFriendly.Circle1, player, new Vector3(0, gcdHeight, 0));
-            sector ??= new(GroundOmenFriendly.CircularSector120, player, new Vector3(0, gcdHeight, 0));
-            rectangle ??= new(GroundOmenFriendly.Rectangle01, player, new Vector3(0, gcdHeight, 0));
+           
+            circle ??= new(GroundOmenFriendly.Circle.Omen(), player, new Vector3(0, gcdHeight, 0));
+            sector ??= new(GroundOmenFriendly.Fan120.Omen(), player, new Vector3(0, gcdHeight, 0));
+            rectangle ??= new(GroundOmenFriendly.Rectangle.Omen(), player, new Vector3(0, gcdHeight, 0));
 
             circle.Enable = sector.Enable = rectangle.Enable = false;
             circle.Owner = sector.Owner = rectangle.Owner = player;

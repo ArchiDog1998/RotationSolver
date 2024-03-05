@@ -96,10 +96,7 @@ public static class Watcher
                 var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
                 DataCenter.VfxNewData.Enqueue(effect);
 #if DEBUG
-                if (!Enum.GetValues<ObjectOmenType>().Any(i => i.GetAttribute<VfxPathAttribute>()?.Path == path))
-                {
-                    Svc.Log.Debug("Object: " + path);
-                }
+                Svc.Log.Debug("Object: " + path);
 #endif
             }
         }

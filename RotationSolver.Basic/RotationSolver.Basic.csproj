@@ -69,6 +69,8 @@
 
 	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj" OutputItemType="Analyzer" ExcludeAssets="All" />
 
+	  <ProjectReference Include="..\XIVPainter\XIVPainter\XIVPainter.csproj" />
+
 	  <None Include="..\COPYING.LESSER">
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>

@@ -1,11 +1,12 @@
-﻿namespace RotationSolver.Basic.Configuration.Timeline;
+﻿using ECommons.DalamudServices;
+
+namespace RotationSolver.Basic.Configuration.Timeline;
 
 [Description("State Timeline")]
-internal class StateTimelineItem : ITimelineItem
+internal class StateTimelineItem : BaseTimelineItem
 {
     public SpecialCommandType State { get; set; } = SpecialCommandType.DefenseArea;
-    public float Time { get; set; } = 3;
-    public bool InPeriod(TimelineItem item)
+    public override bool InPeriod(TimelineItem item)
     {
         var time = item.Time - DataCenter.RaidTimeRaw;
 
@@ -13,5 +14,14 @@ internal class StateTimelineItem : ITimelineItem
 
         if (time > Time || Time - time > 3) return false;
         return true;
+    }
+
+    protected override void OnEnable()
+    {
+        DataCenter.SpecialType = State;
+#if DEBUG
+        Svc.Log.Debug($"Added the state {State} to timeline.");
+#endif
+        base.OnEnable();
     }
 }
