@@ -30,7 +30,7 @@ internal static class StateUpdater
     private static AutoStatus StatusFromAutomatic()
     {
         var hasTimeline = Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)
-            && timeline.Any(p => p.Value.Any());
+            && timeline.Any(p => p.Value.Any(i => i is not DrawingTimeline));
 
         AutoStatus status = AutoStatus.None;
 

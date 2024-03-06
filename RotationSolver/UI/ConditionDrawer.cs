@@ -100,20 +100,22 @@ internal static class ConditionDrawer
         }
         return false;
     }
-    public static bool DrawDragFloat2(ConfigUnitType type, string name, ref Vector2 value, string name1, string name2)
+    public static bool DrawDragFloat2(ConfigUnitType type, string name, ref Vector2 value, string id, string name1, string name2)
     {
         ImGui.Text(name);
-        var result = DrawDragFloat(type, name1, ref value.X);
-        result |= DrawDragFloat(type, name2, ref value.Y);
+        id = "##" + id;
+        var result = DrawDragFloat(type, name1 + id, ref value.X);
+        result |= DrawDragFloat(type, name2 + id, ref value.Y);
         return result;
     }
 
-    public static bool DrawDragFloat3(ConfigUnitType type, string name, ref Vector3 value, string name1, string name2, string name3)
+    public static bool DrawDragFloat3(ConfigUnitType type, string name, ref Vector3 value, string id, string name1, string name2, string name3)
     {
         ImGui.Text(name);
-        var result = DrawDragFloat(type, name1, ref value.X);
-        result |= DrawDragFloat(type, name2, ref value.Y);
-        result |= DrawDragFloat(type, name3, ref value.Z);
+        id = "##" + id;
+        var result = DrawDragFloat(type, name1 + id, ref value.X);
+        result |= DrawDragFloat(type, name2 + id, ref value.Y);
+        result |= DrawDragFloat(type, name3 + id, ref value.Z);
         return result;
     }
 

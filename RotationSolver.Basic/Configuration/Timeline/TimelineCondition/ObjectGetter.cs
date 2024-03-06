@@ -12,7 +12,7 @@ internal class ObjectGetter
     {
         if (IsPlayer && obj is not PlayerCharacter) return false;
 
-        if (!string.IsNullOrEmpty(DataID) && new Regex(DataID).IsMatch(obj.DataId.ToString("X"))) return false;
+        if (!string.IsNullOrEmpty(DataID) && !new Regex(DataID).IsMatch(obj.DataId.ToString("X"))) return false;
 
         if (Role != JobRole.None && !obj.IsJobCategory(Role)) return false;
         return true;

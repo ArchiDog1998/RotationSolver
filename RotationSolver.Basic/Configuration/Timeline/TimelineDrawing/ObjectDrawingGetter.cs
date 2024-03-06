@@ -11,7 +11,7 @@ internal class ObjectDrawingGetter : IDrawingGetter
     public bool IsActorEffect { get; set; } = false;
     public Vector3 Position { get; set; }
     public float Rotation { get; set; }
-    public Vector3 Scale { get; set; }
+    public Vector3 Scale { get; set; } = Vector3.One;
     public ObjectGetter ObjectGetter { get; set; } = new();
     public ObjectGetter TargetGetter { get; set; } = new();
     public bool IsTargetByTarget { get; set; } = true;

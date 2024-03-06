@@ -96,7 +96,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         if (Player.Available)
         {
-            _ = XIVPainterMain.ShowOff();
+            //_ = XIVPainterMain.ShowOff();
         }
 #endif
     }

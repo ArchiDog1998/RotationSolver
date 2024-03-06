@@ -724,11 +724,8 @@ public partial class RotationConfigWindow : Window
             }
         }
 
-
-#if DEBUG
         ImGui.SameLine();
         ImGui.Text("Raid Time: " + TimeSpan.FromSeconds(DataCenter.RaidTimeRaw).ToString("hh\\:mm\\:ss\\.f"));
-#endif
 
         using var table = ImRaii.Table("Rotation Solver List Timeline", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)
@@ -810,6 +807,10 @@ public partial class RotationConfigWindow : Window
                         (Delete, [VirtualKey.DELETE]),
                         (Up, [VirtualKey.UP]),
                         (Down, [VirtualKey.DOWN]));
+
+                    ImGui.SameLine();
+
+                    using var grp = ImRaii.Group();
 
                     var time = timeLineItem.Time;
                     if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $" ##Time{timeLineItem.GetHashCode()}", ref time))
@@ -923,7 +924,21 @@ public partial class RotationConfigWindow : Window
 
             if (IconSet.GetTexture(30, out var texture))
             {
-                ImGui.Image(texture.ImGuiHandle, ConditionDrawer.IconSize * Vector2.One);
+                if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, false, $"Icon :{item.GetHashCode()}"))
+                {
+                    if(_previewItems == null)
+                    {
+                        _previewItems = item.GetDrawing();
+                    }
+                    else
+                    {
+                        foreach (var preview in _previewItems)
+                        {
+                            preview.Dispose();
+                        }
+                        _previewItems = null;
+                    }
+                }
             }
 
             ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
@@ -931,8 +946,13 @@ public partial class RotationConfigWindow : Window
                 (Up, [VirtualKey.UP]),
                 (Down, [VirtualKey.DOWN]));
 
+            ImGui.SameLine();
+            using var grp = ImRaii.Group();
             DrawingGetterDraw(item, timelineItem.ActionIDs);
         }
+
+        ImGui.Spacing();
+        ImGui.Spacing();
 
         TimelineConditionDraw(drawingItem.Condition, timelineItem);
 
@@ -970,11 +990,13 @@ public partial class RotationConfigWindow : Window
     {
         if (con is TimelineConditionSet set)
         {
-            using var grp = ImRaii.Group();
-            AddButton();
+            ConditionDrawer.DrawCondition(set.IsTrue(timelineItem));
+
             ImGui.SameLine();
+            using var grp = ImRaii.Group();
             ConditionDrawer.DrawByteEnum($"##Rule{set.GetHashCode()}", ref set.Type);
-            ImGui.Spacing();
+            ImGui.SameLine();
+            AddButton();
 
             for (int i = 0; i < set.Conditions.Count; i++)
             {
@@ -1021,6 +1043,7 @@ public partial class RotationConfigWindow : Window
                     (Copy, [VirtualKey.CONTROL]));
 
                 ImGui.SameLine();
+                using var g = ImRaii.Group();
 
                 TimelineConditionDraw(condition, timelineItem);
             }
@@ -1074,7 +1097,7 @@ public partial class RotationConfigWindow : Window
                 target.Count = count;
             }
 
-            DrawObjectGetter(target.Getter);
+            DrawObjectGetter(target.Getter, "Target Getter");
         }
         else if(con is TimelineConditionAction action)
         {
@@ -1089,21 +1112,32 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    static readonly string[] _omenNames = typeof(GroundOmenHostile).GetRuntimeFields()
+    static readonly IEnumerable<FieldInfo> _omenInfo = typeof(GroundOmenHostile).GetRuntimeFields()
         .Concat(typeof(GroundOmenNone).GetRuntimeFields())
-        .Concat(typeof(GroundOmenFriendly).GetRuntimeFields())
-        .Select(f => f.GetValue(null))
-        .OfType<string>().Select(OmenHelper.UnOmen).ToArray();
+        .Concat(typeof(GroundOmenFriendly).GetRuntimeFields());
 
-    static readonly string[] _actorNames = typeof(ActorOmen).GetRuntimeFields()
+    static readonly string[] _omenNames = _omenInfo
         .Select(f => f.GetValue(null))
-        .OfType<string>().Select(OmenHelper.UnLockOn).ToArray();
+        .OfType<string>().ToArray();
+
+    static readonly string[] _omenShowNames = _omenInfo
+        .Select(f => f.Name).ToArray();
+
+    static readonly IEnumerable<FieldInfo> _actorInfo = typeof(ActorOmen).GetRuntimeFields();
+    static readonly string[] _actorNames = _actorInfo
+        .Select(f => f.GetValue(null))
+        .OfType<string>().ToArray();
+
+    static readonly string[] _actorShowNames = _actorInfo
+        .Select(f => f.Name).ToArray();
+
+    private static IDisposable[]? _previewItems = null;
     private static void DrawingGetterDraw(IDrawingGetter drawing, uint[] actionIds)
     {
         if (drawing is StaticDrawingGetter staticDrawing)
         {
             var index = Array.IndexOf(_omenNames, staticDrawing.Path.UnOmen());
-            if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenNames, ref index))
+            if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenShowNames, ref index))
             {
                 staticDrawing.Path = _omenNames[index].Omen();
             }
@@ -1115,13 +1149,13 @@ public partial class RotationConfigWindow : Window
             }
 
             var pos = staticDrawing.Position;
-            if(ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　##" + drawing.GetHashCode(), ref pos, "X", "Y", "Z"))
+            if(ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z"))
             {
                 staticDrawing.Position = pos;
             }
 
             var scale = staticDrawing.Scale;
-            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Scale:　##" + drawing.GetHashCode(), ref scale, "X", "Y", "Z"))
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Scale:　", ref scale, drawing.GetHashCode().ToString() + "Scale", "X", "Y", "Z"))
             {
                 staticDrawing.Scale = scale;
             }
@@ -1136,10 +1170,11 @@ public partial class RotationConfigWindow : Window
                 objectDrawing.IsActorEffect = index != 0;
             }
 
+            ImGui.SameLine();
             if (objectDrawing.IsActorEffect)
             {
                 index = Array.IndexOf(_actorNames, objectDrawing.Path.UnLockOn());
-                if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _actorNames, ref index))
+                if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _actorShowNames, ref index))
                 {
                     objectDrawing.Path = _actorNames[index].LockOn();
                 }
@@ -1147,7 +1182,7 @@ public partial class RotationConfigWindow : Window
             else
             {
                 index = Array.IndexOf(_omenNames, objectDrawing.Path.UnOmen());
-                if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenNames, ref index))
+                if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenShowNames, ref index))
                 {
                     objectDrawing.Path = _omenNames[index].Omen();
                 }
@@ -1159,20 +1194,20 @@ public partial class RotationConfigWindow : Window
                 }
 
                 var pos = objectDrawing.Position;
-                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　##" + drawing.GetHashCode(), ref pos, "X", "Y", "Z"))
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z"))
                 {
                     objectDrawing.Position = pos;
                 }
 
                 var scale = objectDrawing.Scale;
-                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Scale:　##" + drawing.GetHashCode(), ref scale, "X", "Y", "Z"))
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Scale:　", ref scale, drawing.GetHashCode().ToString() + "Scale", "X", "Y", "Z"))
                 {
                     objectDrawing.Scale = scale;
                 }
             }
 
-            DrawObjectGetter(objectDrawing.ObjectGetter);
-            DrawTextDrawing(objectDrawing.ObjectText, "Object Text: ");
+            DrawObjectGetter(objectDrawing.ObjectGetter, "Object Getter");
+            DrawTextDrawing(objectDrawing.ObjectText, "Object Text");
 
             var check = objectDrawing.GetATarget;
             if(ImGui.Checkbox("Need a Target: ##" + drawing.GetHashCode(), ref check))
@@ -1191,15 +1226,15 @@ public partial class RotationConfigWindow : Window
 
             if (!check)
             {
-                DrawObjectGetter(objectDrawing.TargetGetter);
+                DrawObjectGetter(objectDrawing.TargetGetter, "Target Getter");
             }
 
-            DrawTextDrawing(objectDrawing.TargetText, "Target Text: ");
+            DrawTextDrawing(objectDrawing.TargetText, "Target Text");
         }
         else if(drawing is ActionDrawingGetter actionDrawing)
         {
             var index = Array.IndexOf(_omenNames, actionDrawing.Path.UnOmen());
-            if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenNames, ref index))
+            if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenShowNames, ref index))
             {
                 actionDrawing.Path = _omenNames[index].Omen();
             }
@@ -1220,7 +1255,7 @@ public partial class RotationConfigWindow : Window
             }
 
             var pos = actionDrawing.Position;
-            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　##" + drawing.GetHashCode(), ref pos, "X", "Y", "Z"))
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position: ", ref pos, drawing.GetHashCode().ToString(), "X", "Y", "Z"))
             {
                 actionDrawing.Position = pos;
             }
@@ -1237,26 +1272,38 @@ public partial class RotationConfigWindow : Window
                 actionDrawing.Y = scale;
             }
 
-            DrawObjectGetter(actionDrawing.ObjectGetter);
+            DrawObjectGetter(actionDrawing.ObjectGetter, "Object Getter");
         }
     }
 
-    private static void DrawObjectGetter(ObjectGetter getter)
+    private static void DrawObjectGetter(ObjectGetter getter, string getterName)
     {
+        ImGui.Text(getterName);
+
+        using var indent = new ImRaii.Indent();
+        indent.Push();
+
         var check = getter.IsPlayer;
         if (ImGui.Checkbox("Is A Player: ##" + getter.GetHashCode(), ref check))
         {
             getter.IsPlayer = check;
         }
 
+        ImGui.SameLine();
+
+        ImGui.Text("Job Role:");
+        ImGui.SameLine();
         var v = getter.Role;
-        if (ConditionDrawer.DrawByteEnum("Job Role: ##" + getter.GetHashCode(), ref v))
+        if (ConditionDrawer.DrawByteEnum("Job Role" + getter.GetHashCode(), ref v))
         {
             getter.Role = v;
         }
 
+        ImGui.SameLine();
+
+        ImGui.SetNextItemWidth(150 * Scale);
         var name = getter.DataID;
-        if(ImGui.InputText("Data ID :## " + getter.GetHashCode(), ref name, 256))
+        if(ImGui.InputText("Data ID## " + getter.GetHashCode(), ref name, 256))
         {
             getter.DataID = name;
         }
@@ -1273,7 +1320,7 @@ public partial class RotationConfigWindow : Window
         if (string.IsNullOrEmpty(text)) return;
 
         var positionOffset = textDrawing.PositionOffset;
-        if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position Offset:　##" + textDrawing.GetHashCode(), ref positionOffset, "X", "Y", "Z"))
+        if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position Offset: ", ref positionOffset, textDrawing.GetHashCode().ToString(), "X", "Y", "Z"))
         {
             textDrawing.PositionOffset = positionOffset;
         }
@@ -1286,7 +1333,7 @@ public partial class RotationConfigWindow : Window
         }
 
         var padding = textDrawing.Padding;
-        if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Pixels, "Background Padding:　##" + textDrawing.GetHashCode(), ref padding, "X", "Y"))
+        if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Pixels, "Background Padding: ", ref padding, textDrawing.GetHashCode().ToString(),  "X", "Y"))
         {
             textDrawing.Padding = padding;
         }

@@ -96,10 +96,6 @@ public static class JobRoleExtension
             JobRole.Melee => [Job.MNK, Job.DRG, Job.NIN, Job.SAM, Job.RPR],
             JobRole.RangedPhysical => [Job.BRD, Job.MCH, Job.DNC],
             JobRole.RangedMagical => [Job.BLM, Job.SMN, Job.RDM, Job.BLU],
-            JobRole.Ranged => [
-                                .. JobRole.RangedPhysical.ToJobs(),
-                                .. JobRole.RangedMagical.ToJobs()
-                              ],
             _ => [],
         };
     }
