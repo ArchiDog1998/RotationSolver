@@ -3,16 +3,16 @@
 namespace RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 internal class TextDrawing
 {
-    public string? Text { get; set; }
+    public string Text { get; set; } = "";
     public Vector3 PositionOffset { get; set; }
 
     public Vector2 Padding { get; set; } = Vector2.One * 5;
 
     public float Scale { get; set; } = 1;
 
-    public uint BackgroundColor { get; set; } = 0x00000080;
+    public Vector4 BackgroundColor { get; set; } = new(0, 0, 0, 0.5f);
 
-    public uint Color { get; set; } = uint.MaxValue;
+    public Vector4 Color { get; set; } = new(1, 1, 1, 1);
 
     /// <summary>
     /// The corner of the background.
@@ -26,8 +26,8 @@ internal class TextDrawing
         {
             HideIfInvisible = false,
             Padding = Padding,
-            BackgroundColor = BackgroundColor,
-            Color = Color,
+            BackgroundColor = ImGui.ColorConvertFloat4ToU32(BackgroundColor),
+            Color = ImGui.ColorConvertFloat4ToU32(Color),
             Scale = Scale,
         };
     }

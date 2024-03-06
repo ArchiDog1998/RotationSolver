@@ -12,8 +12,8 @@ internal class ActionDrawingGetter : IDrawingGetter
 {
     public uint ActionID { get; set; }
     public string Path { get; set; } = "";
-    public float? X { get; set; }
-    public float? Y { get; set; }
+    public float X { get; set; }
+    public float Y { get; set; }
     public Vector3 Position { get; set; }
     public float Rotation { get; set; }
     public ObjectGetter ObjectGetter { get; set; } = new();
@@ -39,8 +39,8 @@ internal class ActionDrawingGetter : IDrawingGetter
         var omen = action.Omen.Value?.Path?.RawString;
         omen = string.IsNullOrEmpty(omen) ? Path : omen.Omen();
 
-        var x = X ?? (action.XAxisModifier > 0 ? action.XAxisModifier / 2 : action.EffectRange);
-        var y = Y ?? action.EffectRange;
+        var x = X != 0 ? X : (action.XAxisModifier > 0 ? action.XAxisModifier / 2 : action.EffectRange);
+        var y = Y != 0 ? Y : action.EffectRange;
         var scale = new Vector3(x, XIVPainterMain.HeightScale, y);
 
         if (action.TargetArea)

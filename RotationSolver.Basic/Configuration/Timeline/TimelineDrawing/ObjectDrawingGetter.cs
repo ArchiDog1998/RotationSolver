@@ -13,6 +13,9 @@ internal class ObjectDrawingGetter : IDrawingGetter
     public float Rotation { get; set; }
     public Vector3 Scale { get; set; }
     public ObjectGetter ObjectGetter { get; set; } = new();
+    public ObjectGetter TargetGetter { get; set; } = new();
+    public bool IsTargetByTarget { get; set; } = true;
+    public bool GetATarget { get; set; } = false;
     public TextDrawing ObjectText { get; set; } = new();
     public TextDrawing TargetText { get; set; } = new();
 
@@ -23,9 +26,23 @@ internal class ObjectDrawingGetter : IDrawingGetter
             ..objs.SelectMany(GetObjectDrawing)];
     }
 
+    private GameObject[] TargetGet(GameObject obj)
+    {
+        if (!GetATarget) return [];
+        if (IsTargetByTarget)
+        {
+            var tar = obj.TargetObject;
+            if (tar == null) return [];
+            return [tar];
+        }
+        else
+        {
+            return [.. Svc.Objects.Where(TargetGetter.CanGet)];
+        }
+    }
     private IDisposable[] GetTextDrawing(GameObject obj)
     {
-        return [..ObjectGetter.TargetGetter(obj).Select(TargetText.GetText)
+        return [..TargetGet(obj).Select(TargetText.GetText)
             .Append(ObjectText.GetText(obj))
             .OfType<IDisposable>()];
     }
@@ -34,7 +51,7 @@ internal class ObjectDrawingGetter : IDrawingGetter
     {
         if (string.IsNullOrEmpty(Path)) return [];
 
-        var targets = ObjectGetter.TargetGetter(obj);
+        var targets = TargetGet(obj);
         if (IsActorEffect)
         {
             if (targets.Length > 0)

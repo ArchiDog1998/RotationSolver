@@ -23,10 +23,10 @@ public enum JobRole : byte
     /// </summary>
     Melee = 2,
 
-    /// <summary>
-    /// 
-    /// </summary>
-    Ranged = 3,
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //Ranged = 3,
 
     /// <summary>
     /// 
@@ -43,15 +43,15 @@ public enum JobRole : byte
     /// </summary>
     RangedMagical = 6,
 
-    /// <summary>
-    /// 
-    /// </summary>
-    DiscipleOfTheLand = 7,
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //DiscipleOfTheLand = 7,
 
-    /// <summary>
-    /// 
-    /// </summary>
-    DiscipleOfTheHand = 8,
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //DiscipleOfTheHand = 8,
 }
 
 /// <summary>
@@ -68,14 +68,14 @@ public static class JobRoleExtension
     {
         var role = (JobRole)job.Role;
 
-        if (role is JobRole.Ranged or JobRole.None)
+        if (role is (JobRole)3 or JobRole.None)
         {
             role = job.ClassJobCategory.Row switch
             {
                 30 => JobRole.RangedPhysical,
                 31 => JobRole.RangedMagical,
-                32 => JobRole.DiscipleOfTheLand,
-                33 => JobRole.DiscipleOfTheHand,
+                //32 => JobRole.DiscipleOfTheLand,
+                //33 => JobRole.DiscipleOfTheHand,
                 _ => JobRole.None,
             };
         }

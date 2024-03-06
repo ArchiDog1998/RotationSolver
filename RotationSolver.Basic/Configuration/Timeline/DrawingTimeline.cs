@@ -7,6 +7,8 @@ namespace RotationSolver.Basic.Configuration.Timeline;
 [Description("Drawing Timeline")]
 internal class DrawingTimeline : BaseTimelineItem
 {
+    public float Duration { get; set; } = 5;
+
     public ITimelineCondition Condition { get; set; } = new TrueTimelineCondition();
     public List<IDrawingGetter> DrawingGetters { get; set; } = [];
 
@@ -21,7 +23,7 @@ internal class DrawingTimeline : BaseTimelineItem
     {
         var time = item.Time - DataCenter.RaidTimeRaw;
 
-        if (time < 0) return false;
+        if (time < Time - Duration) return false;
         if (time > Time) return false;
 
         if (!Condition.IsTrue()) return false;

@@ -1,14 +1,9 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
-using ECommons.GameFunctions;
-using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json.Linq;
-using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.UI;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using XIVPainter.Vfx;
 
 namespace RotationSolver.Updaters;
 internal static partial class RaidTimeUpdater
@@ -65,10 +60,9 @@ internal static partial class RaidTimeUpdater
 
         foreach (var item in DataCenter.TimelineItems)
         {
-            var time = item.Time - DataCenter.RaidTimeRaw;
-
-            if (time < 0) continue;
             if (!timeline.TryGetValue(item.Time, out var items)) continue;
+
+            var time = item.Time - DataCenter.RaidTimeRaw;
 
             foreach (var i in items)
             {
@@ -185,14 +179,16 @@ internal static partial class RaidTimeUpdater
         var name = GetNameFromObjectId(targetActorId);
         var actionId = ReadUshort(dataPtr, 0);
 
-        foreach (var item in DataCenter.TimelineItems)
+        for (int i = 0; i < DataCenter.TimelineItems.Length; i++)
         {
+            var item = DataCenter.TimelineItems[i];
             if (!item.IsInWindow) continue;
             if (item.Type is not TimelineType.StartsUsing) continue;
 
             if (!item["id", actionId]) continue;
             if (!item["source", name]) continue;
 
+            item.LastActionID = actionId;
             item.UpdateRaidTimeOffset();
             break;
         }
@@ -231,24 +227,24 @@ internal static partial class RaidTimeUpdater
     {
         var name = GetNameFromObjectId(targetActorId);
 
-        foreach (var item in DataCenter.TimelineItems)
+        for (int i = 0; i < DataCenter.TimelineItems.Length; i++)
         {
+            var item = DataCenter.TimelineItems[i];
             if (!item.IsInWindow) continue;
             if (item.Type is not TimelineType.Ability) continue;
 
-            if (!item["id", ReadUint(dataPtr, 28)]) continue;
+            var actionId = ReadUint(dataPtr, 28);
+            if (!item["id", actionId]) continue;
             if (!item["source", name]) continue;
 
             if (DateTime.Now - _actionUpdateTime < TimeSpan.FromSeconds(0.5)) continue;
 
+            item.LastActionID = actionId;
             item.UpdateRaidTimeOffset();
             _actionUpdateTime = DateTime.Now;
             break;
         }
-
     }
-
-
 
     private static void OnActorControl(IntPtr dataPtr)
     {

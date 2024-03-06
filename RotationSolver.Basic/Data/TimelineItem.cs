@@ -18,6 +18,8 @@ internal enum TimelineType : byte
 internal struct TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
 {
     private uint[]? ids = null;
+
+    public uint LastActionID { get; set; }
     public uint[] ActionIDs => ids ??= GetActionIds();
     private readonly uint[] GetActionIds()
     {
@@ -26,15 +28,32 @@ internal struct TimelineItem(float time, string name, TimelineType type, JObject
 
         if (idsRaw == null || idsRaw.Length == 0) return [];
 
-        var regex = idsRaw.Select(id => new Regex(id));
+        List<uint> reuslt = [];
+        List<Regex> regexes = [];
 
+        foreach ( var id in idsRaw)
+        {
+            if(uint.TryParse(id, out var i))
+            {
+                reuslt.Add(i);
+            }
+            else
+            {
+                regexes.Add(new(id));
+            }
+        }
+
+        if (regexes.Count == 0) return [.. reuslt];
+
+#if DEBUG
+        Svc.Log.Debug("Need to cast the regex, with " + string.Join(", ", regexes));
+#endif
         var count = Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.RowCount ?? ushort.MaxValue;
 
-        List<uint> reuslt = [];
         for (uint i = 0; i < count; i++)
         {
             var text = i.ToString("X");
-            if (regex.Any(i => i.IsMatch(text)))
+            if (regexes.Any(i => i.IsMatch(text)))
             {
                 reuslt.Add(i);
             }

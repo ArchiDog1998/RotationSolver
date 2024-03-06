@@ -5,6 +5,7 @@ using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
+using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -18,7 +19,6 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
-using RotationSolver.Basic.Data;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -26,7 +26,11 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System;
 using System.Diagnostics;
+using System.Xml.Linq;
 using XIVPainter;
+using XIVPainter.Vfx;
+using static Dalamud.Interface.Utility.Raii.ImRaii;
+using static FFXIVClientStructs.FFXIV.Client.UI.Agent.AgentMJIFarmManagement;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
 
@@ -847,7 +851,7 @@ public partial class RotationConfigWindow : Window
                     }
                     else if(timeLineItem is DrawingTimeline drawingItem)
                     {
-                        DrawDrawingTimeline(drawingItem);
+                        DrawDrawingTimeline(drawingItem, item.ActionIDs);
                     }
                 }
 
@@ -881,8 +885,16 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private static void DrawDrawingTimeline(DrawingTimeline drawingItem)
+    private static void DrawDrawingTimeline(DrawingTimeline drawingItem, uint[] actionIds)
     {
+        var duration = drawingItem.Duration;
+        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"Duration##Duration{drawingItem.GetHashCode()}", ref duration))
+        {
+            drawingItem.Duration = duration;
+        }
+
+        ImGui.SameLine();
+
         AddButton();
 
         for (int i = 0; i < drawingItem.DrawingGetters.Count; i++)
@@ -923,7 +935,7 @@ public partial class RotationConfigWindow : Window
                 (Up, [VirtualKey.UP]),
                 (Down, [VirtualKey.DOWN]));
 
-            DrawingGetterDraw(item);
+            DrawingGetterDraw(item, actionIds);
         }
 
         TimelineConditionDraw(drawingItem.Condition);
@@ -940,7 +952,11 @@ public partial class RotationConfigWindow : Window
             {
                 AddOneCondition<StaticDrawingGetter>();
                 AddOneCondition<ObjectDrawingGetter>();
-                AddOneCondition<ActionDrawingGetter>();
+
+                if (actionIds.Length > 0)
+                {
+                    AddOneCondition<ActionDrawingGetter>();
+                }
             }
 
             void AddOneCondition<T>() where T : IDrawingGetter
@@ -959,9 +975,221 @@ public partial class RotationConfigWindow : Window
         //TODO: the condition drawing in the config window.
     }
 
-    private static void DrawingGetterDraw(IDrawingGetter drawing)
-    {
+    static readonly string[] _omenNames = typeof(GroundOmenHostile).GetRuntimeFields()
+        .Concat(typeof(GroundOmenNone).GetRuntimeFields())
+        .Concat(typeof(GroundOmenFriendly).GetRuntimeFields())
+        .Select(f => f.GetValue(null))
+        .OfType<string>().Select(OmenHelper.UnOmen).ToArray();
 
+    static readonly string[] _actorNames = typeof(ActorOmen).GetRuntimeFields()
+        .Select(f => f.GetValue(null))
+        .OfType<string>().Select(OmenHelper.UnLockOn).ToArray();
+    private static void DrawingGetterDraw(IDrawingGetter drawing, uint[] actionIds)
+    {
+        if (drawing is StaticDrawingGetter staticDrawing)
+        {
+            var index = Array.IndexOf(_omenNames, staticDrawing.Path.UnOmen());
+            if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenNames, ref index))
+            {
+                staticDrawing.Path = _omenNames[index].Omen();
+            }
+
+            var rot = staticDrawing.Rotation / MathF.PI * 180f;
+            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Degree, "Rotation: ##" + drawing.GetHashCode(), ref rot))
+            {
+                staticDrawing.Rotation = rot * MathF.PI / 180f;
+            }
+
+            var pos = staticDrawing.Position;
+            if(ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　##" + drawing.GetHashCode(), ref pos, "X", "Y", "Z"))
+            {
+                staticDrawing.Position = pos;
+            }
+
+            var scale = staticDrawing.Scale;
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Scale:　##" + drawing.GetHashCode(), ref scale, "X", "Y", "Z"))
+            {
+                staticDrawing.Scale = scale;
+            }
+
+            DrawTextDrawing(staticDrawing.Text, "Showing Text: ");
+        }
+        else if(drawing is ObjectDrawingGetter objectDrawing)
+        {
+            var index = objectDrawing.IsActorEffect ? 1 : 0;
+            if(ImGuiHelper.SelectableCombo("##ActorType" + drawing.GetHashCode(), ["Ground", "Actor"], ref index))
+            {
+                objectDrawing.IsActorEffect = index != 0;
+            }
+
+            if (objectDrawing.IsActorEffect)
+            {
+                index = Array.IndexOf(_actorNames, objectDrawing.Path.UnLockOn());
+                if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _actorNames, ref index))
+                {
+                    objectDrawing.Path = _actorNames[index].LockOn();
+                }
+            }
+            else
+            {
+                index = Array.IndexOf(_omenNames, objectDrawing.Path.UnOmen());
+                if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenNames, ref index))
+                {
+                    objectDrawing.Path = _omenNames[index].Omen();
+                }
+
+                var rot = objectDrawing.Rotation / MathF.PI * 180f;
+                if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Degree, "Rotation: ##" + drawing.GetHashCode(), ref rot))
+                {
+                    objectDrawing.Rotation = rot * MathF.PI / 180f;
+                }
+
+                var pos = objectDrawing.Position;
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　##" + drawing.GetHashCode(), ref pos, "X", "Y", "Z"))
+                {
+                    objectDrawing.Position = pos;
+                }
+
+                var scale = objectDrawing.Scale;
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Scale:　##" + drawing.GetHashCode(), ref scale, "X", "Y", "Z"))
+                {
+                    objectDrawing.Scale = scale;
+                }
+            }
+
+            DrawObjectGetter(objectDrawing.ObjectGetter);
+            DrawTextDrawing(objectDrawing.ObjectText, "Object Text: ");
+
+            var check = objectDrawing.GetATarget;
+            if(ImGui.Checkbox("Need a Target: ##" + drawing.GetHashCode(), ref check))
+            {
+                objectDrawing.GetATarget = check;
+            }
+
+            if (!check) return;
+
+            ImGui.SameLine();
+            check = objectDrawing.IsTargetByTarget;
+            if (ImGui.Checkbox("Target By target: ##" + drawing.GetHashCode(), ref check))
+            {
+                objectDrawing.IsTargetByTarget = check;
+            }
+
+            if (!check)
+            {
+                DrawObjectGetter(objectDrawing.TargetGetter);
+            }
+
+            DrawTextDrawing(objectDrawing.TargetText, "Target Text: ");
+        }
+        else if(drawing is ActionDrawingGetter actionDrawing)
+        {
+            var index = Array.IndexOf(_omenNames, actionDrawing.Path.UnOmen());
+            if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenNames, ref index))
+            {
+                actionDrawing.Path = _omenNames[index].Omen();
+            }
+
+            index = Array.IndexOf(actionIds, actionDrawing.ActionID);
+            var actionNames = actionIds.Select(i => Svc.Data.GetExcelSheet<GAction>()?.GetRow(i)?.Name.RawString ?? "Unnamed Action").ToArray();
+
+            ImGui.SameLine();
+            if (ImGuiHelper.SelectableCombo("Action ##Select Action" + drawing.GetHashCode(), actionNames, ref index))
+            {
+                actionDrawing.ActionID = actionIds[index];
+            }
+
+            var rot = actionDrawing.Rotation / MathF.PI * 180f;
+            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Degree, "Rotation: ##" + drawing.GetHashCode(), ref rot))
+            {
+                actionDrawing.Rotation = rot * MathF.PI / 180f;
+            }
+
+            var pos = actionDrawing.Position;
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　##" + drawing.GetHashCode(), ref pos, "X", "Y", "Z"))
+            {
+                actionDrawing.Position = pos;
+            }
+
+            var scale = actionDrawing.X;
+            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Yalms, "Scale X:　##" + drawing.GetHashCode(), ref scale))
+            {
+                actionDrawing.X = scale;
+            }
+
+            scale = actionDrawing.Y;
+            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Yalms, "Scale Y:　##" + drawing.GetHashCode(), ref scale))
+            {
+                actionDrawing.Y = scale;
+            }
+
+            DrawObjectGetter(actionDrawing.ObjectGetter);
+        }
+    }
+
+    private static void DrawObjectGetter(ObjectGetter getter)
+    {
+        var check = getter.IsPlayer;
+        if (ImGui.Checkbox("Is A Player: ##" + getter.GetHashCode(), ref check))
+        {
+            getter.IsPlayer = check;
+        }
+
+        var id = (int)getter.DataID;
+        if(ConditionDrawer.DrawDragInt("Data ID :## " + getter.GetHashCode(), ref id))
+        {
+            getter.DataID = (uint)id;
+        }
+
+        var v = getter.Role;
+        if(ConditionDrawer.DrawByteEnum("Job Role: ##" + getter.GetHashCode(), ref v))
+        {
+            getter.Role = v;
+        }
+    }
+
+    private static void DrawTextDrawing(TextDrawing textDrawing, string name)
+    {
+        var text = textDrawing.Text;
+        if (ImGui.InputText(name + "##" + textDrawing.GetHashCode(), ref text, 256))
+        {
+            textDrawing.Text = text;
+        }
+
+        if (string.IsNullOrEmpty(text)) return;
+
+        var positionOffset = textDrawing.PositionOffset;
+        if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position Offset:　##" + textDrawing.GetHashCode(), ref positionOffset, "X", "Y", "Z"))
+        {
+            textDrawing.PositionOffset = positionOffset;
+        }
+
+        ImGui.SetNextItemWidth(Scale * 150);
+        var scale = textDrawing.Scale;
+        if (ImGui.DragFloat($"Scale##{textDrawing.GetHashCode()}", ref scale, 0.1f, 0.1f, 20, $"{scale:F2}{ConfigUnitType.Percent.ToSymbol()}"))
+        {
+            textDrawing.Scale = scale;
+        }
+
+        var padding = textDrawing.Padding;
+        if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Pixels, "Background Padding:　##" + textDrawing.GetHashCode(), ref padding, "X", "Y"))
+        {
+            textDrawing.Padding = padding;
+        }
+
+        var value = textDrawing.Color;
+        ImGui.SetNextItemWidth(150 * 1.5f * Scale);
+        if (ImGui.ColorEdit4($"Color##{textDrawing.GetHashCode()}", ref value))
+        {
+            textDrawing.Color = value;
+        }
+
+        value = textDrawing.BackgroundColor;
+        ImGui.SetNextItemWidth(150 * 1.5f * Scale);
+        if (ImGui.ColorEdit4($"Background Color##{textDrawing.GetHashCode()}", ref value))
+        {
+            textDrawing.BackgroundColor = value;
+        }
     }
     #endregion
 
