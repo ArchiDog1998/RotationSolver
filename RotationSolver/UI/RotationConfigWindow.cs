@@ -16,6 +16,9 @@ using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
+using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
+using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
+using RotationSolver.Basic.Data;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
@@ -188,7 +191,7 @@ public partial class RotationConfigWindow : Window
                     }
 
                     ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
-        (DeleteFile, [Dalamud.Game.ClientState.Keys.VirtualKey.DELETE]));
+                        (DeleteFile, [VirtualKey.DELETE]));
                 }
             }
 
@@ -701,7 +704,8 @@ public partial class RotationConfigWindow : Window
             var str = ImGui.GetClipboardText();
             try
             {
-                var set = JsonConvert.DeserializeObject<Dictionary<float, List<BaseTimelineItem>>>(str, new ITimelineItemConverter())!;
+                var set = JsonConvert.DeserializeObject<Dictionary<float, List<BaseTimelineItem>>>(str, 
+                    new ITimelineItemConverter(), new IDrawingGetterConverter(), new ITimelineConditionConverter())!;
                 Service.Config.Timeline[_territoryId] = timeLine = set;
             }
             catch (Exception ex)
@@ -843,7 +847,7 @@ public partial class RotationConfigWindow : Window
                     }
                     else if(timeLineItem is DrawingTimeline drawingItem)
                     {
-                        //TODO: the drawing thing in the config window.
+                        DrawDrawingTimeline(drawingItem);
                     }
                 }
 
@@ -875,6 +879,89 @@ public partial class RotationConfigWindow : Window
                 }
             }
         }
+    }
+
+    private static void DrawDrawingTimeline(DrawingTimeline drawingItem)
+    {
+        AddButton();
+
+        for (int i = 0; i < drawingItem.DrawingGetters.Count; i++)
+        {
+            var item = drawingItem.DrawingGetters[i];
+
+            void Delete()
+            {
+                drawingItem.DrawingGetters.RemoveAt(i);
+            };
+
+            void Up()
+            {
+                drawingItem.DrawingGetters.RemoveAt(i);
+                drawingItem.DrawingGetters.Insert(Math.Max(0, i - 1), item);
+            };
+
+            void Down()
+            {
+                drawingItem.DrawingGetters.RemoveAt(i);
+                drawingItem.DrawingGetters.Insert(Math.Min(drawingItem.DrawingGetters.Count, i + 1), item);
+            }
+
+            var key = $"DrawingItem Pop Up: {item.GetHashCode()}";
+
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
+                (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
+                (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
+                (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]));
+
+            if (IconSet.GetTexture(30, out var texture))
+            {
+                ImGui.Image(texture.ImGuiHandle, ConditionDrawer.IconSize * Vector2.One);
+            }
+
+            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+                (Delete, [VirtualKey.DELETE]),
+                (Up, [VirtualKey.UP]),
+                (Down, [VirtualKey.DOWN]));
+
+            DrawingGetterDraw(item);
+        }
+
+        TimelineConditionDraw(drawingItem.Condition);
+
+        void AddButton()
+        {
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddDrawingButton" + drawingItem.GetHashCode()))
+            {
+                ImGui.OpenPopup("PopupDrawingButton" + drawingItem.GetHashCode());
+            }
+
+            using var popUp = ImRaii.Popup("PopupDrawingButton" + drawingItem.GetHashCode());
+            if (popUp)
+            {
+                AddOneCondition<StaticDrawingGetter>();
+                AddOneCondition<ObjectDrawingGetter>();
+                AddOneCondition<ActionDrawingGetter>();
+            }
+
+            void AddOneCondition<T>() where T : IDrawingGetter
+            {
+                if (ImGui.Selectable(typeof(T).Local()))
+                {
+                    drawingItem.DrawingGetters.Add(Activator.CreateInstance<T>());
+                    ImGui.CloseCurrentPopup();
+                }
+            }
+        }
+    }
+
+    private static void TimelineConditionDraw(ITimelineCondition condition)
+    {
+        //TODO: the condition drawing in the config window.
+    }
+
+    private static void DrawingGetterDraw(IDrawingGetter drawing)
+    {
+
     }
     #endregion
 

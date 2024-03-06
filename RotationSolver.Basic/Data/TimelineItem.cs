@@ -15,9 +15,34 @@ internal enum TimelineType : byte
     AddedCombatant,
 }
 
-internal readonly struct TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
+internal struct TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
 {
-    private RaidLangs.Lang Lang
+    private uint[]? ids = null;
+    public uint[] ActionIDs => ids ??= GetActionIds();
+    private readonly uint[] GetActionIds()
+    {
+        if (Type is not TimelineType.Ability and not TimelineType.StartsUsing) return [];
+        var idsRaw = this["id"];
+
+        if (idsRaw == null || idsRaw.Length == 0) return [];
+
+        var regex = idsRaw.Select(id => new Regex(id));
+
+        var count = Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.RowCount ?? ushort.MaxValue;
+
+        List<uint> reuslt = [];
+        for (uint i = 0; i < count; i++)
+        {
+            var text = i.ToString("X");
+            if (regex.Any(i => i.IsMatch(text)))
+            {
+                reuslt.Add(i);
+            }
+        }
+        return [.. reuslt];
+    }
+
+    private readonly RaidLangs.Lang Lang
     {
         get
         {
@@ -35,15 +60,15 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
             return new RaidLangs.Lang();
         }
     }
-    public TimelineType Type => type;
+    public readonly TimelineType Type => type;
 
-    public float Time => time;
+    public readonly float Time => time;
 
-    public float WindowMin => windowMin;
-    public float WindowMax => windowMax;
-    public JObject? Object => obj;
+    public readonly float WindowMin => windowMin;
+    public readonly float WindowMax => windowMax;
+    public readonly JObject? Object => obj;
 
-    public string Name
+    public readonly string Name
     {
         get
         {
@@ -52,14 +77,14 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
         }
     }
 
-    public bool IsInWindow => DataCenter.RaidTimeRaw >= Time - WindowMin && DataCenter.RaidTimeRaw <= Time + WindowMax;
+    public readonly bool IsInWindow => DataCenter.RaidTimeRaw >= Time - WindowMin && DataCenter.RaidTimeRaw <= Time + WindowMax;
 
-    public bool IsShown => Name is not "--Reset--" and not "--sync--";
+    public readonly bool IsShown => Name is not "--Reset--" and not "--sync--";
 
-    public bool this[string propertyName, uint matchValue]
+    public readonly bool this[string propertyName, uint matchValue]
         => this[propertyName, matchValue.ToString("X")];
 
-    public bool this[string propertyName, string matchString]
+    public readonly bool this[string propertyName, string matchString]
     {
         get
         {
@@ -80,7 +105,7 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
         }
     }
 
-    public string[] this[string propertyName]
+    public readonly string[] this[string propertyName]
     {
         get
         {
@@ -159,7 +184,7 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
         }
     }
 
-    public void UpdateRaidTimeOffset()
+    public readonly void UpdateRaidTimeOffset()
     {
         if (Name == "--Reset--")
         {
@@ -178,7 +203,7 @@ internal readonly struct TimelineItem(float time, string name, TimelineType type
         }
     }
 
-    public override string ToString()
+    public readonly override string ToString()
     {
         return $"""
             IsShown: {IsShown},

@@ -8,6 +8,8 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
+using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
+using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -15,7 +17,6 @@ using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
 using XIVPainter;
-using XIVPainter.Element;
 
 namespace RotationSolver;
 
@@ -43,7 +44,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         try
         {
             Service.Config = JsonConvert.DeserializeObject<Configs>(
-                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName), new ITimelineItemConverter())
+                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName),
+                new ITimelineItemConverter(), new IDrawingGetterConverter(), new ITimelineConditionConverter())
                 ?? new Configs();
         }
         catch (Exception ex)
@@ -95,20 +97,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         if (Player.Available)
         {
             _ = XIVPainterMain.ShowOff();
-            //_ = new StaticVfx($"vfx/omen/eff/{GroundOmenFriendly.Circle}.avfx", Player.Object, new Vector3(1, 1, 3))
-            //{
-            //    RotateAddition = MathF.PI / 4,
-            //    LocationOffset = new Vector3(1, 0, 2),
-            //};
-
-            //Task.Run(async () =>
-            //{
-            //    while(true)
-            //    {
-            //        new Share2(Player.Object, 3);
-            //        await Task.Delay(6000);
-            //    }
-            //});
         }
 #endif
     }
