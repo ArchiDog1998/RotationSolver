@@ -1,5 +1,5 @@
 ﻿namespace RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
-public interface ITimelineCondition
+internal interface ITimelineCondition
 {
-    bool IsTrue();
+    bool IsTrue(TimelineItem item);
 }

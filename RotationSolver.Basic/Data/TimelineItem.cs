@@ -15,13 +15,13 @@ internal enum TimelineType : byte
     AddedCombatant,
 }
 
-internal struct TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
+internal class TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
 {
     private uint[]? ids = null;
 
     public uint LastActionID { get; set; }
     public uint[] ActionIDs => ids ??= GetActionIds();
-    private readonly uint[] GetActionIds()
+    private uint[] GetActionIds()
     {
         if (Type is not TimelineType.Ability and not TimelineType.StartsUsing) return [];
         var idsRaw = this["id"];
@@ -61,7 +61,7 @@ internal struct TimelineItem(float time, string name, TimelineType type, JObject
         return [.. reuslt];
     }
 
-    private readonly RaidLangs.Lang Lang
+    private RaidLangs.Lang Lang
     {
         get
         {
@@ -79,15 +79,15 @@ internal struct TimelineItem(float time, string name, TimelineType type, JObject
             return new RaidLangs.Lang();
         }
     }
-    public readonly TimelineType Type => type;
+    public TimelineType Type => type;
 
-    public readonly float Time => time;
+    public float Time => time;
 
-    public readonly float WindowMin => windowMin;
-    public readonly float WindowMax => windowMax;
-    public readonly JObject? Object => obj;
+    public float WindowMin => windowMin;
+    public float WindowMax => windowMax;
+    public JObject? Object => obj;
 
-    public readonly string Name
+    public string Name
     {
         get
         {
@@ -96,14 +96,14 @@ internal struct TimelineItem(float time, string name, TimelineType type, JObject
         }
     }
 
-    public readonly bool IsInWindow => DataCenter.RaidTimeRaw >= Time - WindowMin && DataCenter.RaidTimeRaw <= Time + WindowMax;
+    public bool IsInWindow => DataCenter.RaidTimeRaw >= Time - WindowMin && DataCenter.RaidTimeRaw <= Time + WindowMax;
 
-    public readonly bool IsShown => Name is not "--Reset--" and not "--sync--";
+    public bool IsShown => Name is not "--Reset--" and not "--sync--";
 
-    public readonly bool this[string propertyName, uint matchValue]
+    public bool this[string propertyName, uint matchValue]
         => this[propertyName, matchValue.ToString("X")];
 
-    public readonly bool this[string propertyName, string matchString]
+    public bool this[string propertyName, string matchString]
     {
         get
         {
@@ -124,7 +124,7 @@ internal struct TimelineItem(float time, string name, TimelineType type, JObject
         }
     }
 
-    public readonly string[] this[string propertyName]
+    public string[] this[string propertyName]
     {
         get
         {
@@ -203,7 +203,7 @@ internal struct TimelineItem(float time, string name, TimelineType type, JObject
         }
     }
 
-    public readonly void UpdateRaidTimeOffset()
+    public void UpdateRaidTimeOffset()
     {
         if (Name == "--Reset--")
         {
@@ -222,7 +222,7 @@ internal struct TimelineItem(float time, string name, TimelineType type, JObject
         }
     }
 
-    public readonly override string ToString()
+    public override string ToString()
     {
         return $"""
             IsShown: {IsShown},

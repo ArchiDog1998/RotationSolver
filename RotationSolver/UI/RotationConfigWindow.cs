@@ -5,7 +5,6 @@ using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
-using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -16,6 +15,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
@@ -24,13 +24,9 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
-using System;
 using System.Diagnostics;
-using System.Xml.Linq;
 using XIVPainter;
 using XIVPainter.Vfx;
-using static Dalamud.Interface.Utility.Raii.ImRaii;
-using static FFXIVClientStructs.FFXIV.Client.UI.Agent.AgentMJIFarmManagement;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
 
@@ -851,7 +847,7 @@ public partial class RotationConfigWindow : Window
                     }
                     else if(timeLineItem is DrawingTimeline drawingItem)
                     {
-                        DrawDrawingTimeline(drawingItem, item.ActionIDs);
+                        DrawDrawingTimeline(drawingItem, item);
                     }
                 }
 
@@ -885,7 +881,7 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private static void DrawDrawingTimeline(DrawingTimeline drawingItem, uint[] actionIds)
+    private static void DrawDrawingTimeline(DrawingTimeline drawingItem, TimelineItem timelineItem)
     {
         var duration = drawingItem.Duration;
         if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"Duration##Duration{drawingItem.GetHashCode()}", ref duration))
@@ -935,10 +931,10 @@ public partial class RotationConfigWindow : Window
                 (Up, [VirtualKey.UP]),
                 (Down, [VirtualKey.DOWN]));
 
-            DrawingGetterDraw(item, actionIds);
+            DrawingGetterDraw(item, timelineItem.ActionIDs);
         }
 
-        TimelineConditionDraw(drawingItem.Condition);
+        TimelineConditionDraw(drawingItem.Condition, timelineItem);
 
         void AddButton()
         {
@@ -953,7 +949,7 @@ public partial class RotationConfigWindow : Window
                 AddOneCondition<StaticDrawingGetter>();
                 AddOneCondition<ObjectDrawingGetter>();
 
-                if (actionIds.Length > 0)
+                if (timelineItem.ActionIDs.Length > 0)
                 {
                     AddOneCondition<ActionDrawingGetter>();
                 }
@@ -970,9 +966,127 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private static void TimelineConditionDraw(ITimelineCondition condition)
+    private static void TimelineConditionDraw(ITimelineCondition con, TimelineItem timelineItem)
     {
-        //TODO: the condition drawing in the config window.
+        if (con is TimelineConditionSet set)
+        {
+            using var grp = ImRaii.Group();
+            AddButton();
+            ImGui.SameLine();
+            ConditionDrawer.DrawByteEnum($"##Rule{set.GetHashCode()}", ref set.Type);
+            ImGui.Spacing();
+
+            for (int i = 0; i < set.Conditions.Count; i++)
+            {
+                var condition = set.Conditions[i];
+
+                void Delete()
+                {
+                    set.Conditions.RemoveAt(i);
+                };
+
+                void Up()
+                {
+                    set.Conditions.RemoveAt(i);
+                    set.Conditions.Insert(Math.Max(0, i - 1), condition);
+                };
+
+                void Down()
+                {
+                    set.Conditions.RemoveAt(i);
+                    set.Conditions.Insert(Math.Min(set.Conditions.Count, i + 1), condition);
+                }
+
+                void Copy()
+                {
+                    var str = JsonConvert.SerializeObject(set.Conditions[i], Formatting.Indented);
+                    ImGui.SetClipboardText(str);
+                }
+
+                var key = $"Condition Pop Up: {condition.GetHashCode()}";
+
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
+                    (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
+                    (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
+                    (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
+                    (UiString.ConfigWindow_Actions_Copy.Local(), Copy, ["Ctrl"]));
+
+
+                ConditionDrawer.DrawCondition(condition.IsTrue(timelineItem));
+
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+                    (Delete, [VirtualKey.DELETE]),
+                    (Up, [VirtualKey.UP]),
+                    (Down, [VirtualKey.DOWN]),
+                    (Copy, [VirtualKey.CONTROL]));
+
+                ImGui.SameLine();
+
+                TimelineConditionDraw(condition, timelineItem);
+            }
+
+            void AddButton()
+            {
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddButton" + set.GetHashCode().ToString()))
+                {
+                    ImGui.OpenPopup("Popup" + set.GetHashCode().ToString());
+                }
+
+                using var popUp = ImRaii.Popup("Popup" + set.GetHashCode().ToString());
+                if (popUp)
+                {
+                    AddOneCondition<TimelineConditionSet>();
+                    AddOneCondition<TimelineConditionAction>();
+                    AddOneCondition<TimelineConditionTargetCount>();
+
+                    if (ImGui.Selectable(UiString.ActionSequencer_FromClipboard.Local()))
+                    {
+                        var str = ImGui.GetClipboardText();
+                        try
+                        {
+                            var s = JsonConvert.DeserializeObject<ICondition>(str, new IConditionConverter())!;
+                            set.Conditions.Add(set);
+                        }
+                        catch (Exception ex)
+                        {
+                            Svc.Log.Warning(ex, "Failed to load the condition.");
+                        }
+                        ImGui.CloseCurrentPopup();
+                    }
+                }
+
+                void AddOneCondition<T>() where T : ITimelineCondition
+                {
+                    if (ImGui.Selectable(typeof(T).Local()))
+                    {
+                        set.Conditions.Add(Activator.CreateInstance<T>());
+                        ImGui.CloseCurrentPopup();
+                    }
+                }
+            }
+
+        }
+        else if(con is TimelineConditionTargetCount target)
+        {
+            var count = target.Count;
+            if (ConditionDrawer.DrawDragInt("Target Count: ##" + target.GetHashCode(), ref count))
+            {
+                target.Count = count;
+            }
+
+            DrawObjectGetter(target.Getter);
+        }
+        else if(con is TimelineConditionAction action)
+        {
+            var index = Array.IndexOf(timelineItem.ActionIDs, action.ActionID);
+            var actionNames = timelineItem.ActionIDs.Select(i => Svc.Data.GetExcelSheet<GAction>()?.GetRow(i)?.Name.RawString ?? "Unnamed Action").ToArray();
+
+            ImGui.SameLine();
+            if (ImGuiHelper.SelectableCombo("Action ##Select Action" + action.GetHashCode(), actionNames, ref index))
+            {
+                action.ActionID = timelineItem.ActionIDs[index];
+            }
+        }
     }
 
     static readonly string[] _omenNames = typeof(GroundOmenHostile).GetRuntimeFields()
@@ -1135,16 +1249,16 @@ public partial class RotationConfigWindow : Window
             getter.IsPlayer = check;
         }
 
-        var id = (int)getter.DataID;
-        if(ConditionDrawer.DrawDragInt("Data ID :## " + getter.GetHashCode(), ref id))
-        {
-            getter.DataID = (uint)id;
-        }
-
         var v = getter.Role;
-        if(ConditionDrawer.DrawByteEnum("Job Role: ##" + getter.GetHashCode(), ref v))
+        if (ConditionDrawer.DrawByteEnum("Job Role: ##" + getter.GetHashCode(), ref v))
         {
             getter.Role = v;
+        }
+
+        var name = getter.DataID;
+        if(ImGui.InputText("Data ID :## " + getter.GetHashCode(), ref name, 256))
+        {
+            getter.DataID = name;
         }
     }
 

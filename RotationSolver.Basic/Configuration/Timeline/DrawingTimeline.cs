@@ -9,7 +9,10 @@ internal class DrawingTimeline : BaseTimelineItem
 {
     public float Duration { get; set; } = 5;
 
-    public ITimelineCondition Condition { get; set; } = new TrueTimelineCondition();
+    public TimelineConditionSet Condition { get; set; } = new()
+    {
+        Conditions = [new TrueTimelineCondition()],
+    };
     public List<IDrawingGetter> DrawingGetters { get; set; } = [];
 
     private IDisposable[] _drawings = [];
@@ -26,7 +29,7 @@ internal class DrawingTimeline : BaseTimelineItem
         if (time < Time - Duration) return false;
         if (time > Time) return false;
 
-        if (!Condition.IsTrue()) return false;
+        if (!Condition.IsTrue(item)) return false;
 
         return true;
     }
