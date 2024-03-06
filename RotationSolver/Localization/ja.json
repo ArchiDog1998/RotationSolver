@@ -361,5 +361,15 @@
   "TargetDelayName": "The range of random delay for finding a target.",
   "ShowOmenName": "Show The Omen things.",
   "AutoCloseChestWindowName": "Auto close the loot window when auto opened the chest.",
-  "RotationSolver.Data.UiString.ConfigWindow_About_OpenConfigFolder": "Open Config Folder"
+  "RotationSolver.Data.UiString.ConfigWindow_About_OpenConfigFolder": "Open Config Folder",
+  "RotationSolver.Basic.Configuration.Timeline.DrawingTimeline": "Drawing Timeline",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineDrawing.StaticDrawingGetter": "Static Drawing",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineDrawing.ObjectDrawingGetter": "Object Drawing",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineDrawing.ActionDrawingGetter": "Action Drawing",
+  "RotationSolver.Basic.Data.JobRole.None": "None",
+  "RotationSolver.Basic.Data.JobRole.Tank": "Tank",
+  "RotationSolver.Basic.Data.JobRole.Melee": "Melee",
+  "RotationSolver.Basic.Data.JobRole.Healer": "Healer",
+  "RotationSolver.Basic.Data.JobRole.RangedPhysical": "RangedPhysical",
+  "RotationSolver.Basic.Data.JobRole.RangedMagical": "RangedMagical"
 }
