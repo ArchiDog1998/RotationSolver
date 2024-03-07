@@ -1,6 +1,8 @@
 ﻿using ECommons.DalamudServices;
 
 namespace RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
+
+[Description("Target Count Condition")]
 internal class TimelineConditionTargetCount : ITimelineCondition
 {
     public int Count { get; set; }

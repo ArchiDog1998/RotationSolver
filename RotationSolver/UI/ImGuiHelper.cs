@@ -165,6 +165,7 @@ internal static class ImGuiHelper
             ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
         }
 
+        ImGui.SetNextWindowSizeConstraints(Vector2.Zero, Vector2.One * 500);
         if (ImGui.BeginPopup(popUp))
         {
             for (int i = 0; i < count; i++)

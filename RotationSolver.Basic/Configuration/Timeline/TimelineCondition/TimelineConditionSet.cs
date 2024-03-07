@@ -2,6 +2,7 @@
 
 namespace RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 
+[Description("Condition Set")]
 internal class TimelineConditionSet : ITimelineCondition
 {
     public List<ITimelineCondition> Conditions { get; set; } = [];

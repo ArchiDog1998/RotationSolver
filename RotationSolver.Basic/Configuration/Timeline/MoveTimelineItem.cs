@@ -13,20 +13,23 @@ internal class MoveTimelineItem : BaseTimelineItem
         if (time < 0) return false;
 
         if (time > Time || Time - time > 3) return false;
+
+        if (!Condition.IsTrue(item)) return false;
+
         return true;
     }
 
-    protected override void OnEnable()
+    internal override void OnEnable()
     {
         base.OnEnable();
 
         var ipc = Svc.PluginInterface.GetIpcSubscriber<List<Vector3>, bool, object>("vnavmesh.Path.MoveTo");
 
-        if(ipc == null)
+        if (ipc == null)
         {
             Svc.Log.Error("Can't find the vnavmesh to move.");
             return;
         }
-        ipc.InvokeAction(Points, false);
+        ipc.InvokeAction(new (Points), false);
     }
 }

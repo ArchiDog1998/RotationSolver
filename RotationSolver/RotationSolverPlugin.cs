@@ -98,26 +98,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         if (Player.Available)
         {
-            Task.Run(async () =>
-            {
-                var player = Player.Object;
-                var target = Svc.Targets.Target ?? player;
-                
-                foreach (var str in Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets2.Lockon>()!.Select(i => i.Unknown0.RawString))
-                {
-                    using var i = new ActorVfx(str.LockOn(), player, target);
-                    Svc.Toasts.ShowError(str);
-                    await Task.Delay(5000);
-                }
-
-                Svc.Toasts.ShowQuest("That's All Lock On!", new Dalamud.Game.Gui.Toast.QuestToastOptions()
-                {
-                    DisplayCheckmark = true,
-                    PlaySound = true,
-                });
-            });
-
-            _ = XIVPainterMain.ShowOff();
+            //_ = XIVPainterMain.ShowOff();
         }
 #endif
     }

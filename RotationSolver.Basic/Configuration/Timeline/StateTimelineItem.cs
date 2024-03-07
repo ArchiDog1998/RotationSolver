@@ -13,10 +13,13 @@ internal class StateTimelineItem : BaseTimelineItem
         if (time < 0) return false;
 
         if (time > Time || Time - time > 3) return false;
+
+        if (!Condition.IsTrue(item)) return false;
+
         return true;
     }
 
-    protected override void OnEnable()
+    internal override void OnEnable()
     {
         DataCenter.SpecialType = State;
 #if DEBUG

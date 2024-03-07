@@ -9,7 +9,6 @@ internal class DrawingTimeline : BaseTimelineItem
 {
     public float Duration { get; set; } = 5;
 
-    public TimelineConditionSet Condition { get; set; } = new();
     public List<IDrawingGetter> DrawingGetters { get; set; } = [];
 
     private IDisposable[] _drawings = [];
@@ -31,7 +30,7 @@ internal class DrawingTimeline : BaseTimelineItem
         return true;
     }
 
-    protected override void OnEnable()
+    internal override void OnEnable()
     {
         foreach (var item in _drawings)
         {
@@ -46,7 +45,7 @@ internal class DrawingTimeline : BaseTimelineItem
         base.OnEnable();
     }
 
-    protected override void OnDisable()
+    internal override void OnDisable()
     {
         foreach (var item in _drawings)
         {

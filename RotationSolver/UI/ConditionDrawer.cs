@@ -109,9 +109,20 @@ internal static class ConditionDrawer
         return result;
     }
 
-    public static bool DrawDragFloat3(ConfigUnitType type, string name, ref Vector3 value, string id, string name1, string name2, string name3)
+    public static bool DrawDragFloat3(ConfigUnitType type, string name, ref Vector3 value, string id, string name1, string name2, string name3, Func<Vector3>? func = null)
     {
-        ImGui.Text(name);
+        if(func == null)
+        {
+            ImGui.Text(name);
+        }
+        else
+        {
+            if(ImGui.Button(name + "##" + id))
+            {
+                value = func();
+            }
+        }
+
         id = "##" + id;
         var result = DrawDragFloat(type, name1 + id, ref value.X);
         result |= DrawDragFloat(type, name2 + id, ref value.Y);

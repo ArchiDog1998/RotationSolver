@@ -1,4 +1,6 @@
 ﻿namespace RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
+
+[Description("Action Condition")]
 internal class TimelineConditionAction : ITimelineCondition
 {
     public uint ActionID { get; set; }

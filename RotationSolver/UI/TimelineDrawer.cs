@@ -11,6 +11,7 @@ using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
+using RotationSolver.Basic.Data;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
@@ -153,6 +154,10 @@ internal static class TimelineDrawer
 
                 for (int i = 0; i < timeLineItems.Count; i++)
                 {
+                    if (i != 0)
+                    {
+                        ImGui.Separator();
+                    }
                     var timeLineItem = timeLineItems[i];
 
                     void Delete()
@@ -172,25 +177,38 @@ internal static class TimelineDrawer
                         timeLineItems.Insert(Math.Min(timeLineItems.Count, i + 1), timeLineItem);
                     }
 
+                    void Execute()
+                    {
+                        Task.Run(async () =>
+                        {
+                            timeLineItem.OnEnable();
+                            await Task.Delay(3000);
+                            timeLineItem.OnDisable();
+                        });
+                    }
+
                     var key = $"TimelineItem Pop Up: {timeLineItem.GetHashCode()}";
 
                     ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
                         (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
                         (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                        (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]));
+                        (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
+                        ("Execute", Execute, ["→"]));
 
                     ConditionDrawer.DrawCondition(timeLineItem.InPeriod(item));
 
                     ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
                         (Delete, [VirtualKey.DELETE]),
                         (Up, [VirtualKey.UP]),
-                        (Down, [VirtualKey.DOWN]));
+                        (Down, [VirtualKey.DOWN]),
+                        (Execute, [VirtualKey.RIGHT]));
 
                     ImGui.SameLine();
 
                     using var grp = ImRaii.Group();
 
                     DrawTimelineItem(timeLineItem, item);
+
                 }
 
                 ImGui.TableNextRow();
@@ -270,13 +288,14 @@ internal static class TimelineDrawer
             ImGui.SameLine();
 
             var macro = macroItem.Macro;
-            if (ImGui.InputTextMultiline("Macro: ##" + macroItem.GetHashCode(), ref macro, 500, Vector2.One * -1))
+            if (ImGui.InputTextMultiline("Macro: ##" + macroItem.GetHashCode(), ref macro, 500, new Vector2( -1, 50)))
             {
                 macroItem.Macro = macro;
             }
         }
         else if (timeLineItem is MoveTimelineItem moveItem)
         {
+            ImGui.SameLine();
             if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddPoint" + moveItem.GetHashCode())
                 && Player.Available)
             {
@@ -313,7 +332,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture(10, out var texture))
                 {
-                    if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, ConditionDrawer.IconSize * Vector2.One, "Position " + i))
+                    if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, ConditionDrawer.IconSize * Vector2.One, "Position " + moveItem.GetHashCode() + i))
                     {
                         if (_previewItems == null)
                         {
@@ -336,8 +355,18 @@ internal static class TimelineDrawer
                     (Down, [VirtualKey.DOWN]));
 
                 ImGui.SameLine();
+
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position", ref point, "Pos" + moveItem.GetHashCode(), "X", "Y", "Z", () => Player.Object?.Position ?? default))
+                {
+                    moveItem.Points[i] = point;
+                }
             }
         }
+
+        ImGui.Spacing();
+        ImGui.Spacing();
+
+        TimelineConditionDraw(timeLineItem.Condition, item);
     }
 
     private static void DrawDrawingTimeline(DrawingTimeline drawingItem, TimelineItem timelineItem)
@@ -354,6 +383,10 @@ internal static class TimelineDrawer
 
         for (int i = 0; i < drawingItem.DrawingGetters.Count; i++)
         {
+            if(i != 0)
+            {
+                ImGui.Spacing();
+            }
             var item = drawingItem.DrawingGetters[i];
 
             void Delete()
@@ -408,11 +441,6 @@ internal static class TimelineDrawer
             using var grp = ImRaii.Group();
             DrawingGetterDraw(item, timelineItem.ActionIDs);
         }
-
-        ImGui.Spacing();
-        ImGui.Spacing();
-
-        TimelineConditionDraw(drawingItem.Condition, timelineItem);
 
         void AddButton()
         {
@@ -633,7 +661,7 @@ internal static class TimelineDrawer
             }
 
             var pos = staticDrawing.Position;
-            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z"))
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z", () => Player.Object?.Position ?? default))
             {
                 staticDrawing.Position = pos;
             }
@@ -678,7 +706,7 @@ internal static class TimelineDrawer
                 }
 
                 var pos = objectDrawing.Position;
-                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z"))
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z", () => Player.Object?.Position ?? default))
                 {
                     objectDrawing.Position = pos;
                 }
@@ -739,7 +767,7 @@ internal static class TimelineDrawer
             }
 
             var pos = actionDrawing.Position;
-            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position: ", ref pos, drawing.GetHashCode().ToString(), "X", "Y", "Z"))
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position: ", ref pos, drawing.GetHashCode().ToString(), "X", "Y", "Z", () => Player.Object?.Position ?? default))
             {
                 actionDrawing.Position = pos;
             }
@@ -763,7 +791,7 @@ internal static class TimelineDrawer
     private static Status[]? _badStatus = null;
     internal static Status[] BadStatus
         => _badStatus ??= Service.GetSheet<Status>()
-                    .Where(s => s.StatusCategory == 2)
+                    .Where(s => s.StatusCategory == 2 && s.Icon != 0)
                     .ToArray();
 
     private static void DrawObjectGetter(ObjectGetter getter, string getterName)
@@ -857,11 +885,13 @@ internal static class TimelineDrawer
         }
 
         var vfx = getter.VfxPath;
+        ImGui.SetNextItemWidth(300 * Scale);
         if (ImGui.InputText("Vfx ## " + getter.GetHashCode(), ref vfx, 256))
         {
             getter.VfxPath = vfx;
         }
 
+        ImGui.NewLine();
         var param = (int)getter.ObjectEffect1;
         if (ConditionDrawer.DrawDragInt("Effect Param1##" + getter.GetHashCode(), ref param))
         {
@@ -878,6 +908,7 @@ internal static class TimelineDrawer
     private static void DrawTextDrawing(TextDrawing textDrawing, string name)
     {
         var text = textDrawing.Text;
+        ImGui.SetNextItemWidth(300 * Scale);
         if (ImGui.InputText(name + "##" + textDrawing.GetHashCode(), ref text, 256))
         {
             textDrawing.Text = text;
