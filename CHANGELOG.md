@@ -1,5 +1,42 @@
 # Changelog
 
+## [4.2.0](https://github.com/ArchiDog1998/RotationSolver/compare/v4.1.2...v4.2.0) (2024-03-07)
+
+
+### Features
+
+* timeline drawing first commit. ([df13743](https://github.com/ArchiDog1998/RotationSolver/commit/df1374338dba4741af44dd9eadc4acea97a0f7b3))
+
+
+### Bug Fixes
+
+* action effect check. ([e6e4cf0](https://github.com/ArchiDog1998/RotationSolver/commit/e6e4cf0922df2e6401a266ec9d1f28d9b51b90de))
+* action list drawing. ([74e2afe](https://github.com/ArchiDog1998/RotationSolver/commit/74e2afe40a6e226111bbedaf7f7d63a8c21a0c4a))
+* add a lot of ui for raidboss drawing. ([673dd83](https://github.com/ArchiDog1998/RotationSolver/commit/673dd83f68c5ed4ebed7877cde619c0cd1602d88))
+* add addedCombatant feature for timeraid. ([69249b3](https://github.com/ArchiDog1998/RotationSolver/commit/69249b38d23597cb8bacf9dc7bcc28eca79197c2))
+* add an option for omen. ([5032cd5](https://github.com/ArchiDog1998/RotationSolver/commit/5032cd5854b17a62118fa57f20362ca3c6fe8361))
+* add drawing ui etc without tests. ([a2db516](https://github.com/ArchiDog1998/RotationSolver/commit/a2db516eebeb1fc845513920e20d5a4ee7299229))
+* add drawing ui. ([7a441f0](https://github.com/ArchiDog1998/RotationSolver/commit/7a441f0bc9bc05e236425a0b800ab04beb23eeb5))
+* add macro timeline item. ([49c5723](https://github.com/ArchiDog1998/RotationSolver/commit/49c5723dd596b8bf9f625619b19053459a70efbd))
+* add no casting window. ([a2fcba6](https://github.com/ArchiDog1998/RotationSolver/commit/a2fcba6acdd3c68bc9b44fe838fbe7c8751fff08))
+* casting action preview and some configs. ([ff2fd04](https://github.com/ArchiDog1998/RotationSolver/commit/ff2fd04c4c73569da1768937b72d450b2b3082e8))
+* changed the way to add the state in raid timeline. ([1884b1f](https://github.com/ArchiDog1998/RotationSolver/commit/1884b1f4e2a1c5cf6c11337a1a4eaf032339651f))
+* changed the way to show the sub targets. ([31c74a0](https://github.com/ArchiDog1998/RotationSolver/commit/31c74a00395cb19187c1fa85318bbd9e0e7d7518))
+* changed timeline layout. ([4876484](https://github.com/ArchiDog1998/RotationSolver/commit/48764849746298a24aa3cc8b38cb26c800bf792d))
+* defense fix. ([f91e744](https://github.com/ArchiDog1998/RotationSolver/commit/f91e744ab018c406dfe3e0cff5c2af0e0aaa9e61))
+* fixed raid time cast using. ([44b675c](https://github.com/ArchiDog1998/RotationSolver/commit/44b675cb1947e9b2c4c0469037b661f08ec0ee71))
+* fixed some ui stuff. ([2654937](https://github.com/ArchiDog1998/RotationSolver/commit/26549378ada9bf234654f211f7cb45fd6246f301))
+* fixed timeline check. ([ffcd482](https://github.com/ArchiDog1998/RotationSolver/commit/ffcd48213da4968c2a30a8481478f4f6b31bb90f))
+* fixed timeline. ([37ce88e](https://github.com/ArchiDog1998/RotationSolver/commit/37ce88eee787dbbe7fd64c0fe3b3d5379c104597))
+* positional fix. ([52b2aa9](https://github.com/ArchiDog1998/RotationSolver/commit/52b2aa90450562e12ce3b6128311201718377df9))
+* poslock. ([795eb78](https://github.com/ArchiDog1998/RotationSolver/commit/795eb78f0a8854dac72da9f43fb2882faa75ac85))
+* timeline check. ([0a5f5a8](https://github.com/ArchiDog1998/RotationSolver/commit/0a5f5a8b19b08ee0d68fc1664ea1b65b3fc649a2))
+* timeline drawing fixed. ([5a24eff](https://github.com/ArchiDog1998/RotationSolver/commit/5a24eff45c5521d2446571f04f9f9110b37a65e4))
+* timeline drawing testing. ([d9b08e6](https://github.com/ArchiDog1998/RotationSolver/commit/d9b08e69807d2412ad3eb88a0def44a9a242c6de))
+* timeline fixing. ([ee534f0](https://github.com/ArchiDog1998/RotationSolver/commit/ee534f09e4c2f89f444defe2f830ee97e73ffcc7))
+* timeline. ([fd8f281](https://github.com/ArchiDog1998/RotationSolver/commit/fd8f2811eac39db379a8aa05457877074c24ef7f))
+* vfx fixed. ([0ebc6b0](https://github.com/ArchiDog1998/RotationSolver/commit/0ebc6b03713055150be2d1b5c3cf6b13523b544d))
+
 ## [4.1.2](https://github.com/ArchiDog1998/RotationSolver/compare/v4.1.1...v4.1.2) (2024-02-29)
 
 
