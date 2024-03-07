@@ -18,7 +18,11 @@ internal class ITimelineConditionConverter : JsonCreationConverter<ITimelineCond
         {
             return new TimelineConditionTargetCount();
         }
+        else if (FieldExists(nameof(TimelineConditionMapEffect.Position), jObject))
+        {
+            return new TimelineConditionMapEffect();
+        }
 
-        return new TrueTimelineCondition();
+        return null;
     }
 }

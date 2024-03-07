@@ -24,7 +24,10 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
+using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using XIVPainter;
 using XIVPainter.Vfx;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
@@ -1110,6 +1113,32 @@ public partial class RotationConfigWindow : Window
                 action.ActionID = timelineItem.ActionIDs[index];
             }
         }
+        else if(con is TimelineConditionMapEffect map)
+        {
+            var duration = map.TimeDuration;
+            if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Seconds, "Effect Duration", ref duration, "Effect duration" + map.GetHashCode(), "Start", "End"))
+            {
+                map.TimeDuration = duration;
+            }
+
+            var param = map.Position;
+            if (ConditionDrawer.DrawDragInt("Position##" + map.GetHashCode(), ref param))
+            {
+                map.Position = (ushort)param;
+            }
+
+            param = map.Param1;
+            if (ConditionDrawer.DrawDragInt("Param1##" + map.GetHashCode(), ref param))
+            {
+                map.Param1 = (ushort)param;
+            }
+
+            param = map.Param2;
+            if (ConditionDrawer.DrawDragInt("Param2##" + map.GetHashCode(), ref param))
+            {
+                map.Param2 = (ushort)param;
+            }
+        }
     }
 
     static readonly IEnumerable<FieldInfo> _omenInfo = typeof(GroundOmenHostile).GetRuntimeFields()
@@ -1276,36 +1305,112 @@ public partial class RotationConfigWindow : Window
         }
     }
 
+    private static Status[]? _badStatus = null;
+    internal static Status[] BadStatus
+        => _badStatus ??= Service.GetSheet<Status>()
+                    .Where(s => s.StatusCategory == 2)
+                    .ToArray();
+
     private static void DrawObjectGetter(ObjectGetter getter, string getterName)
     {
-        ImGui.Text(getterName);
-
-        using var indent = new ImRaii.Indent();
-        indent.Push();
-
-        var check = getter.IsPlayer;
-        if (ImGui.Checkbox("Is A Player: ##" + getter.GetHashCode(), ref check))
+        if (ImGui.Button(getterName + "##" + getter.GetHashCode()))
         {
-            getter.IsPlayer = check;
+            if (_previewItems == null)
+            {
+                _previewItems = [.. Svc.Objects.Where(getter.CanGet).Select(b => new StaticVfx(GroundOmenNone.Circle.Omen(), b, Vector3.One))];
+            }
+            else
+            {
+                foreach (var preview in _previewItems)
+                {
+                    preview.Dispose();
+                }
+                _previewItems = null;
+            }
         }
 
-        ImGui.SameLine();
+        using var indent = ImRaii.PushIndent();
 
-        ImGui.Text("Job Role:");
-        ImGui.SameLine();
-        var v = getter.Role;
-        if (ConditionDrawer.DrawByteEnum("Job Role" + getter.GetHashCode(), ref v))
+        var check = getter.Type;
+
+        if (ConditionDrawer.DrawByteEnum("Object Type: ##" + getter.GetHashCode(), ref check))
         {
-            getter.Role = v;
+            getter.Type = check;
         }
 
+        switch (check)
+        {
+            case ObjectType.Myself:
+                return;
+
+            case ObjectType.PlayerCharactor:
+                ImGui.SameLine();
+                ImGui.Text("Job Role:");
+                ImGui.SameLine();
+                var v = getter.Role;
+                if (ConditionDrawer.DrawByteEnum("Job Role" + getter.GetHashCode(), ref v))
+                {
+                    getter.Role = v;
+                }
+                break;
+
+            case ObjectType.BattleCharactor:
+
+                ImGui.SameLine();
+
+                ImGui.SetNextItemWidth(150 * Scale);
+                var name = getter.DataID;
+                if (ImGui.InputText("Data ID## " + getter.GetHashCode(), ref name, 256))
+                {
+                    getter.DataID = name;
+                }
+
+                break;
+        }
         ImGui.SameLine();
 
-        ImGui.SetNextItemWidth(150 * Scale);
-        var name = getter.DataID;
-        if(ImGui.InputText("Data ID## " + getter.GetHashCode(), ref name, 256))
+        var key = "Status PopUp" + getter.GetHashCode();
+        var status = Svc.Data.GetExcelSheet<Status>()?.GetRow(getter.Status);
+        if (IconSet.GetTexture(status?.Icon ?? 10100, out var texture, 10100))
         {
-            getter.DataID = name;
+            ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * Scale, "Status" + getter.Status.ToString());
+
+            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, $"{status?.Name ?? "Unknown"} ({getter.Status})", false,
+                (() => getter.Status = 0, [VirtualKey.DELETE]));
+        }
+        StatusPopUp(key, BadStatus, ref _statusSearching, s => getter.Status = s.RowId);
+
+        if (getter.Status != 0)
+        {
+            var time = getter.StatusTime;
+            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, "Status Time: ##" + getter.GetHashCode(), ref time))
+            {
+                getter.StatusTime = time;
+            }
+        }
+
+        var duration = getter.TimeDuration;
+        if (ConditionDrawer.DrawDragFloat2( ConfigUnitType.Seconds, "Effect Duration", ref duration, "Effect duration" + getter.GetHashCode(), "Start", "End"))
+        {
+            getter.TimeDuration = duration;
+        }
+
+        var vfx = getter.VfxPath;
+        if (ImGui.InputText("Vfx ## " + getter.GetHashCode(), ref vfx, 256))
+        {
+            getter.VfxPath = vfx;
+        }
+
+        var param = (int)getter.ObjectEffect1;
+        if (ConditionDrawer.DrawDragInt("Effect Param1##" + getter.GetHashCode(), ref param))
+        {
+            getter.ObjectEffect1 = (ushort)param;
+        }
+
+        param = getter.ObjectEffect2;
+        if (ConditionDrawer.DrawDragInt("Effect Param2##" + getter.GetHashCode(), ref param))
+        {
+            getter.ObjectEffect2 = (ushort)param;
         }
     }
 
@@ -1318,6 +1423,8 @@ public partial class RotationConfigWindow : Window
         }
 
         if (string.IsNullOrEmpty(text)) return;
+
+        using var indent = ImRaii.PushIndent();
 
         var positionOffset = textDrawing.PositionOffset;
         if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position Offset: ", ref positionOffset, textDrawing.GetHashCode().ToString(), "X", "Y", "Z"))
@@ -2772,7 +2879,7 @@ public partial class RotationConfigWindow : Window
                 ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * Scale, "Status" + status.RowId.ToString());
 
                 ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false,
-                    (Delete, [Dalamud.Game.ClientState.Keys.VirtualKey.DELETE]));
+                    (Delete, [VirtualKey.DELETE]));
             }
         }
 

@@ -9,7 +9,7 @@ internal class TimelineConditionSet : ITimelineCondition
     public LogicalType Type;
     public bool IsTrue(TimelineItem item)
     {
-        if (Conditions.Count == 0) return false;
+        if (Conditions.Count == 0) return true;
 
         return Type switch
         {

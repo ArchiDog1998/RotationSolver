@@ -836,75 +836,6 @@ internal static class ConditionDrawer
                 ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
                 ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
                 break;
-
-            case TargetConditionType.ObjectEffect:
-                ImGui.SameLine();
-
-                ImGui.Text("P1:");
-                DrawDragInt($"##Param1{targetCondition.GetHashCode()}", ref targetCondition.GCD);
-
-                ImGui.SameLine();
-
-                ImGui.Text("P2:");
-                DrawDragInt($"##Param2{targetCondition.GetHashCode()}", ref targetCondition.Param2);
-
-                ImGui.SameLine();
-
-                ImGui.Text("Time Offset:");
-                ImGui.SameLine();
-                const float MIN = 0, MAX = 60;
-
-                ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
-                if (ImGui.DragFloatRange2($"##TimeOffset {targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, ref targetCondition.TimeEnd, 0.1f, MIN, MAX))
-                {
-                    targetCondition.DistanceOrTime = Math.Max(Math.Min(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MIN);
-                    targetCondition.TimeEnd = Math.Min(Math.Max(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MAX);
-                }
-
-                ImGui.SameLine();
-                check = targetCondition.FromSelf ? 1 : 0;
-                if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}",
-                [
-                    UiString.ActionSequencer_StatusAll.Local(),
-                    UiString.ActionSequencer_StatusSelf.Local(),
-                ], ref check))
-                {
-                    targetCondition.FromSelf = check != 0;
-                }
-                break;
-
-            case TargetConditionType.Vfx:
-                ImGui.SameLine();
-
-                ImGui.Text("Vfx Path:");
-                ImGui.SameLine();
-
-                ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
-                ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
-
-                ImGui.SameLine();
-
-                ImGui.Text("Time Offset:");
-                ImGui.SameLine();
-
-                ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
-                if (ImGui.DragFloatRange2($"##TimeOffset {targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime, ref targetCondition.TimeEnd, 0.1f, MIN, MAX))
-                {
-                    targetCondition.DistanceOrTime = Math.Max(Math.Min(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MIN);
-                    targetCondition.TimeEnd = Math.Min(Math.Max(targetCondition.DistanceOrTime, targetCondition.TimeEnd), MAX);
-                }
-
-                ImGui.SameLine();
-                check = targetCondition.FromSelf ? 1 : 0;
-                if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}",
-                [
-                    UiString.ActionSequencer_StatusAll.Local(),
-                    UiString.ActionSequencer_StatusSelf.Local(),
-                ], ref check))
-                {
-                    targetCondition.FromSelf = check != 0;
-                }
-                break;
         }
 
         if (targetCondition._action == null && targetCondition.TargetType == TargetType.Target)
@@ -932,9 +863,9 @@ internal static class ConditionDrawer
             case TerritoryConditionType.TerritoryContentType:
                 ImGui.SameLine();
 
-                var type = (TerritoryContentType)territoryCondition.Param1;
+                var type = (TerritoryContentType)territoryCondition.TerritoryId;
                 DrawByteEnum($"##TerritoryContentType{territoryCondition.GetHashCode()}", ref type);
-                territoryCondition.Param1 = (int)type;
+                territoryCondition.TerritoryId = (int)type;
                 break;
 
             case TerritoryConditionType.TerritoryName:
@@ -966,7 +897,7 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
 
                 ImGui.Text("P1:");
-                DrawDragInt($"##Param1{territoryCondition.GetHashCode()}", ref territoryCondition.Param1);
+                DrawDragInt($"##Param1{territoryCondition.GetHashCode()}", ref territoryCondition.TerritoryId);
 
                 ImGui.SameLine();
 

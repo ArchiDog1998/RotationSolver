@@ -16,7 +16,7 @@ internal class TargetCondition : DelayCondition
     public TargetType TargetType;
     public TargetConditionType TargetConditionType;
 
-    public float DistanceOrTime, TimeEnd;
+    public float DistanceOrTime;
     public int GCD, Param2;
 
     public string CastingActionName = string.Empty;
@@ -197,39 +197,6 @@ internal class TargetCondition : DelayCondition
                 }
                 result = tar.Name.TextValue == CastingActionName;
                 break;
-
-            case TargetConditionType.ObjectEffect:
-                foreach (var effect in DataCenter.ObjectEffects.Reverse())
-                {
-                    var time = effect.TimeDuration.TotalSeconds;
-                    if (time > DistanceOrTime && time < TimeEnd
-                        && effect.Param1 == GCD
-                        && effect.Param2 == Param2)
-                    {
-                        if (!FromSelf || effect.ObjectId == tar.ObjectId)
-                        {
-                            result = true;
-                            break;
-                        }
-                    }
-                }
-                break;
-
-            case TargetConditionType.Vfx:
-                foreach (var effect in DataCenter.VfxNewData.Reverse())
-                {
-                    var time = effect.TimeDuration.TotalSeconds;
-                    if (time > DistanceOrTime && time < TimeEnd
-                        && effect.Path == CastingActionName)
-                    {
-                        if (!FromSelf || effect.ObjectId == tar.ObjectId)
-                        {
-                            result = true;
-                            break;
-                        }
-                    }
-                }
-                break;
         }
 
         return result;
@@ -297,10 +264,4 @@ internal enum TargetConditionType : byte
 
     [Description("Target Name")]
     TargetName,
-
-    [Description("Object Effect")]
-    ObjectEffect,
-
-    [Description("Vfx")]
-    Vfx,
 }
