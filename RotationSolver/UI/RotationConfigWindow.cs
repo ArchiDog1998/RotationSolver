@@ -853,6 +853,16 @@ public partial class RotationConfigWindow : Window
                     {
                         DrawDrawingTimeline(drawingItem, item);
                     }
+                    else if(timeLineItem is MacroTimelineItem macroItem)
+                    {
+                        ImGui.SameLine();
+
+                        var macro = macroItem.Macro;
+                        if(ImGui.InputTextMultiline("Macro: ##" + macroItem.GetHashCode(), ref macro, 500, Vector2.One * -1))
+                        {
+                            macroItem.Macro = macro;
+                        }
+                    }
                 }
 
                 ImGui.TableNextRow();
@@ -870,6 +880,7 @@ public partial class RotationConfigWindow : Window
                         AddOneCondition<ActionTimelineItem>();
                         AddOneCondition<StateTimelineItem>();
                         AddOneCondition<DrawingTimeline>();
+                        AddOneCondition<MacroTimelineItem>();
                     }
 
                     void AddOneCondition<T>() where T : BaseTimelineItem

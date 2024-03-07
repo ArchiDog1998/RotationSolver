@@ -19,7 +19,10 @@ internal class ITimelineItemConverter : JsonCreationConverter<BaseTimelineItem>
         {
             return new DrawingTimeline();
         }
-
+        else if (FieldExists(nameof(MacroTimelineItem.Macro), jObject))
+        {
+            return new MacroTimelineItem();
+        }
         return null;
     }
 }
