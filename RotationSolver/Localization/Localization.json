@@ -371,5 +371,10 @@
   "RotationSolver.Basic.Data.JobRole.Melee": "Melee",
   "RotationSolver.Basic.Data.JobRole.Healer": "Healer",
   "RotationSolver.Basic.Data.JobRole.RangedPhysical": "RangedPhysical",
-  "RotationSolver.Basic.Data.JobRole.RangedMagical": "RangedMagical"
+  "RotationSolver.Basic.Data.JobRole.RangedMagical": "RangedMagical",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.GameObject": "GameObject",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.BattleCharactor": "BattleCharactor",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.PlayerCharactor": "PlayerCharactor",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.Myself": "Myself",
+  "RotationSolver.Basic.Configuration.Timeline.MacroTimelineItem": "Macro Time line"
 }

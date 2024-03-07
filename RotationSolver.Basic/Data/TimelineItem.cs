@@ -1,5 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Data;
@@ -33,7 +34,7 @@ internal class TimelineItem(float time, string name, TimelineType type, JObject?
 
         foreach ( var id in idsRaw)
         {
-            if(uint.TryParse(id, out var i))
+            if (uint.TryParse(id, NumberStyles.HexNumber, null, out var i))
             {
                 reuslt.Add(i);
             }

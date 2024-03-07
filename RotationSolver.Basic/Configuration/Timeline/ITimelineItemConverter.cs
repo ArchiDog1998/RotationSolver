@@ -23,6 +23,10 @@ internal class ITimelineItemConverter : JsonCreationConverter<BaseTimelineItem>
         {
             return new MacroTimelineItem();
         }
+        else if (FieldExists(nameof(MoveTimelineItem.Points), jObject))
+        {
+            return new MoveTimelineItem();
+        }
         return null;
     }
 }

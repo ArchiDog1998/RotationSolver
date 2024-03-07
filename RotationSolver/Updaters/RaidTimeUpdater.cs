@@ -313,7 +313,7 @@ internal static partial class RaidTimeUpdater
         _isInCombat.Clear();
         if (PathForRaids.ContainsKey(id))
         {
-            RotationConfigWindow._territoryId = id;
+            TimelineDrawer._territoryId = id;
         }
         try
         {
@@ -471,10 +471,10 @@ internal static partial class RaidTimeUpdater
         }
 
 #if DEBUG
-        foreach (var item in result)
-        {
-            Svc.Log.Debug(item.ToString());
-        }
+        //foreach (var item in result)
+        //{
+        //    Svc.Log.Debug(item.ToString());
+        //}
 #endif
         return [..result.OrderBy(i => i.Time)];
     }

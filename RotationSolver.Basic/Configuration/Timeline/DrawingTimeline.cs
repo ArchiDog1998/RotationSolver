@@ -9,10 +9,7 @@ internal class DrawingTimeline : BaseTimelineItem
 {
     public float Duration { get; set; } = 5;
 
-    public TimelineConditionSet Condition { get; set; } = new()
-    {
-        Conditions = [new TrueTimelineCondition()],
-    };
+    public TimelineConditionSet Condition { get; set; } = new();
     public List<IDrawingGetter> DrawingGetters { get; set; } = [];
 
     private IDisposable[] _drawings = [];

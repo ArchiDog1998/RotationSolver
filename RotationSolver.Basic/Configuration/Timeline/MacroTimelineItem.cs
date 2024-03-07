@@ -1,6 +1,8 @@
 ﻿using ECommons.Automation;
 
 namespace RotationSolver.Basic.Configuration.Timeline;
+
+[Description("Macro Time line")]
 internal class MacroTimelineItem : BaseTimelineItem
 {
     public string Macro { get; set; } = "";

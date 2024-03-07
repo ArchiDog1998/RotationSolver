@@ -887,36 +887,6 @@ internal static class ConditionDrawer
                     territoryCondition.Name = i;
                 }, UiString.ConfigWindow_Condition_DutyName.Local());
                 break;
-
-            case TerritoryConditionType.MapEffect:
-                ImGui.SameLine();
-
-                ImGui.Text("Pos:");
-                DrawDragInt($"##Position{territoryCondition.GetHashCode()}", ref territoryCondition.Position);
-
-                ImGui.SameLine();
-
-                ImGui.Text("P1:");
-                DrawDragInt($"##Param1{territoryCondition.GetHashCode()}", ref territoryCondition.TerritoryId);
-
-                ImGui.SameLine();
-
-                ImGui.Text("P2:");
-                DrawDragInt($"##Param2{territoryCondition.GetHashCode()}", ref territoryCondition.Param2);
-
-                ImGui.SameLine();
-
-                ImGui.Text("Time Offset:");
-                ImGui.SameLine();
-                const float MIN = 0, MAX = 60;
-
-                ImGui.SetNextItemWidth(80 * ImGuiHelpers.GlobalScale);
-                if (ImGui.DragFloatRange2($"##TimeOffset {territoryCondition.GetHashCode()}", ref territoryCondition.TimeStart, ref territoryCondition.TimeEnd, 0.1f, MIN, MAX))
-                {
-                    territoryCondition.TimeStart = Math.Max(Math.Min(territoryCondition.TimeStart, territoryCondition.TimeEnd), MIN);
-                    territoryCondition.TimeEnd = Math.Min(Math.Max(territoryCondition.TimeStart, territoryCondition.TimeEnd), MAX);
-                }
-                break;
         }
     }
     #endregion
