@@ -366,19 +366,13 @@
   "RotationSolver.Basic.Configuration.Timeline.TimelineDrawing.StaticDrawingGetter": "Static Drawing",
   "RotationSolver.Basic.Configuration.Timeline.TimelineDrawing.ObjectDrawingGetter": "Object Drawing",
   "RotationSolver.Basic.Configuration.Timeline.TimelineDrawing.ActionDrawingGetter": "Action Drawing",
-  "RotationSolver.Basic.Data.JobRole.None": "None",
-  "RotationSolver.Basic.Data.JobRole.Tank": "Tank",
-  "RotationSolver.Basic.Data.JobRole.Melee": "Melee",
-  "RotationSolver.Basic.Data.JobRole.Healer": "Healer",
-  "RotationSolver.Basic.Data.JobRole.RangedPhysical": "RangedPhysical",
-  "RotationSolver.Basic.Data.JobRole.RangedMagical": "RangedMagical",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.GameObject": "GameObject",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.BattleCharactor": "BattleCharactor",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.PlayerCharactor": "PlayerCharactor",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.Myself": "Myself",
   "RotationSolver.Basic.Configuration.Timeline.MacroTimelineItem": "Macro Time line",
   "RotationSolver.Basic.Configuration.Timeline.MoveTimelineItem": "Move Time line",
-  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet": "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet",
-  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction": "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction",
-  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount"
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet": "Condition Set",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction": "Action Condition",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "Target Count Condition"
 }
