@@ -242,6 +242,14 @@ internal static class TimelineDrawer
 
     private static void DrawTimelineItem(BaseTimelineItem timeLineItem, TimelineItem item)
     {
+        var isOpen = _openedTab == timeLineItem.GetHashCode();
+        if (ImGuiEx.IconButton(FontAwesomeIcon.Cog, "Condition icon." + timeLineItem.GetHashCode()))
+        {
+            _openedTab = isOpen ? 0 : timeLineItem.GetHashCode();
+        }
+
+        ImGui.SameLine();
+
         var time = timeLineItem.Time;
         if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $" ##Time{timeLineItem.GetHashCode()}", ref time))
         {
@@ -359,6 +367,8 @@ internal static class TimelineDrawer
                 }
             }
         }
+
+        if (!isOpen) return;
 
         ImGui.Spacing();
         ImGui.Spacing();
@@ -669,16 +679,7 @@ internal static class TimelineDrawer
     private static IDisposable[]? _previewItems = null;
     static int _openedTab = 0;
     private static void DrawingGetterDraw(BaseDrawingGetter drawing, uint[] actionIds)
-    {
-        var name = drawing.Name;
-        ImGui.SetNextItemWidth(300 * Scale);
-        if (ImGui.InputText(UiString.ConfigWindow_Timeline_Name.Local() + "##" + drawing.GetHashCode(), ref name, 256))
-        {
-            drawing.Name = name;
-        }
-
-        ImGui.SameLine();
-
+    {       
         var enable = drawing.Enable;
         if(ImGui.Checkbox("##Enable" + drawing.GetHashCode(), ref enable))
         {
@@ -687,8 +688,17 @@ internal static class TimelineDrawer
 
         ImGui.SameLine();
 
+        var name = drawing.Name;
+        ImGui.SetNextItemWidth(300 * Scale);
+        if (ImGui.InputText("##" + drawing.GetHashCode(), ref name, 256))
+        {
+            drawing.Name = name;
+        }
+
+        ImGui.SameLine();
+
         var isOpen = _openedTab == drawing.GetHashCode();
-        if (ImGuiEx.IconButton(FontAwesomeIcon.Cog))
+        if (ImGuiEx.IconButton(FontAwesomeIcon.Cog, "Config icon." + drawing.GetHashCode()))
         {
             _openedTab = isOpen ? 0 : drawing.GetHashCode();
         }
