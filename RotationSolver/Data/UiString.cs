@@ -629,4 +629,64 @@ internal enum UiString
 
     [Description("This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}")]
     NotInJob,
+
+    [Description("Raid Time")]
+    TimelineRaidTime,
+
+    [Description("Execute")]
+    TimelineExecute,
+
+    [Description("Position")]
+    TimelinePosition,
+
+    [Description("Duration")]
+    TimelineDuration,
+
+    [Description("Target Count")]
+    TimelineTargetCount,
+
+    [Description("Target Getter")]
+    TimelineTargetGetter,
+
+    [Description("Effect Duration")]
+    TimelineEffectDuration,
+
+    [Description("Scale")]
+    TimelineScale,
+
+    [Description("Showing Text")]
+    TimelineShowText,
+
+    [Description("Ground")]
+    TimelineGround,
+
+    [Description("Actor")]
+    TimelineActor,
+
+    [Description("Rotation")]
+    TimelineRotation,
+
+    [Description("Object Getter")]
+    TimelineObjectGetter,
+
+    [Description("Need a target")]
+    TimelineNeedATarget,
+
+    [Description("Target by target")]
+    TimelineTargetByTarget,
+
+    [Description("Position Offset")]
+    TimelinePositionOffset,
+
+    [Description("Corner")]
+    TimelineCorner,
+
+    [Description("Padding")]
+    TimelinePadding,
+
+    [Description("Color")]
+    TimelineColor,
+
+    [Description("Background Color")]
+    TimelineBackgroundColor,
 }

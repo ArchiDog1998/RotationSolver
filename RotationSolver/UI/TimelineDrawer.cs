@@ -102,7 +102,7 @@ internal static class TimelineDrawer
         }
 
         ImGui.SameLine();
-        ImGui.Text("Raid Time: " + TimeSpan.FromSeconds(DataCenter.RaidTimeRaw).ToString("hh\\:mm\\:ss\\.f"));
+        ImGui.Text(UiString.TimelineRaidTime.Local() + ": " + TimeSpan.FromSeconds(DataCenter.RaidTimeRaw).ToString("hh\\:mm\\:ss\\.f"));
 
         using var table = ImRaii.Table("Rotation Solver List Timeline", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)
@@ -191,7 +191,7 @@ internal static class TimelineDrawer
                         (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
                         (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
                         (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
-                        ("Execute", Execute, ["→"]));
+                        (UiString.TimelineExecute.Local(), Execute, ["→"]));
 
                     ConditionDrawer.DrawCondition(timeLineItem.InPeriod(item));
 
@@ -285,7 +285,7 @@ internal static class TimelineDrawer
             ImGui.SameLine();
 
             var macro = macroItem.Macro;
-            if (ImGui.InputTextMultiline("Macro: ##" + macroItem.GetHashCode(), ref macro, 500, new Vector2( -1, 50)))
+            if (ImGui.InputTextMultiline(UiString.ConfigWindow_About_Macros.Local() + ": ##" + macroItem.GetHashCode(), ref macro, 500, new Vector2( -1, 50)))
             {
                 macroItem.Macro = macro;
             }
@@ -353,7 +353,7 @@ internal static class TimelineDrawer
 
                 ImGui.SameLine();
 
-                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position", ref point, "Pos" + moveItem.GetHashCode(), "X", "Y", "Z", () => Player.Object?.Position ?? default))
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local(), ref point, "Pos" + moveItem.GetHashCode(), "X", "Y", "Z", () => Player.Object?.Position ?? default))
                 {
                     moveItem.Points[i] = point;
                 }
@@ -368,7 +368,7 @@ internal static class TimelineDrawer
     private static void DrawDrawingTimeline(DrawingTimeline drawingItem, TimelineItem timelineItem)
     {
         var duration = drawingItem.Duration;
-        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"Duration##Duration{drawingItem.GetHashCode()}", ref duration))
+        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"{UiString.TimelineDuration.Local()}##Duration{drawingItem.GetHashCode()}", ref duration))
         {
             drawingItem.Duration = duration;
         }
@@ -601,12 +601,13 @@ internal static class TimelineDrawer
         else if (con is TimelineConditionTargetCount target)
         {
             var count = target.Count;
-            if (ConditionDrawer.DrawDragInt("Target Count: ##" + target.GetHashCode(), ref count))
+            if (ConditionDrawer.DrawDragInt(UiString.TimelineTargetCount.Local() +
+                ": ##" + target.GetHashCode(), ref count))
             {
                 target.Count = count;
             }
 
-            DrawObjectGetter(target.Getter, "Target Getter");
+            DrawObjectGetter(target.Getter, UiString.TimelineTargetGetter.Local());
         }
         else if (con is TimelineConditionAction action)
         {
@@ -622,13 +623,13 @@ internal static class TimelineDrawer
         else if (con is TimelineConditionMapEffect map)
         {
             var duration = map.TimeDuration;
-            if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Seconds, "Effect Duration", ref duration, "Effect duration" + map.GetHashCode(), "Start", "End"))
+            if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Seconds, UiString.TimelineEffectDuration.Local(), ref duration, "Effect duration" + map.GetHashCode(), "Start", "End"))
             {
                 map.TimeDuration = duration;
             }
 
             var param = map.Position;
-            if (ConditionDrawer.DrawDragInt("Position##" + map.GetHashCode(), ref param))
+            if (ConditionDrawer.DrawDragInt(UiString.TimelinePosition.Local() + "##" + map.GetHashCode(), ref param))
             {
                 map.Position = (ushort)param;
             }
@@ -672,7 +673,7 @@ internal static class TimelineDrawer
     {
         var name = drawing.Name;
         ImGui.SetNextItemWidth(300 * Scale);
-        if (ImGui.InputText("Name##" + drawing.GetHashCode(), ref name, 256))
+        if (ImGui.InputText(UiString.ConfigWindow_Timeline_Name.Local() + "##" + drawing.GetHashCode(), ref name, 256))
         {
             drawing.Name = name;
         }
@@ -701,23 +702,23 @@ internal static class TimelineDrawer
             }
 
             var pos = staticDrawing.Position;
-            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z", () => Player.Object?.Position ?? default))
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local() + ":　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z", () => Player.Object?.Position ?? default))
             {
                 staticDrawing.Position = pos;
             }
 
             var scale = staticDrawing.Scale;
-            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Scale:　", ref scale, drawing.GetHashCode().ToString() + "Scale", "X", "Y", "Z"))
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelineScale.Local() + ":　", ref scale, drawing.GetHashCode().ToString() + "Scale", "X", "Y", "Z"))
             {
                 staticDrawing.Scale = scale;
             }
 
-            DrawTextDrawing(staticDrawing.Text, "Showing Text: ");
+            DrawTextDrawing(staticDrawing.Text, UiString.TimelineShowText.Local() + ": ");
         }
         else if (drawing is ObjectDrawingGetter objectDrawing)
         {
             var index = objectDrawing.IsActorEffect ? 1 : 0;
-            if (ImGuiHelper.SelectableCombo("##ActorType" + drawing.GetHashCode(), ["Ground", "Actor"], ref index))
+            if (ImGuiHelper.SelectableCombo("##ActorType" + drawing.GetHashCode(), [UiString.TimelineGround.Local(), UiString.TimelineActor.Local()], ref index))
             {
                 objectDrawing.IsActorEffect = index != 0;
             }
@@ -740,29 +741,29 @@ internal static class TimelineDrawer
                 }
 
                 var rot = objectDrawing.Rotation / MathF.PI * 180f;
-                if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Degree, "Rotation: ##" + drawing.GetHashCode(), ref rot))
+                if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Degree, UiString.TimelineRotation.Local() + ": ##" + drawing.GetHashCode(), ref rot))
                 {
                     objectDrawing.Rotation = rot * MathF.PI / 180f;
                 }
 
                 var pos = objectDrawing.Position;
-                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position:　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z", () => Player.Object?.Position ?? default))
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local() + ":　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z", () => Player.Object?.Position ?? default))
                 {
                     objectDrawing.Position = pos;
                 }
 
                 var scale = objectDrawing.Scale;
-                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Scale:　", ref scale, drawing.GetHashCode().ToString() + "Scale", "X", "Y", "Z"))
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelineScale.Local() + ":　", ref scale, drawing.GetHashCode().ToString() + "Scale", "X", "Y", "Z"))
                 {
                     objectDrawing.Scale = scale;
                 }
             }
 
-            DrawObjectGetter(objectDrawing.ObjectGetter, "Object Getter");
-            DrawTextDrawing(objectDrawing.ObjectText, "Object Text");
+            DrawObjectGetter(objectDrawing.ObjectGetter, UiString.TimelineObjectGetter.Local());
+            DrawTextDrawing(objectDrawing.ObjectText, UiString.TimelineShowText.Local());
 
             var check = objectDrawing.GetATarget;
-            if (ImGui.Checkbox("Need a Target: ##" + drawing.GetHashCode(), ref check))
+            if (ImGui.Checkbox(UiString.TimelineNeedATarget.Local() + ": ##" + drawing.GetHashCode(), ref check))
             {
                 objectDrawing.GetATarget = check;
             }
@@ -771,17 +772,17 @@ internal static class TimelineDrawer
 
             ImGui.SameLine();
             check = objectDrawing.IsTargetByTarget;
-            if (ImGui.Checkbox("Target By target: ##" + drawing.GetHashCode(), ref check))
+            if (ImGui.Checkbox(UiString.TimelineTargetByTarget.Local() + ": ##" + drawing.GetHashCode(), ref check))
             {
                 objectDrawing.IsTargetByTarget = check;
             }
 
             if (!check)
             {
-                DrawObjectGetter(objectDrawing.TargetGetter, "Target Getter");
+                DrawObjectGetter(objectDrawing.TargetGetter, UiString.TimelineTargetGetter.Local());
             }
 
-            DrawTextDrawing(objectDrawing.TargetText, "Target Text");
+            DrawTextDrawing(objectDrawing.TargetText, UiString.TimelineShowText.Local());
         }
         else if (drawing is ActionDrawingGetter actionDrawing)
         {
@@ -801,30 +802,30 @@ internal static class TimelineDrawer
             }
 
             var rot = actionDrawing.Rotation / MathF.PI * 180f;
-            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Degree, "Rotation: ##" + drawing.GetHashCode(), ref rot))
+            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Degree, UiString.TimelineRotation.Local() + ": ##" + drawing.GetHashCode(), ref rot))
             {
                 actionDrawing.Rotation = rot * MathF.PI / 180f;
             }
 
             var pos = actionDrawing.Position;
-            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position: ", ref pos, drawing.GetHashCode().ToString(), "X", "Y", "Z", () => Player.Object?.Position ?? default))
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local() + ": ", ref pos, drawing.GetHashCode().ToString(), "X", "Y", "Z", () => Player.Object?.Position ?? default))
             {
                 actionDrawing.Position = pos;
             }
 
             var scale = actionDrawing.X;
-            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Yalms, "Scale X:　##" + drawing.GetHashCode(), ref scale))
+            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Yalms, UiString.TimelineScale.Local() + " X:　##" + drawing.GetHashCode(), ref scale))
             {
                 actionDrawing.X = scale;
             }
 
             scale = actionDrawing.Y;
-            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Yalms, "Scale Y:　##" + drawing.GetHashCode(), ref scale))
+            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Yalms, UiString.TimelineScale.Local() + " Y:　##" + drawing.GetHashCode(), ref scale))
             {
                 actionDrawing.Y = scale;
             }
 
-            DrawObjectGetter(actionDrawing.ObjectGetter, "Object Getter");
+            DrawObjectGetter(actionDrawing.ObjectGetter, UiString.TimelineObjectGetter.Local());
         }
     }
 
@@ -884,8 +885,6 @@ internal static class TimelineDrawer
                 return;
 
             case ObjectType.PlayerCharactor:
-                ImGui.Text("Job Role:");
-                ImGui.SameLine();
 
                 var size = Vector2.One * 24 * Scale;
 
@@ -960,14 +959,14 @@ internal static class TimelineDrawer
         if (getter.Status != 0)
         {
             var time = getter.StatusTime;
-            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, "Status Time: ##" + getter.GetHashCode(), ref time))
+            if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, UiString.ConfigWindow_Timeline_Time.Local() + ": ##" + getter.GetHashCode(), ref time))
             {
                 getter.StatusTime = time;
             }
         }
 
         var duration = getter.TimeDuration;
-        if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Seconds, "Effect Duration", ref duration, "Effect duration" + getter.GetHashCode(), "Start", "End"))
+        if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Seconds, UiString.TimelineEffectDuration.Local(), ref duration, "Effect duration" + getter.GetHashCode(), "Start", "End"))
         {
             getter.TimeDuration = duration;
         }
@@ -981,13 +980,13 @@ internal static class TimelineDrawer
 
         ImGui.NewLine();
         var param = (int)getter.ObjectEffect1;
-        if (ConditionDrawer.DrawDragInt("Effect Param1##" + getter.GetHashCode(), ref param))
+        if (ConditionDrawer.DrawDragInt("Param1##" + getter.GetHashCode(), ref param))
         {
             getter.ObjectEffect1 = (ushort)param;
         }
 
         param = getter.ObjectEffect2;
-        if (ConditionDrawer.DrawDragInt("Effect Param2##" + getter.GetHashCode(), ref param))
+        if (ConditionDrawer.DrawDragInt("Param2##" + getter.GetHashCode(), ref param))
         {
             getter.ObjectEffect2 = (ushort)param;
         }
@@ -1007,34 +1006,40 @@ internal static class TimelineDrawer
         using var indent = ImRaii.PushIndent();
 
         var positionOffset = textDrawing.PositionOffset;
-        if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, "Position Offset: ", ref positionOffset, textDrawing.GetHashCode().ToString(), "X", "Y", "Z"))
+        if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePositionOffset.Local() + ": ", ref positionOffset, textDrawing.GetHashCode().ToString(), "X", "Y", "Z"))
         {
             textDrawing.PositionOffset = positionOffset;
         }
 
         ImGui.SetNextItemWidth(Scale * 150);
         var scale = textDrawing.Scale;
-        if (ImGui.DragFloat($"Scale##{textDrawing.GetHashCode()}", ref scale, 0.1f, 0.1f, 20, $"{scale:F2}{ConfigUnitType.Percent.ToSymbol()}"))
+        if (ImGui.DragFloat($"{UiString.TimelineScale.Local()}##{textDrawing.GetHashCode()}", ref scale, 0.1f, 0.1f, 20, $"{scale:F2}{ConfigUnitType.Percent.ToSymbol()}"))
         {
             textDrawing.Scale = scale;
         }
 
+        var corner = textDrawing.Corner;
+        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Pixels, UiString.TimelineCorner.Local() + "##" + textDrawing.GetHashCode(), ref corner))
+        {
+            textDrawing.Corner = corner;
+        }
+
         var padding = textDrawing.Padding;
-        if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Pixels, "Background Padding: ", ref padding, textDrawing.GetHashCode().ToString(), "X", "Y"))
+        if (ConditionDrawer.DrawDragFloat2(ConfigUnitType.Pixels, UiString.TimelinePadding.Local() + ": ", ref padding, textDrawing.GetHashCode().ToString(), "X", "Y"))
         {
             textDrawing.Padding = padding;
         }
 
         var value = textDrawing.Color;
         ImGui.SetNextItemWidth(150 * 1.5f * Scale);
-        if (ImGui.ColorEdit4($"Color##{textDrawing.GetHashCode()}", ref value))
+        if (ImGui.ColorEdit4($"{UiString.TimelineColor.Local()}##{textDrawing.GetHashCode()}", ref value))
         {
             textDrawing.Color = value;
         }
 
         value = textDrawing.BackgroundColor;
         ImGui.SetNextItemWidth(150 * 1.5f * Scale);
-        if (ImGui.ColorEdit4($"Background Color##{textDrawing.GetHashCode()}", ref value))
+        if (ImGui.ColorEdit4($"{UiString.TimelineBackgroundColor.Local()}##{textDrawing.GetHashCode()}", ref value))
         {
             textDrawing.BackgroundColor = value;
         }
