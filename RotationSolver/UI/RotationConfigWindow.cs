@@ -2166,7 +2166,7 @@ public partial class RotationConfigWindow : Window
 
             ImGui.Selectable($"{action.Name} ({action.RowId})");
 
-            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [Dalamud.Game.ClientState.Keys.VirtualKey.DELETE]));
+            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [VirtualKey.DELETE]));
         }
 
         if (removeId != 0)
@@ -2375,7 +2375,7 @@ public partial class RotationConfigWindow : Window
                     HoveredPosition = pts[i];
                 }
 
-                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [Dalamud.Game.ClientState.Keys.VirtualKey.DELETE]));
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [VirtualKey.DELETE]));
             }
             if (removeIndex > -1)
             {

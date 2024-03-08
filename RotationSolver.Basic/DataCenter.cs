@@ -273,6 +273,10 @@ internal static class DataCenter
             if (value < 0)
             {
                 _startRaidTime = DateTime.MinValue;
+                foreach (var item in TimelineItems)
+                {
+                    item.LastActionID = 0;
+                }
             }
             else
             {

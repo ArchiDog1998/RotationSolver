@@ -47,7 +47,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             Service.Config = JsonConvert.DeserializeObject<Configs>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName),
-                new ITimelineItemConverter(), new IDrawingGetterConverter(), new ITimelineConditionConverter())
+                new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())
                 ?? new Configs();
         }
         catch (Exception ex)

@@ -59,7 +59,7 @@ public static class Watcher
             var effect = new MapEffectData(position, param1, param2);
             DataCenter.MapEffects.Enqueue(effect);
 #if DEBUG
-            //Svc.Log.Debug(effect.ToString());
+            Svc.Log.Debug(effect.ToString());
 #endif
         });
     }
@@ -82,14 +82,16 @@ public static class Watcher
     {
         try
         {
-            if (!path.StartsWith("vfx/common/eff/", StringComparison.OrdinalIgnoreCase))
+            var obj = Svc.Objects.CreateObjectReference(a2);
+
+            if (obj is not PlayerCharacter 
+                || !path.StartsWith("vfx/common/eff/", StringComparison.OrdinalIgnoreCase))
             {
                 if (DataCenter.VfxNewData.Count >= 64)
                 {
                     DataCenter.VfxNewData.TryDequeue(out _);
                 }
 
-                var obj = Svc.Objects.CreateObjectReference(a2);
                 var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
                 DataCenter.VfxNewData.Enqueue(effect);
 #if DEBUG

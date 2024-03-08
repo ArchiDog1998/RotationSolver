@@ -9,7 +9,7 @@ internal class DrawingTimeline : BaseTimelineItem
 {
     public float Duration { get; set; } = 5;
 
-    public List<IDrawingGetter> DrawingGetters { get; set; } = [];
+    public List<BaseDrawingGetter> DrawingGetters { get; set; } = [];
 
     private IDisposable[] _drawings = [];
 

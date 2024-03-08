@@ -3,7 +3,7 @@ using RotationSolver.Basic.Configuration.Conditions;
 
 namespace RotationSolver.Basic.Configuration.Timeline;
 
-internal class ITimelineItemConverter : JsonCreationConverter<BaseTimelineItem>
+internal class BaseTimelineItemConverter : JsonCreationConverter<BaseTimelineItem>
 {
     protected override BaseTimelineItem? Create(JObject jObject)
     {

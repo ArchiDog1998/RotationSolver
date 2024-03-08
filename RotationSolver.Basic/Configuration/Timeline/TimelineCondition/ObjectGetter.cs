@@ -8,7 +8,11 @@ internal class ObjectGetter
 {
     public ObjectType Type { get; set; }
     public string DataID { get; set; } = "";
-    public JobRole Role { get; set; } = JobRole.None;
+    public bool Tank { get; set; } = true;
+    public bool Healer { get; set; } = true;
+    public bool Melee { get; set; } = true;
+    public bool Range { get; set; } = true;
+    public bool Caster { get; set; } = true;
     public uint Status { get; set; }
     public float StatusTime { get; set; } = 5;
     public Vector2 TimeDuration { get; set; } = new(0, 2);
@@ -20,20 +24,25 @@ internal class ObjectGetter
         switch (Type)
         {
             case ObjectType.BattleCharactor:
-                if(obj is not BattleChara) return false;
+                if (obj is not BattleChara) return false;
+
+                if (!string.IsNullOrEmpty(DataID) && !new Regex(DataID).IsMatch(obj.DataId.ToString("X"))) return false;
+
                 break;
 
             case ObjectType.PlayerCharactor:
                 if (obj is not PlayerCharacter) return false;
+
+                if (!Tank && obj.IsJobCategory(JobRole.Tank)) return false;
+                if (!Healer && obj.IsJobCategory(JobRole.Healer)) return false;
+                if (!Melee && obj.IsJobCategory(JobRole.Melee)) return false;
+                if (!Range && obj.IsJobCategory(JobRole.RangedPhysical)) return false;
+                if (!Caster && obj.IsJobCategory(JobRole.RangedMagical)) return false;
                 break;
 
             case ObjectType.Myself:
                 return obj == Player.Object;
         }
-
-        if (!string.IsNullOrEmpty(DataID) && !new Regex(DataID).IsMatch(obj.DataId.ToString("X"))) return false;
-
-        if (Role != JobRole.None && !obj.IsJobCategory(Role)) return false;
 
         if (Status != 0)
         {

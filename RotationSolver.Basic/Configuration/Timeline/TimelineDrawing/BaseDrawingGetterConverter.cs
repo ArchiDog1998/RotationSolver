@@ -3,9 +3,9 @@ using RotationSolver.Basic.Configuration.Conditions;
 
 namespace RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 
-internal class IDrawingGetterConverter : JsonCreationConverter<IDrawingGetter>
+internal class BaseDrawingGetterConverter : JsonCreationConverter<BaseDrawingGetter>
 {
-    protected override IDrawingGetter? Create(JObject jObject)
+    protected override BaseDrawingGetter? Create(JObject jObject)
     {
         if (FieldExists(nameof(ActionDrawingGetter.ActionID), jObject))
         {

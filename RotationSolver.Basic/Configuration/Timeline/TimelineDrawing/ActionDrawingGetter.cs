@@ -8,7 +8,7 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 namespace RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 
 [Description("Action Drawing")]
-internal class ActionDrawingGetter : IDrawingGetter
+internal class ActionDrawingGetter : BaseDrawingGetter
 {
     public uint ActionID { get; set; }
     public string Path { get; set; } = "";
@@ -18,7 +18,7 @@ internal class ActionDrawingGetter : IDrawingGetter
     public float Rotation { get; set; }
     public ObjectGetter ObjectGetter { get; set; } = new();
 
-    public IDisposable[] GetDrawing()
+    public override IDisposable[] GetDrawing()
     {
         var objs = Svc.Objects.Where(ObjectGetter.CanGet);
         if (objs.Any())

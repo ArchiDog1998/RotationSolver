@@ -7,11 +7,9 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
-using RotationSolver.Basic.Data;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
@@ -84,7 +82,7 @@ internal static class TimelineDrawer
             try
             {
                 var set = JsonConvert.DeserializeObject<Dictionary<float, List<BaseTimelineItem>>>(str,
-                    new ITimelineItemConverter(), new IDrawingGetterConverter(), new ITimelineConditionConverter())!;
+                    new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())!;
                 Service.Config.Timeline[_territoryId] = timeLine = set;
             }
             catch (Exception ex)
@@ -208,7 +206,6 @@ internal static class TimelineDrawer
                     using var grp = ImRaii.Group();
 
                     DrawTimelineItem(timeLineItem, item);
-
                 }
 
                 ImGui.TableNextRow();
@@ -274,7 +271,7 @@ internal static class TimelineDrawer
         {
             var state = stateItem.State;
             ImGui.SameLine();
-            if (ConditionDrawer.DrawByteEnum($"##AutoStatus{timeLineItem.GetHashCode()}", ref state))
+            if (ConditionDrawer.DrawByteEnum($"##AutoState{timeLineItem.GetHashCode()}", ref state))
             {
                 stateItem.State = state;
             }
@@ -368,7 +365,6 @@ internal static class TimelineDrawer
 
         TimelineConditionDraw(timeLineItem.Condition, item);
     }
-
     private static void DrawDrawingTimeline(DrawingTimeline drawingItem, TimelineItem timelineItem)
     {
         var duration = drawingItem.Duration;
@@ -406,12 +402,20 @@ internal static class TimelineDrawer
                 drawingItem.DrawingGetters.Insert(Math.Min(drawingItem.DrawingGetters.Count, i + 1), item);
             }
 
+            void Copy()
+            {
+                var str = JsonConvert.SerializeObject(drawingItem.DrawingGetters[i], Formatting.Indented);
+                ImGui.SetClipboardText(str);
+            }
+
             var key = $"DrawingItem Pop Up: {item.GetHashCode()}";
 
             ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
                 (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
                 (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]));
+                (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
+                (UiString.ConfigWindow_Actions_Copy.Local(), Copy, ["Ctrl"]));
+
 
             if (IconSet.GetTexture(30, out var texture))
             {
@@ -435,10 +439,13 @@ internal static class TimelineDrawer
             ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
                 (Delete, [VirtualKey.DELETE]),
                 (Up, [VirtualKey.UP]),
-                (Down, [VirtualKey.DOWN]));
+                (Down, [VirtualKey.DOWN]),
+                (Copy, [VirtualKey.CONTROL]));
 
             ImGui.SameLine();
+
             using var grp = ImRaii.Group();
+
             DrawingGetterDraw(item, timelineItem.ActionIDs);
         }
 
@@ -459,9 +466,24 @@ internal static class TimelineDrawer
                 {
                     AddOneCondition<ActionDrawingGetter>();
                 }
+                if (ImGui.Selectable(UiString.ActionSequencer_FromClipboard.Local()))
+                {
+                    var str = ImGui.GetClipboardText();
+                    try
+                    {
+                        var s = JsonConvert.DeserializeObject<BaseDrawingGetter>
+                            (str, new BaseDrawingGetterConverter())!;
+                        drawingItem.DrawingGetters.Add(s);
+                    }
+                    catch (Exception ex)
+                    {
+                        Svc.Log.Warning(ex, "Failed to load the condition.");
+                    }
+                    ImGui.CloseCurrentPopup();
+                }
             }
 
-            void AddOneCondition<T>() where T : IDrawingGetter
+            void AddOneCondition<T>() where T : BaseDrawingGetter
             {
                 if (ImGui.Selectable(typeof(T).Local()))
                 {
@@ -553,8 +575,9 @@ internal static class TimelineDrawer
                         var str = ImGui.GetClipboardText();
                         try
                         {
-                            var s = JsonConvert.DeserializeObject<ICondition>(str, new IConditionConverter())!;
-                            set.Conditions.Add(set);
+                            var s = JsonConvert.DeserializeObject<ITimelineCondition>
+                                (str, new ITimelineConditionConverter())!;
+                            set.Conditions.Add(s);
                         }
                         catch (Exception ex)
                         {
@@ -644,8 +667,25 @@ internal static class TimelineDrawer
         .Select(f => f.Name).ToArray();
 
     private static IDisposable[]? _previewItems = null;
-    private static void DrawingGetterDraw(IDrawingGetter drawing, uint[] actionIds)
+    static int _openedTab = 0;
+    private static void DrawingGetterDraw(BaseDrawingGetter drawing, uint[] actionIds)
     {
+        var name = drawing.Name;
+        ImGui.SetNextItemWidth(300 * Scale);
+        if (ImGui.InputText("Name##" + drawing.GetHashCode(), ref name, 256))
+        {
+            drawing.Name = name;
+        }
+
+        ImGui.SameLine();
+
+        var isOpen = _openedTab == drawing.GetHashCode();
+        if (ImGuiEx.IconButton(FontAwesomeIcon.Cog))
+        {
+            _openedTab = isOpen ? 0 : drawing.GetHashCode();
+        }
+        if (!isOpen) return;
+        
         if (drawing is StaticDrawingGetter staticDrawing)
         {
             var index = Array.IndexOf(_omenNames, staticDrawing.Path.UnOmen());
@@ -823,35 +863,6 @@ internal static class TimelineDrawer
 
         using var indent = ImRaii.PushIndent();
 
-        switch (check)
-        {
-            case ObjectType.Myself:
-                return;
-
-            case ObjectType.PlayerCharactor:
-                ImGui.SameLine();
-                ImGui.Text("Job Role:");
-                ImGui.SameLine();
-                var v = getter.Role;
-                if (ConditionDrawer.DrawByteEnum("Job Role" + getter.GetHashCode(), ref v))
-                {
-                    getter.Role = v;
-                }
-                break;
-
-            case ObjectType.BattleCharactor:
-
-                ImGui.SameLine();
-
-                ImGui.SetNextItemWidth(150 * Scale);
-                var name = getter.DataID;
-                if (ImGui.InputText("Data ID## " + getter.GetHashCode(), ref name, 256))
-                {
-                    getter.DataID = name;
-                }
-
-                break;
-        }
         ImGui.SameLine();
 
         var key = "Status PopUp" + getter.GetHashCode();
@@ -865,6 +876,83 @@ internal static class TimelineDrawer
 
             ImGuiHelper.ExecuteHotKeysPopup(key + "Edit", string.Empty, $"{status?.Name ?? "Unknown"} ({getter.Status})", false,
                 (() => getter.Status = 0, [VirtualKey.DELETE]));
+        }
+
+        switch (check)
+        {
+            case ObjectType.Myself:
+                return;
+
+            case ObjectType.PlayerCharactor:
+                ImGui.Text("Job Role:");
+                ImGui.SameLine();
+
+                var size = Vector2.One * 24 * Scale;
+
+                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_tank.png", out var overlay))
+                {
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                        getter.Tank, "Tank##" + getter.GetHashCode()))
+                    {
+                        getter.Tank = !getter.Tank;
+                    }
+                }
+
+                ImGui.SameLine();
+
+                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_healer.png", out overlay))
+                {
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                        getter.Healer, "Healer##" + getter.GetHashCode()))
+                    {
+                        getter.Healer = !getter.Healer;
+                    }
+                }
+
+                ImGui.SameLine();
+
+                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_dps.png", out overlay))
+                {
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                        getter.Melee, "Melee##" + getter.GetHashCode()))
+                    {
+                        getter.Melee = !getter.Melee;
+                    }
+                }
+
+                ImGui.SameLine();
+
+                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_ranged.png", out overlay))
+                {
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                        getter.Range, "Range##" + getter.GetHashCode()))
+                    {
+                        getter.Range = !getter.Range;
+                    }
+                }
+
+                ImGui.SameLine();
+
+                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_dps_magic.png", out overlay))
+                {
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                        getter.Caster, "Caster##" + getter.GetHashCode()))
+                    {
+                        getter.Caster = !getter.Caster;
+                    }
+                }
+                break;
+
+            case ObjectType.BattleCharactor:
+
+                ImGui.SetNextItemWidth(150 * Scale);
+                var name = getter.DataID;
+                if (ImGui.InputText("Data ID## " + getter.GetHashCode(), ref name, 256))
+                {
+                    getter.DataID = name;
+                }
+
+                break;
         }
 
         RotationConfigWindow.StatusPopUp(key, BadStatus, ref _statusSearching, s => getter.Status = s.RowId);

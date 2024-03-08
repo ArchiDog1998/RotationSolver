@@ -5,7 +5,7 @@ using XIVPainter.Vfx;
 namespace RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 
 [Description("Object Drawing")]
-internal class ObjectDrawingGetter : IDrawingGetter
+internal class ObjectDrawingGetter : BaseDrawingGetter
 {
     public string Path { get; set; } = GroundOmenHostile.Circle.Omen();
     public bool IsActorEffect { get; set; } = false;
@@ -19,7 +19,7 @@ internal class ObjectDrawingGetter : IDrawingGetter
     public TextDrawing ObjectText { get; set; } = new();
     public TextDrawing TargetText { get; set; } = new();
 
-    public IDisposable[] GetDrawing()
+    public override IDisposable[] GetDrawing()
     {
         var objs = Svc.Objects.Where(ObjectGetter.CanGet);
         return [..objs.SelectMany(GetTextDrawing),

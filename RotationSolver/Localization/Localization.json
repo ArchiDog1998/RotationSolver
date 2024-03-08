@@ -378,7 +378,7 @@
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.Myself": "Myself",
   "RotationSolver.Basic.Configuration.Timeline.MacroTimelineItem": "Macro Time line",
   "RotationSolver.Basic.Configuration.Timeline.MoveTimelineItem": "Move Time line",
-  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet": "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet",
-  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction": "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction",
-  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount"
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet": "Condition Set",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction": "Action Condition",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "Target Count Condition"
 }
