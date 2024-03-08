@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.2.1](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.0...v4.2.1) (2024-03-08)
+
+
+### Bug Fixes
+
+* add enable for the drawing items. ([b5fcd8d](https://github.com/ArchiDog1998/RotationSolver/commit/b5fcd8d7adb4057b04a2361b796d55e32b9e4d5d))
+* add static drawing on the obj. ([184641e](https://github.com/ArchiDog1998/RotationSolver/commit/184641ed4495b1212c1a285f0117c10ef1ee2b91))
+* fixed friendly aoe omen. and timeline drawing. ([477973e](https://github.com/ArchiDog1998/RotationSolver/commit/477973ef4ea372bea9ba44feaa4ac3957554cd57))
+* multi lang. ([8f39525](https://github.com/ArchiDog1998/RotationSolver/commit/8f39525b65f868a79f87599281d55ad75d656c45))
+* ui stuff. ([147e6b9](https://github.com/ArchiDog1998/RotationSolver/commit/147e6b9fc054b9dc5c56cc9663bc97925158621c))
+
 ## [4.2.0](https://github.com/ArchiDog1998/RotationSolver/compare/v4.1.2...v4.2.0) (2024-03-07)
 
 
