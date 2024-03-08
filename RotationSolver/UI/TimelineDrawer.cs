@@ -695,22 +695,47 @@ internal static class TimelineDrawer
                 staticDrawing.Path = _omenNames[index].Omen();
             }
 
+            ImGui.SameLine();
+
+            var isTarget = staticDrawing.PlaceOnObject;
+            if (ImGui.Checkbox(UiString.TimelinePlaceOnTarget.Local() + "##" + drawing.GetHashCode(), ref isTarget))
+            {
+                staticDrawing.PlaceOnObject = isTarget;
+            }
+
+            if (isTarget)
+            {
+                var pos = staticDrawing.Position;
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePositionOffset.Local() + ":　", ref pos, drawing.GetHashCode().ToString() + "PositionOffset", "X", "Y", "Z"))
+                {
+                    staticDrawing.Position = pos;
+                }
+            }
+            else
+            {
+                var pos = staticDrawing.Position;
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local() + ":　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z", () => Player.Object?.Position ?? default))
+                {
+                    staticDrawing.Position = pos;
+                }
+            }
+
+
             var rot = staticDrawing.Rotation / MathF.PI * 180f;
             if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Degree, "Rotation: ##" + drawing.GetHashCode(), ref rot))
             {
                 staticDrawing.Rotation = rot * MathF.PI / 180f;
             }
 
-            var pos = staticDrawing.Position;
-            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local() + ":　", ref pos, drawing.GetHashCode().ToString() + "Position", "X", "Y", "Z", () => Player.Object?.Position ?? default))
-            {
-                staticDrawing.Position = pos;
-            }
-
             var scale = staticDrawing.Scale;
             if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelineScale.Local() + ":　", ref scale, drawing.GetHashCode().ToString() + "Scale", "X", "Y", "Z"))
             {
                 staticDrawing.Scale = scale;
+            }
+
+            if (isTarget)
+            {
+                DrawObjectGetter(staticDrawing.ObjectGetter, UiString.TimelineObjectGetter.Local());
             }
 
             DrawTextDrawing(staticDrawing.Text, UiString.TimelineShowText.Local() + ": ");

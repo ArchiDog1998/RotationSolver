@@ -689,4 +689,7 @@ internal enum UiString
 
     [Description("Background Color")]
     TimelineBackgroundColor,
+
+    [Description("Place On Target")]
+    TimelinePlaceOnTarget,
 }

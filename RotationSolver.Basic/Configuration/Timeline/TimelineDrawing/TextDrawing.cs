@@ -35,7 +35,10 @@ internal class TextDrawing
     public Drawing3DText? GetText(GameObject obj)
     {
         var text = GetText(obj.Position);
+
         if (text == null) return null;
+
+        text.Text = text.Text.Replace("{Name}", obj.Name.TextValue);
         text.UpdateEveryFrame += () =>
         {
             text.Position = obj.Position + PositionOffset;
