@@ -416,7 +416,6 @@ internal static class TimelineDrawer
                 (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
                 (UiString.ConfigWindow_Actions_Copy.Local(), Copy, ["Ctrl"]));
 
-
             if (IconSet.GetTexture(30, out var texture))
             {
                 if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, false, $"Icon :{item.GetHashCode()}"))
@@ -676,6 +675,14 @@ internal static class TimelineDrawer
         if (ImGui.InputText(UiString.ConfigWindow_Timeline_Name.Local() + "##" + drawing.GetHashCode(), ref name, 256))
         {
             drawing.Name = name;
+        }
+
+        ImGui.SameLine();
+
+        var enable = drawing.Enable;
+        if(ImGui.Checkbox("##Enable" + drawing.GetHashCode(), ref enable))
+        {
+            drawing.Enable = enable;
         }
 
         ImGui.SameLine();
