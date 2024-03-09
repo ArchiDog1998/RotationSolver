@@ -871,12 +871,6 @@ internal static class TimelineDrawer
         }
     }
 
-    private static Status[]? _badStatus = null;
-    internal static Status[] BadStatus
-        => _badStatus ??= Service.GetSheet<Status>()
-                    .Where(s => s.StatusCategory == 2 && s.Icon != 0)
-                    .ToArray();
-
     private static void DrawObjectGetter(ObjectGetter getter, string getterName)
     {
         if (ImGui.Button(getterName + "##" + getter.GetHashCode()))
@@ -996,7 +990,7 @@ internal static class TimelineDrawer
                 break;
         }
 
-        RotationConfigWindow.StatusPopUp(key, BadStatus, ref _statusSearching, s => getter.Status = s.RowId);
+        RotationConfigWindow.StatusPopUp(key, RotationConfigWindow.BadStatus, ref _statusSearching, s => getter.Status = s.RowId);
 
         if (getter.Status != 0)
         {

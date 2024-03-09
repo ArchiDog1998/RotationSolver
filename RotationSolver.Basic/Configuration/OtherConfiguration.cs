@@ -18,8 +18,8 @@ public class OtherConfiguration
 
     public static HashSet<uint> DangerousStatus = [];
     public static HashSet<uint> PriorityStatus = [];
-
     public static HashSet<uint> InvincibleStatus = [];
+    public static HashSet<uint> NoCastingStatus = [];
 
     public static RotationSolverRecord RotationSolverRecord = new();
 
@@ -40,6 +40,8 @@ public class OtherConfiguration
         Task.Run(() => InitOne(ref HostileCastingTank, nameof(HostileCastingTank)));
         Task.Run(() => InitOne(ref BeneficialPositions, nameof(BeneficialPositions)));
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
+        Task.Run(() => InitOne(ref NoCastingStatus, nameof(NoCastingStatus)));
+
     }
 
     public static Task Save()
@@ -56,8 +58,14 @@ public class OtherConfiguration
             await SaveBeneficialPositions();
             await SaveRotationSolverRecord();
             await SaveNoProvokeNames();
+            await SaveNoCastingStatus();
         });
     }
+    public static Task SaveNoCastingStatus()
+    {
+        return Task.Run(() => Save(NoCastingStatus, nameof(NoCastingStatus)));
+    }
+
     public static Task SavePriorityStatus()
     {
         return Task.Run(() => Save(PriorityStatus, nameof(PriorityStatus)));

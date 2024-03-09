@@ -1917,7 +1917,11 @@ public partial class RotationConfigWindow : Window
                     .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction
                     && a.ClassJob.Value == null && a.Cast100ms > 0)
                     .ToArray();
-
+    private static Status[]? _badStatus = null;
+    internal static Status[] BadStatus
+        => _badStatus ??= Service.GetSheet<Status>()
+                    .Where(s => s.StatusCategory == 2 && s.Icon != 0)
+                    .ToArray();
     private static void DrawList()
     {
         ImGui.TextWrapped(UiString.ConfigWindow_List_Description.Local());
@@ -1949,6 +1953,9 @@ public partial class RotationConfigWindow : Window
             ImGui.TableNextColumn();
             ImGui.TableHeader(UiString.ConfigWindow_List_DangerousStatus.Local());
 
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(UiString.ConfigWindow_List_NoCastingStatus.Local());
+
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
@@ -1965,6 +1972,12 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_DangerousStatusDesc.Local());
             DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, AllDispelStatus);
+
+            ImGui.TableNextColumn();
+
+            ImGui.TextWrapped(UiString.ConfigWindow_List_NoCastingStatusDesc.Local());
+            DrawStatusList(nameof(OtherConfiguration.NoCastingStatus), OtherConfiguration.NoCastingStatus, BadStatus);
+
         }
     }
 

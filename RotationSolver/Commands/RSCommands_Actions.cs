@@ -40,6 +40,11 @@ public static partial class RSCommands
     internal static uint _lastActionID;
     public static void DoAction()
     {
+        if (Player.Object.HasStatus(false, [..OtherConfiguration.NoCastingStatus.Select(i => (StatusID)i)]))
+        {
+            return;
+        }
+
         var wrong = new Random().NextDouble() < Service.Config.MistakeRatio && ActionUpdater.WrongAction != null;
         var nextAction = wrong ? ActionUpdater.WrongAction : ActionUpdater.NextAction;
         if (nextAction == null) return;

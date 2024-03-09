@@ -163,7 +163,7 @@ public static class StatusHelper
         }
     }
 
-    private static IEnumerable<float> StatusTimes(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
+    internal static IEnumerable<float> StatusTimes(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         return obj.GetStatus(isFromSelf, statusIDs).Select(status => status.RemainingTime == 0 ? float.MaxValue : status.RemainingTime);
     }

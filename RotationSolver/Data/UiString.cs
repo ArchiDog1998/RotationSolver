@@ -204,6 +204,9 @@ internal enum UiString
     [Description("Dispellable debuffs")]
     ConfigWindow_List_DangerousStatus,
 
+    [Description("No Casting debuffs")]
+    ConfigWindow_List_NoCastingStatus,
+
     [Description("Ignores target if it has one of this statuses")]
     ConfigWindow_List_InvincibilityDesc,
 
@@ -212,6 +215,9 @@ internal enum UiString
 
     [Description("Dispellable debuffs list")]
     ConfigWindow_List_DangerousStatusDesc,
+
+    [Description("No Casting debuffs List")]
+    ConfigWindow_List_NoCastingStatusDesc,
 
     [Description("Copy to Clipboard")]
     ConfigWindow_Actions_Copy,

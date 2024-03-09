@@ -7,6 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 
 namespace RotationSolver.Updaters;
@@ -56,7 +57,11 @@ internal static class PreviewUpdater
             && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
             && b.IsEnemy() && b.CurrentHp == 0;
 
-        if (_tarStopCastDelay.Delay(tarDead))
+        var statusTimes = Player.Object.StatusTimes(false, [.. OtherConfiguration.NoCastingStatus.Select(i => (StatusID)i)]);
+
+        var stopDueStatus = statusTimes.Any() && statusTimes.Min() > Player.Object.TotalCastTime - Player.Object.CurrentCastTime;
+
+        if (_tarStopCastDelay.Delay(tarDead) || stopDueStatus)
         {
             UIState.Instance()->Hotbar.CancelCast();
         }
