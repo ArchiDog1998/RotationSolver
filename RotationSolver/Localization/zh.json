@@ -374,5 +374,22 @@
   "RotationSolver.Basic.Configuration.Timeline.MoveTimelineItem": "Move Time line",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet": "条件设置",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction": "技能使用条件",
-  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "Target Count Condition"
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "Target Count Condition",
+  "RotationSolver.Data.UiString.TimelineRaidTime": "Raid Time",
+  "RotationSolver.Data.UiString.TimelineExecute": "Execute",
+  "RotationSolver.Data.UiString.TimelineDuration": "Duration",
+  "RotationSolver.Data.UiString.TimelineTargetCount": "Target Count",
+  "RotationSolver.Data.UiString.TimelineTargetGetter": "Target Getter",
+  "RotationSolver.Data.UiString.TimelineEffectDuration": "Effect Duration",
+  "RotationSolver.Data.UiString.TimelineGround": "Ground",
+  "RotationSolver.Data.UiString.TimelineActor": "Actor",
+  "RotationSolver.Data.UiString.TimelineRotation": "Rotation",
+  "RotationSolver.Data.UiString.TimelinePosition": "Position",
+  "RotationSolver.Data.UiString.TimelineScale": "Scale",
+  "RotationSolver.Data.UiString.TimelineObjectGetter": "Object Getter",
+  "RotationSolver.Data.UiString.TimelineShowText": "Showing Text",
+  "RotationSolver.Data.UiString.TimelineNeedATarget": "Need a target",
+  "RotationSolver.Data.UiString.TimelineTargetByTarget": "Target by target",
+  "RotationSolver.Data.UiString.TimelinePlaceOnTarget": "Place On Target",
+  "RotationSolver.Data.UiString.TimelinePositionOffset": "Position Offset"
 }
