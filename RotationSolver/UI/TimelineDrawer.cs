@@ -768,10 +768,11 @@ internal static class TimelineDrawer
             ImGui.SameLine();
             if (objectDrawing.IsActorEffect)
             {
-                index = Array.IndexOf(_actorNames, objectDrawing.Path.UnLockOn());
+                index = Array.IndexOf(_actorNames.Select(n => n.StartsWith("chn_") ? n.Channeling() : n.LockOn()).ToArray(), objectDrawing.Path);
                 if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _actorShowNames, ref index))
                 {
-                    objectDrawing.Path = _actorNames[index].LockOn();
+                    var actorName = _actorNames[index];
+                    objectDrawing.Path = actorName.StartsWith("chn_") ? actorName.Channeling() : actorName.LockOn();
                 }
             }
             else

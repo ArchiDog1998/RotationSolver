@@ -40,7 +40,9 @@ public static partial class RSCommands
     internal static uint _lastActionID;
     public static void DoAction()
     {
-        if (Player.Object.HasStatus(false, [..OtherConfiguration.NoCastingStatus.Select(i => (StatusID)i)]))
+        var statusTimes = Player.Object.StatusTimes(false, [.. OtherConfiguration.NoCastingStatus.Select(i => (StatusID)i)]);
+
+        if (statusTimes.Any() && statusTimes.Min() > Player.Object.TotalCastTime - Player.Object.CurrentCastTime && statusTimes.Min() < 5)
         {
             return;
         }

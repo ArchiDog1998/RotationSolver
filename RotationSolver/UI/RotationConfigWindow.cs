@@ -1938,7 +1938,7 @@ public partial class RotationConfigWindow : Window
         ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
         ImGui.InputTextWithHint("##Searching the action", UiString.ConfigWindow_List_StatusNameOrId.Local(), ref _statusSearching, 128);
 
-        using var table = ImRaii.Table("Rotation Solver List Statuses", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+        using var table = ImRaii.Table("Rotation Solver List Statuses", 4, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
         if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);

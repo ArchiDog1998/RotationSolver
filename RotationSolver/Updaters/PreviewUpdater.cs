@@ -53,13 +53,15 @@ internal static class PreviewUpdater
 
     private static unsafe void UpdateCancelCast()
     {
+        if (!Player.Object.IsCasting) return;
+
         var tarDead = Service.Config.UseStopCasting
             && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
             && b.IsEnemy() && b.CurrentHp == 0;
 
         var statusTimes = Player.Object.StatusTimes(false, [.. OtherConfiguration.NoCastingStatus.Select(i => (StatusID)i)]);
 
-        var stopDueStatus = statusTimes.Any() && statusTimes.Min() > Player.Object.TotalCastTime - Player.Object.CurrentCastTime;
+        var stopDueStatus = statusTimes.Any() && statusTimes.Min() > Player.Object.TotalCastTime - Player.Object.CurrentCastTime && statusTimes.Min() < 5;
 
         if (_tarStopCastDelay.Delay(tarDead) || stopDueStatus)
         {
