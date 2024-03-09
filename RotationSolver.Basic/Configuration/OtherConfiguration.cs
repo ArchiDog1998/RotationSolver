@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using RotationSolver.Basic.Configuration.Timeline;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -30,23 +31,14 @@ public class OtherConfiguration
         }
 
         Task.Run(() => InitOne(ref DangerousStatus, nameof(DangerousStatus)));
-
         Task.Run(() => InitOne(ref PriorityStatus, nameof(PriorityStatus)));
-
         Task.Run(() => InitOne(ref InvincibleStatus, nameof(InvincibleStatus)));
-
         Task.Run(() => InitOne(ref NoHostileNames, nameof(NoHostileNames)));
-
         Task.Run(() => InitOne(ref NoProvokeNames, nameof(NoProvokeNames)));
-
         Task.Run(() => InitOne(ref AnimationLockTime, nameof(AnimationLockTime)));
-
         Task.Run(() => InitOne(ref HostileCastingArea, nameof(HostileCastingArea)));
-
         Task.Run(() => InitOne(ref HostileCastingTank, nameof(HostileCastingTank)));
-
         Task.Run(() => InitOne(ref BeneficialPositions, nameof(BeneficialPositions)));
-
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
     }
 

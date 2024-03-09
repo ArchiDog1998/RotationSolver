@@ -120,11 +120,6 @@ partial class WarriorRotation
         setting.StatusNeed = [StatusID.NascentChaos_1992];
     }
 
-    static partial void ModifyOnslaughtPvE(ref ActionSetting setting)
-    {
-        setting.TargetType = TargetType.Move;
-    }
-
     /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {

@@ -143,11 +143,6 @@ partial class GunbreakerRotation
         return base.EmergencyAbility(nextGCD, out act);
     }
 
-    static partial void ModifyRoughDividePvE(ref ActionSetting setting)
-    {
-        setting.TargetType = TargetType.Move;
-    }
-
     /// <inheritdoc/>
     [RotationDesc(ActionID.RoughDividePvE)]
     protected sealed override bool MoveForwardAbility(out IAction? act)

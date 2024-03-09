@@ -148,7 +148,6 @@ partial class SamuraiRotation
 
     static partial void ModifyHissatsuGyotenPvE(ref ActionSetting setting)
     {
-        setting.TargetType = TargetType.Move;
         setting.ActionCheck = () => Kenki >= 10;
     }
 

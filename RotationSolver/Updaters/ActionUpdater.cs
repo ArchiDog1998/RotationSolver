@@ -70,6 +70,7 @@ internal static class ActionUpdater
             }
         }
     }
+
     internal static IAction? WrongAction { get; set; }
     static readonly Random _wrongRandom = new();
 

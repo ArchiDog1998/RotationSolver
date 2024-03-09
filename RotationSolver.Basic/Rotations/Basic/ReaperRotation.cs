@@ -183,7 +183,6 @@ partial class ReaperRotation
     static partial void ModifyHellsIngressPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.EnhancedHarpe, StatusID.Bind];
-        setting.TargetType = TargetType.Move;
     }
 
     static partial void ModifyHellsEgressPvE(ref ActionSetting setting)
