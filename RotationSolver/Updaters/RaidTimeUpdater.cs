@@ -178,10 +178,28 @@ internal static partial class RaidTimeUpdater
     {
         var name = GetNameFromObjectId(targetActorId);
         var actionId = ReadUshort(dataPtr, 0);
+        var castingTime = Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?
+            .GetRow(actionId)?.Cast100ms / 10f;
 
         for (int i = 0; i < DataCenter.TimelineItems.Length; i++)
         {
             var item = DataCenter.TimelineItems[i];
+
+            if (item.Type is TimelineType.Ability
+                && item["id", actionId]
+                && item["source", name])
+            {
+                var t = DataCenter.RaidTimeRaw + castingTime;
+
+                if (t >= item.Time - item.WindowMin && t <= item.Time + item.WindowMax)
+                {
+                    item.LastActionID = actionId;
+#if DEBUG
+                    Svc.Log.Debug($"Set the timeline {item.Time} action to {actionId}");
+#endif
+                }
+            }
+
             if (!item.IsInWindow) continue;
             if (item.Type is not TimelineType.StartsUsing) continue;
 

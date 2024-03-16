@@ -621,7 +621,7 @@ internal static class TimelineDrawer
         else if (con is TimelineConditionAction action)
         {
             var index = Array.IndexOf(timelineItem.ActionIDs, action.ActionID);
-            var actionNames = timelineItem.ActionIDs.Select(i => Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.GetRow(i)?.Name.RawString ?? "Unnamed Action").ToArray();
+            var actionNames = timelineItem.ActionIDs.Select(i => (Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.GetRow(i)?.Name.RawString ?? "Unnamed Action") + $" ({i})").ToArray();
 
             ImGui.SameLine();
             if (ImGuiHelper.SelectableCombo("Action ##Select Action" + action.GetHashCode(), actionNames, ref index))
@@ -1007,6 +1007,8 @@ internal static class TimelineDrawer
         {
             getter.TimeDuration = duration;
         }
+
+        if (!ImGui.CollapsingHeader("Effect##" + getter.GetHashCode())) return;
 
         var vfx = getter.VfxPath;
         ImGui.SetNextItemWidth(300 * Scale);

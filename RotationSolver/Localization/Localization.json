@@ -393,5 +393,6 @@
   "RotationSolver.Data.UiString.TimelinePlaceOnTarget": "Place On Target",
   "RotationSolver.Data.UiString.TimelinePositionOffset": "Position Offset",
   "RotationSolver.Data.UiString.ConfigWindow_List_NoCastingStatus": "No Casting debuffs",
-  "RotationSolver.Data.UiString.ConfigWindow_List_NoCastingStatusDesc": "No Casting debuffs List"
+  "RotationSolver.Data.UiString.ConfigWindow_List_NoCastingStatusDesc": "No Casting debuffs List",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_CheckStatus": "Should this action check the stauts."
 }

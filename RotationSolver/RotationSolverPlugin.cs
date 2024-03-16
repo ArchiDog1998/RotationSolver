@@ -68,7 +68,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         windowSystem.AddWindow(_cooldownWindow);
 
         Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
-        Svc.PluginInterface.UiBuilder.Draw += windowSystem.Draw;
+        Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
         PainterManager.Init();
         MajorUpdater.Enable();
@@ -103,6 +103,12 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #endif
     }
 
+    private void OnDraw()
+    {
+        if (Svc.GameGui.GameUiHidden) return;
+        windowSystem.Draw();
+    }
+
     internal static void ChangeUITranslation()
     {
         _rotationConfigWindow!.WindowName = UiString.ConfigWindowHeader.Local()
@@ -118,7 +124,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Watcher.Disable();
 
         Svc.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
-        Svc.PluginInterface.UiBuilder.Draw -= windowSystem.Draw;
+        Svc.PluginInterface.UiBuilder.Draw -= OnDraw;
 
         foreach (var item in _dis)
         {

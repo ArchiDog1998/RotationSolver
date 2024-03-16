@@ -219,12 +219,13 @@ internal static class PainterManager
 
     private static unsafe void UpdateHostileIcons()
     {
+        foreach (var item in TargetsDrawings)
+        {
+            item.Enable = false;
+        }
+
         if (!Service.Config.ShowHostilesIcons)
         {
-            foreach (var item in TargetsDrawings)
-            {
-                item.Enable = false;
-            }
             return;
         }
 

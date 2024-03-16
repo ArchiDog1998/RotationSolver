@@ -3,7 +3,7 @@
 /// <summary>
 /// The bozja action.
 /// </summary>
-[DutyTerritory] //TODO: the bozja territory ids!
+[DutyTerritory(920, 975)] //TODO: the bozja territory ids!
 public abstract class BozjaRotation : DutyRotation
 {
 }
