@@ -2,28 +2,49 @@
 
 namespace RotationSolver.Basic.Helpers;
 
+internal enum HeadMarker : byte
+{
+    Attack1,
+    Attack2,
+    Attack3,
+    Attack4,
+    Attack5,
+    Bind1,
+    Bind2,
+    Bind3,
+    Stop1,
+    Stop2,
+    Square,
+    Circle,
+    Cross,
+    Triangle,
+    Attack6,
+    Attack7, 
+    Attack8,
+}
+
 internal class MarkingHelper
 {
-    internal unsafe static long GetMarker(uint index) => MarkingController.Instance()->MarkerArray[index];
+    internal unsafe static long GetMarker(HeadMarker index) => MarkingController.Instance()->MarkerArray[(int)index];
 
     internal static bool HaveAttackChara => AttackSignTargets.Any(id => id != GameObject.InvalidGameObjectId);
 
     internal static long[] AttackSignTargets => 
     [
-        GetMarker(0),
-        GetMarker(1),
-        GetMarker(2),
-        GetMarker(3),
-        GetMarker(4),
-        GetMarker(14),
-        GetMarker(15),
-        GetMarker(16),
+        GetMarker(HeadMarker.Attack1),
+        GetMarker(HeadMarker.Attack2),
+        GetMarker(HeadMarker.Attack3),
+        GetMarker(HeadMarker.Attack4),
+        GetMarker(HeadMarker.Attack5),
+        GetMarker(HeadMarker.Attack6),
+        GetMarker(HeadMarker.Attack7),
+        GetMarker(HeadMarker.Attack8),
     ];
 
     internal static long[] StopTargets =>
     [
-        GetMarker(8),
-        GetMarker(9),
+        GetMarker(HeadMarker.Stop1),
+        GetMarker(HeadMarker.Stop2),
     ];
 
     internal unsafe static IEnumerable<BattleChara> FilterStopCharaes(IEnumerable<BattleChara> charas)
