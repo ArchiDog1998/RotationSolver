@@ -96,8 +96,8 @@ internal static class LocalizationManager
 #if DEBUG
     private static void ExportLocalization()
     {
-        var dirInfo = new DirectoryInfo(typeof(LocalizationManager).Assembly.Location);
-        dirInfo = dirInfo.Parent!.Parent!.Parent!.Parent!;
+        var dirInfo = Svc.PluginInterface.AssemblyLocation.Directory;
+        dirInfo = dirInfo?.Parent!.Parent!.Parent!.Parent!;
 
 
         var directory = dirInfo.FullName + @"\Localization";
