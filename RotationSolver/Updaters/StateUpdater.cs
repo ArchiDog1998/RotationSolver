@@ -44,8 +44,8 @@ internal static class StateUpdater
         {
             var id = ActionUpdater.NextGCDAction.ID;
             if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)id, out var positional)
-                && positional != ActionUpdater.NextGCDAction.Target?.Target?.FindEnemyPositional()
-                && (ActionUpdater.NextGCDAction.Target?.Target?.HasPositional() ?? false))
+                && positional != ActionUpdater.NextGCDAction.Target.Target?.FindEnemyPositional()
+                && (ActionUpdater.NextGCDAction.Target.Target?.HasPositional() ?? false))
             {
                 status |= AutoStatus.Positional;
             }

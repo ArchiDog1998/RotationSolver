@@ -32,7 +32,7 @@ partial class CustomRotation
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward)
             && MoveForwardGCD(out act))
         {
-            if (act is IBaseAction b && ObjectHelper.DistanceToPlayer(b.Target?.Target) > 5) return act;
+            if (act is IBaseAction b && ObjectHelper.DistanceToPlayer(b.Target.Target) > 5) return act;
         }
 
         IBaseAction.TargetOverride = TargetType.Heal;

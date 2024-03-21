@@ -11,7 +11,7 @@ namespace RotationSolver.Basic.Actions;
 public class BaseAction : IBaseAction
 {
     /// <inheritdoc/>
-    public TargetResult? Target { get; set; } = null;
+    public TargetResult Target { get; set; } = new(Player.Object, [], null);
 
     /// <inheritdoc/>
     public TargetResult? PreviewTarget { get; private set; } = null;
@@ -152,7 +152,7 @@ public class BaseAction : IBaseAction
         if (PreviewTarget == null) return false;
         if (!IBaseAction.ActionPreview)
         {
-            Target = PreviewTarget;
+            Target = PreviewTarget.Value;
         }
 
         return true;
@@ -175,9 +175,7 @@ public class BaseAction : IBaseAction
     /// <inheritdoc/>
     public unsafe bool Use()
     {
-        if (!Target.HasValue) return false;
-
-        var target = Target.Value;
+        var target = Target;
 
         var adjustId = AdjustedID;
         if (TargetInfo.IsTargetArea)

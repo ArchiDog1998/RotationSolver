@@ -1550,10 +1550,7 @@ public partial class RotationConfigWindow : Window
 
                     ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
                     ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
-                    if (action.Target != null)
-                    {
-                        ImGui.Text("Target Name: " + action.Target.Value.Target?.Name ?? string.Empty);
-                    }
+                    ImGui.Text("Target Name: " + action.Target.Target?.Name ?? string.Empty);
                 }
                 catch
                 {

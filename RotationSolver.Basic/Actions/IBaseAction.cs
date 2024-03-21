@@ -23,7 +23,7 @@ public interface IBaseAction : IAction
     /// <summary>
     /// The target to use on.
     /// </summary>
-    TargetResult? Target { get; set; }
+    TargetResult Target { get; set; }
 
     /// <summary>
     /// The target for preview.

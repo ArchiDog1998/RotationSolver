@@ -53,6 +53,7 @@ internal static class MajorUpdater
         {
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
+            TargetUpdater.UpdateTarget();
 
             if (Service.Config.TeachingMode && ActionUpdater.NextAction != null)
             {
@@ -171,7 +172,6 @@ internal static class MajorUpdater
 
         try
         {
-            TargetUpdater.UpdateTarget();
             StateUpdater.UpdateState();
 
             if (Service.Config.AutoLoadCustomRotations)

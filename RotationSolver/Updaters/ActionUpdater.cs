@@ -42,7 +42,7 @@ internal static class ActionUpdater
             circle.Owner = sector.Owner = rectangle.Owner = player;
 
             if (value == null) return;
-            var target = value.Target?.Target ?? player;
+            var target = value.Target.Target ?? player;
 
             var range = value.Action.EffectRange;
             var size = new Vector3(range, gcdHeight, range);

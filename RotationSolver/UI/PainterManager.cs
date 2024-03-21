@@ -193,15 +193,13 @@ internal static class PainterManager
 
         if (ActionUpdater.NextAction is not BaseAction act) return;
 
-        if (act.Target == null) return;
-
         var d = DateTime.Now.Millisecond / 1000f;
         var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
 
         if (Service.Config.TargetIconSize > 0)
         {
             _targetImage.Enable = true;
-            _targetImage.Position = act.Target?.Position ?? Player.Object.Position;
+            _targetImage.Position = act.Target.Position ?? Player.Object.Position;
             if (act.GetTexture(out var texture, true))
             {
                 _targetImage.Image = texture;
@@ -212,7 +210,7 @@ internal static class PainterManager
         {
             _target.Enable = true;
             _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
-            _target.Center = act.Target?.Position ?? Player.Object.Position;
+            _target.Center = act.Target.Position ?? Player.Object.Position;
             _target.Radius = targetRadius * ratio;
         }
     }

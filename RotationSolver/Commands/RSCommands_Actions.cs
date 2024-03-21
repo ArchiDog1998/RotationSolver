@@ -60,7 +60,7 @@ public static partial class RSCommands
 
         if (nextAction is BaseAction act1 && act1.Info.IsPvP && !act1.Setting.IsFriendly
             && act1.TargetInfo.IsSingleTarget
-            && act1.Target?.Target is PlayerCharacter p && p != Player.Object)
+            && act1.Target.Target is PlayerCharacter p && p != Player.Object)
         {
             var hash = p.EncryptString();
 
@@ -109,8 +109,8 @@ public static partial class RSCommands
                 //}
 #endif
                 //Change Target
-                var tar = (act.Target == null || act.Target?.Target == Player.Object)
-                    ? act.Target?.AffectedTargets.FirstOrDefault() : act.Target?.Target;
+                var tar = act.Target.Target == Player.Object
+                    ? act.Target.AffectedTargets.FirstOrDefault() : act.Target.Target;
 
                 if (tar != null && tar != Player.Object && tar.IsEnemy())
                 {
@@ -123,6 +123,11 @@ public static partial class RSCommands
                     }
                 }
             }
+
+        }
+        else
+        {
+            Svc.Log.Error($"Failed to use the action {nextAction} ({nextAction.AdjustedID})");
         }
     }
 
