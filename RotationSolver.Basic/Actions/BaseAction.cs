@@ -187,7 +187,8 @@ public class BaseAction : IBaseAction
 
             return ActionManager.Instance()->UseActionLocation(ActionType.Action, ID, Player.Object.ObjectId, &loc);
         }
-        else if (Svc.Objects.SearchById(target.Target?.ObjectId ?? GameObject.InvalidGameObjectId) == null)
+        else if (Svc.Objects.SearchById(target.Target?.ObjectId 
+            ?? Player.Object?.ObjectId ?? GameObject.InvalidGameObjectId) == null)
         {
             return false;
         }

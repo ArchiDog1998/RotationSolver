@@ -209,7 +209,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _interruptibleMoreCheck = true;
 
     [ConditionBool, UI("Use work task for acceleration.",
-        Filter =BasicParams)]
+        Filter = BasicParams)]
     private static readonly bool _useWorkTask = false;
 
     [ConditionBool, UI("Stops casting when the target is dead.", Filter = Extra)]

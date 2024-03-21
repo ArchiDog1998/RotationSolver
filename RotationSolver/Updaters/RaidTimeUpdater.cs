@@ -28,7 +28,7 @@ internal static partial class RaidTimeUpdater
     private static void UpdateTimelineAddCombat()
     {
         if (DataCenter.TimelineItems.Length == 0) return;
-        foreach (var obj in Svc.Objects.OfType<BattleChara>())
+        foreach (var obj in DataCenter.AllTargets)
         {
             if (obj is PlayerCharacter) continue;
             var id = obj.ObjectId;
