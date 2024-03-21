@@ -1,5 +1,12 @@
 ﻿namespace RotationSolver.Basic.Actions;
 
+internal enum SpecialActionType : byte
+{
+    None,
+    MeleeRange,
+    MovingForward,
+}
+
 /// <summary>
 /// Setting from the developer.
 /// </summary>
@@ -18,7 +25,7 @@ public class ActionSetting()
     /// <summary>
     /// Is this action in the melee range.
     /// </summary>
-    public bool IsMeleeRange { get; set; } = false;
+    internal SpecialActionType SpecialType { get; set; }
 
     /// <summary>
     /// Is this status is added by the plyer.

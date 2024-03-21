@@ -52,7 +52,7 @@ partial class NinjaRotation
 
     static partial void ModifyThrowingDaggerPvE(ref ActionSetting setting)
     {
-        setting.IsMeleeRange = true;
+        setting.SpecialType = SpecialActionType.MeleeRange;
     }
 
     static partial void ModifyBhavacakraPvE(ref ActionSetting setting)
@@ -113,6 +113,11 @@ partial class NinjaRotation
     static partial void ModifyDotonPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.Doton];
+    }
+
+    static partial void ModifyShukuchiPvE(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     /// <summary>

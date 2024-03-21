@@ -63,7 +63,7 @@ partial class DragoonRotation
 
     static partial void ModifyPiercingTalonPvE(ref ActionSetting setting)
     {
-        setting.IsMeleeRange = true;
+        setting.SpecialType = SpecialActionType.MeleeRange;
     }
 
     static partial void ModifyJumpPvE(ref ActionSetting setting)

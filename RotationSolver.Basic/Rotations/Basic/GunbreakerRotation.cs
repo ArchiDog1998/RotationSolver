@@ -75,7 +75,7 @@ partial class GunbreakerRotation
 
     static partial void ModifyLightningShotPvE(ref ActionSetting setting)
     {
-        setting.IsMeleeRange = true;
+        setting.SpecialType = SpecialActionType.MeleeRange;
     }
 
     static partial void ModifyFatedCirclePvE(ref ActionSetting setting)
@@ -133,6 +133,11 @@ partial class GunbreakerRotation
         {
             AoeCount = 2,
         };
+    }
+
+    static partial void ModifyRoughDividePvE(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     /// <inheritdoc/>

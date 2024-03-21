@@ -142,7 +142,9 @@ public class BaseAction : IBaseAction
         if (!Cooldown.CooldownCheck(usedUp, onLastAbility, skipClippingCheck, gcdCountForAbility)) return false;
 
 
-        if (Setting.IsMeleeRange && IActionHelper.IsLastAction(IActionHelper.MovingActions)) return false; //No range actions after moving.
+        if (Setting.SpecialType is SpecialActionType.MeleeRange
+            && IActionHelper.IsLastAction(IActionHelper.MovingActions)) return false; //No range actions after moving.
+
         if (DataCenter.AverageTimeToKill < Config.TimeToKill) return false;
         if (DataCenter.TimeToUntargetable < Config.TimeToUntargetable) return false;
 

@@ -73,7 +73,7 @@ partial class DarkKnightRotation
 
     static partial void ModifyUnmendPvE(ref ActionSetting setting)
     {
-        setting.IsMeleeRange = true;
+        setting.SpecialType =  SpecialActionType.MeleeRange;
     }
 
     static partial void ModifyLivingShadowPvE(ref ActionSetting setting)
@@ -145,6 +145,11 @@ partial class DarkKnightRotation
         {
             AoeCount = 2,
         };
+    }
+
+    static partial void ModifyPlungePvE(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     /// <inheritdoc/>

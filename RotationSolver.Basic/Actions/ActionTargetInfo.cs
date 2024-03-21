@@ -260,7 +260,7 @@ public struct ActionTargetInfo(IBaseAction action)
         {
             type = TargetType.Big;
         }
-        var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.IsMeleeRange);
+        var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.SpecialType);
         if (target == null) return null;
 
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
@@ -322,7 +322,7 @@ public struct ActionTargetInfo(IBaseAction action)
         {
             var availableCharas = DataCenter.AllTargets.Where(b => b.ObjectId != Player.Object.ObjectId);
             var target = FindTargetByType(TargetFilter.GetObjectInRadius(availableCharas, range),
-                TargetType.Move, action.Config.AutoHealRatio, action.Setting.IsMeleeRange);
+                TargetType.Move, action.Config.AutoHealRatio, action.Setting.SpecialType);
             if (target == null) return null;
             return new(target, [], target.Position);
         }
@@ -384,7 +384,7 @@ public struct ActionTargetInfo(IBaseAction action)
         {
             var effectRange = EffectRange;
             var attackT = FindTargetByType(DataCenter.AllianceMembers.GetObjectInRadius(range + effectRange),
-                TargetType.BeAttacked, action.Config.AutoHealRatio, action.Setting.IsMeleeRange);
+                TargetType.BeAttacked, action.Config.AutoHealRatio, action.Setting.SpecialType);
 
             if (attackT == null)
             {
@@ -512,13 +512,26 @@ public struct ActionTargetInfo(IBaseAction action)
     #endregion
 
     #region TargetFind
-    private static BattleChara? FindTargetByType(IEnumerable<BattleChara> gameObjects, TargetType type, float healRatio, bool isMeleeRange)
+    private static BattleChara? FindTargetByType(IEnumerable<BattleChara> gameObjects, TargetType type, float healRatio, SpecialActionType actionType)
     {
         if (type == TargetType.Self) return Player.Object;
 
-        if (isMeleeRange)
+        switch (actionType)
         {
-            gameObjects = gameObjects.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.MeleeRangeOffset);
+            case SpecialActionType.MeleeRange:
+                gameObjects = gameObjects.Where(t => t.DistanceToPlayer() >= 3 + Service.Config.MeleeRangeOffset);
+                break;
+
+            case SpecialActionType.MovingForward:
+                if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward))
+                {
+                    type = TargetType.Move;
+                }
+                else
+                {
+                    gameObjects = gameObjects.Where(t => t.DistanceToPlayer() < 1);
+                }
+                break;
         }
 
         switch (type) // Filter the objects.
@@ -568,13 +581,6 @@ public struct ActionTargetInfo(IBaseAction action)
 
         BattleChara? FindTargetForMoving()
         {
-            //if (!IBaseAction.ActionPreview && !DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward))
-            //{
-            //    var o = gameObjects.MinBy(b => b.DistanceToPlayer());
-            //    if (o.DistanceToPlayer() < 1) return o;
-            //    return null;
-            //}
-
             const float DISTANCE_TO_MOVE = 3;
 
             if (Service.Config.MoveTowardsScreenCenter)

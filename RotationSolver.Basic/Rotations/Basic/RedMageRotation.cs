@@ -133,6 +133,11 @@ partial class RedMageRotation
         };
     }
 
+    static partial void ModifyCorpsacorpsPvE(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.VercurePvE)]
     protected sealed override bool HealSingleGCD(out IAction? act)

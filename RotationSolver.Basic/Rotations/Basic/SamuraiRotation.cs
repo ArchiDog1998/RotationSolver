@@ -118,7 +118,7 @@ partial class SamuraiRotation
 
     static partial void ModifyEnpiPvE(ref ActionSetting setting)
     {
-        setting.IsMeleeRange = true;
+        setting.SpecialType = SpecialActionType.MeleeRange;
     }
 
     static partial void ModifyMeikyoShisuiPvE(ref ActionSetting setting)
@@ -148,6 +148,7 @@ partial class SamuraiRotation
 
     static partial void ModifyHissatsuGyotenPvE(ref ActionSetting setting)
     {
+        setting.SpecialType = SpecialActionType.MovingForward;
         setting.ActionCheck = () => Kenki >= 10;
     }
 

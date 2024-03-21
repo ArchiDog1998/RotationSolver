@@ -124,6 +124,11 @@ partial class SageRotation
         };
     }
 
+    static partial void ModifyIcarusPvE(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.IcarusPvE)]
     protected sealed override bool MoveForwardAbility(out IAction? act)

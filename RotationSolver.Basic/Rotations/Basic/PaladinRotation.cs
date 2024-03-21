@@ -54,7 +54,7 @@ partial class PaladinRotation
 
     static partial void ModifyShieldLobPvE(ref ActionSetting setting)
     {
-        setting.IsMeleeRange = true;
+        setting.SpecialType = SpecialActionType.MeleeRange;
     }
 
     private protected sealed override IBaseAction TankStance => IronWillPvE;
@@ -102,6 +102,10 @@ partial class PaladinRotation
         setting.ActionCheck = () => OathGauge >= 50 && Player.IsTargetOnSelf();
     }
 
+    static partial void ModifyIntervenePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
 
     /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)

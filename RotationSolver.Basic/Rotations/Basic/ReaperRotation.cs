@@ -177,7 +177,7 @@ partial class ReaperRotation
 
     static partial void ModifyHarpePvE(ref ActionSetting setting)
     {
-        setting.IsMeleeRange = true;
+        setting.SpecialType = SpecialActionType.MeleeRange;
     }
 
     static partial void ModifyHellsIngressPvE(ref ActionSetting setting)
@@ -199,6 +199,11 @@ partial class ReaperRotation
     static partial void ModifyHarvestMoonPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.Soulsow];
+    }
+
+    static partial void ModifyHellsIngressPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     /// <inheritdoc/>

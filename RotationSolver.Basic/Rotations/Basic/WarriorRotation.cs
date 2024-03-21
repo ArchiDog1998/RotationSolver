@@ -11,6 +11,8 @@ partial class WarriorRotation
     /// </summary>
     public static byte BeastGauge => JobGauge.BeastGauge;
 
+    private sealed protected override IBaseAction TankStance => DefiancePvE;
+
     static partial void ModifyStormsEyePvE(ref ActionSetting setting)
     {
         setting.CreateConfig = () => new()
@@ -27,7 +29,7 @@ partial class WarriorRotation
 
     static partial void ModifyTomahawkPvE(ref ActionSetting setting)
     {
-        setting.IsMeleeRange = true;
+        setting.SpecialType = SpecialActionType.MeleeRange;
     }
 
     static partial void ModifyUpheavalPvE(ref ActionSetting setting)
@@ -48,8 +50,8 @@ partial class WarriorRotation
     static partial void ModifyPrimalRendPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.PrimalRendReady];
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
-    private sealed protected override IBaseAction TankStance => DefiancePvE;
 
     static partial void ModifyInfuriatePvE(ref ActionSetting setting)
     {
@@ -118,6 +120,11 @@ partial class WarriorRotation
     static partial void ModifyChaoticCyclonePvP(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.NascentChaos_1992];
+    }
+
+    static partial void ModifyOnslaughtPvE(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     /// <inheritdoc/>
