@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.2.2](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.1...v4.2.2) (2024-03-21)
+
+
+### Bug Fixes
+
+* .net8 ([7ddd01f](https://github.com/ArchiDog1998/RotationSolver/commit/7ddd01fee367b30ff7e967cdf435599048f48959))
+* add no casting list. ([0792e9f](https://github.com/ArchiDog1998/RotationSolver/commit/0792e9f0afcc5fd43b8d8c2d53d86d939efc10e9))
+* casting and some ui preview fix. ([3695114](https://github.com/ArchiDog1998/RotationSolver/commit/369511406e877c16aa998e63ff6e707451cad6dd))
+* changed the way to add rotation config. ([3f0d7e7](https://github.com/ArchiDog1998/RotationSolver/commit/3f0d7e776eeca671645e776ea6793ee1945f650f))
+* default target. ([4f6824e](https://github.com/ArchiDog1998/RotationSolver/commit/4f6824e591f61008d09edb9d5d3f72117ef66504))
+* io bug. ([3fc7fa9](https://github.com/ArchiDog1998/RotationSolver/commit/3fc7fa9f443306562b24f4592962a464e996d12c))
+* move stuff. ([20d8cd8](https://github.com/ArchiDog1998/RotationSolver/commit/20d8cd8d6dfe4e3b7d46bacf8549536561c37249))
+* moving forward actions' target. ([baad8e5](https://github.com/ArchiDog1998/RotationSolver/commit/baad8e5d1aabc292f40fa4e94b55b33494ef497b))
+* some target fix. ([f80e826](https://github.com/ArchiDog1998/RotationSolver/commit/f80e826d68866a78b7a6ce2aef941e13127df539))
+* superbolide no healing. ([f230e72](https://github.com/ArchiDog1998/RotationSolver/commit/f230e729519424fbf0a9d813bdb8da6eab3534d5))
+* territory id and drawing fix. ([501e846](https://github.com/ArchiDog1998/RotationSolver/commit/501e846454592137b0a8fe609e62afa606f5bb49))
+
 ## [4.2.1](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.0...v4.2.1) (2024-03-08)
 
 
