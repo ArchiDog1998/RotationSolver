@@ -69,7 +69,7 @@ public struct ActionTargetInfo(IBaseAction action)
         return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget);
     }
 
-    private readonly IEnumerable<BattleChara> GetCanAffects(bool skipStatusProvideCheck, TargetType type)
+    private readonly List<BattleChara> GetCanAffects(bool skipStatusProvideCheck, TargetType type)
     {
         if (EffectRange == 0) return [];
 

@@ -147,8 +147,8 @@ public static partial class RSCommands
         {
             if (config.DoCommand(configs, str))
             {
-                Svc.Chat.Print(string.Format(UiString.CommandsInsertAction.Local(),
-                    config.DisplayName, configs.GetDisplayString(config.Name)));
+                Svc.Chat.Print(string.Format(UiString.CommandsChangeSettingsValue.Local(),
+                    config.DisplayName, config.Value));
 
                 return;
             }

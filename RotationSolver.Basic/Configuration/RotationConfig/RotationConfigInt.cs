@@ -4,12 +4,22 @@ internal class RotationConfigInt : RotationConfigBase
 {
     public int Min, Max, Speed;
 
-    public RotationConfigInt(string name, int value, string displayName, int min, int max, int speed, CombatType type)
-        : base(name, value.ToString(), displayName, type)
+    public RotationConfigInt(ICustomRotation rotation, PropertyInfo property)
+        : base(rotation, property)
     {
-        Min = min;
-        Max = max;
-        Speed = speed;
+        var attr = property.GetCustomAttribute<RangeAttribute>();
+        if (attr != null)
+        {
+            Min = (int)attr.MinValue;
+            Max = (int)attr.MaxValue;
+            Speed = (int)attr.Speed;
+        }
+        else
+        {
+            Min = 0;
+            Max = 10;
+            Speed = 1;
+        }
     }
 
     public override bool DoCommand(IRotationConfigSet set, string str)
@@ -20,7 +30,7 @@ internal class RotationConfigInt : RotationConfigBase
 
         if (int.TryParse(numStr, out _))
         {
-            set.SetValue(Name, numStr.ToString());
+            Value = numStr.ToString();
         }
         return true;
     }

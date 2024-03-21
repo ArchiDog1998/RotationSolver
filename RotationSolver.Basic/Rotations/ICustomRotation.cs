@@ -54,10 +54,7 @@ public interface ICustomRotation : ITexture
     /// </summary>
     JobRole Role { get; }
 
-    /// <summary>
-    /// Configurations about this rotation.
-    /// </summary>
-    IRotationConfigSet Configs { get; }
+    internal IRotationConfigSet Configs { get; }
 
     /// <summary>
     /// The type of medicine.

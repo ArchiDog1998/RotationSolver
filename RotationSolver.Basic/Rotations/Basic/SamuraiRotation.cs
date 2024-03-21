@@ -91,18 +91,18 @@ partial class SamuraiRotation
 
     static partial void ModifyHiganbanaPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => !IsMoving && SenCount == 1;
+        setting.ActionCheck = () => SenCount == 1;
         setting.TargetStatusProvide = [StatusID.Higanbana];
     }
 
     static partial void ModifyTenkaGokenPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => !IsMoving && SenCount == 2;
+        setting.ActionCheck = () => SenCount == 2;
         setting.IsFriendly = false;
     }
     static partial void ModifyMidareSetsugekkaPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => !IsMoving && SenCount == 3;
+        setting.ActionCheck = () => SenCount == 3;
     }
 
     static partial void ModifyKaeshiGokenPvE(ref ActionSetting setting)

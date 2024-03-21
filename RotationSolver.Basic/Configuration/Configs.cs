@@ -732,7 +732,7 @@ internal partial class Configs : IPluginConfiguration
     private readonly Dictionary<uint, ItemConfig> _rotationItemConfig = [];
 
     [JobChoiceConfig]
-    private readonly Dictionary<string, string> _rotationsConfigurations = [];
+    private readonly Dictionary<string, string> _rotationConfigurations = [];
 
     public Dictionary<uint, string> DutyRotationChoice { get; set; } = [];
 

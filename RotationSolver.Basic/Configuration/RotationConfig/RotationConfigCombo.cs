@@ -1,9 +1,21 @@
-﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
+﻿using Dalamud.Utility;
 
-internal class RotationConfigCombo(string name, int value, string displayName, string[] items, CombatType type) 
-    : RotationConfigBase(name, value.ToString(), displayName, type)
+namespace RotationSolver.Basic.Configuration.RotationConfig;
+
+internal class RotationConfigCombo: RotationConfigBase
 {
-    public string[] Items { get; set; } = items;
+    public string[] Items { get; set; }
+
+    public RotationConfigCombo(ICustomRotation rotation, PropertyInfo property)
+        :base(rotation, property)
+    {
+        var names = new List<string>();
+        foreach (Enum v in Enum.GetValues(property.PropertyType))
+        {
+            names.Add(v.GetAttribute<DescriptionAttribute>()?.Description ?? v.ToString());
+        }
+        Items = [.. names];
+    }
 
     public override string ToString()
     {
@@ -19,7 +31,7 @@ internal class RotationConfigCombo(string name, int value, string displayName, s
         string numStr = str[Name.Length..].Trim();
         var length = Items.Length;
 
-        int nextId = (set.GetCombo(Name) + 1) % length;
+        int nextId = (int.Parse(Value) + 1) % length;
         if (int.TryParse(numStr, out int num))
         {
             nextId = num % length;
@@ -35,7 +47,7 @@ internal class RotationConfigCombo(string name, int value, string displayName, s
             }
         }
 
-        set.SetValue(Name, nextId.ToString());
+        Value = nextId.ToString();
         return true;
     }
 }

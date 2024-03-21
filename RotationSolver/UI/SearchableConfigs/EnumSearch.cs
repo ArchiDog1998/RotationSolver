@@ -1,4 +1,8 @@
-﻿namespace RotationSolver.UI.SearchableConfigs;
+﻿using Newtonsoft.Json.Linq;
+using RotationSolver.Localization;
+using System;
+
+namespace RotationSolver.UI.SearchableConfigs;
 
 internal class EnumSearch(PropertyInfo property) : Searchable(property)
 {
@@ -12,7 +16,12 @@ internal class EnumSearch(PropertyInfo property) : Searchable(property)
     {
         var value = Value;
 
-        var strs = Enum.GetNames(_property.PropertyType);
+        var names = new List<string>();
+        foreach (Enum v in Enum.GetValues(_property.PropertyType))
+        {
+            names.Add(v.Local());
+        }
+        var strs = names.ToArray();
 
         if (strs.Length > 0)
         {

@@ -6,13 +6,24 @@ internal class RotationConfigFloat : RotationConfigBase
 
     public ConfigUnitType UnitType { get; set; }
 
-
-    public RotationConfigFloat(string name, float value, string displayName, float min, float max, float speed, ConfigUnitType unitType, CombatType type) : base(name, value.ToString(), displayName, type)
+    public RotationConfigFloat(ICustomRotation rotation, PropertyInfo property)
+        : base(rotation, property)
     {
-        Min = min;
-        Max = max;
-        Speed = speed;
-        UnitType = unitType;
+        var attr = property.GetCustomAttribute<RangeAttribute>();
+        if(attr != null)
+        {
+            Min = attr.MinValue;
+            Max = attr.MaxValue;
+            Speed = attr.Speed;
+            UnitType = attr.UnitType;
+        }
+        else
+        {
+            Min = 0.0f;
+            Max = 1.0f;
+            Speed = 0.005f;
+            UnitType = ConfigUnitType.Percent;
+        }
     }
 
     public override bool DoCommand(IRotationConfigSet set, string str)
@@ -23,7 +34,7 @@ internal class RotationConfigFloat : RotationConfigBase
 
         if (float.TryParse(numStr, out _))
         {
-            set.SetValue(Name, numStr.ToString());
+            Value = numStr.ToString();
         }
         return true;
     }
