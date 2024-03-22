@@ -523,7 +523,7 @@ public struct ActionTargetInfo(IBaseAction action)
                 break;
 
             case SpecialActionType.MovingForward:
-                if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward))
+                if (DataCenter.MergedStatus.HasFlag(AutoStatus.MoveForward) || Service.CountDownTime > 0)
                 {
                     type = TargetType.Move;
                 }
