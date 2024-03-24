@@ -979,8 +979,8 @@ internal static class TimelineDrawer
                 }
                 break;
 
+            case ObjectType.GameObject:
             case ObjectType.BattleCharactor:
-
                 ImGui.SetNextItemWidth(150 * Scale);
                 var name = getter.DataID;
                 if (ImGui.InputText("Data ID## " + getter.GetHashCode(), ref name, 256))

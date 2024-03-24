@@ -23,9 +23,12 @@ internal class ObjectGetter
     {
         switch (Type)
         {
+            case ObjectType.GameObject:
+                if (!string.IsNullOrEmpty(DataID) && !new Regex(DataID).IsMatch(obj.DataId.ToString("X"))) return false;
+                break;
+
             case ObjectType.BattleCharactor:
                 if (obj is not BattleChara) return false;
-
                 if (!string.IsNullOrEmpty(DataID) && !new Regex(DataID).IsMatch(obj.DataId.ToString("X"))) return false;
 
                 break;

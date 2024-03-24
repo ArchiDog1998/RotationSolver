@@ -10,7 +10,7 @@ internal class StaticDrawingGetter : BaseDrawingGetter
     public string Path { get; set; } = GroundOmenHostile.Circle.Omen();
     public Vector3 Position { get; set; }
     public float Rotation { get; set; }
-    public Vector3 Scale { get; set; } = Vector3.Zero;
+    public Vector3 Scale { get; set; } = Vector3.One;
     public bool PlaceOnObject { get; set; } = false;
     public ObjectGetter ObjectGetter { get; set; } = new();
     public TextDrawing Text { get; set; } = new();
