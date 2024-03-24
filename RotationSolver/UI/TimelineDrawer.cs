@@ -361,7 +361,7 @@ internal static class TimelineDrawer
 
                 ImGui.SameLine();
 
-                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local(), ref point, "Pos" + moveItem.GetHashCode(), "X", "Y", "Z", () => Player.Object?.Position ?? default))
+                if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local(), ref point, "Pos" + moveItem.GetHashCode() + i, "X", "Y", "Z", () => Player.Object?.Position ?? default))
                 {
                     moveItem.Points[i] = point;
                 }

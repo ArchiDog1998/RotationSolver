@@ -7,7 +7,7 @@ namespace RotationSolver.Basic.Configuration.Timeline;
 [Description("Drawing Timeline")]
 internal class DrawingTimeline : BaseTimelineItem
 {
-    public float Duration { get; set; } = 5;
+    public float Duration { get; set; } = 6;
 
     public List<BaseDrawingGetter> DrawingGetters { get; set; } = [];
 
@@ -15,7 +15,7 @@ internal class DrawingTimeline : BaseTimelineItem
 
     public DrawingTimeline()
     {
-        Time = 5;
+        Time = 6;
     }
 
     public override bool InPeriod(TimelineItem item)
