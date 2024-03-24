@@ -20,17 +20,17 @@ internal class StaticDrawingGetter : BaseDrawingGetter
 
         if (PlaceOnObject)
         {
-            List<IDisposable> drawables = [];
+            List<IDisposable> drawable = [];
             foreach (var obj in Svc.Objects.Where(ObjectGetter.CanGet))
             {
-                drawables.Add(new StaticVfx(Path, Position + obj.Position, Rotation + obj.Rotation, Scale));
+                drawable.Add(new StaticVfx(Path, Position + obj.Position, Rotation + obj.Rotation, Scale));
                 var text = Text.GetText(Position);
                 if(text != null)
                 {
-                    drawables.Add(text);
+                    drawable.Add(text);
                 }
             }
-            return [.. drawables];
+            return [.. drawable];
         }
         else
         {

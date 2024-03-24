@@ -474,8 +474,8 @@ internal static class RotationUpdater
         var type = GetChosenType(rotations, name);
         if (type != DataCenter.RightNowDutyRotation?.GetType())
         {
-            var instance = GetRotation(type);
-            DataCenter.RightNowDutyRotation = instance;
+            DataCenter.RightNowDutyRotation?.Dispose();
+            DataCenter.RightNowDutyRotation = GetRotation(type);
         }
 
         static DutyRotation? GetRotation(Type? t)

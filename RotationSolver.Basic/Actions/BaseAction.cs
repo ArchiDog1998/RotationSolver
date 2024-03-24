@@ -122,11 +122,13 @@ public class BaseAction : IBaseAction
     {
         act = this!;
 
-        Setting.EndSpecial = IBaseAction.ShouldEndSpecial;
-
         if (IBaseAction.ActionPreview)
         {
             skipCastingCheck = skipClippingCheck = true;
+        }
+        else
+        {
+            Setting.EndSpecial = IBaseAction.ShouldEndSpecial;
         }
         if (IBaseAction.AllEmpty)
         {

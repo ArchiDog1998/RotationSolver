@@ -140,6 +140,11 @@ public partial class RotationConfigWindow : Window
                 var r = type.GetCustomAttribute<RotationAttribute>();
                 if (r == null) continue;
 
+                if (ImGui.Selectable("None"))
+                {
+                    Service.Config.DutyRotationChoice[Svc.ClientState.TerritoryType] = string.Empty;
+                }
+
                 if (ImGui.Selectable(r.Name) && !string.IsNullOrEmpty(type.FullName))
                 {
                     Service.Config.DutyRotationChoice[Svc.ClientState.TerritoryType] = type.FullName;

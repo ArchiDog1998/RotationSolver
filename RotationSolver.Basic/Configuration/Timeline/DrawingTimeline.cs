@@ -1,6 +1,4 @@
-﻿using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
-using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
-
+﻿using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 
 namespace RotationSolver.Basic.Configuration.Timeline;
 

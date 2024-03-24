@@ -1,7 +1,7 @@
 ﻿namespace RotationSolver.Basic.Rotations.Duties;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-partial class DutyRotation
+partial class DutyRotation : IDisposable
 {
     #region GCD
     public virtual bool EmergencyGCD(out IAction? act)
@@ -116,7 +116,18 @@ partial class DutyRotation
     {
         act = null; return false;
     }
+
     #endregion
+
+    public virtual void GenerateDrawing()
+    {
+
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+    }
 
     internal IAction[] AllActions
     {
