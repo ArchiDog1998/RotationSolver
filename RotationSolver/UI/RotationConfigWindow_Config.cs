@@ -18,7 +18,7 @@ public partial class RotationConfigWindow
     private string _searchText = string.Empty;
     private ISearchable[] _searchResults = [];
 
-    private static SearchableCollection _allSearchable = new();
+    internal static SearchableCollection _allSearchable = new();
 
     private void SearchingBox()
     {

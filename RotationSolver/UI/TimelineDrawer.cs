@@ -7,6 +7,7 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
@@ -109,6 +110,8 @@ internal static class TimelineDrawer
 
         ImGui.SameLine();
         ImGui.Text(UiString.TimelineRaidTime.Local() + ": " + TimeSpan.FromSeconds(DataCenter.RaidTimeRaw).ToString("hh\\:mm\\:ss\\.f"));
+
+        RotationConfigWindow._allSearchable.DrawItems(Configs.TimelineFilter);
 
         using var table = ImRaii.Table("Rotation Solver List Timeline", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)

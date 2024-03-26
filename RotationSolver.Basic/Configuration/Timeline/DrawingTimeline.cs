@@ -35,7 +35,14 @@ internal class DrawingTimeline : BaseTimelineItem
             item.Dispose();
         }
 
-        _drawings = [.. DrawingGetters.Where(i => i.Enable).SelectMany(i => i.GetDrawing())];
+        if (Service.Config.ShowTimelineDrawing)
+        {
+            _drawings = [.. DrawingGetters.Where(i => i.Enable).SelectMany(i => i.GetDrawing())];
+        }
+        else
+        {
+            _drawings = [];
+        }
 
 #if DEBUG
         //Svc.Log.Debug($"Added the state {item2.State} to timeline.");

@@ -2,7 +2,6 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration.Timeline;
-using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -22,6 +21,7 @@ internal partial class Configs : IPluginConfiguration
         Extra = "Extra",
         Rotations = "Rotations",
         List = "List",
+        TimelineFilter = "Timeline",
         Debug = "Debug";
 
     public int Version { get; set; } = 8;
@@ -413,6 +413,10 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Display toggle action feedback on chat",
         Filter =UiInformation)]
     private static readonly bool _showToggledActionInChat = true;
+
+    [ConditionBool, UI("Show the timeline drawing staff in the game.",
+    Filter = TimelineFilter)]
+    private static readonly bool _showTimelineDrawing = true;
 
     [UI("Use additional conditions", Filter = BasicParams)]
     public bool UseAdditionalConditions { get; set; } = false;
