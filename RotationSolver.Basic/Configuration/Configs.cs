@@ -2,6 +2,7 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration.Timeline;
+using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -743,6 +744,30 @@ internal partial class Configs : IPluginConfiguration
     {
 #if DEBUG
         Svc.Log.Information("Saved configurations.");
+
+        Dictionary<uint, Dictionary<float, List<BaseTimelineItem>>> dict = [];
+        foreach((var job, var timelineSet) in this._timelineDict)
+        {
+            foreach ((var id, var timeline) in timelineSet)
+            {
+                var refineTimeline = timeline.Select(i => (i.Key, i.Value.Where(j => j is DrawingTimeline).ToList())).ToDictionary();
+
+                if (dict.TryGetValue(id, out var lastTimeline))
+                {
+                    if (lastTimeline.Sum(i => i.Value.Count)
+                        >= refineTimeline.Sum(i => i.Value.Count))
+                    {
+                        continue;
+                    }
+                }
+                dict[id] = refineTimeline;
+            }
+        }
+        
+        foreach ((var id, var timeline) in dict)
+        {
+            File.WriteAllText(@$"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources\Timelines\{id}.json", JsonConvert.SerializeObject(timeline));
+        }
 #endif
         File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,
             JsonConvert.SerializeObject(this, Formatting.Indented));

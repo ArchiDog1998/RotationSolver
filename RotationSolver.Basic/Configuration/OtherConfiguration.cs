@@ -41,7 +41,6 @@ public class OtherConfiguration
         Task.Run(() => InitOne(ref BeneficialPositions, nameof(BeneficialPositions)));
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
         Task.Run(() => InitOne(ref NoCastingStatus, nameof(NoCastingStatus)));
-
     }
 
     public static Task Save()

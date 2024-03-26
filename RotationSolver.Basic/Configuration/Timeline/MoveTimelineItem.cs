@@ -32,4 +32,12 @@ internal class MoveTimelineItem : BaseTimelineItem
         }
         ipc.InvokeAction(new (Points), false);
     }
+
+    internal override void OnDisable()
+    {
+        base.OnDisable();
+
+        var ipc = Svc.PluginInterface.GetIpcSubscriber<object>("vnavmesh.Path.Stop");
+        ipc?.InvokeAction();
+    }
 }

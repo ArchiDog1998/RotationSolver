@@ -119,10 +119,10 @@ partial class DutyRotation : IDisposable
 
     #endregion
 
-    public virtual void GenerateDrawing()
-    {
+    //public virtual void GenerateDrawing()
+    //{
 
-    }
+    //}
 
     public void Dispose()
     {

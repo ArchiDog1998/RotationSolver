@@ -15,6 +15,7 @@ using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using XIVPainter;
 using XIVPainter.Vfx;
+using static Lumina.Data.Parsing.Uld.UldRoot;
 
 namespace RotationSolver.UI;
 internal static class TimelineDrawer
@@ -63,7 +64,12 @@ internal static class TimelineDrawer
 
         if (!Service.Config.Timeline.TryGetValue(_territoryId, out var timeLine))
         {
+            RaidTimeUpdater.DownloadTerritory(_territoryId);
             Service.Config.Timeline[_territoryId] = timeLine = [];
+        }
+        if (timeLine.Sum(i => i.Value.Count) == 0)
+        {
+            RaidTimeUpdater.DownloadTerritory(_territoryId);
         }
 
         ImGui.Separator();

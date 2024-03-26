@@ -2,8 +2,12 @@
 using ECommons.DalamudServices;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json.Linq;
+using RotationSolver.Basic.Configuration.Timeline;
+using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
+using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.UI;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace RotationSolver.Updaters;
 internal static partial class RaidTimeUpdater
@@ -56,7 +60,15 @@ internal static partial class RaidTimeUpdater
 
     private static void UpdateTimelineEvent()
     {
-        if (!Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)) return;
+        if (!Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline))
+        {
+            DownloadTerritory(Svc.ClientState.TerritoryType);
+            return;
+        }
+        if (timeline.Sum(i => i.Value.Count) == 0)
+        {
+            DownloadTerritory(Svc.ClientState.TerritoryType);
+        }
 
         foreach (var item in DataCenter.TimelineItems)
         {
@@ -69,6 +81,40 @@ internal static partial class RaidTimeUpdater
                 i.Enable = i.InPeriod(item);
             }
         }
+    }
+
+    private static readonly List<uint> _downloadingList = [];
+    public static void DownloadTerritory(uint id)
+    {
+        if (_downloadingList.Contains(id)) return;
+        _downloadingList.Add(id);
+
+        Task.Run(() =>
+        {
+            DownloadTerritoryPrivate(id);
+        });
+    }
+
+    private static void DownloadTerritoryPrivate(uint id)
+    {
+        try
+        {
+            using var client = new HttpClient();
+            var str = client.GetStringAsync($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/Timelines/{id}.json").Result;
+
+            Service.Config.Timeline[id] = JsonConvert.DeserializeObject<Dictionary<float, List<BaseTimelineItem>>>(str,
+                    new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())!;
+        }
+#if DEBUG
+        catch(Exception ex)
+        {
+            Svc.Log.Error(ex, $"Failed to download the timeline {id}.");
+        }
+#endif
+        finally
+        {
+        }
+        _downloadingList.Remove(id);
     }
 
     internal static async void EnableAsync()

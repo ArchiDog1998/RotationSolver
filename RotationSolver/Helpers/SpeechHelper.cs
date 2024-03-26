@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Text.SeStringHandling;
+﻿using Dalamud.Game.Text;
+using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin;
 using ECommons.DalamudServices;
@@ -30,14 +31,9 @@ internal static class SpeechHelper
         try
         {
             _stop?.Invoke(_manager, []);
-            try
-            {
-                _say?.Invoke(_textToTalk, [null, text, 1]);
-            }
-            catch
-            {
-                _say?.Invoke(_textToTalk, [null, new SeString(new TextPayload("Rotation Solver")), text, 1]);
-            }
+
+            _say?.Invoke(_textToTalk, [null, new SeString(new TextPayload("Rotation Solver")), XivChatType.SystemMessage,
+                    text, 2]);
         }
         catch (Exception ex)
         {
