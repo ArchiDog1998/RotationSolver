@@ -231,7 +231,7 @@ public static class Watcher
             OtherConfiguration.AnimationLockTime[id] = set.Header.AnimationLockTime;
         }
 
-        if (!set.TargetEffects.Any()) return;
+        if (set.TargetEffects.Length == 0) return;
 
         var action = set.Action;
         var tar = set.Target;

@@ -2464,7 +2464,7 @@ public partial class RotationConfigWindow : Window
         ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
         ImGui.Text("TimeToNext: " + DataCenter.NextAbilityToNextGCD.ToString());
         ImGui.Text("WeaponElapsed: " + DataCenter.WeaponElapsed.ToString());
-        ImGui.Text("AnimationLock: " + DataCenter.ActionRemain.ToString());
+        ImGui.Text("AnimationLock: " + DataCenter.AnimationLocktime.ToString());
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
         ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
@@ -2560,7 +2560,7 @@ public partial class RotationConfigWindow : Window
 
         ImGui.Text(ActionUpdater.NextAction?.Name ?? "null");
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
-        ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
+        ImGui.Text("Action Remain: " + DataCenter.AnimationLocktime.ToString());
         ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
     }
 

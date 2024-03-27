@@ -202,22 +202,22 @@ internal static class DataCenter
     /// <summary>
     /// Time to the next action
     /// </summary>
-    public static unsafe float ActionRemain => *(float*)((IntPtr)ActionManager.Instance() + 0x8);
+    public static unsafe float AnimationLocktime => *(float*)((IntPtr)ActionManager.Instance() + 0x8);
 
     public static float AbilityRemain
     {
         get
         {
             var gcdRemain = WeaponRemain;
-            if (gcdRemain - MinAnimationLock - Ping <= ActionRemain)
+            if (gcdRemain - MinAnimationLock - Ping <= AnimationLocktime)
             {
                 return gcdRemain + MinAnimationLock + Ping;
             }
-            return ActionRemain;
+            return AnimationLocktime;
         }
     }
 
-    public static float NextAbilityToNextGCD => WeaponRemain - ActionRemain;
+    public static float NextAbilityToNextGCD => WeaponRemain - AnimationLocktime;
 
     public static float CastingTotal { get; internal set; }
     #endregion
@@ -392,7 +392,8 @@ internal static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Math.Min(Math.Min(RTT, FetchTime), Service.Config.MaxPing);
+    public static float Ping => Service.Config.NoPingCheck ? 0 : RawPing;
+    public static float RawPing => Math.Min(RTT, FetchTime);
     public static float RTT { get; internal set; } = 0.1f;
     public static float FetchTime { get; private set; } = 0.1f;
 

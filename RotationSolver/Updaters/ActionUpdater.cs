@@ -33,7 +33,6 @@ internal static class ActionUpdater
             var player = Player.Object;
             if (player == null) return;
 
-           
             circle ??= new(GroundOmenFriendly.Circle.Omen(), player, new Vector3(0, gcdHeight, 0));
             sector ??= new(GroundOmenFriendly.Fan120.Omen(), player, new Vector3(0, gcdHeight, 0));
             rectangle ??= new(GroundOmenFriendly.Rectangle.Omen(), player, new Vector3(0, gcdHeight, 0));
@@ -293,7 +292,7 @@ internal static class ActionUpdater
         var nextAction = NextAction;
         if (nextAction == null) return false;
 
-        var timeToNext = DataCenter.ActionRemain;
+        var timeToNext = DataCenter.AnimationLocktime;
 
         ////No time to use 0gcd
         //if (timeToNext + nextAction.AnimationLockTime

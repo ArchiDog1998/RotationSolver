@@ -218,12 +218,12 @@ partial class BlackMageRotation
 
     static partial void ModifyTransposePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => DataCenter.ActionRemain <= ElementTimeRaw;
+        setting.ActionCheck = () => DataCenter.AnimationLocktime <= ElementTimeRaw;
     }
 
     static partial void ModifyUmbralSoulPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => JobGauge.InUmbralIce && DataCenter.ActionRemain <= ElementTimeRaw;
+        setting.ActionCheck = () => JobGauge.InUmbralIce && DataCenter.AnimationLocktime <= ElementTimeRaw;
     }
 
     /// <summary>
