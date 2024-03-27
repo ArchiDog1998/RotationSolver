@@ -141,7 +141,7 @@ internal static class TimelineDrawer
 
                 ImGui.TableNextColumn();
 
-                IDisposable? color = item.IsInWindow ? ImRaii.PushColor(ImGuiCol.Text,
+                var color = item.IsInWindow ? ImRaii.PushColor(ImGuiCol.Text,
                     ImGuiColors.HealerGreen) : null;
 
                 ImGui.Text(TimeSpan.FromSeconds(item.Time).ToString("hh\\:mm\\:ss\\.f"));
@@ -225,6 +225,7 @@ internal static class TimelineDrawer
                     {
                         ImGui.OpenPopup("PopupTimelineButton" + item.Time);
                     }
+                    ImguiTooltips.HoveredTooltip(UiString.AddTimelineButton.Local());
 
                     using var popUp = ImRaii.Popup("PopupTimelineButton" + item.Time);
                     if (popUp)
@@ -256,11 +257,12 @@ internal static class TimelineDrawer
         {
             _openedTab = isOpen ? 0 : timeLineItem.GetHashCode();
         }
+        ImguiTooltips.HoveredTooltip(UiString.TimelineItemCondition.Local());
 
         ImGui.SameLine();
 
         var time = timeLineItem.Time;
-        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $" ##Time{timeLineItem.GetHashCode()}", ref time))
+        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $" ##Time{timeLineItem.GetHashCode()}", ref time, UiString.TimelineItemTime.Local()))
         {
             timeLineItem.Time = time;
         }
@@ -387,7 +389,7 @@ internal static class TimelineDrawer
     private static void DrawDrawingTimeline(DrawingTimeline drawingItem, TimelineItem timelineItem)
     {
         var duration = drawingItem.Duration;
-        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"{UiString.TimelineDuration.Local()}##Duration{drawingItem.GetHashCode()}", ref duration))
+        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"{UiString.TimelineDuration.Local()}##Duration{drawingItem.GetHashCode()}", ref duration, UiString.TimelineItemDuration.Local()))
         {
             drawingItem.Duration = duration;
         }
@@ -473,6 +475,7 @@ internal static class TimelineDrawer
             {
                 ImGui.OpenPopup("PopupDrawingButton" + drawingItem.GetHashCode());
             }
+            ImguiTooltips.HoveredTooltip(UiString.AddDrawingTimelineButton.Local());
 
             using var popUp = ImRaii.Popup("PopupDrawingButton" + drawingItem.GetHashCode());
             if (popUp)
@@ -580,6 +583,7 @@ internal static class TimelineDrawer
                 {
                     ImGui.OpenPopup("Popup" + set.GetHashCode().ToString());
                 }
+                ImguiTooltips.HoveredTooltip(UiString.AddTimelineCondition.Local());
 
                 using var popUp = ImRaii.Popup("Popup" + set.GetHashCode().ToString());
                 if (popUp)
@@ -614,7 +618,6 @@ internal static class TimelineDrawer
                     }
                 }
             }
-
         }
         else if (con is TimelineConditionTargetCount target)
         {

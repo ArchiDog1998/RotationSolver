@@ -394,7 +394,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _healWhenNothingTodo = true;
 
     [ConditionBool, UI("Say hello to all users of Rotation Solver.",
-        Filter =BasicParams)]
+        Filter = BasicParams)]
     private static readonly bool _sayHelloToAll = true;
 
     [ConditionBool, UI("Say hello to the users of Rotation Solver.", Description = "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!",

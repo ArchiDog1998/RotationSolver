@@ -698,4 +698,22 @@ internal enum UiString
 
     [Description("Place On Target")]
     TimelinePlaceOnTarget,
+
+    [Description("Add a timeline item.")]
+    AddTimelineButton,
+
+    [Description("Add a condition item.")]
+    AddTimelineCondition,
+
+    [Description("Add a drawing timeline item.")]
+    AddDrawingTimelineButton,
+
+    [Description("Click to toggle the timeline item condition.")]
+    TimelineItemCondition,
+
+    [Description("The time before this action.")]
+    TimelineItemTime,
+
+    [Description("The duration of this action.")]
+    TimelineItemDuration,
 }

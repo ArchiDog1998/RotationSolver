@@ -132,7 +132,7 @@ internal static class ConditionDrawer
         return result;
     }
 
-    public static bool DrawDragFloat(ConfigUnitType type, string name, ref float value)
+    public static bool DrawDragFloat(ConfigUnitType type, string name, ref float value, string tooltip = "")
     {
         ImGui.SameLine();
         var show = type == ConfigUnitType.Percent ? $"{value * 100:F1}{type.ToSymbol()}" : $"{value:F2}{type.ToSymbol()}";
@@ -140,7 +140,11 @@ internal static class ConditionDrawer
         ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(show).X));
         var result = type == ConfigUnitType.Percent ? ImGui.SliderFloat(name, ref value, 0, 1, show) 
             : ImGui.DragFloat(name, ref value, 0.1f, 0, 0, show);
-        ImguiTooltips.HoveredTooltip(type.Local());
+        if (!string.IsNullOrEmpty(tooltip))
+        {
+            tooltip += "\n";
+        }
+        ImguiTooltips.HoveredTooltip(tooltip + type.Local());
 
         return result;
     }
