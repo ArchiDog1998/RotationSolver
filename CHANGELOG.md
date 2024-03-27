@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.2.3](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.2...v4.2.3) (2024-03-24)
+
+
+### Bug Fixes
+
+* countdown ([882ec45](https://github.com/ArchiDog1998/RotationSolver/commit/882ec4592aa096beff27270eaffcd767587a66b1))
+* fixed about the timeline. ([7ae5a04](https://github.com/ArchiDog1998/RotationSolver/commit/7ae5a047485c72f04bc4b15d67555914df561812))
+
 ## [4.2.2](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.1...v4.2.2) (2024-03-21)
 
 
