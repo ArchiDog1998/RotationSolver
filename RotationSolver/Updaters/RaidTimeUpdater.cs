@@ -105,14 +105,12 @@ internal static partial class RaidTimeUpdater
             Service.Config.Timeline[id] = JsonConvert.DeserializeObject<Dictionary<float, List<BaseTimelineItem>>>(str,
                     new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())!;
         }
+        catch (Exception ex)
+        {
 #if DEBUG
-        catch(Exception ex)
-        {
             Svc.Log.Error(ex, $"Failed to download the timeline {id}.");
-        }
 #endif
-        finally
-        {
+            return;
         }
         _downloadingList.Remove(id);
     }

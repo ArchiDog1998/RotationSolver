@@ -207,7 +207,6 @@ internal class SocialUpdater
         }
     }
 
-
     internal abstract class ChatEntity(PlayerCharacter character) : IDisposable
     {
         public readonly PlayerCharacter player = character;

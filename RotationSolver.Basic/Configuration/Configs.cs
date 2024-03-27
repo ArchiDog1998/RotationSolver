@@ -418,6 +418,10 @@ internal partial class Configs : IPluginConfiguration
     Filter = TimelineFilter)]
     private static readonly bool _showTimelineDrawing = true;
 
+    [ConditionBool, UI("Enable the auto movement in the timeline.",
+        Filter = TimelineFilter)]
+    private static readonly bool _enableTimelineMovement = true;
+
     [UI("Use additional conditions", Filter = BasicParams)]
     public bool UseAdditionalConditions { get; set; } = false;
 
@@ -721,7 +725,7 @@ internal partial class Configs : IPluginConfiguration
     private readonly float _actionAhead = 0.08f;
 
     [JobConfig, UI("Engage settings", Filter = TargetConfig, PvPFilter = JobFilterType.NoJob)]
-    private readonly TargetHostileType _hostileType = TargetHostileType.TargetsHaveTarget;
+    private readonly TargetHostileType _hostileType = TargetHostileType.AllTargetsWhenSolo;
 
     [JobConfig]
     private readonly string _PvPRotationChoice = string.Empty;
@@ -756,10 +760,13 @@ internal partial class Configs : IPluginConfiguration
             {
                 var refineTimeline = timeline.Select(i => (i.Key, i.Value.Where(j => j is DrawingTimeline).ToList())).ToDictionary();
 
+                var count = refineTimeline.Sum(i => i.Value.Count);
+
+                if (count == 0) continue;
+
                 if (dict.TryGetValue(id, out var lastTimeline))
                 {
-                    if (lastTimeline.Sum(i => i.Value.Count)
-                        >= refineTimeline.Sum(i => i.Value.Count))
+                    if (lastTimeline.Sum(i => i.Value.Count) >= count)
                     {
                         continue;
                     }
@@ -770,7 +777,7 @@ internal partial class Configs : IPluginConfiguration
         
         foreach ((var id, var timeline) in dict)
         {
-            File.WriteAllText(@$"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources\Timelines\{id}.json", JsonConvert.SerializeObject(timeline));
+            File.WriteAllText(@$"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources\Timelines\{id}.json", JsonConvert.SerializeObject(timeline, Formatting.Indented));
         }
 #endif
         File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,

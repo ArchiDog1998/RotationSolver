@@ -144,6 +144,10 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.SameLine();
 
+        DrawCommandAction(61397, SpecialCommandType.NoCasting, ImGuiColors.DalamudWhite2);
+
+        ImGui.SameLine();
+
         DrawCommandAction(61804, SpecialCommandType.Burst, ImGuiColors.DalamudWhite2);
 
         ImGui.SameLine();
@@ -204,7 +208,7 @@ internal class ControlWindow : CtrlWindow
     {
         var gcdW = Service.Config.ControlWindowGCDSize;
         var abilityW = Service.Config.ControlWindow0GCDSize;
-        var width = gcdW + abilityW + ImGui.GetStyle().ItemSpacing.X + ImGui.GetStyle().ItemInnerSpacing.X * 4;
+        var width = gcdW + abilityW + ImGui.GetStyle().ItemSpacing.X;
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
 
@@ -229,13 +233,24 @@ internal class ControlWindow : CtrlWindow
                 {
                     var y = ImGui.GetCursorPosY();
 
-                    DrawIAction(texture.ImGuiHandle, baseId + nameof(gcd), gcdW, command, help);
+                    var gcdHelp = help;
+                    if (gcd != null)
+                    {
+                        gcdHelp += "\n" + gcd.ToString();
+                    }
+                    DrawIAction(texture.ImGuiHandle, baseId + nameof(gcd), gcdW, command, gcdHelp);
                     if (IconSet.GetTexture(ability, out texture))
                     {
                         ImGui.SameLine();
 
                         ImGui.SetCursorPosY(y);
-                        DrawIAction(texture.ImGuiHandle, baseId + nameof(ability), abilityW, command, help);
+
+                        var abilityHelp = help;
+                        if (ability != null)
+                        {
+                            abilityHelp += "\n" + ability.ToString();
+                        }
+                        DrawIAction(texture.ImGuiHandle, baseId + nameof(ability), abilityW, command, abilityHelp);
                     }
                 }
             }
@@ -266,7 +281,7 @@ internal class ControlWindow : CtrlWindow
 
     static void DrawCommandAction(IAction? ability, SpecialCommandType command, Vector4 color)
     {
-        if (ability.GetTexture(out var texture)) DrawCommandAction(texture, command, color);
+        if (ability.GetTexture(out var texture)) DrawCommandAction(texture, command, color, ability?.ToString() ?? "");
     }
 
     static void DrawCommandAction(uint iconId, SpecialCommandType command, Vector4 color)
@@ -274,7 +289,7 @@ internal class ControlWindow : CtrlWindow
         if (IconSet.GetTexture(iconId, out var texture)) DrawCommandAction(texture, command, color);
     }
 
-    static void DrawCommandAction(IDalamudTextureWrap texture, SpecialCommandType command, Vector4 color)
+    static void DrawCommandAction(IDalamudTextureWrap texture, SpecialCommandType command, Vector4 color, string helpAddition = "")
     {
         var abilityW = Service.Config.ControlWindow0GCDSize;
         var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
@@ -294,6 +309,10 @@ internal class ControlWindow : CtrlWindow
                 ImGui.TextColored(color, str);
 
                 var help = command.Local();
+                if (!string.IsNullOrEmpty(helpAddition))
+                {
+                    help += "\n" + helpAddition;
+                }
                 string baseId = "ImgButton" + command.ToString();
 
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));

@@ -16,4 +16,10 @@ public enum TargetHostileType : byte
     /// </summary>
     [Description("Previously engaged targets (engages on countdown timer)")]
     TargetsHaveTarget,
+
+    /// <summary>
+    /// ALl Targets When solo.
+    /// </summary>
+    [Description("All targets when solo, or previously engaged.")]
+    AllTargetsWhenSolo,
 }

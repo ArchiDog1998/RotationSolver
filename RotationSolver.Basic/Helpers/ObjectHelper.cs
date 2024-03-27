@@ -129,6 +129,8 @@ public static class ObjectHelper
         {
             TargetHostileType.AllTargetsCanAttack => true,
             TargetHostileType.TargetsHaveTarget => battleChara.TargetObject is BattleChara,
+            TargetHostileType.AllTargetsWhenSolo => DataCenter.PartyMembers.Length < 2 
+                || battleChara.TargetObject is BattleChara,
             _ => true,
         };
     }
