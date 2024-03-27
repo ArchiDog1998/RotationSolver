@@ -1,5 +1,3 @@
-## There is no repo, development and support by Archi has stopped.
-
 
 # [![](Images/Logo.gif)](https://archidog1998.github.io/RotationSolver/#/) **Rotation Solver**
 
@@ -11,7 +9,7 @@
 
 Due to my friend's invitation, I'll be back at FFXIV. I won't make any public releases anymore to make this plugin mine. If you want to use it, please build it by yourself. 
 
-Or try this [RotationSolver](https://github.com/Jaksuhn/RotationSolver).
+Try the community version of [Rotation Solver](https://github.com/Jaksuhn/RotationSolver). Buy the dev version for $2 in [ko-fi](https://ko-fi.com/s/7cf5ff0de3).
 
 
 ## Brief
