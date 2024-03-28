@@ -5,7 +5,7 @@ on:
       - 'v*.*.*.*'
 jobs:
   Build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       DALAMUD_HOME: ${{ github.workspace }}/Dalamud/
     steps:
@@ -35,19 +35,22 @@ jobs:
 
       - name: Download Dalamud Latest
         run: |
-          mkdir -p ${{ env.DALAMUD_HOME }}
-          wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O ${{ env.DALAMUD_HOME }}latest.zip
-          unzip ${{ env.DALAMUD_HOME }}latest.zip -d ${{ env.DALAMUD_HOME }}
+          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
+          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev"
 
       - name: Restore Nuget Packages
         run: dotnet restore RotationSolver/RotationSolver.csproj
 
       - name: Build Plugin
-        run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }}
+        run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }} -out .\build
+
+      - name: Zip Plugin
+        run: Compress-Archive -Path .\build\* -DestinationPath .\build\RotationSolver.zip
 
       - name: Publish Plugin
         uses: softprops/action-gh-release@v2
         with:
+          files: ./build/RotationSolver.zip
           token: ${{ secrets.GITHUB_TOKEN }}
           name: RotationSolverReborn ${{ env.tag }}
           tag: ${{ env.tag }}
