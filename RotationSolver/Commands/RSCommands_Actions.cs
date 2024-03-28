@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
@@ -172,6 +173,7 @@ public static partial class RSCommands
     }
 
     static float _lastCountdownTime = 0;
+    static Job _previousJob = Job.ADV;
     internal static void UpdateRotationState()
     {
         if (ActionUpdater.AutoCancelTime != DateTime.MinValue &&
@@ -195,6 +197,12 @@ public static partial class RSCommands
         else if (Service.Config.AutoOffCutScene
             && Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent])
         {
+            CancelState();
+        }
+        else if (Service.Config.AutoOffSwitchClass
+            && Player.Job != _previousJob)
+        {
+            _previousJob = Player.Job;
             CancelState();
         }
         else if (Service.Config.AutoOffBetweenArea
