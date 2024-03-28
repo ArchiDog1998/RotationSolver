@@ -211,6 +211,7 @@ internal static class DataCenter
         get
         {
             var gcdRemain = WeaponRemain;
+            // Check if we should account for the animation lock and ping.
             if (gcdRemain - MinAnimationLock - Ping <= AnimationLocktime)
             {
                 return gcdRemain + MinAnimationLock + Ping;
@@ -219,7 +220,20 @@ internal static class DataCenter
         }
     }
 
-    public static float NextAbilityToNextGCD => WeaponRemain - AnimationLocktime;
+    // Update the property to conditionally use AbilityRemain based on the NoPingCheck setting.
+    public static float NextAbilityToNextGCD
+    {
+        get
+        {
+            // Check if NoPingCheck is false; if so, use AbilityRemain.
+            if (!Service.Config.NoPingCheck)
+            {
+                return AbilityRemain - WeaponRemain;
+            }
+            // Otherwise, use the existing logic.
+            return WeaponRemain - AnimationLocktime;
+        }
+    }
 
     public static float CastingTotal { get; internal set; }
     #endregion
@@ -394,9 +408,10 @@ internal static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Service.Config.NoPingCheck ? 0 : Math.Min(RTT, FetchTime);
-    public static float RTT { get; internal set; } = 0.1f;
-    public static float FetchTime { get; private set; } = 0.1f;
+    public static float Ping => Service.Config.NoPingCheck ? 0 : Math.Min(Math.Min(RTT, FetchTime), Service.Config.MaxPing);
+
+    public static float RTT { get; internal set; } = 0.05f;
+    public static float FetchTime { get; private set; } = 0.05f;
 
 
     public const float MinAnimationLock = 0.6f;
