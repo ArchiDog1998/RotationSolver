@@ -15,6 +15,14 @@ public static partial class RSCommands
     static DateTime _lastClickTime = DateTime.MinValue;
     static bool _lastState;
 
+    public static void IncrementState()
+    {
+        if (!DataCenter.State) { DoStateCommandType(StateCommandType.Auto); return; }
+        if (DataCenter.State && !DataCenter.IsManual && DataCenter.TargetingType == TargetingType.Big) { DoStateCommandType(StateCommandType.Auto); return; }
+        if (DataCenter.State && !DataCenter.IsManual) { DoStateCommandType(StateCommandType.Manual); return; }
+        if (DataCenter.State && DataCenter.IsManual) { DoStateCommandType(StateCommandType.Cancel); return; }
+    }
+
     internal static unsafe bool CanDoAnAction(bool isGCD)
     {
         if (!_lastState || !DataCenter.State)
