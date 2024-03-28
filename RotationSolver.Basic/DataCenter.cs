@@ -204,7 +204,7 @@ internal static class DataCenter
     /// <summary>
     /// Time to the next action
     /// </summary>
-    public static unsafe float ActionRemain => *(float*)((IntPtr)ActionManager.Instance() + 0x8);
+    public static unsafe float ActionRemain => ActionManagerHelper.GetCurrentAnimationLock();
 
     public static float AbilityRemain
     {

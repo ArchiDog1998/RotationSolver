@@ -49,6 +49,10 @@ internal partial class Configs : IPluginConfiguration
         Filter =BasicAutoSwitch)]
     private static readonly bool _autoOffCutScene = true;
 
+    [ConditionBool, UI("Auto turn off when switching job",
+               Filter =BasicAutoSwitch)]
+    private static readonly bool _autoOffSwitchClass = true;
+
     [ConditionBool, UI("Auto turn off when dead.",
         Filter =BasicAutoSwitch)]
     private static readonly bool _autoOffWhenDead = true;
