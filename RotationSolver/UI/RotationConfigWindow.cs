@@ -827,7 +827,7 @@ public partial class RotationConfigWindow : Window
     {
         var width = ImGui.GetWindowWidth();
 
-        if (IconSet.GetTexture("https://GitHub-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
+        if (IconSet.GetTexture("https://GitHub-readme-stats.vercel.app/api/pin/?username=FFXIV-CombatReborn&repo=RotationSolverReborn&theme=dark", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
             Util.OpenLink($"https://GitHub.com/{Service.USERNAME}/{Service.REPO}");
         }
@@ -837,19 +837,9 @@ public partial class RotationConfigWindow : Window
             Util.OpenLink("https://crowdin.com/project/rotationsolver");
         }
 
-        var text = "My story about FFXIV and Rotation Solver\n - ArchiTed / Youtube";
+
+        var text = UiString.ConfigWindow_About_OpenConfigFolder.Local();
         var textWidth = ImGuiHelpers.GetButtonSize(text).X;
-        ImGuiHelper.DrawItemMiddle(() =>
-        {
-            if (ImGui.Button(text))
-            {
-                Util.OpenLink("https://www.youtube.com/watch?v=Adigd5uqDx4");
-            }
-        }, width, textWidth);
-
-
-        text = UiString.ConfigWindow_About_OpenConfigFolder.Local();
-        textWidth = ImGuiHelpers.GetButtonSize(text).X;
         ImGuiHelper.DrawItemMiddle(() =>
         {
             if (ImGui.Button(text))
