@@ -63,7 +63,7 @@ partial class PaladinRotation
     {
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 10,
+            TimeToKill = 0,
         };
     }
 
@@ -71,7 +71,7 @@ partial class PaladinRotation
     {
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 10,
+            TimeToKill = 0,
         };
     }
 
