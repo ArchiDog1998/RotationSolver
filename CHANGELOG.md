@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.2.4](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.3...v4.2.4) (2024-03-28)
+
+
+### Bug Fixes
+
+* add an option for showing drawing staff. ([bb46f56](https://github.com/ArchiDog1998/RotationSolver/commit/bb46f56b0e81b919568f2e1109d7df3bb045b8b3))
+* add skip ping check config. ([c53c498](https://github.com/ArchiDog1998/RotationSolver/commit/c53c4986ed1665f84977ec4c9a75d07a6a27c3f1))
+* add some tooltips. ([7f450e3](https://github.com/ArchiDog1998/RotationSolver/commit/7f450e39c7fb6a306879b632c9c4a58f805ce1a4))
+* download the default timeline. ([2a1c80b](https://github.com/ArchiDog1998/RotationSolver/commit/2a1c80b8173facf4557414960cdc2998ed651384))
+* fixed some upload and downloading bug. and control window ui. ([7cb702b](https://github.com/ArchiDog1998/RotationSolver/commit/7cb702be952a7593ddbd82509fe953daa9cb81b6))
+* ping stuff. ([a62effc](https://github.com/ArchiDog1998/RotationSolver/commit/a62effcb056b8c867ed626590e51c8108d1e0770))
+* some fixes. ([2460aff](https://github.com/ArchiDog1998/RotationSolver/commit/2460affe49254ac4c1c3972c53412b88d5d8bfc2))
+
 ## [4.2.3](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.2...v4.2.3) (2024-03-24)
 
 
