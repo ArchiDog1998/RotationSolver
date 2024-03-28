@@ -6,8 +6,6 @@ on:
 jobs:
   Build:
     runs-on: windows-latest
-    env:
-      DALAMUD_HOME: ${{ github.workspace }}/Dalamud/
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -16,17 +14,18 @@ jobs:
 
       - name: Get Environment Variables
         run: |
-          tag=$(echo ${{ github.ref }} | sed 's/refs\/tags\/v//')
-          echo "tag=$tag" >> $GITHUB_ENV
+          $tag = ${{ github.ref }} -replace 'refs/tags/v', ''
 
-          if [[ "$tag" == *"-test" ]]; then
-            branch="testing"
-            tag=$(echo $tag | sed 's/-test//')
-          else
-            branch="latest"
-          fi
+          "tag=$tag" | Out-File -Append -FilePath $Env:GITHUB_ENV
 
-          echo "branch=$branch" >> $GITHUB_ENV
+          if ($tag -match "-test$") {
+              $branch = "testing"
+              $tag = $tag -replace '-test$', ''
+          } else {
+              $branch = "latest"
+          }
+
+          "branch=$branch" | Out-File -Append -FilePath $Env:GITHUB_ENV
           
       - name: Set up .NET
         uses: actions/setup-dotnet@v1
