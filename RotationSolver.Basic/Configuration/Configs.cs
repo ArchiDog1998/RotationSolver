@@ -39,7 +39,7 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Show RS logo animation",
         Filter = UiWindows)]
-    private static readonly bool _drawIconAnimation = true;
+    private static readonly bool _drawIconAnimation = False;
 
     [ConditionBool, UI("Auto turn off when player is moving between areas.",
         Filter =BasicAutoSwitch)]
@@ -64,11 +64,11 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Using movement actions towards the object in the center of the screen",
         Description = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.",
         Filter = TargetConfig, Section = 2)]
-    private static readonly bool _moveTowardsScreenCenter = true;
+    private static readonly bool _moveTowardsScreenCenter = false;
 
     [ConditionBool, UI("Audio notification for when the status changes",
         Filter =UiInformation)]
-    private static readonly bool _sayOutStateChanged = true;
+    private static readonly bool _sayOutStateChanged = false;
 
     [ConditionBool, UI("Display plugin status on server info",
         Filter =UiInformation)]
@@ -80,10 +80,10 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Display plugin status on toast",
         Filter =UiInformation)]
-    private static readonly bool _showInfoOnToast = true;
+    private static readonly bool _showInfoOnToast = false;
 
     [ConditionBool, UI("Lock the movement when casting or when doing some actions.", Filter = Extra)]
-    private static readonly bool _poslockCasting = true;
+    private static readonly bool _poslockCasting = false;
 
     [UI("", Action = ActionID.PassageOfArmsPvE, Parent = nameof(PoslockCasting))]
     public bool  PosPassageOfArms { get; set; } = false;
@@ -137,15 +137,15 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Draw the offset of melee on the screen",
         Filter =UiOverlay)]
-    private static readonly bool _drawMeleeOffset = true;
+    private static readonly bool _drawMeleeOffset = false;
 
     [ConditionBool, UI("Show the target of the move action",
         Filter =UiOverlay)]
-    private static readonly bool _showMoveTarget = true;
+    private static readonly bool _showMoveTarget = false;
 
     [ConditionBool, UI("Show Target",
         Filter = UiOverlay)]
-    private static readonly bool _showTarget = true;
+    private static readonly bool _showTarget = false;
 
     [ConditionBool, UI("Show the target's time to kill.",
         Parent = nameof(ShowTarget))]
@@ -165,14 +165,14 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI ("Show the hostile target icon",
         Filter = UiOverlay)]
-    private static readonly bool _showHostilesIcons = true;
+    private static readonly bool _showHostilesIcons = false;
 
     [ConditionBool, UI ("Teaching mode", Filter =UiOverlay)]
-    private static readonly bool _teachingMode = true;
+    private static readonly bool _teachingMode = false;
 
     [ConditionBool, UI("Display UI Overlay", Description = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.",
         Filter = UiOverlay)]
-    private static readonly bool _useOverlayWindow = true;
+    private static readonly bool _useOverlayWindow = false;
 
     [ConditionBool, UI("Simulate the effect of pressing abilities",
         Filter =UiInformation)]
@@ -180,7 +180,7 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Target movement area ability to the farthest possible location", Description = "Move to the furthest position for targeting are movement actions.",
         Filter = TargetConfig, Section = 2)]
-    private static readonly bool _moveAreaActionFarthest = true;
+    private static readonly bool _moveAreaActionFarthest = false;
 
     [ConditionBool, UI("Auto mode activation delay on countdown start",
         Filter =BasicAutoSwitch, Section = 1)]
@@ -209,7 +209,7 @@ internal partial class Configs : IPluginConfiguration
         PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _interruptibleMoreCheck = true;
 
-    [ConditionBool, UI("Use work task for acceleration.",
+    [ConditionBool, UI("Use work task for acceleration. (EXPERIMENTAL, WILL CAUSE CRASHES AND OTHER ISSUES)",
         Filter = BasicParams)]
     private static readonly bool _useWorkTask = false;
 
@@ -236,7 +236,7 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Debug Mode", Filter = Debug)]
     private static readonly bool _inDebug = false;
-    public bool AutoUpdateLibs { get; set; } = true;
+    public bool AutoUpdateLibs { get; set; } = false;
 
     [ConditionBool, UI("Auto Download Rotations", Filter = Rotations)]
     private static readonly bool _downloadRotations = true;
@@ -254,7 +254,7 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Only show these windows if there are enemies in or in duty",
         Filter =UiWindows)]
-    private static readonly bool _onlyShowWithHostileOrInDuty = true;
+    private static readonly bool _onlyShowWithHostileOrInDuty = false;
 
     [ConditionBool, UI("Show Control Window",
         Filter =UiWindows)]
@@ -265,7 +265,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _isControlWindowLock = false;
 
     [ConditionBool, UI("Show Next Action Window", Filter  = UiWindows)]
-    private static readonly bool _showNextActionWindow = true;
+    private static readonly bool _showNextActionWindow = false;
 
     [ConditionBool, UI("No Inputs", Parent = nameof(ShowNextActionWindow))]
     private static readonly bool _isInfoWindowNoInputs = false;
@@ -291,7 +291,7 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Auto load rotations",
         Filter = Rotations)]
-    private static readonly bool _autoLoadCustomRotations = false;
+    private static readonly bool _autoLoadCustomRotations = true;
 
     [ConditionBool, UI("Target Fate priority",
         Filter = TargetConfig, Section = 1)]
@@ -308,7 +308,7 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Display do action feedback on toast",
         Filter =UiInformation)]
-    private static readonly bool _showToastsAboutDoAction = true;
+    private static readonly bool _showToastsAboutDoAction = false;
 
     [ConditionBool, UI("Use AoE actions", Filter = AutoActionUsage)]
     private static readonly bool _useAOEAction = true;
@@ -373,14 +373,14 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Auto Open the treasure chest",
         Filter = Extra)]
-    private static readonly bool _autoOpenChest = false;
+    private static readonly bool _autoOpenChest = true;
 
     [ConditionBool, UI("Auto close the loot window when auto opened the chest.",
         Parent = nameof(AutoOpenChest))]
     private static readonly bool _autoCloseChestWindow = true;
 
     [ConditionBool, UI("Show RS state icon", Filter = UiOverlay)]
-    private static readonly bool _showStateIcon = true;
+    private static readonly bool _showStateIcon = false;
 
     [ConditionBool, UI("Show beneficial AoE locations.", Filter = UiOverlay)]
     private static readonly bool _showBeneficialPositions = true;
@@ -395,11 +395,11 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Say hello to all users of Rotation Solver.",
         Filter = BasicParams)]
-    private static readonly bool _sayHelloToAll = true;
+    private static readonly bool _sayHelloToAll = false;
 
     [ConditionBool, UI("Say hello to the users of Rotation Solver.", Description = "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!",
         Parent =nameof(SayHelloToAll))]
-    private static readonly bool _sayHelloToUsers = true;
+    private static readonly bool _sayHelloToUsers = false;
 
     [ConditionBool, UI("Just say hello once to the same user.",
         Parent = nameof(SayHelloToAll))]
@@ -412,17 +412,17 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Display toggle action feedback on chat",
         Filter =UiInformation)]
-    private static readonly bool _showToggledActionInChat = true;
+    private static readonly bool _showToggledActionInChat = false;
 
     [ConditionBool, UI("Show the timeline drawing staff in the game.",
     Filter = TimelineFilter)]
-    private static readonly bool _showTimelineDrawing = true;
+    private static readonly bool _showTimelineDrawing = false;
 
     [ConditionBool, UI("Enable the auto movement in the timeline.",
         Filter = TimelineFilter)]
-    private static readonly bool _enableTimelineMovement = true;
+    private static readonly bool _enableTimelineMovement = false;
 
-    [ConditionBool, UI("Skip the Ping Check.",
+    [ConditionBool, UI("Skip the Ping Check. Enable if you use Bossmod Action Tweaks or Noclippy.",
         Filter = BasicTimer, Section = 2)]
     private static readonly bool _noPingCheck = false;
 
