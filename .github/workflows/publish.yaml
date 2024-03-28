@@ -1,0 +1,64 @@
+name: Publish
+on:
+  push:
+    tags:
+      - 'v*.*.*.*'
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    env:
+      DALAMUD_HOME: ${{ github.workspace }}/Dalamud/
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Get Environment Variables
+        run: |
+          tag=$(echo ${{ github.ref }} | sed 's/refs\/tags\/v//')
+          echo "tag=$tag" >> $GITHUB_ENV
+
+          if [[ "$tag" == *"-test" ]]; then
+            branch="testing"
+            tag=$(echo $tag | sed 's/-test//')
+          else
+            branch="latest"
+          fi
+
+          echo "branch=$branch" >> $GITHUB_ENV
+          
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Download Dalamud Latest
+        run: |
+          wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O ${{ env.DALAMUD_HOME }}.zip
+          unzip ${{ env.DALAMUD_HOME }}.zip -d ${{ env.DALAMUD_HOME }}
+
+      - name: Restore Nuget Packages
+        run: dotnet restore RotationSolver/RotationSolver.csproj
+
+      - name: Build Plugin
+        run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }}
+
+      - name: Generate Changelog
+        run: |
+          git fetch --tags
+          git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-decorate --no-merges > changelog.txt
+
+      - name: Publish Plugin
+        uses: softprops/action-gh-release@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: RotationSolverReborn ${{ env.tag }}
+          tag: ${{ env.tag }}
+          body_path: changelog.txt
+          draft: false
+          make_latest: ${{ env.branch == 'latest' }}
+          prerelease: ${{ env.branch == 'testing' }}
+
+
+
