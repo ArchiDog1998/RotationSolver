@@ -67,7 +67,7 @@ internal class NextActionWindow : Window
 
         ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);
 
-        var actionRemain = DataCenter.AnimationLocktime;
+        var actionRemain = DataCenter.ActionRemain;
         if (remain > actionRemain + 0.6f + DataCenter.Ping)
         {
             var value = total - remain + actionRemain;

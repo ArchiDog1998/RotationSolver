@@ -153,7 +153,7 @@ public readonly struct ActionCooldownInfo : ICooldown
                 }
                 else
                 {
-                    if (!HasOneCharge && RecastTimeRemainOneChargeRaw > DataCenter.AnimationLocktime) return false;
+                    if (!HasOneCharge && RecastTimeRemainOneChargeRaw > DataCenter.ActionRemain) return false;
                 }
             }
 

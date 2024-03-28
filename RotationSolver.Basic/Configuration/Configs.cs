@@ -410,10 +410,6 @@ internal partial class Configs : IPluginConfiguration
         Filter = TimelineFilter)]
     private static readonly bool _enableTimelineMovement = false;
 
-    [ConditionBool, UI("Skip the Ping Check. Enable if you use Bossmod Action Tweaks or Noclippy.",
-        Filter = BasicTimer, Section = 2)]
-    private static readonly bool _noPingCheck = false;
-
     [UI("The max ping that RS can get to before skipping to the next action.",
         Filter = BasicTimer)]
     [Range(0.01f, 0.5f, ConfigUnitType.Seconds, 0.002f)]
