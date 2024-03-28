@@ -1,38 +1,23 @@
 
-# [![](Images/Logo.gif)](https://archidog1998.github.io/RotationSolver/#/) **Rotation Solver**
+# [![](Images/Logo.gif)](https://archidog1998.github.io/RotationSolver/#/) 
 
-![Github Latest Releases](https://img.shields.io/github/downloads/ArchiDog1998/RotationSolver/latest/total.svg?style=for-the-badge)
-![Github All Releases](https://img.shields.io/github/downloads/ArchiDog1998/RotationSolver/total.svg?style=for-the-badge)
-![](https://img.shields.io/codefactor/grade/github/ArchiDog1998/RotationSolver?longCache=true&style=for-the-badge)
-![Github License](https://img.shields.io/github/license/ArchiDog1998/RotationSolver.svg?label=License&style=for-the-badge)
-![Github Commits](https://img.shields.io/github/commits-since/ArchiDog1998/RotationSolver/latest/main?style=for-the-badge)
+**RotationSolverReborn**
 
-Due to my friend's invitation, I'll be back at FFXIV. I won't make any public releases anymore to make this plugin mine. If you want to use it, please build it by yourself. 
+![Github Latest Releases](https://img.shields.io/github/downloads/FFXIV-CombatReborn/RotationSolverReborn/latest/total.svg?style=for-the-badge)
+![Github All Releases](https://img.shields.io/github/downloads/FFXIV-CombatReborn/RotationSolverReborn/total.svg?style=for-the-badge)
+![](https://img.shields.io/codefactor/grade/github/FFXIV-CombatReborn/RotationSolverReborn?longCache=true&style=for-the-badge)
+![Github License](https://img.shields.io/github/license/FFXIV-CombatReborn/RotationSolverReborn.svg?label=License&style=for-the-badge)
+![Github Commits](https://img.shields.io/github/commits-since/FFXIV-CombatReborn/RotationSolverReborn/latest/main?style=for-the-badge)
 
-Try the community version of [Rotation Solver](https://github.com/Jaksuhn/RotationSolver). Buy the dev version for $2 in [ko-fi](https://ko-fi.com/s/7cf5ff0de3).
+RotationSolverReborn is a community-made fork of the original RotationSolver plugin for Final Fantasy XIV. This tool is designed to enhance your gameplay experience by performing your rotation as optimally as possible, including heals, intterupts, mitigations, and MP management.
 
+## Features
 
-## Brief
-
-> Analyses combat information in every frame and finds the best action.
-
-This means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.
-
-Then, it will highlight the best action on the hot bar, or help you to click on it.
-
-It is designed for `general combat`, not for savage or ultimate. Use it carefully.
-
-## Compatibility
-
-literally, `Rotation Solver` helps you to choose the target and then click the action. So any plugin that changes these will affect its decision. 
-
-- [XIVCombo](https://github.com/daemitus/XIVComboPlugin)
-- [ReAction](https://github.com/UnknownX7/ReAction)
-- etc...
-
-NOTICE: It can't use with [`Block Targeting Treasure Hunt Enemies`](https://github.com/Caraxi/SimpleTweaksPlugin/blob/7e94915afa17ea873d48be2c469ebdaddd2e5200/Tweaks/TreasureHuntTargets.cs) in [Simple Tweaks](https://github.com/Caraxi/SimpleTweaksPlugin). 
-
-I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXIVClientStructs/blob/c554a586c4649a472433734b45c59a4bc4979ead/FFXIVClientStructs/FFXIV/Client/Game/Object/GameObject.cs#L71) Method in [FFXIVClientStructs](https://github.com/aers/FFXIVClientStructs). If anybody knows why, please tell me.
+- **Dynamic Rotation Guidance aka Training Mode**: Offers real-time suggestions for skill rotations, tailored to your current in-game situation.
+- **Customizable Settings**: Allows users to adjust the rotations based on personal preference, encounter type, and specific boss mechanics.
+- **Comprehensive Database**: Includes an extensive database of class abilities to ensure accurate and effective rotation.
+- **User-Friendly Interface**: Features a clean and intuitive interface, making it easy for players of all levels to navigate and use the plugin effectively.
+- **Regular Updates**: The plugin is regularly updated to reflect the latest game patches, class changes, and user feedback, ensuring it remains relevant and useful.
 
 ## Want to contribute?
 
@@ -43,10 +28,6 @@ I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXI
 
 ## Links
 
-If you have any questions about usage, please check the [Wiki](https://archidog1998.github.io/RotationSolver/#/).
-
-The rotations definitions are [here](https://github.com/ArchiDog1998/FFXIVRotations).
+The rotations definitions are [here](https://github.com/LTS-FFXIV/LTSDefaults).
 
 [![Crowdin](https://badges.crowdin.net/badge/light/crowdin-on-dark.png)](https://crowdin.com/project/rotationsolver)
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B0IN5DX)
