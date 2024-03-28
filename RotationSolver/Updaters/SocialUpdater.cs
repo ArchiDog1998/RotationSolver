@@ -7,7 +7,6 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -18,8 +17,6 @@ namespace RotationSolver.Updaters;
 
 internal class SocialUpdater
 {
-#if DEBUG
-#else
     private static readonly List<string> _macroToAuthor =
     [
         "blush",
@@ -30,7 +27,6 @@ internal class SocialUpdater
         "cheer",
         "stroke",
     ];
-#endif
 
     private static readonly HashSet<string> saidAuthors = [];
 
@@ -188,11 +184,9 @@ internal class SocialUpdater
                 await Task.Delay(100);
             }
 
-#if DEBUG
-#else
             Svc.Targets.Target = entity.player;
             ECommons.Automation.Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
-#endif
+
             Svc.Chat.Print(new Dalamud.Game.Text.XivChatEntry()
             {
                 Message = entity.GetMessage(),

@@ -1,5 +1,4 @@
 ﻿using ECommons.DalamudServices;
-using RotationSolver.Basic.Configuration.Timeline;
 
 namespace RotationSolver.Basic.Configuration;
 

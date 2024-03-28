@@ -136,7 +136,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _useMpPotions = false;
 
     [ConditionBool, UI("Draw the offset of melee on the screen",
-        Filter =UiOverlay)]
+        Filter = UiOverlay)]
     private static readonly bool _drawMeleeOffset = true;
 
     [ConditionBool, UI("Show the target of the move action",
@@ -422,7 +422,7 @@ internal partial class Configs : IPluginConfiguration
         Filter = TimelineFilter)]
     private static readonly bool _enableTimelineMovement = true;
 
-    [ConditionBool, UI("Skip the Ping Check.",
+    [ConditionBool, UI("Skip the Ping Check. Please use it with NoClippy",
         Filter = BasicTimer, Section = 2)]
     private static readonly bool _noPingCheck = false;
 

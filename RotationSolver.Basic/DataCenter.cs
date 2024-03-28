@@ -396,7 +396,6 @@ internal static class DataCenter
     public static float RTT { get; internal set; } = 0.1f;
     public static float FetchTime { get; private set; } = 0.1f;
 
-
     public const float MinAnimationLock = 0.6f;
     internal static unsafe void AddActionRec(Action act)
     {
