@@ -9,7 +9,7 @@ using RotationSolver.GameData.Getters.Actions;
 using System.Net;
 using System.Resources.NetStandard;
 
-var gameData = new GameData("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack", new LuminaOptions
+var gameData = new GameData(@"D:\FFXIV\Game\game\sqpack", new LuminaOptions
 {
     LoadMultithreaded = true,
     CacheFileResources = true,
