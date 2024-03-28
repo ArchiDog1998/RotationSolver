@@ -652,7 +652,7 @@ public partial class RotationConfigWindow : Window
         var width = ImGui.GetWindowWidth();
         if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
-            Util.OpenLink("https://discord.gg/4fECHunam9");
+            Util.OpenLink("https://discord.gg/p54TZMPnC9");
         }
 
         var clickingCount = OtherConfiguration.RotationSolverRecord.ClickingCount;
