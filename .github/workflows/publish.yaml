@@ -35,6 +35,7 @@ jobs:
 
       - name: Download Dalamud Latest
         run: |
+          mkdir -p ${{ env.DALAMUD_HOME }}
           wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O ${{ env.DALAMUD_HOME }}latest.zip
           unzip ${{ env.DALAMUD_HOME }}latest.zip -d ${{ env.DALAMUD_HOME }}
 
