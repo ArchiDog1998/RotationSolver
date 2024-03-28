@@ -54,7 +54,7 @@ jobs:
           files: ./build/RotationSolver.zip
           token: ${{ secrets.GITHUB_TOKEN }}
           name: RotationSolverReborn ${{ env.tag }}
-          tag_name: ${{ env.tag }}
+          tag_name: v${{ env.tag }}
           draft: false
           make_latest: ${{ env.branch == 'latest' }}
           prerelease: ${{ env.branch == 'testing' }}
