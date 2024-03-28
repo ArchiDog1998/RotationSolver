@@ -41,7 +41,7 @@ jobs:
         run: dotnet restore RotationSolver/RotationSolver.csproj
 
       - name: Build Plugin
-        run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }} -out .\build
+        run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }} --output .\build
 
       - name: Zip Plugin
         run: Compress-Archive -Path .\build\* -DestinationPath .\build\RotationSolver.zip
