@@ -48,9 +48,6 @@ internal enum UiString
     [Description("Rotation Solver helped you by clicking actions {0:N0} times.")]
     ConfigWindow_About_ClickingCount,
 
-    [Description("You have said hello to other users {0:N0} times!")]
-    ConfigWindow_About_SayHelloCount,
-
     [Description("Macro")]
     ConfigWindow_About_Macros,
 

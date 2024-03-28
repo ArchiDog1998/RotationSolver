@@ -52,7 +52,8 @@ public readonly struct ActionBasicInfo
     /// <summary>
     /// The animation lock time of this action.
     /// </summary>
-    public readonly float AnimationLockTime => OtherConfiguration.AnimationLockTime?.TryGetValue(AdjustedID, out var time) ?? false ? time : 0.6f;
+    [Obsolete("Use ActionManagerHelper.GetCurrentAnimationLock()")]
+    public readonly float AnimationLockTime => ActionManagerHelper.GetCurrentAnimationLock();
 
     /// <summary>
     /// The level of this action.
