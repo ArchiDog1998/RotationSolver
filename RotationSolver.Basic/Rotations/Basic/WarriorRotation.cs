@@ -59,7 +59,7 @@ partial class WarriorRotation
         setting.ActionCheck = () => HasHostilesInRange && BeastGauge <= 50 && InCombat;
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 5,
+            TimeToKill = 0,
         };
     }
 
@@ -67,7 +67,7 @@ partial class WarriorRotation
     {
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 10,
+            TimeToKill = 0,
         };
     }
 
@@ -76,7 +76,7 @@ partial class WarriorRotation
         setting.ActionCheck = () => HasHostilesInRange && !ActionID.InnerReleasePvE.IsCoolingDown();
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 10,
+            TimeToKill = 0,
         };
     }
 
