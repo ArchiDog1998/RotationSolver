@@ -44,18 +44,12 @@ jobs:
       - name: Build Plugin
         run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }}
 
-      - name: Generate Changelog
-        run: |
-          git fetch --tags
-          git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-decorate --no-merges > changelog.txt
-
       - name: Publish Plugin
         uses: softprops/action-gh-release@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: RotationSolverReborn ${{ env.tag }}
           tag: ${{ env.tag }}
-          body_path: changelog.txt
           draft: false
           make_latest: ${{ env.branch == 'latest' }}
           prerelease: ${{ env.branch == 'testing' }}
