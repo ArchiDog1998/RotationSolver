@@ -149,7 +149,7 @@ public static class StatusHelper
     /// <param name="isFromSelf"></param>
     /// <param name="statusIDs"></param>
     /// <returns></returns>
-    internal static float StatusTime(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
+    public static float StatusTime(this GameObject obj, bool isFromSelf, params StatusID[] statusIDs)
     {
         try
         {
