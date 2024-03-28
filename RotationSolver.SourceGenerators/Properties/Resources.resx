@@ -17069,6 +17069,16 @@ MagicDamageUp_3707 = 3707,
 /// &lt;/summary&gt;
 Spectator = 3708,
 /// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#status/3709"&gt;&lt;strong&gt;Drop and Roll&lt;/strong&gt;&lt;/see&gt; ↑ (All Classes)
+/// &lt;para&gt;Prepared to dodge certain attacks.&lt;/para&gt;
+/// &lt;/summary&gt;
+DropAndRoll = 3709,
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#status/3710"&gt;&lt;strong&gt;Precision&lt;/strong&gt;&lt;/see&gt; ↑ (All Classes)
+/// &lt;para&gt;A precision dodge has created an opening, enabling use of the duty action Precision Strike.&lt;/para&gt;
+/// &lt;/summary&gt;
+Precision = 3710,
+/// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#status/3712"&gt;&lt;strong&gt;Breath of Magic&lt;/strong&gt;&lt;/see&gt; ↓ (All Classes)
 /// &lt;para&gt;Sustaining damage over time.&lt;/para&gt;
 /// &lt;/summary&gt;
@@ -17254,6 +17264,11 @@ OasalBalm_3753 = 3753,
 /// &lt;/summary&gt;
 HeatWave = 3754,
 /// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#status/3755"&gt;&lt;strong&gt;Fetters&lt;/strong&gt;&lt;/see&gt; ↓ (All Classes)
+/// &lt;para&gt;Unable to execute actions.&lt;/para&gt;
+/// &lt;/summary&gt;
+Fetters_3755 = 3755,
+/// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#status/3756"&gt;&lt;strong&gt;Damage Up&lt;/strong&gt;&lt;/see&gt; ↑ (All Classes)
 /// &lt;para&gt;Damage dealt is greatly increased.&lt;/para&gt;
 /// &lt;/summary&gt;
@@ -17318,6 +17333,16 @@ BondsOfDarkness = 3767,
 /// &lt;para&gt;Area of effect for actions is expanded.&lt;/para&gt;
 /// &lt;/summary&gt;
 AreaOfInfluenceUp_3768 = 3768,
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#status/3770"&gt;&lt;strong&gt;Towering Flame&lt;/strong&gt;&lt;/see&gt; ↑ (All Classes)
+/// &lt;para&gt;Rising flames are increasing damage dealt. Unable to execute Rising Flames.&lt;/para&gt;
+/// &lt;/summary&gt;
+ToweringFlame = 3770,
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#status/3771"&gt;&lt;strong&gt;Infernal Shroud&lt;/strong&gt;&lt;/see&gt; ↑ (All Classes)
+/// &lt;para&gt;Bolstered by the power of flame.&lt;/para&gt;
+/// &lt;/summary&gt;
+InfernalShroud = 3771,
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#status/3776"&gt;&lt;strong&gt;Bind&lt;/strong&gt;&lt;/see&gt; ↓ (All Classes)
 /// &lt;para&gt;Unable to move.&lt;/para&gt;
@@ -26806,7 +26831,7 @@ GuardianPvP = 29066,
 HolySheltronPvP = 29067,
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/29070"&gt;&lt;strong&gt;Confiteor&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29070] [Spell]
-/// &lt;para&gt;Deals unaspected damage with a potency of 8,000 to target and all enemies nearby it.&lt;/para&gt;
+/// &lt;para&gt;Deals unaspected damage with a potency of 12,000 to target and all enemies nearby it.&lt;/para&gt;
 /// &lt;para&gt;Additional Effect: Afflicts target with Sacred Claim&lt;/para&gt;
 /// &lt;para&gt;Sacred Claim Effect: Restores HP when successfully landing an attack on targets under this effect&lt;/para&gt;
 /// &lt;para&gt;Cure Potency: 3,000&lt;/para&gt;
@@ -26816,7 +26841,7 @@ HolySheltronPvP = 29067,
 ConfiteorPvP = 29070,
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/29071"&gt;&lt;strong&gt;Blade of Faith&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29071] [Spell]
-/// &lt;para&gt;Deals unaspected damage with a potency of 6,000 to target and all enemies nearby it.&lt;/para&gt;
+/// &lt;para&gt;Deals unaspected damage with a potency of 7,000 to target and all enemies nearby it.&lt;/para&gt;
 /// &lt;para&gt;Additional Effect: Potency is increased by 50% when target is under the effect of Sacred Claim&lt;/para&gt;
 /// &lt;para&gt;Additional Effect: Afflicts target with Sacred Claim&lt;/para&gt;
 /// &lt;para&gt;Sacred Claim Effect: Restores HP when successfully landing an attack on targets under this effect&lt;/para&gt;
@@ -26830,7 +26855,7 @@ ConfiteorPvP = 29070,
 BladeOfFaithPvP = 29071,
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/29072"&gt;&lt;strong&gt;Blade of Truth&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29072] [Spell]
-/// &lt;para&gt;Deals unaspected damage with a potency of 7,000 to target and all enemies nearby it.&lt;/para&gt;
+/// &lt;para&gt;Deals unaspected damage with a potency of 8,000 to target and all enemies nearby it.&lt;/para&gt;
 /// &lt;para&gt;Additional Effect: Potency is increased by 50% when target is under the effect of Sacred Claim&lt;/para&gt;
 /// &lt;para&gt;Combo Action: Blade of Faith&lt;/para&gt;
 /// &lt;para&gt;Additional Effect: Afflicts target with Sacred Claim&lt;/para&gt;
@@ -26844,7 +26869,7 @@ BladeOfFaithPvP = 29071,
 BladeOfTruthPvP = 29072,
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/29073"&gt;&lt;strong&gt;Blade of Valor&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29073] [Spell]
-/// &lt;para&gt;Deals unaspected damage with a potency of 8,000 to target and all enemies nearby it.&lt;/para&gt;
+/// &lt;para&gt;Deals unaspected damage with a potency of 9,000 to target and all enemies nearby it.&lt;/para&gt;
 /// &lt;para&gt;Additional Effect: Potency is increased by 50% when target is under the effect of Sacred Claim&lt;/para&gt;
 /// &lt;para&gt;Combo Action: Blade of Truth&lt;/para&gt;
 /// &lt;para&gt;Additional Effect: Afflicts target with Sacred Claim&lt;/para&gt;
@@ -28017,11 +28042,11 @@ HoningDancePvP = 29422,
 /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
 /// &lt;para&gt;&lt;/para&gt;
@@ -28033,11 +28058,11 @@ HoningOvationPvP = 29423,
 /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
 /// &lt;para&gt;&lt;/para&gt;
@@ -28049,11 +28074,11 @@ HoningOvationPvP_29424 = 29424,
 /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
 /// &lt;para&gt;&lt;/para&gt;
@@ -28065,11 +28090,11 @@ HoningOvationPvP_29425 = 29425,
 /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
 /// &lt;para&gt;&lt;/para&gt;
@@ -28081,11 +28106,11 @@ HoningOvationPvP_29426 = 29426,
 /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
 /// &lt;para&gt;&lt;/para&gt;
@@ -28126,11 +28151,11 @@ ClosedPositionPvP = 29431,
 /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim available at time of execution.&lt;/para&gt;
 /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+/// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+/// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+/// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+/// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+/// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
 /// &lt;para&gt;&lt;/para&gt;
@@ -29583,6 +29608,47 @@ VariantSpiritDartPvE_33863 = 33863,
 /// &lt;/summary&gt;
 VariantRampartPvE_33864 = 33864,
 /// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/33987"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33987] [Ability]
+/// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Precision upon successfully executing a precision dodge&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;/summary&gt;
+DodgePvE = 33987,
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/33988"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33988] [Ability]
+/// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Precision upon successfully executing a precision dodge&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;/summary&gt;
+DodgePvE_33988 = 33988,
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/33989"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33989] [Ability]
+/// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Precision upon successfully executing a precision dodge&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;/summary&gt;
+DodgePvE_33989 = 33989,
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/33990"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33990] [Ability]
+/// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Grants Precision upon successfully executing a precision dodge&lt;/para&gt;
+/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;/summary&gt;
+DodgePvE_33990 = 33990,
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/33997"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33997] [Ability]
+/// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+/// &lt;para&gt;Additional Effect: Applies Precision upon successfully executing a precision dodge&lt;/para&gt;
+/// &lt;para&gt;Duration: 5s&lt;/para&gt;
+/// &lt;/summary&gt;
+DodgePvE_33997 = 33997,
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/34515"&gt;&lt;strong&gt;Precision Strike&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [34515] [Ability]
+/// &lt;para&gt;Closes in on target while delivering an attack.&lt;/para&gt;
+/// &lt;para&gt;Can only be executed while Precision is active.&lt;/para&gt;
+/// &lt;/summary&gt;
+PrecisionStrikePvE = 34515,
+/// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/34563"&gt;&lt;strong&gt;Goblin Punch&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (BLU) [34563] [Spell]
 /// &lt;para&gt;Deals physical damage with a potency of 120.&lt;/para&gt;
 /// &lt;para&gt;220 when executed in front of a target.&lt;/para&gt;
@@ -29742,7 +29808,12 @@ BeingMortalPvE = 34582,
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;para&gt;※This action cannot be assigned to a hotbar.&lt;/para&gt;
 /// &lt;/summary&gt;
-GuillotinePvP = 34786,</value>
+GuillotinePvP = 34786,
+/// &lt;summary&gt;
+/// &lt;see href="https://garlandtools.org/db/#action/34790"&gt;&lt;strong&gt;Rising Flames&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [34790] [Ability]
+/// &lt;para&gt;Closes in on target while delivering an attack.&lt;/para&gt;
+/// &lt;/summary&gt;
+RisingFlamesPvE = 34790,</value>
   </data>
   <data name="ActionCategory" xml:space="preserve">
     <value>/// &lt;summary&gt;
@@ -31255,7 +31326,7 @@ namespace RotationSolver.Basic.Rotations.Duties;
 
 /// &lt;summary&gt;
 /// The Custom Rotation.
-/// &lt;br&gt;Number of Actions: 388&lt;/br&gt;
+/// &lt;br&gt;Number of Actions: 395&lt;/br&gt;
 /// &lt;/summary&gt;
 public abstract partial class DutyRotation
 {
@@ -40664,6 +40735,178 @@ public abstract partial class DutyRotation
     /// &lt;/summary&gt;
     [ID(33864)]
     public IBaseAction VariantRampartPvE_33864 =&gt; _VariantRampartPvE_33864Creator.Value;
+    private readonly Lazy&lt;IBaseAction&gt; _DodgePvECreator = new(() =&gt; 
+    {
+        IBaseAction action = new BaseAction((ActionID)33987, true);
+        CustomRotation.LoadActionSetting(ref action);
+    
+        var setting = action.Setting;
+        ModifyDodgePvE(ref setting);
+        action.Setting = setting;
+    
+        return action;
+    });
+    
+    /// &lt;summary&gt;
+    /// Modify &lt;see href="https://garlandtools.org/db/#action/33987"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33987] [Ability] Duty Action
+    /// &lt;/summary&gt;
+    static partial void ModifyDodgePvE(ref ActionSetting setting);
+    
+    /// &lt;summary&gt;
+    /// &lt;see href="https://garlandtools.org/db/#action/33987"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33987] [Ability] Duty Action
+    /// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+    /// &lt;para&gt;Additional Effect: Grants Precision upon successfully executing a precision dodge&lt;/para&gt;
+    /// &lt;para&gt;Duration: 10s&lt;/para&gt;
+    /// &lt;/summary&gt;
+    [ID(33987)]
+    public IBaseAction DodgePvE =&gt; _DodgePvECreator.Value;
+    private readonly Lazy&lt;IBaseAction&gt; _DodgePvE_33988Creator = new(() =&gt; 
+    {
+        IBaseAction action = new BaseAction((ActionID)33988, true);
+        CustomRotation.LoadActionSetting(ref action);
+    
+        var setting = action.Setting;
+        ModifyDodgePvE_33988(ref setting);
+        action.Setting = setting;
+    
+        return action;
+    });
+    
+    /// &lt;summary&gt;
+    /// Modify &lt;see href="https://garlandtools.org/db/#action/33988"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33988] [Ability] Duty Action
+    /// &lt;/summary&gt;
+    static partial void ModifyDodgePvE_33988(ref ActionSetting setting);
+    
+    /// &lt;summary&gt;
+    /// &lt;see href="https://garlandtools.org/db/#action/33988"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33988] [Ability] Duty Action
+    /// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+    /// &lt;para&gt;Additional Effect: Grants Precision upon successfully executing a precision dodge&lt;/para&gt;
+    /// &lt;para&gt;Duration: 10s&lt;/para&gt;
+    /// &lt;/summary&gt;
+    [ID(33988)]
+    public IBaseAction DodgePvE_33988 =&gt; _DodgePvE_33988Creator.Value;
+    private readonly Lazy&lt;IBaseAction&gt; _DodgePvE_33989Creator = new(() =&gt; 
+    {
+        IBaseAction action = new BaseAction((ActionID)33989, true);
+        CustomRotation.LoadActionSetting(ref action);
+    
+        var setting = action.Setting;
+        ModifyDodgePvE_33989(ref setting);
+        action.Setting = setting;
+    
+        return action;
+    });
+    
+    /// &lt;summary&gt;
+    /// Modify &lt;see href="https://garlandtools.org/db/#action/33989"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33989] [Ability] Duty Action
+    /// &lt;/summary&gt;
+    static partial void ModifyDodgePvE_33989(ref ActionSetting setting);
+    
+    /// &lt;summary&gt;
+    /// &lt;see href="https://garlandtools.org/db/#action/33989"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33989] [Ability] Duty Action
+    /// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+    /// &lt;para&gt;Additional Effect: Grants Precision upon successfully executing a precision dodge&lt;/para&gt;
+    /// &lt;para&gt;Duration: 10s&lt;/para&gt;
+    /// &lt;/summary&gt;
+    [ID(33989)]
+    public IBaseAction DodgePvE_33989 =&gt; _DodgePvE_33989Creator.Value;
+    private readonly Lazy&lt;IBaseAction&gt; _DodgePvE_33990Creator = new(() =&gt; 
+    {
+        IBaseAction action = new BaseAction((ActionID)33990, true);
+        CustomRotation.LoadActionSetting(ref action);
+    
+        var setting = action.Setting;
+        ModifyDodgePvE_33990(ref setting);
+        action.Setting = setting;
+    
+        return action;
+    });
+    
+    /// &lt;summary&gt;
+    /// Modify &lt;see href="https://garlandtools.org/db/#action/33990"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33990] [Ability] Duty Action
+    /// &lt;/summary&gt;
+    static partial void ModifyDodgePvE_33990(ref ActionSetting setting);
+    
+    /// &lt;summary&gt;
+    /// &lt;see href="https://garlandtools.org/db/#action/33990"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33990] [Ability] Duty Action
+    /// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+    /// &lt;para&gt;Additional Effect: Grants Precision upon successfully executing a precision dodge&lt;/para&gt;
+    /// &lt;para&gt;Duration: 10s&lt;/para&gt;
+    /// &lt;/summary&gt;
+    [ID(33990)]
+    public IBaseAction DodgePvE_33990 =&gt; _DodgePvE_33990Creator.Value;
+    private readonly Lazy&lt;IBaseAction&gt; _DodgePvE_33997Creator = new(() =&gt; 
+    {
+        IBaseAction action = new BaseAction((ActionID)33997, true);
+        CustomRotation.LoadActionSetting(ref action);
+    
+        var setting = action.Setting;
+        ModifyDodgePvE_33997(ref setting);
+        action.Setting = setting;
+    
+        return action;
+    });
+    
+    /// &lt;summary&gt;
+    /// Modify &lt;see href="https://garlandtools.org/db/#action/33997"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33997] [Ability] Duty Action
+    /// &lt;/summary&gt;
+    static partial void ModifyDodgePvE_33997(ref ActionSetting setting);
+    
+    /// &lt;summary&gt;
+    /// &lt;see href="https://garlandtools.org/db/#action/33997"&gt;&lt;strong&gt;Dodge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [33997] [Ability] Duty Action
+    /// &lt;para&gt;Take evasive action in the selected direction.&lt;/para&gt;
+    /// &lt;para&gt;Additional Effect: Applies Precision upon successfully executing a precision dodge&lt;/para&gt;
+    /// &lt;para&gt;Duration: 5s&lt;/para&gt;
+    /// &lt;/summary&gt;
+    [ID(33997)]
+    public IBaseAction DodgePvE_33997 =&gt; _DodgePvE_33997Creator.Value;
+    private readonly Lazy&lt;IBaseAction&gt; _PrecisionStrikePvECreator = new(() =&gt; 
+    {
+        IBaseAction action = new BaseAction((ActionID)34515, true);
+        CustomRotation.LoadActionSetting(ref action);
+    
+        var setting = action.Setting;
+        ModifyPrecisionStrikePvE(ref setting);
+        action.Setting = setting;
+    
+        return action;
+    });
+    
+    /// &lt;summary&gt;
+    /// Modify &lt;see href="https://garlandtools.org/db/#action/34515"&gt;&lt;strong&gt;Precision Strike&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [34515] [Ability] Duty Action
+    /// &lt;/summary&gt;
+    static partial void ModifyPrecisionStrikePvE(ref ActionSetting setting);
+    
+    /// &lt;summary&gt;
+    /// &lt;see href="https://garlandtools.org/db/#action/34515"&gt;&lt;strong&gt;Precision Strike&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [34515] [Ability] Duty Action
+    /// &lt;para&gt;Closes in on target while delivering an attack.&lt;/para&gt;
+    /// &lt;para&gt;Can only be executed while Precision is active.&lt;/para&gt;
+    /// &lt;/summary&gt;
+    [ID(34515)]
+    public IBaseAction PrecisionStrikePvE =&gt; _PrecisionStrikePvECreator.Value;
+    private readonly Lazy&lt;IBaseAction&gt; _RisingFlamesPvECreator = new(() =&gt; 
+    {
+        IBaseAction action = new BaseAction((ActionID)34790, true);
+        CustomRotation.LoadActionSetting(ref action);
+    
+        var setting = action.Setting;
+        ModifyRisingFlamesPvE(ref setting);
+        action.Setting = setting;
+    
+        return action;
+    });
+    
+    /// &lt;summary&gt;
+    /// Modify &lt;see href="https://garlandtools.org/db/#action/34790"&gt;&lt;strong&gt;Rising Flames&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [34790] [Ability] Duty Action
+    /// &lt;/summary&gt;
+    static partial void ModifyRisingFlamesPvE(ref ActionSetting setting);
+    
+    /// &lt;summary&gt;
+    /// &lt;see href="https://garlandtools.org/db/#action/34790"&gt;&lt;strong&gt;Rising Flames&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [34790] [Ability] Duty Action
+    /// &lt;para&gt;Closes in on target while delivering an attack.&lt;/para&gt;
+    /// &lt;/summary&gt;
+    [ID(34790)]
+    public IBaseAction RisingFlamesPvE =&gt; _RisingFlamesPvECreator.Value;
 }</value>
   </data>
   <data name="Rotation" xml:space="preserve">
@@ -41790,7 +42033,7 @@ public abstract partial class PaladinRotation : CustomRotation
     
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/29070"&gt;&lt;strong&gt;Confiteor&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29070] [Spell]
-    /// &lt;para&gt;Deals unaspected damage with a potency of 8,000 to target and all enemies nearby it.&lt;/para&gt;
+    /// &lt;para&gt;Deals unaspected damage with a potency of 12,000 to target and all enemies nearby it.&lt;/para&gt;
     /// &lt;para&gt;Additional Effect: Afflicts target with Sacred Claim&lt;/para&gt;
     /// &lt;para&gt;Sacred Claim Effect: Restores HP when successfully landing an attack on targets under this effect&lt;/para&gt;
     /// &lt;para&gt;Cure Potency: 3,000&lt;/para&gt;
@@ -41818,7 +42061,7 @@ public abstract partial class PaladinRotation : CustomRotation
     
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/29071"&gt;&lt;strong&gt;Blade of Faith&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29071] [Spell]
-    /// &lt;para&gt;Deals unaspected damage with a potency of 6,000 to target and all enemies nearby it.&lt;/para&gt;
+    /// &lt;para&gt;Deals unaspected damage with a potency of 7,000 to target and all enemies nearby it.&lt;/para&gt;
     /// &lt;para&gt;Additional Effect: Potency is increased by 50% when target is under the effect of Sacred Claim&lt;/para&gt;
     /// &lt;para&gt;Additional Effect: Afflicts target with Sacred Claim&lt;/para&gt;
     /// &lt;para&gt;Sacred Claim Effect: Restores HP when successfully landing an attack on targets under this effect&lt;/para&gt;
@@ -41850,7 +42093,7 @@ public abstract partial class PaladinRotation : CustomRotation
     
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/29072"&gt;&lt;strong&gt;Blade of Truth&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29072] [Spell]
-    /// &lt;para&gt;Deals unaspected damage with a potency of 7,000 to target and all enemies nearby it.&lt;/para&gt;
+    /// &lt;para&gt;Deals unaspected damage with a potency of 8,000 to target and all enemies nearby it.&lt;/para&gt;
     /// &lt;para&gt;Additional Effect: Potency is increased by 50% when target is under the effect of Sacred Claim&lt;/para&gt;
     /// &lt;para&gt;Combo Action: Blade of Faith&lt;/para&gt;
     /// &lt;para&gt;Additional Effect: Afflicts target with Sacred Claim&lt;/para&gt;
@@ -41882,7 +42125,7 @@ public abstract partial class PaladinRotation : CustomRotation
     
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/29073"&gt;&lt;strong&gt;Blade of Valor&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29073] [Spell]
-    /// &lt;para&gt;Deals unaspected damage with a potency of 8,000 to target and all enemies nearby it.&lt;/para&gt;
+    /// &lt;para&gt;Deals unaspected damage with a potency of 9,000 to target and all enemies nearby it.&lt;/para&gt;
     /// &lt;para&gt;Additional Effect: Potency is increased by 50% when target is under the effect of Sacred Claim&lt;/para&gt;
     /// &lt;para&gt;Combo Action: Blade of Truth&lt;/para&gt;
     /// &lt;para&gt;Additional Effect: Afflicts target with Sacred Claim&lt;/para&gt;
@@ -71004,11 +71247,11 @@ public abstract partial class DancerRotation : CustomRotation
     /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
     /// &lt;para&gt;Duration: 10s&lt;/para&gt;
     /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
     /// &lt;para&gt;&lt;/para&gt;
@@ -71038,11 +71281,11 @@ public abstract partial class DancerRotation : CustomRotation
     /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
     /// &lt;para&gt;Duration: 10s&lt;/para&gt;
     /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
     /// &lt;para&gt;&lt;/para&gt;
@@ -71072,11 +71315,11 @@ public abstract partial class DancerRotation : CustomRotation
     /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
     /// &lt;para&gt;Duration: 10s&lt;/para&gt;
     /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
     /// &lt;para&gt;&lt;/para&gt;
@@ -71106,11 +71349,11 @@ public abstract partial class DancerRotation : CustomRotation
     /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
     /// &lt;para&gt;Duration: 10s&lt;/para&gt;
     /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
     /// &lt;para&gt;&lt;/para&gt;
@@ -71140,11 +71383,11 @@ public abstract partial class DancerRotation : CustomRotation
     /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
     /// &lt;para&gt;Duration: 10s&lt;/para&gt;
     /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
     /// &lt;para&gt;&lt;/para&gt;
@@ -71275,11 +71518,11 @@ public abstract partial class DancerRotation : CustomRotation
     /// &lt;para&gt;Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier varies with the number of stacks of Acclaim available at time of execution.&lt;/para&gt;
     /// &lt;para&gt;Potency of both the attack and barrier doubles when targets are within 5 yalms.&lt;/para&gt;
-    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
-    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
-    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
-    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
-    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency&lt;/para&gt;
+    /// &lt;para&gt;0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency&lt;/para&gt;
+    /// &lt;para&gt;1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency&lt;/para&gt;
+    /// &lt;para&gt;2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency&lt;/para&gt;
+    /// &lt;para&gt;3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency&lt;/para&gt;
+    /// &lt;para&gt;4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency&lt;/para&gt;
     /// &lt;para&gt;Duration: 10s&lt;/para&gt;
     /// &lt;para&gt;Honing Dance effect expires upon execution.&lt;/para&gt;
     /// &lt;para&gt;&lt;/para&gt;
@@ -74508,385 +74751,385 @@ private sealed protected override IBaseAction LimitBreakPvP =&gt; MesotesPvP;
   </data>
   <data name="OpCode" xml:space="preserve">
     <value>/// &lt;summary&gt;
-///Actor Control Target
+///Actor Control
 /// &lt;/summary&gt;
-[Description("Actor Control Target")]
-ActorControlTarget = 973,
-/// &lt;summary&gt;
-///Actor Control Self
-/// &lt;/summary&gt;
-[Description("Actor Control Self")]
-ActorControlSelf = 813,
-/// &lt;summary&gt;
-///Airship Timers
-/// &lt;/summary&gt;
-[Description("Airship Timers")]
-AirshipTimers = 370,
-/// &lt;summary&gt;
-///Actor Gauge
-/// &lt;/summary&gt;
-[Description("Actor Gauge")]
-ActorGauge = 431,
-/// &lt;summary&gt;
-///Actor Move
-/// &lt;/summary&gt;
-[Description("Actor Move")]
-ActorMove = 845,
-/// &lt;summary&gt;
-///Airship Status
-/// &lt;/summary&gt;
-[Description("Airship Status")]
-AirshipStatus = 471,
-/// &lt;summary&gt;
-///Airship Exploration Result
-/// &lt;/summary&gt;
-[Description("Airship Exploration Result")]
-AirshipExplorationResult = 286,
-/// &lt;summary&gt;
-///Airship Status List
-/// &lt;/summary&gt;
-[Description("Airship Status List")]
-AirshipStatusList = 517,
+[Description("Actor Control")]
+ActorControl = 713,
 /// &lt;summary&gt;
 ///Actor Set Pos
 /// &lt;/summary&gt;
 [Description("Actor Set Pos")]
-ActorSetPos = 174,
+ActorSetPos = 121,
 /// &lt;summary&gt;
-///Actor Control
+///Actor Gauge
 /// &lt;/summary&gt;
-[Description("Actor Control")]
-ActorControl = 717,
+[Description("Actor Gauge")]
+ActorGauge = 123,
+/// &lt;summary&gt;
+///Airship Timers
+/// &lt;/summary&gt;
+[Description("Airship Timers")]
+AirshipTimers = 411,
+/// &lt;summary&gt;
+///Actor Control Target
+/// &lt;/summary&gt;
+[Description("Actor Control Target")]
+ActorControlTarget = 361,
 /// &lt;summary&gt;
 ///Actor Cast
 /// &lt;/summary&gt;
 [Description("Actor Cast")]
-ActorCast = 421,
+ActorCast = 357,
 /// &lt;summary&gt;
-///CFNotify
+///Airship Status List
 /// &lt;/summary&gt;
-[Description("CFNotify")]
-CFNotify = 556,
+[Description("Airship Status List")]
+AirshipStatusList = 430,
+/// &lt;summary&gt;
+///Actor Move
+/// &lt;/summary&gt;
+[Description("Actor Move")]
+ActorMove = 416,
+/// &lt;summary&gt;
+///Airship Exploration Result
+/// &lt;/summary&gt;
+[Description("Airship Exploration Result")]
+AirshipExplorationResult = 261,
+/// &lt;summary&gt;
+///Actor Control Self
+/// &lt;/summary&gt;
+[Description("Actor Control Self")]
+ActorControlSelf = 832,
+/// &lt;summary&gt;
+///Airship Status
+/// &lt;/summary&gt;
+[Description("Airship Status")]
+AirshipStatus = 965,
 /// &lt;summary&gt;
 ///Currency Crystal Info
 /// &lt;/summary&gt;
 [Description("Currency Crystal Info")]
-CurrencyCrystalInfo = 390,
+CurrencyCrystalInfo = 936,
 /// &lt;summary&gt;
 ///Container Info
 /// &lt;/summary&gt;
 [Description("Container Info")]
-ContainerInfo = 849,
+ContainerInfo = 659,
+/// &lt;summary&gt;
+///CFNotify
+/// &lt;/summary&gt;
+[Description("CFNotify")]
+CFNotify = 327,
 /// &lt;summary&gt;
 ///Desynth Result
 /// &lt;/summary&gt;
 [Description("Desynth Result")]
-DesynthResult = 967,
-/// &lt;summary&gt;
-///Event Play 8
-/// &lt;/summary&gt;
-[Description("Event Play 8")]
-EventPlay8 = 805,
-/// &lt;summary&gt;
-///Effect Result Basic
-/// &lt;/summary&gt;
-[Description("Effect Result Basic")]
-EffectResultBasic = 507,
-/// &lt;summary&gt;
-///Event Play 128
-/// &lt;/summary&gt;
-[Description("Event Play 128")]
-EventPlay128 = 790,
-/// &lt;summary&gt;
-///Event Play 16
-/// &lt;/summary&gt;
-[Description("Event Play 16")]
-EventPlay16 = 577,
-/// &lt;summary&gt;
-///Event Play
-/// &lt;/summary&gt;
-[Description("Event Play")]
-EventPlay = 423,
-/// &lt;summary&gt;
-///Event Play 32
-/// &lt;/summary&gt;
-[Description("Event Play 32")]
-EventPlay32 = 799,
-/// &lt;summary&gt;
-///Examine Search Info
-/// &lt;/summary&gt;
-[Description("Examine Search Info")]
-ExamineSearchInfo = 410,
-/// &lt;summary&gt;
-///Effect Result
-/// &lt;/summary&gt;
-[Description("Effect Result")]
-EffectResult = 898,
-/// &lt;summary&gt;
-///Environment Control
-/// &lt;/summary&gt;
-[Description("Environment Control")]
-EnvironmentControl = 141,
+DesynthResult = 585,
 /// &lt;summary&gt;
 ///Event Play 4
 /// &lt;/summary&gt;
 [Description("Event Play 4")]
-EventPlay4 = 955,
+EventPlay4 = 893,
 /// &lt;summary&gt;
-///Event Play 255
+///Event Play 8
 /// &lt;/summary&gt;
-[Description("Event Play 255")]
-EventPlay255 = 936,
+[Description("Event Play 8")]
+EventPlay8 = 515,
 /// &lt;summary&gt;
-///Event Finish
+///Event Play 128
 /// &lt;/summary&gt;
-[Description("Event Finish")]
-EventFinish = 267,
+[Description("Event Play 128")]
+EventPlay128 = 562,
 /// &lt;summary&gt;
 ///Event Play 64
 /// &lt;/summary&gt;
 [Description("Event Play 64")]
-EventPlay64 = 894,
+EventPlay64 = 996,
 /// &lt;summary&gt;
-///Event Start
+///Event Play
 /// &lt;/summary&gt;
-[Description("Event Start")]
-EventStart = 709,
+[Description("Event Play")]
+EventPlay = 821,
+/// &lt;summary&gt;
+///Effect Result
+/// &lt;/summary&gt;
+[Description("Effect Result")]
+EffectResult = 814,
+/// &lt;summary&gt;
+///Effect Result Basic
+/// &lt;/summary&gt;
+[Description("Effect Result Basic")]
+EffectResultBasic = 621,
 /// &lt;summary&gt;
 ///Examine
 /// &lt;/summary&gt;
 [Description("Examine")]
-Examine = 862,
+Examine = 776,
+/// &lt;summary&gt;
+///Examine Search Info
+/// &lt;/summary&gt;
+[Description("Examine Search Info")]
+ExamineSearchInfo = 467,
+/// &lt;summary&gt;
+///Event Play 255
+/// &lt;/summary&gt;
+[Description("Event Play 255")]
+EventPlay255 = 931,
+/// &lt;summary&gt;
+///Environment Control
+/// &lt;/summary&gt;
+[Description("Environment Control")]
+EnvironmentControl = 728,
+/// &lt;summary&gt;
+///Event Play 32
+/// &lt;/summary&gt;
+[Description("Event Play 32")]
+EventPlay32 = 324,
+/// &lt;summary&gt;
+///Event Finish
+/// &lt;/summary&gt;
+[Description("Event Finish")]
+EventFinish = 967,
+/// &lt;summary&gt;
+///Event Play 16
+/// &lt;/summary&gt;
+[Description("Event Play 16")]
+EventPlay16 = 236,
 /// &lt;summary&gt;
 ///Effect
 /// &lt;/summary&gt;
 [Description("Effect")]
-Effect = 316,
+Effect = 211,
 /// &lt;summary&gt;
-///Free Company Dialog
+///Event Start
 /// &lt;/summary&gt;
-[Description("Free Company Dialog")]
-FreeCompanyDialog = 644,
+[Description("Event Start")]
+EventStart = 982,
 /// &lt;summary&gt;
 ///Free Company Info
 /// &lt;/summary&gt;
 [Description("Free Company Info")]
-FreeCompanyInfo = 354,
+FreeCompanyInfo = 686,
 /// &lt;summary&gt;
-///Inventory Action Ack
+///Free Company Dialog
 /// &lt;/summary&gt;
-[Description("Inventory Action Ack")]
-InventoryActionAck = 522,
-/// &lt;summary&gt;
-///Init Zone
-/// &lt;/summary&gt;
-[Description("Init Zone")]
-InitZone = 560,
-/// &lt;summary&gt;
-///Inventory Transaction
-/// &lt;/summary&gt;
-[Description("Inventory Transaction")]
-InventoryTransaction = 196,
-/// &lt;summary&gt;
-///Inventory Transaction Finish
-/// &lt;/summary&gt;
-[Description("Inventory Transaction Finish")]
-InventoryTransactionFinish = 781,
-/// &lt;summary&gt;
-///Item Market Board Info
-/// &lt;/summary&gt;
-[Description("Item Market Board Info")]
-ItemMarketBoardInfo = 596,
+[Description("Free Company Dialog")]
+FreeCompanyDialog = 678,
 /// &lt;summary&gt;
 ///Item Info
 /// &lt;/summary&gt;
 [Description("Item Info")]
-ItemInfo = 810,
+ItemInfo = 942,
 /// &lt;summary&gt;
 ///Island Workshop Supply Demand
 /// &lt;/summary&gt;
 [Description("Island Workshop Supply Demand")]
-IslandWorkshopSupplyDemand = 358,
+IslandWorkshopSupplyDemand = 120,
+/// &lt;summary&gt;
+///Inventory Transaction Finish
+/// &lt;/summary&gt;
+[Description("Inventory Transaction Finish")]
+InventoryTransactionFinish = 557,
+/// &lt;summary&gt;
+///Inventory Transaction
+/// &lt;/summary&gt;
+[Description("Inventory Transaction")]
+InventoryTransaction = 226,
+/// &lt;summary&gt;
+///Init Zone
+/// &lt;/summary&gt;
+[Description("Init Zone")]
+InitZone = 727,
+/// &lt;summary&gt;
+///Inventory Action Ack
+/// &lt;/summary&gt;
+[Description("Inventory Action Ack")]
+InventoryActionAck = 781,
+/// &lt;summary&gt;
+///Item Market Board Info
+/// &lt;/summary&gt;
+[Description("Item Market Board Info")]
+ItemMarketBoardInfo = 143,
 /// &lt;summary&gt;
 ///Logout
 /// &lt;/summary&gt;
 [Description("Logout")]
-Logout = 435,
-/// &lt;summary&gt;
-///Market Board Search Result
-/// &lt;/summary&gt;
-[Description("Market Board Search Result")]
-MarketBoardSearchResult = 773,
-/// &lt;summary&gt;
-///Market Board Item Listing
-/// &lt;/summary&gt;
-[Description("Market Board Item Listing")]
-MarketBoardItemListing = 567,
+Logout = 725,
 /// &lt;summary&gt;
 ///Market Board Item Listing History
 /// &lt;/summary&gt;
 [Description("Market Board Item Listing History")]
-MarketBoardItemListingHistory = 330,
+MarketBoardItemListingHistory = 197,
+/// &lt;summary&gt;
+///Market Board Item Listing
+/// &lt;/summary&gt;
+[Description("Market Board Item Listing")]
+MarketBoardItemListing = 119,
 /// &lt;summary&gt;
 ///Market Board Item Listing Count
 /// &lt;/summary&gt;
 [Description("Market Board Item Listing Count")]
-MarketBoardItemListingCount = 510,
+MarketBoardItemListingCount = 251,
+/// &lt;summary&gt;
+///Market Board Search Result
+/// &lt;/summary&gt;
+[Description("Market Board Search Result")]
+MarketBoardSearchResult = 339,
 /// &lt;summary&gt;
 ///Market Board Purchase
 /// &lt;/summary&gt;
 [Description("Market Board Purchase")]
-MarketBoardPurchase = 374,
+MarketBoardPurchase = 779,
 /// &lt;summary&gt;
 ///Npc Spawn
 /// &lt;/summary&gt;
 [Description("Npc Spawn")]
-NpcSpawn = 636,
+NpcSpawn = 974,
 /// &lt;summary&gt;
 ///Object Spawn
 /// &lt;/summary&gt;
 [Description("Object Spawn")]
-ObjectSpawn = 658,
-/// &lt;summary&gt;
-///Player Stats
-/// &lt;/summary&gt;
-[Description("Player Stats")]
-PlayerStats = 692,
-/// &lt;summary&gt;
-///Playtime
-/// &lt;/summary&gt;
-[Description("Playtime")]
-Playtime = 938,
-/// &lt;summary&gt;
-///Player Setup
-/// &lt;/summary&gt;
-[Description("Player Setup")]
-PlayerSetup = 607,
-/// &lt;summary&gt;
-///Player Spawn
-/// &lt;/summary&gt;
-[Description("Player Spawn")]
-PlayerSpawn = 221,
-/// &lt;summary&gt;
-///Place Field Marker Preset
-/// &lt;/summary&gt;
-[Description("Place Field Marker Preset")]
-PlaceFieldMarkerPreset = 307,
-/// &lt;summary&gt;
-///Place Field Marker
-/// &lt;/summary&gt;
-[Description("Place Field Marker")]
-PlaceFieldMarker = 539,
+ObjectSpawn = 192,
 /// &lt;summary&gt;
 ///Prepare Zoning
 /// &lt;/summary&gt;
 [Description("Prepare Zoning")]
-PrepareZoning = 819,
+PrepareZoning = 910,
+/// &lt;summary&gt;
+///Playtime
+/// &lt;/summary&gt;
+[Description("Playtime")]
+Playtime = 581,
+/// &lt;summary&gt;
+///Place Field Marker Preset
+/// &lt;/summary&gt;
+[Description("Place Field Marker Preset")]
+PlaceFieldMarkerPreset = 227,
+/// &lt;summary&gt;
+///Player Spawn
+/// &lt;/summary&gt;
+[Description("Player Spawn")]
+PlayerSpawn = 645,
+/// &lt;summary&gt;
+///Player Stats
+/// &lt;/summary&gt;
+[Description("Player Stats")]
+PlayerStats = 302,
+/// &lt;summary&gt;
+///Player Setup
+/// &lt;/summary&gt;
+[Description("Player Setup")]
+PlayerSetup = 427,
+/// &lt;summary&gt;
+///Place Field Marker
+/// &lt;/summary&gt;
+[Description("Place Field Marker")]
+PlaceFieldMarker = 475,
 /// &lt;summary&gt;
 ///Result Dialog
 /// &lt;/summary&gt;
 [Description("Result Dialog")]
-ResultDialog = 169,
+ResultDialog = 998,
 /// &lt;summary&gt;
 ///Retainer Information
 /// &lt;/summary&gt;
 [Description("Retainer Information")]
-RetainerInformation = 830,
-/// &lt;summary&gt;
-///Submarine Timers
-/// &lt;/summary&gt;
-[Description("Submarine Timers")]
-SubmarineTimers = 797,
-/// &lt;summary&gt;
-///System Log Message
-/// &lt;/summary&gt;
-[Description("System Log Message")]
-SystemLogMessage = 313,
-/// &lt;summary&gt;
-///Submarine Progression Status
-/// &lt;/summary&gt;
-[Description("Submarine Progression Status")]
-SubmarineProgressionStatus = 968,
-/// &lt;summary&gt;
-///Status Effect List 2
-/// &lt;/summary&gt;
-[Description("Status Effect List 2")]
-StatusEffectList2 = 878,
-/// &lt;summary&gt;
-///Submarine Status List
-/// &lt;/summary&gt;
-[Description("Submarine Status List")]
-SubmarineStatusList = 292,
+RetainerInformation = 734,
 /// &lt;summary&gt;
 ///Status Effect List 3
 /// &lt;/summary&gt;
 [Description("Status Effect List 3")]
-StatusEffectList3 = 741,
+StatusEffectList3 = 270,
 /// &lt;summary&gt;
-///Status Effect List
+///Submarine Timers
 /// &lt;/summary&gt;
-[Description("Status Effect List")]
-StatusEffectList = 649,
+[Description("Submarine Timers")]
+SubmarineTimers = 310,
 /// &lt;summary&gt;
 ///Submarine Exploration Result
 /// &lt;/summary&gt;
 [Description("Submarine Exploration Result")]
-SubmarineExplorationResult = 119,
+SubmarineExplorationResult = 420,
 /// &lt;summary&gt;
-///Update Class Info
+///Submarine Progression Status
 /// &lt;/summary&gt;
-[Description("Update Class Info")]
-UpdateClassInfo = 234,
+[Description("Submarine Progression Status")]
+SubmarineProgressionStatus = 449,
+/// &lt;summary&gt;
+///Status Effect List
+/// &lt;/summary&gt;
+[Description("Status Effect List")]
+StatusEffectList = 830,
+/// &lt;summary&gt;
+///System Log Message
+/// &lt;/summary&gt;
+[Description("System Log Message")]
+SystemLogMessage = 597,
+/// &lt;summary&gt;
+///Status Effect List 2
+/// &lt;/summary&gt;
+[Description("Status Effect List 2")]
+StatusEffectList2 = 428,
+/// &lt;summary&gt;
+///Submarine Status List
+/// &lt;/summary&gt;
+[Description("Submarine Status List")]
+SubmarineStatusList = 755,
 /// &lt;summary&gt;
 ///Update Hp Mp Tp
 /// &lt;/summary&gt;
 [Description("Update Hp Mp Tp")]
-UpdateHpMpTp = 920,
-/// &lt;summary&gt;
-///Update Search Info
-/// &lt;/summary&gt;
-[Description("Update Search Info")]
-UpdateSearchInfo = 574,
+UpdateHpMpTp = 588,
 /// &lt;summary&gt;
 ///Update Inventory Slot
 /// &lt;/summary&gt;
 [Description("Update Inventory Slot")]
-UpdateInventorySlot = 548,
+UpdateInventorySlot = 618,
+/// &lt;summary&gt;
+///Update Class Info
+/// &lt;/summary&gt;
+[Description("Update Class Info")]
+UpdateClassInfo = 673,
+/// &lt;summary&gt;
+///Update Search Info
+/// &lt;/summary&gt;
+[Description("Update Search Info")]
+UpdateSearchInfo = 763,
 /// &lt;summary&gt;
 ///Weather Change
 /// &lt;/summary&gt;
 [Description("Weather Change")]
-WeatherChange = 127,
+WeatherChange = 178,
 /// &lt;summary&gt;
 ///Client Trigger
 /// &lt;/summary&gt;
 [Description("Client Trigger")]
-ClientTrigger = 716,
+ClientTrigger = 259,
 /// &lt;summary&gt;
 ///Inventory Modify Handler
 /// &lt;/summary&gt;
 [Description("Inventory Modify Handler")]
-InventoryModifyHandler = 553,
+InventoryModifyHandler = 923,
 /// &lt;summary&gt;
 ///Market Board Purchase Handler
 /// &lt;/summary&gt;
 [Description("Market Board Purchase Handler")]
-MarketBoardPurchaseHandler = 631,
+MarketBoardPurchaseHandler = 891,
 /// &lt;summary&gt;
 ///Set Search Info Handler
 /// &lt;/summary&gt;
 [Description("Set Search Info Handler")]
-SetSearchInfoHandler = 689,
+SetSearchInfoHandler = 156,
 /// &lt;summary&gt;
 ///Update Position Handler
 /// &lt;/summary&gt;
 [Description("Update Position Handler")]
-UpdatePositionHandler = 417,
+UpdatePositionHandler = 355,
 /// &lt;summary&gt;
 ///Update Position Instance
 /// &lt;/summary&gt;
 [Description("Update Position Instance")]
-UpdatePositionInstance = 608,
+UpdatePositionInstance = 844,
 /// &lt;summary&gt;
 ///Lobby Error
 /// &lt;/summary&gt;
