@@ -126,7 +126,7 @@ partial class SamuraiRotation
         setting.StatusProvide = [StatusID.MeikyoShisui];
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 8,
+            TimeToKill = 0,
         };
     }
 
