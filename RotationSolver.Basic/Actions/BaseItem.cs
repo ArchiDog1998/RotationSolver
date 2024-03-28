@@ -175,7 +175,7 @@ public class BaseItem : IBaseItem
 
         var remain = Cooldown.RecastTimeOneChargeRaw - Cooldown.RecastTimeElapsedRaw;
 
-        if (remain > DataCenter.AnimationLocktime) return false;
+        if (remain > DataCenter.ActionRemain) return false;
 
         if (clippingCheck && DataCenter.WeaponRemain > 0)
         {
