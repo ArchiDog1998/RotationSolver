@@ -542,11 +542,11 @@ public partial class RotationConfigWindow : Window
                     {
                         if( DataCenter.IsPvP)
                         {
-                            Service.Config.PvPRotationChoice = r.GetType().FullName;
+                            Service.Config.PvPRotationChoice = r.FullName;
                         }
                         else
                         {
-                            Service.Config.RotationChoice = r.GetType().FullName;
+                            Service.Config.RotationChoice = r.FullName;
                         }
                     }
                     ImguiTooltips.HoveredTooltip(rAttr.Description);

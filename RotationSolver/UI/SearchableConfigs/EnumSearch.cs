@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using RotationSolver.Localization;
-using System;
+﻿using RotationSolver.Localization;
 
 namespace RotationSolver.UI.SearchableConfigs;
 
@@ -14,8 +12,6 @@ internal class EnumSearch(PropertyInfo property) : Searchable(property)
 
     protected override void DrawMain()
     {
-        var value = Value;
-
         var names = new List<string>();
         foreach (Enum v in Enum.GetValues(_property.PropertyType))
         {
@@ -25,18 +21,11 @@ internal class EnumSearch(PropertyInfo property) : Searchable(property)
 
         if (strs.Length > 0)
         {
+            var value = Value;
             ImGui.SetNextItemWidth(Math.Max(ImGui.CalcTextSize(strs[value % strs.Length]).X + 30, DRAG_WIDTH) * Scale);
             if (ImGui.Combo($"##Config_{ID}{GetHashCode()}", ref value, strs, strs.Length))
             {
-                int index = 0;
-                foreach (var v in Enum.GetValues(_property.PropertyType))
-                {
-                    if (index++ == value)
-                    {
-                        Value = Convert.ToInt32(v);
-                        break;
-                    }
-                }
+                Value = value;
             }
         }
 

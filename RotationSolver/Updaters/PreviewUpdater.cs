@@ -42,6 +42,21 @@ internal static class PreviewUpdater
                 new IconPayload(BitmapFontIcon.DPS),
                 new TextPayload(showStr)
                 );
+            _dtrEntry.OnClick ??= new(() =>
+            {
+                if (!DataCenter.State)
+                {
+                    RSCommands.DoStateCommandType(StateCommandType.Auto);
+                }
+                else if (DataCenter.IsManual)
+                {
+                    RSCommands.DoStateCommandType(StateCommandType.Cancel);
+                }
+                else
+                {
+                    RSCommands.DoStateCommandType(StateCommandType.Manual);
+                }
+            });
         }
         else if (_dtrEntry != null && _dtrEntry.Shown)
         {

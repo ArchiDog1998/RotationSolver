@@ -22,7 +22,7 @@ public static partial class RSCommands
         });
     }
 
-    private static unsafe void DoStateCommandType(StateCommandType stateType, int index = -1) => DoOneCommandType(EnumTranslations.ToSayout, role =>
+    internal static unsafe void DoStateCommandType(StateCommandType stateType, int index = -1) => DoOneCommandType(EnumTranslations.ToSayout, role =>
     {
         if (DataCenter.State)
         {

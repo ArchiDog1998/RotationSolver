@@ -15,6 +15,7 @@ namespace RotationSolver.Basic;
 internal static class DataCenter
 {
     private static uint _hostileTargetId = GameObject.InvalidGameObjectId;
+
     internal static BattleChara? HostileTarget
     {
         get
@@ -38,7 +39,7 @@ internal static class DataCenter
     {
         get
         {
-            if (ConditionSets == null || !ConditionSets.Any())
+            if (ConditionSets == null || ConditionSets.Length == 0)
             {
                 ConditionSets = [new MajorConditionSet()];
             }

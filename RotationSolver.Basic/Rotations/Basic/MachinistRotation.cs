@@ -14,6 +14,11 @@ partial class MachinistRotation
     /// <summary>
     /// 
     /// </summary>
+    public static byte LastSummonBatteryPower => JobGauge.LastSummonBatteryPower;
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static byte Heat => JobGauge.Heat;
 
     /// <summary>

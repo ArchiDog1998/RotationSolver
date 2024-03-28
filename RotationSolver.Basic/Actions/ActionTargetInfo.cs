@@ -243,8 +243,17 @@ public struct ActionTargetInfo(IBaseAction action)
                     return new(t, [.. GetAffects(t, canAffects)], t.Position);
                 }
             }
-            else
+            else if (!NoAOE)
             {
+                if (!action.Action.CanTargetFriendly
+                    && !action.Action.CanTargetHostile)
+                {
+                    t = player;
+                }
+                if (!CanUseTo(t))
+                {
+                    return null;
+                }
                 var effects = GetAffects(t, canAffects).ToArray();
                 if (effects.Length >= action.Config.AoeCount || skipAoeCheck)
                 {

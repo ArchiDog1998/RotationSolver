@@ -456,7 +456,7 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 5, ConfigUnitType.Yalms, 0.02f)]
     public float MeleeRangeOffset { get; set; } = 1;
 
-    [UI("The time ahead of the last oGCD before the next GCD being avaliable to start trying using it (may affect skill weaving)",
+    [UI("The time ahead of the last oGCD before the next GCD being available to start trying using it (may affect skill weaving)",
         Filter = BasicTimer)]
     [Range(0, 0.4f, ConfigUnitType.Seconds, 0.002f)]
     public float MinLastAbilityAdvanced { get; set; } = 0.1f;
@@ -491,11 +491,6 @@ internal partial class Configs : IPluginConfiguration
         Filter =BasicTimer, Section = 1)]
     [Range(1, 20, ConfigUnitType.Seconds, 1f)]
     public float SpecialDuration { get; set; } = 3;
-
-    [UI("The time before an oGCD is avaliable to start trying using it",
-        Filter = BasicTimer)]
-    [Range(0, 0.5f, ConfigUnitType.Seconds, 0.002f)]
-    public float ActionAheadForLast0GCD { get; set; } = 0.06f;
 
     [UI("The range of random delay for finding a target.", Filter =TargetConfig)]
     [Range(0, 3, ConfigUnitType.Seconds)]
