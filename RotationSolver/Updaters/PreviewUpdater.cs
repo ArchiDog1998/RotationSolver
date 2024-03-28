@@ -42,6 +42,7 @@ internal static class PreviewUpdater
                 new IconPayload(BitmapFontIcon.DPS),
                 new TextPayload(showStr)
                 );
+            _dtrEntry.OnClick = RSCommands.IncrementState;
         }
         else if (_dtrEntry != null && _dtrEntry.Shown)
         {

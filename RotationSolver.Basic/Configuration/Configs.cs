@@ -39,7 +39,7 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Show RS logo animation",
         Filter = UiWindows)]
-    private static readonly bool _drawIconAnimation = False;
+    private static readonly bool _drawIconAnimation = false;
 
     [ConditionBool, UI("Auto turn off when player is moving between areas.",
         Filter =BasicAutoSwitch)]

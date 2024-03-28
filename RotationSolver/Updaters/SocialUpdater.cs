@@ -139,73 +139,10 @@ internal class SocialUpdater
             _canSaying = false;
             Service.Config.DutyStart.AddMacro();
             await Task.Delay(new Random().Next(1000, 1500));
-
-            SayHelloToUsers();
         }
     }
 
     private static readonly ChatEntityComparer _comparer = new();
-    private static async void SayHelloToUsers()
-    {
-        if (!Service.Config.SayHelloToAll)
-        {
-            return;
-        }
-
-        var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
-#if DEBUG
-#else
-            .Where(c => c.ObjectId != Player.Object.ObjectId)
-#endif
-            .Select(player => (player, player.EncryptString()))
-            .Where(pair => !saidAuthors.Contains(pair.Item2)
-                && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(pair.Item2));
-
-        IEnumerable<ChatEntity> entities = players
-            .Select(c =>
-            {
-                if (!DataCenter.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
-                return (c.player, nameDesc);
-            })
-            .Where(p => !string.IsNullOrEmpty(p.nameDesc))
-            .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc));
-
-        entities = entities.Union(players
-            .Where(p => DataCenter.ContributorsHash.Contains(p.Item2))
-            .Select(p => new ContributorChatEntity(p.player)), _comparer);
-
-        if (Service.Config.SayHelloToUsers)
-        {
-            entities = entities.Union(players
-                .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
-                .Select(p => new UserChatEntity(p.player)), _comparer);
-        }
-
-        foreach (var entity in entities)
-        {
-            while (!entity.CanTarget && !DataCenter.InCombat)
-            {
-                await Task.Delay(100);
-            }
-
-#if DEBUG
-#else
-            Svc.Targets.Target = entity.player;
-            ECommons.Automation.Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
-#endif
-            Svc.Chat.Print(new Dalamud.Game.Text.XivChatEntry()
-            {
-                Message = entity.GetMessage(),
-                Type = Dalamud.Game.Text.XivChatType.Notice,
-            });
-            UIModule.PlaySound(20, 0, 0, 0);
-            entity.Dispose();
-
-            await Task.Delay(new Random().Next(800, 1200));
-            Svc.Targets.Target = null;
-            await Task.Delay(new Random().Next(800, 1200));
-        }
-    }
 
     internal abstract class ChatEntity(PlayerCharacter character) : IDisposable
     {
@@ -247,10 +184,6 @@ internal class SocialUpdater
             OtherConfiguration.RotationSolverRecord.SayingHelloCount++;
             var hash = player.EncryptString();
             saidAuthors.Add(hash);
-            if (Service.Config.JustSayHelloOnce)
-            {
-                OtherConfiguration.RotationSolverRecord.SaidUsers.Add(hash);
-            }
         }
     }
 

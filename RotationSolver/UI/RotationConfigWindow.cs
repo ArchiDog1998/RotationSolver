@@ -308,26 +308,6 @@ public partial class RotationConfigWindow : Window
                     }
                 }
             }
-
-            if (wholeWidth <= 60 * Scale
-                ? IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_s_logo_nolabel.png", out var texture)
-                : IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_bg_tag_dark.png", out texture))
-            {
-                var width = Math.Min(150 * Scale, Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, texture.Width)));
-                var size = new Vector2(width, width * texture.Height / texture.Width);
-                size *= MathF.Max(Scale * MIN_COLUMN_WIDTH / size.Y, 1);
-                var result = false;
-                ImGuiHelper.DrawItemMiddle(() =>
-                {
-                    ImGui.SetCursorPosY(ImGui.GetWindowSize().Y + ImGui.GetScrollY() - size.Y);
-                    result = ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, size, "Donate Plugin");
-                }, wholeWidth, size.X);
-
-                if (result)
-                {
-                    Util.OpenLink("https://ko-fi.com/B0B0IN5DX");
-                }
-            }
         }
     }
 
@@ -542,12 +522,13 @@ public partial class RotationConfigWindow : Window
                     {
                         if( DataCenter.IsPvP)
                         {
-                            Service.Config.PvPRotationChoice = r.GetType().FullName;
+                            Service.Config.PvPRotationChoice = r.FullName;
                         }
                         else
                         {
-                            Service.Config.RotationChoice = r.GetType().FullName;
+                            Service.Config.RotationChoice = r.FullName;
                         }
+                        Service.Config.Save();
                     }
                     ImguiTooltips.HoveredTooltip(rAttr.Description);
                     ImGui.PopStyleColor();
@@ -698,19 +679,6 @@ public partial class RotationConfigWindow : Window
                 }
             }
         }
-
-        var sayHelloCount = OtherConfiguration.RotationSolverRecord.SayingHelloCount;
-        if (sayHelloCount > 0)
-        {
-            using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.8f, 0.95f, 1));
-            var countStr = string.Format(UiString.ConfigWindow_About_SayHelloCount.Local(), sayHelloCount);
-
-            ImGuiHelper.DrawItemMiddle(() =>
-            {
-                ImGui.TextWrapped(countStr);
-            }, width, ImGui.CalcTextSize(countStr).X);
-        }
-
         _aboutHeaders.Draw();
     }
 
@@ -1724,7 +1692,9 @@ public partial class RotationConfigWindow : Window
                     if (IconSet.GetTexture(IconSet.GetJobIcon(jobs.Key, IconType.Framed), out var texture, 62574))
                         ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
 
-                    ImguiTooltips.HoveredTooltip(string.Join('\n', jobs.Select(t => t.GetCustomAttribute<UIAttribute>()?.Name ?? t.Name)));
+                    ImguiTooltips.HoveredTooltip(string.Join('\n', jobs.Select(t => t.GetCustomAttribute<UIAttribute>()?.Name ?? t.Name)) +
+                                                 Environment.NewLine +
+                                                 string.Join('\n', jobs.Select(t => t.GetCustomAttribute<RotationAttribute>()?.Type ?? CombatType.None)));
                 }
 
                 ImGui.TableNextColumn();
@@ -2562,6 +2532,7 @@ public partial class RotationConfigWindow : Window
         ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
         ImGui.Text("Action Remain: " + DataCenter.AnimationLocktime.ToString());
         ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
+        ImGui.Text("Animation Lock Delay: " + ActionManagerHelper.GetCurrentAnimationLock().ToString());
     }
 
     private static void DrawLastAction()

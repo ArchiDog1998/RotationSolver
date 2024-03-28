@@ -553,11 +553,11 @@ internal static class RotationUpdater
 
     private static Type? GetChosenType(IEnumerable<Type> types, string name)
     {
-        var rotation = types.FirstOrDefault(r => r.GetType().FullName == name);
+        var rotation = types.FirstOrDefault(r => r.FullName == name);
 
-        rotation ??= types.FirstOrDefault(r => r.GetType().Assembly.FullName!.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
+        rotation ??= types.FirstOrDefault(r => r.Assembly.FullName!.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
 
-        rotation ??= types.FirstOrDefault(r => r.GetType().Assembly.FullName!.Contains("DefaultRotations", StringComparison.OrdinalIgnoreCase));
+        rotation ??= types.FirstOrDefault(r => r.Assembly.FullName!.Contains("DefaultRotations", StringComparison.OrdinalIgnoreCase));
 
         rotation ??= types.FirstOrDefault();
 

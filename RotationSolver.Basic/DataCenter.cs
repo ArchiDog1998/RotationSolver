@@ -15,6 +15,8 @@ namespace RotationSolver.Basic;
 internal static class DataCenter
 {
     private static uint _hostileTargetId = GameObject.InvalidGameObjectId;
+
+    public static bool IsActivated() => State || IsManual || Service.Config.TeachingMode;
     internal static BattleChara? HostileTarget
     {
         get
