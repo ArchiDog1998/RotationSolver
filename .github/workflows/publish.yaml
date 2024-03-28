@@ -45,7 +45,7 @@ jobs:
         run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }}
 
       - name: Publish Plugin
-        uses: softprops/action-gh-release@v4
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: RotationSolverReborn ${{ env.tag }}
