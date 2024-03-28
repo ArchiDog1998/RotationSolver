@@ -414,6 +414,11 @@ internal partial class Configs : IPluginConfiguration
         Filter = BasicTimer, Section = 2)]
     private static readonly bool _noPingCheck = false;
 
+    [UI("The max ping that RS can get to before skipping to the next action.",
+        Filter = BasicTimer)]
+    [Range(0.01f, 0.5f, ConfigUnitType.Seconds, 0.002f)]
+    public float MaxPing { get; set; } = 0.06f;
+
     [UI("Use additional conditions", Filter = BasicParams)]
     public bool UseAdditionalConditions { get; set; } = false;
 
