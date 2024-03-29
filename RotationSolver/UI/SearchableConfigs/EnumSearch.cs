@@ -14,29 +14,26 @@ internal class EnumSearch(PropertyInfo property) : Searchable(property)
 
     protected override void DrawMain()
     {
-        var value = Value;
+        var currentValue = Value;
 
-        var names = new List<string>();
-        foreach (Enum v in Enum.GetValues(_property.PropertyType))
+        var enumValueToNameMap = new Dictionary<int, string>();
+        foreach (Enum enumValue in Enum.GetValues(_property.PropertyType))
         {
-            names.Add(v.Local());
+            enumValueToNameMap[Convert.ToInt32(enumValue)] = enumValue.Local();
         }
-        var strs = names.ToArray();
 
-        if (strs.Length > 0)
+        var displayNames = enumValueToNameMap.Values.ToArray();
+
+        if (displayNames.Length > 0)
         {
-            ImGui.SetNextItemWidth(Math.Max(ImGui.CalcTextSize(strs[value % strs.Length]).X + 30, DRAG_WIDTH) * Scale);
-            if (ImGui.Combo($"##Config_{ID}{GetHashCode()}", ref value, strs, strs.Length))
+            ImGui.SetNextItemWidth(Math.Max(displayNames.Max(name => ImGui.CalcTextSize(name).X) + 30, DRAG_WIDTH) * Scale);
+
+            int currentIndex = enumValueToNameMap.Keys.ToList().IndexOf(currentValue);
+            if (currentIndex == -1) currentIndex = 0; // Default to first item if not found
+
+            if (ImGui.Combo($"##Config_{ID}{GetHashCode()}", ref currentIndex, displayNames, displayNames.Length))
             {
-                int index = 0;
-                foreach (var v in Enum.GetValues(_property.PropertyType))
-                {
-                    if (index++ == value)
-                    {
-                        Value = Convert.ToInt32(v);
-                        break;
-                    }
-                }
+                Value = enumValueToNameMap.Keys.ElementAt(currentIndex);
             }
         }
 
