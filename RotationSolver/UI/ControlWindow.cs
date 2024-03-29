@@ -75,27 +75,52 @@ internal class ControlWindow : CtrlWindow
 
         var color = *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
 
-        var isAoe = Service.Config.UseAoeAction
-            && (!DataCenter.IsManual
-            || Service.Config.UseAoeWhenManual);
+        var isAoe = Service.Config.UseAoeAction && (!DataCenter.IsManual || Service.Config.UseAoeWhenManual);
 
-        if (!isAoe) ImGui.PushStyleColor(ImGuiCol.Text, color);
+        // Track whether the style color was pushed
+        bool pushedStyleColor = false;
+
+        if (!isAoe)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Text, color);
+            pushedStyleColor = true; // Indicate that a style color has been pushed
+        }
+
         if (ImGuiHelper.SelectableButton("AOE"))
         {
             Service.Config.UseAoeAction.Value = !isAoe;
             Service.Config.UseAoeWhenManual.Value = !isAoe;
         }
-        if (!isAoe) ImGui.PopStyleColor();
+
+        // Ensure PopStyleColor is called only if PushStyleColor was called
+        if (pushedStyleColor)
+        {
+            ImGui.PopStyleColor();
+        }
+
 
         ImGui.SameLine();
 
         var isBurst = Service.Config.AutoBurst;
-        if (!isBurst) ImGui.PushStyleColor(ImGuiCol.Text, color);
+        // Track whether the style color was pushed
+        pushedStyleColor = false;
+
+        if (!isBurst)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Text, color);
+            pushedStyleColor = true; // Indicate that a style color has been pushed
+        }
+
         if (ImGuiHelper.SelectableButton("Burst"))
         {
             Service.Config.AutoBurst.Value = !isBurst;
         }
-        if (!isBurst) ImGui.PopStyleColor();
+
+        // Ensure PopStyleColor is called only if PushStyleColor was called
+        if (pushedStyleColor)
+        {
+            ImGui.PopStyleColor();
+        }
         ImGui.SameLine();
         columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
         ImGui.NewLine();
