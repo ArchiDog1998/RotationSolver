@@ -120,8 +120,8 @@ public partial class RotationConfigWindow
         var actionAhead = Service.Config.ActionAhead;
         var minAbilityAhead = Service.Config.MinLastAbilityAdvanced;
         var animationLockTime = DataCenter.MinAnimationLock;
-        var weaponDelay = (Service.Config.WeaponDelay.X + Service.Config.WeaponDelay.Y) / 2;
-        var clickingDelay = (Service.Config.ClickingDelay.X + Service.Config.ClickingDelay.Y) / 2;
+        var weaponDelay = (Service.Config.WeaponDelay.X == 0 ? 0.05f : Service.Config.WeaponDelay.X + Service.Config.WeaponDelay.Y == 0 ? 0.05f : Service.Config.WeaponDelay.Y) / 2;
+        var clickingDelay = (Service.Config.ClickingDelay.X == 0 ? 0.05f : Service.Config.ClickingDelay.X + Service.Config.ClickingDelay.Y == 0 ? 0.05f : Service.Config.ClickingDelay.Y) / 2;
 
         var drawList = ImGui.GetWindowDrawList();
         ImGui.Spacing();
