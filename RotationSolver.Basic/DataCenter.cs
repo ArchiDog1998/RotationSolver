@@ -128,7 +128,7 @@ internal static class DataCenter
             return next?.Act ?? ActionSequencerAction;
         }
     }
-    public static Job Job { get; set; }
+    public static Job Job => Player.Job;
 
     public static JobRole Role => Service.GetSheet<ClassJob>().GetRow((uint)Job)?.GetJobRole() ?? JobRole.None;
 

@@ -166,16 +166,8 @@ public readonly struct ActionCooldownInfo : ICooldown
 
         if (!_action.Info.IsRealGCD)
         {
-            if (onLastAbility)
-            {
-                if (DataCenter.NextAbilityToNextGCD > ActionManagerHelper.GetCurrentAnimationLock() + DataCenter.Ping + DataCenter.MinAnimationLock) return false;
-            }
-            else if (!ignoreClippingCheck)
-            {
-                if (DataCenter.NextAbilityToNextGCD < ActionManagerHelper.GetCurrentAnimationLock()) return false;
-            }
+            if (ActionManagerHelper.GetCurrentAnimationLock() > 0) return false;
         }
-
         return true;
     }
 }
