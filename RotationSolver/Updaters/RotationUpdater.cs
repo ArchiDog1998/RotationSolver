@@ -509,14 +509,12 @@ internal static class RotationUpdater
                 DataCenter.RightNowRotation = instance;
             }
             RightRotationActions = DataCenter.RightNowRotation?.AllActions ?? [];
-            DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
             return;
         }
 
         CustomRotation.MoveTarget = null;
         DataCenter.RightNowRotation = null;
         RightRotationActions = [];
-        DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
 
         static ICustomRotation? GetRotation(Type? t)
         {
