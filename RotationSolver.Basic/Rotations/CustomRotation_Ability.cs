@@ -44,7 +44,7 @@ partial class CustomRotation
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional))
         {
-            if (TrueNorthPvE.CanUse(out act, usedUp: true, onLastAbility: true)) return true;
+            if (TrueNorthPvE.CanUse(out act, onLastAbility: true)) return true;
         }
 
         IBaseAction.TargetOverride = TargetType.Heal;
