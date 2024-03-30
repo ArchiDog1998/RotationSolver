@@ -1,6 +1,6 @@
 ﻿
-name: Rotation Solver
-author: ArchiTed
+name: Rotation Solver Reborn
+author: The Combat Reborn Team
 description: |-
   Analyses combat information every frame and finds the best action.
 
@@ -10,8 +10,8 @@ description: |-
 
   It is designed for `general combat`, not for savage or ultimate. Use it carefully.
 punchline: Analyses combat information every frame and finds the best action.
-repo_url: https://github.com/ArchiDog1998/RotationSolver
-icon_url: https://raw.githubusercontent.com/ArchiDog1998/RotationSolver/main/Images/Logo.png
+repo_url: https://github.com/FFXIV-CombatReborn/RotationSolverReborn
+icon_url: https://raw.githubusercontent.com/FFXIV-CombatReborn/RotationSolverReborn/main/Images/Logo.png
 dalamud_api_level: 9
 tags:
   - combat
@@ -20,6 +20,6 @@ category_tags:
   - jobs
 image_urls:
 download_count: 1024
-download_link_install: https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip
-download_link_update: https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip
-download_link_testing: https://github.com/ArchiDog1998/RotationSolver/releases/latest/download/latest.zip
+download_link_install: https://github.com/FFXIV-CombatReborn/RotationSolverReborn/releases/latest/download/latest.zip
+download_link_update: https://github.com/FFXIV-CombatReborn/RotationSolverReborn/releases/latest/download/latest.zip
+download_link_testing: https://github.com/FFXIV-CombatReborn/RotationSolverReborn/releases/latest/download/latest.zip
