@@ -555,6 +555,9 @@ internal enum UiString
     [Description("Can not find the action, please check the action name.")]
     CommandsInsertActionFailure,
 
+    [Description("Failed to get both value and config from string. Please make sure you provide both a config option and value")]
+    CommandsMissingArgument,
+
     [Description("Start ")]
     SpecialCommandType_Start,
 
