@@ -417,7 +417,7 @@ internal partial class Configs : IPluginConfiguration
     [UI("The max ping that RS can get to before skipping to the next action.",
         Filter = BasicTimer)]
     [Range(0.01f, 0.5f, ConfigUnitType.Seconds, 0.002f)]
-    public float MaxPing { get; set; } = 0.06f;
+    public float MaxPing { get; set; } = 0.5f;
 
     [UI("Use additional conditions", Filter = BasicParams)]
     public bool UseAdditionalConditions { get; set; } = false;
@@ -452,7 +452,7 @@ internal partial class Configs : IPluginConfiguration
     [UI("The time ahead of the last oGCD before the next GCD being avaliable to start trying using it (may affect skill weaving)",
         Filter = BasicTimer)]
     [Range(0, 0.4f, ConfigUnitType.Seconds, 0.002f)]
-    public float MinLastAbilityAdvanced { get; set; } = 0.1f;
+    public float MinLastAbilityAdvanced { get; set; } = 0.06f;
 
     [UI("When their minimum HP is lower than this.", Parent = nameof(HealWhenNothingTodo))]
     [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
@@ -488,7 +488,7 @@ internal partial class Configs : IPluginConfiguration
     [UI("The time before an oGCD is avaliable to start trying using it",
         Filter = BasicTimer)]
     [Range(0, 0.5f, ConfigUnitType.Seconds, 0.002f)]
-    public float ActionAheadForLast0GCD { get; set; } = 0.06f;
+    public float ActionAheadForLast0GCD { get; set; } = 0.01f;
 
     [UI("The range of random delay for finding a target.", Filter =TargetConfig)]
     [Range(0, 3, ConfigUnitType.Seconds)]
@@ -612,7 +612,7 @@ internal partial class Configs : IPluginConfiguration
     [UI("The minimum time between updating RS information.",
         Filter = BasicTimer)]
     [Range(0, 1, ConfigUnitType.Seconds, 0.002f)]
-    public float MinUpdatingTime { get; set; } = 0.02f;
+    public float MinUpdatingTime { get; set; } = 0.00f;
 
     [UI("The HP for using Guard.", 
         Filter = AutoActionCondition, Section = 3,
