@@ -40,10 +40,14 @@ public static partial class RSCommands
     private static void DoSettingCommand(string str)
     {
         var strs = str.Split(' ');
+        if (strs.Length < 2)
+        {
+            Svc.Chat.PrintError(UiString.CommandsMissingArgument.Local());
+            return;
+        }
         var value = strs.LastOrDefault();
 
-        foreach (var property in typeof(Configs).GetRuntimeProperties()
-            .Where(p => (p.GetMethod?.IsPublic ?? false) && (p.SetMethod?.IsPublic ?? false)))
+        foreach (var property in typeof(Configs).GetRuntimeProperties())
         {
             if (!str.StartsWith(property.Name, StringComparison.OrdinalIgnoreCase)) continue;
 
