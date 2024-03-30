@@ -32,7 +32,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static CooldownWindow? _cooldownWindow;
 
     static readonly List<IDisposable> _dis = [];
-    public static string Name => "Rotation Solver";
+    public static string Name => "Rotation Solver Reborn";
 
     public static DalamudLinkPayload OpenLinkPayload { get; private set; } = null!;
     public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }

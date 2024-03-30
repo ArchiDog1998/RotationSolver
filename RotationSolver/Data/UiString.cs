@@ -36,7 +36,7 @@ internal enum UiString
     [Description("Well, you must be a lazy player!")]
     ConfigWindow_About_Clicking100k,
 
-    [Description("You're tiring RS out, give it a break!")]
+    [Description("You're tiring RSR out, give it a break!")]
     ConfigWindow_About_Clicking500k,
 
     [Description("This means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.\n\nThen, it will highlight the best action on the hot bar, or help you to click on it.")]
@@ -45,7 +45,7 @@ internal enum UiString
     [Description("It is designed for GENERAL COMBAT, not for savage or ultimate. Use it carefully.")]
     ConfigWindow_About_Warning,
 
-    [Description("Rotation Solver helped you by clicking actions {0:N0} times.")]
+    [Description("RSR helped you by clicking actions {0:N0} times.")]
     ConfigWindow_About_ClickingCount,
 
     [Description("Macro")]
@@ -66,10 +66,10 @@ internal enum UiString
     [Description("Literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:")]
     ConfigWindow_About_Compatibility_Description,
 
-    [Description("Can't properly execute the behavior that RS wants to do.")]
+    [Description("Can't properly execute the behavior that RSR wants to do.")]
     ConfigWindow_About_Compatibility_Mistake,
 
-    [Description("Misleading RS to make the right decision.")]
+    [Description("Conflicts with RSR decision making")]
     ConfigWindow_About_Compatibility_Mislead,
 
     [Description("Causes the game to crash.")]
@@ -105,7 +105,7 @@ internal enum UiString
     [Description("Status")]
     ConfigWindow_Rotation_Status,
 
-    [Description("To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.")]
+    [Description("Used to customize when RSR uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.")]
     ConfigWindow_Actions_Description,
 
     [Description("Show on CD window")]
@@ -114,19 +114,19 @@ internal enum UiString
     [Description("Can be used by mistake")]
     ConfigWindow_Actions_IsInMistake,
 
-    [Description("TTK that this action needs the target be.")]
+    [Description("TTK that this action needs the target be before it is used.")]
     ConfigWindow_Actions_TTK,
 
-    [Description("Time to untargetable that this action needs the timeline be.")]
+    [Description("TTK that this action needs the target be on the timeline before it is used")]
     ConfigWindow_Actions_TTU,
 
     [Description("How many targets are needed to use this action.")]
     ConfigWindow_Actions_AoeCount,
 
-    [Description("Should this action check the stauts.")]
+    [Description("Should this action check the status.")]
     ConfigWindow_Actions_CheckStatus,
 
-    [Description("How many gcds are needed to add the status.")]
+    [Description("How many gcds before the dot is reapplied.")]
     ConfigWindow_Actions_GcdCount,
 
     [Description("The HP ratio to auto heal")]
@@ -279,7 +279,7 @@ internal enum UiString
     [Description("Actions")]
     ConfigWindow_Timeline_Actions,
 
-    [Description("OOOps! RS clicked the wrong action ({0})!")]
+    [Description("OOOps! RSR clicked the wrong action ({0})!")]
     ClickingMistakeMessage,
 
     [Description("Ability")]
@@ -294,7 +294,7 @@ internal enum UiString
     [Description("Normal Targets")]
     NormalTargets,
 
-    [Description("Targets with HOT")]
+    [Description("Targets with Heal-over-Time")]
     HotTargets,
 
     [Description("HP for AoE healing oGCDs")]
@@ -330,13 +330,13 @@ internal enum UiString
     [Description("Others")]
     ConfigWindow_Basic_Others,
 
-    [Description("The ping time.\nIn RS, it means the time from sending the action request to receiving the using success message from the server.")]
+    [Description("The ping time.\nIn RSR, it means the time from sending the action request to receiving the using success message from the server.")]
     ConfigWindow_Basic_Ping,
 
     [Description("The Animation lock time from individual actions. Here is 0.6s for example.")]
     ConfigWindow_Basic_AnimationLockTime,
 
-    [Description("The clicking duration, RS will try to click at this moment.")]
+    [Description("The clicking duration, RSR will try to click at this moment.")]
     ConfigWindow_Basic_ClickingDuration,
 
     [Description("The ideal click time.")]
@@ -366,13 +366,13 @@ internal enum UiString
     [Description("Windows")]
     ConfigWindow_UI_Windows,
 
-    [Description("Change the way that RS atomatically uses actions.")]
+    [Description("Change the way that RSR automatically uses actions.")]
     ConfigWindow_Auto_Description,
 
     [Description("Action Usage")]
     ConfigWindow_Auto_ActionUsage,
 
-    [Description("Which actions Rotation Solver can use.")]
+    [Description("Which actions RSR can use.")]
     ConfigWindow_Auto_ActionUsage_Description,
 
     [Description("Action Condition")]
@@ -414,7 +414,7 @@ internal enum UiString
     [Description("Limit Break Forced Condition")]
     ConfigWindow_Auto_LimitBreakConditionSet,
 
-    [Description("This will change the way that Rotation Solver uses actions.")]
+    [Description("This will change the way that RSR uses actions.")]
     ConfigWindow_Auto_ActionCondition_Description,
 
     [Description("Configuration")]
@@ -423,7 +423,7 @@ internal enum UiString
     [Description("Hostile")]
     ConfigWindow_List_Hostile,
 
-    [Description("You can The logic of hostile target selection to allow flexibility in switching the logic of selecting hostile in battle.")]
+    [Description("Enemy targetting logic. Adding more options cycles them when using /rotation Auto.")]
     ConfigWindow_Param_HostileDesc,
 
     [Description("Move Up")]
@@ -435,7 +435,7 @@ internal enum UiString
     [Description("Hostile target selection condition")]
     ConfigWindow_Param_HostileCondition,
 
-    [Description("Rotation Solver focuses on the rotation itself. These are side features. If there are some other plugins can do that, these features will be deleted.")]
+    [Description("RSR focuses on the rotation itself. These are side features. If there are some other plugins can do that, these features will be deleted.")]
     ConfigWindow_Extra_Description,
 
     [Description("Event")]
@@ -507,13 +507,13 @@ internal enum UiString
     [Description("Duty Name")]
     ConfigWindow_Condition_DutyName,
 
-    [Description("Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!")]
+    [Description("Please separately keybind damage reduction / shield cooldowns in case RSR fails at a crucial moment in {0}!")]
     HighEndWarning,
 
-    [Description("Avarice addon was not detected, please install it if you want to get the positional indicators for Rotation Solver!")]
+    [Description("Avarice addon was not detected, please install it if you want to get the positional indicators for RSRs overlay!")]
     AvariceWarning,
 
-    [Description("TextToTalk addon was not detected, please install it to make Rotation Solver give audio notifications!")]
+    [Description("TextToTalk addon was not detected, please install it to make RSR give audio notifications!")]
     TextToTalkWarning,
 
     [Description("Use Forced Enable Condition")]
@@ -624,7 +624,7 @@ internal enum UiString
     [Description("Open config window.")]
     Commands_Rotation,
 
-    [Description("Rotation Solver Settings v")]
+    [Description("Rotation Solver Reborn Settings v")]
     ConfigWindowHeader,
 
     [Description("This config is job specific")]
