@@ -41,11 +41,11 @@ internal partial class Configs : IPluginConfiguration
         Filter = UiWindows)]
     private static readonly bool _drawIconAnimation = false;
 
-    [ConditionBool, UI("Auto turn off when player is moving between areas.",
+    [ConditionBool, UI("Disable automatically during area transitions.",
         Filter =BasicAutoSwitch)]
     private static readonly bool _autoOffBetweenArea = true;
 
-    [ConditionBool, UI("Auto turn off during cutscenes.",
+    [ConditionBool, UI("Disable automatically during cutscenes.",
         Filter =BasicAutoSwitch)]
     private static readonly bool _autoOffCutScene = true;
 
@@ -74,11 +74,11 @@ internal partial class Configs : IPluginConfiguration
         Filter =UiInformation)]
     private static readonly bool _sayOutStateChanged = false;
 
-    [ConditionBool, UI("Display plugin status on server info",
+    [ConditionBool, UI("Show plugin status in server info bar.",
         Filter =UiInformation)]
     private static readonly bool _showInfoOnDtr = true;
 
-    [ConditionBool, UI("Heal members outside of combat.",
+    [ConditionBool, UI("Heal party members when not in combat.",
         Filter = AutoActionCondition, Section =1)]
     private static readonly bool _healOutOfCombat = false;
 
@@ -116,7 +116,7 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raiseBrinkOfDeath = true;
 
-    [UI("The random delay before raising a dead player.",
+    [UI("Random delay range for resurrecting players.",
         Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     [Range(0, 10, ConfigUnitType.Seconds, 0.002f)]
@@ -133,17 +133,17 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Use Tinctures", Filter = AutoActionUsage)]
     private static readonly bool _useTinctures = false;
 
-    [ConditionBool, UI("Use HP Potions", Filter = AutoActionUsage)]
+    [ConditionBool, UI("Automatically use HP Potions", Filter = AutoActionUsage)]
     private static readonly bool _useHpPotions = false;
 
-    [ConditionBool, UI("Use MP Potions", Filter = AutoActionUsage)]
+    [ConditionBool, UI("Automatically use MP Potions", Filter = AutoActionUsage)]
     private static readonly bool _useMpPotions = false;
 
     [ConditionBool, UI("Draw melee offset",
         Filter =UiOverlay)]
     private static readonly bool _drawMeleeOffset = false;
 
-    [ConditionBool, UI("Show the target of the move action",
+    [ConditionBool, UI("Display move action's target",
         Filter =UiOverlay)]
     private static readonly bool _showMoveTarget = false;
 
@@ -190,7 +190,7 @@ internal partial class Configs : IPluginConfiguration
         Filter =BasicAutoSwitch, Section = 1)]
     private static readonly bool _startOnCountdown = true;
 
-    [ConditionBool, UI("Automatically turn on manual mode and target enemy when being attacked",
+    [ConditionBool, UI("Switch to manual and target attackers automatically.",
         Filter =BasicAutoSwitch, Section =1)]
     private static readonly bool _startOnAttackedBySomeone = false;
 
@@ -217,7 +217,7 @@ internal partial class Configs : IPluginConfiguration
         Filter = BasicParams)]
     private static readonly bool _useWorkTask = false;
 
-    [ConditionBool, UI("Stop casting when the target is dead.", Filter = Extra)]
+    [ConditionBool, UI("Stop casting if the target dies.", Filter = Extra)]
     private static readonly bool _useStopCasting = false;
 
     [ConditionBool, UI("Cleanse all dispellable debuffs.",
@@ -402,11 +402,11 @@ internal partial class Configs : IPluginConfiguration
         PvPFilter = JobFilterType.NoHealer, PvEFilter = JobFilterType.NoHealer)]
     private static readonly bool _onlyHealSelfWhenNoHealer = false;
 
-    [ConditionBool, UI("Display toggle action feedback on chat",
+    [ConditionBool, UI("Show action toggle feedback in chat.",
         Filter =UiInformation)]
     private static readonly bool _showToggledActionInChat = false;
 
-    [ConditionBool, UI("Show the timeline drawing stuff in the game a-la splatoon.",
+    [ConditionBool, UI("Display timeline drawings in-game (like Splatoon).",
     Filter = TimelineFilter)]
     private static readonly bool _showTimelineDrawing = false;
 
@@ -485,7 +485,7 @@ internal partial class Configs : IPluginConfiguration
     [Range(1, 20, ConfigUnitType.Seconds, 1f)]
     public float SpecialDuration { get; set; } = 3;
 
-    [UI("The ammount of time before an oGCD is available to actually use for RSR to decide which to use.",
+    [UI("The amount of time before an oGCD is available to actually use for RSR to decide which to use.",
         Filter = BasicTimer)]
     [Range(0, 0.5f, ConfigUnitType.Seconds, 0.002f)]
     public float ActionAheadForLast0GCD { get; set; } = 0.01f;
@@ -710,8 +710,6 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Tank)]
     private readonly float _healthForAutoDefense = 1;
 
-    [LinkDescription($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/HowAndWhenToClick.svg",
-        "Here is a guide showing the different options.")]
     [JobConfig, Range(0, 0.5f, ConfigUnitType.Seconds)]
     [UI("Action Ahead (How far ahead of a oGCD/GCD use does RSR decide which oGCD/GCD to use)", Filter = BasicTimer)]
     private readonly float _actionAhead = 0.08f;
