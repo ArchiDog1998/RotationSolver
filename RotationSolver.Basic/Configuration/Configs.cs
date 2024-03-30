@@ -490,7 +490,7 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 0.5f, ConfigUnitType.Seconds, 0.002f)]
     public float ActionAheadForLast0GCD { get; set; } = 0.01f;
 
-    [UI("Range of time before locking onto aggro'd or new target to attack", Decription = "(Do not set too low, can rip newly aggro'd dungeon mobs off tanks).", Filter =TargetConfig)]
+    [UI("Range of time before locking onto aggro'd or new target to attack", Description = "(Do not set too low, can rip newly aggro'd dungeon mobs off tanks).", Filter =TargetConfig)]
     [Range(0, 3, ConfigUnitType.Seconds)]
     public Vector2 TargetDelay { get; set; } = new(1, 2);
 
