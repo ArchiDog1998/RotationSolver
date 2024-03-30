@@ -68,7 +68,7 @@ partial class DarkKnightRotation
 
     static partial void ModifyBloodspillerPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Blood >= 50 || !Player.WillStatusEnd(0, true, StatusID.Delirium);
+        setting.ActionCheck = () => Blood >= 50 || !Player.WillStatusEnd(0, true, StatusID.Delirium_1972);
     }
 
     static partial void ModifyUnmendPvE(ref ActionSetting setting)
@@ -83,7 +83,7 @@ partial class DarkKnightRotation
 
     static partial void ModifyQuietusPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Blood >= 50 || !Player.WillStatusEnd(0, true, StatusID.Delirium);
+        setting.ActionCheck = () => Blood >= 50 || !Player.WillStatusEnd(0, true, StatusID.Delirium_1972);
     }
 
     static partial void ModifyStalwartSoulPvE(ref ActionSetting setting)
