@@ -15,7 +15,17 @@ internal static class ActionUpdater
 
     static RandomDelay _GCDDelay = new(() => Service.Config.WeaponDelay);
 
-    internal static IAction? NextAction { get; set; }
+    private static IAction? _nextAction;
+    internal static IAction? NextAction 
+    { 
+        get => _nextAction;
+        set
+        {
+            if (_nextAction == value) return;
+            _nextAction = value;
+            Service.NextActionID = value?.AdjustedID ?? 0;
+        }
+    }
 
     private static StaticVfx? circle, sector, rectangle;
     private static IBaseAction? _nextGCDAction;

@@ -97,10 +97,10 @@ internal static class LocalizationManager
     private static void ExportLocalization()
     {
         var dirInfo = Svc.PluginInterface.AssemblyLocation.Directory;
-        dirInfo = dirInfo?.Parent!.Parent!.Parent!.Parent!;
-
+        dirInfo = dirInfo?.Parent!.Parent!.Parent!;
 
         var directory = dirInfo.FullName + @"\Localization";
+
         if (!Directory.Exists(directory)) return;
 
         if (Svc.PluginInterface.UiLanguage != "en") return;

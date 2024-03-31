@@ -1,6 +1,4 @@
-﻿using static Dalamud.Interface.Utility.Raii.ImRaii;
-
-namespace RotationSolver.Basic.Rotations.Basic;
+﻿namespace RotationSolver.Basic.Rotations.Basic;
 
 partial class DarkKnightRotation
 {

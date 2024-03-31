@@ -86,7 +86,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _poslockCasting = true;
 
     [UI("", Action = ActionID.PassageOfArmsPvE, Parent = nameof(PoslockCasting))]
-    public bool  PosPassageOfArms { get; set; } = false;
+    public bool PosPassageOfArms { get; set; } = false;
 
     [UI("", Action = ActionID.TenChiJinPvE, Parent = nameof(PoslockCasting))]
     public bool PosTenChiJin { get; set; } = true;
@@ -96,6 +96,21 @@ internal partial class Configs : IPluginConfiguration
 
     [UI("", Action = ActionID.ImprovisationPvE, Parent = nameof(PoslockCasting))]
     public bool  PosImprovisation { get; set; } = false;
+
+    [ConditionBool, UI("Replace the action icon.", Filter = Extra)]
+    private static readonly bool _replaceIcon = false;
+
+    [UI("", Action = ActionID.LegGrazePvE, Parent = nameof(ReplaceIcon))]
+    public bool ReplaceLegGraze { get; set; } = true;
+
+    [UI("", Action = ActionID.FootGrazePvE, Parent = nameof(ReplaceIcon))]
+    public bool ReplaceFootGraze { get; set; } = true;
+
+    [UI("", Action = ActionID.ReposePvE, Parent = nameof(ReplaceIcon))]
+    public bool ReplaceRepose { get; set; } = true;
+
+    [UI("", Action = ActionID.SleepPvE, Parent = nameof(ReplaceIcon))]
+    public bool ReplaceSleep { get; set; } = true;
 
     [ConditionBool, UI("Raise player while swiftcast is on cooldown",
         Filter = AutoActionUsage, Section = 2,
