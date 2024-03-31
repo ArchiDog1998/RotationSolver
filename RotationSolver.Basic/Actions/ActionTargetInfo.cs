@@ -251,6 +251,7 @@ public struct ActionTargetInfo(IBaseAction action)
                     return new(t, effects, t.Position);
                 }
             }
+            return null;
         }
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
