@@ -436,16 +436,15 @@ internal partial class Configs : IPluginConfiguration
     [Range(0.005f, 0.05f, ConfigUnitType.Yalms, 0.001f)]
     public float SampleLength { get; set; } = 1;
 
-    [ConditionBool, UI("Use tasks for making the overlay window faster. (EXPERIMENTAL, ", Parent = nameof(UseOverlayWindow))]
+    [ConditionBool, UI("Use tasks for making the overlay window faster. (EXPERIMENTAL,WILL CAUSE CRASHES) ", Parent = nameof(UseOverlayWindow))]
     private static readonly bool _useTasksForOverlay = false;
 
     [UI("The angle of your vision cone", Parent = nameof(OnlyAttackInVisionCone))]
     [Range(0, 90, ConfigUnitType.Degree, 0.02f)]
     public float AngleOfVisionCone { get; set; } = 45;
 
-    [UI("HP for standard deviation for using AoE heal.", Description = "Basically the health difference between a single party member and the whole party, used for deciding between healing a single party member or AOE healing. Leave this alone if you don't undertand its use.",
-        Parent = nameof(Automatic Heal),
-        Filter = AutoActionCondition)]
+    [UI("HP for standard deviation for using AoE heal.", Description = "Basically the health difference between a single party member and the whole party, used for deciding between healing a single party member or AOE healing. Leave this alone if you don't undertand its use.", 
+        Filter = AutoActionCondition, Section = 1)]
     [Range(0, 0.5f, ConfigUnitType.Percent, 0.02f)]
     public float HealthDifference { get; set; } = 0.25f;
 
