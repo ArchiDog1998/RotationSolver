@@ -234,7 +234,10 @@ public static partial class RSCommands
             _lastCountdownTime = Service.CountDownTime;
             if (!DataCenter.State)
             {
-                DoStateCommandType(StateCommandType.Auto);
+                if (Service.Config.CountdownStartsManualMode)
+                    DoStateCommandType(StateCommandType.Manual);
+                else
+                    DoStateCommandType(StateCommandType.Auto);
             }
         }
         //Cancel when after combat.
