@@ -21,7 +21,6 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System.Diagnostics;
-using XIVPainter;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
 

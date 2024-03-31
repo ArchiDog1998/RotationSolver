@@ -1,6 +1,5 @@
 ﻿using ECommons.DalamudServices;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
-using XIVPainter.Vfx;
 
 namespace RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 
