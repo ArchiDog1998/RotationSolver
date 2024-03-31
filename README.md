@@ -7,7 +7,9 @@
 ![Github License](https://img.shields.io/github/license/ArchiDog1998/RotationSolver.svg?label=License&style=for-the-badge)
 ![Github Commits](https://img.shields.io/github/commits-since/ArchiDog1998/RotationSolver/latest/main?style=for-the-badge)
 
-Due to my friend's invitation, I'll be back at FFXIV. I won't make any public releases anymore to make this plugin mine. If you want to use it, please build it by yourself. 
+It's time to learn something new, see you in the game version 7.0!
+
+I won't make any public releases anymore to make this plugin mine. If you want to use it, please build it by yourself. 
 
 Try the community version of [Rotation Solver](https://github.com/Jaksuhn/RotationSolver). Buy the dev version for $2 in [ko-fi](https://ko-fi.com/s/7cf5ff0de3).
 

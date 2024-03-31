@@ -49,6 +49,7 @@ partial class SageRotation
     static partial void ModifyEukrasianDiagnosisPvE(ref ActionSetting setting)
     {
         setting.TargetType = TargetType.BeAttacked;
+        setting.TargetStatusProvide = [StatusID.EukrasianDiagnosis];
     }
 
     static partial void ModifyEukrasianDosisPvE(ref ActionSetting setting)

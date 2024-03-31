@@ -37,52 +37,52 @@ internal partial class Configs : IPluginConfiguration
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
-    [ConditionBool, UI("Show RS logo animation",
+    [ConditionBool, UI("Show RS logo animation.",
         Filter = UiWindows)]
     private static readonly bool _drawIconAnimation = true;
 
-    [ConditionBool, UI("Auto turn off when player is moving between areas.",
+    [ConditionBool, UI("Turns auto mode  off when player is switching between different maps.",
         Filter =BasicAutoSwitch)]
     private static readonly bool _autoOffBetweenArea = true;
 
-    [ConditionBool, UI("Auto turn off during cutscenes.",
+    [ConditionBool, UI("Turns auto mode off during cutscenes.",
         Filter =BasicAutoSwitch)]
     private static readonly bool _autoOffCutScene = true;
 
-    [ConditionBool, UI("Auto turn off when dead.",
+    [ConditionBool, UI("Turns auto mode off when you die.",
         Filter =BasicAutoSwitch)]
     private static readonly bool _autoOffWhenDead = true;
 
-    [ConditionBool, UI("Auto turn off when duty completed.",
+    [ConditionBool, UI("Turns auto mode off when the duty in progress is completed.",
         Filter =BasicAutoSwitch)]
     private static readonly bool _autoOffWhenDutyCompleted = true;
 
-    [ConditionBool, UI("Select only Fate targets in Fate",
+    [ConditionBool, UI("Consider only fate targets in the current fate area",
         Filter = TargetConfig, Section = 1)]
     private static readonly bool _changeTargetForFate  = true;
 
-    [ConditionBool, UI("Using movement actions towards the object in the center of the screen",
-        Description = "Using movement actions towards the object in the center of the screen, otherwise toward the facing object.",
+    [ConditionBool, UI("Use movement actions towards the closest object from the center of the screen",
+        Description = "Use movement actions towards the closest object from the center of the screen, otherwise toward your current facing direction.",
         Filter = TargetConfig, Section = 2)]
     private static readonly bool _moveTowardsScreenCenter = true;
 
-    [ConditionBool, UI("Audio notification for when the status changes",
+    [ConditionBool, UI("Audio notification for addon mode changes",
         Filter =UiInformation)]
     private static readonly bool _sayOutStateChanged = true;
 
-    [ConditionBool, UI("Display plugin status on server info",
+    [ConditionBool, UI("Display plugin status in server info bar",
         Filter =UiInformation)]
     private static readonly bool _showInfoOnDtr = true;
 
-    [ConditionBool, UI("Heal members outside of combat.",
+    [ConditionBool, UI("Heals players when not in combat.",
         Filter = AutoActionCondition, Section =1)]
     private static readonly bool _healOutOfCombat = false;
 
-    [ConditionBool, UI("Display plugin status on toast",
+    [ConditionBool, UI("Displays plugin status with toast notifications",
         Filter =UiInformation)]
     private static readonly bool _showInfoOnToast = true;
 
-    [ConditionBool, UI("Lock the movement when casting or when doing some actions.", Filter = Extra)]
+    [ConditionBool, UI("Lock the movement when casting or when doing some other actions.", Filter = Extra)]
     private static readonly bool _poslockCasting = true;
 
     [UI("", Action = ActionID.PassageOfArmsPvE, Parent = nameof(PoslockCasting))]
@@ -107,12 +107,12 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raiseAll = false;
 
-    [ConditionBool, UI("Raise players that even have Brink of Death debuff",
+    [ConditionBool, UI("Raise players that have the Brink of Death debuff",
         Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _raiseBrinkOfDeath = true;
 
-    [UI("The random delay between for raising.",
+    [UI("Random delay for considering a ressurection type action.",
         Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     [Range(0, 10, ConfigUnitType.Seconds, 0.002f)]
@@ -122,79 +122,84 @@ internal partial class Configs : IPluginConfiguration
         Filter = TargetConfig)]
     private static readonly bool _addEnemyListToHostile = true;
 
-    [ConditionBool, UI("Only attack the targets in enemy list.",
+    [ConditionBool, UI("Only attack targets in the enemy list.",
         Parent = nameof(AddEnemyListToHostile))]
     private static readonly bool _onlyAttackInEnemyList = false;
 
-    [ConditionBool, UI("Use Tinctures", Filter = AutoActionUsage)]
+    [ConditionBool, UI("Use Tinctures.", Filter = AutoActionUsage)]
     private static readonly bool _useTinctures = false;
 
-    [ConditionBool, UI("Use HP Potions", Filter = AutoActionUsage)]
+    [ConditionBool, UI("Use HP Potions.", Filter = AutoActionUsage)]
     private static readonly bool _useHpPotions = false;
 
-    [ConditionBool, UI("Use MP Potions", Filter = AutoActionUsage)]
+    [ConditionBool, UI("Use MP Potions.", Filter = AutoActionUsage)]
     private static readonly bool _useMpPotions = false;
 
-    [ConditionBool, UI("Draw the offset of melee on the screen",
+    [ConditionBool, UI("Draw the melee buffer area on the screen.",
+        Description = "Shows the area where no actions will be used between ranged and melee type actions.",
         Filter = UiOverlay)]
     private static readonly bool _drawMeleeOffset = true;
 
-    [ConditionBool, UI("Show the target of the move action",
+    [ConditionBool, UI("Shows the target of the movement action.",
         Filter =UiOverlay)]
     private static readonly bool _showMoveTarget = true;
 
-    [ConditionBool, UI("Show Target",
+    [ConditionBool, UI("Shows target related drawing.",
+        Description = "Shows the next ability under the target and AoE attacks effect area",
         Filter = UiOverlay)]
     private static readonly bool _showTarget = true;
 
-    [ConditionBool, UI("Show the target's time to kill.",
+    [ConditionBool, UI("Show the target's estimated time to kill.",
         Parent = nameof(ShowTarget))]
     private static readonly bool _showTargetTimeToKill = false;
 
-    [ConditionBool, UI("Priority attack targets with attack markers",
+    [ConditionBool, UI("Priority attacks targets with attack markers.",
         Filter = TargetConfig)]
     private static readonly bool _chooseAttackMark = true;
 
-    [ConditionBool, UI("Allowed use of AoE to attack more mobs.",
+    [ConditionBool, UI("Allows use of AoE abilities to attack as many targets as possibly.",
         Parent = nameof(ChooseAttackMark))]
     private static readonly bool _canAttackMarkAOE = true;
 
-    [ConditionBool, UI("Never attack targets with stop markers",
+    [ConditionBool, UI("Never attack targets with stop markers.",
         Filter = TargetConfig)]
     private static readonly bool _filterStopMark = true;
 
-    [ConditionBool, UI ("Show the hostile target icon",
+    [ConditionBool, UI ("Shows the hostile targets icon.",
         Filter = UiOverlay)]
     private static readonly bool _showHostilesIcons = true;
 
-    [ConditionBool, UI ("Teaching mode", Filter =UiOverlay)]
+    [ConditionBool, UI ("Teaching mode.",
+        Description = "Shows the next suggested ability that should be used",
+        Filter =UiOverlay)]
+    
     private static readonly bool _teachingMode = true;
 
-    [ConditionBool, UI("Display UI Overlay", Description = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.",
+    [ConditionBool, UI("Display UI Overlay.", Description = "This overlay is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.",
         Filter = UiOverlay)]
     private static readonly bool _useOverlayWindow = true;
 
-    [ConditionBool, UI("Simulate the effect of pressing abilities",
+    [ConditionBool, UI("Simulates the effect of pressing abilities.",
         Filter =UiInformation)]
     private static readonly bool _keyBoardNoise = true;
 
-    [ConditionBool, UI("Target movement area ability to the farthest possible location", Description = "Move to the furthest position for targeting are movement actions.",
+    [ConditionBool, UI("Targets movement area ability to the farthest possible location.", Description = "Moves to the furthest possible position that can be targeted with movement actions.",
         Filter = TargetConfig, Section = 2)]
     private static readonly bool _moveAreaActionFarthest = true;
 
-    [ConditionBool, UI("Auto mode activation delay on countdown start",
+    [ConditionBool, UI("Auto mode activation delay on countdown start.",
         Filter =BasicAutoSwitch, Section = 1)]
     private static readonly bool _startOnCountdown = true;
 
-    [ConditionBool, UI("Automatically turn on manual mode and target enemy when being attacked",
+    [ConditionBool, UI("Automatically turns on manual mode and targets enemy when being attacked.",
         Filter =BasicAutoSwitch, Section =1)]
     private static readonly bool _startOnAttackedBySomeone = false;
 
-    [ConditionBool, UI("Don't attack new mobs by AoE", Description = "Never use any AoE action when this may attack the mobs that are not hostile targets.",
+    [ConditionBool, UI("Don't attack new mobs by AoE.", Description = "Avoids usage of AoE abilities when new enemies would be aggroed.",
         Parent =nameof(UseAoeAction))]
     private static readonly bool _noNewHostiles = false;
 
-    [ConditionBool, UI("Use healing abilities when playing a non-healer role",
+    [ConditionBool, UI("Use healing abilities when playing a non-healer role.",
         Filter = AutoActionCondition, Section = 1,
         PvEFilter = JobFilterType.NoHealer, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _useHealWhenNotAHealer = true;
@@ -221,27 +226,27 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Dispel, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _dispelAll = false;
 
-    [ConditionBool, UI("Only attack the target in view.",
+    [ConditionBool, UI("Only attacks targets within camera view.",
         Filter = TargetConfig, Section = 1)]
     private static readonly bool _onlyAttackInView = false;
 
-    [ConditionBool, UI("Only attack the targets in vision cone",
-                Filter = TargetConfig, Section = 1)]
+    [ConditionBool, UI("Only attack the targets within the character's vision cone.",
+        Filter = TargetConfig, Section = 1)]
     private static readonly bool _onlyAttackInVisionCone = false;
 
-    [ConditionBool, UI("Use single target healing over time actions only on tanks",
+    [ConditionBool, UI("Use single target healing over time actions only on tanks.",
         Filter = AutoActionCondition, Section = 1,
         PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
     private static readonly bool _onlyHotOnTanks = false;
 
-    [ConditionBool, UI("Debug Mode", Filter = Debug)]
+    [ConditionBool, UI("Debug Mode.", Filter = Debug)]
     private static readonly bool _inDebug = false;
     public bool AutoUpdateLibs { get; set; } = true;
 
-    [ConditionBool, UI("Auto Download Rotations", Filter = Rotations)]
+    [ConditionBool, UI("Auto Download Rotations.", Filter = Rotations)]
     private static readonly bool _downloadRotations = true;
 
-    [ConditionBool, UI("Auto Update Rotations", Parent = nameof(DownloadRotations))]
+    [ConditionBool, UI("Auto Update Rotations.", Parent = nameof(DownloadRotations))]
     private static readonly bool _autoUpdateRotations = true;
 
     [ConditionBool, UI("Make /rotation Manual as a toggle command.",
@@ -252,97 +257,97 @@ internal partial class Configs : IPluginConfiguration
         Filter =BasicParams)]
     private static readonly bool _toggleAuto = false;
 
-    [ConditionBool, UI("Only show these windows if there are enemies in or in duty",
+    [ConditionBool, UI("Only show these windows if there are enemies in or in duty.",
         Filter =UiWindows)]
     private static readonly bool _onlyShowWithHostileOrInDuty = true;
 
-    [ConditionBool, UI("Show Control Window",
+    [ConditionBool, UI("Show Control Window.",
         Filter =UiWindows)]
     private static readonly bool _showControlWindow = false;
 
-    [ConditionBool, UI("Is Control Window Lock",
+    [ConditionBool, UI("Lock Control Window.",
         Filter = UiWindows)]
     private static readonly bool _isControlWindowLock = false;
 
-    [ConditionBool, UI("Show Next Action Window", Filter  = UiWindows)]
+    [ConditionBool, UI("Show Next Action Window.", Filter  = UiWindows)]
     private static readonly bool _showNextActionWindow = true;
 
-    [ConditionBool, UI("No Inputs", Parent = nameof(ShowNextActionWindow))]
+    [ConditionBool, UI("No Inputs.", Parent = nameof(ShowNextActionWindow))]
     private static readonly bool _isInfoWindowNoInputs = false;
 
-    [ConditionBool, UI("No Move", Parent = nameof(ShowNextActionWindow))]
+    [ConditionBool, UI("No Move.", Parent = nameof(ShowNextActionWindow))]
     private static readonly bool _isInfoWindowNoMove = false;
 
-    [ConditionBool, UI("Show Items' Cooldown",
+    [ConditionBool, UI("Show Items Cooldown.",
         Parent = nameof(ShowCooldownWindow))]
     private static readonly bool _showItemsCooldown = false;
 
-    [ConditionBool, UI("Show GCD' Cooldown",
+    [ConditionBool, UI("Show GCD Cooldown.",
         Parent = nameof(ShowCooldownWindow))]
     private static readonly bool _showGCDCooldown = false;
 
-    [ConditionBool, UI("Show Original Cooldown",
+    [ConditionBool, UI("Show Original Cooldown.",
         Parent = nameof(ShowCooldownWindow))]
     private static readonly bool _useOriginalCooldown = true;
 
-    [ConditionBool, UI("Show tooltips",
+    [ConditionBool, UI("Show tooltips.",
         Filter = UiInformation)]
     private static readonly bool _showTooltips = true;
 
-    [ConditionBool, UI("Auto load rotations",
+    [ConditionBool, UI("Auto load custom rotation files.",
         Filter = Rotations)]
     private static readonly bool _autoLoadCustomRotations = false;
 
-    [ConditionBool, UI("Target Fate priority",
+    [ConditionBool, UI("Prioritize fate targets.",
         Filter = TargetConfig, Section = 1)]
     private static readonly bool _targetFatePriority = true;
 
-    [ConditionBool, UI("Target Hunt/Relic/Leve priority.",
+    [ConditionBool, UI("Prioritize Hunt/Relic/Leve targets.",
         Filter = TargetConfig, Section = 1)]
     private static readonly bool _targetHuntingRelicLevePriority = true;
 
-    [ConditionBool, UI("Target quest priority.",
+    [ConditionBool, UI("Prioritize Quest targets.",
         Filter = TargetConfig, Section = 1)]
 
     private static readonly bool _targetQuestPriority = true;
 
-    [ConditionBool, UI("Display do action feedback on toast",
+    [ConditionBool, UI("Display manually triggered actions feedback on toast",
         Filter =UiInformation)]
     private static readonly bool _showToastsAboutDoAction = true;
 
-    [ConditionBool, UI("Use AoE actions", Filter = AutoActionUsage)]
+    [ConditionBool, UI("Use AoE actions.", Filter = AutoActionUsage)]
     private static readonly bool _useAOEAction = true;
 
-    [ConditionBool, UI("Use AoE actions in manual mode", Parent = nameof(UseAoeAction))]
+    [ConditionBool, UI("Use AoE actions in manual mode.", Parent = nameof(UseAoeAction))]
     private static readonly bool _useAOEWhenManual = false;
 
-    [ConditionBool, UI("Automatically trigger dps burst phase", Filter = AutoActionCondition)]
+    [ConditionBool, UI("Automatically trigger dps burst phase.", Filter = AutoActionCondition)]
     private static readonly bool _autoBurst = true;
 
-    [ConditionBool, UI("Automatic Heal", Filter = AutoActionCondition)]
+    [ConditionBool, UI("Automatic Healing.", Filter = AutoActionCondition)]
     private static readonly bool _autoHeal = true;
 
-    [ConditionBool, UI("Auto-use abilities", Filter = AutoActionUsage)]
+    [ConditionBool, UI("Automatic offensive ability use.", Filter = AutoActionUsage)]
     private static readonly bool _useAbility = true;
 
-    [ConditionBool, UI("Use defensive abilities", Description = "It is recommended to check this option if you are playing Raids or you can plan the heal and defense ability usage by yourself.",
+    [ConditionBool, UI("Automatically use defensive abilities.", Description = "It is recommended to uncheck this option if you are playing high end content or if you can plan healing and defensive ability usage by yourself.",
         Parent = nameof(UseAbility))]
     private static readonly bool _useDefenseAbility = true;
 
-    [ConditionBool, UI("Automatically activate tank stance", Parent =nameof(UseAbility),
+    [ConditionBool, UI("Automatically activate tank stance.", Parent =nameof(UseAbility),
         PvEFilter = JobFilterType.Tank)]
     private static readonly bool _autoTankStance = true;
 
-    [ConditionBool, UI("Auto provoke non-tank attacking targets", Description = "Automatically use provoke when an enemy is attacking a non-tank member of the party.",
+    [ConditionBool, UI("Auto provoke non-tank attacking targets.", Description = "Automatically use provoke when an enemy is attacking a non-tank member of the party.",
         Parent = nameof(UseAbility), PvEFilter = JobFilterType.Tank)]
     private static readonly bool _autoProvokeForTank = true;
 
-    [ConditionBool, UI("Auto TrueNorth (Melee)",
+    [ConditionBool, UI("Auto TrueNorth (Melee).",
         Parent = nameof(UseAbility),
         PvEFilter = JobFilterType.Melee)]
     private static readonly bool _autoUseTrueNorth = true;
 
-    [ConditionBool, UI("Raise player by using swiftcast if avaliable",
+    [ConditionBool, UI("Raise player by using swiftcast if available",
         Parent = nameof(UseAbility),
         PvEFilter = JobFilterType.Healer)]
     private static readonly bool _raisePlayerBySwift = true;
@@ -350,28 +355,28 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Use movement speed increase abilities when out of combat.", Parent = nameof(UseAbility))]
     private static readonly bool _autoSpeedOutOfCombat = true;
 
-    [ConditionBool, UI("Use beneficial ground-targeted actions", Parent = nameof(UseAbility),
+    [ConditionBool, UI("Use beneficial ground-targeted actions.", Parent = nameof(UseAbility),
         PvEFilter = JobFilterType.Healer)]
     private static readonly bool _useGroundBeneficialAbility = true;
 
-    [ConditionBool, UI("Use beneficial AoE actions when moving.", Parent = nameof(UseGroundBeneficialAbility))]
+    [ConditionBool, UI("Use beneficial AoE actions while moving.", Parent = nameof(UseGroundBeneficialAbility))]
     private static readonly bool _useGroundBeneficialAbilityWhenMoving = false;
 
-    [ConditionBool, UI("Target all for friendly actions (include passerby)",
+    [ConditionBool, UI("Consider all players for friendly actions (include passerby).",
         Filter = TargetConfig, Section = 3)]
     private static readonly bool _targetAllForFriendly = false;
 
-    [ConditionBool, UI("Show Cooldown Window", Filter = UiWindows)]
+    [ConditionBool, UI("Show Cooldown Window.", Filter = UiWindows)]
     private static readonly bool _showCooldownWindow = false;
 
-    [ConditionBool, UI("Record AOE actions", Filter = List)]
+    [ConditionBool, UI("Record AoE actions.", Filter = List)]
     private static readonly bool _recordCastingArea = true;
 
     [ConditionBool, UI("Auto turn off RS when combat is over more for more then...",
         Filter =BasicAutoSwitch)]
     private static readonly bool _autoOffAfterCombat = true;
 
-    [ConditionBool, UI("Auto Open the treasure chest",
+    [ConditionBool, UI("Auto open treasure chests",
         Filter = Extra)]
     private static readonly bool _autoOpenChest = false;
 
@@ -379,21 +384,21 @@ internal partial class Configs : IPluginConfiguration
         Parent = nameof(AutoOpenChest))]
     private static readonly bool _autoCloseChestWindow = true;
 
-    [ConditionBool, UI("Show RS state icon", Filter = UiOverlay)]
+    [ConditionBool, UI("Show RS state icon.", Filter = UiOverlay)]
     private static readonly bool _showStateIcon = true;
 
     [ConditionBool, UI("Show beneficial AoE locations.", Filter = UiOverlay)]
     private static readonly bool _showBeneficialPositions = true;
 
-    [ConditionBool, UI("Hide all warnings",
+    [ConditionBool, UI("Hide all warnings.",
         Filter = UiInformation)]
     private static readonly bool _hideWarning = false;
 
-    [ConditionBool, UI("Healing the members with GCD if there is nothing to do in combat.",
+    [ConditionBool, UI("Heal party members using GCD healing if there is nothing to do while in combat.",
         Filter = AutoActionCondition, Section = 1)]
     private static readonly bool _healWhenNothingTodo = true;
 
-    [ConditionBool, UI("Say hello to all users of Rotation Solver.",
+    [ConditionBool, UI("Say hello to all other users of Rotation Solver.",
         Filter = BasicParams)]
     private static readonly bool _sayHelloToAll = true;
 
@@ -401,28 +406,28 @@ internal partial class Configs : IPluginConfiguration
         Parent =nameof(SayHelloToAll))]
     private static readonly bool _sayHelloToUsers = true;
 
-    [ConditionBool, UI("Just say hello once to the same user.",
+    [ConditionBool, UI("Say hello only one time to the same user.",
         Parent = nameof(SayHelloToAll))]
     private static readonly bool _justSayHelloOnce = false;
 
-    [ConditionBool, UI("Only Heal self When Not a healer", 
+    [ConditionBool, UI("Only Heal self when not a healer.", 
         Filter = AutoActionCondition, Section = 1,
         PvPFilter = JobFilterType.NoHealer, PvEFilter = JobFilterType.NoHealer)]
     private static readonly bool _onlyHealSelfWhenNoHealer = false;
 
-    [ConditionBool, UI("Display toggle action feedback on chat",
+    [ConditionBool, UI("Display toggle action feedback on chat.",
         Filter =UiInformation)]
     private static readonly bool _showToggledActionInChat = true;
 
-    [ConditionBool, UI("Show the timeline drawing staff in the game.",
+    [ConditionBool, UI("Show the timeline assigned drawings in game.",
     Filter = TimelineFilter)]
     private static readonly bool _showTimelineDrawing = true;
 
-    [ConditionBool, UI("Enable the auto movement in the timeline.",
+    [ConditionBool, UI("Enable auto movement using timeline assignments.",
         Filter = TimelineFilter)]
     private static readonly bool _enableTimelineMovement = true;
 
-    [ConditionBool, UI("Skip the Ping Check. Please use it with NoClippy",
+    [ConditionBool, UI("Skips ping checking. Please use it along with NoClippy",
         Filter = BasicTimer, Section = 2)]
     private static readonly bool _noPingCheck = false;
 
@@ -450,7 +455,7 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 0.5f, ConfigUnitType.Percent, 0.02f)]
     public float HealthDifference { get; set; } = 0.25f;
 
-    [UI("Melee Range action using offset", 
+    [UI("Maximum melee range action usage before using offset setting", 
         Filter = AutoActionCondition, Section = 3,
         PvEFilter = JobFilterType.Melee, PvPFilter = JobFilterType.NoJob)]
     [Range(0, 5, ConfigUnitType.Yalms, 0.02f)]
@@ -461,7 +466,7 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 0.4f, ConfigUnitType.Seconds, 0.002f)]
     public float MinLastAbilityAdvanced { get; set; } = 0.1f;
 
-    [UI("When their minimum HP is lower than this.", Parent = nameof(HealWhenNothingTodo))]
+    [UI("Heal party members that are lower then the selected percentage", Parent = nameof(HealWhenNothingTodo))]
     [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
     public float HealWhenNothingTodoBelow { get; set; } = 0.8f;
 
@@ -475,24 +480,24 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
     public float MistakeRatio { get; set; } = 0;
 
-    [UI("Heal tank first if its HP is lower than this.",
+    [UI("Prioritize tank healing if its HP is lower than the selected percentage.",
         Filter = AutoActionCondition, Section = 1,
         PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
     [Range(0, 1, ConfigUnitType.Percent, 0.02f)]
     public float HealthTankRatio { get; set; } = 0.4f;
 
-    [UI("Heal healer first if its HP is lower than this.", 
+    [UI("Prioritize healer healing if its HP is lower than the selected percentage", 
         Filter = AutoActionCondition, Section = 1,
         PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
     [Range(0, 1, ConfigUnitType.Percent, 0.02f)]
     public float HealthHealerRatio { get; set; } = 0.4f;
 
-    [UI("The duration of special windows set by commands",
+    [UI("The duration of special windows set by commands.",
         Filter =BasicTimer, Section = 1)]
     [Range(1, 20, ConfigUnitType.Seconds, 1f)]
     public float SpecialDuration { get; set; } = 3;
 
-    [UI("The range of random delay for finding a target.", Filter =TargetConfig)]
+    [UI("Random delay for finding a target.", Filter =TargetConfig)]
     [Range(0, 3, ConfigUnitType.Seconds)]
     public Vector2 TargetDelay { get; set; } = new(1, 2);
 
@@ -501,51 +506,51 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 1, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 WeaponDelay { get; set; } = new(0, 0);
 
-    [UI("The range of random delay for stopping casting when the target is dead or immune to damage.",
+    [UI("Random delay for stopping casting when the target is dead or immune to damage.",
         Parent = nameof(UseStopCasting))]
     [Range(0, 3, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 StopCastingDelay { get; set; } = new(0.5f, 1);
 
-    [UI("The range of random delay for interrupting hostile targets.",
+    [UI("Random delay for interrupting hostile targets.",
         Filter = AutoActionCondition, Section = 3,
         PvEFilter = JobFilterType.Interrupt, PvPFilter = JobFilterType.NoJob)]
     [Range(0, 3, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 InterruptDelay { get; set; } = new(0.5f, 1);
 
-    [UI("The delay of provoke.", Parent = nameof(AutoProvokeForTank))]
+    [UI("Provoke delay.", Parent = nameof(AutoProvokeForTank))]
     [Range(0, 10, ConfigUnitType.Seconds, 0.05f)]
     public Vector2 ProvokeDelay { get; set; } = new(0.5f, 1);
 
-    [UI("The range of random delay for Not In Combat.",
+    [UI("Random delay for Not In Combat.",
         Filter =BasicParams)]
     [Range(0, 10, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 NotInCombatDelay { get; set; } = new(3, 4);
 
-    [UI("The range of random delay for clicking actions.",
+    [UI("Random delay for clicking actions.",
         Filter =BasicTimer)]
     [Range(0.05f, 0.25f, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 ClickingDelay { get; set; } = new(0.1f, 0.15f);
 
-    [UI("The delay of this type of healing.", Parent = nameof(HealWhenNothingTodo))]
+    [UI("Delay of this type of healing.", Parent = nameof(HealWhenNothingTodo))]
     [Range(0, 5,  ConfigUnitType.Seconds, 0.05f)]
     public Vector2 HealWhenNothingTodoDelay { get; set; } = new(0.5f, 1);
 
-    [UI("The random delay between which auto mode activation on countdown varies.",
+    [UI("Random delay between for auto mode activation on countdown.",
         Parent =nameof(StartOnCountdown))]
     [Range(0, 3, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 CountdownDelay { get; set; } = new(0.5f, 1);
 
-    [UI("The random delay between for the heal delay",
+    [UI("The random delay between for the heal delay.",
     Parent = nameof(AutoHeal))]
     [Range(0, 3, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 HealDelay { get; set; } = new(0.5f, 1);
 
-    [UI("The starting when abilities will be used before finishing the countdown",
+    [UI("Remaining countdown duration when abilities will start being used before finishing the countdown.",
         Filter =BasicTimer, Section = 1, PvPFilter = JobFilterType.NoJob)]
     [Range(0, 0.7f, ConfigUnitType.Seconds, 0.002f)]
     public float CountDownAhead { get; set; } = 0.4f;
 
-    [UI("The size of the sector angle that can be selected as the moveable target", 
+    [UI("The angle that targets can be selected as the move ability targets.", 
         Description = "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are moveable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.",
         Filter = TargetConfig, Section = 2)]
     [Range(0, 90, ConfigUnitType.Degree, 0.02f)]
@@ -562,7 +567,7 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 60, ConfigUnitType.Seconds, 0.02f)]
     public float DyingTimeToKill { get; set; } = 10;
 
-    [UI("Change the cooldown font size.", Parent = nameof(ShowCooldownWindow))]
+    [UI("Cooldown font size.", Parent = nameof(ShowCooldownWindow))]
     [Range(9.6f, 96, ConfigUnitType.Pixels, 0.1f)]
     public float CooldownFontSize { get; set; } = 16;
 
@@ -651,11 +656,11 @@ internal partial class Configs : IPluginConfiguration
 
     public int ActionSequencerIndex { get; set; }
 
-    [UI("The modifier key to unlock the movement temporary", Description = "RB is for gamepad player", Parent = nameof(PoslockCasting))]
+    [UI("The modifier key to unlock movement temporary", Description = "RB is for gamepad player", Parent = nameof(PoslockCasting))]
     public ConsoleModifiers PoslockModifier { get; set; }
 
     [Range(0, 10000, ConfigUnitType.None, 200)]
-    [UI("Never raise player if MP is less than the set value",
+    [UI("Never ressurect players if MP is less than the set value",
         Filter = AutoActionUsage,
         PvEFilter = JobFilterType.Raise)]
     public int LessMPNoRaise { get; set; }
@@ -702,13 +707,13 @@ internal partial class Configs : IPluginConfiguration
     private readonly float _healthSingleSpell = 0.55f;
 
     [JobConfig, Range(0, 1, ConfigUnitType.Percent, 0.02f)]
-    [UI("The HP%% for tank to use invulnerability", 
+    [UI("The HP%% for tanks to use invulnerability", 
         Filter = AutoActionCondition, Section = 3,
         PvEFilter = JobFilterType.Tank, PvPFilter = JobFilterType.NoJob)]
     private readonly float _healthForDyingTanks = 0.15f;
 
     [JobConfig, Range(0, 1, ConfigUnitType.Percent, 0.02f)]
-    [UI("HP%% about defense single of Tanks", Parent = nameof(UseDefenseAbility),
+    [UI("HP%% for personal defense abilities usage for tanks", Parent = nameof(UseDefenseAbility),
         PvEFilter = JobFilterType.Tank)]
     private readonly float _healthForAutoDefense = 1;
 
