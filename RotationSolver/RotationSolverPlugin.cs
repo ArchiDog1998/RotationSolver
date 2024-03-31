@@ -68,6 +68,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         windowSystem.AddWindow(_cooldownWindow);
 
         Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
+        Svc.PluginInterface.UiBuilder.OpenMainUi += OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
         PainterManager.Init();
