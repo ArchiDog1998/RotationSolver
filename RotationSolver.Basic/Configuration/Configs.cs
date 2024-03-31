@@ -190,6 +190,10 @@ internal partial class Configs : IPluginConfiguration
         Filter =BasicAutoSwitch, Section = 1)]
     private static readonly bool _startOnCountdown = true;
 
+    [ConditionBool, UI("Countdown will start manual mode instead of auto mode",
+               Parent = nameof(StartOnCountdown))]
+    private static readonly bool _countdownStartsManualMode = false;
+
     [ConditionBool, UI("Switch to manual and target attackers automatically.",
         Filter =BasicAutoSwitch, Section =1)]
     private static readonly bool _startOnAttackedBySomeone = false;
