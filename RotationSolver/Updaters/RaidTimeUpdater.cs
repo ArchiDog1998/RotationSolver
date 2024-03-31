@@ -6,6 +6,7 @@ using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.UI;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -479,7 +480,7 @@ internal static partial class RaidTimeUpdater
 
                 if (string.IsNullOrEmpty(header)) continue;
 
-                var time = float.Parse(Time().Match(header).Value);
+                var time = float.Parse(Time().Match(header).Value, CultureInfo.InvariantCulture);
                 var name = Name().Match(header).Value[1..^1];
 
                 var timelineStr = ActionGetter().Match(timeline).Value;
@@ -497,7 +498,7 @@ internal static partial class RaidTimeUpdater
                 float? jumpTime = null;
                 if (jumpTimeStr.Length > 5)
                 {
-                    jumpTime = float.Parse(jumpTimeStr[5..]);
+                    jumpTime = float.Parse(jumpTimeStr[5..], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -520,8 +521,8 @@ internal static partial class RaidTimeUpdater
                 if (windowStr.Length > 7)
                 {
                     var windowStrs = windowStr[7..].Split(',');
-                    windowMin = float.Parse(windowStrs.First());
-                    windowMax = float.Parse(windowStrs.Last());
+                    windowMin = float.Parse(windowStrs.First(), CultureInfo.InvariantCulture);
+                    windowMax = float.Parse(windowStrs.Last(), CultureInfo.InvariantCulture);
                 }
 
                 result.Add(new (time, name, type, item, lang, jumpTime, windowMin, windowMax));
