@@ -206,19 +206,19 @@ internal static class DataCenter
     /// </summary>
     public static unsafe float ActionRemain => ActionManagerHelper.GetCurrentAnimationLock();
 
-    public static float AbilityRemain
-    {
-        get
-        {
-            var gcdRemain = WeaponRemain;
-            // Check if we should account for the animation lock and ping.
-            if (gcdRemain - MinAnimationLock - Ping <= ActionRemain)
-            {
-                return gcdRemain + MinAnimationLock + Ping;
-            }
-            return ActionRemain;
-        }
-    }
+    public static float AbilityRemain => ActionManagerHelper.GetCurrentAnimationLock();
+    //{
+     //   get
+     //   {
+     //       var gcdRemain = WeaponRemain;
+     //       // Check if we should account for the animation lock and ping.
+     //       if (gcdRemain - MinAnimationLock - Ping <= ActionRemain)
+     //       {
+     //           return gcdRemain + MinAnimationLock + Ping;
+     //       }
+     //       return ActionRemain;
+     //   }
+    //}
 
     // Update the property to conditionally use AbilityRemain based on the NoPingCheck setting.
     public static float NextAbilityToNextGCD => WeaponRemain - ActionRemain;
