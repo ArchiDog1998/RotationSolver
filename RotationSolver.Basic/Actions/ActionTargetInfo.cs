@@ -30,10 +30,14 @@ public struct ActionTargetInfo(IBaseAction action)
     /// </summary>
     public readonly bool IsSingleTarget => action.Action.CastType == 1;
     /// <summary>
-    /// Is this action target are.
+    /// Is this action target area.
     /// </summary>
-
     public readonly bool IsTargetArea => action.Action.TargetArea;
+
+    /// <summary>
+    /// Is this action friendly.
+    /// </summary>
+    public readonly bool IsTargetFriendly => action.Setting.IsFriendly;
 
     private static bool NoAOE
     {
@@ -64,6 +68,11 @@ public struct ActionTargetInfo(IBaseAction action)
 
             if (!GeneralCheck(obj, skipStatusProvideCheck)) continue;
             objs.Add(obj);
+        }
+
+        if (DataCenter.IsManual && !IsTargetFriendly)
+        {
+            return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget).Where(o => o.Address == Svc.Targets.Target.Address);
         }
 
         return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget);
@@ -226,40 +235,9 @@ public struct ActionTargetInfo(IBaseAction action)
         {
             return FindTargetArea(canTargets, canAffects, range, player);
         }
-        else if (DataCenter.IsManual)
-        {
-            var t = Svc.Targets.Target as BattleChara;
-
-            if (t == null || !action.Setting.CanTarget(t)) return null;
-
-            if (type == TargetType.Move)
-            {
-                return null;
-            }
-            else if (IsSingleTarget)
-            {
-                if (CanUseTo(t) && CheckStatus(t, skipStatusProvideCheck) && t.DistanceToPlayer() <= range)
-                {
-                    return new(t, [.. GetAffects(t, canAffects)], t.Position);
-                }
-            }
-            else if (!NoAOE)
-            {
-                var effects = GetAffects(t, canAffects).ToArray();
-                if (effects.Length >= action.Config.AoeCount || skipAoeCheck)
-                {
-                    return new(t, effects, t.Position);
-                }
-            }
-            return null;
-        }
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
             skipAoeCheck ? 0 : action.Config.AoeCount);
-        if (type == TargetType.BeAttacked && !action.Setting.IsFriendly)
-        {
-            type = TargetType.Big;
-        }
         var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.SpecialType);
         if (target == null) return null;
 

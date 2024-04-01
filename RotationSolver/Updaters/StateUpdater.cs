@@ -106,7 +106,7 @@ internal static class StateUpdater
             }
         }
 
-        if (DataCenter.InCombat)
+        if (DataCenter.InCombat || DataCenter.IsManual)
         {
             if (Service.Config.UseDefenseAbility)
             {
