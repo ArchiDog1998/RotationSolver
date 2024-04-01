@@ -23,6 +23,11 @@ partial class CustomRotation
     }
 
     #region Role Actions
+        
+    static partial void ModifyTrueNorthPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.TrueNorth];
+    }
     static partial void ModifyAddlePvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = [StatusID.Addle];
