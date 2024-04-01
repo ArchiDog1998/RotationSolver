@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Basic.Rotations;
+namespace RotationSolver.Basic.Rotations;
 
 partial class CustomRotation
 {
@@ -44,7 +44,10 @@ partial class CustomRotation
 
         if (DataCenter.MergedStatus.HasFlag(AutoStatus.Positional))
         {
-            if (TrueNorthPvE.CanUse(out act)) return true;
+            if (TrueNorthPvE.Cooldown.CurrentCharges > 0)
+            {
+                if (TrueNorthPvE.CanUse(out act, onLastAbility: true, skipClippingCheck: true, skipComboCheck: true, usedUp: true)) return true;
+            }
         }
 
         IBaseAction.TargetOverride = TargetType.Heal;
