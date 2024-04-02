@@ -72,7 +72,16 @@ public struct ActionTargetInfo(IBaseAction action)
 
         if (DataCenter.IsManual && !IsTargetFriendly)
         {
-            return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget).Where(o => o.Address == Svc.Targets.Target.Address);
+            var currentTarget = Svc.Targets?.Target;
+            if (currentTarget != null && currentTarget.ObjectId != 0)
+            {
+                return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget).Where(o => o.Address == currentTarget.Address);
+            }
+            else
+            {
+                objs.Clear();
+                return objs;
+            }
         }
 
         return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget);
