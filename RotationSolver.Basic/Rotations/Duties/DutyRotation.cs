@@ -51,6 +51,19 @@ partial class DutyRotation : IDisposable
     #endregion
 
     #region Ability
+
+    static partial void ModifyVrilPvE(ref ActionSetting setting)
+    {
+        setting.StatusFromSelf = true;
+        setting.TargetStatusProvide = [StatusID.Vril];
+    }
+
+    static partial void ModifyVrilPvE_9345(ref ActionSetting setting)
+    {
+        setting.StatusFromSelf = true;
+        setting.TargetStatusProvide = [StatusID.Vril];
+    }
+
     public virtual bool InterruptAbility(out IAction? act)
     {
         act = null; return false;
