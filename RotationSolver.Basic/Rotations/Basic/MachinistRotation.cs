@@ -21,6 +21,9 @@ partial class MachinistRotation
     /// </summary>
     public static byte Battery => JobGauge.Battery;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static byte LastSummonBatteryPower => JobGauge.LastSummonBatteryPower;
 
     static float OverheatTimeRemainingRaw => JobGauge.OverheatTimeRemaining / 1000f;
@@ -82,12 +85,28 @@ partial class MachinistRotation
         setting.ActionCheck = () => HasHostilesInRange;
     }
 
+    static partial void ModifyChainSawPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
     static partial void ModifyHyperchargePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => !IsOverheated && Heat >= 50;
         setting.CreateConfig = () => new()
         {
             TimeToKill = 8,
+        };
+    }
+
+    static partial void ModifyRicochetPvE(ref ActionSetting setting)
+    {
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
         };
     }
 
