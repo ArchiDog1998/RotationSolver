@@ -16,7 +16,7 @@ internal abstract class DelayCondition : ICondition
     [ThreadStatic]
     private static Stack<ICondition>? _callingStack;
 
-    public bool IsTrue(ICustomRotation? rotation)
+    public bool? IsTrue(ICustomRotation? rotation)
     {
         if (rotation == null) return false;
 
@@ -25,7 +25,7 @@ internal abstract class DelayCondition : ICondition
         if (_callingStack.Contains(this))
         {
             //Do something for recursion!
-            return false;
+            return null;
         }
 
         if (_delay.GetRange == null)
@@ -88,7 +88,7 @@ internal abstract class DelayCondition : ICondition
 
     private static IEnumerable<MemberInfo> GetAllMembers(Type? type, Func<Type, IEnumerable<MemberInfo>> getFunc)
     {
-        if (type == null || getFunc == null) return Array.Empty<MemberInfo>();
+        if (type == null || getFunc == null) return [];
 
         var methods = getFunc(type);
         return methods.Union(GetAllMembers(type.BaseType, getFunc));

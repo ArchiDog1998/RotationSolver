@@ -29,8 +29,14 @@ public struct ActionTargetInfo(IBaseAction action)
     /// Is this action single target.
     /// </summary>
     public readonly bool IsSingleTarget => action.Action.CastType == 1;
+
     /// <summary>
-    /// Is this action target are.
+    /// Is this action friendly.
+    /// </summary>
+    public readonly bool IsTargetFriendly => action.Setting.IsFriendly;
+
+    /// <summary>
+    /// Is this action target area.
     /// </summary>
 
     public readonly bool IsTargetArea => action.Action.TargetArea;
@@ -66,7 +72,9 @@ public struct ActionTargetInfo(IBaseAction action)
             objs.Add(obj);
         }
 
-        return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget);
+        var isAuto = !DataCenter.IsManual || IsTargetFriendly;
+        return objs.Where(b => isAuto || b.Address == Svc.Targets.Target?.Address)
+            .Where(InViewTarget).Where(CanUseTo).Where(action.Setting.CanTarget);
     }
 
     private readonly List<BattleChara> GetCanAffects(bool skipStatusProvideCheck, TargetType type)
@@ -226,49 +234,9 @@ public struct ActionTargetInfo(IBaseAction action)
         {
             return FindTargetArea(canTargets, canAffects, range, player);
         }
-        else if (DataCenter.IsManual)
-        {
-            var t = Svc.Targets.Target as BattleChara;
-
-            if (t == null || !action.Setting.CanTarget(t)) return null;
-
-            if (type == TargetType.Move)
-            {
-                return null;
-            }
-            else if (IsSingleTarget)
-            {
-                if (CanUseTo(t) && CheckStatus(t, skipStatusProvideCheck) && t.DistanceToPlayer() <= range)
-                {
-                    return new(t, [.. GetAffects(t, canAffects)], t.Position);
-                }
-            }
-            else if (!NoAOE)
-            {
-                if (!action.Action.CanTargetFriendly
-                    && !action.Action.CanTargetHostile)
-                {
-                    t = player;
-                }
-                if (!CanUseTo(t))
-                {
-                    return null;
-                }
-                var effects = GetAffects(t, canAffects).ToArray();
-                if (effects.Length >= action.Config.AoeCount || skipAoeCheck)
-                {
-                    return new(t, effects, t.Position);
-                }
-            }
-            return null;
-        }
 
         var targets = GetMostCanTargetObjects(canTargets, canAffects,
             skipAoeCheck ? 0 : action.Config.AoeCount);
-        if (type == TargetType.BeAttacked && !action.Setting.IsFriendly)
-        {
-            type = TargetType.Big;
-        }
         var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.SpecialType);
         if (target == null) return null;
 
@@ -716,13 +684,13 @@ public struct ActionTargetInfo(IBaseAction action)
 
         BattleChara? FindHostileRaw()
         {
-            gameObjects = type switch
+            gameObjects = DataCenter.TargetingType switch
             {
-                TargetType.Small => gameObjects.OrderBy(p => p.HitboxRadius),
-                TargetType.HighHP => gameObjects.OrderByDescending(p => p is BattleChara b ? b.CurrentHp : 0),
-                TargetType.LowHP => gameObjects.OrderBy(p => p is BattleChara b ? b.CurrentHp : 0),
-                TargetType.HighMaxHP => gameObjects.OrderByDescending(p => p is BattleChara b ? b.MaxHp : 0),
-                TargetType.LowMaxHP => gameObjects.OrderBy(p => p is BattleChara b ? b.MaxHp : 0),
+                TargetingType.Small => gameObjects.OrderBy(p => p.HitboxRadius),
+                TargetingType.HighHP => gameObjects.OrderByDescending(p => p is BattleChara b ? b.CurrentHp : 0),
+                TargetingType.LowHP => gameObjects.OrderBy(p => p is BattleChara b ? b.CurrentHp : 0),
+                TargetingType.HighMaxHP => gameObjects.OrderByDescending(p => p is BattleChara b ? b.MaxHp : 0),
+                TargetingType.LowMaxHP => gameObjects.OrderBy(p => p is BattleChara b ? b.MaxHp : 0),
                 _ => gameObjects.OrderByDescending(p => p.HitboxRadius),
             };
             return gameObjects.FirstOrDefault();
@@ -828,12 +796,7 @@ public struct ActionTargetInfo(IBaseAction action)
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public enum TargetType : byte
 {
-    Big,
-    Small,
-    HighHP,
-    LowHP,
-    HighMaxHP,
-    LowMaxHP,
+    FromConfig,
     Interrupt,
     Provoke,
     Death,

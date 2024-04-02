@@ -4,6 +4,7 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.UI.SearchableSettings;
 
 namespace RotationSolver.UI;
+
 internal readonly record struct SearchPair(UIAttribute Attribute, ISearchable Searchable);
 
 internal class SearchableCollection
@@ -169,5 +170,4 @@ internal class SearchableCollection
 
         return startWithCount * 3 + containCount;
     }
-
 }

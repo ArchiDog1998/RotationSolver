@@ -94,10 +94,28 @@ internal class ObjectGetter
     }
 }
 
+/// <summary>
+/// The type of the object.
+/// </summary>
 public enum ObjectType : byte
 {
+    /// <summary>
+    /// 
+    /// </summary>
     GameObject,
+
+    /// <summary>
+    /// 
+    /// </summary>
     BattleCharactor,
+
+    /// <summary>
+    /// 
+    /// </summary>
     PlayerCharactor,
+
+    /// <summary>
+    /// 
+    /// </summary>
     Myself,
 }

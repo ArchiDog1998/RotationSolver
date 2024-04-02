@@ -13,8 +13,8 @@ internal class ConditionSet : DelayCondition
 
         return Type switch
         {
-            LogicalType.And => Conditions.All(c => c.IsTrue(rotation)),
-            LogicalType.Or => Conditions.Any(c => c.IsTrue(rotation)),
+            LogicalType.And => Conditions.All(c => c.IsTrue(rotation) ?? false),
+            LogicalType.Or => Conditions.Any(c => c.IsTrue(rotation) ?? false),
             _ => false,
         };
     }

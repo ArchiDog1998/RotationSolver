@@ -81,7 +81,7 @@ public class ActionSetting()
     /// </summary>
     public bool IsFriendly { get; set; }
 
-    private TargetType _type = TargetType.Big;
+    private TargetType _type = TargetType.FromConfig;
 
     /// <summary>
     /// The strategy to target the target.

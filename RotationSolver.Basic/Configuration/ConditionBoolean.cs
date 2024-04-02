@@ -22,8 +22,8 @@ internal class ConditionBoolean(bool defaultValue, string key)
         var set = DataCenter.RightSet;
         if (rotation != null)
         {
-            if (condition.Enable && set.GetEnableCondition(condition.Key).IsTrue(rotation)) return true;
-            if (condition.Disable && set.GetDisableCondition(condition.Key).IsTrue(rotation)) return false;
+            if (condition.Enable && (set.GetEnableCondition(condition.Key).IsTrue(rotation) ?? false)) return true;
+            if (condition.Disable && (set.GetDisableCondition(condition.Key).IsTrue(rotation) ?? false)) return false;
         }
         return condition.Value;
     }

@@ -1,7 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 
 namespace RotationSolver.UI;

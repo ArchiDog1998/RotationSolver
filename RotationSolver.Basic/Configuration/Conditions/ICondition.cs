@@ -2,6 +2,6 @@
 
 internal interface ICondition
 {
-    bool IsTrue(ICustomRotation rotation);
+    bool? IsTrue(ICustomRotation rotation);
     bool CheckBefore(ICustomRotation rotation);
 }

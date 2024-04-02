@@ -2,6 +2,7 @@
 using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.Basic.Traits;
+
 /// <summary>
 /// The trait thing.
 /// </summary>

@@ -2,6 +2,7 @@
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Basic.Configuration.Timeline;
+using System.Runtime.CompilerServices;
 
 namespace RotationSolver.Updaters;
 internal static class StateUpdater
@@ -219,6 +220,7 @@ internal static class StateUpdater
         return h < Lerp(healSingle, healSingleHot, ratio);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static float Lerp(float a, float b, float ratio)
     {
         return a + (b - a) * ratio;
@@ -272,13 +274,12 @@ internal static class StateUpdater
 
     private static void AddStatus(ref AutoStatus status, AutoStatus flag, ConditionSet set)
     {
-        AddStatus(ref status, flag, () => set.IsTrue(DataCenter.RightNowRotation));
+        AddStatus(ref status, flag, () => set.IsTrue(DataCenter.RightNowRotation) ?? false);
     }
 
     private static void AddStatus(ref AutoStatus status, AutoStatus flag, Func<bool> getValue)
     {
         if (status.HasFlag(flag) | !getValue()) return;
-
         status |= flag;
     }
 }
