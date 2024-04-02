@@ -112,6 +112,9 @@ partial class CustomRotation : ICustomRotation
     /// <inheritdoc/>
     public IAction? ActionAntiKnockbackAbility { get; private set; }
 
+    /// <inheritdoc/>
+    public IAction? ActionLimitBreak { get; private set; }
+
     /// <summary>
     /// Is this action valid.
     /// </summary>

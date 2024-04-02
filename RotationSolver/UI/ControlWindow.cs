@@ -154,6 +154,10 @@ internal class ControlWindow : CtrlWindow
 
         DrawCommandAction(61753, SpecialCommandType.EndSpecial, ImGuiColors.DalamudWhite2);
 
+        ImGui.SameLine();
+
+        DrawCommandAction(rotation?.ActionLimitBreak, SpecialCommandType.LimitBreak, ImGuiColors.DalamudWhite2);
+
         ImGui.Spacing();
 
         DrawCommandAction(rotation?.ActionDispelStancePositionalGCD, rotation?.ActionDispelStancePositionalAbility,
@@ -165,7 +169,6 @@ internal class ControlWindow : CtrlWindow
             SpecialCommandType.RaiseShirk, ImGuiColors.ParsedBlue);
 
         ImGui.SameLine();
-
 
         DrawCommandAction(rotation?.ActionAntiKnockbackAbility,
             SpecialCommandType.AntiKnockback, ImGuiColors.DalamudWhite2);

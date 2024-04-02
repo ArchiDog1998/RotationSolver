@@ -109,6 +109,7 @@ public interface ICustomRotation : ITexture
     internal IAction? ActionRaiseShirkGCD { get; }
     internal IAction? ActionRaiseShirkAbility { get; }
     internal IAction? ActionAntiKnockbackAbility { get; }
+    internal IAction? ActionLimitBreak { get; }
 
     /// <summary>
     /// Try to use this rotation.

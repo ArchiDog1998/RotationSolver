@@ -150,6 +150,7 @@ partial class CustomRotation
 
         ActionMoveBackAbility = MoveBackAbility(out act) ? act : null;
         ActionSpeedAbility = SpeedAbility(out act) ? act : null;
+        ActionLimitBreak = UseLimitBreak(out act) ? act : null;
     }
 
     private IAction? Invoke(out IAction? gcdAction)
