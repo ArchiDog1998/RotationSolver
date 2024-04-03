@@ -26820,11 +26820,11 @@ GuardianPvP = 29066,
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/29067"&gt;&lt;strong&gt;Holy Sheltron&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29067] [Ability]
 /// &lt;para&gt;Grants Holy Sheltron and Knight's Resolve.&lt;/para&gt;
-/// &lt;para&gt;Holy Sheltron Effect: Creates a barrier around self that absorbs damage equivalent to a heal of 12,000 potency&lt;/para&gt;
-/// &lt;para&gt;Duration: 5s&lt;/para&gt;
-/// &lt;para&gt;If the barrier is not absorbed and the effect duration expires, deals unaspected damage to all nearby enemies with a potency equal to the barrier's remaining potency.&lt;/para&gt;
+/// &lt;para&gt;Holy Sheltron Effect: Creates a barrier around self that absorbs damage equivalent to a heal of 8,000 potency&lt;/para&gt;
+/// &lt;para&gt;Duration: 4s&lt;/para&gt;
+/// &lt;para&gt;If the barrier is not absorbed and the effect duration expires, deals unaspected damage to all nearby enemies with a potency equal to 150% of the barrier's remaining potency.&lt;/para&gt;
 /// &lt;para&gt;Knight's Resolve Effect: Reduces damage taken by 20%&lt;/para&gt;
-/// &lt;para&gt;Duration: 10s&lt;/para&gt;
+/// &lt;para&gt;Duration: 8s&lt;/para&gt;
 /// &lt;para&gt;Additional Effect: Heavy +75%&lt;/para&gt;
 /// &lt;para&gt;Duration: 5s&lt;/para&gt;
 /// &lt;/summary&gt;
@@ -42004,11 +42004,11 @@ public abstract partial class PaladinRotation : CustomRotation
     /// &lt;summary&gt;
     /// &lt;see href="https://garlandtools.org/db/#action/29067"&gt;&lt;strong&gt;Holy Sheltron&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvP&lt;/i&gt; (PLD) [29067] [Ability]
     /// &lt;para&gt;Grants Holy Sheltron and Knight's Resolve.&lt;/para&gt;
-    /// &lt;para&gt;Holy Sheltron Effect: Creates a barrier around self that absorbs damage equivalent to a heal of 12,000 potency&lt;/para&gt;
-    /// &lt;para&gt;Duration: 5s&lt;/para&gt;
-    /// &lt;para&gt;If the barrier is not absorbed and the effect duration expires, deals unaspected damage to all nearby enemies with a potency equal to the barrier's remaining potency.&lt;/para&gt;
+    /// &lt;para&gt;Holy Sheltron Effect: Creates a barrier around self that absorbs damage equivalent to a heal of 8,000 potency&lt;/para&gt;
+    /// &lt;para&gt;Duration: 4s&lt;/para&gt;
+    /// &lt;para&gt;If the barrier is not absorbed and the effect duration expires, deals unaspected damage to all nearby enemies with a potency equal to 150% of the barrier's remaining potency.&lt;/para&gt;
     /// &lt;para&gt;Knight's Resolve Effect: Reduces damage taken by 20%&lt;/para&gt;
-    /// &lt;para&gt;Duration: 10s&lt;/para&gt;
+    /// &lt;para&gt;Duration: 8s&lt;/para&gt;
     /// &lt;para&gt;Additional Effect: Heavy +75%&lt;/para&gt;
     /// &lt;para&gt;Duration: 5s&lt;/para&gt;
     /// &lt;/summary&gt;
@@ -42192,7 +42192,7 @@ static partial void ModifyShieldWallPvE(ref ActionSetting setting);
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction ShieldWallPvE =&gt; _ShieldWallPvECreator.Value;
+public IBaseAction ShieldWallPvE =&gt; _ShieldWallPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/197"&gt;&lt;strong&gt;Shield Wall&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [197] [Limit Break]
 /// &lt;para&gt;Reduces damage taken by all party members by 20%.&lt;/para&gt;
@@ -42222,7 +42222,7 @@ static partial void ModifyStrongholdPvE(ref ActionSetting setting);
 /// &lt;para&gt;Duration: 15s&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction StrongholdPvE =&gt; _StrongholdPvECreator.Value;
+public IBaseAction StrongholdPvE =&gt; _StrongholdPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/198"&gt;&lt;strong&gt;Stronghold&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [198] [Limit Break]
 /// &lt;para&gt;Reduces damage taken by all party members by 40%.&lt;/para&gt;
@@ -42252,7 +42252,7 @@ static partial void ModifyLastBastionPvE(ref ActionSetting setting);
 /// &lt;para&gt;Duration: 12s&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction LastBastionPvE =&gt; _LastBastionPvECreator.Value;
+public IBaseAction LastBastionPvE =&gt; _LastBastionPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/199"&gt;&lt;strong&gt;Last Bastion&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [199] [Limit Break]
 /// &lt;para&gt;Reduces damage taken by all party members by 80%.&lt;/para&gt;
@@ -43679,7 +43679,7 @@ static partial void ModifyBraverPvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
+public IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/200"&gt;&lt;strong&gt;Braver&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [200] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
@@ -43707,7 +43707,7 @@ static partial void ModifyBladedancePvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
+public IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/201"&gt;&lt;strong&gt;Bladedance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [201] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
@@ -43735,7 +43735,7 @@ static partial void ModifyFinalHeavenPvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 9,000.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction FinalHeavenPvE =&gt; _FinalHeavenPvECreator.Value;
+public IBaseAction FinalHeavenPvE =&gt; _FinalHeavenPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/202"&gt;&lt;strong&gt;Final Heaven&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [202] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 9,000.&lt;/para&gt;
@@ -44983,7 +44983,7 @@ static partial void ModifyShieldWallPvE(ref ActionSetting setting);
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction ShieldWallPvE =&gt; _ShieldWallPvECreator.Value;
+public IBaseAction ShieldWallPvE =&gt; _ShieldWallPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/197"&gt;&lt;strong&gt;Shield Wall&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [197] [Limit Break]
 /// &lt;para&gt;Reduces damage taken by all party members by 20%.&lt;/para&gt;
@@ -45013,7 +45013,7 @@ static partial void ModifyStrongholdPvE(ref ActionSetting setting);
 /// &lt;para&gt;Duration: 15s&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction StrongholdPvE =&gt; _StrongholdPvECreator.Value;
+public IBaseAction StrongholdPvE =&gt; _StrongholdPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/198"&gt;&lt;strong&gt;Stronghold&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [198] [Limit Break]
 /// &lt;para&gt;Reduces damage taken by all party members by 40%.&lt;/para&gt;
@@ -45042,7 +45042,7 @@ static partial void ModifyLandWakerPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction LandWakerPvE =&gt; _LandWakerPvECreator.Value;
+public IBaseAction LandWakerPvE =&gt; _LandWakerPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4240"&gt;&lt;strong&gt;Land Waker&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4240] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -46289,7 +46289,7 @@ static partial void ModifyBraverPvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
+public IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/200"&gt;&lt;strong&gt;Braver&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [200] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
@@ -46317,7 +46317,7 @@ static partial void ModifyBladedancePvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
+public IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/201"&gt;&lt;strong&gt;Bladedance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [201] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
@@ -46345,7 +46345,7 @@ static partial void ModifyDragonsongDivePvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction DragonsongDivePvE =&gt; _DragonsongDivePvECreator.Value;
+public IBaseAction DragonsongDivePvE =&gt; _DragonsongDivePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4242"&gt;&lt;strong&gt;Dragonsong Dive&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4242] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -47570,7 +47570,7 @@ static partial void ModifyBigShotPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BigShotPvE =&gt; _BigShotPvECreator.Value;
+public IBaseAction BigShotPvE =&gt; _BigShotPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4238"&gt;&lt;strong&gt;Big Shot&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4238] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -47598,7 +47598,7 @@ static partial void ModifyDesperadoPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction DesperadoPvE =&gt; _DesperadoPvECreator.Value;
+public IBaseAction DesperadoPvE =&gt; _DesperadoPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4239"&gt;&lt;strong&gt;Desperado&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4239] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -47626,7 +47626,7 @@ static partial void ModifySagittariusArrowPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction SagittariusArrowPvE =&gt; _SagittariusArrowPvECreator.Value;
+public IBaseAction SagittariusArrowPvE =&gt; _SagittariusArrowPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4244"&gt;&lt;strong&gt;Sagittarius Arrow&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4244] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -48829,7 +48829,7 @@ static partial void ModifyHealingWindPvE(ref ActionSetting setting);
 /// &lt;para&gt;Restores 25% of own HP and the HP of all nearby party members.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction HealingWindPvE =&gt; _HealingWindPvECreator.Value;
+public IBaseAction HealingWindPvE =&gt; _HealingWindPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/206"&gt;&lt;strong&gt;Healing Wind&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [206] [Limit Break]
 /// &lt;para&gt;Restores 25% of own HP and the HP of all nearby party members.&lt;/para&gt;
@@ -48857,7 +48857,7 @@ static partial void ModifyBreathOfTheEarthPvE(ref ActionSetting setting);
 /// &lt;para&gt;Restores 60% of own HP and the HP of all nearby party members.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BreathOfTheEarthPvE =&gt; _BreathOfTheEarthPvECreator.Value;
+public IBaseAction BreathOfTheEarthPvE =&gt; _BreathOfTheEarthPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/207"&gt;&lt;strong&gt;Breath of the Earth&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [207] [Limit Break]
 /// &lt;para&gt;Restores 60% of own HP and the HP of all nearby party members.&lt;/para&gt;
@@ -48885,7 +48885,7 @@ static partial void ModifyPulseOfLifePvE(ref ActionSetting setting);
 /// &lt;para&gt;Restores 100% of own HP and the HP of all nearby party members, including ones KO'd.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction PulseOfLifePvE =&gt; _PulseOfLifePvECreator.Value;
+public IBaseAction PulseOfLifePvE =&gt; _PulseOfLifePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/208"&gt;&lt;strong&gt;Pulse of Life&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [208] [Limit Break]
 /// &lt;para&gt;Restores 100% of own HP and the HP of all nearby party members, including ones KO'd.&lt;/para&gt;
@@ -50302,7 +50302,7 @@ static partial void ModifySkyshardPvE(ref ActionSetting setting);
 /// &lt;para&gt;Deals unaspected damage with a potency of 1,650 to all enemies near point of impact.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction SkyshardPvE =&gt; _SkyshardPvECreator.Value;
+public IBaseAction SkyshardPvE =&gt; _SkyshardPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/203"&gt;&lt;strong&gt;Skyshard&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [203] [Limit Break]
 /// &lt;para&gt;Deals unaspected damage with a potency of 1,650 to all enemies near point of impact.&lt;/para&gt;
@@ -50330,7 +50330,7 @@ static partial void ModifyStarstormPvE(ref ActionSetting setting);
 /// &lt;para&gt;Deals unaspected damage with a potency of 3,600 to all enemies near point of impact.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction StarstormPvE =&gt; _StarstormPvECreator.Value;
+public IBaseAction StarstormPvE =&gt; _StarstormPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/204"&gt;&lt;strong&gt;Starstorm&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [204] [Limit Break]
 /// &lt;para&gt;Deals unaspected damage with a potency of 3,600 to all enemies near point of impact.&lt;/para&gt;
@@ -50358,7 +50358,7 @@ static partial void ModifyMeteorPvE(ref ActionSetting setting);
 /// &lt;para&gt;Deals unaspected damage with a potency of 6,150 to all enemies near point of impact.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction MeteorPvE =&gt; _MeteorPvECreator.Value;
+public IBaseAction MeteorPvE =&gt; _MeteorPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/205"&gt;&lt;strong&gt;Meteor&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [205] [Limit Break]
 /// &lt;para&gt;Deals unaspected damage with a potency of 6,150 to all enemies near point of impact.&lt;/para&gt;
@@ -52899,7 +52899,7 @@ static partial void ModifySkyshardPvE(ref ActionSetting setting);
 /// &lt;para&gt;Deals unaspected damage with a potency of 1,650 to all enemies near point of impact.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction SkyshardPvE =&gt; _SkyshardPvECreator.Value;
+public IBaseAction SkyshardPvE =&gt; _SkyshardPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/203"&gt;&lt;strong&gt;Skyshard&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [203] [Limit Break]
 /// &lt;para&gt;Deals unaspected damage with a potency of 1,650 to all enemies near point of impact.&lt;/para&gt;
@@ -52927,7 +52927,7 @@ static partial void ModifyStarstormPvE(ref ActionSetting setting);
 /// &lt;para&gt;Deals unaspected damage with a potency of 3,600 to all enemies near point of impact.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction StarstormPvE =&gt; _StarstormPvECreator.Value;
+public IBaseAction StarstormPvE =&gt; _StarstormPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/204"&gt;&lt;strong&gt;Starstorm&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [204] [Limit Break]
 /// &lt;para&gt;Deals unaspected damage with a potency of 3,600 to all enemies near point of impact.&lt;/para&gt;
@@ -52955,7 +52955,7 @@ static partial void ModifyTeraflarePvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction TeraflarePvE =&gt; _TeraflarePvECreator.Value;
+public IBaseAction TeraflarePvE =&gt; _TeraflarePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4246"&gt;&lt;strong&gt;Teraflare&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4246] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -54605,7 +54605,7 @@ static partial void ModifyHealingWindPvE(ref ActionSetting setting);
 /// &lt;para&gt;Restores 25% of own HP and the HP of all nearby party members.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction HealingWindPvE =&gt; _HealingWindPvECreator.Value;
+public IBaseAction HealingWindPvE =&gt; _HealingWindPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/206"&gt;&lt;strong&gt;Healing Wind&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [206] [Limit Break]
 /// &lt;para&gt;Restores 25% of own HP and the HP of all nearby party members.&lt;/para&gt;
@@ -54633,7 +54633,7 @@ static partial void ModifyBreathOfTheEarthPvE(ref ActionSetting setting);
 /// &lt;para&gt;Restores 60% of own HP and the HP of all nearby party members.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BreathOfTheEarthPvE =&gt; _BreathOfTheEarthPvECreator.Value;
+public IBaseAction BreathOfTheEarthPvE =&gt; _BreathOfTheEarthPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/207"&gt;&lt;strong&gt;Breath of the Earth&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [207] [Limit Break]
 /// &lt;para&gt;Restores 60% of own HP and the HP of all nearby party members.&lt;/para&gt;
@@ -54661,7 +54661,7 @@ static partial void ModifyAngelFeathersPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction AngelFeathersPvE =&gt; _AngelFeathersPvECreator.Value;
+public IBaseAction AngelFeathersPvE =&gt; _AngelFeathersPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4247"&gt;&lt;strong&gt;Angel Feathers&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4247] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -56653,7 +56653,7 @@ static partial void ModifyBraverPvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
+public IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/200"&gt;&lt;strong&gt;Braver&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [200] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
@@ -56681,7 +56681,7 @@ static partial void ModifyBladedancePvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
+public IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/201"&gt;&lt;strong&gt;Bladedance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [201] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
@@ -56709,7 +56709,7 @@ static partial void ModifyChimatsuriPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction ChimatsuriPvE =&gt; _ChimatsuriPvECreator.Value;
+public IBaseAction ChimatsuriPvE =&gt; _ChimatsuriPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4243"&gt;&lt;strong&gt;Chimatsuri&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4243] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -58099,7 +58099,7 @@ static partial void ModifyBigShotPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BigShotPvE =&gt; _BigShotPvECreator.Value;
+public IBaseAction BigShotPvE =&gt; _BigShotPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4238"&gt;&lt;strong&gt;Big Shot&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4238] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -58127,7 +58127,7 @@ static partial void ModifyDesperadoPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction DesperadoPvE =&gt; _DesperadoPvECreator.Value;
+public IBaseAction DesperadoPvE =&gt; _DesperadoPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4239"&gt;&lt;strong&gt;Desperado&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4239] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -58155,7 +58155,7 @@ static partial void ModifySatelliteBeamPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction SatelliteBeamPvE =&gt; _SatelliteBeamPvECreator.Value;
+public IBaseAction SatelliteBeamPvE =&gt; _SatelliteBeamPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4245"&gt;&lt;strong&gt;Satellite Beam&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4245] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -59360,7 +59360,7 @@ static partial void ModifyShieldWallPvE(ref ActionSetting setting);
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction ShieldWallPvE =&gt; _ShieldWallPvECreator.Value;
+public IBaseAction ShieldWallPvE =&gt; _ShieldWallPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/197"&gt;&lt;strong&gt;Shield Wall&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [197] [Limit Break]
 /// &lt;para&gt;Reduces damage taken by all party members by 20%.&lt;/para&gt;
@@ -59390,7 +59390,7 @@ static partial void ModifyStrongholdPvE(ref ActionSetting setting);
 /// &lt;para&gt;Duration: 15s&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction StrongholdPvE =&gt; _StrongholdPvECreator.Value;
+public IBaseAction StrongholdPvE =&gt; _StrongholdPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/198"&gt;&lt;strong&gt;Stronghold&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [198] [Limit Break]
 /// &lt;para&gt;Reduces damage taken by all party members by 40%.&lt;/para&gt;
@@ -59419,7 +59419,7 @@ static partial void ModifyDarkForcePvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction DarkForcePvE =&gt; _DarkForcePvECreator.Value;
+public IBaseAction DarkForcePvE =&gt; _DarkForcePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4241"&gt;&lt;strong&gt;Dark Force&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4241] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -61088,7 +61088,7 @@ static partial void ModifyHealingWindPvE(ref ActionSetting setting);
 /// &lt;para&gt;Restores 25% of own HP and the HP of all nearby party members.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction HealingWindPvE =&gt; _HealingWindPvECreator.Value;
+public IBaseAction HealingWindPvE =&gt; _HealingWindPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/206"&gt;&lt;strong&gt;Healing Wind&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [206] [Limit Break]
 /// &lt;para&gt;Restores 25% of own HP and the HP of all nearby party members.&lt;/para&gt;
@@ -61116,7 +61116,7 @@ static partial void ModifyBreathOfTheEarthPvE(ref ActionSetting setting);
 /// &lt;para&gt;Restores 60% of own HP and the HP of all nearby party members.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BreathOfTheEarthPvE =&gt; _BreathOfTheEarthPvECreator.Value;
+public IBaseAction BreathOfTheEarthPvE =&gt; _BreathOfTheEarthPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/207"&gt;&lt;strong&gt;Breath of the Earth&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [207] [Limit Break]
 /// &lt;para&gt;Restores 60% of own HP and the HP of all nearby party members.&lt;/para&gt;
@@ -61144,7 +61144,7 @@ static partial void ModifyAstralStasisPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction AstralStasisPvE =&gt; _AstralStasisPvECreator.Value;
+public IBaseAction AstralStasisPvE =&gt; _AstralStasisPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4248"&gt;&lt;strong&gt;Astral Stasis&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4248] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -62599,7 +62599,7 @@ static partial void ModifyBraverPvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
+public IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/200"&gt;&lt;strong&gt;Braver&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [200] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
@@ -62627,7 +62627,7 @@ static partial void ModifyBladedancePvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
+public IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/201"&gt;&lt;strong&gt;Bladedance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [201] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
@@ -62655,7 +62655,7 @@ static partial void ModifyDoomOfTheLivingPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction DoomOfTheLivingPvE =&gt; _DoomOfTheLivingPvECreator.Value;
+public IBaseAction DoomOfTheLivingPvE =&gt; _DoomOfTheLivingPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/7861"&gt;&lt;strong&gt;Doom of the Living&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [7861] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -64357,7 +64357,7 @@ static partial void ModifySkyshardPvE(ref ActionSetting setting);
 /// &lt;para&gt;Deals unaspected damage with a potency of 1,650 to all enemies near point of impact.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction SkyshardPvE =&gt; _SkyshardPvECreator.Value;
+public IBaseAction SkyshardPvE =&gt; _SkyshardPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/203"&gt;&lt;strong&gt;Skyshard&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [203] [Limit Break]
 /// &lt;para&gt;Deals unaspected damage with a potency of 1,650 to all enemies near point of impact.&lt;/para&gt;
@@ -64385,7 +64385,7 @@ static partial void ModifyStarstormPvE(ref ActionSetting setting);
 /// &lt;para&gt;Deals unaspected damage with a potency of 3,600 to all enemies near point of impact.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction StarstormPvE =&gt; _StarstormPvECreator.Value;
+public IBaseAction StarstormPvE =&gt; _StarstormPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/204"&gt;&lt;strong&gt;Starstorm&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [204] [Limit Break]
 /// &lt;para&gt;Deals unaspected damage with a potency of 3,600 to all enemies near point of impact.&lt;/para&gt;
@@ -64413,7 +64413,7 @@ static partial void ModifyVermilionScourgePvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction VermilionScourgePvE =&gt; _VermilionScourgePvECreator.Value;
+public IBaseAction VermilionScourgePvE =&gt; _VermilionScourgePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/7862"&gt;&lt;strong&gt;Vermilion Scourge&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [7862] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -69729,7 +69729,7 @@ static partial void ModifyShieldWallPvE(ref ActionSetting setting);
 /// &lt;para&gt;Duration: 10s&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction ShieldWallPvE =&gt; _ShieldWallPvECreator.Value;
+public IBaseAction ShieldWallPvE =&gt; _ShieldWallPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/197"&gt;&lt;strong&gt;Shield Wall&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [197] [Limit Break]
 /// &lt;para&gt;Reduces damage taken by all party members by 20%.&lt;/para&gt;
@@ -69759,7 +69759,7 @@ static partial void ModifyStrongholdPvE(ref ActionSetting setting);
 /// &lt;para&gt;Duration: 15s&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction StrongholdPvE =&gt; _StrongholdPvECreator.Value;
+public IBaseAction StrongholdPvE =&gt; _StrongholdPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/198"&gt;&lt;strong&gt;Stronghold&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [198] [Limit Break]
 /// &lt;para&gt;Reduces damage taken by all party members by 40%.&lt;/para&gt;
@@ -69788,7 +69788,7 @@ static partial void ModifyGunmetalSoulPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction GunmetalSoulPvE =&gt; _GunmetalSoulPvECreator.Value;
+public IBaseAction GunmetalSoulPvE =&gt; _GunmetalSoulPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/17105"&gt;&lt;strong&gt;Gunmetal Soul&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [17105] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -71561,7 +71561,7 @@ static partial void ModifyBigShotPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BigShotPvE =&gt; _BigShotPvECreator.Value;
+public IBaseAction BigShotPvE =&gt; _BigShotPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4238"&gt;&lt;strong&gt;Big Shot&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4238] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -71589,7 +71589,7 @@ static partial void ModifyDesperadoPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction DesperadoPvE =&gt; _DesperadoPvECreator.Value;
+public IBaseAction DesperadoPvE =&gt; _DesperadoPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/4239"&gt;&lt;strong&gt;Desperado&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [4239] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -71617,7 +71617,7 @@ static partial void ModifyCrimsonLotusPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction CrimsonLotusPvE =&gt; _CrimsonLotusPvECreator.Value;
+public IBaseAction CrimsonLotusPvE =&gt; _CrimsonLotusPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/17106"&gt;&lt;strong&gt;Crimson Lotus&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [17106] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -73142,7 +73142,7 @@ static partial void ModifyBraverPvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
+public IBaseAction BraverPvE =&gt; _BraverPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/200"&gt;&lt;strong&gt;Braver&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [200] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 2,400.&lt;/para&gt;
@@ -73170,7 +73170,7 @@ static partial void ModifyBladedancePvE(ref ActionSetting setting);
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
+public IBaseAction BladedancePvE =&gt; _BladedancePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/201"&gt;&lt;strong&gt;Bladedance&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [201] [Limit Break]
 /// &lt;para&gt;Delivers an attack with a potency of 5,250.&lt;/para&gt;
@@ -73198,7 +73198,7 @@ static partial void ModifyTheEndPvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction TheEndPvE =&gt; _TheEndPvECreator.Value;
+public IBaseAction TheEndPvE =&gt; _TheEndPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/24858"&gt;&lt;strong&gt;the End&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [24858] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -74562,7 +74562,7 @@ static partial void ModifyHealingWindPvE(ref ActionSetting setting);
 /// &lt;para&gt;Restores 25% of own HP and the HP of all nearby party members.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction HealingWindPvE =&gt; _HealingWindPvECreator.Value;
+public IBaseAction HealingWindPvE =&gt; _HealingWindPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/206"&gt;&lt;strong&gt;Healing Wind&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [206] [Limit Break]
 /// &lt;para&gt;Restores 25% of own HP and the HP of all nearby party members.&lt;/para&gt;
@@ -74590,7 +74590,7 @@ static partial void ModifyBreathOfTheEarthPvE(ref ActionSetting setting);
 /// &lt;para&gt;Restores 60% of own HP and the HP of all nearby party members.&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction BreathOfTheEarthPvE =&gt; _BreathOfTheEarthPvECreator.Value;
+public IBaseAction BreathOfTheEarthPvE =&gt; _BreathOfTheEarthPvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/207"&gt;&lt;strong&gt;Breath of the Earth&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [207] [Limit Break]
 /// &lt;para&gt;Restores 60% of own HP and the HP of all nearby party members.&lt;/para&gt;
@@ -74618,7 +74618,7 @@ static partial void ModifyTechneMakrePvE(ref ActionSetting setting);
 /// &lt;para&gt;&lt;/para&gt;
 /// &lt;/summary&gt;
 
-private IBaseAction TechneMakrePvE =&gt; _TechneMakrePvECreator.Value;
+public IBaseAction TechneMakrePvE =&gt; _TechneMakrePvECreator.Value;
 /// &lt;summary&gt;
 /// &lt;see href="https://garlandtools.org/db/#action/24859"&gt;&lt;strong&gt;Techne Makre&lt;/strong&gt;&lt;/see&gt; &lt;i&gt;PvE&lt;/i&gt; (All Classes) [24859] [Limit Break]
 /// &lt;para&gt;&lt;/para&gt;
@@ -74751,385 +74751,385 @@ private sealed protected override IBaseAction LimitBreakPvP =&gt; MesotesPvP;
   </data>
   <data name="OpCode" xml:space="preserve">
     <value>/// &lt;summary&gt;
-///Actor Control
-/// &lt;/summary&gt;
-[Description("Actor Control")]
-ActorControl = 713,
-/// &lt;summary&gt;
-///Actor Set Pos
-/// &lt;/summary&gt;
-[Description("Actor Set Pos")]
-ActorSetPos = 121,
-/// &lt;summary&gt;
-///Actor Gauge
-/// &lt;/summary&gt;
-[Description("Actor Gauge")]
-ActorGauge = 123,
-/// &lt;summary&gt;
-///Airship Timers
-/// &lt;/summary&gt;
-[Description("Airship Timers")]
-AirshipTimers = 411,
-/// &lt;summary&gt;
 ///Actor Control Target
 /// &lt;/summary&gt;
 [Description("Actor Control Target")]
-ActorControlTarget = 361,
-/// &lt;summary&gt;
-///Actor Cast
-/// &lt;/summary&gt;
-[Description("Actor Cast")]
-ActorCast = 357,
-/// &lt;summary&gt;
-///Airship Status List
-/// &lt;/summary&gt;
-[Description("Airship Status List")]
-AirshipStatusList = 430,
-/// &lt;summary&gt;
-///Actor Move
-/// &lt;/summary&gt;
-[Description("Actor Move")]
-ActorMove = 416,
-/// &lt;summary&gt;
-///Airship Exploration Result
-/// &lt;/summary&gt;
-[Description("Airship Exploration Result")]
-AirshipExplorationResult = 261,
-/// &lt;summary&gt;
-///Actor Control Self
-/// &lt;/summary&gt;
-[Description("Actor Control Self")]
-ActorControlSelf = 832,
+ActorControlTarget = 110,
 /// &lt;summary&gt;
 ///Airship Status
 /// &lt;/summary&gt;
 [Description("Airship Status")]
-AirshipStatus = 965,
+AirshipStatus = 960,
 /// &lt;summary&gt;
-///Currency Crystal Info
+///Airship Exploration Result
 /// &lt;/summary&gt;
-[Description("Currency Crystal Info")]
-CurrencyCrystalInfo = 936,
+[Description("Airship Exploration Result")]
+AirshipExplorationResult = 432,
 /// &lt;summary&gt;
-///Container Info
+///Actor Set Pos
 /// &lt;/summary&gt;
-[Description("Container Info")]
-ContainerInfo = 659,
+[Description("Actor Set Pos")]
+ActorSetPos = 401,
+/// &lt;summary&gt;
+///Actor Control
+/// &lt;/summary&gt;
+[Description("Actor Control")]
+ActorControl = 819,
+/// &lt;summary&gt;
+///Actor Control Self
+/// &lt;/summary&gt;
+[Description("Actor Control Self")]
+ActorControlSelf = 273,
+/// &lt;summary&gt;
+///Actor Gauge
+/// &lt;/summary&gt;
+[Description("Actor Gauge")]
+ActorGauge = 851,
+/// &lt;summary&gt;
+///Airship Status List
+/// &lt;/summary&gt;
+[Description("Airship Status List")]
+AirshipStatusList = 852,
+/// &lt;summary&gt;
+///Actor Cast
+/// &lt;/summary&gt;
+[Description("Actor Cast")]
+ActorCast = 913,
+/// &lt;summary&gt;
+///Airship Timers
+/// &lt;/summary&gt;
+[Description("Airship Timers")]
+AirshipTimers = 634,
+/// &lt;summary&gt;
+///Actor Move
+/// &lt;/summary&gt;
+[Description("Actor Move")]
+ActorMove = 949,
 /// &lt;summary&gt;
 ///CFNotify
 /// &lt;/summary&gt;
 [Description("CFNotify")]
-CFNotify = 327,
+CFNotify = 549,
+/// &lt;summary&gt;
+///Currency Crystal Info
+/// &lt;/summary&gt;
+[Description("Currency Crystal Info")]
+CurrencyCrystalInfo = 117,
+/// &lt;summary&gt;
+///Container Info
+/// &lt;/summary&gt;
+[Description("Container Info")]
+ContainerInfo = 501,
 /// &lt;summary&gt;
 ///Desynth Result
 /// &lt;/summary&gt;
 [Description("Desynth Result")]
-DesynthResult = 585,
-/// &lt;summary&gt;
-///Event Play 4
-/// &lt;/summary&gt;
-[Description("Event Play 4")]
-EventPlay4 = 893,
-/// &lt;summary&gt;
-///Event Play 8
-/// &lt;/summary&gt;
-[Description("Event Play 8")]
-EventPlay8 = 515,
-/// &lt;summary&gt;
-///Event Play 128
-/// &lt;/summary&gt;
-[Description("Event Play 128")]
-EventPlay128 = 562,
-/// &lt;summary&gt;
-///Event Play 64
-/// &lt;/summary&gt;
-[Description("Event Play 64")]
-EventPlay64 = 996,
-/// &lt;summary&gt;
-///Event Play
-/// &lt;/summary&gt;
-[Description("Event Play")]
-EventPlay = 821,
-/// &lt;summary&gt;
-///Effect Result
-/// &lt;/summary&gt;
-[Description("Effect Result")]
-EffectResult = 814,
-/// &lt;summary&gt;
-///Effect Result Basic
-/// &lt;/summary&gt;
-[Description("Effect Result Basic")]
-EffectResultBasic = 621,
-/// &lt;summary&gt;
-///Examine
-/// &lt;/summary&gt;
-[Description("Examine")]
-Examine = 776,
+DesynthResult = 583,
 /// &lt;summary&gt;
 ///Examine Search Info
 /// &lt;/summary&gt;
 [Description("Examine Search Info")]
-ExamineSearchInfo = 467,
-/// &lt;summary&gt;
-///Event Play 255
-/// &lt;/summary&gt;
-[Description("Event Play 255")]
-EventPlay255 = 931,
-/// &lt;summary&gt;
-///Environment Control
-/// &lt;/summary&gt;
-[Description("Environment Control")]
-EnvironmentControl = 728,
-/// &lt;summary&gt;
-///Event Play 32
-/// &lt;/summary&gt;
-[Description("Event Play 32")]
-EventPlay32 = 324,
+ExamineSearchInfo = 869,
 /// &lt;summary&gt;
 ///Event Finish
 /// &lt;/summary&gt;
 [Description("Event Finish")]
-EventFinish = 967,
+EventFinish = 561,
 /// &lt;summary&gt;
-///Event Play 16
+///Event Play 128
 /// &lt;/summary&gt;
-[Description("Event Play 16")]
-EventPlay16 = 236,
+[Description("Event Play 128")]
+EventPlay128 = 694,
+/// &lt;summary&gt;
+///Examine
+/// &lt;/summary&gt;
+[Description("Examine")]
+Examine = 703,
+/// &lt;summary&gt;
+///Event Play 255
+/// &lt;/summary&gt;
+[Description("Event Play 255")]
+EventPlay255 = 731,
 /// &lt;summary&gt;
 ///Effect
 /// &lt;/summary&gt;
 [Description("Effect")]
-Effect = 211,
+Effect = 458,
+/// &lt;summary&gt;
+///Event Play 16
+/// &lt;/summary&gt;
+[Description("Event Play 16")]
+EventPlay16 = 128,
+/// &lt;summary&gt;
+///Effect Result
+/// &lt;/summary&gt;
+[Description("Effect Result")]
+EffectResult = 397,
+/// &lt;summary&gt;
+///Event Play 4
+/// &lt;/summary&gt;
+[Description("Event Play 4")]
+EventPlay4 = 791,
 /// &lt;summary&gt;
 ///Event Start
 /// &lt;/summary&gt;
 [Description("Event Start")]
-EventStart = 982,
+EventStart = 146,
 /// &lt;summary&gt;
-///Free Company Info
+///Event Play 32
 /// &lt;/summary&gt;
-[Description("Free Company Info")]
-FreeCompanyInfo = 686,
+[Description("Event Play 32")]
+EventPlay32 = 312,
+/// &lt;summary&gt;
+///Event Play 64
+/// &lt;/summary&gt;
+[Description("Event Play 64")]
+EventPlay64 = 170,
+/// &lt;summary&gt;
+///Event Play
+/// &lt;/summary&gt;
+[Description("Event Play")]
+EventPlay = 298,
+/// &lt;summary&gt;
+///Environment Control
+/// &lt;/summary&gt;
+[Description("Environment Control")]
+EnvironmentControl = 280,
+/// &lt;summary&gt;
+///Effect Result Basic
+/// &lt;/summary&gt;
+[Description("Effect Result Basic")]
+EffectResultBasic = 378,
+/// &lt;summary&gt;
+///Event Play 8
+/// &lt;/summary&gt;
+[Description("Event Play 8")]
+EventPlay8 = 826,
 /// &lt;summary&gt;
 ///Free Company Dialog
 /// &lt;/summary&gt;
 [Description("Free Company Dialog")]
-FreeCompanyDialog = 678,
+FreeCompanyDialog = 686,
 /// &lt;summary&gt;
-///Item Info
+///Free Company Info
 /// &lt;/summary&gt;
-[Description("Item Info")]
-ItemInfo = 942,
-/// &lt;summary&gt;
-///Island Workshop Supply Demand
-/// &lt;/summary&gt;
-[Description("Island Workshop Supply Demand")]
-IslandWorkshopSupplyDemand = 120,
-/// &lt;summary&gt;
-///Inventory Transaction Finish
-/// &lt;/summary&gt;
-[Description("Inventory Transaction Finish")]
-InventoryTransactionFinish = 557,
-/// &lt;summary&gt;
-///Inventory Transaction
-/// &lt;/summary&gt;
-[Description("Inventory Transaction")]
-InventoryTransaction = 226,
-/// &lt;summary&gt;
-///Init Zone
-/// &lt;/summary&gt;
-[Description("Init Zone")]
-InitZone = 727,
-/// &lt;summary&gt;
-///Inventory Action Ack
-/// &lt;/summary&gt;
-[Description("Inventory Action Ack")]
-InventoryActionAck = 781,
+[Description("Free Company Info")]
+FreeCompanyInfo = 154,
 /// &lt;summary&gt;
 ///Item Market Board Info
 /// &lt;/summary&gt;
 [Description("Item Market Board Info")]
-ItemMarketBoardInfo = 143,
+ItemMarketBoardInfo = 359,
+/// &lt;summary&gt;
+///Inventory Action Ack
+/// &lt;/summary&gt;
+[Description("Inventory Action Ack")]
+InventoryActionAck = 173,
+/// &lt;summary&gt;
+///Item Info
+/// &lt;/summary&gt;
+[Description("Item Info")]
+ItemInfo = 836,
+/// &lt;summary&gt;
+///Inventory Transaction
+/// &lt;/summary&gt;
+[Description("Inventory Transaction")]
+InventoryTransaction = 513,
+/// &lt;summary&gt;
+///Island Workshop Supply Demand
+/// &lt;/summary&gt;
+[Description("Island Workshop Supply Demand")]
+IslandWorkshopSupplyDemand = 790,
+/// &lt;summary&gt;
+///Inventory Transaction Finish
+/// &lt;/summary&gt;
+[Description("Inventory Transaction Finish")]
+InventoryTransactionFinish = 180,
+/// &lt;summary&gt;
+///Init Zone
+/// &lt;/summary&gt;
+[Description("Init Zone")]
+InitZone = 795,
 /// &lt;summary&gt;
 ///Logout
 /// &lt;/summary&gt;
 [Description("Logout")]
-Logout = 725,
-/// &lt;summary&gt;
-///Market Board Item Listing History
-/// &lt;/summary&gt;
-[Description("Market Board Item Listing History")]
-MarketBoardItemListingHistory = 197,
-/// &lt;summary&gt;
-///Market Board Item Listing
-/// &lt;/summary&gt;
-[Description("Market Board Item Listing")]
-MarketBoardItemListing = 119,
-/// &lt;summary&gt;
-///Market Board Item Listing Count
-/// &lt;/summary&gt;
-[Description("Market Board Item Listing Count")]
-MarketBoardItemListingCount = 251,
+Logout = 668,
 /// &lt;summary&gt;
 ///Market Board Search Result
 /// &lt;/summary&gt;
 [Description("Market Board Search Result")]
-MarketBoardSearchResult = 339,
+MarketBoardSearchResult = 762,
+/// &lt;summary&gt;
+///Market Board Item Listing Count
+/// &lt;/summary&gt;
+[Description("Market Board Item Listing Count")]
+MarketBoardItemListingCount = 749,
+/// &lt;summary&gt;
+///Market Board Item Listing
+/// &lt;/summary&gt;
+[Description("Market Board Item Listing")]
+MarketBoardItemListing = 997,
 /// &lt;summary&gt;
 ///Market Board Purchase
 /// &lt;/summary&gt;
 [Description("Market Board Purchase")]
-MarketBoardPurchase = 779,
+MarketBoardPurchase = 529,
+/// &lt;summary&gt;
+///Market Board Item Listing History
+/// &lt;/summary&gt;
+[Description("Market Board Item Listing History")]
+MarketBoardItemListingHistory = 265,
 /// &lt;summary&gt;
 ///Npc Spawn
 /// &lt;/summary&gt;
 [Description("Npc Spawn")]
-NpcSpawn = 974,
+NpcSpawn = 701,
 /// &lt;summary&gt;
 ///Object Spawn
 /// &lt;/summary&gt;
 [Description("Object Spawn")]
-ObjectSpawn = 192,
-/// &lt;summary&gt;
-///Prepare Zoning
-/// &lt;/summary&gt;
-[Description("Prepare Zoning")]
-PrepareZoning = 910,
-/// &lt;summary&gt;
-///Playtime
-/// &lt;/summary&gt;
-[Description("Playtime")]
-Playtime = 581,
-/// &lt;summary&gt;
-///Place Field Marker Preset
-/// &lt;/summary&gt;
-[Description("Place Field Marker Preset")]
-PlaceFieldMarkerPreset = 227,
-/// &lt;summary&gt;
-///Player Spawn
-/// &lt;/summary&gt;
-[Description("Player Spawn")]
-PlayerSpawn = 645,
-/// &lt;summary&gt;
-///Player Stats
-/// &lt;/summary&gt;
-[Description("Player Stats")]
-PlayerStats = 302,
-/// &lt;summary&gt;
-///Player Setup
-/// &lt;/summary&gt;
-[Description("Player Setup")]
-PlayerSetup = 427,
+ObjectSpawn = 788,
 /// &lt;summary&gt;
 ///Place Field Marker
 /// &lt;/summary&gt;
 [Description("Place Field Marker")]
-PlaceFieldMarker = 475,
+PlaceFieldMarker = 671,
 /// &lt;summary&gt;
-///Result Dialog
+///Prepare Zoning
 /// &lt;/summary&gt;
-[Description("Result Dialog")]
-ResultDialog = 998,
+[Description("Prepare Zoning")]
+PrepareZoning = 935,
+/// &lt;summary&gt;
+///Player Spawn
+/// &lt;/summary&gt;
+[Description("Player Spawn")]
+PlayerSpawn = 246,
+/// &lt;summary&gt;
+///Playtime
+/// &lt;/summary&gt;
+[Description("Playtime")]
+Playtime = 797,
+/// &lt;summary&gt;
+///Player Stats
+/// &lt;/summary&gt;
+[Description("Player Stats")]
+PlayerStats = 370,
+/// &lt;summary&gt;
+///Player Setup
+/// &lt;/summary&gt;
+[Description("Player Setup")]
+PlayerSetup = 534,
+/// &lt;summary&gt;
+///Place Field Marker Preset
+/// &lt;/summary&gt;
+[Description("Place Field Marker Preset")]
+PlaceFieldMarkerPreset = 503,
 /// &lt;summary&gt;
 ///Retainer Information
 /// &lt;/summary&gt;
 [Description("Retainer Information")]
-RetainerInformation = 734,
+RetainerInformation = 219,
 /// &lt;summary&gt;
-///Status Effect List 3
+///Result Dialog
 /// &lt;/summary&gt;
-[Description("Status Effect List 3")]
-StatusEffectList3 = 270,
-/// &lt;summary&gt;
-///Submarine Timers
-/// &lt;/summary&gt;
-[Description("Submarine Timers")]
-SubmarineTimers = 310,
+[Description("Result Dialog")]
+ResultDialog = 480,
 /// &lt;summary&gt;
 ///Submarine Exploration Result
 /// &lt;/summary&gt;
 [Description("Submarine Exploration Result")]
-SubmarineExplorationResult = 420,
-/// &lt;summary&gt;
-///Submarine Progression Status
-/// &lt;/summary&gt;
-[Description("Submarine Progression Status")]
-SubmarineProgressionStatus = 449,
-/// &lt;summary&gt;
-///Status Effect List
-/// &lt;/summary&gt;
-[Description("Status Effect List")]
-StatusEffectList = 830,
+SubmarineExplorationResult = 793,
 /// &lt;summary&gt;
 ///System Log Message
 /// &lt;/summary&gt;
 [Description("System Log Message")]
-SystemLogMessage = 597,
+SystemLogMessage = 487,
+/// &lt;summary&gt;
+///Status Effect List
+/// &lt;/summary&gt;
+[Description("Status Effect List")]
+StatusEffectList = 241,
+/// &lt;summary&gt;
+///Submarine Progression Status
+/// &lt;/summary&gt;
+[Description("Submarine Progression Status")]
+SubmarineProgressionStatus = 441,
 /// &lt;summary&gt;
 ///Status Effect List 2
 /// &lt;/summary&gt;
 [Description("Status Effect List 2")]
-StatusEffectList2 = 428,
+StatusEffectList2 = 559,
+/// &lt;summary&gt;
+///Status Effect List 3
+/// &lt;/summary&gt;
+[Description("Status Effect List 3")]
+StatusEffectList3 = 137,
 /// &lt;summary&gt;
 ///Submarine Status List
 /// &lt;/summary&gt;
 [Description("Submarine Status List")]
-SubmarineStatusList = 755,
+SubmarineStatusList = 580,
+/// &lt;summary&gt;
+///Submarine Timers
+/// &lt;/summary&gt;
+[Description("Submarine Timers")]
+SubmarineTimers = 524,
 /// &lt;summary&gt;
 ///Update Hp Mp Tp
 /// &lt;/summary&gt;
 [Description("Update Hp Mp Tp")]
-UpdateHpMpTp = 588,
-/// &lt;summary&gt;
-///Update Inventory Slot
-/// &lt;/summary&gt;
-[Description("Update Inventory Slot")]
-UpdateInventorySlot = 618,
-/// &lt;summary&gt;
-///Update Class Info
-/// &lt;/summary&gt;
-[Description("Update Class Info")]
-UpdateClassInfo = 673,
+UpdateHpMpTp = 337,
 /// &lt;summary&gt;
 ///Update Search Info
 /// &lt;/summary&gt;
 [Description("Update Search Info")]
-UpdateSearchInfo = 763,
+UpdateSearchInfo = 276,
+/// &lt;summary&gt;
+///Update Inventory Slot
+/// &lt;/summary&gt;
+[Description("Update Inventory Slot")]
+UpdateInventorySlot = 862,
+/// &lt;summary&gt;
+///Update Class Info
+/// &lt;/summary&gt;
+[Description("Update Class Info")]
+UpdateClassInfo = 210,
 /// &lt;summary&gt;
 ///Weather Change
 /// &lt;/summary&gt;
 [Description("Weather Change")]
-WeatherChange = 178,
+WeatherChange = 509,
 /// &lt;summary&gt;
 ///Client Trigger
 /// &lt;/summary&gt;
 [Description("Client Trigger")]
-ClientTrigger = 259,
+ClientTrigger = 129,
 /// &lt;summary&gt;
 ///Inventory Modify Handler
 /// &lt;/summary&gt;
 [Description("Inventory Modify Handler")]
-InventoryModifyHandler = 923,
+InventoryModifyHandler = 301,
 /// &lt;summary&gt;
 ///Market Board Purchase Handler
 /// &lt;/summary&gt;
 [Description("Market Board Purchase Handler")]
-MarketBoardPurchaseHandler = 891,
+MarketBoardPurchaseHandler = 460,
 /// &lt;summary&gt;
 ///Set Search Info Handler
 /// &lt;/summary&gt;
 [Description("Set Search Info Handler")]
-SetSearchInfoHandler = 156,
-/// &lt;summary&gt;
-///Update Position Handler
-/// &lt;/summary&gt;
-[Description("Update Position Handler")]
-UpdatePositionHandler = 355,
+SetSearchInfoHandler = 181,
 /// &lt;summary&gt;
 ///Update Position Instance
 /// &lt;/summary&gt;
 [Description("Update Position Instance")]
-UpdatePositionInstance = 844,
+UpdatePositionInstance = 217,
+/// &lt;summary&gt;
+///Update Position Handler
+/// &lt;/summary&gt;
+[Description("Update Position Handler")]
+UpdatePositionHandler = 538,
 /// &lt;summary&gt;
 ///Lobby Error
 /// &lt;/summary&gt;
