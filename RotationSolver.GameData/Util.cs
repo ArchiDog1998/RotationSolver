@@ -92,30 +92,30 @@ internal static partial class Util
         }
 
         return $$"""
-        private readonly Lazy<IBaseAction> _{{actionName}}Creator = new(() => 
-        {
-            IBaseAction action = new BaseAction((ActionID){{item.RowId}}, {{isDuty.ToString().ToLower()}});
-            CustomRotation.LoadActionSetting(ref action);
-
-            var setting = action.Setting;
-            Modify{{actionName}}(ref setting);
-            action.Setting = setting;
-
-            return action;
-        });
-
-        /// <summary>
-        /// Modify {{actionDescName}}
-        /// </summary>
-        static partial void Modify{{actionName}}(ref ActionSetting setting);
-
-        /// <summary>
-        /// {{actionDescName}}
-        /// {{desc}}
-        /// </summary>
-        {{(isDuty ? $"[ID({item.RowId})]" : string.Empty)}}
-        {{(item.ActionCategory.Row is 9 or 15 ? "private" : "public")}} IBaseAction {{actionName}} => _{{actionName}}Creator.Value;
-        """;
+         private readonly Lazy<IBaseAction> _{{actionName}}Creator = new(() => 
+         {
+             IBaseAction action = new BaseAction((ActionID){{item.RowId}}, {{isDuty.ToString().ToLower()}});
+             CustomRotation.LoadActionSetting(ref action);
+         
+             var setting = action.Setting;
+             Modify{{actionName}}(ref setting);
+             action.Setting = setting;
+         
+             return action;
+         });
+         
+         /// <summary>
+         /// Modify {{actionDescName}}
+         /// </summary>
+         static partial void Modify{{actionName}}(ref ActionSetting setting);
+         
+         /// <summary>
+         /// {{actionDescName}}
+         /// {{desc}}
+         /// </summary>
+         {{(isDuty ? $"[ID({item.RowId})]" : string.Empty)}}
+         {{(item.ActionCategory.Row is 9 or 15 ? "private" : "public")}} IBaseAction {{actionName}} => _{{actionName}}Creator.Value;
+         """;
     }
 
     public static string GetDescName(this Lumina.Excel.GeneratedSheets.Action action)

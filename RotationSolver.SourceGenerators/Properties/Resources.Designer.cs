@@ -229,15 +229,6 @@ namespace RotationSolver.SourceGenerators.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string OpCode {
-            get {
-                return ResourceManager.GetString("OpCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to using ECommons.DalamudServices;
         ///using ECommons.ExcelServices;
         ///using RotationSolver.Basic.Actions;

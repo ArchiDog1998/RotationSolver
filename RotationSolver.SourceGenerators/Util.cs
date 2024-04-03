@@ -1,4 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -97,5 +99,14 @@ internal static class Util
 
             return string.Concat(pascalCase);
         }
+    }
+
+    public static AttributeListSyntax GeneratedCodeAttribute(Type generator)
+    {
+        return SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(
+                        SyntaxFactory.Attribute(SyntaxFactory.IdentifierName("global::System.CodeDom.Compiler.GeneratedCode"))
+                        .AddArgumentListArguments(
+                            SyntaxFactory.AttributeArgument(SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(generator.FullName))),
+                            SyntaxFactory.AttributeArgument(SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(generator.Assembly.GetName().Version.ToString()))))));
     }
 }

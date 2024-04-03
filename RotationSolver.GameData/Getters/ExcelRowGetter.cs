@@ -11,7 +11,6 @@ internal abstract class ExcelRowGetter<T>(Lumina.GameData gameData) where T : Ex
 
     protected virtual void BeforeCreating() { }
 
-
     public string GetCode()
     {
         var items = _gameData.GetExcelSheet<T>();
