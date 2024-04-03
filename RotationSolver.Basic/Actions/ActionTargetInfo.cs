@@ -70,20 +70,6 @@ public struct ActionTargetInfo(IBaseAction action)
             objs.Add(obj);
         }
 
-        if (DataCenter.IsManual && !IsTargetFriendly)
-        {
-            var currentTarget = Svc.Targets?.Target;
-            if (currentTarget != null && currentTarget.ObjectId != 0)
-            {
-                return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget).Where(o => o.Address == currentTarget.Address);
-            }
-            else
-            {
-                objs.Clear();
-                return objs;
-            }
-        }
-
         return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget);
     }
 
@@ -249,6 +235,19 @@ public struct ActionTargetInfo(IBaseAction action)
             skipAoeCheck ? 0 : action.Config.AoeCount);
         var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.SpecialType);
         if (target == null) return null;
+        if (DataCenter.IsManual && target.IsEnemy())
+        {
+            var activeTarget = Svc.Targets.Target as BattleChara;
+            if (target.ObjectId != activeTarget?.ObjectId)
+            {
+                return null;
+            }
+            else if (activeTarget != null && activeTarget.IsEnemy())
+            {
+                return new(activeTarget, [.. GetAffects(activeTarget, canAffects)], activeTarget.Position);
+            }
+            return null;
+        }
 
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
     }
