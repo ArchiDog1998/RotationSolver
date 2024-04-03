@@ -88,7 +88,7 @@ partial class DarkKnightRotation
 
     static partial void ModifyStalwartSoulPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.SaltedEarth];
+        setting.ComboIds = [ActionID.UnleashPvE];
         setting.CreateConfig = () => new()
         {
             AoeCount = 2,
