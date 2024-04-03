@@ -6,6 +6,7 @@ using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using XIVPainter;
 
 namespace RotationSolver.UI;
 
@@ -296,7 +297,7 @@ internal class ControlWindow : CtrlWindow
             {
                 var time = DataCenter.SpecialTimeLeft.ToString("F2") + "s";
                 var strSize = ImGui.CalcTextSize(time);
-                CooldownWindow.TextShade(winPos + pos + size - strSize, time);
+                ImGuiHelper.TextShade(winPos + pos + size - strSize, time);
             }
         }
     }
@@ -361,7 +362,7 @@ internal class ControlWindow : CtrlWindow
             {
                 var time = DataCenter.SpecialTimeLeft.ToString("F2") + "s";
                 var strSize = ImGui.CalcTextSize(time);
-                CooldownWindow.TextShade(winPos + pos + size - strSize, time);
+                ImGuiHelper.TextShade(winPos + pos + size - strSize, time);
             }
         }
     }
@@ -459,16 +460,82 @@ internal class ControlWindow : CtrlWindow
                 }
                 if (canDoIt) action?.Use();
             }
-            else if(action != null)
+            else if (action != null)
             {
                 DataCenter.AddCommandAction(action, 5);
             }
         }
         var size = ImGui.GetItemRectSize();
-        ImGuiHelper.DrawActionOverlay(cursor, width, action == null ? -1 : percent);
-        ImguiTooltips.HoveredTooltip(desc);
+        var pos = cursor;
+        DrawKeybindOnAction(pos, action?.ID);
 
-        return (cursor, size);
+        if (action == null || !Service.Config.ShowCooldownsAlways)
+        {
+            ImGuiHelper.DrawActionOverlay(pos, width, -1);
+            ImguiTooltips.HoveredTooltip(desc);
+
+            return (pos, size);
+        }
+        else
+        {
+            var recast = action.Cooldown.RecastTimeOneChargeRaw;
+            var elapsed = action.Cooldown.RecastTimeElapsedRaw;
+            var winPos = ImGui.GetWindowPos();
+            var r = -1f;
+            if (Service.Config.UseOriginalCooldown)
+            {
+                r = !action.EnoughLevel ? 0 : recast == 0 || !action.Cooldown.IsCoolingDown ? 1 : elapsed / recast;
+            }
+            ImGuiHelper.DrawActionOverlay(cursor, width, r);
+            ImguiTooltips.HoveredTooltip(desc);
+
+            if (!action.EnoughLevel)
+            {
+                if (!Service.Config.UseOriginalCooldown)
+                {
+                    ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X, pos.Y) + winPos,
+                        new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, ImGuiHelper.ProgressCol);
+                }
+            }
+            else if (action.Cooldown.IsCoolingDown)
+            {
+                if (!Service.Config.UseOriginalCooldown)
+                {
+                    var ratio = recast == 0 || !action.EnoughLevel ? 0 : elapsed % recast / recast;
+                    var startPos = new Vector2(pos.X + size.X * ratio, pos.Y) + winPos;
+                    ImGui.GetWindowDrawList().AddRectFilled(startPos,
+                        new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, ImGuiHelper.ProgressCol);
+
+                    ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), ImGuiHelper.Black);
+                }
+
+                using var font = ImRaii.PushFont(DrawingExtensions.GetFont(Service.Config.CooldownFontSize));
+                string time = recast == 0 ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
+                var strSize = ImGui.CalcTextSize(time);
+                var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;
+
+                ImGuiHelper.TextShade(fontPos, time);
+            }
+
+            if (action.EnoughLevel && action is IBaseAction bAct && bAct.Cooldown.MaxCharges > 1)
+            {
+                for (int i = 0; i < bAct.Cooldown.CurrentCharges; i++)
+                {
+                    ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + (i + 0.5f) * new Vector2(width / 5, 0), width / 12, ImGuiHelper.White);
+                }
+            }
+
+            return (pos, size);
+        }
+    }
+
+    private static void DrawKeybindOnAction(Vector2 pos, uint? @uint)
+    {
+        return;
+        if (@uint == null) return;
+        var keybind = PreviewUpdater.GetActionKeybind(@uint.Value);
+        if (string.IsNullOrEmpty(keybind)) return;
+        ImGuiHelper.TextShade(pos + new Vector2(2, 2), keybind);
     }
 
     static unsafe void DrawNextAction(float gcd, float ability, float width)

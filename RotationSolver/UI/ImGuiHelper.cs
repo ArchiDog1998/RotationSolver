@@ -280,6 +280,20 @@ internal static class ImGuiHelper
         return result;
     }
 
+    internal static readonly uint ProgressCol = ImGui.ColorConvertFloat4ToU32(new Vector4(0.6f, 0.6f, 0.6f, 0.7f)); 
+    internal static readonly uint Black = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 0, 0, 1));
+    internal static readonly uint White = ImGui.ColorConvertFloat4ToU32(new Vector4(1, 1, 1, 1));
+
+    internal static void TextShade(Vector2 pos, string text, float width = 1.5f)
+    {
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(0, width), Black, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(0, -width), Black, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(width, 0), Black, text);
+        ImGui.GetWindowDrawList().AddText(pos - new Vector2(-width, 0), Black, text);
+        ImGui.GetWindowDrawList().AddText(pos, White, text);
+    }
+
+
     internal static void DrawActionOverlay(Vector2 cursor, float width, float percent)
     {
         var pixPerUnit = width / 82;
