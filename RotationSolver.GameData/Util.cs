@@ -114,7 +114,7 @@ internal static partial class Util
         /// {{desc}}
         /// </summary>
         {{(isDuty ? $"[ID({item.RowId})]" : string.Empty)}}
-        {{(item.ActionCategory.Row is 9 or 15 ? "private" : "public")}} IBaseAction {{actionName}} => _{{actionName}}Creator.Value;
+        {{(item.ActionCategory.Row is 15 ? "private" : "public")}} IBaseAction {{actionName}} => _{{actionName}}Creator.Value;
         """;
     }
 
