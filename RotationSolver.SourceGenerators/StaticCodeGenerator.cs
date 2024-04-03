@@ -19,7 +19,7 @@ public class StaticCodeGenerator : IIncrementalGenerator
 
     private static void Execute(SourceProductionContext context)
     {
-        GenerateStatus(context);
+        //GenerateStatus(context);
         GenerateActionID(context);
         GenerateContentType(context);
         GenerateActionCate(context);

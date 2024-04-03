@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Security.Cryptography;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace RotationSolver.GameData;
@@ -22,6 +21,12 @@ public static class SyntaxHelper
             .WithEqualsValue(EqualsValueClause(LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(value))));
     }
 
+    public static EnumMemberDeclarationSyntax EnumMember(string name, uint value)
+    {
+        return EnumMemberDeclaration(name)
+            .WithEqualsValue(EqualsValueClause(LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(value))));
+    }
+
     public static AttributeSyntax DescriptionAttribute(string description)
     {
         var attributeArgument = AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(description)));
@@ -31,7 +36,8 @@ public static class SyntaxHelper
     public static TSyntax WithXmlComment<TSyntax>(this TSyntax node, string comment)
         where TSyntax : SyntaxNode
     {
-        return node.WithLeadingTrivia(TriviaList([.. comment.Split('\n').Select(Comment)]));
+        return node.WithLeadingTrivia(TriviaList([Comment(comment)]));
+        //return node.WithLeadingTrivia(TriviaList([.. comment.Split('\n').Select(Comment)]));
     }
 
     public static BaseNamespaceDeclarationSyntax NamespaceDeclaration(string name)
@@ -45,7 +51,13 @@ public static class SyntaxHelper
 
     public static async Task SaveNode(SyntaxNode node, DirectoryInfo dirInfo, string name)
     {
-        await using var streamWriter = new StreamWriter(dirInfo.FullName + $"\\RotationSolver.SourceGenerators\\Resources\\{name}.txt", false);
+        var path = dirInfo.FullName + $"\\RotationSolver.SourceGenerators\\Resources\\{name}.txt";
+        if (File.Exists(path))
+        {
+            File.SetAttributes(path, FileAttributes.Normal);
+        }
+        await using var streamWriter = new StreamWriter(path, false);
         node.NormalizeWhitespace().WriteTo(streamWriter);
+        File.SetAttributes(path, FileAttributes.ReadOnly);
     }
 }

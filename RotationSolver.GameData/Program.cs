@@ -24,7 +24,7 @@ dirInfo = dirInfo.Parent!.Parent!.Parent!.Parent!.Parent!;
 
 using var res = new ResXResourceWriter(dirInfo.FullName + "\\RotationSolver.SourceGenerators\\Properties\\Resources.resx");
 
-res.AddResource("StatusId", new StatusGetter(gameData).GetCode());
+//res.AddResource("StatusId", new StatusGetter(gameData).GetCodes());
 res.AddResource("ContentType", new ContentTypeGetter(gameData).GetCode());
 res.AddResource("ActionId", new ActionIdGetter(gameData).GetCode());
 res.AddResource("ActionCategory", new ActionCategoryGetter(gameData).GetCode());
@@ -96,6 +96,7 @@ res.AddResource("Rotation", header + string.Join("\n\n", rotations));
 
 res.Generate();
 
-await OpCodeGetter.GetOpCode(dirInfo);
+await CodeGenerator.GetOpCode(dirInfo);
+await CodeGenerator.GetStatus(gameData, dirInfo);
 
 Console.WriteLine("Finished!");

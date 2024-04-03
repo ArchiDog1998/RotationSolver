@@ -1,13 +1,31 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Newtonsoft.Json.Linq;
+using RotationSolver.GameData.Getters;
+using System;
 using System.Net;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static RotationSolver.GameData.SyntaxHelper;
 
 namespace RotationSolver.GameData;
-internal static class OpCodeGetter
+internal static class CodeGenerator
 {
+    public static async Task GetStatus(Lumina.GameData gameData, DirectoryInfo dirInfo)
+    {
+        var members = new StatusGetter(gameData).GetCodes();
+
+        var enumDefinition = EnumDeclaration("StatusID")
+    .AddBaseListTypes(SimpleBaseType(PredefinedType(Token(SyntaxKind.UShortKeyword))))
+    .AddAttributeLists(GeneratedCodeAttribute(typeof(CodeGenerator)).WithXmlComment($"/// <summary> The id of the status </summary>"))
+    .AddModifiers(Token(SyntaxKind.PublicKeyword))
+    .AddMembers([EnumMember("None", 0).WithXmlComment($"/// <summary/>")
+                , ..members]);
+
+        var majorNameSpace = NamespaceDeclaration("RotationSolver.Basic.Data").AddMembers(enumDefinition);
+
+        await SaveNode(majorNameSpace, dirInfo, "StatusID");
+    }
+
     public static async Task GetOpCode(DirectoryInfo dirInfo)
     {
         using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
@@ -31,7 +49,7 @@ internal static class OpCodeGetter
 
         var enumDefinition = EnumDeclaration("OpCode")
             .AddBaseListTypes(SimpleBaseType(PredefinedType(Token(SyntaxKind.UShortKeyword))))
-            .AddAttributeLists(GeneratedCodeAttribute(typeof(OpCodeGetter)).WithXmlComment($"/// <summary> The OpCode </summary>"))
+            .AddAttributeLists(GeneratedCodeAttribute(typeof(CodeGenerator)).WithXmlComment($"/// <summary> The OpCode </summary>"))
             .AddModifiers(Token(SyntaxKind.PublicKeyword))
             .AddMembers([EnumMember("None", 0).WithXmlComment($"/// <summary/>")
                 , ..enums]);

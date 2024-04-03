@@ -1,17 +1,11 @@
 ﻿using Lumina.Excel.GeneratedSheets;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static RotationSolver.GameData.SyntaxHelper;
 
 namespace RotationSolver.GameData.Getters;
 internal class StatusGetter(Lumina.GameData gameData)
-    : ExcelRowGetter<Status>(gameData)
+    : ExcelRowGetterNew<Status, EnumMemberDeclarationSyntax>(gameData)
 {
-    private readonly List<string> _addedNames = [];
-
-    protected override void BeforeCreating()
-    {
-        _addedNames.Clear();
-        base.BeforeCreating();
-    }
-
     protected override bool AddToList(Status item)
     {
         if (item.ClassJobCategory.Row == 0) return false;
@@ -22,18 +16,10 @@ internal class StatusGetter(Lumina.GameData gameData)
         return true;
     }
 
-    protected override string ToCode(Status item)
-    {
-        var name = item.Name.RawString.ToPascalCase();
-        if (_addedNames.Contains(name))
-        {
-            name += "_" + item.RowId.ToString();
-        }
-        else
-        {
-            _addedNames.Add(name);
-        }
+    protected override string ToName(Status item) => item.Name.RawString;
 
+    protected override EnumMemberDeclarationSyntax[] ToNodes(Status item, string name)
+    {
         var desc = item.Description.RawString;
 
         var jobs = item.ClassJobCategory.Value?.Name.RawString;
@@ -46,12 +32,11 @@ internal class StatusGetter(Lumina.GameData gameData)
             _ => string.Empty,
         };
 
-        return $"""
+        return [EnumMember(name, (ushort)item.RowId).WithXmlComment($"""
         /// <summary>
         /// <see href="https://garlandtools.org/db/#status/{item.RowId}"><strong>{item.Name.RawString.Replace("&", "and")}</strong></see>{cate}{jobs}
         /// <para>{desc.Replace("\n", "</para>\n/// <para>")}</para>
         /// </summary>
-        {name} = {item.RowId},
-        """;
+        """)];
     }
 }
