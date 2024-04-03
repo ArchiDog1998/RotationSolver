@@ -262,12 +262,4 @@ partial class SummonerRotation
         if (AddlePvE.CanUse(out act)) return true;
         return base.DefenseAreaAbility(out act);
     }
-    
-    /// <inheritdoc/>
-    [RotationDesc(ActionID.CrimsonCyclonePvE)]
-    protected override bool MoveForwardGCD(out IAction? act)
-    {
-        if (CrimsonCyclonePvE.CanUse(out act)) return true;
-        return base.MoveForwardGCD(out act);
-    }
 }
