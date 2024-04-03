@@ -265,9 +265,9 @@ partial class SummonerRotation
     
     /// <inheritdoc/>
     [RotationDesc(ActionID.CrimsonCyclonePvE)]
-    protected override bool MoveForwardAbility(out IAction? act)
+    protected override bool MoveForwardGCD(out IAction? act)
     {
         if (CrimsonCyclonePvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardGCD(out act);
     }
 }
