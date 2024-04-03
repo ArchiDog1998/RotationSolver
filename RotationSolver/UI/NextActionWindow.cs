@@ -68,7 +68,7 @@ internal class NextActionWindow : Window
         ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);
 
         var actionRemain = DataCenter.ActionRemain;
-        if (remain > actionRemain + 0.6f + DataCenter.Ping)
+        if (actionRemain > 0)
         {
             var value = total - remain + actionRemain;
 

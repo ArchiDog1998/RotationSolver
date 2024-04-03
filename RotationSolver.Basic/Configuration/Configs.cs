@@ -285,13 +285,16 @@ internal partial class Configs : IPluginConfiguration
         Parent = nameof(ShowCooldownWindow))]
     private static readonly bool _showItemsCooldown = false;
 
-    [ConditionBool, UI("Show GCD' Cooldown",
+    [ConditionBool, UI("Show GCD Cooldown",
         Parent = nameof(ShowCooldownWindow))]
     private static readonly bool _showGCDCooldown = false;
 
     [ConditionBool, UI("Show Original Cooldown",
-        Parent = nameof(ShowCooldownWindow))]
+        Filter = UiInformation)]
     private static readonly bool _useOriginalCooldown = true;
+
+    [ConditionBool, UI("Always Show Cooldowns", Filter = UiInformation)]
+    private static readonly bool _showCooldownsAlways = true;
 
     [ConditionBool, UI("Show tooltips",
         Filter = UiInformation)]
@@ -565,11 +568,12 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 60, ConfigUnitType.Seconds, 0.02f)]
     public float DyingTimeToKill { get; set; } = 10;
 
-    [UI("Change the cooldown font size.", Parent = nameof(ShowCooldownWindow))]
+    [UI("Change the cooldown font size.",
+        Filter = UiInformation)]
     [Range(9.6f, 96, ConfigUnitType.Pixels, 0.1f)]
     public float CooldownFontSize { get; set; } = 16;
 
-    [UI("Cooldown window icon size", Parent = nameof(ShowCooldownWindow))]
+    [UI("Cooldown window icon size")]
     [Range(0, 80, ConfigUnitType.Pixels, 0.2f)]
     public float CooldownWindowIconSize { get; set; } = 30;
 
