@@ -67,7 +67,8 @@
 		  <PrivateAssets>all</PrivateAssets>
 	  </ProjectReference>
 
-	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj" OutputItemType="Analyzer" ExcludeAssets="All" />
+	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj"
+						OutputItemType="Analyzer" ExcludeAssets="All" ReferenceOutputAssembly="false" />
 
 	  <ProjectReference Include="..\XIVPainter\XIVPainter\XIVPainter.csproj" />
 
