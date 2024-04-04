@@ -19,117 +19,15 @@ public class StaticCodeGenerator : IIncrementalGenerator
 
     private static void Execute(SourceProductionContext context)
     {
-        //GenerateStatus(context);
-        GenerateActionID(context);
-        GenerateContentType(context);
-        GenerateActionCate(context);
-        GenerateBaseRotation(context);
-        GenerateRotations(context);
-
-        var assmebly = typeof(StaticCodeGenerator).Assembly;
-        foreach (var resourceName in assmebly.GetManifestResourceNames())
+        var assembly = typeof(StaticCodeGenerator).Assembly;
+        foreach (var resourceName in assembly.GetManifestResourceNames())
         {
             if (!resourceName.EndsWith(".txt")) continue;
-            using var stream = assmebly.GetManifestResourceStream(resourceName);
+            using var stream = assembly.GetManifestResourceStream(resourceName);
             using var streamReader = new StreamReader(stream);
             var name = resourceName.Split('.').Reverse().ElementAt(1);
             var code = streamReader.ReadToEnd();
             context.AddSource(name + ".g.cs", code);
         }
-    }
-
-    private static void GenerateStatus(SourceProductionContext context)
-    {
-        var code = $$"""
-            namespace RotationSolver.Basic.Data;
-
-            /// <summary>
-            /// The id of the status.
-            /// </summary>
-            public enum StatusID : ushort
-            {
-                /// <summary>
-                /// 
-                /// </summary>
-                None = 0,
-            {{Properties.Resources.StatusId.Table()}}
-            }
-            """;
-
-        context.AddSource("StatusID.g.cs", code);
-    }
-
-    private static void GenerateContentType(SourceProductionContext context)
-    {
-        var code = $$"""
-            namespace RotationSolver.Basic.Data;
-
-            /// <summary>
-            /// 
-            /// </summary>
-            public enum TerritoryContentType : byte
-            {
-                /// <summary>
-                /// 
-                /// </summary>
-                None = 0,
-            {{Properties.Resources.ContentType.Table()}}
-            }
-            """;
-
-        context.AddSource("TerritoryContentType.g.cs", code);
-    }
-
-    private static void GenerateActionCate(SourceProductionContext context)
-    {
-        var code = $$"""
-            namespace RotationSolver.Basic.Data;
-
-            /// <summary>
-            /// 
-            /// </summary>
-            public enum ActionCate : byte
-            {
-                /// <summary>
-                /// 
-                /// </summary>
-                None = 0,
-            {{Properties.Resources.ActionCategory.Table()}}
-            }
-            """;
-
-        context.AddSource("ActionCate.g.cs", code);
-    }
-
-    private static void GenerateActionID(SourceProductionContext context)
-    {
-        var code = $$"""
-            namespace RotationSolver.Basic.Data;
-
-            /// <summary>
-            /// The id of the status.
-            /// </summary>
-            public enum ActionID : uint
-            {
-                /// <summary>
-                /// 
-                /// </summary>
-                None = 0,
-            {{Properties.Resources.ActionId.Table()}}
-            }
-            """;
-
-        context.AddSource("ActionID.g.cs", code);
-    }
-
-    private static void GenerateBaseRotation(SourceProductionContext context)
-    {
-        context.AddSource("CustomRotation.g.cs", Properties.Resources.Action);
-        context.AddSource("DutyRotation.g.cs", Properties.Resources.DutyAction);
-    }
-
-    private static void GenerateRotations(SourceProductionContext context)
-    {
-        context.AddSource($"BaseRotations.g.cs", Properties.Resources.Rotation);
     }
 }

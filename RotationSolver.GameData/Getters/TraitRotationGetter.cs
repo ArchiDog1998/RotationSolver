@@ -1,16 +1,14 @@
 ﻿using Lumina.Excel.GeneratedSheets;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static RotationSolver.GameData.SyntaxHelper;
 
 namespace RotationSolver.GameData.Getters;
 internal class TraitRotationGetter(Lumina.GameData gameData, ClassJob job)
-    : ExcelRowGetter<Trait>(gameData)
+    : ExcelRowGetterNew<Trait, PropertyDeclarationSyntax>(gameData)
 {
-    public List<string> AddedNames { get; } = [];
-
-    protected override void BeforeCreating()
-    {
-        AddedNames.Clear();
-        base.BeforeCreating();
-    }
+    protected override string ToName(Trait item) => item.Name.RawString + "Trait";
 
     protected override bool AddToList(Trait item)
     {
@@ -26,28 +24,6 @@ internal class TraitRotationGetter(Lumina.GameData gameData, ClassJob job)
         return (bool?)category.GetType().GetRuntimeProperty(jobName)?.GetValue(category) ?? false;
     }
 
-    protected override string ToCode(Trait item)
-    {
-        var name = item.Name.RawString.ToPascalCase() + "Trait";
-
-        if (AddedNames.Contains(name))
-        {
-            name += "_" + item.RowId.ToString();
-        }
-        else
-        {
-            AddedNames.Add(name);
-        }
-
-        return $$"""
-        /// <summary>
-        /// {{GetDescName(item)}}
-        /// {{GetDesc(item)}}
-        /// </summary>
-        public static IBaseTrait {{name}} { get; } = new BaseTrait({{item.RowId}});
-        """;
-    }
-
     private static string GetDescName(Trait item)
     {
         var jobs = item.ClassJobCategory.Value?.Name.RawString;
@@ -61,5 +37,31 @@ internal class TraitRotationGetter(Lumina.GameData gameData, ClassJob job)
         var desc = _gameData.GetExcelSheet<TraitTransient>()?.GetRow(item.RowId)?.Description.RawString ?? string.Empty;
 
         return $"<para>{desc.Replace("\n", "</para>\n/// <para>")}</para>";
+    }
+
+    protected override PropertyDeclarationSyntax[] ToNodes(Trait item, string name)
+    {
+        return [PropertyDeclaration(ParseTypeName("global::RotationSolver.Basic.Traits.IBaseTrait"), name)
+                .AddModifiers(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword))
+                .AddAccessorListAccessors(
+                    AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithSemicolonToken(Token(SyntaxKind.SemicolonToken)))
+                .WithInitializer(
+            EqualsValueClause(
+                ObjectCreationExpression(
+                    IdentifierName("global::RotationSolver.Basic.Traits.BaseTrait"))
+                .WithArgumentList(
+                    ArgumentList(
+                        SingletonSeparatedList(
+                            Argument(
+                                LiteralExpression(
+                                    SyntaxKind.NumericLiteralExpression,
+                                    Literal(item.RowId))))))))
+                .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+                .WithXmlComment($"""
+                 /// <summary>
+                 /// {GetDescName(item)}
+                 /// {GetDesc(item)}
+                 /// </summary>
+                 """)];
     }
 }

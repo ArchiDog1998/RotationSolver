@@ -1,13 +1,14 @@
-﻿namespace RotationSolver.GameData.Getters.Actions;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace RotationSolver.GameData.Getters.Actions;
 internal abstract class ActionRotationGetterBase(Lumina.GameData gameData)
-    : ActionGetterBase(gameData)
+    : ActionGetterBase<MemberDeclarationSyntax>(gameData)
 {
-    protected override string ToCode(Lumina.Excel.GeneratedSheets.Action item)
+    protected override MemberDeclarationSyntax[] ToNodes(Lumina.Excel.GeneratedSheets.Action item, string name)
     {
-        var name = GetName(item);
         var descName = item.GetDescName();
 
-        return item.ToCode(name, descName, GetDesc(item), IsDutyAction);
+        return item.ToNodes(name, descName, item.GetDesc(_gameData), IsDutyAction);
     }
 
     public abstract bool IsDutyAction { get; }

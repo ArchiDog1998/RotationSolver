@@ -1,22 +1,18 @@
 ﻿using Lumina.Excel.GeneratedSheets;
+using Microsoft.CodeAnalysis;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.GameData.Getters.Actions;
 
-internal abstract class ActionGetterBase(Lumina.GameData gameData)
-    : ExcelRowGetter<Action>(gameData)
+internal abstract class ActionGetterBase<TSyntax>(Lumina.GameData gameData)
+    : ExcelRowGetterNew<Action, TSyntax>(gameData)
+        where TSyntax : SyntaxNode
+
 {
-    public List<string> AddedNames { get; } = [];
-    private string[] _notCombatJobs = [];
-    protected override void BeforeCreating()
-    {
-        AddedNames.Clear();
-        _notCombatJobs = [.. _gameData.GetExcelSheet<ClassJob>()!.Where(c =>
+    private readonly string[] _notCombatJobs = [.. gameData.GetExcelSheet<ClassJob>()!.Where(c =>
         {
             return c.ClassJobCategory.Row is 32 or 33;
         }).Select(c => c.Abbreviation.RawString)];
-        base.BeforeCreating();
-    }
 
     protected override bool AddToList(Action item)
     {
@@ -32,7 +28,6 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
             or 8 //No Event.
             or 12 // No Mount,
             or > 14 // No item manipulation and other thing.
-            or 9 //No LB,
             ) return false;
 
         //No crafting or gathering.
@@ -52,26 +47,8 @@ internal abstract class ActionGetterBase(Lumina.GameData gameData)
         return true;
     }
 
-    protected string GetName(Action item)
+    protected sealed override string ToName(Action item)
     {
-        var name = item.Name.RawString.ToPascalCase()
-            + (item.IsPvP ? "PvP" : "PvE");
-
-        if (AddedNames.Contains(name))
-        {
-            name += "_" + item.RowId.ToString();
-        }
-        else
-        {
-            AddedNames.Add(name);
-        }
-        return name;
-    }
-
-    protected string GetDesc(Action item)
-    {
-        var desc = _gameData.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description.RawString ?? string.Empty;
-
-        return $"<para>{desc.Replace("\n", "</para>\n/// <para>")}</para>";
+        return item.Name.RawString + (item.IsPvP ? "PvP" : "PvE");
     }
 }

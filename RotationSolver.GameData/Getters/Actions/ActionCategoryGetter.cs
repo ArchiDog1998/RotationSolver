@@ -1,17 +1,11 @@
 ﻿using Lumina.Excel.GeneratedSheets;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static RotationSolver.GameData.SyntaxHelper;
 
 namespace RotationSolver.GameData.Getters.Actions;
 internal class ActionCategoryGetter(Lumina.GameData gameData)
-    : ExcelRowGetter<ActionCategory>(gameData)
+    : ExcelRowGetterNew<ActionCategory, EnumMemberDeclarationSyntax>(gameData)
 {
-    private readonly List<string> _addedNames = [];
-
-    protected override void BeforeCreating()
-    {
-        _addedNames.Clear();
-        base.BeforeCreating();
-    }
-
     protected override bool AddToList(ActionCategory item)
     {
         var name = item.Name.RawString;
@@ -20,24 +14,15 @@ internal class ActionCategoryGetter(Lumina.GameData gameData)
         return true;
     }
 
-    protected override string ToCode(ActionCategory item)
+    protected override EnumMemberDeclarationSyntax[] ToNodes(ActionCategory item, string name)
     {
-        var name = item.Name.RawString.ToPascalCase();
+        return [EnumMember(name, (byte)item.RowId).WithXmlComment($"""
+        /// <summary/>
+        """)];
+    }
 
-        if (_addedNames.Contains(name))
-        {
-            name += "_" + item.RowId.ToString();
-        }
-        else
-        {
-            _addedNames.Add(name);
-        }
-
-        return $"""
-        /// <summary>
-        /// 
-        /// </summary>
-        {name} = {item.RowId},
-        """;
+    protected override string ToName(ActionCategory item)
+    {
+        return item.Name.RawString;
     }
 }

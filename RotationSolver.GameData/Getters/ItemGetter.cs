@@ -1,17 +1,14 @@
 ﻿using Lumina.Excel.GeneratedSheets;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static RotationSolver.GameData.SyntaxHelper;
 
 namespace RotationSolver.GameData.Getters;
 
 internal class ItemGetter(Lumina.GameData gameData)
-    : ExcelRowGetter<Item>(gameData)
+    : ExcelRowGetterNew<Item, MemberDeclarationSyntax>(gameData)
 {
-    public List<string> AddedNames { get; } = [];
-
-    protected override void BeforeCreating()
-    {
-        AddedNames.Clear();
-        base.BeforeCreating();
-    }
 
     protected override bool AddToList(Item item)
     {
@@ -21,32 +18,78 @@ internal class ItemGetter(Lumina.GameData gameData)
         return true;
     }
 
-    protected override string ToCode(Item item)
+    protected override string ToName(Item item)
     {
-       var name = item.Singular.RawString.ToPascalCase();
-        if (AddedNames.Contains(name))
-        {
-            name += "_" + item.RowId.ToString();
-        }
-        else
-        {
-            AddedNames.Add(name);
-        }
+        return item.Singular.RawString;
+    }
 
+    protected override MemberDeclarationSyntax[] ToNodes(Item item, string name)
+    {
         var desc = item.Description.RawString ?? string.Empty;
 
         desc = $"<para>{desc.Replace("\n", "</para>\n/// <para>")}</para>";
 
         var descName = $"<see href=\"https://garlandtools.org/db/#item/{item.RowId}\"><strong>{item.Name.RawString}</strong></see> [{item.RowId}]";
 
-        return $$"""
-        private readonly Lazy<IBaseItem> _{{name}}Creator = new(() => new BaseItem({{item.RowId}}));
 
-        /// <summary>
-        /// {{descName}}
-        /// {{desc}}
-        /// </summary>
-        public IBaseItem {{name}} => _{{name}}Creator.Value;
-        """;
+        var field = FieldDeclaration(
+            VariableDeclaration(
+                GenericName(
+                    Identifier("global::System.Lazy"))
+                .WithTypeArgumentList(
+                    TypeArgumentList(
+                        SingletonSeparatedList<TypeSyntax>(
+                            IdentifierName("global::RotationSolver.Basic.Actions.IBaseItem")))))
+            .WithVariables(
+                SingletonSeparatedList(
+                    VariableDeclarator(
+                        Identifier($"_{name}Creator"))
+                    .WithInitializer(
+                        EqualsValueClause(
+                            ImplicitObjectCreationExpression()
+                            .WithArgumentList(
+                                ArgumentList(
+                                    SingletonSeparatedList(
+                                        Argument(
+                                            ParenthesizedLambdaExpression()
+                                            .WithExpressionBody(
+                                                ObjectCreationExpression(
+                                                    IdentifierName("global::RotationSolver.Basic.Actions.BaseItem"))
+                                                .WithArgumentList(
+                                                    ArgumentList(
+                                                        SingletonSeparatedList(
+                                                            Argument(
+                                                                LiteralExpression(
+                                                                    SyntaxKind.NumericLiteralExpression,
+                                                                    Literal(item.RowId))))))))))))))))
+            .AddAttributeLists(GeneratedCodeAttribute(typeof(SyntaxHelper)))
+            .WithModifiers(
+                TokenList(
+                    [
+                        Token(SyntaxKind.PrivateKeyword),
+                        Token(SyntaxKind.ReadOnlyKeyword)]));
+
+        var property = PropertyDeclaration(
+            IdentifierName("global::RotationSolver.Basic.Actions.IBaseItem"),
+            Identifier(name))
+        .WithModifiers(
+            TokenList(
+                Token(SyntaxKind.PublicKeyword)))
+        .WithExpressionBody(
+            ArrowExpressionClause(
+                MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    IdentifierName($"_{name}Creator"),
+                    IdentifierName("Value"))))
+        .WithSemicolonToken(
+            Token(SyntaxKind.SemicolonToken))
+        .AddAttributeLists(GeneratedCodeAttribute(typeof(SyntaxHelper)).WithXmlComment($$"""
+            /// <summary>
+            /// {{descName}}
+            /// {{desc}}
+            /// </summary>
+            """));
+
+        return [field, property];
     }
 }

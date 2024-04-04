@@ -1,6 +1,8 @@
 ﻿using Lumina.Excel;
 
 namespace RotationSolver.GameData.Getters;
+
+[Obsolete]
 internal abstract class ExcelRowGetter<T>(Lumina.GameData gameData) where T : ExcelRow
 {
     protected Lumina.GameData _gameData = gameData;

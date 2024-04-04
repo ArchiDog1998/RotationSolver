@@ -135,7 +135,6 @@ partial class CustomRotation
     private protected virtual IBaseAction? LimitBreak1 => null;
     private protected virtual IBaseAction? LimitBreak2 => null;
     private protected virtual IBaseAction? LimitBreak3 => null;
-    private protected virtual IBaseAction? LimitBreakPvP => null;
 
     /// <summary>
     /// All actions of this rotation.

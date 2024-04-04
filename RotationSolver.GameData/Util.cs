@@ -67,64 +67,24 @@ internal static partial class Util
     [GeneratedRegex("(?<=[A-Z])[A-Z]+?((?=[A-Z][a-z])|(?=[0-9]))")]
     private static partial Regex UpperCaseInside();
 
-    public static string ArrayNames(string propertyName, string propertyType, string modifier, params string[] items)
-    {
-        var thisItems = $"""
-            [
-                {string.Join(", ", items)},
-                {(modifier.Contains("override") ? $"..base.{propertyName}," : string.Empty)}
-            ]
-            """;
-        return $$"""
-        private {{propertyType}}[] _{{propertyName}} = null;
-
-        /// <inheritdoc/>
-        {{modifier}} {{propertyType}}[] {{propertyName}} => _{{propertyName}} ??= {{thisItems}};
-        """;
-    }
-
-    public static string ToCode(this Lumina.Excel.GeneratedSheets.Action item,
-        string actionName, string actionDescName, string desc, bool isDuty)
-    {
-        if (isDuty)
-        {
-            actionDescName += " Duty Action";
-        }
-
-        return $$"""
-         private readonly Lazy<IBaseAction> _{{actionName}}Creator = new(() => 
-         {
-             IBaseAction action = new BaseAction((ActionID){{item.RowId}}, {{isDuty.ToString().ToLower()}});
-             CustomRotation.LoadActionSetting(ref action);
-         
-             var setting = action.Setting;
-             Modify{{actionName}}(ref setting);
-             action.Setting = setting;
-         
-             return action;
-         });
-         
-         /// <summary>
-         /// Modify {{actionDescName}}
-         /// </summary>
-         static partial void Modify{{actionName}}(ref ActionSetting setting);
-         
-         /// <summary>
-         /// {{actionDescName}}
-         /// {{desc}}
-         /// </summary>
-         {{(isDuty ? $"[ID({item.RowId})]" : string.Empty)}}
-         {{(item.ActionCategory.Row is 9 or 15 ? "private" : "public")}} IBaseAction {{actionName}} => _{{actionName}}Creator.Value;
-         """;
-    }
-
     public static string GetDescName(this Lumina.Excel.GeneratedSheets.Action action)
     {
         var jobs = action.ClassJobCategory.Value?.Name.RawString;
         jobs = string.IsNullOrEmpty(jobs) ? string.Empty : $" ({jobs})";
 
-        var cate = action.IsPvP ? " <i>PvP</i>" : " <i>PvE</i>";
+        var cate = action.IsPvP ? "-<i>PvP</i>" : "-<i>PvE</i>";
+        if (action.ActionCategory.Row is 9 or 15)
+        {
+            cate += " <i>LimitBreak</i>";
+        }
 
         return $"<see href=\"https://garlandtools.org/db/#action/{action.RowId}\"><strong>{action.Name.RawString}</strong></see>{cate}{jobs} [{action.RowId}] [{action.ActionCategory.Value?.Name.RawString ?? string.Empty}]";
+    }
+
+    public static  string GetDesc(this Lumina.Excel.GeneratedSheets.Action item, Lumina.GameData gameData)
+    {
+        var desc = gameData.GetExcelSheet<ActionTransient>()?.GetRow(item.RowId)?.Description.RawString ?? string.Empty;
+
+        return $"<para>{desc.Replace("\n", "</para>\n/// <para>")}</para>";
     }
 }

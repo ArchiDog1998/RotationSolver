@@ -1,20 +1,19 @@
-﻿using Action = Lumina.Excel.GeneratedSheets.Action;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Action = Lumina.Excel.GeneratedSheets.Action;
+using static RotationSolver.GameData.SyntaxHelper;
 
 namespace RotationSolver.GameData.Getters.Actions;
 
 internal class ActionIdGetter(Lumina.GameData gameData)
-    : ActionGetterBase(gameData)
+    : ActionGetterBase<EnumMemberDeclarationSyntax>(gameData)
 {
-    protected override string ToCode(Action item)
+    protected override EnumMemberDeclarationSyntax[] ToNodes(Action item, string name)
     {
-        var name = GetName(item);
-
-        return $"""
+        return [EnumMember(name, (ushort)item.RowId).WithXmlComment($"""
         /// <summary>
         /// {item.GetDescName()}
-        /// {GetDesc(item)}
+        /// {item.GetDesc(_gameData)}
         /// </summary>
-        {name} = {item.RowId},
-        """;
+        """)];
     }
 }

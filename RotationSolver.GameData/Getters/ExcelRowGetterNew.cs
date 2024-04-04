@@ -7,7 +7,7 @@ internal abstract class ExcelRowGetterNew<T, TSyntax>(Lumina.GameData gameData)
     where T : ExcelRow
     where TSyntax : SyntaxNode
 {
-    private readonly List<string> _addedNames = [];
+    public List<string> AddedNames { get; } = [];
 
     protected Lumina.GameData _gameData = gameData;
     public int Count { get; private set; } = 0;
@@ -17,12 +17,12 @@ internal abstract class ExcelRowGetterNew<T, TSyntax>(Lumina.GameData gameData)
 
     protected abstract string ToName(T item);
 
-    public TSyntax[] GetCodes()
+    public TSyntax[] GetNodes()
     {
         var items = _gameData.GetExcelSheet<T>();
 
         if (items == null) return [];
-        _addedNames.Clear();
+        AddedNames.Clear();
 
         var filteredItems = items.Where(AddToList);
         Count = filteredItems.Count();
@@ -30,13 +30,13 @@ internal abstract class ExcelRowGetterNew<T, TSyntax>(Lumina.GameData gameData)
         return [..filteredItems.SelectMany(item => 
         {
             var name = ToName(item).ToPascalCase();
-            if (_addedNames.Contains(name))
+            if (AddedNames.Contains(name))
             {
                 name += "_" + item.RowId.ToString();
             }
             else
             {
-                _addedNames.Add(name);
+                AddedNames.Add(name);
             }
             return ToNodes(item, name);
         })];

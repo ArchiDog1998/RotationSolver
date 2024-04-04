@@ -237,7 +237,6 @@ partial class SummonerRotation
         setting.ActionCheck = () => HasAetherflowStacks;
     }
 
-
     /// <inheritdoc/>
     [RotationDesc(ActionID.RadiantAegisPvE)]
     protected sealed override bool DefenseSingleAbility(out IAction? act)

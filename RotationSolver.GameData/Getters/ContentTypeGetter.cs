@@ -1,8 +1,10 @@
 ﻿using Lumina.Excel.GeneratedSheets;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static RotationSolver.GameData.SyntaxHelper;
 
 namespace RotationSolver.GameData.Getters;
 internal class ContentTypeGetter(Lumina.GameData gameData)
-    : ExcelRowGetter<ContentType>(gameData)
+    : ExcelRowGetterNew<ContentType, EnumMemberDeclarationSyntax>(gameData)
 {
     protected override bool AddToList(ContentType item)
     {
@@ -12,14 +14,15 @@ internal class ContentTypeGetter(Lumina.GameData gameData)
         return true;
     }
 
-    protected override string ToCode(ContentType item)
+    protected override EnumMemberDeclarationSyntax[] ToNodes(ContentType item, string name)
     {
-        var name = item.Name.RawString.ToPascalCase();
-        return $"""
-        /// <summary>
-        /// 
-        /// </summary>
-        {name} = {item.RowId},
-        """;
+        return [EnumMember(name, (byte)item.RowId).WithXmlComment($"""
+        /// <summary/>
+        """)];
+    }
+
+    protected override string ToName(ContentType item)
+    {
+        return item.Name.RawString;
     }
 }
