@@ -9,6 +9,7 @@ public class OtherConfiguration
 {
     public static HashSet<uint> HostileCastingArea = [];
     public static HashSet<uint> HostileCastingTank = [];
+    public static HashSet<uint> HostileCastingKnockback = [];
 
     public static SortedList<uint, float> AnimationLockTime = [];
 
@@ -41,6 +42,7 @@ public class OtherConfiguration
         Task.Run(() => InitOne(ref BeneficialPositions, nameof(BeneficialPositions)));
         Task.Run(() => InitOne(ref RotationSolverRecord, nameof(RotationSolverRecord), false));
         Task.Run(() => InitOne(ref NoCastingStatus, nameof(NoCastingStatus)));
+        Task.Run(() => InitOne(ref HostileCastingKnockback, nameof(HostileCastingKnockback)));
     }
 
     public static Task Save()
@@ -58,8 +60,15 @@ public class OtherConfiguration
             await SaveRotationSolverRecord();
             await SaveNoProvokeNames();
             await SaveNoCastingStatus();
+            await SaveHostileCastingKnockback();
         });
     }
+
+    private static Task SaveHostileCastingKnockback()
+    {
+        return Task.Run(() => Save(HostileCastingKnockback, nameof(HostileCastingKnockback)));
+    }
+
     public static Task SaveNoCastingStatus()
     {
         return Task.Run(() => Save(NoCastingStatus, nameof(NoCastingStatus)));
