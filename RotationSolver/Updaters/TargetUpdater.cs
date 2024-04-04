@@ -126,7 +126,6 @@ internal static partial class TargetUpdater
 
         DataCenter.IsHostileCastingToTank = IsCastingTankVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingTank);
         DataCenter.IsHostileCastingAOE = IsCastingAreaVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingArea);
-        DataCenter.IsHostileCastingKnockback = DataCenter.AllHostileTargets.Any(ObjectHelper.);
 
         DataCenter.ProvokeTarget = _provokeDelay.Delay(DataCenter.AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke));
     }

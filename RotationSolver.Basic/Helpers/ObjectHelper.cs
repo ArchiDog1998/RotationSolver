@@ -447,9 +447,4 @@ public static class ObjectHelper
         distance -= obj.HitboxRadius;
         return distance;
     }
-
-    internal static bool IsKnockback(BattleChara chara)
-    {
-        throw new NotImplementedException();
-    }
 }
