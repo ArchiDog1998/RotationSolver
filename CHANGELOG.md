@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.2.5](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.4...v4.2.5) (2024-04-04)
+
+
+### Bug Fixes
+
+* action id in LB. ([d0cf340](https://github.com/ArchiDog1998/RotationSolver/commit/d0cf340b17fed442a3d098652c1825e3fde8dca2))
+* add git ignore. ([2bc19f0](https://github.com/ArchiDog1998/RotationSolver/commit/2bc19f0857d952bf666c4437de6e3b8d3b6d3c68))
+* add icon replace. ([034e798](https://github.com/ArchiDog1998/RotationSolver/commit/034e79826993571d5fad8b64847133cdc4942bb7))
+* add limit break drawing. ([7dd7ba3](https://github.com/ArchiDog1998/RotationSolver/commit/7dd7ba3e65d930c8cb91383e08ff77bdcc22147d))
+* add next action overlay drawing. ([7da8ba0](https://github.com/ArchiDog1998/RotationSolver/commit/7da8ba0d0dda0f4346b88ad1c3f4cbf8c9b934d3))
+* config targeting fix. ([e2dd58c](https://github.com/ArchiDog1998/RotationSolver/commit/e2dd58ccd9b5a6ee8a374ceb67085433b6df3f19))
+* duty actions empty fix. ([4a8163a](https://github.com/ArchiDog1998/RotationSolver/commit/4a8163aed74eb70bd73e4912602638e05cd7fe29))
+* fixed vfx drawing about the gcd target. ([63d9e8c](https://github.com/ArchiDog1998/RotationSolver/commit/63d9e8ca3618ad78fa46358768022a0c179817b9)), closes [#574](https://github.com/ArchiDog1998/RotationSolver/issues/574)
+* gigignore. ([5e129d0](https://github.com/ArchiDog1998/RotationSolver/commit/5e129d005340ccd54c512e4a3ee41afae96478df))
+* little fixes. ([b98ff39](https://github.com/ArchiDog1998/RotationSolver/commit/b98ff39703d4cdc659473750d66b09e52bd1dfbf))
+* multi langs. ([21e0a80](https://github.com/ArchiDog1998/RotationSolver/commit/21e0a80a3d9c940be2549d2d846b38a21e1eafee))
+* roslyn game data change. ([5e88f93](https://github.com/ArchiDog1998/RotationSolver/commit/5e88f939b7d2fa6b4a4f4b724f80b192fe165450))
+
 ## [4.2.4](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.3...v4.2.4) (2024-03-28)
 
 
