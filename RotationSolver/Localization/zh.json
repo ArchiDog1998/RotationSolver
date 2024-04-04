@@ -338,5 +338,10 @@
   "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Mistake": "Can't properly execute the behavior that RS wants to do.",
   "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Crash": "Causes the game to crash.",
   "RotationSolver.Data.UiString.ConfigWindow_About_ThanksToSupporters": "Many thanks to the sponsors.",
-  "RotationSolver.Data.UiString.ConfigWindow_About_OpenConfigFolder": "Open Config Folder"
+  "RotationSolver.Data.UiString.ConfigWindow_About_OpenConfigFolder": "Open Config Folder",
+  "RotationSolver.Data.UiString.SpecialCommandType_Smart": "Auto Target ",
+  "RotationSolver.Basic.Data.TargetingType.Small": "Small",
+  "RotationSolver.Data.UiString.SpecialCommandType_Off": "Off",
+  "RotationSolver.Data.UiString.SpecialCommandType_Cancel": "Cancel",
+  "RotationSolver.Data.UiString.ConfigWindow_DutyRotationDesc": "The duty rotation you chose, click to modify."
 }
