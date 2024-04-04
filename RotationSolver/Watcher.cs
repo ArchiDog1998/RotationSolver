@@ -191,6 +191,11 @@ public static class Watcher
                 {
                     DataCenter.KnockbackStart = DateTime.Now;
                     DataCenter.KnockbackFinished = DateTime.Now + TimeSpan.FromSeconds(knock.Distance / (float)knock.Speed);
+                    if (!OtherConfiguration.HostileCastingKnockback.Contains(set.Action.RowId))
+                    {
+                        OtherConfiguration.HostileCastingKnockback.Add(set.Action.RowId);
+                        OtherConfiguration.Save();
+                    }
                 }
                 break;
             }

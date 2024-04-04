@@ -2086,7 +2086,7 @@ public partial class RotationConfigWindow : Window
         ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
         ImGui.InputTextWithHint("##Searching the action", UiString.ConfigWindow_List_ActionNameOrId.Local(), ref _actionSearching, 128);
 
-        using var table = ImRaii.Table("Rotation Solver List Actions", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+        using var table = ImRaii.Table("Rotation Solver List Actions", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
         if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);
@@ -2097,6 +2097,9 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TableNextColumn();
             ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingArea.Local());
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingKnockback.Local());
 
             ImGui.TableNextRow();
 
@@ -2111,6 +2114,10 @@ public partial class RotationConfigWindow : Window
             ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingAreaDesc.Local());
 
             DrawActionsList(nameof(OtherConfiguration.HostileCastingArea), OtherConfiguration.HostileCastingArea);
+
+            ImGui.TableNextColumn();
+            ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingKnockbackDesc.Local());
+            DrawActionsList(nameof(OtherConfiguration.HostileCastingKnockback), OtherConfiguration.HostileCastingKnockback);
         }
     }
 

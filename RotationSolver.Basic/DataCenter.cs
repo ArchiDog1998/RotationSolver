@@ -340,6 +340,8 @@ internal static class DataCenter
 
     public static bool IsHostileCastingToTank { get; internal set; }
 
+    public static bool IsHostileCastingKnockback { get; internal set; }
+
     public static bool HasPet { get; internal set; }
 
     public static unsafe bool HasCompanion => (IntPtr)Player.BattleChara != IntPtr.Zero
