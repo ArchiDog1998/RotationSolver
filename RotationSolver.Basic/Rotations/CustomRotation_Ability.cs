@@ -175,7 +175,6 @@ partial class CustomRotation
         act = null; return false;
     }
 
-
     private bool AntiKnockback(JobRole role, out IAction? act)
     {
         switch (role)
