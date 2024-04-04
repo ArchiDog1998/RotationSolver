@@ -11,7 +11,7 @@ It's time to learn something new, see you in the game version 7.0!
 
 I won't make any public releases anymore to make this plugin mine. If you want to use it, please build it by yourself. 
 
-Try the community version of [Rotation Solver](https://github.com/Jaksuhn/RotationSolver). Buy the dev version for $2 in [ko-fi](https://ko-fi.com/s/7cf5ff0de3).
+Try the community version of [Rotation Solver Reborn](https://github.com/FFXIV-CombatReborn/RotationSolverReborn). Buy the dev version for $2 in [ko-fi](https://ko-fi.com/s/7cf5ff0de3).
 
 
 ## Brief
@@ -42,6 +42,14 @@ I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXI
 - Make your changes
 - Test the changes
 - Create a PR and point it to main
+
+## How to build
+
+- Build `RotationSolver.GameData `with your game folder.
+- Run `RotationSolver.GameData`.
+- Build `RotationSolver.SourceGenerators`
+- Restart your IDE.
+- Build the whole solution!
 
 ## Links
 
