@@ -86,10 +86,6 @@ internal class SocialUpdater
 
         DataCenter.Territory = territory;
 
-#if DEBUG
-        Svc.Log.Debug($"Move to {DataCenter.TerritoryName} ({id})");
-#endif
-
         try
         {
             DataCenter.RightNowRotation?.OnTerritoryChanged();
@@ -149,10 +145,7 @@ internal class SocialUpdater
         }
 
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
-#if DEBUG
-#else
             .Where(c => c.ObjectId != Player.Object.ObjectId)
-#endif
             .Select(player => (player, player.EncryptString()))
             .Where(pair => !saidAuthors.Contains(pair.Item2)
                 && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(pair.Item2));

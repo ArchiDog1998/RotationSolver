@@ -35,48 +35,52 @@ internal static class ActionUpdater
         get => _nextGCDAction;
         set
         {
+            UpdateOmen(value);
             if (_nextGCDAction == value) return;
             _nextGCDAction = value;
+        }
+    }
 
-            if (!Service.Config.ShowTarget) return;
+    private static void UpdateOmen(IBaseAction? value)
+    {
+        var player = Player.Object;
+        if (player == null) return;
 
-            var player = Player.Object;
-            if (player == null) return;
+        circle ??= new(GroundOmenFriendly.Circle.Omen(), player, new Vector3(0, gcdHeight, 0));
+        sector ??= new(GroundOmenFriendly.Fan120.Omen(), player, new Vector3(0, gcdHeight, 0));
+        rectangle ??= new(GroundOmenFriendly.Rectangle.Omen(), player, new Vector3(0, gcdHeight, 0));
 
-            circle ??= new(GroundOmenFriendly.Circle.Omen(), player, new Vector3(0, gcdHeight, 0));
-            sector ??= new(GroundOmenFriendly.Fan120.Omen(), player, new Vector3(0, gcdHeight, 0));
-            rectangle ??= new(GroundOmenFriendly.Rectangle.Omen(), player, new Vector3(0, gcdHeight, 0));
+        circle.Enable = sector.Enable = rectangle.Enable = false;
+        circle.Owner = sector.Owner = rectangle.Owner = player;
 
-            circle.Enable = sector.Enable = rectangle.Enable = false;
-            circle.Owner = sector.Owner = rectangle.Owner = player;
+        if (!Service.Config.ShowTarget) return;
+        if (value == null) return;
 
-            if (value == null) return;
-            var target = value.Target.Target ?? player;
+        var target = value.Target.Target ?? player;
 
-            var range = value.Action.EffectRange;
-            var size = new Vector3(range, gcdHeight, range);
-            switch(value.Action.CastType)
-            {
-                //case 1:
-                case 2:
-                    circle.Owner = target;
-                    circle.UpdateScale(size);
-                    circle.Enable = true;
-                    break;
+        var range = value.Action.EffectRange;
+        var size = new Vector3(range, gcdHeight, range);
+        switch (value.Action.CastType)
+        {
+            //case 1:
+            case 2:
+                circle.Owner = target;
+                circle.UpdateScale(size);
+                circle.Enable = true;
+                break;
 
-                case 3:
-                    sector.Target = target;
-                    sector.UpdateScale(size);
-                    sector.Enable = true;
-                    break;
+            case 3:
+                sector.Target = target;
+                sector.UpdateScale(size);
+                sector.Enable = true;
+                break;
 
-                case 4:
-                    size.X = value.Action.XAxisModifier / 2;
-                    rectangle.Target = target;
-                    rectangle.UpdateScale(size);
-                    rectangle.Enable = true;
-                    break;
-            }
+            case 4:
+                size.X = value.Action.XAxisModifier / 2;
+                rectangle.Target = target;
+                rectangle.UpdateScale(size);
+                rectangle.Enable = true;
+                break;
         }
     }
 
@@ -121,10 +125,7 @@ internal static class ActionUpdater
 
                 if (gcdAction is IBaseAction GcdAction)
                 {
-                    if (NextGCDAction != GcdAction)
-                    {
-                        NextGCDAction = GcdAction;
-                    }
+                    NextGCDAction = GcdAction;
                 }
                 return;
             }
