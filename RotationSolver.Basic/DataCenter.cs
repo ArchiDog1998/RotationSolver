@@ -338,6 +338,8 @@ internal static class DataCenter
 
     public static bool IsHostileCastingAOE { get; internal set; }
 
+    public static bool IsHostileCastingKnockback { get; internal set; }
+
     public static bool IsHostileCastingToTank { get; internal set; }
 
     public static bool HasPet { get; internal set; }
