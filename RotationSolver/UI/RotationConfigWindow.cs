@@ -1983,6 +1983,7 @@ public partial class RotationConfigWindow : Window
     static string _statusSearching = string.Empty;
     private static void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
     {
+        ImGui.PushID(name);
         FromClipBoardButton(statuses);
 
         uint removeId = 0;
@@ -2040,6 +2041,7 @@ public partial class RotationConfigWindow : Window
             statuses.Remove(removeId);
             OtherConfiguration.Save();
         }
+        ImGui.PopID();
     }
 
     internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100, float size = 32)
@@ -2115,6 +2117,7 @@ public partial class RotationConfigWindow : Window
     private static string _actionSearching = string.Empty;
     private static void DrawActionsList(string name, HashSet<uint> actions)
     {
+        ImGui.PushID(name);
         uint removeId = 0;
 
         var popupId = "Rotation Solver Action Popup" + name;
@@ -2177,6 +2180,7 @@ public partial class RotationConfigWindow : Window
                 }
             }
         }
+        ImGui.PopID();
     }
 
     public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
