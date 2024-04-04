@@ -1,28 +1,44 @@
 ﻿using Lumina.Excel;
+using Microsoft.CodeAnalysis;
 
 namespace RotationSolver.GameData.Getters;
 
-[Obsolete]
-internal abstract class ExcelRowGetter<T>(Lumina.GameData gameData) where T : ExcelRow
+internal abstract class ExcelRowGetter<T, TSyntax>(Lumina.GameData gameData) 
+    where T : ExcelRow
+    where TSyntax : SyntaxNode
 {
+    public List<string> AddedNames { get; } = [];
+
     protected Lumina.GameData _gameData = gameData;
     public int Count { get; private set; } = 0;
 
     protected abstract bool AddToList(T item);
-    protected abstract string ToCode(T item);
+    protected abstract TSyntax[] ToNodes(T item, string name);
 
-    protected virtual void BeforeCreating() { }
+    protected abstract string ToName(T item);
 
-    public string GetCode()
+    public TSyntax[] GetNodes()
     {
         var items = _gameData.GetExcelSheet<T>();
 
-        if (items == null) return string.Empty;
-        BeforeCreating();
+        if (items == null) return [];
+        AddedNames.Clear();
 
         var filteredItems = items.Where(AddToList);
         Count = filteredItems.Count();
 
-        return string.Join("\n", filteredItems.Select(ToCode));
+        return [..filteredItems.SelectMany(item => 
+        {
+            var name = ToName(item).ToPascalCase();
+            if (AddedNames.Contains(name))
+            {
+                name += "_" + item.RowId.ToString();
+            }
+            else
+            {
+                AddedNames.Add(name);
+            }
+            return ToNodes(item, name);
+        })];
     }
 }

@@ -6,7 +6,7 @@ using static RotationSolver.GameData.SyntaxHelper;
 
 namespace RotationSolver.GameData.Getters;
 internal class TraitRotationGetter(Lumina.GameData gameData, ClassJob job)
-    : ExcelRowGetterNew<Trait, PropertyDeclarationSyntax>(gameData)
+    : ExcelRowGetter<Trait, PropertyDeclarationSyntax>(gameData)
 {
     protected override string ToName(Trait item) => item.Name.RawString + "Trait";
 

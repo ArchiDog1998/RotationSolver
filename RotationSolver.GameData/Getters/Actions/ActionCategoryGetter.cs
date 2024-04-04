@@ -4,7 +4,7 @@ using static RotationSolver.GameData.SyntaxHelper;
 
 namespace RotationSolver.GameData.Getters.Actions;
 internal class ActionCategoryGetter(Lumina.GameData gameData)
-    : ExcelRowGetterNew<ActionCategory, EnumMemberDeclarationSyntax>(gameData)
+    : ExcelRowGetter<ActionCategory, EnumMemberDeclarationSyntax>(gameData)
 {
     protected override bool AddToList(ActionCategory item)
     {

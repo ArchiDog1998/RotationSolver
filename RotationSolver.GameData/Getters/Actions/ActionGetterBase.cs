@@ -5,7 +5,7 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 namespace RotationSolver.GameData.Getters.Actions;
 
 internal abstract class ActionGetterBase<TSyntax>(Lumina.GameData gameData)
-    : ExcelRowGetterNew<Action, TSyntax>(gameData)
+    : ExcelRowGetter<Action, TSyntax>(gameData)
         where TSyntax : SyntaxNode
 
 {
