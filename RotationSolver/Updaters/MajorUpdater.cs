@@ -39,7 +39,6 @@ internal static class MajorUpdater
             TargetUpdater.ClearTarget();
             ActionUpdater.ClearNextAction();
             CustomRotation.MoveTarget = null;
-
             return;
         }
 
