@@ -190,8 +190,7 @@ internal static class CodeGenerator
                 IdentifierName(name)))
         .WithSemicolonToken(
             Token(SyntaxKind.SemicolonToken))
-        .WithXmlComment($"/// <inheritdoc cref=\"{name}\"/>")
-        .AddAttributeLists(GeneratedCodeAttribute(typeof(CodeGenerator)));
+        .AddAttributeLists(GeneratedCodeAttribute(typeof(CodeGenerator)).WithXmlComment($"/// <inheritdoc cref=\"{name}\"/>"));
 
         return [.. declarations, property];
     }

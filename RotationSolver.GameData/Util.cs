@@ -73,10 +73,6 @@ internal static partial class Util
         jobs = string.IsNullOrEmpty(jobs) ? string.Empty : $" ({jobs})";
 
         var cate = action.IsPvP ? "-<i>PvP</i>" : "-<i>PvE</i>";
-        if (action.ActionCategory.Row is 9 or 15)
-        {
-            cate += " <i>LimitBreak</i>";
-        }
 
         return $"<see href=\"https://garlandtools.org/db/#action/{action.RowId}\"><strong>{action.Name.RawString}</strong></see>{cate}{jobs} [{action.RowId}] [{action.ActionCategory.Value?.Name.RawString ?? string.Empty}]";
     }

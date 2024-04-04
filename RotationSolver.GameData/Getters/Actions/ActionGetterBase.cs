@@ -27,7 +27,8 @@ internal abstract class ActionGetterBase<TSyntax>(Lumina.GameData gameData)
             is 6 or 7 // No DoL or DoH Action
             or 8 //No Event.
             or 12 // No Mount,
-            or > 14 // No item manipulation and other thing.
+            or 14 // No item manipulation
+            or > 15 // and other thing.
             ) return false;
 
         //No crafting or gathering.
