@@ -343,5 +343,14 @@
   "RotationSolver.Basic.Data.TargetingType.Small": "Small",
   "RotationSolver.Data.UiString.SpecialCommandType_Off": "Off",
   "RotationSolver.Data.UiString.SpecialCommandType_Cancel": "Cancel",
-  "RotationSolver.Data.UiString.ConfigWindow_DutyRotationDesc": "The duty rotation you chose, click to modify."
+  "RotationSolver.Data.UiString.ConfigWindow_DutyRotationDesc": "The duty rotation you chose, click to modify.",
+  "RotationSolver.Data.UiString.Timeline_OpenLink": "Open the timeline link",
+  "RotationSolver.Data.UiString.AddTimelineButton": "Add a timeline item.",
+  "RotationSolver.Data.UiString.SpecialCommandType_Dispel": "Dispel",
+  "RotationSolver.Data.UiString.SpecialCommandType_Start": "Start ",
+  "RotationSolver.Data.UiString.SpecialCommandType_LimitBreak": "Limit Break",
+  "RotationSolver.Data.UiString.SpecialCommandType_DefenseArea": "Defense Area",
+  "RotationSolver.Data.UiString.ConfigWindow_List_HostileCastingKnockback": "Knockback",
+  "RecordKnockbackName": "Record Knockback actions.",
+  "RotationSolver.Data.UiString.ConfigWindow_List_HostileCastingKnockbackDesc": "Use knockback prevention abilities if the target is casting any of these actions"
 }
