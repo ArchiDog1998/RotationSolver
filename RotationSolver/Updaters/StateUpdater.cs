@@ -116,6 +116,11 @@ internal static class StateUpdater
                     status |= AutoStatus.DefenseArea;
                 }
 
+                if (DataCenter.IsHostileCastingKnockback && !hasTimeline && Service.Config.UseKnockback)
+                {
+                    status |= AutoStatus.AntiKnockback;
+                }
+
                 if (DataCenter.Role == JobRole.Healer || DataCenter.Job == ECommons.ExcelServices.Job.PLD) // Help defense.
                 {
                     if (DataCenter.PartyMembers.Any((tank) =>

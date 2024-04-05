@@ -152,10 +152,6 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.SameLine();
 
-        DrawCommandAction(61753, SpecialCommandType.EndSpecial, ImGuiColors.DalamudWhite2);
-
-        ImGui.SameLine();
-
         DrawCommandAction(rotation?.ActionLimitBreak, SpecialCommandType.LimitBreak, ImGuiColors.DalamudWhite2);
 
         ImGui.Spacing();
@@ -180,10 +176,7 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.Spacing();
 
-        ImGui.Text("CMD:");
-        ImGui.SameLine();
-
-        DrawIAction(DataCenter.CommandNextAction, Service.Config.ControlWindow0GCDSize, 1);
+        DrawCommandAction(61753, SpecialCommandType.EndSpecial, ImGuiColors.DalamudWhite2);
 
         ImGui.SameLine();
 
@@ -191,7 +184,18 @@ internal class ControlWindow : CtrlWindow
         {
             if (group)
             {
-                ImGui.Text(DataCenter.RightNowTargetToHostileType.Local());
+                ImGui.Text("CMD:");
+                DrawIAction(DataCenter.CommandNextAction, Service.Config.ControlWindow0GCDSize, 1);
+            }
+        }
+
+        ImGui.SameLine();
+
+        using (var group = ImRaii.Group())
+        {
+            if (group)
+            {
+                ImGui.TextWrapped(DataCenter.RightNowTargetToHostileType.Local());
                 ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
             }
         }

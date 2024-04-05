@@ -240,11 +240,17 @@ internal enum UiString
     [Description("AoE")]
     ConfigWindow_List_HostileCastingArea,
 
+    [Description("Knockback")]
+    ConfigWindow_List_HostileCastingKnockback,
+
     [Description("Use tank personal damage mitigation abilities if the target is casting any of these actions")]
     ConfigWindow_List_HostileCastingTankDesc,
 
     [Description("Use AoE damage mitigation abilities if the target is casting any of these actions")]
     ConfigWindow_List_HostileCastingAreaDesc,
+
+    [Description("Use knockback prevention abilities if the target is casting any of these actions")]
+    ConfigWindow_List_HostileCastingKnockbackDesc,
 
     [Description("Add Action")]
     ConfigWindow_List_AddAction,

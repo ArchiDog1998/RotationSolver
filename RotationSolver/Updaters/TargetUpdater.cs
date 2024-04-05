@@ -126,6 +126,7 @@ internal static partial class TargetUpdater
 
         DataCenter.IsHostileCastingToTank = IsCastingTankVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingTank);
         DataCenter.IsHostileCastingAOE = IsCastingAreaVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingArea);
+        DataCenter.IsHostileCastingKnockback = DataCenter.AllHostileTargets.Any(IsHostileCastingKnockback);
 
         DataCenter.ProvokeTarget = _provokeDelay.Delay(DataCenter.AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke));
     }
@@ -182,6 +183,14 @@ internal static partial class TargetUpdater
         return IsHostileCastingBase(h, (act) =>
         {
             return OtherConfiguration.HostileCastingArea.Contains(act.RowId);
+        });
+    }
+
+    private static bool IsHostileCastingKnockback(BattleChara h)
+    {
+        return IsHostileCastingBase(h, (act) =>
+        {
+            return OtherConfiguration.HostileCastingKnockback.Contains(act.RowId);
         });
     }
 

@@ -20,7 +20,8 @@ internal partial class Configs : IPluginConfiguration
         TargetConfig = "TargetConfig",
         Extra = "Extra",
         Rotations = "Rotations",
-        List = "List",
+        ListAoE = "ListAoE",
+        ListKnockback = "ListKnockback",
         TimelineFilter = "Timeline",
         Debug = "Debug";
 
@@ -374,6 +375,9 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Healer)]
     private static readonly bool _useGroundBeneficialAbility = true;
 
+    [ConditionBool, UI("Use Anti-Knockback abilities", Parent = nameof(UseAbility))]
+    private static readonly bool _useKnockback = true;
+
     [ConditionBool, UI("Use beneficial AoE actions while moving.", Parent = nameof(UseGroundBeneficialAbility))]
     private static readonly bool _useGroundBeneficialAbilityWhenMoving = false;
 
@@ -384,8 +388,11 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Show Cooldown Window.", Filter = UiWindows)]
     private static readonly bool _showCooldownWindow = false;
 
-    [ConditionBool, UI("Record AoE actions.", Filter = List)]
+    [ConditionBool, UI("Record AoE actions.", Filter = ListAoE)]
     private static readonly bool _recordCastingArea = true;
+
+    [ConditionBool, UI("Record Knockback actions.", Filter = ListKnockback)]
+    private static readonly bool _recordKnockback = true;
 
     [ConditionBool, UI("Auto turn off RS when combat is over more for more then...",
         Filter =BasicAutoSwitch)]

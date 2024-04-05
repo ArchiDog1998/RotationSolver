@@ -2023,6 +2023,7 @@ public partial class RotationConfigWindow : Window
     static string _statusSearching = string.Empty;
     private static void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
     {
+        using var id = ImRaii.PushId(name);
         FromClipBoardButton(statuses);
 
         uint removeId = 0;
@@ -2124,7 +2125,7 @@ public partial class RotationConfigWindow : Window
         ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
         ImGui.InputTextWithHint("##Searching the action", UiString.ConfigWindow_List_ActionNameOrId.Local(), ref _actionSearching, 128);
 
-        using var table = ImRaii.Table("Rotation Solver List Actions", 2, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+        using var table = ImRaii.Table("Rotation Solver List Actions", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
         if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);
@@ -2136,6 +2137,9 @@ public partial class RotationConfigWindow : Window
             ImGui.TableNextColumn();
             ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingArea.Local());
 
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingKnockback.Local());
+
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
@@ -2143,18 +2147,22 @@ public partial class RotationConfigWindow : Window
             DrawActionsList(nameof(OtherConfiguration.HostileCastingTank), OtherConfiguration.HostileCastingTank);
 
             ImGui.TableNextColumn();
-
-            _allSearchable.DrawItems(Configs.List);
-
+            _allSearchable.DrawItems(Configs.ListAoE);
             ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingAreaDesc.Local());
-
             DrawActionsList(nameof(OtherConfiguration.HostileCastingArea), OtherConfiguration.HostileCastingArea);
+
+            ImGui.TableNextColumn();
+            _allSearchable.DrawItems(Configs.ListKnockback);
+            ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingKnockbackDesc.Local());
+            DrawActionsList(nameof(OtherConfiguration.HostileCastingKnockback), OtherConfiguration.HostileCastingKnockback);
         }
     }
 
     private static string _actionSearching = string.Empty;
     private static void DrawActionsList(string name, HashSet<uint> actions)
     {
+        using var id = ImRaii.PushId(name);
+
         uint removeId = 0;
 
         var popupId = "Rotation Solver Action Popup" + name;
