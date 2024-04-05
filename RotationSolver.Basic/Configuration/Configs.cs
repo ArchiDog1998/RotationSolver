@@ -327,7 +327,7 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Use AoE actions", Filter = AutoActionUsage)]
     private static readonly bool _useAOEAction = true;
 
-    [ConditionBool, UI("Use AoE actions in manual mode.", Parent = nameof(UseAoeAction))]
+    [ConditionBool, UI("Use single target AoE actions in manual mode.", Parent = nameof(UseAoeAction))]
     private static readonly bool _useAOEWhenManual = false;
 
     [ConditionBool, UI("Automatically trigger dps burst phase.", Filter = AutoActionCondition)]
