@@ -92,7 +92,7 @@ public readonly struct ActionBasicInfo
     }
 
     /// <summary>
-    /// Is thia action on the slot.
+    /// Is this action on the slot.
     /// </summary>
     public readonly bool IsOnSlot
     {

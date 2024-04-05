@@ -74,7 +74,6 @@ partial class DutyRotation : IDisposable
         act = null; return false;
     }
 
-
     public virtual bool ProvokeAbility(out IAction? act)
     {
         act = null; return false;
@@ -147,7 +146,9 @@ partial class DutyRotation : IDisposable
         get
         {
             var properties = this.GetType().GetAllPropertyInfo()
-                .Where(p => DataCenter.DutyActions.Contains(p.GetCustomAttribute<IDAttribute>()?.ID ?? 0));
+                .Where(p => DataCenter.DutyActions.Contains(p.GetCustomAttribute<IDAttribute>()?.ID ?? uint.MaxValue));
+
+            if (properties == null || !properties.Any()) return [];
 
             return [.. properties.Select(p => (IAction)p.GetValue(this)!)];
         }
