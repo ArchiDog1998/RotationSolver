@@ -133,7 +133,7 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Use Tinctures", Filter = AutoActionUsage)]
     private static readonly bool _useTinctures = false;
 
-    [ConditionBool, UI("Automatically use Anti-Knockback abilities", Filter = AutoActionUsage)]
+    [ConditionBool, UI("Automatically use Anti-Knockback role actions (Arms Length, Surecast)", Filter = AutoActionUsage)]
     private static readonly bool _useKnockback = true;
 
     [ConditionBool, UI("Automatically use HP Potions", Filter = AutoActionUsage)]
