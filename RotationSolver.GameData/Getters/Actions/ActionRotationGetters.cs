@@ -64,6 +64,7 @@ internal class ActionRoleRotationGetter(Lumina.GameData gameData)
     protected override bool AddToList(Lumina.Excel.GeneratedSheets.Action item)
     {
         if (!base.AddToList(item)) return false;
+        if (item.ActionCategory.Row == 9) return false;
         return !IsADutyAction(item);
     }
 }

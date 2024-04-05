@@ -2,9 +2,7 @@
 
 namespace RotationSolver.Basic.Configuration;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-#pragma warning disable CA2211 
-public class OtherConfiguration
+internal class OtherConfiguration
 {
     public static HashSet<uint> HostileCastingArea = [];
     public static HashSet<uint> HostileCastingTank = [];
@@ -126,7 +124,7 @@ public class OtherConfiguration
     {
         var directory = Svc.PluginInterface.ConfigDirectory.FullName;
 #if DEBUG
-        var dir = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources";
+        var dir = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources"; //TODO: relative repo.
         if (Directory.Exists(dir)) directory = dir;
 #endif
 
@@ -194,5 +192,3 @@ public class OtherConfiguration
         }
     }
 }
-#pragma warning restore CA2211
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

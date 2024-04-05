@@ -132,7 +132,7 @@ partial class DutyRotation : IDisposable
     {
         get
         {
-            var properties = this.GetType().GetAllPropertyInfo()
+            var properties = this.GetType().GetRuntimeProperties()
                 .Where(p => DataCenter.DutyActions.Contains(p.GetCustomAttribute<IDAttribute>()?.ID ?? uint.MaxValue));
 
             if (properties == null || !properties.Any()) return [];

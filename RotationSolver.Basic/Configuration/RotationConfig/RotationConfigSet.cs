@@ -9,7 +9,7 @@ internal class RotationConfigSet : IRotationConfigSet
 
     public RotationConfigSet(ICustomRotation rotation)
     {
-        foreach (var prop in rotation.GetType().GetAllPropertyInfo())
+        foreach (var prop in rotation.GetType().GetRuntimeProperties())
         {
             var attr = prop.GetCustomAttribute<RotationConfigAttribute>();
             if (attr == null) continue;

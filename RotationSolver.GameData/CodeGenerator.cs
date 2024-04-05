@@ -101,7 +101,7 @@ internal static class CodeGenerator
         var traitsGetter = new TraitRotationGetter(gameData, job);
 
         List<MemberDeclarationSyntax> list = [.. rotationsGetter.GetNodes(), .. traitsGetter.GetNodes(),
-        .. GetArrayProperty("global::RotationSolver.Basic.Actions.IBaseAction", "AllBaseActions", [SyntaxKind.PublicKeyword, SyntaxKind.OverrideKeyword], [.. rotationsGetter.AddedNames]),
+
         .. GetArrayProperty("global::RotationSolver.Basic.Traits.IBaseTrait", "AllTraits", [SyntaxKind.PublicKeyword, SyntaxKind.OverrideKeyword], [.. traitsGetter.AddedNames])];
 
         if (!job.IsLimitedJob)
@@ -131,21 +131,27 @@ internal static class CodeGenerator
             list.Add(jobgauge);
         }
 
+        var rotationNames = rotationsGetter.AddedNames;
         if (job.LimitBreak1.Value is Lumina.Excel.GeneratedSheets.Action a
             && a.RowId != 0)
         {
             list.AddRange(GetLBInRotation(a, 1, gameData));
+            rotationNames.Add("LimitBreak1");
         }
         if (job.LimitBreak2.Value is Lumina.Excel.GeneratedSheets.Action b
             && b.RowId != 0)
         {
             list.AddRange(GetLBInRotation(b, 2, gameData));
+            rotationNames.Add("LimitBreak2");
         }
         if (job.LimitBreak3.Value is Lumina.Excel.GeneratedSheets.Action c
             && c.RowId != 0)
         {
             list.AddRange(GetLBInRotation(c, 3, gameData));
+            rotationNames.Add("LimitBreak3");
         }
+
+        list.AddRange(GetArrayProperty("global::RotationSolver.Basic.Actions.IBaseAction", "AllBaseActions", [SyntaxKind.PublicKeyword, SyntaxKind.OverrideKeyword], [.. rotationNames]));
 
         var type = ClassDeclaration(className)
             .WithModifiers(
