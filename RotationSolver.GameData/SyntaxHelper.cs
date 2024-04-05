@@ -23,7 +23,6 @@ public static class SyntaxHelper
          
              var setting = action.Setting;
              Modify{{actionName}}(ref setting);
-             {{(item.ActionCategory.Row is 15 ? "setting.ActionCheck = () => LimitBreakLevel >= 1;" : string.Empty)}}
              action.Setting = setting;
          
              return action;

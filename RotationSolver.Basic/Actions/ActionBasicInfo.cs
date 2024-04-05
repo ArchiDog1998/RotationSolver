@@ -151,8 +151,6 @@ public readonly struct ActionBasicInfo
     {
         if (!_action.Config.IsEnabled || !IsOnSlot) return false;
 
-        if (IsLimitBreak) return true;
-
         //Disabled.
         if (DataCenter.DisabledActionSequencer?.Contains(ID) ?? false) return false;
 
@@ -212,6 +210,14 @@ public readonly struct ActionBasicInfo
 
         if (!(_action.Setting.ActionCheck?.Invoke() ?? true)) return false;
         if (!IBaseAction.ForceEnable && !(_action.Setting.RotationCheck?.Invoke() ?? true)) return false;
+
+        unsafe
+        {
+            if (ConfigurationHelper.BadStatus.Contains(ActionManager.Instance()->GetActionStatus(ActionType.Action, AdjustedID))) return false;
+
+            //No resources... TODO: Maybe MP LB status..., etc..... which can be simplify.
+            if (ActionManager.Instance()->CheckActionResources(ActionType.Action, AdjustedID) != 0) return false;
+        }
 
         return true;
     }
