@@ -39,17 +39,17 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <summary>
     /// 
     /// </summary>
-    public unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(_action.Info.AdjustedID, (uint)Player.Level), (ushort)1);
-
-    /// <summary>
-    /// 
-    /// </summary>
     public bool HasOneCharge => !IsCoolingDown || RecastTimeElapsedRaw >= RecastTimeOneChargeRaw;
 
     /// <summary>
     /// 
     /// </summary>
-    public ushort CurrentCharges => IsCoolingDown ? (ushort)(RecastTimeElapsedRaw / RecastTimeOneChargeRaw) : MaxCharges;
+    public unsafe ushort CurrentCharges => (ushort)ActionManager.Instance()->GetCurrentCharges(_action.Info.AdjustedID);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(_action.Info.AdjustedID, (uint)Player.Level), (ushort)1);
 
     internal float RecastTimeOneChargeRaw => ActionManager.GetAdjustedRecastTime(ActionType.Action, _action.Info.AdjustedID) / 1000f;
 
