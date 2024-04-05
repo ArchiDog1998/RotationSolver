@@ -1347,7 +1347,7 @@ public partial class RotationConfigWindow : Window
 
                                 ImGui.BeginGroup();
                                 var cursor = ImGui.GetCursorPos();
-                                if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, item.Name))
+                                if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, item.Name + item.ID))
                                 {
                                     _activeAction = item;
                                 }
@@ -1499,6 +1499,7 @@ public partial class RotationConfigWindow : Window
 
                 try
                 {
+                    ImGui.Text("ID: " + action.Info.ID.ToString());
 #if DEBUG
                     ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
                     ImGui.Text("Resources: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->CheckActionResources(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
