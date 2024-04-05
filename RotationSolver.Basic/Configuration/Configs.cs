@@ -38,53 +38,52 @@ internal partial class Configs : IPluginConfiguration
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
-    [ConditionBool, UI("Show RS logo animation.",
-        Filter = UiWindows)]
-    private static readonly bool _drawIconAnimation = true;
+    [UI("Show RS logo animation.", Filter = UiWindows)]
+    public ConditionBoolean DrawIconAnimation { get; private set; } = new(true, nameof(DrawIconAnimation));
 
-    [ConditionBool, UI("Turns auto mode  off when player is switching between different maps.",
+    [UI("Turns auto mode  off when player is switching between different maps.",
         Filter =BasicAutoSwitch)]
-    private static readonly bool _autoOffBetweenArea = true;
+    public ConditionBoolean AutoOffBetweenArea { get; private set; } = new(true, nameof(AutoOffBetweenArea));
 
-    [ConditionBool, UI("Turns auto mode off during cutscenes.",
+    [UI("Turns auto mode off during cutscenes.",
         Filter =BasicAutoSwitch)]
-    private static readonly bool _autoOffCutScene = true;
+    public ConditionBoolean AutoOffCutScene { get; private set; } = new(true, nameof(AutoOffCutScene));
 
-    [ConditionBool, UI("Turns auto mode off when you die.",
+    [UI("Turns auto mode off when you die.",
         Filter =BasicAutoSwitch)]
-    private static readonly bool _autoOffWhenDead = true;
+    public ConditionBoolean AutoOffWhenDead { get; private set; } = new(true, nameof(AutoOffWhenDead));
 
-    [ConditionBool, UI("Turns auto mode off when the duty in progress is completed.",
+    [UI("Turns auto mode off when the duty in progress is completed.",
         Filter =BasicAutoSwitch)]
-    private static readonly bool _autoOffWhenDutyCompleted = true;
+    public ConditionBoolean AutoOffWhenDutyCompleted { get; private set; } = new(true, nameof(AutoOffWhenDutyCompleted));
 
-    [ConditionBool, UI("Consider only fate targets in the current fate area",
+    [UI("Consider only fate targets in the current fate area",
         Filter = TargetConfig, Section = 1)]
-    private static readonly bool _changeTargetForFate  = true;
+    public ConditionBoolean ChangeTargetForFate  { get; private set; } = new(true, nameof(ChangeTargetForFate));
 
-    [ConditionBool, UI("Use movement actions towards the closest object from the center of the screen",
+    [UI("Use movement actions towards the closest object from the center of the screen",
         Description = "Use movement actions towards the closest object from the center of the screen, otherwise toward your current facing direction.",
         Filter = TargetConfig, Section = 2)]
-    private static readonly bool _moveTowardsScreenCenter = true;
+    public ConditionBoolean MoveTowardsScreenCenter { get; private set; } = new(true, nameof(MoveTowardsScreenCenter));
 
-    [ConditionBool, UI("Audio notification for addon mode changes",
+    [UI("Audio notification for addon mode changes",
         Filter =UiInformation)]
-    private static readonly bool _sayOutStateChanged = true;
+    public ConditionBoolean SayOutStateChanged { get; private set; } = new(true, nameof(SayOutStateChanged));
 
-    [ConditionBool, UI("Display plugin status in server info bar",
+    [UI("Display plugin status in server info bar",
         Filter =UiInformation)]
-    private static readonly bool _showInfoOnDtr = true;
+    public ConditionBoolean ShowInfoOnDtr { get; private set; } = new(true, nameof(ShowInfoOnDtr));
 
-    [ConditionBool, UI("Heals players when not in combat.",
+    [UI("Heals players when not in combat.",
         Filter = AutoActionCondition, Section =1)]
-    private static readonly bool _healOutOfCombat = false;
+    public ConditionBoolean HealOutOfCombat { get; private set; } = new(false, nameof(HealOutOfCombat));
 
-    [ConditionBool, UI("Displays plugin status with toast notifications",
+    [UI("Displays plugin status with toast notifications",
         Filter =UiInformation)]
-    private static readonly bool _showInfoOnToast = true;
+    public ConditionBoolean ShowInfoOnToast { get; private set; } = new(true, nameof(ShowInfoOnToast));
 
-    [ConditionBool, UI("Lock the movement when casting or when doing some other actions.", Filter = Extra)]
-    private static readonly bool _poslockCasting = true;
+    [UI("Lock the movement when casting or when doing some other actions.", Filter = Extra)]
+    public ConditionBoolean PoslockCasting { get; private set; } = new(true, nameof(PoslockCasting));
 
     [UI("", Action = ActionID.PassageOfArmsPvE, Parent = nameof(PoslockCasting))]
     public bool PosPassageOfArms { get; set; } = false;
@@ -93,13 +92,13 @@ internal partial class Configs : IPluginConfiguration
     public bool PosTenChiJin { get; set; } = true;
 
     [UI("", Action = ActionID.FlamethrowerPvE, Parent = nameof(PoslockCasting))]
-    public bool  PosFlameThrower { get; set; } = false;
+    public bool PosFlameThrower { get; set; } = false;
 
     [UI("", Action = ActionID.ImprovisationPvE, Parent = nameof(PoslockCasting))]
-    public bool  PosImprovisation { get; set; } = false;
+    public bool PosImprovisation { get; set; } = false;
 
-    [ConditionBool, UI("Replace the action icon.", Filter = Extra)]
-    private static readonly bool _replaceIcon = false;
+    [UI("Replace the action icon.", Filter = Extra)]
+    public ConditionBoolean ReplaceIcon { get; private set; } = new(false, nameof(ReplaceIcon));
 
     [UI("", Action = ActionID.LegGrazePvE, Parent = nameof(ReplaceIcon))]
     public bool ReplaceLegGraze { get; set; } = true;
@@ -113,20 +112,20 @@ internal partial class Configs : IPluginConfiguration
     [UI("", Action = ActionID.SleepPvE, Parent = nameof(ReplaceIcon))]
     public bool ReplaceSleep { get; set; } = true;
 
-    [ConditionBool, UI("Raise player while swiftcast is on cooldown",
+    [UI("Raise player while swiftcast is on cooldown",
         Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
-    private static readonly bool _raisePlayerByCasting = true;
+    public ConditionBoolean RaisePlayerByCasting { get; private set; } = new(true, nameof(RaisePlayerByCasting));
 
-    [ConditionBool, UI("Raise any player in range (even if they are not in your party)",
+    [UI("Raise any player in range (even if they are not in your party)",
         Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
-    private static readonly bool _raiseAll = false;
+    public ConditionBoolean RaiseAll { get; private set; } = new(false, nameof(RaiseAll));
 
-    [ConditionBool, UI("Raise players that have the Brink of Death debuff",
+    [UI("Raise players that have the Brink of Death debuff",
         Filter = AutoActionUsage, Section = 2,
         PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
-    private static readonly bool _raiseBrinkOfDeath = true;
+    public ConditionBoolean RaiseBrinkOfDeath { get; private set; } = new(true, nameof(RaiseBrinkOfDeath));
 
     [UI("Random delay for considering a ressurection type action.",
         Filter = AutoActionUsage, Section = 2,
@@ -134,324 +133,323 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 10, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 RaiseDelay { get; set; } = new(1, 2);
 
-    [ConditionBool, UI("Add enemy list to the hostile targets.",
+    [UI("Add enemy list to the hostile targets.",
         Filter = TargetConfig)]
-    private static readonly bool _addEnemyListToHostile = true;
+    public ConditionBoolean AddEnemyListToHostile { get; private set; } = new(true, nameof(AddEnemyListToHostile));
 
-    [ConditionBool, UI("Only attack targets in the enemy list.",
+    [UI("Only attack targets in the enemy list.",
         Parent = nameof(AddEnemyListToHostile))]
-    private static readonly bool _onlyAttackInEnemyList = false;
+    public ConditionBoolean OnlyAttackInEnemyList { get; private set; } = new(false, nameof(OnlyAttackInEnemyList));
 
-    [ConditionBool, UI("Use Tinctures.", Filter = AutoActionUsage)]
-    private static readonly bool _useTinctures = false;
+    [UI("Use Tinctures.", Filter = AutoActionUsage)]
+    public ConditionBoolean UseTinctures { get; private set; } = new(false, nameof(UseTinctures));
 
-    [ConditionBool, UI("Use HP Potions.", Filter = AutoActionUsage)]
-    private static readonly bool _useHpPotions = false;
+    [UI("Use HP Potions.", Filter = AutoActionUsage)]
+    public ConditionBoolean UseHpPotions { get; private set; } = new(false, nameof(UseHpPotions));
 
-    [ConditionBool, UI("Use MP Potions.", Filter = AutoActionUsage)]
-    private static readonly bool _useMpPotions = false;
+    [UI("Use MP Potions.", Filter = AutoActionUsage)]
+    public ConditionBoolean UseMpPotions { get; private set; } = new(false, nameof(UseMpPotions));
 
-    [ConditionBool, UI("Draw the melee buffer area on the screen.",
+    [UI("Draw the melee buffer area on the screen.",
         Description = "Shows the area where no actions will be used between ranged and melee type actions.",
         Filter = UiOverlay)]
-    private static readonly bool _drawMeleeOffset = true;
+    public ConditionBoolean DrawMeleeOffset { get; private set; } = new(true, nameof(DrawMeleeOffset));
 
-    [ConditionBool, UI("Shows the target of the movement action.",
+    [UI("Shows the target of the movement action.",
         Filter =UiOverlay)]
-    private static readonly bool _showMoveTarget = true;
+    public ConditionBoolean ShowMoveTarget { get; private set; } = new(true, nameof(ShowMoveTarget));
 
-    [ConditionBool, UI("Shows target related drawing.",
+    [UI("Shows target related drawing.",
         Description = "Shows the next ability under the target and AoE attacks effect area",
         Filter = UiOverlay)]
-    private static readonly bool _showTarget = true;
+    public ConditionBoolean ShowTarget { get; private set; } = new(true, nameof(ShowTarget));
 
-    [ConditionBool, UI("Show the target's estimated time to kill.",
+    [UI("Show the target's estimated time to kill.",
         Parent = nameof(ShowTarget))]
-    private static readonly bool _showTargetTimeToKill = false;
+    public ConditionBoolean ShowTargetTimeToKill { get; private set; } = new(false, nameof(ShowTargetTimeToKill));
 
-    [ConditionBool, UI("Priority attacks targets with attack markers.",
+    [UI("Priority attacks targets with attack markers.",
         Filter = TargetConfig)]
-    private static readonly bool _chooseAttackMark = true;
+    public ConditionBoolean ChooseAttackMark { get; private set; } = new(true, nameof(ChooseAttackMark));
 
-    [ConditionBool, UI("Allows use of AoE abilities to attack as many targets as possibly.",
+    [UI("Allows use of AoE abilities to attack as many targets as possibly.",
         Parent = nameof(ChooseAttackMark))]
-    private static readonly bool _canAttackMarkAOE = true;
+    public ConditionBoolean CanAttackMarkAoe { get; private set; } = new(true, nameof(CanAttackMarkAoe));
 
-    [ConditionBool, UI("Never attack targets with stop markers.",
+    [UI("Never attack targets with stop markers.",
         Filter = TargetConfig)]
-    private static readonly bool _filterStopMark = true;
+    public ConditionBoolean FilterStopMark { get; private set; } = new(true, nameof(FilterStopMark));
 
-    [ConditionBool, UI ("Shows the hostile targets icon.",
+    [UI ("Shows the hostile targets icon.",
         Filter = UiOverlay)]
-    private static readonly bool _showHostilesIcons = true;
+    public ConditionBoolean ShowHostilesIcons { get; private set; } = new(true, nameof(ShowHostilesIcons));
 
-    [ConditionBool, UI ("Teaching mode.",
+    [UI ("Teaching mode.",
         Description = "Shows the next suggested ability that should be used",
         Filter =UiOverlay)]
     
-    private static readonly bool _teachingMode = true;
+    public ConditionBoolean TeachingMode { get; private set; } = new(true, nameof(TeachingMode));
 
-    [ConditionBool, UI("Display UI Overlay.", Description = "This overlay is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.",
+    [UI("Display UI Overlay.", Description = "This overlay is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.",
         Filter = UiOverlay)]
-    private static readonly bool _useOverlayWindow = true;
+    public ConditionBoolean UseOverlayWindow { get; private set; } = new(true, nameof(UseOverlayWindow));
 
-    [ConditionBool, UI("Simulates the effect of pressing abilities.",
+    [UI("Simulates the effect of pressing abilities.",
         Filter =UiInformation)]
-    private static readonly bool _keyBoardNoise = true;
+    public ConditionBoolean KeyBoardNoise { get; private set; } = new(true, nameof(KeyBoardNoise));
 
-    [ConditionBool, UI("Targets movement area ability to the farthest possible location.", Description = "Moves to the furthest possible position that can be targeted with movement actions.",
+    [UI("Targets movement area ability to the farthest possible location.", Description = "Moves to the furthest possible position that can be targeted with movement actions.",
         Filter = TargetConfig, Section = 2)]
-    private static readonly bool _moveAreaActionFarthest = true;
+    public ConditionBoolean MoveAreaActionFarthest { get; private set; } = new(true, nameof(MoveAreaActionFarthest));
 
-    [ConditionBool, UI("Auto mode activation delay on countdown start.",
+    [UI("Auto mode activation delay on countdown start.",
         Filter =BasicAutoSwitch, Section = 1)]
-    private static readonly bool _startOnCountdown = true;
+    public ConditionBoolean StartOnCountdown { get; private set; } = new(true, nameof(StartOnCountdown));
 
-    [ConditionBool, UI("Automatically turns on manual mode and targets enemy when being attacked.",
+    [UI("Automatically turns on manual mode and targets enemy when being attacked.",
         Filter =BasicAutoSwitch, Section =1)]
-    private static readonly bool _startOnAttackedBySomeone = false;
+    public ConditionBoolean StartOnAttackedBySomeone { get; private set; } = new(false, nameof(StartOnAttackedBySomeone));
 
-    [ConditionBool, UI("Don't attack new mobs by AoE.", Description = "Avoids usage of AoE abilities when new enemies would be aggroed.",
+    [UI("Don't attack new mobs by AoE.", Description = "Avoids usage of AoE abilities when new enemies would be aggroed.",
         Parent =nameof(UseAoeAction))]
-    private static readonly bool _noNewHostiles = false;
+    public ConditionBoolean NoNewHostiles { get; private set; } = new(false, nameof(NoNewHostiles));
 
-    [ConditionBool, UI("Use healing abilities when playing a non-healer role.",
+    [UI("Use healing abilities when playing a non-healer role.",
         Filter = AutoActionCondition, Section = 1,
         PvEFilter = JobFilterType.NoHealer, PvPFilter = JobFilterType.NoJob)]
-    private static readonly bool _useHealWhenNotAHealer = true;
+    public ConditionBoolean UseHealWhenNotAHealer { get; private set; } = new(true, nameof(UseHealWhenNotAHealer));
 
-    [ConditionBool, UI("Target allies for friendly actions.",
+    [UI("Target allies for friendly actions.",
         Filter = TargetConfig, Section = 3)]
-    private static readonly bool _switchTargetFriendly = false;
+    public ConditionBoolean SwitchTargetFriendly { get; private set; } = new(false, nameof(SwitchTargetFriendly));
 
-    [ConditionBool, UI("Use interrupt abilities if possible.",
+    [UI("Use interrupt abilities if possible.",
         Filter = AutoActionCondition, Section = 3,
         PvEFilter = JobFilterType.Interrupt,
         PvPFilter = JobFilterType.NoJob)]
-    private static readonly bool _interruptibleMoreCheck = true;
+    public ConditionBoolean InterruptibleMoreCheck { get; private set; } = new(true, nameof(InterruptibleMoreCheck));
 
-    [ConditionBool, UI("Use work task for acceleration.",
+    [UI("Use work task for acceleration.",
         Filter = BasicParams)]
-    private static readonly bool _useWorkTask = false;
+    public ConditionBoolean UseWorkTask { get; private set; } = new(false, nameof(UseWorkTask));
 
-    [ConditionBool, UI("Stops casting when the target is dead.", Filter = Extra)]
-    private static readonly bool _useStopCasting = false;
+    [UI("Stops casting when the target is dead.", Filter = Extra)]
+    public ConditionBoolean UseStopCasting { get; private set; } = new(false, nameof(UseStopCasting));
 
-    [ConditionBool, UI("Cleanse all dispellable debuffs.",
+    [UI("Cleanse all dispellable debuffs.",
         Filter = AutoActionCondition, Section = 3,
         PvEFilter = JobFilterType.Dispel, PvPFilter = JobFilterType.NoJob)]
-    private static readonly bool _dispelAll = false;
+    public ConditionBoolean DispelAll { get; private set; } = new(false, nameof(DispelAll));
 
-    [ConditionBool, UI("Only attacks targets within camera view.",
+    [UI("Only attacks targets within camera view.",
         Filter = TargetConfig, Section = 1)]
-    private static readonly bool _onlyAttackInView = false;
+    public ConditionBoolean OnlyAttackInView { get; private set; } = new(false, nameof(OnlyAttackInView));
 
-    [ConditionBool, UI("Only attack the targets within the character's vision cone.",
+    [UI("Only attack the targets within the character's vision cone.",
         Filter = TargetConfig, Section = 1)]
-    private static readonly bool _onlyAttackInVisionCone = false;
+    public ConditionBoolean OnlyAttackInVisionCone { get; private set; } = new(false, nameof(OnlyAttackInVisionCone));
 
-    [ConditionBool, UI("Use single target healing over time actions only on tanks.",
+    [UI("Use single target healing over time actions only on tanks.",
         Filter = AutoActionCondition, Section = 1,
         PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
-    private static readonly bool _onlyHotOnTanks = false;
+    public ConditionBoolean OnlyHotOnTanks { get; private set; } = new(false, nameof(OnlyHotOnTanks));
 
-    [ConditionBool, UI("Debug Mode.", Filter = Debug)]
-    private static readonly bool _inDebug = false;
-    public bool AutoUpdateLibs { get; set; } = true;
+    [UI("Debug Mode.", Filter = Debug)]
+    public ConditionBoolean InDebug { get; private set; } = new(false, nameof(InDebug));
+    //public bool AutoUpdateLibs { get; set; } = true;
 
-    [ConditionBool, UI("Auto Download Rotations.", Filter = Rotations)]
-    private static readonly bool _downloadRotations = true;
+    [UI("Auto Download Rotations.", Filter = Rotations)]
+    public ConditionBoolean DownloadRotations { get; private set; } = new(true, nameof(DownloadRotations));
 
-    [ConditionBool, UI("Auto Update Rotations.", Parent = nameof(DownloadRotations))]
-    private static readonly bool _autoUpdateRotations = true;
+    [UI("Auto Update Rotations.", Parent = nameof(DownloadRotations))]
+    public ConditionBoolean AutoUpdateRotations { get; private set; } = new(true, nameof(AutoUpdateRotations));
 
-    [ConditionBool, UI("Make /rotation Manual as a toggle command.",
+    [UI("Make /rotation Manual as a toggle command.",
         Filter = BasicParams)]
-    private static readonly bool _toggleManual = false;
+    public ConditionBoolean ToggleManual { get; private set; } = new(false, nameof(ToggleManual));
 
-    [ConditionBool, UI("Make /rotation Auto as a toggle command.",
+    [UI("Make /rotation Auto as a toggle command.",
         Filter =BasicParams)]
-    private static readonly bool _toggleAuto = false;
+    public ConditionBoolean ToggleAuto { get; private set; } = new(false, nameof(ToggleAuto));
 
-    [ConditionBool, UI("Only show these windows if there are enemies in or in duty.",
+    [UI("Only show these windows if there are enemies in or in duty.",
         Filter =UiWindows)]
-    private static readonly bool _onlyShowWithHostileOrInDuty = true;
+    public ConditionBoolean OnlyShowWithHostileOrInDuty { get; private set; } = new(true, nameof(OnlyShowWithHostileOrInDuty));
 
-    [ConditionBool, UI("Show Control Window.",
+    [UI("Show Control Window.",
         Filter =UiWindows)]
-    private static readonly bool _showControlWindow = false;
+    public ConditionBoolean ShowControlWindow { get; private set; } = new(false, nameof(ShowControlWindow));
 
-    [ConditionBool, UI("Lock Control Window.",
+    [UI("Lock Control Window.",
         Filter = UiWindows)]
-    private static readonly bool _isControlWindowLock = false;
+    public ConditionBoolean IsControlWindowLock { get; private set; } = new(false, nameof(IsControlWindowLock));
 
-    [ConditionBool, UI("Show Next Action Window.", Filter  = UiWindows)]
-    private static readonly bool _showNextActionWindow = true;
+    [UI("Show Next Action Window.", Filter  = UiWindows)]
+    public ConditionBoolean ShowNextActionWindow { get; private set; } = new(true, nameof(ShowNextActionWindow));
 
-    [ConditionBool, UI("No Inputs.", Parent = nameof(ShowNextActionWindow))]
-    private static readonly bool _isInfoWindowNoInputs = false;
+    [UI("No Inputs.", Parent = nameof(ShowNextActionWindow))]
+    public ConditionBoolean IsInfoWindowNoInputs { get; private set; } = new(false, nameof(IsInfoWindowNoInputs));
 
-    [ConditionBool, UI("No Move.", Parent = nameof(ShowNextActionWindow))]
-    private static readonly bool _isInfoWindowNoMove = false;
+    [UI("No Move.", Parent = nameof(ShowNextActionWindow))]
+    public ConditionBoolean IsInfoWindowNoMove { get; private set; } = new(false, nameof(IsInfoWindowNoMove));
 
-    [ConditionBool, UI("Show Items Cooldown.",
+    [UI("Show Items Cooldown.",
         Parent = nameof(ShowCooldownWindow))]
-    private static readonly bool _showItemsCooldown = false;
+    public ConditionBoolean ShowItemsCooldown { get; private set; } = new(false, nameof(ShowItemsCooldown));
 
-    [ConditionBool, UI("Show GCD Cooldown.",
+    [UI("Show GCD Cooldown.",
         Parent = nameof(ShowCooldownWindow))]
-    private static readonly bool _showGCDCooldown = false;
+    public ConditionBoolean ShowGcdCooldown { get; private set; } = new(false, nameof(ShowGcdCooldown));
 
-    [ConditionBool, UI("Show Original Cooldown.",
+    [UI("Show Original Cooldown.",
         Parent = nameof(ShowCooldownWindow))]
-    private static readonly bool _useOriginalCooldown = true;
+    public ConditionBoolean UseOriginalCooldown { get; private set; } = new(true, nameof(UseOriginalCooldown));
 
-    [ConditionBool, UI("Show tooltips.",
+    [UI("Show tooltips.",
         Filter = UiInformation)]
-    private static readonly bool _showTooltips = true;
+    public ConditionBoolean ShowTooltips { get; private set; } = new(true, nameof(ShowTooltips));
 
-    [ConditionBool, UI("Auto load custom rotation files.",
+    [UI("Auto load custom rotation files.",
         Filter = Rotations)]
-    private static readonly bool _autoLoadCustomRotations = false;
+    public ConditionBoolean AutoLoadCustomRotations { get; private set; } = new(false, nameof(AutoLoadCustomRotations));
 
-    [ConditionBool, UI("Prioritize fate targets.",
+    [UI("Prioritize fate targets.",
         Filter = TargetConfig, Section = 1)]
-    private static readonly bool _targetFatePriority = true;
+    public ConditionBoolean TargetFatePriority { get; private set; } = new(true, nameof(TargetFatePriority));
 
-    [ConditionBool, UI("Prioritize Hunt/Relic/Leve targets.",
+    [UI("Prioritize Hunt/Relic/Leve targets.",
         Filter = TargetConfig, Section = 1)]
-    private static readonly bool _targetHuntingRelicLevePriority = true;
+    public ConditionBoolean TargetHuntingRelicLevePriority { get; private set; } = new(true, nameof(TargetHuntingRelicLevePriority));
 
-    [ConditionBool, UI("Prioritize Quest targets.",
+    [UI("Prioritize Quest targets.",
         Filter = TargetConfig, Section = 1)]
 
-    private static readonly bool _targetQuestPriority = true;
+    public ConditionBoolean TargetQuestPriority { get; private set; } = new(true, nameof(TargetQuestPriority));
 
-    [ConditionBool, UI("Display manually triggered actions feedback on toast",
+    [UI("Display manually triggered actions feedback on toast",
         Filter =UiInformation)]
-    private static readonly bool _showToastsAboutDoAction = true;
+    public ConditionBoolean ShowToastsAboutDoAction { get; private set; } = new(true, nameof(ShowToastsAboutDoAction));
 
-    [ConditionBool, UI("Use AoE actions.", Filter = AutoActionUsage)]
-    private static readonly bool _useAOEAction = true;
+    [UI("Use AoE actions.", Filter = AutoActionUsage)]
+    public ConditionBoolean UseAoeAction { get; private set; } = new(true, nameof(UseAoeAction));
 
-    [ConditionBool, UI("Use AoE actions in manual mode.", Parent = nameof(UseAoeAction))]
-    private static readonly bool _useAOEWhenManual = false;
+    [UI("Use AoE actions in manual mode.", Parent = nameof(UseAoeAction))]
+    public ConditionBoolean UseAoeWhenManual { get; private set; } = new(false, nameof(UseAoeWhenManual));
 
-    [ConditionBool, UI("Automatically trigger dps burst phase.", Filter = AutoActionCondition)]
-    private static readonly bool _autoBurst = true;
+    [UI("Automatically trigger dps burst phase.", Filter = AutoActionCondition)]
+    public ConditionBoolean AutoBurst { get; private set; } = new(true, nameof(AutoBurst));
 
-    [ConditionBool, UI("Automatic Healing.", Filter = AutoActionCondition)]
-    private static readonly bool _autoHeal = true;
+    [UI("Automatic Healing.", Filter = AutoActionCondition)]
+    public ConditionBoolean AutoHeal { get; private set; } = new(true, nameof(AutoHeal));
 
-    [ConditionBool, UI("Automatic offensive ability use.", Filter = AutoActionUsage)]
-    private static readonly bool _useAbility = true;
+    [UI("Automatic offensive ability use.", Filter = AutoActionUsage)]
+    public ConditionBoolean UseAbility { get; private set; } = new(true, nameof(UseAbility));
 
-    [ConditionBool, UI("Automatically use defensive abilities.", Description = "It is recommended to uncheck this option if you are playing high end content or if you can plan healing and defensive ability usage by yourself.",
+    [UI("Automatically use defensive abilities.", Description = "It is recommended to uncheck this option if you are playing high end content or if you can plan healing and defensive ability usage by yourself.",
         Parent = nameof(UseAbility))]
-    private static readonly bool _useDefenseAbility = true;
+    public ConditionBoolean UseDefenseAbility { get; private set; } = new(true, nameof(UseDefenseAbility));
 
-    [ConditionBool, UI("Automatically activate tank stance.", Parent =nameof(UseAbility),
+    [UI("Automatically activate tank stance.", Parent =nameof(UseAbility),
         PvEFilter = JobFilterType.Tank)]
-    private static readonly bool _autoTankStance = true;
+    public ConditionBoolean AutoTankStance { get; private set; } = new(true, nameof(AutoTankStance));
 
-    [ConditionBool, UI("Auto provoke non-tank attacking targets.", Description = "Automatically use provoke when an enemy is attacking a non-tank member of the party.",
+    [UI("Auto provoke non-tank attacking targets.", Description = "Automatically use provoke when an enemy is attacking a non-tank member of the party.",
         Parent = nameof(UseAbility), PvEFilter = JobFilterType.Tank)]
-    private static readonly bool _autoProvokeForTank = true;
+    public ConditionBoolean AutoProvokeForTank { get; private set; } = new(true, nameof(AutoProvokeForTank));
 
-    [ConditionBool, UI("Auto TrueNorth (Melee).",
+    [UI("Auto TrueNorth (Melee).",
         Parent = nameof(UseAbility),
         PvEFilter = JobFilterType.Melee)]
-    private static readonly bool _autoUseTrueNorth = true;
+    public ConditionBoolean AutoUseTrueNorth { get; private set; } = new(true, nameof(AutoUseTrueNorth));
 
-    [ConditionBool, UI("Raise player by using swiftcast if available",
+    [UI("Raise player by using swiftcast if available",
         Parent = nameof(UseAbility),
         PvEFilter = JobFilterType.Healer)]
-    private static readonly bool _raisePlayerBySwift = true;
+    public ConditionBoolean RaisePlayerBySwift { get; private set; } = new(true, nameof(RaisePlayerBySwift));
 
-    [ConditionBool, UI("Use movement speed increase abilities when out of combat.", Parent = nameof(UseAbility))]
-    private static readonly bool _autoSpeedOutOfCombat = true;
+    [UI("Use movement speed increase abilities when out of combat.", Parent = nameof(UseAbility))]
+    public ConditionBoolean AutoSpeedOutOfCombat { get; private set; } = new(true, nameof(AutoSpeedOutOfCombat));
 
-    [ConditionBool, UI("Use beneficial ground-targeted actions.", Parent = nameof(UseAbility),
+    [UI("Use beneficial ground-targeted actions.", Parent = nameof(UseAbility),
         PvEFilter = JobFilterType.Healer)]
-    private static readonly bool _useGroundBeneficialAbility = true;
+    public ConditionBoolean UseGroundBeneficialAbility { get; private set; } = new(true, nameof(UseGroundBeneficialAbility));
 
-    [ConditionBool, UI("Use Anti-Knockback abilities", Parent = nameof(UseAbility))]
-    private static readonly bool _useKnockback = true;
+    [UI("Use Anti-Knockback abilities", Parent = nameof(UseAbility))]
+    public ConditionBoolean UseKnockback { get; private set; } = new(true, nameof(UseKnockback));
 
-    [ConditionBool, UI("Use beneficial AoE actions while moving.", Parent = nameof(UseGroundBeneficialAbility))]
-    private static readonly bool _useGroundBeneficialAbilityWhenMoving = false;
+    [UI("Use beneficial AoE actions while moving.", Parent = nameof(UseGroundBeneficialAbility))]
+    public ConditionBoolean UseGroundBeneficialAbilityWhenMoving { get; private set; } = new(false, nameof(UseGroundBeneficialAbilityWhenMoving));
 
-    [ConditionBool, UI("Consider all players for friendly actions (include passerby).",
+    [UI("Consider all players for friendly actions (include passerby).",
         Filter = TargetConfig, Section = 3)]
-    private static readonly bool _targetAllForFriendly = false;
+    public ConditionBoolean TargetAllForFriendly { get; private set; } = new(false, nameof(TargetAllForFriendly));
 
-    [ConditionBool, UI("Show Cooldown Window.", Filter = UiWindows)]
-    private static readonly bool _showCooldownWindow = false;
+    [UI("Show Cooldown Window.", Filter = UiWindows)]
+    public ConditionBoolean ShowCooldownWindow { get; private set; } = new(false, nameof(ShowCooldownWindow));
 
-    [ConditionBool, UI("Record AoE actions.", Filter = ListAoE)]
-    private static readonly bool _recordCastingArea = true;
+    [UI("Record AoE actions.", Filter = ListAoE)]
+    public ConditionBoolean RecordCastingArea { get; private set; } = new(true, nameof(RecordCastingArea));
 
-    [ConditionBool, UI("Record Knockback actions.", Filter = ListKnockback)]
-    private static readonly bool _recordKnockback = true;
+    [UI("Record Knockback actions.", Filter = ListKnockback)]
+    public ConditionBoolean RecordKnockback { get; private set; } = new(true, nameof(RecordKnockback));
 
-    [ConditionBool, UI("Auto turn off RS when combat is over more for more then...",
+    [UI("Auto turn off RS when combat is over more for more then...",
         Filter =BasicAutoSwitch)]
-    private static readonly bool _autoOffAfterCombat = true;
+    public ConditionBoolean AutoOffAfterCombat { get; private set; } = new(true, nameof(AutoOffAfterCombat));
 
-    [ConditionBool, UI("Auto open treasure chests",
+    [UI("Auto open treasure chests",
         Filter = Extra)]
-    private static readonly bool _autoOpenChest = false;
+    public ConditionBoolean AutoOpenChest { get; private set; } = new(false, nameof(AutoOpenChest));
 
-    [ConditionBool, UI("Auto close the loot window when auto opened the chest.",
+    [UI("Auto close the loot window when auto opened the chest.",
         Parent = nameof(AutoOpenChest))]
-    private static readonly bool _autoCloseChestWindow = true;
+    public ConditionBoolean AutoCloseChestWindow { get; private set; } = new(true, nameof(AutoCloseChestWindow));
 
-    [ConditionBool, UI("Show RS state icon.", Filter = UiOverlay)]
-    private static readonly bool _showStateIcon = true;
+    [UI("Show RS state icon.", Filter = UiOverlay)]
+    public ConditionBoolean ShowStateIcon { get; private set; } = new(true, nameof(ShowStateIcon));
 
-    [ConditionBool, UI("Show beneficial AoE locations.", Filter = UiOverlay)]
-    private static readonly bool _showBeneficialPositions = true;
+    [UI("Show beneficial AoE locations.", Filter = UiOverlay)]
+    public ConditionBoolean ShowBeneficialPositions { get; private set; } = new(true, nameof(ShowBeneficialPositions));
 
-    [ConditionBool, UI("Hide all warnings.",
-        Filter = UiInformation)]
-    private static readonly bool _hideWarning = false;
+    [UI("Hide all warnings.", Filter = UiInformation)]
+    public ConditionBoolean HideWarning { get; private set; } = new(false, nameof(HideWarning));
 
-    [ConditionBool, UI("Heal party members using GCD healing if there is nothing to do while in combat.",
+    [UI("Heal party members using GCD healing if there is nothing to do while in combat.",
         Filter = AutoActionCondition, Section = 1)]
-    private static readonly bool _healWhenNothingTodo = true;
+    public ConditionBoolean HealWhenNothingTodo { get; private set; } = new(true, nameof(HealWhenNothingTodo));
 
-    [ConditionBool, UI("Say hello to all other users of Rotation Solver.",
+    [UI("Say hello to all other users of Rotation Solver.",
         Filter = BasicParams)]
-    private static readonly bool _sayHelloToAll = true;
+    public ConditionBoolean SayHelloToAll { get; private set; } = new(true, nameof(SayHelloToAll));
 
-    [ConditionBool, UI("Say hello to the users of Rotation Solver.", Description = "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!",
+    [UI("Say hello to the users of Rotation Solver.", Description = "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!",
         Parent =nameof(SayHelloToAll))]
-    private static readonly bool _sayHelloToUsers = true;
+    public ConditionBoolean SayHelloToUsers { get; private set; } = new(true, nameof(SayHelloToUsers));
 
-    [ConditionBool, UI("Say hello only one time to the same user.",
+    [UI("Say hello only one time to the same user.",
         Parent = nameof(SayHelloToAll))]
-    private static readonly bool _justSayHelloOnce = false;
+    public ConditionBoolean JustSayHelloOnce { get; private set; } = new(false, nameof(JustSayHelloOnce));
 
-    [ConditionBool, UI("Only Heal self when not a healer.", 
+    [UI("Only Heal self when not a healer.", 
         Filter = AutoActionCondition, Section = 1,
         PvPFilter = JobFilterType.NoHealer, PvEFilter = JobFilterType.NoHealer)]
-    private static readonly bool _onlyHealSelfWhenNoHealer = false;
+    public ConditionBoolean OnlyHealSelfWhenNoHealer { get; private set; } = new(false, nameof(OnlyHealSelfWhenNoHealer));
 
-    [ConditionBool, UI("Display toggle action feedback on chat.",
+    [UI("Display toggle action feedback on chat.",
         Filter =UiInformation)]
-    private static readonly bool _showToggledActionInChat = true;
+    public ConditionBoolean ShowToggledActionInChat { get; private set; } = new(true, nameof(ShowToggledActionInChat));
 
-    [ConditionBool, UI("Show the timeline assigned drawings in game.",
+    [UI("Show the timeline assigned drawings in game.",
     Filter = TimelineFilter)]
-    private static readonly bool _showTimelineDrawing = true;
+    public ConditionBoolean ShowTimelineDrawing { get; private set; } = new(true, nameof(ShowTimelineDrawing));
 
-    [ConditionBool, UI("Enable auto movement using timeline assignments.",
+    [UI("Enable auto movement using timeline assignments.",
         Filter = TimelineFilter)]
-    private static readonly bool _enableTimelineMovement = true;
+    public ConditionBoolean EnableTimelineMovement { get; private set; } = new(true, nameof(EnableTimelineMovement));
 
-    [ConditionBool, UI("Skips ping checking. Please use it along with NoClippy",
+    [UI("Skips ping checking. Please use it along with NoClippy",
         Filter = BasicTimer, Section = 2)]
-    private static readonly bool _noPingCheck = false;
+    public ConditionBoolean NoPingCheck { get; private set; } = new(false, nameof(NoPingCheck));
 
     [UI("Use additional conditions", Filter = BasicParams)]
     public bool UseAdditionalConditions { get; set; } = false;
@@ -466,8 +464,8 @@ internal partial class Configs : IPluginConfiguration
     [Range(0.005f, 0.05f, ConfigUnitType.Yalms, 0.001f)]
     public float SampleLength { get; set; } = 1;
 
-    [ConditionBool, UI("Use tasks for making the overlay window faster.", Parent = nameof(UseOverlayWindow))]
-    private static readonly bool _useTasksForOverlay = false;
+    [UI("Use tasks for making the overlay window faster.", Parent = nameof(UseOverlayWindow))]
+    public ConditionBoolean UseTasksForOverlay { get; private set; } = new(false, nameof(UseTasksForOverlay));
 
     [UI("The angle of your vision cone", Parent = nameof(OnlyAttackInVisionCone))]
     [Range(0, 90, ConfigUnitType.Degree, 0.02f)]

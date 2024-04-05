@@ -77,8 +77,3 @@ internal class JobConfigAttribute : Attribute
 internal class JobChoiceConfigAttribute : Attribute
 {
 }
-
-[AttributeUsage(AttributeTargets.Field)]
-internal class ConditionBoolAttribute: Attribute
-{
-}
