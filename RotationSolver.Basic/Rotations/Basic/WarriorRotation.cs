@@ -128,6 +128,12 @@ partial class WarriorRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
+    static partial void ModifyNascentFlashPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.NascentFlash];
+        setting.StatusProvide = [StatusID.NascentGlint];
+    }
+
     /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {
