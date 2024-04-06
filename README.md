@@ -45,8 +45,6 @@ I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXI
 
 ## How to build
 
-- Build `RotationSolver.GameData `with your game folder.
-- Run `RotationSolver.GameData`.
 - Build `RotationSolver.SourceGenerators`
 - Restart your IDE.
 - Build the whole solution!

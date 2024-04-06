@@ -14,3 +14,62 @@ jobs:
         with:
           release-type: node
           package-name: release-please-action
+
+  build:
+    name : build
+    needs: release-please
+    if: ${{ needs.release-please.outputs.released }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+            dotnet-version: 8.0.x
+             
+      - name: Restore Dependencies
+        run: dotnet restore
+          
+      - name: Download Dalamud
+        run: |
+          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
+          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev"
+                               
+      - name: Build Plugin
+        run: |
+          invoke-expression 'dotnet build --no-restore --configuration Release RotationSolver.SourceGenerators'
+          invoke-expression 'dotnet build --no-restore --configuration Release RotationSolver'
+           
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: .\RotationSolver\bin\Release\net8.0-windows\RotationSolver\
+
+      - name: publish on version change
+        id: publish_nuget
+        uses: alirezanet/publish-nuget@v3.0.4
+        with:
+          PROJECT_FILE_PATH: RotationSolver.Basic/RotationSolver.Basic.csproj
+          VERSION_FILE_PATH: Directory.Build.props
+          NUGET_KEY: ${{secrets.nuget_api_key}}
+
+  release:
+    name: release
+    needs: [release-please, build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+
+      - name: Trigger Repo Update
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.repository_owner }}/DalamudPlugins
+          event-type: new-release
