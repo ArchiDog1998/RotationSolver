@@ -73,8 +73,13 @@ internal static partial class TargetUpdater
         }
     }
 
-    private static RandomDelay _interruptDelay = new(() => Service.Config.InterruptDelay),
+    private static RandomDelay
+        _interruptDelay = new(() => Service.Config.InterruptDelay),
+        _knockbackDelay = new(() => Service.Config.AntiKnockbackDelay),
+        _defenseSingleDelay = new(() => Service.Config.DefenseSingleDelay),
+        _defenseAreaDelay = new(() => Service.Config.DefenseAreaDelay),
         _provokeDelay = new(() => Service.Config.ProvokeDelay);
+
     private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
     {
         allTargets = allTargets.Where(b =>
@@ -124,9 +129,9 @@ internal static partial class TargetUpdater
         DataCenter.MobsTime = DataCenter.AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
             >= Service.Config.AutoDefenseNumber;
 
-        DataCenter.IsHostileCastingToTank = IsCastingTankVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingTank);
-        DataCenter.IsHostileCastingAOE = IsCastingAreaVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingArea);
-        DataCenter.IsHostileCastingKnockback = DataCenter.AllHostileTargets.Any(IsHostileCastingKnockback);
+        DataCenter.IsHostileCastingToTank = _defenseSingleDelay.Delay(IsCastingTankVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingTank));
+        DataCenter.IsHostileCastingAOE = _defenseAreaDelay.Delay(IsCastingAreaVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingArea));
+        DataCenter.IsHostileCastingKnockback = _knockbackDelay.Delay(DataCenter.AllHostileTargets.Any(IsHostileCastingKnockback));
 
         DataCenter.ProvokeTarget = _provokeDelay.Delay(DataCenter.AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke));
     }
@@ -202,8 +207,7 @@ internal static partial class TargetUpdater
         var last = h.TotalCastTime - h.CurrentCastTime;
         var t = last - DataCenter.WeaponRemain;
 
-        if (!(h.TotalCastTime > 2.5 &&
-            t > 0 && t < DataCenter.GCDTime(2))) return false;
+        if (!(h.TotalCastTime > 2.5 && t is > 0 and < 5)) return false;
 
         var action = Service.GetSheet<Action>().GetRow(h.CastActionId);
         if (action == null) return false;

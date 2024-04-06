@@ -52,8 +52,6 @@ public class JobChoiceConfigGenerator : IIncrementalGenerator
                     continue;
                 }
 
-                var key = string.Join(".", nameSpace, className, propertyName);
-
                 var fieldTypeStr = field.Declaration.Type;
                 var fieldType = model.GetTypeInfo(fieldTypeStr).Type!;
                 var fieldStr = fieldType.GetFullMetadataName();

@@ -422,7 +422,7 @@ internal partial class Configs : IPluginConfiguration
         Filter = BasicParams)]
     public ConditionBoolean SayHelloToAll { get; private set; } = new(true, nameof(SayHelloToAll));
 
-    [UI("Say hello to the users of Rotation Solver.", Description = "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed in Discord Server with your Hash!",
+    [UI("Say hello to the users of Rotation Solver.", Description = "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed with your Hash!",
         Parent =nameof(SayHelloToAll))]
     public ConditionBoolean SayHelloToUsers { get; private set; } = new(true, nameof(SayHelloToUsers));
 
@@ -564,6 +564,18 @@ internal partial class Configs : IPluginConfiguration
     Parent = nameof(AutoHeal))]
     [Range(0, 3, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 HealDelay { get; set; } = new(0.5f, 1);
+
+    [UI("The random delay between for the auto anti-knockback.", Parent = nameof(UseKnockback))]
+    [Range(0, 5, ConfigUnitType.Seconds, 0.002f)]
+    public Vector2 AntiKnockbackDelay { get; set; } = new(2, 3);
+
+    [UI("The random delay between for the auto defense single.", Parent = nameof(UseDefenseAbility))]
+    [Range(0, 5, ConfigUnitType.Seconds, 0.002f)]
+    public Vector2 DefenseSingleDelay { get; set; } = new(2, 3);
+
+    [UI("The random delay between for the auto defense area.", Parent = nameof(UseDefenseAbility))]
+    [Range(0, 5, ConfigUnitType.Seconds, 0.002f)]
+    public Vector2 DefenseAreaDelay { get; set; } = new(2, 3);
 
     [UI("Remaining countdown duration when abilities will start being used before finishing the countdown.",
         Filter =BasicTimer, Section = 1, PvPFilter = JobFilterType.NoJob)]
