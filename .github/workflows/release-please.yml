@@ -8,6 +8,9 @@ jobs:
     name : releasePlz
     if : ${{ startsWith(github.event.head_commit.message, 'chore:') || startsWith(github.event.head_commit.message, 'Merge pull request')}}
     runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.rp.outputs.releases_created }}
+      upload_url: ${{ steps.rp.outputs.upload_url }}
     steps:
       - id: rp
         uses: google-github-actions/release-please-action@v3
