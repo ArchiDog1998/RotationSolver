@@ -352,5 +352,11 @@
   "RotationSolver.Data.UiString.SpecialCommandType_DefenseArea": "Defense Area",
   "RotationSolver.Data.UiString.ConfigWindow_List_HostileCastingKnockback": "Knockback",
   "RecordKnockbackName": "Record Knockback actions.",
-  "RotationSolver.Data.UiString.ConfigWindow_List_HostileCastingKnockbackDesc": "Use knockback prevention abilities if the target is casting any of these actions"
+  "RotationSolver.Data.UiString.ConfigWindow_List_HostileCastingKnockbackDesc": "Use knockback prevention abilities if the target is casting any of these actions",
+  "RotationSolver.Data.UiString.SpecialCommandType_MoveForward": "Move Forward",
+  "RotationSolver.Data.UiString.SpecialCommandType_EndSpecial": "End Special",
+  "RotationSolver.Data.UiString.SpecialCommandType_Manual": "Manual Target",
+  "RotationSolver.Data.UiString.SpecialCommandType_AntiKnockback": "Anti Knockback",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_CheckStatus": "Should this action check the stauts.",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_GcdCount": "How many gcds are needed to add the status."
 }
