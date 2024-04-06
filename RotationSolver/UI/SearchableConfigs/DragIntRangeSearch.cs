@@ -9,22 +9,6 @@ internal class DragIntRangeSearch : Searchable
     public float Speed { get; }
     public ConfigUnitType Unit { get; }
 
-    public override string Description
-    {
-        get
-        {
-            var baseDesc = base.Description;
-            if (!string.IsNullOrEmpty(baseDesc))
-            {
-                return baseDesc + "\n" + Unit.Local();
-            }
-            else
-            {
-                return Unit.Local();
-            }
-        }
-    }
-
     protected Vector2Int Value
     {
         get => (Vector2Int)_property.GetValue(Service.Config)!;
@@ -77,5 +61,12 @@ internal class DragIntRangeSearch : Searchable
         ImGui.SameLine();
         ImGui.TextWrapped(Name);
         if (ImGui.IsItemHovered()) ShowTooltip(false);
+    }
+
+    protected override void TooltipAdditional()
+    {
+        ImGui.Separator();
+        ImGui.TextDisabled(Unit.Local());
+        base.TooltipAdditional();
     }
 }

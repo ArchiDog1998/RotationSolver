@@ -639,7 +639,7 @@ internal enum UiString
     [Description("This config is job specific")]
     JobConfigTip,
 
-    [Description("This option is unavailable while using your current job\n \nRoles or jobs needed:\n{0}")]
+    [Description("This option is unavailable while using your current job.\nRoles or jobs needed:")]
     NotInJob,
 
     [Description("Raid Time")]

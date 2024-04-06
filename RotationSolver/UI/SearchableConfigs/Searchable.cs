@@ -117,16 +117,6 @@ internal readonly struct JobFilter
     }
 
     public Job[] AllJobs => (JobRoles ?? []).SelectMany(JobRoleExtension.ToJobs).Union(Jobs ?? []).ToArray();
-
-    public string Description
-    {
-        get
-        {
-            var roleOrJob = string.Join("\n",
-                AllJobs.Select(job => Svc.Data.GetExcelSheet<ClassJob>()?.GetRow((uint)job)?.Name ?? job.ToString()));
-            return string.Format(UiString.NotInJob.Local(), roleOrJob);
-        }
-    }
 }
 
 internal abstract class Searchable(PropertyInfo property) : ISearchable
@@ -187,7 +177,7 @@ internal abstract class Searchable(PropertyInfo property) : ISearchable
 
         if (!filter.CanDraw)
         {
-            if (!filter.AllJobs.Any())
+            if (filter.AllJobs.Length == 0)
             {
                 return;
             }
@@ -212,7 +202,17 @@ internal abstract class Searchable(PropertyInfo property) : ISearchable
                 wholeWidth -= size.X;
             }
 
-            ImguiTooltips.HoveredTooltip(filter.Description);
+            ImguiTooltips.HoveredTooltip(() =>
+            {
+                ImGui.Text(UiString.NotInJob.Local());
+
+                ImGui.NewLine();
+
+                foreach (var job in filter.AllJobs)
+                {
+                    DrawJobIcon(job);
+                }
+            });
             return;
         }
 
@@ -241,26 +241,35 @@ internal abstract class Searchable(PropertyInfo property) : ISearchable
                 }
                 var wholeWidth = ImGui.GetWindowWidth();
 
-                if (Tooltips != null) foreach (var tooltip in Tooltips)
+                if (Tooltips != null)
+                {
+                    foreach (var tooltip in Tooltips)
                     {
                         RotationConfigWindow.DrawLinkDescription(tooltip, wholeWidth, false);
                     }
+                }
+
+                TooltipAdditional();
             });
         }
 
         ImGuiHelper.ReactPopup(Popup_Key, Command, ResetToDefault, showHand);
     }
 
-    protected static void DrawJobIcon()
+    protected virtual void TooltipAdditional() { }
+
+    private static void DrawJobIcon(Job job)
     {
         ImGui.SameLine();
 
-        if (IconSet.GetTexture(IconSet.GetJobIcon(DataCenter.Job, IconType.Framed), out var texture))
+        if (IconSet.GetTexture(IconSet.GetJobIcon(job, IconType.Framed), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
             ImguiTooltips.HoveredTooltip(UiString.JobConfigTip.Local());
         }
     }
+
+    protected static void DrawJobIcon() => DrawJobIcon(DataCenter.Job);
 
     public virtual void ResetToDefault()
     {

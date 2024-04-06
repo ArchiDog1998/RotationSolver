@@ -23,6 +23,12 @@ internal static class ImguiTooltips
         ShowTooltip(text);
     }
 
+    public static void HoveredTooltip(Action act)
+    {
+        if (!ImGui.IsItemHovered()) return;
+        ShowTooltip(act);
+    }
+
     public static void ShowTooltip(string? text)
     {
         if (string.IsNullOrEmpty(text)) return;

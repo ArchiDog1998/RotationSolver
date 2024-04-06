@@ -749,10 +749,8 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Tank)]
     private readonly float _healthForAutoDefense = 1;
 
-    [LinkDescription($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/HowAndWhenToClick.svg",
-        "This plugin helps you to use the right action during the combat. Here is a guide about the different options.")]
     [JobConfig, Range(0, 0.5f, ConfigUnitType.Seconds)]
-    [UI("Action Ahead", Filter = BasicTimer)]
+    [UI("Action Ahead", Filter = BasicTimer, Description = "This plugin helps you to use the right action during the combat. Here is a guide about the different options.")]
     private readonly float _actionAhead = 0.08f;
 
     [JobConfig, UI("Engage settings", Filter = TargetConfig, PvPFilter = JobFilterType.NoJob)]
