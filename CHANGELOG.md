@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.2.6](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.5...v4.2.6) (2024-04-06)
+
+
+### Bug Fixes
+
+* action resources check. Maybe the code can be simplify... ([a6a8a99](https://github.com/ArchiDog1998/RotationSolver/commit/a6a8a9910b1e6c19bcb58ecc08f9cfa9a5117f15))
+* add auto - knocking back and control window drawing fix. ([37f5731](https://github.com/ArchiDog1998/RotationSolver/commit/37f573153fd21cd0f10fedf0c049089f2e7c2189))
+* add back the txt files. ([cb4938e](https://github.com/ArchiDog1998/RotationSolver/commit/cb4938e1526a2cb74ed578fe71be2045e62873c8))
+* add casting delay. ([e052251](https://github.com/ArchiDog1998/RotationSolver/commit/e052251a720b678d76bc55855894c15c930279e3)), closes [#580](https://github.com/ArchiDog1998/RotationSolver/issues/580)
+* LB drawing and the duty actions drawing. ([570cd14](https://github.com/ArchiDog1998/RotationSolver/commit/570cd1425ca2e4e7ca34c766c26ed12b829dac98))
+* remove analyzer. ([f32667e](https://github.com/ArchiDog1998/RotationSolver/commit/f32667ee17aed15150f7c9a4ab4b93b8ddd15749))
+* some config ui fixing. ([3ee9d60](https://github.com/ArchiDog1998/RotationSolver/commit/3ee9d60c80dd273f854fb861ae2ad7d1b1696075))
+* warrior rotation status fix. ([82833d6](https://github.com/ArchiDog1998/RotationSolver/commit/82833d65dcaf2acbbe1c9dc2abe940f6b9c1eb5b))
+
 ## [4.2.5](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.4...v4.2.5) (2024-04-04)
 
 
