@@ -1347,7 +1347,7 @@ public partial class RotationConfigWindow : Window
 
                                 ImGui.BeginGroup();
                                 var cursor = ImGui.GetCursorPos();
-                                if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, item.Name))
+                                if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * size, item.Name + item.ID))
                                 {
                                     _activeAction = item;
                                 }
@@ -1499,17 +1499,20 @@ public partial class RotationConfigWindow : Window
 
                 try
                 {
+                    ImGui.Text("ID: " + action.Info.ID.ToString());
 #if DEBUG
-                        ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
-                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
-                        ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
-                        ImGui.Text("MP: " + action.Info.MPNeed.ToString());
+                    ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
+                    ImGui.Text("Resources: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->CheckActionResources(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
+                    ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
+                    ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
+                    ImGui.Text("MP: " + action.Info.MPNeed.ToString());
 #endif
                     ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
                     ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
                     ImGui.Text("Has One:" + action.Cooldown.HasOneCharge.ToString());
                     ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
                     ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
+                    ImGui.Text($"Charges: {action.Cooldown.CurrentCharges} / {action.Cooldown.MaxCharges}");
 
                     ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
                     ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
