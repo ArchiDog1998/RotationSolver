@@ -24,6 +24,7 @@ internal class RotationLoadContext(DirectoryInfo? directoryInfo)
             typeof(DataCenter).Assembly,
             typeof(SheetAttribute).Assembly,
             typeof(QuestDialogueText).Assembly,
+            typeof(XIVConfigUI.XIVConfigUIMain).Assembly,
         };
 
         foreach (var assembly in assemblies)

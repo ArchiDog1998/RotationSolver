@@ -2,9 +2,8 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration.Timeline;
-using Svg.FilterEffects;
+using System.IO;
 using XIVConfigUI;
-using static System.Collections.Specialized.BitVector32;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -808,7 +807,15 @@ internal partial class Configs : IPluginConfiguration
         
         foreach ((var id, var timeline) in dict)
         {
-            File.WriteAllText(@$"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources\Timelines\{id}.json", JsonConvert.SerializeObject(timeline, Formatting.Indented));
+            var dirInfo = Svc.PluginInterface.AssemblyLocation.Directory;
+            dirInfo = dirInfo?.Parent!.Parent!.Parent!.Parent!;
+            var dir = dirInfo.FullName + @"\Resources\Timelines";
+            if (Directory.Exists(dir))
+            {
+                Svc.Log.Error("Failed to save the resources: " + dir);
+                continue;
+            }
+            File.WriteAllText(dir + @$"\{id}.json", JsonConvert.SerializeObject(timeline, Formatting.Indented));
         }
 #endif
         File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,

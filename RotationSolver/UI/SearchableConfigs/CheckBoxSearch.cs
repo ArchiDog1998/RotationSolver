@@ -6,9 +6,9 @@ using RotationSolver.Data;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
 
-namespace RotationSolver.UI.SearchableSettings;
+namespace RotationSolver.UI.SearchableConfigs;
 
-internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params Searchable[] children) 
+internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params Searchable[] children)
     : CheckBoxSearch(property, obj,
     [
         new CheckBoxEnable(property, obj),
@@ -51,7 +51,7 @@ internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params
     {
         public override string Name => UiString.ForcedDisableCondition.Local();
 
-        public override string Description => UiString.ForcedDisableConditionDesc.Local(); 
+        public override string Description => UiString.ForcedDisableConditionDesc.Local();
 
         protected override bool Value
         {
@@ -72,7 +72,7 @@ internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params
 
         public override string Description => UiString.ForcedEnableConditionDesc.Local();
 
-        protected override bool Value 
+        protected override bool Value
         {
             get => _condition.Enable;
             set => _condition.Enable = value;

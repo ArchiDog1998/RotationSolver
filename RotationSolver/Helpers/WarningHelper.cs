@@ -2,7 +2,7 @@
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using ECommons.DalamudServices;
 
-namespace RotationSolver.Basic.Helpers;
+namespace RotationSolver.Helpers;
 
 public static class WarningHelper
 {
@@ -17,7 +17,7 @@ public static class WarningHelper
               RawPayload.LinkTerminator,
               new TextPayload(": "));
 
-    public static SeString Close_String => new (new IconPayload(BitmapFontIcon.DoNotDisturb), RotationSolverPlugin.HideWarningLinkPayload!,
+    public static SeString Close_String => new(new IconPayload(BitmapFontIcon.DoNotDisturb), RotationSolverPlugin.HideWarningLinkPayload!,
               new UIForegroundPayload(2),
               new TextPayload("(Hide Warning)"),
               UIForegroundPayload.UIForegroundOff,

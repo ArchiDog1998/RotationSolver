@@ -76,6 +76,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         PainterManager.Init();
         XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + " " + OtherCommandType.Settings.ToString(), new SearchableConfigRS());
+        XIVConfigUIMain.GetTextureID = IconSet.GetTexture;
+        XIVConfigUIMain.GetTexturePath = IconSet.GetTexture;
         MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();

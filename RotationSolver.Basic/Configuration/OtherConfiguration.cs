@@ -124,8 +124,14 @@ internal class OtherConfiguration
     {
         var directory = Svc.PluginInterface.ConfigDirectory.FullName;
 #if DEBUG
-        var dir = @"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources"; //TODO: relative repo.
-        if (Directory.Exists(dir)) directory = dir;
+        var dirInfo = Svc.PluginInterface.AssemblyLocation.Directory;
+        dirInfo = dirInfo?.Parent!.Parent!.Parent!.Parent!;
+        var dir = dirInfo.FullName + @"\Resources"; 
+        if (Directory.Exists(dir))
+        {
+            Svc.Log.Error("Failed to save the resources: " + dir);
+            directory = dir;
+        }
 #endif
 
         return directory + $"\\{name}.json";

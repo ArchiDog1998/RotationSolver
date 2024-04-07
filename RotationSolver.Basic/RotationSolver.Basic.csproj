@@ -62,16 +62,19 @@
 	  <Using Include="Dalamud.Interface" />
 	  <Using Include="ImGuiNET" />
 	  <Using Include="Newtonsoft.Json" />
+	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" >
+		  <PrivateAssets>all</PrivateAssets>
+	  </ProjectReference>
 	  
-	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj">
+	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj" OutputItemType="Analyzer" ExcludeAssets="All" ReferenceOutputAssembly="false" />
+
+	  <ProjectReference Include="..\XIVConfigUI\XIVConfigUI\XIVConfigUI.csproj"/>
+
+	  <ProjectReference Include="..\XIVPainter\XIVPainter\XIVPainter.csproj">
 		  <PrivateAssets>all</PrivateAssets>
 	  </ProjectReference>
 
-	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj" OutputItemType="Analyzer" ExcludeAssets="All" ReferenceOutputAssembly="false" />
-
-	  <ProjectReference Include="..\XIVConfigUI\XIVConfigUI\XIVConfigUI.csproj" />
-
-	  <ProjectReference Include="..\XIVPainter\XIVPainter\XIVPainter.csproj" />
+	  <PackageReference Include="Svg" Version="3.4.7" />
 
 	  <None Include="..\COPYING.LESSER">
 		<Pack>True</Pack>
@@ -81,7 +84,7 @@
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
       </None>
-      <PackageReference Include="Svg" Version="3.4.4" />
+
 	  <None Update="README.md">
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>

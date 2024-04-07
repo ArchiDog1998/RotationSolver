@@ -12,6 +12,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using RotationSolver.Commands;
 using RotationSolver.Data;
+using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using System.Runtime.InteropServices;

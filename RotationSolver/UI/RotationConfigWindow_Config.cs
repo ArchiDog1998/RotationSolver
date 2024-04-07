@@ -7,10 +7,10 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using XIVPainter;
+using RotationSolver.UI.SearchableConfigs;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
-using RotationSolver.UI.SearchableConfigs;
+using XIVPainter;
 
 namespace RotationSolver.UI;
 
@@ -22,6 +22,9 @@ public partial class RotationConfigWindow
     internal static SearchableCollection _allSearchable = new(Service.Config, new()
     {
         {nameof(Configs.AutoHeal), p => new AutoHealCheckBox(p, Service.Config) }
+    }, new()
+    {
+        {typeof(ConditionBoolean), p => new CheckBoxSearchCondition(p, Service.Config) }
     });
 
     private void SearchingBox()

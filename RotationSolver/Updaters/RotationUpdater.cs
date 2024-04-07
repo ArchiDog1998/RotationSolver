@@ -5,7 +5,6 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Localization;
 using XIVConfigUI;
 
 namespace RotationSolver.Updaters;
