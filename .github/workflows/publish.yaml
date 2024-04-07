@@ -45,7 +45,6 @@ jobs:
           PROJECT_FILE_PATH: RotationSolver.Basic/Rotationsolver.Basic.csproj
           VERSION_STATIC: ${{ env.tag }}
           NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
-          INCLUDE_SYMBOLS: true
 
       - name: Build Plugin
         run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:PackageVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }} --output .\build
