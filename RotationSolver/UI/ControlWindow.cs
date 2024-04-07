@@ -6,6 +6,7 @@ using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using XIVConfigUI;
 
 namespace RotationSolver.UI;
 
@@ -58,7 +59,7 @@ internal class ControlWindow : CtrlWindow
         ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.Local());
 
         var value = Service.Config.IsControlWindowLock ? 0 : 1;
-        if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window",
+        if (ImGuiHelperRS.SelectableCombo("Rotation Solver Lock the Control Window",
         [
             UiString.InfoWindowNoMove.Local(),
             UiString.InfoWindowMove.Local(),
@@ -80,7 +81,7 @@ internal class ControlWindow : CtrlWindow
             || Service.Config.UseAoeWhenManual);
 
         if (!isAoe) ImGui.PushStyleColor(ImGuiCol.Text, color);
-        if (ImGuiHelper.SelectableButton("AOE"))
+        if (ImGuiHelperRS.SelectableButton("AOE"))
         {
             Service.Config.UseAoeAction.Value = !isAoe;
             Service.Config.UseAoeWhenManual.Value = !isAoe;
@@ -91,7 +92,7 @@ internal class ControlWindow : CtrlWindow
 
         var isBurst = Service.Config.AutoBurst;
         if (!isBurst) ImGui.PushStyleColor(ImGuiCol.Text, color);
-        if (ImGuiHelper.SelectableButton("Burst"))
+        if (ImGuiHelperRS.SelectableButton("Burst"))
         {
             Service.Config.AutoBurst.Value = !isBurst;
         }

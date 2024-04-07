@@ -7,18 +7,22 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Localization;
-using RotationSolver.UI.SearchableSettings;
 using XIVPainter;
+using XIVConfigUI;
+using XIVConfigUI.SearchableConfigs;
+using RotationSolver.UI.SearchableConfigs;
 
 namespace RotationSolver.UI;
 
 public partial class RotationConfigWindow
 {
     private string _searchText = string.Empty;
-    private ISearchable[] _searchResults = [];
+    private Searchable[] _searchResults = [];
 
-    internal static SearchableCollection _allSearchable = new();
+    internal static SearchableCollection _allSearchable = new(Service.Config, new()
+    {
+        {nameof(Configs.AutoHeal), p => new AutoHealCheckBox(p, Service.Config) }
+    });
 
     private void SearchingBox()
     {
@@ -36,10 +40,10 @@ public partial class RotationConfigWindow
 
     private static readonly CollapsingHeaderGroup _baseHeader = new(new()
     {
-        { UiString.ConfigWindow_Basic_Timer.Local, DrawBasicTimer },
-        { UiString.ConfigWindow_Basic_AutoSwitch.Local, DrawBasicAutoSwitch },
-        { UiString.ConfigWindow_Basic_NamedConditions.Local, DrawBasicNamedConditions },
-        { UiString.ConfigWindow_Basic_Others.Local, DrawBasicOthers },
+        { () => UiString.ConfigWindow_Basic_Timer.Local(), DrawBasicTimer },
+        { () => UiString.ConfigWindow_Basic_AutoSwitch.Local(), DrawBasicAutoSwitch },
+        { () => UiString.ConfigWindow_Basic_NamedConditions.Local(), DrawBasicNamedConditions },
+        { () => UiString.ConfigWindow_Basic_Others.Local(), DrawBasicOthers },
     });
 
     private static readonly uint PING_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedGreen);
@@ -55,7 +59,7 @@ public partial class RotationConfigWindow
     {
         var size = new Vector2(ping * sizePerTime, pingHeight);
         drawList.AddRectFilled(lineStart, lineStart + size, ChangeAlpha(PING_COLOR));
-        if (ImGuiHelper.IsInRect(lineStart, size))
+        if (ImGuiHelperRS.IsInRect(lineStart, size))
         {
             ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Basic_Ping.Local());
         }
@@ -63,7 +67,7 @@ public partial class RotationConfigWindow
         var rectStart = lineStart + new Vector2(ping * sizePerTime, 0);
         size = new Vector2(animationLockTime * sizePerTime, pingHeight);
         drawList.AddRectFilled(rectStart, rectStart + size, ChangeAlpha(LOCK_TIME_COLOR));
-        if (ImGuiHelper.IsInRect(rectStart, size))
+        if (ImGuiHelperRS.IsInRect(rectStart, size))
         {
             ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Basic_AnimationLockTime.Local());
         }
@@ -73,7 +77,7 @@ public partial class RotationConfigWindow
         rectStart = lineStart + new Vector2(-advanceTime * sizePerTime, pingHeight);
         size = new Vector2(advanceTime * sizePerTime, pingHeight);
         drawList.AddRectFilled(rectStart, rectStart + size, ChangeAlpha(color));
-        if (ImGuiHelper.IsInRect(rectStart, size))
+        if (ImGuiHelperRS.IsInRect(rectStart, size))
         {
             ImguiTooltips.ShowTooltip(() =>
             {
@@ -139,7 +143,7 @@ public partial class RotationConfigWindow
         var rectSize = new Vector2(weaponDelay * sizePerTime, pingHeight);
         drawList.AddRectFilled(start, start + rectSize, WEAPON_DELAY_COLOR);
         drawList.AddRect(start, start + rectSize, uint.MaxValue, 0, ImDrawFlags.Closed, 2);
-        if (ImGuiHelper.IsInRect(start, rectSize))
+        if (ImGuiHelperRS.IsInRect(start, rectSize))
         {
             ImguiTooltips.ShowTooltip(typeof(Configs).GetProperty(nameof(Configs.WeaponDelay))!.Local());
         }
@@ -194,15 +198,15 @@ public partial class RotationConfigWindow
     private static readonly CollapsingHeaderGroup _autoSwitch = new(new()
     {
         { 
-            UiString.ConfigWindow_Basic_SwitchCancelConditionSet.Local,
+            () => UiString.ConfigWindow_Basic_SwitchCancelConditionSet.Local(),
             () => DataCenter.RightSet.SwitchCancelConditionSet?.DrawMain(DataCenter.RightNowRotation) 
         },
-        { 
-            UiString.ConfigWindow_Basic_SwitchManualConditionSet.Local,
+        {
+            () => UiString.ConfigWindow_Basic_SwitchManualConditionSet.Local(),
             () => DataCenter.RightSet.SwitchManualConditionSet?.DrawMain(DataCenter.RightNowRotation) 
         },
-        { 
-            UiString.ConfigWindow_Basic_SwitchAutoConditionSet.Local,
+        {
+           () =>  UiString.ConfigWindow_Basic_SwitchAutoConditionSet.Local(),
             () => DataCenter.RightSet.SwitchAutoConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
     })
@@ -302,16 +306,16 @@ public partial class RotationConfigWindow
 
     private static readonly CollapsingHeaderGroup _UIHeader = new(new()
     {
-        { 
-            UiString.ConfigWindow_UI_Information.Local,
+        {
+            () => UiString.ConfigWindow_UI_Information.Local(),
             () => _allSearchable.DrawItems(Configs.UiInformation)
         },
         {
-            UiString.ConfigWindow_UI_Overlay.Local,
+            () => UiString.ConfigWindow_UI_Overlay.Local(),
             () =>_allSearchable.DrawItems(Configs.UiOverlay)
         },
         {
-            UiString.ConfigWindow_UI_Windows.Local,
+            () => UiString.ConfigWindow_UI_Windows.Local(),
             () =>_allSearchable.DrawItems(Configs.UiWindows)
         },
     });
@@ -327,7 +331,7 @@ public partial class RotationConfigWindow
 
     private static readonly CollapsingHeaderGroup _autoHeader = new(new()
     {
-        { UiString.ConfigWindow_Auto_ActionUsage.Local, () =>
+        {  () => UiString.ConfigWindow_Auto_ActionUsage.Local(), () =>
             {
                 ImGui.TextWrapped(UiString.ConfigWindow_Auto_ActionUsage_Description
                     .Local());
@@ -336,65 +340,65 @@ public partial class RotationConfigWindow
                 _allSearchable.DrawItems(Configs.AutoActionUsage);
             }
         },
-        { UiString.ConfigWindow_Auto_ActionCondition.Local, DrawAutoActionCondition },
-        { UiString.ConfigWindow_Auto_StateCondition.Local, () => _autoState?.Draw() },
+        {  () => UiString.ConfigWindow_Auto_ActionCondition.Local(), DrawAutoActionCondition },
+        {  () => UiString.ConfigWindow_Auto_StateCondition.Local(), () => _autoState?.Draw() },
     });
 
 
     private static readonly CollapsingHeaderGroup _autoState = new(new()
     {
-        { 
-            UiString.ConfigWindow_Auto_HealAreaConditionSet.Local,
+        {
+            () => UiString.ConfigWindow_Auto_HealAreaConditionSet.Local(),
             () => DataCenter.RightSet.HealAreaConditionSet?.DrawMain(DataCenter.RightNowRotation) 
         },
 
         {
-            UiString.ConfigWindow_Auto_HealSingleConditionSet.Local,
+            () => UiString.ConfigWindow_Auto_HealSingleConditionSet.Local(),
             () => DataCenter.RightSet.HealSingleConditionSet?.DrawMain(DataCenter.RightNowRotation) 
         },
 
         {
-            UiString.ConfigWindow_Auto_DefenseAreaConditionSet.Local,
+            () => UiString.ConfigWindow_Auto_DefenseAreaConditionSet.Local(),
             () => DataCenter.RightSet.DefenseAreaConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
-            UiString.ConfigWindow_Auto_DefenseSingleConditionSet.Local,
+            () => UiString.ConfigWindow_Auto_DefenseSingleConditionSet.Local(),
             () => DataCenter.RightSet.DefenseSingleConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
-             UiString.ConfigWindow_Auto_DispelStancePositionalConditionSet.Local,
+            () =>  UiString.ConfigWindow_Auto_DispelStancePositionalConditionSet.Local(),
             () => DataCenter.RightSet.DispelStancePositionalConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
-            UiString.ConfigWindow_Auto_RaiseShirkConditionSet.Local,
+           () =>  UiString.ConfigWindow_Auto_RaiseShirkConditionSet.Local(),
             () => DataCenter.RightSet.RaiseShirkConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
-            UiString.ConfigWindow_Auto_MoveForwardConditionSet.Local,
+            () => UiString.ConfigWindow_Auto_MoveForwardConditionSet.Local(),
             () => DataCenter.RightSet.MoveForwardConditionSet?.DrawMain(DataCenter.RightNowRotation) 
         },
 
         {
-            UiString.ConfigWindow_Auto_MoveBackConditionSet.Local,
+            () => UiString.ConfigWindow_Auto_MoveBackConditionSet.Local(),
             () => DataCenter.RightSet.MoveBackConditionSet?.DrawMain(DataCenter.RightNowRotation) 
         },
 
         {
-            UiString.ConfigWindow_Auto_AntiKnockbackConditionSet.Local,
+            () => UiString.ConfigWindow_Auto_AntiKnockbackConditionSet.Local(),
             () => DataCenter.RightSet.AntiKnockbackConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
-            UiString.ConfigWindow_Auto_SpeedConditionSet.Local,
+            () => UiString.ConfigWindow_Auto_SpeedConditionSet.Local(),
             () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation) 
         },
 
         {
-            UiString.ConfigWindow_Auto_LimitBreakConditionSet.Local,
+            () => UiString.ConfigWindow_Auto_LimitBreakConditionSet.Local(),
             () => DataCenter.RightSet.LimitBreakConditionSet?.DrawMain(DataCenter.RightNowRotation) 
         },
     })
@@ -419,8 +423,8 @@ public partial class RotationConfigWindow
 
     private static readonly CollapsingHeaderGroup _targetHeader = new(new()
     {
-        { UiString.ConfigWindow_Target_Config.Local, DrawTargetConfig },
-        { UiString.ConfigWindow_List_Hostile.Local, DrawTargetHostile },
+        {  () =>UiString.ConfigWindow_Target_Config.Local(), DrawTargetConfig },
+        {  () =>UiString.ConfigWindow_List_Hostile.Local(), DrawTargetHostile },
     });
 
     private static void DrawTargetConfig()
@@ -489,10 +493,10 @@ public partial class RotationConfigWindow
     }
     private static readonly CollapsingHeaderGroup _extraHeader = new(new()
     {
-        { UiString.ConfigWindow_EventItem.Local, DrawEventTab },
+        {  () =>UiString.ConfigWindow_EventItem.Local(), DrawEventTab },
 
         {
-            UiString.ConfigWindow_Extra_Others.Local, 
+             () =>UiString.ConfigWindow_Extra_Others.Local(), 
             () => _allSearchable.DrawItems(Configs.Extra)
         },
     });

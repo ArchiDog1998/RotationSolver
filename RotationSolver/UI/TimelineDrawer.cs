@@ -12,11 +12,10 @@ using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.Data;
-using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using XIVConfigUI;
 using XIVPainter;
 using XIVPainter.Vfx;
-using static Lumina.Data.Parsing.Uld.UldRoot;
 
 namespace RotationSolver.UI;
 internal static class TimelineDrawer
@@ -55,7 +54,7 @@ internal static class TimelineDrawer
 
         ImGuiHelper.DrawItemMiddle(() =>
         {
-            ImGuiHelper.SearchCombo("##Choice the specific dungeon", name, ref _territorySearch, territories, GetName, t =>
+            ImGuiHelperRS.SearchCombo("##Choice the specific dungeon", name, ref _territorySearch, territories, GetName, t =>
             {
                 _territoryId = t?.RowId ?? 0;
             }, UiString.ConfigWindow_Condition_DutyName.Local(), imFont, ImGuiColors.DalamudYellow);
@@ -439,7 +438,7 @@ internal static class TimelineDrawer
 
             if (IconSet.GetTexture(30, out var texture))
             {
-                if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, false, $"Icon :{item.GetHashCode()}"))
+                if (ImGuiHelperRS.SilenceImageButton(texture.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, false, $"Icon :{item.GetHashCode()}"))
                 {
                     if (_previewItems == null)
                     {
@@ -636,7 +635,7 @@ internal static class TimelineDrawer
             var actionNames = timelineItem.ActionIDs.Select(i => (Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.GetRow(i)?.Name.RawString ?? "Unnamed Action") + $" ({i})").ToArray();
 
             ImGui.SameLine();
-            if (ImGuiHelper.SelectableCombo("Action ##Select Action" + action.GetHashCode(), actionNames, ref index))
+            if (ImGuiHelperRS.SelectableCombo("Action ##Select Action" + action.GetHashCode(), actionNames, ref index))
             {
                 action.ActionID = timelineItem.ActionIDs[index];
             }
@@ -719,7 +718,7 @@ internal static class TimelineDrawer
         if (drawing is StaticDrawingGetter staticDrawing)
         {
             var index = Array.IndexOf(_omenNames, staticDrawing.Path.UnOmen());
-            if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenShowNames, ref index))
+            if (ImGuiHelperRS.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenShowNames, ref index))
             {
                 staticDrawing.Path = _omenNames[index].Omen();
             }
@@ -772,7 +771,7 @@ internal static class TimelineDrawer
         else if (drawing is ObjectDrawingGetter objectDrawing)
         {
             var index = objectDrawing.IsActorEffect ? 1 : 0;
-            if (ImGuiHelper.SelectableCombo("##ActorType" + drawing.GetHashCode(), [UiString.TimelineGround.Local(), UiString.TimelineActor.Local()], ref index))
+            if (ImGuiHelperRS.SelectableCombo("##ActorType" + drawing.GetHashCode(), [UiString.TimelineGround.Local(), UiString.TimelineActor.Local()], ref index))
             {
                 objectDrawing.IsActorEffect = index != 0;
             }
@@ -781,7 +780,7 @@ internal static class TimelineDrawer
             if (objectDrawing.IsActorEffect)
             {
                 index = Array.IndexOf(_actorNames.Select(n => n.StartsWith("chn_") ? n.Channeling() : n.LockOn()).ToArray(), objectDrawing.Path);
-                if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _actorShowNames, ref index))
+                if (ImGuiHelperRS.SelectableCombo("##PathName" + drawing.GetHashCode(), _actorShowNames, ref index))
                 {
                     var actorName = _actorNames[index];
                     objectDrawing.Path = actorName.StartsWith("chn_") ? actorName.Channeling() : actorName.LockOn();
@@ -790,7 +789,7 @@ internal static class TimelineDrawer
             else
             {
                 index = Array.IndexOf(_omenNames, objectDrawing.Path.UnOmen());
-                if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenShowNames, ref index))
+                if (ImGuiHelperRS.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenShowNames, ref index))
                 {
                     objectDrawing.Path = _omenNames[index].Omen();
                 }
@@ -842,7 +841,7 @@ internal static class TimelineDrawer
         else if (drawing is ActionDrawingGetter actionDrawing)
         {
             var index = Array.IndexOf(_omenNames, actionDrawing.Path.UnOmen());
-            if (ImGuiHelper.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenShowNames, ref index))
+            if (ImGuiHelperRS.SelectableCombo("##PathName" + drawing.GetHashCode(), _omenShowNames, ref index))
             {
                 actionDrawing.Path = _omenNames[index].Omen();
             }
@@ -851,7 +850,7 @@ internal static class TimelineDrawer
             var actionNames = actionIds.Select(i => Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.GetRow(i)?.Name.RawString ?? "Unnamed Action").ToArray();
 
             ImGui.SameLine();
-            if (ImGuiHelper.SelectableCombo("Action ##Select Action" + drawing.GetHashCode(), actionNames, ref index))
+            if (ImGuiHelperRS.SelectableCombo("Action ##Select Action" + drawing.GetHashCode(), actionNames, ref index))
             {
                 actionDrawing.ActionID = actionIds[index];
             }
@@ -939,7 +938,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_tank.png", out var overlay))
                 {
-                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Tank, "Tank##" + getter.GetHashCode()))
                     {
                         getter.Tank = !getter.Tank;
@@ -950,7 +949,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_healer.png", out overlay))
                 {
-                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Healer, "Healer##" + getter.GetHashCode()))
                     {
                         getter.Healer = !getter.Healer;
@@ -961,7 +960,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_dps.png", out overlay))
                 {
-                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Melee, "Melee##" + getter.GetHashCode()))
                     {
                         getter.Melee = !getter.Melee;
@@ -972,7 +971,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_ranged.png", out overlay))
                 {
-                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Range, "Range##" + getter.GetHashCode()))
                     {
                         getter.Range = !getter.Range;
@@ -983,7 +982,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_dps_magic.png", out overlay))
                 {
-                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Caster, "Caster##" + getter.GetHashCode()))
                     {
                         getter.Caster = !getter.Caster;

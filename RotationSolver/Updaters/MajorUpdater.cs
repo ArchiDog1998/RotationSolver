@@ -15,6 +15,7 @@ using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using System.Runtime.InteropServices;
+using XIVConfigUI;
 
 namespace RotationSolver.Updaters;
 

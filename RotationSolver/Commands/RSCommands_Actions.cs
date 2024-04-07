@@ -7,6 +7,7 @@ using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
+using XIVConfigUI;
 
 namespace RotationSolver.Commands;
 

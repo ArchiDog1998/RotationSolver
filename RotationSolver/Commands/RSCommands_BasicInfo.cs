@@ -1,7 +1,7 @@
 ﻿using Dalamud.Game.Command;
 using ECommons.DalamudServices;
 using RotationSolver.Data;
-using RotationSolver.Localization;
+using XIVConfigUI;
 
 namespace RotationSolver.Commands;
 

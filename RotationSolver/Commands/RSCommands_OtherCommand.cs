@@ -1,8 +1,8 @@
 ﻿using ECommons.DalamudServices;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
-using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using XIVConfigUI;
 
 namespace RotationSolver.Commands;
 

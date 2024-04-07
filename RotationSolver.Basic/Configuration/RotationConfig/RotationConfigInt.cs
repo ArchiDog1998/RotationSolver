@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Configuration.RotationConfig;
+﻿using XIVConfigUI;
+
+namespace RotationSolver.Basic.Configuration.RotationConfig;
 
 internal class RotationConfigInt : RotationConfigBase
 {

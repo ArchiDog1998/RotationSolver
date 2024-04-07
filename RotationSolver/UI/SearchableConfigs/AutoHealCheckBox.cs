@@ -2,12 +2,39 @@
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
+using System.Linq;
+using XIVConfigUI;
+using XIVConfigUI.SearchableConfigs;
 
 namespace RotationSolver.UI.SearchableConfigs;
 
-internal class AutoHealCheckBox(PropertyInfo property, params ISearchable[] otherChildren) 
-    : CheckBoxSearchCondition(property, otherChildren.Union(new ISearchable[]
-        {
+internal class AutoHealCheckBox(PropertyInfo property, object obj,  params Searchable[] otherChildren) 
+    : CheckBoxSearchCondition(property, obj, otherChildren.Union(SetUp(obj)).ToArray())
+{
+    private readonly Searchable[] _otherChildren = otherChildren;
+
+    private static DragFloatSearch
+        _healthAreaAbility = null!,
+        _healthAreaAbilityHot = null!,
+        _healthAreaSpell = null!,
+        _healthAreaSpellHot = null!,
+        _healthSingleAbility = null!,
+        _healthSingleAbilityHot = null!,
+        _healthSingleSpell = null!,
+        _healthSingleSpellHot = null!;
+
+    private static Searchable[] SetUp(object obj)
+    {
+        _healthAreaAbility = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaAbility))!, obj);
+        _healthAreaAbilityHot = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaAbilityHot))!, obj);
+        _healthAreaSpell = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaSpell))!, obj);
+        _healthAreaSpellHot = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaSpellHot))!, obj);
+        _healthSingleAbility = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleAbility))!, obj);
+        _healthSingleAbilityHot = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleAbilityHot))!, obj);
+        _healthSingleSpell = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleSpell))!, obj);
+        _healthSingleSpellHot = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleSpellHot))!, obj);
+
+        return [
             _healthAreaAbility,
             _healthAreaAbilityHot,
             _healthAreaSpell ,
@@ -16,19 +43,8 @@ internal class AutoHealCheckBox(PropertyInfo property, params ISearchable[] othe
             _healthSingleAbilityHot ,
             _healthSingleSpell ,
             _healthSingleSpellHot ,
-        }).ToArray())
-{
-    private readonly ISearchable[] _otherChildren = otherChildren;
-
-    private static readonly DragFloatSearch
-        _healthAreaAbility = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaAbility))!),
-        _healthAreaAbilityHot = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaAbilityHot))!),
-        _healthAreaSpell = new(typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaSpell))!),
-        _healthAreaSpellHot =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthAreaSpellHot))!),
-        _healthSingleAbility =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleAbility))!),
-        _healthSingleAbilityHot =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleAbilityHot))!),
-        _healthSingleSpell =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleSpell))!),
-        _healthSingleSpellHot =  new (typeof(Configs).GetRuntimeProperty(nameof(Configs.HealthSingleSpellHot))!);
+        ];
+    }
 
     protected override void DrawChildren()
     {

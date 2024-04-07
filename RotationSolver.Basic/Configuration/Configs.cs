@@ -2,6 +2,9 @@
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using RotationSolver.Basic.Configuration.Timeline;
+using Svg.FilterEffects;
+using XIVConfigUI;
+using static System.Collections.Specialized.BitVector32;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -85,51 +88,51 @@ internal partial class Configs : IPluginConfiguration
     [UI("Lock the movement when casting or when doing some other actions.", Filter = Extra)]
     public ConditionBoolean PoslockCasting { get; private set; } = new(true, nameof(PoslockCasting));
 
-    [UI("", Action = ActionID.PassageOfArmsPvE, Parent = nameof(PoslockCasting))]
+    [UI("", Action = (uint)ActionID.PassageOfArmsPvE, Parent = nameof(PoslockCasting))]
     public bool PosPassageOfArms { get; set; } = false;
 
-    [UI("", Action = ActionID.TenChiJinPvE, Parent = nameof(PoslockCasting))]
+    [UI("", Action = (uint)ActionID.TenChiJinPvE, Parent = nameof(PoslockCasting))]
     public bool PosTenChiJin { get; set; } = true;
 
-    [UI("", Action = ActionID.FlamethrowerPvE, Parent = nameof(PoslockCasting))]
+    [UI("", Action = (uint)ActionID.FlamethrowerPvE, Parent = nameof(PoslockCasting))]
     public bool PosFlameThrower { get; set; } = false;
 
-    [UI("", Action = ActionID.ImprovisationPvE, Parent = nameof(PoslockCasting))]
+    [UI("", Action = (uint)ActionID.ImprovisationPvE, Parent = nameof(PoslockCasting))]
     public bool PosImprovisation { get; set; } = false;
 
     [UI("Replace the action icon.", Filter = Extra)]
     public ConditionBoolean ReplaceIcon { get; private set; } = new(false, nameof(ReplaceIcon));
 
-    [UI("", Action = ActionID.LegGrazePvE, Parent = nameof(ReplaceIcon))]
+    [UI("", Action = (uint)ActionID.LegGrazePvE, Parent = nameof(ReplaceIcon))]
     public bool ReplaceLegGraze { get; set; } = true;
 
-    [UI("", Action = ActionID.FootGrazePvE, Parent = nameof(ReplaceIcon))]
+    [UI("", Action = (uint)ActionID.FootGrazePvE, Parent = nameof(ReplaceIcon))]
     public bool ReplaceFootGraze { get; set; } = true;
 
-    [UI("", Action = ActionID.ReposePvE, Parent = nameof(ReplaceIcon))]
+    [UI("", Action = (uint)ActionID.ReposePvE, Parent = nameof(ReplaceIcon))]
     public bool ReplaceRepose { get; set; } = true;
 
-    [UI("", Action = ActionID.SleepPvE, Parent = nameof(ReplaceIcon))]
+    [UI("", Action = (uint)ActionID.SleepPvE, Parent = nameof(ReplaceIcon))]
     public bool ReplaceSleep { get; set; } = true;
 
+    [JobFilter(PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     [UI("Raise player while swiftcast is on cooldown",
-        Filter = AutoActionUsage, Section = 2,
-        PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionUsage, Section = 2)]
     public ConditionBoolean RaisePlayerByCasting { get; private set; } = new(true, nameof(RaisePlayerByCasting));
 
+    [JobFilter(PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     [UI("Raise any player in range (even if they are not in your party)",
-        Filter = AutoActionUsage, Section = 2,
-        PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionUsage, Section = 2)]
     public ConditionBoolean RaiseAll { get; private set; } = new(false, nameof(RaiseAll));
 
+    [JobFilter(PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     [UI("Raise players that have the Brink of Death debuff",
-        Filter = AutoActionUsage, Section = 2,
-        PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionUsage, Section = 2)]
     public ConditionBoolean RaiseBrinkOfDeath { get; private set; } = new(true, nameof(RaiseBrinkOfDeath));
 
+    [JobFilter(PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
     [UI("Random delay for considering a ressurection type action.",
-        Filter = AutoActionUsage, Section = 2,
-        PvEFilter = JobFilterType.Raise, PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionUsage, Section = 2)]
     [Range(0, 10, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 RaiseDelay { get; set; } = new(1, 2);
 
@@ -214,19 +217,18 @@ internal partial class Configs : IPluginConfiguration
         Parent =nameof(UseAoeAction))]
     public ConditionBoolean NoNewHostiles { get; private set; } = new(false, nameof(NoNewHostiles));
 
+    [JobFilter(PvEFilter = JobFilterType.NoHealer, PvPFilter = JobFilterType.NoJob)]
     [UI("Use healing abilities when playing a non-healer role.",
-        Filter = AutoActionCondition, Section = 1,
-        PvEFilter = JobFilterType.NoHealer, PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionCondition, Section = 1)]
     public ConditionBoolean UseHealWhenNotAHealer { get; private set; } = new(true, nameof(UseHealWhenNotAHealer));
 
     [UI("Target allies for friendly actions.",
         Filter = TargetConfig, Section = 3)]
     public ConditionBoolean SwitchTargetFriendly { get; private set; } = new(false, nameof(SwitchTargetFriendly));
 
+    [JobFilter(PvEFilter = JobFilterType.Interrupt, PvPFilter = JobFilterType.NoJob)]
     [UI("Use interrupt abilities if possible.",
-        Filter = AutoActionCondition, Section = 3,
-        PvEFilter = JobFilterType.Interrupt,
-        PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionCondition, Section = 3)]
     public ConditionBoolean InterruptibleMoreCheck { get; private set; } = new(true, nameof(InterruptibleMoreCheck));
 
     [UI("Use work task for acceleration.",
@@ -236,9 +238,9 @@ internal partial class Configs : IPluginConfiguration
     [UI("Stops casting when the target is dead.", Filter = Extra)]
     public ConditionBoolean UseStopCasting { get; private set; } = new(false, nameof(UseStopCasting));
 
+    [JobFilter(PvEFilter = JobFilterType.Dispel, PvPFilter = JobFilterType.NoJob)]
     [UI("Cleanse all dispellable debuffs.",
-        Filter = AutoActionCondition, Section = 3,
-        PvEFilter = JobFilterType.Dispel, PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionCondition, Section = 3)]
     public ConditionBoolean DispelAll { get; private set; } = new(false, nameof(DispelAll));
 
     [UI("Only attacks targets within camera view.",
@@ -249,14 +251,13 @@ internal partial class Configs : IPluginConfiguration
         Filter = TargetConfig, Section = 1)]
     public ConditionBoolean OnlyAttackInVisionCone { get; private set; } = new(false, nameof(OnlyAttackInVisionCone));
 
+    [JobFilter(PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
     [UI("Use single target healing over time actions only on tanks.",
-        Filter = AutoActionCondition, Section = 1,
-        PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
+        Filter = AutoActionCondition, Section = 1)]
     public ConditionBoolean OnlyHotOnTanks { get; private set; } = new(false, nameof(OnlyHotOnTanks));
 
     [UI("Debug Mode.", Filter = Debug)]
     public ConditionBoolean InDebug { get; private set; } = new(false, nameof(InDebug));
-    //public bool AutoUpdateLibs { get; set; } = true;
 
     [UI("Auto Download Rotations.", Filter = Rotations)]
     public ConditionBoolean DownloadRotations { get; private set; } = new(true, nameof(DownloadRotations));
@@ -349,29 +350,29 @@ internal partial class Configs : IPluginConfiguration
         Parent = nameof(UseAbility))]
     public ConditionBoolean UseDefenseAbility { get; private set; } = new(true, nameof(UseDefenseAbility));
 
-    [UI("Automatically activate tank stance.", Parent =nameof(UseAbility),
-        PvEFilter = JobFilterType.Tank)]
+    [JobFilter(PvEFilter = JobFilterType.Tank)]
+    [UI("Automatically activate tank stance.", Parent =nameof(UseAbility))]
     public ConditionBoolean AutoTankStance { get; private set; } = new(true, nameof(AutoTankStance));
 
-    [UI("Auto provoke non-tank attacking targets.", Description = "Automatically use provoke when an enemy is attacking a non-tank member of the party.",
-        Parent = nameof(UseAbility), PvEFilter = JobFilterType.Tank)]
+    [JobFilter(PvEFilter = JobFilterType.Tank)]
+
+    [UI("Auto provoke non-tank attacking targets.", Description = "Automatically use provoke when an enemy is attacking a non-tank member of the party.", Parent = nameof(UseAbility))]
     public ConditionBoolean AutoProvokeForTank { get; private set; } = new(true, nameof(AutoProvokeForTank));
 
-    [UI("Auto TrueNorth (Melee).",
-        Parent = nameof(UseAbility),
-        PvEFilter = JobFilterType.Melee)]
+    [JobFilter(PvEFilter = JobFilterType.Melee)]
+    [UI("Auto TrueNorth (Melee).", Parent = nameof(UseAbility))]
     public ConditionBoolean AutoUseTrueNorth { get; private set; } = new(true, nameof(AutoUseTrueNorth));
 
+    [JobFilter(PvEFilter = JobFilterType.Healer)]
     [UI("Raise player by using swiftcast if available",
-        Parent = nameof(UseAbility),
-        PvEFilter = JobFilterType.Healer)]
+        Parent = nameof(UseAbility))]
     public ConditionBoolean RaisePlayerBySwift { get; private set; } = new(true, nameof(RaisePlayerBySwift));
 
     [UI("Use movement speed increase abilities when out of combat.", Parent = nameof(UseAbility))]
     public ConditionBoolean AutoSpeedOutOfCombat { get; private set; } = new(true, nameof(AutoSpeedOutOfCombat));
 
-    [UI("Use beneficial ground-targeted actions.", Parent = nameof(UseAbility),
-        PvEFilter = JobFilterType.Healer)]
+    [JobFilter(PvEFilter = JobFilterType.Healer)]
+    [UI("Use beneficial ground-targeted actions.", Parent = nameof(UseAbility))]
     public ConditionBoolean UseGroundBeneficialAbility { get; private set; } = new(true, nameof(UseGroundBeneficialAbility));
 
     [UI("Use Anti-Knockback abilities", Parent = nameof(UseAbility))]
@@ -430,9 +431,9 @@ internal partial class Configs : IPluginConfiguration
         Parent = nameof(SayHelloToAll))]
     public ConditionBoolean JustSayHelloOnce { get; private set; } = new(false, nameof(JustSayHelloOnce));
 
+    [JobFilter(PvPFilter = JobFilterType.NoHealer, PvEFilter = JobFilterType.NoHealer)]
     [UI("Only Heal self when not a healer.", 
-        Filter = AutoActionCondition, Section = 1,
-        PvPFilter = JobFilterType.NoHealer, PvEFilter = JobFilterType.NoHealer)]
+        Filter = AutoActionCondition, Section = 1)]
     public ConditionBoolean OnlyHealSelfWhenNoHealer { get; private set; } = new(false, nameof(OnlyHealSelfWhenNoHealer));
 
     [UI("Display toggle action feedback on chat.",
@@ -475,9 +476,9 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 0.5f, ConfigUnitType.Percent, 0.02f)]
     public float HealthDifference { get; set; } = 0.25f;
 
+    [JobFilter(PvEFilter = JobFilterType.Melee, PvPFilter = JobFilterType.NoJob)]
     [UI("Maximum melee range action usage before using offset setting", 
-        Filter = AutoActionCondition, Section = 3,
-        PvEFilter = JobFilterType.Melee, PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionCondition, Section = 3)]
     [Range(0, 5, ConfigUnitType.Yalms, 0.02f)]
     public float MeleeRangeOffset { get; set; } = 1;
 
@@ -500,15 +501,15 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
     public float MistakeRatio { get; set; } = 0;
 
+    [JobFilter(PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
     [UI("Prioritize tank healing if its HP is lower than the selected percentage.",
-        Filter = AutoActionCondition, Section = 1,
-        PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
+        Filter = AutoActionCondition, Section = 1)]
     [Range(0, 1, ConfigUnitType.Percent, 0.02f)]
     public float HealthTankRatio { get; set; } = 0.4f;
 
+    [JobFilter(PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
     [UI("Prioritize healer healing if its HP is lower than the selected percentage", 
-        Filter = AutoActionCondition, Section = 1,
-        PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
+        Filter = AutoActionCondition, Section = 1)]
     [Range(0, 1, ConfigUnitType.Percent, 0.02f)]
     public float HealthHealerRatio { get; set; } = 0.4f;
 
@@ -531,9 +532,9 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 3, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 StopCastingDelay { get; set; } = new(0.5f, 1);
 
+    [JobFilter(PvEFilter = JobFilterType.Interrupt, PvPFilter = JobFilterType.NoJob)]
     [UI("Random delay for interrupting hostile targets.",
-        Filter = AutoActionCondition, Section = 3,
-        PvEFilter = JobFilterType.Interrupt, PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionCondition, Section = 3)]
     [Range(0, 3, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 InterruptDelay { get; set; } = new(0.5f, 1);
 
@@ -577,8 +578,8 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 5, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 DefenseAreaDelay { get; set; } = new(2, 3);
 
-    [UI("Remaining countdown duration when abilities will start being used before finishing the countdown.",
-        Filter =BasicTimer, Section = 1, PvPFilter = JobFilterType.NoJob)]
+    [JobFilter(PvPFilter = JobFilterType.NoJob)]
+    [UI("Remaining countdown duration when abilities will start being used before finishing the countdown.", Filter = BasicTimer, Section = 1)]
     [Range(0, 0.7f, ConfigUnitType.Seconds, 0.002f)]
     public float CountDownAhead { get; set; } = 0.4f;
 
@@ -653,9 +654,9 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 1, ConfigUnitType.Seconds, 0.002f)]
     public float MinUpdatingTime { get; set; } = 0.02f;
 
+    [JobFilter(PvEFilter = JobFilterType.NoJob)]
     [UI("The HP for using Guard.", 
-        Filter = AutoActionCondition, Section = 3,
-        PvEFilter = JobFilterType.NoJob)]
+        Filter = AutoActionCondition, Section = 3)]
     [Range(0, 1, ConfigUnitType.Percent, 0.02f)]
     public float HealthForGuard { get; set; } = 0.15f;
 
@@ -691,10 +692,10 @@ internal partial class Configs : IPluginConfiguration
     [UI("The modifier key to unlock movement temporary", Description = "RB is for gamepad player", Parent = nameof(PoslockCasting))]
     public ConsoleModifiers PoslockModifier { get; set; }
 
+    [JobFilter(PvEFilter = JobFilterType.Raise)]
     [Range(0, 10000, ConfigUnitType.None, 200)]
     [UI("Never ressurect players if MP is less than the set value",
-        Filter = AutoActionUsage,
-        PvEFilter = JobFilterType.Raise)]
+        Filter = AutoActionUsage)]
     public int LessMPNoRaise { get; set; }
 
     [Range(0, 5, ConfigUnitType.None, 1)]
@@ -707,8 +708,8 @@ internal partial class Configs : IPluginConfiguration
     [UI("Beneficial AoE strategy", Parent = nameof(UseGroundBeneficialAbility))]
     public BeneficialAreaStrategy BeneficialAreaStrategy { get; set; } = BeneficialAreaStrategy.OnCalculated;
 
-    [UI("Number of hostiles", Parent = nameof(UseDefenseAbility),
-        PvEFilter = JobFilterType.Tank)]
+    [JobFilter(PvEFilter = JobFilterType.Tank)]
+    [UI("Number of hostiles", Parent = nameof(UseDefenseAbility))]
     [Range(1, 8, ConfigUnitType.None, 0.05f)]
     public int AutoDefenseNumber { get; set; } = 2;
     #endregion
@@ -738,22 +739,23 @@ internal partial class Configs : IPluginConfiguration
     [JobConfig, Range(0, 1, ConfigUnitType.Percent)]
     private readonly float _healthSingleSpell = 0.55f;
 
+    [JobFilter(PvEFilter = JobFilterType.Tank, PvPFilter = JobFilterType.NoJob)]
     [JobConfig, Range(0, 1, ConfigUnitType.Percent, 0.02f)]
     [UI("The HP%% for tanks to use invulnerability", 
-        Filter = AutoActionCondition, Section = 3,
-        PvEFilter = JobFilterType.Tank, PvPFilter = JobFilterType.NoJob)]
+        Filter = AutoActionCondition, Section = 3)]
     private readonly float _healthForDyingTanks = 0.15f;
 
+    [JobFilter(PvEFilter = JobFilterType.Tank)]
     [JobConfig, Range(0, 1, ConfigUnitType.Percent, 0.02f)]
-    [UI("HP%% for personal defense abilities usage for tanks", Parent = nameof(UseDefenseAbility),
-        PvEFilter = JobFilterType.Tank)]
+    [UI("HP%% for personal defense abilities usage for tanks", Parent = nameof(UseDefenseAbility))]
     private readonly float _healthForAutoDefense = 1;
 
     [JobConfig, Range(0, 0.5f, ConfigUnitType.Seconds)]
     [UI("Action Ahead", Filter = BasicTimer, Description = "This plugin helps you to use the right action during the combat. Here is a guide about the different options.")]
     private readonly float _actionAhead = 0.08f;
 
-    [JobConfig, UI("Engage settings", Filter = TargetConfig, PvPFilter = JobFilterType.NoJob)]
+    [JobFilter(PvPFilter = JobFilterType.NoJob)]
+    [JobConfig, UI("Engage settings", Filter = TargetConfig)]
     private readonly TargetHostileType _hostileType = TargetHostileType.AllTargetsWhenSolo;
 
     [JobConfig]

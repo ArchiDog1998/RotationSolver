@@ -16,8 +16,10 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
+using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System.Xml.Linq;
+using XIVConfigUI;
 using XIVPainter;
 using XIVPainter.Vfx;
 
@@ -73,10 +75,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
         PainterManager.Init();
+        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + " " + OtherCommandType.Settings.ToString(), new SearchableConfigRS());
         MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();
-        LocalizationManager.InIt();
         ChangeUITranslation();
 
         OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
@@ -134,9 +136,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         }
         _dis?.Clear();
 
-        LocalizationManager.Dispose();
         MajorUpdater.Dispose();
         PainterManager.Dispose();
+        XIVConfigUIMain.Dispose();
         await OtherConfiguration.Save();
 
         ECommonsMain.Dispose();

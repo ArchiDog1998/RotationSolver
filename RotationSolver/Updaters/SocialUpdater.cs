@@ -12,6 +12,7 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using System.Diagnostics.CodeAnalysis;
+using XIVConfigUI;
 
 namespace RotationSolver.Updaters;
 

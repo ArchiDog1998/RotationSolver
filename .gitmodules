@@ -4,3 +4,6 @@
 [submodule "XIVPainter"]
 	path = XIVPainter
 	url = https://github.com/ArchiDog1998/XIVPainter
+[submodule "XIVConfigUI"]
+	path = XIVConfigUI
+	url = https://github.com/ArchiDog1998/XIVConfigUI

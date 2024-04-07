@@ -10,6 +10,7 @@ using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using XIVConfigUI;
 using Action = System.Action;
 using TargetType = RotationSolver.Basic.Configuration.Conditions.TargetType;
 
@@ -34,7 +35,7 @@ internal static class ConditionDrawer
         {
             if (IconSet.GetTexture("ui/uld/image2.tex", out var texture, true) || IconSet.GetTexture(0u, out texture))
             {
-                if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size, false, id))
+                if (ImGuiHelperRS.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size, false, id))
                 {
                     isNot = !isNot;
                 }
@@ -46,7 +47,7 @@ internal static class ConditionDrawer
         {
             if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture, true))
             {
-                if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size,
+                if (ImGuiHelperRS.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size,
                     new Vector2(tag.Value ? 0 : 0.5f, 0),
                     new Vector2(tag.Value ? 0.5f : 1, 1), isNot ? ImGui.ColorConvertFloat4ToU32(new Vector4(1, 0.8f, 0.5f, 0.2f)) : 0, id))
                 {
@@ -93,7 +94,7 @@ internal static class ConditionDrawer
         var index = Array.IndexOf(values, value);
         var names = values.Select(v =>  v.Local()).ToArray();
 
-        if (ImGuiHelper.SelectableCombo(name, names, ref index))
+        if (ImGuiHelperRS.SelectableCombo(name, names, ref index))
         {
             value = values[index];
             return true;
@@ -160,12 +161,12 @@ internal static class ConditionDrawer
     {
         ImGui.SameLine();
 
-        return ImGuiHelper.SelectableCombo($"##Comparation{condition.GetHashCode()}", [">", "<", "="], ref index);
+        return ImGuiHelperRS.SelectableCombo($"##Comparation{condition.GetHashCode()}", [">", "<", "="], ref index);
     }
 
     internal static void SearchItemsReflection(string popId, string name, ref string searchTxt, MemberInfo[] actions, Action<MemberInfo> selectAction)
     {
-        ImGuiHelper.SearchCombo(popId, name, ref searchTxt, actions, LocalizationManager.Local, selectAction, UiString.ConfigWindow_Actions_MemberName.Local());
+        ImGuiHelperRS.SearchCombo(popId, name, ref searchTxt, actions, i => LocalManager.Local(i), selectAction, UiString.ConfigWindow_Actions_MemberName.Local());
     }
 
     public static float IconSizeRaw => ImGuiHelpers.GetButtonSize("H").Y;
@@ -307,7 +308,7 @@ internal static class ConditionDrawer
 
     private static void DrawAfter(this NamedCondition namedCondition, ICustomRotation _)
     {
-        ImGuiHelper.SearchCombo($"##Comparation{namedCondition.GetHashCode()}", namedCondition.ConditionName, ref searchTxt,
+        ImGuiHelperRS.SearchCombo($"##Comparation{namedCondition.GetHashCode()}", namedCondition.ConditionName, ref searchTxt,
             DataCenter.RightSet.NamedConditions.Select(p => p.Name).ToArray(), i => i.ToString(), i =>
             {
                 namedCondition.ConditionName = i;
@@ -371,7 +372,7 @@ internal static class ConditionDrawer
 
         ImGui.SameLine();
         var i = 0;
-        ImGuiHelper.SelectableCombo($"##Category{traitCondition.GetHashCode()}",
+        ImGuiHelperRS.SelectableCombo($"##Category{traitCondition.GetHashCode()}",
         [
             UiString.ActionConditionType_EnoughLevel.Local()
         ], ref i);
@@ -630,7 +631,7 @@ internal static class ConditionDrawer
                         nameof(CustomRotation.IsLastAbility),
                     };
                 var index = Math.Max(0, Array.IndexOf(names, rotationCondition.MethodName));
-                if (ImGuiHelper.SelectableCombo($"##Last{rotationCondition.GetHashCode()}", names, ref index))
+                if (ImGuiHelperRS.SelectableCombo($"##Last{rotationCondition.GetHashCode()}", names, ref index))
                 {
                     rotationCondition.MethodName = names[index];
                 }
@@ -654,7 +655,7 @@ internal static class ConditionDrawer
                 }
 
                 ImGui.SameLine();
-                ImGuiHelper.SelectableCombo($"##Adjust{rotationCondition.GetHashCode()}",
+                ImGuiHelperRS.SelectableCombo($"##Adjust{rotationCondition.GetHashCode()}",
                 [
                     UiString.ActionSequencer_Original.Local(),
                     UiString.ActionSequencer_Adjusted.Local(),
@@ -757,7 +758,7 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
 
                 var check = targetCondition.FromSelf ? 1 : 0;
-                if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}",
+                if (ImGuiHelperRS.SelectableCombo($"From Self {targetCondition.GetHashCode()}",
                 [
                     UiString.ActionSequencer_StatusAll.Local(),
                     UiString.ActionSequencer_StatusSelf.Local(),
@@ -774,7 +775,7 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
 
                 check = targetCondition.FromSelf ? 1 : 0;
-                if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}",
+                if (ImGuiHelperRS.SelectableCombo($"From Self {targetCondition.GetHashCode()}",
                 [
                     UiString.ActionSequencer_StatusAll.Local(),
                     UiString.ActionSequencer_StatusSelf.Local(),
@@ -796,7 +797,7 @@ internal static class ConditionDrawer
                 ImGui.SameLine();
 
                 check = targetCondition.FromSelf ? 1 : 0;
-                if (ImGuiHelper.SelectableCombo($"From Self {targetCondition.GetHashCode()}",
+                if (ImGuiHelperRS.SelectableCombo($"From Self {targetCondition.GetHashCode()}",
                 [
                     UiString.ActionSequencer_StatusAll.Local(),
                     UiString.ActionSequencer_StatusSelf.Local(),
@@ -820,7 +821,7 @@ internal static class ConditionDrawer
 
             case TargetConditionType.CastingAction:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
+                ImGuiHelperRS.SetNextWidthWithName(targetCondition.CastingActionName);
                 ImGui.InputText($"Ability Name##CastingActionName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
                 break;
 
@@ -850,7 +851,7 @@ internal static class ConditionDrawer
 
             case TargetConditionType.TargetName:
                 ImGui.SameLine();
-                ImGuiHelper.SetNextWidthWithName(targetCondition.CastingActionName);
+                ImGuiHelperRS.SetNextWidthWithName(targetCondition.CastingActionName);
                 ImGui.InputText($"Name##TargetName{targetCondition.GetHashCode()}", ref targetCondition.CastingActionName, 128);
                 break;
         }
@@ -888,7 +889,7 @@ internal static class ConditionDrawer
             case TerritoryConditionType.TerritoryName:
                 ImGui.SameLine();
 
-                ImGuiHelper.SearchCombo($"##TerritoryName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
+                ImGuiHelperRS.SearchCombo($"##TerritoryName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
                 TerritoryNames, i => i.ToString(), i =>
                 {
                     territoryCondition.Name = i;
@@ -898,7 +899,7 @@ internal static class ConditionDrawer
             case TerritoryConditionType.DutyName:
                 ImGui.SameLine();
 
-                ImGuiHelper.SearchCombo($"##DutyName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
+                ImGuiHelperRS.SearchCombo($"##DutyName{territoryCondition.GetHashCode()}", territoryCondition.Name, ref searchTxt,
                 DutyNames, i => i.ToString(), i =>
                 {
                     territoryCondition.Name = i;

@@ -17,10 +17,10 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Localization;
-using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using XIVConfigUI;
+using XIVConfigUI.SearchableConfigs;
 using XIVPainter;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
@@ -177,7 +177,7 @@ public partial class RotationConfigWindow : Window
 
                 if (combos[i].Name == set.Name)
                 {
-                    ImGuiHelper.SetNextWidthWithName(set.Name);
+                    ImGuiHelperRS.SetNextWidthWithName(set.Name);
                     ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
                 }
                 else
@@ -384,7 +384,7 @@ public partial class RotationConfigWindow : Window
             ImGuiHelper.DrawItemMiddle(() =>
             {
                 var cursor = ImGui.GetCursorPos();
-                if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
+                if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
                     _activeTab == RotationConfigWindowTab.About, "About Icon"))
                 {
                     _activeTab = RotationConfigWindowTab.About;
@@ -474,7 +474,7 @@ public partial class RotationConfigWindow : Window
     private void DrawRotationIcon(ICustomRotation rotation, float iconSize)
     {
         var cursor = ImGui.GetCursorPos();
-        if (rotation.GetTexture(out var jobIcon) && ImGuiHelper.SilenceImageButton(jobIcon.ImGuiHandle,
+        if (rotation.GetTexture(out var jobIcon) && ImGuiHelperRS.SilenceImageButton(jobIcon.ImGuiHandle,
             Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
         {
             _activeTab = RotationConfigWindowTab.Rotation;
@@ -716,53 +716,53 @@ public partial class RotationConfigWindow : Window
 
     private static readonly CollapsingHeaderGroup _aboutHeaders = new(new()
     {
-        { UiString.ConfigWindow_About_Macros.Local, DrawAboutMacros},
-        { UiString.ConfigWindow_About_Compatibility.Local, DrawAboutCompatibility},
-        { UiString.ConfigWindow_About_Supporters.Local, DrawAboutSupporters},
-        { UiString.ConfigWindow_About_Links.Local, DrawAboutLinks},
+        { () => UiString.ConfigWindow_About_Macros.Local(), DrawAboutMacros},
+        { () => UiString.ConfigWindow_About_Compatibility.Local(), DrawAboutCompatibility},
+        { () => UiString.ConfigWindow_About_Supporters.Local(), DrawAboutSupporters},
+        { () => UiString.ConfigWindow_About_Links.Local(), DrawAboutLinks},
     });
 
     private static void DrawAboutMacros()
     {
         using var style = ImRaii.PushStyle(ImGuiStyleVar.ItemSpacing, new Vector2(0f, 5f));
 
-        StateCommandType.Auto.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        StateCommandType.Auto.DisplayCommandHelp(getHelp: i => i.Local());
 
-        StateCommandType.Manual.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        StateCommandType.Manual.DisplayCommandHelp(getHelp: i => i.Local());
 
-        StateCommandType.Cancel.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        StateCommandType.Cancel.DisplayCommandHelp(getHelp: i => i.Local());
 
-        OtherCommandType.NextAction.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        OtherCommandType.NextAction.DisplayCommandHelp(getHelp: i => i.Local());
 
         ImGui.NewLine();
 
-        SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.EndSpecial.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.HealArea.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.HealArea.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.HealSingle.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.HealSingle.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.DefenseArea.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.DefenseArea.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.DefenseSingle.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.DefenseSingle.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.MoveForward.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.MoveForward.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.MoveBack.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.Speed.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.Speed.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.DispelStancePositional.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.DispelStancePositional.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.RaiseShirk.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.AntiKnockback.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.Burst.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.Burst.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.LimitBreak.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.LimitBreak.DisplayCommandHelp(getHelp: i => i.Local());
 
-        SpecialCommandType.NoCasting.DisplayCommandHelp(getHelp: LocalizationManager.Local);
+        SpecialCommandType.NoCasting.DisplayCommandHelp(getHelp: i => i.Local());
     }
 
     private static void DrawAboutCompatibility()
@@ -984,7 +984,7 @@ public partial class RotationConfigWindow : Window
         var step = new Vector2(wholeWidth / count, size.Y);
         var shift = new Vector2(0, size.Y * 0.2f);
 
-        var result = ImGuiHelper.IsInRect(start, new Vector2(ImGui.GetWindowSize().X, size.Y));
+        var result = ImGuiHelperRS.IsInRect(start, new Vector2(ImGui.GetWindowSize().X, size.Y));
         if (wholeWidth <= 0) return result;
 
         var veryStart = start += new Vector2(size.X, 0);
@@ -1017,14 +1017,14 @@ public partial class RotationConfigWindow : Window
 
     private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
     {
-        { UiString.ConfigWindow_Rotation_Description.Local, DrawRotationDescription },
+        { () => UiString.ConfigWindow_Rotation_Description.Local(), DrawRotationDescription },
 
         { GetRotationStatusHead,  DrawRotationStatus },
 
-        { UiString.ConfigWindow_Rotation_Configuration.Local, DrawRotationConfiguration },
-        { UiString.ConfigWindow_Rotation_Rating.Local, DrawRotationRating },
+        { () => UiString.ConfigWindow_Rotation_Configuration.Local(), DrawRotationConfiguration },
+        { () =>  UiString.ConfigWindow_Rotation_Rating.Local(), DrawRotationRating },
 
-        { UiString.ConfigWindow_Rotation_Information.Local, DrawRotationInformation },
+        { () => UiString.ConfigWindow_Rotation_Information.Local(), DrawRotationInformation },
     });
 
     private static void DrawRotationRating()
@@ -1598,7 +1598,7 @@ public partial class RotationConfigWindow : Window
 
     private static readonly CollapsingHeaderGroup _sequencerList = new(new()
     {
-        { UiString.ConfigWindow_Actions_ForcedConditionSet.Local, () =>
+        { () => UiString.ConfigWindow_Actions_ForcedConditionSet.Local(), () =>
         {
             ImGui.TextWrapped(UiString.ConfigWindow_Actions_ForcedConditionSet_Description.Local());
 
@@ -1609,7 +1609,7 @@ public partial class RotationConfigWindow : Window
             set.GetCondition(_activeAction.ID)?.DrawMain(rotation);
         } },
 
-        { UiString.ConfigWindow_Actions_DisabledConditionSet.Local, () =>
+        { () => UiString.ConfigWindow_Actions_DisabledConditionSet.Local(), () =>
         {
             ImGui.TextWrapped(UiString.ConfigWindow_Actions_DisabledConditionSet_Description.Local());
 
@@ -1658,10 +1658,10 @@ public partial class RotationConfigWindow : Window
     }
     private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
     {
-        { UiString.ConfigWindow_Rotations_Settings.Local, DrawRotationsSettings},
-        { UiString.ConfigWindow_Rotations_Loaded.Local, DrawRotationsLoaded},
-        { UiString.ConfigWindow_Rotations_GitHub.Local, DrawRotationsGitHub},
-        { UiString.ConfigWindow_Rotations_Libraries.Local, DrawRotationsLibraries},
+        {  () => UiString.ConfigWindow_Rotations_Settings.Local(), DrawRotationsSettings},
+        {  () => UiString.ConfigWindow_Rotations_Loaded.Local(), DrawRotationsLoaded},
+        {  () => UiString.ConfigWindow_Rotations_GitHub.Local(), DrawRotationsGitHub},
+        {  () => UiString.ConfigWindow_Rotations_Libraries.Local(), DrawRotationsLibraries},
     });
 
     private static void DrawRotationsSettings()
@@ -1935,9 +1935,9 @@ public partial class RotationConfigWindow : Window
     }
     private static readonly CollapsingHeaderGroup _idsHeader = new(new()
     {
-        { UiString.ConfigWindow_List_Statuses.Local, DrawListStatuses},
+        { () => UiString.ConfigWindow_List_Statuses.Local(), DrawListStatuses},
         { () => Service.Config.UseDefenseAbility ? UiString.ConfigWindow_List_Actions.Local() : string.Empty, DrawListActions},
-        { UiString.ConfigWindow_List_Territories.Local, DrawListTerritories},
+        {() =>  UiString.ConfigWindow_List_Territories.Local(), DrawListTerritories},
     });
     private static void DrawListStatuses()
     {

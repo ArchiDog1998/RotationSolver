@@ -159,6 +159,7 @@ public static class IconSet
     /// <param name="actionID"></param>
     /// <param name="texture"></param>
     /// <returns></returns>
+    [Obsolete]
     public static bool GetTexture(this ActionID actionID, out IDalamudTextureWrap texture)
     {
         if (actionID == ActionID.None)
