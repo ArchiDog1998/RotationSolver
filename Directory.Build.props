@@ -2,8 +2,7 @@
     <PropertyGroup>
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Authors>ArchiTed</Authors>
-		<Version>4.2.3.1</Version>
+		<Authors>The CombatReborn Team</Authors>
 		<PlatformTarget>x64</PlatformTarget>
 		<Platforms>AnyCPU</Platforms>
 		<LangVersion>latest</LangVersion>
