@@ -47,7 +47,9 @@ public static partial class RSCommands
         }
         var value = strs.LastOrDefault();
 
-        foreach (var property in typeof(Configs).GetRuntimeProperties())
+
+        foreach (var property in typeof(Configs).GetRuntimeProperties()
+            .Where(p => p.GetMethod?.IsPublic ?? false))
         {
             if (!str.StartsWith(property.Name, StringComparison.OrdinalIgnoreCase)) continue;
 
@@ -58,11 +60,18 @@ public static partial class RSCommands
                 type = typeof(bool);
             }
 
-            var v = Convert.ChangeType(value, type);
+            object v;
+            try { v = Convert.ChangeType(value, type); }
+            catch { v = null; }
 
             if (v == null && type == typeof(bool))
             {
-                v = !(bool)property.GetValue(Service.Config)!;
+                var config = property.GetValue(Service.Config);
+                if (config is ConditionBoolean relay)
+                {
+                    relay.Value = !relay.Value;
+                    v = relay.Value;
+                }
             }
 
             if (property.PropertyType == typeof(ConditionBoolean))
