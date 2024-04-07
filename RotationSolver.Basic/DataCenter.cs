@@ -398,7 +398,7 @@ internal static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Math.Min(Math.Min(RTT, FetchTime), Service.Config.MaxPing);
+    public static float Ping => Math.Max(RTT, FetchTime);
 
     public static float RTT { get; internal set; } = 0.05f;
     public static float FetchTime { get; private set; } = 0.05f;
