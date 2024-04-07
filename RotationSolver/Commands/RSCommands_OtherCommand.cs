@@ -40,11 +40,6 @@ public static partial class RSCommands
     private static void DoSettingCommand(string str)
     {
         var strs = str.Split(' ');
-        if (strs.Length < 2)
-        {
-            Svc.Chat.PrintError(UiString.CommandsMissingArgument.Local());
-            return;
-        }
         var value = strs.LastOrDefault();
 
 
