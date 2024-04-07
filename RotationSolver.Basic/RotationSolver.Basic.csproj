@@ -5,7 +5,7 @@
 	  <Description>A basic library for rotation development in FFXIV in RotationSolver.</Description>
 	  <PackageId>RotationSolver.Basic</PackageId>
 	  <Title>RotationSolver.Basic</Title>
-	  <RepositoryUrl>https://github.com/ArchiDog1998/RotationSolver/tree/main/RotationSolver.Basic</RepositoryUrl>
+	  <RepositoryUrl>https://github.com/FFXIV-CombatReborn/RotationSolverReborn/tree/main/RotationSolver.Basic</RepositoryUrl>
 	  <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 	  <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
 	  <PackageTags>FFXIV, FF14, Dalamud, Rotation</PackageTags>
