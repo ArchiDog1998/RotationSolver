@@ -98,7 +98,7 @@ partial class MachinistRotation
         setting.ActionCheck = () => !IsOverheated && Heat >= 50;
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 8,
+            TimeToKill = 10,
         };
     }
 
@@ -114,7 +114,7 @@ partial class MachinistRotation
     {
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 8,
+            TimeToKill = 10,
         };
     }
 
@@ -122,7 +122,7 @@ partial class MachinistRotation
     {
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 8,
+            TimeToKill = 15,
         };
     }
 
