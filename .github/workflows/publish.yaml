@@ -39,16 +39,11 @@ jobs:
       - name: Restore Nuget Packages
         run: dotnet restore RotationSolver/RotationSolver.csproj
 
-      - name: Publish NuGet
-        uses: brandedoutcast/publish-nuget@v2
-        with:
-          PROJECT_FILE_PATH: RotationSolver.Basic/Rotationsolver.Basic.csproj
-          PACKAGE_NAME: RotationSolverReborn.Basic
-          VERSION_STATIC: ${{ env.tag }}
-          NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
-
       - name: Build Plugin
         run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:PackageVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }} --output .\build
+
+      - name: Push Nuget Package
+        run: dotnet nuget push .\build\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
       - name: Zip Plugin
         run: Compress-Archive -Path .\build\* -DestinationPath .\build\RotationSolver.zip
