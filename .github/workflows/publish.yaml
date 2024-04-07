@@ -37,7 +37,7 @@ jobs:
         run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:PackageVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }} --output .\build
 
       - name: Publish RS.Basic Nuget
-        run: dotnet nuget push .\build\RotationSolver.Basic.${{ env.tag }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push .\build\RotationSolver.Basic.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
       - name: Zip Plugin
         run: Compress-Archive -Path .\build\* -DestinationPath .\build\RotationSolver.zip
