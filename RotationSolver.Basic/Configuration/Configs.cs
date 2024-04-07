@@ -424,10 +424,6 @@ internal partial class Configs : IPluginConfiguration
         Filter = TimelineFilter)]
     private static readonly bool _enableTimelineMovement = false;
 
-    [UI("The max ping that RSR can get to before skipping to the next action.", Description = "(If you set too low, RSR will skip oGCDs)",
-        Filter = BasicTimer)]
-    [Range(0.01f, 0.5f, ConfigUnitType.Seconds, 0.002f)]
-    public float MaxPing { get; set; } = 0.5f;
 
     [UI("Use additional conditions", Filter = BasicParams)]
     public bool UseAdditionalConditions { get; set; } = false;
@@ -460,11 +456,6 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 5, ConfigUnitType.Yalms, 0.02f)]
     public float MeleeRangeOffset { get; set; } = 1;
 
-    [UI("The minimum time ahead that the last oGCD ability can be used before the next GCD ability becomes available to use.", Description = "(Adjust to prevent clipping and allow weaving)",
-        Filter = BasicTimer)]
-    [Range(0, 0.4f, ConfigUnitType.Seconds, 0.002f)]
-    public float MinLastAbilityAdvanced { get; set; } = 0.06f;
-
     [UI("When their minimum HP is lower than this.", Parent = nameof(HealWhenNothingTodo))]
     [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
     public float HealWhenNothingTodoBelow { get; set; } = 0.8f;
@@ -496,16 +487,11 @@ internal partial class Configs : IPluginConfiguration
     [Range(1, 20, ConfigUnitType.Seconds, 1f)]
     public float SpecialDuration { get; set; } = 3;
 
-    [UI("The amount of time before an oGCD is available to actually use for RSR to decide which to use.",
-        Filter = BasicTimer)]
-    [Range(0, 0.5f, ConfigUnitType.Seconds, 0.002f)]
-    public float ActionAheadForLast0GCD { get; set; } = 0.01f;
-
     [UI("Range of time before locking onto aggro'd or new target to attack", Description = "(Do not set too low, can rip newly aggro'd dungeon mobs off tanks).", Filter =TargetConfig)]
     [Range(0, 3, ConfigUnitType.Seconds)]
     public Vector2 TargetDelay { get; set; } = new(1, 2);
 
-    [UI("GCD Action Execution Delay.\n(RSR will not take actions during window).",
+    [UI("Action Execution Delay.\n(RSR will not take actions during window).",
         Filter = BasicTimer)]
     [Range(0, 1, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 WeaponDelay { get; set; } = new(0, 0);
@@ -721,10 +707,6 @@ internal partial class Configs : IPluginConfiguration
     [UI("HP%% needed to use single/self targetted mitigation on Tanks", Parent = nameof(UseDefenseAbility),
         PvEFilter = JobFilterType.Tank)]
     private readonly float _healthForAutoDefense = 1;
-
-    [JobConfig, Range(0, 0.5f, ConfigUnitType.Seconds)]
-    [UI("Action Ahead (How far ahead of a oGCD/GCD use does RSR decide which oGCD/GCD to use)", Filter = BasicTimer)]
-    private readonly float _actionAhead = 0.08f;
 
     [JobConfig, UI("Engage settings", Filter = TargetConfig, PvPFilter = JobFilterType.NoJob)]
     private readonly TargetHostileType _hostileType = TargetHostileType.AllTargetsWhenSolo;
