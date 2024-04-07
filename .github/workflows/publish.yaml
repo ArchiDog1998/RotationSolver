@@ -43,6 +43,7 @@ jobs:
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: RotationSolver.Basic/Rotationsolver.Basic.csproj
+          PACKAGE_NAME: RotationSolverReborn.Basic
           VERSION_STATIC: ${{ env.tag }}
           NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
 
