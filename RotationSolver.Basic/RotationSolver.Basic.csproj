@@ -3,7 +3,7 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <PackageIcon>Logo.png</PackageIcon>
 	  <Description>A basic library for rotation development in FFXIV in RotationSolver.</Description>
-	  <PackageId>RotationSolver.Basic</PackageId>
+	  <PackageId>RotationSolverReborn.Basic</PackageId>
 	  <Title>RotationSolver.Basic</Title>
 	  <RepositoryUrl>https://github.com/FFXIV-CombatReborn/RotationSolverReborn/tree/main/RotationSolver.Basic</RepositoryUrl>
 	  <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
