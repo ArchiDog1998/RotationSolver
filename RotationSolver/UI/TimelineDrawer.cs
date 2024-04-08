@@ -7,7 +7,6 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
@@ -24,7 +23,7 @@ internal static class TimelineDrawer
 
     private static readonly CollapsingHeaderGroup _timelineActionsList = new()
     {
-        HeaderSize = 12,
+        HeaderSize = FontSize.Fifth,
     };
     internal static uint _territoryId = 0;
     private static string _territorySearch = string.Empty;
@@ -110,7 +109,7 @@ internal static class TimelineDrawer
         ImGui.SameLine();
         ImGui.Text(UiString.TimelineRaidTime.Local() + ": " + TimeSpan.FromSeconds(DataCenter.RaidTimeRaw).ToString("hh\\:mm\\:ss\\.f"));
 
-        RotationConfigWindow._allSearchable.DrawItems(Configs.TimelineFilter);
+        RotationConfigWindow._allSearchable.DrawItems((int)UiString.TimelineRaidTime);
 
         using var table = ImRaii.Table("Rotation Solver List Timeline", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)

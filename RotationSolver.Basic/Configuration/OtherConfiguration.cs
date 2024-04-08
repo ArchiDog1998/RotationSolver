@@ -127,7 +127,7 @@ internal class OtherConfiguration
         var dirInfo = Svc.PluginInterface.AssemblyLocation.Directory;
         dirInfo = dirInfo?.Parent!.Parent!.Parent!.Parent!;
         var dir = dirInfo.FullName + @"\Resources"; 
-        if (Directory.Exists(dir))
+        if (!Directory.Exists(dir))
         {
             Svc.Log.Error("Failed to save the resources: " + dir);
             directory = dir;

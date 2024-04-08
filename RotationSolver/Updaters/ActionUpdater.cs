@@ -123,6 +123,10 @@ internal static class ActionUpdater
 
                 NextAction = newAction;
 
+                if(gcdAction == null)
+                {
+                    NextGCDAction = null;
+                }
                 if (gcdAction is IBaseAction GcdAction)
                 {
                     NextGCDAction = GcdAction;

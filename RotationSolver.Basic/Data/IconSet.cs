@@ -5,6 +5,7 @@ using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
 using Svg;
 using System.Drawing.Imaging;
+using XIVConfigUI;
 
 namespace RotationSolver.Basic.Data;
 
@@ -159,26 +160,8 @@ public static class IconSet
     /// <param name="actionID"></param>
     /// <param name="texture"></param>
     /// <returns></returns>
-    [Obsolete]
-    public static bool GetTexture(this ActionID actionID, out IDalamudTextureWrap texture)
-    {
-        if (actionID == ActionID.None)
-        {
-            return GetTexture(0, out texture, 0);
-        }
-        if(actionID == ActionID.SprintPvE)
-        {
-            return GetTexture(104, out texture, 0);
-        }
+    public static bool GetTexture(this ActionID actionID, out IDalamudTextureWrap texture) => XIVConfigUIMain.GetTextureAction((uint)actionID, out texture);
 
-        if (!_actionIcons.TryGetValue(actionID, out var iconId))
-        {
-            iconId = Service.GetSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow((uint)actionID)?.Icon ?? 0;
-
-            _actionIcons[actionID] = iconId;
-        }
-        return GetTexture(iconId, out texture);
-    }
 
     private static readonly Dictionary<IconType, uint[]> _icons = new()
     {

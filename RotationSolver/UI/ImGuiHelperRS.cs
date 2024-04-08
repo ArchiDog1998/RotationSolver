@@ -1,15 +1,11 @@
-﻿using Dalamud.Game.ClientState.Keys;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Internal;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
-using ECommons.ImGuiMethods;
 using ECommons.LanguageHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
-using RotationSolver.Localization;
 using XIVConfigUI;
 
 namespace RotationSolver.UI;

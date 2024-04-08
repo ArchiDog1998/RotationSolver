@@ -1,6 +1,8 @@
-﻿using Dalamud.Interface.Utility;
+﻿using Dalamud.Interface.Internal;
+using Dalamud.Interface.Utility;
 using ECommons.ExcelServices;
 using RotationSolver.Data;
+using System.IO;
 using XIVConfigUI;
 
 namespace RotationSolver.UI.SearchableConfigs;
@@ -41,7 +43,7 @@ internal class SearchableConfigRS : SearchableConfig
         var attr = info.GetCustomAttribute<JobFilterAttribute>();
         if (attr == null) return new();
 
-        return new(DataCenter.IsPvP ? attr.PvPFilter : attr.PvEFilter);
+        return new(DataCenter.IsPvP ? attr.PvP : attr.PvE);
     }
 
     private static void DrawJobIcon(Job job)
@@ -54,4 +56,11 @@ internal class SearchableConfigRS : SearchableConfig
             ImguiTooltips.HoveredTooltip(UiString.JobConfigTip.Local());
         }
     }
+
+    public override bool GetTexture(string path, out IDalamudTextureWrap texture, bool loadingIcon = false)
+    => IconSet.GetTexture(path, out texture, loadingIcon);
+
+    public override bool GetTexture(uint id, out IDalamudTextureWrap texture, uint @default = 0)
+    => IconSet.GetTexture(id, out texture, @default);
+
 }

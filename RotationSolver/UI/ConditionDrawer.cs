@@ -381,7 +381,7 @@ internal static class ConditionDrawer
 
     private static readonly CollapsingHeaderGroup _actionsList = new()
     {
-        HeaderSize = 12,
+        HeaderSize = FontSize.Fifth,
     };
 
     static string searchTxt = string.Empty;
