@@ -2,6 +2,7 @@
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
+using ECommons.ImGuiMethods;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
@@ -80,23 +81,31 @@ internal class ControlWindow : CtrlWindow
             && (!DataCenter.IsManual
             || Service.Config.UseAoeWhenManual);
 
-        if (!isAoe) ImGui.PushStyleColor(ImGuiCol.Text, color);
+        var dispose = isAoe ? null : ImRaii.PushColor(ImGuiCol.Text, color);
         if (ImGuiHelperRS.SelectableButton("AOE"))
         {
             Service.Config.UseAoeAction.Value = !isAoe;
             Service.Config.UseAoeWhenManual.Value = !isAoe;
         }
-        if (!isAoe) ImGui.PopStyleColor();
+        dispose?.Dispose();
 
         ImGui.SameLine();
 
         var isBurst = Service.Config.AutoBurst;
-        if (!isBurst) ImGui.PushStyleColor(ImGuiCol.Text, color);
+        dispose = isBurst ? null : ImRaii.PushColor(ImGuiCol.Text, color);
         if (ImGuiHelperRS.SelectableButton("Burst"))
         {
             Service.Config.AutoBurst.Value = !isBurst;
         }
-        if (!isBurst) ImGui.PopStyleColor();
+        dispose?.Dispose();
+
+        ImGui.SameLine();
+
+        if(ImGuiEx.IconButton(FontAwesomeIcon.Cog, "Open Config"))
+        {
+            RotationSolverPlugin.OpenConfigWindow();
+        }
+
         ImGui.SameLine();
         columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
         ImGui.NewLine();
@@ -110,6 +119,8 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.Columns(1);
     }
+
+    private static void DrawAOe() { }
 
     private static void DrawSpecials()
     {

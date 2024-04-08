@@ -656,8 +656,8 @@ internal partial class Configs : IPluginConfiguration
     [UI("Unlocked Control Window's Background", Parent =nameof(ShowControlWindow))]
     public Vector4 ControlWindowUnlockBg { get; set; } = new(0, 0, 0, 0.75f);
 
-    [UI("Info Window's Background", (int)UiString.ConfigWindow_UI_Windows)]
-    public Vector4 InfoWindowBg { get; set; } = new(0, 0, 0, 0.4f);
+    [UI("Next Action Window's Background", Parent = nameof(ShowNextActionWindow))]
+    public Vector4 NextWindowBg { get; set; } = new(0, 0, 0, 0.4f);
 
     [UI("The text color of the time to kill indicator.", Parent =nameof(ShowTargetTimeToKill))]
     public Vector4 TTKTextColor { get; set; } = new(0f, 1f, 0.8f, 1f);

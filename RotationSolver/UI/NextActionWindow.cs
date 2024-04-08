@@ -18,7 +18,7 @@ internal class NextActionWindow : Window
 
     public override void PreDraw()
     {
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.InfoWindowBg);
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, Service.Config.NextWindowBg);
 
         Flags = BaseFlags;
         if (Service.Config.IsInfoWindowNoInputs)
