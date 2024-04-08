@@ -9,12 +9,12 @@ public class JobFilterAttribute() : Attribute
     /// <summary>
     /// The filter for the pvp.
     /// </summary>
-    public JobFilterType PvPFilter { get; set; }
+    public JobFilterType PvP { get; set; }
 
     /// <summary>
     /// The filter for the pve.
     /// </summary>
-    public JobFilterType PvEFilter { get; set; }
+    public JobFilterType PvE { get; set; }
 }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member

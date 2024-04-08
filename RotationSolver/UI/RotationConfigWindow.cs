@@ -384,7 +384,7 @@ public partial class RotationConfigWindow : Window
             ImGuiHelper.DrawItemMiddle(() =>
             {
                 var cursor = ImGui.GetCursorPos();
-                if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
+                if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
                     _activeTab == RotationConfigWindowTab.About, "About Icon"))
                 {
                     _activeTab = RotationConfigWindowTab.About;
@@ -474,7 +474,7 @@ public partial class RotationConfigWindow : Window
     private void DrawRotationIcon(ICustomRotation rotation, float iconSize)
     {
         var cursor = ImGui.GetCursorPos();
-        if (rotation.GetTexture(out var jobIcon) && ImGuiHelperRS.SilenceImageButton(jobIcon.ImGuiHandle,
+        if (rotation.GetTexture(out var jobIcon) && ImGuiHelper.SilenceImageButton(jobIcon.ImGuiHandle,
             Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
         {
             _activeTab = RotationConfigWindowTab.Rotation;
@@ -1593,7 +1593,7 @@ public partial class RotationConfigWindow : Window
 
     private static readonly CollapsingHeaderGroup _actionsList = new()
     {
-        HeaderSize = 18,
+        HeaderSize = XIVConfigUI.FontSize.Forth,
     };
 
     private static readonly CollapsingHeaderGroup _sequencerList = new(new()
@@ -1621,7 +1621,7 @@ public partial class RotationConfigWindow : Window
         } },
     })
     {
-        HeaderSize = 18,
+        HeaderSize = XIVConfigUI.FontSize.Forth,
     };
     #endregion
 
@@ -1666,7 +1666,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawRotationsSettings()
     {
-        _allSearchable.DrawItems(Configs.Rotations);
+        _allSearchable.DrawItems((int)UiString.ConfigWindow_Rotations_Settings);
     }
 
     private static void DrawRotationsLoaded()
@@ -2151,12 +2151,12 @@ public partial class RotationConfigWindow : Window
             DrawActionsList(nameof(OtherConfiguration.HostileCastingTank), OtherConfiguration.HostileCastingTank);
 
             ImGui.TableNextColumn();
-            _allSearchable.DrawItems(Configs.ListAoE);
+            _allSearchable.DrawItems((int)UiString.ConfigWindow_List_HostileCastingArea);
             ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingAreaDesc.Local());
             DrawActionsList(nameof(OtherConfiguration.HostileCastingArea), OtherConfiguration.HostileCastingArea);
 
             ImGui.TableNextColumn();
-            _allSearchable.DrawItems(Configs.ListKnockback);
+            _allSearchable.DrawItems((int)UiString.ConfigWindow_List_HostileCastingKnockback);
             ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingKnockbackDesc.Local());
             DrawActionsList(nameof(OtherConfiguration.HostileCastingKnockback), OtherConfiguration.HostileCastingKnockback);
         }
@@ -2434,7 +2434,7 @@ public partial class RotationConfigWindow : Window
     #region Debug
     private static void DrawDebug()
     {
-        _allSearchable.DrawItems(Configs.Debug);
+        _allSearchable.DrawItems(-1);
 
         if (!Player.Available || !Service.Config.InDebug) return;
 

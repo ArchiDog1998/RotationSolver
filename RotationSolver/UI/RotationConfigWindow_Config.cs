@@ -195,7 +195,7 @@ public partial class RotationConfigWindow
 
         ImGui.Spacing();
 
-        _allSearchable.DrawItems(Configs.BasicTimer);
+        _allSearchable.DrawItems((int)UiString.ConfigWindow_Basic_Timer);
     }
 
     private static readonly CollapsingHeaderGroup _autoSwitch = new(new()
@@ -214,11 +214,11 @@ public partial class RotationConfigWindow
         },
     })
     {
-        HeaderSize = 18,
+        HeaderSize =  FontSize.Forth,
     };
     private static void DrawBasicAutoSwitch()
     {
-        _allSearchable.DrawItems(Configs.BasicAutoSwitch);
+        _allSearchable.DrawItems((int)UiString.ConfigWindow_Basic_AutoSwitch);
         _autoSwitch?.Draw();
     }
 
@@ -274,7 +274,7 @@ public partial class RotationConfigWindow
 
     private static void DrawBasicOthers()
     {
-        _allSearchable.DrawItems(Configs.BasicParams);
+        _allSearchable.DrawItems((int)UiString.ConfigWindow_Basic_Others);
 
         if (Service.Config.SayHelloToAll)
         {
@@ -307,22 +307,11 @@ public partial class RotationConfigWindow
         _UIHeader?.Draw();
     }
 
-    private static readonly CollapsingHeaderGroup _UIHeader = new(new()
-    {
-        {
-            () => UiString.ConfigWindow_UI_Information.Local(),
-            () => _allSearchable.DrawItems(Configs.UiInformation)
-        },
-        {
-            () => UiString.ConfigWindow_UI_Overlay.Local(),
-            () =>_allSearchable.DrawItems(Configs.UiOverlay)
-        },
-        {
-            () => UiString.ConfigWindow_UI_Windows.Local(),
-            () =>_allSearchable.DrawItems(Configs.UiWindows)
-        },
-    });
-
+    private static readonly CollapsingHeaderGroup _UIHeader = _allSearchable.GetGroups([
+        UiString.ConfigWindow_UI_Information,
+        UiString.ConfigWindow_UI_Overlay,
+        UiString.ConfigWindow_UI_Windows,
+        ]);
     #endregion
 
     #region Auto
@@ -340,7 +329,7 @@ public partial class RotationConfigWindow
                     .Local());
                 ImGui.Separator();
 
-                _allSearchable.DrawItems(Configs.AutoActionUsage);
+                _allSearchable.DrawItems((int)UiString.ConfigWindow_Auto_ActionUsage);
             }
         },
         {  () => UiString.ConfigWindow_Auto_ActionCondition.Local(), DrawAutoActionCondition },
@@ -376,7 +365,7 @@ public partial class RotationConfigWindow
         },
 
         {
-           () =>  UiString.ConfigWindow_Auto_RaiseShirkConditionSet.Local(),
+            () =>  UiString.ConfigWindow_Auto_RaiseShirkConditionSet.Local(),
             () => DataCenter.RightSet.RaiseShirkConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
@@ -406,7 +395,7 @@ public partial class RotationConfigWindow
         },
     })
     {
-        HeaderSize = 18,
+        HeaderSize =  FontSize.Forth,
     };
 
     private static void DrawAutoActionCondition()
@@ -414,7 +403,7 @@ public partial class RotationConfigWindow
         ImGui.TextWrapped(UiString.ConfigWindow_Auto_ActionCondition_Description.Local());
         ImGui.Separator();
 
-        _allSearchable.DrawItems(Configs.AutoActionCondition);
+        _allSearchable.DrawItems((int)UiString.ConfigWindow_Auto_ActionCondition);
     }
     #endregion
 
@@ -432,7 +421,7 @@ public partial class RotationConfigWindow
 
     private static void DrawTargetConfig()
     {
-        _allSearchable.DrawItems(Configs.TargetConfig);
+        _allSearchable.DrawItems((int)UiString.ConfigWindow_Target_Config);
     }
 
     private static void DrawTargetHostile()
@@ -496,11 +485,10 @@ public partial class RotationConfigWindow
     }
     private static readonly CollapsingHeaderGroup _extraHeader = new(new()
     {
-        {  () =>UiString.ConfigWindow_EventItem.Local(), DrawEventTab },
-
+        {   () =>UiString.ConfigWindow_EventItem.Local(), DrawEventTab },
         {
-             () =>UiString.ConfigWindow_Extra_Others.Local(), 
-            () => _allSearchable.DrawItems(Configs.Extra)
+            () =>UiString.ConfigWindow_Extra_Others.Local(), 
+            () => _allSearchable.DrawItems((int)UiString.ConfigWindow_Extra_Others)
         },
     });
 

@@ -23,8 +23,6 @@ internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params
 
         public override string Command => string.Empty;
 
-        public override LinkDescription[]? Tooltips => null;
-
         public override string ID => base.ID + Name;
 
         public override bool ShowInChild => Service.Config.UseAdditionalConditions;

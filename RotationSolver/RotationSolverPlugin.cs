@@ -6,7 +6,6 @@ using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
@@ -14,14 +13,10 @@ using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
-using System.Xml.Linq;
 using XIVConfigUI;
-using XIVPainter;
-using XIVPainter.Vfx;
 
 namespace RotationSolver;
 
@@ -75,9 +70,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
         PainterManager.Init();
-        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + " " + OtherCommandType.Settings.ToString(), new SearchableConfigRS());
-        XIVConfigUIMain.GetTextureID = IconSet.GetTexture;
-        XIVConfigUIMain.GetTexturePath = IconSet.GetTexture;
+        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + " " + OtherCommandType.Settings.ToString(),
+            new SearchableConfigRS());
+        LocalManager.LanguageChanged += ChangeUITranslation;
         MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();
@@ -137,6 +132,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             item.Dispose();
         }
         _dis?.Clear();
+
+        LocalManager.LanguageChanged -= ChangeUITranslation;
 
         MajorUpdater.Dispose();
         PainterManager.Dispose();

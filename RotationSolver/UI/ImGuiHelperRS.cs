@@ -1,15 +1,11 @@
-﻿using Dalamud.Game.ClientState.Keys;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Internal;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
-using ECommons.ImGuiMethods;
 using ECommons.LanguageHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
-using RotationSolver.Localization;
 using XIVConfigUI;
 
 namespace RotationSolver.UI;
@@ -206,47 +202,6 @@ internal static class ImGuiHelperRS
 
         return result;
     }
-
-
-    #region Image
-    internal unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, bool selected, string id = "")
-        => SilenceImageButton(handle, size, Vector2.Zero, Vector2.One, selected, id);
-    internal unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, Vector2 uv0, Vector2 uv1, bool selected, string id = "")
-    {
-        return SilenceImageButton(handle, size, uv0, uv1, selected ? ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.Header)) : 0, id);
-    }
-
-    internal unsafe static bool SilenceImageButton(IntPtr handle, Vector2 size, Vector2 uv0, Vector2 uv1, uint buttonColor, string id = "")
-    {
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderActive)));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderHovered)));
-        ImGui.PushStyleColor(ImGuiCol.Button, buttonColor);
-
-        var result = NoPaddingImageButton(handle, size, uv0, uv1, id);
-        ImGui.PopStyleColor(3);
-
-        return result;
-    }
-
-
-    internal static bool NoPaddingImageButton(IntPtr handle, Vector2 size, Vector2 uv0, Vector2 uv1, string id = "")
-    {
-        var padding = ImGui.GetStyle().FramePadding;
-        ImGui.GetStyle().FramePadding = Vector2.Zero;
-
-        ImGui.PushID(id);
-        var result = ImGui.ImageButton(handle, size, uv0, uv1);
-        ImGui.PopID();
-        if (ImGui.IsItemHovered())
-        {
-            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-        }
-
-        ImGui.GetStyle().FramePadding = padding;
-        return result;
-    }
-
-    #endregion
 
     public static bool IsInRect(Vector2 leftTop, Vector2 size)
     {
