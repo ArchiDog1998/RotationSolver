@@ -383,7 +383,7 @@ public partial class RotationConfigWindow : Window
             ImGuiHelper.DrawItemMiddle(() =>
             {
                 var cursor = ImGui.GetCursorPos();
-                if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
+                if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
                     _activeTab == RotationConfigWindowTab.About, "About Icon"))
                 {
                     _activeTab = RotationConfigWindowTab.About;
@@ -473,7 +473,7 @@ public partial class RotationConfigWindow : Window
     private void DrawRotationIcon(ICustomRotation rotation, float iconSize)
     {
         var cursor = ImGui.GetCursorPos();
-        if (rotation.GetTexture(out var jobIcon) && ImGuiHelperRS.SilenceImageButton(jobIcon.ImGuiHandle,
+        if (rotation.GetTexture(out var jobIcon) && ImGuiHelper.SilenceImageButton(jobIcon.ImGuiHandle,
             Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
         {
             _activeTab = RotationConfigWindowTab.Rotation;

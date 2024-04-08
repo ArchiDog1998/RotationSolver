@@ -35,7 +35,7 @@ internal static class ConditionDrawer
         {
             if (IconSet.GetTexture("ui/uld/image2.tex", out var texture, true) || IconSet.GetTexture(0u, out texture))
             {
-                if (ImGuiHelperRS.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size, false, id))
+                if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size, false, id))
                 {
                     isNot = !isNot;
                 }
@@ -47,7 +47,7 @@ internal static class ConditionDrawer
         {
             if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture, true))
             {
-                if (ImGuiHelperRS.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size,
+                if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size,
                     new Vector2(tag.Value ? 0 : 0.5f, 0),
                     new Vector2(tag.Value ? 0.5f : 1, 1), isNot ? ImGui.ColorConvertFloat4ToU32(new Vector4(1, 0.8f, 0.5f, 0.2f)) : 0, id))
                 {

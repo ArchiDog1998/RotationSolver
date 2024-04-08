@@ -437,7 +437,7 @@ internal static class TimelineDrawer
 
             if (IconSet.GetTexture(30, out var texture))
             {
-                if (ImGuiHelperRS.SilenceImageButton(texture.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, false, $"Icon :{item.GetHashCode()}"))
+                if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, false, $"Icon :{item.GetHashCode()}"))
                 {
                     if (_previewItems == null)
                     {
@@ -937,7 +937,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_tank.png", out var overlay))
                 {
-                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Tank, "Tank##" + getter.GetHashCode()))
                     {
                         getter.Tank = !getter.Tank;
@@ -948,7 +948,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_healer.png", out overlay))
                 {
-                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Healer, "Healer##" + getter.GetHashCode()))
                     {
                         getter.Healer = !getter.Healer;
@@ -959,7 +959,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_dps.png", out overlay))
                 {
-                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Melee, "Melee##" + getter.GetHashCode()))
                     {
                         getter.Melee = !getter.Melee;
@@ -970,7 +970,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_ranged.png", out overlay))
                 {
-                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Range, "Range##" + getter.GetHashCode()))
                     {
                         getter.Range = !getter.Range;
@@ -981,7 +981,7 @@ internal static class TimelineDrawer
 
                 if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_dps_magic.png", out overlay))
                 {
-                    if (ImGuiHelperRS.SilenceImageButton(overlay.ImGuiHandle, size,
+                    if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Caster, "Caster##" + getter.GetHashCode()))
                     {
                         getter.Caster = !getter.Caster;
