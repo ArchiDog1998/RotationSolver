@@ -11,6 +11,7 @@ using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using XIVConfigUI;
+using XIVConfigUI.Attributes;
 using Action = System.Action;
 using TargetType = RotationSolver.Basic.Configuration.Conditions.TargetType;
 

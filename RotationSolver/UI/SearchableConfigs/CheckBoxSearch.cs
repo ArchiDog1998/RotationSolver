@@ -106,4 +106,14 @@ internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params
         }
         base.DrawMiddle();
     }
+
+    public override void OnCommand(string value)
+    {
+        if(!bool.TryParse(value, out var b)) 
+        {
+            b = !Condition.Value;
+        }
+
+        Condition.Value = b;
+    }
 }

@@ -70,7 +70,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
         PainterManager.Init();
-        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + " " + OtherCommandType.Settings.ToString(),
+        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + "Config",
             new SearchableConfigRS());
         LocalManager.LanguageChanged += ChangeUITranslation;
         MajorUpdater.Enable();

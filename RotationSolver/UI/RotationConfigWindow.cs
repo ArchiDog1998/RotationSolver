@@ -21,6 +21,7 @@ using RotationSolver.Updaters;
 using System.ComponentModel;
 using System.Diagnostics;
 using XIVConfigUI;
+using XIVConfigUI.Attributes;
 using XIVConfigUI.SearchableConfigs;
 using XIVDrawer;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
@@ -2511,7 +2512,7 @@ public class RotationConfigWindow : ConfigWindow
         }
     }
 
-    [Description("Target")] //TODO: Extract the list thing to imguihelper.
+    [Description("Target")]
     public class TargetItem : ConfigWindowItemRS
     {
         private CollapsingHeaderGroup? _targetHeader;

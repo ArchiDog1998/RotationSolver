@@ -1,5 +1,4 @@
 ﻿using ECommons.DalamudServices;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Updaters;
 using XIVConfigUI;
@@ -27,66 +26,10 @@ public static partial class RSCommands
                 ToggleActionCommand(str);
                 break;
 
-            case OtherCommandType.Settings:
-                DoSettingCommand(str);
-                break;
-
             case OtherCommandType.NextAction:
                 DoAction();
                 break;
         }
-    }
-
-    private static void DoSettingCommand(string str)
-    {
-        var strs = str.Split(' ');
-        var value = strs.LastOrDefault();
-
-        foreach (var property in typeof(Configs).GetRuntimeProperties()
-            .Where(p => (p.GetMethod?.IsPublic ?? false) && (p.SetMethod?.IsPublic ?? false)))
-        {
-            if (!str.StartsWith(property.Name, StringComparison.OrdinalIgnoreCase)) continue;
-
-            var type = property.PropertyType;
-
-            if (type == typeof(ConditionBoolean))
-            {
-                type = typeof(bool);
-            }
-
-            var v = Convert.ChangeType(value, type);
-
-            if (v == null && type == typeof(bool))
-            {
-                v = !(bool)property.GetValue(Service.Config)!;
-            }
-
-            if (property.PropertyType == typeof(ConditionBoolean))
-            {
-                var relay = (ConditionBoolean)property.GetValue(Service.Config)!;
-                relay.Value = (bool)v!;
-                v = relay;
-            }
-
-            if (v == null)
-            {
-#if DEBUG
-                Svc.Chat.Print("Failed to get the value.");
-#endif
-                continue;
-            }
-
-            property.SetValue(Service.Config, v);
-            value = v.ToString();   
-
-            //Say out.
-            Svc.Chat.Print(string.Format(UiString.CommandsChangeSettingsValue.Local(), property.Name, value));
-
-            return;
-
-        }
-
-        Svc.Chat.PrintError(UiString.CommandsCannotFindConfig.Local());
     }
 
     private static void ToggleActionCommand(string str)
