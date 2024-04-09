@@ -2133,7 +2133,7 @@ public class RotationConfigWindow : ConfigWindow
         private CollapsingHeaderGroup? _baseHeader;
         public override void Draw(ConfigWindow window)
         {
-            _baseHeader = new(new()
+            _baseHeader ??= new(new()
             {
                 { () => UiString.ConfigWindow_Basic_Timer.Local(), () => DrawBasicTimer(window) },
                 { () => UiString.ConfigWindow_Basic_AutoSwitch.Local(), () => DrawBasicAutoSwitch(window) },

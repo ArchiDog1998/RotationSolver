@@ -679,7 +679,7 @@ internal static class TimelineDrawer
     static readonly string[] _omenShowNames = _omenInfo
         .Select(f => f.Name).ToArray();
 
-    static readonly IEnumerable<FieldInfo> _actorInfo = typeof(LockOnOmen).GetRuntimeFields().Union(typeof(Channeling).GetRuntimeFields());
+    static readonly IEnumerable<FieldInfo> _actorInfo = typeof(LockOnOmen).GetRuntimeFields().Union(typeof(ChannelingOmen).GetRuntimeFields());
     static readonly string[] _actorNames = _actorInfo
         .Select(f => f.GetValue(null))
         .OfType<string>().ToArray();

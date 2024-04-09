@@ -600,6 +600,10 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 80, ConfigUnitType.Pixels, 0.2f)]
     public float ControlWindow0GCDSize { get; set; } = 30;
 
+    [UI("Next Action Size Ratio", Parent = nameof(ShowNextActionWindow))]
+    [Range(0, 10, ConfigUnitType.Percent, 0.02f)]
+    public float NextActionNextSizeRatio { get; set; } = 1.5f;
+
     [UI("Control Progress Height")]
     [Range( 2, 30, ConfigUnitType.Yalms)]
     public float ControlProgressHeight { get; set; } = 8;

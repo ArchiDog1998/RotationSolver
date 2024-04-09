@@ -43,7 +43,7 @@ internal class NextActionWindow : Window
     public override unsafe void Draw()
     {
         var width = Service.Config.ControlWindowGCDSize
-            * Service.Config.ControlWindowNextSizeRatio;
+            * Service.Config.NextActionNextSizeRatio;
         DrawGcdCooldown(width, false);
 
         var precent = 0f;

@@ -1,6 +1,4 @@
-﻿using Dalamud.Interface.Internal;
-using Dalamud.Interface.Utility;
-using RotationSolver.Basic.Configuration;
+﻿using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Data;
 using XIVConfigUI;
