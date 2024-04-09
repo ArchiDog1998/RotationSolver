@@ -2,6 +2,7 @@
 using Dalamud.Hooking;
 using Dalamud.Plugin.Ipc;
 using ECommons.DalamudServices;
+using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using ECommons.Hooks;
 using ECommons.Hooks.ActionEffectTypes;
@@ -84,8 +85,7 @@ public static class Watcher
         {
             var obj = Svc.Objects.CreateObjectReference(a2);
 
-            if (obj is not PlayerCharacter 
-                || !path.StartsWith("vfx/common/eff/", StringComparison.OrdinalIgnoreCase))
+            if (NotFrom(path))
             {
                 if (DataCenter.VfxNewData.Count >= 64)
                 {
@@ -94,14 +94,13 @@ public static class Watcher
 
                 var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
                 DataCenter.VfxNewData.Enqueue(effect);
-            }
 
 #if DEBUG
-            if(obj is PlayerCharacter)
-            {
-                Svc.Log.Debug("Object: " + path);
-            }
+                Svc.Log.Debug(effect.ToString());
 #endif
+            }
+
+
         }
         catch (Exception e)
         {
@@ -109,6 +108,16 @@ public static class Watcher
         }
 
         return _actorVfxCreateHook!.Original(path, a2, a3, a4, a5, a6, a7);
+
+        static bool NotFrom(string path)
+        {
+            return NotName(path, "dk") && NotName(path, "cmpp") && Enum.GetNames(typeof(Job)).All(s => NotName(path, s.ToLower()));
+
+            static bool NotName(string path, string trail)
+            {
+                return !path.StartsWith("vfx/common/eff/" + trail, StringComparison.OrdinalIgnoreCase);
+            }
+        }
     }
 
     private static unsafe long ProcessObjectEffectDetour(GameObject* a1, ushort a2, ushort a3, long a4)

@@ -143,7 +143,6 @@ public class BaseAction : IBaseAction
 
         if (!Cooldown.CooldownCheck(usedUp, onLastAbility, skipClippingCheck, gcdCountForAbility)) return false;
 
-
         if (Setting.SpecialType is SpecialActionType.MeleeRange
             && IActionHelper.IsLastAction(IActionHelper.MovingActions)) return false; //No range actions after moving.
 
@@ -187,7 +186,7 @@ public class BaseAction : IBaseAction
 
             var loc = (FFXIVClientStructs.FFXIV.Common.Math.Vector3)target.Position;
 
-            return ActionManager.Instance()->UseActionLocation(ActionType.Action, ID, Player.Object.ObjectId, &loc);
+            return ActionManager.Instance()->UseActionLocation(ActionType.Action, adjustId, Player.Object.ObjectId, &loc);
         }
         else if (Svc.Objects.SearchById(target.Target?.ObjectId 
             ?? Player.Object?.ObjectId ?? GameObject.InvalidGameObjectId) == null)

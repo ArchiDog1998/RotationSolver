@@ -35,7 +35,7 @@ public static class ActionIdHelper
     /// </summary>
     /// <param name="cdGroup"></param>
     /// <returns></returns>
-    public static unsafe RecastDetail* GetCoolDownDetail(byte cdGroup) => ActionManager.Instance()->GetRecastGroupDetail(cdGroup - 1);
+    public static unsafe RecastDetail* GetCoolDownDetail(byte cdGroup) => ActionManager.Instance()->GetRecastGroupDetail(cdGroup);
 
 
     private static Action GetAction(this ActionID actionID)

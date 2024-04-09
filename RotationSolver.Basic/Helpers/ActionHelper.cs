@@ -1,4 +1,5 @@
-﻿using Action = Lumina.Excel.GeneratedSheets.Action;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using Action = Lumina.Excel.GeneratedSheets.Action;
 
 
 namespace RotationSolver.Basic.Helpers;
@@ -15,9 +16,19 @@ internal static class ActionHelper
 
     internal static byte GetCoolDownGroup(this Action action)
     {
-        var group = action.IsGeneralGCD() ? action.AdditionalCooldownGroup : action.CooldownGroup;
-        if (group == 0) group = GCDCooldownGroup;
+        var group = action.IsGeneralGCD() ? GetAdditionalCooldownGroup(action) : GetFirstCooldownGroup(action);
+        if (group < 0) group = GCDCooldownGroup;
         return group;
+    }
+
+    private static unsafe byte GetFirstCooldownGroup(Action action)
+    {
+        return (byte)ActionManager.Instance()->GetRecastGroup((int)ActionType.Action, action.RowId);
+    }
+
+    private static unsafe byte GetAdditionalCooldownGroup(Action action)
+    {
+        return (byte)ActionManager.Instance()->GetAdditionalRecastGroup(ActionType.Action, action.RowId);
     }
 
     internal static bool IsInJob(this Action i)

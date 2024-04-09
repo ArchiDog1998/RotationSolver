@@ -72,9 +72,16 @@ public struct ActionTargetInfo(IBaseAction action)
             objs.Add(obj);
         }
 
+        var targetables = objs.Where(CanUseTo);
+
+        if (!targetables.Any() && action.Info.IsDutyAction)
+        {
+            targetables = [Player.Object];
+        }
+
         var isAuto = !DataCenter.IsManual || IsTargetFriendly;
-        return objs.Where(b => isAuto || b.ObjectId == Svc.Targets.Target?.ObjectId)
-            .Where(InViewTarget).Where(CanUseTo).Where(action.Setting.CanTarget);
+        return targetables.Where(b => isAuto || b.ObjectId == Svc.Targets.Target?.ObjectId)
+            .Where(InViewTarget).Where(action.Setting.CanTarget);
     }
 
     private readonly List<BattleChara> GetCanAffects(bool skipStatusProvideCheck, TargetType type)

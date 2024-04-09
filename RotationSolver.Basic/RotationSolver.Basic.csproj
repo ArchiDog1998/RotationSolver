@@ -62,9 +62,7 @@
 	  <Using Include="Dalamud.Interface" />
 	  <Using Include="ImGuiNET" />
 	  <Using Include="Newtonsoft.Json" />
-	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj">
-		  <PrivateAssets>all</PrivateAssets>
-	  </ProjectReference>
+	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj"/>
 	  
 	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj" OutputItemType="Analyzer" ExcludeAssets="All" ReferenceOutputAssembly="false" />
 
@@ -72,7 +70,9 @@
 
 	  <ProjectReference Include="..\XIVDrawer\XIVDrawer\XIVDrawer.csproj" />
 
-	  <PackageReference Include="Svg" Version="3.4.7" />
+	  <PackageReference Include="Svg" Version="3.4.7" >
+		  <PrivateAssets>all</PrivateAssets>
+	  </PackageReference>
 
       <None Include="..\Images\Logo.png">
 		<Pack>True</Pack>

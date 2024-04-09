@@ -21,7 +21,6 @@ using RotationSolver.Updaters;
 using System.ComponentModel;
 using System.Diagnostics;
 using XIVConfigUI;
-using XIVConfigUI.Attributes;
 using XIVConfigUI.SearchableConfigs;
 using XIVDrawer;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
@@ -1293,6 +1292,7 @@ public class RotationConfigWindow : ConfigWindow
                         ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
                         ImGui.Text("MP: " + action.Info.MPNeed.ToString());
 #endif
+                        ImGui.Text("AnimationLock: " + action.Info.AnimationLockTime.ToString());
                         ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
                         ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
                         ImGui.Text("Has One:" + action.Cooldown.HasOneCharge.ToString());

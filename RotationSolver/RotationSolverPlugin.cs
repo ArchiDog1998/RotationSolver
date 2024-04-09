@@ -17,7 +17,6 @@ using RotationSolver.UI;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using XIVConfigUI;
-using XIVDrawer.Vfx;
 
 namespace RotationSolver;
 
@@ -100,7 +99,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         if (Player.Available)
         {
-            new ActorVfx("vfx/common/eff/kaihi_stlp_c2v.avfx", Player.Object, Player.Object);
             //_ = XIVPainterMain.ShowOff();
         }
 #endif
