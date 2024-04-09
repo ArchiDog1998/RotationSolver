@@ -77,6 +77,10 @@ partial class MachinistRotation
     static partial void ModifyRookAutoturretPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Battery >= 50 && !JobGauge.IsRobotActive;
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     static partial void ModifyReassemblePvE(ref ActionSetting setting)
